@@ -104,7 +104,7 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_value_is_not_defined()
+    public function it_should_throw_exception_if_value_is_not_defined()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'simple_select',
@@ -114,7 +114,7 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_value_is_not_an_array()
+    public function it_should_throw_exception_if_value_is_not_an_array()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'simple_select',
@@ -125,7 +125,7 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_value_is_not_an_array_of_strings()
+    public function it_should_throw_exception_if_value_is_not_an_array_of_strings()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'simple_select',
@@ -136,7 +136,7 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_value_is_empty()
+    public function it_should_throw_exception_if_value_is_empty()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'simple_select',
@@ -147,7 +147,7 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_value_is_defined()
+    public function it_should_throw_exception_if_value_is_defined_and_operator_is_empty()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'simple_select',

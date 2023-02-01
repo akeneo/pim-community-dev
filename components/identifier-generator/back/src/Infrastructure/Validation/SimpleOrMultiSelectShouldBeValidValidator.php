@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\MultiSelect;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\SimpleSelect;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
@@ -21,7 +22,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
+final class SimpleOrMultiSelectShouldBeValidValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -30,13 +31,13 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
 
     public function validate($condition, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, SimpleSelectShouldBeValid::class);
+        Assert::isInstanceOf($constraint, SimpleOrMultiSelectShouldBeValid::class);
 
         if (!\is_array($condition)) {
             return;
         }
 
-        if (\array_key_exists('type', $condition) && $condition['type'] !== SimpleSelect::type()) {
+        if (\array_key_exists('type', $condition) && !\in_array($condition['type'], [SimpleSelect::type(), MultiSelect::type()])) {
             return;
         }
 
@@ -56,7 +57,7 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
     /**
      * @param array<string, mixed> $condition
      */
-    private function validateConditionKeys(array $condition, SimpleSelectShouldBeValid $constraint): void
+    private function validateConditionKeys(array $condition, SimpleOrMultiSelectShouldBeValid $constraint): void
     {
         $this->validator->inContext($this->context)->validate($condition, [new Collection([
             'type' => null,
@@ -67,7 +68,9 @@ final class SimpleSelectShouldBeValidValidator extends ConstraintValidator
             'attributeCode' => [
                 new Type('string'),
                 new AttributeShouldExist(),
-                new AttributeShouldHaveType(['type' => 'pim_catalog_simpleselect']),
+                new AttributeShouldHaveTypes([
+                    'types' => ['pim_catalog_simpleselect', 'pim_catalog_multiselect'],
+                ]),
             ],
             'scope' => [new Optional()],
             'locale' => [new Optional()],

@@ -7,6 +7,7 @@ Feature: Create Identifier Generator
     And the 'name' attribute of type 'pim_catalog_text'
     And the 'color' attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color' attribute
+    And the 'size' attribute of type 'pim_catalog_multiselect'
 
   Scenario: Can create a valid identifier generator
     When I create an identifier generator
@@ -282,7 +283,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator with wrong attribute type
     When I try to create an identifier generator with a simple_select condition with name attribute
-    Then I should get an error with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
+    Then I should get an error with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect, pim_catalog_multiselect".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator without scope

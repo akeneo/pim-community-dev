@@ -232,7 +232,7 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier generator with wrong attribute type
     When I try to update an identifier generator with a simple_select condition with name attribute
-    Then I should get an error on update with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
+    Then I should get an error on update with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect, pim_catalog_multiselect".'
 
   Scenario: Cannot update an identifier generator without scope
     Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'

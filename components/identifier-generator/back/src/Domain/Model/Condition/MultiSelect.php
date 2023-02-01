@@ -8,13 +8,13 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Webmozart\Assert\Assert;
 
 /**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-import-type SimpleOrMultiSelectOperator from SimpleSelect
+ * @phpstan-type MultiSelectOperator 'IN'|'NOT IN'|'EMPTY'|'NOT EMPTY'
  * @phpstan-type MultiSelectNormalized array{
  *   type: 'multi_select',
- *   operator: SimpleOrMultiSelectOperator,
+ *   operator: MultiSelectOperator,
  *   attributeCode: string,
  *   value?: string[],
  *   scope?: string,
@@ -90,7 +90,7 @@ final class MultiSelect implements ConditionInterface
      */
     public function normalize(): array
     {
-        return \array_filter([
+        return array_filter([
             'type' => self::type(),
             'attributeCode' => $this->attributeCode,
             'operator' => $this->operator,
@@ -103,15 +103,15 @@ final class MultiSelect implements ConditionInterface
     public function match(ProductProjection $productProjection): bool
     {
         $value = $productProjection->value($this->attributeCode, $this->locale, $this->scope);
-        if (null !== $value && !\is_string($value)) {
+        if (null !== $value && !\is_array($value)) {
             return false;
         }
 
         return match ($this->operator) {
-            'IN' => null !== $value && \in_array($value, $this->value ?? []),
-            'NOT IN' => null !== $value && !\in_array($value, $this->value ?? []),
+            'IN' => \is_array($value) && \is_array($this->value) && [] !== array_intersect($value, $this->value),
+            'NOT IN' => \is_array($value) && \is_array($this->value)  && [] === array_intersect($value, $this->value),
             'EMPTY' => null === $value,
-            default => null !== $value
+            'NOT EMPTY' => null !== $value
         };
     }
 }
