@@ -79,6 +79,11 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
                 ->buildViolation('You must provide a schema with valid regexes.')
                 ->addViolation();
         }
+        if ($this->containsMissingRequiredPropertyKeys($value)) {
+            $this->context
+                ->buildViolation('You must provide a schema with valid property keys.')
+                ->addViolation();
+        }
     }
 
     /**
@@ -126,5 +131,21 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
             }
         }
         return false;
+    }
+
+    private function containsMissingRequiredPropertyKeys(object $schema): bool
+    {
+        /** @var array{properties: array<string, array<string, string>>} $schema */
+        $schema = \json_decode(\json_encode($schema, JSON_THROW_ON_ERROR) ?: '{}', true, 512, JSON_THROW_ON_ERROR);
+
+        if(!isset($schema['required'])) {
+            return false;
+        }
+        $propertyKeys = array_keys($schema['properties']);
+        $requiredKeys = array_keys($schema['required']);
+        dump($propertyKeys, $requiredKeys);
+        $missingPropertyKeys = array_diff($requiredKeys, $propertyKeys);
+
+        return \count($missingPropertyKeys) > 0;
     }
 }

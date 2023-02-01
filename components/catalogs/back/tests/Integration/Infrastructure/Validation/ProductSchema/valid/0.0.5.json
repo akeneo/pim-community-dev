@@ -34,5 +34,6 @@
             "type": "string",
             "enum": ["S", "M", "L"]
         }
-    }
+    },
+    "required": ["name", "body_html"]
 }
