@@ -34,8 +34,6 @@ final class UpdateNomenclatureHandler
 
         $this->nomenclatureDefinitionRepository->update('family', $nomenclatureDefinition);
 
-        foreach ($command->getValues() as $familyCode => $value) {
-            $this->nomenclatureValueRepository->set($familyCode, $value === '' ? null : $value);
-        }
+        $this->nomenclatureValueRepository->update($command->getValues());
     }
 }
