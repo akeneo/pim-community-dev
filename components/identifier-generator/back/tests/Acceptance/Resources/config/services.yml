@@ -19,16 +19,12 @@ services:
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateFamilyNomenclatureContext:
     public: true
     arguments:
-      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository'
-      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler'
 
   # Persistence
   Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository:
     class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryIdentifierGeneratorRepository'
 
-  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository:
-    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryNomenclatureValueRepository'
-
-  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository:
-    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryNomenclatureDefinitionRepository'
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryNomenclatureRepository'
