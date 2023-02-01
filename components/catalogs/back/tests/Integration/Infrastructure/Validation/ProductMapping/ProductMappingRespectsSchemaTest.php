@@ -67,6 +67,12 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             'scopable' => false,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'price',
+            'type' => 'pim_catalog_price_collection',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
 
         $violations = $this->validator->validate(
             new Catalog(
@@ -91,6 +97,14 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'source' => 'description',
                         'scope' => null,
                         'locale' => null,
+                    ],
+                    'price_number' => [
+                        'source' => 'price',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'currency' => 'USD',
+                        ]
                     ],
                     'released_at' => [
                         'source' => 'release_date',
@@ -134,7 +148,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             ),
         );
 
-        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "released_at", "released", "size".');
+        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "released_at", "released", "size", "price_number".');
     }
 
     public function testItReturnsViolationsWhenThereIsAdditionalTarget(): void
@@ -148,6 +162,12 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'description',
             'type' => 'pim_catalog_text',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'price',
+            'type' => 'pim_catalog_price_collection',
             'scopable' => false,
             'localizable' => false,
         ]);
@@ -185,6 +205,14 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'source' => null,
                         'scope' => null,
                         'locale' => null,
+                    ],
+                    'price_number' => [
+                        'source' => 'price',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'currency' => 'USD',
+                        ]
                     ],
                     'size' => [
                         'source' => null,
@@ -229,6 +257,9 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             },
             "released": {
               "type": "boolean"
+            },
+            "price_number": {
+              "type": "number"
             },
             "size": {
               "type": "number"
