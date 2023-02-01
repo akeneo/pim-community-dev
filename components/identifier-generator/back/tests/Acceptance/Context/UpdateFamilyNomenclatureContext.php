@@ -16,6 +16,7 @@ class UpdateFamilyNomenclatureContext implements Context
     private ?ViolationsException $violations = null;
     private const DEFAULT_OPERATOR = '<=';
     private const DEFAULT_VALUE = '3';
+    private const DEFAULT_GENERATE_IF_EMPTY = false;
 
     public function __construct(
         private readonly NomenclatureValueRepository $nomenclatureValueRepository,
@@ -34,9 +35,10 @@ class UpdateFamilyNomenclatureContext implements Context
             $familyValues[$line['familyCode']] = $line['value'];
         }
         $command = new UpdateNomenclatureCommand(
-            propertyType: 'family',
+            propertyCode: 'family',
             operator: self::DEFAULT_OPERATOR,
             value: self::DEFAULT_VALUE,
+            generateIfEmpty: self::DEFAULT_GENERATE_IF_EMPTY,
             values: $familyValues,
         );
         ($this->updateNomenclatureValuesHandler)($command);
@@ -48,9 +50,10 @@ class UpdateFamilyNomenclatureContext implements Context
     public function iAddTheValueForFamily(string $value, string $familyCode)
     {
         $command = new UpdateNomenclatureCommand(
-            propertyType: 'family',
+            propertyCode: 'family',
             operator: self::DEFAULT_OPERATOR,
             value: self::DEFAULT_VALUE,
+            generateIfEmpty: self::DEFAULT_GENERATE_IF_EMPTY,
             values: [$familyCode => $value],
         );
         ($this->updateNomenclatureValuesHandler)($command);
@@ -62,9 +65,10 @@ class UpdateFamilyNomenclatureContext implements Context
     public function iRemoveTheFamilyValue(string $familyCode)
     {
         $command = new UpdateNomenclatureCommand(
-            propertyType: 'family',
+            propertyCode: 'family',
             operator: self::DEFAULT_OPERATOR,
             value: self::DEFAULT_VALUE,
+            generateIfEmpty: self::DEFAULT_GENERATE_IF_EMPTY,
             values: [$familyCode => null],
         );
         ($this->updateNomenclatureValuesHandler)($command);
@@ -79,14 +83,15 @@ class UpdateFamilyNomenclatureContext implements Context
     }
 
     /**
-     * @When /^I (create|update) the family nomenclature operator to (?P<operator>[^ ]*) and value to (?P<value>.*)$/
+     * @When /^I (create|update) the family nomenclature operator to (?P<operator>[^ ]*), value to (?P<value>.*) and(?P<no> no)? generation if empty$/
      */
-    public function iUpdateTheFamilyNomenclatureOperatorTo(string $operator, string $value)
+    public function iUpdateTheFamilyNomenclatureOperatorTo(string $operator, string $value, string $no = '')
     {
         $command = new UpdateNomenclatureCommand(
-            propertyType: 'family',
+            propertyCode: 'family',
             operator: $operator,
             value: $value,
+            generateIfEmpty: $no !== '',
         );
         try {
             ($this->updateNomenclatureValuesHandler)($command);
@@ -112,11 +117,27 @@ class UpdateFamilyNomenclatureContext implements Context
     }
 
     /**
+     * @Then the family nomenclature generation if empty should be :generateIfEmpty
+     */
+    public function theFamilyNomenclatureGenerationIfEmptyShouldBe(string $generateIfEmpty)
+    {
+        Assert::eq($this->nomenclatureDefinitionRepository->get('family')->generateIfEmpty(), $generateIfEmpty === 'true');
+    }
+
+    /**
      * @Then I should have an error :message
      */
     public function iShouldHaveAnError($message)
     {
         Assert::notNull($this->violations, 'No error were raised.');
         Assert::contains($this->violations->getMessage(), $message);
+    }
+
+    /**
+     * @Then I should not have an error
+     */
+    public function iShouldNotHaveAnError()
+    {
+        Assert::null($this->violations);
     }
 }

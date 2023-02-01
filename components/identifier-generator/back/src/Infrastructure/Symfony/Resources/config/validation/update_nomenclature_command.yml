@@ -11,3 +11,5 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureC
             - NotBlank: ~
             - Choice:
                 choices: ['<=', '=']
+        generateIfEmpty:
+            - Type: bool

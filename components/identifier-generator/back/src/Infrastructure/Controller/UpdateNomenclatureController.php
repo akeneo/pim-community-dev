@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,12 +34,17 @@ final class UpdateNomenclatureController
         $content = $this->getContent($request);
 
         $command = new UpdateNomenclatureCommand(
-            propertyType: 'family',
-            operator: $content['operator'],
-            value: $content['value'],
-            values: $content['families'],
+            propertyCode: $propertyCode,
+            operator: $content['operator'] ?? null,
+            value: $content['value'] ?? null,
+            generateIfEmpty: $content['generate_if_empty'] ?? null,
+            values: $content['families'] ?? [],
         );
-        ($this->updateNomenclatureHandler)($command);
+        try {
+            ($this->updateNomenclatureHandler)($command);
+        } catch (ViolationsException $exception) {
+            return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
+        }
 
         return new JsonResponse();
     }
