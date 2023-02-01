@@ -24,7 +24,7 @@ describe('validateFamilyProperty', () => {
     const violations = validateFamilyProperty(familyProperty, 'path');
     expect(violations).toEqual([
       {
-        message: 'The values must be filled',
+        message: 'The empty values must be filled',
         path: 'path',
       },
     ]);
@@ -35,7 +35,7 @@ describe('validateFamilyProperty', () => {
     );
     expect(violations2).toEqual([
       {
-        message: 'The values must be filled',
+        message: 'The empty values must be filled',
         path: 'path',
       },
     ]);
@@ -46,7 +46,33 @@ describe('validateFamilyProperty', () => {
     );
     expect(violations3).toEqual([
       {
-        message: 'The values must be filled',
+        message: 'The empty values must be filled',
+        path: 'path',
+      },
+    ]);
+  });
+
+  it('should add a violation when process is truncate but the value is incorrect', () => {
+    const violations1 = validateFamilyProperty(
+      {type: PROPERTY_NAMES.FAMILY, process: {type: AbbreviationType.TRUNCATE, operator: Operator.EQUAL, value: 0}},
+      'path'
+    );
+
+    expect(violations1).toEqual([
+      {
+        message: 'Please choose a number between 1 and 5',
+        path: 'path',
+      },
+    ]);
+
+    const violations2 = validateFamilyProperty(
+      {type: PROPERTY_NAMES.FAMILY, process: {type: AbbreviationType.TRUNCATE, operator: Operator.EQUAL, value: 6}},
+      'path'
+    );
+
+    expect(violations2).toEqual([
+      {
+        message: 'Please choose a number between 1 and 5',
         path: 'path',
       },
     ]);

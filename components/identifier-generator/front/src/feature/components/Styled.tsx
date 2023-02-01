@@ -36,10 +36,10 @@ const FullPageCenteredContent = styled.div`
   }
 `;
 
-const TitleCell = styled(Table.Cell)`
+const TitleCell = styled(Table.Cell)<{withWidth: boolean} & AkeneoThemedProps>`
   font-style: italic;
   color: ${getColor('brand', 100)};
-  width: 120px;
+  ${({withWidth = true}) => withWidth && 'width: 120px;'}
 `;
 
 const InputContainer = styled.div`

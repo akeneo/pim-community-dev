@@ -14,11 +14,24 @@ const validateFamilyProperty: Validator<FamilyProperty> = (familyCode, path) => 
 
   if (
     familyCode.process.type === AbbreviationType.TRUNCATE &&
-    (!familyCode.process.operator || !familyCode.process.value)
+    (!familyCode.process.operator || (null === familyCode.process.value || undefined === familyCode.process.value))
   ) {
     violations.push({
       path: path,
-      message: 'The values must be filled',
+      message: 'The empty values must be filled',
+    });
+  }
+
+  if (
+    familyCode.process.type === AbbreviationType.TRUNCATE &&
+    (familyCode.process?.value !== null && familyCode.process?.value !== undefined) &&
+    (!/^\d+$/.exec(familyCode.process?.value.toString()) ||
+      familyCode.process?.value < 1 ||
+      familyCode.process?.value > 5)
+  ) {
+    violations.push({
+      path: path,
+      message: 'Please choose a number between 1 and 5',
     });
   }
 
