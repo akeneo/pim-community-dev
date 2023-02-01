@@ -81,7 +81,7 @@ final class LoginRateLimitListener implements EventSubscriberInterface
 
     private function getUserFromPassport($passport): ?UserInterface
     {
-        if (!$passport->hasBadge(UserBadge::class)) {
+        if (empty($passport) || !$passport->hasBadge(UserBadge::class)) {
             return null;
         }
 

@@ -102,6 +102,16 @@ class LoginRateLimitListenerSpec extends ObjectBehavior
         $this->lockStateShouldBeUpdated($userManager, $user, self::ALLOWED_FAILED_ATTEMPTS);
     }
 
+    public function it_consider_login_has_failed_when_passport_is_empty(
+        UserInterface $user,
+        LoginFailureEvent $event,
+    ): void {
+        $this->initUser($user,self::ALLOWED_FAILED_ATTEMPTS - 1, $this->getAuthenticationFailureResetDateFromNow(self::ACCOUNT_LOCK_DURATION - 1));
+        $event->getPassport()->willReturn(null);
+
+        $this->onFailureLogin($event)->shouldReturn(null);
+    }
+
     public function it_reset_failed_attempts_on_login_success(
         UserInterface $user,
         LoginSuccessEvent $event,
