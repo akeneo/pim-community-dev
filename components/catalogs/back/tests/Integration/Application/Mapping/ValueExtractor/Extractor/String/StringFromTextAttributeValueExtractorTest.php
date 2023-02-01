@@ -80,7 +80,7 @@ class StringFromTextAttributeValueExtractorTest extends ValueExtractorTestCase
             parameters: [],
         );
 
-        $this->assertEquals(null, $result);
+        $this->assertNull($result);
     }
 
     public function testItReturnsNullIfInconsistentRawValue(): void
@@ -104,6 +104,6 @@ class StringFromTextAttributeValueExtractorTest extends ValueExtractorTestCase
             parameters: [],
         );
 
-        $this->assertEquals(null, $result);
+        $this->assertNull($result);
     }
 }

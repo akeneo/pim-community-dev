@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor;
 
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\BooleanValueExtractorInterface;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\NumberValueExtractorInterface;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ValueExtractorInterface;
@@ -16,6 +17,7 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 abstract class ValueExtractorTestCase extends IntegrationTestCase
 {
     protected const TARGET_TYPES_INTERFACES_MAPPING = [
+        ValueExtractorInterface::TARGET_TYPE_BOOLEAN => BooleanValueExtractorInterface::class,
         ValueExtractorInterface::TARGET_TYPE_NUMBER => NumberValueExtractorInterface::class,
         ValueExtractorInterface::TARGET_TYPE_STRING => StringValueExtractorInterface::class,
     ];

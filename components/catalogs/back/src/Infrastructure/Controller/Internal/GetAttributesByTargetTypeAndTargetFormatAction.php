@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
+use Akeneo\Catalogs\Application\Mapping\TargetTypeConverter;
 use Akeneo\Catalogs\Application\Persistence\Attribute\SearchAttributesQueryInterface;
-use Akeneo\Catalogs\Application\Service\TargetTypeConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
