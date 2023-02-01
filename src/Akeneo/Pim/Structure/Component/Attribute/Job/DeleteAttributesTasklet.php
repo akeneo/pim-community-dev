@@ -26,7 +26,6 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
         private readonly EntityManagerClearerInterface $cacheClearer,
         private readonly int $batchSize = 100,
     ) {
-
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
