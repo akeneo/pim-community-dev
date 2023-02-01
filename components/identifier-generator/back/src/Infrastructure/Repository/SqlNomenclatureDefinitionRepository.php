@@ -40,6 +40,7 @@ SQL;
         return new NomenclatureDefinition(
             $jsonResult['operator'],
             $jsonResult['value'],
+            $jsonResult['generate_if_empty'],
         );
     }
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void

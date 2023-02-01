@@ -10,9 +10,10 @@ class UpdateNomenclatureCommand implements CommandInterface
      * @param array<string, ?string> $values
      */
     public function __construct(
-        private readonly string $propertyType,
-        private readonly string $operator,
-        private readonly string|int $value,
+        private readonly ?string $propertyCode,
+        private readonly ?string $operator,
+        private readonly string|int|null $value,
+        private readonly ?bool $generateIfEmpty,
         private readonly ?array $values = [],
     ) {
     }
@@ -33,5 +34,10 @@ class UpdateNomenclatureCommand implements CommandInterface
     public function getValue(): string
     {
         return $this->value;
+    }
+
+    public function getGenerateIfEmpty(): bool
+    {
+        return $this->generateIfEmpty;
     }
 }
