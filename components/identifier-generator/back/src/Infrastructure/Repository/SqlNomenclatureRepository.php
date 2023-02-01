@@ -22,24 +22,14 @@ class SqlNomenclatureRepository implements NomenclatureRepository
 
     public function get(string $propertyCode): ?NomenclatureDefinition
     {
-        $sql = <<<SQL
-SELECT definition
-FROM pim_catalog_identifier_generator_nomenclature_definition
-WHERE property_code=:property_code
-SQL;
-        $definition = $this->connection->fetchOne($sql, [
-            'property_code' => $propertyCode,
-        ]);
+        $nomenclatureDefinition = $this->getNomenclatureDefinition($propertyCode);
 
-        if (false === $definition) {
-            return null;
+        if (null !== $nomenclatureDefinition) {
+            $values = $this->getNomenclatureValues();
+            $nomenclatureDefinition = $nomenclatureDefinition->withValues($values);
         }
-        Assert::string($definition);
 
-        $jsonResult = \json_decode($definition, true);
-        Assert::isArray($jsonResult, sprintf('Invalid JSON: "%s"', $definition));
-
-        return $this->fromNormalized($jsonResult);
+        return $nomenclatureDefinition;
     }
 
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
@@ -209,5 +199,54 @@ SQL;
         if (\count($valuesToUpdateOrInsert)) {
             $this->insertOrUpdateNomenclatureValues($valuesToUpdateOrInsert);
         }
+    }
+
+    /**
+     * @param string $propertyCode
+     * @return NomenclatureDefinition|null
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function getNomenclatureDefinition(string $propertyCode): ?NomenclatureDefinition
+    {
+        $sql = <<<SQL
+SELECT definition
+FROM pim_catalog_identifier_generator_nomenclature_definition
+WHERE property_code=:property_code
+SQL;
+        $definition = $this->connection->fetchOne($sql, [
+            'property_code' => $propertyCode,
+        ]);
+
+        if (false === $definition) {
+            return null;
+        }
+        Assert::string($definition);
+
+        $jsonResult = \json_decode($definition, true);
+        Assert::isArray($jsonResult, sprintf('Invalid JSON: "%s"', $definition));
+
+        return $this->fromNormalized($jsonResult);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getNomenclatureValues(): array
+    {
+        $sql = <<<SQL
+SELECT f.code, value
+FROM pim_catalog_identifier_generator_family_nomenclature n
+INNER JOIN pim_catalog_family f ON f.id = n.family_id
+SQL;
+
+        $result = $this->connection->fetchAllKeyValue($sql);
+
+        $nomenclatureValues = [];
+        foreach ($result as $familyCode => $value) {
+            Assert::string($value);
+            $nomenclatureValues[(string) $familyCode] = $value;
+        }
+
+        return $nomenclatureValues;
     }
 }
