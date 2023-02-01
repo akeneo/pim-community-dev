@@ -1,7 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
+use Webmozart\Assert\Assert;
+
+/**
+ * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-type NormalizedNomenclatureDefinition array{operator: string, value: int, generate_if_empty: bool}
+ */
 class NomenclatureDefinition
 {
     public function __construct(
@@ -41,8 +51,15 @@ class NomenclatureDefinition
         return new NomenclatureDefinition($this->operator, $this->value, $generateIfEmpty);
     }
 
+    /**
+     * @return NormalizedNomenclatureDefinition
+     */
     public function normalize(): array
     {
+        Assert::notNull($this->operator);
+        Assert::notNull($this->value);
+        Assert::notNull($this->generateIfEmpty);
+
         return [
             'operator' => $this->operator,
             'value' => $this->value,

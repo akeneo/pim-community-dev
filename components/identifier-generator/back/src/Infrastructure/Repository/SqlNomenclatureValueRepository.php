@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -19,9 +20,9 @@ class SqlNomenclatureValueRepository implements NomenclatureValueRepository
     }
 
     /**
-     * @param array<string, ?string> $values
+     * @{inheritdoc}
      */
-    public function update(array $values): void
+    public function update(string $propertyCode, array $values): void
     {
         $familyIds = $this->getExistingFamilyIdsFromFamilyCodes(\array_unique(\array_keys($values)));
 
@@ -35,7 +36,7 @@ class SqlNomenclatureValueRepository implements NomenclatureValueRepository
                 } else {
                     $valuesToUpdateOrInsert[] = [
                         'familyId' => $familyIds[$familyCode],
-                        'value' => $value
+                        'value' => $value,
                     ];
                 }
             }
@@ -62,10 +63,16 @@ INNER JOIN pim_catalog_family f ON f.id = n.family_id
 WHERE f.code = :family_code
 SQL;
         $result = $this->connection->fetchOne($sql, [
-            'family_code' => $familyCode
+            'family_code' => $familyCode,
         ]);
 
-        return $result === false ? null : $result;
+        if (false === $result) {
+            return null;
+        }
+
+        Assert::stringNotEmpty($result);
+
+        return $result;
     }
 
     /**
@@ -79,11 +86,19 @@ SELECT code, id
 FROM pim_catalog_family f
 WHERE f.code IN (:family_codes)
 SQL;
-        return $this->connection->fetchAllKeyValue($sql, [
+
+        $result = $this->connection->fetchAllKeyValue($sql, [
             'family_codes' => $familyCodes,
         ], [
             'family_codes' => Connection::PARAM_STR_ARRAY,
         ]);
+
+        $familyIds = [];
+        foreach ($result as $familyCode => $familyId) {
+            $familyIds[(string) $familyCode] = \intval($familyId);
+        }
+
+        return $familyIds;
     }
 
     /**
@@ -94,7 +109,7 @@ SQL;
         $deleteSql = <<<SQL
 DELETE FROM pim_catalog_identifier_generator_family_nomenclature 
 WHERE family_id IN (:family_ids);
-    SQL;
+SQL;
         $this->connection->executeStatement($deleteSql, [
             'family_ids' => $familyIdsToDelete,
         ], [
@@ -103,7 +118,7 @@ WHERE family_id IN (:family_ids);
     }
 
     /**
-     * @param {familyId: int, value: string}[] $valuesToUpdateOrInsert
+     * @param array{familyId: int, value: string}[] $valuesToUpdateOrInsert
      */
     private function insertOrUpdateNomenclatureValues(array $valuesToUpdateOrInsert): void
     {
