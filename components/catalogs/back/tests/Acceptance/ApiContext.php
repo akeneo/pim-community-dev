@@ -18,12 +18,14 @@ use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -776,6 +778,14 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'price_number' => [
+                        'source' => 'price',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'currency' => 'USD',
+                        ],
+                    ],
                     'release_date' => [
                         'source' => 'released_at',
                         'scope' => null,
@@ -835,6 +845,9 @@ class ApiContext implements Context
                     "customization_artists_count": {
                       "type": "string"
                     },
+                    "price_number": {
+                      "type": "number"
+                    },
                     "release_date": {
                       "type": "string",
                       "format": "date-time"
@@ -876,6 +889,7 @@ class ApiContext implements Context
                 'size' => 'l',
                 'drawings_customization_count' => '12',
                 'artists_customization_count' => '7',
+                'price' => ['USD' => 21],
                 'released_at' => new \DateTimeImmutable('2023-01-12T00:00:00+00:00'),
                 'is_released' => true,
                 'picture' => $this->files['akeneoLogoImage'],
@@ -889,6 +903,7 @@ class ApiContext implements Context
                 'size' => 'm',
                 'drawings_customization_count' => '8',
                 'artists_customization_count' => '5',
+                'price' => ['USD' => 34],
                 'released_at' => new \DateTimeImmutable('2023-01-10T00:00:00+00:00'),
                 'is_released' => true,
                 'picture' => $this->files['akeneoLogoImage'],
@@ -902,6 +917,7 @@ class ApiContext implements Context
                 'size' => 'xl',
                 'drawings_customization_count' => '4',
                 'artists_customization_count' => '2',
+                'price' => ['USD' => 78],
                 'released_at' => new \DateTimeImmutable('2042-01-01T00:00:00+00:00'),
                 'is_released' => false,
                 'picture' => $this->files['ziggyImage'],
@@ -941,6 +957,12 @@ class ApiContext implements Context
             'localizable' => false,
         ]);
         $this->createAttribute([
+            'code' => 'price',
+            'type' => 'pim_catalog_price_collection',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
             'code' => 'released_at',
             'type' => 'pim_catalog_date',
             'scopable' => false,
@@ -966,6 +988,7 @@ class ApiContext implements Context
             'size',
             'drawings_customization_count',
             'artists_customization_count',
+            'price',
             'released_at',
             'is_released',
         ]);
@@ -988,6 +1011,11 @@ class ApiContext implements Context
                     new SetDateValue('released_at', null, null, $product['released_at']),
                     new SetBooleanValue('is_released', null, null, $product['is_released']),
                     new SetImageValue('picture', null, null, $product['picture']),
+                    new SetPriceCollectionValue('price', null, null, \array_map(
+                        static fn (int $amount, string $currency): PriceValue => new PriceValue($amount, $currency),
+                        $product['price'],
+                        \array_keys($product['price']),
+                    )),
                 ],
             );
 
@@ -1032,6 +1060,7 @@ class ApiContext implements Context
                 'size' => 'L',
                 'customization_drawings_count' => 12,
                 'customization_artists_count' => '7',
+                'price_number' => 21,
                 'release_date' => '2023-01-12T00:00:00+00:00',
                 'is_released' => true,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
@@ -1045,6 +1074,7 @@ class ApiContext implements Context
                 'size' => 'XL',
                 'customization_drawings_count' => 4,
                 'customization_artists_count' => '2',
+                'price_number' => 78,
                 'release_date' => '2042-01-01T00:00:00+00:00',
                 'is_released' => false,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
@@ -1087,6 +1117,7 @@ class ApiContext implements Context
             'size' => 'L',
             'customization_drawings_count' => 12,
             'customization_artists_count' => '7',
+            'price_number' => 21,
             'release_date' => '2023-01-12T00:00:00+00:00',
             'is_released' => true,
             'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',

@@ -104,7 +104,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'locale' => null,
                         'parameters' => [
                             'currency' => 'USD',
-                        ]
+                        ],
                     ],
                     'released_at' => [
                         'source' => 'release_date',
@@ -212,7 +212,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'locale' => null,
                         'parameters' => [
                             'currency' => 'USD',
-                        ]
+                        ],
                     ],
                     'size' => [
                         'source' => null,
