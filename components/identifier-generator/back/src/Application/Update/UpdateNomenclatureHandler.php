@@ -6,8 +6,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Update;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
 use Webmozart\Assert\Assert;
 
 /**
@@ -17,8 +16,7 @@ use Webmozart\Assert\Assert;
 final class UpdateNomenclatureHandler
 {
     public function __construct(
-        private readonly NomenclatureValueRepository $nomenclatureValueRepository,
-        private readonly NomenclatureDefinitionRepository $nomenclatureDefinitionRepository,
+        private readonly NomenclatureRepository    $nomenclatureRepository,
         private readonly CommandValidatorInterface $validator,
     ) {
     }
@@ -27,7 +25,7 @@ final class UpdateNomenclatureHandler
     {
         $this->validator->validate($command);
 
-        $nomenclatureDefinition = $this->nomenclatureDefinitionRepository->get('family');
+        $nomenclatureDefinition = $this->nomenclatureRepository->get('family');
         if (null === $nomenclatureDefinition) {
             $nomenclatureDefinition = new NomenclatureDefinition();
         }
@@ -39,10 +37,9 @@ final class UpdateNomenclatureHandler
         $nomenclatureDefinition = $nomenclatureDefinition
             ->withOperator($command->getOperator())
             ->withValue($command->getValue())
-            ->withGenerateIfEmpty($command->getGenerateIfEmpty());
+            ->withGenerateIfEmpty($command->getGenerateIfEmpty())
+            ->withValues($command->getValues());
 
-        $this->nomenclatureDefinitionRepository->update('family', $nomenclatureDefinition);
-
-        $this->nomenclatureValueRepository->update($command->getPropertyCode(), $command->getValues());
+        $this->nomenclatureRepository->update('family', $nomenclatureDefinition);
     }
 }

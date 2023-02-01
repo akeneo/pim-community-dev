@@ -10,9 +10,11 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinitio
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface NomenclatureDefinitionRepository
+interface NomenclatureRepository
 {
     public function get(string $propertyCode): ?NomenclatureDefinition;
 
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void;
+
+    public function getValue(string $familyCode): ?string;
 }
