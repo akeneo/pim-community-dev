@@ -8,6 +8,7 @@
 - PIM-10779: Fix lowercase on get attribute group code for dqi activation
 - PIM-10784: Fix API error 500 when filtering for identifier with null value
 - PIM-10785: Fix case-insensitive patch product model
+- PIM-10808: Fix Error message on the family modification when an attribute is as required=0
 
 # 7.0.7 (2023-02-13)
 
