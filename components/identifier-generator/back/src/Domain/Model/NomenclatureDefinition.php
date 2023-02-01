@@ -14,10 +14,14 @@ use Webmozart\Assert\Assert;
  */
 class NomenclatureDefinition
 {
+    /**
+     * @param array<string, ?string>|null $values
+     */
     public function __construct(
         private readonly ?string $operator = null,
         private readonly ?int $value = null,
         private readonly ?bool $generateIfEmpty = null,
+        private readonly ?array $values = [],
     ) {
     }
 
@@ -36,25 +40,39 @@ class NomenclatureDefinition
         return $this->value;
     }
 
+    /**
+     * @return array<string, ?string>|null
+     */
+    public function values(): ?array
+    {
+        return $this->values;
+    }
+
     public function withOperator(string $operator): self
     {
-        return new NomenclatureDefinition($operator, $this->value, $this->generateIfEmpty);
+        return new NomenclatureDefinition($operator, $this->value, $this->generateIfEmpty, $this->values);
     }
 
     public function withValue(int $value): self
     {
-        return new NomenclatureDefinition($this->operator, $value, $this->generateIfEmpty);
+        return new NomenclatureDefinition($this->operator, $value, $this->generateIfEmpty, $this->values);
     }
 
     public function withGenerateIfEmpty(bool $generateIfEmpty): self
     {
-        return new NomenclatureDefinition($this->operator, $this->value, $generateIfEmpty);
+        return new NomenclatureDefinition($this->operator, $this->value, $generateIfEmpty, $this->values);
     }
 
+    public function withValues(array $values): self
+    {
+        return new NomenclatureDefinition($this->operator, $this->value, $this->generateIfEmpty, $values);
+    }
+
+    // TODO: move this in repository
     /**
      * @return NormalizedNomenclatureDefinition
      */
-    public function normalize(): array
+    public function normalizeForDatabase(): array
     {
         Assert::notNull($this->operator);
         Assert::notNull($this->value);

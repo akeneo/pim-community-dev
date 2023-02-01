@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
@@ -50,13 +49,13 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
-        $nomenclatureDefinition = $this->getNomenclatureDefinitionRepository()->get('family');
+        $nomenclatureDefinition = $this->getNomenclatureRepository()->get('family');
         Assert::assertSame($nomenclatureDefinition->operator(), '<=');
         Assert::assertSame($nomenclatureDefinition->value(), 4);
         Assert::assertSame($nomenclatureDefinition->generateIfEmpty(), true);
-        Assert::assertSame($this->getNomenclatureValueRepository()->get('familyA1'), 'FAM1');
-        Assert::assertSame($this->getNomenclatureValueRepository()->get('familyA2'), 'FAM2');
-        Assert::assertSame($this->getNomenclatureValueRepository()->get('familyA3'), null);
+        Assert::assertSame($this->getNomenclatureRepository()->getValue('familyA1'), 'FAM1');
+        Assert::assertSame($this->getNomenclatureRepository()->getValue('familyA2'), 'FAM2');
+        Assert::assertSame($this->getNomenclatureRepository()->getValue('familyA3'), null);
     }
 
     /** @test */
@@ -96,13 +95,8 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         return $this->catalog->useTechnicalCatalog(['identifier_generator']);
     }
 
-    private function getNomenclatureDefinitionRepository(): NomenclatureDefinitionRepository
+    private function getNomenclatureRepository(): NomenclatureRepository
     {
-        return $this->get('Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository');
-    }
-
-    private function getNomenclatureValueRepository(): NomenclatureValueRepository
-    {
-        return $this->get('Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository');
+        return $this->get('Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository');
     }
 }
