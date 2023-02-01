@@ -39,11 +39,11 @@ final class NomenclatureDefinition
     }
 
     /**
-     * @return array<string, ?string>|null
+     * @return array<string, ?string>
      */
-    public function values(): ?array
+    public function values(): array
     {
-        return $this->values;
+        return $this->values ?? [];
     }
 
     public function withOperator(string $operator): self

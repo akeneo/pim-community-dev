@@ -65,3 +65,8 @@ services:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetNomenclatureController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler'
