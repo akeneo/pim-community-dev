@@ -502,6 +502,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 $code ?? self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 $conditions ?? [
                     $this->getValidCondition('enabled'),
+                    $this->getValidCondition('family', 'EMPTY'),
                     $this->getValidCondition('simple_select'),
                     $this->getValidCondition('multi_select'),
                 ],
