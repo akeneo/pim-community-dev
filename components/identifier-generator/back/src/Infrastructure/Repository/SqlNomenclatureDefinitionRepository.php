@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -36,12 +37,8 @@ SQL;
         }
 
         $jsonResult = \json_decode($result, true);
-        // TODO Create a FromNormalized + check data
-        return new NomenclatureDefinition(
-            $jsonResult['operator'],
-            $jsonResult['value'],
-            $jsonResult['generate_if_empty'],
-        );
+
+        return $this->denormalizeNomenclatureDefinition($jsonResult);
     }
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
     {
@@ -55,5 +52,14 @@ SQL;
             'property_code' => $propertyCode,
             'definition' => \json_encode($nomenclatureDefinition->normalize()),
         ]);
+    }
+
+    private function denormalizeNomenclatureDefinition(mixed $jsonResult): NomenclatureDefinition
+    {
+        return new NomenclatureDefinition(
+            $jsonResult['operator'] ?? null,
+            $jsonResult['value'] ?? null,
+            $jsonResult['generate_if_empty'] ?? null,
+        );
     }
 }
