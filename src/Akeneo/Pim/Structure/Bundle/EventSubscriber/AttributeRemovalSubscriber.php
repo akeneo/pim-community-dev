@@ -42,6 +42,7 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::POST_REMOVE => 'blacklistAttributeCodeAndLaunchJob',
+            StorageEvents::POST_REMOVE_ALL => 'bulkBlacklistAttributeCodeAndLaunchJob',
         ];
     }
 
@@ -52,15 +53,41 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
         if (!$subject instanceof AttributeInterface) {
             return;
         }
+        if (!$event->hasArgument('unitary') || true !== $event->getArgument('unitary')) {
+            return;
+        }
 
         $attributeCode = $subject->getCode();
-        $this->attributeCodeBlacklister->blacklist($attributeCode);
+        $this->attributeCodeBlacklister->blacklist([$attributeCode]);
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_NAME);
         $jobExecution = $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
             'attribute_codes' => [$attributeCode]
         ]);
 
-        $this->attributeCodeBlacklister->registerJob($attributeCode, $jobExecution->getId());
+        $this->attributeCodeBlacklister->registerJob([$attributeCode], $jobExecution->getId());
+    }
+
+    public function bulkBlacklistAttributeCodeAndLaunchJob(GenericEvent $event): void
+    {
+        $attributes = $event->getSubject();
+        $attributeCodes = [];
+
+        foreach ($attributes as $attribute) {
+            if (!$attribute instanceof AttributeInterface) {
+                return;
+            }
+
+            $attributeCodes[] = $attribute->getCode();
+        }
+
+        $this->attributeCodeBlacklister->blacklist($attributeCodes);
+
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_NAME);
+        $jobExecution = $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
+            'attribute_codes' => $attributeCodes
+        ]);
+
+        $this->attributeCodeBlacklister->registerJob($attributeCodes, $jobExecution->getId());
     }
 }

@@ -34,8 +34,6 @@ class RemoveAttributeCodesFromBlacklistTasklet implements TaskletInterface
             ->getJobParameters()
             ->get('attribute_codes');
 
-        foreach ($attributeCodes as $attributeCode) {
-            $this->attributeCodeBlacklister->removeFromBlacklist($attributeCode);
-        }
+        $this->attributeCodeBlacklister->removeFromBlacklist($attributeCodes);
     }
 }
