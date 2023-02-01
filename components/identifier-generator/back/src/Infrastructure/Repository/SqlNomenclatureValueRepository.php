@@ -50,10 +50,12 @@ class SqlNomenclatureValueRepository implements NomenclatureValueRepository
         }
     }
 
+    /**
+     * This method should not exist. It will be removed in CPM-943. It is only for testing for now.
+     * @deprecated @TODO
+     */
     public function get(string $familyCode): ?string
     {
-        // TODO this method should not exist.
-        // We can keep it until CPM-943 is done.
         $sql = <<<SQL
 SELECT value FROM pim_catalog_identifier_generator_family_nomenclature n
 INNER JOIN pim_catalog_family f ON f.id = n.family_id
@@ -90,8 +92,8 @@ SQL;
     private function deleteNomenclatureValues(array $familyIdsToDelete): void
     {
         $deleteSql = <<<SQL
-    DELETE FROM pim_catalog_identifier_generator_family_nomenclature 
-    WHERE family_id IN (:family_ids);
+DELETE FROM pim_catalog_identifier_generator_family_nomenclature 
+WHERE family_id IN (:family_ids);
     SQL;
         $this->connection->executeStatement($deleteSql, [
             'family_ids' => $familyIdsToDelete,
