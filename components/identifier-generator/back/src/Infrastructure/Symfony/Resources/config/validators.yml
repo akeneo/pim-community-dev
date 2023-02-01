@@ -4,7 +4,7 @@ services:
             - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: validator.constraint_validator }
-    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldHaveTypeValidator:
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldHaveTypesValidator:
         arguments:
             - '@akeneo.pim.structure.query.get_attributes'
         tags:
@@ -33,7 +33,7 @@ services:
             - '@validator'
         tags:
             - { name: validator.constraint_validator }
-    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectShouldBeValidValidator:
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleOrMultiSelectShouldBeValidValidator:
         arguments:
             - '@validator'
         tags:
