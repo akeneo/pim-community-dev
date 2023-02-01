@@ -38,7 +38,7 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
                 'operator' => '<=',
                 'value' => 4,
                 'generate_if_empty' => true,
-                'families' => [
+                'values' => [
                     'familyA1' => 'FAM1',
                     'familyA2' => 'FAM2',
                     'familyA3' => '',
