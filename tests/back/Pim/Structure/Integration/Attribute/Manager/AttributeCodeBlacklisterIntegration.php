@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Family;
+namespace AkeneoTest\Pim\Structure\Integration\Attribute\Manager;
 
 use Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister;
 use Akeneo\Test\Integration\Configuration;
@@ -19,7 +19,7 @@ final class AttributeCodeBlacklisterIntegration extends TestCase
         $blacklister = $this->getBlacklister();
         $this->assertFalse($this->isBlacklisted('nice_attribute_code'));
 
-        $blacklister->blacklist('nice_attribute_code');
+        $blacklister->blacklist(['nice_attribute_code']);
 
         $this->assertTrue($this->isBlacklisted('nice_attribute_code'));
     }
@@ -37,7 +37,7 @@ final class AttributeCodeBlacklisterIntegration extends TestCase
             new JobParameters(['attribute_code' => 'nice_attribute_code'])
         );
 
-        $blacklister->registerJob('nice_attribute_code', $jobExecution->getId());
+        $blacklister->registerJob(['nice_attribute_code'], $jobExecution->getId());
 
         $this->assertJobIsRegistered('nice_attribute_code', $jobExecution->getId());
     }
@@ -46,8 +46,8 @@ final class AttributeCodeBlacklisterIntegration extends TestCase
     {
         $blacklister = $this->getBlacklister();
 
-        $blacklister->blacklist('nice_attribute_code');
-        $blacklister->removeFromBlacklist('nice_attribute_code');
+        $blacklister->blacklist(['nice_attribute_code']);
+        $blacklister->removeFromBlacklist(['nice_attribute_code']);
 
         $this->assertFalse($this->isBlacklisted('nice_attribute_code'));
     }
