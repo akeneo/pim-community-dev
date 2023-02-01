@@ -24,13 +24,11 @@ final class UpdateNomenclatureHandler
         if (null === $nomenclatureDefinition) {
             $nomenclatureDefinition = new NomenclatureDefinition();
         }
-        if (null !== $command->getOperator()) {
-            $nomenclatureDefinition = $nomenclatureDefinition->withOperator($command->getOperator());
-        }
 
-        if (null !== $command->getValue()) {
-            $nomenclatureDefinition = $nomenclatureDefinition->withValue($command->getValue());
-        }
+        $nomenclatureDefinition = $nomenclatureDefinition
+            ->withOperator($command->getOperator())
+            ->withValue($command->getValue())
+            ->withGenerateIfEmpty($command->getGenerateIfEmpty());
 
         $this->nomenclatureDefinitionRepository->update('family', $nomenclatureDefinition);
 
