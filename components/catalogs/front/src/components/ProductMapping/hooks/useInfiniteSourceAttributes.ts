@@ -42,7 +42,7 @@ export const useInfiniteSourceAttributes = ({target, search = '', limit = 20}: Q
             }).toString();
 
             const response = await fetch(
-                '/rest/catalogs/attributes_by_target_type_and_target_format?' + queryParameters,
+                '/rest/catalogs/attributes-by-target-type-and-target-format?' + queryParameters,
                 {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',
