@@ -7,8 +7,7 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -17,12 +16,11 @@ class UpdateFamilyNomenclatureContext implements Context
 {
     private ?ViolationsException $violations = null;
     private const DEFAULT_OPERATOR = '<=';
-    private const DEFAULT_VALUE = '3';
+    private const DEFAULT_VALUE = 3;
     private const DEFAULT_GENERATE_IF_EMPTY = false;
 
     public function __construct(
-        private readonly NomenclatureValueRepository $nomenclatureValueRepository,
-        private readonly NomenclatureDefinitionRepository $nomenclatureDefinitionRepository,
+        private readonly NomenclatureRepository    $nomenclatureRepository,
         private readonly UpdateNomenclatureHandler $updateNomenclatureValuesHandler,
     ) {
     }
@@ -81,7 +79,7 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function theValueForFamilyShouldBe(string $familyCode, string $value): void
     {
-        Assert::eq($this->nomenclatureValueRepository->get($familyCode), 'undefined' === $value ? null : $value);
+        Assert::eq($this->nomenclatureRepository->getValue($familyCode), 'undefined' === $value ? null : $value);
     }
 
     /**
@@ -108,7 +106,7 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function theFamilyNomenclatureOperatorShouldBe(string $operator): void
     {
-        Assert::eq($this->nomenclatureDefinitionRepository->get('family')->operator(), $operator);
+        Assert::eq($this->nomenclatureRepository->get('family')->operator(), $operator);
     }
 
     /**
@@ -116,7 +114,7 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function theFamilyNomenclatureValueShouldBe(string $value): void
     {
-        Assert::eq($this->nomenclatureDefinitionRepository->get('family')->value(), \intval($value));
+        Assert::eq($this->nomenclatureRepository->get('family')->value(), \intval($value));
     }
 
     /**
@@ -124,7 +122,7 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function theFamilyNomenclatureGenerationIfEmptyShouldBe(string $generateIfEmpty): void
     {
-        Assert::eq($this->nomenclatureDefinitionRepository->get('family')->generateIfEmpty(), $generateIfEmpty === 'true');
+        Assert::eq($this->nomenclatureRepository->get('family')->generateIfEmpty(), $generateIfEmpty === 'true');
     }
 
     /**
