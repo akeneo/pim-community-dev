@@ -70,7 +70,7 @@ final class GetAvailableConditionsController
                 $localeCode,
                 $limit,
                 $offset,
-                [AttributeTypes::OPTION_SIMPLE_SELECT],
+                [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT],
                 $search
             );
         }
