@@ -12,7 +12,7 @@ class UpdateNomenclatureCommand implements CommandInterface
     public function __construct(
         private readonly string $propertyType,
         private readonly string $operator,
-        private readonly string $value,
+        private readonly string|int $value,
         private readonly ?array $values = [],
     ) {
     }
