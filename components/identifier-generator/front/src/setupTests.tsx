@@ -22,7 +22,7 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
   useTranslate: () => (i18nKey: string) => i18nKey,
   useRouter: () => ({
-    generate: (key: string) => key
+    generate: (key: string) => key,
   }),
   useNotify: () => () => {},
   useUserContext: () => ({
@@ -35,9 +35,9 @@ jest.mock('@akeneo-pim-community/shared', () => ({
         default:
           throw new Error(`Unknown key ${k}`);
       }
-    }
+    },
   }),
   useSecurity: () => ({
-    isGranted: () => true
-  })
+    isGranted: () => true,
+  }),
 }));
