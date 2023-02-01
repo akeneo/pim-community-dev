@@ -20,7 +20,7 @@ class SqlNomenclatureDefinitionRepository implements NomenclatureDefinitionRepos
     ) {
     }
 
-    public function get(string $propertyCode): NomenclatureDefinition
+    public function get(string $propertyCode): ?NomenclatureDefinition
     {
         $sql = <<<SQL
 SELECT definition
@@ -32,7 +32,7 @@ SQL;
         ]);
 
         if (false === $result) {
-            return NomenclatureDefinition::default();
+            return null;
         }
 
         $jsonResult = \json_decode($result, true);
@@ -42,13 +42,6 @@ SQL;
             $jsonResult['value'],
         );
     }
-
-    public function create(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
-    {
-        // TODO This method should be removed
-        throw new \LogicException('Not implemented');
-    }
-
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
     {
         $sql = <<<SQL
