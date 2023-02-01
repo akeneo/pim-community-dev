@@ -24,17 +24,21 @@ Feature: Update Family Nomenclature
     And The value for family2 should be Bar
 
   Scenario: Can update an existing nomenclature operator
-    When I update the family nomenclature operator to = and value to 3
+    When I update the family nomenclature operator to =, value to 3 and no generation if empty
     Then the family nomenclature operator should be =
 
   Scenario: Can update an existing nomenclature value
-    When I update the family nomenclature operator to <= and value to 5
+    When I update the family nomenclature operator to <=, value to 5 and no generation if empty
     Then the family nomenclature value should be 5
 
+  Scenario: Can update an existing nomenclature generation if empty
+    When I update the family nomenclature operator to <=, value to 3 and generation if empty
+    Then the family nomenclature generation if empty should be true
+
   Scenario: Cannot update the nomenclature value
-    When I update the family nomenclature operator to <= and value to 6
+    When I update the family nomenclature operator to <=, value to 6 and no generation if empty
     Then I should have an error 'value: This value should be less than or equal to 5.'
 
   Scenario: Cannot update the nomenclature operator
-    When I update the family nomenclature operator to foo and value to 3
+    When I update the family nomenclature operator to foo, value to 3 and no generation if empty
     Then I should have an error 'operator: The value you selected is not a valid choice.'

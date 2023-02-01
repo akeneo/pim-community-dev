@@ -37,6 +37,7 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
             \json_encode([
                 'operator' => '<=',
                 'value' => 4,
+                'generate_if_empty' => true,
                 'families' => [
                     'familyA1' => 'FAM1',
                     'familyA2' => 'FAM2',
@@ -51,14 +52,43 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         $nomenclatureDefinition = $this->getNomenclatureDefinitionRepository()->get('family');
         Assert::assertSame($nomenclatureDefinition->operator(), '<=');
         Assert::assertSame($nomenclatureDefinition->value(), 4);
+        Assert::assertSame($nomenclatureDefinition->generateIfEmpty(), true);
         Assert::assertSame($this->getNomenclatureValueRepository()->get('familyA1'), 'FAM1');
         Assert::assertSame($this->getNomenclatureValueRepository()->get('familyA2'), 'FAM2');
         Assert::assertSame($this->getNomenclatureValueRepository()->get('familyA3'), null);
     }
 
-    // TODO Add failing update
-    // TODO Add update when nomenclature definition already exists
-    // TODO Add update with empty body => this should work
+    /** @test */
+    public function it_should_not_update_a_nomenclature_with_missing_field(): void
+    {
+        $this->loginAs('Julia');
+        $this->callUpdateRoute(
+            'akeneo_identifier_generator_nomenclature_rest_update',
+            ['propertyCode' => 'family'],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest'],
+            \json_encode([
+                'operator' => '<=',
+                'generate_if_empty' => true,
+            ]),
+        );
+        $response = $this->client->getResponse();
+        Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        Assert::assertSame('[{"path":"value","message":"This value should not be blank."}]', $response->getContent());
+    }
+
+    /** @test */
+    public function it_should_not_work_with_invalid_json(): void
+    {
+        $this->loginAs('Julia');
+        $this->callUpdateRoute(
+            'akeneo_identifier_generator_nomenclature_rest_update',
+            ['propertyCode' => 'family'],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest'],
+            '[an invalid { json',
+        );
+        $response = $this->client->getResponse();
+        Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+    }
 
     protected function getConfiguration(): Configuration
     {
