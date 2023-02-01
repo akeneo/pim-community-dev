@@ -9,6 +9,7 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\Att
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeDateSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeIdentifierSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeImageSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeMultiSelectSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeNumberSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeSimpleSelectSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextareaSource;
@@ -115,6 +116,7 @@ final class CatalogProductMappingValidator extends ConstraintValidator
             'pim_catalog_date' => new AttributeDateSource(),
             'pim_catalog_identifier' => new AttributeIdentifierSource(),
             'pim_catalog_image' => new AttributeImageSource(),
+            'pim_catalog_multiselect' => new AttributeMultiSelectSource(),
             'pim_catalog_number' => new AttributeNumberSource(),
             'pim_catalog_simpleselect' => new AttributeSimpleSelectSource(),
             'pim_catalog_text' => new AttributeTextSource(),

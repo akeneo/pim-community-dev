@@ -16,6 +16,7 @@ interface ValueExtractorInterface
 {
     public const SOURCE_TYPE_ATTRIBUTE_BOOLEAN = 'pim_catalog_boolean';
     public const SOURCE_TYPE_ATTRIBUTE_DATE = 'pim_catalog_date';
+    public const SOURCE_TYPE_ATTRIBUTE_MULTI_SELECT = 'pim_catalog_multiselect';
     public const SOURCE_TYPE_ATTRIBUTE_IMAGE = 'pim_catalog_image';
     public const SOURCE_TYPE_ATTRIBUTE_NUMBER = 'pim_catalog_number';
     public const SOURCE_TYPE_ATTRIBUTE_IDENTIFIER = 'pim_catalog_identifier';
