@@ -52,7 +52,6 @@ class VersionBuilderIntegration extends TestCase
             $versionRepositoryMock,
             $eventDispatcherMock,
             $this->objectManager,
-            $this->legacyVersionBuilder
         );
 
         $givenSnapshot = [
@@ -92,6 +91,7 @@ class VersionBuilderIntegration extends TestCase
             resourceId: null,
             resourceName: $givenResourceName,
             snapshot: $givenSnapshot,
+            changeset: $givenChangeSet
         );
 
         $version = $this->get('pim_versioning.repository.version')->getNewestLogEntry(
@@ -127,7 +127,6 @@ class VersionBuilderIntegration extends TestCase
             $versionRepositoryMock,
             $eventDispatcherMock,
             $this->objectManager,
-            $this->legacyVersionBuilder
         );
 
         $givenSnapshot = [
@@ -139,10 +138,30 @@ class VersionBuilderIntegration extends TestCase
             'view_permission' => 'All',
         ];
 
-        $givenSpecificChangeSet = [
+        $givenChangeset = [
             'updated' => [
                 'old' => '',
                 'new' => '2023-01-16T14:30:30+00:00',
+            ],
+            'code' => [
+                'old' => '',
+                'new' => 'photo',
+            ],
+            'parent' => [
+                'old' => '',
+                'new' => 'master',
+            ],
+            'label-en_US' => [
+                'old' => '',
+                'new' => 'photo'
+            ],
+            'label-fr_FR' => [
+                'old' => '',
+                'new' => 'image'
+            ],
+            'view_permission' => [
+                'old' => '',
+                'new' => 'All'
             ]
         ];
 
@@ -152,8 +171,15 @@ class VersionBuilderIntegration extends TestCase
             resourceId: '169',
             resourceName: $givenResourceName,
             snapshot: $givenSnapshot,
+            changeset: $givenChangeset
         );
 
+        $givenSpecificChangeSet = [
+            'updated' => [
+                'old' => '',
+                'new' => '2023-01-16T14:30:30+00:00',
+            ]
+        ];
         $expectedSpecificVersion = $this->versionFactory->create($givenResourceName, '169', null, $givenAuthor, null);
         $expectedSpecificVersion->setVersion(2)
             ->setSnapshot($givenSnapshot)
@@ -211,7 +237,6 @@ class VersionBuilderIntegration extends TestCase
             $versionRepositoryMock,
             $eventDispatcherMock,
             $this->objectManager,
-            $this->legacyVersionBuilder
         );
 
         $givenSnapshot = [
@@ -223,12 +248,40 @@ class VersionBuilderIntegration extends TestCase
             'view_permission' => 'All',
         ];
 
+        $givenChangeset = [
+            'updated' => [
+                'old' => '',
+                'new' => '2023-01-16T14:30:30+00:00',
+            ],
+            'code' => [
+                'old' => '',
+                'new' => 'photo',
+            ],
+            'parent' => [
+                'old' => '',
+                'new' => 'master',
+            ],
+            'label-en_US' => [
+                'old' => '',
+                'new' => 'photo'
+            ],
+            'label-fr_FR' => [
+                'old' => '',
+                'new' => 'image'
+            ],
+            'view_permission' => [
+                'old' => '',
+                'new' => 'All'
+            ]
+        ];
+
         $givenResourceName = 'Akeneo\Category\Infrastructure\Component\Model\Category';
 
         $versionBuilder->buildVersionWithId(
             resourceId: null,
             resourceName: $givenResourceName,
             snapshot: $givenSnapshot,
+            changeset: $givenChangeset
         );
 
         /** @var Version[] $versions */

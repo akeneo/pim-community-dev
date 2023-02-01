@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\ServiceApi;
 
-use Akeneo\Tool\Bundle\VersioningBundle\Builder\VersionBuilder as LegacyVersionBuilder;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
@@ -25,11 +24,10 @@ class VersionBuilder
         private readonly VersionRepository $versionRepository,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ObjectManager $objectManager,
-        private readonly LegacyVersionBuilder $versionBuilder
     ) {
     }
 
-    public function buildVersionWithId(?string $resourceId, string $resourceName, array $snapshot): void
+    public function buildVersionWithId(?string $resourceId, string $resourceName, array $snapshot, array $changeset): void
     {
         $username = $this->getUsername();
 
@@ -39,9 +37,6 @@ class VersionBuilder
             resourceUuid: null
         );
         $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
-        $oldSnapshot = $previousVersion ? $previousVersion->getSnapshot() : [];
-
-        $changeset = $this->versionBuilder->buildChangeset($oldSnapshot, $snapshot);
 
         $versions = [];
         $version = $this->versionFactory->create($resourceName, $resourceId, null, $username);

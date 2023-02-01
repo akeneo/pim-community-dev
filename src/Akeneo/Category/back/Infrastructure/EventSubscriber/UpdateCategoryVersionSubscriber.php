@@ -30,12 +30,22 @@ class UpdateCategoryVersionSubscriber implements EventSubscriberInterface
 
     public function updateCategoryVersion(CategoryUpdatedEvent $event): void
     {
-        $categoryVersion = $this->categoryVersionBuilder->create($event->getCategory());
+        $categoryVersion = $this->categoryVersionBuilder->create(
+            $event->getCategory(),
+            $event->getChangeset(),
+        );
+
+        if (null === $categoryVersion) {
+            return;
+        }
+
+        // TODO : Manage permissions changeset and rules for specific versions.
 
         $this->versionBuilder->buildVersionWithId(
             resourceId: $categoryVersion->getResourceId(),
             resourceName: $categoryVersion->getResourceName(),
             snapshot: $categoryVersion->getSnapshot(),
+            changeset: $categoryVersion->getChangeset(),
         );
     }
 }

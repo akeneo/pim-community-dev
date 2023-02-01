@@ -12,12 +12,25 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
  */
 class CategoryUpdatedEvent
 {
-    public function __construct(private readonly Category $category)
-    {
+    /**
+     * @param array<string, mixed> $changeset
+     */
+    public function __construct(
+        private readonly Category $category,
+        private readonly array $changeset,
+    ) {
     }
 
     public function getCategory(): Category
     {
         return $this->category;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getChangeset(): array
+    {
+        return $this->changeset;
     }
 }

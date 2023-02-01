@@ -22,22 +22,32 @@ class CategoryVersionBuilder
     {
     }
 
-    public function create(Category $category): CategoryVersion
+    /**
+     * @param array<string, mixed> $categoryChangeset
+     */
+    public function create(Category $category, array $categoryChangeset): ?CategoryVersion
     {
+        if (empty($categoryChangeset)) {
+            return null;
+        }
+
         $categoryId = $category->getId() ? (string) $category->getId()->getValue() : null;
 
-        $categorySnapshot = $this->buildSnapshot($category);
+        $snapshot = $this->buildSnapshot($category, $categoryChangeset['updated']['new']);
+
+        $changeset = $this->buildChangeset($category, $categoryChangeset);
 
         return CategoryVersion::fromBuilder(
             resourceId: $categoryId,
-            snapshot: $categorySnapshot,
+            snapshot: $snapshot,
+            changeset: $changeset,
         );
     }
 
     /**
      * @return Snapshot
      */
-    public function buildSnapshot(Category $category): array
+    public function buildSnapshot(Category $category, string $updatedAt): array
     {
         if (null !== $category->getParentId()) {
             $parent = $this->getCategory->byId($category->getParentId()->getValue());
@@ -60,7 +70,7 @@ class CategoryVersionBuilder
         $snapshot = [
             'code' => (string) $category->getCode(),
             'parent' => $parent,
-            'updated' => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('c') ?? '',
+            'updated' => $updatedAt,
         ];
 
         return array_merge($snapshot, $snapshotLabels, $snapshotPermissions);
@@ -79,5 +89,25 @@ class CategoryVersionBuilder
         }
 
         return implode(',', $permissions);
+    }
+
+    /**
+     * @param array<string, mixed> $categoryChangeset
+     *
+     * @return array<string, array{old: string, new: string}>
+     */
+    private function buildChangeset(Category $category, array $categoryChangeset): array
+    {
+        $changeset = [];
+        $changeset['updated'] = $categoryChangeset['updated'];
+        foreach ($categoryChangeset as $key => $changes) {
+            if ($key === 'labels') {
+                foreach ($changes as $locale => $value) {
+                    $changeset["label-$locale"] = $value;
+                }
+            }
+        }
+
+        return $changeset;
     }
 }

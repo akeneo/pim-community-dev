@@ -55,6 +55,7 @@ class CategorySpec extends ObjectBehavior
 
     function it_is_constructed_from_database_data()
     {
+        /** @var Category $category */
         $category = $this::fromDatabase([
             'id' => 1,
             'code' => 'my_category',
@@ -87,6 +88,7 @@ class CategorySpec extends ObjectBehavior
             "edit" => [1 => "IT Support", 3 => "Redactor", 7 => "Manager"],
             "own" => [1 => "IT Support", 3 => "Redactor", 7 => "Manager"],
         ]);
+        $category->getChangeset()->shouldReturn([]);
     }
 
     function it_is_constructed_from_category_with_permissions()
@@ -108,6 +110,7 @@ class CategorySpec extends ObjectBehavior
 
         $category->getPermissions()->normalize()->shouldReturn([]);
 
+        /** @var Category $category */
         $category = $this::fromCategoryWithPermissions(
             $category,
             [
@@ -130,5 +133,21 @@ class CategorySpec extends ObjectBehavior
             "edit" => [1 => "IT Support", 3 => "Redactor", 7 => "Manager"],
             "own" => [1 => "IT Support", 3 => "Redactor", 7 => "Manager"],
         ]);
+        $category->getChangeset()->shouldReturn([]);
+    }
+
+    public function it_updates_changeset_when_set_a_label(): void
+    {
+        $this->setLabel('en_US', 'label category');
+        $this->getChangeset()->shouldHaveKeyWithValue('labels', ['en_US' => [ 'old' => '', 'new' => 'label category']]);
+        $this->getChangeset()->shouldHaveKey('updated');
+        $this->getChangeset()['updated']->shouldHaveKey('old');
+        $this->getChangeset()['updated']->shouldHaveKey('new');
+    }
+
+    public function it_does_not_update_changeset_when_set_a_label_and_value_is_unchanged(): void
+    {
+        $this->setLabel('fr_FR', 'category_libelle');
+        $this->getChangeset()->shouldReturn([]);
     }
 }

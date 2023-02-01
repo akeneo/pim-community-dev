@@ -22,6 +22,94 @@ use Ramsey\Uuid\Uuid;
  */
 class CategoryVersionBuilderIntegration extends CategoryTestCase
 {
+    public function testCreateACategoryVersionWithChangeset(): void
+    {
+        $givenParent = new Category(
+            id: new CategoryId(1),
+            code: new Code('master'),
+            templateUuid: null,
+        );
+        $getCategoryMock = $this->createMock(GetCategoryInterface::class);
+        $getCategoryMock->method('byId')->willReturn($givenParent);
+        $builder = new CategoryVersionBuilder($getCategoryMock);
+
+        $updated = new \DateTimeImmutable();
+        $givenCategory = new Category(
+            id: new CategoryId(2),
+            code: new Code('category_test'),
+            templateUuid: TemplateUuid::fromUuid(Uuid::uuid4()),
+            labels: LabelCollection::fromArray(['en_US' => 'test category', 'fr_FR' => 'catégorie de test']),
+            parentId: $givenParent->getId(),
+            parentCode: $givenParent->getCode(),
+            rootId: $givenParent->getId(),
+            updated: $updated,
+            attributes: null,
+            permissions: null,
+            position: null,
+        );
+        $givenCategory->setLabel('de_DE', 'Testkategorie');
+        $givenChangeset = [
+            'updated' => ['old' => '', 'new' => $givenCategory->getChangeset()['updated']['new']],
+            'labels' => ['de_DE' => ['old' => '', 'new' => 'Testkategorie']]
+        ];
+
+        $categoryVersion = $builder->create($givenCategory, $givenChangeset);
+
+        $expectedCategoryVersion = CategoryVersion::fromBuilder(
+            resourceId: '2',
+            snapshot: [
+                'code' => 'category_test',
+                'parent' => 'master',
+                'updated' => $updated->format('c'),
+                'label-en_US' => 'test category',
+                'label-fr_FR' => 'catégorie de test',
+                'label-de_DE' => 'Testkategorie'
+            ],
+            changeset: [
+                'updated' => $givenCategory->getChangeset()['updated'],
+                'label-de_DE' => ['old' => '', 'new' => 'Testkategorie']
+            ]
+        );
+
+        $this->assertVersion($expectedCategoryVersion, $categoryVersion);
+        $this->assertArrayHasKey('updated', $categoryVersion->getChangeset());
+        $this->assertEquals($expectedCategoryVersion->getChangeset()['label-de_DE'], $categoryVersion->getChangeset()['label-de_DE']);
+    }
+
+    public function testDoNotCreateVersionIfNoChangeset(): void
+    {
+        $givenParent = new Category(
+            id: new CategoryId(1),
+            code: new Code('master'),
+            templateUuid: null,
+        );
+        $getCategoryMock = $this->createMock(GetCategoryInterface::class);
+        $getCategoryMock->method('byId')->willReturn($givenParent);
+        $builder = new CategoryVersionBuilder($getCategoryMock);
+
+        $updated = new \DateTimeImmutable();
+        $givenCategory = new Category(
+            id: new CategoryId(2),
+            code: new Code('category_test'),
+            templateUuid: TemplateUuid::fromUuid(Uuid::uuid4()),
+            labels: LabelCollection::fromArray(['en_US' => 'test category', 'fr_FR' => 'catégorie de test']),
+            parentId: $givenParent->getId(),
+            parentCode: $givenParent->getCode(),
+            rootId: $givenParent->getId(),
+            updated: $updated,
+            attributes: null,
+            permissions: null,
+            position: null,
+        );
+
+        $categoryVersion = $builder->create(
+            category: $givenCategory,
+            categoryChangeset: []
+        );
+
+        $this->assertNull($categoryVersion);
+    }
+
     public function testCreateACategoryVersion(): void
     {
         $givenParent = new Category(
@@ -48,7 +136,13 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
             position: null,
         );
 
-        $categoryVersion = $builder->create($givenCategory);
+        $givenCategory->setLabel('de_DE', 'Testkategorie');
+        $givenChangeset = [
+            'updated' => ['old' => '', 'new' => $givenCategory->getChangeset()['updated']['new']],
+            'labels' => ['de_DE' => ['old' => '', 'new' => 'Testkategorie']]
+        ];
+
+        $categoryVersion = $builder->create($givenCategory, $givenChangeset);
 
         $expectedCategoryVersion = CategoryVersion::fromBuilder(
             resourceId: '2',
@@ -58,6 +152,10 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
                 'updated' => $updated->format('c'),
                 'label-en_US' => 'test category',
                 'label-fr_FR' => 'catégorie de test'
+            ],
+            changeset: [
+                'updated' => $givenCategory->getChangeset()['updated'],
+                'label-de_DE' => ['old' => '', 'new' => 'Testkategorie']
             ]
         );
 
@@ -79,8 +177,13 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
             updated: $updated
         );
 
-        $categoryVersion = $builder->create($givenCategory);
+        $givenCategory->setLabel('de_DE', 'Testkategorie');
+        $givenChangeset = [
+            'updated' => ['old' => '', 'new' => $givenCategory->getChangeset()['updated']['new']],
+            'labels' => ['de_DE' => ['old' => '', 'new' => 'Testkategorie']]
+        ];
 
+        $categoryVersion = $builder->create($givenCategory, $givenChangeset);
 
         $expectedCategoryVersion = CategoryVersion::fromBuilder(
             resourceId: '2',
@@ -90,6 +193,10 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
                 'updated' => $updated->format('c'),
                 'label-en_US' => 'test category',
                 'label-fr_FR' => 'catégorie de test'
+            ],
+            changeset: [
+                'updated' => $givenCategory->getChangeset()['updated'],
+                'label-de_DE' => ['old' => '', 'new' => 'Testkategorie']
             ]
         );
 
@@ -116,7 +223,13 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
             ]),
         );
 
-        $categoryVersion = $builder->create($givenCategory);
+        $givenCategory->setLabel('de_DE', 'Testkategorie');
+        $givenChangeset = [
+            'updated' => ['old' => '', 'new' => $givenCategory->getChangeset()['updated']['new']],
+            'labels' => ['de_DE' => ['old' => '', 'new' => 'Testkategorie']]
+        ];
+
+        $categoryVersion = $builder->create($givenCategory, $givenChangeset);
 
 
         $expectedCategoryVersion = CategoryVersion::fromBuilder(
@@ -130,6 +243,10 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
                 'view_permission' => 'Manager,Redactor',
                 'edit_permission' => 'All',
                 'own_permission' => 'All',
+            ],
+            changeset: [
+                'updated' => $givenCategory->getChangeset()['updated'],
+                'label-de_DE' => ['old' => '', 'new' => 'Testkategorie']
             ]
         );
 

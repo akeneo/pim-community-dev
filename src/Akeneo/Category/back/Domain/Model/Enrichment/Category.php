@@ -18,6 +18,11 @@ use Akeneo\Category\Domain\ValueObject\ValueCollection;
  */
 class Category
 {
+    /**
+     * @var array<string, mixed>
+     */
+    private array $changeset;
+
     public function __construct(
         private ?CategoryId $id,
         private Code $code,
@@ -31,6 +36,7 @@ class Category
         private ?PermissionCollection $permissions = null,
         private ?Position $position = null,
     ) {
+        $this->changeset = [];
     }
 
     /**
@@ -159,7 +165,21 @@ class Category
 
     public function setLabel(string $localeCode, string $label): void
     {
+        $oldLabel = $this->labels->getTranslation($localeCode) ?: '';
         $this->labels->setTranslation($localeCode, $label);
+
+        if ($oldLabel === $label) {
+            return;
+        }
+
+        $this->changeset['updated'] = [
+            'old' => $this->getUpdated()?->format('c') ?: '',
+            'new' => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('c'),
+        ];
+        $this->changeset['labels'][$localeCode] = [
+            'old' => $oldLabel,
+            'new' => $label,
+        ];
     }
 
     public function setAttributes(ValueCollection $attributes): void
@@ -205,5 +225,13 @@ class Category
             'attributes' => $this->getAttributes()?->normalize(),
             'permissions' => $this->getPermissions()?->normalize(),
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getChangeset(): array
+    {
+        return $this->changeset;
     }
 }

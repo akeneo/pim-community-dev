@@ -31,20 +31,23 @@ class CategoryVersion
      * ].
      *
      * @param Snapshot $snapshot
+     * @param array<string, array{old: string, new: string}> $changeset
      */
     private function __construct(
         private readonly ?string $resourceId,
         private readonly array $snapshot,
+        private readonly array $changeset,
     ) {
     }
 
     /**
      * @param string|null $resourceId The category id
      * @param Snapshot $snapshot
+     * @param array<string, array{old: string, new: string}> $changeset
      */
-    public static function fromBuilder(?string $resourceId, array $snapshot): self
+    public static function fromBuilder(?string $resourceId, array $snapshot, array $changeset): self
     {
-        return new self($resourceId, $snapshot);
+        return new self($resourceId, $snapshot, $changeset);
     }
 
     public function getResourceId(): ?string
@@ -58,6 +61,14 @@ class CategoryVersion
     public function getSnapshot(): array
     {
         return $this->snapshot;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getChangeset(): array
+    {
+        return $this->changeset;
     }
 
     public function getResourceName(): string

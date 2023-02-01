@@ -54,7 +54,7 @@ class UpsertCategoryCommandHandler
 
         $this->saver->save($category, $command->userIntents());
 
-        $this->eventDispatcher->dispatch(new CategoryUpdatedEvent($category));
+        $this->eventDispatcher->dispatch(new CategoryUpdatedEvent($category, $category->getChangeset()));
     }
 
     private function updateCategory(Category $category, UpsertCategoryCommand $command): void
