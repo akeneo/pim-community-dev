@@ -115,7 +115,7 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validat
       <Table>
         <Table.Body>
           {conditionsWithId.map(({id, ...condition}) => (
-            <Table.Row key={id} aria-colspan={3}>
+            <Table.Row key={id}>
               <ConditionLine
                 condition={condition}
                 onChange={condition => handleChange({...condition, id})}

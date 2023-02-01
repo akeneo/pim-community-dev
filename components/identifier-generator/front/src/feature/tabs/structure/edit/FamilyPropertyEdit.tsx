@@ -49,7 +49,13 @@ const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedPr
   const onChangeCharsNumber = useCallback(
     (charsNumber: string) => {
       if (selectedProperty.process.type === AbbreviationType.TRUNCATE) {
-        onChange({...selectedProperty, process: {...selectedProperty.process, value: parseInt(charsNumber)}});
+        onChange({
+          ...selectedProperty,
+          process: {
+            ...selectedProperty.process,
+            value: charsNumber ? parseInt(charsNumber) : null,
+          },
+        });
       }
     },
     [onChange, selectedProperty]
@@ -75,7 +81,7 @@ const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedPr
           ))}
         </SelectInput>
       </Field>
-      {selectedProperty.process.type === AbbreviationType.TRUNCATE && selectedProperty.process.value && (
+      {selectedProperty.process.type === AbbreviationType.TRUNCATE && (
         <>
           <Field
             label={translate('pim_identifier_generator.structure.settings.family.operator')}
@@ -92,7 +98,7 @@ const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedPr
             requiredLabel={translate('pim_common.required_label')}
           >
             <NumberInput
-              value={selectedProperty.process.value.toString()}
+              value={selectedProperty.process.value?.toString() || ''}
               onChange={onChangeCharsNumber}
               max={5}
               min={1}

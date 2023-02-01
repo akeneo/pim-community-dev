@@ -15,7 +15,7 @@ describe('FamilyCodePreview', () => {
     const screen = render(<FamilyCodePreview property={familyProperty} />);
 
     await waitFor(() => {
-      expect(screen.getByText('family')).toBeInTheDocument();
+      expect(screen.getByText('Family')).toBeInTheDocument();
     });
   });
 
@@ -31,7 +31,7 @@ describe('FamilyCodePreview', () => {
     const screen = render(<FamilyCodePreview property={familyProperty} />);
 
     await waitFor(() => {
-      expect(screen.getByText('fam')).toBeInTheDocument();
+      expect(screen.getByText('Fam')).toBeInTheDocument();
     });
   });
 });

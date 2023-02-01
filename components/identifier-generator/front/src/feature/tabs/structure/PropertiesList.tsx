@@ -57,7 +57,7 @@ const PropertiesList: React.FC<PropertiesListProps> = ({
         <Table.Body>
           {structureWithErrors.map(property => (
             <Table.Row key={property.id} onClick={() => onSelect(property.id)} isSelected={property.id === selectedId}>
-              <Styled.TitleCell>
+              <Styled.TitleCell withWidth={false}>
                 {property.type === PROPERTY_NAMES.FREE_TEXT && <FreeTextLine freeTextProperty={property} />}
                 {property.type === PROPERTY_NAMES.AUTO_NUMBER && <AutoNumberLine property={property} />}
                 {property.type === PROPERTY_NAMES.FAMILY && <FamilyCodeLine />}

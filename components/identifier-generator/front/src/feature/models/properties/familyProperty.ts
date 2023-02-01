@@ -11,7 +11,7 @@ type FamilyProperty = {
     | {
         type: AbbreviationType.TRUNCATE;
         operator: Operator | null;
-        value: number;
+        value: number | null;
       }
     | {type: null};
 };

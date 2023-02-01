@@ -8,7 +8,7 @@ type Props = {
 
 const FamilyCodePreview: React.FC<Props> = ({property}) => {
   const firstFamily = useMemo(() => {
-    const familyCode = 'family';
+    const familyCode = 'Family';
     if (property.process.type === AbbreviationType.TRUNCATE) {
       return familyCode.substring(0, property.process.value || 3);
     }
