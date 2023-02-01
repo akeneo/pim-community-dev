@@ -11,9 +11,9 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type SimpleOrMultiSelectOperator 'IN'|'NOT IN'|'EMPTY'|'NOT EMPTY'
- * @phpstan-type SimpleSelectNormalized array{
- *   type: 'simple_select',
+ * @phpstan-import-type SimpleOrMultiSelectOperator from SimpleSelect
+ * @phpstan-type MultiSelectNormalized array{
+ *   type: 'multi_select',
  *   operator: SimpleOrMultiSelectOperator,
  *   attributeCode: string,
  *   value?: string[],
@@ -21,10 +21,10 @@ use Webmozart\Assert\Assert;
  *   locale?: string,
  * }
  */
-final class SimpleSelect implements ConditionInterface
+final class MultiSelect implements ConditionInterface
 {
     /**
-     * @param SimpleOrMultiSelectOperator $operator
+     * @param MultiSelectOperator $operator
      * @param string[]|null $value
      */
     private function __construct(
@@ -37,11 +37,11 @@ final class SimpleSelect implements ConditionInterface
     }
 
     /**
-     * @return 'simple_select'
+     * @return 'multi_select'
      */
     public static function type(): string
     {
-        return 'simple_select';
+        return 'multi_select';
     }
 
     /**
@@ -86,7 +86,7 @@ final class SimpleSelect implements ConditionInterface
     }
 
     /**
-     * @return SimpleSelectNormalized
+     * @return MultiSelectNormalized
      */
     public function normalize(): array
     {
