@@ -17,7 +17,8 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
     public function it_should_redirect_on_non_xhr_request(): void
     {
         $this->loginAs('Julia');
-        $this->callUpdateRoute('akeneo_identifier_generator_nomenclature_rest_update',
+        $this->callUpdateRoute(
+            'akeneo_identifier_generator_nomenclature_rest_update',
             ['propertyCode' => 'family'],
             ['HTTP_X-Requested-With' => 'toto']
         );
@@ -43,7 +44,7 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
                     'familyA2' => 'FAM2',
                     'familyA3' => '',
                     'deletedFamily' => 'FOOB',
-                ]
+                ],
             ]),
         );
         $response = $this->client->getResponse();

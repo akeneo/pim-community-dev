@@ -40,6 +40,7 @@ final class UpdateNomenclatureController
             generateIfEmpty: $content['generate_if_empty'] ?? null,
             values: $content['families'] ?? [],
         );
+
         try {
             ($this->updateNomenclatureHandler)($command);
         } catch (ViolationsException $exception) {
@@ -50,7 +51,12 @@ final class UpdateNomenclatureController
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array{
+     *     operator?: string,
+     *     value?: int,
+     *     generate_if_empty?: bool,
+     *     families?: array<string, ?string>,
+     * }
      */
     private function getContent(Request $request): array
     {
