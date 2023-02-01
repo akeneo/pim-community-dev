@@ -50,7 +50,8 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
         CREATE TABLE IF NOT EXISTS pim_catalog_category_template (
             uuid binary(16) PRIMARY KEY,
             code VARCHAR(100) NOT NULL,
-            labels JSON NOT NULL DEFAULT ('{}')
+            labels JSON NOT NULL DEFAULT ('{}'),
+            is_deactivated BOOLEAN
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         SQL;
 
