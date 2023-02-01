@@ -105,6 +105,12 @@ const useEditCategoryForm = (categoryId: number) => {
         return;
       }
 
+      if (Array.isArray(categoryEdited.properties.labels) && !categoryEdited.properties.labels.length) {
+        categoryEdited['properties']['labels'] = {
+          [localeCode]: label
+        };
+      }
+
       setCategoryEdited(set(['properties', 'labels', localeCode], label, categoryEdited));
     },
     [categoryEdited]
