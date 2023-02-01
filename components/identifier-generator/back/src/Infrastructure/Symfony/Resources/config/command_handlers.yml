@@ -31,3 +31,7 @@ services:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateNomenclatureCommandValidator'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository'
