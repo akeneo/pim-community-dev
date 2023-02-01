@@ -206,7 +206,8 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
         $this->removeListAttributesPermissions();
         $this->loginAs('admin');
 
-        $this->assertResponse(['systemFields' => ['family', 'enabled'], 'dataLocale' => 'fr_FR'],
+        $this->assertResponse(
+            ['systemFields' => ['family', 'enabled'], 'dataLocale' => 'fr_FR'],
             [
                 [
                     'id' => 'system',
@@ -222,7 +223,8 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
                         ],
                     ],
                 ],
-            ]);
+            ]
+        );
     }
 
     protected function setUp(): void
