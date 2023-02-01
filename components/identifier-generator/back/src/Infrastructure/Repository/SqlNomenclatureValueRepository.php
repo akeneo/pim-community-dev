@@ -18,44 +18,35 @@ class SqlNomenclatureValueRepository implements NomenclatureValueRepository
     ) {
     }
 
-    public function set(string $familyCode, ?string $value): void
+    /**
+     * @param array<string, ?string> $values
+     */
+    public function update(array $values): void
     {
-        // TODO This method has to be //
-        // It should accept a big array of family_codes => values
-        // Don't hesitate to call a method to get familyIds from familyCodes
+        $familyIds = $this->getExistingFamilyIdsFromFamilyCodes(\array_unique(\array_keys($values)));
 
-        $checkSql = <<<SQL
-SELECT id FROM pim_catalog_family WHERE code=:family_code
-SQL;
-        $resultFamily = $this->connection->fetchOne($checkSql, ['family_code' => $familyCode]);
-        $familyId = $resultFamily === false ? null : \intval($resultFamily);
-
-        if (null === $value) {
+        $valuesToUpdateOrInsert = [];
+        $familyIdsToDelete = [];
+        foreach ($values as $familyCode => $value) {
+            $familyId = $familyIds[$familyCode] ?? null;
             if ($familyId) {
-                $sql = <<<SQL
-DELETE FROM pim_catalog_identifier_generator_family_nomenclature 
-WHERE family_id=:family_id;
-SQL;
-                $this->connection->executeStatement($sql, [
-                    'family_id' => $familyId,
-                ]);
+                if (null === $value || '' === $value) {
+                    $familyIdsToDelete[] = $familyIds[$familyCode];
+                } else {
+                    $valuesToUpdateOrInsert[] = [
+                        'familyId' => $familyIds[$familyCode],
+                        'value' => $value
+                    ];
+                }
             }
-            // Else ; the DELETE CASCADE already dropped it.
         }
-        else {
-            if ($familyId) {
-                $sql = <<<SQL
-INSERT INTO pim_catalog_identifier_generator_family_nomenclature (family_id, value)
-VALUES(:family_id, :value)
-ON DUPLICATE KEY UPDATE value = :value
-SQL;
 
-                $this->connection->executeStatement($sql, [
-                    'family_id' => $familyId,
-                    'value' => $value,
-                ]);
-            }
-            // Else ; The family disappears, do nothing.
+        if (\count($familyIdsToDelete)) {
+            $this->deleteNomenclatureValues($familyIdsToDelete);
+        }
+
+        if (\count($valuesToUpdateOrInsert)) {
+            $this->insertOrUpdateNomenclatureValues($valuesToUpdateOrInsert);
         }
     }
 
@@ -73,5 +64,66 @@ SQL;
         ]);
 
         return $result === false ? null : $result;
+    }
+
+    /**
+     * @param string[] $familyCodes
+     * @return array<string, int>
+     */
+    private function getExistingFamilyIdsFromFamilyCodes(array $familyCodes): array
+    {
+        $sql = <<<SQL
+SELECT code, id
+FROM pim_catalog_family f
+WHERE f.code IN (:family_codes)
+SQL;
+        return $this->connection->fetchAllKeyValue($sql, [
+            'family_codes' => $familyCodes,
+        ], [
+            'family_codes' => Connection::PARAM_STR_ARRAY,
+        ]);
+    }
+
+    /**
+     * @param int[] $familyIdsToDelete
+     */
+    private function deleteNomenclatureValues(array $familyIdsToDelete): void
+    {
+        $deleteSql = <<<SQL
+    DELETE FROM pim_catalog_identifier_generator_family_nomenclature 
+    WHERE family_id IN (:family_ids);
+    SQL;
+        $this->connection->executeStatement($deleteSql, [
+            'family_ids' => $familyIdsToDelete,
+        ], [
+            'family_ids' => Connection::PARAM_INT_ARRAY,
+        ]);
+    }
+
+    /**
+     * @param {familyId: int, value: string}[] $valuesToUpdateOrInsert
+     */
+    private function insertOrUpdateNomenclatureValues(array $valuesToUpdateOrInsert): void
+    {
+        $insertOrUpdateSql = <<<SQL
+INSERT INTO pim_catalog_identifier_generator_family_nomenclature (family_id, value)
+VALUES {{ values }}
+ON DUPLICATE KEY UPDATE value = VALUES(value)
+SQL;
+        $valuesArray = [];
+        for ($i = 0; $i < \count($valuesToUpdateOrInsert); $i++) {
+            $valuesArray[] = \sprintf('(:familyId%d, :value%d)', $i, $i);
+        }
+        $statement = $this->connection->prepare(\strtr(
+            $insertOrUpdateSql,
+            ['{{ values }}' => \join(',', $valuesArray)]
+        ));
+
+        foreach ($valuesToUpdateOrInsert as $i => $valueToUpdateOrInsert) {
+            $statement->bindParam(\sprintf('familyId%d', $i), $valueToUpdateOrInsert['familyId']);
+            $statement->bindParam(\sprintf('value%d', $i), $valueToUpdateOrInsert['value']);
+        }
+
+        $statement->executeStatement();
     }
 }
