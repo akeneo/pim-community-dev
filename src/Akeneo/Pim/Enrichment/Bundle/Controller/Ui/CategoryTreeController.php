@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
-use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Domain\Model\Classification\CategoryTree;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
@@ -59,7 +58,6 @@ class CategoryTreeController extends AbstractController
         private CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
         private GetCategoryInterface $getCategory,
         private GetCategoryTreesInterface $getCategoryTrees,
-        private GetTemplate $getTemplate,
         private FeatureFlags $featureFlags,
         array $rawConfiguration,
     ) {
