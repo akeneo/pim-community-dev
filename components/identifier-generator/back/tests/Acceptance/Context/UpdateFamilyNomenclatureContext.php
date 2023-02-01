@@ -5,7 +5,6 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureDefinitionRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureValueRepository;
 use Behat\Behat\Context\Context;
@@ -15,6 +14,8 @@ use Webmozart\Assert\Assert;
 class UpdateFamilyNomenclatureContext implements Context
 {
     private ?ViolationsException $violations = null;
+    private const DEFAULT_OPERATOR = '<=';
+    private const DEFAULT_VALUE = '3';
 
     public function __construct(
         private readonly NomenclatureValueRepository $nomenclatureValueRepository,
@@ -28,26 +29,30 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function aFamilyNomenclatureWithTheFollowingValues(TableNode $table)
     {
+        $familyValues = [];
         foreach ($table as $line) {
-            $this->nomenclatureValueRepository->set($line['familyCode'], $line['value']);
+            $familyValues[$line['familyCode']] = $line['value'];
         }
-    }
-
-    /**
-     * @When I add the value :value for :familyCode
-     */
-    public function iAddTheValueForFamily(string $value, string $familyCode)
-    {
-        $command = new UpdateNomenclatureCommand(values:[$familyCode => $value]);
+        $command = new UpdateNomenclatureCommand(
+            propertyType: 'family',
+            operator: self::DEFAULT_OPERATOR,
+            value: self::DEFAULT_VALUE,
+            values: $familyValues,
+        );
         ($this->updateNomenclatureValuesHandler)($command);
     }
 
     /**
-     * @When I update :familyCode value to :value
+     * @When /^I (?:add|update) (.*) value for (.*)$/
      */
-    public function iUpdateFamilyValueTo(string $familyCode, string $value)
+    public function iAddTheValueForFamily(string $value, string $familyCode)
     {
-        $command = new UpdateNomenclatureCommand(values:[$familyCode => $value]);
+        $command = new UpdateNomenclatureCommand(
+            propertyType: 'family',
+            operator: self::DEFAULT_OPERATOR,
+            value: self::DEFAULT_VALUE,
+            values: [$familyCode => $value],
+        );
         ($this->updateNomenclatureValuesHandler)($command);
     }
 
@@ -56,7 +61,12 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function iRemoveTheFamilyValue(string $familyCode)
     {
-        $command = new UpdateNomenclatureCommand(values:[$familyCode => null]);
+        $command = new UpdateNomenclatureCommand(
+            propertyType: 'family',
+            operator: self::DEFAULT_OPERATOR,
+            value: self::DEFAULT_VALUE,
+            values: [$familyCode => null],
+        );
         ($this->updateNomenclatureValuesHandler)($command);
     }
 
@@ -69,12 +79,15 @@ class UpdateFamilyNomenclatureContext implements Context
     }
 
     /**
-     * @When /^I update the family nomenclature operator to (?P<operator>.*)$/
+     * @When /^I (create|update) the family nomenclature operator to (?P<operator>[^ ]*) and value to (?P<value>.*)$/
      */
-    public function iUpdateTheFamilyNomenclatureOperatorTo(string $operator)
+    public function iUpdateTheFamilyNomenclatureOperatorTo(string $operator, string $value)
     {
-
-        $command = new UpdateNomenclatureCommand(operator: $operator);
+        $command = new UpdateNomenclatureCommand(
+            propertyType: 'family',
+            operator: $operator,
+            value: $value,
+        );
         try {
             ($this->updateNomenclatureValuesHandler)($command);
         } catch (ViolationsException $e) {
@@ -88,27 +101,6 @@ class UpdateFamilyNomenclatureContext implements Context
     public function theFamilyNomenclatureOperatorShouldBe(string $operator)
     {
         Assert::eq($this->nomenclatureDefinitionRepository->get('family')->operator(), $operator);
-    }
-
-    /**
-     * @Given a family nomenclature definition
-     */
-    public function aFamilyNomenclatureDefinition()
-    {
-        $this->nomenclatureDefinitionRepository->create('family', new NomenclatureDefinition('=', 5));
-    }
-
-    /**
-     * @When I update the family nomenclature value to :value
-     */
-    public function iUpdateTheFamilyNomenclatureValueTo(string $value)
-    {
-        $command = new UpdateNomenclatureCommand(value: \intval($value));
-        try {
-            ($this->updateNomenclatureValuesHandler)($command);
-        } catch (ViolationsException $e) {
-            $this->violations = $e;
-        }
     }
 
     /**

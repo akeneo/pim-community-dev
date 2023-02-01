@@ -12,9 +12,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinitio
  */
 interface NomenclatureDefinitionRepository
 {
-    public function get(string $propertyCode): NomenclatureDefinition;
-
-    public function create(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void;
+    public function get(string $propertyCode): ?NomenclatureDefinition;
 
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void;
 }

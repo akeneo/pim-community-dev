@@ -16,19 +16,9 @@ class InMemoryNomenclatureDefinitionRepository implements NomenclatureDefinition
     /** @var array<string, NomenclatureDefinition> */
     private array $nomenclatureDefinitions = [];
 
-    public function get(string $propertyCode): NomenclatureDefinition
+    public function get(string $propertyCode): ?NomenclatureDefinition
     {
-        $result = $this->nomenclatureDefinitions[$propertyCode] ?? null;
-        if (null === $result && $propertyCode === 'family') {
-            return NomenclatureDefinition::default();
-        }
-
-        return $result;
-    }
-
-    public function create(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
-    {
-        $this->nomenclatureDefinitions[$propertyCode] = $nomenclatureDefinition;
+        return $this->nomenclatureDefinitions[$propertyCode] ?? null;
     }
 
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void

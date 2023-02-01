@@ -485,6 +485,7 @@ final class CreateIdentifierGeneratorContext implements Context
                     $this->getValidCondition('enabled'),
                     $this->getValidCondition('family'),
                     $this->getValidCondition('simple_select'),
+                    $this->getValidCondition('multi_select'),
                 ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
