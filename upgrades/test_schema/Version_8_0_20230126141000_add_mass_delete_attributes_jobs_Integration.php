@@ -6,11 +6,11 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-final class Version_7_0_20230126141000_add_mass_delete_attributes_jobs_Integration extends TestCase
+final class Version_8_0_20230126141000_add_mass_delete_attributes_jobs_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_7_0_20230126141000_add_mass_delete_attributes_jobs';
+    private const MIGRATION_LABEL = '_8_0_20230126141000_add_mass_delete_attributes_jobs';
 
     private Connection $connection;
 
