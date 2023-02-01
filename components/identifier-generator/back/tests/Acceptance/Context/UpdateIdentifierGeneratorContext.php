@@ -497,9 +497,10 @@ final class UpdateIdentifierGeneratorContext implements Context
         try {
             ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
                 $code ?? self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                $conditions ?? [
-                    ['type' => 'enabled', 'value' => true],
-                    ['type' => 'family', 'operator' => 'EMPTY'],
+                    $conditions ?? [
+                    $this->getValidCondition('enabled'),
+                    $this->getValidCondition('simple_select'),
+                    $this->getValidCondition('multi_select'),
                 ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_IDENTIFIER_GENERATOR_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
@@ -529,6 +530,12 @@ final class UpdateIdentifierGeneratorContext implements Context
                 'operator' => $operator ?? 'IN',
                 'attributeCode' => 'color',
                 'value' => ['green'],
+            ];
+            case 'multi_select': return [
+                'type' => 'multi_select',
+                'operator' => $operator ?? 'IN',
+                'attributeCode' => 'color',
+                'value' => ['green', 'blue'],
             ];
         }
 
