@@ -22,6 +22,7 @@ define([
   return BaseSave.extend({
     updateSuccessMessage: __('pim_enrich.entity.product.flash.update.success'),
     updateFailureMessage: __('pim_enrich.entity.product.flash.update.fail'),
+    sessionExpiredMessage: __('pim_enrich.entity.product.flash.update.fail_session_expired'),
 
     configure: function () {
       this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.save);
