@@ -1,10 +1,9 @@
-import {useCurrencies} from './useCurrencies';
-
 jest.unmock('./useCurrencies');
 
 import {renderHook} from '@testing-library/react-hooks';
 import fetchMock from 'jest-fetch-mock';
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
+import {useCurrencies} from './useCurrencies';
 
 test('it fetches the API response', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(['USD', 'EUR']));
