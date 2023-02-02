@@ -37,9 +37,4 @@ class InMemoryNomenclatureRepository implements NomenclatureRepository
             }
         }
     }
-
-    public function getValue(string $familyCode): ?string
-    {
-        return $this->values[$familyCode] ?? null;
-    }
 }
