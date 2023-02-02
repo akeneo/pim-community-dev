@@ -56,30 +56,6 @@ class SqlNomenclatureRepository implements NomenclatureRepository
     }
 
     /**
-     * This method should not exist. It will be removed in CPM-943. It is only for testing for now.
-     * @deprecated @TODO
-     */
-    public function getValue(string $familyCode): ?string
-    {
-        $sql = <<<SQL
-SELECT value FROM pim_catalog_identifier_generator_family_nomenclature n
-INNER JOIN pim_catalog_family f ON f.id = n.family_id
-WHERE f.code = :family_code
-SQL;
-        $result = $this->connection->fetchOne($sql, [
-            'family_code' => $familyCode,
-        ]);
-
-        if (false === $result) {
-            return null;
-        }
-
-        Assert::stringNotEmpty($result);
-
-        return $result;
-    }
-
-    /**
      * @param string[] $familyCodes
      * @return array<string, int>
      */
