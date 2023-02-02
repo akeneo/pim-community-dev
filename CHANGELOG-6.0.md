@@ -5,6 +5,7 @@
 ## Bug fixes
 
 - [Backport PIM-10802] PIM-10818: Fix wysiwyg-field add link event
+- PIM-10786: Fix misleading message when session expires
 
 # 6.0.65 (2023-01-26)
 
