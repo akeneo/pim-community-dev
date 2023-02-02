@@ -10,7 +10,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use PhpSpec\ObjectBehavior;
 
 /**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class MultiSelectSpec extends ObjectBehavior
@@ -228,7 +228,7 @@ class MultiSelectSpec extends ObjectBehavior
         ]]);
         $this->match(new ProductProjection(true, null, []))->shouldReturn(false);
         $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'red',
+            'color-<all_channels>-<all_locales>' => ['red'],
         ]))->shouldReturn(true);
     }
 
@@ -241,10 +241,10 @@ class MultiSelectSpec extends ObjectBehavior
             'value' => ['red', 'pink']
         ]]);
         $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'red',
+            'color-<all_channels>-<all_locales>' => ['red', 'blue'],
         ]))->shouldReturn(true);
         $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'blue',
+            'color-<all_channels>-<all_locales>' => ['blue', 'yellow'],
         ]))->shouldReturn(false);
     }
 
@@ -257,10 +257,10 @@ class MultiSelectSpec extends ObjectBehavior
             'value' => ['red', 'pink']
         ]]);
         $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'red',
+            'color-<all_channels>-<all_locales>' => ['red'],
         ]))->shouldReturn(false);
         $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'blue',
+            'color-<all_channels>-<all_locales>' => ['blue'],
         ]))->shouldReturn(true);
         $this->match(new ProductProjection(true, null, []))->shouldReturn(false);
     }

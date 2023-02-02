@@ -11,10 +11,10 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type SimpleOrMultiSelectOperator 'IN'|'NOT IN'|'EMPTY'|'NOT EMPTY'
+ * @phpstan-type SimpleSelectOperator 'IN'|'NOT IN'|'EMPTY'|'NOT EMPTY'
  * @phpstan-type SimpleSelectNormalized array{
  *   type: 'simple_select',
- *   operator: SimpleOrMultiSelectOperator,
+ *   operator: SimpleSelectOperator,
  *   attributeCode: string,
  *   value?: string[],
  *   scope?: string,
@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 final class SimpleSelect implements ConditionInterface
 {
     /**
-     * @param SimpleOrMultiSelectOperator $operator
+     * @param SimpleSelectOperator $operator
      * @param string[]|null $value
      */
     private function __construct(
