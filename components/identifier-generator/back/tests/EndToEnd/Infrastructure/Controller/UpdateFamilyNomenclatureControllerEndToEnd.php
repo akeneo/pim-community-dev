@@ -53,9 +53,9 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         Assert::assertSame($nomenclatureDefinition->operator(), '<=');
         Assert::assertSame($nomenclatureDefinition->value(), 4);
         Assert::assertSame($nomenclatureDefinition->generateIfEmpty(), true);
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA1'], 'FAM1');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA2'], 'FAM2');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA3'], null);
+        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA1'] ?? null, 'FAM1');
+        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA2'] ?? null, 'FAM2');
+        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA3'] ?? null, null);
     }
 
     /** @test */
