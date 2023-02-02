@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
-use Webmozart\Assert\Assert;
-
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -69,22 +67,5 @@ class NomenclatureDefinition
     public function withValues(array $values): self
     {
         return new NomenclatureDefinition($this->operator, $this->value, $this->generateIfEmpty, $values);
-    }
-
-    // TODO: move this in repository
-    /**
-     * @return NormalizedNomenclatureDefinition
-     */
-    public function normalizeForDatabase(): array
-    {
-        Assert::notNull($this->operator);
-        Assert::notNull($this->value);
-        Assert::notNull($this->generateIfEmpty);
-
-        return [
-            'operator' => $this->operator,
-            'value' => $this->value,
-            'generate_if_empty' => $this->generateIfEmpty,
-        ];
     }
 }
