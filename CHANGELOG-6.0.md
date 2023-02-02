@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.66 (2023-02-02)
+
 ## Bug fixes
 
 - [Backport PIM-10802] PIM-10818: Fix wysiwyg-field add link event
