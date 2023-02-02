@@ -12,7 +12,6 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCo
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
@@ -81,6 +80,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             $textTransformation,
         );
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
+        $this->delimiter()->shouldBeNull();
     }
 
     public function it_returns_an_indentifier_generator_id(): void
@@ -100,9 +100,11 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_sets_a_delimiter(): void
     {
-        $this->delimiter()->asString()->shouldBeLike('-');
-        $this->setDelimiter(Delimiter::fromString('='));
-        $this->delimiter()->asString()->shouldBeLike('=');
+        $this->delimiter()->asString()->shouldReturn('-');
+        $result = $this->withDelimiter(Delimiter::fromString('='));
+        $result->delimiter()->asString()->shouldReturn('=');
+        $result->shouldNotBe($this);
+        $this->delimiter()->asString()->shouldReturn('-');
     }
 
     public function it_returns_a_target(): void
@@ -112,9 +114,11 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_sets_a_target(): void
     {
-        $this->target()->asString()->shouldBeLike('sku');
-        $this->setTarget(Target::fromString('gtin'));
-        $this->target()->asString()->shouldBeLike('gtin');
+        $this->target()->asString()->shouldReturn('sku');
+        $result = $this->withTarget(Target::fromString('gtin'));
+        $result->target()->asString()->shouldReturn('gtin');
+        $result->shouldNotBe($this);
+        $this->target()->asString()->shouldReturn('sku');
     }
 
     public function it_returns_a_conditions(): void
@@ -132,14 +136,20 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_sets_a_structure(): void
     {
-        $this->setStructure(Structure::fromArray([
-            FreeText::fromString('cba'),
-            AutoNumber::fromValues(3, 2),
-        ]));
-        $this->structure()->shouldBeLike(Structure::fromArray([
-            FreeText::fromString('cba'),
-            AutoNumber::fromValues(3, 2),
-        ]));
+        $previousStructure = Structure::fromArray([
+            FreeText::fromString('abc'),
+            FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'no']]),
+        ]);
+        $updatedStructure = Structure::fromArray([
+            FreeText::fromString('def'),
+            FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => 'EQUALS', 'value' => 3]]),
+        ]);
+
+        $this->structure()->shouldBeLike($previousStructure);
+        $result = $this->withStructure($updatedStructure);
+        $result->structure()->shouldBeLike($updatedStructure);
+        $result->shouldNotBe($this);
+        $this->structure()->shouldBeLike($previousStructure);
     }
 
     public function it_returns_a_labels_collection(): void
@@ -149,15 +159,17 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_sets_a_labels_collection(): void
     {
-        $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
-        $this->setLabelCollection(LabelCollection::fromNormalized([
+        $previousLabelCollection = LabelCollection::fromNormalized(['fr' => 'Générateur']);
+        $updatedLabelCollection = LabelCollection::fromNormalized([
             'fr' => 'Générateur',
             'en' => 'generator',
-        ]));
-        $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized([
-            'fr' => 'Générateur',
-            'en' => 'generator',
-        ]));
+        ]);
+
+        $this->labelCollection()->shouldBeLike($previousLabelCollection);
+        $result = $this->withLabelCollection($updatedLabelCollection);
+        $result->labelCollection()->shouldBeLike($updatedLabelCollection);
+        $result->shouldNotBe($this);
+        $this->labelCollection()->shouldBeLike($previousLabelCollection);
     }
 
     public function it_can_be_normalized(): void
