@@ -38,29 +38,61 @@ class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
     public function testItCleanEnrichedValuesLinkedToDeletedChannel(): void
     {
         $currentValuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
-        $this->assertTrue(array_key_exists($this->getMobileTitleKey(), json_decode($currentValuesByCategoryCode['socks'], true)));
-        $this->assertTrue(array_key_exists($this->getMobileTitleKey(), json_decode($currentValuesByCategoryCode['pants'], true)));
+        $this->assertTrue(array_key_exists($this->getMobileTitleKey('en_US'), json_decode($currentValuesByCategoryCode['socks'], true)));
+        $this->assertTrue(array_key_exists($this->getMobileTitleKey('en_US'), json_decode($currentValuesByCategoryCode['pants'], true)));
 
         // clean enriched categories data linked to 'mobile' channel
-        $this->get(CleanCategoryDataLinkedToChannel::class)->__invoke('mobile');
+        $this->get(CleanCategoryDataLinkedToChannel::class)->__invoke('mobile', [], CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_ACTION);
         $cleanedValuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
 
         $cleanedSocksValueCollection = json_decode($cleanedValuesByCategoryCode['socks'], true);
         $cleanedPantsValueCollection = json_decode($cleanedValuesByCategoryCode['pants'], true);
 
-        $this->assertTrue(array_key_exists($this->getEcommerceTitleKey(), $cleanedSocksValueCollection));
+        $this->assertTrue(array_key_exists($this->getEcommerceTitleKey('en_US'), $cleanedSocksValueCollection));
         $this->assertEquals(
             'ecommerce',
-            $cleanedSocksValueCollection[$this->getEcommerceTitleKey()]['channel']
+            $cleanedSocksValueCollection[$this->getEcommerceTitleKey('en_US')]['channel']
         );
-        $this->assertFalse(array_key_exists($this->getMobileTitleKey(), $cleanedSocksValueCollection));
+        $this->assertFalse(array_key_exists($this->getMobileTitleKey('en_US'), $cleanedSocksValueCollection));
+        $this->assertFalse(array_key_exists($this->getMobileTitleKey('fr_FR'), $cleanedSocksValueCollection));
 
-        $this->assertTrue(array_key_exists($this->getEcommerceTitleKey(), $cleanedPantsValueCollection));
+        $this->assertTrue(array_key_exists($this->getEcommerceTitleKey('en_US'), $cleanedPantsValueCollection));
         $this->assertEquals(
             'ecommerce',
-            $cleanedPantsValueCollection[$this->getEcommerceTitleKey()]['channel']
+            $cleanedPantsValueCollection[$this->getEcommerceTitleKey('en_US')]['channel']
         );
-        $this->assertFalse(array_key_exists($this->getMobileTitleKey(), $cleanedPantsValueCollection));
+        $this->assertFalse(array_key_exists($this->getMobileTitleKey('en_US'), $cleanedPantsValueCollection));
+        $this->assertFalse(array_key_exists($this->getMobileTitleKey('fr_FR'), $cleanedPantsValueCollection));
+    }
+
+    public function testItCleanEnrichedValuesLinkedToDeactivateChannelLocale(): void
+    {
+        $currentValuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
+        $this->assertTrue(array_key_exists($this->getMobileTitleKey('en_US'), json_decode($currentValuesByCategoryCode['socks'], true)));
+        $this->assertTrue(array_key_exists($this->getMobileTitleKey('en_US'), json_decode($currentValuesByCategoryCode['pants'], true)));
+
+        // clean enriched categories data linked to 'mobile' channel
+        $this->get(CleanCategoryDataLinkedToChannel::class)->__invoke('mobile', ['fr_FR'], CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_LOCALE_ACTION);
+        $cleanedValuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
+
+        $cleanedSocksValueCollection = json_decode($cleanedValuesByCategoryCode['socks'], true);
+        $cleanedPantsValueCollection = json_decode($cleanedValuesByCategoryCode['pants'], true);
+
+        $this->assertTrue(array_key_exists($this->getEcommerceTitleKey('en_US'), $cleanedSocksValueCollection));
+        $this->assertEquals(
+            'ecommerce',
+            $cleanedSocksValueCollection[$this->getEcommerceTitleKey('en_US')]['channel']
+        );
+        $this->assertFalse(array_key_exists($this->getMobileTitleKey('en_US'), $cleanedSocksValueCollection));
+        $this->assertTrue(array_key_exists($this->getMobileTitleKey('fr_FR'), $cleanedSocksValueCollection));
+
+        $this->assertTrue(array_key_exists($this->getEcommerceTitleKey('en_US'), $cleanedPantsValueCollection));
+        $this->assertEquals(
+            'ecommerce',
+            $cleanedPantsValueCollection[$this->getEcommerceTitleKey('en_US')]['channel']
+        );
+        $this->assertFalse(array_key_exists($this->getMobileTitleKey('en_US'), $cleanedPantsValueCollection));
+        $this->assertTrue(array_key_exists($this->getMobileTitleKey('fr_FR'), $cleanedPantsValueCollection));
     }
 
     private function addMobileChannelToAlreadyEnrichedCategories(): void
@@ -71,7 +103,7 @@ class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
         $pantsValueCollection = json_decode($valuesByCategoryCode['pants'], true);
 
         // add 'mobile' channel value to 'title' attribute
-        $socksValueCollection[$this->getMobileTitleKey()] = [
+        $socksValueCollection[$this->getMobileTitleKey('en_US')] = [
             'data' => 'Socks you need on phone',
             'type' => 'text',
             'channel' => 'mobile',
@@ -79,14 +111,31 @@ class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
             'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
         ];
 
+        $socksValueCollection[$this->getMobileTitleKey('fr_FR')] = [
+            'data' => 'Socks you need on phone',
+            'type' => 'text',
+            'channel' => 'mobile',
+            'locale' => 'fr_FR',
+            'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+        ];
+
         // add 'mobile' channel value to 'title' attribute
-        $pantsValueCollection[$this->getMobileTitleKey()] = [
+        $pantsValueCollection[$this->getMobileTitleKey('en_US')] = [
             'data' => 'Pants you need on phone',
             'type' => 'text',
             'channel' => 'mobile',
             'locale' => 'en_US',
             'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
         ];
+
+        $pantsValueCollection[$this->getMobileTitleKey('fr_FR')] = [
+            'data' => 'Pants you need on phone',
+            'type' => 'text',
+            'channel' => 'mobile',
+            'locale' => 'fr_FR',
+            'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+        ];
+
 
         $updatedBatch =  [
             'socks' => json_encode($socksValueCollection),
@@ -96,19 +145,19 @@ class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
         $this->get(UpdateCategoryEnrichedValues::class)->execute($updatedBatch);
     }
 
-    private function getMobileTitleKey(): string
+    private function getMobileTitleKey(string $localCode): string
     {
         return 'title'
             .AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'
             .AbstractValue::SEPARATOR.'mobile'
-            .AbstractValue::SEPARATOR.'en_US';
+            .AbstractValue::SEPARATOR.$localCode;
     }
 
-    private function getEcommerceTitleKey(): string
+    private function getEcommerceTitleKey(string $localCode): string
     {
         return 'title'
             .AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'
             .AbstractValue::SEPARATOR.'ecommerce'
-            .AbstractValue::SEPARATOR.'en_US';
+            .AbstractValue::SEPARATOR.$localCode;
     }
 }

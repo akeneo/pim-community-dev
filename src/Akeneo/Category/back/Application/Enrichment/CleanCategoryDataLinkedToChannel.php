@@ -5,8 +5,6 @@ namespace Akeneo\Category\Application\Enrichment;
 use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
-use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
-use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 
 class CleanCategoryDataLinkedToChannel
 {
@@ -20,7 +18,10 @@ class CleanCategoryDataLinkedToChannel
     ) {
     }
 
-    public function __invoke(ChannelInterface $channel, string $action): void
+    /**
+     * @param array<string> $channelLocales
+     */
+    public function __invoke(string $channelCode, array $channelLocales, string $action): void
     {
         $offset = 0;
         $cleanedBatch = [];
@@ -31,7 +32,7 @@ class CleanCategoryDataLinkedToChannel
 
             foreach ($valuesByCode as $categoryCode => $json) {
                 $enrichedValues = json_decode($json, true);
-                $valueKeysToRemove = $this->getEnrichedValueKeysToRemove($enrichedValues, $channel, $action);
+                $valueKeysToRemove = $this->getEnrichedValueKeysToRemove($enrichedValues, $channelCode, $channelLocales, $action);
                 if (!empty($valueKeysToRemove)) {
                     foreach ($valueKeysToRemove as $key) {
                         unset($enrichedValues[$key]);
@@ -54,33 +55,32 @@ class CleanCategoryDataLinkedToChannel
 
     /**
      * @param array<string, string> $values
+     * @param array<string> $channelLocales
      *
      * @return array<string>
      */
-    private function getEnrichedValueKeysToRemove(array $values, ChannelInterface $channel, string $action): array
+    private function getEnrichedValueKeysToRemove(array $values, string $channelCode, array $channelLocales, string $action): array
     {
         $keysToRemove = [];
-        $codes = array_map(function (Locale $locale) {
-            return $locale->getCode();
-        },$channel->getLocales()->getValues());
         // matching string is '.*\|.*\|$code\|.*'
-        $matchingString = '.*\\'.AbstractValue::SEPARATOR.'.*\\'.AbstractValue::SEPARATOR.$channel->getCode().'\|(\w{2}_\w{2})';
+        $matchingString = '.*\\'.AbstractValue::SEPARATOR.'.*\\'.AbstractValue::SEPARATOR.$channelCode.'\|(\w{2}_\w{2})';
         foreach ($values as $key => $value) {
             if ($key === 'attribute_codes') {
                 continue;
             }
-            if($action == self::CLEAN_CHANNEL_ACTION) {
+            if ($action == self::CLEAN_CHANNEL_ACTION) {
                 if (preg_match('/'.$matchingString.'/', $key, $matches)) {
                     $keysToRemove[] = $key;
                 }
-            } else if($action == self::CLEAN_CHANNEL_LOCALE_ACTION) {
-                if(preg_match('/'.$matchingString.'/', $key, $matches)) {
-                    if(!in_array($matches[1], $codes)) {
+            } elseif ($action == self::CLEAN_CHANNEL_LOCALE_ACTION) {
+                if (preg_match('/'.$matchingString.'/', $key, $matches)) {
+                    if (!in_array($matches[1], $channelLocales)) {
                         $keysToRemove[] = $key;
                     }
                 }
             }
         }
+
         return $keysToRemove;
     }
 

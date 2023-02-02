@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
+use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -45,9 +47,13 @@ class CleanCategoryDataAfterChannelChangeSubscriber implements EventSubscriberIn
         if (!$jobInstance instanceof JobInstance) {
             return;
         }
-
+        $locales = array_map(function (Locale $locale) {
+            return $locale->getCode();
+        }, $channel->getLocales()->getValues());
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
             'channel_code' => $channel->getCode(),
+            'locales_codes' => $locales,
+            'action' => CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_ACTION,
         ]);
     }
 
@@ -59,6 +65,20 @@ class CleanCategoryDataAfterChannelChangeSubscriber implements EventSubscriberIn
             return;
         }
 
-        ($this->cleanCategoryDataLinkedToChannel)($channel, CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_LOCALE_ACTION);
+        /** @var JobInstance|null $jobInstance */
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values');
+        if (!$jobInstance instanceof JobInstance) {
+            return;
+        }
+
+        $locales = array_map(function (Locale $locale) {
+            return $locale->getCode();
+        }, $channel->getLocales()->getValues());
+
+        $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
+            'channel_code' => $channel->getCode(),
+            'locales_codes' => $locales,
+            'action' => CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_LOCALE_ACTION,
+        ]);
     }
 }

@@ -2,9 +2,11 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\EventSubscriber;
 
+use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -15,6 +17,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
 {
@@ -54,16 +57,57 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($channel);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);
         $channel->getCode()->willReturn('deleted_channel_code');
+        $enUs = new ArrayCollection([(new Locale())->setCode('en_US')]);
+        $channel->getLocales()->willReturn($enUs);
         $jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values')->willReturn($cleanCategoriesJobInstance);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $jobLauncher->launch(
             $cleanCategoriesJobInstance,
             $user,
-            ['channel_code' => 'deleted_channel_code']
+            [
+                'channel_code' => 'deleted_channel_code',
+                'locales_codes' => ['en_US'],
+                'action' => CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_LOCALE_ACTION,
+            ]
+
         )->shouldBeCalled();
 
-        $this->cleanCategoryData($event);
+        $this->cleanCategoryDataForChannelLocale($event);
+    }
+
+    function it_puts_in_queue_the_job_cleaning_category_after_channel_update(
+        GenericEvent $event,
+        Channel $channel,
+        FeatureFlag $enrichedCategoryFeature,
+        JobInstanceRepository $jobInstanceRepository,
+        JobInstance $cleanCategoriesJobInstance,
+        JobLauncherInterface $jobLauncher,
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        UserInterface $user,
+    )
+    {
+        $event->getSubject()->willReturn($channel);
+        $enrichedCategoryFeature->isEnabled()->willReturn(true);
+        $channel->getCode()->willReturn('deleted_channel_code');
+        $enUs = new ArrayCollection([(new Locale())->setCode('en_US')]);
+        $channel->getLocales()->willReturn($enUs);
+        $jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values')->willReturn($cleanCategoriesJobInstance);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+        $jobLauncher->launch(
+            $cleanCategoriesJobInstance,
+            $user,
+            [
+                'channel_code' => 'deleted_channel_code',
+                'locales_codes' => ['en_US'],
+                'action' => CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_ACTION,
+            ]
+
+        )->shouldBeCalled();
+
+        $this->cleanCategoryDataForChannel($event);
     }
 
     function it_does_not_puts_in_queue_the_job_cleaning_category_if_subject_is_not_a_channel(

@@ -68,7 +68,8 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
 
   const [channel, setChannel] = useState(catalogChannel);
   const channelList = useMemo(() => Object.values(channels), [channels]);
-  const selectedLocale: Locale = channels[channel]?.locales.find(locale => locale.code === locale.code) || channels[channel]?.locales[0];
+  const selectedLocale: Locale =
+    channels[channel]?.locales.find(locale => locale.code === locale.code) || channels[channel]?.locales[0];
   const [locale, setLocale] = useState(selectedLocale.code);
   const handleLocaleChange = (value: string): void => {
     setLocale(value);

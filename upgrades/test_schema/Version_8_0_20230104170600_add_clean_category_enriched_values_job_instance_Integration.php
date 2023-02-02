@@ -13,9 +13,9 @@ use PHPUnit\Framework\Assert;
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class Version_7_0_20230104170600_add_clean_category_enriched_values_job_instance_Integration extends TestCase
+final class Version_8_0_20230104170600_add_clean_category_enriched_values_job_instance_Integration extends TestCase
 {
-    private const MIGRATION_NAME = '_7_0_20230104170600_add_clean_category_enriched_values_job_instance';
+    private const MIGRATION_NAME = '_8_0_20230104170600_add_clean_category_enriched_values_job_instance';
 
     use ExecuteMigrationTrait;
 
