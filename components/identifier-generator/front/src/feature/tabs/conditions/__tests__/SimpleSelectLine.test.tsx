@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import {render, waitFor} from '../../../tests/test-utils';
-import {SimpleSelectLine} from '../SimpleSelectLine';
-import {CONDITION_NAMES, Operator, SimpleSelectCondition} from '../../../models';
+import {SimpleOrMultiSelectLine} from '../SimpleOrMultiSelectLine';
+import {CONDITION_NAMES, Operator, SimpleOrMultiSelectCondition} from '../../../models';
 import {fireEvent} from '@testing-library/react';
 import mockedScopes from '../../../tests/fixtures/scopes';
 
@@ -13,10 +13,10 @@ const TableMock = ({children}: {children: ReactNode}) => (
   </table>
 );
 
-describe('SimpleSelectLine', () => {
+describe('SimpleOrMultiSelectLine', () => {
   it('displays select options for IN and NOT_IN operator', async () => {
     //GIVEN a simple select WIth IN condition
-    const condition: SimpleSelectCondition = {
+    const condition: SimpleOrMultiSelectCondition = {
       attributeCode: 'simple_select',
       type: CONDITION_NAMES.SIMPLE_SELECT,
       value: [],
@@ -30,7 +30,7 @@ describe('SimpleSelectLine', () => {
     const mockedOnChange = jest.fn();
     const screen = render(
       <TableMock>
-        <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+        <SimpleOrMultiSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
       </TableMock>
     );
 
@@ -66,7 +66,7 @@ describe('SimpleSelectLine', () => {
 
   it('does not display select options for EMPTY operator', async () => {
     //GIVEN a simple select WIth IN condition
-    const condition: SimpleSelectCondition = {
+    const condition: SimpleOrMultiSelectCondition = {
       attributeCode: 'simple_select',
       type: CONDITION_NAMES.SIMPLE_SELECT,
       value: [],
@@ -80,7 +80,7 @@ describe('SimpleSelectLine', () => {
     const mockedOnChange = jest.fn();
     const screen = render(
       <TableMock>
-        <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+        <SimpleOrMultiSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
       </TableMock>
     );
 
@@ -110,7 +110,7 @@ describe('SimpleSelectLine', () => {
     //GIVEN a localizable simple select added in the list of conditions
     mockSimpleSelectCalls({localizable: true});
 
-    const condition: SimpleSelectCondition = {
+    const condition: SimpleOrMultiSelectCondition = {
       attributeCode: 'simple_select',
       type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
@@ -121,7 +121,7 @@ describe('SimpleSelectLine', () => {
     const mockedOnChange = jest.fn();
     const screen = render(
       <TableMock>
-        <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+        <SimpleOrMultiSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
       </TableMock>
     );
 
@@ -145,7 +145,7 @@ describe('SimpleSelectLine', () => {
     //GIVEN a scopable simple select added in the list of conditions
     mockSimpleSelectCalls({scopable: true});
 
-    const condition: SimpleSelectCondition = {
+    const condition: SimpleOrMultiSelectCondition = {
       attributeCode: 'simple_select',
       type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
@@ -156,7 +156,7 @@ describe('SimpleSelectLine', () => {
     const mockedOnChange = jest.fn();
     const screen = render(
       <TableMock>
-        <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+        <SimpleOrMultiSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
       </TableMock>
     );
 
@@ -179,7 +179,7 @@ describe('SimpleSelectLine', () => {
   it('displays unauthorized error when attribute does not exists or is not authorized to see it', async () => {
     mockSimpleSelectCalls({inError: true, errorStatus: '401'});
 
-    const condition: SimpleSelectCondition = {
+    const condition: SimpleOrMultiSelectCondition = {
       attributeCode: 'unknown_simple_select',
       type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
@@ -190,7 +190,7 @@ describe('SimpleSelectLine', () => {
     const mockedOnChange = jest.fn();
     const screen = render(
       <TableMock>
-        <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+        <SimpleOrMultiSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
       </TableMock>
     );
 
@@ -202,7 +202,7 @@ describe('SimpleSelectLine', () => {
   it('displays general error when attribute route fails', async () => {
     mockSimpleSelectCalls({inError: true, errorStatus: '500'});
 
-    const condition: SimpleSelectCondition = {
+    const condition: SimpleOrMultiSelectCondition = {
       attributeCode: 'unknown_simple_select',
       type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
@@ -213,7 +213,7 @@ describe('SimpleSelectLine', () => {
     const mockedOnChange = jest.fn();
     const screen = render(
       <TableMock>
-        <SimpleSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
+        <SimpleOrMultiSelectLine condition={condition} onChange={mockedOnChange} onDelete={jest.fn()} />
       </TableMock>
     );
 

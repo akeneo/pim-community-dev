@@ -1,11 +1,11 @@
 import React from 'react';
 import {fireEvent, mockResponse, render, screen} from '../../tests/test-utils';
 import {SelectionTab} from '../SelectionTab';
-import {CONDITION_NAMES, Operator, SimpleSelectCondition} from '../../models';
+import {CONDITION_NAMES, Operator, SimpleOrMultiSelectCondition} from '../../models';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/EnabledLine');
-jest.mock('../conditions/SimpleSelectLine');
+jest.mock('../conditions/SimpleOrMultiSelectLine');
 jest.mock('../../pages/SimpleDeleteModal');
 
 describe('SelectionTab', () => {
@@ -173,14 +173,36 @@ describe('SelectionTab', () => {
         scope: null,
         locale: null,
         attributeCode: 'simple_select',
-      } as SimpleSelectCondition,
+      } as SimpleOrMultiSelectCondition,
     ];
 
     const screen = render(
       <SelectionTab target={'sku'} conditions={conditions} onChange={jest.fn()} validationErrors={[]} />
     );
 
-    expect(await screen.findByText('SimpleSelectLineMock')).toBeInTheDocument();
+    expect(await screen.findByText('SimpleOrMultiSelectLineMock')).toBeInTheDocument();
+  });
+
+  it('should display multi select line', async () => {
+    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
+    const conditions = [
+      {
+        type: CONDITION_NAMES.MULTI_SELECT,
+        value: [],
+        operator: Operator.IN,
+        scope: null,
+        locale: null,
+        attributeCode: 'multi_select',
+      } as SimpleOrMultiSelectCondition,
+    ];
+
+    const screen = render(
+      <SelectionTab target={'sku'} conditions={conditions} onChange={jest.fn()} validationErrors={[]} />
+    );
+
+    expect(await screen.findByText('SimpleOrMultiSelectLineMock')).toBeInTheDocument();
   });
 
   it('should display errors', () => {

@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo} from 'react';
-import {Operator, SimpleSelectCondition, SimpleSelectOperators} from '../../models';
+import {Operator, SimpleOrMultiSelectCondition, SimpleSelectOperators} from '../../models';
 import {Button, Helper, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {OperatorSelector} from '../../components';
@@ -10,13 +10,13 @@ import {ScopeAndLocaleSelector} from '../../components/ScopeAndLocaleSelector';
 import {useGetAttributeByCode} from '../../hooks/useGetAttributeByCode';
 import {Unauthorized} from '../../errors';
 
-type SimpleSelectLineProps = {
-  condition: SimpleSelectCondition;
-  onChange: (condition: SimpleSelectCondition) => void;
+type SimpleOrMultiSelectLineProps = {
+  condition: SimpleOrMultiSelectCondition;
+  onChange: (condition: SimpleOrMultiSelectCondition) => void;
   onDelete: () => void;
 };
 
-const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange, onDelete}) => {
+const SimpleOrMultiSelectLine: React.FC<SimpleOrMultiSelectLineProps> = ({condition, onChange, onDelete}) => {
   const translate = useTranslate();
   const locale = useUserContext().get('catalogLocale');
   const {data, isLoading, error} = useGetAttributeByCode(condition.attributeCode);
@@ -97,4 +97,4 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
   );
 };
 
-export {SimpleSelectLine};
+export {SimpleOrMultiSelectLine};

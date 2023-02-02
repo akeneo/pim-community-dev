@@ -3,7 +3,7 @@ export * from './conditions/conditions';
 export * from './conditions/enabledCondition';
 export * from './conditions/familyCondition';
 export * from './conditions/operator';
-export * from './conditions/simpleSelectCondition';
+export * from './conditions/simpleOrMultiSelectCondition';
 export * from './delimiter';
 export * from './family';
 export * from './flatten-attribute';
