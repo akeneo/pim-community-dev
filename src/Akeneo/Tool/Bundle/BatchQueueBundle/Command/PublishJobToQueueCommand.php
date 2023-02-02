@@ -86,7 +86,14 @@ class PublishJobToQueueCommand extends Command
                 'email',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'The email to notify at the end of the job execution'
+                'Deprecated: use "emails" option instead'
+            )
+            ->addOption(
+                'emails',
+                null,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'The email to notify at the end of the job execution',
+                []
             )
             ->addOption(
                 'no-log',
@@ -106,13 +113,14 @@ class PublishJobToQueueCommand extends Command
         $noLog = $input->getOption('no-log') ? true : false;
         $username = $input->getOption('username');
         $email = $input->getOption('email');
+        $emails = $input->getOption('emails', $email ? [$email] : []);
 
         $this->publishJobToQueue->publish(
             $jobInstanceCode,
             $config,
             $noLog,
             $username,
-            $email
+            $emails
         );
 
         $jobInstance = $this->getJobManager()->getRepository($this->jobInstanceClass)->findOneBy(['code' => $jobInstanceCode]);

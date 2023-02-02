@@ -80,20 +80,20 @@ class PublishJobToQueueCommandSpec extends ObjectBehavior
         $inputConfig = '{"key": "data", "superkey": 50}';
         $inputNoLog = null;
         $inputUsername = 'admin';
-        $inputEmail = null;
+        $inputEmails = [];
 
         $input->getArgument('code')->willReturn($inputCode);
         $input->getOption('config')->willReturn($inputConfig);
         $input->getOption('no-log')->willReturn($inputNoLog);
         $input->getOption('username')->willReturn($inputUsername);
-        $input->getOption('email')->willReturn($inputEmail);
+        $input->getOption('emails')->willReturn($inputEmails);
 
         $publishJobToQueue->publish(
             $inputCode,
             json_decode($inputConfig, true),
             false,
             $inputUsername,
-            $inputEmail
+            $inputEmails
         )->shouldBeCalled();
 
         $jobInstanceRepository->findOneBy(['code' => $inputCode])->willReturn($jobInstance);
@@ -129,13 +129,13 @@ class PublishJobToQueueCommandSpec extends ObjectBehavior
         $inputConfig = '{{invalid_config}';
         $inputNoLog = null;
         $inputUsername = 'admin';
-        $inputEmail = null;
+        $inputEmails = [];
 
         $input->getArgument('code')->willReturn($inputCode);
         $input->getOption('config')->willReturn($inputConfig);
         $input->getOption('no-log')->willReturn($inputNoLog);
         $input->getOption('username')->willReturn($inputUsername);
-        $input->getOption('email')->willReturn($inputEmail);
+        $input->getOption('emails')->willReturn($inputEmails);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during(
             'run', [$input, $output]
