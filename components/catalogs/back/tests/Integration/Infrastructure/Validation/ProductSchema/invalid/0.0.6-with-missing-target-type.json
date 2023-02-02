@@ -1,5 +1,5 @@
 {
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.5/schema",
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.6/schema",
   "description": "The required properties (type) are missing at #/properties/name",
   "properties": {
     "uuid": {

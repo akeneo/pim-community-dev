@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductMapping\AttributeSource;
 
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeImageSource;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource
+ * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeImageSource
  */
 class AttributeImageSourceTest extends AbstractAttributeSourceTest
 {
@@ -31,7 +31,7 @@ class AttributeImageSourceTest extends AbstractAttributeSourceTest
     {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($source, new AttributeTextSource());
+        $violations = $this->validator->validate($source, new AttributeImageSource());
 
         $this->assertEmpty($violations);
     }
@@ -108,7 +108,7 @@ class AttributeImageSourceTest extends AbstractAttributeSourceTest
     ): void {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($source, new AttributeTextSource());
+        $violations = $this->validator->validate($source, new AttributeImageSource());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }
@@ -116,6 +116,20 @@ class AttributeImageSourceTest extends AbstractAttributeSourceTest
     public function invalidDataProvider(): array
     {
         return [
+            'missing source value' => [
+                'attribute' => [
+                    'code' => 'thumbnail',
+                    'type' => 'pim_catalog_image',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
             'invalid source value' => [
                 'attribute' => [
                     'code' => 'thumbnail',
@@ -146,6 +160,49 @@ class AttributeImageSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
+            'blank scope' => [
+                'attribute' => [
+                    'code' => 'thumbnail',
+                    'type' => 'pim_catalog_image',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'thumbnail',
+                    'scope' => '',
+                    'locale' => null,
+                ],
+                'expected_message' => 'This value should not be blank.',
+            ],
+            'unknown scope' => [
+                'attribute' => [
+                    'code' => 'thumbnail',
+                    'type' => 'pim_catalog_image',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'thumbnail',
+                    'scope' => 'unknown_scope',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
+            ],
+            'missing scope' => [
+                'attribute' => [
+                    'code' => 'thumbnail',
+                    'type' => 'pim_catalog_image',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'thumbnail',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
             'invalid locale' => [
                 'attribute' => [
                     'code' => 'thumbnail',
@@ -161,7 +218,50 @@ class AttributeImageSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
-            'source with invalid locale for a channel' => [
+            'blank locale' => [
+                'attribute' => [
+                    'code' => 'thumbnail',
+                    'type' => 'pim_catalog_image',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'thumbnail',
+                    'scope' => null,
+                    'locale' => '',
+                ],
+                'expected_message' => 'This value should not be blank.',
+            ],
+            'missing locale' => [
+                'attribute' => [
+                    'code' => 'thumbnail',
+                    'type' => 'pim_catalog_image',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'thumbnail',
+                    'scope' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'disabled locale' => [
+                'attribute' => [
+                    'code' => 'thumbnail',
+                    'type' => 'pim_catalog_image',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'thumbnail',
+                    'scope' => null,
+                    'locale' => 'kz_KZ',
+                ],
+                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'disabled locale for a channel' => [
                 'attribute' => [
                     'code' => 'thumbnail',
                     'type' => 'pim_catalog_image',
@@ -176,35 +276,21 @@ class AttributeImageSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
             ],
-            'source with invalid scope' => [
-                'attribute' => [
-                    'code' => 'thumbnail',
-                    'type' => 'pim_catalog_image',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'thumbnail',
-                    'scope' => 'unknown_scope',
-                    'locale' => null,
-                ],
-                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
-            ],
-            'source with invalid locale' => [
+            'extra field' => [
                 'attribute' => [
                     'code' => 'thumbnail',
                     'type' => 'pim_catalog_image',
                     'group' => 'other',
                     'scopable' => false,
-                    'localizable' => true,
+                    'localizable' => false,
                 ],
                 'source' => [
                     'source' => 'thumbnail',
                     'scope' => null,
-                    'locale' => 'kz_KZ',
+                    'locale' => null,
+                    'parameters' => [],
                 ],
-                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+                'expectedMessage' => 'This field was not expected.',
             ],
         ];
     }
