@@ -51,7 +51,7 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
     public function validDataProvider(): array
     {
         return [
-            'without scope and without locale' => [
+            'non localizable and non scopable attribute' => [
                 'attribute' => [
                     'code' => 'size',
                     'label' => 'Optical size',
@@ -65,7 +65,7 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                 ],
             ],
-            'with a scope' => [
+            'scopable attribute' => [
                 'attribute' => [
                     'code' => 'size',
                     'label' => 'Optical size',
@@ -79,7 +79,7 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                 ],
             ],
-            'with a locale' => [
+            'localizable attribute' => [
                 'attribute' => [
                     'code' => 'size',
                     'label' => 'Optical size',
@@ -93,7 +93,7 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                 ],
             ],
-            'with a locale and a scope' => [
+            'localizable and scopable attribute' => [
                 'attribute' => [
                     'code' => 'size',
                     'label' => 'Optical size',
@@ -109,13 +109,57 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
             ],
         ];
     }
+
     public function invalidDataProvider(): array
     {
         return [
-            'with a blank scope' => [
+            'missing source value' => [
                 'attribute' => [
                     'code' => 'size',
-                    'label' => 'Optical size',
+                    'type' => 'pim_catalog_number',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'invalid source value' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_number',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 42,
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                ],
+                'expectedMessage' => 'This value should be of type string.',
+            ],
+            'invalid scope' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_number',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => 42,
+                    'locale' => 'en_US',
+                ],
+                'expectedMessage' => 'This value should be of type string.',
+            ],
+            'blank scope' => [
+                'attribute' => [
+                    'code' => 'size',
                     'type' => 'pim_catalog_number',
                     'scopable' => true,
                     'localizable' => false,
@@ -127,10 +171,53 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expected_message' => 'This value should not be blank.',
             ],
-            'with a blank locale' => [
+            'unknown scope' => [
                 'attribute' => [
                     'code' => 'size',
-                    'label' => 'Optical size',
+                    'type' => 'pim_catalog_number',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => 'unknown_scope',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
+            ],
+            'missing scope' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_number',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'invalid locale' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_number',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => 'ecommerce',
+                    'locale' => 42,
+                ],
+                'expectedMessage' => 'This value should be of type string.',
+            ],
+            'blank locale' => [
+                'attribute' => [
+                    'code' => 'size',
                     'type' => 'pim_catalog_number',
                     'scopable' => false,
                     'localizable' => true,
@@ -142,20 +229,65 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expected_message' => 'This value should not be blank.',
             ],
-            'with blank locale and scope' => [
+            'missing locale' => [
                 'attribute' => [
                     'code' => 'size',
-                    'label' => 'Optical size',
                     'type' => 'pim_catalog_number',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'disabled locale' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_number',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => 'kz_KZ',
+                ],
+                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'disabled locale for a channel' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_number',
+                    'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
                 ],
                 'source' => [
                     'source' => 'size',
-                    'scope' => '',
-                    'locale' => '',
+                    'scope' => 'ecommerce',
+                    'locale' => 'kz_KZ',
                 ],
-                'expected_message' => 'This value should not be blank.',
+                'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
+            ],
+            'extra field' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_number',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [],
+                ],
+                'expectedMessage' => 'This field was not expected.',
             ],
         ];
     }
