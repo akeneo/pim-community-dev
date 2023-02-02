@@ -120,6 +120,7 @@
 - PIM-10785: Fix case-insensitive patch product model
 - PIM-10808: Fix Error message on the family modification when an attribute is as required=0
 - PIM-10802: Fix wysiwyg-field add link event 
+- PIM-10796: Fix system-information endpoint with wrong answers
 
 ## Improvements
 
