@@ -23,7 +23,7 @@ test('it returns a date formatter that is based on the default user context', ()
 
   const format = result.current;
 
-  expect(format('2020-01-02T00:00:00+00:00', options)).toEqual('Thursday, January 2, 2020 at 12:00:00 AM UTC');
+  expect(format('2020-01-02T00:00:00+00:00', options)).toEqual('Thursday, January 2, 2020 at 12:00:00 AM UTC');
 });
 
 test('it returns default format when user has no timezone', () => {

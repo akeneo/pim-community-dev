@@ -3,7 +3,7 @@ import {useDebounce, useDebounceCallback} from './useDebounce';
 
 describe('useDebounce', () => {
   beforeEach(() => {
-    jest.useFakeTimers('modern');
+    jest.useFakeTimers();
   });
   afterAll(() => {
     jest.useRealTimers();
@@ -60,7 +60,7 @@ describe('useDebounce', () => {
 
 describe('useDebounceCallback', () => {
   beforeEach(() => {
-    jest.useFakeTimers('modern');
+    jest.useFakeTimers();
   });
   afterAll(() => {
     jest.useRealTimers();

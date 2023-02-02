@@ -23,5 +23,6 @@ module.exports = {
             lines: 100,
         },
     },
-    workerIdleMemoryLimit: '300MB'
+    workerIdleMemoryLimit: '300MB',
+    testEnvironment: 'jsdom',
 };

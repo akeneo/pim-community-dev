@@ -17,6 +17,9 @@
     "html"
   ],
   "cacheDirectory": "/tmp/jest",
-  "testURL": "http://localhost/",
+  "testEnvironment": "jsdom",
+  "testEnvironmentOptions": {
+    "url": "http://localhost/"
+  },
   "coveragePathIgnorePatterns": ["./lib/"]
 }

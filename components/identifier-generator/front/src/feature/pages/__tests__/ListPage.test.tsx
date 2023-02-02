@@ -3,7 +3,7 @@ import {fireEvent, render, screen, waitFor} from '../../tests/test-utils';
 import {ListPage} from '../ListPage';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 import {useGetIdentifierGenerators} from '../../hooks';
-import {mocked} from 'ts-jest/utils';
+import {mocked} from 'jest-mock';
 import {Router} from 'react-router';
 import {createMemoryHistory} from 'history';
 

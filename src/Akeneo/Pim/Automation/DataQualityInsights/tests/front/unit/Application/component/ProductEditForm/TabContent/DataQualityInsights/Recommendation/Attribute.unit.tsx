@@ -46,6 +46,8 @@ describe('Attribute actions', () => {
   });
 
   test('it redirects to the attribute on product Edit Form when it is a simple product', () => {
+    const windowDispatchEventSpy = jest.spyOn(window, 'dispatchEvent');
+
     const expectedEvent = new CustomEvent(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, {
       detail: {
         code: 'an_attribute',
@@ -58,10 +60,11 @@ describe('Attribute actions', () => {
 
     fireEvent.click(getByText('an_attribute_label'));
 
-    expect(window.dispatchEvent).toHaveBeenCalledWith(expectedEvent);
+    expect(windowDispatchEventSpy).toHaveBeenCalledWith(expectedEvent);
   });
 
   test('it redirects to the attribute on product Edit Form when it is a the same product variant level', () => {
+    const windowDispatchEventSpy = jest.spyOn(window, 'dispatchEvent');
     const expectedEvent = new CustomEvent(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, {
       detail: {
         code: 'an_attribute',
@@ -76,10 +79,11 @@ describe('Attribute actions', () => {
 
     fireEvent.click(getByText('an_attribute_label'));
 
-    expect(window.dispatchEvent).toHaveBeenCalledWith(expectedEvent);
+    expect(windowDispatchEventSpy).toHaveBeenCalledWith(expectedEvent);
   });
 
   test('it redirects to the attribute on product Edit Form when it is a the same product model level', () => {
+    const windowDispatchEventSpy = jest.spyOn(window, 'dispatchEvent');
     const expectedEvent = new CustomEvent(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, {
       detail: {
         code: 'a_model_attribute',
@@ -92,7 +96,7 @@ describe('Attribute actions', () => {
 
     fireEvent.click(getByText('a_model_attribute_label'));
 
-    expect(window.dispatchEvent).toHaveBeenCalledWith(expectedEvent);
+    expect(windowDispatchEventSpy).toHaveBeenCalledWith(expectedEvent);
   });
 
   test('it redirects to the attribute on parent product model Form when it is a variant product with 1 level of variation', () => {
