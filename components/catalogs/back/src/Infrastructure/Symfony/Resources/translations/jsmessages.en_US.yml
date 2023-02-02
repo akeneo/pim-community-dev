@@ -138,13 +138,17 @@ akeneo_catalogs:
                     label: Value translation
                     placeholder: Select a translation
                     helper: Select the language in which the value should be sent.
+                currency:
+                    label: Currency
+                    placeholder: Select a currency
+                    helper: Select the currency in which the value should be sent.
                 no_parameters_message: No parameters for this source.
             select_source:
                 label: Pim source
                 search: Search criterion
-                no_results: no matches found
-                section_system: system
-                section_attributes: attributes
+                no_results: No matches found
+                section_system: System
+                section_attributes: Attributes
             placeholder:
                 title: Select source
                 illustration_title: Click on a target in the right panel to configure your catalog mapping.

@@ -9,8 +9,12 @@ type Result = {
     error: ResultError;
 };
 
-export const useChannelCurrencies = (channelCode: string): Result => {
-    return useQuery<Data, ResultError, Data>(['currencies', channelCode], async () => {
+export const useChannelCurrencies = (channelCode: string | null): Result => {
+    return useQuery<Data, ResultError, Data>(['channel_currencies', channelCode], async () => {
+        if (null === channelCode) {
+            return [];
+        }
+
         const response = await fetch(`/rest/catalogs/channels/${channelCode}/currencies`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',

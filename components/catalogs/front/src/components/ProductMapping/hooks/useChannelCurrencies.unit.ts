@@ -27,3 +27,23 @@ test('it fetches the API response', async () => {
         error: null,
     });
 });
+
+test('it returns an empty array when no code provided', async () => {
+    const {result, waitForNextUpdate} = renderHook(() => useChannelCurrencies(null), {wrapper: ReactQueryWrapper});
+
+    expect(result.current).toMatchObject({
+        isLoading: true,
+        isError: false,
+        data: undefined,
+        error: null,
+    });
+
+    await waitForNextUpdate();
+
+    expect(result.current).toMatchObject({
+        isLoading: false,
+        isError: false,
+        data: [],
+        error: null,
+    });
+});
