@@ -174,11 +174,13 @@ SQL;
 
     private function updateValues(NomenclatureDefinition $nomenclatureDefinition): void
     {
-        $familyIds = $this->getExistingFamilyIdsFromFamilyCodes(\array_unique(\array_keys($nomenclatureDefinition->values())));
+        $familyIds = $this->getExistingFamilyIdsFromFamilyCodes(
+            \array_unique(\array_keys($nomenclatureDefinition->values() ?? []))
+        );
 
         $valuesToUpdateOrInsert = [];
         $familyIdsToDelete = [];
-        foreach ($nomenclatureDefinition->values() as $familyCode => $value) {
+        foreach (($nomenclatureDefinition->values() ?? []) as $familyCode => $value) {
             $familyId = $familyIds[$familyCode] ?? null;
             if ($familyId) {
                 if (null === $value || '' === $value) {
