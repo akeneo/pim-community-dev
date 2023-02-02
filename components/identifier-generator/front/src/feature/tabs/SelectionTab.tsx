@@ -7,8 +7,8 @@ import {TabValidationErrors} from '../components';
 import {AddConditionButton, EnabledLine, FamilyLine, ImplicitConditionsList} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
-import {SimpleSelectLine} from './conditions/SimpleSelectLine';
 import {useIdentifierGeneratorAclContext} from '../context';
+import {SimpleOrMultiSelectLine} from './conditions/SimpleOrMultiSelectLine';
 
 type SelectionTabProps = {
   generator: IdentifierGenerator;
@@ -33,7 +33,8 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
     case CONDITION_NAMES.FAMILY:
       return <FamilyLine condition={condition} onChange={onChange} onDelete={onDelete} />;
     case CONDITION_NAMES.SIMPLE_SELECT:
-      return <SimpleSelectLine condition={condition} onChange={onChange} onDelete={onDelete} />;
+    case CONDITION_NAMES.MULTI_SELECT:
+      return <SimpleOrMultiSelectLine condition={condition} onChange={onChange} onDelete={onDelete} />;
   }
 };
 
