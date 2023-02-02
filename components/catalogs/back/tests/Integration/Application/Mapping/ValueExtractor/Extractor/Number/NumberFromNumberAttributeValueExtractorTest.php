@@ -36,12 +36,9 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
     }
 
     /**
-     * @param string | int | float $rawValue
-     * @param int | float $expected
-     *
      * @dataProvider numberRawValueProvider
      */
-    public function testItReturnsTheValueForNumberAttribute($rawValue, $expected): void
+    public function testItReturnsTheValueForNumberAttribute(string|int|float $rawValue, int|float $expected): void
     {
         /** @var RawProduct $product */
         $product = [
@@ -65,7 +62,7 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
         $this->assertEquals($expected, $result);
     }
 
-    private function numberRawValueProvider(): array
+    public function numberRawValueProvider(): array
     {
         return [
             'with int' => [
