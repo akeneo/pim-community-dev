@@ -36,9 +36,27 @@ class GetAllAppsEndToEnd extends WebTestCase
     /**
      * @group ce
      */
-    public function test_it_gets_all_the_apps(): void
+    public function test_it_gets_all_the_apps_with_certified_first(): void
     {
         $expectedApps = [
+            [
+                'id' => 'b18561ff-378e-41a5-babb-ca0ec0af569a',
+                'name' => 'Akeneo PIM Connector for Shopify',
+                'logo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/shopify-connector-logo-1200x.png?itok=mASOVlwC',
+                'author' => 'StrikeTru',
+                'partner' => 'Akeneo Partner',
+                'description' => 'SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions – Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru\'s smallPIM.',
+                'url' => 'https://marketplace.akeneo.com/extension/akeneo-pim-connector-shopify?utm_medium=pim&utm_content=extension_link&utm_source=http%3A%2F%2Flocalhost%3A8080',
+                'categories' => [
+                    'E-commerce',
+                ],
+                'certified' => true,
+                'activate_url' => 'http://shopify.example.com/activate?pim_url=http%3A%2F%2Flocalhost%3A8080',
+                'callback_url' => 'http://shopify.example.com/callback',
+                'connected' => false,
+                'isPending' => false,
+                'isTestApp' => false,
+            ],
             [
                 'id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
                 'name' => 'Akeneo Shopware 6 Connector by EIKONA Media',
@@ -53,24 +71,6 @@ class GetAllAppsEndToEnd extends WebTestCase
                 'certified' => false,
                 'activate_url' => 'http://shopware.example.com/activate?pim_url=http%3A%2F%2Flocalhost%3A8080',
                 'callback_url' => 'http://shopware.example.com/callback',
-                'connected' => false,
-                'isPending' => false,
-                'isTestApp' => false,
-            ],
-            [
-                'id' => 'b18561ff-378e-41a5-babb-ca0ec0af569a',
-                'name' => 'Akeneo PIM Connector for Shopify',
-                'logo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/shopify-connector-logo-1200x.png?itok=mASOVlwC',
-                'author' => 'StrikeTru',
-                'partner' => 'Akeneo Partner',
-                'description' => 'SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions – Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru\'s smallPIM.',
-                'url' => 'https://marketplace.akeneo.com/extension/akeneo-pim-connector-shopify?utm_medium=pim&utm_content=extension_link&utm_source=http%3A%2F%2Flocalhost%3A8080',
-                'categories' => [
-                    'E-commerce',
-                ],
-                'certified' => false,
-                'activate_url' => 'http://shopify.example.com/activate?pim_url=http%3A%2F%2Flocalhost%3A8080',
-                'callback_url' => 'http://shopify.example.com/callback',
                 'connected' => false,
                 'isPending' => false,
                 'isTestApp' => false,
@@ -151,7 +151,7 @@ class GetAllAppsEndToEnd extends WebTestCase
                 'categories' => [
                     'E-commerce',
                 ],
-                'certified' => false,
+                'certified' => true,
                 'activate_url' => 'http://shopify.example.com/activate',
                 'callback_url' => 'http://shopify.example.com/callback',
             ],
