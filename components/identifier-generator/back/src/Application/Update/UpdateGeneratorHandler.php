@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 final class UpdateGeneratorHandler
 {
     public function __construct(
-        private IdentifierGeneratorRepository $identifierGeneratorRepository,
-        private CommandValidatorInterface $validator
+        private readonly IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly CommandValidatorInterface $validator
     ) {
     }
 
@@ -33,13 +33,14 @@ final class UpdateGeneratorHandler
         $identifierGenerator = $this->identifierGeneratorRepository->get($command->code);
         Assert::notNull($identifierGenerator, sprintf("Identifier generator \"%s\" does not exist or you do not have permission to access it.", $command->code));
 
-        $identifierGenerator->setDelimiter(Delimiter::fromString($command->delimiter));
-        $identifierGenerator->setLabelCollection(LabelCollection::fromNormalized($command->labels));
-        $identifierGenerator->setTarget(Target::fromString($command->target));
-        $identifierGenerator->setStructure(Structure::fromNormalized($command->structure));
-        $identifierGenerator->setConditions(Conditions::fromNormalized($command->conditions));
-        $identifierGenerator->setTextTransformation(TextTransformation::fromString($command->textTransformation));
+        $updatedIdentifierGenerator = $identifierGenerator
+            ->withStructure(Structure::fromNormalized($command->structure))
+            ->withConditions(Conditions::fromNormalized($command->conditions))
+            ->withLabelCollection(LabelCollection::fromNormalized($command->labels))
+            ->withTarget(Target::fromString($command->target))
+            ->withDelimiter(Delimiter::fromString($command->delimiter))
+            ->withTextTransformation(TextTransformation::fromString($command->textTransformation));
 
-        $this->identifierGeneratorRepository->update($identifierGenerator);
+        $this->identifierGeneratorRepository->update($updatedIdentifierGenerator);
     }
 }
