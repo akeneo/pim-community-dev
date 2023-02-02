@@ -16,7 +16,7 @@ type FamilyProperty = {
     | {type: null};
 };
 
-const FamilyPropertyOperators: Operator[] = [Operator.EQUAL, Operator.EQUAL_OR_LESS];
+const FamilyPropertyOperators: Operator[] = [Operator.EQUALS, Operator.LOWER_OR_EQUAL_THAN];
 
 export {FamilyPropertyOperators};
 export type {FamilyProperty};

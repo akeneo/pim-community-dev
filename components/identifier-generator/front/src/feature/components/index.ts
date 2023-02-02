@@ -4,6 +4,7 @@ export * from './Header';
 export * from './IdentifierAttributeSelector';
 export * from './LabelTranslations';
 export * from './ListSkeleton';
+export * from './NomenclatureEdit';
 export * from './OperatorSelector';
 export * from './TranslationWithLink';
 export * from './LabelTranslationsSkeleton';

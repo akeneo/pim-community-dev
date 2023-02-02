@@ -1,4 +1,5 @@
 export * from './useCreateIdentifierGenerator';
+export * from './useGetNomenclature';
 export * from './useDeleteIdentifierGenerator';
 export * from './useGetConditionItems';
 export * from './useGetIdentifierGenerator';

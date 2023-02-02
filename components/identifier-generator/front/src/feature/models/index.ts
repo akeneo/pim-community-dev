@@ -10,6 +10,7 @@ export * from './flatten-attribute';
 export * from './identifierGenerator';
 export * from './identifierGeneratorCode';
 export * from './labelCollection';
+export * from './nomenclature';
 export * from './structure';
 export * from './target';
 export * from './text-transformation';
