@@ -29,7 +29,7 @@ class InMemoryNomenclatureRepository implements NomenclatureRepository
     {
         $this->nomenclatureDefinitions[$propertyCode] = $nomenclatureDefinition;
 
-        foreach ($nomenclatureDefinition->values() as $familyCode => $value) {
+        foreach (($nomenclatureDefinition->values() ?? []) as $familyCode => $value) {
             if (null === $value) {
                 unset($this->values[$familyCode]);
             } else {
