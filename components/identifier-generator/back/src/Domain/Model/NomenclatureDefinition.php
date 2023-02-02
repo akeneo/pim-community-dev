@@ -63,6 +63,9 @@ class NomenclatureDefinition
         return new NomenclatureDefinition($this->operator, $this->value, $generateIfEmpty, $this->values);
     }
 
+    /**
+     * @param array<string, ?string> $values
+     */
     public function withValues(array $values): self
     {
         return new NomenclatureDefinition($this->operator, $this->value, $this->generateIfEmpty, $values);
