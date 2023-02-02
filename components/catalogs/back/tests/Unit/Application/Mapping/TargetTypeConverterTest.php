@@ -55,7 +55,7 @@ class TargetTypeConverterTest extends TestCase
                     'pim_catalog_boolean',
                 ],
             ],
-            'date' => [
+            'string+date-time' => [
                 'string',
                 'date-time',
                 [
