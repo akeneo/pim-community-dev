@@ -35,14 +35,20 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
         );
     }
 
-    public function testItReturnsTheValueForNumberAttribute(): void
+    /**
+     * @param string | int | float $rawValue
+     * @param int | float $expected
+     *
+     * @dataProvider numberRawValueProvider
+     */
+    public function testItReturnsTheValueForNumberAttribute($rawValue, $expected): void
     {
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
                 'optical_zoom' => [
                     'ecommerce' => [
-                        'en_US' => 3.7,
+                        'en_US' => $rawValue,
                     ],
                 ],
             ],
@@ -56,7 +62,29 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             parameters: [],
         );
 
-        $this->assertEquals(3.7, $result);
+        $this->assertEquals($expected, $result);
+    }
+
+    private function numberRawValueProvider(): array
+    {
+        return [
+            'with int' => [
+                'rawValue' => 42,
+                'expected' => 42,
+            ],
+            'with float' => [
+                'rawValue' => 42.7,
+                'expected' => 42.7,
+            ],
+            'with int as string' => [
+                'rawValue' => '42',
+                'expected' => 42,
+            ],
+            'with float as string' => [
+                'rawValue' => '42.7',
+                'expected' => 42.7,
+            ],
+        ];
     }
 
     public function testItReturnsNullIfNotFound(): void

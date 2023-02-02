@@ -130,6 +130,11 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => null,
                 ],
+                'zoom' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
@@ -207,6 +212,10 @@ class CatalogFixtureCommand extends Command
             },
             "is_released": {
               "type": "boolean"
+            },
+            "zoom": {
+              "type": "number",
+              "title": "Optical Zoom"
             }
           }
         }
