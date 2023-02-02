@@ -166,9 +166,17 @@ VALUES(:property_code, :definition)
 ON DUPLICATE KEY UPDATE definition = :definition
 SQL;
 
+        Assert::notNull($nomenclatureDefinition->operator());
+        Assert::notNull($nomenclatureDefinition->value());
+        Assert::notNull($nomenclatureDefinition->generateIfEmpty());
+
         $this->connection->executeStatement($sql, [
             'property_code' => $propertyCode,
-            'definition' => \json_encode($nomenclatureDefinition->normalizeForDatabase()),
+            'definition' => [
+                'operator' => $nomenclatureDefinition->operator(),
+                'value' => $nomenclatureDefinition->value(),
+                'generate_if_empty' => $nomenclatureDefinition->generateIfEmpty(),
+            ],
         ]);
     }
 
