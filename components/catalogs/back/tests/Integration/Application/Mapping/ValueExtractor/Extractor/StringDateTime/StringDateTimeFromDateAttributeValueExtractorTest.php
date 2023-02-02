@@ -37,7 +37,7 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
         );
     }
 
-    public function testItReturnsTheValueForNumberAttribute(): void
+    public function testItReturnsTheValueForDateAttribute(): void
     {
         /** @var RawProduct $product */
         $product = [

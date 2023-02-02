@@ -35,7 +35,7 @@ class StringUriFromImageAttributeValueExtractorTest extends ValueExtractorTestCa
         );
     }
 
-    public function testItReturnsTheValueForNumberAttribute(): void
+    public function testItReturnsTheValueForImageAttribute(): void
     {
         /** @var RawProduct $product */
         $product = [
