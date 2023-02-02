@@ -55,6 +55,13 @@ class TargetTypeConverterTest extends TestCase
                     'pim_catalog_boolean',
                 ],
             ],
+            'string+date-time' => [
+                'string',
+                'date-time',
+                [
+                    'pim_catalog_date',
+                ],
+            ],
         ];
     }
 

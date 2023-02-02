@@ -22,9 +22,12 @@ final class StringDateTimeFromDateAttributeValueExtractor implements StringValue
         /** @var mixed $value */
         $value = $product['raw_values'][$code][$scope][$locale] ?? null;
 
-        // @todo transform date in ISO 8601
+        if (\is_string($value)) {
+            $date = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $value);
+            return false === $date ? null : $date->format('c');
+        }
 
-        return \is_string($value) ? $value : null;
+        return null;
     }
 
     public function getSupportedSourceType(): string
