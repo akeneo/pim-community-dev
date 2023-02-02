@@ -43,6 +43,9 @@ class GetSystemInformationEndToEnd extends ApiTestCase
         );
     }
 
+    /**
+     * @group ce
+     */
     public function test_to_get_ge_system_information_through_the_api(): void
     {
         putenv('PIM_EDITION=growth_edition_instance');
@@ -72,6 +75,9 @@ class GetSystemInformationEndToEnd extends ApiTestCase
         );
     }
 
+    /**
+     * @group ce
+     */
     public function test_to_get_ee_system_information_through_the_api(): void
     {
         putenv('PIM_EDITION=flexibility_instance');
@@ -101,6 +107,9 @@ class GetSystemInformationEndToEnd extends ApiTestCase
         );
     }
 
+    /**
+     * @group ce
+     */
     public function test_to_get_serenity_system_information_through_the_api(): void
     {
         putenv('PIM_EDITION=serenity_instance');
