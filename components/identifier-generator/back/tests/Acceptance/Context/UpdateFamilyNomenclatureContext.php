@@ -79,7 +79,9 @@ class UpdateFamilyNomenclatureContext implements Context
      */
     public function theValueForFamilyShouldBe(string $familyCode, string $value): void
     {
-        Assert::eq($this->nomenclatureRepository->getValue($familyCode), 'undefined' === $value ? null : $value);
+        $nomenclature = $this->nomenclatureRepository->get('family');
+        $value = ($nomenclature->values() ?? [])[$familyCode] ?? null;
+        Assert::eq($value, 'undefined' === $value ? null : $value);
     }
 
     /**
