@@ -77,6 +77,11 @@ final class NumberFromPriceCollectionAttributeValueExtractor implements NumberVa
             return (float) $value;
         }
 
+        if (\number_format((float) $value, 2)  === $value) {
+            return (float) $value;
+        }
+
+
         return null;
     }
 }

@@ -112,6 +112,34 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
                 ],
                 'expectedValue' => 56,
             ],
+            'string float that is an integer price value' => [
+                'product' => [
+                    'raw_values' => [
+                        'price' => [
+                            'ecommerce' => [
+                                'en_US' => [
+                                    ['amount' => '56.00', 'currency' => 'EUR'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedValue' => 56.0,
+            ],
+            'string float with two digit precision price value' => [
+                'product' => [
+                    'raw_values' => [
+                        'price' => [
+                            'ecommerce' => [
+                                'en_US' => [
+                                    ['amount' => '56.20', 'currency' => 'EUR'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedValue' => 56.2,
+            ],
         ];
     }
 
