@@ -172,11 +172,11 @@ SQL;
 
         $this->connection->executeStatement($sql, [
             'property_code' => $propertyCode,
-            'definition' => [
+            'definition' => \json_encode([
                 'operator' => $nomenclatureDefinition->operator(),
                 'value' => $nomenclatureDefinition->value(),
                 'generate_if_empty' => $nomenclatureDefinition->generateIfEmpty(),
-            ],
+            ]),
         ]);
     }
 
