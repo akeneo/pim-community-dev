@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Classification\CategoryTree;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCategoryTreesSqlIntegration extends TestCase
+class GetCategoryTreesSqlIntegration extends CategoryTestCase
 {
     private const TEMPLATE_UUID = '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
 
@@ -50,6 +50,15 @@ class GetCategoryTreesSqlIntegration extends TestCase
             'en_US' => 'The template',
             'fr_FR' => 'Le modèle'
         ],  $categoryTrees[0]->getCategoryTreeTemplate()->getTemplateLabels()->normalize());
+    }
+
+    public function testItIgnoresDeactivateTemplate(): void
+    {
+        $this->deactivateTemplate(self::TEMPLATE_UUID);
+
+        $expectedCategoryTrees = $this->get(GetCategoryTreesInterface::class)->byIds([$this->categoryParent->getId()]);
+
+        $this->assertNull($expectedCategoryTrees[0]->getCategoryTreeTemplate());
     }
 
     private function insertFixtures(): void

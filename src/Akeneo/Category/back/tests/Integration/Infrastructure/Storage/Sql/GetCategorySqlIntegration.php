@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageValue;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Test\Integration\Configuration;
 
@@ -142,6 +143,22 @@ class GetCategorySqlIntegration extends CategoryTestCase
         $hatsCategory = $this->get(GetCategoryInterface::class)->byCode($hats->getCode());
         $this->assertInstanceOf(Category::class, $hatsCategory);
         $this->assertSame($hatsCategory->getLabels()->getTranslations(), []);
+    }
+
+    public function testItIgnoresDeactivateTemplate(): void
+    {
+        $category = $this->get(GetCategoryInterface::class)->byId($this->category->getId());
+
+        $templateUuid = '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
+        $templateModel = $this->givenTemplate($templateUuid, $category->getId());
+
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+        $this->deactivateTemplate($templateUuid);
+
+        $retrievedCategory = $this->get(GetCategoryInterface::class)->byId($this->category->getId());
+
+        $this->assertNull($retrievedCategory->getTemplateUuid());
     }
 
     private function getLastCategoryId(): int

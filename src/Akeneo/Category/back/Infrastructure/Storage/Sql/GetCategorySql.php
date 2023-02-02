@@ -57,6 +57,7 @@ class GetCategorySql implements GetCategoryInterface
                 SELECT category.code as category_code, BIN_TO_UUID(category_template_uuid) as template_uuid
                 FROM pim_catalog_category_tree_template template_category
                 JOIN pim_catalog_category category ON category.root = template_category.category_tree_id
+                JOIN pim_catalog_category_template category_template ON category_template.uuid = template_category.category_template_uuid AND (category_template.is_deactivated IS NULL OR category_template.is_deactivated = 0)
                 WHERE $sqlWhere
             )
             SELECT
