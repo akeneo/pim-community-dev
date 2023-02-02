@@ -161,6 +161,7 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
                 'attribute' => [
                     'code' => 'size',
                     'type' => 'pim_catalog_number',
+                    'group' => 'other',
                     'scopable' => true,
                     'localizable' => false,
                 ],
@@ -219,6 +220,7 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
                 'attribute' => [
                     'code' => 'size',
                     'type' => 'pim_catalog_number',
+                    'group' => 'other',
                     'scopable' => false,
                     'localizable' => true,
                 ],

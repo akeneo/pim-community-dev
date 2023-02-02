@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\BooleanValueExtractorInterface;
-use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\NumberValueExtractorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)

@@ -116,6 +116,20 @@ class AttributeBooleanSourceTest extends AbstractAttributeSourceTest
     public function invalidDataProvider(): array
     {
         return [
+            'missing source value' => [
+                'attribute' => [
+                    'code' => 'is_released',
+                    'type' => 'pim_catalog_boolean',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
             'invalid source value' => [
                 'attribute' => [
                     'code' => 'is_released',
@@ -146,6 +160,50 @@ class AttributeBooleanSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
+            'blank scope' => [
+                'attribute' => [
+                    'code' => 'is_released',
+                    'type' => 'pim_catalog_boolean',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'is_released',
+                    'scope' => '',
+                    'locale' => null,
+                ],
+                'expected_message' => 'This value should not be blank.',
+            ],
+            'unknown scope' => [
+                'attribute' => [
+                    'code' => 'is_released',
+                    'type' => 'pim_catalog_boolean',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'is_released',
+                    'scope' => 'unknown_scope',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
+            ],
+            'missing scope' => [
+                'attribute' => [
+                    'code' => 'is_released',
+                    'type' => 'pim_catalog_boolean',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'is_released',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
             'invalid locale' => [
                 'attribute' => [
                     'code' => 'is_released',
@@ -161,7 +219,51 @@ class AttributeBooleanSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
-            'source with invalid locale for a channel' => [
+            'blank locale' => [
+                'attribute' => [
+                    'code' => 'is_released',
+                    'type' => 'pim_catalog_boolean',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'is_released',
+                    'scope' => null,
+                    'locale' => '',
+                ],
+                'expected_message' => 'This value should not be blank.',
+            ],
+            'missing locale' => [
+                'attribute' => [
+                    'code' => 'is_released',
+                    'type' => 'pim_catalog_boolean',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'is_released',
+                    'scope' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'disabled locale' => [
+                'attribute' => [
+                    'code' => 'is_released',
+                    'type' => 'pim_catalog_boolean',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'is_released',
+                    'scope' => null,
+                    'locale' => 'kz_KZ',
+                ],
+                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'disabled locale for a channel' => [
                 'attribute' => [
                     'code' => 'is_released',
                     'type' => 'pim_catalog_boolean',
@@ -176,35 +278,21 @@ class AttributeBooleanSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
             ],
-            'source with invalid scope' => [
-                'attribute' => [
-                    'code' => 'is_released',
-                    'type' => 'pim_catalog_boolean',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'is_released',
-                    'scope' => 'unknown_scope',
-                    'locale' => null,
-                ],
-                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
-            ],
-            'source with invalid locale' => [
+            'extra field' => [
                 'attribute' => [
                     'code' => 'is_released',
                     'type' => 'pim_catalog_boolean',
                     'group' => 'other',
                     'scopable' => false,
-                    'localizable' => true,
+                    'localizable' => false,
                 ],
                 'source' => [
                     'source' => 'is_released',
                     'scope' => null,
-                    'locale' => 'kz_KZ',
+                    'locale' => null,
+                    'parameters' => [],
                 ],
-                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+                'expectedMessage' => 'This field was not expected.',
             ],
         ];
     }
