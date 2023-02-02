@@ -55,7 +55,7 @@ describe('FamilyPropertyEdit', () => {
       type: PROPERTY_NAMES.FAMILY,
       process: {
         type: AbbreviationType.TRUNCATE,
-        operator: Operator.EQUAL_OR_LESS,
+        operator: Operator.LOWER_OR_EQUAL_THAN,
         value: 3,
       },
     };
@@ -74,7 +74,7 @@ describe('FamilyPropertyEdit', () => {
       process: {
         type: AbbreviationType.TRUNCATE,
         value: 3,
-        operator: Operator.EQUAL,
+        operator: Operator.EQUALS,
       },
     });
 
@@ -83,7 +83,7 @@ describe('FamilyPropertyEdit', () => {
       ...familyProperty,
       process: {
         type: AbbreviationType.TRUNCATE,
-        operator: Operator.EQUAL_OR_LESS,
+        operator: Operator.LOWER_OR_EQUAL_THAN,
         value: 4,
       },
     });

@@ -30,7 +30,7 @@ describe('validateFamilyProperty', () => {
     ]);
 
     const violations2 = validateFamilyProperty(
-      {...familyProperty, process: {...familyProperty.process, operator: Operator.EQUAL}},
+      {...familyProperty, process: {...familyProperty.process, operator: Operator.EQUALS}},
       'path'
     );
     expect(violations2).toEqual([
@@ -54,7 +54,7 @@ describe('validateFamilyProperty', () => {
 
   it('should add a violation when process is truncate but the value is incorrect', () => {
     const violations1 = validateFamilyProperty(
-      {type: PROPERTY_NAMES.FAMILY, process: {type: AbbreviationType.TRUNCATE, operator: Operator.EQUAL, value: 0}},
+      {type: PROPERTY_NAMES.FAMILY, process: {type: AbbreviationType.TRUNCATE, operator: Operator.EQUALS, value: 0}},
       'path'
     );
 
@@ -66,7 +66,7 @@ describe('validateFamilyProperty', () => {
     ]);
 
     const violations2 = validateFamilyProperty(
-      {type: PROPERTY_NAMES.FAMILY, process: {type: AbbreviationType.TRUNCATE, operator: Operator.EQUAL, value: 6}},
+      {type: PROPERTY_NAMES.FAMILY, process: {type: AbbreviationType.TRUNCATE, operator: Operator.EQUALS, value: 6}},
       'path'
     );
 
