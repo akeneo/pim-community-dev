@@ -30,8 +30,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Behat\Behat\Context\Context;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
