@@ -33,7 +33,7 @@ class CleanCategoryEnrichedValuesProvider implements ConstraintCollectionProvide
     }
 
     /**
-     * channel: deleted channel's code to be cleaned from category enriched values.
+     * channel_code: deleted channel's code to be cleaned from category enriched values.
      */
     public function getConstraintCollection(): Collection
     {
