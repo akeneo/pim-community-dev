@@ -1,0 +1,9 @@
+services:
+  Akeneo\Tool\Bundle\VersioningBundle\ServiceApi\VersionBuilder:
+    public: true
+    arguments:
+      - '@pim_versioning.factory.version'
+      - '@pim_versioning.repository.version'
+      - '@event_dispatcher'
+      - '@doctrine.orm.default_entity_manager'
+      - '@pim_versioning.builder.version'

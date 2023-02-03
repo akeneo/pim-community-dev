@@ -7,8 +7,10 @@ services:
 
     Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelDeletionSubscriber:
         arguments:
-            - '@Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel'
             - '@akeneo.category.enriched.feature'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@security.token_storage'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -20,6 +22,13 @@ services:
             - '@akeneo.category.enriched.feature'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\UpdateCategoryVersionSubscriber:
+        arguments:
+            - '@Akeneo\Tool\Bundle\VersioningBundle\ServiceApi\VersionBuilder'
+            - '@Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder'
+        tags:
+            - { name: 'kernel.event_subscriber' }
 
     Akeneo\Category\Infrastructure\EventSubscriber\RemoveTemplateAndAttributesAfterCategoryTreeDeletionSubscriber:
         arguments:
