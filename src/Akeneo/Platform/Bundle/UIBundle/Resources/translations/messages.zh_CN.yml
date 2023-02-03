@@ -455,6 +455,8 @@ pim_datagrid:
       label: 父级
     identifier:
       label: 标识符
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: 更改历史记录
 Data Audit: 数据审计

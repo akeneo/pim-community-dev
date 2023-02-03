@@ -1,4 +1,9 @@
 akeneo_catalogs:
+  common:
+    select:
+      open: Openen
+      remove: Verwijderen
+      no_matches: Geen resultaten gevonden
   catalog_list:
     catalogs_name: Catalogusnaam
     status: Status
@@ -14,6 +19,9 @@ akeneo_catalogs:
       product_value_filters: Filter de waarden
       product_mapping: Toewijzen
   catalog_status_widget:
+    fields:
+      enable_catalog: Catalogus inschakelen
+    helper: Nieuwe catalogi zijn standaard uitgeschakeld. Schakel de catalogus in zodat de app uw productgegevens kan ophalen.
     inputs:
       yes: Yes
       no: No
@@ -36,6 +44,9 @@ akeneo_catalogs:
         placeholder: Selecteer een valuta
   product_selection:
     empty: Voeg selectiecriteria toe om uw productselectie te maken
+    count:
+      products: '{0} Geen producten|{1} 1 product|[2,Inf[ {{ count }} producten'
+      error: Onmogelijk om het aantal producten te berekenen
     more_information: Ga naar Hulp voor meer informatie.
     add_criteria:
       label: selectiecriteria toevoegen
@@ -54,6 +65,7 @@ akeneo_catalogs:
       empty: Geen kanaal gevonden.
     criteria:
       unknown: Dit attribuut is verwijderd.
+      max_reached: U heeft de limiet van {{ maxCount }} selectiecriteria bereikt.
       status:
         label: Status
         enabled: Ingeschakeld
@@ -113,6 +125,14 @@ akeneo_catalogs:
         illustration_title: Geen doelcatalogus beschikbaar
     source:
       title: Selecteer bron
+      parameters:
+        title: Bronparameters
+        channel:
+          label: Kanaal
+          placeholder: Selecteer een kanaal
+        locale:
+          label: Taal
+          placeholder: Selecteer een taal
       select_source:
         label: Pim-bron
         search: Zoekcriterium
@@ -124,3 +144,7 @@ akeneo_catalogs:
         illustration_title: Klik op een doel in het rechterpaneel om de toewijzing van uw catalogus te configureren.
         subtitle: Vervolgens kunt u een overeenkomend PIM-attribuut koppelen aan het geselecteerde doel.
         link: Ga naar Hulp voor meer informatie.
+      uuid_placeholder:
+        illustration_title: De UUID is een technische product-id
+        subtitle: Dit moet in alle apps als doel zijn vereist. U heeft niets te configureren voor dit doel omdat we het automatisch toewijzen aan de Akeneo product-UUID.
+        link: Meer informatie over de UUID.

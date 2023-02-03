@@ -197,6 +197,8 @@ pim_common:
   less_than: Weniger als
   loading: Lädt...
   media_upload: Upload per Drag & Drop oder hier klicken
+  media_uploading: Lädt hoch…
+  media_upload_error: Beim Hochladen ist ein Fehler aufgetreten
   more_actions: Weitere Aktionen
   more_than: Mehr als
   next: Vor
