@@ -77,7 +77,6 @@ pim_common:
   updated: Bijgewerkt
   view: Bekijk
   yes: "Ja"
-  uuid: uuid
 pim_enrich:
   #ACLs
   acl:

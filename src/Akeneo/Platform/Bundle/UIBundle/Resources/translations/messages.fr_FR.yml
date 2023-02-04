@@ -77,7 +77,6 @@ pim_common:
   updated: Mis à jour
   view: Afficher
   yes: "Oui"
-  uuid: UUID
 pim_enrich:
   #ACLs
   acl:

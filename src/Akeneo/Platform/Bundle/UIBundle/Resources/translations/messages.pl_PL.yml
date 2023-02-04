@@ -77,7 +77,6 @@ pim_common:
   updated: Zaktualizowano
   view: Zobacz
   yes: "Tak"
-  uuid: uuid
 pim_enrich:
   #ACLs
   acl:

@@ -146,6 +146,10 @@ akeneo_connectivity.connection:
         flash:
           error: Beim Abrufen der Liste der verbundenen Apps ist ein Fehler aufgetreten.
       edit:
+        header:
+          open_app_button:
+            label: Zur App gehen
+            icon_alt: Gehe zum App-Symbol
         not_found: App nicht gefunden
         tabs:
           settings: Einstellungen
@@ -243,6 +247,9 @@ akeneo_connectivity.connection:
           helper: Um mehr über die App-Autorisierung zu erfahren,
           helper_link: lesen Sie unseren Hilfe-Center-Artikel.
           is_allowed_to: 'Ist bereits erlaubt:'
+          certification_consent:
+            label: 'Ich habe den folgenden Haftungsausschluss über die Zertifizierung gelesen und akzeptiere diese.'
+            subtext: 'Akeneo verzichtet auf jegliche Verantwortung für die Nutzung der App durch den Kunden und seine Funktionalitäten. Die Zertifizierung garantiert weder die Interoperabilität der App noch das ordnungsgemäße Funktionieren im Umfeld des Kunden.'
         flash:
           success: App erfolgreich konfiguriert.
           error: Beim Verbinden mit der App ist ein Fehler aufgetreten.
@@ -479,6 +486,7 @@ akeneo_connectivity.connection:
       url: URL
       secret: Passwort (Secret)
       enabled: Event-Abonnement-Aktivierung
+      is_using_uuid: Produkt-UUID anstelle von Produkt-Identifikator verwenden?
       test: Test
     error:
       wrong_url: Dieser Wert ist keine gültige URL.
@@ -586,5 +594,8 @@ pim_permissions:
 pim_notification:
   types:
     connected_app_authorizations: Verbundene App-Autorisierungen
+    disabled_catalog: App-Katalog deaktiviert
   connected_app_authorizations:
     button_label: App öffnen
+  disabled_catalog:
+    button_label: Katalogeinstellungen
