@@ -11,28 +11,34 @@ import {
   useBooleanState,
 } from 'akeneo-design-system';
 import {Styled} from './Styled';
-import {useGetFamilyNomenclatureValues, useGetNomenclature} from '../hooks';
+import {useGetFamilyNomenclatureValues, useGetNomenclature, useSaveNomenclature} from '../hooks';
 import {OperatorSelector} from './OperatorSelector';
 import {Nomenclature, NomenclatureFilter, NomenclatureValues, Operator} from '../models';
 import {NomenclatureLineEdit} from './NomenclatureLineEdit';
 import {NomenclatureValuesDisplayFilter} from './NomenclatureValuesDisplayFilter';
+import {Violation} from '../validators';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 
 type NomenclatureEditProps = {};
 
 const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
+  const translate = useTranslate();
+  const notify = useNotify();
   const [isOpen, open, close] = useBooleanState();
   const [nomenclature, setNomenclature] = useState<Nomenclature | undefined>(undefined);
   const {data: fetchedNomenclature} = useGetNomenclature('family');
   const [filter, setFilter] = useState<NomenclatureFilter>('all');
   const [valuesToSave, setValuesToSave] = useState<NomenclatureValues>({});
+  const [violations, setViolations] = useState<Violation[]>([]);
   const {
     data: nomenclatureLines,
     page,
     setPage,
     search,
     setSearch,
-    total
+    total,
   } = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave);
+  const {save} = useSaveNomenclature();
 
   const onFilterChange = (value: NomenclatureFilter) => {
     if (nomenclature) setNomenclature({...nomenclature, values: valuesToSave});
@@ -87,13 +93,27 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
     [setSearch]
   );
 
+  const handleSaveNomenclature = () => {
+    if (nomenclature) {
+      save(
+        {...nomenclature, propertyCode: 'family', values: valuesToSave},
+        {
+          onError: (violations: Violation[]) => {
+            setViolations(violations);
+            notify(NotificationLevel.ERROR, translate('TODO'));
+          },
+        }
+      );
+    }
+  };
+
   return (
     <>
       <button onClick={open}>Open nomenclature</button> {/* TODO */}
       {isOpen && (
         <Modal closeTitle="TODO Close" onClose={close}>
           <Modal.TopRightButtons>
-            <Button>Save TODO</Button>
+            <Button onClick={handleSaveNomenclature}>Save TODO</Button>
           </Modal.TopRightButtons>
           <Modal.SectionTitle color="brand">Generating my identifiers for Families TODO</Modal.SectionTitle>
           <Modal.Title>Manage nomenclature TODO</Modal.Title>
@@ -112,8 +132,15 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
                         operators={[Operator.EQUALS, Operator.LOWER_OR_EQUAL_THAN]}
                         operator={nomenclature.operator}
                         onChange={handleChangeOperator}
+                        invalid={!!violations.find(violation => violation.path === 'operator')}
+                        placeholder={'TODO'}
                       />
-                      <NumberInput value={`${nomenclature.value || ''}`} onChange={handleValueChange} />
+                      <NumberInput
+                        value={`${nomenclature.value || ''}`}
+                        onChange={handleValueChange}
+                        invalid={!!violations.find(violation => violation.path === 'value')}
+                        placeholder={'todo placeholder'}
+                      />
                       <Checkbox checked={nomenclature.generate_if_empty} onChange={handleGenerateIfEmptyChange} />
                       Generate nomenclature automatically
                     </Table.Cell>
@@ -122,12 +149,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
               </Table>
               <div style={{flexBasis: 'calc(100vh - 300px)', overflow: 'auto', width: 'calc(100vw - 160px)'}}>
                 <Search searchValue={search} onSearchChange={handleSearchChange} />
-                <Pagination
-                  currentPage={page}
-                  itemsPerPage={25}
-                  totalItems={total}
-                  followPage={setPage}
-                />
+                <Pagination currentPage={page} itemsPerPage={25} totalItems={total} followPage={setPage} />
                 <Table>
                   <Table.Header>
                     <Table.HeaderCell>Label TODO</Table.HeaderCell>
@@ -145,12 +167,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
                     ))}
                   </Table.Body>
                 </Table>
-                <Pagination
-                  currentPage={page}
-                  itemsPerPage={25}
-                  totalItems={total}
-                  followPage={setPage}
-                />
+                <Pagination currentPage={page} itemsPerPage={25} totalItems={total} followPage={setPage} />
               </div>
             </>
           )}

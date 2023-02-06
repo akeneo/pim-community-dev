@@ -13,7 +13,7 @@ type HookResult = {
   search: string;
   setSearch: (search: string) => void;
   total: number;
-}
+};
 
 const useGetFamilyNomenclatureValues = (
   nomenclature?: Nomenclature,
@@ -57,7 +57,7 @@ const useGetFamilyNomenclatureValues = (
       ) {
         totalMatchingItems++;
         const currentIndex = filteredButNotDisplayedDataCount + filteredData.length;
-        if (currentIndex >= firstIndexToDisplay && currentIndex < (firstIndexToDisplay + ITEM_PER_PAGE)) {
+        if (currentIndex >= firstIndexToDisplay && currentIndex < firstIndexToDisplay + ITEM_PER_PAGE) {
           filteredData.push(getLineFromFamily(family));
         } else {
           filteredButNotDisplayedDataCount++;
