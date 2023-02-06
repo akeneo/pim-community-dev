@@ -3,11 +3,11 @@ import {Dropdown, SwitcherButton} from 'akeneo-design-system';
 import {NomenclatureFilter} from '../models';
 
 type Props = {
-  filter: NomenclatureFilter
-  onChange: (value: NomenclatureFilter) => void
-}
+  filter: NomenclatureFilter;
+  onChange: (value: NomenclatureFilter) => void;
+};
 
-const values: {code: NomenclatureFilter, label: string}[] = [
+const values: {code: NomenclatureFilter; label: string}[] = [
   {code: 'all', label: 'All'},
   {code: 'error', label: 'Error'},
   {code: 'empty', label: 'Missing'},
@@ -19,17 +19,10 @@ const NomenclatureValuesDisplayFilter: React.FC<Props> = ({filter, onChange}) =>
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
 
-
   return (
     <Dropdown>
-      <SwitcherButton
-        inline
-        onClick={open}
-        label={'DIsplay TODO'}
-      >
-        <span>
-          {filter}
-        </span>
+      <SwitcherButton inline onClick={open} label={'DIsplay TODO'}>
+        <span>{filter}</span>
       </SwitcherButton>
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>

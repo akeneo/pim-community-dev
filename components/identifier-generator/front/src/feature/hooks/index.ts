@@ -5,6 +5,7 @@ export * from './useGetConditionItems';
 export * from './useGetIdentifierGenerator';
 export * from './useGetIdentifierGenerators';
 export * from './useIdentifierAttributes';
+export * from './useIsNomenclatureValueValid';
 export * from './useUiLocales';
 export * from './useValidateFormWithEnter';
 export * from './useStructureTabs';

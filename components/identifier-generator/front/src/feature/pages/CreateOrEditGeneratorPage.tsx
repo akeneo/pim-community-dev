@@ -97,7 +97,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   return (
     <>
-      <NomenclatureEdit/>
+      <NomenclatureEdit />
       <Header>
         {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
           <PageHeader.Actions>
