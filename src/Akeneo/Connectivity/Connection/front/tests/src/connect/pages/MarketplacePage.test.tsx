@@ -58,7 +58,9 @@ test('It redirect when the "create a test app" button is clicked', async () => {
     renderWithProviders(<MarketplacePage />);
 
     await waitFor(() => expect(Marketplace).toHaveBeenCalled());
-    userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app'));
+    userEvent.click(
+        screen.getByText('akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app')
+    );
 
     expect(historyMock.history.location.pathname).toBe(
         '/akeneo_connectivity_connection_connect_marketplace_test_app_create'
