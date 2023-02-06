@@ -73,7 +73,7 @@
   },
   "scripts": {
     "app:start": "yarn route:build && yarn packages:build && react-scripts --openssl-legacy-provider start",
-    "test:unit:run": "react-scripts --openssl-legacy-provider test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3 --workerIdleMemoryLimit=300MB",
+    "test:unit:run": "react-scripts --openssl-legacy-provider test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",
     "test:unit:watch": "react-scripts --openssl-legacy-provider test --maxWorkers=3",
     "lib:build": "tsc -p ./tsconfig.build.json",
     "route:build": "cp ../../../../../../public/js/fos_js_routes.json ./src/routes.json",

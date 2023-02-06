@@ -4,7 +4,7 @@
     "private": true,
     "main": "lib/index.js",
     "scripts": {
-        "test:unit:run": "jest --config jest.config.json --coverage --coverageDirectory=coverage --maxWorkers=3 --workerIdleMemoryLimit=300MB",
+        "test:unit:run": "jest --config jest.config.json --coverage --coverageDirectory=coverage --maxWorkers=3",
         "test:unit:watch": "jest --config jest.config.json --watch",
         "lib:build": "tsc -p ./tsconfig.build.json",
         "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
