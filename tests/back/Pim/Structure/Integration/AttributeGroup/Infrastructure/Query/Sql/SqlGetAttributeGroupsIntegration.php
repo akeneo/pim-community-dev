@@ -11,7 +11,8 @@ use Doctrine\DBAL\Connection;
 
 class SqlGetAttributeGroupsIntegration extends TestCase
 {
-    public function testItReturnsAttributeGroups() {
+    public function testItReturnsAttributeGroups()
+    {
         $this->createAttributeGroup('an_attribute_group', 1, []);
         $this->createAttributeGroup('another_attribute_group', 2, ['en_US' => 'Another attribute group']);
 
@@ -39,7 +40,8 @@ class SqlGetAttributeGroupsIntegration extends TestCase
         ], $this->getQuery()->all());
     }
 
-    public function testItReturnsAttributeGroupsWithDqiIsActivatedWhenFeatureFlagIsEnabled() {
+    public function testItReturnsAttributeGroupsWithDqiIsActivatedWhenFeatureFlagIsEnabled()
+    {
         $this->get('feature_flags')->enable('data_quality_insights');
 
         $this->createAttributeGroup('an_attribute_group', 1, []);
