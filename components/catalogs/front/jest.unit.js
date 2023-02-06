@@ -12,14 +12,6 @@ module.exports = {
     moduleNameMapper: {
         '\\.(svg|css)$': '<rootDir>/tests/test-file-stub.ts',
     },
-    collectCoverage: true,
-    collectCoverageFrom: [
-        '<rootDir>/src/**/use*.ts',
-        '<rootDir>/src/**/*Reducer.ts',
-        '<rootDir>/src/**/hooks/*.ts',
-        '<rootDir>/src/**/reducers/*.ts',
-        '<rootDir>/src/**/utils/*.ts',
-    ],
     coverageThreshold: {
         global: {
             branches: 100,
