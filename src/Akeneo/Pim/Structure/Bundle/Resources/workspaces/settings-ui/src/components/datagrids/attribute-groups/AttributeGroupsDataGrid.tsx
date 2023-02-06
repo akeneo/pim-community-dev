@@ -1,14 +1,10 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {Search, useAutoFocus, Table, Badge} from 'akeneo-design-system';
-import {useDebounceCallback, useTranslate, useFeatureFlags} from '@akeneo-pim-community/shared';
-import {
-  useAttributeGroupPermissions,
-  useAttributeGroupsIndexState,
-  useFilteredAttributeGroups,
-  useGetAttributeGroupLabel,
-} from '../../../hooks';
+import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
+import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
 import {AttributeGroup} from '../../../models';
 import {NoResults} from '../../shared';
+import {getLabel} from 'pimui/js/i18n';
 
 type Props = {
   groups: AttributeGroup[];
@@ -18,7 +14,7 @@ type Props = {
 const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
   const {refreshOrder} = useAttributeGroupsIndexState();
   const {sortGranted} = useAttributeGroupPermissions();
-  const getLabel = useGetAttributeGroupLabel();
+  const userContext = useUserContext();
   const {filteredGroups, search} = useFilteredAttributeGroups(groups);
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
@@ -73,7 +69,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
           <Table.Body>
             {filteredGroups.map(group => (
               <Table.Row key={group.code} isSelected={false} onSelectToggle={() => {}}>
-                <Table.Cell>{getLabel(group)}</Table.Cell>
+                <Table.Cell>{getLabel(group.labels, userContext.get('catalogLocale'), group.code)}</Table.Cell>
                 {featureFlags.isEnabled('data_quality_insights') && (
                   <Table.Cell>
                     <Badge level={group.is_dqi_activated ? 'primary' : 'danger'}>
