@@ -36,7 +36,7 @@ class SqlGetAttributeGroupsIntegration extends TestCase
                     'en_US' => 'Other',
                     'fr_FR' => 'Autre',
                 ],
-            ]
+            ],
         ], $this->getQuery()->all());
     }
 
@@ -70,7 +70,7 @@ class SqlGetAttributeGroupsIntegration extends TestCase
                     'fr_FR' => 'Autre',
                 ],
                 'is_dqi_activated' => true,
-            ]
+            ],
         ], $this->getQuery()->all());
     }
 

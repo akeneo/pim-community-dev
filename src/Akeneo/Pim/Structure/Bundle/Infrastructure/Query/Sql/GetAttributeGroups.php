@@ -38,7 +38,7 @@ SQL;
 
         return array_map(function (array $attributeGroup) use ($dqiFeatureIsEnabled) {
             $attributeGroup['sort_order'] = (int) $attributeGroup['sort_order'];
-            $attributeGroup['labels'] = json_decode($attributeGroup['labels'], true);
+            $attributeGroup['labels'] = null !== $attributeGroup['labels'] ? json_decode($attributeGroup['labels'], true) : [];
             if ($dqiFeatureIsEnabled) {
                 // @TODO RAB-1274 call ServiceAPI
                 $attributeGroup['is_dqi_activated'] = true;
