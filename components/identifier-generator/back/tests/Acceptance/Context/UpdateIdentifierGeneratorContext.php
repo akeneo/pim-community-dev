@@ -34,8 +34,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function __construct(
         private UpdateGeneratorHandler        $updateGeneratorHandler,
         private IdentifierGeneratorRepository $generatorRepository,
-    )
-    {
+    ) {
     }
 
     /**
@@ -470,8 +469,7 @@ final class UpdateIdentifierGeneratorContext implements Context
         string $attributeCode,
         string $scope = '',
         string $locale = ''
-    ): void
-    {
+    ): void {
         $defaultCondition = $this->getValidCondition('simple_select');
         $defaultCondition['attributeCode'] = $attributeCode;
         if ('undefined' === $scope) {
@@ -495,8 +493,7 @@ final class UpdateIdentifierGeneratorContext implements Context
         ?string $target = null,
         ?string $delimiter = null,
         ?string $textTransformation = null,
-    ): void
-    {
+    ): void {
         try {
             ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
                 $code ?? self::DEFAULT_IDENTIFIER_GENERATOR_CODE,

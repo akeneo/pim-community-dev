@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class AttributeShouldHaveTypes extends Constraint
 {
+    /** @var array<string> */
     public array $types;
 
     public string $message = 'validation.identifier_generator.attribute_should_have_type';
