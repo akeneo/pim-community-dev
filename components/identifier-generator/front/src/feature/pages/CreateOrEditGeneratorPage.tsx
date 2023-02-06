@@ -103,7 +103,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   return (
     <>
-      <NomenclatureEdit/>
+      <NomenclatureEdit />
       <Header>
         <PageHeader.Actions>
           {!isNew && (
