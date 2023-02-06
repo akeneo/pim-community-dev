@@ -6,27 +6,29 @@ import {useIsNomenclatureValueValid, usePlaceholder} from './useIsNomenclatureVa
 
 const ITEM_PER_PAGE = 25;
 
-const useGetFamilyNomenclatureValues = (
-  nomenclature?: Nomenclature,
-  filter?: NomenclatureFilter,
-  values?: NomenclatureValues
-): {
+type HookResult = {
   data: NomenclatureLineEditProps[];
   page: number;
   setPage: (page: number) => void;
   search: string;
   setSearch: (search: string) => void;
-} => {
+  total: number;
+}
+
+const useGetFamilyNomenclatureValues = (
+  nomenclature?: Nomenclature,
+  filter?: NomenclatureFilter,
+  values?: NomenclatureValues
+): HookResult => {
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>('');
   const isValid = useIsNomenclatureValueValid(nomenclature);
   const getPlaceholder = usePlaceholder(nomenclature);
   const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
+  const [total, setTotal] = useState<number>(0);
 
   const {data: families} = useGetFamilies({
-    page: 1,
-    search: '',
-    limit: 8000, // TODO
+    limit: -1,
   });
 
   const getLineFromFamily = useCallback(
@@ -44,6 +46,7 @@ const useGetFamilyNomenclatureValues = (
     const filteredData: NomenclatureLineEditProps[] = [];
     let filteredButNotDisplayedDataCount = 0;
     const firstIndexToDisplay = (page - 1) * ITEM_PER_PAGE;
+    let totalMatchingItems = 0;
 
     const addData = (family: Family) => {
       const value = values?.[family.code];
@@ -52,8 +55,9 @@ const useGetFamilyNomenclatureValues = (
         (family.code.toLowerCase() || '').includes(lowerCaseSearch) ||
         (getLabel(family.labels, 'en_US', family.code) || '').includes(lowerCaseSearch) // TODO
       ) {
+        totalMatchingItems++;
         const currentIndex = filteredButNotDisplayedDataCount + filteredData.length;
-        if (currentIndex >= firstIndexToDisplay) {
+        if (currentIndex >= firstIndexToDisplay && currentIndex < (firstIndexToDisplay + ITEM_PER_PAGE)) {
           filteredData.push(getLineFromFamily(family));
         } else {
           filteredButNotDisplayedDataCount++;
@@ -62,10 +66,6 @@ const useGetFamilyNomenclatureValues = (
     };
 
     for (const family of families) {
-      if (filteredButNotDisplayedDataCount + filteredData.length >= page * ITEM_PER_PAGE) {
-        break;
-      }
-
       switch (filter) {
         case 'all':
           addData(family);
@@ -83,6 +83,8 @@ const useGetFamilyNomenclatureValues = (
       }
     }
 
+    setTotal(totalMatchingItems);
+
     return filteredData;
   }, [families, filter, getLineFromFamily, nomenclature, page, isValid, lowerCaseSearch, values, getPlaceholder]);
 
@@ -91,7 +93,7 @@ const useGetFamilyNomenclatureValues = (
     setSearch(search);
   };
 
-  return {data, page, setPage, search, setSearch: mySetSearch};
+  return {data, page, setPage, search, setSearch: mySetSearch, total};
 };
 
 export {useGetFamilyNomenclatureValues};
