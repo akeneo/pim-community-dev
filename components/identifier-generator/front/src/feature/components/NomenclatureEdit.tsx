@@ -1,5 +1,6 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {
+  Button,
   Checkbox,
   Modal,
   NumberInput,
@@ -29,7 +30,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
     page,
     setPage,
     search,
-    setSearch
+    setSearch,
   } = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave);
 
   const onFilterChange = (value: NomenclatureFilter) => {
@@ -78,15 +79,21 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
     [nomenclature]
   );
 
-  const handleSearchChange = useCallback(search => {
-    setSearch(search);
-  }, []);
+  const handleSearchChange = useCallback(
+    search => {
+      setSearch(search);
+    },
+    [setSearch]
+  );
 
   return (
     <>
-      <button onClick={open}>Open nomenclature</button>
+      <button onClick={open}>Open nomenclature</button> {/* TODO */}
       {isOpen && (
         <Modal closeTitle="TODO Close" onClose={close}>
+          <Modal.TopRightButtons>
+            <Button>Save TODO</Button>
+          </Modal.TopRightButtons>
           <Modal.SectionTitle color="brand">Generating my identifiers for Families TODO</Modal.SectionTitle>
           <Modal.Title>Manage nomenclature TODO</Modal.Title>
           {nomenclature && (
