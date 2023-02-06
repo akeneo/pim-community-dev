@@ -11,3 +11,4 @@ export * from './LabelTranslationsSkeleton';
 export * from './ScopeSelector';
 export * from './TabValidationErrors';
 export * from './TextTransformationSelector';
+export * from './NomenclatureLineEdit';
