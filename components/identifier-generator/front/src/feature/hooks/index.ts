@@ -9,3 +9,4 @@ export * from './useUiLocales';
 export * from './useValidateFormWithEnter';
 export * from './useStructureTabs';
 export * from './useGetScopes';
+export * from './useGetFamilyNomenclatureValues';

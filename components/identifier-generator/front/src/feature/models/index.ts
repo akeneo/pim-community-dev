@@ -17,3 +17,5 @@ export * from './text-transformation';
 export * from './ui-locale';
 export * from './generatorTab';
 export * from './attribute';
+export * from './nomenclatureLineEditProps';
+export * from './nomenclatureFilter';
