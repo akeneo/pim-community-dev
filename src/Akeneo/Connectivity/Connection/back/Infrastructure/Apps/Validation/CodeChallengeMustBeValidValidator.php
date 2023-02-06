@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\Validator\Constraint;
@@ -20,7 +20,7 @@ class CodeChallengeMustBeValidValidator extends ConstraintValidator
 {
     public function __construct(
         private WebMarketplaceApiInterface $webMarketplaceApi,
-        private GetTestAppQueryInterface $getTestAppQuery,
+        private GetCustomAppQueryInterface $getTestAppQuery,
         private FeatureFlag $fakeAppsFeatureFlag
     ) {
     }

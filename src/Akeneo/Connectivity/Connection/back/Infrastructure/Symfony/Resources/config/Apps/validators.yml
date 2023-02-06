@@ -26,7 +26,7 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValidValidator:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
             - '@akeneo_connectivity.connection.marketplace_fake_apps.feature'
         tags:
             - { name: validator.constraint_validator }

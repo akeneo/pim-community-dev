@@ -59,10 +59,13 @@ class AkeneoConnectivityConnectionExtension extends Extension
 
         $loader->load('Marketplace/controllers.yml');
         $loader->load('Marketplace/feature_flag.yml');
-        $loader->load('Marketplace/handlers.yml');
         $loader->load('Marketplace/install.yml');
         $loader->load('Marketplace/persistence.yml');
         $loader->load('Marketplace/services.yml');
+
+        $loader->load('CustomApps/controllers.yml');
+        $loader->load('CustomApps/handlers.yml');
+        $loader->load('CustomApps/persistence.yml');
 
         $loader->load('Settings/controllers.yml');
         $loader->load('Settings/handlers.yml');
