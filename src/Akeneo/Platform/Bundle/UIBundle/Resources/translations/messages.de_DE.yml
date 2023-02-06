@@ -454,6 +454,8 @@ pim_datagrid:
       label: Eltern
     identifier:
       label: Kennung
+    uuid:
+      label: UUID
 #Versioning / history
 Change History: Änderungshistorie
 Data Audit: Datenhistorie
