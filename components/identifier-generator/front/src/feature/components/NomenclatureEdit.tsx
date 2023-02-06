@@ -22,10 +22,15 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
   const [isOpen, open, close] = useBooleanState();
   const [nomenclature, setNomenclature] = useState<Nomenclature | undefined>(undefined);
   const {data: fetchedNomenclature} = useGetNomenclature('family');
-  const [search, setSearch] = useState<string>('');
   const [filter, setFilter] = useState<NomenclatureFilter>('all');
   const [valuesToSave, setValuesToSave] = useState<NomenclatureValues>({});
-  const {data: nomenclatureLines, page, setPage} = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave);
+  const {
+    data: nomenclatureLines,
+    page,
+    setPage,
+    search,
+    setSearch
+  } = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave);
 
   const onFilterChange = (value: NomenclatureFilter) => {
     if (nomenclature) setNomenclature({...nomenclature, values: valuesToSave});
