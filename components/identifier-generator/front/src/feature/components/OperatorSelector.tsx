@@ -8,14 +8,17 @@ type OperatorSelectorProps = {
   operator: Operator | null;
   onChange: (operator: Operator) => void;
   operators: Operator[];
+  invalid?: boolean;
+  placeholder?: string;
   isInSelection?: boolean;
 };
 
-const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operators, isInSelection = false}) => {
+const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operators, isInSelection = false, ...rest}) => {
   const translate = useTranslate();
 
   return (
     <Styled.OperatorSelectCondition
+      {...rest}
       value={operator}
       placeholder={translate('pim_identifier_generator.structure.settings.operator.placeholder')}
       emptyResultLabel={translate('pim_common.no_result')}
