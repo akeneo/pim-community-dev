@@ -131,6 +131,6 @@ describe('ListPage', () => {
     expect(screen.queryByText('pim_common.create')).toHaveAttribute('disabled');
     expect(screen.queryByText('pim_common.delete')).not.toBeInTheDocument();
     expect(screen.queryByText('pim_common.edit')).not.toBeInTheDocument();
-    expect(screen.queryByText('pim_common.show')).toBeInTheDocument();
+    expect(screen.queryByText('pim_common.view')).toBeInTheDocument();
   });
 });

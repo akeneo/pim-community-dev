@@ -129,7 +129,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                     </Table.Cell>
                     <Table.ActionCell>
                       <Button onClick={goToEditPage(code)} ghost>
-                        {translate(isManageIdentifierGeneratorAclGranted ? 'pim_common.edit' : 'pim_common.show')}
+                        {translate(isManageIdentifierGeneratorAclGranted ? 'pim_common.edit' : 'pim_common.view')}
                       </Button>
                       {isManageIdentifierGeneratorAclGranted && (
                         <Button onClick={onDelete(code)} ghost level="danger">
