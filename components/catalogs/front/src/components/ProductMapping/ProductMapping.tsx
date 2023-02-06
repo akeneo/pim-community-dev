@@ -1,6 +1,6 @@
 import React, {FC, useCallback, useState} from 'react';
 import styled from 'styled-components';
-import {SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
+import {LightIcon, SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {TargetPlaceholder} from './components/TargetPlaceholder';
 import {ProductMapping as ProductMappingType} from './models/ProductMapping';
@@ -13,6 +13,8 @@ import {Target} from './models/Target';
 import {sourceHasError} from './utils/sourceHasError';
 import {createTargetFromProductMappingSchema} from './utils/createTargetFromProductMappingSchema';
 import {SourceParameter} from './models/SourceParameter';
+import {Button} from 'akeneo-design-system/lib/components/Button/Button';
+import {AutoFill} from './components/AutoFill';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -44,6 +46,8 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
         scope: null,
     });
 
+    const [showAutoFillModal, setShowAutoFillModal] = useState<boolean>(false);
+
     const handleClick = useCallback(
         (targetCode, source) => {
             if (productMappingSchema === undefined) {
@@ -73,11 +77,26 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
 
     const targetSourceAssociations = Object.entries(productMapping);
 
+    const openAutoFillModal = function () {
+        setShowAutoFillModal(true);
+    };
+    const hideAutoFillModal = function () {
+        setShowAutoFillModal(false);
+    };
+
     return (
         <MappingContainer data-testid={'product-mapping'}>
             <TargetContainer>
                 <SectionTitle>
                     <SectionTitle.Title>{translate('akeneo_catalogs.product_mapping.target.title')}</SectionTitle.Title>
+                    <Button
+                        active
+                        ghost
+                        level="secondary"
+                        onClick={openAutoFillModal}
+                    >
+                        Auto-fill <LightIcon />
+                    </Button>
                     <SectionTitle.Spacer />
                     <SwitcherButton label={translate('akeneo_catalogs.product_mapping.target.filter.label')}>
                         {translate('akeneo_catalogs.product_mapping.target.filter.option.all')}
@@ -125,6 +144,10 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                     errors={selectedTarget === null ? null : errors[selectedTarget?.code]}
                 />
             </SourceContainer>
+            {showAutoFillModal &&
+                <AutoFill
+                    closeModal={hideAutoFillModal}
+                />}
         </MappingContainer>
     );
 };
