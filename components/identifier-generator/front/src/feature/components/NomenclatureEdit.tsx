@@ -31,6 +31,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
     setPage,
     search,
     setSearch,
+    total
   } = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave);
 
   const onFilterChange = (value: NomenclatureFilter) => {
@@ -124,7 +125,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
                 <Pagination
                   currentPage={page}
                   itemsPerPage={25}
-                  totalItems={3000} // TODO
+                  totalItems={total}
                   followPage={setPage}
                 />
                 <Table>
@@ -147,7 +148,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
                 <Pagination
                   currentPage={page}
                   itemsPerPage={25}
-                  totalItems={3000} // TODO
+                  totalItems={total}
                   followPage={setPage}
                 />
               </div>
