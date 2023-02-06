@@ -5,6 +5,7 @@ import {getColor, getFontSize, DeleteIcon, IconButton} from 'akeneo-design-syste
 import {useTranslate} from '../../../shared/translate';
 import {useHistory} from 'react-router';
 import {useRouter} from '../../../shared/router/use-router';
+import {useSecurity} from '../../../shared/security';
 
 const CardContainer = styled.div`
     padding: 20px;
@@ -70,6 +71,7 @@ type Props = {
 };
 
 export const TestAppCard: FC<Props> = ({testApp, additionalActions}) => {
+    const security = useSecurity();
     const translate = useTranslate();
     const generateUrl = useRouter();
     const history = useHistory();
@@ -101,13 +103,15 @@ export const TestAppCard: FC<Props> = ({testApp, additionalActions}) => {
                     {translate('akeneo_connectivity.connection.connect.marketplace.card.developed_by', {author})}
                 </Author>
             </TextInformation>
-            <IconButton
-                ghost='borderless'
-                icon={<DeleteIcon />}
-                level='tertiary'
-                onClick={onDelete}
-                title={translate('pim_common.delete')}
-            />
+            {security.isGranted('akeneo_connectivity_connection_manage_test_apps') && (
+                <IconButton
+                    ghost='borderless'
+                    icon={<DeleteIcon />}
+                    level='tertiary'
+                    onClick={onDelete}
+                    title={translate('pim_common.delete')}
+                />
+            )}
             <Actions>{additionalActions}</Actions>
         </CardContainer>
     );

@@ -78,7 +78,7 @@ akeneo_connectivity.connection:
             test_apps:
                 title: My test apps
                 removed_user: Removed user
-                create_a_test_app: Create a test app
+                create_a_custom_app: Create a custom app
                 modal:
                     subtitle: Create a test app
                     app_information:
