@@ -26,7 +26,7 @@ class GetAttributeGroupsActivationQueryIntegration extends DataQualityInsightsTe
             'other' => true,
         ]);
 
-        $query = $this->get('Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\AttributeGroup\GetAttributesGroupActivationQuery');
+        $query = $this->get('Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\AttributeGroup\GetAttributeGroupsActivationQuery');
         $actualAttributeGroupsActivation = $query->all();
 
         $this->assertEquals($expectedAttributeGroupsActivation, $actualAttributeGroupsActivation);

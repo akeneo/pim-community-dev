@@ -11,7 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\AttributeGroupsAct
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetAttributesGroupActivationQuery implements GetAttributeGroupsActivationQueryInterface
+class GetAttributeGroupsActivationQuery implements GetAttributeGroupsActivationQueryInterface
 {
     public function __construct(
         private readonly GetAllAttributeGroupsActivationQueryInterface $getAllAttributeGroupsActivationQuery,
