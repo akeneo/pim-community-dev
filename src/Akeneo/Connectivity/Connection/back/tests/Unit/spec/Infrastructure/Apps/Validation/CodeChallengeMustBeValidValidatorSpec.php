@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValid;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -20,7 +20,7 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
 {
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
-        GetTestAppQueryInterface $getTestAppQuery,
+        GetCustomAppQueryInterface $getTestAppQuery,
         FeatureFlag $fakeAppsFeatureFlag,
         ExecutionContextInterface $context
     ): void {
@@ -120,7 +120,7 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
     public function it_validates_that_the_test_app_code_challenge_is_valid(
         CodeChallengeMustBeValid $constraint,
         AccessTokenRequest $value,
-        GetTestAppQueryInterface $getTestAppQuery,
+        GetCustomAppQueryInterface $getTestAppQuery,
         ExecutionContextInterface $context
     ): void {
         $clientId = '90741597-54c5-48a1-98da-a68e7ee0a715';
@@ -144,7 +144,7 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
     public function it_adds_a_violation_when_the_test_app_code_challenge_is_refused(
         CodeChallengeMustBeValid $constraint,
         AccessTokenRequest $value,
-        GetTestAppQueryInterface $getTestAppQuery,
+        GetCustomAppQueryInterface $getTestAppQuery,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violation
     ): void {
