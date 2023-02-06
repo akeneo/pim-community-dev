@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
@@ -19,7 +19,7 @@ final class GetAppQuery implements GetAppQueryInterface
     public function __construct(
         private WebMarketplaceApiInterface $webMarketplaceApi,
         private FeatureFlag $appDeveloperModeFeatureFlag,
-        private GetTestAppQuery $getTestAppQuery,
+        private GetCustomAppQuery $getTestAppQuery,
     ) {
     }
 

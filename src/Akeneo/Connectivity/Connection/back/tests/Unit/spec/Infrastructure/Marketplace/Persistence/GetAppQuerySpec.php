@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
+use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
@@ -20,7 +20,7 @@ class GetAppQuerySpec extends ObjectBehavior
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
         FeatureFlag $appDeveloperModeFeatureFlag,
-        GetTestAppQuery $getTestAppQuery,
+        GetCustomAppQuery $getTestAppQuery,
     ) {
         $appDeveloperModeFeatureFlag->isEnabled()->willReturn(false);
 
@@ -77,7 +77,7 @@ class GetAppQuerySpec extends ObjectBehavior
     public function it_returns_a_known_marketplace_app_even_when_developer_mode_is_enabled(
         WebMarketplaceApiInterface $webMarketplaceApi,
         FeatureFlag $appDeveloperModeFeatureFlag,
-        GetTestAppQuery $getTestAppQuery,
+        GetCustomAppQuery $getTestAppQuery,
     ): void {
         $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
         $getTestAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
@@ -126,7 +126,7 @@ class GetAppQuerySpec extends ObjectBehavior
 
     public function it_returns_a_known_test_app_if_developer_mode_is_enabled(
         FeatureFlag $appDeveloperModeFeatureFlag,
-        GetTestAppQuery $getTestAppQuery,
+        GetCustomAppQuery $getTestAppQuery,
     ): void {
         $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
         $getTestAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn([
@@ -151,7 +151,7 @@ class GetAppQuerySpec extends ObjectBehavior
     public function it_returns_null_if_unknown_test_app_and_marketplace_app(
         WebMarketplaceApiInterface $webMarketplaceApi,
         FeatureFlag $appDeveloperModeFeatureFlag,
-        GetTestAppQuery $getTestAppQuery,
+        GetCustomAppQuery $getTestAppQuery,
     ): void {
         $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
         $getTestAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);

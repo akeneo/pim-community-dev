@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace\Persistence;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -18,7 +18,7 @@ class GetTestAppQueryIntegration extends TestCase
 {
     private Connection $connection;
     private ConnectedAppLoader $connectedAppLoader;
-    private GetTestAppQuery $query;
+    private GetCustomAppQuery $query;
 
     protected function setUp(): void
     {
@@ -26,7 +26,7 @@ class GetTestAppQueryIntegration extends TestCase
 
         $this->connection = $this->get('database_connection');
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
-        $this->query = $this->get(GetTestAppQuery::class);
+        $this->query = $this->get(GetCustomAppQuery::class);
     }
 
     protected function getConfiguration(): Configuration
