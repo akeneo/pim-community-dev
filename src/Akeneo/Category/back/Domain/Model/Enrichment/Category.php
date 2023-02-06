@@ -232,6 +232,10 @@ class Category
      */
     public function getChangeset(): array
     {
+        if (!empty($this->permissions->getChangeset())) {
+            $this->changeset['permissions'] = $this->permissions->getChangeset();
+        }
+
         return $this->changeset;
     }
 }
