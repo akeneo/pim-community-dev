@@ -120,6 +120,7 @@
 - PIM-10785: Fix case-insensitive patch product model
 - PIM-10808: Fix Error message on the family modification when an attribute is as required=0
 - PIM-10802: Fix wysiwyg-field add link event 
+- PIM-10806: Allow to delete product's attributes with type 'identifier' and ensure grey cross is displayed
 
 ## Improvements
 
