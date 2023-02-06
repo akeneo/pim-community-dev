@@ -1,15 +1,8 @@
 import {useGetFamilies} from './useGetFamilies';
 import {useCallback, useMemo, useState} from 'react';
 import {getLabel} from '@akeneo-pim-community/shared';
-import {
-  Family,
-  Nomenclature,
-  NomenclatureFilter,
-  NomenclatureLineEditProps,
-  NomenclatureValues,
-  Operator,
-} from '../models';
-import {useIsNomenclatureValueValid} from './useIsNomenclatureValueValid';
+import {Family, Nomenclature, NomenclatureFilter, NomenclatureLineEditProps, NomenclatureValues} from '../models';
+import {useIsNomenclatureValueValid, usePlaceholder} from './useIsNomenclatureValueValid';
 
 const ITEM_PER_PAGE = 25;
 
@@ -27,6 +20,7 @@ const useGetFamilyNomenclatureValues = (
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>('');
   const isValid = useIsNomenclatureValueValid(nomenclature);
+  const getPlaceholder = usePlaceholder(nomenclature);
   const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
 
   const {data: families} = useGetFamilies({
@@ -77,7 +71,7 @@ const useGetFamilyNomenclatureValues = (
           addData(family);
           break;
         case 'error': {
-          if (!isValid(nomenclature?.values[family.code] || '')) addData(family);
+          if (!isValid(nomenclature?.values[family.code] || getPlaceholder(family.code))) addData(family);
           break;
         }
         case 'empty':
@@ -90,12 +84,12 @@ const useGetFamilyNomenclatureValues = (
     }
 
     return filteredData;
-  }, [families, filter, getLineFromFamily, nomenclature, page, search]);
+  }, [families, filter, getLineFromFamily, nomenclature, page, isValid, lowerCaseSearch, values, getPlaceholder]);
 
   const mySetSearch = (search: string) => {
     setPage(1);
     setSearch(search);
-  }
+  };
 
   return {data, page, setPage, search, setSearch: mySetSearch};
 };

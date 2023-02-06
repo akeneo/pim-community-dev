@@ -1,13 +1,25 @@
 import {useCallback} from 'react';
 import {Nomenclature, Operator} from '../models';
 
-const useIsNomenclatureValueValid: (nomenclature?: Nomenclature) => ((value: string) => boolean) = (nomenclature) => {
+const usePlaceholder: (nomenclature?: Nomenclature) => (code: string) => string = nomenclature => {
+  return useCallback(
+    (code: string) => {
+      if (nomenclature && nomenclature.generate_if_empty) {
+        return code.substr(0, nomenclature.value || 0);
+      }
+      return '';
+    },
+    [nomenclature]
+  );
+};
+
+// TODO Merge these 2 methods in once
+const useIsNomenclatureValueValid: (nomenclature?: Nomenclature) => (value: string) => boolean = nomenclature => {
   return useCallback(
     (value: string) => {
       if (!nomenclature || null === nomenclature.value || null === nomenclature.operator) {
         return true;
       }
-
       if (nomenclature.generate_if_empty && value === '') {
         return true;
       }
@@ -22,6 +34,6 @@ const useIsNomenclatureValueValid: (nomenclature?: Nomenclature) => ((value: str
     },
     [nomenclature]
   );
-}
+};
 
-export {useIsNomenclatureValueValid};
+export {useIsNomenclatureValueValid, usePlaceholder};
