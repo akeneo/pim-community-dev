@@ -1,51 +1,44 @@
-import React, {FC, useCallback, useState, useEffect, useMemo} from 'react';
-import {
-  Checkbox,
-  Modal,
-  NumberInput,
-  Search,
-  SectionTitle,
-  Table,
-  TextInput,
-  useBooleanState
-} from 'akeneo-design-system';
-import {useGetFamilies} from '../hooks/useGetFamilies';
+import React, {FC, useCallback, useEffect, useState} from 'react';
+import {Checkbox, Modal, NumberInput, Search, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
 import {Styled} from './Styled';
-import {getLabel} from '@akeneo-pim-community/shared';
-import {useGetNomenclature} from '../hooks';
+import {useGetFamilyNomenclatureValues, useGetNomenclature} from '../hooks';
 import {OperatorSelector} from './OperatorSelector';
-import {Nomenclature, Operator} from '../models';
+import {Nomenclature, NomenclatureFilter, NomenclatureValues, Operator} from '../models';
+import {NomenclatureLineEdit} from './NomenclatureLineEdit';
+import {NomenclatureValuesDisplayFilter} from './NomenclatureValuesDisplayFilter';
 
 type NomenclatureEditProps = {};
 
 const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
   const [isOpen, open, close] = useBooleanState();
   const [nomenclature, setNomenclature] = useState<Nomenclature | undefined>(undefined);
-  const {nomenclature: fetchedNomenclature} = useGetNomenclature();
+  const {data: fetchedNomenclature} = useGetNomenclature('family');
   const [search, setSearch] = useState<string>('');
+  const [filter, setFilter] = useState<NomenclatureFilter>('all');
+  const [valuesToSave, setValuesToSave] = useState<NomenclatureValues>({});
+  const {data: nomenclatureLines} = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave);
+
+  const onFilterChange = (value: NomenclatureFilter) => {
+    if (nomenclature) setNomenclature({...nomenclature, values: valuesToSave});
+    setFilter(value);
+  };
 
   useEffect(() => {
     if (fetchedNomenclature) {
       setNomenclature(fetchedNomenclature);
+      setValuesToSave(fetchedNomenclature.values);
     }
   }, [fetchedNomenclature]);
 
-  const {data: families} = useGetFamilies({
-    page: 1,
-    search,
-  });
-
   const handleChangeValue = useCallback((familyCode, value) => {
     if (nomenclature) {
-      const values = nomenclature.values;
-      values[familyCode] = value;
-      setNomenclature({...nomenclature, values });
+      setValuesToSave({...nomenclature.values, [familyCode]: value});
     }
   }, [nomenclature]);
 
   const handleChangeOperator = useCallback(operator => {
     if (nomenclature) {
-      setNomenclature({...nomenclature, operator: operator as (Operator.EQUALS | Operator.LOWER_OR_EQUAL_THAN)});
+      setNomenclature({...nomenclature, operator: operator });
     }
   }, [nomenclature]);
 
@@ -65,32 +58,6 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
     setSearch(search);
   }, []);
 
-  const getPlaceholder = useCallback(familyCode => {
-    if (nomenclature && nomenclature.generate_if_empty) {
-      return familyCode.substr(0, nomenclature.value || 0);
-    }
-  }, [nomenclature?.generate_if_empty, nomenclature?.value])
-
-  const getValue = useCallback(familyCode => {
-    return nomenclature?.values[familyCode] || '';
-  }, [nomenclature]);
-
-  const isValid = useCallback(familyCode => {
-    const value = getValue(familyCode);
-    if (nomenclature && nomenclature.value && nomenclature.operator) {
-      if (nomenclature.generate_if_empty && value === '') {
-        return true;
-      }
-      if (nomenclature.operator === Operator.EQUALS && value.length !== nomenclature.value) {
-        return false;
-      }
-      if (nomenclature.operator === Operator.LOWER_OR_EQUAL_THAN && value.length > nomenclature.value) {
-        return false;
-      }
-    }
-    return true;
-  }, [nomenclature]);
-
   return <>
     <button onClick={open}>Open nomenclature</button>
     {isOpen && <Modal closeTitle='TODO Close' onClose={close}>
@@ -98,7 +65,10 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
       <Modal.Title>Manage nomenclature TODO</Modal.Title>
       {nomenclature &&
         <>
-          <SectionTitle><SectionTitle.Title>Families TODO</SectionTitle.Title></SectionTitle>
+          <SectionTitle>
+              <SectionTitle.Title>Families TODO</SectionTitle.Title>
+              <NomenclatureValuesDisplayFilter filter={filter} onChange={onFilterChange} />
+          </SectionTitle>
           <Table>
             <Table.Body>
               <Table.Row>
@@ -124,6 +94,12 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
           </Table>
           <div style={{flexBasis: 'calc(100vh - 300px)', overflow: 'auto', width: 'calc(100vw - 160px)'}}>
             <Search searchValue={search} onSearchChange={handleSearchChange} />
+              <Pagination
+                  currentPage={1}
+                  itemsPerPage={25}
+                  totalItems={3000}
+                  followPage={nextPage => console.log({nextPage})}
+              />
             <Table>
               <Table.Header>
                 <Table.HeaderCell>Label TODO</Table.HeaderCell>
@@ -131,26 +107,23 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
                 <Table.HeaderCell>Nomenclature TODO</Table.HeaderCell>
               </Table.Header>
               <Table.Body>
-                {families && families.map(family => <Table.Row key={family.code}>
-                  <Styled.TitleCell>
-                    {getLabel(family.labels, 'en_US', family.code)}
-                  </Styled.TitleCell>
-                  <Table.Cell>
-                    {family.code}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <TextInput
-                      value={getValue(family.code)}
-                      invalid={!isValid(family.code)}
-                      readOnly={false}
-                      onChange={(value) => handleChangeValue(family.code, value)}
-                      placeholder={getPlaceholder(family.code)}
-                    />
-                  </Table.Cell>
-                </Table.Row>
+                {nomenclatureLines?.map(nomenclatureLine => (
+                  <NomenclatureLineEdit
+                    nomenclature={nomenclature}
+                    nomenclatureLine={nomenclatureLine}
+                    onChange={handleChangeValue}
+                    key={nomenclatureLine.code}
+                  />
+                  )
                 )}
               </Table.Body>
             </Table>
+              <Pagination
+                  currentPage={1}
+                  itemsPerPage={25}
+                  totalItems={3000}
+                  followPage={nextPage => console.log({nextPage})}
+              />
           </div>
         </>}
     </Modal>}
