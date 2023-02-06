@@ -250,7 +250,8 @@ class CatalogFixtureCommand extends Command
               "type": "string",
               "enum": ["S", "M", "L"]
             }
-          }
+          },
+          "required": ["description"]
         }
         JSON_WRAP;
     }

@@ -269,4 +269,78 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
             'c07ad6f1-78a1-4add-84af-3c1d7d8484a3',
         ], $result);
     }
+
+    public function testItGetsMatchingProductsUuidsUsingRequiredPropertyInTheSchema(): void
+    {
+        $this->createUser('owner');
+        $this->logAs('owner');
+
+        $this->createChannel('mobile', ['en_US', 'fr_FR']);
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            productMappingSchema: $this->getValidSchemaData(),
+            catalogProductMapping: [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'title' => [
+                    'source' => 'name',
+                    'scope' => 'mobile',
+                    'locale' => 'en_US',
+                ],
+            ],
+        );
+
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
+            new SetTextValue('name', 'mobile', 'en_US', 'Blue'),
+        ]);
+
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
+            new SetTextValue('name', 'mobile', 'en_US', ''),
+        ]);
+
+        $this->createProduct(Uuid::fromString('c07ad6f1-78a1-4add-84af-3c1d7d8484a3'));
+
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog);
+
+        $this->assertEquals([
+            '00380587-3893-46e6-a8c2-8fee6404cc9e',
+        ], $result);
+    }
+
+    private function getValidSchemaData(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.5/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "required": ["title"]
+        }
+        JSON_WRAP;
+    }
 }

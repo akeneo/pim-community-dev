@@ -37,7 +37,8 @@ final class GetProductMappingSchemaQuery implements GetProductMappingSchemaQuery
 
         /**
          * @var array{
-         *      properties: array<array-key, mixed>
+         *      properties: array<array-key, mixed>,
+         *      required?: string[]
          * } $productMappingSchema
          */
         $productMappingSchema = \json_decode($productMappingSchemaRaw, true, 512, JSON_THROW_ON_ERROR);

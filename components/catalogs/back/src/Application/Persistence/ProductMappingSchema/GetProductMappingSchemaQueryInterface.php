@@ -11,7 +11,8 @@ use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-type ProductMappingSchema array{
- *      properties: array<array-key, mixed>
+ *      properties: array<array-key, mixed>,
+ *      required?: string[]
  * }
  */
 interface GetProductMappingSchemaQueryInterface

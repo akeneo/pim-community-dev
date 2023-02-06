@@ -6,7 +6,9 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Infrastructure\Persistence\ProductMappingSchema\GetProductMappingSchemaQuery;
 use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -20,6 +22,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
 {
     public function __construct(
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private GetProductMappingSchemaQuery $productMappingSchemaQuery,
     ) {
     }
 
@@ -40,6 +43,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
             'filters' => \array_merge(
                 $this->getUpdatedFilters($updatedAfter, $updatedBefore),
                 FormatProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria()),
+                $this->getProductMappingRequiredFilters($catalog),
             ),
             'limit' => $limit,
         ];
@@ -137,5 +141,51 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         }
 
         return $matches['uuid'];
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    private function getProductMappingRequiredFilters(Catalog $catalog): array
+    {
+        try {
+            $productMappingSchema = $this->productMappingSchemaQuery->execute($catalog->getId());
+        } catch (ProductSchemaMappingNotFoundException $exception) {
+            return [];
+        }
+
+        $productMapping = $catalog->getProductMapping();
+
+        if (!isset($productMappingSchema['required'])) {
+            return [];
+        }
+
+        $filters = [];
+
+        foreach ($productMappingSchema['required'] as $targetCode) {
+            $filter = [
+                'field' => $productMapping[$targetCode]['source'],
+                'value' => '',
+                'operator' => 'NOT EMPTY',
+            ];
+
+            $context = [];
+
+            if (null !== $productMapping[$targetCode]['scope']) {
+                $context['scope'] = $productMapping[$targetCode]['scope'];
+            }
+
+            if (null !== $productMapping[$targetCode]['locale']) {
+                $context['locale'] = $productMapping[$targetCode]['locale'];
+            }
+
+            if (\count($context) > 0) {
+                $filter['context'] = $context;
+            }
+
+            $filters[] = $filter;
+        }
+
+        return $filters;
     }
 }

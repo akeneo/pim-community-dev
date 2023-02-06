@@ -72,17 +72,25 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
                 ->addViolation();
 
             $this->logger->debug('A Product Mapping Schema validation failed', $errors);
+
+            return;
         }
 
         if ($this->containsInvalidRegexes($value)) {
             $this->context
                 ->buildViolation('You must provide a schema with valid regexes.')
                 ->addViolation();
+
+            return;
         }
+
         if ($this->containsMissingRequiredPropertyKeys($value)) {
             $this->context
-                ->buildViolation('You must provide a schema with valid property keys.')
+                ->buildViolation('You must provide a valid schema.')
+                ->setCause('You must provide a schema with valid property keys.')
                 ->addViolation();
+
+            return;
         }
     }
 
@@ -135,16 +143,15 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
 
     private function containsMissingRequiredPropertyKeys(object $schema): bool
     {
-        /** @var array{properties: array<string, array<string, string>>} $schema */
+        /** @var array{properties: array<string, array<string, string>>, required?: string[]} $schema */
         $schema = \json_decode(\json_encode($schema, JSON_THROW_ON_ERROR) ?: '{}', true, 512, JSON_THROW_ON_ERROR);
 
-        if(!isset($schema['required'])) {
+        if (!isset($schema['required'])) {
             return false;
         }
-        $propertyKeys = array_keys($schema['properties']);
-        $requiredKeys = array_keys($schema['required']);
-        dump($propertyKeys, $requiredKeys);
-        $missingPropertyKeys = array_diff($requiredKeys, $propertyKeys);
+
+        $propertyKeys = \array_keys($schema['properties']);
+        $missingPropertyKeys = \array_diff($schema['required'], $propertyKeys);
 
         return \count($missingPropertyKeys) > 0;
     }
