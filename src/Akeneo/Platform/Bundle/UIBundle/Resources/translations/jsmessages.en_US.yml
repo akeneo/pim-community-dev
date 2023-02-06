@@ -273,6 +273,7 @@ pim_common:
     product_models: Product models
     more: More
     public_view: Public view
+    view: View
 
 error:
     exception: A {{ status_code }} error occurred...
@@ -432,6 +433,7 @@ pim_settings:
     group_types: '{0}You have 0 group types|{1}You have 1 group type|]1, Inf[You have {{ count }} group types'
     groups: '{0}You have 0 groups|{1}You have 1 group|]1, Inf[You have {{ count }} groups'
     rules: '{0}You have 0 enabled rules|{1}You have 1 enabled rule|]1, Inf[You have {{ count }} enabled rules'
+    identifier_generators: '{0}You have 0 identifier generator|{1}You have 1 identifier generator|]1, Inf[You have {{ count }} identifier generators'
 
 pim_system:
   system_menu: System menu
