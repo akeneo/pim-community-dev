@@ -18,6 +18,7 @@ final class TargetTypeConverter
         ],
         'string' => [
             'pim_catalog_identifier',
+            'pim_catalog_number',
             'pim_catalog_simpleselect',
             'pim_catalog_text',
             'pim_catalog_textarea',
