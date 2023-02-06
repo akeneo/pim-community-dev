@@ -6,7 +6,7 @@ type AttributeGroup = {
   code: string;
   sort_order: number;
   labels: AttributeGroupLabels;
-  is_dqi_activated?: boolean;
+  is_dqi_activated: boolean;
 };
 
 type AttributeGroupCollection = {
