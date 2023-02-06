@@ -11,10 +11,9 @@ namespace Akeneo\Pim\Structure\Bundle\Infrastructure\controller;
 
 use Akeneo\Pim\Structure\Bundle\Application\GetAttributeGroup\GetAttributeGroupHandler;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
-use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 final class GetAttributeGroupController
 {
@@ -27,7 +26,7 @@ final class GetAttributeGroupController
     public function __invoke(): Response
     {
         if (!$this->securityFacade->isGranted('pim_api_attribute_group_list')) {
-            throw AccessDeniedException::create(__CLASS__, __METHOD__);
+            throw new AccessDeniedHttpException();
         }
 
         $attributeGroups = $this->getAttributeGroupHandler->handle();
