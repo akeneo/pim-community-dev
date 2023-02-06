@@ -90,7 +90,7 @@ final class MultiSelect implements ConditionInterface
      */
     public function normalize(): array
     {
-        return \array_filter([
+        return array_filter([
             'type' => self::type(),
             'attributeCode' => $this->attributeCode,
             'operator' => $this->operator,

@@ -37,7 +37,7 @@ final class SimpleOrMultiSelectShouldBeValidValidator extends ConstraintValidato
             return;
         }
 
-        if (\array_key_exists('type', $condition) && !in_array($condition['type'], [SimpleSelect::type(), MultiSelect::type()])) {
+        if (\array_key_exists('type', $condition) && !\in_array($condition['type'], [SimpleSelect::type(), MultiSelect::type()])) {
             return;
         }
 
