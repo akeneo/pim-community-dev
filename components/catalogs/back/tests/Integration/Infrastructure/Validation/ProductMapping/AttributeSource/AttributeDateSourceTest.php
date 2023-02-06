@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource
+ * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeDateSource
  */
 class AttributeDateSourceTest extends AbstractAttributeSourceTest
 {
@@ -116,6 +116,20 @@ class AttributeDateSourceTest extends AbstractAttributeSourceTest
     public function invalidDataProvider(): array
     {
         return [
+            'missing source value' => [
+                'attribute' => [
+                    'code' => 'release_date',
+                    'type' => 'pim_catalog_date',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
             'invalid source value' => [
                 'attribute' => [
                     'code' => 'release_date',
@@ -146,6 +160,50 @@ class AttributeDateSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
+            'blank scope' => [
+                'attribute' => [
+                    'code' => 'release_date',
+                    'type' => 'pim_catalog_date',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'release_date',
+                    'scope' => '',
+                    'locale' => null,
+                ],
+                'expected_message' => 'This value should not be blank.',
+            ],
+            'unknown scope' => [
+                'attribute' => [
+                    'code' => 'release_date',
+                    'type' => 'pim_catalog_date',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'release_date',
+                    'scope' => 'unknown_scope',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
+            ],
+            'missing scope' => [
+                'attribute' => [
+                    'code' => 'release_date',
+                    'type' => 'pim_catalog_date',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'release_date',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
             'invalid locale' => [
                 'attribute' => [
                     'code' => 'release_date',
@@ -161,7 +219,51 @@ class AttributeDateSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
-            'source with invalid locale for a channel' => [
+            'blank locale' => [
+                'attribute' => [
+                    'code' => 'release_date',
+                    'type' => 'pim_catalog_date',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'release_date',
+                    'scope' => null,
+                    'locale' => '',
+                ],
+                'expected_message' => 'This value should not be blank.',
+            ],
+            'missing locale' => [
+                'attribute' => [
+                    'code' => 'release_date',
+                    'type' => 'pim_catalog_date',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'release_date',
+                    'scope' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'disabled locale' => [
+                'attribute' => [
+                    'code' => 'release_date',
+                    'type' => 'pim_catalog_date',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'release_date',
+                    'scope' => null,
+                    'locale' => 'kz_KZ',
+                ],
+                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'disabled locale for a channel' => [
                 'attribute' => [
                     'code' => 'release_date',
                     'type' => 'pim_catalog_date',
@@ -176,35 +278,21 @@ class AttributeDateSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
             ],
-            'source with invalid scope' => [
-                'attribute' => [
-                    'code' => 'release_date',
-                    'type' => 'pim_catalog_date',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'release_date',
-                    'scope' => 'unknown_scope',
-                    'locale' => null,
-                ],
-                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
-            ],
-            'source with invalid locale' => [
+            'extra field' => [
                 'attribute' => [
                     'code' => 'release_date',
                     'type' => 'pim_catalog_date',
                     'group' => 'other',
                     'scopable' => false,
-                    'localizable' => true,
+                    'localizable' => false,
                 ],
                 'source' => [
                     'source' => 'release_date',
                     'scope' => null,
-                    'locale' => 'kz_KZ',
+                    'locale' => null,
+                    'parameters' => [],
                 ],
-                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+                'expectedMessage' => 'This field was not expected.',
             ],
         ];
     }

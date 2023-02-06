@@ -130,6 +130,24 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
     public function invalidDataProvider(): array
     {
         return [
+            'missing source value' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                    'options' => ['XS', 'S', 'M', 'L', 'XL'],
+                ],
+                'source' => [
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
             'invalid source value' => [
                 'attribute' => [
                     'code' => 'size',
@@ -168,6 +186,62 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
+            'blank scope' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                    'options' => ['XS', 'S', 'M', 'L', 'XL'],
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => '',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expected_message' => 'This value should not be blank.',
+            ],
+            'unknown scope' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                    'options' => ['XS', 'S', 'M', 'L', 'XL'],
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => 'unknown_scope',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
+            ],
+            'missing scope' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                    'options' => ['XS', 'S', 'M', 'L', 'XL'],
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
             'invalid locale' => [
                 'attribute' => [
                     'code' => 'size',
@@ -187,7 +261,63 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
-            'source with invalid locale for a channel' => [
+            'blank locale' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                    'options' => ['XS', 'S', 'M', 'L', 'XL'],
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => '',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expected_message' => 'This value should not be blank.',
+            ],
+            'missing locale' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                    'options' => ['XS', 'S', 'M', 'L', 'XL'],
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'disabled locale' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                    'options' => ['XS', 'S', 'M', 'L', 'XL'],
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => 'kz_KZ',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'disabled locale for a channel' => [
                 'attribute' => [
                     'code' => 'size',
                     'type' => 'pim_catalog_simpleselect',
@@ -206,44 +336,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
             ],
-            'source with invalid scope' => [
-                'attribute' => [
-                    'code' => 'size',
-                    'type' => 'pim_catalog_simpleselect',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'size',
-                    'scope' => 'unknown_scope',
-                    'locale' => null,
-                    'parameters' => [
-                        'label_locale' => 'en_US',
-                    ],
-                ],
-                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
-            ],
-            'source with invalid locale' => [
-                'attribute' => [
-                    'code' => 'size',
-                    'type' => 'pim_catalog_simpleselect',
-                    'group' => 'other',
-                    'scopable' => false,
-                    'localizable' => true,
-                    'options' => ['XS', 'S', 'M', 'L', 'XL'],
-                ],
-                'source' => [
-                    'source' => 'size',
-                    'scope' => null,
-                    'locale' => 'kz_KZ',
-                    'parameters' => [
-                        'label_locale' => 'en_US',
-                    ],
-                ],
-                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
-            ],
-            'source with missing parameters' => [
+            'missing parameters' => [
                 'attribute' => [
                     'code' => 'size',
                     'type' => 'pim_catalog_simpleselect',
@@ -259,7 +352,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
-            'source with missing label_locale field' => [
+            'missing label_locale field' => [
                 'attribute' => [
                     'code' => 'size',
                     'type' => 'pim_catalog_simpleselect',
@@ -277,7 +370,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
-            'source with invalid label_locale type' => [
+            'invalid label_locale type' => [
                 'attribute' => [
                     'code' => 'size',
                     'type' => 'pim_catalog_simpleselect',
@@ -296,7 +389,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
-            'source with invalid label_locale locale' => [
+            'disabled label_locale locale' => [
                 'attribute' => [
                     'code' => 'size',
                     'type' => 'pim_catalog_simpleselect',
@@ -314,6 +407,25 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'extra field' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                    'EXTRA_FIELD' => null,
+                ],
+                'expectedMessage' => 'This field was not expected.',
             ],
         ];
     }
