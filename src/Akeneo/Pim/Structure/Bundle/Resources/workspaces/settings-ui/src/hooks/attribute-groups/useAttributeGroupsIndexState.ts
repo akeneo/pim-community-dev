@@ -40,30 +40,30 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
 
     setAttributeGroups(groups);
     setIsPending(false);
-  }, [refresh]);
+  }, [router]);
 
-  const saveOrder = useCallback(async () => {
-    let order: {[code: string]: number} = {};
+  const saveOrder = useCallback(async (reorderedGroups: AttributeGroup[]) => {
+    const order: {[code: string]: number} = {};
 
-    groups.forEach(attributeGroup => {
+    reorderedGroups.forEach(attributeGroup => {
       order[attributeGroup.code] = attributeGroup.sort_order;
     });
 
     await saveAttributeGroupsOrder(order);
-  }, [groups]);
+  }, []);
 
   const refreshOrder = useCallback(
-    (list: AttributeGroup[]) => {
+    async (list: AttributeGroup[]) => {
       const reorderedGroups = list.map((item, index) => {
         return {
           ...item,
           sort_order: index,
         };
       });
-
-      refresh(reorderedGroups);
+      setAttributeGroups(reorderedGroups);
+      await saveOrder(reorderedGroups);
     },
-    [refresh]
+    [saveOrder]
   );
 
   const compare = (source: AttributeGroup, target: AttributeGroup) => {
