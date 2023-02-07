@@ -1,7 +1,14 @@
 import {useGetFamilies} from './useGetFamilies';
 import {useCallback, useMemo, useState} from 'react';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
-import {Family, Nomenclature, NomenclatureFilter, NomenclatureLineEditProps, NomenclatureValues} from '../models';
+import {
+  Family,
+  FamilyCode,
+  Nomenclature,
+  NomenclatureFilter,
+  NomenclatureLineEditProps,
+  NomenclatureValues,
+} from '../models';
 import {useIsNomenclatureValueValid, usePlaceholder} from './useIsNomenclatureValueValid';
 
 const ITEM_PER_PAGE = 25;
@@ -12,9 +19,9 @@ type HookResult = {
   setPage: (page: number) => void;
   search: string;
   setSearch: (search: string) => void;
-  total: number;
-  totalFiltered: number;
-  hasAFieldInError: boolean;
+  totalValuesCount: number;
+  filteredValuesCount: number;
+  hasValueInvalid: boolean;
 };
 
 const useGetFamilyNomenclatureValues = (
@@ -27,86 +34,134 @@ const useGetFamilyNomenclatureValues = (
   const isValid = useIsNomenclatureValueValid(nomenclature);
   const getPlaceholder = usePlaceholder(nomenclature);
   const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
-  const [totalFiltered, setTotalFiltered] = useState<number>(0);
+  const [filteredValuesCount, setFilteredValuesCount] = useState<number>(0);
   const userContext = useUserContext();
+  const [hasValueInvalid, setHasValueInvalid] = useState<boolean>(false);
 
   const {data: families} = useGetFamilies({
     limit: -1,
   });
 
-  const getLineFromFamily = useCallback(
-    (family: Family): NomenclatureLineEditProps => ({
-      code: family.code,
-      label: getLabel(family.labels, userContext.get('catalogLocale'), family.code),
-      value: values?.[family.code] || '',
-    }),
+  const getValueBeforeUserUpdate = useCallback(
+    (familyCode: FamilyCode) => {
+      return nomenclature?.values[familyCode];
+    },
+    [nomenclature]
+  );
+
+  const getValueAfterUserUpdate = useCallback(
+    (familyCode: FamilyCode) => {
+      return values?.[familyCode];
+    },
     [values]
   );
 
-  let hasAFieldInError = false;
+  const getValueBeforeUserUpdateOrPlaceholder = useCallback(
+    (familyCode: FamilyCode) => {
+      return getValueBeforeUserUpdate(familyCode) || getPlaceholder(familyCode);
+    },
+    [getValueBeforeUserUpdate, getPlaceholder]
+  );
+
+  const getFamilyLabel = useCallback(
+    (family: Family) => {
+      return getLabel(family.labels, userContext.get('catalogLocale'), family.code);
+    },
+    [userContext]
+  );
+
+  const familyMatchSearch = useCallback(
+    (family: Family) => {
+      return (
+        (getValueAfterUserUpdate(family.code)?.toLowerCase() || '').includes(lowerCaseSearch) ||
+        (family.code.toLowerCase() || '').includes(lowerCaseSearch) ||
+        (getFamilyLabel(family).toLowerCase() || '').includes(lowerCaseSearch)
+      );
+    },
+    [getFamilyLabel, getValueAfterUserUpdate, lowerCaseSearch]
+  );
+
+  const familyMatchFilter = useCallback(
+    (familyCode: FamilyCode) => {
+      switch (filter) {
+        case 'all':
+          return true;
+        case 'error':
+          return !isValid(getValueBeforeUserUpdateOrPlaceholder(familyCode));
+        case 'empty':
+          return !getValueBeforeUserUpdate(familyCode);
+        case 'filled':
+          return getValueBeforeUserUpdate(familyCode) && getValueBeforeUserUpdate(familyCode) !== '';
+      }
+      throw new Error(`Unknown filter ${filter}`);
+    },
+    [filter, isValid, getValueBeforeUserUpdate, getValueBeforeUserUpdateOrPlaceholder]
+  );
+
+  const getLineFromFamily = useCallback(
+    (family: Family): NomenclatureLineEditProps => ({
+      code: family.code,
+      label: getFamilyLabel(family),
+      value: getValueAfterUserUpdate(family.code) || '',
+    }),
+    [getFamilyLabel, getValueAfterUserUpdate]
+  );
+
   const data = useMemo(() => {
     if (!families) return [];
 
-    const filteredData: NomenclatureLineEditProps[] = [];
     let filteredButNotDisplayedDataCount = 0;
+    let filteredValuesCount = 0;
+    let hasNomenclatureValueInvalid = false;
+    const filteredData: NomenclatureLineEditProps[] = [];
     const firstIndexToDisplay = (page - 1) * ITEM_PER_PAGE;
-    let totalMatchingItems = 0;
 
-    const addData = (family: Family) => {
-      const value = values?.[family.code];
-      if (
-        (value?.toLowerCase() || '').includes(lowerCaseSearch) ||
-        (family.code.toLowerCase() || '').includes(lowerCaseSearch) ||
-        (getLabel(family.labels, userContext.get('catalogLocale'), family.code) || '').includes(lowerCaseSearch)
-      ) {
-        totalMatchingItems++;
-        const currentIndex = filteredButNotDisplayedDataCount + filteredData.length;
-        if (currentIndex >= firstIndexToDisplay && currentIndex < firstIndexToDisplay + ITEM_PER_PAGE) {
-          filteredData.push(getLineFromFamily(family));
-        } else {
-          filteredButNotDisplayedDataCount++;
-        }
+    const addFilteredData = (family: Family) => {
+      filteredValuesCount++;
+      const currentIndex = filteredButNotDisplayedDataCount + filteredData.length;
+
+      if (currentIndex >= firstIndexToDisplay && currentIndex < firstIndexToDisplay + ITEM_PER_PAGE) {
+        filteredData.push(getLineFromFamily(family));
+      } else {
+        filteredButNotDisplayedDataCount++;
       }
     };
 
     for (const family of families) {
-      hasAFieldInError = hasAFieldInError ||
-        (!isValid(nomenclature?.values[family.code] || getPlaceholder(family.code)));
-      switch (filter) {
-        case 'all':
-          addData(family);
-          break;
-        case 'error': {
-          if (!isValid(nomenclature?.values[family.code] || getPlaceholder(family.code))) addData(family);
-          break;
-        }
-        case 'empty':
-          if (!nomenclature?.values[family.code]) addData(family);
-          break;
-        case 'filled':
-          if (nomenclature?.values[family.code] && nomenclature?.values[family.code] !== '') addData(family);
-          break;
-      }
+      hasNomenclatureValueInvalid =
+        hasNomenclatureValueInvalid || !isValid(getValueBeforeUserUpdateOrPlaceholder(family.code));
+
+      if (familyMatchSearch(family) && familyMatchFilter(family.code)) addFilteredData(family);
     }
 
-    setTotalFiltered(totalMatchingItems);
+    setFilteredValuesCount(filteredValuesCount);
+    setHasValueInvalid(hasNomenclatureValueInvalid);
 
     return filteredData;
-  }, [families, filter, getLineFromFamily, nomenclature, page, isValid, lowerCaseSearch, values, getPlaceholder]);
+  }, [
+    families,
+    getLineFromFamily,
+    page,
+    isValid,
+    getValueBeforeUserUpdateOrPlaceholder,
+    familyMatchSearch,
+    familyMatchFilter,
+  ]);
 
-  const mySetSearch = (search: string) => {
+  const innerSetSearch = (search: string) => {
     setPage(1);
     setSearch(search);
   };
 
-  return {data,
+  return {
+    data,
     page,
     setPage,
     search,
-    setSearch: mySetSearch,
-    totalFiltered,
-    total: families?.length || 0,
-    hasAFieldInError
+    setSearch: innerSetSearch,
+    filteredValuesCount,
+    totalValuesCount: families?.length || 0,
+    hasValueInvalid,
   };
 };
 
