@@ -5,7 +5,9 @@
 
 {% block head_style %}
     {{ parent() }}
-    {{ block('unlock_banner_styles') }}
+    {% if feature_is_enabled('promote_unlock') %}
+        {{ block('unlock_banner_styles') }}
+    {% endif %}
 {% endblock %}
 
 {% block messages %}
@@ -80,5 +82,7 @@
         initPimLoginForm([username, password], submit, form);
       })();
     </script>
-    {{ block('unlock_banner_scripts') }}
+    {% if feature_is_enabled('promote_unlock') %}
+        {{ block('unlock_banner_scripts') }}
+    {% endif %}
 {% endblock %}
