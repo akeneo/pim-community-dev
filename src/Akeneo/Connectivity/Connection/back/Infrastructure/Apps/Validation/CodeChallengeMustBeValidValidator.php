@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
-use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppSecretQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\Validator\Constraint;
@@ -19,9 +19,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class CodeChallengeMustBeValidValidator extends ConstraintValidator
 {
     public function __construct(
-        private WebMarketplaceApiInterface $webMarketplaceApi,
-        private GetCustomAppQueryInterface $getTestAppQuery,
-        private FeatureFlag $fakeAppsFeatureFlag
+        private readonly WebMarketplaceApiInterface $webMarketplaceApi,
+        private readonly GetCustomAppSecretQueryInterface $getCustomAppSecretQuery,
+        private readonly FeatureFlag $fakeAppsFeatureFlag
     ) {
     }
 
@@ -65,12 +65,11 @@ class CodeChallengeMustBeValidValidator extends ConstraintValidator
 
     private function isCodeChallengeValid(AccessTokenRequest $value): bool
     {
-        $testApp = $this->getTestAppQuery->execute($value->getClientId());
+        $customAppSecret = $this->getCustomAppSecretQuery->execute($value->getClientId());
 
-        if (null !== $testApp) {
-            $secret = $testApp['secret'];
+        if (null !== $customAppSecret) {
             $codeIdentifier = $value->getCodeIdentifier();
-            $expectedCodeChallenge = \hash('sha256', $codeIdentifier . $secret);
+            $expectedCodeChallenge = \hash('sha256', $codeIdentifier . $customAppSecret);
 
             return $expectedCodeChallenge === $value->getCodeChallenge();
         }
