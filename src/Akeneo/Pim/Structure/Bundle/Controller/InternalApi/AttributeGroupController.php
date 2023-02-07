@@ -15,7 +15,6 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -29,7 +28,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Attribute group controller
+ * Attribute group controller.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @author    Alexandr Jeliuc <alex@jeliuc.com>
@@ -60,7 +59,7 @@ class AttributeGroupController
     public function indexAction(): JsonResponse
     {
         if (!$this->securityFacade->isGranted('pim_api_attribute_group_list')) {
-            throw AccessDeniedException::create(__CLASS__, __METHOD__);
+            throw new AccessDeniedHttpException();
         }
 
         $attributeGroups = $this->getAttributeGroups->all();
@@ -69,9 +68,7 @@ class AttributeGroupController
     }
 
     /**
-     * Get a single attribute group
-     *
-     * @param string $identifier
+     * Get a single attribute group.
      *
      * @return JsonResponse
      */
@@ -87,8 +84,6 @@ class AttributeGroupController
     }
 
     /**
-     * @param Request $request
-     *
      * @return Response
      *
      * @AclAncestor("pim_enrich_attributegroup_create")
@@ -132,8 +127,7 @@ class AttributeGroupController
     }
 
     /**
-     * @param Request $request
-     * @param string  $identifier
+     * @param string $identifier
      *
      * @return Response
      *
@@ -197,9 +191,7 @@ class AttributeGroupController
     }
 
     /**
-     * Sort the attribute groups
-     *
-     * @param Request $request
+     * Sort the attribute groups.
      *
      * @AclAncestor("pim_enrich_attributegroup_sort")
      *
@@ -223,7 +215,7 @@ class AttributeGroupController
     }
 
     /**
-     * Remove action
+     * Remove action.
      *
      * @param string $identifier
      *
@@ -297,30 +289,22 @@ class AttributeGroupController
     }
 
     /**
-     * Finds attribute group type by identifier or throws not found exception
-     *
-     * @param string $identifier
+     * Finds attribute group type by identifier or throws not found exception.
      *
      * @throws NotFoundHttpException
-     *
-     * @return AttributeGroupInterface
      */
     protected function getAttributeGroupOr404(string $identifier): AttributeGroupInterface
     {
         $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($identifier);
         if (null === $attributeGroup) {
-            throw new NotFoundHttpException(
-                sprintf('Attribute group with identifier "%s" not found', $identifier)
-            );
+            throw new NotFoundHttpException(sprintf('Attribute group with identifier "%s" not found', $identifier));
         }
 
         return $attributeGroup;
     }
 
     /**
-     * Check that the user doesn't change the attribute list without permission
-     *
-     * @param array $newAttributeGroup
+     * Check that the user doesn't change the attribute list without permission.
      */
     protected function checkAttributeCollectionRights(array $newAttributeGroup): void
     {
