@@ -7,6 +7,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetAllCustomAppsQuery:
+        arguments:
+            - '@database_connection'
+
+
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery:
         arguments:
             - '@database_connection'

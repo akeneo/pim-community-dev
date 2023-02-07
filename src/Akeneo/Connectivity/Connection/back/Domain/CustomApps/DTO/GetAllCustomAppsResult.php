@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Domain\Marketplace\DTO;
+namespace Akeneo\Connectivity\Connection\Domain\CustomApps\DTO;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 
@@ -10,18 +10,15 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetAllTestAppsResult
+final class GetAllCustomAppsResult
 {
-    private int $total;
-
-    /** @var array<App> */
-    private array $apps;
-
     /**
      * @param array<App> $apps
      */
-    private function __construct(int $total, array $apps)
-    {
+    private function __construct(
+        private readonly int $total,
+        private readonly array $apps,
+    ) {
         foreach ($apps as $app) {
             if (!$app instanceof App) {
                 throw new \InvalidArgumentException(\sprintf(
@@ -31,8 +28,6 @@ final class GetAllTestAppsResult
                 ));
             }
         }
-        $this->total = $total;
-        $this->apps = $apps;
     }
 
     /**

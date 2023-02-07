@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace\Persistence;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\CustomApps\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllTestAppsResult;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\DTO\GetAllCustomAppsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllTestAppsQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetAllCustomAppsQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -15,12 +16,14 @@ use Doctrine\DBAL\Connection;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetAllCustomAppsQuery
  */
-class GetAllTestAppsQueryIntegration extends TestCase
+class GetAllCustomAppsQueryIntegration extends TestCase
 {
-    private Connection $connection;
-    private ConnectedAppLoader $connectedAppLoader;
-    private GetAllTestAppsQuery $query;
+    private ?Connection $connection;
+    private ?ConnectedAppLoader $connectedAppLoader;
+    private ?GetAllCustomAppsQuery $getAllCustomAppsQuery;
 
     protected function setUp(): void
     {
@@ -28,7 +31,7 @@ class GetAllTestAppsQueryIntegration extends TestCase
 
         $this->connection = $this->get('database_connection');
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
-        $this->query = $this->get(GetAllTestAppsQuery::class);
+        $this->getAllCustomAppsQuery = $this->get(GetAllCustomAppsQuery::class);
     }
 
     protected function getConfiguration(): Configuration
@@ -36,7 +39,7 @@ class GetAllTestAppsQueryIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    public function test_it_returns_test_apps()
+    public function test_it_returns_custom_apps(): void
     {
         $this->createTestApp([
             'client_id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
@@ -56,10 +59,10 @@ class GetAllTestAppsQueryIntegration extends TestCase
             'user_id' => null,
         ]);
 
-        $result = $this->query->execute();
+        $result = $this->getAllCustomAppsQuery->execute();
 
         $this->assertEquals(
-            GetAllTestAppsResult::create(2, [
+            GetAllCustomAppsResult::create(2, [
                 App::fromTestAppValues([
                     'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
                     'name' => 'My test app',
