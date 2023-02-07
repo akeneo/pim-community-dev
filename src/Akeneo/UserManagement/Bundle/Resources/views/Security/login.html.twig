@@ -1,6 +1,12 @@
 {% extends '@PimUser/layout.html.twig' %}
+{%- use "@PimUser/Unlock/login-banner.html.twig" with scripts as unlock_banner_scripts, styles as unlock_banner_styles %}
 
 {% block bodyClass %}AknLogin{% endblock %}
+
+{% block head_style %}
+    {{ parent() }}
+    {{ block('unlock_banner_styles') }}
+{% endblock %}
 
 {% block messages %}
     {{ parent() }}
@@ -74,9 +80,5 @@
         initPimLoginForm([username, password], submit, form);
       })();
     </script>
-    <script type="text/javascript" nonce="{{ js_nonce() }}">
-      (function () {
-        initUnlockBanner();
-      })();
-    </script>
+    {{ block('unlock_banner_scripts') }}
 {% endblock %}
