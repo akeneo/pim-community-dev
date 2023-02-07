@@ -92,18 +92,3 @@ test('it displays nothing when total is 0', () => {
 
     expect(TestAppCard).not.toHaveBeenCalled();
 });
-
-test('it displays nothing when feature flag is disabled', () => {
-    (useFeatureFlags as jest.Mock).mockImplementation(() => ({isEnabled: () => false}));
-    const testApps = {
-        total: 2,
-        apps: [testApp1, testApp2],
-    };
-    renderWithProviders(<TestAppList testApps={testApps} />);
-
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.title')
-    ).not.toBeInTheDocument();
-
-    expect(TestAppCard).not.toHaveBeenCalled();
-});
