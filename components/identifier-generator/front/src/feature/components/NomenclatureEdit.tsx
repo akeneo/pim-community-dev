@@ -40,8 +40,9 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
     setSearch,
     total,
     totalFiltered,
+    hasAFieldInError
   } = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave);
-  const {save} = useSaveNomenclature();
+  const {save, isLoading: isSaving} = useSaveNomenclature();
 
   const onFilterChange = (value: NomenclatureFilter) => {
     if (nomenclature) setNomenclature({...nomenclature, values: valuesToSave});
@@ -97,20 +98,22 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
   );
 
   const handleSaveNomenclature = () => {
-    if (nomenclature) {
-      // TODO Freeze Save during fetch
-      // TODO Display warning if there is one field in error
+    if (nomenclature && !isSaving) {
       save(
         {...nomenclature, propertyCode: 'family', values: valuesToSave},
         {
           onError: (violations: Violation[]) => {
             setViolations(violations);
-            notify(NotificationLevel.ERROR, translate('TODO'));
+            notify(NotificationLevel.ERROR, translate('pim_identifier_generator.nomenclature.flash.error'));
           },
           onSuccess: () => {
             close();
             setViolations([]);
-            notify(NotificationLevel.SUCCESS, translate('TODO'));
+            if (hasAFieldInError) {
+              notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.nomenclature.flash.warning'));
+            } else {
+              notify(NotificationLevel.WARNING, translate('pim_identifier_generator.nomenclature.flash.success'));
+            }
           }
         }
       );
@@ -123,7 +126,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
       {isOpen && (
         <Modal closeTitle={translate('pim_common.close')} onClose={close}>
           <Modal.TopRightButtons>
-            <Button onClick={handleSaveNomenclature}>{translate('pim_common.save')}</Button>
+            <Button onClick={handleSaveNomenclature} disabled={isSaving}>{translate('pim_common.save')}</Button>
           </Modal.TopRightButtons>
             <Modal.SectionTitle color="brand">{ translate(
               'pim_identifier_generator.nomenclature.section_title',
