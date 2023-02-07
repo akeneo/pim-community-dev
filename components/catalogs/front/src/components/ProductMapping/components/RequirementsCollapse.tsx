@@ -5,7 +5,7 @@ import {Target} from '../models/Target';
 import styled from 'styled-components';
 
 type Props = {
-    target: Target;
+    selectedTarget: Target;
 };
 
 type Constraint = {
@@ -17,26 +17,30 @@ const WarningHelper = styled(Helper)`
     margin-bottom: 10px;
 `;
 
-export const RequirementsCollapse: FC<Props> = ({target}) => {
+export const RequirementsCollapse: FC<Props> = ({selectedTarget}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState(true);
-    const constraintKeys: string[] = ['minLength', 'maxLength'];
+    const acceptedConstraints: string[] = ['minLength', 'maxLength'];
     const translationKey = 'akeneo_catalogs.product_mapping.source.requirements.constraints';
 
-    const constraints: Constraint[] = [];
+    const constraintsToShow: Constraint[] = [];
 
-    (Object.keys(target) as Array<keyof Target>).map(targetKey => {
-        if (constraintKeys.includes(targetKey) && undefined !== target[targetKey]) {
-            constraints.push({
-                key: targetKey,
-                value: target[targetKey],
+    for (const acceptedConstraint of acceptedConstraints) {
+        if (
+            acceptedConstraint in selectedTarget &&
+            undefined !== selectedTarget[acceptedConstraint] &&
+            null !== selectedTarget[acceptedConstraint]
+        ) {
+            constraintsToShow.push({
+                key: acceptedConstraint,
+                value: selectedTarget[acceptedConstraint],
             } as Constraint);
         }
-    });
+    }
 
-    const shouldDisplayWarning = constraints.length > 0;
+    const shouldDisplayWarning = constraintsToShow.length > 0;
 
-    if ((undefined === target.description || null === target.description) && !shouldDisplayWarning) {
+    if ((undefined === selectedTarget.description || null === selectedTarget.description) && !shouldDisplayWarning) {
         return null;
     }
 
@@ -57,7 +61,7 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
             >
                 {shouldDisplayWarning && (
                     <WarningHelper inline level='warning'>
-                        {constraints.map((constraint, i) => (
+                        {constraintsToShow.map((constraint, i) => (
                             <p key={i}>
                                 {translate(
                                     `${translationKey}.${constraint.key}`,
@@ -70,9 +74,9 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
                         ))}
                     </WarningHelper>
                 )}
-                {target.description && (
+                {selectedTarget.description && (
                     <Helper inline level='info'>
-                        {target.description}
+                        {selectedTarget.description}
                     </Helper>
                 )}
             </Collapse>
