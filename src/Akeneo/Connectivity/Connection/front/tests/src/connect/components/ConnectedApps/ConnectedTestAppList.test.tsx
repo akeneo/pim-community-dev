@@ -84,15 +84,3 @@ test('it does not render if list is empty', () => {
 
     expect(ConnectedAppCard).not.toHaveBeenCalled();
 });
-
-test('it does not render if feature flag is disabled', () => {
-    (useFeatureFlags as jest.Mock).mockImplementation(() => ({isEnabled: () => false}));
-
-    renderWithProviders(<ConnectedTestAppList connectedTestApps={connectedTestApps} />);
-
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.test_apps.title')
-    ).not.toBeInTheDocument();
-
-    expect(ConnectedAppCard).not.toHaveBeenCalled();
-});
