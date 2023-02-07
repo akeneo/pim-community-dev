@@ -39,14 +39,9 @@ class UploadController
             return new JsonResponse([], 400);
         }
 
-        $mimeType = $uploadedFile->getMimeType();
-        if (!$this->supportsMimeType($mimeType)) {
-            throw new NotSupportedFormatException(sprintf('The mime type "%s" is not supported.', $mimeType));
-        }
-
         $violations = $this->validator->validate($uploadedFile, [
             new Assert\Valid(),
-            new Assert\File(),
+            new Assert\File(mimeTypes: $this->supportedMimeTypes),
         ]);
 
         if (count($violations) > 0) {
@@ -62,10 +57,5 @@ class UploadController
             'mimeType' => $file->getMimeType(),
             'extension' => $file->getExtension(),
         ]);
-    }
-
-    private function supportsMimeType(string $mimeType): bool
-    {
-        return \in_array(\strtolower($mimeType), $this->supportedMimeTypes);
     }
 }

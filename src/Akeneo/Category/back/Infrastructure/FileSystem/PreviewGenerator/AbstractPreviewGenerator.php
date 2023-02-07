@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator;
 
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
-use Akeneo\Category\Infrastructure\FileSystem\NotSupportedFormatException;
 use Imagine\Exception\RuntimeException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
@@ -85,7 +84,7 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
                 $mimeType = $binary->getMimeType();
 
                 if (!$this->supportsMimeType($mimeType)) {
-                    throw new NotSupportedFormatException(sprintf('The mime type "%s" is not supported.', $mimeType));
+                    throw new CouldNotGeneratePreviewException(sprintf('The mime type "%s" is not supported for the preview type "%s"', $mimeType, $previewType));
                 }
 
                 $file = $this->filterManager->applyFilter($binary, $previewType);
