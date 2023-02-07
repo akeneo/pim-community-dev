@@ -34,7 +34,7 @@ final class ValueUserIntentsShouldBeUniqueValidator extends ConstraintValidator
      */
     private function validUniqueConstraint(array $valueUserIntents, Constraint $constraint): void
     {
-        /** @var ValueUserIntent[] $localizeUserIntents */
+        /** @var ValueUserIntent[] $valueUserIntents */
         $valueUserIntents = array_values(array_filter($valueUserIntents, function ($userIntent) {
             return is_subclass_of($userIntent, ValueUserIntent::class) &&
                 $userIntent->channelCode() !== null && $userIntent->localeCode() !== null;
