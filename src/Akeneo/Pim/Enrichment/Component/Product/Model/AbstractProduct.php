@@ -47,7 +47,7 @@ abstract class AbstractProduct implements ProductInterface
 
     protected Collection $categories;
 
-    protected bool $enabled = true;
+    protected bool $enabled = false;
 
     protected Collection $groups;
 
