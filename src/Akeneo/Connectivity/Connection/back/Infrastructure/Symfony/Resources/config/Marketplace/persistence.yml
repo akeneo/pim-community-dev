@@ -20,7 +20,3 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllTestAppsQuery:
-        arguments:
-            - '@database_connection'
