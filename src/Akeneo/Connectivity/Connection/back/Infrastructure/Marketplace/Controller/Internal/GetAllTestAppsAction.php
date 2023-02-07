@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllTestAppsResult;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllTestAppsQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\DTO\GetAllCustomAppsResult;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetAllCustomAppsQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,7 +22,7 @@ final class GetAllTestAppsAction
     public function __construct(
         private FeatureFlag $appDeveloperMode,
         private AppUrlGenerator $appUrlGenerator,
-        private GetAllTestAppsQueryInterface $getAllTestAppsQuery
+        private GetAllCustomAppsQueryInterface $getAllTestAppsQuery
     ) {
     }
 
@@ -33,7 +33,7 @@ final class GetAllTestAppsAction
         }
 
         if (!$this->appDeveloperMode->isEnabled()) {
-            return new JsonResponse(GetAllTestAppsResult::create(0, [])->normalize());
+            return new JsonResponse(GetAllCustomAppsResult::create(0, [])->normalize());
         }
 
         $result = $this->getAllTestAppsQuery->execute();

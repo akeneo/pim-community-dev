@@ -29,4 +29,4 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllTestAppsQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetAllCustomAppsQuery'
