@@ -247,7 +247,7 @@ describe('SimpleSelectLine', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('pim_error.unauthorized_list_attributes')).toBeInTheDocument();
+      expect(screen.getByText('pim_error.unauthorized_list_properties')).toBeInTheDocument();
     });
   });
 });
