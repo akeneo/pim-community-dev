@@ -91,9 +91,7 @@ test('it disabled the connect button when the user doesnt have the permission to
 
     expect(screen.queryByText('testApp1')).toBeInTheDocument();
 
-    const connectButton = expect(
-        screen.getByText('akeneo_connectivity.connection.connect.marketplace.card.connect')
-    );
+    const connectButton = expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.card.connect'));
 
     connectButton.toHaveAttribute('disabled');
     connectButton.toHaveAttribute('aria-disabled', 'true');

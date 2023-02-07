@@ -72,7 +72,5 @@ test('it not displays the delete button when the user doesnt have the permission
 
     expect(screen.queryByText('Name of the test app')).toBeInTheDocument();
 
-    expect(
-        screen.queryByTitle('pim_common.delete')
-    ).not.toBeInTheDocument();
+    expect(screen.queryByTitle('pim_common.delete')).not.toBeInTheDocument();
 });
