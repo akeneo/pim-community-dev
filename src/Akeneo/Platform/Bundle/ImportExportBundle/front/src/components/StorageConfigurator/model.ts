@@ -6,13 +6,16 @@ import {
   AmazonS3Storage,
   Storage,
   StorageType,
+  additionalStorageIsEnabled,
   localStorageIsEnabled,
   MicrosoftAzureStorage,
+  GoogleCloudStorage,
 } from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
 import {MicrosoftAzureStorageConfigurator} from './MicrosoftAzureStorageConfigurator';
+import {GoogleCloudStorageConfigurator} from './GoogleCloudStorageConfigurator';
 
 type StorageLoginType = 'password' | 'private_key';
 
@@ -32,9 +35,6 @@ type StorageConfiguratorCollection = {
 
 const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   none: null,
-  sftp: SftpStorageConfigurator,
-  amazon_s3: AmazonS3StorageConfigurator,
-  microsoft_azure: MicrosoftAzureStorageConfigurator,
 };
 
 const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
@@ -42,6 +42,13 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConf
 
   if (localStorageIsEnabled(featureFlags)) {
     enabledStorageConfigurators['local'] = LocalStorageConfigurator;
+  }
+
+  if (additionalStorageIsEnabled(featureFlags)) {
+    enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
+    enabledStorageConfigurators['amazon_s3'] = AmazonS3StorageConfigurator;
+    enabledStorageConfigurators['microsoft_azure'] = MicrosoftAzureStorageConfigurator;
+    enabledStorageConfigurators['google_cloud_storage'] = GoogleCloudStorageConfigurator;
   }
 
   return enabledStorageConfigurators;
@@ -89,12 +96,27 @@ const isMicrosoftAzureStorage = (storage: Storage): storage is MicrosoftAzureSto
   return 'microsoft_azure' === storage.type && 'file_path' in storage && 'container_name' in storage;
 };
 
+const isGoogleCloudStorage = (storage: Storage): storage is GoogleCloudStorage => {
+  return (
+    'google_cloud_storage' === storage.type &&
+    'file_path' in storage &&
+    typeof 'file_path' === 'string' &&
+    'project_id' in storage &&
+    typeof 'project_id' === 'string' &&
+    'service_account' in storage &&
+    typeof 'service_account' === 'string' &&
+    'bucket' in storage &&
+    typeof 'bucket' === 'string'
+  );
+};
+
 export type {StorageConfiguratorProps, StorageLoginType};
 export {
   isLocalStorage,
   isSftpStorage,
   isAmazonS3Storage,
   isMicrosoftAzureStorage,
+  isGoogleCloudStorage,
   isValidLoginType,
   getStorageConfigurator,
   STORAGE_LOGIN_TYPES,

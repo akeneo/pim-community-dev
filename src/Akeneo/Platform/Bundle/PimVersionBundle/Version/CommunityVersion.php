@@ -12,7 +12,7 @@ namespace Akeneo\Platform\Bundle\PimVersionBundle\Version;
 final class CommunityVersion implements PimVersion
 {
     /** @staticvar string */
-    private const VERSION_CODENAME = 'Community master';
+    private const VERSION_CODENAME = 'Sahara Hare';
 
     /** @staticvar string */
     private const EDITION_NAME = 'CE';

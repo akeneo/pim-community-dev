@@ -79,7 +79,7 @@ class CompletenessCriterionTest extends AbstractSystemCriterionTest
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testItReturnsViolationsWhenInvalid(array $criterion, $expectedMessage): void
+    public function testItReturnsViolationsWhenInvalid(array $criterion, string $expectedMessage): void
     {
         $violations = $this->validator->validate($criterion, new CompletenessCriterion());
 

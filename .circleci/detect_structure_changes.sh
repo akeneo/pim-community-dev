@@ -3,8 +3,8 @@
 # Detect if migrations related to a structure change are missing.
 #
 # The same script is used for both CE and EE builds. In both cases, an EE is installed.
-# For a CE build, EE master branch is used with CE $PR_BRANCH.
-# For an EE build, EE $PR_BRANCH is used. If CE $PR_BRANCH exists, then it is used. Otherwise CE master is used.
+# For a CE build, EE 7.0 branch is used with CE $PR_BRANCH.
+# For an EE build, EE $PR_BRANCH is used. If CE $PR_BRANCH exists, then it is used. Otherwise CE 7.0 is used.
 #
 # It works in 4 steps:
 #   - step 1: Checkout 5.0 code to be able to install a 5.0 database and index.
@@ -58,7 +58,7 @@ cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 
 echo "Enable Onboarder bundle on 5.0 branch..."
 sudo chown 1000:1000 composer.json
-docker-compose run --rm php composer config repositories.onboarder '{ "type": "vcs", "url": "https://github.com/akeneo/pim-onboarder.git", "branch": "master" }'
+docker-compose run --rm php composer config repositories.onboarder '{ "type": "vcs", "url": "https://github.com/akeneo/pim-onboarder.git", "branch": "7.0" }'
 docker-compose run --rm php php -d memory_limit=5G /usr/local/bin/composer require "akeneo/pim-onboarder:^4.2.1"
 if [ -d "vendor/akeneo/pim-onboarder" ]; then
     sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
@@ -88,8 +88,8 @@ echo "Restore Git repository as how it was at the beginning..."
 git clean -f
 git checkout -- .
 
-echo "Checkout EE PR branch (or master if it does not exist)..."
-git checkout $PR_BRANCH || git checkout master
+echo "Checkout EE PR branch (or 7.0 if it does not exist)..."
+git checkout $PR_BRANCH || git checkout 7.0
 cp /tmp/composer.lock ./composer.lock
 touch composer.lock
 sudo chown 1000:1000 -R .

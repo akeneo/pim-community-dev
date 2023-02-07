@@ -1,49 +1,9 @@
-aliases:
-    - &envVarsDeployDev
-        ENV_NAME: "dev"
-        GOOGLE_PROJECT_ID: "akecld-saas-dev"
-        GOOGLE_COMPUTE_ZONE: "europe-west3-a"
-        CLUSTER_NAME: "europe-west3-a"
-
-    - &dockerCloudDeployer
-        docker:
-            - image: eu.gcr.io/akeneo-cloud/cloud-deployer:7.11
-              auth:
-                  username: _json_key  # default username when using a JSON key file to authenticate
-                  password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
-
 executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
 
 orbs:
   git-shallow-clone: guitarrapc/git-shallow-clone@2.4.0
 
 commands:
-    set_gcloud_config_dev:
-        description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
-        steps:
-            - run:
-                  name: "Set Gcloud Config."
-                  shell: "/bin/bash -eo pipefail"
-                  command: |
-                      echo ${GCLOUD_SERVICE_KEY_DEV} | gcloud auth activate-service-account --key-file=-
-                      gcloud config set project ${GOOGLE_PROJECT_ID}
-                      gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-                      gcloud container clusters get-credentials ${GOOGLE_COMPUTE_ZONE} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
-                      echo ${GCLOUD_SERVICE_KEY_DEV} > ${HOME}/gcloud-service-key.json
-                      echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
-                      export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
-                      gcloud auth configure-docker --quiet
-
-    restore_persisted_env_vars:
-        description: "Restore env vars that have been persisted by the previous job."
-        steps:
-            - run:
-                  name: Restore persisted env vars
-                  command: |
-                      echo "Persisted env vars:"
-                      cat persisted_env_vars
-                      cat persisted_env_vars >> $BASH_ENV
-
     install_yq_v3:
       description: "Install yq (v3)"
       steps:
@@ -76,7 +36,7 @@ jobs:
                   fingerprints:
                       - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             - run:
-                  name: Clone EE branch if it exists, or master otherwise with the SSH key that we added above
+                  name: Clone EE branch if it exists, or 7.0 otherwise with the SSH key that we added above
                   command: |
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       ENTREPRISE_BRANCH=$(if [[ -z $(git ls-remote --exit-code --heads git@github.com:akeneo/pim-enterprise-dev.git ${CIRCLE_BRANCH}) ]]; then echo "master"; else echo ${CIRCLE_BRANCH}; fi)
@@ -102,12 +62,6 @@ jobs:
                   command: |
                       sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json
                       sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" grth/composer.json
-            - run:
-                  name: Require proper dev onboarder bundle branch
-                  command: |
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                      ONBOARDER_BRANCH=$(if [[ -z $(git ls-remote --exit-code --heads git@github.com:akeneo/pim-onboarder.git ${CIRCLE_BRANCH}) ]]; then echo "master"; else echo ${CIRCLE_BRANCH}; fi)
-                      sed -i "s#akeneo/pim-onboarder\": \"^5.0.9#akeneo/pim-onboarder\": \"dev-${ONBOARDER_BRANCH}#" composer.json
             - run:
                   name: Checkout CE
                   command: git clone --depth 1 https://github.com/akeneo/pim-community-dev vendor/akeneo/pim-community-dev -b ${CIRCLE_BRANCH}
@@ -187,8 +141,8 @@ jobs:
                       - run:
                             name: Save the CE image as a tar
                             command: |
-                                docker pull akeneo/pim-php-dev:master
-                                docker save -o php-pim-image.tar akeneo/pim-php-dev:master
+                                docker pull akeneo/pim-php-dev:8.1
+                                docker save -o php-pim-image.tar akeneo/pim-php-dev:8.1
             - run:
                   name: Setup tests results folder and log folder
                   command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
