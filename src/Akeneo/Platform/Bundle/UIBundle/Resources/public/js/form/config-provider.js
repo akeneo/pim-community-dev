@@ -10,7 +10,14 @@ define(['jquery', 'pim/security-context', 'pim/feature-flags'], function ($, Sec
    */
   const filterByGranted = extensions => {
     return extensions.filter(extension => {
-      return null === extension.aclResourceId || SecurityContext.isGranted(extension.aclResourceId);
+      if (null === extension.aclResourceId) {
+        return true
+      }
+
+      return extension.aclResourceId.split(/\|\|/).reduce(
+        (currentValue, resourceId) => currentValue || SecurityContext.isGranted(resourceId.trim()),
+        false
+      );
     });
   };
 

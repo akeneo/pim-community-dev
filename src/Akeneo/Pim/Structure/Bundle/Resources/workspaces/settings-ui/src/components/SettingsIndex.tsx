@@ -21,6 +21,7 @@ import {
   GroupsIcon,
   IconCard,
   IconCardGrid,
+  IdIcon,
   LocaleIcon,
   LockIcon,
   MetricIcon,
@@ -73,6 +74,7 @@ const SettingsIndex = () => {
   const canAccessGroupTypes = isGranted('pim_enrich_grouptype_index');
   const canAccessGroups = isGranted('pim_enrich_group_index');
   const canAccessRules = isGranted('pimee_catalog_rule_rule_view_permissions');
+  const canAccessIdentifierGenerator = isGranted('pim_identifier_generator_view') || isGranted('pim_identifier_generator_manage');
 
   const canAccessProductSettings =
     canAccessAttributeGroups ||
@@ -82,7 +84,8 @@ const SettingsIndex = () => {
     canAccessAssociationTypes ||
     canAccessGroupTypes ||
     canAccessGroups ||
-    canAccessRules;
+    canAccessRules ||
+    canAccessIdentifierGenerator;
 
   const redirectToRoute = (route: string) => {
     router.redirect(router.generate(route));
@@ -317,6 +320,20 @@ const SettingsIndex = () => {
                       'pim_settings.count.rules',
                       countEntities,
                       'count_rules'
+                    )}
+                  />
+                )}
+                {canAccessIdentifierGenerator && featureFlags.isEnabled('identifier_generator') && (
+                  <IconCard
+                    id="pim-enrich-identifier-generator"
+                    icon={<IdIcon />}
+                    label={translate('pim_title.akeneo_identifier_generator_index')}
+                    onClick={() => redirectToRoute('akeneo_identifier_generator_index')}
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.identifier_generators',
+                      countEntities,
+                      'count_identifier_generators'
                     )}
                   />
                 )}
