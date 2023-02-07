@@ -246,12 +246,22 @@ $rules = [
             'Akeneo\Connectivity\Connection\Application\Marketplace',
 
             // Exceptions
-            'Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface',
 
             'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
             'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Marketplace'),
+
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain\CustomApps',
+            'Akeneo\Connectivity\Connection\Application\CustomApps',
+
+            // Exceptions
+            'Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface',
+            'Symfony\Component\Validator\Constraint',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application\CustomApps'),
 
     $builder->only(
         [

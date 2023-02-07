@@ -9,7 +9,6 @@ interface GetCustomAppQueryInterface
     /**
      * @return array{
      *     id: string,
-     *     secret: string,
      *     name: string,
      *     author: string|null,
      *     activate_url: string,
