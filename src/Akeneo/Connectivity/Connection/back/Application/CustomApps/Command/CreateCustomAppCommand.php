@@ -18,7 +18,6 @@ final class CreateCustomAppCommand
         #[Assert\NotBlank(message: self::MESSAGE_PREFIX . 'client_id.not_blank')]
         #[Assert\Length(max: 36, maxMessage: self::MESSAGE_PREFIX . 'client_id.max_length')]
         public readonly string $clientId,
-
         #[Assert\NotBlank(message: self::MESSAGE_PREFIX . 'name.not_blank')]
         #[Assert\Length(
             min: 3,
@@ -27,12 +26,10 @@ final class CreateCustomAppCommand
             maxMessage: self::MESSAGE_PREFIX . 'name.max_length',
         )]
         public readonly string $name,
-
         #[Assert\NotBlank(message: self::MESSAGE_PREFIX . 'activate_url.not_blank')]
         #[Assert\Length(max: 255, maxMessage: self::MESSAGE_PREFIX . 'activate_url.max_length')]
         #[Assert\Url(message: self::MESSAGE_PREFIX . 'activate_url.must_be_url')]
         public readonly string $activateUrl,
-
         #[Assert\NotBlank(message: self::MESSAGE_PREFIX . 'callback_url.not_blank')]
         #[Assert\Length(max: 255, maxMessage: self::MESSAGE_PREFIX . 'callback_url.max_length')]
         #[Assert\Url(message: self::MESSAGE_PREFIX . 'callback_url.must_be_url')]
