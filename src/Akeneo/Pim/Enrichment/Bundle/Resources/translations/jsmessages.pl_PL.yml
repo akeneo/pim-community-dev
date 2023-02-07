@@ -24,6 +24,7 @@ pim_enrich.entity.product:
       fields_not_ready: "Nie można teraz zapisać produktu. Następujące pola nie są gotowe: {{ fields }}"
       already_in_upload: Plik jest aktualnie dodawany dla tego atrybutu w wersji językowej "{{ locale }}" i kanale "{{ scope }}"
       file_upload: Wystąpił błąd podczas przesyłania pliku
+      identifier_warning: Twój produkt został zapisany, ale nie można było wygenerować identyfikatora.
     delete:
       success: Produkt pomyślnie usunięty.
       fail: Nie można usunąć produktu.
@@ -496,6 +497,8 @@ pim_datagrid:
       label: Element nadrzędny
     identifier:
       label: Identyfikator
+    uuid:
+      label: Uuid
   search: Szukaj wg {{ label }}
 batch_jobs:
   add_association:

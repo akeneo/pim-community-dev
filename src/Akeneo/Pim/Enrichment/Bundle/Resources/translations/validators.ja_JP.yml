@@ -38,6 +38,7 @@ product_model.family_variant.not_blank.message: 商品モデルのファミリ�
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": '{{ attribute_code }} 属性には {{ limit }} 以降の日付が必要です。'
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": '{{ attribute_code }} 属性には {{ limit }} 以前の日付が必要です。'
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": '{{ attribute }} 属性には数値が必要ですが、送信された {{ value }} 値は数値ではありません。'
+"The {{ attribute }} attribute requires a value which does not contain space, and the submitted \"{{ value }}\" has at least one.": '{{ attribute }} 属性にはスペースを含まない値が必要です。送信された「{{ value }}」には少なくとも 1 つのスペースがあります。'
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": '%attribute% 属性には %limit% 文字以上を含むことはできません。送信された値は長すぎます。'
 "The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": '%type% ファイル拡張子はこの %attribute% 属性に対して許可されていません。許可されている拡張子は %extensions% です。'
 "The %attribute% attribute requires a url link.": '%attribute% 属性には URL リンクが必要です。'

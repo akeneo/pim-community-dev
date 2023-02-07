@@ -51,7 +51,7 @@ class FamilyRequirementsValidator extends ConstraintValidator
         $familyAttributeCodes = $family->getAttributeCodes();
 
         foreach ($family->getAttributeRequirements() as $code => $attributeRequirement) {
-            if (!in_array($attributeRequirement->getAttributeCode(), $familyAttributeCodes)) {
+            if ($attributeRequirement->isRequired() && !in_array($attributeRequirement->getAttributeCode(), $familyAttributeCodes)) {
                 $this->context
                     ->buildViolation($constraint->messageAttribute, [
                         '%attribute%' => $attributeRequirement->getAttributeCode(),
