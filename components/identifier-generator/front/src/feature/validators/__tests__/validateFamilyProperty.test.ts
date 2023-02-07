@@ -10,7 +10,7 @@ describe('validateFamilyProperty', () => {
     const violations = validateFamilyProperty(familyProperty, 'path');
     expect(violations).toEqual([
       {
-        message: 'Family code abbreviation type must be filled',
+        message: 'The empty values must be filled',
         path: 'path',
       },
     ]);

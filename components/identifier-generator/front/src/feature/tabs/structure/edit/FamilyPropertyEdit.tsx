@@ -97,12 +97,7 @@ const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedPr
             label={translate('pim_identifier_generator.structure.settings.family.chars_number')}
             requiredLabel={translate('pim_common.required_label')}
           >
-            <NumberInput
-              value={selectedProperty.process.value?.toString() || ''}
-              onChange={onChangeCharsNumber}
-              max={5}
-              min={1}
-            />
+            <NumberInput value={`${selectedProperty.process.value}`} onChange={onChangeCharsNumber} max={5} min={1} />
           </Field>
         </>
       )}
