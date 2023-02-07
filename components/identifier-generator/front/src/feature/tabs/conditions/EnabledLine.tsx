@@ -31,24 +31,24 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}
           isInSelection={true}
         />
         <Styled.SingleSelectCondition
-            value={typeof condition.value === 'undefined' ? null : condition.value ? 'true' : 'false'}
-            emptyResultLabel={translate('pim_common.no_result')}
-            openLabel={'pim_common.open'}
-            placeholder={translate('pim_identifier_generator.selection.settings.enabled.placeholder')}
-            onChange={handleChange}
-            clearable={false}
-            readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+          value={typeof condition.value === 'undefined' ? null : condition.value ? 'true' : 'false'}
+          emptyResultLabel={translate('pim_common.no_result')}
+          openLabel={'pim_common.open'}
+          placeholder={translate('pim_identifier_generator.selection.settings.enabled.placeholder')}
+          onChange={handleChange}
+          clearable={false}
+          readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+        >
+          <SelectInput.Option value="true" title={translate('pim_common.enabled')}>
+            {translate('pim_common.enabled')}
+          </SelectInput.Option>
+          <SelectInput.Option
+            value="false"
+            title={translate('pim_identifier_generator.selection.settings.enabled.disabled')}
           >
-            <SelectInput.Option value="true" title={translate('pim_common.enabled')}>
-              {translate('pim_common.enabled')}
-            </SelectInput.Option>
-            <SelectInput.Option
-              value="false"
-              title={translate('pim_identifier_generator.selection.settings.enabled.disabled')}
-            >
-              {translate('pim_identifier_generator.selection.settings.enabled.disabled')}
-            </SelectInput.Option>
-          </Styled.SingleSelectCondition>
+            {translate('pim_identifier_generator.selection.settings.enabled.disabled')}
+          </SelectInput.Option>
+        </Styled.SingleSelectCondition>
       </Styled.SelectionInputsContainer>
       <Table.ActionCell>
         {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
