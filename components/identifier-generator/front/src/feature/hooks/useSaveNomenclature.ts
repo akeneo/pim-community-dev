@@ -5,8 +5,8 @@ import {UseMutateFunction} from 'react-query/types/react/types';
 import {Violation} from '../validators';
 
 const useSaveNomenclature: () => {
-  save: UseMutateFunction<void, Violation[], Nomenclature>,
-  isLoading: boolean
+  save: UseMutateFunction<void, Violation[], Nomenclature>;
+  isLoading: boolean;
 } = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
