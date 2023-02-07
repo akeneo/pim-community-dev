@@ -1,6 +1,6 @@
 import {useGetFamilies} from './useGetFamilies';
 import {useCallback, useMemo, useState} from 'react';
-import {getLabel} from '@akeneo-pim-community/shared';
+import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {Family, Nomenclature, NomenclatureFilter, NomenclatureLineEditProps, NomenclatureValues} from '../models';
 import {useIsNomenclatureValueValid, usePlaceholder} from './useIsNomenclatureValueValid';
 
@@ -14,6 +14,7 @@ type HookResult = {
   setSearch: (search: string) => void;
   total: number;
   totalFiltered: number;
+  hasAFieldInError: boolean;
 };
 
 const useGetFamilyNomenclatureValues = (
@@ -27,6 +28,7 @@ const useGetFamilyNomenclatureValues = (
   const getPlaceholder = usePlaceholder(nomenclature);
   const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
   const [totalFiltered, setTotalFiltered] = useState<number>(0);
+  const userContext = useUserContext();
 
   const {data: families} = useGetFamilies({
     limit: -1,
@@ -35,12 +37,13 @@ const useGetFamilyNomenclatureValues = (
   const getLineFromFamily = useCallback(
     (family: Family): NomenclatureLineEditProps => ({
       code: family.code,
-      label: getLabel(family.labels, 'en_US', family.code), // TODO: remove en_US
+      label: getLabel(family.labels, userContext.get('catalogLocale'), family.code),
       value: values?.[family.code] || '',
     }),
     [values]
   );
 
+  let hasAFieldInError = false;
   const data = useMemo(() => {
     if (!families) return [];
 
@@ -54,7 +57,7 @@ const useGetFamilyNomenclatureValues = (
       if (
         (value?.toLowerCase() || '').includes(lowerCaseSearch) ||
         (family.code.toLowerCase() || '').includes(lowerCaseSearch) ||
-        (getLabel(family.labels, 'en_US', family.code) || '').includes(lowerCaseSearch) // TODO
+        (getLabel(family.labels, userContext.get('catalogLocale'), family.code) || '').includes(lowerCaseSearch)
       ) {
         totalMatchingItems++;
         const currentIndex = filteredButNotDisplayedDataCount + filteredData.length;
@@ -67,6 +70,8 @@ const useGetFamilyNomenclatureValues = (
     };
 
     for (const family of families) {
+      hasAFieldInError = hasAFieldInError ||
+        (!isValid(nomenclature?.values[family.code] || getPlaceholder(family.code)));
       switch (filter) {
         case 'all':
           addData(family);
@@ -94,7 +99,15 @@ const useGetFamilyNomenclatureValues = (
     setSearch(search);
   };
 
-  return {data, page, setPage, search, setSearch: mySetSearch, totalFiltered, total: families?.length || 0};
+  return {data,
+    page,
+    setPage,
+    search,
+    setSearch: mySetSearch,
+    totalFiltered,
+    total: families?.length || 0,
+    hasAFieldInError
+  };
 };
 
 export {useGetFamilyNomenclatureValues};

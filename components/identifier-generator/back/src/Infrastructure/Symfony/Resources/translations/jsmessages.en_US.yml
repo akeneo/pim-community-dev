@@ -128,3 +128,8 @@ pim_identifier_generator:
             filled: 'Filled'
         empty:
             title: 'No nomenclatures found'
+        flash:
+            success: 'Your nomenclature was successfully saved'
+            error: 'Your nomenclature cannot be saved'
+            warning: 'Your nomenclature was successfully saved, but some values will not be generated'
+

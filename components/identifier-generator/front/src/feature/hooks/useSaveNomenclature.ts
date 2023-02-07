@@ -4,11 +4,14 @@ import {useRouter} from '@akeneo-pim-community/shared';
 import {UseMutateFunction} from 'react-query/types/react/types';
 import {Violation} from '../validators';
 
-const useSaveNomenclature: () => {save: UseMutateFunction<void, Violation[], Nomenclature>} = () => {
+const useSaveNomenclature: () => {
+  save: UseMutateFunction<void, Violation[], Nomenclature>,
+  isLoading: boolean
+} = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const {mutate: save} = useMutation<void, Violation[], Nomenclature>(
+  const {mutate: save, isLoading} = useMutation<void, Violation[], Nomenclature>(
     async (nomenclature: Nomenclature) => {
       const response = await fetch(
         router.generate('akeneo_identifier_generator_nomenclature_rest_update', {
@@ -33,7 +36,7 @@ const useSaveNomenclature: () => {save: UseMutateFunction<void, Violation[], Nom
     }
   );
 
-  return {save};
+  return {save, isLoading};
 };
 
 export {useSaveNomenclature};
