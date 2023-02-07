@@ -7,7 +7,8 @@ import {
   Preview as PreviewComponent,
   SelectInput,
   SkeletonPlaceholder,
-  Table, TextInput,
+  Table,
+  TextInput,
 } from 'akeneo-design-system';
 import {TEXT_TRANSFORMATION, TextTransformation} from '../models';
 
@@ -160,7 +161,8 @@ const NomenclatureModalContent = styled.div`
 const NomenclatureDefinition = styled(Table)`
   width: auto;
   margin-bottom: 20px;
-  td:nth-child(3), td:nth-child(2) {
+  td:nth-child(3),
+  td:nth-child(2) {
     width: 250px;
   }
   label {
