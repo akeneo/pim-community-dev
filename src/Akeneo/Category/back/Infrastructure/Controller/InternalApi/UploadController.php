@@ -3,7 +3,6 @@
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Application\Handler\StoreUploadedFile;
-use Akeneo\Category\Infrastructure\FileSystem\NotSupportedFormatException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
