@@ -15,12 +15,14 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -47,6 +49,8 @@ class ApiContext implements Context
     private ?Response $response = null;
     private ?ConnectedAppWithValidToken $connectedApp = null;
     private ?KernelBrowser $client = null;
+    /** @var array<string, string> $files  */
+    private array $files = [];
 
     public function __construct(
         KernelInterface $kernel,
@@ -55,6 +59,18 @@ class ApiContext implements Context
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
     ) {
         $this->container = $kernel->getContainer()->get('test.service_container');
+    }
+
+    protected function getFileInfoKey(string $path): string
+    {
+        if (!\is_file($path)) {
+            throw new \Exception(\sprintf('The path "%s" does not exist.', $path));
+        }
+
+        $fileStorer = $this->container->get('akeneo_file_storage.file_storage.file.file_storer');
+        $fileInfo = $fileStorer->store(new \SplFileInfo($path), FileStorage::CATALOG_STORAGE_ALIAS);
+
+        return $fileInfo->getKey();
     }
 
     private function getConnectedApp(): ConnectedAppWithValidToken
@@ -770,6 +786,11 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'thumbnail' => [
+                        'source' => 'picture',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
                     'type' => [
                         'source' => 'family',
                         'scope' => null,
@@ -787,7 +808,7 @@ class ApiContext implements Context
                 <<<'JSON_WRAP'
                 {
                   "$id": "https://example.com/product",
-                  "$schema": "https://api.akeneo.com/mapping/product/0.0.4/schema",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.6/schema",
                   "$comment": "My first schema !",
                   "title": "Product Mapping",
                   "description": "JSON Schema describing the structure of products expected by our application",
@@ -821,6 +842,10 @@ class ApiContext implements Context
                     "is_released": {
                       "type": "boolean"
                     },
+                    "thumbnail": {
+                      "type": "string",
+                      "format": "uri"
+                    },
                     "type": {
                       "type": "string"
                     }
@@ -837,7 +862,10 @@ class ApiContext implements Context
         $adminUser = $this->authentication->getAdminUser();
         $this->authentication->logAs($adminUser->getUserIdentifier());
 
-        $bus = $this->container->get('pim_enrich.product.message_bus');
+        $this->files = [
+            'akeneoLogoImage' => $this->getFileInfoKey(__DIR__ . '/fixtures/akeneo.jpg'),
+            'ziggyImage' => $this->getFileInfoKey(__DIR__ . '/fixtures/ziggy.png'),
+        ];
 
         $products = [
             [
@@ -850,6 +878,7 @@ class ApiContext implements Context
                 'artists_customization_count' => '7',
                 'released_at' => new \DateTimeImmutable('2023-01-12T00:00:00+00:00'),
                 'is_released' => true,
+                'picture' => $this->files['akeneoLogoImage'],
                 'enabled' => true,
             ],
             [
@@ -862,6 +891,7 @@ class ApiContext implements Context
                 'artists_customization_count' => '5',
                 'released_at' => new \DateTimeImmutable('2023-01-10T00:00:00+00:00'),
                 'is_released' => true,
+                'picture' => $this->files['akeneoLogoImage'],
                 'enabled' => false,
             ],
             [
@@ -874,6 +904,7 @@ class ApiContext implements Context
                 'artists_customization_count' => '2',
                 'released_at' => new \DateTimeImmutable('2042-01-01T00:00:00+00:00'),
                 'is_released' => false,
+                'picture' => $this->files['ziggyImage'],
                 'enabled' => true,
             ],
         ];
@@ -921,6 +952,12 @@ class ApiContext implements Context
             'scopable' => false,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'picture',
+            'type' => 'pim_catalog_image',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
 
         $this->createFamily('t-shirt', [
             'sku',
@@ -932,6 +969,8 @@ class ApiContext implements Context
             'released_at',
             'is_released',
         ]);
+
+        $bus = $this->container->get('pim_enrich.product.message_bus');
 
         foreach ($products as $product) {
             $command = UpsertProductCommand::createWithUuid(
@@ -948,6 +987,7 @@ class ApiContext implements Context
                     new SetNumberValue('artists_customization_count', null, null, $product['artists_customization_count']),
                     new SetDateValue('released_at', null, null, $product['released_at']),
                     new SetBooleanValue('is_released', null, null, $product['is_released']),
+                    new SetImageValue('picture', null, null, $product['picture']),
                 ],
             );
 
@@ -994,6 +1034,7 @@ class ApiContext implements Context
                 'customization_artists_count' => '7',
                 'release_date' => '2023-01-12T00:00:00+00:00',
                 'is_released' => true,
+                'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
                 'type' => 't-shirt',
             ],
             [
@@ -1006,6 +1047,7 @@ class ApiContext implements Context
                 'customization_artists_count' => '2',
                 'release_date' => '2042-01-01T00:00:00+00:00',
                 'is_released' => false,
+                'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
                 'type' => 't-shirt',
             ],
         ];
@@ -1047,6 +1089,7 @@ class ApiContext implements Context
             'customization_artists_count' => '7',
             'release_date' => '2023-01-12T00:00:00+00:00',
             'is_released' => true,
+            'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
             'type' => 't-shirt',
         ];
 

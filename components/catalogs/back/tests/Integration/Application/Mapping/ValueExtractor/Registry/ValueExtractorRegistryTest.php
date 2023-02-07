@@ -14,6 +14,7 @@ use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFr
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextareaAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringUri\StringUriFromImageAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
@@ -104,6 +105,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
                 'targetType' => 'string',
                 'targetFormat' => 'date-time',
                 'extractorClassName' => StringDateTimeFromDateAttributeValueExtractor::class,
+            ],
+            StringUriFromImageAttributeValueExtractor::class => [
+                'sourceType' => 'pim_catalog_image',
+                'targetType' => 'string',
+                'targetFormat' => 'uri',
+                'extractorClassName' => StringUriFromImageAttributeValueExtractor::class,
             ],
         ];
     }

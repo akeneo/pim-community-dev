@@ -29,6 +29,9 @@ final class TargetTypeConverter
         'number' => [
             'pim_catalog_number',
         ],
+        'string+uri' => [
+            'pim_catalog_image',
+        ],
     ];
 
     /**

@@ -16,6 +16,7 @@ interface ValueExtractorInterface
 {
     public const SOURCE_TYPE_ATTRIBUTE_BOOLEAN = 'pim_catalog_boolean';
     public const SOURCE_TYPE_ATTRIBUTE_DATE = 'pim_catalog_date';
+    public const SOURCE_TYPE_ATTRIBUTE_IMAGE = 'pim_catalog_image';
     public const SOURCE_TYPE_ATTRIBUTE_NUMBER = 'pim_catalog_number';
     public const SOURCE_TYPE_ATTRIBUTE_IDENTIFIER = 'pim_catalog_identifier';
     public const SOURCE_TYPE_ATTRIBUTE_SIMPLE_SELECT = 'pim_catalog_simpleselect';
@@ -29,6 +30,7 @@ interface ValueExtractorInterface
     public const TARGET_TYPE_STRING = 'string';
 
     public const TARGET_FORMAT_DATETIME = 'date-time';
+    public const TARGET_FORMAT_URI = 'uri';
 
     /**
      * @param RawProduct $product

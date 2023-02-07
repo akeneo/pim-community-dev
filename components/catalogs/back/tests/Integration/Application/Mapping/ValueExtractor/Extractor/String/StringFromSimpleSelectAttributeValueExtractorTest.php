@@ -37,7 +37,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
         );
     }
 
-    public function testItReturnsTheAttributeValue(): void
+    public function testItReturnsTheValueForSimpleSelectAttribute(): void
     {
         $this->createAttribute([
             'code' => 'color',

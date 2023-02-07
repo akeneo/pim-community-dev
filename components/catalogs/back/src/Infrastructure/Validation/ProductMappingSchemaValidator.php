@@ -96,6 +96,7 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
             'https://api.akeneo.com/mapping/product/0.0.2/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.2.json',
             'https://api.akeneo.com/mapping/product/0.0.3/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.3.json',
             'https://api.akeneo.com/mapping/product/0.0.4/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.4.json',
+            'https://api.akeneo.com/mapping/product/0.0.6/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.6.json',
             default => null,
         };
     }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\StringDateTime;
+namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\StringUri;
 
-use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringUri\StringUriFromImageAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\ValueExtractorTestCase;
 
@@ -14,19 +14,17 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  *
- * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor
+ * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringUriFromImageAttributeValueExtractor
  */
-class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTestCase
+class StringUriFromImageAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringDateTimeFromDateAttributeValueExtractor $extractor;
+    private ?StringUriFromImageAttributeValueExtractor $extractor;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->extractor = self::getContainer()->get(StringDateTimeFromDateAttributeValueExtractor::class);
+        $this->extractor = self::getContainer()->get(StringUriFromImageAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
@@ -37,43 +35,31 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
         );
     }
 
-    public function testItReturnsTheValueForDateAttribute(): void
+    public function testItReturnsTheValueForImageAttribute(): void
     {
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
-                'release_date' => [
+                'picture' => [
                     'ecommerce' => [
-                        '<all_locales>' => '2012-04-08T00:00:00+00:00',
-                    ],
-                ],
-                'end_of_life' => [
-                    'ecommerce' => [
-                        'en_US' => '2016-01-01T00:00:00+00:00',
+                        'en_US' => '2/7/6/3/276381a2e49e6cabb1017a80f8d699bf0b4bf2dd_my_picture.jpeg',
                     ],
                 ],
             ],
         ];
 
-        $releaseDate = $this->extractor->extract(
+        $result = $this->extractor->extract(
             product: $product,
-            code: 'release_date',
-            locale: '<all_locales>',
-            scope: 'ecommerce',
-            parameters: [],
-        );
-
-        $this->assertEquals('2012-04-08T00:00:00+00:00', $releaseDate);
-
-        $endOfLife = $this->extractor->extract(
-            product: $product,
-            code: 'end_of_life',
+            code: 'picture',
             locale: 'en_US',
             scope: 'ecommerce',
             parameters: [],
         );
 
-        $this->assertEquals('2016-01-01T00:00:00+00:00', $endOfLife);
+        $this->assertEquals(
+            'http://localhost:8080/api/rest/v1/media-files/2/7/6/3/276381a2e49e6cabb1017a80f8d699bf0b4bf2dd_my_picture.jpeg/download',
+            $result,
+        );
     }
 
     public function testItReturnsNullIfNotFound(): void
@@ -81,27 +67,19 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
-                'release_date' => [
+                'picture' => [
                     'ecommerce' => [
-                        '<all_locales>' => '2012-04-08T00:00:00+00:00',
+                        'en_US' => '2/7/6/3/276381a2e49e6cabb1017a80f8d699bf0b4bf2dd_my_picture.jpeg',
                     ],
                 ],
             ],
         ];
 
-        $this->createAttribute([
-            'code' => 'release_date',
-            'type' => 'pim_catalog_date',
-            'group' => 'other',
-            'scopable' => true,
-            'localizable' => false,
-        ]);
-
         $result = $this->extractor->extract(
             product: $product,
-            code: 'release_date',
-            locale: null,
-            scope: 'print',
+            code: 'picture',
+            locale: '<all_locales>',
+            scope: '<all_channels>',
             parameters: [],
         );
 
@@ -113,9 +91,9 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
-                'release_date' => [
+                'picture' => [
                     'ecommerce' => [
-                        'en_US' => 20230131,
+                        'en_US' => ['2/7/6/3/276381a2e49e6cabb1017a80f8d699bf0b4bf2dd_my_picture.jpeg'],
                     ],
                 ],
             ],
@@ -123,7 +101,7 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
 
         $result = $this->extractor->extract(
             product: $product,
-            code: 'release_date',
+            code: 'picture',
             locale: 'en_US',
             scope: 'ecommerce',
             parameters: [],
