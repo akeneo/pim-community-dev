@@ -65,7 +65,7 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
   if (!canAccessAttributes) {
     return (
       <Table.Cell colSpan={3}>
-        <Helper level="info">{translate('pim_error.unauthorized_list_attributes')}</Helper>
+        <Helper level="info">{translate('pim_error.unauthorized_list_properties')}</Helper>
       </Table.Cell>
     );
   }
