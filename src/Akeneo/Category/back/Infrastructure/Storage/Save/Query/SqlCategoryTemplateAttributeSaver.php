@@ -25,6 +25,10 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
 
     public function insert(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void
     {
+        if ($this->isTemplateDeactivated($templateUuid)) {
+            return;
+        }
+
         $this->insertAttributes($attributeCollection->getAttributes());
     }
 
@@ -81,5 +85,20 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
         }
 
         $statement->executeQuery();
+    }
+
+    private function isTemplateDeactivated(TemplateUuid $templateUuid): bool
+    {
+        $query = <<<SQL
+            SELECT is_deactivated
+            FROM pim_catalog_category_template
+            WHERE uuid = :template_uuid;
+        SQL;
+
+        $result = $this->connection->executeQuery($query, [
+            'template_uuid' => $templateUuid->toBytes(),
+        ])->fetchAssociative();
+
+        return $result['is_deactivated'] === '1';
     }
 }

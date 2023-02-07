@@ -25,12 +25,15 @@ class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
      */
     public function insert(Template $templateModel): void
     {
+        if ($this->isTemplateDeactivated($templateModel)) {
+            return;
+        }
+
         $query = <<< SQL
             INSERT INTO pim_catalog_category_tree_template
                 (category_template_uuid, category_tree_id)
             VALUES
-                (UUID_TO_BIN(:template_uuid), :category_tree_id)
-            ;
+                (UUID_TO_BIN(:template_uuid), :category_tree_id);
         SQL;
 
         $this->connection->executeQuery(
@@ -49,5 +52,20 @@ class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
     public function update(Template $templateModel): void
     {
         // TODO: Implement update() method.
+    }
+
+    private function isTemplateDeactivated(Template $templateModel): bool
+    {
+        $query = <<<SQL
+            SELECT is_deactivated
+            FROM pim_catalog_category_template
+            WHERE uuid = :template_uuid;
+        SQL;
+
+        $result = $this->connection->executeQuery($query, [
+            'template_uuid' => $templateModel->getUuid()->toBytes(),
+        ])->fetchAssociative();
+
+        return $result['is_deactivated'] === '1';
     }
 }

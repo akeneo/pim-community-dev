@@ -32,7 +32,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     public function execute(Category $categoryModel): void
     {
         if ($this->getCategory->byCode((string) $categoryModel->getCode())) {
-            $this->updateCategory($categoryModel);
+            $this->updateEnrichedCategory($categoryModel);
         } else {
             $this->insertCategory($categoryModel);
         }
@@ -100,17 +100,20 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     /**
      * @throws Exception
      */
-    private function updateCategory(Category $categoryModel): void
+    private function updateEnrichedCategory(Category $categoryModel): void
     {
-        $query = <<< SQL
-                UPDATE pim_catalog_category
-                SET
-                    created = pim_catalog_category.created,
-                    updated = NOW(),
-                    value_collection = :value_collection
-                WHERE code = :category_code
-                ;
-            SQL;
+        if ($this->isTemplateDeactivated($categoryModel)) {
+            return;
+        }
+
+        $query = <<<SQL
+            UPDATE pim_catalog_category
+            SET
+                created = pim_catalog_category.created,
+                updated = NOW(),
+                value_collection = :value_collection
+            WHERE code = :category_code;
+        SQL;
 
         $attributeValues = $categoryModel->getAttributes()?->normalize();
         if (null !== $attributeValues) {
@@ -120,7 +123,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
         $this->connection->executeQuery(
             $query,
             [
-                'category_code' => (string) $categoryModel->getCode(),
+                'category_code' => (string)$categoryModel->getCode(),
                 'value_collection' => $attributeValues,
             ],
             [
@@ -128,5 +131,24 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'value_collection' => Types::JSON,
             ],
         );
+    }
+
+    private function isTemplateDeactivated(Category $categoryModel): bool
+    {
+        if (!$categoryModel->getTemplateUuid()) {
+            return false;
+        }
+
+        $query = <<<SQL
+            SELECT is_deactivated
+            FROM pim_catalog_category_template
+            WHERE uuid = :template_uuid;
+        SQL;
+
+        $result = $this->connection->executeQuery($query, [
+            'template_uuid' => $categoryModel->getTemplateUuid()->toBytes(),
+        ])->fetchAssociative();
+
+        return $result['is_deactivated'] === '1';
     }
 }
