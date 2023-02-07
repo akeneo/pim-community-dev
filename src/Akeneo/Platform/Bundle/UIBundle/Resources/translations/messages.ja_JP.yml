@@ -77,7 +77,6 @@ pim_common:
   updated: '更新:'
   view: ビュー
   yes: "はい"
-  uuid: uuid
 pim_enrich:
   #ACLs
   acl:
@@ -455,6 +454,8 @@ pim_datagrid:
       label: 親
     identifier:
       label: 識別子
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: 変更履歴
 Data Audit: データ監査

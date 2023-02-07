@@ -77,7 +77,6 @@ pim_common:
   updated: Zaktualizowano
   view: Zobacz
   yes: "Tak"
-  uuid: uuid
 pim_enrich:
   #ACLs
   acl:
@@ -455,6 +454,8 @@ pim_datagrid:
       label: Element nadrzędny
     identifier:
       label: Identyfikator
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: Historia zmian
 Data Audit: Inspekcja danych

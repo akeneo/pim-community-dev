@@ -150,6 +150,12 @@ pim_import_export:
           file_locale:
             title: Datei Gebietsschema
             help: Definieren Sie das Gebietsschema, in dem die Labels angezeigt werden
+          with_uuid:
+            title: Mit Produkt UUID
+            help: UUID des Produkts und der zugehörigen Produkte exportieren
+          with_uuid_for_models:
+            title: Mit Produkt UUID
+            help: Zugehörige Produkt-UUID anstatt deren Bezeichner exportieren
       file_path: Dateipfad
       storage_form:
         title: Speicher
@@ -157,14 +163,66 @@ pim_import_export:
           label: Typ
           local: Lokal
           sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Speicher
           none: Kein Speicher konfiguriert
         file_path:
           label: Dateipfad
+          placeholder: myfile.{{ file_extension }}
+        host:
+          label: Host
+          placeholder: example.com
+        fingerprint:
+          label: Host Fingerabdruck (optional)
+          placeholder: "c1:91:5e:42:55:5c:74:65:b6:12:32:7e:1f:6d:80:3e"
+          helper: Wir benötigen eine SHA-512 oder MD5 gehashte Prüfsumme mit Doppelpunkt-Notation für den Host-Fingerabdruck.
+        port:
+          label: Port
+          placeholder: 22
+        username:
+          label: Anmelden
+          placeholder: Anmeldedaten eingeben
+        password:
+          label: Passwort
+          placeholder: Passwort eingeben
+        public_key:
+          label: Öffentlicher Schlüssel
+        login_type:
+          label: Authentifizierungsmethode
+          password: Login & Passwort
+          private_key: Privater Schlüssel
+        region:
+          label: Region
+          placeholder: Region eingeben
+        bucket:
+          label: Bucket Name
+          placeholder: Geben Sie Ihren Regionalnamen ein
+        key:
+          label: Schlüssel
+          placeholder: Geben Sie Ihren Schlüssel ein
+        secret:
+          label: Passwort (Secret)
+          placeholder: Schlüssel eingeben
+        connection_string:
+          label: Verbindungszeichenfolge
+          placeholder: Geben Sie Ihre Verbindungszeichenfolge ein
+        container_name:
+          label: Containername
+          placeholder: Geben Sie Ihren Containernamen ein
+        project_id:
+          label: Projekt ID
+          placeholder: Geben Sie Ihre Projekt-ID ein
+        service_account:
+          label: Dienstkonto
+          placeholder: Geben Sie Ihr Service-Konto ein
       validation:
         storage:
           unavailable_type: Dieser Speicher ist nicht verfügbar, nur {{ available_types }} sind verfügbar.
         file_path:
           unsupported_extension: Nicht unterstützte Dateierweiterung
+        fingerprint:
+          invalid_encoding: Host Fingerabdruck sollte ein gültiger SHA-512 oder MD5 Prüfsummen-Hash mit Doppelpunkt-Notation sein.
       connection_checker:
         label: Verbindungseinstellungen testen
         exception: Verbindung kann nicht hergestellt werden, bitte überprüfen Sie Ihre Einstellungen.

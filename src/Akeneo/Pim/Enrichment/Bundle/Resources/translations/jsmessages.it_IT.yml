@@ -24,6 +24,7 @@ pim_enrich.entity.product:
       fields_not_ready: "Il prodotto non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
       already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
       file_upload: Si è verificato un errore durante il caricamento del file
+      identifier_warning: Il prodotto è stato salvato ma non è stato possibile generare l'identificatore.
     delete:
       success: Prodotto eliminato correttamente.
       fail: Il prodotto non può essere eliminato.
@@ -496,6 +497,8 @@ pim_datagrid:
       label: Parente
     identifier:
       label: Identificatore
+    uuid:
+      label: Uuid
   search: Cerca per {{ label }}
 batch_jobs:
   add_association:

@@ -77,7 +77,6 @@ pim_common:
   updated: Caricato
   view: Visualizzazione
   yes: "Sì"
-  uuid: uuid
 pim_enrich:
   #ACLs
   acl:
@@ -455,6 +454,8 @@ pim_datagrid:
       label: Parente
     identifier:
       label: Identificatore
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: Cambia la cronologia
 Data Audit: Revisione dei dati

@@ -277,7 +277,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: local
+                type: none
                 file_path: /tmp/attribute.csv
     option_import:
         connector: Akeneo CSV Connector
