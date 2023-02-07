@@ -54,44 +54,30 @@ final class GetOpenAppUrlAction
             throw new \LogicException("App not found with connected app id \"{$connectedApp->getId()}\"");
         }
 
-        $this->denyAccessUnlessGrantedToManageOrOpen($app);
+        $this->denyAccessUnlessGrantedToManageOrOpen();
 
         $app = $app->withPimUrlSource($this->appUrlGenerator->getAppQueryParameters());
 
-        if ($connectedApp->hasOutdatedScopes() && $this->isGrantedToManage($app)) {
+        if ($connectedApp->hasOutdatedScopes() && $this->isGrantedToManage()) {
             $this->saveConnectedAppOutdatedScopesFlagQuery->execute($connectedApp->getId(), false);
         }
 
         return new JsonResponse(['url' => $app->getActivateUrl()]);
     }
 
-    private function isGrantedToManage(App $app): bool
+    private function isGrantedToManage(): bool
     {
-        return
-            (
-                $app->isCustomApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
-            ) || (
-                !$app->isCustomApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_apps')
-            );
+        return $this->security->isGranted('akeneo_connectivity_connection_manage_apps');
     }
 
-    private function isGrantedToOpen(App $app): bool
+    private function isGrantedToOpen(): bool
     {
-        return
-            (
-                $app->isCustomApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
-            ) || (
-                !$app->isCustomApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_open_apps')
-            );
+        return $this->security->isGranted('akeneo_connectivity_connection_open_apps');
     }
 
-    private function denyAccessUnlessGrantedToManageOrOpen(App $app): void
+    private function denyAccessUnlessGrantedToManageOrOpen(): void
     {
-        if (!$this->isGrantedToManage($app) && !$this->isGrantedToOpen($app)) {
+        if (!$this->isGrantedToManage() && !$this->isGrantedToOpen()) {
             throw new AccessDeniedHttpException();
         }
     }
