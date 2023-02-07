@@ -5,18 +5,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 
-beforeEach(() => {
-  const intersectionObserverMock = () => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-  });
-
-  window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
-});
-
-jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
-  PimView: () => <></>,
-}));
+const mockedUseSecurity = jest.fn();
 
 jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
@@ -37,7 +26,20 @@ jest.mock('@akeneo-pim-community/shared', () => ({
       }
     },
   }),
-  useSecurity: () => ({
-    isGranted: () => true,
-  }),
+  useSecurity: mockedUseSecurity,
+}));
+
+beforeEach(() => {
+  const intersectionObserverMock = () => ({
+    observe: jest.fn(),
+    unobserve: jest.fn(),
+  });
+
+  window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+
+  mockedUseSecurity.mockImplementation(() => ({isGranted: () => true}));
+});
+
+jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
+  PimView: () => <></>,
 }));

@@ -32,10 +32,10 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
 
   const label = useMemo(
     () =>
-      isLoading || error || !canAccessAttributes
+      isLoading || error
         ? `[${condition.attributeCode}]`
         : getLabel(data?.labels || {}, locale, condition.attributeCode),
-    [canAccessAttributes, condition.attributeCode, data, error, isLoading, locale]
+    [condition.attributeCode, data, error, isLoading, locale]
   );
 
   const handleOperatorChange = useCallback(
@@ -61,6 +61,14 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
   const handleScopeAndLocaleChange = (newValue: {scope?: ChannelCode | null; locale?: LocaleCode | null}) => {
     onChange({...condition, ...newValue});
   };
+
+  if (!canAccessAttributes) {
+    return (
+      <Table.Cell colSpan={3}>
+        <Helper level="info">{translate('pim_error.unauthorized_list_attributes')}</Helper>
+      </Table.Cell>
+    );
+  }
 
   return (
     <>
