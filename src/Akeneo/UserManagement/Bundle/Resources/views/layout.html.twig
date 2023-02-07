@@ -97,6 +97,25 @@
               });
             }
         </script>
+        <script type="text/javascript" nonce="{{ js_nonce() }}">
+            const initUnlockBanner = function () {
+              const illustration = document.querySelector('.IllustrationLogin');
+
+              if (!illustration) {
+                return;
+              }
+
+              const link = document.createElement('a');
+              link.href = 'https://unlock.akeneo.com/2023-Paris?utm_source=loginpage&utm_medium=adl&utm_campaign=2023%20-%20WW%20-%20Unlock%20Paris';
+              link.target = '_blank';
+              link.title = 'Register Now'
+              link.textContent = 'Register Now';
+
+
+              illustration.classList.add('UnlockBanner--enabled');
+              illustration.append(link);
+            };
+        </script>
     {% endblock %}
 </body>
 </html>

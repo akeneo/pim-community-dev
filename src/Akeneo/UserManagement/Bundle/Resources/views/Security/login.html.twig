@@ -74,4 +74,9 @@
         initPimLoginForm([username, password], submit, form);
       })();
     </script>
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      (function () {
+        initUnlockBanner();
+      })();
+    </script>
 {% endblock %}
