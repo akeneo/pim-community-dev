@@ -120,11 +120,6 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => 'en_US',
                 ],
-                'meta_description' => [
-                    'source' => null,
-                    'scope' => null,
-                    'locale' => null,
-                ],
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
@@ -197,11 +192,6 @@ class CatalogFixtureCommand extends Command
             "meta_title": {
               "type": "string",
               "title": "Meta title"
-            },
-            "meta_description": {
-              "type": "string",
-              "minLength": 50,
-              "maxLength": 160
             }
           }
         }

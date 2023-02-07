@@ -3,41 +3,21 @@
   "$id": "https://api.akeneo.com/mapping/product/0.0.5/schema",
   "type": "object",
   "properties": {
-    "$id": {
-      "$ref": "#/$defs/$id"
-    },
-    "$schema": {
-      "$ref": "#/$defs/$schema"
-    },
-    "$comment": {
-      "$ref": "#/$defs/$comment"
-    },
-    "$defs": {
-      "$ref": "#/$defs/$defs"
-    },
-    "title": {
-      "$ref": "#/$defs/title"
-    },
-    "description": {
-      "$ref": "#/$defs/description"
-    },
-    "type": {
-      "const": "object"
-    },
+    "$id": { "$ref": "#/$defs/$id" },
+    "$schema": { "$ref": "#/$defs/$schema" },
+    "$comment": { "$ref": "#/$defs/$comment" },
+    "$defs": { "$ref": "#/$defs/$defs" },
+    "title": { "$ref": "#/$defs/title" },
+    "description": { "$ref": "#/$defs/description" },
+    "type": { "const": "object" },
     "properties": {
       "type": "object",
       "properties": {
-        "uuid": {
-          "$ref": "#/$defs/uuidProperty"
-        }
+        "uuid": { "$ref": "#/$defs/uuidProperty" }
       },
-      "additionalProperties": {
-        "$ref": "#/$defs/property"
-      },
+      "additionalProperties": { "$ref": "#/$defs/property" },
       "default": {},
-      "required": [
-        "uuid"
-      ]
+      "required": ["uuid"]
     }
   },
   "$defs": {
@@ -45,17 +25,13 @@
       "$comment": "Non-empty fragments not allowed.",
       "pattern": "^[^#]*#?$"
     },
-    "$schema": {
-      "$ref": "#/$defs/uriString"
-    },
+    "$schema": { "$ref": "#/$defs/uriString" },
     "$comment": {
       "type": "string"
     },
     "$defs": {
       "type": "object",
-      "additionalProperties": {
-        "$ref": "#/$defs/property"
-      }
+      "additionalProperties": { "$ref": "#/$defs/property" }
     },
     "title": {
       "type": "string"
@@ -66,12 +42,8 @@
     "propertyWithSimpleType": {
       "type": "object",
       "properties": {
-        "title": {
-          "$ref": "#/$defs/title"
-        },
-        "description": {
-          "$ref": "#/$defs/description"
-        },
+        "title": { "$ref": "#/$defs/title" },
+        "description": { "$ref": "#/$defs/description" },
         "type": {
           "enum": [
             "string",
@@ -89,19 +61,13 @@
         }
       },
       "additionalProperties": false,
-      "required": [
-        "type"
-      ]
+      "required": ["type"]
     },
     "propertyWithTypeAndFormat": {
       "type": "object",
       "properties": {
-        "title": {
-          "$ref": "#/$defs/title"
-        },
-        "description": {
-          "$ref": "#/$defs/description"
-        },
+        "title": { "$ref": "#/$defs/title" },
+        "description": { "$ref": "#/$defs/description" },
         "type": {
           "enum": [
             "string"
@@ -123,19 +89,12 @@
         }
       },
       "additionalProperties": false,
-      "required": [
-        "type",
-        "format"
-      ]
+      "required": ["type", "format"]
     },
     "property": {
       "oneOf": [
-        {
-          "$ref": "#/$defs/propertyWithSimpleType"
-        },
-        {
-          "$ref": "#/$defs/propertyWithTypeAndFormat"
-        }
+        { "$ref": "#/$defs/propertyWithSimpleType" },
+        { "$ref": "#/$defs/propertyWithTypeAndFormat" }
       ]
     },
     "uriString": {
@@ -145,20 +104,12 @@
     "uuidProperty": {
       "type": "object",
       "properties": {
-        "title": {
-          "$ref": "#/$defs/title"
-        },
-        "description": {
-          "$ref": "#/$defs/description"
-        },
-        "type": {
-          "const": "string"
-        }
+        "title": { "$ref": "#/$defs/title" },
+        "description": { "$ref": "#/$defs/description" },
+        "type": { "const": "string" }
       },
       "additionalProperties": false,
-      "required": [
-        "type"
-      ]
+      "required": ["type"]
     }
   },
   "additionalProperties": false
