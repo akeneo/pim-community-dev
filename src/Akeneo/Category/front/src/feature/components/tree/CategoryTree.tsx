@@ -14,6 +14,7 @@ type Props = {
     identifier: number,
     label: string,
     code: string,
+    isRoot: boolean,
     numberOfProducts: number,
     onDelete: () => void
   ) => void;
@@ -27,7 +28,7 @@ const CategoryTree: FC<Props> = ({root, orderable = false, ...rest}) => {
   return (
     <CategoryTreeProvider root={root}>
       <OrderableTreeProvider isActive={orderable}>
-        <Node id={root.id} label={root.label} code={root.code} orderable={orderable} {...rest} />
+        <Node id={root.id} label={root.label} code={root.code} isRoot={root.isRoot} orderable={orderable} {...rest} />
       </OrderableTreeProvider>
     </CategoryTreeProvider>
   );

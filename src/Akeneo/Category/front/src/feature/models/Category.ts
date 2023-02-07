@@ -142,6 +142,7 @@ const buildTreeNodeFromCategoryTree = (
     identifier: categoryTree.id,
     label: categoryTree.label,
     code: categoryTree.code,
+    isRoot: categoryTree.isRoot,
     childrenIds: Array.isArray(categoryTree.children) ? categoryTree.children.map(child => child.id) : [],
     data: categoryTree,
     parentId: parent,

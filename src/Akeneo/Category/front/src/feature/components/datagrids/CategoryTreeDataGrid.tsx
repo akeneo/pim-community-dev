@@ -36,7 +36,6 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const [displayCategoryTemplatesColumn, setDisplayCategoryTemplatesColumn] = useState<boolean>(false);
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
-
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
       const url = router.generate('pim_enrich_categorytree_tree', {id: tree.id});
@@ -248,6 +247,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
           {isConfirmationModalOpen && categoryTreeToDelete && (
             <DeleteCategoryModal
               categoryLabel={categoryTreeToDelete.label}
+              isRoot={true}
               closeModal={closeConfirmationModal}
               deleteCategory={deleteCategoryTree}
               message={

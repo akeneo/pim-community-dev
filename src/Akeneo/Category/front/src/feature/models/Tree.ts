@@ -2,6 +2,7 @@ type TreeNode<T> = {
   identifier: number;
   label: string;
   code: string;
+  isRoot: boolean;
   parentId: number | null;
   childrenIds: number[];
   data: T;

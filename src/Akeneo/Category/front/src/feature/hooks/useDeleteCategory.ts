@@ -7,6 +7,7 @@ type CategoryToDelete = {
   identifier: number;
   label: string;
   code: string;
+  isRoot: boolean;
   numberOfProducts: number;
   onDelete: () => void;
 };

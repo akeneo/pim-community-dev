@@ -233,14 +233,12 @@ const CategoryEditPage: FC = () => {
                       onClick={() => {
                         countProductsBeforeDeleteCategory((nbProducts: number) => {
                           const identifier = parseInt(categoryId);
-                          if (
-                            category &&
-                            isCategoryDeletionPossible(category.properties.labels[uiLocale], nbProducts)
-                          ) {
+                          if (category && isCategoryDeletionPossible(categoryLabel, nbProducts)) {
                             setCategoryToDelete({
                               identifier,
-                              label: category.properties.labels[uiLocale],
+                              label: categoryLabel,
                               code: category.properties.code,
+                              isRoot: category.isRoot,
                               numberOfProducts: nbProducts,
                               onDelete: followCategoryTree,
                             });
@@ -323,6 +321,7 @@ const CategoryEditPage: FC = () => {
       {isDeleteCategoryModalOpen && categoryToDelete !== null && (
         <DeleteCategoryModal
           categoryLabel={categoryToDelete.label}
+          isRoot={categoryToDelete.isRoot}
           closeModal={handleCloseDeleteCategoryModal}
           deleteCategory={async () => {
             await handleDeleteCategory(categoryToDelete);

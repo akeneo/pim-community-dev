@@ -9,6 +9,7 @@ type Props = {
   id: number;
   label: string;
   code: string;
+  isRoot: boolean;
   index?: number;
   orderable?: boolean;
   followCategory?: (category: CategoryTreeModel) => void;
@@ -18,6 +19,7 @@ type Props = {
     identifier: number,
     label: string,
     code: string,
+    isRoot: boolean,
     numberOfProducts: number,
     onDelete: () => void
   ) => void;
@@ -27,6 +29,7 @@ const Node: FC<Props> = ({
   id,
   label,
   code,
+  isRoot,
   followCategory,
   addCategory,
   deleteCategory,
@@ -91,7 +94,7 @@ const Node: FC<Props> = ({
               onClick={event => {
                 event.stopPropagation();
                 countProductsBeforeDeleteCategory((nbProducts: number) =>
-                  deleteCategory(id, label, code, nbProducts, onDeleteCategory)
+                  deleteCategory(id, label, code, isRoot, nbProducts, onDeleteCategory)
                 );
               }}
             >
@@ -106,6 +109,7 @@ const Node: FC<Props> = ({
             id={child.identifier}
             label={child.label}
             code={child.code}
+            isRoot={child.isRoot}
             followCategory={followCategory}
             addCategory={addCategory}
             deleteCategory={deleteCategory}

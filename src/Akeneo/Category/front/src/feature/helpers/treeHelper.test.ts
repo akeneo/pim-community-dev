@@ -22,6 +22,7 @@ describe('treeHelper', () => {
         identifier: 1,
         label: '[a_root]',
         code: 'a_root',
+        isRoot: true,
         childrenIds: [2, 3],
         data: root,
         parentId: null,
@@ -32,6 +33,7 @@ describe('treeHelper', () => {
         identifier: 2,
         label: '[cat_without_children]',
         code: 'cat_without_children',
+        isRoot: false,
         childrenIds: [],
         data: aCategoryWithoutChildren,
         parentId: 1,
@@ -42,6 +44,7 @@ describe('treeHelper', () => {
         identifier: 3,
         label: '[cat_with_children]',
         code: 'cat_with_children',
+        isRoot: false,
         childrenIds: [4],
         data: aCategoryWithChildren,
         parentId: 1,
@@ -52,6 +55,7 @@ describe('treeHelper', () => {
         identifier: 4,
         label: '[another_cat_without_children]',
         code: 'another_cat_without_children',
+        isRoot: false,
         childrenIds: [],
         data: anotherCategoryWithoutChildren,
         parentId: 3,
@@ -63,7 +67,7 @@ describe('treeHelper', () => {
 
   test('it finds identifiers of loaded descendants of a given node', () => {
     const categoryRoot = aCategory('root', undefined, 1, null);
-    const nodeRoot = aTreeNode(categoryRoot, 1, [10, 11], 'a_tree', '', null, 'root', 'loaded');
+    const nodeRoot = aTreeNode(categoryRoot, 1, [10, 11], 'a_tree', '', true, null, 'root', 'loaded');
 
     const whateverNode = aTreeNode(
       aCategory('whateverCategory', undefined, 10, categoryRoot),
@@ -71,6 +75,7 @@ describe('treeHelper', () => {
       [101],
       'whateverNode',
       '',
+      false,
       1,
       'node',
       'loaded'
@@ -82,6 +87,7 @@ describe('treeHelper', () => {
       [],
       'whateverNodeChild',
       '',
+        false,
       10,
       'leaf',
       'idle'
@@ -93,6 +99,7 @@ describe('treeHelper', () => {
       [111, 112, 113],
       'deletedNode',
       '',
+      false,
       1,
       'node',
       'loaded'
@@ -104,6 +111,7 @@ describe('treeHelper', () => {
       [],
       'deletedChildNodeLeaf',
       '',
+      false,
       11,
       'leaf',
       'idle'
@@ -115,6 +123,7 @@ describe('treeHelper', () => {
       [1121, 1122],
       'deletedChildNodeWithoutLoadedChildren',
       '',
+      false,
       11,
       'node',
       'idle'
@@ -126,6 +135,7 @@ describe('treeHelper', () => {
       [1131, 1132],
       'deletedChildNodeWithLoadedChildren',
       '',
+      false,
       11,
       'node',
       'loaded'
@@ -137,6 +147,7 @@ describe('treeHelper', () => {
       [],
       'deletedGrandChildNode1',
       '',
+      false,
       113,
       'leaf',
       'idle'
@@ -148,6 +159,7 @@ describe('treeHelper', () => {
       [],
       'deletedGrandChildNode2',
       '',
+      false,
       113,
       'leaf',
       'idle'

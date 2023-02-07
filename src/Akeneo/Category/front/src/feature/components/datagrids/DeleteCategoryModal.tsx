@@ -6,6 +6,7 @@ import {useCountCategoryChildren} from '../../hooks/useCountCategoryChildren';
 
 type DeleteCategoryModalProps = {
   categoryLabel: string;
+  isRoot: boolean;
   closeModal: () => void;
   deleteCategory: () => void;
   message: string;
@@ -15,18 +16,17 @@ type DeleteCategoryModalProps = {
 
 const DeleteCategoryModal: FC<DeleteCategoryModalProps> = ({
   categoryLabel,
+  isRoot,
   closeModal,
   deleteCategory,
   message,
   numberOfProducts,
   categoryId,
 }) => {
-  const isMounted = useIsMounted();
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
 
   const {data: categoryChildrenCount, isLoading} = useCountCategoryChildren(categoryId);
-
   let warning = null;
   if (featureFlags.isEnabled('enriched_category') && !isLoading) {
     if (categoryChildrenCount && categoryChildrenCount > 0) {
@@ -44,7 +44,9 @@ const DeleteCategoryModal: FC<DeleteCategoryModalProps> = ({
     <Modal closeTitle="Close" onClose={closeModal} illustration={<DeleteIllustration />}>
       <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.category.plural_label')}</Modal.SectionTitle>
       <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
-      <MessageContainer>{translate(message, {name: categoryLabel})}</MessageContainer>
+      <MessageContainer>
+        {translate(message, {name: categoryLabel, type: isRoot ? 'tree' : 'category'})}
+      </MessageContainer>
       {warning && <Helper level="error">{warning}</Helper>}
       <ActionButtons>
         <Button onClick={closeModal} level="tertiary">
