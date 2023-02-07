@@ -6,6 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
 use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppSecretQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\CodeChallengeMustBeValid;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -20,11 +21,11 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
 {
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
-        GetCustomAppQueryInterface $getTestAppQuery,
+        GetCustomAppSecretQueryInterface $getCustomAppSecretQuery,
         FeatureFlag $fakeAppsFeatureFlag,
         ExecutionContextInterface $context
     ): void {
-        $this->beConstructedWith($webMarketplaceApi, $getTestAppQuery, $fakeAppsFeatureFlag);
+        $this->beConstructedWith($webMarketplaceApi, $getCustomAppSecretQuery, $fakeAppsFeatureFlag);
         $fakeAppsFeatureFlag->isEnabled()->willReturn(false);
         $this->initialize($context);
     }
@@ -117,10 +118,10 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
         $this->validate($value, $constraint);
     }
 
-    public function it_validates_that_the_test_app_code_challenge_is_valid(
+    public function it_validates_that_the_custom_app_code_challenge_is_valid(
         CodeChallengeMustBeValid $constraint,
         AccessTokenRequest $value,
-        GetCustomAppQueryInterface $getTestAppQuery,
+        GetCustomAppSecretQueryInterface $getCustomAppSecretQuery,
         ExecutionContextInterface $context
     ): void {
         $clientId = '90741597-54c5-48a1-98da-a68e7ee0a715';
@@ -132,19 +133,17 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
         $value->getCodeIdentifier()->willReturn($codeIdentifier);
         $value->getCodeChallenge()->willReturn($codeChallenge);
 
-        $getTestAppQuery->execute($clientId)->willReturn([
-            'secret' => $clientSecret,
-        ]);
+        $getCustomAppSecretQuery->execute($clientId)->willReturn($clientSecret);
 
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($value, $constraint);
     }
 
-    public function it_adds_a_violation_when_the_test_app_code_challenge_is_refused(
+    public function it_adds_a_violation_when_the_custom_app_code_challenge_is_refused(
         CodeChallengeMustBeValid $constraint,
         AccessTokenRequest $value,
-        GetCustomAppQueryInterface $getTestAppQuery,
+        GetCustomAppSecretQueryInterface $getCustomAppSecretQuery,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violation
     ): void {
@@ -157,9 +156,7 @@ class CodeChallengeMustBeValidValidatorSpec extends ObjectBehavior
         $value->getCodeIdentifier()->willReturn($codeIdentifier);
         $value->getCodeChallenge()->willReturn($codeChallenge);
 
-        $getTestAppQuery->execute($clientId)->willReturn([
-            'secret' => $clientSecret,
-        ]);
+        $getCustomAppSecretQuery->execute($clientId)->willReturn($clientSecret);
 
         $context->buildViolation(Argument::any())->willReturn($violation);
         $violation->atPath('codeChallenge')->willReturn($violation);
