@@ -4,6 +4,8 @@ import {ConnectedAppAuthorizations} from './ConnectedAppAuthorizations';
 import {ConnectedAppMonitoringSettings} from './ConnectedAppMonitoringSettings';
 import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
 import {Authentication} from './Settings/Authentication';
+import {ConnectedAppCredentials} from './ConnectedAppCredentials';
+import {useSecurity} from '../../../shared/security';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -12,6 +14,11 @@ type Props = {
 };
 
 export const ConnectedAppSettings: FC<Props> = ({connectedApp, monitoringSettings, handleSetMonitoringSettings}) => {
+    const security = useSecurity();
+
+    const showConnectedAppCredentials =
+        connectedApp.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps');
+
     return (
         <>
             <ConnectedAppMonitoringSettings
@@ -20,6 +27,7 @@ export const ConnectedAppSettings: FC<Props> = ({connectedApp, monitoringSetting
             />
             <ConnectedAppAuthorizations connectedApp={connectedApp} />
             <Authentication connectedApp={connectedApp} />
+            {showConnectedAppCredentials && <ConnectedAppCredentials connectedApp={connectedApp} />}
         </>
     );
 };
