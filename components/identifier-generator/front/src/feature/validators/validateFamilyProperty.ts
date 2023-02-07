@@ -8,13 +8,13 @@ const validateFamilyProperty: Validator<FamilyProperty> = (familyCode, path) => 
   if (!familyCode.process.type) {
     violations.push({
       path,
-      message: 'Family code abbreviation type must be filled',
+      message: 'The empty values must be filled',
     });
   }
 
   if (
     familyCode.process.type === AbbreviationType.TRUNCATE &&
-    (!familyCode.process.operator || (null === familyCode.process.value || undefined === familyCode.process.value))
+    (!familyCode.process.operator || null === familyCode.process.value || undefined === familyCode.process.value)
   ) {
     violations.push({
       path: path,
@@ -24,7 +24,8 @@ const validateFamilyProperty: Validator<FamilyProperty> = (familyCode, path) => 
 
   if (
     familyCode.process.type === AbbreviationType.TRUNCATE &&
-    (familyCode.process?.value !== null && familyCode.process?.value !== undefined) &&
+    familyCode.process?.value !== null &&
+    familyCode.process?.value !== undefined &&
     (!/^\d+$/.exec(familyCode.process?.value.toString()) ||
       familyCode.process?.value < 1 ||
       familyCode.process?.value > 5)
