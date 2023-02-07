@@ -86,7 +86,7 @@ SQL;
         $parameters = [
             'code' => $identifierGenerator->code()->asString(),
             'target' => $identifierGenerator->target()->asString(),
-            'delimiter' => $identifierGenerator->delimiter()?->asString(),
+            'delimiter' => $identifierGenerator->delimiter()->asString(),
             'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
             'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
             'structure' => json_encode($identifierGenerator->structure()->normalize()),

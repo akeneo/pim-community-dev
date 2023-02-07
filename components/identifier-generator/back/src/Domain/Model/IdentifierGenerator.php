@@ -26,7 +26,7 @@ final class IdentifierGenerator
         private readonly Structure $structure,
         private readonly LabelCollection $labelCollection,
         private readonly Target $target,
-        private readonly ?Delimiter $delimiter,
+        private readonly Delimiter $delimiter,
         private readonly TextTransformation $textTransformation,
     ) {
     }
@@ -61,7 +61,7 @@ final class IdentifierGenerator
         return $this->target;
     }
 
-    public function delimiter(): ?Delimiter
+    public function delimiter(): Delimiter
     {
         return $this->delimiter;
     }
@@ -127,7 +127,7 @@ final class IdentifierGenerator
         );
     }
 
-    public function withDelimiter(?Delimiter $delimiter): self
+    public function withDelimiter(Delimiter $delimiter): self
     {
         return new IdentifierGenerator(
             $this->id,
@@ -176,7 +176,7 @@ final class IdentifierGenerator
             'structure' => $this->structure->normalize(),
             'labels' => $this->labelCollection->normalize(),
             'target' => $this->target->asString(),
-            'delimiter' => $this->delimiter?->asString(),
+            'delimiter' => $this->delimiter->asString(),
             'text_transformation' => $this->textTransformation->normalize(),
         ];
     }

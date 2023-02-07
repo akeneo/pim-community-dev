@@ -36,28 +36,32 @@ final class GenerateIdentifierHandler
         GenerateIdentifierCommand $command,
     ): string {
         $identifierGenerator = $command->getIdentifierGenerator();
-        $transformedDelimiter = $identifierGenerator->delimiter()?->asString() ?? '';
+        $transformedDelimiter = $identifierGenerator->delimiter()->asString() ?? '';
         switch ($identifierGenerator->textTransformation()->normalize()) {
-            case TextTransformation::UPPERCASE: $transformedDelimiter = \mb_strtoupper($transformedDelimiter);
+            case TextTransformation::UPPERCASE:
+                $transformedDelimiter = \mb_strtoupper($transformedDelimiter);
 
                 break;
-            case TextTransformation::LOWERCASE: $transformedDelimiter = \mb_strtolower($transformedDelimiter);
+            case TextTransformation::LOWERCASE:
+                $transformedDelimiter = \mb_strtolower($transformedDelimiter);
 
                 break;
         }
 
         $result = '';
         foreach ($identifierGenerator->structure()->getProperties() as $property) {
-            if ($result !== '') {
+            if ('' !== $result) {
                 $result .= $transformedDelimiter;
             }
 
             $generatedProperty = $this->generateProperty($property, $identifierGenerator, $command->getProductProjection(), $result);
             switch ($identifierGenerator->textTransformation()->normalize()) {
-                case TextTransformation::UPPERCASE: $generatedProperty = \mb_strtoupper($generatedProperty);
+                case TextTransformation::UPPERCASE:
+                    $generatedProperty = \mb_strtoupper($generatedProperty);
 
                     break;
-                case TextTransformation::LOWERCASE: $generatedProperty = \mb_strtolower($generatedProperty);
+                case TextTransformation::LOWERCASE:
+                    $generatedProperty = \mb_strtolower($generatedProperty);
 
                     break;
             }
@@ -75,10 +79,7 @@ final class GenerateIdentifierHandler
         string $prefix
     ): string {
         if (!isset($this->generateProperties[\get_class($property)])) {
-            throw new \InvalidArgumentException(\sprintf(
-                'No generator found for property %s',
-                \get_class($property)
-            ));
+            throw new \InvalidArgumentException(\sprintf('No generator found for property %s', \get_class($property)));
         }
 
         return ($this->generateProperties[\get_class($property)])($property, $identifierGenerator, $productProjection, $prefix);
