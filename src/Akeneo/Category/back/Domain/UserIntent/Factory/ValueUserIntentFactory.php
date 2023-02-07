@@ -63,6 +63,10 @@ final class ValueUserIntentFactory implements UserIntentFactory
                     continue;
                 }
 
+                if (AttributeType::IMAGE == $attributeType && null == $value['data']) {
+                    continue;
+                }
+
                 $userIntents[] = $this->addValueUserIntent($attributeType, $value);
             }
         }

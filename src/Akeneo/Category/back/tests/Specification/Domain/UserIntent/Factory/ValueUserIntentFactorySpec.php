@@ -253,12 +253,6 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 'channel' => 'ecommerce',
                 'locale' => 'en_US',
                 'attribute_code' => 'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af'
-            ],
-            'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
-                'data' => null,
-                'channel' => 'ecommerce',
-                'locale' => 'en_US',
-                'attribute_code' => 'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
             ]
         ];
 
@@ -296,11 +290,70 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 LabelCollection::fromArray(['en_US' => 'red']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([])
+            )
+        ]);
+
+        $uuids = [
+            AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
+            AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
+            AttributeUuid::fromString('38439aaf-66a2-4b24-854e-29d7a467c7af')
+        ];
+
+        $getAttribute->byUuids($uuids)
+            ->shouldBeCalledOnce()
+            ->willReturn($attributes);
+
+        $expectedUseIntents = [
+            new SetText(
+                '38439aaf-66a2-4b24-854e-29d7a467c7af',
+                'color',
+                'ecommerce',
+                'en_US',
+                'red'
+            )
+        ];
+        $this->create(
+            'values',
+            1,
+            $data
+        )->shouldBeLike($expectedUseIntents);
+    }
+
+    function it_does_not_add_value_user_intent_when_image_field_data_is_null(
+        GetCategoryTemplateAttributeSql $getAttribute
+    ): void {
+        $data = [
+            'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
+                'data' => "red",
+                'channel' => 'ecommerce',
+                'locale' => 'en_US',
+                'attribute_code' => 'color' . AbstractValue::SEPARATOR . '38439aaf-66a2-4b24-854e-29d7a467c7af'
+            ],
+            'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
+                'data' => null,
+                'channel' => 'ecommerce',
+                'locale' => 'en_US',
+                'attribute_code' => 'banner' . AbstractValue::SEPARATOR . 'e0326684-0dff-44be-8283-9262deb9e4bc'
+            ]
+        ];
+
+        $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+        $attributes = AttributeCollection::fromArray([
+            AttributeText::create(
+                AttributeUuid::fromString('38439aaf-66a2-4b24-854e-29d7a467c7af'),
+                new AttributeCode('color'),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(true),
+                AttributeIsScopable::fromBoolean(true),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'red']),
+                $templateUuid,
+                AttributeAdditionalProperties::fromArray([])
             ),
             AttributeImage::create(
                 AttributeUuid::fromString('e0326684-0dff-44be-8283-9262deb9e4bc'),
                 new AttributeCode('banner'),
-                AttributeOrder::fromInteger(3),
+                AttributeOrder::fromInteger(2),
                 AttributeIsRequired::fromBoolean(true),
                 AttributeIsScopable::fromBoolean(true),
                 AttributeIsLocalizable::fromBoolean(true),
@@ -311,8 +364,6 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
         ]);
 
         $uuids = [
-            AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
-            AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
             AttributeUuid::fromString('38439aaf-66a2-4b24-854e-29d7a467c7af'),
             AttributeUuid::fromString('e0326684-0dff-44be-8283-9262deb9e4bc')
         ];
@@ -328,14 +379,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 'ecommerce',
                 'en_US',
                 'red'
-            ),
-            new SetImage(
-                'e0326684-0dff-44be-8283-9262deb9e4bc',
-                'banner',
-                'ecommerce',
-                'en_US',
-                null
-            ),
+            )
         ];
         $this->create(
             'values',
