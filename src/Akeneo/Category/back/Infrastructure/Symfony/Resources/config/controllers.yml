@@ -71,6 +71,7 @@ services:
             - '@validator'
             - '@category_serializer'
             - '@Akeneo\Category\Application\Handler\StoreUploadedFile'
+            - '%supported_image_mime_types%'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:
         public: true

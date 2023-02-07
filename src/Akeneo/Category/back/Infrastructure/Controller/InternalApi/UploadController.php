@@ -3,6 +3,7 @@
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Application\Handler\StoreUploadedFile;
+use Akeneo\Category\Infrastructure\FileSystem\NotSupportedFormatException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,9 +20,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UploadController
 {
     public function __construct(
-        private ValidatorInterface $validator,
-        private NormalizerInterface $normalizer,
-        private StoreUploadedFile $storeUploadedFile,
+        private readonly ValidatorInterface $validator,
+        private readonly NormalizerInterface $normalizer,
+        private readonly StoreUploadedFile $storeUploadedFile,
+        private readonly ?array $supportedMimeTypes = [],
     ) {
     }
 
@@ -35,6 +37,11 @@ class UploadController
         $uploadedFile = $request->files->get('file');
         if (null === $uploadedFile) {
             return new JsonResponse([], 400);
+        }
+
+        $mimeType = $uploadedFile->getMimeType();
+        if (!$this->supportsMimeType($mimeType)) {
+            throw new NotSupportedFormatException(sprintf('The mime type "%s" is not supported.', $mimeType));
         }
 
         $violations = $this->validator->validate($uploadedFile, [
@@ -55,5 +62,10 @@ class UploadController
             'mimeType' => $file->getMimeType(),
             'extension' => $file->getExtension(),
         ]);
+    }
+
+    private function supportsMimeType(string $mimeType): bool
+    {
+        return \in_array(\strtolower($mimeType), $this->supportedMimeTypes);
     }
 }
