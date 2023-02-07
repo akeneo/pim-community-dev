@@ -1,5 +1,5 @@
 import {validateStructure} from '../validateStructure';
-import {PROPERTY_NAMES, Structure} from '../../models';
+import {AbbreviationType, PROPERTY_NAMES, Structure} from '../../models';
 
 describe('validateStructure', () => {
   it('should not add violation for valid structure', () => {
@@ -9,6 +9,12 @@ describe('validateStructure', () => {
           {
             type: PROPERTY_NAMES.FREE_TEXT,
             string: 'AKN',
+          },
+          {
+            type: PROPERTY_NAMES.FAMILY,
+            process: {
+              type: AbbreviationType.NO,
+            },
           },
         ],
         'structure'
@@ -75,7 +81,8 @@ describe('validateStructure', () => {
     ).toEqual([
       {
         path: 'structure[0]',
-        message: 'The property type "unknown" is unknown. Please choose one of the following: free_text, auto_number',
+        message:
+          'The property type "unknown" is unknown. Please choose one of the following: free_text, auto_number, family',
       },
     ]);
   });

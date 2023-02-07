@@ -35,7 +35,12 @@ const FamilyLine: React.FC<FamilyLineProps> = ({condition, onChange, onDelete}) 
     <>
       <Styled.TitleCell>{translate('pim_common.family')}</Styled.TitleCell>
       <Styled.SelectionInputsContainer>
-        <OperatorSelector operator={condition.operator} onChange={handleOperatorChange} operators={FamilyOperators} />
+        <OperatorSelector
+          operator={condition.operator}
+          onChange={handleOperatorChange}
+          operators={FamilyOperators}
+          isInSelection={true}
+        />
         {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
           <FamiliesSelector familyCodes={condition.value} onChange={handleFamilyCodesChange} />
         )}

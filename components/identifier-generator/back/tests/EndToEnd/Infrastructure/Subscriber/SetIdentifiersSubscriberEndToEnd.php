@@ -13,7 +13,6 @@ use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Test\Integration\Configuration;
@@ -38,6 +37,7 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
             [
                 ['type' => 'free_text', 'string' => 'AKN'],
                 ['type' => 'auto_number', 'numberMin' => 50, 'digitsMin' => 3],
+                ['type' => 'family', 'process' => ['type' => 'no']],
             ],
             ['en_US' => 'My Generator'],
             'sku',
@@ -52,8 +52,8 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         $this->createIdentifierGenerator();
         $productFromDatabase = $this->createProduct();
 
-        Assert::assertSame('akn-050', $productFromDatabase->getIdentifier());
-        Assert::assertSame('akn-050', $productFromDatabase->getValue('sku')->getData());
+        Assert::assertSame('akn-050-my_family', $productFromDatabase->getIdentifier());
+        Assert::assertSame('akn-050-my_family', $productFromDatabase->getValue('sku')->getData());
     }
 
     /** @test */
@@ -63,7 +63,7 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         $productsFromDatabase = $this->createProducts(5);
 
         Assert::assertSame(
-            ['akn-050', 'akn-051', 'akn-052', 'akn-053', 'akn-054'],
+            ['akn-050-my_family', 'akn-051-my_family', 'akn-052-my_family', 'akn-053-my_family', 'akn-054-my_family'],
             \array_map(fn (ProductInterface $product): ?string => $product->getIdentifier(), $productsFromDatabase)
         );
     }
@@ -75,8 +75,8 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         $product = $this->createProduct('originalIdentifier');
         $productFromDatabase = $this->updateProductIdentifier($product, null);
 
-        Assert::assertSame('akn-050', $productFromDatabase->getIdentifier());
-        Assert::assertSame('akn-050', $productFromDatabase->getValue('sku')->getData());
+        Assert::assertSame('akn-050-my_family', $productFromDatabase->getIdentifier());
+        Assert::assertSame('akn-050-my_family', $productFromDatabase->getValue('sku')->getData());
     }
 
     /** @test */
@@ -86,15 +86,15 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         $this->createProduct('AKN-050');
 
         $productFromDatabase = $this->createProduct();
-        Assert::assertSame('akn-051', $productFromDatabase->getIdentifier());
-        Assert::assertSame('akn-051', $productFromDatabase->getValue('sku')->getData());
+        Assert::assertSame('akn-051-my_family', $productFromDatabase->getIdentifier());
+        Assert::assertSame('akn-051-my_family', $productFromDatabase->getValue('sku')->getData());
     }
 
     /** @test */
     public function it_should_not_generate_the_identifier_if_generated_value_is_invalid(): void
     {
-        $this->createIdentifierGenerator();
         $this->addRestrictionsOnIdentifierAttribute();
+        $this->createIdentifierGenerator();
 
         $productFromDatabase = $this->createProduct();
         Assert::assertSame(null, $productFromDatabase->getIdentifier());
@@ -135,13 +135,12 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
             ['type' => 'family', 'operator' => 'NOT EMPTY'],
         ]);
 
-        $this->createProduct();
-        $productFromDatabase = $this->createProduct();
+        $productFromDatabase = $this->createProduct(withFamily: false);
         Assert::assertSame(null, $productFromDatabase->getIdentifier());
 
         $this->createFamily('tshirt');
         $this->setProductFamily($productFromDatabase->getUuid(), 'tshirt');
-        Assert::assertSame('akn-050', $productFromDatabase->getIdentifier());
+        Assert::assertSame('akn-050-tshirt', $productFromDatabase->getIdentifier());
     }
 
     /** @test */
@@ -157,7 +156,7 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         Assert::assertSame(null, $productFromDatabase->getIdentifier());
 
         $this->setSimpleSelectProductValue($productFromDatabase->getUuid());
-        Assert::assertSame('akn-050', $productFromDatabase->getIdentifier());
+        Assert::assertSame('akn-050-my_family', $productFromDatabase->getIdentifier());
     }
 
     private function addRestrictionsOnIdentifierAttribute(): void
@@ -165,6 +164,7 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         $this->getConnection()->executeQuery(<<<SQL
 UPDATE pim_catalog_attribute SET max_characters=1 WHERE code='sku';
 SQL);
+        $this->get('doctrine.orm.entity_manager')->clear();
     }
 
     private function createIdentifierGeneratorWithFreeTextValue(string $value): void
@@ -181,17 +181,6 @@ SQL);
             '-',
             'no',
         ));
-    }
-
-    private function createFamily(string $familyCode): FamilyInterface
-    {
-        $family = $this->getFamilyFactory()->create();
-        $this->getFamilyUpdater()->update($family, ['code' => $familyCode]);
-        $familyViolations = $this->getValidator()->validate($family);
-        $this->assertCount(0, $familyViolations);
-        $this->getFamilySaver()->save($family);
-
-        return $family;
     }
 
     private function createSimpleSelectAttributeWithOption(string $attributeCode): void

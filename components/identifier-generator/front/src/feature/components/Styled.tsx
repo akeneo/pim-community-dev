@@ -19,6 +19,12 @@ const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
+const EditionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
 const FullPageCenteredContent = styled.div`
   display: flex;
   align-items: center;
@@ -30,10 +36,10 @@ const FullPageCenteredContent = styled.div`
   }
 `;
 
-const TitleCell = styled(Table.Cell)`
+const TitleCell = styled(Table.Cell)<{withWidth: boolean} & AkeneoThemedProps>`
   font-style: italic;
   color: ${getColor('brand', 100)};
-  width: 120px;
+  ${({withWidth = true}) => withWidth && 'width: 120px;'}
 `;
 
 const InputContainer = styled.div`
@@ -119,8 +125,8 @@ const MultiSelectCondition = styled(MultiSelectInput)`
   flex-basis: 300px;
 `;
 
-const OperatorSelectCondition = styled(SelectInput)`
-  flex-basis: 160px;
+const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
+  ${props => props.isInSelection && 'flex-basis: 160px;'}
 `;
 
 const SelectCondition = styled(SelectInput)`
@@ -129,6 +135,10 @@ const SelectCondition = styled(SelectInput)`
 
 const SingleSelectCondition = styled(SelectInput)`
   flex-basis: 300px;
+`;
+
+const OperatorContainer = styled.div`
+  max-width: 160px;
 `;
 
 const CheckboxContainer = styled.div`
@@ -143,25 +153,27 @@ const PreviewWithTextTransformation = styled(PreviewComponent)<
 `;
 
 const Styled = {
-  SingleSelectCondition,
-  OperatorSelectCondition,
-  SelectCondition,
-  MultiSelectCondition,
-  SelectionInputsContainer,
+  BoldContainer,
   CellInputContainer,
+  CheckboxContainer,
+  ConditionLineSkeleton,
+  EditionContainer,
   ErrorContainer,
-  MainErrorHelper,
   FormContainer,
   FullPageCenteredContent,
   InputContainer,
+  ListItems,
+  MainErrorHelper,
+  MultiSelectCondition,
+  OperatorContainer,
+  OperatorSelectCondition,
+  SelectCondition,
+  SelectionInputsContainer,
+  SingleSelectCondition,
   TitleCell,
-  TwoColumns,
   TranslationsLabelSkeleton,
   TranslationsTextFieldSkeleton,
-  BoldContainer,
-  ListItems,
-  ConditionLineSkeleton,
-  CheckboxContainer,
+  TwoColumns,
   PreviewWithTextTransformation,
 };
 

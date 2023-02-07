@@ -1,19 +1,16 @@
 import React, {useCallback, useState} from 'react';
-import {Condition, CONDITION_NAMES, Conditions, Target} from '../models';
-import {Helper, NoResultsIllustration, Placeholder, SectionTitle, Table, TextInput, uuid} from 'akeneo-design-system';
+import {Condition, CONDITION_NAMES, Conditions, IdentifierGenerator} from '../models';
+import {Helper, NoResultsIllustration, Placeholder, SectionTitle, Table, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useIdentifierAttributes} from '../hooks';
 import {Styled} from '../components/Styled';
-import {ListSkeleton, TabValidationErrors} from '../components';
-import {AddConditionButton, EnabledLine, FamilyLine} from './conditions';
+import {TabValidationErrors} from '../components';
+import {AddConditionButton, EnabledLine, FamilyLine, ImplicitConditionsList} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
 import {SimpleSelectLine} from './conditions/SimpleSelectLine';
-import styled from 'styled-components';
 
 type SelectionTabProps = {
-  conditions: Conditions;
-  target: Target;
+  generator: IdentifierGenerator;
   onChange: (conditions: Conditions) => void;
   validationErrors: Violation[];
 };
@@ -28,10 +25,6 @@ type ConditionLineProps = {
   onDelete: () => void;
 };
 
-const IsEmpty = styled.div`
-  max-width: 160px;
-`;
-
 const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDelete}) => {
   switch (condition.type) {
     case CONDITION_NAMES.ENABLED:
@@ -43,12 +36,11 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
   }
 };
 
-const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange, validationErrors}) => {
+const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validationErrors}) => {
   const translate = useTranslate();
-  const {data: identifiers, isLoading} = useIdentifierAttributes();
   const [conditionIdToDelete, setConditionIdToDelete] = useState<ConditionIdentifier | undefined>();
   const [conditionsWithId, setConditionsWithId] = useState<ConditionsWithIdentifier>(
-    conditions.map(condition => ({
+    generator.conditions?.map(condition => ({
       id: uuid(),
       ...condition,
     }))
@@ -122,46 +114,31 @@ const SelectionTab: React.FC<SelectionTabProps> = ({target, conditions, onChange
       </SectionTitle>
       <Table>
         <Table.Body>
-          {isLoading && <ListSkeleton />}
-          {!isLoading && (
-            <>
-              {conditionsWithId.map(({id, ...condition}) => (
-                <Table.Row key={id} aria-colspan={3}>
-                  <ConditionLine
-                    condition={condition}
-                    onChange={condition => handleChange({...condition, id})}
-                    onDelete={onDelete(id)}
-                  />
-                </Table.Row>
-              ))}
-              <Table.Row aria-colspan={3}>
-                <Styled.TitleCell>
-                  {identifiers && identifiers.length > 0 ? identifiers[0].label : `[${target}]`}
-                </Styled.TitleCell>
-                <Styled.SelectionInputsContainer>
-                  <IsEmpty>
-                    <TextInput value={translate('pim_common.operators.EMPTY')} readOnly={true} />
-                  </IsEmpty>
-                </Styled.SelectionInputsContainer>
-                <Table.Cell />
-              </Table.Row>
-              {conditionsWithId.length === 0 && (
-                <tr aria-colspan={3}>
-                  <td colSpan={3}>
-                    <Placeholder
-                      illustration={<NoResultsIllustration />}
-                      size="large"
-                      title={translate('pim_identifier_generator.selection.empty.title')}
-                    >
-                      <Styled.BoldContainer>
-                        {translate('pim_identifier_generator.selection.empty.text')}
-                      </Styled.BoldContainer>
-                      {translate('pim_identifier_generator.selection.empty.info')}
-                    </Placeholder>
-                  </td>
-                </tr>
-              )}
-            </>
+          {conditionsWithId.map(({id, ...condition}) => (
+            <Table.Row key={id}>
+              <ConditionLine
+                condition={condition}
+                onChange={condition => handleChange({...condition, id})}
+                onDelete={onDelete(id)}
+              />
+            </Table.Row>
+          ))}
+          <ImplicitConditionsList generator={generator} />
+          {conditionsWithId.length === 0 && (
+            <tr aria-colspan={3}>
+              <td colSpan={3}>
+                <Placeholder
+                  illustration={<NoResultsIllustration />}
+                  size="large"
+                  title={translate('pim_identifier_generator.selection.empty.title')}
+                >
+                  <Styled.BoldContainer>
+                    {translate('pim_identifier_generator.selection.empty.text')}
+                  </Styled.BoldContainer>
+                  {translate('pim_identifier_generator.selection.empty.info')}
+                </Placeholder>
+              </td>
+            </tr>
           )}
         </Table.Body>
       </Table>

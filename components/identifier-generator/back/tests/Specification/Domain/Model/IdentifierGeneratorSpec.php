@@ -142,7 +142,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         ]);
         $updatedStructure = Structure::fromArray([
             FreeText::fromString('def'),
-            FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => 'EQUALS', 'value' => 3]]),
+            FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => '=', 'value' => 3]]),
         ]);
 
         $this->structure()->shouldBeLike($previousStructure);

@@ -74,6 +74,7 @@ pim_identifier_generator:
                 system: 'System'
             free_text: 'Free text'
             auto_number: 'Auto Number'
+            family: 'Family'
         settings:
             free_text:
                 title: 'Free text settings'
@@ -82,6 +83,19 @@ pim_identifier_generator:
                 title: 'Auto number'
                 digitsMin_label: 'Min digits'
                 numberMin_label: 'Min number'
+            family:
+                title: 'Family'
+                abbrev_type: 'Define the format of this property'
+                abbrev_type_empty_label: 'Select the format'
+                operator: 'Operator'
+                chars_number: 'Number of characters'
+            code_format:
+                type:
+                    truncate: 'Use first characters'
+                    code: 'Use the entire code'
+                    nomenclature: 'Use nomenclature'
+            operator:
+                placeholder: 'Select the operator'
         empty:
             title: 'Create your identifier structure'
             text: 'Click on "Add new property" on the top right'

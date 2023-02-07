@@ -26,6 +26,7 @@ const EnabledLine: React.FC<EnabledLineProps> = ({condition, onChange, onDelete}
           readOnly={true}
           emptyResultLabel={''}
           openLabel={''}
+          isInSelection={true}
         />
         <Styled.SingleSelectCondition
           value={typeof condition.value === 'undefined' ? null : condition.value ? 'true' : 'false'}

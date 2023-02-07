@@ -144,8 +144,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
         )}
         {currentTab === GeneratorTab.PRODUCT_SELECTION && (
           <SelectionTab
-            target={generator.target}
-            conditions={generator.conditions}
+            generator={generator}
             onChange={onConditionsChange}
             validationErrors={selectionValidationErrors}
           />

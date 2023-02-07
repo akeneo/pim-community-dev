@@ -3,7 +3,7 @@ import {Button, Pill, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {PropertyId, StructureWithIdentifiers} from '../StructureTab';
 import {PROPERTY_NAMES} from '../../models';
-import {AutoNumberLine, FreeTextLine} from './line';
+import {AutoNumberLine, FamilyCodeLine, FreeTextLine} from './line';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SimpleDeleteModal} from '../../pages';
 import {Violation} from '../../validators';
@@ -57,9 +57,10 @@ const PropertiesList: React.FC<PropertiesListProps> = ({
         <Table.Body>
           {structureWithErrors.map(property => (
             <Table.Row key={property.id} onClick={() => onSelect(property.id)} isSelected={property.id === selectedId}>
-              <Styled.TitleCell>
+              <Styled.TitleCell withWidth={false}>
                 {property.type === PROPERTY_NAMES.FREE_TEXT && <FreeTextLine freeTextProperty={property} />}
                 {property.type === PROPERTY_NAMES.AUTO_NUMBER && <AutoNumberLine property={property} />}
+                {property.type === PROPERTY_NAMES.FAMILY && <FamilyCodeLine />}
                 {property.errorMessage && (
                   <Styled.ErrorContainer>
                     <Pill level="danger" />
