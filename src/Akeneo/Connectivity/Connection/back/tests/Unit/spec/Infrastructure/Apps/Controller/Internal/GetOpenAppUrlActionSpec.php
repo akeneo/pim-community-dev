@@ -141,7 +141,8 @@ class GetOpenAppUrlActionSpec extends ObjectBehavior
         SecurityFacade $security,
         GetAppQueryInterface $getAppQuery,
     ): void {
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(false);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
 
         $getAppQuery->execute('connected_app_id')->willReturn(App::fromCustomAppValues([
             'id' => 'connected_app_id',

@@ -52,7 +52,7 @@ final class GetAppActivateUrlAction
             throw new NotFoundHttpException("Invalid app identifier");
         }
 
-        $this->denyAccessUnlessGrantedToManage($app);
+        $this->denyAccessUnlessGrantedToManage();
 
         $app = $app->withPimUrlSource($this->appUrlGenerator->getAppQueryParameters());
 
@@ -61,13 +61,9 @@ final class GetAppActivateUrlAction
         ]);
     }
 
-    private function denyAccessUnlessGrantedToManage(App $app): void
+    private function denyAccessUnlessGrantedToManage(): void
     {
-        if (!$app->isCustomApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
-        }
-
-        if ($app->isCustomApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
             throw new AccessDeniedHttpException();
         }
     }
