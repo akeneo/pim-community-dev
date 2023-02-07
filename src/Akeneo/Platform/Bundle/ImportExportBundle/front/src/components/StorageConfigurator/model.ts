@@ -103,8 +103,6 @@ const isGoogleCloudStorage = (storage: Storage): storage is GoogleCloudStorage =
     typeof 'file_path' === 'string' &&
     'project_id' in storage &&
     typeof 'project_id' === 'string' &&
-    'service_account' in storage &&
-    typeof 'service_account' === 'string' &&
     'bucket' in storage &&
     typeof 'bucket' === 'string'
   );

@@ -32,6 +32,7 @@ test('it renders the google cloud storage configurator', async () => {
   await act(async () => {
     renderWithProviders(
       <GoogleCloudStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -60,6 +61,7 @@ test('it allows user to fill file_path field', async () => {
   await act(async () => {
     renderWithProviders(
       <GoogleCloudStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -90,6 +92,7 @@ test('it allows user to fill project_id field', async () => {
   await act(async () => {
     renderWithProviders(
       <GoogleCloudStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -120,6 +123,7 @@ test('it allows user to fill service_account field', async () => {
   await act(async () => {
     renderWithProviders(
       <GoogleCloudStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -150,6 +154,7 @@ test('it allows user to fill bucket field', async () => {
   await act(async () => {
     renderWithProviders(
       <GoogleCloudStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -169,6 +174,59 @@ test('it allows user to fill bucket field', async () => {
   });
 });
 
+test('it hides the service account field if the service account is obfuscated', () => {
+  const storage: GoogleCloudStorage = {
+    type: 'google_cloud_storage',
+    file_path: '/tmp/file.xlsx',
+    project_id: 'a_project_id',
+    bucket: '',
+  };
+
+  act(() => {
+    renderWithProviders(
+      <GoogleCloudStorageConfigurator
+        jobInstanceCode="csv_product_export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={jest.fn()}
+      />
+    );
+  });
+
+  const serviceAccountInput = screen.getByLabelText(
+    'pim_import_export.form.job_instance.storage_form.service_account.label pim_common.required_label'
+  );
+
+  expect(serviceAccountInput).toBeDisabled();
+  expect(serviceAccountInput).toHaveValue('••••••••');
+});
+
+test('it can edit the service account if the service account is obfuscated', () => {
+  const storage: GoogleCloudStorage = {
+    type: 'google_cloud_storage',
+    file_path: '/tmp/file.xlsx',
+    project_id: 'a_project_id',
+    bucket: '',
+  };
+
+  const onStorageChange = jest.fn();
+  act(() => {
+    renderWithProviders(
+      <GoogleCloudStorageConfigurator
+        jobInstanceCode="csv_product_export"
+        storage={storage}
+        fileExtension="xlsx"
+        validationErrors={[]}
+        onStorageChange={onStorageChange}
+      />
+    );
+  });
+
+  userEvent.click(screen.getByText('pim_common.edit'));
+  expect(onStorageChange).toHaveBeenLastCalledWith({...storage, service_account: ''});
+});
+
 test('it throws an exception when passing a non google cloud storage', async () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
@@ -180,6 +238,7 @@ test('it throws an exception when passing a non google cloud storage', async () 
   expect(() =>
     renderWithProviders(
       <GoogleCloudStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -234,6 +293,7 @@ test('it displays validation errors', async () => {
   await act(async () => {
     renderWithProviders(
       <GoogleCloudStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={validationErrors}
@@ -261,6 +321,7 @@ test('it can check connection', async () => {
 
   renderWithProviders(
     <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -292,6 +353,7 @@ test('it cannot check connection if a field is empty', async () => {
 
   renderWithProviders(
     <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -328,6 +390,7 @@ test('it can check connection, display message if error', async () => {
 
   renderWithProviders(
     <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
