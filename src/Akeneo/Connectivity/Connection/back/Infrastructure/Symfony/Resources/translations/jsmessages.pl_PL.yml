@@ -146,6 +146,10 @@ akeneo_connectivity.connection:
         flash:
           error: Przepraszamy, podczas pobierania listy połączonych aplikacji wystąpił błąd.
       edit:
+        header:
+          open_app_button:
+            label: Przejdź do aplikacji
+            icon_alt: Ikona „Przejdź do aplikacji”
         not_found: Nie znaleziono aplikacji
         tabs:
           settings: Ustawienia
@@ -243,6 +247,9 @@ akeneo_connectivity.connection:
           helper: Aby dowiedzieć się więcej o autoryzacji aplikacji,
           helper_link: zapoznaj się z artykułem w naszym Centrum Pomocy.
           is_allowed_to: 'Ma zezwolenie na:'
+          certification_consent:
+            label: 'Przeczytałem(-am) i akceptuję następujące zastrzeżenie dotyczące certyfikacji.'
+            subtext: 'Akeneo zrzeka się wszelkiej odpowiedzialności za korzystanie z aplikacji przez klienta oraz za jej funkcje. Certyfikacja nie gwarantuje interoperacyjności aplikacji ani jej prawidłowego funkcjonowania w środowisku klienta.'
         flash:
           success: Aplikacja została pomyślnie skonfigurowana.
           error: Przepraszamy, podczas łączenia aplikacji wystąpił błąd.

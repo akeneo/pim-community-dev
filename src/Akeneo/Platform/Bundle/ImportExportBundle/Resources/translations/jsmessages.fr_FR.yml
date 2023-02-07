@@ -150,6 +150,12 @@ pim_import_export:
           file_locale:
             title: Locale du fichier
             help: Définit la langue dans laquelle les libellés vont être affichés.
+          with_uuid:
+            title: Avec UUID du produit
+            help: Exporter les UUID des produits et des produits associés
+          with_uuid_for_models:
+            title: Avec UUID du produit
+            help: Exporter l'UUID du produit associé au lieu de son identifiant
       file_path: Chemin du fichier
       storage_form:
         title: Stockage
@@ -158,6 +164,7 @@ pim_import_export:
           local: Local
           sftp: SFTP
           amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
           none: Aucun stockage configuré
         file_path:
           label: Chemin du fichier
@@ -196,6 +203,12 @@ pim_import_export:
         secret:
           label: Secret 
           placeholder: Saisissez le secret
+        connection_string:
+          label: Chaîne de connexion
+          placeholder: Entrez votre chaîne de connexion
+        container_name:
+          label: Nom du conteneur
+          placeholder: Entrez le nom de votre conteneur
       validation:
         storage:
           unavailable_type: 'Ce stockage n''est pas disponible, seuls les types suivants sont disponibles: {{ available_types }}.'

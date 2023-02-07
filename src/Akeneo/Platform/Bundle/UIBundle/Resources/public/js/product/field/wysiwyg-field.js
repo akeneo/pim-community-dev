@@ -107,7 +107,7 @@ define(['jquery', 'pim/field', 'underscore', 'pim/template/product/field/textare
 
       const source = jqueryEvent.originalEvent.path
         ? $(jqueryEvent.originalEvent.path[0])
-        : $(jqueryEvent.originalEvent.originalTarget);
+        : $(jqueryEvent.originalEvent.target);
 
       if (
         source.hasClass('icon-link') ||
