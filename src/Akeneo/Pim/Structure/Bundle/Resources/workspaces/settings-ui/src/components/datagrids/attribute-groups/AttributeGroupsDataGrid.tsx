@@ -12,7 +12,7 @@ type Props = {
 };
 
 const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
-  const {refreshOrder, saveOrder} = useAttributeGroupsIndexState();
+  const {refreshOrder} = useAttributeGroupsIndexState();
   const {sortGranted} = useAttributeGroupPermissions();
   const userContext = useUserContext();
   const {filteredGroups, search} = useFilteredAttributeGroups(groups);
