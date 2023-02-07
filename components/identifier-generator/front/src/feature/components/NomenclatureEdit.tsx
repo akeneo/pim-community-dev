@@ -1,10 +1,12 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {
+  AttributesIllustration,
   Button,
   Checkbox,
   Modal,
   NumberInput,
   Pagination,
+  Placeholder,
   Search,
   SectionTitle,
   Table,
@@ -37,6 +39,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
     search,
     setSearch,
     total,
+    totalFiltered,
   } = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave);
   const {save} = useSaveNomenclature();
 
@@ -95,6 +98,8 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
 
   const handleSaveNomenclature = () => {
     if (nomenclature) {
+      // TODO Freeze Save during fetch
+      // TODO Display warning if there is one field in error
       save(
         {...nomenclature, propertyCode: 'family', values: valuesToSave},
         {
@@ -102,6 +107,11 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
             setViolations(violations);
             notify(NotificationLevel.ERROR, translate('TODO'));
           },
+          onSuccess: () => {
+            close();
+            setViolations([]);
+            notify(NotificationLevel.SUCCESS, translate('TODO'));
+          }
         }
       );
     }
@@ -111,50 +121,71 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
     <>
       <button onClick={open}>Open nomenclature</button> {/* TODO */}
       {isOpen && (
-        <Modal closeTitle="TODO Close" onClose={close}>
+        <Modal closeTitle={translate('pim_common.close')} onClose={close}>
           <Modal.TopRightButtons>
-            <Button onClick={handleSaveNomenclature}>Save TODO</Button>
+            <Button onClick={handleSaveNomenclature}>{translate('pim_common.save')}</Button>
           </Modal.TopRightButtons>
-          <Modal.SectionTitle color="brand">Generating my identifiers for Families TODO</Modal.SectionTitle>
-          <Modal.Title>Manage nomenclature TODO</Modal.Title>
+            <Modal.SectionTitle color="brand">{ translate(
+              'pim_identifier_generator.nomenclature.section_title',
+              { property: translate('pim_enrich.entity.family.plural_label') }
+            ) }</Modal.SectionTitle>
+          <Modal.Title>{ translate('pim_identifier_generator.nomenclature.title') }</Modal.Title>
           {nomenclature && (
-            <>
+            <Styled.NomenclatureModalContent>
               <SectionTitle>
-                <SectionTitle.Title>Families TODO</SectionTitle.Title>
+                <SectionTitle.Title>{ translate('pim_enrich.entity.family.page_title.index', { count: total }, total) }</SectionTitle.Title>
+                <SectionTitle.Spacer />
                 <NomenclatureValuesDisplayFilter filter={filter} onChange={onFilterChange} />
               </SectionTitle>
-              <Table>
+              <Styled.NomenclatureDefinition>
                 <Table.Body>
                   <Table.Row>
-                    <Styled.TitleCell>Characters number (required)</Styled.TitleCell>
+                    <Styled.TitleCell>
+                      { translate('pim_identifier_generator.nomenclature.characters_number') }
+                      &nbsp;<em>{ translate('pim_common.required_label') }</em>
+                    </Styled.TitleCell>
                     <Table.Cell>
                       <OperatorSelector
                         operators={[Operator.EQUALS, Operator.LOWER_OR_EQUAL_THAN]}
                         operator={nomenclature.operator}
                         onChange={handleChangeOperator}
                         invalid={!!violations.find(violation => violation.path === 'operator')}
-                        placeholder={'TODO'}
+                        placeholder={translate('pim_identifier_generator.nomenclature.operator_placeholder')}
+                        isInSelection={false}
                       />
+                    </Table.Cell>
+                    <Table.Cell>
                       <NumberInput
                         value={`${nomenclature.value || ''}`}
                         onChange={handleValueChange}
                         invalid={!!violations.find(violation => violation.path === 'value')}
-                        placeholder={'todo placeholder'}
+                        placeholder={translate('pim_identifier_generator.nomenclature.value_placeholder')}
+                        min={1}
+                        max={5}
                       />
-                      <Checkbox checked={nomenclature.generate_if_empty} onChange={handleGenerateIfEmptyChange} />
-                      Generate nomenclature automatically
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Styled.CheckboxContainer>
+                        <Checkbox checked={nomenclature.generate_if_empty} onChange={handleGenerateIfEmptyChange}>
+                          { translate('pim_identifier_generator.nomenclature.generate_if_empty') }
+                        </Checkbox>
+                      </Styled.CheckboxContainer>
                     </Table.Cell>
                   </Table.Row>
                 </Table.Body>
-              </Table>
-              <div style={{flexBasis: 'calc(100vh - 300px)', overflow: 'auto', width: 'calc(100vw - 160px)'}}>
-                <Search searchValue={search} onSearchChange={handleSearchChange} />
-                <Pagination currentPage={page} itemsPerPage={25} totalItems={total} followPage={setPage} />
+              </Styled.NomenclatureDefinition>
+              <Search searchValue={search} onSearchChange={handleSearchChange} placeholder={ translate('pim_common.search') }>
+                <Search.ResultCount>
+                  {translate('pim_common.result_count', { itemsCount: totalFiltered }, totalFiltered) }
+                </Search.ResultCount>
+              </Search>
+              <Pagination currentPage={page} itemsPerPage={25} totalItems={totalFiltered} followPage={setPage} />
+              <Styled.NomenclatureTable>
                 <Table>
                   <Table.Header>
-                    <Table.HeaderCell>Label TODO</Table.HeaderCell>
-                    <Table.HeaderCell>Code TODO</Table.HeaderCell>
-                    <Table.HeaderCell>Nomenclature TODO</Table.HeaderCell>
+                    <Table.HeaderCell>{ translate('pim_common.label') }</Table.HeaderCell>
+                    <Table.HeaderCell>{ translate('pim_common.code') }</Table.HeaderCell>
+                    <Table.HeaderCell>{ translate('pim_identifier_generator.nomenclature.nomenclature')} </Table.HeaderCell>
                   </Table.Header>
                   <Table.Body>
                     {nomenclatureLines?.map(nomenclatureLine => (
@@ -165,11 +196,24 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
                         key={nomenclatureLine.code}
                       />
                     ))}
+                    {nomenclatureLines && nomenclatureLines.length === 0 && <tr><td colSpan={3}>
+                        <Placeholder
+                            size={'large'}
+                            illustration={<AttributesIllustration />}
+                            title={
+                          translate('pim_datagrid.no_entities',
+                            {entityHint: translate('pim_enrich.entity.family.plural_label')}
+                          )}
+                        >
+                          {translate('pim_datagrid.no_results_subtitle')}
+                        </Placeholder>
+                    </td></tr>
+                    }
                   </Table.Body>
                 </Table>
-                <Pagination currentPage={page} itemsPerPage={25} totalItems={total} followPage={setPage} />
-              </div>
-            </>
+              </Styled.NomenclatureTable>
+              <Pagination currentPage={page} itemsPerPage={25} totalItems={totalFiltered} followPage={setPage} />
+            </Styled.NomenclatureModalContent>
           )}
         </Modal>
       )}

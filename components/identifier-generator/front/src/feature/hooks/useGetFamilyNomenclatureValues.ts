@@ -13,6 +13,7 @@ type HookResult = {
   search: string;
   setSearch: (search: string) => void;
   total: number;
+  totalFiltered: number;
 };
 
 const useGetFamilyNomenclatureValues = (
@@ -25,7 +26,7 @@ const useGetFamilyNomenclatureValues = (
   const isValid = useIsNomenclatureValueValid(nomenclature);
   const getPlaceholder = usePlaceholder(nomenclature);
   const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
-  const [total, setTotal] = useState<number>(0);
+  const [totalFiltered, setTotalFiltered] = useState<number>(0);
 
   const {data: families} = useGetFamilies({
     limit: -1,
@@ -83,7 +84,7 @@ const useGetFamilyNomenclatureValues = (
       }
     }
 
-    setTotal(totalMatchingItems);
+    setTotalFiltered(totalMatchingItems);
 
     return filteredData;
   }, [families, filter, getLineFromFamily, nomenclature, page, isValid, lowerCaseSearch, values, getPlaceholder]);
@@ -93,7 +94,7 @@ const useGetFamilyNomenclatureValues = (
     setSearch(search);
   };
 
-  return {data, page, setPage, search, setSearch: mySetSearch, total};
+  return {data, page, setPage, search, setSearch: mySetSearch, totalFiltered, total: families?.length || 0};
 };
 
 export {useGetFamilyNomenclatureValues};
