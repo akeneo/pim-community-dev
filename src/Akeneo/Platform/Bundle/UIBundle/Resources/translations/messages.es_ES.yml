@@ -455,6 +455,8 @@ pim_datagrid:
       label: Principal
     identifier:
       label: Identificador
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: Historial de cambios
 Data Audit: Auditoría de datos
