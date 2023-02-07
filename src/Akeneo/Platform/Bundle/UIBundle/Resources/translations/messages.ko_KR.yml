@@ -455,6 +455,8 @@ pim_datagrid:
       label: 상위
     identifier:
       label: 식별자
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: 기록 변경
 Data Audit: 데이터 감사

@@ -6,6 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases;
+use Akeneo\Platform\Bundle\PimVersionBundle\Version\FreeTrialVersion;
 use Akeneo\Platform\Bundle\PimVersionBundle\Version\GrowthVersion;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
@@ -19,7 +20,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     public function let(
         VersionProviderInterface $versionProvider
     ) {
-        $this->beConstructedWith($versionProvider, new GrowthVersion());
+        $this->beConstructedWith($versionProvider, new GrowthVersion(), new FreeTrialVersion());
     }
 
     public function it_is_initializable(): void
@@ -48,6 +49,14 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
         VersionProviderInterface $versionProvider
     ) {
         $versionProvider->getEdition()->willReturn('Growth Edition');
+
+        $this->getEdition()->shouldReturn('growth-edition');
+    }
+
+    public function it_returns_the_edition_when_free_trial(
+        VersionProviderInterface $versionProvider
+    ) {
+        $versionProvider->getEdition()->willReturn('Free Trial Edition');
 
         $this->getEdition()->shouldReturn('growth-edition');
     }

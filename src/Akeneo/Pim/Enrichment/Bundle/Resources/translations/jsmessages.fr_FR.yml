@@ -24,6 +24,7 @@ pim_enrich.entity.product:
       fields_not_ready: "Le produit ne peut actuellement pas être sauvegardé. Les champs suivants ne sont pas prêts : {{ fields }}"
       already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
       file_upload: Une erreur s'est produite lors du transfert du fichier.
+      identifier_warning: Votre produit a été enregistré mais votre identifiant n'a pas pu être généré.
     delete:
       success: Les produits ont bien été supprimés.
       fail: Le produit n'a pas pu être supprimé.
@@ -71,6 +72,7 @@ pim_enrich.entity.product:
     meta:
       updated: Dernière mise à jour
       groups: Groupes
+      uuid: UUID
     show_group:
       title: Groupe {{ group }}
       view_group: Afficher le groupe
@@ -221,6 +223,7 @@ pim_enrich.entity.category:
       columns:
         label: Libellé d'arborescence
         number_of_categories: Nombre de catégories
+        actions: Actions
         count_categories: ']-Inf, 1]{{ count }} catégorie|]1, Inf[{{ count }} catégories'
     tree:
       not_found: Arborescence des catégories introuvable
@@ -437,6 +440,8 @@ pim_datagrid:
         all_attributes: Tous les attributs
         with_codes: Avec codes
         with_labels: Avec libellés
+        without_uuid: Sans UUID
+        with_uuid: Avec UUID
         without_media: Sans image
         with_media: Avec images
       flash:
@@ -492,6 +497,8 @@ pim_datagrid:
       label: Parent
     identifier:
       label: Identifiant
+    uuid:
+      label: UUID
   search: Rechercher sur {{ label }}
 batch_jobs:
   add_association:

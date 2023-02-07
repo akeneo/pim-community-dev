@@ -496,6 +496,8 @@ pim_datagrid:
       label: Padre
     identifier:
       label: Identificador
+    uuid:
+      label: Uuid
   search: Buscar por {{ label }}
 batch_jobs:
   add_association:

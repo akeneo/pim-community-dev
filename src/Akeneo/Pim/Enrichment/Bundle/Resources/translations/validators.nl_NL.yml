@@ -38,6 +38,7 @@ product_model.family_variant.not_blank.message: De product model familie variant
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": Het attribuut {{ attribute_code }} vereist een datum die {{ limit }} of later moet zijn.
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": Het attribuut {{ attribute_code }} vereist een datum die {{ limit }} of eerder moet zijn.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": Het attribuut {{ attribute }} vereist een getal, en de toegevoegde {{ value }} waarde is dat niet.
+"The {{ attribute }} attribute requires a value which does not contain space, and the submitted \"{{ value }}\" has at least one.": Het attribuut {{ attribute }} vereist een waarde die geen spatie bevat en de ingevoerde "{{ value }}" heeft minstens één spatie.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": Het attribuut %attribute% mag niet meer dan %limit% tekens bevatten. De opgegeven waarde is te lang.
 "The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": De bestandsextensie %type% is niet toegestaan voor het attribuut %attribute%. Toegestane extensies zijn %extensions%.
 "The %attribute% attribute requires a url link.": Het attribuut %attribute% vereist een url-link.

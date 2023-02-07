@@ -64,7 +64,7 @@ akeneo_job_process_tracker:
     no: No
     label: 自动化
   max_page_without_filter_helper:
-    - 
+    - 为了向您展示最相关的结果，请改进您的搜索。
   tracking:
     completed: "花费的时间：{{ duration }}"
     in_progress: "当前步骤估计剩余时间：{{ duration }}"
