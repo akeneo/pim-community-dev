@@ -6,5 +6,4 @@ parameters:
         - 'image/png'
         - 'image/svg'
         - 'image/svg+xml'
-        - 'image/tiff'
         - 'image/webp'
