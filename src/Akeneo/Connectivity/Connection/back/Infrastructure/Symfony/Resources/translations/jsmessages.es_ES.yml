@@ -146,6 +146,10 @@ akeneo_connectivity.connection:
         flash:
           error: Lo sentimos, se ha producido un error al obtener la lista de aplicaciones conectadas.
       edit:
+        header:
+          open_app_button:
+            label: Ir a la aplicación
+            icon_alt: Ir al icono de la aplicación
         not_found: Aplicación no encontrada
         tabs:
           settings: Configuración
@@ -243,6 +247,9 @@ akeneo_connectivity.connection:
           helper: Para saber más sobre la autorización de aplicaciones,
           helper_link: consulte nuestro artículo del Centro de ayuda.
           is_allowed_to: 'Ya está permitido:'
+          certification_consent:
+            label: 'He leído y acepto la siguiente exención de responsabilidad sobre la certificación.'
+            subtext: 'Akeneo renuncia a cualquier responsabilidad por el uso de la aplicación por parte del cliente así como por sus funcionalidades. La certificación no garantiza la interoperabilidad de la aplicación ni que funcione correctamente en el entorno del cliente.'
         flash:
           success: Aplicación configurada con éxito.
           error: Lo sentimos, se ha producido un error al conectar la aplicación.

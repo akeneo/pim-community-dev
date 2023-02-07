@@ -24,6 +24,7 @@ pim_enrich.entity.product:
       fields_not_ready: "この商品は現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
       already_in_upload: ファイルはすでに {{ locale }} ローケル と {{ scope }} スコープでこの属性のためにアップロードされています
       file_upload: ファイルをアップロード中にエラーが発生しました
+      identifier_warning: 商品は保存されましたが、あなたの識別子は生成されませんでした。
     delete:
       success: 商品を正常に削除しました
       fail: 商品を削除できませんでした
@@ -496,6 +497,8 @@ pim_datagrid:
       label: 親
     identifier:
       label: 識別子
+    uuid:
+      label: Uuid
   search: '{{ label }}で検索'
 batch_jobs:
   add_association:

@@ -38,9 +38,14 @@ akeneo_catalogs:
         unknown: 'La configuración regional «{{ locale_name }}» ha sido desactivada. Compruebe la configuración de su configuración regional o elimine este filtro.'
     product_mapping:
       source:
+        invalid: 'Este atributo ha sido eliminado.'
+        unknown: 'Valor de origen desconocido'
         channel:
           not_empty: 'Este canal debe estar vacío.'
           empty: 'Este canal no debe estar vacío.'
+          unknown: 'Este canal ha sido eliminado. Compruebe la configuración de su canal o actualice este valor.'
         locale:
           not_empty: 'Esta configuración regional debe estar vacía.'
           empty: 'Esta configuración regional no debe estar vacía.'
+          unknown: 'Esta configuración regional está desactivada o ya no existe. Compruebe la configuración de sus canales y configuraciones regionales.'
+          disabled: 'Esta configuración regional está desactivada. Compruebe la configuración de sus canales y configuraciones regionales o actualice este valor.'

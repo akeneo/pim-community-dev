@@ -146,6 +146,10 @@ akeneo_connectivity.connection:
         flash:
           error: Er is een fout opgetreden tijdens het ophalen van de lijst met verbonden apps.
       edit:
+        header:
+          open_app_button:
+            label: Ga naar app
+            icon_alt: Ga naar app-pictogram
         not_found: App niet gevonden
         tabs:
           settings: Instellingen
@@ -243,6 +247,9 @@ akeneo_connectivity.connection:
           helper: Voor meer informatie over het autoriseren van apps,
           helper_link: kunt u het artikel in Hulp raadplegen.
           is_allowed_to: 'Heeft al toestemming om:'
+          certification_consent:
+            label: 'Ik heb de onderstaande disclaimer over certificering gelezen en ga ermee akkoord.'
+            subtext: 'Akeneo doet afstand van elke verantwoordelijkheid voor het gebruik van de app door de klant en de functionaliteiten ervan. De certificering garandeert niet de interoperabiliteit van de app, noch dat deze goed zal werken in de omgeving van de klant.'
         flash:
           success: De app is geconfigureerd.
           error: Er is een fout opgetreden tijdens het verbinden van de app.

@@ -163,6 +163,8 @@ pim_import_export:
           label: 类型
           local: 本地
           sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
           none: 未配置存储
         file_path:
           label: 文件路径
@@ -189,6 +191,24 @@ pim_import_export:
           label: 验证方法
           password: 登录和密码
           private_key: 私钥
+        region:
+          label: 地区
+          placeholder: 输入您所在的地区
+        bucket:
+          label: 存储桶名称
+          placeholder: 输入您所在地区的名称
+        key:
+          label: 密钥
+          placeholder: 输入您的密钥
+        secret:
+          label: 密钥
+          placeholder: 输入您的密钥
+        connection_string:
+          label: 连接字符串
+          placeholder: 输入您的连接字符串
+        container_name:
+          label: 容器名称
+          placeholder: 输入您的容器名称
       validation:
         storage:
           unavailable_type: 此存储不可用，仅 {{ available_types }} 可用。

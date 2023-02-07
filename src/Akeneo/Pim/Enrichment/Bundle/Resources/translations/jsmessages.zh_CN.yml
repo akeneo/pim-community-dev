@@ -24,6 +24,7 @@ pim_enrich.entity.product:
       fields_not_ready: "该产品目前无法保存。以下字段未准备好： {{ fields }}"
       already_in_upload: 在区域"{{ locale }}"和范围"{{ scope }}"中，已有针对此属性的文件在上传
       file_upload: 上传文件时发生错误
+      identifier_warning: 您的产品已保存，但无法生成标识符。
     delete:
       success: 产品已成功删除。
       fail: 产品无法删除。
@@ -496,6 +497,8 @@ pim_datagrid:
       label: 父级
     identifier:
       label: 标识符
+    uuid:
+      label: Uuid
   search: 按 {{ label }} 搜索
 batch_jobs:
   add_association:
