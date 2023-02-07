@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Marketplace\Controller\Internal;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\CustomApps\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,28 +13,30 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetAllCustomAppsAction
  */
-class GetAllTestAppsActionEndToEnd extends WebTestCase
+class GetAllCustomAppsActionEndToEnd extends WebTestCase
 {
-    protected function getConfiguration(): ?Configuration
+    private ?CustomAppLoader $customAppLoader;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->customAppLoader = $this->get(CustomAppLoader::class);
+    }
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_gets_all_test_app(): void
+    public function test_it_gets_all_custom_app(): void
     {
+        $adminUser = $this->authenticateAsAdmin();
         $this->get('akeneo_connectivity.connection.app_developer_mode.feature')->enable();
 
-        $adminUser = $this->authenticateAsAdmin();
-        $connection = $this->get('database_connection');
-        $connection->insert('akeneo_connectivity_test_app', [
-            'client_id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
-            'client_secret' => 'foobar',
-            'name' => 'My test app',
-            'activate_url' => 'http://shopware.example.com/activate',
-            'callback_url' => 'http://shopware.example.com/callback',
-            'user_id' => $adminUser->getId(),
-        ]);
+        $this->customAppLoader->create('100eedac-ff5c-497b-899d-e2d64b6c59f9', $adminUser->getId());
 
         $this->client->request(
             'GET',
@@ -44,7 +47,7 @@ class GetAllTestAppsActionEndToEnd extends WebTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals([
@@ -52,7 +55,7 @@ class GetAllTestAppsActionEndToEnd extends WebTestCase
             'apps' => [
                 [
                     'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
-                    'name' => 'My test app',
+                    'name' => 'custom_app_name',
                     'logo' => null,
                     'author' => 'John Doe',
                     'partner' => null,
@@ -60,8 +63,8 @@ class GetAllTestAppsActionEndToEnd extends WebTestCase
                     'url' => null,
                     'categories' => [],
                     'certified' => false,
-                    'activate_url' => 'http://shopware.example.com/activate?pim_url=http%3A%2F%2Flocalhost%3A8080',
-                    'callback_url' => 'http://shopware.example.com/callback',
+                    'activate_url' => 'http://activate.test?pim_url=http%3A%2F%2Flocalhost%3A8080',
+                    'callback_url' => 'http://callback.test',
                     'connected' => false,
                     'isPending' => false,
                     'isTestApp' => true,
