@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 import {Nomenclature, NomenclatureLineEditProps} from '../models';
-import {Table, TextInput} from 'akeneo-design-system';
+import {Table} from 'akeneo-design-system';
 import {Styled} from './Styled';
 import {useIsNomenclatureValueValid, usePlaceholder} from '../hooks';
 
@@ -26,7 +26,7 @@ const NomenclatureLineEdit: React.FC<Props> = ({nomenclature, nomenclatureLine: 
       <Styled.TitleCell>{label}</Styled.TitleCell>
       <Table.Cell>{code}</Table.Cell>
       <Table.Cell>
-        <TextInput
+        <Styled.NomenclatureInput
           value={value}
           invalid={!isValid(value || getPlaceholder(code))}
           readOnly={false}
