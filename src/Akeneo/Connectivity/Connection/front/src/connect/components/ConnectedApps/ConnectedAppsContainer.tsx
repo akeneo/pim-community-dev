@@ -39,8 +39,8 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
 
-    const connectedTestApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.is_test_app);
-    const connectedApps = allConnectedApps.filter((connectedApp: ConnectedApp) => !connectedApp.is_test_app);
+    const connectedTestApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.is_custom_app);
+    const connectedApps = allConnectedApps.filter((connectedApp: ConnectedApp) => !connectedApp.is_custom_app);
     const hasPendingApps = undefined !== allConnectedApps.find((connectedApp: ConnectedApp) => connectedApp.is_pending);
 
     const atLeastOneAppIsNotListedOnTheAppStore: boolean =

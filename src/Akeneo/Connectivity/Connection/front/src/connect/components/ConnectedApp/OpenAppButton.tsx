@@ -19,8 +19,8 @@ export const OpenAppButton: FC<Props> = ({connectedApp}) => {
     })}`;
 
     const canOpenApp =
-        (!connectedApp.is_test_app && security.isGranted('akeneo_connectivity_connection_open_apps')) ||
-        (connectedApp.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps'));
+        (!connectedApp.is_custom_app && security.isGranted('akeneo_connectivity_connection_open_apps')) ||
+        (connectedApp.is_custom_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps'));
 
     return (
         <Button

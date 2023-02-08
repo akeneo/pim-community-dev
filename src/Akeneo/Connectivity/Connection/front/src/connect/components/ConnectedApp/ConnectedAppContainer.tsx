@@ -180,7 +180,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         history.push(catalogEditUrl);
     };
 
-    const tag = connectedApp.is_test_app ? <DeveloperModeTag /> : null;
+    const tag = connectedApp.is_custom_app ? <DeveloperModeTag /> : null;
 
     const isAtLeastGrantedToViewProducts = isGrantedOnProduct(connectedApp, 'view');
     const isAtLeastGrantedToViewCatalogs = isGrantedOnCatalog(connectedApp, 'view');
