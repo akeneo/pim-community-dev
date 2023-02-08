@@ -167,7 +167,7 @@ SQL;
     private function createApp(string $id, string $code, bool $isPending, bool $isTestApp): App
     {
         if ($isTestApp) {
-            return App::fromTestAppValues(
+            return App::fromCustomAppValues(
                 [
                     'id' => $id,
                     'name' => $code,

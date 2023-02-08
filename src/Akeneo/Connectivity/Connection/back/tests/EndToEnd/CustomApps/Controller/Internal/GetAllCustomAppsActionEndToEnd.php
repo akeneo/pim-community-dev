@@ -67,7 +67,7 @@ class GetAllCustomAppsActionEndToEnd extends WebTestCase
                     'callback_url' => 'http://callback.test',
                     'connected' => false,
                     'isPending' => false,
-                    'isTestApp' => true,
+                    'isCustomApp' => true,
                 ]
             ]
         ], $result);

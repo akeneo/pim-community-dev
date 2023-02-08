@@ -144,7 +144,7 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
         $this->shouldThrow(AccessDeniedHttpException::class)->during('__invoke', [$request, $clientId]);
     }
 
-    public function it_throws_access_denied_exception_when_the_test_app_is_found_but_permissions_are_missing(
+    public function it_throws_access_denied_exception_when_the_custom_app_is_found_but_permissions_are_missing(
         FeatureFlag $marketplaceActivateFeatureFlag,
         SecurityFacade $security,
         GetAppQueryInterface $getAppQuery,
@@ -154,7 +154,7 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
         $request->isXmlHttpRequest()->willReturn(true);
 
         $clientId = 'a_client_id';
-        $app = App::fromTestAppValues([
+        $app = App::fromCustomAppValues([
             'id' => $clientId,
             'name' => 'test app',
             'activate_url' => 'http://url.test',
