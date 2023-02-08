@@ -5,17 +5,17 @@ import {useAttributeGroupsIndexState} from '../hooks';
 import {Breadcrumb} from 'akeneo-design-system';
 
 const AttributeGroupsIndex: FC = () => {
-  const {groups, load, isPending} = useAttributeGroupsIndexState();
+  const {attributeGroups, load, isPending} = useAttributeGroupsIndexState();
   const translate = useTranslate();
   const settingsHomePageRoute = `#${useRoute('pim_settings_index')}`;
 
-  const [groupCount, setGroupCount] = useState<number>(groups.length);
+  const [groupCount, setGroupCount] = useState<number>(attributeGroups.length);
 
   useEffect(() => {
     (async () => {
       await load();
     })();
-  }, []);
+  }, [load]);
 
   return (
     <>
@@ -40,7 +40,7 @@ const AttributeGroupsIndex: FC = () => {
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
-        <AttributeGroupsDataGrid groups={groups} onGroupCountChange={setGroupCount} />
+        <AttributeGroupsDataGrid attributeGroups={attributeGroups} onGroupCountChange={setGroupCount} />
       </PageContent>
     </>
   );
