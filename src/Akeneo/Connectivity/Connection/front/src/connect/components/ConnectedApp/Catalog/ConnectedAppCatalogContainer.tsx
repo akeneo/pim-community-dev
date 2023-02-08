@@ -81,7 +81,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
         </Breadcrumb>
     );
 
-    const tag = connectedApp.is_test_app ? <DeveloperModeTag /> : null;
+    const tag = connectedApp.is_custom_app ? <DeveloperModeTag /> : null;
 
     return (
         <>
