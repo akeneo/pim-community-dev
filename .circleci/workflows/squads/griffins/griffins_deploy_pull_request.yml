@@ -1,0 +1,35 @@
+workflows:
+    griffins_deploy_pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            -   deploy_pr_environment?:
+                    type: approval
+                    filters:
+                        branches:
+                            only:
+                                - /^(GRF)-.*/
+            -   checkout_ee:
+                    name: checkout_deploy
+                    requires:
+                        - deploy_pr_environment?
+            -   build_prod:
+                    requires:
+                        - checkout_deploy
+            -   deploy_pr_environment:
+                    name: deploy_griffins_pr
+                    requires:
+                        - build_prod
+            -   delete_pr_environment?:
+                    type: approval
+                    filters:
+                        branches:
+                            only:
+                                - /^(GRF)-.*/
+                    requires:
+                        - deploy_griffins_pr
+            -   delete_pr_environment:
+                    name: delete_griffins_pr
+                    requires:
+                        - delete_pr_environment?

@@ -1,0 +1,79 @@
+workflows:
+    griffins_category_pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            -   start_category?:
+                    type: approval
+                    filters:
+                        branches:
+                            only:
+                                - /^(GRF)-.*/
+
+            # CE
+            -   checkout_ce:
+                    name: ce_checkout
+                    requires:
+                        - start_category?
+            -   install_front_dependencies:
+                    name: ce_install_front_dependencies
+                    edition: ce
+                    requires:
+                        - ce_checkout
+            -   install_back_dependencies:
+                    name: ce_install_back_dependencies
+                    edition: ce
+                    requires:
+                        - ce_checkout
+            -   test_front_category_ce:
+                    name: ce_test_front
+                    requires:
+                        - ce_install_front_dependencies
+            -   test_back_category_ce:
+                    name: ce_test_back
+                    requires:
+                        - ce_install_back_dependencies
+            -   build_dev:
+                    name: ce_build
+                    is_ee_built: false
+                    requires:
+                        - ce_checkout
+
+            # EE
+            -   checkout_ee:
+                    name: ee_checkout
+                    requires:
+                        - start_category?
+            -   build_dev:
+                    name: ee_build
+                    is_ee_built: true
+                    path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
+                    requires:
+                        - ee_checkout
+            -   install_back_dependencies:
+                    name: ee_install_back_dependencies
+                    edition: ee
+                    requires:
+                        - ee_checkout
+            -   install_front_dependencies:
+                    name: ee_install_front_dependencies
+                    edition: ee
+                    requires:
+                        - ee_checkout
+            -   test_back_category_ee:
+                    name: ee_test_back
+                    requires:
+                        - ee_install_back_dependencies
+            -   test_front_category_ee:
+                    name: ee_test_front
+                    requires:
+                        - ee_install_front_dependencies
+
+            # PR Requirements
+            -   pull_request_success:
+                    requires:
+                        - ce_test_front
+                        - ce_test_back
+                        - ee_test_front
+                        - ee_test_back

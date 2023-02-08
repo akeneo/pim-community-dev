@@ -1,0 +1,34 @@
+jobs:
+    test_front_category_ee:
+        machine:
+            image: 'ubuntu-2004:2022.04.1'
+            docker_layer_caching: true
+        parameters:
+            notify:
+                type: boolean
+                default: false
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   restore_frontend_dependency_cache
+            -   fix_files_permissions
+            -   load_docker_image_node
+            -   run:
+                    name: Cleanup & re-install CE node_modules
+                    command: |
+                        rm -rf vendor/akeneo/pim-community-dev/node_modules
+                        cd ~/project/vendor/akeneo/pim-community-dev && make node_modules
+# KO for now
+#            -   run:
+#                    name: Lint front
+#                    command: PIM_CONTEXT=category make category-lint-front
+            -   run:
+                    name: Unit front
+                    command: PIM_CONTEXT=category make category-unit-front
+            -   when:
+                    condition: << parameters.notify >>
+                    steps:
+                        -   slack-app/notify:
+                                channel: 'griffins-dev'
+                                event: fail
+                                template: basic_fail_1

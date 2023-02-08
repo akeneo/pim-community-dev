@@ -1,0 +1,37 @@
+jobs:
+    test_back_category_ee:
+        machine:
+            image: 'ubuntu-2004:2022.04.1'
+            docker_layer_caching: true
+        parameters:
+            notify:
+                type: boolean
+                default: false
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   load_docker_image_php
+            -   fix_files_permissions
+            -   start_test_containers
+            -   run:
+                    name: Lint back
+                    command: PIM_CONTEXT=category APP_ENV=test make category-lint-back
+            -   run:
+                    name: Integration back
+                    command: PIM_CONTEXT=category APP_ENV=test make category-integration-back
+            -   run:
+                    name: End to End back
+                    command: PIM_CONTEXT=category APP_ENV=test make category-end-to-end-back
+            -   when:
+                    condition: << pipeline.parameters.run-database-tests >>
+                    steps:
+                        -   run:
+                                name: Database schema reference
+                                command: PIM_CONTEXT=test APP_ENV=test make test-database-structure
+            -   when:
+                    condition: << parameters.notify >>
+                    steps:
+                        -   slack-app/notify:
+                                channel: 'monitoring-octopus'
+                                event: fail
+                                template: basic_fail_1

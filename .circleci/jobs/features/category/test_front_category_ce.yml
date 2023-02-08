@@ -1,0 +1,17 @@
+jobs:
+    test_front_category_ce:
+        machine:
+            image: 'ubuntu-2004:2022.04.1'
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   fix_files_permissions
+            -   load_docker_image_node
+# KO for now
+#            -   run:
+#                    name: Lint front
+#                    command: PIM_CONTEXT=category make category-lint-front
+            -   run:
+                    name: Unit front
+                    command: PIM_CONTEXT=category make category-unit-front
