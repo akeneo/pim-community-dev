@@ -32,7 +32,7 @@ test('The marketplace page display the developer mode when enabled', async () =>
     await waitFor(() => expect(Marketplace).toHaveBeenCalled());
     expect(screen.queryByText('akeneo_connectivity.connection.developer_mode')).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_test_app')
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app')
     ).toBeInTheDocument();
 });
 
@@ -46,7 +46,7 @@ test('The marketplace page do not display the developer mode when not enabled', 
     await waitFor(() => expect(Marketplace).toHaveBeenCalled());
     expect(screen.queryByText('akeneo_connectivity.connection.developer_mode')).not.toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_test_app')
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app')
     ).not.toBeInTheDocument();
 });
 
@@ -58,7 +58,9 @@ test('It redirect when the "create a test app" button is clicked', async () => {
     renderWithProviders(<MarketplacePage />);
 
     await waitFor(() => expect(Marketplace).toHaveBeenCalled());
-    userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_test_app'));
+    userEvent.click(
+        screen.getByText('akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app')
+    );
 
     expect(historyMock.history.location.pathname).toBe(
         '/akeneo_connectivity_connection_connect_marketplace_test_app_create'

@@ -4,17 +4,17 @@ import {Section} from '../Section';
 import {useTranslate} from '../../../shared/translate';
 import {TestAppCard} from './TestAppCard';
 import {ActivateAppButton} from '../ActivateAppButton';
-import {useAppDeveloperMode} from '../../hooks/use-app-developer-mode';
+import {useSecurity} from '../../../shared/security';
 
 interface Props {
     testApps: TestApps;
 }
 
 export const TestAppList: FC<Props> = ({testApps}) => {
+    const security = useSecurity();
     const translate = useTranslate();
-    const isDeveloperModeEnabled = useAppDeveloperMode();
 
-    if (!isDeveloperModeEnabled || testApps.total <= 0) {
+    if (testApps.total <= 0) {
         return null;
     }
 
@@ -27,7 +27,7 @@ export const TestAppList: FC<Props> = ({testApps}) => {
                     key={1}
                     id={testApp.id}
                     isConnected={testApp.connected}
-                    isDisabled={!isDeveloperModeEnabled}
+                    isDisabled={!security.isGranted('akeneo_connectivity_connection_manage_apps')}
                     isPending={false}
                 />,
             ]}

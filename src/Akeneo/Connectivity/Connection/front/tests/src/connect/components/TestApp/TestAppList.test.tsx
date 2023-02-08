@@ -3,8 +3,7 @@ import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {renderWithProviders} from '../../../../test-utils';
 import {TestAppList} from '@src/connect/components/TestApp/TestAppList';
-import {useFeatureFlags} from '@src/shared/feature-flags';
-import {TestAppCard} from '@src/connect/components/TestApp/TestAppCard';
+import {SecurityContext} from '@src/shared/security';
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -17,11 +16,6 @@ jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
             isEnabled: () => true,
         };
     }),
-}));
-
-jest.mock('@src/connect/components/TestApp/TestAppCard', () => ({
-    ...jest.requireActual('@src/connect/components/TestApp/TestAppCard'),
-    TestAppCard: jest.fn(() => null),
 }));
 
 const testApp1 = {
@@ -60,50 +54,45 @@ test('it displays test app', () => {
         screen.queryByText('akeneo_connectivity.connection.connect.marketplace.apps.total', {exact: false})
     ).toBeInTheDocument();
 
-    expect(TestAppCard).toHaveBeenNthCalledWith(
-        1,
-        {
-            testApp: testApp1,
-            additionalActions: expect.anything(),
-        },
-        {}
-    );
-
-    expect(TestAppCard).toHaveBeenNthCalledWith(
-        2,
-        {
-            testApp: testApp2,
-            additionalActions: expect.anything(),
-        },
-        {}
-    );
+    expect(screen.queryByText('testApp1')).toBeInTheDocument();
+    expect(screen.queryByText('testApp2')).toBeInTheDocument();
 });
 
 test('it displays nothing when total is 0', () => {
     const testApps = {
         total: 0,
-        apps: [testApp1, testApp2],
+        apps: [],
     };
     renderWithProviders(<TestAppList testApps={testApps} />);
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.title')
     ).not.toBeInTheDocument();
-
-    expect(TestAppCard).not.toHaveBeenCalled();
 });
 
-test('it displays nothing when feature flag is disabled', () => {
-    (useFeatureFlags as jest.Mock).mockImplementation(() => ({isEnabled: () => false}));
+test('it disabled the connect button when the user doesnt have the permission to open Apps', () => {
+    const isGranted = jest.fn(acl => {
+        if (acl === 'akeneo_connectivity_connection_manage_apps') {
+            return false;
+        }
+        return true;
+    });
+
     const testApps = {
-        total: 2,
-        apps: [testApp1, testApp2],
+        total: 1,
+        apps: [testApp1],
     };
-    renderWithProviders(<TestAppList testApps={testApps} />);
 
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.title')
-    ).not.toBeInTheDocument();
+    renderWithProviders(
+        <SecurityContext.Provider value={{isGranted}}>
+            <TestAppList testApps={testApps} />
+        </SecurityContext.Provider>
+    );
 
-    expect(TestAppCard).not.toHaveBeenCalled();
+    expect(screen.queryByText('testApp1')).toBeInTheDocument();
+
+    const connectButton = expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.card.connect'));
+
+    connectButton.toHaveAttribute('disabled');
+    connectButton.toHaveAttribute('aria-disabled', 'true');
 });
