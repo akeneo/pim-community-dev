@@ -6,10 +6,10 @@ config:
                     module: pim/controller/connectivity/connection/connect/marketplace
                 akeneo_connectivity_connection_connect_marketplace_profile:
                     module: pim/controller/connectivity/connection/connect/marketplace
-                akeneo_connectivity_connection_connect_marketplace_test_app_create:
-                    module: pim/controller/connectivity/connection/connect/marketplace
-                akeneo_connectivity_connection_connect_marketplace_test_app_delete:
-                    module: pim/controller/connectivity/connection/connect/marketplace
+                akeneo_connectivity_connection_connect_custom_apps_create:
+                    module: pim/controller/connectivity/connection/connect/custom-apps
+                akeneo_connectivity_connection_connect_custom_apps_delete:
+                    module: pim/controller/connectivity/connection/connect/custom-apps
                 akeneo_connectivity_connection_connect_apps_activate:
                     module: pim/controller/connectivity/connection/connect/apps
                 akeneo_connectivity_connection_connect_apps_authorize:
@@ -57,6 +57,7 @@ config:
     paths:
         pim/controller/connectivity/connection/connect/apps: akeneoconnectivityconnection/js/controller/apps.tsx
         pim/controller/connectivity/connection/connect/marketplace: akeneoconnectivityconnection/js/controller/marketplace.tsx
+        pim/controller/connectivity/connection/connect/custom-apps: akeneoconnectivityconnection/js/controller/custom-apps.tsx
         pim/controller/connectivity/connection/settings: akeneoconnectivityconnection/js/controller/settings.tsx
         pim/controller/connectivity/connection/error-management: akeneoconnectivityconnection/js/controller/error-management.tsx
         pim/controller/connectivity/connection/webhook: akeneoconnectivityconnection/js/controller/webhook.tsx

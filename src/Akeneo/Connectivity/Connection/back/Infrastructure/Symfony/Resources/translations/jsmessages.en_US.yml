@@ -40,8 +40,8 @@ pim_title:
     akeneo_connectivity_connection_connect_connected_apps: Connected Apps
     akeneo_connectivity_connection_connect_connected_apps_edit: App settings
     akeneo_connectivity_connection_connect_connected_apps_delete: App delete
-    akeneo_connectivity_connection_connect_marketplace_test_app_create: Create a test app
-    akeneo_connectivity_connection_connect_marketplace_test_app_delete: Delete test app
+    akeneo_connectivity_connection_custom_apps_create: Create a custom app
+    akeneo_connectivity_connection_custom_apps_delete: Delete custom app
     akeneo_connectivity_connection_connect_connected_apps_open: Open App
     akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Edit catalog
 akeneo_connectivity.connection:

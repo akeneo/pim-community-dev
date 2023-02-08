@@ -63,6 +63,6 @@ test('It redirect when the "create a test app" button is clicked', async () => {
     );
 
     expect(historyMock.history.location.pathname).toBe(
-        '/akeneo_connectivity_connection_connect_marketplace_test_app_create'
+        '/akeneo_connectivity_connection_custom_apps_create'
     );
 });
