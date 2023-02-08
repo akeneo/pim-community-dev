@@ -152,7 +152,7 @@ class AuthorizeActionSpec extends ObjectBehavior
             ->during('__invoke', [$request]);
     }
 
-    public function it_throws_access_denied_exception_when_the_test_app_is_found_but_permissions_are_missing(
+    public function it_throws_access_denied_exception_when_the_custom_app_is_found_but_permissions_are_missing(
         FeatureFlag $marketplaceActivateFeatureFlag,
         Request $request,
         GetAppQueryInterface $getAppQuery,
@@ -162,9 +162,9 @@ class AuthorizeActionSpec extends ObjectBehavior
         $clientId = 'a_client_id';
         $request->query = new InputBag(['client_id' => $clientId]);
 
-        $app = App::fromTestAppValues([
+        $app = App::fromCustomAppValues([
             'id' => $clientId,
-            'name' => 'test app',
+            'name' => 'custom app',
             'activate_url' => 'http://url.test',
             'callback_url' => 'http://url.test',
         ]);
@@ -472,9 +472,9 @@ class AuthorizeActionSpec extends ObjectBehavior
             ])
             ->willReturn('/connect/apps/authorize');
 
-        $app = App::fromTestAppValues([
+        $app = App::fromCustomAppValues([
             'id' => $clientId,
-            'name' => 'test app',
+            'name' => 'custom app',
             'activate_url' => 'http://url.test',
             'callback_url' => 'http://url.test',
         ]);

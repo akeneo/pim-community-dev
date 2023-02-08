@@ -1,5 +1,4 @@
 services:
-    # MARKETPLACE
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetUserProfileQuery:
         arguments:
             - '@database_connection'
@@ -20,29 +19,4 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppsQuery:
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery:
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllTestAppsQuery:
-        arguments:
-            - '@database_connection'
-
-    # TEST APPS
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\CreateTestAppQuery:
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppSecretQuery:
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\DeleteTestAppQuery:
-        arguments:
-            - '@database_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'

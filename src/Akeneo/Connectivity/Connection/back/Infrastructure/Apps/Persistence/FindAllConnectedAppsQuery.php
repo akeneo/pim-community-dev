@@ -41,7 +41,7 @@ final class FindAllConnectedAppsQuery implements FindAllConnectedAppsQueryInterf
             connected_app.certified,
             connected_app.partner,
             oro_user.username AS connection_username,
-            IF(akeneo_connectivity_test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app,
+            IF(akeneo_connectivity_test_app.client_id IS NULL, FALSE, TRUE) AS is_custom_app,
             IF(pending.marketplace_public_app_id IS NULL, FALSE, TRUE) AS is_pending,
             connected_app.has_outdated_scopes
         FROM akeneo_connectivity_connected_app AS connected_app

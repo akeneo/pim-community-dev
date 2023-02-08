@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
@@ -17,19 +17,19 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 final class GetAppQuery implements GetAppQueryInterface
 {
     public function __construct(
-        private WebMarketplaceApiInterface $webMarketplaceApi,
-        private FeatureFlag $appDeveloperModeFeatureFlag,
-        private GetTestAppQuery $getTestAppQuery,
+        private readonly WebMarketplaceApiInterface $webMarketplaceApi,
+        private readonly FeatureFlag $appDeveloperModeFeatureFlag,
+        private readonly GetCustomAppQuery $getCustomAppQuery,
     ) {
     }
 
     public function execute(string $id): ?App
     {
         if ($this->appDeveloperModeFeatureFlag->isEnabled()) {
-            $data = $this->getTestAppQuery->execute($id);
+            $data = $this->getCustomAppQuery->execute($id);
 
             if (null !== $data) {
-                return App::fromTestAppValues($data);
+                return App::fromCustomAppValues($data);
             }
         }
 

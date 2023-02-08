@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
+use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
@@ -20,14 +20,14 @@ class GetAppQuerySpec extends ObjectBehavior
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
         FeatureFlag $appDeveloperModeFeatureFlag,
-        GetTestAppQuery $getTestAppQuery,
+        GetCustomAppQuery $getCustomAppQuery,
     ) {
         $appDeveloperModeFeatureFlag->isEnabled()->willReturn(false);
 
         $this->beConstructedWith(
             $webMarketplaceApi,
             $appDeveloperModeFeatureFlag,
-            $getTestAppQuery,
+            $getCustomAppQuery,
         );
     }
 
@@ -77,10 +77,10 @@ class GetAppQuerySpec extends ObjectBehavior
     public function it_returns_a_known_marketplace_app_even_when_developer_mode_is_enabled(
         WebMarketplaceApiInterface $webMarketplaceApi,
         FeatureFlag $appDeveloperModeFeatureFlag,
-        GetTestAppQuery $getTestAppQuery,
+        GetCustomAppQuery $getCustomAppQuery,
     ): void {
         $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
-        $getTestAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
+        $getCustomAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
         $webMarketplaceApi->getApp('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn([
             'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
             'name' => 'Akeneo Shopware 6 App by EIKONA Media',
@@ -124,12 +124,12 @@ class GetAppQuerySpec extends ObjectBehavior
         $this->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->shouldReturn(null);
     }
 
-    public function it_returns_a_known_test_app_if_developer_mode_is_enabled(
+    public function it_returns_a_known_custom_app_if_developer_mode_is_enabled(
         FeatureFlag $appDeveloperModeFeatureFlag,
-        GetTestAppQuery $getTestAppQuery,
+        GetCustomAppQuery $getCustomAppQuery,
     ): void {
         $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
-        $getTestAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn([
+        $getCustomAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn([
             'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
             'name' => 'My Test App',
             'author' => 'John Doe',
@@ -138,7 +138,7 @@ class GetAppQuerySpec extends ObjectBehavior
         ]);
 
         $this->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->shouldBeLike(
-            App::fromTestAppValues([
+            App::fromCustomAppValues([
                 'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
                 'name' => 'My Test App',
                 'author' => 'John Doe',
@@ -148,13 +148,13 @@ class GetAppQuerySpec extends ObjectBehavior
         );
     }
 
-    public function it_returns_null_if_unknown_test_app_and_marketplace_app(
+    public function it_returns_null_if_unknown_custom_app_and_marketplace_app(
         WebMarketplaceApiInterface $webMarketplaceApi,
         FeatureFlag $appDeveloperModeFeatureFlag,
-        GetTestAppQuery $getTestAppQuery,
+        GetCustomAppQuery $getCustomAppQuery,
     ): void {
         $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
-        $getTestAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
+        $getCustomAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
         $webMarketplaceApi->getApp('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
 
         $this->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->shouldReturn(null);

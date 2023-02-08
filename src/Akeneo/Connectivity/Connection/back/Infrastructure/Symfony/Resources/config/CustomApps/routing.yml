@@ -1,0 +1,43 @@
+# Internal API
+akeneo_connectivity_connection_marketplace_rest_get_all_test_apps:
+    path: '/rest/marketplace/test-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetAllCustomAppsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_marketplace_rest_test_apps_create:
+    path: '/rest/marketplace/test-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\CreateCustomAppAction
+    methods: [POST]
+
+akeneo_connectivity_connection_marketplace_rest_test_apps_delete:
+    path: '/rest/marketplace/test-apps/{testAppId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\DeleteCustomAppAction
+    methods: [DELETE]
+
+# External API
+akeneo_connectivity_connection_marketplace_api_test_apps_list:
+    path: '/api/rest/v1/test-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\GetCustomAppsAction
+    methods: [GET]
+    defaults: { _list_in_root_endpoint: false }
+
+akeneo_connectivity_connection_marketplace_api_test_apps_create:
+    path: '/api/rest/v1/test-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\CreateCustomAppAction
+    methods: [POST]
+    defaults: { _list_in_root_endpoint: false }
+
+akeneo_connectivity_connection_marketplace_api_test_apps_delete:
+    path: '/api/rest/v1/test-apps/{clientId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\DeleteCustomAppAction
+    methods: [DELETE]
+    defaults: { _list_in_root_endpoint: false }
+
+# Front API
+akeneo_connectivity_connection_connect_marketplace_test_app_create:
+    path: '/connect/app-store/test-apps/create'
+
+akeneo_connectivity_connection_connect_marketplace_test_app_delete:
+    path: '/connect/app-store/test-apps/{testAppId}/delete'
+    requirements:
+        testAppId: '[a-zA-Z0-9_-]+'
