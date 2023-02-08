@@ -40,8 +40,6 @@ class SqlIdentifierGeneratorRepository implements IdentifierGeneratorRepository
      */
     public function save(IdentifierGenerator $identifierGenerator): void
     {
-        Assert::notNull($identifierGenerator->delimiter());
-
         $parameters = [
             'uuid' => $identifierGenerator->id()->asString(),
             'code' => $identifierGenerator->code()->asString(),
