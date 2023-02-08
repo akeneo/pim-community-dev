@@ -9,7 +9,7 @@ import {
   NomenclatureLineEditProps,
   NomenclatureValues,
 } from '../models';
-import {useIsNomenclatureValueValid, usePlaceholder} from './useIsNomenclatureValueValid';
+import {useNomenclatureDisplay} from './useNomenclatureDisplay';
 
 type HookResult = {
   data: NomenclatureLineEditProps[];
@@ -23,15 +23,14 @@ type HookResult = {
 };
 
 const useGetFamilyNomenclatureValues = (
-  nomenclature?: Nomenclature,
-  filter?: NomenclatureFilter,
-  values?: NomenclatureValues,
+  nomenclature: Nomenclature | undefined,
+  filter: NomenclatureFilter | undefined,
+  values: NomenclatureValues | undefined,
   itemsPerPage: number
 ): HookResult => {
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>('');
-  const isValid = useIsNomenclatureValueValid(nomenclature);
-  const getPlaceholder = usePlaceholder(nomenclature);
+  const {isValid, getPlaceholder} = useNomenclatureDisplay(nomenclature);
   const lowerCaseSearch = useMemo(() => search.toLowerCase(), [search]);
   const [filteredValuesCount, setFilteredValuesCount] = useState<number>(0);
   const userContext = useUserContext();
