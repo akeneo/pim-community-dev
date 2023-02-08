@@ -17,7 +17,7 @@ export const ConnectedAppSettings: FC<Props> = ({connectedApp, monitoringSetting
     const security = useSecurity();
 
     const showConnectedAppCredentials =
-        connectedApp.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps');
+        connectedApp.is_custom_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps');
 
     return (
         <>
