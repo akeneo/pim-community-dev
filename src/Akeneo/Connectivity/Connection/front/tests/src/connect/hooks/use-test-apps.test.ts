@@ -44,7 +44,7 @@ test('it returns loading status and testApps values', async () => {
     }));
 
     mockFetchResponses({
-        akeneo_connectivity_connection_marketplace_rest_get_all_test_apps: {
+        akeneo_connectivity_connection_custom_apps_rest_get_all: {
             json: testApps,
         },
     });
@@ -74,7 +74,7 @@ test('it returns loading status and empty values on fetch error ', async () => {
     }));
 
     mockFetchResponses({
-        akeneo_connectivity_connection_marketplace_rest_get_all_test_apps: {
+        akeneo_connectivity_connection_custom_apps_rest_get_all: {
             reject: true,
             json: {},
         },
