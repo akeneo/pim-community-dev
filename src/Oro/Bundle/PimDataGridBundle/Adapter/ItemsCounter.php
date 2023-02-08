@@ -3,6 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Adapter;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts;
+use Akeneo\Pim\Structure\Component\Query\InternalApi\CountAttributes;
 
 /**
  * Counts the number of items selected in the grid.
@@ -13,12 +14,10 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts;
  */
 class ItemsCounter
 {
-    /** @var CountImpactedProducts */
-    private $countImpactedProducts;
-
-    public function __construct(CountImpactedProducts $countImpactedProducts)
-    {
-        $this->countImpactedProducts = $countImpactedProducts;
+    public function __construct(
+        private readonly CountImpactedProducts $countImpactedProducts,
+        private readonly CountAttributes $countAttributes,
+    ) {
     }
 
     /**
@@ -35,8 +34,10 @@ class ItemsCounter
         }
 
         if ($gridName === OroToPimGridFilterAdapter::ATTRIBUTE_GRID_NAME) {
-            // @TODO RAB-1260: Use a query to count attribute group
-            return 0;
+            return $this->countAttributes->byCodes(
+                'IN' === $filters['operator'] ? $filters['values'] : [],
+                'NOT IN' === $filters['operator'] ? $filters['values'] : [],
+            );
         }
 
         if (!isset($filters[0]['value'])) {
