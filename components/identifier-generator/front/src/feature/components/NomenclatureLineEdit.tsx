@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {Nomenclature, NomenclatureLineEditProps} from '../models';
 import {Table} from 'akeneo-design-system';
 import {Styled} from './Styled';
-import {useIsNomenclatureValueValid, usePlaceholder} from '../hooks';
+import {useNomenclatureDisplay} from '../hooks';
 
 type Props = {
   nomenclature: Nomenclature;
@@ -11,8 +11,7 @@ type Props = {
 };
 
 const NomenclatureLineEdit: React.FC<Props> = ({nomenclature, nomenclatureLine: {code, label, value}, onChange}) => {
-  const isValid = useIsNomenclatureValueValid(nomenclature);
-  const getPlaceholder = usePlaceholder(nomenclature);
+  const {isValid, getPlaceholder} = useNomenclatureDisplay(nomenclature);
 
   const handleChangeValue = useCallback(
     (value: string) => {
