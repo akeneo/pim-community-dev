@@ -49,7 +49,7 @@ class RedirectToEditConnectedAppActionSpec extends ObjectBehavior
         $this->shouldThrow(new NotFoundHttpException())->during('__invoke', [$badId]);
     }
 
-    public function it_denies_user_that_cannot_manage_a_test_app(
+    public function it_denies_user_that_cannot_manage_a_custom_app(
         FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
         SecurityFacade $security,
     ): void {

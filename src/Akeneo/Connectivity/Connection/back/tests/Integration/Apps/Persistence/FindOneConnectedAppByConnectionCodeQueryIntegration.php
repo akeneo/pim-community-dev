@@ -50,7 +50,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
             'logo' => 'http://example.com/logo.png',
             'author' => 'Akeneo',
             'categories' => ['ecommerce'],
-            'is_test_app' => false,
+            'is_custom_app' => false,
             'scopes' => ['read_products'],
             'partner' => null,
             'certified' => false,
@@ -62,33 +62,33 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
         Assert::assertEquals($expectedApp, $connectedApp->normalize());
     }
 
-    public function test_it_retrieves_a_test_connected_app_by_connection_code(): void
+    public function test_it_retrieves_a_custom_connected_app_by_connection_code(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '0dfce574-2238-4b13-b8cc-8d257ce7645b',
-            'connected_test_app',
+            'connected_custom_app',
             ['read_products'],
             true,
         );
-        $expectedTestApp = [
+        $expectedCustomApp = [
             'id' => '0dfce574-2238-4b13-b8cc-8d257ce7645b',
-            'name' => 'connected_test_app',
-            'connection_code' => 'connected_test_app',
+            'name' => 'connected_custom_app',
+            'connection_code' => 'connected_custom_app',
             'author' => 'Akeneo',
             'logo' => null,
-            'user_group_name' => 'app_connected_test_app',
-            'connection_username' => $this->findConnectionUsername('connected_test_app'),
+            'user_group_name' => 'app_connected_custom_app',
+            'connection_username' => $this->findConnectionUsername('connected_custom_app'),
             'categories' => [],
             'partner' => null,
             'certified' => false,
-            'is_test_app' => true,
+            'is_custom_app' => true,
             'is_pending' => false,
             'scopes' => ['read_products'],
             'has_outdated_scopes' => false,
         ];
-        $testApp = $this->query->execute('connected_test_app');
+        $customApp = $this->query->execute('connected_custom_app');
 
-        Assert::assertEquals($expectedTestApp, $testApp->normalize());
+        Assert::assertEquals($expectedCustomApp, $customApp->normalize());
     }
 
     public function test_it_retrieves_a_pending_app_by_connection_code(): void
@@ -112,7 +112,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
             'categories' => ['ecommerce'],
             'certified' => false,
             'partner' => null,
-            'is_test_app' => false,
+            'is_custom_app' => false,
             'is_pending' => true,
             'has_outdated_scopes' => false,
         ];

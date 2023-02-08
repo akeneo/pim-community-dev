@@ -93,7 +93,7 @@ class GetAllConnectedAppScopeMessagesActionSpec extends ObjectBehavior
             ->during('__invoke', [$request, 'foo']);
     }
 
-    public function it_throws_access_denied_exception_with_missing_manage_test_apps_acl(
+    public function it_throws_access_denied_exception_with_missing_manage_custom_apps_acl(
         FeatureFlag $featureFlag,
         SecurityFacade $security,
         FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,

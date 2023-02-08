@@ -68,7 +68,7 @@ class FindOneConnectedAppByIdQueryIntegration extends TestCase
         Assert::assertEquals(\serialize($createdApp), \serialize($retrievedApp));
     }
 
-    public function test_it_can_retrieve_a_connected_app_by_id_related_to_a_test_app(): void
+    public function test_it_can_retrieve_a_connected_app_by_id_related_to_a_custom_app(): void
     {
         $connection = $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
         $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
@@ -89,14 +89,14 @@ class FindOneConnectedAppByIdQueryIntegration extends TestCase
         );
         $this->createConnectedAppQuery->execute($createdApp);
 
-        $this->createTestApp('86d603e6-ec67-45fa-bd79-aa8b2f649e12');
+        $this->createCustomApp('86d603e6-ec67-45fa-bd79-aa8b2f649e12');
 
         $retrievedApp = $this->query->execute('86d603e6-ec67-45fa-bd79-aa8b2f649e12');
 
         Assert::assertEquals(\serialize($createdApp), \serialize($retrievedApp));
     }
 
-    private function createTestApp(string $id): void
+    private function createCustomApp(string $id): void
     {
         $this->connection->insert('akeneo_connectivity_test_app', [
             'client_id' => $id,
