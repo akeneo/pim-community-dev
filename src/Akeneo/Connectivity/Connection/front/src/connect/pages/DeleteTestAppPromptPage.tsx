@@ -39,8 +39,8 @@ export const DeleteTestAppPromptPage: FC = () => {
     const notify = useNotify();
     const isAppDeveloperModeEnabled = useAppDeveloperMode();
 
-    const {testAppId} = useParams<{testAppId: string}>();
-    const deleteTestApp = useDeleteTestApp(testAppId);
+    const {customAppId} = useParams<{customAppId: string}>();
+    const deleteTestApp = useDeleteTestApp(customAppId);
 
     if (!isAppDeveloperModeEnabled) {
         history.push(generateUrl('akeneo_connectivity_connection_connect_marketplace'));
