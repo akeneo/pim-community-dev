@@ -50,7 +50,7 @@ class DeleteCustomAppActionEndToEnd extends WebTestCase
 
         $this->client->request(
             'DELETE',
-            '/rest/marketplace/test-apps/100eedac-ff5c-497b-899d-e2d64b6c59f9',
+            '/rest/custom-apps/100eedac-ff5c-497b-899d-e2d64b6c59f9',
             [],
             [],
             [

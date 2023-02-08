@@ -9,8 +9,8 @@ akeneo_connectivity_connection_custom_apps_rest_create:
     controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\CreateCustomAppAction
     methods: [POST]
 
-akeneo_connectivity_connection_marketplace_rest_test_apps_delete:
-    path: '/rest/marketplace/test-apps/{testAppId}'
+akeneo_connectivity_connection_custom_apps_rest_delete:
+    path: '/rest/custom-apps/{customAppId}'
     controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\DeleteCustomAppAction
     methods: [DELETE]
 
