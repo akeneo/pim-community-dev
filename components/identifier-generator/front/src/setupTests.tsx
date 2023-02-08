@@ -7,25 +7,33 @@ import '@testing-library/jest-dom/extend-expect';
 
 const mockedUseSecurity = jest.fn();
 
+const userContext = {
+  get: (k: string) => {
+    switch (k) {
+      case 'catalogLocale':
+        return 'en_US';
+      case 'uiLocale':
+        return 'en_US';
+      default:
+        throw new Error(`Unknown key ${k}`);
+    }
+  },
+};
+
+const router = {
+  generate: (key: string) => key,
+};
+
 jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
   useTranslate: () => (i18nKey: string) => i18nKey,
-  useRouter: () => ({
-    generate: (key: string) => key,
-  }),
+  useRouter: () => {
+    return router
+  },
   useNotify: () => () => {},
-  useUserContext: () => ({
-    get: (k: string) => {
-      switch (k) {
-        case 'catalogLocale':
-          return 'en_US';
-        case 'uiLocale':
-          return 'en_US';
-        default:
-          throw new Error(`Unknown key ${k}`);
-      }
-    },
-  }),
+  useUserContext: () => {
+    return userContext;
+  },
   useSecurity: mockedUseSecurity,
 }));
 

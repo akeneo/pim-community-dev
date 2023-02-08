@@ -11,8 +11,6 @@ import {
 } from '../models';
 import {useIsNomenclatureValueValid, usePlaceholder} from './useIsNomenclatureValueValid';
 
-const ITEM_PER_PAGE = 25;
-
 type HookResult = {
   data: NomenclatureLineEditProps[];
   page: number;
@@ -27,7 +25,8 @@ type HookResult = {
 const useGetFamilyNomenclatureValues = (
   nomenclature?: Nomenclature,
   filter?: NomenclatureFilter,
-  values?: NomenclatureValues
+  values?: NomenclatureValues,
+  itemsPerPage: number
 ): HookResult => {
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>('');
@@ -91,9 +90,9 @@ const useGetFamilyNomenclatureValues = (
         case 'empty':
           return !getValueBeforeUserUpdate(familyCode);
         case 'filled':
+        default:
           return getValueBeforeUserUpdate(familyCode) && getValueBeforeUserUpdate(familyCode) !== '';
       }
-      throw new Error(`Unknown filter ${filter}`);
     },
     [filter, isValid, getValueBeforeUserUpdate, getValueBeforeUserUpdateOrPlaceholder]
   );
@@ -114,13 +113,13 @@ const useGetFamilyNomenclatureValues = (
     let filteredValuesCount = 0;
     let hasNomenclatureValueInvalid = false;
     const filteredData: NomenclatureLineEditProps[] = [];
-    const firstIndexToDisplay = (page - 1) * ITEM_PER_PAGE;
+    const firstIndexToDisplay = (page - 1) * itemsPerPage;
 
     const addFilteredData = (family: Family) => {
       filteredValuesCount++;
       const currentIndex = filteredButNotDisplayedDataCount + filteredData.length;
 
-      if (currentIndex >= firstIndexToDisplay && currentIndex < firstIndexToDisplay + ITEM_PER_PAGE) {
+      if (currentIndex >= firstIndexToDisplay && currentIndex < firstIndexToDisplay + itemsPerPage) {
         filteredData.push(getLineFromFamily(family));
       } else {
         filteredButNotDisplayedDataCount++;
@@ -142,6 +141,7 @@ const useGetFamilyNomenclatureValues = (
     families,
     getLineFromFamily,
     page,
+    itemsPerPage,
     isValid,
     getValueBeforeUserUpdateOrPlaceholder,
     familyMatchSearch,
