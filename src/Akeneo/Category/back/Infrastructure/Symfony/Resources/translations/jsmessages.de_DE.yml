@@ -1,0 +1,33 @@
+akeneo.category:
+  tree_list:
+    column:
+      category_templates: Kategorievorlagen
+  attributes: Attribute
+  edition_form:
+    error:
+      unhandled_attribute_type: Attributfeld-Builder für Attributtyp "{{type}} " konnte nicht gefunden werden
+    template:
+      title: Vorlage
+      fetching_failed: Fehler beim Abrufen der Vorlage
+    unsaved_changes: Änderungen an der Kategorie gehen verloren, wenn Sie die Seite verlassen.
+  tree:
+    create: Strukturbaum anlegen
+    delete: Strukturbaum löschen
+  template:
+    create: Vorlage aktivieren
+    edit: Vorlage anzeigen
+    delete: Vorlage löschen
+    notification_success: Vorlage erfolgreich aktiviert
+    notification_error: Vorlage konnte nicht aktiviert werden
+    attribute:
+      description_title: Beschreibungseinstellungen
+      type:
+        text: Text
+        textarea: Textbereich
+        richtext: Rich Text
+        image: Bild
+  template_list:
+    columns:
+      header: Bezeichnung
+      code: Code
+      type: Typ

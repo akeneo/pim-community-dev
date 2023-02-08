@@ -10,6 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
@@ -100,6 +101,28 @@ class LoginRateLimitListenerSpec extends ObjectBehavior
         $this->onFailureLogin($event);
 
         $this->lockStateShouldBeUpdated($userManager, $user, self::ALLOWED_FAILED_ATTEMPTS);
+    }
+
+    public function it_consider_login_has_failed_when_passport_is_empty(
+        UserInterface $user,
+        LoginFailureEvent $event,
+    ): void {
+        $this->initUser($user,self::ALLOWED_FAILED_ATTEMPTS - 1, $this->getAuthenticationFailureResetDateFromNow(self::ACCOUNT_LOCK_DURATION - 1));
+        $event->getPassport()->willReturn(null);
+
+        $this->onFailureLogin($event)->shouldReturn(null);
+    }
+
+    public function it_consider_login_has_failed_when_passport_is_not_a_symfony_passport_instance(
+        PassportInterface $passport,
+        UserBadge $badge,
+        UserInterface $user,
+        LoginFailureEvent $event,
+    ): void {
+        $this->initUser($user,self::ALLOWED_FAILED_ATTEMPTS - 1, $this->getAuthenticationFailureResetDateFromNow(self::ACCOUNT_LOCK_DURATION - 1));
+        $event->getPassport()->willReturn($passport);
+
+        $this->onFailureLogin($event)->shouldReturn(null);
     }
 
     public function it_reset_failed_attempts_on_login_success(

@@ -1,4 +1,9 @@
 akeneo_catalogs:
+  common:
+    select:
+      open: Otwórz
+      remove: Usuń
+      no_matches: Nie znaleziono dopasowań
   catalog_list:
     catalogs_name: Nazwa katalogu
     status: Status
@@ -14,6 +19,9 @@ akeneo_catalogs:
       product_value_filters: Filtruj wartości
       product_mapping: Mapowanie
   catalog_status_widget:
+    fields:
+      enable_catalog: Włącz katalog
+    helper: Domyślnie nowe katalogi są wyłączone. Włącz katalog, aby umożliwić aplikacji pozyskiwanie danych produktu.
     inputs:
       yes: Yes
       no: No
@@ -36,6 +44,9 @@ akeneo_catalogs:
         placeholder: Wybierz walutę
   product_selection:
     empty: Dodaj kryteria wyboru, aby utworzyć wybór produktów
+    count:
+      products: '{0} Brak produktów {count, plural, one{{count} produkt} few {{count} produkty} many {{count} produktów} other{{count} produktu}}'
+      error: Nie można obliczyć liczby produktów.
     more_information: Więcej informacji znajdziesz w naszej pomocy.
     add_criteria:
       label: dodaj kryteria wyboru
@@ -54,6 +65,7 @@ akeneo_catalogs:
       empty: Nie znaleziono kanału
     criteria:
       unknown: Ten atrybut został usunięty.
+      max_reached: Osiągnięto limit kryteriów wyboru ({{ maxCount }}).
       status:
         label: Status
         enabled: Włączony
@@ -113,6 +125,14 @@ akeneo_catalogs:
         illustration_title: Brak dostępnych celów katalogu
     source:
       title: Wybierz źródło
+      parameters:
+        title: Parametry źródła
+        channel:
+          label: Kanał
+          placeholder: Wybierz kanał
+        locale:
+          label: Wersja językowa
+          placeholder: Wybierz wersję językową
       select_source:
         label: Źródło PIM
         search: Kryterium wyszukiwania
@@ -124,3 +144,7 @@ akeneo_catalogs:
         illustration_title: Kliknij cel w prawym panelu, aby skonfigurować mapowanie katalogu.
         subtitle: Wtedy będziesz mieć możliwość dopasowania atrybutu PIM do wybranego celu.
         link: Więcej informacji znajdziesz w naszej pomocy.
+      uuid_placeholder:
+        illustration_title: UUID to techniczny identyfikator produktu.
+        subtitle: Wszystkie aplikacje muszą wymagać go jako celu. Nie musisz nic konfigurować w odniesieniu do tego celu, ponieważ automatycznie mapujemy go za pomocą identyfikatora UUID produktu Akeneo.
+        link: Więcej informacji o identyfikatorze UUID.
