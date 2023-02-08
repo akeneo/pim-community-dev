@@ -15,6 +15,7 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
 
   return (
     <Router basename="/enrich/product-category-tree">
+      <h1>Test JBE</h1>
       <Switch>
         <Route path="/:treeId/tree">
           <CategoriesTreePage />
