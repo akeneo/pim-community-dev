@@ -17,7 +17,7 @@ final class Version_7_0_20221017143357_add_category_template_table_Integration e
     private const TREE_TEMPLATE_TABLE_NAME = 'pim_catalog_category_tree_template';
     private const FOREIGN_TREE_TEMPLATE_KEY_NAME = 'FK_TREE_TEMPLATE_template_uuid';
     private const ATTRIBUTE_TABLE_NAME = 'pim_catalog_category_attribute';
-    private const FOREIGN_ATTRIBUTE_KEY_NAME = 'FK_ATTRIBUTE_template_uiid';
+    private const FOREIGN_ATTRIBUTE_KEY_NAME = 'FK_ATTRIBUTE_template_uuid';
 
     private Connection $connection;
 
