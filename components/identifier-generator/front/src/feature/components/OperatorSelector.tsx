@@ -13,7 +13,13 @@ type OperatorSelectorProps = {
   isInSelection?: boolean;
 };
 
-const OperatorSelector: FC<OperatorSelectorProps> = ({operator, onChange, operators, isInSelection = false, ...rest}) => {
+const OperatorSelector: FC<OperatorSelectorProps> = ({
+  operator,
+  onChange,
+  operators,
+  isInSelection = false,
+  ...rest
+}) => {
   const translate = useTranslate();
 
   return (
