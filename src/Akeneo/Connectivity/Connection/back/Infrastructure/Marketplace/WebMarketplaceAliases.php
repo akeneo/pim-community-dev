@@ -17,6 +17,7 @@ class WebMarketplaceAliases implements WebMarketplaceAliasesInterface
     public function __construct(
         private VersionProviderInterface $versionProvider,
         private PimVersion $growthVersion,
+        private PimVersion $freeTrialVersion,
     ) {
     }
 
@@ -32,6 +33,7 @@ class WebMarketplaceAliases implements WebMarketplaceAliasesInterface
     {
         return match ($this->versionProvider->getEdition()) {
             $this->growthVersion->editionName() => 'growth-edition',
+            $this->freeTrialVersion->editionName() => 'growth-edition',
             default => 'community-edition',
         };
     }

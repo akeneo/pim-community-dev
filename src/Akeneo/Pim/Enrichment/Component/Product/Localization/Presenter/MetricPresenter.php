@@ -65,10 +65,19 @@ class MetricPresenter extends NumberPresenter
                     LocaleIdentifier::fromCode($options['locale'])
                 );
             } catch (\Exception $e) {
-                $this->logger->warning('An error occured while trying to fetch the measurement family of a metric value to present it.');
+                $this->logger->warning('An error occurred while trying to fetch the measurement family of a metric value to present it.', [
+                    'error_message' => $e->getMessage(),
+                    'error_trace' => $e->getTrace(),
+                ]);
             }
         } else {
-            $this->logger->warning('Expected to have an attribute code given in the options of the presenter, none given.');
+            $this->logger->warning('Expected to have an attribute code given in the options of the presenter, none given.', [
+                'options' => [
+                    'attribute' => $options['attribute'] ?? 'undefined',
+                    'unit' => $options['unit'] ?? 'undefined',
+                    'locale' => $options['locale'] ?? 'undefined',
+                ],
+            ]);
         }
 
         $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;

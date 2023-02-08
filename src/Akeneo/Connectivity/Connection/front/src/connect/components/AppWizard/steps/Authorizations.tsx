@@ -41,6 +41,7 @@ type Props = {
     certificationConsentGiven: boolean;
     setCertificationConsent: (newValue: boolean) => void;
     displayCertificationConsent: boolean;
+    displayCheckboxConsent: boolean;
 };
 
 export const Authorizations: FC<Props> = ({
@@ -53,6 +54,7 @@ export const Authorizations: FC<Props> = ({
     certificationConsentGiven,
     setCertificationConsent,
     displayCertificationConsent,
+    displayCheckboxConsent,
 }) => {
     const translate = useTranslate();
 
@@ -61,7 +63,12 @@ export const Authorizations: FC<Props> = ({
             <Connect>{translate('akeneo_connectivity.connection.connect.apps.title')}</Connect>
             <ScopeListContainer appName={appName} scopeMessages={scopeMessages} oldScopeMessages={oldScopeMessages} />
             <WrappedConsentCheckbox>
-                <ConsentCheckbox isChecked={scopesConsentGiven} onChange={setScopesConsent} appUrl={appUrl} />
+                <ConsentCheckbox
+                    isChecked={scopesConsentGiven}
+                    onChange={setScopesConsent}
+                    appUrl={appUrl}
+                    displayCheckbox={displayCheckboxConsent}
+                />
             </WrappedConsentCheckbox>
             {displayCertificationConsent && (
                 <WrappedCertificationConsentCheckbox>

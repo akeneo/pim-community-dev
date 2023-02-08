@@ -119,7 +119,11 @@ export const AppWizard: FC<Props> = ({clientId}) => {
             onClose={redirectToMarketplace}
             onConfirm={confirm}
             steps={steps}
-            maxAllowedStep={!authenticationScopesConsentGiven || certificationConsentRequired ? 'authorizations' : null}
+            maxAllowedStep={
+                (!authenticationScopesConsentGiven && wizardData.displayCheckboxConsent) || certificationConsentRequired
+                    ? 'authorizations'
+                    : null
+            }
         >
             {step => (
                 <>
@@ -132,6 +136,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                             scopesConsentGiven={authenticationScopesConsentGiven}
                             setScopesConsent={setAuthenticationScopesConsent}
                             displayConsent={false}
+                            displayCheckboxConsent={wizardData.displayCheckboxConsent}
                         />
                     )}
                     {step.name === 'authorizations' && (
@@ -145,6 +150,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                             certificationConsentGiven={certificationConsentGiven}
                             setCertificationConsent={setCertificationConsent}
                             displayCertificationConsent={wizardData.appIsCertified}
+                            displayCheckboxConsent={wizardData.displayCheckboxConsent}
                         />
                     )}
                     {step.name === 'permissions' && (
