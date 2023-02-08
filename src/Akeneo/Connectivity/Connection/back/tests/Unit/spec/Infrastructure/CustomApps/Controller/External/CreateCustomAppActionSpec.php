@@ -198,7 +198,7 @@ class CreateCustomAppActionSpec extends ObjectBehavior
 
         $getCustomAppSecretQuery->execute(Argument::type('string'))->willReturn(null);
 
-        $request->get('name', '')->willReturn('TestApp');
+        $request->get('name', '')->willReturn('CustomApp');
         $request->get('activate_url', '')->willReturn('http://callback-url.test');
         $request->get('callback_url', '')->willReturn('http://activate-url.test');
 
@@ -241,17 +241,17 @@ class CreateCustomAppActionSpec extends ObjectBehavior
 
         $getCustomAppSecretQuery->execute(Argument::type('string'))->willReturn('app_secret');
 
-        $request->get('name', '')->willReturn('TestApp');
+        $request->get('name', '')->willReturn('CustomApp');
         $request->get('activate_url', '')->willReturn('http://callback-url.test');
         $request->get('callback_url', '')->willReturn('http://activate-url.test');
 
-        $this->__invoke($request)->shouldBeAValidCreateTestAppResponse('app_secret');
+        $this->__invoke($request)->shouldBeAValidCreateCustomAppResponse('app_secret');
     }
 
     public function getMatchers(): array
     {
         return [
-            'beAValidCreateTestAppResponse' => function ($subject, $value) {
+            'beAValidCreateCustomAppResponse' => function ($subject, $value) {
                 if (!$subject instanceof JsonResponse || $subject->getStatusCode() !== Response::HTTP_CREATED) {
                     throw new FailureException('Response should be a JsonResponse with 201 as status code');
                 }
