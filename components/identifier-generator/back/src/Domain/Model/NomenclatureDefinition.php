@@ -10,7 +10,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
  *
  * @phpstan-type NormalizedNomenclatureDefinition array{operator: string, value: int, generate_if_empty: bool}
  */
-class NomenclatureDefinition
+final class NomenclatureDefinition
 {
     /**
      * @param array<string, ?string>|null $values
