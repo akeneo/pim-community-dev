@@ -40,7 +40,7 @@ class GetAllCustomAppsActionEndToEnd extends WebTestCase
 
         $this->client->request(
             'GET',
-            '/rest/marketplace/test-apps',
+            '/rest/custom-apps',
             [],
             [],
             [

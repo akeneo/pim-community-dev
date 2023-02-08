@@ -42,7 +42,7 @@ test('it fetches the test apps', async () => {
         ],
     };
     mockFetchResponses({
-        akeneo_connectivity_connection_marketplace_rest_get_all_test_apps: {
+        akeneo_connectivity_connection_custom_apps_rest_get_all: {
             json: expected,
         },
     });
