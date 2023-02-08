@@ -13,7 +13,9 @@ type FamilyProperty = {
         operator: Operator | null;
         value: number | null;
       }
-    | {type: null};
+    | {
+      type: AbbreviationType.NOMENCLATURE;
+    } | {type: null};
 };
 
 const FamilyPropertyOperators: Operator[] = [Operator.EQUALS, Operator.LOWER_OR_EQUAL_THAN];

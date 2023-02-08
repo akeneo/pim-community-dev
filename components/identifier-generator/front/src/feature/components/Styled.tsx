@@ -24,6 +24,7 @@ const EditionContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: baseline;
 `;
 
 const FullPageCenteredContent = styled.div`
