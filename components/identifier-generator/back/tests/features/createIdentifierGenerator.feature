@@ -7,7 +7,8 @@ Feature: Create Identifier Generator
     And the 'name' attribute of type 'pim_catalog_text'
     And the 'color' attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color' attribute
-    And the 'size' attribute of type 'pim_catalog_multiselect'
+    And the 'a_multi_select' attribute of type 'pim_catalog_multiselect'
+    And the 'option_a', 'option_b' and 'option_c' options for 'a_multi_select' attribute
 
   Scenario: Can create a valid identifier generator
     When I create an identifier generator
@@ -341,6 +342,11 @@ Feature: Create Identifier Generator
     And the 'ecommerce' channel having 'de_DE' as locale
     When I try to create an identifier generator with a simple_select condition with color_localizable_and_scopable attribute and ecommerce scope and en_US locale
     Then I should get an error with message 'conditions[0][locale]: The "en_US" locale is not active for the "ecommerce" channel.'
+    And the identifier should not be created
+
+  Scenario: Cannot create a multiselect condition by using options of the color attribute
+    When I try to create an identifier generator with a multi_select condition with color attribute
+    Then I should get an error with message 'conditions[0][value]: The following attribute options do not exist for the attribute "color": "option_a", "option_b".'
     And the identifier should not be created
 
   # Label

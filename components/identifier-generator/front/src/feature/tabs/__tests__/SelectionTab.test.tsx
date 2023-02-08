@@ -194,9 +194,7 @@ describe('SelectionTab', () => {
     ];
     const generator: IdentifierGenerator = {...mockedGenerator, conditions};
 
-    const screen = render(
-      <SelectionTab generator={generator} onChange={jest.fn()} validationErrors={[]} />
-    );
+    const screen = render(<SelectionTab generator={generator} onChange={jest.fn()} validationErrors={[]} />);
 
     expect(await screen.findByText('SimpleOrMultiSelectLineMock')).toBeInTheDocument();
   });

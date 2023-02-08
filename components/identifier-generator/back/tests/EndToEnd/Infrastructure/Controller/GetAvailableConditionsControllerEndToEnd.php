@@ -287,9 +287,6 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
     private function updateAttributeLabels(string $attributeCode, array $labels): void
     {
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($attributeCode);
-        if (null === $attribute) {
-            return;
-        }
         $this->get('pim_catalog.updater.attribute')->update($attribute, ['labels' => $labels]);
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }

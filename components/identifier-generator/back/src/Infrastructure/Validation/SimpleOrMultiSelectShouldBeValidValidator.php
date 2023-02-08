@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\MultiSelect;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\SimpleSelect;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
@@ -36,7 +37,7 @@ final class SimpleOrMultiSelectShouldBeValidValidator extends ConstraintValidato
             return;
         }
 
-        if (\array_key_exists('type', $condition) && !in_array($condition['type'], [SimpleSelect::type(), MultiSelect::type()])) {
+        if (\array_key_exists('type', $condition) && !\in_array($condition['type'], [SimpleSelect::type(), MultiSelect::type()])) {
             return;
         }
 

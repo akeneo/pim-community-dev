@@ -7,6 +7,8 @@ Feature: Update Identifier Generator
     And the 'default' identifier generator
     And the 'color' attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color' attribute
+    And the 'a_multi_select' attribute of type 'pim_catalog_multiselect'
+    And the 'option_a', 'option_b' and 'option_c' options for 'a_multi_select' attribute
 
   Scenario: Can update a valid identifier generator
     When I update the identifier generator

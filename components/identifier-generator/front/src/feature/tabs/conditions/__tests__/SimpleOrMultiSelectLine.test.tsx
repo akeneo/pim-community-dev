@@ -231,7 +231,7 @@ describe('SimpleOrMultiSelectLine', () => {
           pim_enrich_attribute_index: false,
         }[acl] ?? false),
     }));
-    const condition: SimpleSelectCondition = {
+    const condition: SimpleOrMultiSelectCondition = {
       attributeCode: 'simple_select',
       type: CONDITION_NAMES.SIMPLE_SELECT,
       value: [],
@@ -242,7 +242,7 @@ describe('SimpleOrMultiSelectLine', () => {
 
     const screen = render(
       <TableMock>
-        <SimpleSelectLine condition={condition} onChange={jest.fn()} onDelete={jest.fn()} />
+        <SimpleOrMultiSelectLine condition={condition} onChange={jest.fn()} onDelete={jest.fn()} />
       </TableMock>
     );
 

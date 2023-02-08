@@ -90,7 +90,7 @@ final class MultiSelect implements ConditionInterface
      */
     public function normalize(): array
     {
-        return array_filter([
+        return \array_filter([
             'type' => self::type(),
             'attributeCode' => $this->attributeCode,
             'operator' => $this->operator,
@@ -108,8 +108,8 @@ final class MultiSelect implements ConditionInterface
         }
 
         return match ($this->operator) {
-            'IN' => \is_array($value) && \is_array($this->value) && [] !== array_intersect($value, $this->value),
-            'NOT IN' => \is_array($value) && \is_array($this->value)  && [] === array_intersect($value, $this->value),
+            'IN' => \is_array($value) && \is_array($this->value) && [] !== \array_intersect($value, $this->value),
+            'NOT IN' => \is_array($value) && \is_array($this->value)  && [] === \array_intersect($value, $this->value),
             'EMPTY' => null === $value,
             'NOT EMPTY' => null !== $value
         };

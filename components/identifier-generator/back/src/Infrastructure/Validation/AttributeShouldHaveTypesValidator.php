@@ -27,12 +27,12 @@ final class AttributeShouldHaveTypesValidator extends ConstraintValidator
         }
 
         $attribute = $this->getAttributes->forCode($target);
-        if (null !== $attribute && !in_array($attribute->type(), $constraint->types)) {
+        if (null !== $attribute && !\in_array($attribute->type(), $constraint->types)) {
             $this->context
                 ->buildViolation($constraint->message, [
                     '{{ code }}' => $target,
                     '{{ type }}' => $attribute->type(),
-                    '{{ expected }}' => implode(', ', $constraint->types),
+                    '{{ expected }}' => \implode(', ', $constraint->types),
                 ])
                 ->addViolation();
         }

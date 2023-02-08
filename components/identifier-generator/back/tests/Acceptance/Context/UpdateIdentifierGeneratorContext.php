@@ -61,7 +61,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function identifierGeneratorIsUpdatedInTheRepository(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq('updatedGenerator', $identifierGenerator->delimiter()->asString());
+        Assert::eq($identifierGenerator->delimiter()->asString(), 'updatedGenerator');
     }
 
     /**
@@ -70,7 +70,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function identifierGeneratorIsUpdatedWithoutLabelInTheRepository(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq((object)[], $identifierGenerator->labelCollection()->normalize());
+        Assert::eq($identifierGenerator->labelCollection()->normalize(), (object)[]);
     }
 
     /**
@@ -96,7 +96,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndDelimiterIsNull(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq(null, $identifierGenerator->delimiter()->asString());
+        Assert::null($identifierGenerator->delimiter()->asString());
     }
 
     /**
@@ -105,7 +105,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndTextTransformationIsLowercase(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq(TextTransformation::LOWERCASE, $identifierGenerator->textTransformation()->normalize());
+        Assert::eq($identifierGenerator->textTransformation()->normalize(), TextTransformation::LOWERCASE);
     }
 
     /**
@@ -487,9 +487,9 @@ final class UpdateIdentifierGeneratorContext implements Context
 
     private function tryToUpdateGenerator(
         ?string $code = null,
-        ?array  $structure = null,
-        ?array  $conditions = null,
-        ?array  $labels = null,
+        ?array $structure = null,
+        ?array $conditions = null,
+        ?array $labels = null,
         ?string $target = null,
         ?string $delimiter = null,
         ?string $textTransformation = null,
@@ -523,11 +523,15 @@ final class UpdateIdentifierGeneratorContext implements Context
                     'value' => true,
                 ];
             case 'family':
-                return [
+                $familyCondition = [
                     'type' => 'family',
                     'operator' => $operator ?? 'IN',
-                    'value' => ['tshirt'],
                 ];
+                if ('EMPTY' !== $operator) {
+                    $familyCondition['value'] = ['tshirt'];
+                }
+
+                return $familyCondition;
             case 'simple_select':
                 return [
                     'type' => 'simple_select',
@@ -539,8 +543,8 @@ final class UpdateIdentifierGeneratorContext implements Context
                 return [
                     'type' => 'multi_select',
                     'operator' => $operator ?? 'IN',
-                    'attributeCode' => 'color',
-                    'value' => ['green', 'blue'],
+                    'attributeCode' => 'a_multi_select',
+                    'value' => ['option_a', 'option_b'],
                 ];
         }
 

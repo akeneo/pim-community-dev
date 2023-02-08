@@ -469,6 +469,19 @@ final class CreateIdentifierGeneratorContext implements Context
         $this->tryToCreateGenerator(conditions: [$defaultCondition]);
     }
 
+    /**
+     * @When /^I try to create an identifier generator with a multi_select condition with (?P<attributeCode>[^']*) attribute?$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAMultiSelectConditionWithNameAttribute(
+        string $attributeCode,
+        string $scope = '',
+        string $locale = ''
+    ): void {
+        $defaultCondition = $this->getValidCondition('multi_select');
+        $defaultCondition['attributeCode'] = $attributeCode;
+        $this->tryToCreateGenerator(conditions: [$defaultCondition]);
+    }
+
     private function tryToCreateGenerator(
         ?string $code = null,
         ?array $structure = null,
@@ -519,8 +532,8 @@ final class CreateIdentifierGeneratorContext implements Context
             case 'multi_select': return [
                 'type' => 'multi_select',
                 'operator' => $operator ?? 'IN',
-                'attributeCode' => 'color',
-                'value' => ['green', 'blue'],
+                'attributeCode' => 'a_multi_select',
+                'value' => ['option_a', 'option_b'],
             ];
         }
 
@@ -535,7 +548,7 @@ final class CreateIdentifierGeneratorContext implements Context
         $codesWithQuotes = \preg_split('/(, )|( and )/', $codesList);
 
         return \array_map(
-            static fn (string $codeWithQuotes): string => substr($codeWithQuotes, 1, -1),
+            static fn (string $codeWithQuotes): string => \substr($codeWithQuotes, 1, -1),
             $codesWithQuotes
         );
     }

@@ -50,17 +50,17 @@ final class SimpleSelectOptionCodesShouldExistValidator extends ConstraintValida
             }
         }
 
-        $parameters = array_map(fn (string $value): string => sprintf('%s.%s', $simpleSelectCondition['attributeCode'], $value), $simpleSelectCondition['value']);
+        $parameters = \array_map(fn (string $value): string => \sprintf('%s.%s', $simpleSelectCondition['attributeCode'], $value), $simpleSelectCondition['value']);
 
-        $existingOptionsWithAttributeCode = array_keys($this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes($parameters));
-        $existingOptions = array_map(fn (string $optionWithAttribute): string => explode('.', $optionWithAttribute)[1], $existingOptionsWithAttributeCode);
+        $existingOptionsWithAttributeCode = \array_keys($this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes($parameters));
+        $existingOptions = \array_map(fn (string $optionWithAttribute): string => \explode('.', $optionWithAttribute)[1], $existingOptionsWithAttributeCode);
 
-        $nonExistingCodes = array_diff($simpleSelectCondition['value'], $existingOptions);
+        $nonExistingCodes = \array_diff($simpleSelectCondition['value'], $existingOptions);
         if (\count($nonExistingCodes) > 0) {
             $this->context
                 ->buildViolation($constraint->optionsDoNotExist, [
                     '{{ attributeCode }}' => $simpleSelectCondition['attributeCode'],
-                    '{{ optionCodes }}' =>  implode(', ', array_map(fn (string $value): string => (string) json_encode($value), $nonExistingCodes)),
+                    '{{ optionCodes }}' =>  \implode(', ', \array_map(fn (string $value): string => (string) \json_encode($value), $nonExistingCodes)),
                 ])
                 ->atPath('[value]')
                 ->addViolation();
