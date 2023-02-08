@@ -2,33 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Marketplace\TestApps\Controller\Internal;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\CustomApps\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Persistence\GetTestAppSecretQuery;
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\TestAppLoader;
+use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppSecretQuery;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class GetCustomAppSecretActionEndToEnd extends WebTestCase
 {
     private FilePersistedFeatureFlags $featureFlags;
-    private TestAppLoader $testAppLoader;
-    private GetTestAppSecretQuery $getTestAppSecretQuery;
+    private CustomAppLoader $testAppLoader;
+    private GetCustomAppSecretQuery $getCustomAppSecretQuery;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->featureFlags = $this->get('feature_flags');
-        $this->testAppLoader = $this->get(TestAppLoader::class);
-        $this->getTestAppSecretQuery = $this->get(GetTestAppSecretQuery::class);
+        $this->testAppLoader = $this->get(CustomAppLoader::class);
+        $this->getCustomAppSecretQuery = $this->get(GetCustomAppSecretQuery::class);
     }
 
     protected function getConfiguration(): Configuration
@@ -47,7 +47,7 @@ class GetCustomAppSecretActionEndToEnd extends WebTestCase
             userId: $user->getId()
         );
 
-        $secret = $this->getTestAppSecretQuery->execute('0dfce574-2238-4b13-b8cc-8d257ce7645b');
+        $secret = $this->getCustomAppSecretQuery->execute('0dfce574-2238-4b13-b8cc-8d257ce7645b');
 
         $secretObfuscated = \str_pad(
             string: \substr($secret, -4),
