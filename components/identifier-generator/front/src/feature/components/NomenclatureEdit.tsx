@@ -21,9 +21,11 @@ import {NomenclatureValuesDisplayFilter} from './NomenclatureValuesDisplayFilter
 import {Violation} from '../validators';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 
-type NomenclatureEditProps = {};
+type NomenclatureEditProps = {
+  itemsPerPage?: number;
+};
 
-const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
+const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
   const translate = useTranslate();
   const notify = useNotify();
   const [isOpen, open, close] = useBooleanState();
@@ -41,7 +43,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
     totalValuesCount,
     filteredValuesCount,
     hasValueInvalid,
-  } = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave);
+  } = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave, itemsPerPage);
   const {save, isLoading: isSaving} = useSaveNomenclature();
 
   const onFilterChange = (value: NomenclatureFilter) => {
@@ -191,7 +193,12 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
                   {translate('pim_common.result_count', {itemsCount: filteredValuesCount}, filteredValuesCount)}
                 </Search.ResultCount>
               </Search>
-              <Pagination currentPage={page} itemsPerPage={25} totalItems={filteredValuesCount} followPage={setPage} />
+              <Pagination
+                currentPage={page}
+                itemsPerPage={itemsPerPage}
+                totalItems={filteredValuesCount}
+                followPage={setPage}
+              />
               <Styled.NomenclatureTable>
                 <Table>
                   <Table.Header>
@@ -228,7 +235,12 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = () => {
                   </Table.Body>
                 </Table>
               </Styled.NomenclatureTable>
-              <Pagination currentPage={page} itemsPerPage={25} totalItems={filteredValuesCount} followPage={setPage} />
+              <Pagination
+                currentPage={page}
+                itemsPerPage={itemsPerPage}
+                totalItems={filteredValuesCount}
+                followPage={setPage}
+              />
             </Styled.NomenclatureModalContent>
           )}
         </Modal>
