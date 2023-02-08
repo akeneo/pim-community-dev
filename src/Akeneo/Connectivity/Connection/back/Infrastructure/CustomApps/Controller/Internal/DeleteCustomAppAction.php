@@ -32,7 +32,7 @@ final class DeleteCustomAppAction
     ) {
     }
 
-    public function __invoke(Request $request, string $testAppId): Response
+    public function __invoke(Request $request, string $customAppId): Response
     {
         if (!$this->appDevModeFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
@@ -46,15 +46,15 @@ final class DeleteCustomAppAction
             throw new AccessDeniedHttpException();
         }
 
-        $customAppData = $this->getCustomAppQuery->execute($testAppId);
+        $customAppData = $this->getCustomAppQuery->execute($customAppId);
         if (null === $customAppData) {
-            throw new NotFoundHttpException(\sprintf('Custom app with id %s was not found.', $testAppId));
+            throw new NotFoundHttpException(\sprintf('Custom app with id %s was not found.', $customAppId));
         }
 
-        $this->deleteCustomAppHandler->handle(new DeleteCustomAppCommand($testAppId));
+        $this->deleteCustomAppHandler->handle(new DeleteCustomAppCommand($customAppId));
 
         if ($customAppData['connected']) {
-            $this->deleteAppHandler->handle(new DeleteAppCommand($testAppId));
+            $this->deleteAppHandler->handle(new DeleteAppCommand($customAppId));
         }
 
         return new Response(null, Response::HTTP_NO_CONTENT);
