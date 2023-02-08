@@ -37,7 +37,7 @@ class AppSpec extends ObjectBehavior
         $this->shouldHaveType(App::class);
     }
 
-    public function it_is_normalizable()
+    public function it_is_normalizable(): void
     {
         $this->normalize()->shouldBe([
             'id' => 'ce8cf07f-321e-4dd2-a52f-30ac00881ba7',
@@ -53,11 +53,11 @@ class AppSpec extends ObjectBehavior
             'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
             'connected' => false,
             'isPending' => false,
-            'isTestApp' => false,
+            'isCustomApp' => false,
         ]);
     }
 
-    public function it_adds_analytics()
+    public function it_adds_analytics(): void
     {
         $this->withAnalytics([
             'utm_campaign' => 'foobar',
@@ -75,11 +75,11 @@ class AppSpec extends ObjectBehavior
             'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
             'connected' => false,
             'isPending' => false,
-            'isTestApp' => false,
+            'isCustomApp' => false,
         ]);
     }
 
-    public function it_adds_pim_url_source()
+    public function it_adds_pim_url_source(): void
     {
         $this->withPimUrlSource([
             'pim_url' => 'http://my-akeneo.test',
@@ -97,13 +97,13 @@ class AppSpec extends ObjectBehavior
             'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
             'connected' => false,
             'isPending' => false,
-            'isTestApp' => false,
+            'isCustomApp' => false,
         ]);
     }
 
-    public function it_is_instantiable_with_test_values()
+    public function it_is_instantiable_with_custom_app_values(): void
     {
-        $this->beConstructedThrough('fromTestAppValues', [
+        $this->beConstructedThrough('fromCustomAppValues', [
             [
                 'id' => 'ce8cf07f-321e-4dd2-a52f-30ac00881ba7',
                 'name' => 'Shopify App',
@@ -127,13 +127,13 @@ class AppSpec extends ObjectBehavior
             'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
             'connected' => false,
             'isPending' => false,
-            'isTestApp' => true,
+            'isCustomApp' => true,
         ]);
     }
 
-    public function it_adds_pim_url_source_for_an_instance_with_test_values(): void
+    public function it_adds_pim_url_source_for_an_instance_with_test_app_values(): void
     {
-        $this->beConstructedThrough('fromTestAppValues', [
+        $this->beConstructedThrough('fromCustomAppValues', [
             [
                 'id' => 'ce8cf07f-321e-4dd2-a52f-30ac00881ba7',
                 'name' => 'Shopify App',
@@ -159,7 +159,7 @@ class AppSpec extends ObjectBehavior
             'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
             'connected' => false,
             'isPending' => false,
-            'isTestApp' => true,
+            'isCustomApp' => true,
         ]);
     }
 
@@ -230,7 +230,7 @@ class AppSpec extends ObjectBehavior
                 'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
                 'connected' => false,
                 'isPending' => true,
-                'isTestApp' => false,
+                'isCustomApp' => false,
         ]);
     }
 
@@ -269,7 +269,7 @@ class AppSpec extends ObjectBehavior
                 'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
                 'connected' => false,
                 'isPending' => true,
-                'isTestApp' => false,
+                'isCustomApp' => false,
             ]);
     }
 
@@ -292,7 +292,7 @@ class AppSpec extends ObjectBehavior
                 'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
                 'connected' => true,
                 'isPending' => false,
-                'isTestApp' => false,
+                'isCustomApp' => false,
             ]);
     }
 }

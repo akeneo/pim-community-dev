@@ -138,7 +138,7 @@ class GetAppQuerySpec extends ObjectBehavior
         ]);
 
         $this->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->shouldBeLike(
-            App::fromTestAppValues([
+            App::fromCustomAppValues([
                 'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
                 'name' => 'My Test App',
                 'author' => 'John Doe',

@@ -44,7 +44,7 @@ class GetAllCustomAppsQuery implements GetAllCustomAppsQueryInterface
             \array_map(function ($row) {
                 $row['connected'] = (bool) $row['connected'];
 
-                return App::fromTestAppValues($row);
+                return App::fromCustomAppValues($row);
             }, $rows)
         );
     }

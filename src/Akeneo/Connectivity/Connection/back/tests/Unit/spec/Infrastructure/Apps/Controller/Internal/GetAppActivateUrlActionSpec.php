@@ -120,7 +120,7 @@ class GetAppActivateUrlActionSpec extends ObjectBehavior
             ->during('__invoke', [$request, $clientId]);
     }
 
-    public function it_throws_access_denied_exception_when_the_test_app_is_found_but_manage_test_apps_permission_is_missing(
+    public function it_throws_access_denied_exception_when_the_custom_app_is_found_but_manage_custom_apps_permission_is_missing(
         FeatureFlag $marketplaceActivateFeatureFlag,
         SecurityFacade $security,
         IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery,
@@ -132,7 +132,7 @@ class GetAppActivateUrlActionSpec extends ObjectBehavior
         $isConnectionsNumberLimitReachedQuery->execute()->willReturn(false);
 
         $clientId = 'a_client_id';
-        $app = App::fromTestAppValues([
+        $app = App::fromCustomAppValues([
             'id' => $clientId,
             'name' => 'test app',
             'activate_url' => 'http://url.test',

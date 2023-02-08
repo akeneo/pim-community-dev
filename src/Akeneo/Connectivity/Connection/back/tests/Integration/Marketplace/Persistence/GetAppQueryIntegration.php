@@ -115,7 +115,7 @@ class GetAppQueryIntegration extends TestCase
         $result = $this->query->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9');
 
         $this->assertEquals(
-            App::fromTestAppValues([
+            App::fromCustomAppValues([
                 'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
                 'secret' => 'foobar',
                 'name' => 'My test app',
