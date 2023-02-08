@@ -29,3 +29,10 @@ services:
             - '@Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\RemoveTemplateAndAttributesAfterCategoryTreeDeletionSubscriber:
+        arguments:
+            - '@akeneo.category.enriched.feature'
+            - '@Akeneo\Category\Application\Query\DeleteTemplateAndAttributes'
+        tags:
+            - { name: kernel.event_subscriber }
