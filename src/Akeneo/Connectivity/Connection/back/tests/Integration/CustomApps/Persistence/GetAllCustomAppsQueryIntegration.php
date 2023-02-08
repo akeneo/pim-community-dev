@@ -40,7 +40,7 @@ class GetAllCustomAppsQueryIntegration extends TestCase
 
     public function test_it_returns_custom_apps(): void
     {
-        $this->createTestApp([
+        $this->createCustomApp([
             'client_id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
             'client_secret' => 'foobar',
             'name' => 'My test app',
@@ -49,7 +49,7 @@ class GetAllCustomAppsQueryIntegration extends TestCase
             'user_id' => $this->findUserId('admin'),
         ]);
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens('100eedac-ff5c-497b-899d-e2d64b6c59f9', 'foo');
-        $this->createTestApp([
+        $this->createCustomApp([
             'client_id' => '42b9ecb1-ddd7-4874-9ad6-21a02d08ed50',
             'client_secret' => 'foobar',
             'name' => 'My test app 2',
@@ -93,7 +93,7 @@ class GetAllCustomAppsQueryIntegration extends TestCase
      *     user_id: int|null,
      * } $data
      */
-    private function createTestApp(array $data): void
+    private function createCustomApp(array $data): void
     {
         $this->connection->insert('akeneo_connectivity_test_app', $data);
     }

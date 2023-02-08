@@ -131,7 +131,7 @@ class AppSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_adds_pim_url_source_for_an_instance_with_test_app_values(): void
+    public function it_adds_pim_url_source_for_an_instance_with_custom_app_values(): void
     {
         $this->beConstructedThrough('fromCustomAppValues', [
             [

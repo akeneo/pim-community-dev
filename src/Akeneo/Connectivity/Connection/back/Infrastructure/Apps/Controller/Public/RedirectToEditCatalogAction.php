@@ -67,10 +67,10 @@ final class RedirectToEditCatalogAction
     {
         return
             (
-                $app->isTestApp() &&
+                $app->isCustomApp() &&
                 $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
             ) || (
-                !$app->isTestApp() &&
+                !$app->isCustomApp() &&
                 $this->security->isGranted('akeneo_connectivity_connection_manage_apps')
             );
     }

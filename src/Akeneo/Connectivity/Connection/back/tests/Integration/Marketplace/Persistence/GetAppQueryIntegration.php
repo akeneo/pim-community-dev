@@ -64,7 +64,7 @@ class GetAppQueryIntegration extends TestCase
         $this->webMarketplaceApi->setApps($apps);
     }
 
-    public function test_it_returns_an_app()
+    public function test_it_returns_an_app(): void
     {
         $this->appDeveloperFeatureFlag->disable();
 
@@ -90,7 +90,7 @@ class GetAppQueryIntegration extends TestCase
         );
     }
 
-    public function test_it_returns_null_when_app_does_not_exist()
+    public function test_it_returns_null_when_app_does_not_exist(): void
     {
         $this->appDeveloperFeatureFlag->disable();
 
@@ -99,11 +99,11 @@ class GetAppQueryIntegration extends TestCase
         $this->assertNull($result);
     }
 
-    public function test_it_returns_a_test_app()
+    public function test_it_returns_a_custom_app(): void
     {
         $this->appDeveloperFeatureFlag->enable();
         $user = $this->createAdminUser();
-        $this->createTestApp([
+        $this->createCustomApp([
             'client_id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
             'client_secret' => 'foobar',
             'name' => 'My test app',
@@ -128,7 +128,7 @@ class GetAppQueryIntegration extends TestCase
         );
     }
 
-    public function test_it_returns_null_when_test_app_does_not_exist()
+    public function test_it_returns_null_when_custom_app_does_not_exist(): void
     {
         $this->appDeveloperFeatureFlag->enable();
 
@@ -147,7 +147,7 @@ class GetAppQueryIntegration extends TestCase
      *     user_id: string|null,
      * } $data
      */
-    private function createTestApp(array $data): void
+    private function createCustomApp(array $data): void
     {
         $this->connection->insert('akeneo_connectivity_test_app', $data);
     }
