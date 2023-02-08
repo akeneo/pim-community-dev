@@ -182,7 +182,7 @@ test('The connected apps list renders a warning where at least one connected app
             categories: [],
             certified: true,
             partner: null,
-            is_test_app: false,
+            is_custom_app: false,
             is_pending: false,
             has_outdated_scopes: false,
             is_loaded: true,
@@ -212,7 +212,7 @@ test('The connected apps list renders with pending apps', async () => {
         categories: [],
         certified: true,
         partner: null,
-        is_test_app: false,
+        is_custom_app: false,
         is_pending: true,
         has_outdated_scopes: false,
     };
