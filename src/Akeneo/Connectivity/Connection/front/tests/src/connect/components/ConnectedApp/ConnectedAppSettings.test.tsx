@@ -84,7 +84,7 @@ test('Connected App Settings renders custom app credentials', () => {
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
-        is_test_app: true,
+        is_custom_app: true,
         is_pending: false,
         has_outdated_scopes: false,
     };
@@ -146,7 +146,7 @@ test('Connected App Settings does not renders custom app credentials when missin
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
-        is_test_app: true,
+        is_custom_app: true,
         is_pending: false,
         has_outdated_scopes: false,
     };
