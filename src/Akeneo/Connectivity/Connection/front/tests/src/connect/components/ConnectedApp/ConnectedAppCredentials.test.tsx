@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {screen} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {historyMock, mockFetchResponses, renderWithProviders} from '../../../../test-utils';
-import {ConnectedAppCredentials} from '@src/connect/components/ConnectedApp/ConnectedAppCredentials';
+import {ConnectedAppCredentials} from '@src/connect/components/ConnectedApp/Settings/ConnectedAppCredentials';
 
 beforeEach(() => {
     fetchMock.resetMocks();
@@ -30,7 +30,7 @@ test('The connected app credentials renders with secret', async () => {
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
-        is_test_app: true,
+        is_custom_app: true,
         is_pending: false,
         has_outdated_scopes: false,
     };
