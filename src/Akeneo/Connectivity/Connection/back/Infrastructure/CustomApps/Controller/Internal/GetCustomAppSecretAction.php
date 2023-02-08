@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\Internal;
+namespace Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal;
 
-use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\TestApps\Persistence\GetTestAppSecretQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppSecretQueryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,15 +15,15 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class GetCustomAppSecretAction
 {
     public function __construct(
         private readonly SecurityFacade $security,
-        private readonly GetTestAppQueryInterface $getTestAppQuery,
-        private readonly GetTestAppSecretQueryInterface $getTestAppSecretQuery,
+        private readonly GetCustomAppQueryInterface $getCustomAppQuery,
+        private readonly GetCustomAppSecretQueryInterface $getCustomAppSecretQuery,
     ) {
     }
 
@@ -37,12 +37,12 @@ final class GetCustomAppSecretAction
             throw new AccessDeniedHttpException();
         }
 
-        $customApp = $this->getTestAppQuery->execute($customAppId);
+        $customApp = $this->getCustomAppQuery->execute($customAppId);
         if (null === $customApp) {
             throw new NotFoundHttpException(\sprintf('Custom app with id %s was not found.', $customAppId));
         }
 
-        $secret = $this->getTestAppSecretQuery->execute($customAppId);
+        $secret = $this->getCustomAppSecretQuery->execute($customAppId);
 
         $secretObfuscated = \str_pad(
             string: \substr($secret, -4),
