@@ -19,3 +19,8 @@ services:
     arguments:
       - '@pim_catalog.repository.attribute'
       - '@database_connection'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\SqlNomenclatureRepository'
+    arguments:
+      - '@database_connection'
