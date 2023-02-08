@@ -3,7 +3,14 @@ import {Operator, SimpleSelectCondition, SimpleSelectOperators} from '../../mode
 import {Button, Helper, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {OperatorSelector} from '../../components';
-import {ChannelCode, getLabel, LocaleCode, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {
+  ChannelCode,
+  getLabel,
+  LocaleCode,
+  useSecurity,
+  useTranslate,
+  useUserContext,
+} from '@akeneo-pim-community/shared';
 import {SimpleSelectOptionsSelector} from '../../components/SimpleSelectOptionsSelector';
 import {OptionCode} from '../../models/option';
 import {ScopeAndLocaleSelector} from '../../components/ScopeAndLocaleSelector';
@@ -18,10 +25,16 @@ type SimpleSelectLineProps = {
 
 const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange, onDelete}) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const locale = useUserContext().get('catalogLocale');
   const {data, isLoading, error} = useGetAttributeByCode(condition.attributeCode);
+  const canAccessAttributes = isGranted('pim_enrich_attribute_index');
+
   const label = useMemo(
-    () => (isLoading || error ? undefined : getLabel(data?.labels || {}, locale, condition.attributeCode)),
+    () =>
+      isLoading || error
+        ? `[${condition.attributeCode}]`
+        : getLabel(data?.labels || {}, locale, condition.attributeCode),
     [condition.attributeCode, data, error, isLoading, locale]
   );
 
@@ -48,6 +61,14 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
   const handleScopeAndLocaleChange = (newValue: {scope?: ChannelCode | null; locale?: LocaleCode | null}) => {
     onChange({...condition, ...newValue});
   };
+
+  if (!canAccessAttributes) {
+    return (
+      <Table.Cell colSpan={3}>
+        <Helper level="info">{translate('pim_error.unauthorized_list_properties')}</Helper>
+      </Table.Cell>
+    );
+  }
 
   return (
     <>

@@ -3,6 +3,7 @@ pim_title:
     akeneo_identifier_generator_edit: "Edit Identifier generator"
 pim_error:
     unauthorized_list_attributes: "You cannot list attributes. Please contact your administrator to change your rights."
+    unauthorized_list_properties: "You don’t have permission to list this property. Please contact your administrator."
     unauthorized_list_families: "You cannot list families. Please contact your administrator to change your rights."
     general: "An error occurred during the display of this page. Please contact your administrator."
     unexpected: "Unexpected error occurred. Please contact system administrator."

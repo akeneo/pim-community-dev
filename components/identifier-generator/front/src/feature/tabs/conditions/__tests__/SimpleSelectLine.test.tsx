@@ -4,6 +4,7 @@ import {SimpleSelectLine} from '../SimpleSelectLine';
 import {CONDITION_NAMES, Operator, SimpleSelectCondition} from '../../../models';
 import {fireEvent} from '@testing-library/react';
 import mockedScopes from '../../../tests/fixtures/scopes';
+import {useSecurity} from '@akeneo-pim-community/shared';
 
 const TableMock = ({children}: {children: ReactNode}) => (
   <table>
@@ -219,6 +220,34 @@ describe('SimpleSelectLine', () => {
 
     await waitFor(() => {
       expect(screen.getByText('pim_error.general')).toBeInTheDocument();
+    });
+  });
+
+  it('displays info message when user has no right to list attributes', async () => {
+    mockSimpleSelectCalls();
+    (useSecurity as jest.Mock).mockImplementation(() => ({
+      isGranted: (acl: string) =>
+        ({
+          pim_enrich_attribute_index: false,
+        }[acl] ?? false),
+    }));
+    const condition: SimpleSelectCondition = {
+      attributeCode: 'simple_select',
+      type: CONDITION_NAMES.SIMPLE_SELECT,
+      value: [],
+      operator: Operator.IN,
+      scope: null,
+      locale: null,
+    };
+
+    const screen = render(
+      <TableMock>
+        <SimpleSelectLine condition={condition} onChange={jest.fn()} onDelete={jest.fn()} />
+      </TableMock>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('pim_error.unauthorized_list_properties')).toBeInTheDocument();
     });
   });
 });

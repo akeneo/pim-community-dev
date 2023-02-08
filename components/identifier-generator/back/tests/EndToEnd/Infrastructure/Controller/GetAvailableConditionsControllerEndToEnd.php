@@ -6,6 +6,7 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
+use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\MessageCatalogueInterface;
@@ -199,6 +200,33 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
         );
     }
 
+    /** @test */
+    public function it_does_not_get_attributes_when_no_acl_granted(): void
+    {
+        $this->removeListAttributesPermissions();
+        $this->loginAs('admin');
+
+        $this->assertResponse(
+            ['systemFields' => ['family', 'enabled'], 'dataLocale' => 'fr_FR'],
+            [
+                [
+                    'id' => 'system',
+                    'text' => 'Système',
+                    'children' => [
+                        [
+                            'id' => 'family',
+                            'text' => 'Famille',
+                        ],
+                        [
+                            'id' => 'enabled',
+                            'text' => 'Statut',
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -241,5 +269,33 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertSame($expectedResponse, \json_decode($response->getContent(), true));
+    }
+
+    private function removeListAttributesPermissions(): void
+    {
+        $roleWithPermissions = $this->getAdminRoleWithPermissions();
+        $permissions = $roleWithPermissions->permissions();
+
+        $revokedPermissions = [];
+
+        foreach ($permissions as $acl => $isGranted) {
+            if ($acl === 'action:pim_enrich_attribute_index') {
+                $revokedPermissions[$acl] = false;
+            } else {
+                $revokedPermissions[$acl] = true;
+            }
+        }
+
+        $roleWithPermissions->setPermissions($revokedPermissions);
+
+        $this->get('pim_user.saver.role_with_permissions')->saveAll([$roleWithPermissions]);
+
+        $this->get('oro_security.acl.manager')->flush();
+        $this->get('oro_security.acl.manager')->clearCache();
+    }
+
+    private function getAdminRoleWithPermissions(): ?RoleWithPermissions
+    {
+        return $this->get('pim_user.repository.role_with_permissions')->findOneByIdentifier('ROLE_ADMINISTRATOR');
     }
 }
