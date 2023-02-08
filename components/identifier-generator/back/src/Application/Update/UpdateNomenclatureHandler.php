@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
 final class UpdateNomenclatureHandler
 {
     public function __construct(
-        private readonly NomenclatureRepository    $nomenclatureRepository,
+        private readonly NomenclatureRepository $nomenclatureRepository,
         private readonly CommandValidatorInterface $validator,
     ) {
     }

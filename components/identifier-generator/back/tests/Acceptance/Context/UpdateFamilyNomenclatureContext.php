@@ -20,7 +20,7 @@ class UpdateFamilyNomenclatureContext implements Context
     private const DEFAULT_GENERATE_IF_EMPTY = false;
 
     public function __construct(
-        private readonly NomenclatureRepository    $nomenclatureRepository,
+        private readonly NomenclatureRepository $nomenclatureRepository,
         private readonly UpdateNomenclatureHandler $updateNomenclatureValuesHandler,
     ) {
     }
