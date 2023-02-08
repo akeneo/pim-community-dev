@@ -8,7 +8,7 @@ export type TestApp = {
 };
 
 export const useCreateTestApp = () => {
-    const url = useRoute('akeneo_connectivity_connection_marketplace_rest_test_apps_create');
+    const url = useRoute('akeneo_connectivity_connection_custom_apps_rest_create');
 
     return useCallback(
         async (testApp: TestApp) => {

@@ -45,7 +45,7 @@ class CreateCustomAppActionEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            'rest/marketplace/test-apps',
+            '/rest/custom-apps',
             [],
             [],
             [

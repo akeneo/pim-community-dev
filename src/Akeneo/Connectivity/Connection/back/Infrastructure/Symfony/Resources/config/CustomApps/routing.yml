@@ -4,8 +4,8 @@ akeneo_connectivity_connection_custom_apps_rest_get_all:
     controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetAllCustomAppsAction
     methods: [GET]
 
-akeneo_connectivity_connection_marketplace_rest_test_apps_create:
-    path: '/rest/marketplace/test-apps'
+akeneo_connectivity_connection_custom_apps_rest_create:
+    path: '/rest/custom-apps'
     controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\CreateCustomAppAction
     methods: [POST]
 
