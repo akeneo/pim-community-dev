@@ -136,7 +136,7 @@ test('it fetches connected apps', async () => {
         categories: ['category A1', 'category A2'],
         certified: false,
         partner: 'partner A',
-        is_test_app: false,
+        is_custom_app: false,
         is_pending: false,
         has_outdated_scopes: false,
     };
@@ -203,7 +203,7 @@ test('it fetches connected test apps', async () => {
         categories: ['category A1', 'category A2'],
         certified: false,
         partner: 'partner A',
-        is_test_app: true,
+        is_custom_app: true,
         is_pending: false,
         has_outdated_scopes: false,
     };
@@ -272,7 +272,7 @@ test('it returns connected apps and warns when not listed on the appstore', asyn
         categories: ['category A1', 'category A2'],
         certified: false,
         partner: 'partner A',
-        is_test_app: false,
+        is_custom_app: false,
         is_pending: false,
         has_outdated_scopes: false,
     };

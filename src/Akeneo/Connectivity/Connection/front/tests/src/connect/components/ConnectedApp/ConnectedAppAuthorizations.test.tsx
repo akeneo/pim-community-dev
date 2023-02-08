@@ -63,7 +63,7 @@ test('The connected app authorizations renders with scopes', async () => {
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
-        is_test_app: false,
+        is_custom_app: false,
         is_pending: false,
         has_outdated_scopes: false,
     };
@@ -123,7 +123,7 @@ test('The connected app authorizations renders with an additional helper if ther
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
-        is_test_app: false,
+        is_custom_app: false,
         is_pending: false,
         has_outdated_scopes: false,
     };
@@ -175,7 +175,7 @@ test('The connected app authorizations renders without scopes', async () => {
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
-        is_test_app: false,
+        is_custom_app: false,
         is_pending: false,
         has_outdated_scopes: false,
     };

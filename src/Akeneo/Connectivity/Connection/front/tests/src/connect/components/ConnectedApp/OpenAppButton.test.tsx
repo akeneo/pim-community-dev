@@ -24,7 +24,7 @@ const connectedApp = {
     categories: ['e-commerce', 'print'],
     certified: false,
     partner: null,
-    is_test_app: false,
+    is_custom_app: false,
     is_pending: false,
     has_outdated_scopes: true,
 };
@@ -55,7 +55,7 @@ test('The Open App button is disabled for test app when the user doesnt have the
 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
-            <OpenAppButton connectedApp={{...connectedApp, is_test_app: true}} />
+            <OpenAppButton connectedApp={{...connectedApp, is_custom_app: true}} />
         </SecurityContext.Provider>
     );
 
@@ -96,7 +96,7 @@ test('The Open App button is enabled for test app when the user has the permissi
 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
-            <OpenAppButton connectedApp={{...connectedApp, is_test_app: true}} />
+            <OpenAppButton connectedApp={{...connectedApp, is_custom_app: true}} />
         </SecurityContext.Provider>
     );
 
