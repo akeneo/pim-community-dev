@@ -1,0 +1,18 @@
+workflows:
+    griffins_continuous_deploy_pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            -   checkout_ee:
+                    filters:
+                        branches:
+                            only:
+                                - griffins-master
+            -   build_prod:
+                    requires:
+                        - checkout_ee
+            -   deploy_pr_environment:
+                    name: deploy_griffins_pr
+                    requires:
+                        - build_prod
