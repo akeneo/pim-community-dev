@@ -9,7 +9,7 @@ type Result = {
 };
 
 export const useFetchCustomAppSecret = (customAppId: string): Result => {
-    return useQuery<string, Error, string>(['id', customAppId], async () => {
+    return useQuery<string, Error, string>(['custom_app_secret', customAppId], async () => {
         const response = await fetch(`/rest/marketplace/custom-apps/${customAppId}/secret`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
