@@ -26,7 +26,6 @@ class GetCustomAppSecretActionEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $this->featureFlags = $this->get('feature_flags');
         $this->testAppLoader = $this->get(CustomAppLoader::class);
         $this->getCustomAppSecretQuery = $this->get(GetCustomAppSecretQuery::class);
     }
@@ -38,7 +37,6 @@ class GetCustomAppSecretActionEndToEnd extends WebTestCase
 
     public function test_it_gets_secret(): void
     {
-        $this->featureFlags->enable('app_developer_mode');
         $user = $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_test_apps');
 
@@ -90,7 +88,6 @@ class GetCustomAppSecretActionEndToEnd extends WebTestCase
 
     public function test_it_gets_not_found_exception(): void
     {
-        $this->featureFlags->enable('app_developer_mode');
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_test_apps');
 
