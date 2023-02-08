@@ -39,10 +39,10 @@ akeneo_connectivity_connection_custom_apps_api_delete:
     defaults: { _list_in_root_endpoint: false }
 
 # Front API
-akeneo_connectivity_connection_connect_marketplace_test_app_create:
-    path: '/connect/app-store/test-apps/create'
+akeneo_connectivity_connection_connect_custom_apps_create:
+    path: '/connect/custom-apps/create'
 
-akeneo_connectivity_connection_connect_marketplace_test_app_delete:
-    path: '/connect/app-store/test-apps/{testAppId}/delete'
+akeneo_connectivity_connection_connect_custom_apps_delete:
+    path: '/connect/custom-apps/:customAppId/delete'
     requirements:
-        testAppId: '[a-zA-Z0-9_-]+'
+        customAppId: '[a-zA-Z0-9_-]+'
