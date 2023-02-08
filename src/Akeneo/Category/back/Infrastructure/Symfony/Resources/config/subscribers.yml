@@ -5,7 +5,7 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
-    Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelDeletionSubscriber:
+    Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber:
         arguments:
             - '@akeneo.category.enriched.feature'
             - '@akeneo_batch.job.job_instance_repository'

@@ -32,6 +32,8 @@ class CleanCategoriesEnrichedValuesTasklet implements TaskletInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $channelCode = $jobParameters->get('channel_code');
-        ($this->cleanCategoryDataLinkedToChannel)($channelCode);
+        $locales = $jobParameters->get('locales_codes');
+        $action = $jobParameters->get('action');
+        ($this->cleanCategoryDataLinkedToChannel)($channelCode, $locales, $action);
     }
 }
