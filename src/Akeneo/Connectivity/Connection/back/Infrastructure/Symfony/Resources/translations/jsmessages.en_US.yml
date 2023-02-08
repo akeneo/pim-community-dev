@@ -173,6 +173,10 @@ akeneo_connectivity.connection:
                         information_link_anchor: Help Center article
                         openid_only: This app uses Akeneo App authentication without using your personal data.
                     pending: This app is not connected to your PIM. Opening the app should fix the connection issue. If it persists, please contact the App support.
+                    credentials:
+                        title: Credentials
+                        client_id : Client id
+                        client_secret: Client secret
                 error_monitoring:
                     error: Oups, something went wrong!
                     helper:

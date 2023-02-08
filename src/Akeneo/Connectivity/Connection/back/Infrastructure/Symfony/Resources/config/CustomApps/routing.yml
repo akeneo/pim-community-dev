@@ -14,6 +14,11 @@ akeneo_connectivity_connection_marketplace_rest_test_apps_delete:
     controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\DeleteCustomAppAction
     methods: [DELETE]
 
+akeneo_connectivity_connection_custom_apps_rest_get_secret:
+    path: '/rest/marketplace/custom-apps/{customAppId}/secret'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetCustomAppSecretAction
+    methods: [GET]
+
 # External API
 akeneo_connectivity_connection_marketplace_api_test_apps_list:
     path: '/api/rest/v1/test-apps'
