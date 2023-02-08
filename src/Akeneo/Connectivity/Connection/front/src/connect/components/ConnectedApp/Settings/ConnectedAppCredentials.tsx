@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
-import {ConnectedApp} from '../../../model/Apps/connected-app';
+import {ConnectedApp} from '../../../../model/Apps/connected-app';
 import {KeyIcon, SectionTitle, UserIcon} from 'akeneo-design-system';
-import {useTranslate} from '../../../shared/translate';
+import {useTranslate} from '../../../../shared/translate';
 import styled from 'styled-components';
-import {CopiableCredential} from '../../../settings/components/credentials/CopiableCredential';
-import {Credential} from '../../../settings/components/credentials/Credential';
-import {useFetchCustomAppSecret} from '../../hooks/use-fetch-custom-app-secret';
+import {CopiableCredential} from '../../../../settings/components/credentials/CopiableCredential';
+import {Credential} from '../../../../settings/components/credentials/Credential';
+import {useFetchCustomAppSecret} from '../../../hooks/use-fetch-custom-app-secret';
 
 export const CredentialList = styled.div`
     display: grid;

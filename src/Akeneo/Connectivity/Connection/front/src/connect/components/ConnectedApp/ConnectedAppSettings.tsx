@@ -4,7 +4,7 @@ import {ConnectedAppAuthorizations} from './ConnectedAppAuthorizations';
 import {ConnectedAppMonitoringSettings} from './ConnectedAppMonitoringSettings';
 import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
 import {Authentication} from './Settings/Authentication';
-import {ConnectedAppCredentials} from './ConnectedAppCredentials';
+import {ConnectedAppCredentials} from './Settings/ConnectedAppCredentials';
 import {useSecurity} from '../../../shared/security';
 
 type Props = {
