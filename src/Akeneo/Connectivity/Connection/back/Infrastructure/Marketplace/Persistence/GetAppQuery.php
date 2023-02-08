@@ -17,19 +17,19 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 final class GetAppQuery implements GetAppQueryInterface
 {
     public function __construct(
-        private WebMarketplaceApiInterface $webMarketplaceApi,
-        private FeatureFlag $appDeveloperModeFeatureFlag,
-        private GetCustomAppQuery $getTestAppQuery,
+        private readonly WebMarketplaceApiInterface $webMarketplaceApi,
+        private readonly FeatureFlag $appDeveloperModeFeatureFlag,
+        private readonly GetCustomAppQuery $getCustomAppQuery,
     ) {
     }
 
     public function execute(string $id): ?App
     {
         if ($this->appDeveloperModeFeatureFlag->isEnabled()) {
-            $data = $this->getTestAppQuery->execute($id);
+            $data = $this->getCustomAppQuery->execute($id);
 
             if (null !== $data) {
-                return App::fromTestAppValues($data);
+                return App::fromCustomAppValues($data);
             }
         }
 

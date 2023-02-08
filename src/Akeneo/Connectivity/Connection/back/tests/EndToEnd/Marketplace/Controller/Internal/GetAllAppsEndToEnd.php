@@ -55,7 +55,7 @@ class GetAllAppsEndToEnd extends WebTestCase
                 'callback_url' => 'http://shopify.example.com/callback',
                 'connected' => false,
                 'isPending' => false,
-                'isTestApp' => false,
+                'isCustomApp' => false,
             ],
             [
                 'id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
@@ -73,7 +73,7 @@ class GetAllAppsEndToEnd extends WebTestCase
                 'callback_url' => 'http://shopware.example.com/callback',
                 'connected' => false,
                 'isPending' => false,
-                'isTestApp' => false,
+                'isCustomApp' => false,
             ],
         ];
 

@@ -69,10 +69,10 @@ final class GetOpenAppUrlAction
     {
         return
             (
-                $app->isTestApp() &&
+                $app->isCustomApp() &&
                 $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
             ) || (
-                !$app->isTestApp() &&
+                !$app->isCustomApp() &&
                 $this->security->isGranted('akeneo_connectivity_connection_manage_apps')
             );
     }
@@ -81,10 +81,10 @@ final class GetOpenAppUrlAction
     {
         return
             (
-                $app->isTestApp() &&
+                $app->isCustomApp() &&
                 $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
             ) || (
-                !$app->isTestApp() &&
+                !$app->isCustomApp() &&
                 $this->security->isGranted('akeneo_connectivity_connection_open_apps')
             );
     }

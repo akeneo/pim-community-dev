@@ -169,7 +169,7 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         $request->isXmlHttpRequest()->willReturn(true);
 
         $clientId = 'a_client_id';
-        $app = App::fromTestAppValues([
+        $app = App::fromCustomAppValues([
             'id' => $clientId,
             'name' => 'test app',
             'activate_url' => 'http://url.test',

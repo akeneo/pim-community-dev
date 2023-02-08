@@ -62,7 +62,7 @@ class GetAllCustomAppsQueryIntegration extends TestCase
 
         $this->assertEquals(
             GetAllCustomAppsResult::create(2, [
-                App::fromTestAppValues([
+                App::fromCustomAppValues([
                     'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
                     'name' => 'My test app',
                     'author' => 'John Doe',
@@ -70,7 +70,7 @@ class GetAllCustomAppsQueryIntegration extends TestCase
                     'callback_url' => 'http://shopware.example.com/callback',
                     'connected' => true,
                 ]),
-                App::fromTestAppValues([
+                App::fromCustomAppValues([
                     'id' => '42b9ecb1-ddd7-4874-9ad6-21a02d08ed50',
                     'name' => 'My test app 2',
                     'author' => null,

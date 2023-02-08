@@ -104,11 +104,11 @@ final class ConfirmAuthenticationAction
 
     private function denyAccessUnlessGrantedToOpen(App $app): void
     {
-        if (!$app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_open_apps')) {
+        if (!$app->isCustomApp() && !$this->security->isGranted('akeneo_connectivity_connection_open_apps')) {
             throw new AccessDeniedHttpException();
         }
 
-        if ($app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+        if ($app->isCustomApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
             throw new AccessDeniedHttpException();
         }
     }
