@@ -8,6 +8,19 @@ import {act, fireEvent} from '@testing-library/react';
 
 const mockNotify = jest.fn();
 
+const userContext = {
+  get: (k: string) => {
+    switch (k) {
+      case 'catalogLocale':
+        return 'en_US';
+      case 'uiLocale':
+        return 'en_US';
+      default:
+        throw new Error(`Unknown key ${k}`);
+    }
+  },
+};
+
 jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
   useTranslate: () => (key: string) => key,
@@ -18,6 +31,9 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   },
   useNotify: () => {
     return mockNotify;
+  },
+  useUserContext: () => {
+    return userContext;
   },
   useSecurity: () => {
     return {

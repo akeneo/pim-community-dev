@@ -4,7 +4,7 @@ import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-p
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
 import {Conditions, Delimiter, GeneratorTab, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {Violation} from '../validators';
-import {Header, NomenclatureEdit} from '../components';
+import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
 import {useIdentifierGeneratorAclContext, useIdentifierGeneratorContext} from '../context';
@@ -97,7 +97,6 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   return (
     <>
-      <NomenclatureEdit />
       <Header>
         {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
           <PageHeader.Actions>

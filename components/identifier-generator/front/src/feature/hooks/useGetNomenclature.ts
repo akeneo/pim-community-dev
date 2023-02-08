@@ -23,6 +23,7 @@ const useGetNomenclature = (propertyCode: string): HookResponse => {
         }
       );
 
+      /* istanbul ignore next */
       if (!response.ok) throw new ServerError(response.statusText);
       const nomenclature = await response.json();
 
