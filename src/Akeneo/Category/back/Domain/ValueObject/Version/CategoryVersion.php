@@ -10,7 +10,7 @@ namespace Akeneo\Category\Domain\ValueObject\Version;
  *
  * @phpstan-type Snapshot array{
  *     code: string,
- *     parent: string,
+ *     parent: string|null,
  *     updated: string
  * }&array<string, string>
  */
