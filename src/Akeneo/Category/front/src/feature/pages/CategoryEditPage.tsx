@@ -238,7 +238,6 @@ const CategoryEditPage: FC = () => {
                               identifier,
                               label: categoryLabel,
                               code: category.properties.code,
-                              isRoot: category.isRoot,
                               numberOfProducts: nbProducts,
                               onDelete: followCategoryTree,
                             });
@@ -321,7 +320,6 @@ const CategoryEditPage: FC = () => {
       {isDeleteCategoryModalOpen && categoryToDelete !== null && (
         <DeleteCategoryModal
           categoryLabel={categoryToDelete.label}
-          isRoot={categoryToDelete.isRoot}
           closeModal={handleCloseDeleteCategoryModal}
           deleteCategory={async () => {
             await handleDeleteCategory(categoryToDelete);

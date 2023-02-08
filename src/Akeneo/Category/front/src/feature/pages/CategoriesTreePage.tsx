@@ -81,12 +81,11 @@ const CategoriesTreePage: FC = () => {
     identifier: number,
     label: string,
     code: string,
-    isRoot: boolean,
     numberOfProducts: number,
     onDelete: () => void
   ) => {
     if (isCategoryDeletionPossible(label, numberOfProducts)) {
-      setCategoryToDelete({identifier, label, code, isRoot, numberOfProducts, onDelete});
+      setCategoryToDelete({identifier, label, code, numberOfProducts, onDelete});
       openDeleteCategoryModal();
     }
   };
@@ -166,7 +165,6 @@ const CategoriesTreePage: FC = () => {
         {isDeleteCategoryModalOpen && categoryToDelete !== null && (
           <DeleteCategoryModal
             categoryLabel={categoryToDelete.label}
-            isRoot={categoryToDelete.isRoot}
             closeModal={handleCloseDeleteCategoryModal}
             deleteCategory={async () => {
               await handleDeleteCategory(categoryToDelete);

@@ -6,7 +6,6 @@ const aTreeNode = <T>(
   childrenIds: number[] = [],
   label: string = 'a_tree_node',
   code: string = '',
-  isRoot: boolean = true,
   parentId: number | null = null,
   type: 'root' | 'node' | 'leaf' = 'root',
   childrenStatus: 'idle' | 'loaded' | 'loading' = 'idle'
@@ -17,7 +16,6 @@ const aTreeNode = <T>(
     childrenIds,
     label,
     code,
-    isRoot,
     parentId,
     type,
     childrenStatus,
