@@ -107,6 +107,7 @@
         "oneup/flysystem-bundle": "^4.5.0",
         "openspout/openspout": "^4.9.0",
         "opis/json-schema": "^2.3",
+        "php-http/discovery": "~1.14.3",
         "phpseclib/phpseclib": "^3.0",
         "psr/event-dispatcher": "^1.0.0",
         "ramsey/uuid": "4.7.1",
