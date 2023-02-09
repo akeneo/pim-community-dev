@@ -196,7 +196,7 @@ const AttributeOptionTable = ({
                   <Table.HeaderCell>&nbsp;</Table.HeaderCell>
                 </Table.Header>
                 <Table.Body>
-                  {filteredAttributeOptions.map((attributeOption: AttributeOption) => {
+                  {filteredAttributeOptions.slice(0,500).map((attributeOption: AttributeOption) => {
                     return (
                       <AttributeOptionRow
                         isDraggable={isDraggable}
