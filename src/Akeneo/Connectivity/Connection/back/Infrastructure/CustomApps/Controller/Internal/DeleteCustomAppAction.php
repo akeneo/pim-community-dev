@@ -24,7 +24,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class DeleteCustomAppAction
 {
     public function __construct(
-        private readonly FeatureFlag $appDevModeFeatureFlag,
         private readonly SecurityFacade $security,
         private readonly DeleteCustomAppHandler $deleteCustomAppHandler,
         private readonly GetCustomAppQueryInterface $getCustomAppQuery,
@@ -34,10 +33,6 @@ final class DeleteCustomAppAction
 
     public function __invoke(Request $request, string $customAppId): Response
     {
-        if (!$this->appDevModeFeatureFlag->isEnabled()) {
-            throw new NotFoundHttpException();
-        }
-
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
