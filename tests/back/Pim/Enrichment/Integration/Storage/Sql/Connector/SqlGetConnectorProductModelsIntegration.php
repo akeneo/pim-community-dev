@@ -787,7 +787,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
 
     private function getUserIdFromUsername(string $username): int
     {
-        return (int)$this->get('database_connection')->fetchColumn(
+        return (int)$this->get('database_connection')->fetchOne(
             'SELECT id from oro_user WHERE username = :username',
             [
                 'username' => $username,
@@ -797,7 +797,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
 
     private function getIdAndDatesFromProductModelCode(string $productModelCode): array
     {
-        return $this->get('database_connection')->fetchAssoc(
+        return $this->get('database_connection')->fetchAssociative(
             'SELECT id, created, updated FROM pim_catalog_product_model where code = :code',
             [
                 'code' => $productModelCode,

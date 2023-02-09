@@ -22,17 +22,17 @@ class Version_6_0_20211025161901_set_default_role_type_Integration extends TestC
         $connection->executeQuery('ALTER TABLE oro_access_role MODIFY type VARCHAR(30) DEFAULT NULL;');
         $connection->executeQuery('UPDATE oro_access_role SET type = NULL;');
 
-        foreach($this->getAllRoleTypes() as $type) {
+        foreach ($this->getAllRoleTypes() as $type) {
             Assert::assertNull($type);
         }
 
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        foreach($this->getAllRoleTypes() as $type) {
+        foreach ($this->getAllRoleTypes() as $type) {
             Assert::assertEquals('default', $type);
         }
 
-        $columns = $this->getConnection()->getSchemaManager()->listTableColumns('oro_access_role');
+        $columns = $this->getConnection()->createSchemaManager()->listTableColumns('oro_access_role');
         Assert::assertEquals('default', $columns['type']->getDefault());
     }
 
@@ -48,7 +48,7 @@ class Version_6_0_20211025161901_set_default_role_type_Integration extends TestC
 
     private function updatedColumnExists(): bool
     {
-        $columns = $this->getConnection()->getSchemaManager()->listTableColumns('oro_user');
+        $columns = $this->getConnection()->createSchemaManager()->listTableColumns('oro_user');
 
         return isset($columns['profile']);
     }

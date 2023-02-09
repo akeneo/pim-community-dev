@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Command;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Query\PurgeDoctrineQueueQuery;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

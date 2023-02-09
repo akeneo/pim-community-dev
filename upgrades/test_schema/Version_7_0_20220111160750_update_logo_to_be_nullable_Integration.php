@@ -36,7 +36,7 @@ SQL;
 
     private function assertAuthorColumnIsNullable(bool $isNullable): void
     {
-        $columns = $this->getConnection()->getSchemaManager()->listTableColumns('akeneo_connectivity_connected_app');
+        $columns = $this->getConnection()->createSchemaManager()->listTableColumns('akeneo_connectivity_connected_app');
 
         Assert::assertEquals(!$isNullable, $columns['logo']?->getNotnull());
     }

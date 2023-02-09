@@ -60,9 +60,8 @@ class InstallStatusManager
 
         $stmt->bindValue('database_name', $this->databaseName);
         $stmt->bindValue('install_table_name', self::INSTALL_TABLE_NAME);
-        $stmt->execute();
 
-        $result = $stmt->fetch();
+        $result = $stmt->executeQuery()->fetchAssociative();
         if (!isset($result[self::MYSQL_META_COLUMN_CREATE_TIME])) {
             throw new UnavailableCreationTimeException(
                 sprintf(

@@ -78,7 +78,7 @@ class Version_6_0_20211119154203_add_is_stoppable_in_job_execution_Integration e
 
     private function columnExists(): bool
     {
-        $columns = $this->connection->getSchemaManager()->listTableColumns('akeneo_batch_job_execution');
+        $columns = $this->connection->createSchemaManager()->listTableColumns('akeneo_batch_job_execution');
 
         return isset($columns['is_stoppable']);
     }

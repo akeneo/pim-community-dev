@@ -144,9 +144,6 @@
     "dompdf/dompdf": {
         "version": "v0.6.2"
     },
-    "dvdoug/behat-code-coverage": {
-        "version": "v5.2.1"
-    },
     "elasticsearch/elasticsearch": {
         "version": "v7.2.2"
     },

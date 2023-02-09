@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Webmozart\Assert\Assert;
 
 /**
@@ -92,8 +93,8 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
                 'identifier' => 'productA',
                 'is_enabled' => true,
                 'product_model_code' => null,
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
+                'created' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
+                'updated' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
                 'family_code' => 'family',
                 'group_codes' => [],
                 'raw_values' => [
@@ -125,8 +126,8 @@ class GetValuesAndPropertiesFromProductUuidsIntegration extends TestCase
                 'identifier' => 'VariantProductA',
                 'is_enabled' => true,
                 'product_model_code' => 'SubProductModel',
-                'created' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
-                'updated' => Type::getType(Type::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
+                'created' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::CREATED, $platform),
+                'updated' => Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue(self::UPDATED, $platform),
                 'family_code' => 'FamilyWithVariant',
                 'group_codes' => [],
                 'raw_values' => [

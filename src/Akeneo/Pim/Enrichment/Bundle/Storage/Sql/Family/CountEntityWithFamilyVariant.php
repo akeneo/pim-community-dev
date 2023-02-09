@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family;
@@ -36,7 +37,7 @@ final class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariant
      * @param FamilyVariantInterface $familyVariant
      *
      * @return int
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function countProductModels(FamilyVariantInterface $familyVariant): int
     {
@@ -50,7 +51,7 @@ final class CountEntityWithFamilyVariant implements CountEntityWithFamilyVariant
      * @param FamilyVariantInterface $familyVariant
      *
      * @return int
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     private function countVariantProducts(FamilyVariantInterface $familyVariant): int
     {

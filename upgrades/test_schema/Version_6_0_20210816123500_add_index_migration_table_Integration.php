@@ -22,7 +22,7 @@ class Version_6_0_20210816123500_add_index_migration_table_Integration extends T
     public function test_it_creates_the_index_migration_table(): void
     {
         $connection = $this->get('database_connection');
-        $schemaManager  = $connection->getSchemaManager();
+        $schemaManager  = $connection->createSchemaManager();
 
         $connection->executeQuery('DROP TABLE IF EXISTS pim_index_migration');
         $this->reExecuteMigration(self::MIGRATION_LABEL);

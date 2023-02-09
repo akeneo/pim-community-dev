@@ -130,7 +130,7 @@ SQL;
 
     private function allowMultipleScoresPerProduct(): void
     {
-        $indexes = $this->dbConnection->getSchemaManager()->listTableIndexes('pim_data_quality_insights_product_score');
+        $indexes = $this->dbConnection->createSchemaManager()->listTableIndexes('pim_data_quality_insights_product_score');
 
         if (count($indexes['primary']?->getColumns()) > 1) {
             return;

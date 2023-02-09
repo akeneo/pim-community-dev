@@ -1,11 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQueryInterface;
 use Doctrine\DBAL\Connection as DbalConnection;
-use Doctrine\DBAL\FetchMode;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -29,7 +29,7 @@ class DbalSelectWebhookSecretQuery implements SelectWebhookSecretQueryInterface
         WHERE code = :code
 SQL;
 
-        $result = $this->dbalConnection->executeQuery($query, ['code' => $code])->fetch(FetchMode::COLUMN);
+        $result = $this->dbalConnection->executeQuery($query, ['code' => $code])->fetchOne();
 
         return false === $result ? null : $result;
     }

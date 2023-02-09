@@ -118,8 +118,8 @@ IF NEW.product_uuid IS NULL THEN SET NEW.category_id = 1;
 END IF;  
 END
 SQL;
-        foreach($this->migrationToTest::TABLES_TO_UPDATE as $tableName => $properties) {
-            if (!$this->connection->getSchemaManager()->tablesExist([$tableName])) {
+        foreach ($this->migrationToTest::TABLES_TO_UPDATE as $tableName => $properties) {
+            if (!$this->connection->createSchemaManager()->tablesExist([$tableName])) {
                 continue;
             }
             foreach ($properties['triggers'] as $triggerName) {
@@ -144,8 +144,8 @@ SQL;
                 continue;
             }
             $tableColumnNames = \array_map(
-                static fn(Column $column) => $column->getName(),
-                $this->connection->getSchemaManager()->listTableColumns($table)
+                static fn (Column $column) => $column->getName(),
+                $this->connection->createSchemaManager()->listTableColumns($table)
             );
             $this->assertNotContains(
                 $productIdColumnName,
@@ -165,7 +165,7 @@ ALTER TABLE %s
     ADD CONSTRAINT FOREIGN KEY(%s) REFERENCES pim_catalog_product(id);
 SQL;
         foreach ($this->migrationToTest::TABLES_TO_UPDATE as $table => $properties) {
-            if ($this->connection->getSchemaManager()->tablesExist($table) && null !== $properties['column']) {
+            if ($this->connection->createSchemaManager()->tablesExist($table) && null !== $properties['column']) {
                 $query = \sprintf($addColumnQuery, $table, $properties['column'], $properties['column'], $properties['column']);
                 $this->connection->executeStatement($query);
             }

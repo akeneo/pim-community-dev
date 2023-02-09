@@ -130,8 +130,8 @@ SQL;
                 'redirect_uris' => [],
             ],
             [
-                'allowed_grant_types' => Types::ARRAY,
-                'redirect_uris' => Types::ARRAY
+                'allowed_grant_types' => Types::JSON,
+                'redirect_uris' => Types::JSON
             ]
         );
 

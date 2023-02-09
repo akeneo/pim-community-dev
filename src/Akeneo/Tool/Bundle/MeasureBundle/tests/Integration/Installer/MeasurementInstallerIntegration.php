@@ -39,11 +39,13 @@ class MeasurementInstallerIntegration extends SqlIntegrationTestCase
 
         $this->assertMeasurementTableExist();
         $this->assertMeasurementTableHasColumns(
+            // KLUDGE: getting the type name is now deprecated and there is no replacement in DBAL
+            // so we have to check the class it returns. Hopefuly there will be a better way in the future
             [
-                'code' => 'string',
-                'labels' => 'string',
-                'standard_unit' => 'string',
-                'units' => 'string',
+                'code' => 'Doctrine\\DBAL\\Types\\StringType',
+                'labels' => 'Doctrine\\DBAL\\Types\\StringType',
+                'standard_unit' => 'Doctrine\\DBAL\\Types\\StringType',
+                'units' => 'Doctrine\\DBAL\\Types\\StringType',
             ]
         );
         $this->assertNumberOfMeasurements(23);
@@ -57,7 +59,7 @@ class MeasurementInstallerIntegration extends SqlIntegrationTestCase
     private function assertMeasurementTableExist()
     {
         /** @var AbstractSchemaManager $schemaManager */
-        $schemaManager = $this->get('database_connection')->getSchemaManager();
+        $schemaManager = $this->get('database_connection')->createSchemaManager();
         $tables = $schemaManager->listTableNames();
         Assert::assertContains('akeneo_measurement', $tables);
     }
@@ -66,10 +68,10 @@ class MeasurementInstallerIntegration extends SqlIntegrationTestCase
     {
         $actualColumnsAndTypes = [];
         /** @var AbstractSchemaManager $schemaManager */
-        $schemaManager = $this->get('database_connection')->getSchemaManager();
+        $schemaManager = $this->get('database_connection')->createSchemaManager();
         $tableColumns = $schemaManager->listTableColumns('akeneo_measurement');
         foreach ($tableColumns as $actualColumn) {
-            $actualColumnsAndTypes[$actualColumn->getName()] =  $actualColumn->getType()->getName();
+            $actualColumnsAndTypes[$actualColumn->getName()] = get_class($actualColumn->getType());
         }
         Assert::assertEquals($expectedColumnsAndTypes, $actualColumnsAndTypes);
     }
@@ -79,7 +81,7 @@ class MeasurementInstallerIntegration extends SqlIntegrationTestCase
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
         $stmt = $connection->executeQuery('SELECT COUNT(*) FROM akeneo_measurement;');
-        $actualNumberOfMeasurements = $stmt->fetch(\PDO::FETCH_COLUMN);
+        $actualNumberOfMeasurements = $stmt->fetchOne();
         Assert::assertEquals($expectedNumberOfMeasurements, $actualNumberOfMeasurements);
     }
 }

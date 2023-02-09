@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGenera
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Driver\Exception as DriverException;
+use Doctrine\DBAL\ParameterType;
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
@@ -97,7 +98,7 @@ FROM pim_catalog_identifier_generator
 WHERE code=:code
 SQL;
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam('code', $identifierGeneratorCode, \PDO::PARAM_STR);
+        $stmt->bindValue('code', $identifierGeneratorCode, ParameterType::STRING);
 
         try {
             $result = $stmt->executeQuery()->fetchAssociative();
@@ -183,7 +184,7 @@ WHERE code=:code
 LIMIT 1
 SQL;
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam('code', $identifierGeneratorCode, \PDO::PARAM_STR);
+        $stmt->bindValue('code', $identifierGeneratorCode, ParameterType::STRING);
 
         try {
             $stmt->executeQuery();

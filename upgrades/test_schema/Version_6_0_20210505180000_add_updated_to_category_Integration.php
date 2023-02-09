@@ -46,7 +46,7 @@ class Version_6_0_20210505180000_add_updated_to_category_Integration extends Tes
 
     private function updatedColumnExists(): bool
     {
-        $columns = $this->getConnection()->getSchemaManager()->listTableColumns('pim_catalog_category');
+        $columns = $this->getConnection()->createSchemaManager()->listTableColumns('pim_catalog_category');
 
         return isset($columns['updated']);
     }

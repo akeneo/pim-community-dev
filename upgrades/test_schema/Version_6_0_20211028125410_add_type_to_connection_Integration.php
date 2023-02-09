@@ -75,7 +75,7 @@ class Version_6_0_20211028125410_add_type_to_connection_Integration extends Test
 
     private function typeColumnExists(): bool
     {
-        $columns = $this->connection->getSchemaManager()->listTableColumns('akeneo_connectivity_connection');
+        $columns = $this->connection->createSchemaManager()->listTableColumns('akeneo_connectivity_connection');
 
         return isset($columns['type']);
     }

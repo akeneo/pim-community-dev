@@ -36,7 +36,7 @@ class EmailDomainsIntegration extends TestCase
     {
         $conn = $this->get('database_connection');
 
-        $localeId = $conn->fetchColumn('SELECT id FROM pim_catalog_locale LIMIT 1');
+        $localeId = $conn->fetchOne('SELECT id FROM pim_catalog_locale LIMIT 1');
 
         $sqlInsert = <<<SQL
             INSERT INTO oro_user

@@ -7,6 +7,7 @@ namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -42,7 +43,7 @@ class UTCDateTimeImmutableType extends DateTimeImmutableType
         if (!$converted) {
             throw ConversionException::conversionFailedFormat(
                 $value,
-                $this->getName(),
+                Types::DATETIME_IMMUTABLE,
                 $platform->getDateTimeFormatString()
             );
         }

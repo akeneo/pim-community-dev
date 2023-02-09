@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeType;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * Stores dates with UTC timezone
@@ -51,7 +52,7 @@ class UTCDateTimeType extends DateTimeType
         $val->setTimezone(new \DateTimeZone($serverTimezone));
 
         if (!$val) {
-            throw ConversionException::conversionFailed($value, $this->getName());
+            throw ConversionException::conversionFailed($value, Types::DATETIME_MUTABLE);
         }
 
         $errors = $val->getLastErrors();

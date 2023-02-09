@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
 use Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\FosRegenerateClientSecret;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Doctrine\DBAL\Connection as DbalConnection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Statement;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

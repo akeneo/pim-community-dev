@@ -71,6 +71,6 @@ class DbalFindViewedAnnouncementIdsIntegration extends TestCase
 SQL;
         $statement = $this->dbalConnection->executeQuery($query);
 
-        return $statement->fetch();
+        return $statement->fetchAssociative();
     }
 }
