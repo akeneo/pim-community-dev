@@ -21,17 +21,16 @@ const DeleteCategoryModal: FC<DeleteCategoryModalProps> = ({
   numberOfProducts,
   categoryId,
 }) => {
-  const isMounted = useIsMounted();
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
 
   const {data: categoryChildrenCount, isLoading} = useCountCategoryChildren(categoryId);
-
   let warning = null;
   if (featureFlags.isEnabled('enriched_category') && !isLoading) {
     if (categoryChildrenCount && categoryChildrenCount > 0) {
       warning = translate('pim_enrich.entity.category.category_tree_deletion.warning_categories_number', {
-        categoriesNumber: categoryChildrenCount,
+        // Add the current category (parent) we want to delete
+        categoriesNumber: categoryChildrenCount + 1,
       });
     } else if (numberOfProducts) {
       warning = translate('pim_enrich.entity.category.category_tree_deletion.warning_products', {
