@@ -55,3 +55,9 @@ services:
         arguments:
             - '%env(string:PIM_EDITION)%'
         public: true
+
+    akeneo.feature_flag.service.only_growth_and_serenity_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlyGrowthAndSerenityFeatureFlag
+        arguments:
+            - '%env(string:PIM_EDITION)%'
+        public: true
