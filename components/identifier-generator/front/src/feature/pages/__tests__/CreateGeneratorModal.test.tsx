@@ -3,6 +3,7 @@ import {fireEvent, render, screen} from '../../tests/test-utils';
 import {CreateGeneratorModal} from '../';
 import {waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import {TEXT_TRANSFORMATION} from '../../models';
 
 jest.mock('../../hooks/useIdentifierAttributes');
 
@@ -39,6 +40,7 @@ describe('CreateGeneratorModal', () => {
       labels: {en_US: 'Other label'},
       structure: [],
       target: 'sku',
+      text_transformation: TEXT_TRANSFORMATION.NO,
     });
   });
 
@@ -101,6 +103,7 @@ describe('CreateGeneratorModal', () => {
       labels: {en_US: 'New label 123'},
       structure: [],
       target: 'sku',
+      text_transformation: TEXT_TRANSFORMATION.NO,
     });
   });
 });

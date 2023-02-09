@@ -27,6 +27,15 @@ const items: PropertiesSelection[] = [
         code: PROPERTY_NAMES.AUTO_NUMBER,
         defaultValue: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
       },
+      {
+        code: PROPERTY_NAMES.FAMILY,
+        defaultValue: {
+          type: PROPERTY_NAMES.FAMILY,
+          process: {
+            type: null,
+          },
+        },
+      },
     ],
   },
 ];
