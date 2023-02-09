@@ -14,6 +14,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorShouldExist;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorShouldExistValidator;
@@ -67,7 +68,8 @@ class IdentifierGeneratorShouldExistValidatorSpec extends ObjectBehavior
             [['type' => 'unknown', 'string' => 'abcdef']],
             ['fr' => 'Générateur'],
             'sku',
-            '-'
+            '-',
+            'no',
         );
         $this->validate($updateGeneratorCommand, new IdentifierGeneratorShouldExist());
     }
@@ -84,6 +86,7 @@ class IdentifierGeneratorShouldExistValidatorSpec extends ObjectBehavior
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
         $identifierGeneratorRepository
             ->get('sku')
@@ -98,7 +101,8 @@ class IdentifierGeneratorShouldExistValidatorSpec extends ObjectBehavior
             [['type' => 'unknown', 'string' => 'abcdef']],
             ['fr' => 'Générateur'],
             'sku',
-            '-'
+            '-',
+            'no',
         );
         $this->validate($updateGeneratorCommand, new IdentifierGeneratorShouldExist());
     }

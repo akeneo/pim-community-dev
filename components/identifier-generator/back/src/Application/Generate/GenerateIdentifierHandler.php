@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GeneratePropertyHandlerInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Webmozart\Assert\Assert;
 
 /**
@@ -33,31 +35,53 @@ final class GenerateIdentifierHandler
     public function __invoke(
         GenerateIdentifierCommand $command,
     ): string {
-        $delimiter = $command->getDelimiter();
-        $properties = $command->getProperties();
-        $target = $command->getTarget();
+        $identifierGenerator = $command->getIdentifierGenerator();
+        $transformedDelimiter = $identifierGenerator->delimiter()->asString() ?? '';
+        switch ($identifierGenerator->textTransformation()->normalize()) {
+            case TextTransformation::UPPERCASE:
+                $transformedDelimiter = \mb_strtoupper($transformedDelimiter);
+
+                break;
+            case TextTransformation::LOWERCASE:
+                $transformedDelimiter = \mb_strtolower($transformedDelimiter);
+
+                break;
+        }
 
         $result = '';
-        foreach ($properties as $property) {
-            if ($result !== '') {
-                $result .= $delimiter?->asString() ?? '';
+        foreach ($identifierGenerator->structure()->getProperties() as $property) {
+            if ('' !== $result) {
+                $result .= $transformedDelimiter;
             }
 
-            $result .= $this->generateProperty($property, $target, $result);
+            $generatedProperty = $this->generateProperty($property, $identifierGenerator, $command->getProductProjection(), $result);
+            switch ($identifierGenerator->textTransformation()->normalize()) {
+                case TextTransformation::UPPERCASE:
+                    $generatedProperty = \mb_strtoupper($generatedProperty);
+
+                    break;
+                case TextTransformation::LOWERCASE:
+                    $generatedProperty = \mb_strtolower($generatedProperty);
+
+                    break;
+            }
+
+            $result .= $generatedProperty;
         }
 
         return $result;
     }
 
-    private function generateProperty(PropertyInterface $property, Target $target, string $prefix): string
-    {
+    private function generateProperty(
+        PropertyInterface $property,
+        IdentifierGenerator $identifierGenerator,
+        ProductProjection $productProjection,
+        string $prefix
+    ): string {
         if (!isset($this->generateProperties[\get_class($property)])) {
-            throw new \InvalidArgumentException(\sprintf(
-                'No generator found for property %s',
-                \get_class($property)
-            ));
+            throw new \InvalidArgumentException(\sprintf('No generator found for property %s', \get_class($property)));
         }
 
-        return ($this->generateProperties[\get_class($property)])($property, $target, $prefix);
+        return ($this->generateProperties[\get_class($property)])($property, $identifierGenerator, $productProjection, $prefix);
     }
 }

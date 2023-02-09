@@ -53,6 +53,7 @@ final class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndT
                 'string' => 'AKN',
             ]],
             'delimiter' => null,
+            'text_transformation' => 'no',
         ];
 
         $this->loginAs('Julia');
@@ -70,7 +71,7 @@ final class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndT
         $uuid = $this->getUuidFromCode('my_new_generator');
         Assert::assertSame(
             sprintf(
-                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"}],"labels":{"en_US":"My new generator","fr_FR":"Mon nouveau g\u00e9n\u00e9rateur"},"target":"sku","delimiter":null}',
+                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"}],"labels":{"en_US":"My new generator","fr_FR":"Mon nouveau g\u00e9n\u00e9rateur"},"target":"sku","delimiter":null,"text_transformation":"no"}',
                 $uuid
             ),
             $response->getContent()

@@ -89,6 +89,7 @@ services:
             - '@database_connection'
         tags:
             - { name: 'akeneo.pim.zdd_migration' }
+        public: true
 
     Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns:
         arguments:
@@ -96,6 +97,7 @@ services:
             - '@monolog.logger'
         tags:
             - { name: 'akeneo.pim.zdd_migration' }
+        public: true
 
     Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedProductsCommand:
         arguments:

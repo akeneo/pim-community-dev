@@ -4,6 +4,7 @@ akeneo.category:
       category_code:
         wrong_format: El codi de categoria només pot contenir lletres, números i guions baixos
         line_feed: El codi de categoria no pot contenir caràcters d'alimentació de línia
+      duplicated_value_user_intents: El valor de l'atribut {{ attributeCode }} s'està actualitzant diverses vegades
       value:
         text_too_long: El valor no pot tenir més de {{ limit }} caràcters
         textarea_too_long: El valor no pot tenir més de {{ limit }} caràcters

@@ -11,7 +11,7 @@ namespace Akeneo\Catalogs\Application\Persistence\Channel;
 interface GetChannelQueryInterface
 {
     /**
-     * @return array{code: string, label: string}
+     * @return array{code: string, label: string}|null
      */
     public function execute(string $code): ?array;
 }

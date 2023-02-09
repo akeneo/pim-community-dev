@@ -77,7 +77,6 @@ pim_common:
   updated: Caricato
   view: Visualizzazione
   yes: "Sì"
-  uuid: uuid
 pim_enrich:
   #ACLs
   acl:
