@@ -5,7 +5,7 @@ import {useAppDeveloperMode} from './use-app-developer-mode';
 
 export const useFetchTestApps = (): (() => Promise<TestApps>) => {
     const isAppDeveloperModeEnabled = useAppDeveloperMode();
-    const url = useRoute('akeneo_connectivity_connection_marketplace_rest_get_all_test_apps');
+    const url = useRoute('akeneo_connectivity_connection_custom_apps_rest_get_all');
 
     const fetchTestApps = useCallback(async () => {
         const response = await fetch(url, {

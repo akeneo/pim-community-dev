@@ -236,7 +236,7 @@ test('it fetches connected test apps', async () => {
                 apps: [],
             },
         },
-        akeneo_connectivity_connection_marketplace_rest_get_all_test_apps: {
+        akeneo_connectivity_connection_custom_apps_rest_get_all: {
             json: {
                 total: 1,
                 apps: [testApp],

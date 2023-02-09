@@ -13,7 +13,7 @@ beforeEach(() => {
 
 test('The connected app credentials renders with secret', async () => {
     mockFetchResponses({
-        '/rest/marketplace/custom-apps/0dfce574-2238-4b13-b8cc-8d257ce7645b/secret': {
+        '/rest/custom-apps/0dfce574-2238-4b13-b8cc-8d257ce7645b/secret': {
             json: '******************************ZmNQ',
         },
     });

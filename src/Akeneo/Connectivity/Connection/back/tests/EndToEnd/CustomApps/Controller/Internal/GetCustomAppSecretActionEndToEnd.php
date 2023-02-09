@@ -56,7 +56,7 @@ class GetCustomAppSecretActionEndToEnd extends WebTestCase
 
         $this->client->request(
             'GET',
-            '/rest/marketplace/custom-apps/0dfce574-2238-4b13-b8cc-8d257ce7645b/secret',
+            '/rest/custom-apps/0dfce574-2238-4b13-b8cc-8d257ce7645b/secret',
             [],
             [],
             [
@@ -74,7 +74,7 @@ class GetCustomAppSecretActionEndToEnd extends WebTestCase
     {
         $this->client->request(
             'GET',
-            '/rest/marketplace/custom-apps/0dfce574-2238-4b13-b8cc-8d257ce7645b/secret',
+            '/rest/custom-apps/0dfce574-2238-4b13-b8cc-8d257ce7645b/secret',
             [],
             [],
             [
@@ -93,7 +93,7 @@ class GetCustomAppSecretActionEndToEnd extends WebTestCase
 
         $this->client->request(
             'GET',
-            '/rest/marketplace/custom-apps/0dfce574-2238-4b13-b8cc-000000000/secret',
+            '/rest/custom-apps/0dfce574-2238-4b13-b8cc-000000000/secret',
             [],
             [],
             [

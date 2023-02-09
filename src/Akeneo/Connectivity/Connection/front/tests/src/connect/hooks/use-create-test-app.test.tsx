@@ -16,7 +16,7 @@ test('it creates the test app and returns credentials', async done => {
         callbackUrl: 'http://activate.test',
     });
 
-    expect(fetchMock).toBeCalledWith('akeneo_connectivity_connection_marketplace_rest_test_apps_create', {
+    expect(fetchMock).toBeCalledWith('akeneo_connectivity_connection_custom_apps_rest_create', {
         body: '{"name":"Test app bynder","activateUrl":"http://any_url.test","callbackUrl":"http://activate.test"}',
         headers: [
             ['Content-type', 'application/json'],
@@ -38,7 +38,7 @@ test('it returns errors when fields are not valid', async done => {
     };
 
     mockFetchResponses({
-        akeneo_connectivity_connection_marketplace_rest_test_apps_create: {
+        akeneo_connectivity_connection_custom_apps_rest_create: {
             json: expectedTestApp,
             status: 422,
         },
@@ -52,7 +52,7 @@ test('it returns errors when fields are not valid', async done => {
         callbackUrl: '',
     });
 
-    expect(fetchMock).toBeCalledWith('akeneo_connectivity_connection_marketplace_rest_test_apps_create', {
+    expect(fetchMock).toBeCalledWith('akeneo_connectivity_connection_custom_apps_rest_create', {
         body: '{"name":"","activateUrl":"foo","callbackUrl":""}',
         headers: [
             ['Content-type', 'application/json'],
