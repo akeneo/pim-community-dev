@@ -44,6 +44,11 @@ class V20221205153905FillIdentifierPrefixesZddMigration implements ZddMigration
         }
     }
 
+    public function migrateNotZdd(): void
+    {
+        $this->migrate();
+    }
+
     public function getName(): string
     {
         return 'FillIdentifierPrefixes';
