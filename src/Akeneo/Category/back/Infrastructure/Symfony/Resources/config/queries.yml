@@ -62,3 +62,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryTreeTemplateSql
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Application\Query\IsTemplateDeactivated:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\IsTemplateDeactivatedSql
+    arguments:
+      - '@database_connection'

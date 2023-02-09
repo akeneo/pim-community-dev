@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
+use Akeneo\Category\Application\Query\IsTemplateDeactivated;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Types;
@@ -22,8 +22,9 @@ use Doctrine\DBAL\Types\Types;
 class UpsertCategoryBaseSql implements UpsertCategoryBase
 {
     public function __construct(
-        private Connection $connection,
-        private GetCategoryInterface $getCategory,
+        private readonly Connection $connection,
+        private readonly GetCategoryInterface $getCategory,
+        private readonly IsTemplateDeactivated $isTemplateDeactivated,
     ) {
     }
 
@@ -104,7 +105,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     private function updateEnrichedCategory(Category $categoryModel): void
     {
         $templateUuid = $categoryModel->getTemplateUuid();
-        if ($templateUuid && $this->isTemplateDeactivated($templateUuid)) {
+        if ($templateUuid && ($this->isTemplateDeactivated)($templateUuid)) {
             return;
         }
 
@@ -133,20 +134,5 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'value_collection' => Types::JSON,
             ],
         );
-    }
-
-    private function isTemplateDeactivated(TemplateUuid $templateUuid): bool
-    {
-        $query = <<<SQL
-            SELECT is_deactivated
-            FROM pim_catalog_category_template
-            WHERE uuid = :template_uuid;
-        SQL;
-
-        $result = $this->connection->executeQuery($query, [
-            'template_uuid' => $templateUuid->toBytes(),
-        ])->fetchAssociative();
-
-        return $result['is_deactivated'] === '1';
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
+use Akeneo\Category\Application\Query\IsTemplateDeactivated;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
@@ -19,13 +20,14 @@ use Doctrine\DBAL\Types\Types;
 class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSaver
 {
     public function __construct(
-        private Connection $connection,
+        private readonly Connection $connection,
+        private readonly IsTemplateDeactivated $isTemplateDeactivated,
     ) {
     }
 
     public function insert(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void
     {
-        if ($this->isTemplateDeactivated($templateUuid)) {
+        if (($this->isTemplateDeactivated)($templateUuid)) {
             return;
         }
 
@@ -85,20 +87,5 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
         }
 
         $statement->executeQuery();
-    }
-
-    private function isTemplateDeactivated(TemplateUuid $templateUuid): bool
-    {
-        $query = <<<SQL
-            SELECT is_deactivated
-            FROM pim_catalog_category_template
-            WHERE uuid = :template_uuid;
-        SQL;
-
-        $result = $this->connection->executeQuery($query, [
-            'template_uuid' => $templateUuid->toBytes(),
-        ])->fetchAssociative();
-
-        return $result['is_deactivated'] === '1';
     }
 }

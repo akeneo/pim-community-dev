@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
+use Akeneo\Category\Application\Query\IsTemplateDeactivated;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Doctrine\DBAL\Connection;
@@ -16,7 +17,8 @@ use Doctrine\DBAL\Exception;
 class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
 {
     public function __construct(
-        private Connection $connection,
+        private readonly Connection $connection,
+        private readonly IsTemplateDeactivated $isTemplateDeactivated,
     ) {
     }
 
@@ -25,7 +27,7 @@ class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
      */
     public function insert(Template $templateModel): void
     {
-        if ($this->isTemplateDeactivated($templateModel)) {
+        if (($this->isTemplateDeactivated)($templateModel->getUuid())) {
             return;
         }
 
@@ -52,20 +54,5 @@ class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
     public function update(Template $templateModel): void
     {
         // TODO: Implement update() method.
-    }
-
-    private function isTemplateDeactivated(Template $templateModel): bool
-    {
-        $query = <<<SQL
-            SELECT is_deactivated
-            FROM pim_catalog_category_template
-            WHERE uuid = :template_uuid;
-        SQL;
-
-        $result = $this->connection->executeQuery($query, [
-            'template_uuid' => $templateModel->getUuid()->toBytes(),
-        ])->fetchAssociative();
-
-        return $result['is_deactivated'] === '1';
     }
 }
