@@ -104,7 +104,13 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
     /** @test */
     public function it_should_not_generate_the_identifier_if_generated_product_contains_invalid_character(): void
     {
-        $this->createIdentifierGeneratorWithFreeTextValue(',');
+        $exceptionMsg = '';
+        try {
+            $this->createIdentifierGeneratorWithFreeTextValue(',');
+        } catch (ViolationsException $exception) {
+            $exceptionMsg = $exception->getMessage();
+        }
+        Assert::assertSame('structure[0]: Free text must not contain a comma, a semicolon or any space', $exceptionMsg);
 
         $productFromDatabase = $this->createProduct();
         Assert::assertSame(null, $productFromDatabase->getIdentifier());
