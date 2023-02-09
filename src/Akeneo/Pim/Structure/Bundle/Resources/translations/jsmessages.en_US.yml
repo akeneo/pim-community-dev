@@ -245,9 +245,13 @@ pim_enrich.entity.attribute:
             confirm_from_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
             confirm_from_product: Are you sure you want to delete this attribute from the product?
         mass_delete:
-            confirm: Are you sure you want to delete the selected attributes?
-            launched: The mass delete operation has been launched. You will be notified when it is done.
-            cannot_be_launched: An error occurred during the launching of the mass delete operation
+            modal:
+                title: Attributes
+                subtitle: '{1}Confirm deletion of {{ count }} attribute|]1, Inf[Confirm deletion of {{ count }} attributes'
+                confirm: Are you sure you want to delete these attributes?
+            message_bar:
+                success: The deletion has started. You will get a notification once the job is completed. In the meantime, you can keep an eye on its progress on the process tracker.
+                fail: An error occurred during the launching of the deletion
 
 pim_enrich.entity.attribute_group:
     label: attribute group
