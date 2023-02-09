@@ -39,10 +39,17 @@ class CategoryVersionBuilder
      */
     public function buildSnapshot(Category $category): array
     {
-        if (null !== $category->getParentId()) {
+        $snapshotParent = null;
+
+        if (!$category->isRoot() && null !== $category->getParentId()) {
             $parent = $this->getCategory->byId($category->getParentId()->getValue());
+            $snapshotParent = (string) $parent->getCode();
         }
-        $parent = !empty($parent) ? (string) $parent->getCode() : '';
+
+        if (!$category->isRoot() && empty($snapshotParent) && null !== $category->getRootId()) {
+            $root = $this->getCategory->byId($category->getRootId()->getValue());
+            $snapshotParent = (string) $root->getCode();
+        }
 
         $snapshotLabels = [];
         foreach ($category->getLabels()?->normalize() as $locale => $label) {
@@ -59,7 +66,7 @@ class CategoryVersionBuilder
 
         $snapshot = [
             'code' => (string) $category->getCode(),
-            'parent' => $parent,
+            'parent' => $snapshotParent,
             'updated' => (new \DateTimeImmutable('now', new \DateTimeZone('UTC')))->format('c') ?? '',
         ];
 
