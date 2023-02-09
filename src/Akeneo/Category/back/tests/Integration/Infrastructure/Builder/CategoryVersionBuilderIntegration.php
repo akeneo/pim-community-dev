@@ -81,12 +81,12 @@ class CategoryVersionBuilderIntegration extends CategoryTestCase
 
         $categoryVersion = $builder->create($givenCategory);
 
-
         $expectedCategoryVersion = CategoryVersion::fromBuilder(
             resourceId: '2',
+            /** @phpstan-ignore-next-line  */
             snapshot: [
                 'code' => 'category_test',
-                'parent' => '',
+                'parent' => null,
                 'updated' => $updated->format('c'),
                 'label-en_US' => 'test category',
                 'label-fr_FR' => 'catégorie de test'

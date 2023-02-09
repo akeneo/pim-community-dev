@@ -233,13 +233,10 @@ const CategoryEditPage: FC = () => {
                       onClick={() => {
                         countProductsBeforeDeleteCategory((nbProducts: number) => {
                           const identifier = parseInt(categoryId);
-                          if (
-                            category &&
-                            isCategoryDeletionPossible(category.properties.labels[uiLocale], nbProducts)
-                          ) {
+                          if (category && isCategoryDeletionPossible(categoryLabel, nbProducts)) {
                             setCategoryToDelete({
                               identifier,
-                              label: category.properties.labels[uiLocale],
+                              label: categoryLabel,
                               code: category.properties.code,
                               numberOfProducts: nbProducts,
                               onDelete: followCategoryTree,
