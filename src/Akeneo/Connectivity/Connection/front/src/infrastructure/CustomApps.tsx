@@ -11,10 +11,10 @@ export const CustomApps = withDependencies(() => (
             <Router>
                 <Switch>
                     <Route path='/connect/custom-apps/create'>
-                        <TestAppCreatePage/>
+                        <TestAppCreatePage />
                     </Route>
                     <Route path='/connect/custom-apps/:customAppId/delete'>
-                        <DeleteTestAppPromptPage/>
+                        <DeleteTestAppPromptPage />
                     </Route>
                 </Switch>
             </Router>
