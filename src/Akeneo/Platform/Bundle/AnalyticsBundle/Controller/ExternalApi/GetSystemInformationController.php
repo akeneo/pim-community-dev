@@ -23,7 +23,7 @@ class GetSystemInformationController
         $edition = $this->versionProvider->getEdition();
         $response = [
             'version' => strtolower($this->versionProvider->getVersion()),
-            'edition' => $edition === CommunityVersion::EDITION ? strtolower($edition) : 'ee',
+            'edition' => $edition === CommunityVersion::EDITION ? 'CE' : 'EE',
         ];
 
         return new JsonResponse($response);
