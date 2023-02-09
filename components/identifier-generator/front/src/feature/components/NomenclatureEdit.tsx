@@ -68,7 +68,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
   const handleChangeOperator = useCallback(
     operator => {
       if (nomenclature) {
-        setNomenclature({...nomenclature, operator: operator});
+        setNomenclature({...nomenclature, operator});
       }
     },
     [nomenclature]
