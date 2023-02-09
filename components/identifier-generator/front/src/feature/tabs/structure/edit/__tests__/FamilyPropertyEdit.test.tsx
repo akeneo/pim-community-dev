@@ -4,6 +4,8 @@ import {FamilyPropertyEdit} from '../FamilyPropertyEdit';
 import {AbbreviationType, FamilyProperty, Operator, PROPERTY_NAMES} from '../../../../models';
 import {fireEvent} from '@testing-library/react';
 
+jest.mock('../../../../components/NomenclatureEdit');
+
 describe('FamilyPropertyEdit', () => {
   it('should update the family property', () => {
     const familyProperty: FamilyProperty = {
@@ -46,6 +48,22 @@ describe('FamilyPropertyEdit', () => {
         type: AbbreviationType.TRUNCATE,
         value: 3,
         operator: null,
+      },
+    });
+
+    // With nomenclature option
+    fireEvent.click(input);
+
+    const nomenclatureOption = screen.getByText(
+      'pim_identifier_generator.structure.settings.code_format.type.nomenclature'
+    );
+    expect(nomenclatureOption).toBeInTheDocument();
+    fireEvent.click(nomenclatureOption);
+
+    expect(mockedOnChange).toHaveBeenCalledWith({
+      ...familyProperty,
+      process: {
+        type: AbbreviationType.NOMENCLATURE,
       },
     });
   });
