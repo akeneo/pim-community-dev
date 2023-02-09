@@ -274,6 +274,7 @@ pim_enrich.entity.attribute_group:
         columns:
             name: Attribute groups name
         no_search_result: Sorry, there is no result for your search.
+    selected: '{1}1 attribute group selected|]1, Inf[{{ count }} attribute groups selected'
 pim_enrich.mass_edit.family:
     title: Families bulk action
     confirm: "{1}You are about to update a family with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} families with the following information, please confirm."

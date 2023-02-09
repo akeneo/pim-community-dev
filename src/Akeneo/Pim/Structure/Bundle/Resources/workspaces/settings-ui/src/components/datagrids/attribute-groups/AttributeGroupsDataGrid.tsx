@@ -1,17 +1,20 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {Search, useAutoFocus, Table, Badge} from 'akeneo-design-system';
-import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
-import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
 import {AttributeGroup} from '../../../models';
 import {NoResults} from '../../shared';
+import {Search, useAutoFocus, Table, Badge, Toolbar, Checkbox, useSelection} from 'akeneo-design-system';
 import {getLabel} from 'pimui/js/i18n';
+import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
+import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
 const FeatureFlags = require('pim/feature-flags');
 
 type Props = {
   attributeGroups: AttributeGroup[];
   onGroupCountChange: (newGroupCount: number) => void;
 };
+
 const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange}) => {
+  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
+    useSelection<AttributeGroup>(0);
   const {refreshOrder, selectAttributeGroup, isSelected} = useAttributeGroupsIndexState();
   const {sortGranted} = useAttributeGroupPermissions();
   const userContext = useUserContext();
@@ -74,8 +77,8 @@ const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange
             {filteredGroups.map(attributeGroup => (
               <Table.Row
                 key={attributeGroup.code}
-                isSelected={attributeGroup.selected ?? false}
-                onSelectToggle={() => selectAttributeGroup(attributeGroup)}
+                isSelected={isItemSelected(attributeGroup)}
+                onSelectToggle={(selected: boolean) => onSelectionChange(attributeGroup, selected)}
               >
                 <Table.Cell>
                   {getLabel(attributeGroup.labels, userContext.get('catalogLocale'), attributeGroup.code)}
@@ -96,6 +99,14 @@ const AttributeGroupsDataGrid: FC<Props> = ({attributeGroups, onGroupCountChange
           </Table.Body>
         </Table>
       )}
+      <Toolbar isVisible={isSelected}>
+        <Toolbar.SelectionContainer>
+          <Checkbox checked={!selectionState} onChange={() => {}} />
+        </Toolbar.SelectionContainer>
+        <Toolbar.LabelContainer>
+          {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}
+        </Toolbar.LabelContainer>
+      </Toolbar>
     </>
   );
 };
