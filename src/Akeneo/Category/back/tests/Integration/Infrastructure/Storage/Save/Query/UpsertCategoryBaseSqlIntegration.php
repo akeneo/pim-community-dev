@@ -127,6 +127,64 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         );
     }
 
+    public function testUpdateCategoryValueCollectionWithNullValue(): void
+    {
+        // Given
+        $categoryCode = new Code('myCategory');
+        $categoryInserted = $this->insertBaseCategory($categoryCode);
+
+        // When
+        $valueCollection = ValueCollection::fromArray([
+            TextValue::fromApplier(
+                value: 'Meta shoes',
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: 'ecommerce',
+                locale: 'en_US'
+            ),
+            TextValue::fromApplier(
+                value: null,
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: 'ecommerce',
+                locale: 'fr_FR'
+            )
+        ]);
+        $categoryToUpdate = new Category(
+            id: $categoryInserted->getId(),
+            code: $categoryInserted->getCode(),
+            templateUuid: null,
+            parentId: null,
+            attributes: $valueCollection,
+        );
+
+        /** @var UpsertCategoryBaseSql $upsertCategoryBaseSql */
+        $upsertCategoryBaseSql = $this->get(UpsertCategoryBase::class);
+        $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseSql::class);
+
+        $upsertCategoryBaseSql->execute($categoryToUpdate);
+
+        // Then
+        $updatedCategory = $this->getCategoryByCode('myCategory');
+        $valueCollectionUpdated = \json_decode($updatedCategory['value_collection'], true);
+
+        $this->assertEquals(
+            [
+                "attribute_codes" => [
+                    "seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d"
+                ],
+                "seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|ecommerce|en_US" => [
+                    "data" => "Meta shoes",
+                    "type" => "text",
+                    "locale" => "en_US",
+                    "channel" => "ecommerce",
+                    "attribute_code" => "seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d",
+                ],
+            ],
+            $valueCollectionUpdated
+        );
+    }
+
     /**
      * @phpstan-ignore-next-line
      */
@@ -135,11 +193,11 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $sqlQuery = <<<SQL
             SELECT
                 category.id,
-                category.code, 
+                category.code,
                 category.parent_id,
                 category.root as root_id,
                 category.value_collection
-            FROM 
+            FROM
                 pim_catalog_category category
             WHERE category.code = :category_code
         SQL;

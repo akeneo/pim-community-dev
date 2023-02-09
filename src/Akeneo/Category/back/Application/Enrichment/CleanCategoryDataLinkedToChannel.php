@@ -8,6 +8,8 @@ use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 
 class CleanCategoryDataLinkedToChannel
 {
+    public const CLEAN_CHANNEL_ACTION = 'cleanChannel';
+    public const CLEAN_CHANNEL_LOCALE_ACTION = 'cleanChannelLocale';
     private const CATEGORY_BATCH_SIZE = 100;
 
     public function __construct(
@@ -16,7 +18,10 @@ class CleanCategoryDataLinkedToChannel
     ) {
     }
 
-    public function __invoke(string $channelCode): void
+    /**
+     * @param array<string> $channelLocales
+     */
+    public function __invoke(string $channelCode, array $channelLocales, string $action): void
     {
         $offset = 0;
         $cleanedBatch = [];
@@ -27,7 +32,7 @@ class CleanCategoryDataLinkedToChannel
 
             foreach ($valuesByCode as $categoryCode => $json) {
                 $enrichedValues = json_decode($json, true);
-                $valueKeysToRemove = $this->getEnrichedValueKeysToRemove($enrichedValues, $channelCode);
+                $valueKeysToRemove = $this->getEnrichedValueKeysToRemove($enrichedValues, $channelCode, $channelLocales, $action);
                 if (!empty($valueKeysToRemove)) {
                     foreach ($valueKeysToRemove as $key) {
                         unset($enrichedValues[$key]);
@@ -50,21 +55,29 @@ class CleanCategoryDataLinkedToChannel
 
     /**
      * @param array<string, string> $values
+     * @param array<string> $channelLocales
      *
      * @return array<string>
      */
-    private function getEnrichedValueKeysToRemove(array $values, string $code): array
+    private function getEnrichedValueKeysToRemove(array $values, string $channelCode, array $channelLocales, string $action): array
     {
         $keysToRemove = [];
-
         // matching string is '.*\|.*\|$code\|.*'
-        $matchingString = '.*\\'.AbstractValue::SEPARATOR.'.*\\'.AbstractValue::SEPARATOR.$code.'\|.*';
+        $matchingString = '.*\\'.AbstractValue::SEPARATOR.'.*\\'.AbstractValue::SEPARATOR.$channelCode.'\|(\w{2}_\w{2})';
         foreach ($values as $key => $value) {
             if ($key === 'attribute_codes') {
                 continue;
             }
-            if (preg_match('/'.$matchingString.'/', $key, $matches)) {
-                $keysToRemove[] = $key;
+            if ($action == self::CLEAN_CHANNEL_ACTION) {
+                if (preg_match('/'.$matchingString.'/', $key, $matches)) {
+                    $keysToRemove[] = $key;
+                }
+            } elseif ($action == self::CLEAN_CHANNEL_LOCALE_ACTION) {
+                if (preg_match('/'.$matchingString.'/', $key, $matches)) {
+                    if (!in_array($matches[1], $channelLocales)) {
+                        $keysToRemove[] = $key;
+                    }
+                }
             }
         }
 

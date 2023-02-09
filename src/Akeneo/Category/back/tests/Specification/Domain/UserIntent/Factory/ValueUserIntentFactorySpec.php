@@ -189,7 +189,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
 
     function it_does_not_add_value_user_intent_when_corresponding_attribute_type_no_found(
         GetCategoryTemplateAttributeSql $getAttribute
-    ) : void {
+    ): void {
         $data = [
             'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d' . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US' => [
                 'data' => 'Meta shoes',
@@ -232,7 +232,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
         $this->create('values', 1, $data)->shouldHaveCount(1);
     }
 
-    function it_does_not_add_value_user_intent_when_text_field_data_is_empty(
+    function it_add_value_user_intent_when_the_text_field_data_is_empty(
         GetCategoryTemplateAttributeSql $getAttribute
     ): void {
         $data = [
@@ -322,6 +322,20 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
             ->willReturn($attributes);
 
         $expectedUseIntents = [
+            new SetTextArea(
+                '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                'seo_meta_description',
+                'ecommerce',
+                'en_US',
+                null
+            ),
+            new SetRichText(
+                '840fcd1a-f66b-4f0c-9bbd-596629732950',
+                'description',
+                'ecommerce',
+                'en_US',
+                null
+            ),
             new SetText(
                 '38439aaf-66a2-4b24-854e-29d7a467c7af',
                 'color',

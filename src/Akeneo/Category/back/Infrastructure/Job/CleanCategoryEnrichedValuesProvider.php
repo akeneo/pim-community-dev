@@ -26,7 +26,9 @@ class CleanCategoryEnrichedValuesProvider implements ConstraintCollectionProvide
     public function getDefaultValues(): array
     {
         return [
-            'channel_code' => '',
+            'channel_code' => null,
+            'locales_codes' => [],
+            'action' => '',
         ];
     }
 
@@ -39,6 +41,8 @@ class CleanCategoryEnrichedValuesProvider implements ConstraintCollectionProvide
             [
                 'fields' => [
                     'channel_code' => new Type('string'),
+                    'locales_codes' => new Type('array'),
+                    'action' => new Type('string'),
                 ],
             ],
         );
