@@ -63,8 +63,8 @@ describe('AddPropertyButton', () => {
       {
         type: PROPERTY_NAMES.AUTO_NUMBER,
         digitsMin: 0,
-        numberMin: 5
-      }
+        numberMin: 5,
+      },
     ];
     render(<AddPropertyButton onAddProperty={jest.fn()} structure={structureWithAutoNumber} />);
 
