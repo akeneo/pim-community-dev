@@ -66,7 +66,7 @@ export const MarketplacePage: FC = () => {
     const isLoading = null === extensions || null === apps || isTestAppsLoading;
     const isUnreachable = false === extensions || false === apps;
     const handleCreateTestApp = () => {
-        history.push(generateUrl('akeneo_connectivity_connection_custom_apps_create'));
+        history.push(generateUrl('akeneo_connectivity_connection_connect_custom_apps_create'));
     };
 
     const breadcrumb = (
