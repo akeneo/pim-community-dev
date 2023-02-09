@@ -18,5 +18,4 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
-            - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'

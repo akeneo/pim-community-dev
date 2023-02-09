@@ -34,7 +34,6 @@ class GetAllCustomAppsActionEndToEnd extends WebTestCase
     public function test_it_gets_all_custom_app(): void
     {
         $adminUser = $this->authenticateAsAdmin();
-        $this->get('akeneo_connectivity.connection.app_developer_mode.feature')->enable();
 
         $this->customAppLoader->create('100eedac-ff5c-497b-899d-e2d64b6c59f9', $adminUser->getId());
 
