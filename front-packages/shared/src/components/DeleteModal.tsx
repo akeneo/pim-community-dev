@@ -5,6 +5,7 @@ import {useTranslate} from '../hooks';
 type DeleteModalProps = {
   title: string;
   children: ReactNode;
+  confirmDeletionTitle?: string;
   confirmButtonLabel?: string;
   cancelButtonLabel?: string;
   canConfirmDelete?: boolean;
@@ -15,6 +16,7 @@ type DeleteModalProps = {
 const DeleteModal = ({
   children,
   title,
+  confirmDeletionTitle,
   confirmButtonLabel,
   cancelButtonLabel,
   canConfirmDelete = true,
@@ -28,7 +30,7 @@ const DeleteModal = ({
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={<DeleteIllustration />}>
       <Modal.SectionTitle color="brand">{title}</Modal.SectionTitle>
-      <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
+      <Modal.Title>{confirmDeletionTitle ?? translate('pim_common.confirm_deletion')}</Modal.Title>
       {children}
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onCancel} ref={cancelRef}>
@@ -42,4 +44,5 @@ const DeleteModal = ({
   );
 };
 
+export type {DeleteModalProps};
 export {DeleteModal};

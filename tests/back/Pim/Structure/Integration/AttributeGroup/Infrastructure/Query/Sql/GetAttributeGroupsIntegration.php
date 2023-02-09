@@ -95,7 +95,7 @@ class GetAttributeGroupsIntegration extends TestCase
 
     private function getQuery(): GetAttributeGroups
     {
-        return $this->get('Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups');
+        return $this->get('Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql\GetAttributeGroups');
     }
 
     private function createAttributeGroup(string $code, int $sortOrder, array $labels, ?bool $isDqiActivated): int

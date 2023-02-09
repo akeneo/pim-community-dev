@@ -5,14 +5,12 @@ import {AfterMoveRowHandler} from '../shared/providers';
 
 type AttributeGroupsIndexState = {
   attributeGroups: AttributeGroup[];
-  isSelected: boolean;
-  saveOrder: (reorderedGroups: AttributeGroup[]) => Promise<void>;
+  saveOrder: (attributeGroups: AttributeGroup[]) => Promise<void>;
   load: () => Promise<void>;
   redirect: (group: AttributeGroup) => void;
   refresh: (refreshedGroups: AttributeGroup[]) => void;
   refreshOrder: AfterMoveRowHandler<AttributeGroup>;
   isPending: boolean;
-  selectAttributeGroup: (group: AttributeGroup) => void;
 };
 
 const AttributeGroupsIndexContext = createContext<AttributeGroupsIndexState>({
@@ -22,7 +20,6 @@ const AttributeGroupsIndexContext = createContext<AttributeGroupsIndexState>({
   redirect: () => {},
   refresh: () => {},
   refreshOrder: () => {},
-  selectAttributeGroup: () => {},
   isPending: true,
 });
 

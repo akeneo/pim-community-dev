@@ -20,7 +20,6 @@ const ATTRIBUTE_GROUP_INDEX_ROUTE = 'pim_structure_attributegroup_rest_index';
 const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   const [attributeGroups, setAttributeGroups] = useState<AttributeGroup[]>([]);
   const [isPending, setIsPending] = useState<boolean>(true);
-  const [isSelected, setIsSelected] = useState<boolean>(false);
   const router = useRouter();
 
   const redirect = useRedirectToAttributeGroup();
@@ -68,37 +67,14 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
     [refresh, saveOrder]
   );
 
-  const checkIfSelected = useCallback(() => {
-    const selectedAttributeGroups = attributeGroups.filter((attributeGroup: AttributeGroup) => attributeGroup.selected);
-    setIsSelected(selectedAttributeGroups.length > 0);
-  }, [attributeGroups, setIsSelected]);
-
-  const selectAttributeGroup = useCallback(
-    (selectedAttributeGroup: AttributeGroup) => {
-      refresh(
-        attributeGroups.map((attributeGroup: AttributeGroup) => {
-          if (attributeGroup.code === selectedAttributeGroup.code) {
-            attributeGroup.selected = !attributeGroup.selected;
-          }
-
-          return attributeGroup;
-        })
-      );
-      checkIfSelected();
-    },
-    [attributeGroups, refresh, checkIfSelected]
-  );
-
   return {
     attributeGroups,
-    isSelected,
     load,
     saveOrder,
     redirect,
     refresh,
     refreshOrder,
     isPending,
-    selectAttributeGroup,
   };
 };
 
