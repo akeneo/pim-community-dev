@@ -56,6 +56,15 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface, Cache
         return array_unique(array_merge(...array_values($this->activatedCurrenciesForChannels)));
     }
 
+    public function forAllChannelsIndexedByChannelCode(): array
+    {
+        if (empty($this->activatedCurrenciesForChannels)) {
+            $this->activatedCurrenciesForChannels = $this->fetchActivatedCurrenciesForAllChannels();
+        }
+
+        return $this->activatedCurrenciesForChannels;
+    }
+
     public function clearCache(): void
     {
         $this->activatedCurrenciesForChannels = [];

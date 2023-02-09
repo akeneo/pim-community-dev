@@ -77,7 +77,6 @@ pim_common:
   updated: 업데이트됨
   view: 보기
   yes: "예"
-  uuid: uuid
 pim_enrich:
   #ACLs
   acl:
