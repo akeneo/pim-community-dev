@@ -1,10 +1,8 @@
 import {useRoute} from '../../shared/router';
 import {useCallback} from 'react';
 import {TestApps} from '../../model/app';
-import {useAppDeveloperMode} from './use-app-developer-mode';
 
 export const useFetchTestApps = (): (() => Promise<TestApps>) => {
-    const isAppDeveloperModeEnabled = useAppDeveloperMode();
     const url = useRoute('akeneo_connectivity_connection_custom_apps_rest_get_all');
 
     const fetchTestApps = useCallback(async () => {
@@ -18,14 +16,6 @@ export const useFetchTestApps = (): (() => Promise<TestApps>) => {
 
         return response.json();
     }, [url]);
-
-    if (!isAppDeveloperModeEnabled) {
-        return () =>
-            Promise.resolve({
-                total: 0,
-                apps: [],
-            });
-    }
 
     return fetchTestApps;
 };

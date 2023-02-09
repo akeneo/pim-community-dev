@@ -25,7 +25,6 @@ test('The marketplace renders with apps', () => {
         isEnabled: (feature: string) =>
             ({
                 marketplace_activate: true,
-                app_developer_mode: false,
             }[feature] ?? false),
     }));
     (useSecurity as jest.Mock).mockImplementation(() => ({
@@ -98,7 +97,6 @@ test('The marketplace renders with extensions', () => {
         isEnabled: (feature: string) =>
             ({
                 marketplace_activate: true,
-                app_developer_mode: false,
             }[feature] ?? false),
     }));
     (useSecurity as jest.Mock).mockImplementation(() => ({
@@ -169,7 +167,6 @@ test('The marketplace renders with test apps', () => {
         isEnabled: (feature: string) =>
             ({
                 marketplace_activate: true,
-                app_developer_mode: true,
             }[feature] ?? false),
     }));
     (useSecurity as jest.Mock).mockImplementation(() => ({
@@ -235,7 +232,6 @@ test('The search input filters apps and extensions', async () => {
         isEnabled: (feature: string) =>
             ({
                 marketplace_activate: true,
-                app_developer_mode: false,
             }[feature] ?? false),
     }));
     (useSecurity as jest.Mock).mockImplementation(() => ({
