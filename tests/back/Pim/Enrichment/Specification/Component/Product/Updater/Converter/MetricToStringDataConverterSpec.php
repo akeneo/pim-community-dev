@@ -57,7 +57,7 @@ class MetricToStringDataConverterSpec extends ObjectBehavior
     {
         $sourceValue = MetricValue::value(
             'weight_in_grams',
-            new Metric('weight', 'GRAM', 23.55, 'KILOGRAM', .02355)
+            new Metric('weight', 'GRAM', 23.55, 'KILOGRAM', .02355, 'g')
         );
 
         $this->convert($sourceValue, new Attribute())->shouldReturn('23.55 GRAM');
@@ -67,7 +67,7 @@ class MetricToStringDataConverterSpec extends ObjectBehavior
     {
         $sourceValue = MetricValue::value(
             'weight_in_grams',
-            new Metric('weight', 'GRAM', "23.550000", 'KILOGRAM', .02355)
+            new Metric('weight', 'GRAM', "23.550000", 'KILOGRAM', .02355, 'g')
         );
 
         $this->convert($sourceValue, new Attribute())->shouldReturn('23.55 GRAM');

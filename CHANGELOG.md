@@ -124,6 +124,7 @@
 
 ## Improvements
 
+- issue_5750 Add getSymbol method to Metric Class and add symbol column on metric attributes to products export
 - PIM-10293: add batch-size option to pim:completness:calculate command
 - PIM-10229: Enforce strict samesite policy for session cookies
 - Improvement: Use Debian Bullseye (v11) in Dockerfiles for akeneo/pim-php-dev:master

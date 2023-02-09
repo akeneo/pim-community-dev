@@ -8,6 +8,7 @@ services:
             - '@akeneo_measure.measure_converter'
             - '@pim_catalog.builder.entity_with_values'
             - '@pim_catalog.repository.cached_attribute'
+            - '@akeneo_measure.persistence.measurement_family_repository'
 
     pim_enrich.converter.standard_to_enrich.product_value:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Converter\StandardToInternalApi\ValueConverter'

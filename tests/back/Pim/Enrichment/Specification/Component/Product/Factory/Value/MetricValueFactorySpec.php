@@ -47,7 +47,7 @@ final class MetricValueFactorySpec extends ObjectBehavior
 
     public function it_creates_a_localizable_and_scopable_value(MetricFactory $metricFactory): void
     {
-        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
+        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05, 'cm');
         $metricFactory->createMetric('distance', 'centimeters', 5)->willReturn($metric);
         $attribute = $this->getAttribute(true, true);
         $value = $this->createByCheckingData($attribute, 'ecommerce', 'fr_FR', ['unit' => 'centimeters', 'amount' => 5]);
@@ -56,7 +56,7 @@ final class MetricValueFactorySpec extends ObjectBehavior
 
     public function it_creates_a_localizable_value(MetricFactory $metricFactory): void
     {
-        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
+        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05,'cm');
         $metricFactory->createMetric('distance', 'centimeters', 5)->willReturn($metric);
         $attribute = $this->getAttribute(true, false);
         $value = $this->createByCheckingData($attribute, null, 'fr_FR', ['unit' => 'centimeters', 'amount' => 5]);
@@ -65,7 +65,7 @@ final class MetricValueFactorySpec extends ObjectBehavior
 
     public function it_creates_a_scopable_value(MetricFactory $metricFactory): void
     {
-        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
+        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05,'cm');
         $metricFactory->createMetric('distance', 'centimeters', 5)->willReturn($metric);
         $attribute = $this->getAttribute(false, true);
         $value = $this->createByCheckingData($attribute, 'ecommerce', null, ['unit' => 'centimeters', 'amount' => 5]);
@@ -74,7 +74,7 @@ final class MetricValueFactorySpec extends ObjectBehavior
 
     public function it_creates_a_non_localizable_and_non_scopable_value(MetricFactory $metricFactory): void
     {
-        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
+        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05, 'cm');
         $metricFactory->createMetric('distance', 'centimeters', 5)->willReturn($metric);
         $attribute = $this->getAttribute(false, false);
         $value = $this->createByCheckingData($attribute, null, null, ['unit' => 'centimeters', 'amount' => 5]);
@@ -83,7 +83,7 @@ final class MetricValueFactorySpec extends ObjectBehavior
 
     public function it_creates_a_value_without_checking_data(MetricFactory $metricFactory): void
     {
-        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05);
+        $metric = new Metric('distance', 'centimeters', 5, 'meters', 0.05, 'cm');
         $metricFactory->createMetric('distance', 'centimeters', 5)->willReturn($metric);
         $attribute = $this->getAttribute(false, false);
         $value = $this->createWithoutCheckingData($attribute, null, null, ['unit' => 'centimeters', 'amount' => 5]);

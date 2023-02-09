@@ -65,12 +65,13 @@ class MetricFactory
                 $this->measureConverter->setFamily($family)->convertBaseToStandard($unit, $data) :
                 null;
         } catch (MeasureException) {
-            return new $this->metricClass($family, $unit, $data, null, null);
+            return new $this->metricClass($family, $unit, $data, null, null, null);
         }
 
         $baseUnit = $this->getBaseUnit($family);
+        $symbol = $this->getSymbol($unit, $family);
 
-        return new $this->metricClass($family, $unit, $data, $baseUnit, $baseData);
+        return new $this->metricClass($family, $unit, $data, $baseUnit, $baseData, $symbol);
     }
 
     /**
@@ -85,6 +86,9 @@ class MetricFactory
         return $this->measureManager->getStandardUnitForFamily($family);
     }
 
+    /**
+     * @throws UnitNotFoundException
+     */
     private function getUnit(string $unit, string $family): string
     {
         $unitCodesForFamily = $this->measureManager->getUnitCodesForFamily($family);
@@ -94,5 +98,16 @@ class MetricFactory
         );
 
         return $unitCodesForFamily[\strtolower($unit)] ?? throw new UnitNotFoundException();
+    }
+
+    private function getSymbol(string $unit, string $family): ?string
+    {
+        try {
+            $symbol = $this->measureManager->getSymbolByUnitCodeForFamily($unit, $family);
+        } catch (MeasureException) {
+            return null;
+        }
+
+        return $symbol;
     }
 }

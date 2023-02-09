@@ -94,6 +94,23 @@ class MeasureManager
     }
 
     /**
+     * Get symbol by unit code for a measure family
+     *
+     * @param string $unit the measure unit
+     * @param string $family the measure family
+     *
+     * @return string|null the measure units code
+     * @throws MeasurementFamilyNotFoundException
+     */
+    public function getSymbolByUnitCodeForFamily(string $unit, string $family): ?string
+    {
+        $familyConfig = $this->getFamilyConfig($family);
+        $unitFromFamily = $familyConfig['units'][$unit];
+
+        return  $unitFromFamily['symbol'];
+    }
+
+    /**
      * Check if provided family exists
      */
     public function familyExists(string $familyCode): bool

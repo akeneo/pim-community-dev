@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInter
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
+use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
@@ -27,18 +29,25 @@ class MetricConverter
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var MeasurementFamilyRepositoryInterface */
+    protected $measurementFamilyRepository;
+
     /**
-     * @param MeasureConverter                 $converter
+     * @param MeasureConverter $converter
      * @param EntityWithValuesBuilderInterface $entityWithValuesBuilder
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
+     * @param MeasurementFamilyRepositoryInterface $measurementFamilyRepository
      */
     public function __construct(
         MeasureConverter $converter,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
-        IdentifiableObjectRepositoryInterface $attributeRepository
+        IdentifiableObjectRepositoryInterface $attributeRepository,
+        MeasurementFamilyRepositoryInterface $measurementFamilyRepository
     ) {
         $this->converter               = $converter;
         $this->entityWithValuesBuilder = $entityWithValuesBuilder;
         $this->attributeRepository     = $attributeRepository;
+        $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
     /**
@@ -57,11 +66,17 @@ class MetricConverter
                     continue;
                 }
 
-                $measureFamily = $data->getFamily();
+                $measureFamily = $this->measurementFamilyRepository->getByCode(
+                    MeasurementFamilyCode::fromString($data->getFamily())
+                );
                 $channelUnit = $channelUnits[$value->getAttributeCode()];
                 $amount = $this->converter
-                    ->setFamily($measureFamily)
+                    ->setFamily($data->getFamily())
                     ->convert($data->getUnit(), $channelUnit, $data->getData());
+
+                $normalizedMeasureFamily = $measureFamily->normalize();
+                $unitKey = array_search($channelUnit, array_column($normalizedMeasureFamily['units'], 'code'), true);
+                $symbol = $normalizedMeasureFamily['units'][$unitKey]['symbol'];
 
                 $attribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
 
@@ -71,7 +86,7 @@ class MetricConverter
                         $attribute,
                         $value->getLocaleCode(),
                         $value->getScopeCode(),
-                        ['amount' => $amount, 'unit' => $channelUnit]
+                        ['amount' => $amount, 'unit' => $channelUnit, 'symbol' => $symbol]
                     );
                 }
             }

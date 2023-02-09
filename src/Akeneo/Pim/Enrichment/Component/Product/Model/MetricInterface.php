@@ -48,6 +48,13 @@ interface MetricInterface
     public function getFamily();
 
     /**
+     * Gets used unit.
+     *
+     * @return string
+     */
+    public function getSymbol();
+
+    /**
      * Checks if the metric is equal to another one.
      *
      * @param MetricInterface $metric

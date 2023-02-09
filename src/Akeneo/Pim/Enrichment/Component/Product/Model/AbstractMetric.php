@@ -26,6 +26,9 @@ abstract class AbstractMetric implements MetricInterface
     /** @var string */
     protected $family;
 
+    /** @var string */
+    protected $symbol;
+
     /**
      * TODO master: add string type hiting for more strict data type and to handle big numbers and/or decimals
      *
@@ -34,14 +37,16 @@ abstract class AbstractMetric implements MetricInterface
      * @param float  $data (TODO: should not be float because of precision issues)
      * @param string $baseUnit
      * @param float  $baseData
+     * @param string $symbol
      */
-    public function __construct($family, $unit, $data, $baseUnit, $baseData)
+    public function __construct($family, $unit, $data, $baseUnit, $baseData, $symbol)
     {
         $this->family = $family;
         $this->unit = $unit;
         $this->data = $data;
         $this->baseUnit = $baseUnit;
         $this->baseData = $baseData;
+        $this->symbol = $symbol;
     }
 
     /**
@@ -82,6 +87,11 @@ abstract class AbstractMetric implements MetricInterface
     public function getFamily()
     {
         return $this->family;
+    }
+
+    public function getSymbol()
+    {
+        return $this->symbol;
     }
 
     /**

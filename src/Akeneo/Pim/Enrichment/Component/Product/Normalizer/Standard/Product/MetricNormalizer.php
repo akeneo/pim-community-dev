@@ -35,12 +35,14 @@ class MetricNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
             return [
                 'amount' => null,
                 'unit'   => null,
+                'symbol' => null,
             ];
         }
 
         return [
             'amount' => $amount,
-            'unit'   => $metric->getUnit()
+            'unit'   => $metric->getUnit(),
+            'symbol' => $metric->getSymbol()
         ];
     }
 

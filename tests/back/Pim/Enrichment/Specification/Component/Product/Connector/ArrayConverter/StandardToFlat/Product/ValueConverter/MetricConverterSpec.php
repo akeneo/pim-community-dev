@@ -20,6 +20,7 @@ class MetricConverterSpec extends ObjectBehavior
         $expected = [
             'overall_frequency-mobile'      => '229',
             'overall_frequency-mobile-unit' => 'HERTZ',
+            'overall_frequency-mobile-symbol' => 'Hz',
         ];
 
         $data = [
@@ -29,6 +30,7 @@ class MetricConverterSpec extends ObjectBehavior
                 'data'   => [
                     'amount' => '229',
                     'unit'   => 'HERTZ',
+                    'symbol' => 'Hz',
                 ],
             ]
         ];
@@ -44,6 +46,7 @@ class MetricConverterSpec extends ObjectBehavior
         $expected = [
             'overall_frequency-mobile'      => null,
             'overall_frequency-mobile-unit' => null,
+            'overall_frequency-mobile-symbol' => null,
         ];
 
         $data = [
@@ -53,6 +56,7 @@ class MetricConverterSpec extends ObjectBehavior
                 'data'   => [
                     'amount' => null,
                     'unit'   => 'HERTZ',
+                    'symbol'   => 'Hz',
                 ],
             ]
         ];

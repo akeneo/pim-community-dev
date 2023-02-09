@@ -31,10 +31,12 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('12.1231');
+        $metric->getSymbol()->willReturn('kg');
 
         $this->normalize($metric, 'standard', ['is_decimals_allowed' => true])->shouldReturn([
             'amount' => '12.1231',
-            'unit'   => 'KILOGRAM'
+            'unit'   => 'KILOGRAM',
+            'symbol' => 'kg',
         ]);
     }
 
@@ -42,10 +44,12 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('12.0000');
+        $metric->getSymbol()->willReturn('kg');
 
         $this->normalize($metric, 'standard', ['is_decimals_allowed' => false])->shouldReturn([
             'amount' => 12,
-            'unit'   => 'KILOGRAM'
+            'unit'   => 'KILOGRAM',
+            'symbol' => 'kg',
         ]);
     }
 
@@ -53,10 +57,12 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('0');
+        $metric->getSymbol()->willReturn('kg');
 
         $this->normalize($metric, 'standard', ['is_decimals_allowed' => false])->shouldReturn([
             'amount' => 0,
-            'unit'   => 'KILOGRAM'
+            'unit'   => 'KILOGRAM',
+            'symbol' => 'kg',
         ]);
     }
 
@@ -64,10 +70,12 @@ class MetricNormalizerSpec extends ObjectBehavior
     {
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn('a_metric_data');
+        $metric->getSymbol()->willReturn('kg');
 
         $this->normalize($metric, 'standard', ['is_decimals_allowed' => false])->shouldReturn([
             'amount' => 'a_metric_data',
-            'unit'   => 'KILOGRAM'
+            'unit'   => 'KILOGRAM',
+            'symbol' => 'kg',
         ]);
     }
 
@@ -76,10 +84,12 @@ class MetricNormalizerSpec extends ObjectBehavior
     ) {
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn(null);
+        $metric->getSymbol()->willReturn('kg');
 
         $this->normalize($metric, 'standard', ['is_decimals_allowed' => true])->shouldReturn([
             'amount' => null,
-            'unit'   => null
+            'unit'   => null,
+            'symbol' => null,
         ]);
     }
 

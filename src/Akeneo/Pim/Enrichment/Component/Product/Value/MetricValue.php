@@ -49,10 +49,18 @@ class MetricValue extends AbstractValue implements MetricValueInterface
     /**
      * {@inheritdoc}
      */
+    public function getSymbol(): ?string
+    {
+        return $this->data->getSymbol();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function __toString(): string
     {
         if (null !== $this->data && (null !== $data = $this->data->getData())) {
-            return sprintf('%.4F %s', $data, $this->data->getUnit());
+            return sprintf('%.4F %s %s', $data, $this->data->getUnit(), $this->data->getSymbol());
         }
 
         return '';
