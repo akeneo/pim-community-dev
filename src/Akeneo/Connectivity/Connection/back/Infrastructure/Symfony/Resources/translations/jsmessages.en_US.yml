@@ -314,6 +314,8 @@ akeneo_connectivity.connection:
                     must_be_url: The redirect_uri is not a valid url.
                 scope:
                     too_long: The scope list must not contain more than 1000 characters.
+        custom_apps:
+            create_button: Create an app
     connections: Connections
     secondary_actions:
         title: Other actions
