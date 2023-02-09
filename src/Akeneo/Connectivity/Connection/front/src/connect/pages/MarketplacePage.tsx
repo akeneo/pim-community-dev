@@ -13,9 +13,7 @@ import {Marketplace} from '../components/Marketplace';
 import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 import {useFetchApps} from '../hooks/use-fetch-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
-import {DeveloperModeTag} from '../components/DeveloperModeTag';
 import {useTestApps} from '../hooks/use-test-apps';
-import {useAppDeveloperMode} from '../hooks/use-app-developer-mode';
 
 export const MarketplacePage: FC = () => {
     const translate = useTranslate();
@@ -25,7 +23,6 @@ export const MarketplacePage: FC = () => {
     const generateUrl = useRouter();
     const fetchExtensions = useFetchExtensions();
     const fetchApps = useFetchApps();
-    const isAppDeveloperModeEnabled = useAppDeveloperMode();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const [userProfile, setUserProfile] = useState<string | null>(null);
     const [extensions, setExtensions] = useState<Extensions | null | false>(null);
@@ -76,15 +73,11 @@ export const MarketplacePage: FC = () => {
         </Breadcrumb>
     );
 
-    const tag = isAppDeveloperModeEnabled ? <DeveloperModeTag /> : null;
-
-    const CreateTestAppButton = () => {
-        return isAppDeveloperModeEnabled ? (
-            <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp}>
-                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app' />
-            </ApplyButton>
-        ) : null;
-    };
+    const CreateTestAppButton = () => (
+        <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp}>
+            <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app' />
+        </ApplyButton>
+    );
 
     return (
         <>
@@ -92,7 +85,6 @@ export const MarketplacePage: FC = () => {
                 breadcrumb={breadcrumb}
                 buttons={[<CreateTestAppButton key={0} />]}
                 userButtons={<UserButtons />}
-                tag={tag}
             >
                 {translate('pim_menu.item.marketplace')}
             </PageHeader>

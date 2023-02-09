@@ -9,15 +9,12 @@ import {CreateTestAppCredentials} from '@src/connect/components/TestApp/CreateTe
 import {TestAppCredentials} from '@src/model/Apps/test-app-credentials';
 import userEvent from '@testing-library/user-event';
 import {act} from '@testing-library/react-hooks';
-import {useAppDeveloperMode} from '@src/connect/hooks/use-app-developer-mode';
 
 beforeEach(() => {
     fetchMock.resetMocks();
     historyMock.reset();
     jest.clearAllMocks();
 });
-
-jest.mock('@src/connect/hooks/use-app-developer-mode');
 
 type CreateTestAppFormProps = {
     onCancel: () => void;
@@ -48,8 +45,6 @@ jest.mock('@src/connect/components/TestApp/CreateTestAppCredentials', () => ({
 }));
 
 test('it renders the form without credentials and display them when form is submitted', () => {
-    (useAppDeveloperMode as jest.Mock).mockImplementation(() => true);
-
     renderWithProviders(<TestAppCreatePage />);
 
     expect(
@@ -72,17 +67,4 @@ test('it renders the form without credentials and display them when form is subm
         }),
         {}
     );
-});
-
-test('it renders a 404 when the app developer mode is disabled', () => {
-    (useAppDeveloperMode as jest.Mock).mockImplementation(() => false);
-
-    renderWithProviders(<TestAppCreatePage />);
-
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.subtitle')
-    ).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.errors.page_not_found')
-    ).toBeInTheDocument();
 });

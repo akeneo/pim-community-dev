@@ -6,7 +6,6 @@ import {useTranslate} from '../../shared/translate';
 import {useRouter} from '../../shared/router/use-router';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import {useDeleteTestApp} from '../hooks/use-delete-test-app';
-import {useAppDeveloperMode} from '../hooks/use-app-developer-mode';
 
 const Subtitle = styled.h3`
     color: ${getColor('brand', 100)};
@@ -37,14 +36,9 @@ export const DeleteTestAppPromptPage: FC = () => {
     const generateUrl = useRouter();
     const translate = useTranslate();
     const notify = useNotify();
-    const isAppDeveloperModeEnabled = useAppDeveloperMode();
 
     const {customAppId} = useParams<{customAppId: string}>();
     const deleteTestApp = useDeleteTestApp(customAppId);
-
-    if (!isAppDeveloperModeEnabled) {
-        history.push(generateUrl('akeneo_connectivity_connection_connect_marketplace'));
-    }
 
     const handleClick = useCallback(() => {
         deleteTestApp()

@@ -15,7 +15,6 @@ test('it fetches the test apps', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) =>
             ({
-                app_developer_mode: true,
                 marketplace_activate: true,
             }[feature] ?? false),
     }));
@@ -50,19 +49,4 @@ test('it fetches the test apps', async () => {
     const response = await result.current();
 
     expect(response).toStrictEqual(expected);
-});
-
-test('it returns an empty response if the developer mode is disabled', async () => {
-    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: (feature: string) =>
-            ({
-                app_developer_mode: false,
-                marketplace_activate: true,
-            }[feature] ?? false),
-    }));
-
-    const {result} = renderHook(() => useFetchTestApps());
-    const response = await result.current();
-
-    expect(response).toStrictEqual({total: 0, apps: []});
 });
