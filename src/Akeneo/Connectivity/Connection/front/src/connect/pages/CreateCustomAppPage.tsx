@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import {useHistory} from 'react-router';
 import {AppIllustration, getColor, getFontSize, Modal} from 'akeneo-design-system';
 import styled from '../../common/styled-with-theme';
@@ -16,7 +16,7 @@ const Subtitle = styled.h3`
     margin: 0 0 6px 0;
 `;
 
-export const TestAppCreatePage = () => {
+export const CreateCustomAppPage: FC = () => {
     const history = useHistory();
     const generateUrl = useRouter();
     const translate = useTranslate();
