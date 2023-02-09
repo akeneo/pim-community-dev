@@ -8,6 +8,7 @@ import {ConnectedAppDeletePage} from '../connect/pages/ConnectedAppDeletePage';
 import {OpenAppPage} from '../connect/pages/OpenAppPage';
 import {QueryClientProvider, QueryClient} from 'react-query';
 import {ConnectedAppCatalogPage} from '../connect/pages/ConnectedAppCatalogPage';
+import {RegenerateSecret} from '../connect/components/ConnectedApp/Settings/RegenerateSecret';
 
 const client = new QueryClient({
     defaultOptions: {
@@ -24,6 +25,9 @@ export const ConnectedApps = withDependencies(() => (
             <AkeneoThemeProvider>
                 <Router>
                     <Switch>
+                        <Route path='/connect/connected-apps/:connectionCode/regenerate-secret'>
+                            <RegenerateSecret />
+                        </Route>
                         <Route path='/connect/connected-apps/:connectionCode/catalogs/:catalogId'>
                             <ConnectedAppCatalogPage />
                         </Route>

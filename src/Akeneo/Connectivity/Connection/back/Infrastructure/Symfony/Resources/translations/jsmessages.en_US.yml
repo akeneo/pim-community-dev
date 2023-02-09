@@ -177,6 +177,13 @@ akeneo_connectivity.connection:
                         title: Credentials
                         client_id : Client id
                         client_secret: Client secret
+                        regenerate_button: Regenerate
+                        regenerate_secret:
+                            title: Regenerate credentials
+                            description: Regenerating credentials will impact your custom app connection with the PIM. Are you sure you want to proceed ?
+                            regenerate_button: Regenerate
+                            cancel_button: Cancel
+                            done_button: Done
                 error_monitoring:
                     error: Oups, something went wrong!
                     helper:
