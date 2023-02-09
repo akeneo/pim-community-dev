@@ -59,4 +59,25 @@ class CategoryQueryHandler implements CategoryQueryInterface
             $categoryNormalized['permissions'],
         );
     }
+
+    /**
+     * @param array<string> $categoryCodes
+     * @return \Generator<Category>
+     */
+    public function byCodes(array $categoryCodes): \Generator
+    {
+        $categories = $this->getCategory->byCodes(array_values($categoryCodes));
+        foreach ($categories as $category) {
+            $categoryNormalized = $category->normalize();
+
+            yield new Category(
+                $categoryNormalized['id'],
+                $categoryNormalized['properties']['code'],
+                $categoryNormalized['properties']['labels'],
+                $categoryNormalized['parent'],
+                $categoryNormalized['attributes'],
+                $categoryNormalized['permissions'],
+            );
+        }
+    }
 }

@@ -8,6 +8,7 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
+use PHP_CodeSniffer\Generators\Generator;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -38,11 +39,24 @@ class GetCategorySql implements GetCategoryInterface
     }
 
     /**
-     * @throws Exception
+     * @param array $categoryCodes
+     * @return \Generator<Category>
+     */
+    public function byCodes(array $categoryCodes): \Generator
+    {
+        $condition['sqlWhere'] = 'category.code IN (:category_code)';
+        $condition['params'] = ['category_code' => $categoryCodes];
+        $condition['types'] = ['category_code' => \PDO::PARAM_STR];
+
+        return $this->execute($condition, true);
+    }
+
+    /**
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \JsonException
+     * @throws Exception
      */
-    private function execute(array $condition): ?Category
+    private function execute(array $condition, $asGenerator = false): \Generator|Category|null
     {
         $sqlWhere = $condition['sqlWhere'];
 
@@ -77,6 +91,18 @@ class GetCategorySql implements GetCategoryInterface
                 LEFT JOIN template ON category.code = template.category_code
             WHERE $sqlWhere
         SQL;
+
+        if ($asGenerator) {
+            $results = $this->connection->executeQuery(
+                $sqlQuery,
+                $condition['params'],
+                $condition['types'],
+            )->iterateAssociative();
+
+            foreach ($results as $result) {
+                yield Category::fromDatabase($result);
+            }
+        }
 
         $result = $this->connection->executeQuery(
             $sqlQuery,

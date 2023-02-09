@@ -14,4 +14,10 @@ interface CategoryQueryInterface
     public function byId(int $categoryId): Category;
 
     public function byCode(string $categoryCode): Category;
+
+    /**
+     * @param array<string> $categoryCodes
+     * @return \Generator<Category>
+     */
+    public function byCodes(array $categoryCodes): \Generator;
 }
