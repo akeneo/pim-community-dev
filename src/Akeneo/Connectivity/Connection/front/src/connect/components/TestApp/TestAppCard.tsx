@@ -81,8 +81,8 @@ export const TestAppCard: FC<Props> = ({testApp, additionalActions}) => {
 
     const onDelete = () => {
         history.push(
-            generateUrl('akeneo_connectivity_connection_custom_apps_delete', {
-                testAppId: testApp.id,
+            generateUrl('akeneo_connectivity_connection_connect_custom_apps_delete', {
+                customAppId: testApp.id,
             })
         );
     };
