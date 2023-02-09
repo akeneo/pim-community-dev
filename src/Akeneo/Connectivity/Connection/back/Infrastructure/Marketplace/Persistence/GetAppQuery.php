@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -18,19 +17,16 @@ final class GetAppQuery implements GetAppQueryInterface
 {
     public function __construct(
         private readonly WebMarketplaceApiInterface $webMarketplaceApi,
-        private readonly FeatureFlag $appDeveloperModeFeatureFlag,
         private readonly GetCustomAppQuery $getCustomAppQuery,
     ) {
     }
 
     public function execute(string $id): ?App
     {
-        if ($this->appDeveloperModeFeatureFlag->isEnabled()) {
-            $data = $this->getCustomAppQuery->execute($id);
+        $data = $this->getCustomAppQuery->execute($id);
 
-            if (null !== $data) {
-                return App::fromCustomAppValues($data);
-            }
+        if (null !== $data) {
+            return App::fromCustomAppValues($data);
         }
 
         $data = $this->webMarketplaceApi->getApp($id);

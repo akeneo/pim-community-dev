@@ -28,7 +28,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class CreateCustomAppAction
 {
     public function __construct(
-        private readonly FeatureFlag $appDevModeFeatureFlag,
         private readonly FeatureFlag $marketplaceActivateFeatureFlag,
         private readonly ValidatorInterface $validator,
         private readonly TokenStorageInterface $tokenStorage,
@@ -40,7 +39,7 @@ final class CreateCustomAppAction
 
     public function __invoke(Request $request): Response
     {
-        if (!$this->appDevModeFeatureFlag->isEnabled() || !$this->marketplaceActivateFeatureFlag->isEnabled()) {
+        if (!$this->marketplaceActivateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
 
