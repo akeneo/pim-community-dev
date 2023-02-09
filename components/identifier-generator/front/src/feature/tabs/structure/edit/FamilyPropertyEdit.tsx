@@ -9,7 +9,10 @@ import {Styled} from '../../../components/Styled';
 const options = [
   {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.truncate'},
   {value: AbbreviationType.NO, label: 'pim_identifier_generator.structure.settings.code_format.type.code'},
-  {value: AbbreviationType.NOMENCLATURE, label: 'pim_identifier_generator.structure.settings.code_format.type.nomenclature'}
+  {
+    value: AbbreviationType.NOMENCLATURE,
+    label: 'pim_identifier_generator.structure.settings.code_format.type.nomenclature',
+  },
 ];
 
 const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedProperty, onChange}) => {
@@ -38,8 +41,8 @@ const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedPr
           type: selectedProperty.type,
           process: {
             type: AbbreviationType.NOMENCLATURE,
-          }
-        })
+          },
+        });
       }
     },
     [onChange, selectedProperty.type]
@@ -109,9 +112,7 @@ const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedPr
           </Field>
         </>
       )}
-      {selectedProperty.process.type === AbbreviationType.NOMENCLATURE && (
-        <NomenclatureEdit />
-      )}
+      {selectedProperty.process.type === AbbreviationType.NOMENCLATURE && <NomenclatureEdit />}
     </Styled.EditionContainer>
   );
 };

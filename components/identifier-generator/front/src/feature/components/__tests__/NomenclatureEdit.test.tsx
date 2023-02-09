@@ -135,7 +135,7 @@ describe('NomenclatureEdit', () => {
 
   it('should render the family codes, labels and nomenclatures', async () => {
     render(<NomenclatureEdit />);
-    fireEvent.click(screen.getByText('Open nomenclature'));
+    fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
 
     expect(await screen.findByText('family1')).toBeInTheDocument();
     expect(await screen.findByText('family2')).toBeInTheDocument();
@@ -150,7 +150,7 @@ describe('NomenclatureEdit', () => {
   it('should navigate with invalid values', async () => {
     render(<NomenclatureEdit />);
     // ['FA1', 'FA2', 'fam' (placeholder)], = 3 chars, display all
-    fireEvent.click(screen.getByText('Open nomenclature'));
+    fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
     // Update 1 valid valid to too long value
@@ -195,7 +195,7 @@ describe('NomenclatureEdit', () => {
 
   it('should navigate with filters', async () => {
     render(<NomenclatureEdit />);
-    fireEvent.click(screen.getByText('Open nomenclature'));
+    fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
     await updateFilter('all', 'filled');
@@ -206,7 +206,7 @@ describe('NomenclatureEdit', () => {
 
   it('should use pagination', async () => {
     render(<NomenclatureEdit itemsPerPage={2} />);
-    fireEvent.click(screen.getByText('Open nomenclature'));
+    fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
     await familiesShouldBeInTheDocument(['family1', 'family2']);
@@ -217,7 +217,7 @@ describe('NomenclatureEdit', () => {
   it('should search', async () => {
     render(<NomenclatureEdit />);
     // ['FA1', 'FA2', 'fam' (placeholder)], = 3 chars, display all
-    fireEvent.click(screen.getByText('Open nomenclature'));
+    fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
     updateValue('FA2', 'foo');
@@ -236,7 +236,7 @@ describe('NomenclatureEdit', () => {
 
   it('should save', async () => {
     render(<NomenclatureEdit />);
-    fireEvent.click(screen.getByText('Open nomenclature'));
+    fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
     await act(async () => {
@@ -254,7 +254,7 @@ describe('NomenclatureEdit', () => {
 
   it('should save with warnings', async () => {
     render(<NomenclatureEdit />);
-    fireEvent.click(screen.getByText('Open nomenclature'));
+    fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
     updateValue('FA2', 'INVALIDVALUE');
@@ -275,8 +275,10 @@ describe('NomenclatureEdit', () => {
   });
 
   it('should not save when violation errors', async () => {
+    const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+
     render(<NomenclatureEdit />);
-    fireEvent.click(screen.getByText('Open nomenclature'));
+    fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
     fireEvent.change(screen.getByTitle('3'), {target: {value: ''}});
@@ -290,5 +292,7 @@ describe('NomenclatureEdit', () => {
       NotificationLevel.ERROR,
       'pim_identifier_generator.nomenclature.flash.error'
     );
+
+    mockConsole.mockRestore();
   });
 });
