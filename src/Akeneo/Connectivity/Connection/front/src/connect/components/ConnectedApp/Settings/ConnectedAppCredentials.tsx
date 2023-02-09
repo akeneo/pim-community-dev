@@ -1,15 +1,17 @@
 import React, {FC} from 'react';
 import {ConnectedApp} from '../../../../model/Apps/connected-app';
-import {KeyIcon, SectionTitle, UserIcon} from 'akeneo-design-system';
+import {Button, KeyIcon, SectionTitle, UserIcon} from 'akeneo-design-system';
 import {useTranslate} from '../../../../shared/translate';
 import styled from 'styled-components';
 import {CopiableCredential} from '../../../../settings/components/credentials/CopiableCredential';
 import {Credential} from '../../../../settings/components/credentials/Credential';
 import {useFetchCustomAppSecret} from '../../../hooks/use-fetch-custom-app-secret';
+import {useHistory} from 'react-router';
+import {useRouter} from '../../../../shared/router/use-router';
 
 export const CredentialList = styled.div`
     display: grid;
-    grid-template-columns: 40px 140px repeat(2, auto);
+    grid-template-columns: 44px 140px repeat(2, auto);
 `;
 
 type Props = {
@@ -18,8 +20,14 @@ type Props = {
 
 export const ConnectedAppCredentials: FC<Props> = ({connectedApp}) => {
     const translate = useTranslate();
+    const history = useHistory();
+    const generateUrl = useRouter();
 
     const {data: secret} = useFetchCustomAppSecret(connectedApp.id);
+
+    const regenerateSecretUrl = `${generateUrl('akeneo_connectivity_connection_connect_connected_apps_regenerate_secret', {
+        connectionCode: connectedApp.connection_code,
+    })}`;
 
     return (
         <>
@@ -28,7 +36,7 @@ export const ConnectedAppCredentials: FC<Props> = ({connectedApp}) => {
                     {translate('akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.title')}
                 </SectionTitle.Title>
             </SectionTitle>
-            <CredentialList>
+            <CredentialList withIcon={true}>
                 <CopiableCredential
                     icon={<UserIcon></UserIcon>}
                     label={translate(
@@ -42,6 +50,11 @@ export const ConnectedAppCredentials: FC<Props> = ({connectedApp}) => {
                     label={translate(
                         'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.client_secret'
                     )}
+                    actions={<Button ghost level="secondary" size="small"
+                         onClick={() => history.push(regenerateSecretUrl)}>
+                        {translate(
+                        'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.regenerate_button'
+                    )}</Button>}
                 >
                     {secret ?? ''}
                 </Credential>
