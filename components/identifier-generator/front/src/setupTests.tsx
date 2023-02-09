@@ -28,7 +28,7 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
   useTranslate: () => (i18nKey: string) => i18nKey,
   useRouter: () => {
-    return router
+    return router;
   },
   useNotify: () => () => {},
   useUserContext: () => {
