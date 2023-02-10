@@ -14,7 +14,6 @@ class StorageValidator extends ConstraintValidator
 
     public function __construct(iterable $storageConstraints)
     {
-        // TODO RAB-665: Use feature flags to invalidate usage of local and sftp if flags are disabled
         $this->storageConstraints = $storageConstraints instanceof \Traversable
             ? iterator_to_array($storageConstraints)
             : $storageConstraints;

@@ -142,6 +142,34 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
   </Story>
 </Canvas>
 
+## Variation on invalid value
+
+<Canvas>
+  <Story name="InvalidValue">
+    {args => {
+      const invalidValue = ['en_US', 'de_DE'];
+      const [validValue, setValidValue] = useState(['en_US', 'fr_FR']);
+      return (
+        <>
+          <MultiSelectInput
+            {...args}
+            value={validValue}
+            invalidValue={invalidValue}
+            onChange={setValidValue}
+            placeholder="Invalid input value"
+          >
+            <MultiSelectInput.Option value="en_US">English (United States)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="fr_FR">French (France)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="de_DE">German (Germany)</MultiSelectInput.Option>
+            <MultiSelectInput.Option value="es_ES">Spanish (Spain)</MultiSelectInput.Option>
+          </MultiSelectInput>
+          <SpaceContainer height={100} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Variation on vertical position
 
 <Canvas>

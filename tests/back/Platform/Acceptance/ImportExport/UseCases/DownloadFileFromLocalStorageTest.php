@@ -19,16 +19,28 @@ class DownloadFileFromLocalStorageTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_downloads_file_from_local_storage()
+    public function it_does_nothing_when_storage_is_local_storage()
     {
+        $this->get('feature_flags')->enable('import_export_local_storage');
+        $this->getLocalFilesystem()->write('a_file_path', 'file content');
+
+        $storage = ['type' => 'local', 'file_path' => '/a_file_path'];
+
+        $filePath = $this->getHandler()->handle(new DownloadFileFromStorageCommand($storage, '/tmp/job_name/'));
+        $this->assertEquals('/a_file_path', $filePath);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throw_an_error_when_local_storage_is_not_available()
+    {
+        $this->expectExceptionMessage('Local storage cannot be used');
         $this->getLocalFilesystem()->write('a_file_path', 'file content');
 
         $storage = ['type' => 'local', 'file_path' => '/a_file_path'];
 
         $this->getHandler()->handle(new DownloadFileFromStorageCommand($storage, '/tmp/job_name/'));
-
-        $this->assertTrue($this->getLocalFilesystem()->fileExists('/tmp/job_name/a_file_path'));
-        $this->assertEquals('file content', $this->getLocalFilesystem()->read('/tmp/job_name/a_file_path'));
     }
 
     private function getHandler(): DownloadFileFromStorageHandler

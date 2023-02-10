@@ -7,6 +7,7 @@ akeneo.category:
     error:
       unhandled_attribute_type: No s'ha pogut trobar el creador de camps d'atribut per al tipus d'atribut "{{type}}"
     template:
+      title: Plantilla
       fetching_failed: S'ha produït un error en obtenir la plantilla
     unsaved_changes: Perdreu els canvis a la categoria si abandoneu la pàgina.
   tree:
@@ -27,5 +28,6 @@ akeneo.category:
         image: Imatge
   template_list:
     columns:
+      header: Etiqueta
       code: Codi
       type: Tipus

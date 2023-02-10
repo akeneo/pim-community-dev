@@ -38,8 +38,16 @@ class GetProductsActionTest extends IntegrationTestCase
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [new SetEnabled(true)]);
 
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
-        $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
+
+        $productCountFromEvent = 0;
+        $this->addSubscriberForReadProductEvent(function ($productCount) use (&$productCountFromEvent): void {
+            $productCountFromEvent = $productCount;
+        });
 
         $this->client->request(
             'GET',
@@ -64,6 +72,8 @@ class GetProductsActionTest extends IntegrationTestCase
             '00380587-3893-46e6-a8c2-8fee6404cc9e',
             '8985de43-08bc-484d-aee0-4489a56ba02d'
         ], $uuids);
+
+        Assert::assertEquals(2, $productCountFromEvent, 'Wrong dispatched product count');
     }
 
     public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsDisabled(): void

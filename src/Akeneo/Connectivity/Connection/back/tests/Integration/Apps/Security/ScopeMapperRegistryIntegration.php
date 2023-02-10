@@ -46,12 +46,10 @@ class ScopeMapperRegistryIntegration extends TestCase
         \sort($scopes);
 
         $this->assertEquals([
-            'delete_catalogs',
             'delete_products',
             'read_association_types',
             'read_attribute_options',
             'read_catalog_structure',
-            'read_catalogs',
             'read_categories',
             'read_channel_localization',
             'read_channel_settings',
@@ -59,7 +57,6 @@ class ScopeMapperRegistryIntegration extends TestCase
             'write_association_types',
             'write_attribute_options',
             'write_catalog_structure',
-            'write_catalogs',
             'write_categories',
             'write_channel_settings',
             'write_products',
@@ -147,11 +144,6 @@ class ScopeMapperRegistryIntegration extends TestCase
             'write_catalogs' => [
                 'pim_api_catalog_edit',
                 'pim_api_catalog_list',
-            ],
-            'delete_catalogs' => [
-                'pim_api_catalog_remove',
-                'pim_api_catalog_list',
-                'pim_api_catalog_edit',
             ],
         ];
 
