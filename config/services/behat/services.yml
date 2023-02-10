@@ -74,6 +74,7 @@ services:
             - '@database_connection'
             - !tagged akeneo.pim.tests.pub_sub_queue_status.job
             - '@logger'
+            - '@feature_flags'
 
     akeneo_integration_tests.pub_sub_queue_status.ui_job:
         class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus

@@ -493,10 +493,6 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function isAttributeRemovable(AttributeInterface $attribute)
     {
-        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
-            return false;
-        }
-
         if ($this->hasAttributeInFamily($attribute)) {
             return false;
         }

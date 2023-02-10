@@ -9,6 +9,11 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
 use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -20,7 +25,7 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
     protected KernelBrowser $client;
     protected CatalogInterface $catalog;
 
-    private const DEFAULT_HEADER = [
+    protected const DEFAULT_HEADER = [
         'HTTP_X-Requested-With' => 'XMLHttpRequest',
     ];
 
@@ -71,12 +76,23 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         $this->getAuthenticated()->logIn($username, $this->client);
     }
 
-    protected function callRoute(string $routeName, ?array $header = self::DEFAULT_HEADER): void
+    protected function callRoute(string $routeName, ?array $header = self::DEFAULT_HEADER, $routeParams = []): void
     {
         $this->getWebClientHelper()->callRoute(
             $this->client,
             $routeName,
-            [],
+            $routeParams,
+            'GET',
+            $header
+        );
+    }
+
+    protected function callGetRouteWithQueryParam(string $routeName, array $queryParam, ?array $header = self::DEFAULT_HEADER): void
+    {
+        $this->getWebClientHelper()->callRoute(
+            $this->client,
+            $routeName,
+            $queryParam,
             'GET',
             $header
         );
@@ -154,5 +170,23 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         $webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
 
         return $webClientHelper;
+    }
+
+    protected function removeAclFromRole(string $aclPrivilegeIdentityId, string $role = 'ROLE_ADMINISTRATOR'): void
+    {
+        $aclManager = $this->get('oro_security.acl.manager');
+        $role = $this->get('pim_user.repository.role')->findOneByIdentifier($role);
+        $privilege = new AclPrivilege();
+        $identity = new AclPrivilegeIdentity($aclPrivilegeIdentityId);
+        $privilege
+            ->setIdentity($identity)
+            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
+        $aclManager->getPrivilegeRepository()->savePrivileges(
+            $aclManager->getSid($role),
+            new ArrayCollection([$privilege])
+        );
+
+        $aclManager->flush();
+        $aclManager->clearCache();
     }
 }

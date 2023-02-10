@@ -65,3 +65,8 @@ services:
 
     akeneo.pim.structure.query.attribute_is_an_family_variant_axis:
         class: 'Akeneo\Test\Acceptance\Attribute\InMemoryAttributeIsAFamilyVariantAxis'
+
+    pim_catalog.query.find_activated_currencies:
+        class: Akeneo\Test\Acceptance\Channel\InMemoryFindActivatedCurrencies
+        arguments:
+            - '@pim_catalog.repository.channel'

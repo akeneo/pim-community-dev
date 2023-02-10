@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 
@@ -33,24 +31,71 @@ final class CreateIdentifierGeneratorContext implements Context
     private ?ViolationsException $violations = null;
 
     public function __construct(
-        private CreateGeneratorHandler $createGeneratorHandler,
-        private IdentifierGeneratorRepository $generatorRepository,
-        private SaverInterface $attributeRepository
+        private readonly CreateGeneratorHandler $createGeneratorHandler,
+        private readonly IdentifierGeneratorRepository $generatorRepository,
+        private readonly AttributeRepositoryInterface $attributeRepository,
+        private readonly AttributeOptionRepositoryInterface $attributeOptionRepository,
+        private readonly FindFamilyCodes $findFamilyCodes,
+        private readonly ChannelRepositoryInterface $channelRepository,
     ) {
     }
 
     /**
-     * @Given the ':attributeCode' attribute of type ':attributeType'
+     * @Given /^the '(?P<attributeCode>[^']*)'(?P<localizable> localizable)?(?: and)?(?P<scopable> scopable)? attribute of type '(?P<attributeType>[^']*)'$/
      */
-    public function theAttribute(string $attributeCode, string $attributeType): void
-    {
+    public function theAttribute(
+        string $attributeCode,
+        string $attributeType,
+        string $scopable = '',
+        string $localizable = ''
+    ): void {
         $identifierAttribute = new Attribute();
         $identifierAttribute->setType($attributeType);
         $identifierAttribute->setCode($attributeCode);
-        $identifierAttribute->setScopable(false);
-        $identifierAttribute->setLocalizable(false);
+        $identifierAttribute->setScopable($scopable !== '');
+        $identifierAttribute->setLocalizable($localizable !== '');
         $identifierAttribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXT);
         $this->attributeRepository->save($identifierAttribute);
+    }
+
+    /**
+     * @Given the :familyCode family
+     */
+    public function theFamily(string $familyCode): void
+    {
+        $this->findFamilyCodes->save($familyCode);
+    }
+
+    /**
+     * @Given /^the (?P<optionCodes>(('.*')(, | and )?)+) options? for '(?P<attributeCode>[^']*)' attribute$/
+     */
+    public function theAndOptionsForAttribute(string $optionCodes, string $attributeCode): void
+    {
+        foreach ($this->splitList($optionCodes) as $optionCode) {
+            $attributeOption = new AttributeOption();
+            $attributeOption->setCode($optionCode);
+            $attributeOption->setAttribute($this->attributeRepository->findOneByIdentifier($attributeCode));
+            $this->attributeOptionRepository->save($attributeOption);
+        }
+    }
+
+    /**
+     * @Given /^the '(?P<channelCode>[^']*)' channel having (?P<localeCodes>(('.*')(, | and )?)+) as locales?$/
+     */
+    public function theChannelHavingActiveLocalesAnd(string $channelCode, string $localeCodes): void
+    {
+        $channel = new Channel();
+        $channel->setCode($channelCode);
+        $locales = [];
+        foreach ($this->splitList($localeCodes) as $localeCode) {
+            $locale = new Locale();
+            $locale->setCode($localeCode);
+            $locale->addChannel($channel);
+            $locales[] = $locale;
+        }
+        $channel->setLocales($locales);
+
+        $this->channelRepository->save($channel);
     }
 
     /**
@@ -60,23 +105,6 @@ final class CreateIdentifierGeneratorContext implements Context
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_CODE);
         Assert::isInstanceOf($identifierGenerator, IdentifierGenerator::class);
-    }
-
-    /**
-     * @Then the identifier generator is created
-     */
-    public function theIdentifierGeneratorIsCreated(): void
-    {
-        $identifierGenerator = new IdentifierGenerator(
-            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
-            IdentifierGeneratorCode::fromString(self::DEFAULT_CODE),
-            Conditions::fromArray([]),
-            Structure::fromArray([FreeText::fromString('abc')]),
-            LabelCollection::fromNormalized(['fr_FR' => 'Générateur']),
-            Target::fromString('sku'),
-            Delimiter::fromString('-'),
-        );
-        $this->generatorRepository->save($identifierGenerator);
     }
 
     /**
@@ -137,13 +165,13 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with too many properties in structure
+     * @When I try to create an identifier generator with :propertiesCount properties in structure
      */
-    public function iTryToCreateAnIdentifierGeneratorWithTooManyPropertiesInStructure(): void
+    public function iTryToCreateAnIdentifierGeneratorWithTooManyPropertiesInStructure(int $propertiesCount): void
     {
         $this->tryToCreateGenerator(
             structure:
-            \array_fill(0, 21, ['type' => 'free_text', 'string' => 'abcdef1'])
+            \array_fill(0, $propertiesCount, ['type' => 'free_text', 'string' => 'abcdef1'])
         );
     }
 
@@ -199,6 +227,57 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When /^I try to create an identifier generator with family property without required field$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithFamilyPropertyWithoutRequiredField(): void
+    {
+        $this->tryToCreateGenerator(structure: [['type' => 'family']]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with invalid family property$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithInvalidFamilyProperty(): void
+    {
+        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'no'], 'unknown' => '']]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with empty family process property$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithEmptyFamilyProcessProperty(): void
+    {
+        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => []]]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with a family process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and (?P<value>[^']*) as value$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithFamilyProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
+    {
+        $value = \json_decode($value);
+        $defaultStructure = [
+            'type' => 'family',
+            'process' => ['type' => $type, 'operator' => $operator, 'value' => $value],
+        ];
+        if ($operator === 'undefined') {
+            unset($defaultStructure['process']['operator']);
+        }
+        if ($value === 'undefined') {
+            unset($defaultStructure['process']['value']);
+        }
+        $this->tryToCreateGenerator(structure: [$defaultStructure]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with a family containing invalid truncate process$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithFamilyContainingInvalidTruncateProcess(): void
+    {
+        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => '=', 'value' => '1', 'unknown' => '']]]);
+    }
+
+    /**
      * @When I create an identifier generator without label
      */
     public function iCreateAnIdentifierGeneratorWithoutLabel(): void
@@ -235,10 +314,19 @@ final class CreateIdentifierGeneratorContext implements Context
                 [],
                 'sku',
                 null,
+                'no',
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
         }
+    }
+
+    /**
+     * @When I try to create an identifier generator with text transformation :textTransformation
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithTextTransformation(string $textTransformation): void
+    {
+        $this->tryToCreateGenerator(textTransformation: $textTransformation);
     }
 
     /**
@@ -280,13 +368,14 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with enabled condition with an unknown property
+     * @When /^I try to create an identifier generator with (?P<type>enabled|simple_select) condition with an unknown property$/
      */
-    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty(): void
+    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty($type): void
     {
-        $this->tryToCreateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property'],
-        ]);
+        $defaultValue = $this->getValidCondition($type);
+        $defaultValue['unknown'] = 'unknown property';
+
+        $this->tryToCreateGenerator(conditions: [$defaultValue]);
     }
 
     /**
@@ -300,6 +389,86 @@ final class CreateIdentifierGeneratorContext implements Context
         ]);
     }
 
+    /**
+     * @When I try to create an identifier generator with a family condition with an unknown operator
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator(): void
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'unknown'],
+        ]);
+    }
+
+    /**
+     * @When I try to create an identifier generator with a family condition with unknown property
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty(): void
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'EMPTY', 'unknown' => 'unknown_field'],
+        ]);
+    }
+
+    /**
+     * @When I try to create an identifier generator with 2 family conditions
+     */
+    public function iTryToCreateAnIdentifierGeneratorWith2FamilyConditions(): void
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'EMPTY'],
+            ['type' => 'family', 'operator' => 'NOT EMPTY'],
+        ]);
+    }
+
+    /**
+     * @When I try to create an identifier generator with a family without operator
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyWithoutOperator(): void
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'family', 'value' => ['shirts']],
+        ]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with a (?P<type>family|simple_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($type, $operator, $value): void
+    {
+        $defaultCondition = $this->getValidCondition($type, operator: $operator);
+
+        if ($value === 'undefined') {
+            unset($defaultCondition['value']);
+            $this->tryToCreateGenerator(conditions: [$defaultCondition]);
+        } else {
+            $defaultCondition['value'] = \json_decode($value);
+            $this->tryToCreateGenerator(conditions: [$defaultCondition]);
+        }
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with a simple_select condition with (?P<attributeCode>[^']*) attribute(?: and (?P<scope>.*) scope)?(?: and (?P<locale>.*) locale)?$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(
+        string $attributeCode,
+        string $scope = '',
+        string $locale = ''
+    ): void {
+        $defaultCondition = $this->getValidCondition('simple_select');
+        $defaultCondition['attributeCode'] = $attributeCode;
+        if ('undefined' === $scope) {
+            unset($defaultCondition['scope']);
+        } elseif ('' !== $scope) {
+            $defaultCondition['scope'] = $scope;
+        }
+        if ('undefined' === $locale) {
+            unset($defaultCondition['locale']);
+        } elseif ('' !== $locale) {
+            $defaultCondition['locale'] = $locale;
+        }
+        $this->tryToCreateGenerator(conditions: [$defaultCondition]);
+    }
+
     private function tryToCreateGenerator(
         ?string $code = null,
         ?array $structure = null,
@@ -307,18 +476,60 @@ final class CreateIdentifierGeneratorContext implements Context
         ?array $labels = null,
         ?string $target = null,
         ?string $delimiter = null,
+        ?string $textTransformation = null,
     ): void {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
                 $code ?? self::DEFAULT_CODE,
-                $conditions ?? [['type' => 'enabled', 'value' => true]],
+                $conditions ?? [
+                    $this->getValidCondition('enabled'),
+                    $this->getValidCondition('family'),
+                    $this->getValidCondition('simple_select'),
+                ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
                 $target ?? 'sku',
-                $delimiter ?? '-'
+                $delimiter ?? '-',
+                $textTransformation ?? 'no',
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
         }
+    }
+
+    private function getValidCondition(string $type, ?string $operator = null): array
+    {
+        switch($type) {
+            case 'enabled': return [
+                'type' => 'enabled',
+                'value' => true,
+            ];
+            case 'family': return [
+                'type' => 'family',
+                'operator' => $operator ?? 'IN',
+                'value' => ['tshirt'],
+            ];
+            case 'simple_select': return [
+                'type' => 'simple_select',
+                'operator' => $operator ?? 'IN',
+                'attributeCode' => 'color',
+                'value' => ['green'],
+            ];
+        }
+
+        throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
+    }
+
+    /**
+     * @return string[]
+     */
+    private function splitList(string $codesList): array
+    {
+        $codesWithQuotes = \preg_split('/(, )|( and )/', $codesList);
+
+        return \array_map(
+            static fn (string $codeWithQuotes): string => substr($codeWithQuotes, 1, -1),
+            $codesWithQuotes
+        );
     }
 }

@@ -80,7 +80,7 @@ pim_common:
     updated: Updated
     view: View
     yes: "Yes"
-    uuid: uuid
+    uuid: UUID
 
 pim_enrich:
     # ACLs

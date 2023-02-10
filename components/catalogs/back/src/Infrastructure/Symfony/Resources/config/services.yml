@@ -49,6 +49,9 @@ services:
     Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator:
         alias: 'pim_api.pagination.offset_hal_paginator'
 
+    Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags:
+        alias: 'feature_flags'
+
     # @todo CXP-1186 REMOVE
     Akeneo\Catalogs\Infrastructure\TemporaryEnrichmentBridge\SearchAfterSizeUuidResultCursorFactory:
         arguments:

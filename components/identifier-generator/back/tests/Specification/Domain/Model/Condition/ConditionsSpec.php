@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Enabled;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Family;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use PhpSpec\ObjectBehavior;
 
@@ -49,12 +51,20 @@ class ConditionsSpec extends ObjectBehavior
     public function it_matches_if_condition_matches(): void
     {
         $this->beConstructedThrough('fromArray', [[new Enabled(true)]]);
-        $this->match(new ProductProjection('', true))->shouldReturn(true);
+        $this->match(new ProductProjection(true, '', []))->shouldReturn(true);
     }
 
     public function it_does_not_match_if_condition_doest_not_match(): void
     {
         $this->beConstructedThrough('fromArray', [[new Enabled(true)]]);
-        $this->match(new ProductProjection('', false))->shouldReturn(false);
+        $this->match(new ProductProjection(false, '', []))->shouldReturn(false);
+    }
+
+    public function it_should_return_conjunction(): void
+    {
+        $condition1 = new Enabled(true);
+        $condition2 = Family::fromNormalized(['type' => 'family', 'operator' => 'EMPTY']);
+        $this->beConstructedThrough('fromArray', [[$condition1]]);
+        $this->and([$condition2])->shouldBeLike(Conditions::fromArray([$condition1, $condition2]));
     }
 }

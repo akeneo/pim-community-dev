@@ -1,6 +1,14 @@
 {% extends '@PimUser/layout.html.twig' %}
+{%- use "@PimUser/Unlock/login-banner.html.twig" with scripts as unlock_banner_scripts, styles as unlock_banner_styles %}
 
 {% block bodyClass %}AknLogin{% endblock %}
+
+{% block head_style %}
+    {{ parent() }}
+    {% if feature_is_enabled('promote_unlock') %}
+        {{ block('unlock_banner_styles') }}
+    {% endif %}
+{% endblock %}
 
 {% block messages %}
     {{ parent() }}
@@ -74,4 +82,7 @@
         initPimLoginForm([username, password], submit, form);
       })();
     </script>
+    {% if feature_is_enabled('promote_unlock') %}
+        {{ block('unlock_banner_scripts') }}
+    {% endif %}
 {% endblock %}
