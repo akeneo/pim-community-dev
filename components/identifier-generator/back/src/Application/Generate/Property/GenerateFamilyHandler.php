@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToGenerateIdentifierFromFamilyNomenclature;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
 use Webmozart\Assert\Assert;
 
 /**
@@ -18,6 +20,11 @@ use Webmozart\Assert\Assert;
  */
 final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
 {
+    public function __construct(
+        private readonly NomenclatureRepository $nomenclatureRepository
+    ) {
+    }
+
     public function __invoke(
         PropertyInterface $familyProperty,
         IdentifierGenerator $identifierGenerator,
@@ -43,9 +50,52 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
                 }
 
                 return \substr($productProjection->familyCode(), 0, $familyProperty->process()->value());
+            case Process::PROCESS_TYPE_NOMENCLATURE:
+                $familyCode = $productProjection->familyCode();
+                $nomenclatureFamily = $this->nomenclatureRepository->get('family');
+                if (null === $nomenclatureFamily) {
+                    throw new UnableToGenerateIdentifierFromFamilyNomenclature(
+                        sprintf('%s%s', $prefix, $familyCode),
+                        $identifierGenerator->target()->asString(),
+                        $familyCode
+                    );
+                }
+                $values = $nomenclatureFamily->values();
+
+                $value = null;
+                if (isset($values[$familyCode])) {
+                    $value = $values[$familyCode];
+                } elseif ($nomenclatureFamily->generateIfEmpty()) {
+                    $value = \substr($familyCode, 0, $nomenclatureFamily->value());
+                }
+                if (null === $value) {
+                    throw new UnableToGenerateIdentifierFromFamilyNomenclature(
+                        sprintf('%s%s', $prefix, $familyCode),
+                        $identifierGenerator->target()->asString(),
+                        $familyCode
+                    );
+                }
+                if (\strlen($value) > $nomenclatureFamily->value()) {
+                    throw new UnableToTruncateException(
+                        sprintf('%s%s', $prefix, $familyCode),
+                        $identifierGenerator->target()->asString(),
+                        $familyCode
+                    );
+                }
+
+                if (Process::PROCESS_OPERATOR_EQ === $nomenclatureFamily->operator() && \strlen($value) < $nomenclatureFamily->value()) {
+                    throw new UnableToTruncateException(
+                        sprintf('%s%s', $prefix, $familyCode),
+                        $identifierGenerator->target()->asString(),
+                        $familyCode
+                    );
+                }
+
+                return $value;
             case Process::PROCESS_TYPE_NO:
-            default:
                 return $productProjection->familyCode();
+            default:
+                throw new \InvalidArgumentException('Not implemented');
         }
     }
 

@@ -23,7 +23,6 @@ class SqlNomenclatureRepository implements NomenclatureRepository
     public function get(string $propertyCode): ?NomenclatureDefinition
     {
         $nomenclatureDefinition = $this->getNomenclatureDefinition($propertyCode);
-
         if (null !== $nomenclatureDefinition) {
             $values = $this->getNomenclatureValues();
             $nomenclatureDefinition = $nomenclatureDefinition->withValues($values);
@@ -192,8 +191,7 @@ SQL;
         $definition = $this->connection->fetchOne($sql, [
             'property_code' => $propertyCode,
         ]);
-
-        if (false === $definition) {
+        if (!$definition) {
             return null;
         }
         Assert::string($definition);
