@@ -1,4 +1,4 @@
-import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
+import {IdentifierGenerator, PROPERTY_NAMES, TEXT_TRANSFORMATION} from '../../models';
 
 const mockedList: IdentifierGenerator[] = [
   {
@@ -8,6 +8,7 @@ const mockedList: IdentifierGenerator[] = [
     labels: {ca_ES: 'azeaze', en_US: 'Sku generator'},
     target: 'sku',
     delimiter: null,
+    text_transformation: TEXT_TRANSFORMATION.NO,
   },
 ];
 

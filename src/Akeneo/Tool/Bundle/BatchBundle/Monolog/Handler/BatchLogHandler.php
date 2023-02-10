@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Monolog\Utils;
 
 /**
  * Write the log into a separate log file
@@ -34,13 +35,10 @@ class BatchLogHandler extends StreamHandler
         bool $useLocking,
         string $logDir
     ) {
-        $this->level = $level;
-        $this->bubble = $bubble;
-        $this->stream = null;
-        $this->url = null;
-        $this->filePermission = $filePermission;
-        $this->useLocking = $useLocking;
         $this->logDir = $logDir;
+
+        $url = $this->getRealPath($this->generateLogFilename());
+        parent::__construct($url, $level, $bubble, $filePermission, $useLocking);
     }
 
     /**
@@ -58,6 +56,7 @@ class BatchLogHandler extends StreamHandler
      */
     public function setSubDirectory($subDirectory)
     {
+        $this->close();
         $this->url = $this->getRealPath($this->generateLogFilename(), $subDirectory);
     }
 
@@ -81,7 +80,7 @@ class BatchLogHandler extends StreamHandler
     /**
      * {@inheritdoc}
      */
-    public function write(array $record)
+    public function write(array $record): void
     {
         if (null === $this->url) {
             $this->url = $this->getRealPath($this->generateLogFilename());

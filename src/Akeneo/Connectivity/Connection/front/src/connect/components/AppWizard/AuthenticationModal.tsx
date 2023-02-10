@@ -53,7 +53,7 @@ export const AuthenticationModal: FC<Props> = ({clientId}) => {
             appName={wizardData.appName}
             onConfirm={handleConfirm}
             onClose={handleClose}
-            maxAllowedStep={!scopesConsentGiven ? 'authentication' : null}
+            maxAllowedStep={!scopesConsentGiven && wizardData.displayCheckboxConsent ? 'authentication' : null}
             steps={[
                 {
                     name: 'authentication',
@@ -70,6 +70,7 @@ export const AuthenticationModal: FC<Props> = ({clientId}) => {
                     scopesConsentGiven={scopesConsentGiven}
                     setScopesConsent={setScopesConsent}
                     displayConsent={true}
+                    displayCheckboxConsent={wizardData.displayCheckboxConsent}
                 />
             )}
         </WizardModal>

@@ -25,7 +25,8 @@ class DownloadFileFromManualStorageTest extends AcceptanceTestCase
 
         $storage = ['type' => 'manual_upload', 'file_path' => 'a_file_path'];
 
-        $this->getHandler()->handle(new DownloadFileFromStorageCommand($storage, '/tmp/job_name/'));
+        $filePath = $this->getHandler()->handle(new DownloadFileFromStorageCommand($storage, '/tmp/job_name/'));
+        $this->assertEquals('/tmp/job_name/a_file_path', $filePath);
 
         $this->assertTrue($this->getLocalFilesystem()->fileExists('/tmp/job_name/a_file_path'));
         $this->assertEquals('file content', $this->getLocalFilesystem()->read('/tmp/job_name/a_file_path'));
