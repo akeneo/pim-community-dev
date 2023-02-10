@@ -1,8 +1,8 @@
 import {FeatureFlags} from '@akeneo-pim-community/shared';
 
-const STORAGE_LOGIN_TYPES = ['password', 'private_key'];
+const SFTP_STORAGE_LOGIN_TYPES = ['password', 'private_key'] as const;
 
-type StorageLoginType = 'password' | 'private_key';
+type SftpStorageLoginType = typeof SFTP_STORAGE_LOGIN_TYPES[number];
 
 type JobType = 'import' | 'export';
 
@@ -17,7 +17,7 @@ type SftpStorage = {
   host: string;
   fingerprint?: string;
   port: number;
-  login_type: StorageLoginType;
+  login_type: SftpStorageLoginType;
   username: string;
   password?: string | null;
 };
@@ -87,7 +87,8 @@ const isExport = (jobType: JobType) => 'export' === jobType;
 const getDefaultFilePath = (jobType: JobType, fileExtension: string) =>
   isExport(jobType) ? `${jobType}_%job_label%_%datetime%.${fileExtension}` : `myfile.${fileExtension}`;
 
-const isValidLoginType = (loginType: string): loginType is StorageLoginType => STORAGE_LOGIN_TYPES.includes(loginType);
+const isValidSftpLoginType = (loginType: string): loginType is SftpStorageLoginType =>
+  SFTP_STORAGE_LOGIN_TYPES.includes(loginType as SftpStorageLoginType);
 
 const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExtension: string): Storage => {
   switch (storageType) {
@@ -151,7 +152,7 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
     'port' in storage &&
     'username' in storage &&
     'login_type' in storage &&
-    isValidLoginType(storage.login_type)
+    isValidSftpLoginType(storage.login_type)
   );
 };
 
@@ -238,8 +239,8 @@ export {
   isMicrosoftAzureStorage,
   isSftpConnectionFieldFulfilled,
   isSftpStorage,
-  isValidLoginType,
+  isValidSftpLoginType,
   isValidStorageType,
   localStorageIsEnabled,
-  STORAGE_LOGIN_TYPES,
+  SFTP_STORAGE_LOGIN_TYPES,
 };

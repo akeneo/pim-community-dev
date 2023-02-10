@@ -4,7 +4,7 @@ import {Field, Helper, NumberInput, Button, getColor, getFontSize, SelectInput, 
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps} from './model';
 import {useGetPublicKey} from '../../hooks/';
-import {isSftpStorage, isValidLoginType, STORAGE_LOGIN_TYPES} from '../../models';
+import {isSftpStorage, isValidSftpLoginType, SFTP_STORAGE_LOGIN_TYPES} from '../../models';
 import {CheckStorageConnection} from './CheckStorageConnection';
 
 const CopyableInputContainer = styled.div`
@@ -122,7 +122,7 @@ const SftpStorageConfigurator = ({
         <SelectInput
           value={storage.login_type}
           onChange={login_type => {
-            if (isValidLoginType(login_type)) {
+            if (isValidSftpLoginType(login_type)) {
               onStorageChange({...storage, login_type});
             }
           }}
@@ -130,7 +130,7 @@ const SftpStorageConfigurator = ({
           openLabel={translate('pim_common.open')}
           clearable={false}
         >
-          {STORAGE_LOGIN_TYPES.map(loginType => (
+          {SFTP_STORAGE_LOGIN_TYPES.map(loginType => (
             <SelectInput.Option value={loginType} key={loginType}>
               {translate(`pim_import_export.form.job_instance.storage_form.login_type.${loginType}`)}
             </SelectInput.Option>
