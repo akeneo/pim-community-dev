@@ -13,3 +13,4 @@ akeneo_feature_flag:
         - { feature: 'identifier_generator', service: 'akeneo.feature_flag.service.only_saas_feature' }
         - { feature: 'import_export_local_storage', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
         - { feature: 'catalogs', service: 'akeneo.feature_flag.service.only_saas_feature' }
+        - { feature: 'promote_unlock', service: 'akeneo.feature_flag.service.only_growth_and_serenity_feature' }
