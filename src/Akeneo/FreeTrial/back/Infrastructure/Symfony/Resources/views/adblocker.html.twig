@@ -1,0 +1,29 @@
+{% block styles %}
+    <link rel="stylesheet" href="{{asset('bundles/akeneocommunityfreetrial/css/adblocker.css', 'frontend')}}" />
+{% endblock %}
+
+{% block content %}
+    <div id="ad-blocker-overlay"></div>
+    <div id="ad-blocker-information">
+        <img id="ad-blocker-information-close-icon" src="{{ asset('bundles/akeneocommunityfreetrial/img/icon_close.svg', 'frontend') }}" alt="close"/>
+        <div class="ad-blocker-information-title">It seems you are using an Adblocker.</div>
+        <img class="ad-blocker-information-lock-icon" src="{{ asset('bundles/akeneocommunityfreetrial/img/akeneo-ico-free-trial.png', 'frontend') }}" alt=""/>
+        <div class="ad-blocker-information-content">If it's the case, please disable your Adblocker while discovering Akeneo Free Trial so you can benefit from our onboarding.</div>
+    </div>
+    <script type="text/javascript" src="{{ asset('bundles/akeneocommunityfreetrial/js/free-trial-ad-banner-fake.js', 'frontend') }}"></script>
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      function removeAdblockAlert() {
+          document.body.removeChild(document.getElementById('ad-blocker-information'));
+          document.body.removeChild(document.getElementById('ad-blocker-overlay'));
+      }
+      if(sessionStorage.getItem('adblock-alert-is-visible') !== null || document.getElementById('nLbyuIxfUjHk')) {
+          removeAdblockAlert();
+      }
+      if(document.getElementById('ad-blocker-information-close-icon')) {
+          document.getElementById('ad-blocker-information-close-icon').addEventListener("click", (e) => {
+              removeAdblockAlert();
+              sessionStorage.setItem('adblock-alert-is-visible', false);
+          });
+      }
+    </script>
+{% endblock %}

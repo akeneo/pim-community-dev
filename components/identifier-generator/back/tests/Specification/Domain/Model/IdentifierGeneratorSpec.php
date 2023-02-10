@@ -12,10 +12,11 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCo
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -30,13 +31,15 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
 
         $freeText = FreeText::fromString('abc');
+        $family = FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'no']]);
         $enabled = Enabled::fromBoolean(true);
-        $structure = Structure::fromArray([$freeText]);
+        $structure = Structure::fromArray([$freeText, $family]);
         $conditions = Conditions::fromArray([$enabled]);
 
         $label = LabelCollection::fromNormalized(['fr' => 'Générateur']);
         $delimiter = Delimiter::fromString('-');
         $target = Target::fromString('sku');
+        $textTransformation = TextTransformation::fromString('no');
 
         $this->beConstructedWith(
             $identifierGeneratorId,
@@ -46,6 +49,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             $label,
             $target,
             $delimiter,
+            $textTransformation,
         );
     }
 
@@ -54,7 +58,7 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
     }
 
-    public function it_can_instantiated_without_delimiter(): void
+    public function it_can_instantiated_with_null_value_delimiter(): void
     {
         $identifierGeneratorId = IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002');
         $identifierGeneratorCode = IdentifierGeneratorCode::fromString('abcdef');
@@ -63,6 +67,8 @@ class IdentifierGeneratorSpec extends ObjectBehavior
         $structure = Structure::fromArray([$freeText]);
         $label = LabelCollection::fromNormalized(['fr' => 'Générateur']);
         $target = Target::fromString('sku');
+        $delimiter = Delimiter::fromString(null);
+        $textTransformation = TextTransformation::fromString('no');
 
         $this->beConstructedWith(
             $identifierGeneratorId,
@@ -71,9 +77,11 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             $structure,
             $label,
             $target,
-            null,
+            $delimiter,
+            $textTransformation,
         );
         $this->shouldBeAnInstanceOf(IdentifierGenerator::class);
+        $this->delimiter()->asString()->shouldBeNull();
     }
 
     public function it_returns_an_indentifier_generator_id(): void
@@ -93,9 +101,11 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_sets_a_delimiter(): void
     {
-        $this->delimiter()->asString()->shouldBeLike('-');
-        $this->setDelimiter(Delimiter::fromString('='));
-        $this->delimiter()->asString()->shouldBeLike('=');
+        $this->delimiter()->asString()->shouldReturn('-');
+        $result = $this->withDelimiter(Delimiter::fromString('='));
+        $result->delimiter()->asString()->shouldReturn('=');
+        $result->shouldNotBe($this);
+        $this->delimiter()->asString()->shouldReturn('-');
     }
 
     public function it_returns_a_target(): void
@@ -105,9 +115,11 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_sets_a_target(): void
     {
-        $this->target()->asString()->shouldBeLike('sku');
-        $this->setTarget(Target::fromString('gtin'));
-        $this->target()->asString()->shouldBeLike('gtin');
+        $this->target()->asString()->shouldReturn('sku');
+        $result = $this->withTarget(Target::fromString('gtin'));
+        $result->target()->asString()->shouldReturn('gtin');
+        $result->shouldNotBe($this);
+        $this->target()->asString()->shouldReturn('sku');
     }
 
     public function it_returns_a_conditions(): void
@@ -117,20 +129,28 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_returns_a_structure(): void
     {
-        $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
+        $this->structure()->shouldBeLike(Structure::fromArray([
+            FreeText::fromString('abc'),
+            FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'no']]),
+        ]));
     }
 
     public function it_sets_a_structure(): void
     {
-        $this->structure()->shouldBeLike(Structure::fromArray([FreeText::fromString('abc')]));
-        $this->setStructure(Structure::fromArray([
-            FreeText::fromString('cba'),
-            AutoNumber::fromValues(3, 2),
-        ]));
-        $this->structure()->shouldBeLike(Structure::fromArray([
-            FreeText::fromString('cba'),
-            AutoNumber::fromValues(3, 2),
-        ]));
+        $previousStructure = Structure::fromArray([
+            FreeText::fromString('abc'),
+            FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'no']]),
+        ]);
+        $updatedStructure = Structure::fromArray([
+            FreeText::fromString('def'),
+            FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => '=', 'value' => 3]]),
+        ]);
+
+        $this->structure()->shouldBeLike($previousStructure);
+        $result = $this->withStructure($updatedStructure);
+        $result->structure()->shouldBeLike($updatedStructure);
+        $result->shouldNotBe($this);
+        $this->structure()->shouldBeLike($previousStructure);
     }
 
     public function it_returns_a_labels_collection(): void
@@ -140,15 +160,17 @@ class IdentifierGeneratorSpec extends ObjectBehavior
 
     public function it_sets_a_labels_collection(): void
     {
-        $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized(['fr' => 'Générateur']));
-        $this->setLabelCollection(LabelCollection::fromNormalized([
+        $previousLabelCollection = LabelCollection::fromNormalized(['fr' => 'Générateur']);
+        $updatedLabelCollection = LabelCollection::fromNormalized([
             'fr' => 'Générateur',
             'en' => 'generator',
-        ]));
-        $this->labelCollection()->shouldBeLike(LabelCollection::fromNormalized([
-            'fr' => 'Générateur',
-            'en' => 'generator',
-        ]));
+        ]);
+
+        $this->labelCollection()->shouldBeLike($previousLabelCollection);
+        $result = $this->withLabelCollection($updatedLabelCollection);
+        $result->labelCollection()->shouldBeLike($updatedLabelCollection);
+        $result->shouldNotBe($this);
+        $this->labelCollection()->shouldBeLike($previousLabelCollection);
     }
 
     public function it_can_be_normalized(): void
@@ -166,6 +188,11 @@ class IdentifierGeneratorSpec extends ObjectBehavior
                 [
                     'type' => 'free_text',
                     'string' => 'abc',
+                ], [
+                    'type' => 'family',
+                    'process' => [
+                        'type' => 'no',
+                    ],
                 ],
             ],
             'labels' => [
@@ -173,38 +200,23 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             ],
             'target' => 'sku',
             'delimiter' => '-',
+            'text_transformation' => 'no',
         ]);
     }
 
-    public function it_should_match_empty_identifier(): void
+    public function it_should_add_conditions_from_structure(): void
     {
+        // Structure contains Family property, which imply family should not be empty.
         $this->match(new ProductProjection(
-            '',
-            true
+            true,
+            'a_family',
+            [],
         ))->shouldReturn(true);
-    }
 
-    public function it_should_match_null_identifier(): void
-    {
         $this->match(new ProductProjection(
+            true,
             null,
-            true
-        ))->shouldReturn(true);
-    }
-
-    public function it_should_not_match_filled_identifier(): void
-    {
-        $this->match(new ProductProjection(
-            'a_product_identifier',
-            true
-        ))->shouldReturn(false);
-    }
-
-    public function it_should_not_match_disabled_product(): void
-    {
-        $this->match(new ProductProjection(
-            null,
-            false
+            [],
         ))->shouldReturn(false);
     }
 }

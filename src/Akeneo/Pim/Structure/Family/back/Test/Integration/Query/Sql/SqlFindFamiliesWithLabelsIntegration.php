@@ -25,6 +25,7 @@ class SqlFindFamiliesWithLabelsIntegration extends TestCase
         $this->createFamily('bikes', ['fr_FR' => 'Vélos', 'en_US' => 'Bikes']);
         $this->createFamily('screens', ['fr_FR' => 'Écrans', 'en_US' => 'Screens']);
         $this->createFamily('tvs', []);
+        $this->createFamily('123', ['en_US' => 'With code number']);
     }
 
     public function test_it_returns_code_and_labels_of_all_families(): void
@@ -36,6 +37,24 @@ class SqlFindFamiliesWithLabelsIntegration extends TestCase
             new FamilyWithLabels('bikes', ['fr_FR' => 'Vélos', 'en_US' => 'Bikes']),
             new FamilyWithLabels('screens', ['fr_FR' => 'Écrans', 'en_US' => 'Screens']),
             new FamilyWithLabels('tvs', []),
+            new FamilyWithLabels('123', ['en_US' => 'With code number']),
+        ];
+
+        $actualFamilies = $this->sqlFindFamiliesWithLabels->fromQuery($query);
+
+        self::assertEqualsCanonicalizing($expectedFamilies, $actualFamilies);
+    }
+
+    public function test_it_returns_code_and_labels_with_code_is_a_number(): void
+    {
+        $query = new FamilyQuery(
+            search: new FamilyQuerySearch(
+                value: 'code number',
+            ),
+        );
+
+        $expectedFamilies = [
+            new FamilyWithLabels('123', ['en_US' => 'With code number']),
         ];
 
         $actualFamilies = $this->sqlFindFamiliesWithLabels->fromQuery($query);
@@ -56,6 +75,7 @@ class SqlFindFamiliesWithLabelsIntegration extends TestCase
             new FamilyWithLabels('bikes', ['fr_FR' => 'Vélos', 'en_US' => 'Bikes']),
             new FamilyWithLabels('screens', ['fr_FR' => 'Écrans', 'en_US' => 'Screens']),
             new FamilyWithLabels('tvs', []),
+            new FamilyWithLabels('123', ['en_US' => 'With code number']),
         ];
 
         $actualFamilies = $this->sqlFindFamiliesWithLabels->fromQuery($query);
@@ -157,7 +177,7 @@ class SqlFindFamiliesWithLabelsIntegration extends TestCase
             search: new FamilyQuerySearch(
                 value: 'b',
             ),
-            excludeCodes: ['beers'],
+            excludeCodes: ['beers', '123'],
         );
 
         $expectedFamilies = [
@@ -179,7 +199,7 @@ class SqlFindFamiliesWithLabelsIntegration extends TestCase
         );
 
         $expectedFamilies = [
-            new FamilyWithLabels('screens', ['fr_FR' => 'Écrans', 'en_US' => 'Screens']),
+            new FamilyWithLabels('bikes', ['fr_FR' => 'Vélos', 'en_US' => 'Bikes']),
         ];
 
         $actualFamilies = $this->sqlFindFamiliesWithLabels->fromQuery($query);

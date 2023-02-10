@@ -2,10 +2,12 @@ pim_title:
     akeneo_identifier_generator_index: "Identifier generator"
     akeneo_identifier_generator_edit: "Edit Identifier generator"
 pim_error:
-    unauthorized: "You cannot list attributes. Please contact your administrator to change your rights."
+    unauthorized_list_attributes: "You cannot list attributes. Please contact your administrator to change your rights."
+    unauthorized_list_properties: "You don’t have permission to list this property. Please contact your administrator."
+    unauthorized_list_families: "You cannot list families. Please contact your administrator to change your rights."
     general: "An error occurred during the display of this page. Please contact your administrator."
     unexpected: "Unexpected error occurred. Please contact system administrator."
-    404: 'A 404 error occured...'
+    404: 'A 404 error occurred...'
     identifier_generator_not_found: 'Identifier generator not found'
 pim_identifier_generator:
     create:
@@ -19,6 +21,11 @@ pim_identifier_generator:
     general:
         title: "General properties"
         label_translations_in_ui_locale: "Label translations in UI locale"
+        text_transformation:
+            label: 'Text transformation'
+            no: 'No text transformation'
+            lowercase: 'Lowercase'
+            uppercase: 'Uppercase'
     flash:
         create:
             success: 'The identifier generator "{{ code }}" was successfully created'
@@ -32,24 +39,34 @@ pim_identifier_generator:
     list:
         identifier: 'Identifier'
         first_generator: 'Create your first identifier generator!'
+        helper:
+            title: 'Automate the generation of identifiers.'
+            info: 'Once an identifier generator is created, an identifier will be assigned automatically to every new product you create.'
         check_help_center: 'Check out our help center for more information.'
-        helper: 'Here, you will be able to build an identifier generator profile for your products. Please note that new and existing references will be impacted by this change. A unique profile is available for the moment, you will be able to create multiple identifier generators soon.'
         max_generator:
             title: 'It is only possible to create one Identifier Generator for the moment.'
             info: 'You will soon be able to configure multiple generators matching all your usecases.'
         confirmation: 'Are you sure you want to delete this property?'
     selection:
-        property_type:
-            sections:
-                system: 'System'
-            enabled: 'Status'
+        helper:
+            title: 'Add conditions to your product selection, if you want to:'
+            automate: 'automate the creation of identifiers for a targeted selection of products'
+            multiple: 'have multiple structures of identifiers for different selection of products (to be released soon)'
+        empty:
+            title: 'Create your product selection'
+            text: 'All your products with an empty identifier will be impacted.'
+            info: 'If you want to target specific products, add new conditions.'
         settings:
             enabled:
                 disabled: 'Disabled'
                 placeholder: 'Choose a status'
+            family:
+                placeholder: 'Please select at least one family'
+            select_option:
+                placeholder: 'Please select at least one option'
     structure:
-        helper: 'You must define your product selection in order to create Identifier Structure. If you dont know how, take a look at {{link}}.'
-        helper_link: 'this article'
+        helper: 'Define the structure of the product identifiers you want to generate. If you need any help setting up the property settings, {{link}}.'
+        helper_link: 'check our help center for more information'
         title: 'Identifier Structure'
         add_element: 'Add new property'
         limit_reached: 'You have reached the limit of 20 properties'
@@ -58,6 +75,7 @@ pim_identifier_generator:
                 system: 'System'
             free_text: 'Free text'
             auto_number: 'Auto Number'
+            family: 'Family'
         settings:
             free_text:
                 title: 'Free text settings'
@@ -66,6 +84,19 @@ pim_identifier_generator:
                 title: 'Auto number'
                 digitsMin_label: 'Min digits'
                 numberMin_label: 'Min number'
+            family:
+                title: 'Family'
+                abbrev_type: 'Define the format of this property'
+                abbrev_type_empty_label: 'Select the format'
+                operator: 'Operator'
+                chars_number: 'Number of characters'
+            code_format:
+                type:
+                    truncate: 'Use first characters'
+                    code: 'Use the entire code'
+                    nomenclature: 'Use nomenclature'
+            operator:
+                placeholder: 'Select the operator'
         empty:
             title: 'Create your identifier structure'
             text: 'Click on "Add new property" on the top right'

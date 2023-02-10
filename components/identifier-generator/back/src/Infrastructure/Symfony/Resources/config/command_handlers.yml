@@ -19,6 +19,10 @@ services:
     tags:
       - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
 
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFamilyHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler:
     arguments:
       - !tagged_iterator { tag: 'akeneo.pim.automation.identifier_generator.generate_property' }

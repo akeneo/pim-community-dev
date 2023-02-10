@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
@@ -49,6 +50,7 @@ final class UpdateIdentifierGeneratorContext implements Context
             LabelCollection::fromNormalized(['fr_FR' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
         $this->generatorRepository->save($identifierGenerator);
     }
@@ -95,6 +97,15 @@ final class UpdateIdentifierGeneratorContext implements Context
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
         Assert::eq(null, $identifierGenerator->delimiter()->asString());
+    }
+
+    /**
+     * @Then The identifier generator is updated in the repository and text transformation is lowercase
+     */
+    public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndTextTransformationIsLowercase(): void
+    {
+        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
+        Assert::eq(TextTransformation::LOWERCASE, $identifierGenerator->textTransformation()->normalize());
     }
 
     /**
@@ -259,11 +270,67 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When I try to update an identifier generator with family property without required field
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithFamilyPropertyWithoutRequiredField(): void
+    {
+        $this->tryToUpdateGenerator(structure: [['type' => 'family']]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with invalid family property$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithInvalidFamilyProperty(): void
+    {
+        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'no'], 'unknown' => '']]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with empty family process property
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithEmptyFamilyProcessProperty(): void
+    {
+        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => []]]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a family process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and (?P<value>[^']*) as value$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithFamilyProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
+    {
+        $value = \json_decode($value);
+        $defaultStructure = ['type' => 'family', 'process' => ['type' => $type, 'operator' => $operator, 'value' => $value]];
+        if ($operator === 'undefined') {
+            unset($defaultStructure['process']['operator']);
+        }
+        if ($value === 'undefined') {
+            unset($defaultStructure['process']['value']);
+        }
+        $this->tryToUpdateGenerator(structure: [$defaultStructure]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with a family containing invalid truncate process
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyContainingInvalidTruncateProcess(): void
+    {
+        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => '=', 'value' => '1', 'unknown' => '']]]);
+    }
+
+    /**
      * @When /^I try to update an identifier generator with delimiter '(?P<delimiter>[^']*)'$/
      */
     public function iTryToUpdateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
     {
         $this->tryToUpdateGenerator(delimiter: $delimiter);
+    }
+
+    /**
+     * @When /^I (?:try to )?update an identifier generator with text transformation (?P<textTransformation>.+)$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithTextTransformation(string $textTransformation): void
+    {
+        $this->tryToUpdateGenerator(textTransformation: $textTransformation);
     }
 
     /**
@@ -279,6 +346,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 ['fr_FR' => 'Générateur'],
                 'sku',
                 null,
+                'no',
             ));
         } catch (ViolationsException $exception) {
             $this->violations = $exception;
@@ -316,13 +384,14 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an identifier generator with enabled condition with an unknown property
+     * @When /^I try to update an identifier generator with (?P<type>enabled|simple_select) condition with an unknown property$/
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty(): void
+    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty($type): void
     {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => true, 'unknown' => 'unknown property'],
-        ]);
+        $defaultValue = $this->getValidCondition($type);
+        $defaultValue['unknown'] = 'unknown property';
+
+        $this->tryToUpdateGenerator(conditions: [$defaultValue]);
     }
 
     /**
@@ -336,6 +405,86 @@ final class UpdateIdentifierGeneratorContext implements Context
         ]);
     }
 
+    /**
+     * @When I try to update an identifier generator with a family condition with an unknown operator
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator(): void
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'unknown'],
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with a family condition with unknown property
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty(): void
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'EMPTY', 'unknown' => 'unknown_field'],
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with 2 family conditions
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWith2FamilyConditions(): void
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'family', 'operator' => 'EMPTY'],
+            ['type' => 'family', 'operator' => 'NOT EMPTY'],
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with a family without operator
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyWithoutOperator(): void
+    {
+        $this->tryToUpdateGenerator(conditions: [
+            ['type' => 'family', 'value' => ['shirts']],
+        ]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a (?P<type>family|simple_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue(string $type, string $operator, string $value): void
+    {
+        $defaultCondition = $this->getValidCondition($type, operator: $operator);
+
+        if ($value === 'undefined') {
+            unset($defaultCondition['value']);
+            $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
+        } else {
+            $defaultCondition['value'] = \json_decode($value);
+            $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
+        }
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a simple_select condition with (?P<attributeCode>[^']*) attribute(?: and (?P<scope>.*) scope)?(?: and (?P<locale>.*) locale)?$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(
+        string $attributeCode,
+        string $scope = '',
+        string $locale = ''
+    ): void {
+        $defaultCondition = $this->getValidCondition('simple_select');
+        $defaultCondition['attributeCode'] = $attributeCode;
+        if ('undefined' === $scope) {
+            unset($defaultCondition['scope']);
+        } elseif ('' !== $scope) {
+            $defaultCondition['scope'] = $scope;
+        }
+        if ('undefined' === $locale) {
+            unset($defaultCondition['locale']);
+        } elseif ('' !== $locale) {
+            $defaultCondition['locale'] = $locale;
+        }
+        $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
+    }
+
     private function tryToUpdateGenerator(
         ?string $code = null,
         ?array $structure = null,
@@ -343,18 +492,46 @@ final class UpdateIdentifierGeneratorContext implements Context
         ?array $labels = null,
         ?string $target = null,
         ?string $delimiter = null,
+        ?string $textTransformation = null,
     ): void {
         try {
             ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
                 $code ?? self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                $conditions ?? [['type' => 'enabled', 'value' => true]],
+                $conditions ?? [
+                    ['type' => 'enabled', 'value' => true],
+                    ['type' => 'family', 'operator' => 'EMPTY'],
+                ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_IDENTIFIER_GENERATOR_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
                 $target ?? 'sku',
-                $delimiter ?? 'updatedGenerator'
+                $delimiter ?? 'updatedGenerator',
+                $textTransformation ?? 'no',
             ));
         } catch (ViolationsException $violations) {
             $this->violations = $violations;
         }
+    }
+
+    private function getValidCondition(string $type, ?string $operator = null): array
+    {
+        switch($type) {
+            case 'enabled': return [
+                'type' => 'enabled',
+                'value' => true,
+            ];
+            case 'family': return [
+                'type' => 'family',
+                'operator' => $operator ?? 'IN',
+                'value' => ['tshirt'],
+            ];
+            case 'simple_select': return [
+                'type' => 'simple_select',
+                'operator' => $operator ?? 'IN',
+                'attributeCode' => 'color',
+                'value' => ['green'],
+            ];
+        }
+
+        throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
     }
 }

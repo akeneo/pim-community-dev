@@ -7,7 +7,7 @@ type UnsavedChangesContextValue = {
 
 const UnsavedChangesContext = createContext<UnsavedChangesContextValue>({
   hasUnsavedChanges: false,
-  setHasUnsavedChanges: () => {},
+  setHasUnsavedChanges: (_newValue: boolean) => {},
 });
 
 export {UnsavedChangesContext};

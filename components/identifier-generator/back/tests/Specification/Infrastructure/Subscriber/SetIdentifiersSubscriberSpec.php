@@ -15,9 +15,11 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\SetIdentifiersSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -78,12 +80,13 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         ClassMetadataInterface $productMetadata,
         PropertyMetadataInterface $productPropertyMetadata,
     ): void {
-        $product->getValue('sku')->shouldBeCalled()->willReturn(null);
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
+        $product->getFamily()->shouldBeCalled()->willReturn(null);
+        $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
@@ -115,12 +118,13 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         ClassMetadataInterface $valueMetadata,
         PropertyMetadataInterface $valuePropertyMetadata,
     ): void {
-        $product->getValue('sku')->shouldBeCalled()->willReturn(null);
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
+        $product->getFamily()->shouldBeCalled()->willReturn(null);
+        $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
@@ -156,12 +160,13 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         ClassMetadataInterface $productMetadata,
         PropertyMetadataInterface $productPropertyMetadata,
     ): void {
-        $product->getValue('sku')->shouldBeCalled()->willReturn(null);
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = ScalarValue::value('sku', 'AKN');
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
+        $product->getFamily()->shouldBeCalled()->willReturn(null);
+        $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
         $unique = new UniqueProductEntity();
         $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
@@ -203,6 +208,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
             LabelCollection::fromNormalized(['fr' => 'Mon générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
     }
 }

@@ -9,4 +9,5 @@ module.exports = {
             ...require('./jest.integration'),
         },
     ],
+    workerIdleMemoryLimit: '300MB'
 };

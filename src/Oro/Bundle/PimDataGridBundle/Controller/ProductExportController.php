@@ -69,8 +69,7 @@ class ProductExportController
 
         foreach (self::FILE_PATH_KEYS as $filePathKey) {
             if (isset($rawParameters[$filePathKey])) {
-                //TODO RAB-665 handle local storage on PaaS version
-                $rawParameters['storage']['type'] = $this->versionProvider->isSaaSVersion() ? NoneStorage::TYPE : LocalStorage::TYPE;
+                $rawParameters['storage']['type'] = NoneStorage::TYPE;
                 $rawParameters['storage'][$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
             }
         }

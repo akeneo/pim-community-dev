@@ -1,6 +1,7 @@
 export * from './validateConditions';
 export * from './validateDelimiter';
 export * from './validateEnabled';
+export * from './validateFamily';
 export * from './validateFreeText';
 export * from './validateIdentifierGenerator';
 export * from './validateIdentifierGeneratorCode';

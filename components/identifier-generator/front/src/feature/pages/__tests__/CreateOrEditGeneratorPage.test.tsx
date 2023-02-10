@@ -4,7 +4,7 @@ import {CreateOrEditGeneratorPage} from '../';
 import {createMemoryHistory} from 'history';
 import {Router} from 'react-router';
 import {IdentifierGeneratorContext} from '../../context';
-import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import initialGenerator from '../../tests/fixtures/initialGenerator';
 import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
 
 jest.mock('../DeleteGeneratorModal');
@@ -51,22 +51,6 @@ describe('CreateOrEditGeneratorPage', () => {
 
     fireEvent.click(screen.getByText('pim_common.save'));
     expect(mainButtonCallback).toBeCalledWith(initialGenerator);
-  });
-
-  it('should display validation errors', () => {
-    const mainButtonCallback = jest.fn();
-    render(
-      <CreateOrEditGeneratorPage
-        isMainButtonDisabled={false}
-        initialGenerator={initialGenerator}
-        validationErrors={[{message: 'a message', path: 'a path'}, {message: 'another message'}]}
-        mainButtonCallback={mainButtonCallback}
-        isNew={false}
-      />
-    );
-
-    expect(screen.getByText('a path: a message')).toBeInTheDocument();
-    expect(screen.getByText('another message')).toBeInTheDocument();
   });
 
   it('should delete a generator', () => {
@@ -177,6 +161,25 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('Delimiter is -')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Update Delimiter'));
     expect(screen.getByText('Delimiter is /')).toBeInTheDocument();
+  });
+
+  it('should reset delimiter when all properties are removed', () => {
+    render(
+      <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
+        initialGenerator={initialGenerator}
+        validationErrors={[]}
+        mainButtonCallback={jest.fn()}
+        isNew={false}
+      />
+    );
+
+    fireEvent.click(screen.getByText('pim_identifier_generator.tabs.identifier_structure'));
+    expect(screen.getByText('StructureTabMock')).toBeInTheDocument();
+    expect(screen.getByText('Delimiter is -')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Delete Free Text'));
+    expect(expect(screen.getByText('Delimiter is null')).toBeInTheDocument());
   });
 
   it('should update conditions', () => {

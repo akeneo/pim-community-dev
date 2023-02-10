@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -16,30 +14,25 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 final class GenerateIdentifierCommand
 {
     private function __construct(
-        private IdentifierGenerator $identifierGenerator
+        private IdentifierGenerator $identifierGenerator,
+        private ProductProjection $productProjection,
     ) {
     }
 
-    public static function fromIdentifierGenerator(IdentifierGenerator $identifierGenerator): self
-    {
-        return new self($identifierGenerator);
+    public static function fromIdentifierGenerator(
+        IdentifierGenerator $identifierGenerator,
+        ProductProjection $productProjection
+    ): self {
+        return new self($identifierGenerator, $productProjection);
     }
 
-    public function getDelimiter(): ?Delimiter
+    public function getIdentifierGenerator(): IdentifierGenerator
     {
-        return $this->identifierGenerator->delimiter();
+        return $this->identifierGenerator;
     }
 
-    /**
-     * @return PropertyInterface[]
-     */
-    public function getProperties(): array
+    public function getProductProjection(): ProductProjection
     {
-        return $this->identifierGenerator->structure()->getProperties();
-    }
-
-    public function getTarget(): Target
-    {
-        return $this->identifierGenerator->target();
+        return $this->productProjection;
     }
 }
