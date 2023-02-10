@@ -11,6 +11,7 @@
 - PIM-10808: Fix Error message on the family modification when an attribute is as required=0
 - PIM-10802: Fix wysiwyg-field add link event
 - PIM-10796: Fix system-information endpoint with wrong answers
+- PIM-10806: Allow to delete product's attributes with type 'identifier' and ensure grey cross is displayed
 
 ## Improvements
 
