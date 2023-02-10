@@ -28,10 +28,17 @@ class GetProductActionTest extends IntegrationTestCase
 
     public function testItGetsProductByCatalogIdAndUuid(): void
     {
-        $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $productCountFromEvent = 0;
+        $this->addSubscriberForReadProductEvent(function ($productCount) use (&$productCountFromEvent): void {
+            $productCountFromEvent = $productCount;
+        });
+
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog($catalogId, 'Store US', 'shopifi');
-        $this->enableCatalog($catalogId);
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
 
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
         $this->createProduct('red', [new SetEnabled(true)]);
@@ -40,7 +47,7 @@ class GetProductActionTest extends IntegrationTestCase
 
         $this->client->request(
             'GET',
-            "/api/rest/v1/catalogs/$catalogId/products/$productUuid",
+            "/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/$productUuid",
             [],
             [],
             [
@@ -54,6 +61,7 @@ class GetProductActionTest extends IntegrationTestCase
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertEquals($productUuid, $result['uuid'], 'Not a valid UUID');
         Assert::assertTrue($result['enabled']);
+        Assert::assertEquals(1, $productCountFromEvent, 'Wrong dispatched product count');
     }
 
     public function testItReturnsForbiddenWhenMissingReadProductsPermissions(): void

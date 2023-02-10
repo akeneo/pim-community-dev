@@ -70,6 +70,7 @@ final class DeleteIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
                     'string' => 'AKN',
                 ]],
                 'delimiter' => null,
+                'text_transformation' => 'no',
             ]),
         );
 

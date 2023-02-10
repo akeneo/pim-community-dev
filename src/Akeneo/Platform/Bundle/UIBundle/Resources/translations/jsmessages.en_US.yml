@@ -290,6 +290,7 @@ pim_enrich.entity.fallback:
         generic_error: An error occurred
         update:
             fail: Update failed
+            fail_session_expired: Your user session has expired. Please log in again.
             success: Successfully updated
         delete:
             fail: Cannot delete this item

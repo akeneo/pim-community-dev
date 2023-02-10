@@ -1,4 +1,4 @@
-import {CONDITION_NAMES, IdentifierGenerator, PROPERTY_NAMES} from '../../models';
+import {CONDITION_NAMES, IdentifierGenerator, PROPERTY_NAMES, TEXT_TRANSFORMATION} from '../../models';
 
 const initialGenerator: IdentifierGenerator = {
   code: 'initialCode',
@@ -9,6 +9,7 @@ const initialGenerator: IdentifierGenerator = {
   structure: [{type: PROPERTY_NAMES.FREE_TEXT, string: 'AKN'}],
   delimiter: '-',
   target: 'sku',
+  text_transformation: TEXT_TRANSFORMATION.NO,
 };
 
-export {initialGenerator};
+export default initialGenerator;
