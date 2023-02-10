@@ -22,6 +22,8 @@ services:
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFamilyHandler:
     tags:
       - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository'
 
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler:
     arguments:

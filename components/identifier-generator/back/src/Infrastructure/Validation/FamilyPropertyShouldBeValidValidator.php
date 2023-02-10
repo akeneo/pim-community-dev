@@ -62,6 +62,10 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
                 $this->validateProcessTypeTruncate($property['process'], $constraint);
 
                 break;
+            case Process::PROCESS_TYPE_NOMENCLATURE:
+                $this->validateProcessTypeNomenclature($property['process'], $constraint);
+
+                break;
         }
     }
 
@@ -98,6 +102,18 @@ final class FamilyPropertyShouldBeValidValidator extends ConstraintValidator
                         'max' => 5,
                     ]),
                 ],
+            ],
+        ]));
+    }
+
+    /**
+     * @param array<string, mixed> $property
+     */
+    private function validateProcessTypeNomenclature(array $property, FamilyPropertyShouldBeValid $constraint): void
+    {
+        $this->validator->inContext($this->context)->validate($property, new Collection([
+            'fields' => [
+                'type' => null,
             ],
         ]));
     }
