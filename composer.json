@@ -90,6 +90,7 @@
         "monolog/monolog": "1.25.5",
         "ocramius/proxy-manager": "2.11.1",
         "oneup/flysystem-bundle": "^4.0.0",
+        "php-http/discovery": "~1.14.3",
         "phpseclib/phpseclib": "2.0.31",
         "psr/event-dispatcher": "^1.0.0",
         "ramsey/uuid": "^3.7",
