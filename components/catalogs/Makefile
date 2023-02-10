@@ -158,6 +158,10 @@ catalogs-unit-front: yarn-policies
 catalogs-integration-front: yarn-policies
 	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs jest:integration --ci --runInBand
 
+.PHONY: catalogs-acceptance-front
+catalogs-acceptance-front: $(CATALOGS_PATH)/front/cypress/features
+	$(CATALOGS_YARN) workspace @akeneo-pim-community/catalogs --version
+
 # UTILS
 
 .PHONY: catalogs-lint-front_fix
@@ -188,3 +192,6 @@ var/infection.phar:
 	echo "80b26af31585cf98f6a898c34aa961c0bd4289ad135fa6771831bcd1d47aa5cc  var/infection.phar" | sha256sum --check
 	echo "5052975aaf68cc4010b9726bd00ac2ec3c0cf0123f94044ae37aa3d892cf02c8  var/infection.phar.asc" | sha256sum --check
 	chmod +x var/infection.phar
+
+$(CATALOGS_PATH)/front/cypress/features:
+	cp -r $(shell pwd)/$(CATALOGS_PATH)/features $(CATALOGS_PATH)/front/cypress/features
