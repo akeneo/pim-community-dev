@@ -205,7 +205,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
                     <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
                     <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
                     <Table.HeaderCell>
-                      {translate('pim_identifier_generator.nomenclature.nomenclature')}{' '}
+                      {translate('pim_identifier_generator.nomenclature.nomenclature')}
                     </Table.HeaderCell>
                   </Table.Header>
                   <Table.Body>
