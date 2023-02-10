@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import {Target} from '../models/Target';
 import {SelectLabelLocaleDropdown} from './SelectLabelLocaleDropdown';
 import {RequirementsCollapse} from './RequirementsCollapse';
+import {SelectMeasurementUnitDropdown} from './SelectMeasurementUnitDropdown';
 
 type Props = {
     target: Target | null;
@@ -70,11 +71,13 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
     const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
     const shouldDisplayChannelLocale = source !== null && attribute?.localizable && attribute?.scopable;
     const shouldDisplayTranslationValue = source !== null && attribute?.type === 'pim_catalog_simpleselect';
+    const shouldDisplayMeasurementUnits = source !== null && attribute?.type === 'pim_catalog_metric';
     const shouldDisplayNoParametersMessage = !(
         shouldDisplayLocale ||
         shouldDisplayChannel ||
         shouldDisplayChannelLocale ||
-        shouldDisplayTranslationValue
+        shouldDisplayTranslationValue ||
+        shouldDisplayMeasurementUnits
     );
 
     return (
@@ -132,6 +135,15 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
                             {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
                         </Information>
                     )}
+                    {shouldDisplayMeasurementUnits && (
+                        <SelectMeasurementUnitDropdown
+                            source={source}
+                            onChange={onChange}
+                            error={errors?.source}
+                        />
+                    )
+
+                    }
                 </>
             )}
         </>

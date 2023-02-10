@@ -140,6 +140,11 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => null,
                 ],
+                'weight' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
@@ -227,6 +232,10 @@ class CatalogFixtureCommand extends Command
               "type": "string",
               "format": "uri",
               "title": "Thumbnail"
+            },
+            "weight": {
+              "type": "number",
+              "title": "Weight"
             }
           }
         }

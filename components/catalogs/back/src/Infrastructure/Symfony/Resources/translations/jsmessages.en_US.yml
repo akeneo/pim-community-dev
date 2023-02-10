@@ -139,6 +139,9 @@ akeneo_catalogs:
                     placeholder: Select a translation
                     helper: Select the language in which the value should be sent.
                 no_parameters_message: No parameters for this source.
+                unit:
+                    label: Unit
+                    placeholder: Select a unit
             select_source:
                 label: Pim source
                 search: Search criterion
