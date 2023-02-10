@@ -23,6 +23,7 @@ define([
     updateSuccessMessage: __('pim_enrich.entity.product.flash.update.success'),
     updateFailureMessage: __('pim_enrich.entity.product.flash.update.fail'),
     updateIdentifierWarningMessage: __('pim_enrich.entity.product.flash.update.identifier_warning'),
+    sessionExpiredMessage: __('pim_enrich.entity.product.flash.update.fail_session_expired'),
 
     configure: function () {
       this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.save);
@@ -70,7 +71,7 @@ define([
           function (data) {
             if (data.meta?.identifier_generator_warnings) {
               const normalizedWarnings = data.meta.identifier_generator_warnings.map(warning => {
-                return `${warning.path}: ${warning.message} `;
+                return warning.path ? `${warning.path}: ${warning.message} ` : warning.message;
               });
 
               messenger.notify('warning', this.updateIdentifierWarningMessage, normalizedWarnings);

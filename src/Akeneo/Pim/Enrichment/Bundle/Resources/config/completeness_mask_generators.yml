@@ -10,6 +10,8 @@ services:
 
     akeneo.pim.enrichment.completeness.mask_item_generator.price_collection:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\PriceCollectionMaskItemGenerator'
+        arguments:
+            - '@pim_catalog.query.find_activated_currencies'
         tags: [{ name: akeneo.pim.enrichment.completeness.mask_item_generator }]
 
     akeneo.pim.enrichment.completeness.mask_item_generator.metric:

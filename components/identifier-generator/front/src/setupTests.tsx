@@ -5,6 +5,30 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 
+const mockedUseSecurity = jest.fn();
+
+jest.mock('@akeneo-pim-community/shared', () => ({
+  ...jest.requireActual('@akeneo-pim-community/shared'),
+  useTranslate: () => (i18nKey: string) => i18nKey,
+  useRouter: () => ({
+    generate: (key: string) => key,
+  }),
+  useNotify: () => () => {},
+  useUserContext: () => ({
+    get: (k: string) => {
+      switch (k) {
+        case 'catalogLocale':
+          return 'en_US';
+        case 'uiLocale':
+          return 'en_US';
+        default:
+          throw new Error(`Unknown key ${k}`);
+      }
+    },
+  }),
+  useSecurity: mockedUseSecurity,
+}));
+
 beforeEach(() => {
   const intersectionObserverMock = () => ({
     observe: jest.fn(),
@@ -12,37 +36,10 @@ beforeEach(() => {
   });
 
   window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
+
+  mockedUseSecurity.mockImplementation(() => ({isGranted: () => true}));
 });
 
 jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
   PimView: () => <></>,
-}));
-
-jest.mock('@akeneo-pim-community/shared', () => ({
-  ...jest.requireActual('@akeneo-pim-community/shared'),
-  useTranslate: () => (i18nKey: string) => {
-    return i18nKey;
-  },
-  useRouter: () => {
-    return {
-      generate: (key: string) => key,
-    };
-  },
-  useNotify: () => {
-    return () => {};
-  },
-  useUserContext: () => {
-    return {
-      get: (k: string) => {
-        switch (k) {
-          case 'catalogLocale':
-            return 'en_US';
-          case 'uiLocale':
-            return 'en_US';
-          default:
-            throw new Error(`Unknown key ${k}`);
-        }
-      },
-    };
-  },
 }));

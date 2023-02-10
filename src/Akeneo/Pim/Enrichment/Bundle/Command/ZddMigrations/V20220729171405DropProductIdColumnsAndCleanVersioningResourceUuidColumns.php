@@ -128,6 +128,8 @@ class V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns i
         ],
     ];
 
+    private bool $shouldLog = true;
+
     public function __construct(private Connection $connection, private LoggerInterface $logger)
     {
     }
@@ -147,7 +149,17 @@ class V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns i
         $this->log(sprintf('%s ended', $this->getName()));
     }
 
-    private function dropTriggersAndProductIdColumns(string $table, array $tableProperties): void
+
+    public function migrateNotZdd(): void
+    {
+        $this->shouldLog = false;
+        foreach (self::TABLES_TO_UPDATE as $table => $properties) {
+            $this->dropTriggersAndProductIdColumns($table, $properties, false);
+        }
+        $this->cleanVersioningResourceUuid();
+    }
+
+    private function dropTriggersAndProductIdColumns(string $table, array $tableProperties, $isZdd = true): void
     {
         if (!$this->tableExists($table)) {
             $this->log(\sprintf('The %s table does not exist, moving on to the next table', $table));
@@ -160,9 +172,9 @@ class V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns i
         if (null !== $column && $this->columnExists($table, $column)) {
             $this->dropForeignKeys($table, $column);
             $this->dropIndexes($table, $column);
-            $this->setColumnNullable($table, $column);
+            $this->setColumnNullable($table, $column, $isZdd);
             $this->dropTriggers($tableProperties['triggers']);
-            $this->dropColumn($table, $column);
+            $this->dropColumn($table, $column, $isZdd);
         } else {
             $this->dropTriggers($tableProperties['triggers']);
         }
@@ -235,18 +247,24 @@ class V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns i
         }
     }
 
-    private function setColumnNullable(string $table, string $column): void
+    private function setColumnNullable(string $table, string $column, bool $isZdd = true): void
     {
+        $algorithm = $isZdd ? ', ALGORITHM=INPLACE' : '';
+        $lock = $isZdd ? ', LOCK=NONE' : '';
+
         $this->connection->executeStatement(
-            \sprintf('ALTER TABLE %s MODIFY %s INT DEFAULT NULL, ALGORITHM=INPLACE, LOCK=NONE;', $table, $column)
+            \sprintf('ALTER TABLE %s MODIFY %s INT DEFAULT NULL%s%s;', $table, $column, $algorithm, $lock)
         );
         $this->log(\sprintf('Set column nullable: %s.%s', $table, $column));
     }
 
-    private function dropColumn(string $table, string $column): void
+    private function dropColumn(string $table, string $column, bool $isZdd = true): void
     {
+        $algorithm = $isZdd ? ', ALGORITHM=INPLACE' : '';
+        $lock = $isZdd ? ', LOCK=NONE' : '';
+
         $this->connection->executeStatement(
-            \sprintf('ALTER TABLE %s DROP COLUMN %s, ALGORITHM=INPLACE, LOCK=NONE;', $table, $column)
+            \sprintf('ALTER TABLE %s DROP COLUMN %s%s%s;', $table, $column, $algorithm, $lock)
         );
         $this->log(\sprintf('Dropped column %s.%s', $table, $column));
     }
@@ -284,6 +302,9 @@ class V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns i
 
     private function log(string $message): void
     {
+        if (!$this->shouldLog) {
+            return;
+        }
         $this->logger->notice($message, ['zdd_migration' => $this->getName()]);
     }
 }

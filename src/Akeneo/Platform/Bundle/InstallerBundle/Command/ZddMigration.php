@@ -22,5 +22,12 @@ interface ZddMigration
 {
     public function migrate(): void;
 
+    /**
+     * As any change in a ZDD Migration have to be reflected in the database schema,
+     * we need to provide a way to migrate also without ZDD.
+     * It's useful for users running the PIM out of Saas.
+     */
+    public function migrateNotZdd(): void;
+
     public function getName(): string;
 }

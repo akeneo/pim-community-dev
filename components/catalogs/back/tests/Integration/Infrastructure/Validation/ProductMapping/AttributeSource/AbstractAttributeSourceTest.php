@@ -75,7 +75,7 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
         $this->getChannelQuery = $this->createMock(GetChannelQueryInterface::class);
         $this->getChannelQuery
             ->method('execute')
-            ->willReturnCallback(fn ($code) => $this->channels[$code] ?? null);
+            ->willReturnCallback(fn ($code): ?array => $this->channels[$code] ?? null);
         self::getContainer()->set(GetChannelQuery::class, $this->getChannelQuery);
 
         $this->getLocalesQuery = $this->createMock(GetLocalesQueryInterface::class);

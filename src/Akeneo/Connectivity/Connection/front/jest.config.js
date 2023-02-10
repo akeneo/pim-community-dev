@@ -12,4 +12,5 @@ module.exports = {
     },
     setupFiles: ['./tests/mocks/fetch-mock.ts'],
     collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
+    workerIdleMemoryLimit: "300MB"
 };

@@ -16,6 +16,27 @@ akeneo_identifier_generator_get_identifier_attributes:
     defaults:
         _feature: identifier_generator
 
+akeneo_identifier_generator_get_families:
+    path: '/identifier-generator/families'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetFamiliesController
+    methods: [GET]
+    defaults:
+        _feature: identifier_generator
+
+akeneo_identifier_generator_get_attribute_options:
+    path: '/identifier-generator/attribute-options/{attributeCode}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAttributeOptionsController
+    methods: [GET]
+    defaults:
+        _feature: identifier_generator
+
+akeneo_identifier_generator_get_conditions:
+    path: '/identifier-generator/conditions'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailableConditionsController
+    methods: [GET]
+    defaults:
+        _feature: identifier_generator
+
 akeneo_identifier_generator_rest_list:
     path: '/rest/identifier-generator'
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\ListIdentifierGeneratorController

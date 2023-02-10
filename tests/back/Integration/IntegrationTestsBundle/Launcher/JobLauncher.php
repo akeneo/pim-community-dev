@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -42,18 +43,21 @@ class JobLauncher
     /** @var PubSubQueueStatus[] */
     private iterable $pubSubQueueStatuses;
     private LoggerInterface $logger;
+    private FeatureFlags $featureFlags;
 
     public function __construct(
         KernelInterface $kernel,
         Connection $dbConnection,
         iterable $pubSubQueueStatuses,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        FeatureFlags $featureFlags
     ) {
         Assert::allIsInstanceOf($pubSubQueueStatuses, PubSubQueueStatus::class);
         $this->kernel = $kernel;
         $this->dbConnection = $dbConnection;
         $this->pubSubQueueStatuses = $pubSubQueueStatuses;
         $this->logger = $logger;
+        $this->featureFlags = $featureFlags;
     }
 
     /**
@@ -67,6 +71,7 @@ class JobLauncher
      */
     public function launchExport(string $jobCode, string $username = null, array $config = [], string $format = 'csv') : string
     {
+        $this->featureFlags->enable('import_export_local_storage');
         Assert::stringNotEmpty($format);
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
@@ -141,6 +146,7 @@ class JobLauncher
      */
     public function launchSubProcessExport(string $jobCode, string $username = null, array $config = []) : string
     {
+        $this->featureFlags->enable('import_export_local_storage');
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export_.csv';
         if (file_exists($filePath)) {
             unlink($filePath);
@@ -193,6 +199,7 @@ class JobLauncher
         array $config = [],
         string $format = 'csv'
     ) : void {
+        $this->featureFlags->enable('import_export_local_storage');
         Assert::stringNotEmpty($format);
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
@@ -400,6 +407,8 @@ class JobLauncher
         array $fixturePaths = [],
         array $config = []
     ): void {
+        $this->featureFlags->enable('import_export_local_storage');
+
         $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::IMPORT_DIRECTORY;
         $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
         $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';

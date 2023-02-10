@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\Analytics\Query;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
@@ -15,12 +16,14 @@ final class IsDemoCatalogIntegration extends TestCase
     private IsDemoCatalogQuery $isDemoCatalogQuery;
     private JobLauncher $jobLauncher;
     private FixtureJobLoader $fixtureJobLoader;
+    private FeatureFlags $featureFlags;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->isDemoCatalogQuery = $this->get('pim_analytics.query.is_demo_catalog');
+        $this->featureFlags = $this->get('feature_flags');
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $this->fixtureJobLoader = $this->get('pim_installer.fixture_loader.job_loader');
     }
@@ -39,6 +42,7 @@ final class IsDemoCatalogIntegration extends TestCase
         Assert::assertFalse($this->isDemoCatalogQuery->fetch());
 
         // test both CE and EE fixtures as the path is the same
+        $this->featureFlags->enable('import_export_local_storage');
         $this->fixtureJobLoader->loadJobInstances($this->getParameter('kernel.project_dir') . '/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal');
         $fixturePath = $this->getParameter('kernel.project_dir') . '/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev/';
 
