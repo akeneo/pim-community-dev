@@ -1,6 +1,6 @@
 {
   "$schema": "https://api.akeneo.com/mapping/product/0.0.5/schema",
-  "description": "The data should match one item from enum at #/properties/release_date/type",
+  "description": "Additional object properties are not allowed: format at #/properties/release_date",
   "properties": {
     "uuid": {
       "type": "string"
