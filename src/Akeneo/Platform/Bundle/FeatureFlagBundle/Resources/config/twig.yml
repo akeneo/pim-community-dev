@@ -1,0 +1,6 @@
+services:
+  Akeneo\Platform\Bundle\FeatureFlagBundle\Twig\FeatureFlagExtension:
+    arguments:
+      - '@feature_flags'
+    tags:
+      - { name: twig.extension }

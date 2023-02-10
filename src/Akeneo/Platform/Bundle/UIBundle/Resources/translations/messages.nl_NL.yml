@@ -455,6 +455,8 @@ pim_datagrid:
       label: Bovenliggende
     identifier:
       label: Id
+    uuid:
+      label: Uuid
 #Versioning / history
 Change History: Geschiedenis van wijzigingen
 Data Audit: Gegevens audit

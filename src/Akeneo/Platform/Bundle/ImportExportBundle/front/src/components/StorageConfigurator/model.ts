@@ -6,19 +6,23 @@ import {
   AmazonS3Storage,
   Storage,
   StorageType,
+  additionalStorageIsEnabled,
   localStorageIsEnabled,
   MicrosoftAzureStorage,
+  GoogleCloudStorage,
 } from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 import {AmazonS3StorageConfigurator} from './AmazonS3StorageConfigurator';
 import {MicrosoftAzureStorageConfigurator} from './MicrosoftAzureStorageConfigurator';
+import {GoogleCloudStorageConfigurator} from './GoogleCloudStorageConfigurator';
 
 type StorageLoginType = 'password' | 'private_key';
 
 const STORAGE_LOGIN_TYPES = ['password', 'private_key'];
 
 type StorageConfiguratorProps = {
+  jobInstanceCode: string;
   storage: Storage;
   fileExtension: string;
   onStorageChange: (storage: Storage) => void;
@@ -31,9 +35,6 @@ type StorageConfiguratorCollection = {
 
 const STORAGE_CONFIGURATORS: StorageConfiguratorCollection = {
   none: null,
-  sftp: SftpStorageConfigurator,
-  amazon_s3: AmazonS3StorageConfigurator,
-  microsoft_azure: MicrosoftAzureStorageConfigurator,
 };
 
 const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConfiguratorCollection => {
@@ -41,6 +42,13 @@ const getEnabledStorageConfigurators = (featureFlags: FeatureFlags): StorageConf
 
   if (localStorageIsEnabled(featureFlags)) {
     enabledStorageConfigurators['local'] = LocalStorageConfigurator;
+  }
+
+  if (additionalStorageIsEnabled(featureFlags)) {
+    enabledStorageConfigurators['sftp'] = SftpStorageConfigurator;
+    enabledStorageConfigurators['amazon_s3'] = AmazonS3StorageConfigurator;
+    enabledStorageConfigurators['microsoft_azure'] = MicrosoftAzureStorageConfigurator;
+    enabledStorageConfigurators['google_cloud_storage'] = GoogleCloudStorageConfigurator;
   }
 
   return enabledStorageConfigurators;
@@ -78,27 +86,25 @@ const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
   return (
     'amazon_s3' === storage.type &&
     'file_path' in storage &&
-    typeof 'file_path' === 'string' &&
     'region' in storage &&
-    typeof 'region' === 'string' &&
     'bucket' in storage &&
-    typeof 'bucket' === 'string' &&
-    'key' in storage &&
-    typeof 'key' === 'string' &&
-    'secret' in storage &&
-    typeof 'secret' === 'string'
+    'key' in storage
   );
 };
 
 const isMicrosoftAzureStorage = (storage: Storage): storage is MicrosoftAzureStorage => {
+  return 'microsoft_azure' === storage.type && 'file_path' in storage && 'container_name' in storage;
+};
+
+const isGoogleCloudStorage = (storage: Storage): storage is GoogleCloudStorage => {
   return (
-    'microsoft_azure' === storage.type &&
+    'google_cloud_storage' === storage.type &&
     'file_path' in storage &&
     typeof 'file_path' === 'string' &&
-    'connection_string' in storage &&
-    typeof 'connection_string' === 'string' &&
-    'container_name' in storage &&
-    typeof 'container_name' === 'string'
+    'project_id' in storage &&
+    typeof 'project_id' === 'string' &&
+    'bucket' in storage &&
+    typeof 'bucket' === 'string'
   );
 };
 
@@ -108,6 +114,7 @@ export {
   isSftpStorage,
   isAmazonS3Storage,
   isMicrosoftAzureStorage,
+  isGoogleCloudStorage,
   isValidLoginType,
   getStorageConfigurator,
   STORAGE_LOGIN_TYPES,

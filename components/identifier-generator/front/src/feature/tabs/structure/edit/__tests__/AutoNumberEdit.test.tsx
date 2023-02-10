@@ -26,5 +26,19 @@ describe('AutoNumberEdit', () => {
       numberMin: 42,
       digitsMin: 5,
     });
+
+    fireEvent.change(screen.getByTitle('42'), {target: {value: ''}});
+    expect(onChange).toBeCalledWith({
+      type: PROPERTY_NAMES.AUTO_NUMBER,
+      numberMin: null,
+      digitsMin: 10,
+    });
+
+    fireEvent.change(screen.getByTitle('10'), {target: {value: ''}});
+    expect(onChange).toBeCalledWith({
+      type: PROPERTY_NAMES.AUTO_NUMBER,
+      numberMin: 42,
+      digitsMin: null,
+    });
   });
 });

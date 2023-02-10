@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
 final class IdentifierGeneratorId
 {
     private function __construct(
-        private string $id,
+        private readonly string $id,
     ) {
     }
 

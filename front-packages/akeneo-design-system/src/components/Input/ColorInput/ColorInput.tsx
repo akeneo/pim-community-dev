@@ -68,7 +68,8 @@ const ReadOnlyIcon = styled(LockIcon)`
 `;
 
 const ErrorIcon = styled(DangerIcon)`
-  padding: 0 16px 0 15px;
+  padding: 0 15px 0 16px;
+  box-sizing: content-box;
 `;
 
 type ColorInputProps = Override<

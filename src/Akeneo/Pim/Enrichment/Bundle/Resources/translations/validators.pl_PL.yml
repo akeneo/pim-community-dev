@@ -38,6 +38,7 @@ product_model.family_variant.not_blank.message: Wariant rodziny modelu produktu 
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": Atrybut {{ attribute_code }} wymaga daty nie wcześniejszej niż {{ limit }}.
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": Atrybut {{ attribute_code }} wymaga daty nie późniejszej niż {{ limit }}.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": Atrybut {{ attribute }} wymaga liczby, a wprowadzona wartość {{ value }} nią nie jest.
+"The {{ attribute }} attribute requires a value which does not contain space, and the submitted \"{{ value }}\" has at least one.": Atrybut {{ attribute }} wymaga wartości, która nie zawiera spacji, a przesłana wartość „{{ value }}” zawiera co najmniej jedną spację.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": Atrybut %attribute% nie może zawierać więcej niż %limit% znaków. Wprowadzona wartość jest za długa.
 "The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": Rozszerzenie pliku %type% nie jest dozwolone dla atrybutu %attribute%. Dozwolone rozszerzenia to %extensions%.
 "The %attribute% attribute requires a url link.": Atrybut %attribute% wymaga adresu URL.

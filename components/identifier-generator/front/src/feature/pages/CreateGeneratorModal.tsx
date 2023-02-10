@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {AttributesIllustration, Button, Field, Modal, TextInput, useAutoFocus} from 'akeneo-design-system';
-import {IdentifierGenerator} from '../models';
+import {IdentifierGenerator, TEXT_TRANSFORMATION} from '../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Styled} from '../components/Styled';
 import {useIdentifierAttributes, useValidateFormWithEnter} from '../hooks';
@@ -56,6 +56,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
         conditions: [],
         structure: [],
         delimiter: null,
+        text_transformation: TEXT_TRANSFORMATION.NO,
       });
     }
   }, [target, isFormInvalid, onSave, code, uiLocale, label]);

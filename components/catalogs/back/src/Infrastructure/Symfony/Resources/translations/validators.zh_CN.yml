@@ -38,9 +38,14 @@ akeneo_catalogs:
         unknown: '此区域“{{ locale_name }}”已停用。请检查您的区域设置或移除此筛选器。'
     product_mapping:
       source:
+        invalid: '此属性已被删除。'
+        unknown: '未知源值'
         channel:
           not_empty: '此渠道必须为空。'
           empty: '此渠道不能为空。'
+          unknown: '此渠道已被删除。请检查您的渠道设置或更新此值。'
         locale:
           not_empty: '此区域必须为空。'
           empty: '此区域不能为空。'
+          unknown: '此区域已被禁用或不再存在。请检查您的渠道和区域设置。'
+          disabled: '此区域已禁用。请检查您的渠道和区域设置或更新此值。'

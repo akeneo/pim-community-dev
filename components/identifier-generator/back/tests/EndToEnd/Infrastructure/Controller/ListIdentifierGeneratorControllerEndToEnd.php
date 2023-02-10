@@ -41,6 +41,7 @@ final class ListIdentifierGeneratorControllerEndToEnd extends ControllerEndToEnd
                 'string' => 'AKN',
             ]],
             'delimiter' => null,
+            'text_transformation' => 'no',
         ];
 
         $this->callCreateRoute(

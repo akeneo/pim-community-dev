@@ -1,7 +1,12 @@
 import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
-import {AmazonS3Storage, MicrosoftAzureStorage, SftpStorage} from '../components';
-import {isAmazonS3Storage, isMicrosoftAzureStorage, isSftpStorage} from '../components/StorageConfigurator';
+import {AmazonS3Storage, MicrosoftAzureStorage, GoogleCloudStorage, SftpStorage} from '../components';
+import {
+  isAmazonS3Storage,
+  isMicrosoftAzureStorage,
+  isGoogleCloudStorage,
+  isSftpStorage,
+} from '../components/StorageConfigurator';
 
 const isSftpConnectionFieldFulfilled = (storage: SftpStorage): boolean => {
   return (
@@ -27,17 +32,27 @@ const isMicrosoftAzureConnectionFieldFulfilled = (storage: MicrosoftAzureStorage
   return '' !== storage.connection_string && '' !== storage.container_name && '' !== storage.file_path;
 };
 
-const useCheckStorageConnection = (storage: SftpStorage | AmazonS3Storage | MicrosoftAzureStorage) => {
+const isGoogleCloudConnectionFieldFulfilled = (storage: GoogleCloudStorage): boolean => {
+  return (
+    '' !== storage.file_path && '' !== storage.project_id && '' !== storage.service_account && '' !== storage.bucket
+  );
+};
+
+const useCheckStorageConnection = (
+  jobInstanceCode: string,
+  storage: SftpStorage | AmazonS3Storage | MicrosoftAzureStorage | GoogleCloudStorage
+) => {
   const [isValid, setValid] = useState<boolean | undefined>(undefined);
   const [isChecking, setIsChecking] = useState<boolean>(false);
-  const route = useRoute('pimee_job_automation_get_storage_connection_check');
+  const route = useRoute('pimee_job_automation_get_storage_connection_check', {jobInstanceCode});
 
   const canCheckConnection =
     !isChecking &&
     !isValid &&
     ((isSftpStorage(storage) && isSftpConnectionFieldFulfilled(storage)) ||
       (isAmazonS3Storage(storage) && isAmazonS3ConnectionFieldFulfilled(storage)) ||
-      (isMicrosoftAzureStorage(storage) && isMicrosoftAzureConnectionFieldFulfilled(storage)));
+      (isMicrosoftAzureStorage(storage) && isMicrosoftAzureConnectionFieldFulfilled(storage)) ||
+      (isGoogleCloudStorage(storage) && isGoogleCloudConnectionFieldFulfilled(storage)));
 
   useEffect(() => {
     return () => {
