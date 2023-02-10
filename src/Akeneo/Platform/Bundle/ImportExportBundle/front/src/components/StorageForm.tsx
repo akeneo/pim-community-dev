@@ -1,8 +1,8 @@
 import React from 'react';
 import {SectionTitle, Field, SelectInput, Helper} from 'akeneo-design-system';
 import {Section, useTranslate, ValidationError, filterErrors, useFeatureFlags} from '@akeneo-pim-community/shared';
-import {Storage, isValidStorageType, getDefaultStorage, JobType, getEnabledStorageTypes} from './model';
 import {getStorageConfigurator} from './StorageConfigurator';
+import {getDefaultStorage, getEnabledStorageTypes, isValidStorageType, JobType, Storage} from '../models';
 
 type StorageFormProps = {
   jobInstanceCode: string;

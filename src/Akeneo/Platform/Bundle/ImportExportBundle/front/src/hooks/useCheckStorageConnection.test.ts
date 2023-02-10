@@ -1,7 +1,7 @@
 import {act} from '@testing-library/react-hooks';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {SftpStorage} from '../components';
 import {useCheckStorageConnection} from './useCheckStorageConnection';
+import {SftpStorage} from '../models';
 
 test('connection healthy', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
