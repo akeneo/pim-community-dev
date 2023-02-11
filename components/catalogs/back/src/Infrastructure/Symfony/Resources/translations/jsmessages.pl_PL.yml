@@ -45,7 +45,7 @@ akeneo_catalogs:
   product_selection:
     empty: Dodaj kryteria wyboru, aby utworzyć wybór produktów
     count:
-      products: '{0} Brak produktów {count, plural, one{{count} produkt} few {{count} produkty} many {{count} produktów} other{{count} produktu}}'
+      products: '{0} Brak produktów|one: {{ count }} produkt|few: {{ count }} produkty|many: {{ count }} produktów|other: {{ count }} produktu'
       error: Nie można obliczyć liczby produktów.
     more_information: Więcej informacji znajdziesz w naszej pomocy.
     add_criteria:
