@@ -163,6 +163,9 @@ pim_import_export:
           label: Tipus
           local: Local
           sftp: SFTP
+          amazon_s3: Amazon S3
+          microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
           none: No s'ha configurat emmagatzematge
         file_path:
           label: Ruta de l'arxiu
@@ -183,6 +186,36 @@ pim_import_export:
         password:
           label: Contrasenya
           placeholder: Introduïu la vostra contrasenya
+        public_key:
+          label: Clau pública
+        login_type:
+          label: Mètode d'autenticació
+          password: Inici de sessió i contrasenya
+          private_key: Clau privada
+        region:
+          label: Regió
+          placeholder: Introdueix la teva regió
+        bucket:
+          label: Nom del bucket
+          placeholder: Introdueix el nom de la teva regió
+        key:
+          label: Clau
+          placeholder: Introdueixi la teva clau
+        secret:
+          label: Secret
+          placeholder: Introdueix el teu secret
+        connection_string:
+          label: Cadena de connexió
+          placeholder: Introdueix la teva cadena de connexió
+        container_name:
+          label: Nom del contenidor
+          placeholder: Introdueix el teu nom del contenidor
+        project_id:
+          label: Identificació del projecte
+          placeholder: Introdueix el teu nom ID del projecte
+        service_account:
+          label: Compte del servei
+          placeholder: Introduïu el vostre compte de servei
       validation:
         storage:
           unavailable_type: Aquest emmagatzematge no està disponible, només hi ha {{ available_types }} disponibles.
