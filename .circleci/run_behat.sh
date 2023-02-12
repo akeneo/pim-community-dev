@@ -4,7 +4,7 @@ set -eo pipefail
 
 TEST_SUITE=$1
 
-TEST_FILES=$(docker-compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TEST_SUITE | circleci tests split --split-by=timings)
+TEST_FILES=$(docker compose run --rm -T php vendor/bin/behat --list-scenarios -p legacy -s $TEST_SUITE | circleci tests split --split-by=timings)
 echo "TEST FILES ON THIS CONTAINER: $TEST_FILES"
 
 fail=0
@@ -16,11 +16,11 @@ for TEST_FILE in $TEST_FILES; do
     output=$(basename $TEST_FILE)_$(uuidgen)
 
     set +e
-    docker-compose exec -u www-data -T fpm ./vendor/bin/behat --strict --format pim --out var/tests/behat/${output} --format pretty --out std --colors -p legacy -s $TEST_SUITE $TEST_FILE ||
+    docker compose exec -u www-data -T fpm ./vendor/bin/behat --strict --format pim --out var/tests/behat/${output} --format pretty --out std --colors -p legacy -s $TEST_SUITE $TEST_FILE ||
     (
       echo Retrying $TEST_FILE &&
-      docker-compose exec -u www-data -T fpm /bin/bash -c "echo $TEST_FILE >> var/tests/behat/behats_retried.txt" &&
-      docker-compose exec -u www-data -T fpm ./vendor/bin/behat --strict --format pim --out var/tests/behat/${output} --format pretty --out std --colors -p legacy -s $TEST_SUITE $TEST_FILE
+      docker compose exec -u www-data -T fpm /bin/bash -c "echo $TEST_FILE >> var/tests/behat/behats_retried.txt" &&
+      docker compose exec -u www-data -T fpm ./vendor/bin/behat --strict --format pim --out var/tests/behat/${output} --format pretty --out std --colors -p legacy -s $TEST_SUITE $TEST_FILE
     )
 
     fail=$(($fail + $?))

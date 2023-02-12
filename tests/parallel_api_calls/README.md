@@ -15,7 +15,7 @@ in order to detect dysfunctions in the handling of parallel API write calls
 3. Create an API connection
 
 ```
-$ APP_ENV=test docker-compose run php bin/console akeneo:connectivity-connection:create parallel_api_calls
+$ APP_ENV=test docker compose run php bin/console akeneo:connectivity-connection:create parallel_api_calls
 Code: parallel_api_calls
 Client ID: 1_6coeumqtx64owcg0oosg4k0www0g0wssswsgcw44g4csowwgck
 Secret: 2pu2c79qn6yok8kcgocs4okw4wgsw4w48wwws0sww88080co0c
@@ -25,7 +25,7 @@ Password: 5dde2008e
 
 4. Run the test program
 ```
-$ APP_ENV=test docker-compose run php php tests/parallel_api_calls/parallel_api_calls.php \
+$ APP_ENV=test docker compose run php php tests/parallel_api_calls/parallel_api_calls.php \
     -c 1_6coeumqtx64owcg0oosg4k0www0g0wssswsgcw44g4csowwgck
     -s 2pu2c79qn6yok8kcgocs4okw4wgsw4w48wwws0sww88080co0c
     -u admin -p admin -P 10

@@ -23,19 +23,19 @@ commands:
                     name: Load php docker image
                     command: |
                         [ ! -f ~/project/php-pim-image.tar ] || docker load -i php-pim-image.tar
-                        [ -f ~/project/php-pim-image.tar ] || docker-compose pull php
+                        [ -f ~/project/php-pim-image.tar ] || docker compose pull php
 
     load_docker_image_node:
         steps:
             -   run:
                     name: Load node docker image
-                    command: docker-compose pull node
+                    command: docker compose pull node
 
     start_test_containers:
         steps:
             -   run:
                     name: Pull docker images
-                    command: docker-compose pull mysql elasticsearch object-storage pubsub-emulator
+                    command: docker compose pull mysql elasticsearch object-storage pubsub-emulator
             -   run:
                     name: Start containers
                     command: |

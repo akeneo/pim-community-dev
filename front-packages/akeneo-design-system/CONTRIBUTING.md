@@ -16,7 +16,7 @@ As a general advice, you should ask the assigned designer what to do and make su
 $ front-packages/akeneo-design-system/bin/dsm generate ComponentName
 $ yarn --cwd=front-packages/akeneo-design-system storybook:start
 # Or with Docker
-$ docker-compose run --rm -p 6006:6006 node yarn --cwd=front-packages/akeneo-design-system storybook:start
+$ docker compose run --rm -p 6006:6006 node yarn --cwd=front-packages/akeneo-design-system storybook:start
 ```
 
 - Then implement your Component logic in the newly created file `src/components/ComponentName/ComponentName.tsx`

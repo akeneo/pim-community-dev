@@ -33,13 +33,13 @@ boot_and_install_pim()
     message "Boot and install PIM in test environment"
     cd $PIM_PATH
     export ES_JAVA_OPTS='-Xms2g -Xmx2g'
-    docker-compose up -d --remove-orphans
-    PUBLIC_PIM_HTTP_PORT=$(docker-compose port httpd-behat 80 | cut -d ':' -f 2)
+    docker compose up -d --remove-orphans
+    PUBLIC_PIM_HTTP_PORT=$(docker compose port httpd-behat 80 | cut -d ':' -f 2)
     rm -rf var/cache/*
     bin/docker/pim-setup.sh
-    docker-compose exec -T fpm bin/console cache:warmup -e behat
-    docker-compose exec -T fpm bin/console pim:installer:db -e behat
-    CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
+    docker compose exec -T fpm bin/console cache:warmup -e behat
+    docker compose exec -T fpm bin/console pim:installer:db -e behat
+    CREDENTIALS=$(docker compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
     export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
     export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
     export API_URL="http://$DOCKER_BRIDGE_IP:$PUBLIC_PIM_HTTP_PORT"
@@ -75,8 +75,8 @@ boot_and_install_pim
 generate_reference_catalog
 
 cd $PIM_PATH
-PRODUCT_SIZE=$(docker-compose exec -T mysql mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) avg_product_values FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
-PRODUCT_COUNT=$(docker-compose exec -T mysql mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT COUNT(*) FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
+PRODUCT_SIZE=$(docker compose exec -T mysql mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) avg_product_values FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
+PRODUCT_COUNT=$(docker compose exec -T mysql mysql -uakeneo_pim -pakeneo_pim akeneo_pim -N -s -e "SELECT COUNT(*) FROM pim_catalog_product;" | tail -n 1 | tr -d '\r \n')
 message "Start bench products with 120 attributes"
 
 sleep 10

@@ -58,8 +58,8 @@ cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 
 echo "Enable Onboarder bundle on 5.0 branch..."
 sudo chown 1000:1000 composer.json
-docker-compose run --rm php composer config repositories.onboarder '{ "type": "vcs", "url": "https://github.com/akeneo/pim-onboarder.git", "branch": "master" }'
-docker-compose run --rm php php -d memory_limit=5G /usr/local/bin/composer require "akeneo/pim-onboarder:^4.2.1"
+docker compose run --rm php composer config repositories.onboarder '{ "type": "vcs", "url": "https://github.com/akeneo/pim-onboarder.git", "branch": "master" }'
+docker compose run --rm php php -d memory_limit=5G /usr/local/bin/composer require "akeneo/pim-onboarder:^4.2.1"
 if [ -d "vendor/akeneo/pim-onboarder" ]; then
     sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
 fi
@@ -115,13 +115,13 @@ echo "Clean cache..."
 APP_ENV=test make cache
 
 echo "Launch branch migrations..."
-docker-compose run --rm php bin/console doctrine:migrations:migrate --env=test --no-interaction
+docker compose run --rm php bin/console doctrine:migrations:migrate --env=test --no-interaction
 
 echo "Dump 5.0 with migrations database..."
-docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME | sed 's/ AUTO_INCREMENT=[0-9]*\b//g' > /tmp/structure_changes/dump_50_database_with_migrations.sql
+docker compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME | sed 's/ AUTO_INCREMENT=[0-9]*\b//g' > /tmp/structure_changes/dump_50_database_with_migrations.sql
 
 echo "Dump 5.0 with migrations index..."
-docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"|json_pp --json_opt=canonical,pretty > /tmp/structure_changes/dump_50_index_with_migrations.json
+docker compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"|json_pp --json_opt=canonical,pretty > /tmp/structure_changes/dump_50_index_with_migrations.json
 
 
 ## STEP 3: install fresh branch database and indexes
@@ -133,10 +133,10 @@ echo "Install fresh branch database and indexes..."
 APP_ENV=test make database
 
 echo "Dump branch database..."
-docker-compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME | sed 's/ AUTO_INCREMENT=[0-9]*\b//g' > /tmp/structure_changes/dump_branch_database.sql
+docker compose exec -T mysql mysqldump --no-data --skip-opt --skip-comments --password=$APP_DATABASE_PASSWORD --user=$APP_DATABASE_USER $APP_DATABASE_NAME | sed 's/ AUTO_INCREMENT=[0-9]*\b//g' > /tmp/structure_changes/dump_branch_database.sql
 
 echo "Dump branch index..."
-docker-compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"|json_pp --json_opt=canonical,pretty > /tmp/structure_changes/dump_branch_index.json
+docker compose exec -T elasticsearch curl -XGET "$APP_INDEX_HOSTS/_all/_mapping"|json_pp --json_opt=canonical,pretty > /tmp/structure_changes/dump_branch_index.json
 
 
 ## STEP 4: compare the results
