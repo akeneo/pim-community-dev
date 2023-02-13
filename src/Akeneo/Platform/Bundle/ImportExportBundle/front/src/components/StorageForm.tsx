@@ -5,6 +5,7 @@ import {Storage, isValidStorageType, getDefaultStorage, JobType, getEnabledStora
 import {getStorageConfigurator} from './StorageConfigurator';
 
 type StorageFormProps = {
+  jobInstanceCode: string;
   jobType: JobType;
   fileExtension: string;
   storage: Storage;
@@ -12,7 +13,14 @@ type StorageFormProps = {
   onStorageChange: (storage: Storage) => void;
 };
 
-const StorageForm = ({jobType, fileExtension, storage, validationErrors, onStorageChange}: StorageFormProps) => {
+const StorageForm = ({
+  jobInstanceCode,
+  jobType,
+  fileExtension,
+  storage,
+  validationErrors,
+  onStorageChange,
+}: StorageFormProps) => {
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
 
@@ -49,6 +57,7 @@ const StorageForm = ({jobType, fileExtension, storage, validationErrors, onStora
       </Field>
       {null !== StorageConfigurator && (
         <StorageConfigurator
+          jobInstanceCode={jobInstanceCode}
           storage={storage}
           fileExtension={fileExtension}
           validationErrors={validationErrors}

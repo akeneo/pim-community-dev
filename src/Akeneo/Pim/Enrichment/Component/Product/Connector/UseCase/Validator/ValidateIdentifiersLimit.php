@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * @author    Thomas Fehringer <thomas.fehringer@getakeneo.com>
@@ -31,6 +32,12 @@ final class ValidateIdentifiersLimit
 
         if (!$inQuery) {
             return;
+        }
+
+        if ($inQuery['value'] === null) {
+            throw new UnprocessableEntityHttpException(
+                "The identifier filter can't contain null value"
+            );
         }
 
         if (count(array_unique($inQuery['value'])) > self::LIMIT) {

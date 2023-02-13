@@ -19,6 +19,7 @@ const CheckStorageConnection = styled.div`
 `;
 
 const GoogleCloudStorageConfigurator = ({
+  jobInstanceCode,
   storage,
   fileExtension,
   validationErrors,
@@ -29,7 +30,8 @@ const GoogleCloudStorageConfigurator = ({
   }
 
   const translate = useTranslate();
-  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(storage);
+  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(jobInstanceCode, storage);
+  const serviceAccountIsStoredOnServer = storage.service_account === undefined;
 
   return (
     <>
@@ -52,8 +54,21 @@ const GoogleCloudStorageConfigurator = ({
         errors={filterErrors(validationErrors, '[project_id]')}
       />
       <TextField
+        actions={
+          serviceAccountIsStoredOnServer && (
+            <Button
+              level="secondary"
+              ghost={true}
+              size="small"
+              onClick={() => onStorageChange({...storage, service_account: ''})}
+            >
+              {translate('pim_common.edit')}
+            </Button>
+          )
+        }
         required={true}
-        value={storage.service_account}
+        value={serviceAccountIsStoredOnServer ? '••••••••' : storage.service_account}
+        readOnly={serviceAccountIsStoredOnServer}
         type="password"
         label={translate('pim_import_export.form.job_instance.storage_form.service_account.label')}
         placeholder={translate('pim_import_export.form.job_instance.storage_form.service_account.placeholder')}

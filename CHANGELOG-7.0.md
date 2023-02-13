@@ -1,5 +1,16 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-1318 [Backport PIM-10789]: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
+- PIM-1318 [Backport PIM-10791]: Fix product and product model completeness compute on attribute removal
+- PIM-1318 [Backport PIM-10768]: Fix update list status_code response
+- PIM-1318 [Backport PIM-10779]: Fix lowercase on get attribute group code for dqi activation
+- PIM-1318 [Backport PIM-10784]: Fix API error 500 when filtering for identifier with null value
+- PIM-1318 [Backport PIM-10785]: Fix case-insensitive patch product model
+- PIM-1318 [Backport PIM-10808]: Fix Error message on the family modification when an attribute is as required=0
+- PIM-1318 [Backport PIM-10802]: Fix wysiwyg-field add link event
+
 # 7.0.7 (2023-02-13)
 
 # 7.0.6 (2023-02-07)

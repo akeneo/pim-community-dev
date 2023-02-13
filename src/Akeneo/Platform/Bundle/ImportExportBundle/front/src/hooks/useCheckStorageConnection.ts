@@ -39,11 +39,12 @@ const isGoogleCloudConnectionFieldFulfilled = (storage: GoogleCloudStorage): boo
 };
 
 const useCheckStorageConnection = (
+  jobInstanceCode: string,
   storage: SftpStorage | AmazonS3Storage | MicrosoftAzureStorage | GoogleCloudStorage
 ) => {
   const [isValid, setValid] = useState<boolean | undefined>(undefined);
   const [isChecking, setIsChecking] = useState<boolean>(false);
-  const route = useRoute('pimee_job_automation_get_storage_connection_check');
+  const route = useRoute('pimee_job_automation_get_storage_connection_check', {jobInstanceCode});
 
   const canCheckConnection =
     !isChecking &&

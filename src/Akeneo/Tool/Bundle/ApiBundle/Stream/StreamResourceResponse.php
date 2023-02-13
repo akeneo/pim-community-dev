@@ -96,9 +96,9 @@ final class StreamResourceResponse
 
                     if ('' !== $subResponse->getContent()) {
                         $subResponse = json_decode($subResponse->getContent(), true);
-                        if (isset($subResponse[$this->uriParamName])) {
-                            $response['status_code'] = $subResponse[$this->uriParamName];
-                            unset($subResponse[$this->uriParamName]);
+                        if (isset($subResponse['code'])) {
+                            $response['status_code'] = $subResponse['code'];
+                            unset($subResponse['code']);
                         }
 
                         $response = array_merge($response, $subResponse);

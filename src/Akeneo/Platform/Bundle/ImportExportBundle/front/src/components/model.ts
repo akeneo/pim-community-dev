@@ -16,7 +16,7 @@ type SftpStorage = {
   port: number;
   login_type: StorageLoginType;
   username: string;
-  password: string | null;
+  password?: string | null;
 };
 
 type AmazonS3Storage = {
@@ -25,13 +25,13 @@ type AmazonS3Storage = {
   region: string;
   bucket: string;
   key: string;
-  secret: string;
+  secret?: string;
 };
 
 type MicrosoftAzureStorage = {
   type: 'microsoft_azure';
   file_path: string;
-  connection_string: string;
+  connection_string?: string;
   container_name: string;
 };
 
@@ -39,7 +39,7 @@ type GoogleCloudStorage = {
   type: 'google_cloud_storage';
   file_path: string;
   project_id: string;
-  service_account: string;
+  service_account?: string;
   bucket: string;
 };
 
