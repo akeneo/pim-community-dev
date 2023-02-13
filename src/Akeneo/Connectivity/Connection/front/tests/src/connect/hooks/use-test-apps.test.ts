@@ -38,7 +38,6 @@ test('it returns loading status and testApps values', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) =>
             ({
-                app_developer_mode: true,
                 marketplace_activate: true,
             }[feature] ?? false),
     }));
@@ -68,7 +67,6 @@ test('it returns loading status and empty values on fetch error ', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) =>
             ({
-                app_developer_mode: true,
                 marketplace_activate: true,
             }[feature] ?? false),
     }));
@@ -99,7 +97,6 @@ test('it returns loading status and empty values with feature flag disabled', as
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) =>
             ({
-                app_developer_mode: false,
                 marketplace_activate: true,
             }[feature] ?? false),
     }));

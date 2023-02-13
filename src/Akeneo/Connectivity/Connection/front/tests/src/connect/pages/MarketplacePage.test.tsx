@@ -22,34 +22,6 @@ jest.mock('@src/connect/components/Marketplace', () => ({
     Marketplace: jest.fn().mockImplementation(() => null),
 }));
 
-test('The marketplace page display the developer mode when enabled', async () => {
-    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: () => true,
-    }));
-
-    renderWithProviders(<MarketplacePage />);
-
-    await waitFor(() => expect(Marketplace).toHaveBeenCalled());
-    expect(screen.queryByText('akeneo_connectivity.connection.developer_mode')).toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app')
-    ).toBeInTheDocument();
-});
-
-test('The marketplace page do not display the developer mode when not enabled', async () => {
-    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: () => false,
-    }));
-
-    renderWithProviders(<MarketplacePage />);
-
-    await waitFor(() => expect(Marketplace).toHaveBeenCalled());
-    expect(screen.queryByText('akeneo_connectivity.connection.developer_mode')).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app')
-    ).not.toBeInTheDocument();
-});
-
 test('It redirect when the "create a test app" button is clicked', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: () => true,

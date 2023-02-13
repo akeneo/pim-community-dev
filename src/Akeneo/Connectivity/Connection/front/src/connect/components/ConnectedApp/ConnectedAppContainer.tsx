@@ -15,7 +15,6 @@ import {useSaveConnectedAppMonitoringSettings} from '../../hooks/use-save-connec
 import {useFetchConnectedAppMonitoringSettings} from '../../hooks/use-fetch-connected-app-monitoring-settings';
 import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
 import {ConnectedAppErrorMonitoring} from './ErrorMonitoring/ConnectedAppErrorMonitoring';
-import {DeveloperModeTag} from '../DeveloperModeTag';
 import isGrantedOnProduct from '../../is-granted-on-product';
 import isGrantedOnCatalog from '../../is-granted-on-catalog';
 import {CatalogList} from '@akeneo-pim-community/catalogs';
@@ -180,8 +179,6 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         history.push(catalogEditUrl);
     };
 
-    const tag = connectedApp.is_custom_app ? <DeveloperModeTag /> : null;
-
     const isAtLeastGrantedToViewProducts = isGrantedOnProduct(connectedApp, 'view');
     const isAtLeastGrantedToViewCatalogs = isGrantedOnCatalog(connectedApp, 'view');
 
@@ -206,7 +203,6 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 state={<FormState />}
                 imageSrc={connectedApp.logo ?? undefined}
                 imageIllustration={connectedApp.logo ? undefined : <AppIllustration />}
-                tag={tag}
             >
                 {connectedApp.name}
             </PageHeader>

@@ -19,14 +19,10 @@ class GetAppQuerySpec extends ObjectBehavior
 {
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
-        FeatureFlag $appDeveloperModeFeatureFlag,
         GetCustomAppQuery $getCustomAppQuery,
     ) {
-        $appDeveloperModeFeatureFlag->isEnabled()->willReturn(false);
-
         $this->beConstructedWith(
             $webMarketplaceApi,
-            $appDeveloperModeFeatureFlag,
             $getCustomAppQuery,
         );
     }
@@ -76,10 +72,8 @@ class GetAppQuerySpec extends ObjectBehavior
 
     public function it_returns_a_known_marketplace_app_even_when_developer_mode_is_enabled(
         WebMarketplaceApiInterface $webMarketplaceApi,
-        FeatureFlag $appDeveloperModeFeatureFlag,
         GetCustomAppQuery $getCustomAppQuery,
     ): void {
-        $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
         $getCustomAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
         $webMarketplaceApi->getApp('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn([
             'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
@@ -125,10 +119,8 @@ class GetAppQuerySpec extends ObjectBehavior
     }
 
     public function it_returns_a_known_custom_app_if_developer_mode_is_enabled(
-        FeatureFlag $appDeveloperModeFeatureFlag,
         GetCustomAppQuery $getCustomAppQuery,
     ): void {
-        $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
         $getCustomAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn([
             'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
             'name' => 'My Test App',
@@ -150,10 +142,8 @@ class GetAppQuerySpec extends ObjectBehavior
 
     public function it_returns_null_if_unknown_custom_app_and_marketplace_app(
         WebMarketplaceApiInterface $webMarketplaceApi,
-        FeatureFlag $appDeveloperModeFeatureFlag,
         GetCustomAppQuery $getCustomAppQuery,
     ): void {
-        $appDeveloperModeFeatureFlag->isEnabled()->willReturn(true);
         $getCustomAppQuery->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
         $webMarketplaceApi->getApp('100eedac-ff5c-497b-899d-e2d64b6c59f9')->willReturn(null);
 

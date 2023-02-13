@@ -130,6 +130,7 @@ test('it fetches connected apps', async () => {
         scopes: ['scope A1'],
         connection_code: 'connectionCodeA',
         logo: 'http://www.example.com/path/to/logo/a',
+        activate_url: 'https://example.com/activate',
         author: 'author A',
         user_group_name: 'app_123456abcde',
         connection_username: 'Connection Username',
@@ -137,6 +138,8 @@ test('it fetches connected apps', async () => {
         certified: false,
         partner: 'partner A',
         is_custom_app: false,
+        is_listed_on_the_appstore: true,
+        is_loaded: true,
         is_pending: false,
         has_outdated_scopes: false,
     };
@@ -185,7 +188,6 @@ test('it fetches connected test apps', async () => {
         isEnabled: (feature: string) => {
             switch (feature) {
                 case 'marketplace_activate':
-                case 'app_developer_mode':
                     return true;
             }
         },
@@ -266,6 +268,7 @@ test('it returns connected apps and warns when not listed on the appstore', asyn
         scopes: ['scope A1'],
         connection_code: 'connectionCodeA',
         logo: 'http://www.example.com/path/to/logo/a',
+        activate_url: undefined,
         author: 'author A',
         user_group_name: 'app_123456abcde',
         connection_username: 'Connection Username',
@@ -273,6 +276,8 @@ test('it returns connected apps and warns when not listed on the appstore', asyn
         certified: false,
         partner: 'partner A',
         is_custom_app: false,
+        is_listed_on_the_appstore: false,
+        is_loaded: true,
         is_pending: false,
         has_outdated_scopes: false,
     };
@@ -374,6 +379,29 @@ test('it triggers a connected app update if there is inconsistency between it an
                 ],
             },
         },
+        akeneo_connectivity_connection_custom_apps_rest_get_all: {
+            json: {
+                total: 1,
+                apps: [
+                    {
+                        id: 'b85f3b1a-a887-11ed-afa1-0242ac120002',
+                        name: 'Custom App C',
+                        scopes: ['scope C1'],
+                        connection_code: 'connectionCodeC',
+                        logo: 'http://www.example.com/path/to/logo/c',
+                        author: 'author C',
+                        user_group_name: 'app_custom_654321',
+                        connection_username: 'Connection Username',
+                        categories: ['category C1', 'category C2'],
+                        certified: false,
+                        partner: 'partner C',
+                        is_custom_app: true,
+                        is_pending: false,
+                        has_outdated_scopes: false,
+                    },
+                ],
+            },
+        },
     });
 
     const triggerConnectedAppRefresh = jest.fn();
@@ -384,4 +412,5 @@ test('it triggers a connected app update if there is inconsistency between it an
     await waitForNextUpdate();
     expect(triggerConnectedAppRefresh).toHaveBeenCalledWith('connectionCodeA');
     expect(triggerConnectedAppRefresh).not.toHaveBeenCalledWith('connectionCodeB');
+    expect(triggerConnectedAppRefresh).not.toHaveBeenCalledWith('connectionCodeC');
 });

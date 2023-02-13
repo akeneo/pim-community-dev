@@ -3,7 +3,6 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\CreateCustomAppAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@validator'
             - '@security.token_storage'
@@ -14,7 +13,6 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\DeleteCustomAppAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@oro_security.security_facade'
             - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\DeleteCustomAppHandler'
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
@@ -23,7 +21,6 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetAllCustomAppsAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.app_developer_mode.feature'
             - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetAllCustomAppsQuery'
 

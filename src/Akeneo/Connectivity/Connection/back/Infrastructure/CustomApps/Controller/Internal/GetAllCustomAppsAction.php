@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetAllCustomAppsAction
 {
     public function __construct(
-        private readonly FeatureFlag $appDeveloperMode,
         private readonly AppUrlGenerator $appUrlGenerator,
         private readonly GetAllCustomAppsQueryInterface $getAllCustomAppsQuery
     ) {
@@ -30,10 +29,6 @@ final class GetAllCustomAppsAction
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
-        }
-
-        if (!$this->appDeveloperMode->isEnabled()) {
-            return new JsonResponse(GetAllCustomAppsResult::create(0, [])->normalize());
         }
 
         $result = $this->getAllCustomAppsQuery->execute();
