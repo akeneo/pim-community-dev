@@ -120,6 +120,13 @@ class GetAppQueryIntegration extends TestCase
         );
     }
 
+    public function test_it_returns_null_when_custom_app_does_not_exist(): void
+    {
+        $result = $this->query->execute('wrong_id');
+
+        $this->assertNull($result);
+    }
+
     /**
      * @param array{
      *     client_id: string,
