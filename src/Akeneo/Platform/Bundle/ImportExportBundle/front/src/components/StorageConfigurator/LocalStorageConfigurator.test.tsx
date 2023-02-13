@@ -2,8 +2,8 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
+import {LocalStorage, SftpStorage} from '../../models';
 
 test('it renders the local storage configurator', () => {
   const storage: LocalStorage = {

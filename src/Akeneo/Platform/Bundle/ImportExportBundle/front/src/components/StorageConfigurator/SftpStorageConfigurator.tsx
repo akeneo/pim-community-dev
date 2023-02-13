@@ -1,33 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  Field,
-  Helper,
-  NumberInput,
-  Button,
-  CheckIcon,
-  getColor,
-  getFontSize,
-  SelectInput,
-  CopyIcon,
-} from 'akeneo-design-system';
+import {Field, Helper, NumberInput, Button, getColor, getFontSize, SelectInput, CopyIcon} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
-import {StorageConfiguratorProps, isSftpStorage, isValidLoginType, STORAGE_LOGIN_TYPES} from './model';
-import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
-import {useGetPublicKey} from '../../hooks/useGetPublicKey';
-
-const CheckStorageForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const CheckStorageConnection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8.5px;
-  color: ${getColor('green', 100)};
-`;
+import {StorageConfiguratorProps} from './model';
+import {useGetPublicKey} from '../../hooks/';
+import {isSftpStorage, isValidSftpLoginType, SFTP_STORAGE_LOGIN_TYPES} from '../../models';
+import {CheckStorageConnection} from './CheckStorageConnection';
 
 const CopyableInputContainer = styled.div`
   position: relative;
@@ -83,7 +61,6 @@ const SftpStorageConfigurator = ({
 
   const translate = useTranslate();
   const portValidationErrors = filterErrors(validationErrors, '[port]');
-  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(jobInstanceCode, storage);
   const publicKey = useGetPublicKey();
   const passwordIsStoredOnServer = storage.login_type === 'password' && storage.password === undefined;
 
@@ -145,7 +122,7 @@ const SftpStorageConfigurator = ({
         <SelectInput
           value={storage.login_type}
           onChange={login_type => {
-            if (isValidLoginType(login_type)) {
+            if (isValidSftpLoginType(login_type)) {
               onStorageChange({...storage, login_type});
             }
           }}
@@ -153,7 +130,7 @@ const SftpStorageConfigurator = ({
           openLabel={translate('pim_common.open')}
           clearable={false}
         >
-          {STORAGE_LOGIN_TYPES.map(loginType => (
+          {SFTP_STORAGE_LOGIN_TYPES.map(loginType => (
             <SelectInput.Option value={loginType} key={loginType}>
               {translate(`pim_import_export.form.job_instance.storage_form.login_type.${loginType}`)}
             </SelectInput.Option>
@@ -203,19 +180,7 @@ const SftpStorageConfigurator = ({
           </CopyableInputContainer>
         </Field>
       )}
-      <CheckStorageForm>
-        <CheckStorageConnection>
-          <Button onClick={checkReliability} disabled={!canCheckConnection} level="primary">
-            {translate('pim_import_export.form.job_instance.connection_checker.label')}
-          </Button>
-          {isValid && <CheckIcon />}
-        </CheckStorageConnection>
-        {false === isValid && (
-          <Helper inline={true} level="error">
-            {translate('pim_import_export.form.job_instance.connection_checker.exception')}
-          </Helper>
-        )}
-      </CheckStorageForm>
+      <CheckStorageConnection jobInstanceCode={jobInstanceCode} storage={storage} />
     </>
   );
 };
