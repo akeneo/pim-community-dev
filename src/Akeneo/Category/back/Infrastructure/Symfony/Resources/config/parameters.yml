@@ -1,5 +1,5 @@
 parameters:
-    supported_image_mime_types:
+    supported_category_image_mime_types:
         - 'image/gif'
         - 'image/jpeg'
         - 'image/jpg'
