@@ -127,7 +127,7 @@ $rules = [
             'Symfony\Component\HttpFoundation',
             'Symfony\Component\HttpKernel',
             'Symfony\Component\Security',
-            'Symfony\Component\Serializer\Normalizer\NormalizerInterface',
+            'Symfony\Component\Serializer',
             'Symfony\Component\Validator\Constraints',
             'Symfony\Component\Form\FormFactoryInterface',
             'Webmozart\Assert\Assert',

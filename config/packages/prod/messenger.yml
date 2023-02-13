@@ -41,6 +41,15 @@ framework:
                     redeliver_timeout: 86400
                     auto_setup: false
                 serializer: akeneo_batch_queue.messenger.serializer
+            dqi_launch_evaluation:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: dqi_launch_evaluation
+                    redeliver_timeout: 86400
+                    auto_setup: false
+                serializer: akeneo_batch_queue.messenger.serializer
+
         routing:
             'Akeneo\Platform\Component\EventQueue\Event': webhook
             'Akeneo\Platform\Component\EventQueue\BulkEvent': webhook
@@ -49,3 +58,4 @@ framework:
             'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': import_export_job
             'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage': data_maintenance_job
             'Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessage': scheduled_job
+            'Akeneo\Pim\Automation\DataQualityInsights\Domain\Message\LaunchProductAndProductModelEvaluation': dqi_launch_evaluation
