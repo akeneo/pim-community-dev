@@ -1,16 +1,7 @@
-import React, {useCallback, useState} from 'react';
-import {Button, KeyIcon, Modal, SettingsIllustration, UserIcon} from 'akeneo-design-system';
-import {useHistory, useParams} from 'react-router';
+import React from 'react';
+import {Button, Modal} from 'akeneo-design-system';
 import {useTranslate} from '../../../../shared/translate';
-import {NotificationLevel, useNotify} from '../../../../shared/notify';
-import {useRouter} from '../../../../shared/router/use-router';
 import styled from 'styled-components';
-import {CopiableCredential} from '../../../../settings/components/credentials/CopiableCredential';
-import {isErr} from '../../../../shared/fetch-result/result';
-import {useCustomAppRegenerateSecret} from '../../../hooks/use-custom-app-regenerate-secret';
-import {useConnectedApp} from '../../../hooks/use-connected-app';
-import fn = jest.fn;
-import {useQueryClient} from 'react-query';
 
 const Description = styled.div`
     font-size: 17px;
