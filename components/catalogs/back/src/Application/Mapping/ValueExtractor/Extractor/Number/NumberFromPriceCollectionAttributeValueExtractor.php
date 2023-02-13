@@ -61,26 +61,14 @@ final class NumberFromPriceCollectionAttributeValueExtractor implements NumberVa
             }
         }
 
-        if (!\is_scalar($value) || !\is_numeric($value)) {
-            return null;
-        }
+        if (\is_numeric($value)) {
+            $intValue = (int) $value;
+            if ($intValue == $value) {
+                return $intValue;
+            }
 
-        if (\is_float($value) || \is_int($value)) {
-            return $value;
-        }
-
-        if ($value === (string) (int) $value) {
-            return (int) $value;
-        }
-
-        if ($value === (string) (float) $value) {
             return (float) $value;
         }
-
-        if (\number_format((float) $value, 2)  === $value) {
-            return (float) $value;
-        }
-
 
         return null;
     }

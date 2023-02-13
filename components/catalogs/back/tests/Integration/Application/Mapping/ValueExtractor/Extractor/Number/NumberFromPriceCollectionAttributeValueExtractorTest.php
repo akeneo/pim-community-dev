@@ -124,7 +124,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
                         ],
                     ],
                 ],
-                'expectedValue' => 56.0,
+                'expectedValue' => 56,
             ],
             'string float with two digit precision price value' => [
                 'product' => [
