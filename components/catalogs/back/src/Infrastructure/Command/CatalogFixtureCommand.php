@@ -227,10 +227,6 @@ class CatalogFixtureCommand extends Command
               "type": "string",
               "format": "uri",
               "title": "Thumbnail"
-            },
-            "price_number": {
-              "type": "number",
-              "title": "Price number"
             }
           }
         }
