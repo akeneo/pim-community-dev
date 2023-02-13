@@ -50,7 +50,10 @@ class AttributeMassDeleteAction extends MassAction {
 
   private openModal(data: MassActionData): void {
     const modalProps: DoubleCheckDeleteModalProps = {
-      onConfirm: () => this.launchJob(data),
+      onConfirm: () => {
+        this.launchJob(data);
+        this.closeModal();
+      },
       onCancel: this.closeModal.bind(this),
       title: translate('pim_enrich.entity.attribute.module.mass_delete.modal.title'),
       confirmDeletionTitle: translate('pim_enrich.entity.attribute.module.mass_delete.modal.subtitle', {
@@ -59,7 +62,7 @@ class AttributeMassDeleteAction extends MassAction {
       children: translate('pim_enrich.entity.attribute.module.mass_delete.modal.confirm'),
       confirmButtonLabel: translate('pim_common.delete'),
       cancelButtonLabel: translate('pim_common.cancel'),
-      textToCheck: 'delete', // @TODO send pim_common.delete translation (lowercased)
+      textToCheck: translate('pim_common.delete').toLowerCase(),
     };
 
     ReactDOM.render(
