@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeBooleanSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeDateSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeIdentifierSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeImageSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeNumberSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeSimpleSelectSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextareaSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource;
@@ -106,9 +111,14 @@ final class CatalogProductMappingValidator extends ConstraintValidator
         $attribute = $this->findOneAttributeByCodeQuery->execute($source);
 
         return match ($attribute['type'] ?? null) {
+            'pim_catalog_boolean' => new AttributeBooleanSource(),
+            'pim_catalog_date' => new AttributeDateSource(),
+            'pim_catalog_identifier' => new AttributeIdentifierSource(),
+            'pim_catalog_image' => new AttributeImageSource(),
+            'pim_catalog_number' => new AttributeNumberSource(),
+            'pim_catalog_simpleselect' => new AttributeSimpleSelectSource(),
             'pim_catalog_text' => new AttributeTextSource(),
             'pim_catalog_textarea' => new AttributeTextareaSource(),
-            'pim_catalog_simpleselect' => new AttributeSimpleSelectSource(),
             default => null,
         };
     }

@@ -37,7 +37,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
         );
     }
 
-    public function testItReturnsTheAttributeValue(): void
+    public function testItReturnsTheValueForSimpleSelectAttribute(): void
     {
         $this->createAttribute([
             'code' => 'color',
@@ -90,7 +90,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
             parameters: ['label_locale' => 'en_US'],
         );
 
-        $this->assertEquals(null, $result);
+        $this->assertNull($result);
     }
 
     public function testItReturnsNullIfInconsistentRawValue(): void
@@ -122,7 +122,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
             parameters: ['label_locale' => 'en_US'],
         );
 
-        $this->assertEquals(null, $result);
+        $this->assertNull($result);
     }
 
     public function testItReturnsTheSelectValueCodeIfNoTranslation(): void

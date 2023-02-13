@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping;
 
 use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
+use Akeneo\Catalogs\Application\Mapping\TargetTypeConverter;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Service\TargetTypeConverter;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Symfony\Component\Validator\Constraint;

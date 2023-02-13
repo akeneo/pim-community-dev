@@ -49,6 +49,24 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             'scopable' => false,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'release_date',
+            'type' => 'pim_catalog_date',
+            'scopable' => true,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'is_released',
+            'type' => 'pim_catalog_boolean',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'height',
+            'type' => 'pim_catalog_number',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
 
         $violations = $this->validator->validate(
             new Catalog(
@@ -71,6 +89,21 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                     ],
                     'simple_description' => [
                         'source' => 'description',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'released_at' => [
+                        'source' => 'release_date',
+                        'scope' => 'ecommerce',
+                        'locale' => null,
+                    ],
+                    'released' => [
+                        'source' => 'is_released',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'size' => [
+                        'source' => 'height',
                         'scope' => null,
                         'locale' => null,
                     ],
@@ -101,7 +134,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             ),
         );
 
-        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description".');
+        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "released_at", "released", "size".');
     }
 
     public function testItReturnsViolationsWhenThereIsAdditionalTarget(): void
@@ -143,6 +176,21 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'released_at' => [
+                        'source' => null,
+                        'scope' => true,
+                        'locale' => null,
+                    ],
+                    'released' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'size' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
                     'additional' => [
                         'source' => 'uuid',
                         'scope' => null,
@@ -174,6 +222,16 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             },
             "simple_description": {
               "type": "string"
+            },
+            "released_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "released": {
+              "type": "boolean"
+            },
+            "size": {
+              "type": "number"
             }
           }
         }

@@ -30,6 +30,7 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI\Command',
             'Akeneo\Catalogs\ServiceAPI\Query',
             'Akeneo\Catalogs\ServiceAPI\Exception',
+            'Symfony\Component\Routing\RouterInterface',
         ]
     )->in('Akeneo\Catalogs\Application'),
 

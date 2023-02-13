@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Unit\Application\Service;
+namespace Akeneo\Catalogs\Test\Unit\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
-use Akeneo\Catalogs\Application\Service\TargetTypeConverter;
+use Akeneo\Catalogs\Application\Mapping\TargetTypeConverter;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,7 +26,7 @@ class TargetTypeConverterTest extends TestCase
      */
     public function testItConvertsTargetTypeToAttributeTypes(
         string $targetType,
-        ?string $targetFormat,
+        string $targetFormat,
         array $expectedAttributeTypes,
     ): void {
         $this->assertEquals(
@@ -42,9 +42,39 @@ class TargetTypeConverterTest extends TestCase
                 'string',
                 '',
                 [
+                    'pim_catalog_identifier',
+                    'pim_catalog_number',
+                    'pim_catalog_simpleselect',
                     'pim_catalog_text',
                     'pim_catalog_textarea',
-                    'pim_catalog_simpleselect',
+                ],
+            ],
+            'string+uri' => [
+                'string',
+                'uri',
+                [
+                    'pim_catalog_image',
+                ],
+            ],
+            'boolean' => [
+                'boolean',
+                '',
+                [
+                    'pim_catalog_boolean',
+                ],
+            ],
+            'string+date-time' => [
+                'string',
+                'date-time',
+                [
+                    'pim_catalog_date',
+                ],
+            ],
+            'number' => [
+                'number',
+                '',
+                [
+                    'pim_catalog_number',
                 ],
             ],
         ];

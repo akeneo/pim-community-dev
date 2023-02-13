@@ -33,7 +33,6 @@ export const useInfiniteSourceAttributes = ({target, search = '', limit = 20}: Q
         async ({pageParam}: {pageParam?: PageParam}): Promise<Page> => {
             const _page = pageParam?.number || 1;
             const _search = search || pageParam?.search || '';
-
             const queryParameters = new URLSearchParams({
                 page: _page.toString(),
                 limit: limit.toString(),
@@ -43,7 +42,7 @@ export const useInfiniteSourceAttributes = ({target, search = '', limit = 20}: Q
             }).toString();
 
             const response = await fetch(
-                '/rest/catalogs/attributes_by_target_type_and_target_format?' + queryParameters,
+                '/rest/catalogs/attributes-by-target-type-and-target-format?' + queryParameters,
                 {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest',

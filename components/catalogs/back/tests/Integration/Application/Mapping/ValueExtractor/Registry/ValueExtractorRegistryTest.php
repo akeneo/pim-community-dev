@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Registry;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromNumberAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromIdentifierAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromNumberAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromSimpleSelectAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextareaAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringUri\StringUriFromImageAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
@@ -49,6 +52,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
     public function extractorDataProvider(): array
     {
         return [
+            BooleanFromBooleanAttributeValueExtractor::class => [
+                'sourceType' => 'pim_catalog_boolean',
+                'targetType' => 'boolean',
+                'targetFormat' => null,
+                'extractorClassName' => BooleanFromBooleanAttributeValueExtractor::class,
+            ],
             NumberFromNumberAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_number',
                 'targetType' => 'number',
@@ -60,6 +69,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromFamilyValueExtractor::class,
+            ],
+            StringFromIdentifierAttributeValueExtractor::class => [
+                'sourceType' => 'pim_catalog_identifier',
+                'targetType' => 'string',
+                'targetFormat' => null,
+                'extractorClassName' => StringFromIdentifierAttributeValueExtractor::class,
             ],
             StringFromNumberAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_number',
@@ -90,6 +105,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
                 'targetType' => 'string',
                 'targetFormat' => 'date-time',
                 'extractorClassName' => StringDateTimeFromDateAttributeValueExtractor::class,
+            ],
+            StringUriFromImageAttributeValueExtractor::class => [
+                'sourceType' => 'pim_catalog_image',
+                'targetType' => 'string',
+                'targetFormat' => 'uri',
+                'extractorClassName' => StringUriFromImageAttributeValueExtractor::class,
             ],
         ];
     }

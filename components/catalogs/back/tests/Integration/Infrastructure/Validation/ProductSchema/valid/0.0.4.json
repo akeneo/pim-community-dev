@@ -23,6 +23,10 @@
         },
         "height": {
             "type": "number"
+        },
+        "release_date": {
+            "type": "string",
+            "format": "date-time"
         }
     }
 }

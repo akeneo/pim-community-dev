@@ -120,6 +120,26 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => 'en_US',
                 ],
+                'release_date' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'is_released' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'zoom' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'thumbnail' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ];
 
             $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
@@ -167,7 +187,7 @@ class CatalogFixtureCommand extends Command
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.5/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.6/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
@@ -192,6 +212,23 @@ class CatalogFixtureCommand extends Command
             "meta_title": {
               "type": "string",
               "title": "Meta title"
+            },
+            "release_date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "is_released": {
+              "type": "boolean",
+              "title": "Is released"
+            },
+            "zoom": {
+              "type": "number",
+              "title": "Optical Zoom"
+            },
+            "thumbnail": {
+              "type": "string",
+              "format": "uri",
+              "title": "Thumbnail"
             }
           }
         }

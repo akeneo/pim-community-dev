@@ -35,14 +35,17 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
         );
     }
 
-    public function testItReturnsTheValueForNumberAttribute(): void
+    /**
+     * @dataProvider numberRawValueProvider
+     */
+    public function testItReturnsTheValueForNumberAttribute(string|int|float $rawValue, int|float $expected): void
     {
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
                 'optical_zoom' => [
                     'ecommerce' => [
-                        'en_US' => 3.7,
+                        'en_US' => $rawValue,
                     ],
                 ],
             ],
@@ -56,7 +59,29 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             parameters: [],
         );
 
-        $this->assertEquals(3.7, $result);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function numberRawValueProvider(): array
+    {
+        return [
+            'with int' => [
+                'rawValue' => 42,
+                'expected' => 42,
+            ],
+            'with float' => [
+                'rawValue' => 42.7,
+                'expected' => 42.7,
+            ],
+            'with int as string' => [
+                'rawValue' => '42',
+                'expected' => 42,
+            ],
+            'with float as string' => [
+                'rawValue' => '42.7',
+                'expected' => 42.7,
+            ],
+        ];
     }
 
     public function testItReturnsNullIfNotFound(): void
@@ -80,7 +105,7 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             parameters: [],
         );
 
-        $this->assertEquals(null, $result);
+        $this->assertNull($result);
     }
 
     public function testItReturnsNullIfInconsistentRawValue(): void
@@ -104,6 +129,6 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             parameters: [],
         );
 
-        $this->assertEquals(null, $result);
+        $this->assertNull($result);
     }
 }

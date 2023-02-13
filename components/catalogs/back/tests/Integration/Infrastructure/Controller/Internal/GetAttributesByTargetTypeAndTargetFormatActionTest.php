@@ -35,7 +35,7 @@ class GetAttributesByTargetTypeAndTargetFormatActionTest extends IntegrationTest
 
         $client->request(
             'GET',
-            '/rest/catalogs/attributes_by_target_type_and_target_format',
+            '/rest/catalogs/attributes-by-target-type-and-target-format',
             [
                 'targetType' => 'string',
                 'targetFormat' => null,
@@ -50,14 +50,20 @@ class GetAttributesByTargetTypeAndTargetFormatActionTest extends IntegrationTest
         Assert::assertEquals(200, $response->getStatusCode());
 
         $attributes = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        Assert::assertCount(1, $attributes);
-        Assert::assertArrayHasKey('code', $attributes[0]);
-        Assert::assertArrayHasKey('label', $attributes[0]);
-        Assert::assertArrayHasKey('type', $attributes[0]);
-        Assert::assertArrayHasKey('scopable', $attributes[0]);
-        Assert::assertArrayHasKey('localizable', $attributes[0]);
-        Assert::assertArrayHasKey('attribute_group_code', $attributes[0]);
-        Assert::assertArrayHasKey('attribute_group_label', $attributes[0]);
+        // @todo rework to be more specific when there will be a combination type/format that will match only one attribute
+        Assert::assertCount(2, $attributes);
+        foreach ($attributes as $attribute) {
+            Assert::assertArrayHasKey('code', $attribute);
+            Assert::assertArrayHasKey('label', $attribute);
+            Assert::assertArrayHasKey('type', $attribute);
+            Assert::assertArrayHasKey('scopable', $attribute);
+            Assert::assertArrayHasKey('localizable', $attribute);
+            Assert::assertArrayHasKey('attribute_group_code', $attribute);
+            Assert::assertArrayHasKey('attribute_group_label', $attribute);
+        }
+
+        Assert::assertEquals('name', $attributes[0]['code']);
+        Assert::assertEquals('sku', $attributes[1]['code']);
     }
 
     public function testItSearchesAttributes(): void
@@ -74,7 +80,7 @@ class GetAttributesByTargetTypeAndTargetFormatActionTest extends IntegrationTest
 
         $client->request(
             'GET',
-            '/rest/catalogs/attributes_by_target_type_and_target_format',
+            '/rest/catalogs/attributes-by-target-type-and-target-format',
             [
                 'search' => 'name',
                 'targetType' => 'string',
@@ -109,7 +115,7 @@ class GetAttributesByTargetTypeAndTargetFormatActionTest extends IntegrationTest
 
         $client->request(
             'GET',
-            '/rest/catalogs/attributes_by_target_type_and_target_format',
+            '/rest/catalogs/attributes-by-target-type-and-target-format',
             ['targetType' => 'unexpected_type'],
             [],
             [

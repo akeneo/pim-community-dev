@@ -24,6 +24,8 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
     {
         parent::setUp();
 
+        $this->purgeDataAndLoadMinimalCatalog();
+
         $this->extractor = self::getContainer()->get(StringDateTimeFromDateAttributeValueExtractor::class);
     }
 
@@ -35,28 +37,43 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
         );
     }
 
-    public function testItReturnsTheValueForNumberAttribute(): void
+    public function testItReturnsTheValueForDateAttribute(): void
     {
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
                 'release_date' => [
                     'ecommerce' => [
-                        'en_US' => '2023-01-31',
+                        '<all_locales>' => '2012-04-08T00:00:00+00:00',
+                    ],
+                ],
+                'end_of_life' => [
+                    'ecommerce' => [
+                        'en_US' => '2016-01-01T00:00:00+00:00',
                     ],
                 ],
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $releaseDate = $this->extractor->extract(
             product: $product,
             code: 'release_date',
+            locale: '<all_locales>',
+            scope: 'ecommerce',
+            parameters: [],
+        );
+
+        $this->assertEquals('2012-04-08T00:00:00+00:00', $releaseDate);
+
+        $endOfLife = $this->extractor->extract(
+            product: $product,
+            code: 'end_of_life',
             locale: 'en_US',
             scope: 'ecommerce',
             parameters: [],
         );
 
-        $this->assertEquals('2023-01-31', $result);
+        $this->assertEquals('2016-01-01T00:00:00+00:00', $endOfLife);
     }
 
     public function testItReturnsNullIfNotFound(): void
@@ -66,21 +83,29 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
             'raw_values' => [
                 'release_date' => [
                     'ecommerce' => [
-                        'en_US' => '2023-01-31',
+                        '<all_locales>' => '2012-04-08T00:00:00+00:00',
                     ],
                 ],
             ],
         ];
 
+        $this->createAttribute([
+            'code' => 'release_date',
+            'type' => 'pim_catalog_date',
+            'group' => 'other',
+            'scopable' => true,
+            'localizable' => false,
+        ]);
+
         $result = $this->extractor->extract(
             product: $product,
             code: 'release_date',
-            locale: '<all_locales>',
-            scope: '<all_channels>',
+            locale: null,
+            scope: 'print',
             parameters: [],
         );
 
-        $this->assertEquals(null, $result);
+        $this->assertNull($result);
     }
 
     public function testItReturnsNullIfInconsistentRawValue(): void
@@ -104,6 +129,6 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
             parameters: [],
         );
 
-        $this->assertEquals(null, $result);
+        $this->assertNull($result);
     }
 }

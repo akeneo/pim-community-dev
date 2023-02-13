@@ -35,9 +35,11 @@ final class AttributeTextareaSource extends Compound
                         ],
                         'scope' => [
                             new Assert\Type('string'),
+                            new Assert\NotBlank(allowNull: true),
                         ],
                         'locale' => [
                             new Assert\Type('string'),
+                            new Assert\NotBlank(allowNull: true),
                         ],
                     ],
                     'allowMissingFields' => false,
