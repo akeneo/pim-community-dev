@@ -39,7 +39,7 @@ type GoogleCloudStorage = {
   type: 'google_cloud_storage';
   file_path: string;
   project_id: string;
-  service_account: string;
+  service_account?: string;
   bucket: string;
 };
 
