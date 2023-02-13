@@ -1,17 +1,17 @@
 import React, {useCallback, useState} from 'react';
 import {Modal, SettingsIllustration} from 'akeneo-design-system';
 import {useHistory, useParams} from 'react-router';
-import {useTranslate} from '../../../../shared/translate';
-import {NotificationLevel, useNotify} from '../../../../shared/notify';
-import {useRouter} from '../../../../shared/router/use-router';
-import {useCustomAppRegenerateSecret} from '../../../hooks/use-custom-app-regenerate-secret';
-import {useConnectedApp} from '../../../hooks/use-connected-app';
-import {RegenerateSecretConfirm} from './RegenerateSecretConfirm';
-import {RegenerateSecretNewCredentials} from './RegenerateSecretNewCredentials';
+import {useTranslate} from '../../shared/translate';
+import {NotificationLevel, useNotify} from '../../shared/notify';
+import {useRouter} from '../../shared/router/use-router';
+import {useCustomAppRegenerateSecret} from '../hooks/use-custom-app-regenerate-secret';
+import {useConnectedApp} from '../hooks/use-connected-app';
+import {RegenerateSecretConfirm} from '../components/CustomApp/RegenerateSecret/RegenerateSecretConfirm';
+import {RegenerateSecretNewCredentials} from '../components/CustomApp/RegenerateSecret/RegenerateSecretNewCredentials';
 
 type Step = 'confirm' | 'new_credentials';
 
-export const RegenerateSecret = () => {
+export const RegenerateSecretPage = () => {
     const translate = useTranslate();
     const history = useHistory();
     const notify = useNotify();

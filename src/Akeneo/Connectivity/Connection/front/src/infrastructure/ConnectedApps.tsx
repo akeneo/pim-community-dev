@@ -8,7 +8,7 @@ import {ConnectedAppDeletePage} from '../connect/pages/ConnectedAppDeletePage';
 import {OpenAppPage} from '../connect/pages/OpenAppPage';
 import {QueryClientProvider, QueryClient} from 'react-query';
 import {ConnectedAppCatalogPage} from '../connect/pages/ConnectedAppCatalogPage';
-import {RegenerateSecret} from '../connect/components/ConnectedApp/Settings/RegenerateSecret';
+import {RegenerateSecretPage} from '../connect/pages/RegenerateSecretPage';
 
 const client = new QueryClient({
     defaultOptions: {
@@ -26,7 +26,7 @@ export const ConnectedApps = withDependencies(() => (
                 <Router>
                     <Switch>
                         <Route path='/connect/connected-apps/:connectionCode/regenerate-secret'>
-                            <RegenerateSecret />
+                            <RegenerateSecretPage />
                         </Route>
                         <Route path='/connect/connected-apps/:connectionCode/catalogs/:catalogId'>
                             <ConnectedAppCatalogPage />
