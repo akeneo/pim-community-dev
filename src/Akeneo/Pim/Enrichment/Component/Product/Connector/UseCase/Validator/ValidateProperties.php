@@ -48,21 +48,7 @@ final class ValidateProperties
             $propertyCode = (string) $propertyCode;
             $isExistingAttribute = $this->isExistingAttribute($propertyCode);
 
-            if ($this->isProductField($propertyCode)) {
-                if ('parent' === $propertyCode) {
-                    foreach ($filters as $filter) {
-                        if (Operators::EQUALS === $filter['operator']) {
-                            throw new InvalidQueryException(
-                                sprintf(
-                                    'Filter on property "%s" is not supported or does not support operator "%s"',
-                                    $propertyCode,
-                                    $filter['operator']
-                                )
-                            );
-                        }
-                    }
-                }
-            } elseif (!$isExistingAttribute) {
+            if (!$this->isProductField($propertyCode) && !$isExistingAttribute) {
                 throw new InvalidQueryException(
                     sprintf(
                         '"%s" does not exist or you do not have permission to access it.',

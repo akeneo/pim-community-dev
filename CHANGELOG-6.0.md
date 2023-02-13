@@ -1,10 +1,14 @@
 # 6.0.x
 
+## Bug fixes:
+
+- PIM-10834: Fix regression on parent filter in LIST products endpoint
+
 # 6.0.68 (2023-02-09)
 
 ## Bug fixes
 
-- Pim 10810: Optimize completeness saving
+- PIM-10810: Optimize completeness saving
 
 # 6.0.67 (2023-02-06)
 
