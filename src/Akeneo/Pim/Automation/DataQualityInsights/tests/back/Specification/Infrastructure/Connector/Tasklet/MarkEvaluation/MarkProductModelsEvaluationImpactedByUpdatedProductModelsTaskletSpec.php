@@ -49,8 +49,8 @@ class MarkProductModelsEvaluationImpactedByUpdatedProductModelsTaskletSpec exten
             ->since(Argument::that(fn (\DateTimeImmutable $updatedSince) => $updatedSince->format('Y-m-d H:i:s') === '2023-02-07 14:23:56'), 2)
             ->willReturn(new \ArrayIterator($productModelIds));
 
-        $createCriteriaEvaluations->createAll($productModelIds[0])->shouldBeCalled();
-        $createCriteriaEvaluations->createAll($productModelIds[1])->shouldBeCalled();
+        $createCriteriaEvaluations->createAll($productModelIds[0])->shouldBeCalledOnce();
+        $createCriteriaEvaluations->createAll($productModelIds[1])->shouldBeCalledOnce();
 
         $logger->error(Argument::cetera())->shouldNotBeCalled();
 
@@ -67,7 +67,7 @@ class MarkProductModelsEvaluationImpactedByUpdatedProductModelsTaskletSpec exten
 
         $getUpdatedProductModelIdsQuery->since(Argument::cetera())->willThrow(new \Exception('error'));
 
-        $logger->error(Argument::cetera())->shouldBeCalled();
+        $logger->error(Argument::cetera())->shouldBeCalledOnce();
 
         $this->execute();
     }
