@@ -54,9 +54,5 @@ final class GetConnectedAppAction
         if (!$connectedApp->isCustomApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
             throw new AccessDeniedHttpException();
         }
-
-        if ($connectedApp->isCustomApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
-            throw new AccessDeniedHttpException();
-        }
     }
 }
