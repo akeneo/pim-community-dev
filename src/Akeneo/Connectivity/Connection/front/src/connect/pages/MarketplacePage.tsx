@@ -14,8 +14,10 @@ import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 import {useFetchApps} from '../hooks/use-fetch-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {useTestApps} from '../hooks/use-test-apps';
+import {useSecurity} from '../../shared/security';
 
 export const MarketplacePage: FC = () => {
+    const security = useSecurity();
     const translate = useTranslate();
     const user = useContext(UserContext);
     const history = useHistory();
@@ -73,11 +75,13 @@ export const MarketplacePage: FC = () => {
         </Breadcrumb>
     );
 
-    const CreateTestAppButton = () => (
-        <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp}>
-            <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app' />
-        </ApplyButton>
-    );
+    const CreateTestAppButton = () => {
+        return security.isGranted('akeneo_connectivity_connection_manage_test_apps') ? (
+            <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp}>
+                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app' />
+            </ApplyButton>
+        ) : null;
+    };
 
     return (
         <>
