@@ -1,0 +1,6 @@
+services:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Message\LaunchProductAndProductModelEvaluationNormalizer:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+        tags:
+            - { name: 'akeneo_batch_queue.messenger.normalizer' }
