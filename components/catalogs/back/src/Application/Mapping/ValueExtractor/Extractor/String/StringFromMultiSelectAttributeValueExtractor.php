@@ -25,25 +25,28 @@ final class StringFromMultiSelectAttributeValueExtractor implements StringValueE
         ?string $scope,
         ?array $parameters,
     ): null | string {
-        /** @var mixed $values */
-        $values = $product['raw_values'][$code][$scope][$locale] ?? null;
+        /** @var array<mixed> $rawValues */
+        $rawValues = $product['raw_values'][$code][$scope][$locale] ?? null;
 
-        if (!\is_array($values) || $this->containsIncorrectType($values)) {
+        try {
+            /** @var array<string> $values */
+            $values = $this->convertRawValuesToStringArray($rawValues);
+        } catch (\Exception) {
             return null;
         }
-
-        $translatedValues = [];
 
         /** @var string $labelLocale */
         $labelLocale = $parameters['label_locale'] ?? '';
         $options = $this->getAttributeOptionsByCodeQuery->execute($code, $values, $labelLocale);
-        if (!is_array($options) || count($options) === 0) {
-            return null;
-        }
 
+        $translatedValues = [];
         foreach ($values as $value) {
-            $translatedValue = \array_filter($options, fn ($v) => $v['code'] == $value);
-            $translatedValues[] = $translatedValue[\array_key_first($translatedValue)]['label'] ?? \sprintf('[%s]', $value);
+            $translatedValue = array_values(\array_filter($options, fn ($v) => $v['code'] == $value));
+            if (count($translatedValue) > 0 && isset($translatedValue[0]['label'])) {
+                $translatedValues[] = $translatedValue[0]['label'];
+            } else {
+                $translatedValues[] = \sprintf('[%s]', $value);
+            }
         }
 
         return \implode(', ', $translatedValues);
@@ -65,15 +68,23 @@ final class StringFromMultiSelectAttributeValueExtractor implements StringValueE
     }
 
     /**
-     * @param array<mixed> $values
+     * @param array<mixed> $rawValues
+     * @return array<string>
      */
-    private function containsIncorrectType(array $values): bool
+    private function convertRawValuesToStringArray(?array $rawValues): array
     {
-        foreach ($values as $value) {
-            if (!\is_string($value)) {
-                return true;
-            }
+        if (!is_array($rawValues)) {
+            throw new \LogicException();
         }
-        return false;
+
+        /** @var array<string> $values */
+        $values = [];
+        foreach ($rawValues as $rawValue) {
+            if (!is_string($rawValue)) {
+                throw new \LogicException();
+            }
+            $values[] = $rawValue;
+        }
+        return $values;
     }
 }
