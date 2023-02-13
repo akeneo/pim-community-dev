@@ -49,8 +49,8 @@ class MarkProductsEvaluationImpactedByUpdatedAttributeGroupActivationTaskletSpec
             ->updatedSince(Argument::that(fn (\DateTimeImmutable $updatedSince) => $updatedSince->format('Y-m-d H:i:s') === '2023-02-07 14:23:56'), 2)
             ->willReturn(new \ArrayIterator($productUuids));
 
-        $createCriteriaEvaluations->createAll($productUuids[0])->shouldBeCalled();
-        $createCriteriaEvaluations->createAll($productUuids[1])->shouldBeCalled();
+        $createCriteriaEvaluations->createAll($productUuids[0])->shouldBeCalledOnce();
+        $createCriteriaEvaluations->createAll($productUuids[1])->shouldBeCalledOnce();
 
         $logger->error(Argument::cetera())->shouldNotBeCalled();
 
@@ -69,7 +69,7 @@ class MarkProductsEvaluationImpactedByUpdatedAttributeGroupActivationTaskletSpec
             new \Exception('error')
         );
 
-        $logger->error(Argument::cetera())->shouldBeCalled();
+        $logger->error(Argument::cetera())->shouldBeCalledOnce();
 
         $this->execute();
     }
