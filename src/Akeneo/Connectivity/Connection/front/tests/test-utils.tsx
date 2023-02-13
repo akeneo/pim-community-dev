@@ -36,8 +36,8 @@ const UserProvider: FC = ({children}) => {
     return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 };
 
-const DefaultProviders: FC = ({children}) => {
-    const client = new QueryClient({
+export const ReactQueryWrapper: FC = ({children}) => {
+    const queryClient = new QueryClient({
         defaultOptions: {
             queries: {
                 // by default, react query uses a back-off delay gradually applied to each retry attempt.
@@ -48,8 +48,11 @@ const DefaultProviders: FC = ({children}) => {
         },
     });
 
+    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+};
+const DefaultProviders: FC = ({children}) => {
     return (
-        <QueryClientProvider client={client}>
+        <ReactQueryWrapper>
             <DependenciesContext.Provider
                 value={{
                     translate: (id: string) => id,
@@ -61,7 +64,7 @@ const DefaultProviders: FC = ({children}) => {
                     </UserProvider>
                 </ThemeProvider>
             </DependenciesContext.Provider>
-        </QueryClientProvider>
+        </ReactQueryWrapper>
     );
 };
 

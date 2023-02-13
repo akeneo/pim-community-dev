@@ -1,4 +1,4 @@
-export type TestAppCredentials = {
+export type CustomAppCredentials = {
     clientId: string;
     clientSecret: string;
 };
