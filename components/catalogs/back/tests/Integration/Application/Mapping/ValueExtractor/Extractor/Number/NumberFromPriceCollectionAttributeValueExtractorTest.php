@@ -151,7 +151,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
     {
         $result = $this->extractor->extract(
             product: $product,
-            code: 'optical_zoom',
+            code: 'price',
             locale: 'en_US',
             scope: 'ecommerce',
             parameters: ['currency' => 'EUR'],
@@ -165,7 +165,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
             'price collection not a an array' => [
                 [
                     'raw_values' => [
-                        'optical_zoom' => [
+                        'price' => [
                             'ecommerce' => [
                                 'en_US' => 'bonjour',
                             ],
@@ -176,7 +176,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
             'price collection value is not a price value structure' => [
                 [
                     'raw_values' => [
-                        'optical_zoom' => [
+                        'price' => [
                             'ecommerce' => [
                                 'en_US' => [
                                     ['foo' => 'bar'],
@@ -194,7 +194,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
         /** @var RawProduct $product */
         $product = [
             'raw_values' => [
-                'optical_zoom' => [
+                'price' => [
                     'ecommerce' => [
                         'en_US' => [
                             ['amount' => 12, 'currency' => 'USD'],
@@ -207,7 +207,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
 
         $result = $this->extractor->extract(
             product: $product,
-            code: 'optical_zoom',
+            code: 'price',
             locale: '<all_locales>',
             scope: '<all_channels>',
             parameters: ['currency' => 'EUR'],
