@@ -1,8 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import fetchMock from 'jest-fetch-mock';
-import {historyMock, mockFetchResponses, renderWithProviders} from '../../../../test-utils';
-import {RegenerateSecret} from '@src/connect/components/ConnectedApp/Settings/RegenerateSecret';
+import {historyMock, mockFetchResponses, renderWithProviders} from '../../../test-utils';
+import {RegenerateSecretPage} from '@src/connect/pages/RegenerateSecretPage';
 import {MemoryRouter, Route, Router} from 'react-router-dom';
 import {act, screen} from '@testing-library/react';
 import {createMemoryHistory} from 'history';
@@ -39,7 +39,7 @@ jest.mock('@src/connect/hooks/use-connected-app', () => ({
 }));
 
 test('The regenerate secret modal return null if no connectedApp found or still loading', () => {
-    const {container} = renderWithProviders(<RegenerateSecret />);
+    const {container} = renderWithProviders(<RegenerateSecretPage />);
     expect(container).toBeEmptyDOMElement();
 });
 
@@ -47,7 +47,7 @@ test('The regenerate secret modal renders the regenerate step by default', async
     renderWithProviders(
         <MemoryRouter initialEntries={['connect/connected-apps/custom_app/regenerate-secret']}>
             <Route path='connect/connected-apps/:connectionCode/regenerate-secret'>
-                <RegenerateSecret />
+                <RegenerateSecretPage />
             </Route>
         </MemoryRouter>
     );
@@ -70,7 +70,7 @@ test('The regenerate secret modal redirect to the connected app page when closed
         <Router history={history}>
             <MemoryRouter initialEntries={['connect/connected-apps/custom_app/regenerate-secret']}>
                 <Route path='connect/connected-apps/:connectionCode/regenerate-secret'>
-                    <RegenerateSecret />
+                    <RegenerateSecretPage />
                 </Route>
             </MemoryRouter>
         </Router>
@@ -89,7 +89,7 @@ test('The regenerate secret modal redirect to the connected app page when the ca
         <Router history={history}>
             <MemoryRouter initialEntries={['connect/connected-apps/custom_app/regenerate-secret']}>
                 <Route path='connect/connected-apps/:connectionCode/regenerate-secret'>
-                    <RegenerateSecret />
+                    <RegenerateSecretPage />
                 </Route>
             </MemoryRouter>
         </Router>
@@ -125,7 +125,7 @@ test('The regenerate secret modal regenerate a new secret when the regenerate bu
         <Router history={history}>
             <MemoryRouter initialEntries={['connect/connected-apps/custom_app/regenerate-secret']}>
                 <Route path='connect/connected-apps/:connectionCode/regenerate-secret'>
-                    <RegenerateSecret />
+                    <RegenerateSecretPage />
                 </Route>
             </MemoryRouter>
         </Router>

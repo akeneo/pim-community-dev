@@ -56,14 +56,18 @@ class UpdateCustomAppSecretQueryIntegration extends TestCase
     {
         $this->customAppLoader->create('100eedac-ff5c-497b-899d-e2d64b6c59f9', $this->createAdminUser()->getId());
 
+        $preQuerySecret = $this->getCustomAppSecret('100eedac-ff5c-497b-899d-e2d64b6c59f9');
+
         $this->updateCustomAppSecretQuery->execute(
             clientId: 'wrong_id',
             clientSecret: 'NjNjZWMxODc2Mjg2ZTkxMjEyYmI3NDMwNzkxZjRkNjQ3MTA5MDdjNWQzMWMzOTU3MTE1YWYxYWVjNDY0MWUwOQ'
         );
 
+        $postQuerySecret = $this->getCustomAppSecret('100eedac-ff5c-497b-899d-e2d64b6c59f9');
+
         $this->assertNotSame(
-            $this->getCustomAppSecret('100eedac-ff5c-497b-899d-e2d64b6c59f9'),
-            'NjNjZWMxODc2Mjg2ZTkxMjEyYmI3NDMwNzkxZjRkNjQ3MTA5MDdjNWQzMWMzOTU3MTE1YWYxYWVjNDY0MWUwOQ'
+            $preQuerySecret,
+            $postQuerySecret
         );
     }
 
