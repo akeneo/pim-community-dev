@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.69 (2023-02-13)
+
 ## Bug fixes:
 
 - PIM-10834: Fix regression on parent filter in LIST products endpoint
