@@ -36,9 +36,11 @@ final class AttributePriceCollectionSource extends Compound
                         ],
                         'scope' => [
                             new Assert\Type('string'),
+                            new Assert\NotBlank(allowNull: true),
                         ],
                         'locale' => [
                             new Assert\Type('string'),
+                            new Assert\NotBlank(allowNull: true),
                         ],
                         'parameters' => [
                             new Assert\Collection([

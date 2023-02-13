@@ -126,7 +126,7 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
     public function invalidDataProvider(): array
     {
         return [
-            'missing mandatory field' => [
+            'missing mandatory parameters field' => [
                 'attribute' => [
                     'code' => 'price',
                     'type' => 'pim_catalog_price_collection',
@@ -160,43 +160,7 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This field was not expected.',
             ],
-            'invalid source value' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => true,
-                ],
-                'source' => [
-                    'source' => 42,
-                    'scope' => 'ecommerce',
-                    'locale' => 'en_US',
-                    'parameters' => [
-                        'currency' => 'USD',
-                    ],
-                ],
-                'expectedMessage' => 'This value should be of type string.',
-            ],
-            'invalid scope' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => true,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => 42,
-                    'locale' => 'en_US',
-                    'parameters' => [
-                        'currency' => 'USD',
-                    ],
-                ],
-                'expectedMessage' => 'This value should be of type string.',
-            ],
-            'invalid locale' => [
+            'unknown extra parameter' => [
                 'attribute' => [
                     'code' => 'price',
                     'type' => 'pim_catalog_price_collection',
@@ -207,9 +171,46 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'price',
                     'scope' => 'ecommerce',
-                    'locale' => 42,
+                    'locale' => 'en_US',
                     'parameters' => [
                         'currency' => 'USD',
+                        'foo' => 'bar',
+                    ],
+                ],
+                'expectedMessage' => 'This field was not expected.',
+            ],
+            'blank currency parameter' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'currency' => null,
+                    ],
+                ],
+                'expectedMessage' => 'This value should not be blank.',
+            ],
+            'invalid currency parameter' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'currency' => 42,
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
@@ -231,7 +232,7 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
-            'unknown extra parameter' => [
+            'unknown currency parameter' => [
                 'attribute' => [
                     'code' => 'price',
                     'type' => 'pim_catalog_price_collection',
@@ -244,101 +245,10 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => 'USD',
-                        'foo' => 'bar',
+                        'currency' => 'UNKNOWN',
                     ],
                 ],
-                'expectedMessage' => 'This field was not expected.',
-            ],
-            'invalid currency parameter' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => true,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => 'ecommerce',
-                    'locale' => 'en_US',
-                    'parameters' => [
-                        'currency' => 42,
-                    ],
-                ],
-                'expectedMessage' => 'This value should be of type string.',
-            ],
-            'blank currency parameter' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => true,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => 'ecommerce',
-                    'locale' => 'en_US',
-                    'parameters' => [
-                        'currency' => null,
-                    ],
-                ],
-                'expectedMessage' => 'This value should not be blank.',
-            ],
-            'source with invalid locale for a channel' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => true,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => 'ecommerce',
-                    'locale' => 'kz_KZ',
-                    'parameters' => [
-                        'currency' => 'USD',
-                    ],
-                ],
-                'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
-            ],
-            'source with invalid scope' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => 'unknown_scope',
-                    'locale' => null,
-                    'parameters' => [
-                        'currency' => 'USD',
-                    ],
-                ],
-                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
-            ],
-            'source with invalid locale' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => false,
-                    'localizable' => true,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => null,
-                    'locale' => 'kz_KZ',
-                    'parameters' => [
-                        'currency' => 'USD',
-                    ],
-                ],
-                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+                'expectedMessage' => 'This currency is not activated. Please check your channels and currency settings or update this value.',
             ],
             'not scopable source with disabled currency' => [
                 'attribute' => [
@@ -375,6 +285,210 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                     ],
                 ],
                 'expectedMessage' => 'This currency is not activated. Please check your channels and currency settings or update this value.',
+            ],
+            'blank locale' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => 'ecommerce',
+                    'locale' => '',
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+                'expectedMessage' => 'This value should not be blank.',
+            ],
+            'invalid locale' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => 'ecommerce',
+                    'locale' => 42,
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
+            ],
+            'invalid locale for a channel' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => 'ecommerce',
+                    'locale' => 'kz_KZ',
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+                'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
+            ],
+            'missing locale value' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'unknown locale' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => null,
+                    'locale' => 'kz_KZ',
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'blank scope' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => '',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+                'expectedMessage' => 'This value should not be blank.',
+            ],
+            'invalid scope' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => 42,
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
+            ],
+            'missing scope value' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'unknown scope' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => 'unknown_scope',
+                    'locale' => null,
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
+            ],
+            'blank source value' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => '',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+                'expectedMessage' => 'This value should not be blank.',
+            ],
+            'invalid source value' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 42,
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
+            ],
+            'missing source value' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
             ],
         ];
     }
