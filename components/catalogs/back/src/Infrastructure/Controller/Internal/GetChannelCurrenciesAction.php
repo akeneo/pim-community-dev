@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Currency\GetChannelCurrenciesQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,8 +36,8 @@ class GetChannelCurrenciesAction
             throw new NotFoundHttpException(\sprintf('channel "%s" does not exist.', $code));
         }
 
-        $locales = $this->getChannelCurrenciesQuery->execute($code);
+        $currencies = $this->getChannelCurrenciesQuery->execute($code);
 
-        return new JsonResponse($locales);
+        return new JsonResponse($currencies);
     }
 }
