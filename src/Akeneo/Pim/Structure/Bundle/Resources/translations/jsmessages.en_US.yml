@@ -248,6 +248,7 @@ pim_enrich.entity.attribute:
             modal:
                 title: Attributes
                 subtitle: '{1}Confirm deletion of {{ count }} attribute|]1, Inf[Confirm deletion of {{ count }} attributes'
+                label: Please type "{{ textToCheck }}"
                 confirm: Are you sure you want to delete these attributes?
             message_bar:
                 success: The deletion has started. You will get a notification once the job is completed. In the meantime, you can keep an eye on its progress on the process tracker.
