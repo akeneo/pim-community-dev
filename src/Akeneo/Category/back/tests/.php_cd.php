@@ -80,6 +80,7 @@ $rules = [
         // Other Domains Components
         'Akeneo\Channel\Infrastructure\Component\Model\Channel',
         'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\Locale',
         'Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
@@ -94,6 +95,8 @@ $rules = [
         'Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository',
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
 
+        // Infrastructure Service API
+        'Akeneo\Tool\Bundle\VersioningBundle\ServiceApi',
         // Infrastructure Components
         'Akeneo\Tool\Component',
         'Symfony\Component\OptionsResolver\OptionsResolver',
@@ -109,6 +112,8 @@ $rules = [
         'Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass',
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType',
         'Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber',
+        'Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository',
+        'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
 
         // Vendors
         'Symfony\Component\Config',

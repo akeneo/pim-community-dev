@@ -80,6 +80,11 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigration implements
         }
     }
 
+    public function migrateNotZdd(): void
+    {
+        // Do nothing
+    }
+
     public function getName(): string
     {
         return 'GiveToUsersNewEnrichedCategoriesAclsBasedOnLegacyCategoriesAcls';
