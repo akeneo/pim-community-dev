@@ -27,12 +27,12 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
     const [isOpen, setIsOpen] = useState(true);
     const translationKey = 'akeneo_catalogs.product_mapping.source.requirements.constraints';
 
-    const constraints: Constraint[] = ACCEPTED_CONSTRAINTS
-        .filter(constraint => target[constraint] !== undefined && target[constraint] !== null)
-        .map(constraint => ({
-            key: constraint,
-            value: (target as TargetWith<typeof constraint>)[constraint],
-        }));
+    const constraints: Constraint[] = ACCEPTED_CONSTRAINTS.filter(
+        constraint => target[constraint] !== undefined && target[constraint] !== null
+    ).map(constraint => ({
+        key: constraint,
+        value: (target as TargetWith<typeof constraint>)[constraint],
+    }));
 
     const shouldDisplayWarning = constraints.length > 0;
 
