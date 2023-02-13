@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Attribute\Job;
 
+use Akeneo\Pim\Structure\Component\Exception\AttributeRemovalException;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -22,9 +24,8 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
 
     public function __construct(
         private readonly AttributeRepositoryInterface $attributeRepository,
-        private readonly BulkRemoverInterface $remover,
-        private readonly EntityManagerClearerInterface $cacheClearer,
-        private readonly int $batchSize = 100,
+        private readonly RemoverInterface $remover,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -37,37 +38,25 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
     {
         if (null === $this->stepExecution) {
             throw new \InvalidArgumentException(
-                sprintf('In order to execute "%s" you need to set a step execution.', static::class)
+                sprintf('In order to execute "%s" you need to set a step execution.', static::class),
             );
         }
 
-        $attributesToDelete = $this->getAttributesToDelete();
+        $attributes = $this->getAttributes();
 
-        $this->stepExecution->setTotalItems(count($attributesToDelete));
+        $this->stepExecution->setTotalItems(count($attributes));
         $this->stepExecution->addSummaryInfo('deleted_attributes', 0);
+        $this->stepExecution->addSummaryInfo('skipped_attributes', 0);
 
-        foreach (array_chunk($attributesToDelete, $this->batchSize) as $batchAttributes) {
-            $this->delete($batchAttributes);
+        foreach ($attributes as $attribute) {
+            $this->delete($attribute);
         }
-    }
-
-    /**
-     * @param Attribute[] $attributes
-     */
-    private function delete(array $attributes): void
-    {
-        $this->remover->removeAll($attributes);
-
-        $this->stepExecution->incrementSummaryInfo('deleted_attributes', count($attributes));
-        $this->stepExecution->incrementProcessedItems(count($attributes));
-
-        $this->cacheClearer->clear();
     }
 
     /**
      * @return Attribute[]
      */
-    private function getAttributesToDelete(): array
+    private function getAttributes(): array
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
 
@@ -76,6 +65,27 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
             'NOT IN' => $this->attributeRepository->findByNotInCodes($filters['values']),
             default => new \LogicException('Operator should be "IN" or "NOT IN"'),
         };
+    }
+
+    private function delete(Attribute $attribute): void
+    {
+        try {
+            $this->remover->remove($attribute);
+            $this->stepExecution->incrementSummaryInfo('deleted_attributes');
+            $this->stepExecution->incrementProcessedItems();
+        } catch (AttributeRemovalException $e) {
+            $this->addWarning($e->getMessage(), $attribute);
+            $this->stepExecution->incrementSummaryInfo('skipped_attributes');
+        }
+    }
+
+    private function addWarning(string $reason, Attribute $attribute): void
+    {
+        $this->stepExecution->addWarning(
+            $this->translator->trans($reason),
+            [],
+            new DataInvalidItem($attribute),
+        );
     }
 
     public function isTrackable(): bool
