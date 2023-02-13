@@ -1,8 +1,8 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '../tests';
-import {DoubleCheckDeleteModal} from "./DoubleCheckDeleteModal";
-import userEvent from "@testing-library/user-event";
+import {DoubleCheckDeleteModal} from './DoubleCheckDeleteModal';
+import userEvent from '@testing-library/user-event';
 
 test('It displays a double check delete modal', () => {
   renderWithProviders(
@@ -10,6 +10,7 @@ test('It displays a double check delete modal', () => {
       title="Entity"
       onCancel={jest.fn()}
       onConfirm={jest.fn()}
+      doubleCheckInputLabel="a_double_check_input_label"
       textToCheck="delete"
     >
       Are you sure you want to remove this entity ?
@@ -17,11 +18,11 @@ test('It displays a double check delete modal', () => {
   );
 
   expect(screen.getByText('Are you sure you want to remove this entity ?')).toBeInTheDocument();
-  expect(screen.getByLabelText('pim_enrich.entity.attribute.module.mass_delete.modal.label')).toBeInTheDocument();
+  expect(screen.getByLabelText('a_double_check_input_label')).toBeInTheDocument();
   expect(screen.getByText('pim_common.delete')).toBeDisabled();
 });
 
-test('It allow deletion when user type the text to check', () => {
+test('It allows deletion when user type the text to check', () => {
   const handleConfirm = jest.fn();
 
   renderWithProviders(
@@ -29,13 +30,14 @@ test('It allow deletion when user type the text to check', () => {
       title="Entity"
       onCancel={jest.fn()}
       onConfirm={handleConfirm}
+      doubleCheckInputLabel="a_double_check_input_label"
       textToCheck="delete"
     >
       Are you sure you want to remove this entity ?
     </DoubleCheckDeleteModal>
   );
 
-  userEvent.type(screen.getByLabelText('pim_enrich.entity.attribute.module.mass_delete.modal.label'), 'delete');
+  userEvent.type(screen.getByLabelText('a_double_check_input_label'), 'delete');
   expect(screen.getByText('pim_common.delete')).toBeEnabled();
 
   userEvent.click(screen.getByText('pim_common.delete'));

@@ -1,23 +1,25 @@
 import React, {useState} from 'react';
 import {DeleteModal, DeleteModalProps} from './DeleteModal';
 import {TextField} from './TextField';
-import {useTranslate} from '../hooks';
 
-type DoubleCheckDeleteModalProps = DeleteModalProps & {textToCheck: string};
+type DoubleCheckDeleteModalProps = DeleteModalProps & {
+  doubleCheckInputLabel: string;
+  textToCheck: string;
+};
 
-const DoubleCheckDeleteModal = ({children, textToCheck, ...deleteModalProps}: DoubleCheckDeleteModalProps) => {
-  const translate = useTranslate();
+const DoubleCheckDeleteModal = ({
+  children,
+  doubleCheckInputLabel,
+  textToCheck,
+  ...deleteModalProps
+}: DoubleCheckDeleteModalProps) => {
   const [value, setValue] = useState('');
   const canConfirmDelete = value === textToCheck;
 
   return (
     <DeleteModal {...deleteModalProps} canConfirmDelete={canConfirmDelete}>
       {children}
-      <TextField
-        value={value}
-        label={translate('pim_enrich.entity.attribute.module.mass_delete.modal.label', {textToCheck})}
-        onChange={setValue}
-      />
+      <TextField value={value} label={doubleCheckInputLabel} onChange={setValue} />
     </DeleteModal>
   );
 };

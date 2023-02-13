@@ -7,7 +7,6 @@ import {DoubleCheckDeleteModal, DoubleCheckDeleteModalProps} from '@akeneo-pim-c
 
 const MassAction = require('oro/datagrid/mass-action');
 const Routing = require('routing');
-const Router = require('pim/router');
 const Messenger = require('oro/messenger');
 const LoadingMask = require('oro/loading-mask');
 const translate = require('oro/translator');
@@ -25,7 +24,6 @@ type MassActionData = {
   itemsCount: number;
 };
 
-const ATTRIBUTE_INDEX_ROUTE = 'pim_enrich_attribute_index';
 const GET_FILTERS_ROUTE = 'pim_enrich_mass_edit_rest_get_filter';
 const LAUNCH_JOB_ROUTE = 'pim_enrich_mass_edit_rest_launch';
 const DELETE_ATTRIBUTES_JOB = 'delete_attributes';
@@ -49,10 +47,11 @@ class AttributeMassDeleteAction extends MassAction {
   }
 
   private openModal(data: MassActionData): void {
+    const textToCheck = translate('pim_common.delete').toLowerCase();
+
     const modalProps: DoubleCheckDeleteModalProps = {
       onConfirm: () => {
         this.launchJob(data);
-        this.closeModal();
       },
       onCancel: this.closeModal.bind(this),
       title: translate('pim_enrich.entity.attribute.module.mass_delete.modal.title'),
@@ -62,7 +61,8 @@ class AttributeMassDeleteAction extends MassAction {
       children: translate('pim_enrich.entity.attribute.module.mass_delete.modal.confirm'),
       confirmButtonLabel: translate('pim_common.delete'),
       cancelButtonLabel: translate('pim_common.cancel'),
-      textToCheck: translate('pim_common.delete').toLowerCase(),
+      doubleCheckInputLabel: translate('pim_enrich.entity.attribute.module.mass_delete.modal.label', {textToCheck}),
+      textToCheck,
     };
 
     ReactDOM.render(
@@ -81,7 +81,6 @@ class AttributeMassDeleteAction extends MassAction {
 
   private async launchJob(data: MassActionData): Promise<void> {
     const loadingMask = new LoadingMask();
-    // @TODO Mask seems not working
     loadingMask.render().$el.appendTo($('.hash-loading-mask')).show();
 
     const url = Routing.generate(LAUNCH_JOB_ROUTE);
@@ -103,9 +102,8 @@ class AttributeMassDeleteAction extends MassAction {
       Messenger.notify('error', translate('pim_enrich.entity.attribute.module.mass_delete.message_bar.fail'));
     }
 
-    // @TODO Redirect does not work
-    Router.redirectToRoute(ATTRIBUTE_INDEX_ROUTE);
     loadingMask.hide().$el.remove();
+    this.closeModal();
   }
 
   private async getMassActionData(): Promise<MassActionData> {
