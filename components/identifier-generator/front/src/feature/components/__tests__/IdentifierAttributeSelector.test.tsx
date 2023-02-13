@@ -27,8 +27,8 @@ describe('IdentifierAttributeSelector', () => {
 
     render(<IdentifierAttributeSelector code="sku" />);
 
-    await waitFor(() => screen.findByText('pim_error.unauthorized'));
-    expect(screen.getByText('pim_error.unauthorized')).toBeVisible();
+    await waitFor(() => screen.findByText('pim_error.unauthorized_list_attributes'));
+    expect(screen.getByText('pim_error.unauthorized_list_attributes')).toBeVisible();
   });
 
   it('should show error message when endpoint returns an error', async () => {

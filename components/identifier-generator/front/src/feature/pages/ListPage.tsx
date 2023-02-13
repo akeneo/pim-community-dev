@@ -12,14 +12,12 @@ import {
   Table,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useGetIdentifierGenerators, useIdentifierAttributes} from '../hooks';
-import {LabelCollection, Target} from '../models';
+import {useGetIdentifierGenerators, useIdentifierAttributes, useStructureTabs} from '../hooks';
+import {GeneratorTab, LabelCollection, Target} from '../models';
 import {Styled} from './styles';
 import {Header, ListSkeleton} from '../components';
 import {useHistory} from 'react-router-dom';
 import {DeleteGeneratorModal} from './';
-import {GeneratorTab} from '../models/generatorTab';
-import {useStructureTabs} from '../hooks/useStructureTabs';
 
 type ListPageProps = {
   onCreate: () => void;
@@ -74,10 +72,13 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
         </Button>
       </Header>
       <PageContent>
-        <Information illustration={<AttributesIllustration />} title={'Welcome to your identifier generator!'}>
-          {translate('pim_identifier_generator.list.helper')}
+        <Information
+          illustration={<AttributesIllustration />}
+          title={translate('pim_identifier_generator.list.helper.title')}
+        >
+          {translate('pim_identifier_generator.list.helper.info')}
           <br />
-          <Link href="https://www.akeneo.com/" target="_blank">
+          <Link href="https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html" target="_blank">
             {translate('pim_identifier_generator.list.check_help_center')}
           </Link>
         </Information>

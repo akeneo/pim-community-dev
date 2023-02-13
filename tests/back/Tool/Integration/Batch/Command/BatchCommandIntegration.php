@@ -63,6 +63,7 @@ class BatchCommandIntegration extends TestCase
 
     public function testLaunchJobWithConfigOverridden()
     {
+        $this->get('feature_flags')->enable('import_export_local_storage');
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'new_export.csv';
         if (file_exists($filePath)) {
             unlink($filePath);

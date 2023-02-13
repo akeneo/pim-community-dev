@@ -1,8 +1,8 @@
 import React from 'react';
 import {fireEvent, render, screen} from '../../tests/test-utils';
-import {StructureTab} from '../StructureTab';
+import {StructureTab, StructureWithIdentifiers} from '../StructureTab';
 import {PROPERTY_NAMES, Structure} from '../../models';
-import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import initialGenerator from '../../tests/fixtures/initialGenerator';
 
 jest.mock('../structure/AddPropertyButton');
 jest.mock('../structure/DelimiterEdit');
@@ -26,9 +26,11 @@ describe('StructureTab', () => {
         delimiter={'--'}
         onStructureChange={jest.fn()}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
     expect(screen.getByText('pim_identifier_generator.structure.title')).toBeInTheDocument();
+    expect(screen.queryByText('pim_identifier_generator.structure.empty.title')).not.toBeInTheDocument();
     expect(screen.getByText('AddPropertyButtonMock')).toBeInTheDocument();
     expect(screen.getByText('DelimiterEditMock')).toBeInTheDocument();
     expect(screen.getAllByText('AKN')).toHaveLength(2);
@@ -42,9 +44,11 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={onStructureChange}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
 
+    expect(screen.getByText('pim_identifier_generator.structure.empty.title')).toBeInTheDocument();
     expect(screen.getByText('AddPropertyButtonMock')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Add Property'));
     expect(onStructureChange).toBeCalledWith(expect.any(Array));
@@ -63,6 +67,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={onStructureChange}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
 
@@ -82,6 +87,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={onStructureChange}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
 
@@ -104,6 +110,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={onStructureChange}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
 
@@ -127,6 +134,7 @@ describe('StructureTab', () => {
         delimiter={'--'}
         onStructureChange={onStructureChange}
         onDelimiterChange={onDelimiterChange}
+        validationErrors={[]}
       />
     );
 
@@ -150,6 +158,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={onStructureChange}
         onDelimiterChange={onDelimiterChange}
+        validationErrors={[]}
       />
     );
 
@@ -187,6 +196,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={jest.fn()}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
     expect(screen.queryByText('AddPropertyButtonMock')).not.toBeInTheDocument();
@@ -205,6 +215,7 @@ describe('StructureTab', () => {
         delimiter={null}
         onStructureChange={jest.fn()}
         onDelimiterChange={jest.fn()}
+        validationErrors={[]}
       />
     );
 
@@ -230,5 +241,31 @@ describe('StructureTab', () => {
 
     const rows = screen.getAllByRole('row');
     expect(rows.map(row => row.textContent?.substr(0, 3))).toEqual(['abc', 'ijk', 'lmn', 'def']);
+  });
+
+  it('should show displayed errors', () => {
+    const structure: StructureWithIdentifiers = [
+      {type: PROPERTY_NAMES.FREE_TEXT, string: 'First item', id: 'id0'},
+      {type: PROPERTY_NAMES.FREE_TEXT, string: '', id: 'id1'},
+      {type: PROPERTY_NAMES.FREE_TEXT, string: 'Third item', id: 'id2'},
+      {type: PROPERTY_NAMES.FREE_TEXT, string: '', id: 'id3'},
+    ];
+    render(
+      <StructureTab
+        initialStructure={structure}
+        delimiter={null}
+        onStructureChange={jest.fn()}
+        onDelimiterChange={jest.fn()}
+        validationErrors={[
+          {path: 'structure[1].string', message: 'error on second item'},
+          {path: 'structure[2].string', message: 'similar error'},
+          {path: 'structure[3].string', message: 'similar error'},
+        ]}
+      />
+    );
+
+    expect(screen.getAllByRole('alert').length).toBe(3);
+    expect(screen.getAllByText('error on second item').length).toBe(1);
+    expect(screen.getAllByText('similar error').length).toBe(1);
   });
 });

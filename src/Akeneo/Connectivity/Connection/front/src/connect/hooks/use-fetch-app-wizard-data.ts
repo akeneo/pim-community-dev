@@ -18,6 +18,7 @@ type Result = {
     }> | null;
     authenticationScopes: Array<'email' | 'profile'>;
     oldAuthenticationScopes: Array<'email' | 'profile'> | null;
+    displayCheckboxConsent: boolean;
 };
 
 export const useFetchAppWizardData = (clientId: string): (() => Promise<Result>) => {
