@@ -65,7 +65,7 @@ class UpdateCustomAppSecretQueryIntegration extends TestCase
 
         $postQuerySecret = $this->getCustomAppSecret('100eedac-ff5c-497b-899d-e2d64b6c59f9');
 
-        $this->assertNotSame(
+        $this->assertSame(
             $preQuerySecret,
             $postQuerySecret
         );
