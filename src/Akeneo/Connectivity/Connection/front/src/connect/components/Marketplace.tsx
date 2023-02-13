@@ -7,12 +7,12 @@ import {useTranslate} from '../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../shared/scroll/hooks/useDisplayScrollTopButton';
 import findScrollParent from '../../shared/scroll/utils/findScrollParent';
-import {App, Apps, TestApps} from '../../model/app';
+import {App, Apps, CustomApps} from '../../model/app';
 import {Section} from './Section';
 import {ActivateAppButton} from './ActivateAppButton';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {useConnectionsLimitReached} from '../../shared/hooks/use-connections-limit-reached';
-import {TestAppList} from './TestApp/TestAppList';
+import {CustomAppList} from './CustomApp/CustomAppList';
 import {useSecurity} from '../../shared/security';
 
 const ScrollToTop = styled(IconButton)`
@@ -39,10 +39,10 @@ const SearchBar = styled(Search)`
 type Props = {
     extensions: Extensions;
     apps: Apps;
-    testApps: TestApps;
+    customApps: CustomApps;
 };
 
-export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
+export const Marketplace: FC<Props> = ({extensions, apps, customApps}) => {
     const translate = useTranslate();
     const featureFlag = useFeatureFlags();
     const ref = useRef(null);
@@ -94,6 +94,15 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
         .filter(app => '' === search || app.name.toLowerCase().includes(search.toLowerCase()))
         .map((app: App) => appsComponents[app.id]);
 
+    const filteredCustomApps = customApps.apps.filter(
+        app => '' === search || app.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const customAppsList = {
+        total: filteredCustomApps.length,
+        apps: filteredCustomApps,
+    };
+
     const searchCount = extensionsList.length + appsList.length;
 
     const handleScrollTop = () => {
@@ -103,7 +112,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
     return (
         <>
             <div ref={ref} />
-            <MarketplaceHelper count={extensions.total + apps.total + testApps.total} />
+            <MarketplaceHelper count={extensions.total + apps.total + customApps.total} />
 
             <SearchBar
                 onSearchChange={setSearch}
@@ -122,7 +131,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                 </span>
             </SearchBar>
 
-            <TestAppList testApps={testApps} isLimitReached={isLimitReached} />
+            <CustomAppList customApps={customAppsList} isLimitReached={isLimitReached} />
 
             {featureFlag.isEnabled('marketplace_activate') && (
                 <Section

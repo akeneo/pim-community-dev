@@ -3,7 +3,7 @@ import {mockFetchResponses} from '../../../test-utils';
 import {useConnectedApps} from '@src/connect/hooks/use-connected-apps';
 import {useFeatureFlags} from '@src/shared/feature-flags/use-feature-flags';
 import {NotificationLevel, useNotify} from '@src/shared/notify';
-import {TestApp} from '@src/model/app';
+import {CustomApp} from '@src/model/app';
 import {ConnectedApp} from '@src/model/Apps/connected-app';
 import {useTriggerConnectedAppRefresh} from '@src/connect/hooks/use-trigger-connected-app-refresh';
 
@@ -210,7 +210,7 @@ test('it fetches connected test apps', async () => {
         has_outdated_scopes: false,
     };
 
-    const testApp: TestApp = {
+    const testApp: CustomApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'Extension 1',
         logo: null,

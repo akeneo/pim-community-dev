@@ -61,7 +61,7 @@ test('The marketplace renders with apps', () => {
             },
         ],
     };
-    const testApps = {
+    const customApps = {
         total: 0,
         apps: [],
     };
@@ -70,7 +70,7 @@ test('The marketplace renders with apps', () => {
         extensions: [],
     };
 
-    renderWithProviders(<Marketplace apps={apps} extensions={extensions} testApps={testApps} />);
+    renderWithProviders(<Marketplace apps={apps} extensions={extensions} customApps={customApps} />);
 
     expect(screen.getByText('MarketplaceHelper')).toBeInTheDocument();
     expect(
@@ -117,7 +117,7 @@ test('The marketplace renders with extensions', () => {
         total: 0,
         apps: [],
     };
-    const testApps = {
+    const customApps = {
         total: 0,
         apps: [],
     };
@@ -138,7 +138,7 @@ test('The marketplace renders with extensions', () => {
         ],
     };
 
-    renderWithProviders(<Marketplace apps={apps} extensions={extensions} testApps={testApps} />);
+    renderWithProviders(<Marketplace apps={apps} extensions={extensions} customApps={customApps} />);
 
     expect(screen.getByText('MarketplaceHelper')).toBeInTheDocument();
     expect(
@@ -187,7 +187,7 @@ test('The marketplace renders with test apps', () => {
         total: 0,
         apps: [],
     };
-    const testApps = {
+    const customApps = {
         total: 1,
         apps: [
             {
@@ -207,7 +207,7 @@ test('The marketplace renders with test apps', () => {
         extensions: [],
     };
 
-    renderWithProviders(<Marketplace apps={apps} extensions={extensions} testApps={testApps} />);
+    renderWithProviders(<Marketplace apps={apps} extensions={extensions} customApps={customApps} />);
 
     expect(screen.getByText('MarketplaceHelper')).toBeInTheDocument();
     expect(
@@ -283,7 +283,7 @@ test('The search input filters apps and extensions', async () => {
             },
         ],
     };
-    const testApps = {
+    const customApps = {
         total: 0,
         apps: [],
     };
@@ -315,7 +315,7 @@ test('The search input filters apps and extensions', async () => {
         ],
     };
 
-    renderWithProviders(<Marketplace apps={apps} extensions={extensions} testApps={testApps} />);
+    renderWithProviders(<Marketplace apps={apps} extensions={extensions} customApps={customApps} />);
 
     expect(
         screen.getByText('akeneo_connectivity.connection.connect.marketplace.apps.total?total=2')

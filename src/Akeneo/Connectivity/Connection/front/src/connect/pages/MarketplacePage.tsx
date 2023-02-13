@@ -28,7 +28,7 @@ export const MarketplacePage: FC = () => {
     const [userProfile, setUserProfile] = useState<string | null>(null);
     const [extensions, setExtensions] = useState<Extensions | null | false>(null);
     const [apps, setApps] = useState<Apps | null | false>(null);
-    const {isLoading: isTestAppsLoading, testApps} = useTestApps();
+    const {isLoading: isCustomAppsLoading, testApps} = useTestApps();
 
     useEffect(() => {
         const profile = user.get<string | null>('profile');
@@ -61,7 +61,7 @@ export const MarketplacePage: FC = () => {
         return null;
     }
 
-    const isLoading = null === extensions || null === apps || isTestAppsLoading;
+    const isLoading = null === extensions || null === apps || isCustomAppsLoading;
     const isUnreachable = false === extensions || false === apps;
 
     const breadcrumb = (
@@ -84,7 +84,7 @@ export const MarketplacePage: FC = () => {
             <PageContent>
                 {isLoading && <MarketplaceIsLoading />}
                 {isUnreachable && <UnreachableMarketplace />}
-                {!!extensions && !!apps && <Marketplace extensions={extensions} apps={apps} testApps={testApps} />}
+                {!!extensions && !!apps && <Marketplace extensions={extensions} apps={apps} customApps={testApps} />}
             </PageContent>
         </>
     );
