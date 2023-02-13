@@ -25,9 +25,12 @@ export const ConnectedAppCredentials: FC<Props> = ({connectedApp}) => {
 
     const {data: secret} = useFetchCustomAppSecret(connectedApp.id);
 
-    const regenerateSecretUrl = `${generateUrl('akeneo_connectivity_connection_connect_connected_apps_regenerate_secret', {
-        connectionCode: connectedApp.connection_code,
-    })}`;
+    const regenerateSecretUrl = `${generateUrl(
+        'akeneo_connectivity_connection_connect_connected_apps_regenerate_secret',
+        {
+            connectionCode: connectedApp.connection_code,
+        }
+    )}`;
 
     return (
         <>
@@ -36,7 +39,7 @@ export const ConnectedAppCredentials: FC<Props> = ({connectedApp}) => {
                     {translate('akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.title')}
                 </SectionTitle.Title>
             </SectionTitle>
-            <CredentialList withIcon={true}>
+            <CredentialList>
                 <CopiableCredential
                     icon={<UserIcon></UserIcon>}
                     label={translate(
@@ -50,11 +53,13 @@ export const ConnectedAppCredentials: FC<Props> = ({connectedApp}) => {
                     label={translate(
                         'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.client_secret'
                     )}
-                    actions={<Button ghost level="secondary" size="small"
-                         onClick={() => history.push(regenerateSecretUrl)}>
-                        {translate(
-                        'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.regenerate_button'
-                    )}</Button>}
+                    actions={
+                        <Button ghost level='secondary' size='small' onClick={() => history.push(regenerateSecretUrl)}>
+                            {translate(
+                                'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.regenerate_button'
+                            )}
+                        </Button>
+                    }
                 >
                     {secret ?? ''}
                 </Credential>

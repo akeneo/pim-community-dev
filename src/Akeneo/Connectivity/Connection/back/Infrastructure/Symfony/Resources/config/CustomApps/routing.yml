@@ -19,6 +19,11 @@ akeneo_connectivity_connection_custom_apps_rest_get_secret:
     controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetCustomAppSecretAction
     methods: [GET]
 
+akeneo_connectivity_connection_custom_apps_rest_regenerate_secret:
+    path: '/rest/custom-apps/{customAppId}/secret'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\RegenerateCustomAppSecretAction
+    methods: [ POST ]
+
 # External API
 akeneo_connectivity_connection_custom_apps_api_list:
     path: '/api/rest/v1/test-apps'
