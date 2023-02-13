@@ -131,7 +131,9 @@ class DatabaseCommand extends Command
             $this->logger->error('Database does not exist yet');
         }
 
-        $this->commandExecutor->runCommand('doctrine:database:create', ['--if-not-exists' => true]);
+        if (!$input->getOption('doNotDropDatabase')) {
+            $this->commandExecutor->runCommand('doctrine:database:create', ['--if-not-exists' => true]);
+        }
 
         // Needs to close connection if always open
         if ($this->connection->isConnected()) {
