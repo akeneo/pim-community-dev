@@ -9,6 +9,7 @@ const Container = styled.div`
 
 const Footer = styled.div`
   display: flex;
+  gap: 1em;
 `;
 
 const List = styled.ul`
@@ -54,6 +55,9 @@ const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
         <Footer>
           <Link href={surveyLink} target="_blank">
             {translate('akeneo.category.discover_enriched_categories_information.survey_link_label')}
+          </Link>
+          <Link href='https://help.akeneo.com/pim/serenity/index.html' target="_blank">
+            {translate('akeneo.category.discover_enriched_categories_information.learn_more_link_label')}
           </Link>
         </Footer>
       </Information>
