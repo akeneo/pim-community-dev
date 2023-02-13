@@ -179,6 +179,32 @@ const HelpContainer = styled.div`
   min-height: 80px;
   position: relative;
   margin-top: auto;
+  display: inline-block;
+
+  .dropdown-content {
+    background-color: white;
+    display: none;
+    box-shadow: 0px 8px 16px 0px ${({theme}) => theme.color.grey120};
+    z-index: 1;
+    position: fixed;
+    left: 70px;
+    bottom: 50px;
+    flex-direction: column;
+
+    a {
+      color: ${({theme}) => theme.color.grey120};
+      padding: 12px 16px;
+      :hover {
+        color: ${({theme}) => theme.color.purple100};
+      }
+    }
+  }
+  
+  :hover {
+    .dropdown-content {
+      display: flex;
+    }
+  }
 `;
 
 export type {NavigationEntry, SubNavigation};

@@ -26,6 +26,10 @@ class Help extends BaseView {
           helper: __('pim_menu.tab.help.helper'),
           title: __('pim_menu.tab.help.title'),
           url,
+          akademyTrainingTitle: __('pim_menu.tab.help.akademy_training'),
+          helpCenterTitle: __('pim_menu.tab.help.help_center'),
+          newLabel: __('pim_menu.tab.help.new'),
+          newsTitle: __('pim_menu.tab.help.news')
         })
       );
     });

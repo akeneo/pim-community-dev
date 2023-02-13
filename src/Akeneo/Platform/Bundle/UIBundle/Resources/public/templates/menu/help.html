@@ -1,7 +1,15 @@
-<a id="<%= id %>" class="AknHeader-menuItem" title="<%= helper %>" href="<%= url %>" target="_blank">
+<a id="<%= id %>" class="AknHeader-menuItem">
     <div>
         <span class="AknHeader-menuItemImage AknHeader-menuItemImage--iconHelp"></span>
         <span class="AknHeader-menuItemImage AknHeader-menuItemImage--iconHelp"></span>
+        <div class="AknBadge AknBadge--info AknBadge--topRight">NEW</div>
     </div>
     <%- title %>
 </a>
+<div class="dropdown-content">
+    <a href="<%= url %>" target="_blank" title="<%= helper %>"><%- helpCenterTitle %></a>
+    <a href="https://akademy.akeneo.com/" target="_blank"><%- akademyTrainingTitle %>
+        <div class="AknBadge AknBadge--info"><%- newLabel %></div>
+    </a>
+    <a href="https://help.akeneo.com/pim/serenity/updates/index.html" target="_blank"><%- newsTitle %></a>
+</div>
