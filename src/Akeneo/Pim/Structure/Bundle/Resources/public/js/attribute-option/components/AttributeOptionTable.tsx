@@ -5,7 +5,7 @@ import {AttributeOptionsContext, useAttributeContext} from '../contexts';
 import {useSortedAttributeOptions} from '../hooks';
 import AutoOptionSorting from './AutoOptionSorting';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
-import {Button, Search, SectionTitle, Table, useAutoFocus} from 'akeneo-design-system';
+import {Button, Helper, Search, SectionTitle, Table, useAutoFocus} from 'akeneo-design-system';
 import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
@@ -163,6 +163,13 @@ const AttributeOptionTable = ({
           {translate('pim_enrich.entity.product.module.attribute.add_option')}
         </Button>
       </SectionTitleStyled>
+
+      {filteredAttributeOptionsCount > 500 && (
+        <HelperStyled level="warning">
+          {translate('pim_enrich.entity.attribute_option.module.edit.display_options_limit')}
+        </HelperStyled>
+      )}
+
       <Search
         title={translate('pim_common.search')}
         placeholder={translate('pim_enrich.entity.attribute_option.module.edit.search.placeholder')}
@@ -196,7 +203,7 @@ const AttributeOptionTable = ({
                   <Table.HeaderCell>&nbsp;</Table.HeaderCell>
                 </Table.Header>
                 <Table.Body>
-                  {filteredAttributeOptions.slice(0,500).map((attributeOption: AttributeOption) => {
+                  {filteredAttributeOptions.slice(0, 500).map((attributeOption: AttributeOption) => {
                     return (
                       <AttributeOptionRow
                         isDraggable={isDraggable}
@@ -234,7 +241,11 @@ const AttributeOptionTable = ({
 };
 
 const SectionTitleStyled = styled(SectionTitle)`
-  margin: 20px 0 20px 0;
+  margin-top: 20px;
+`;
+
+const HelperStyled = styled(Helper)`
+  margin-bottom: 10px;
 `;
 
 const SpacedTable = styled(Table)`
