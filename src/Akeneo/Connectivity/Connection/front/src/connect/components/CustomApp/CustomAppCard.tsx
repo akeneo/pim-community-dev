@@ -1,6 +1,6 @@
 import React, {FC, ReactNode} from 'react';
 import styled from 'styled-components';
-import {TestApp} from '../../../model/app';
+import {CustomApp} from '../../../model/app';
 import {getColor, getFontSize, DeleteIcon, IconButton} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {useHistory} from 'react-router';
@@ -66,23 +66,23 @@ const Actions = styled.div`
 `;
 
 type Props = {
-    testApp: TestApp;
+    customApp: CustomApp;
     additionalActions?: ReactNode[];
 };
 
-export const TestAppCard: FC<Props> = ({testApp, additionalActions}) => {
+export const CustomAppCard: FC<Props> = ({customApp, additionalActions}) => {
     const security = useSecurity();
     const translate = useTranslate();
     const generateUrl = useRouter();
     const history = useHistory();
 
     const author =
-        testApp.author ?? translate('akeneo_connectivity.connection.connect.marketplace.test_apps.removed_user');
+        customApp.author ?? translate('akeneo_connectivity.connection.connect.marketplace.test_apps.removed_user');
 
     const onDelete = () => {
         history.push(
             generateUrl('akeneo_connectivity_connection_connect_custom_apps_delete', {
-                customAppId: testApp.id,
+                customAppId: customApp.id,
             })
         );
     };
@@ -98,7 +98,7 @@ export const TestAppCard: FC<Props> = ({testApp, additionalActions}) => {
                 />
             </LogoContainer>
             <TextInformation>
-                <Name>{testApp.name}</Name>
+                <Name>{customApp.name}</Name>
                 <Author>
                     {translate('akeneo_connectivity.connection.connect.marketplace.card.developed_by', {author})}
                 </Author>

@@ -1,33 +1,33 @@
 import React, {FC} from 'react';
-import {TestApp, TestApps} from '../../../model/app';
+import {CustomApp, CustomApps} from '../../../model/app';
 import {Section} from '../Section';
 import {useTranslate} from '../../../shared/translate';
-import {TestAppCard} from './TestAppCard';
+import {CustomAppCard} from './CustomAppCard';
 import {ActivateAppButton} from '../ActivateAppButton';
 import {useSecurity} from '../../../shared/security';
 
 interface Props {
-    testApps: TestApps;
+    customApps: CustomApps;
     isLimitReached: boolean;
 }
 
-export const TestAppList: FC<Props> = ({testApps, isLimitReached}) => {
+export const CustomAppList: FC<Props> = ({customApps, isLimitReached}) => {
     const security = useSecurity();
     const translate = useTranslate();
 
-    if (testApps.total <= 0) {
+    if (customApps.total <= 0) {
         return null;
     }
 
-    const testAppsList = testApps.apps.map((testApp: TestApp) => (
-        <TestAppCard
-            key={testApp.id}
-            testApp={testApp}
+    const customAppsList = customApps.apps.map((customApp: CustomApp) => (
+        <CustomAppCard
+            key={customApp.id}
+            customApp={customApp}
             additionalActions={[
                 <ActivateAppButton
                     key={1}
-                    id={testApp.id}
-                    isConnected={testApp.connected}
+                    id={customApp.id}
+                    isConnected={customApp.connected}
                     isDisabled={!security.isGranted('akeneo_connectivity_connection_manage_apps') || isLimitReached}
                     isPending={false}
                 />,
@@ -41,9 +41,9 @@ export const TestAppList: FC<Props> = ({testApps, isLimitReached}) => {
             information={translate(
                 'akeneo_connectivity.connection.connect.marketplace.apps.total',
                 {
-                    total: testApps.total.toString(),
+                    total: customApps.total.toString(),
                 },
-                testApps.total
+                customApps.total
             )}
             emptyMessage={translate('akeneo_connectivity.connection.connect.marketplace.apps.empty')}
             warningMessage={
@@ -52,7 +52,7 @@ export const TestAppList: FC<Props> = ({testApps, isLimitReached}) => {
                     : translate('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached')
             }
         >
-            {testAppsList}
+            {customAppsList}
         </Section>
     );
 };

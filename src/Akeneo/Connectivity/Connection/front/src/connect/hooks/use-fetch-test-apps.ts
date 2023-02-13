@@ -1,11 +1,11 @@
 import {useRoute} from '../../shared/router';
 import {useCallback} from 'react';
-import {TestApps} from '../../model/app';
+import {CustomApps} from '../../model/app';
 
-export const useFetchTestApps = (): (() => Promise<TestApps>) => {
+export const useFetchTestApps = (): (() => Promise<CustomApps>) => {
     const url = useRoute('akeneo_connectivity_connection_custom_apps_rest_get_all');
 
-    const fetchTestApps = useCallback(async () => {
+    const fetchCustomApps = useCallback(async () => {
         const response = await fetch(url, {
             method: 'GET',
             headers: [['X-Requested-With', 'XMLHttpRequest']],
@@ -17,5 +17,5 @@ export const useFetchTestApps = (): (() => Promise<TestApps>) => {
         return response.json();
     }, [url]);
 
-    return fetchTestApps;
+    return fetchCustomApps;
 };
