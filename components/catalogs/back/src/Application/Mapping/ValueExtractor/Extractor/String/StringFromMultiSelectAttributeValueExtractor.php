@@ -41,8 +41,8 @@ final class StringFromMultiSelectAttributeValueExtractor implements StringValueE
 
         $translatedValues = [];
         foreach ($values as $value) {
-            $translatedValue = array_values(\array_filter($options, fn ($v) => $v['code'] == $value));
-            if (count($translatedValue) > 0 && isset($translatedValue[0]['label'])) {
+            $translatedValue = \array_values(\array_filter($options, fn ($v) => $v['code'] === $value));
+            if (\count($translatedValue) > 0 && isset($translatedValue[0]['label'])) {
                 $translatedValues[] = $translatedValue[0]['label'];
             } else {
                 $translatedValues[] = \sprintf('[%s]', $value);
@@ -73,14 +73,14 @@ final class StringFromMultiSelectAttributeValueExtractor implements StringValueE
      */
     private function convertRawValuesToStringArray(?array $rawValues): array
     {
-        if (!is_array($rawValues)) {
+        if (!\is_array($rawValues)) {
             throw new \LogicException();
         }
 
         /** @var array<string> $values */
         $values = [];
         foreach ($rawValues as $rawValue) {
-            if (!is_string($rawValue)) {
+            if (!\is_string($rawValue)) {
                 throw new \LogicException();
             }
             $values[] = $rawValue;
