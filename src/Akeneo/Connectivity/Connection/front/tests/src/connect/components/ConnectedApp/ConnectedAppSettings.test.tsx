@@ -189,4 +189,10 @@ test('Connected App Settings does not renders custom app credentials when missin
             exact: false,
         })
     ).not.toBeInTheDocument();
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.title', {
+            exact: false,
+        })
+    ).not.toBeInTheDocument();
 });

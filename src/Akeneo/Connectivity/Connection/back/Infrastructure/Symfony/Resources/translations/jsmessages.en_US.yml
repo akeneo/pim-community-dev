@@ -40,6 +40,7 @@ pim_title:
     akeneo_connectivity_connection_connect_connected_apps: Connected Apps
     akeneo_connectivity_connection_connect_connected_apps_edit: App settings
     akeneo_connectivity_connection_connect_connected_apps_delete: App delete
+    akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: Regenerate credentials
     akeneo_connectivity_connection_connect_custom_apps_create: Create a custom app
     akeneo_connectivity_connection_connect_custom_apps_delete: Delete custom app
     akeneo_connectivity_connection_connect_connected_apps_open: Open App
@@ -179,11 +180,16 @@ akeneo_connectivity.connection:
                         client_secret: Client secret
                         regenerate_button: Regenerate
                         regenerate_secret:
-                            title: Regenerate credentials
-                            description: Regenerating credentials will impact your custom app connection with the PIM. Are you sure you want to proceed ?
-                            regenerate_button: Regenerate
-                            cancel_button: Cancel
-                            done_button: Done
+                            flash_error: Sorry, an error occurred while regenerating the connection secret.
+                            confirm:
+                                title: Confirm regenerate
+                                description: Regenerating secret will impact your custom app connection with the PIM. Are you sure you want to proceed ?
+                                regenerate_button: Regenerate
+                                cancel_button: Cancel
+                            new_credentials:
+                                title: New credentials
+                                subtitle: Regenerate credentials
+                                done_button: Done
                 error_monitoring:
                     error: Oups, something went wrong!
                     helper:
