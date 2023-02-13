@@ -98,14 +98,6 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'scope' => null,
                         'locale' => null,
                     ],
-                    'price_number' => [
-                        'source' => 'price',
-                        'scope' => null,
-                        'locale' => null,
-                        'parameters' => [
-                            'currency' => 'USD',
-                        ],
-                    ],
                     'released_at' => [
                         'source' => 'release_date',
                         'scope' => 'ecommerce',
@@ -148,7 +140,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             ),
         );
 
-        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "released_at", "released", "size", "price_number".');
+        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "released_at", "released", "size".');
     }
 
     public function testItReturnsViolationsWhenThereIsAdditionalTarget(): void
@@ -206,14 +198,6 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'scope' => null,
                         'locale' => null,
                     ],
-                    'price_number' => [
-                        'source' => 'price',
-                        'scope' => null,
-                        'locale' => null,
-                        'parameters' => [
-                            'currency' => 'USD',
-                        ],
-                    ],
                     'size' => [
                         'source' => null,
                         'scope' => null,
@@ -257,9 +241,6 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             },
             "released": {
               "type": "boolean"
-            },
-            "price_number": {
-              "type": "number"
             },
             "size": {
               "type": "number"
