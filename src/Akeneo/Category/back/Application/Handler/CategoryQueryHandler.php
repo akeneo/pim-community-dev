@@ -80,4 +80,25 @@ class CategoryQueryHandler implements CategoryQueryInterface
             );
         }
     }
+
+    /**
+     * @param array<int> $categoryIds
+     * @return \Generator<Category>
+     */
+    public function byIds(array $categoryIds): \Generator
+    {
+        $categories = $this->getCategory->byIds(array_values($categoryIds));
+        foreach ($categories as $category) {
+            $categoryNormalized = $category->normalize();
+
+            yield new Category(
+                $categoryNormalized['id'],
+                $categoryNormalized['properties']['code'],
+                $categoryNormalized['properties']['labels'],
+                $categoryNormalized['parent'],
+                $categoryNormalized['attributes'],
+                $categoryNormalized['permissions'],
+            );
+        }
+    }
 }

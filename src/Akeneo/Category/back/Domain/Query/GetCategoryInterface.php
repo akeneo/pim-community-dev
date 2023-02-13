@@ -21,4 +21,10 @@ interface GetCategoryInterface
      * @return \Generator<Category>
      */
     public function byCodes(array $categoryCodes): \Generator;
+
+    /**
+     * @param array<int> $categoryIds
+     * @return \Generator<Category>
+     */
+    public function byIds(array $categoryIds): \Generator;
 }

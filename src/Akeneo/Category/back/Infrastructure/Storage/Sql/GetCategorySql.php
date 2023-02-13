@@ -26,7 +26,7 @@ class GetCategorySql implements GetCategoryInterface
         $condition['params'] = ['category_id' => $categoryId];
         $condition['types'] = ['category_id' => \PDO::PARAM_INT];
 
-        return $this->execute($condition);
+        return $this->executeOne($condition);
     }
 
     public function byCode(string $categoryCode): ?Category
@@ -35,37 +35,49 @@ class GetCategorySql implements GetCategoryInterface
         $condition['params'] = ['category_code' => $categoryCode];
         $condition['types'] = ['category_code' => \PDO::PARAM_STR];
 
-        return $this->execute($condition);
+        return $this->executeOne($condition);
     }
 
     /**
-     * @param array $categoryCodes
+     * @param array<string> $categoryCodes
      * @return \Generator<Category>
      */
     public function byCodes(array $categoryCodes): \Generator
     {
-        $condition['sqlWhere'] = 'category.code IN (:category_code)';
-        $condition['params'] = ['category_code' => $categoryCodes];
-        $condition['types'] = ['category_code' => \PDO::PARAM_STR];
+        $condition['sqlWhere'] = 'category.code IN (:category_codes)';
+        $condition['params'] = ['category_codes' => $categoryCodes];
+        $condition['types'] = ['category_codes' => Connection::PARAM_STR_ARRAY];
 
-        return $this->execute($condition, true);
+        return $this->executeAll($condition, true);
     }
 
     /**
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \JsonException
-     * @throws Exception
+     * @param array<int> $categoryIds
+     * @return \Generator<Category>
      */
-    private function execute(array $condition, $asGenerator = false): \Generator|Category|null
+    public function byIds(array $categoryIds): \Generator
+    {
+        $condition['sqlWhere'] = 'category.id IN (:category_ids)';
+        $condition['params'] = ['category_ids' => $categoryIds];
+        $condition['types'] = ['category_ids' => Connection::PARAM_INT_ARRAY];
+
+        return $this->executeAll($condition, true);
+    }
+
+    /**
+     * @param array<string, array<string, mixed>> $condition
+     */
+    private function getSQL(array $condition): string
     {
         $sqlWhere = $condition['sqlWhere'];
 
-        $sqlQuery = <<<SQL
+        return <<<SQL
             WITH translation as (
                 SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
                 FROM pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
                 WHERE $sqlWhere
+                GROUP BY category.code
             ),
             template as (
                 SELECT category.code as category_code, BIN_TO_UUID(category_template_uuid) as template_uuid
@@ -90,22 +102,19 @@ class GetCategorySql implements GetCategoryInterface
                 LEFT JOIN translation ON translation.code = category.code
                 LEFT JOIN template ON category.code = template.category_code
             WHERE $sqlWhere
+            GROUP BY category.code, template.template_uuid
         SQL;
+    }
 
-        if ($asGenerator) {
-            $results = $this->connection->executeQuery(
-                $sqlQuery,
-                $condition['params'],
-                $condition['types'],
-            )->iterateAssociative();
-
-            foreach ($results as $result) {
-                yield Category::fromDatabase($result);
-            }
-        }
-
+    /**
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \JsonException
+     */
+    private function executeOne(array $condition): ?Category
+    {
         $result = $this->connection->executeQuery(
-            $sqlQuery,
+            $this->getSQL($condition),
             $condition['params'],
             $condition['types'],
         )->fetchAssociative();
@@ -115,5 +124,23 @@ class GetCategorySql implements GetCategoryInterface
         }
 
         return Category::fromDatabase($result);
+    }
+
+    /**
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \JsonException
+     */
+    private function executeAll(array $condition): \Generator
+    {
+        $results = $this->connection->executeQuery(
+            $this->getSQL($condition),
+            $condition['params'],
+            $condition['types'],
+        )->fetchAllAssociative();
+
+        foreach ($results as $result) {
+            yield Category::fromDatabase($result);
+        }
     }
 }
