@@ -4,12 +4,17 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {Target} from '../models/Target';
 import styled from 'styled-components';
 
+const ACCEPTED_CONSTRAINTS = ['minLength', 'maxLength'] as const;
+
 type Props = {
-    selectedTarget: Target;
+    target: Target;
 };
 
+type TargetWithOnlyConstraints = Pick<Target, typeof ACCEPTED_CONSTRAINTS[number]>;
+type TargetWith<K extends keyof TargetWithOnlyConstraints> = Required<Pick<TargetWithOnlyConstraints, K>>;
+
 type Constraint = {
-    key: string;
+    key: keyof TargetWithOnlyConstraints;
     value: string | number;
 };
 
@@ -17,30 +22,21 @@ const WarningHelper = styled(Helper)`
     margin-bottom: 10px;
 `;
 
-export const RequirementsCollapse: FC<Props> = ({selectedTarget}) => {
+export const RequirementsCollapse: FC<Props> = ({target}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState(true);
-    const acceptedConstraints: string[] = ['minLength', 'maxLength'];
     const translationKey = 'akeneo_catalogs.product_mapping.source.requirements.constraints';
 
-    const constraintsToShow: Constraint[] = [];
+    const constraints: Constraint[] = ACCEPTED_CONSTRAINTS
+        .filter(constraint => target[constraint] !== undefined && target[constraint] !== null)
+        .map(constraint => ({
+            key: constraint,
+            value: (target as TargetWith<typeof constraint>)[constraint],
+        }));
 
-    for (const acceptedConstraint of acceptedConstraints) {
-        if (
-            acceptedConstraint in selectedTarget &&
-            undefined !== selectedTarget[acceptedConstraint] &&
-            null !== selectedTarget[acceptedConstraint]
-        ) {
-            constraintsToShow.push({
-                key: acceptedConstraint,
-                value: selectedTarget[acceptedConstraint],
-            } as Constraint);
-        }
-    }
+    const shouldDisplayWarning = constraints.length > 0;
 
-    const shouldDisplayWarning = constraintsToShow.length > 0;
-
-    if ((undefined === selectedTarget.description || null === selectedTarget.description) && !shouldDisplayWarning) {
+    if ((undefined === target.description || null === target.description) && !shouldDisplayWarning) {
         return null;
     }
 
@@ -61,7 +57,7 @@ export const RequirementsCollapse: FC<Props> = ({selectedTarget}) => {
             >
                 {shouldDisplayWarning && (
                     <WarningHelper inline level='warning'>
-                        {constraintsToShow.map((constraint, i) => (
+                        {constraints.map((constraint, i) => (
                             <p key={i}>
                                 {translate(
                                     `${translationKey}.${constraint.key}`,
@@ -74,9 +70,9 @@ export const RequirementsCollapse: FC<Props> = ({selectedTarget}) => {
                         ))}
                     </WarningHelper>
                 )}
-                {selectedTarget.description && (
+                {target.description && (
                     <Helper inline level='info'>
-                        {selectedTarget.description}
+                        {target.description}
                     </Helper>
                 )}
             </Collapse>
