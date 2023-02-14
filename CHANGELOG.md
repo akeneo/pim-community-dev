@@ -12,6 +12,7 @@
 - PIM-10802: Fix wysiwyg-field add link event
 - PIM-10796: Fix system-information endpoint with wrong answers
 - PIM-10806: Allow to delete product's attributes with type 'identifier' and ensure grey cross is displayed
+- PIM-10778: Add limit to the number of options to display on the attribute option page
 
 ## Improvements
 
