@@ -20,10 +20,10 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  * @phpstan-import-type Attribute from FindOneAttributeByCodeQueryInterface
  * @phpstan-type SourceParameters array{currency: string}
  * @phpstan-type AttributeSource array{
- * source: string,
- * scope: string|null,
- * locale: string|null,
- * parameters: SourceParameters
+ *    source: string,
+ *    scope: string|null,
+ *    locale: string|null,
+ *    parameters: SourceParameters
  * }
  */
 class AttributeSourceContainsValidCurrencyValidator extends ConstraintValidator
