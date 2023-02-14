@@ -2,11 +2,11 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {renderWithProviders} from '../../../../test-utils';
-import {TestAppCard} from '@src/connect/components/TestApp/TestAppCard';
+import {CustomAppCard} from '@src/connect/components/CustomApps/CustomAppCard';
 import {SecurityContext} from '@src/shared/security';
 
 test('it displays test app', () => {
-    const testApp = {
+    const customApp = {
         id: 'id1',
         name: 'Name of the test app',
         logo: null,
@@ -16,7 +16,7 @@ test('it displays test app', () => {
         callback_url: 'test_app_1_callback_url',
         connected: false,
     };
-    renderWithProviders(<TestAppCard testApp={testApp} />);
+    renderWithProviders(<CustomAppCard customApp={customApp} />);
 
     expect(screen.queryByText('Name of the test app')).toBeInTheDocument();
     expect(
@@ -25,7 +25,7 @@ test('it displays test app', () => {
 });
 
 test('it displays test app with removed author', () => {
-    const testApp = {
+    const customApp = {
         id: 'id1',
         name: 'Name of the test app',
         logo: null,
@@ -35,7 +35,7 @@ test('it displays test app with removed author', () => {
         callback_url: 'test_app_1_callback_url',
         connected: false,
     };
-    renderWithProviders(<TestAppCard testApp={testApp} />);
+    renderWithProviders(<CustomAppCard customApp={customApp} />);
 
     expect(screen.queryByText('Name of the test app')).toBeInTheDocument();
     expect(
@@ -53,7 +53,7 @@ test('it not displays the delete button when the user doesnt have the permission
         return true;
     });
 
-    const testApp = {
+    const customApp = {
         id: 'id1',
         name: 'Name of the test app',
         logo: null,
@@ -66,7 +66,7 @@ test('it not displays the delete button when the user doesnt have the permission
 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
-            <TestAppCard testApp={testApp} />
+            <CustomAppCard customApp={customApp} />
         </SecurityContext.Provider>
     );
 

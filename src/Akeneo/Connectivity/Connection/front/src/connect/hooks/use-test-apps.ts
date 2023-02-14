@@ -1,24 +1,24 @@
 import {useState, useEffect} from 'react';
-import {TestApps} from '../../model/app';
+import {CustomApps} from '../../model/app';
 import {useFetchTestApps} from './use-fetch-test-apps';
 
 interface Result {
     isLoading: boolean;
-    testApps: TestApps;
+    testApps: CustomApps;
 }
 
-const defaultTestAppsState = {total: 0, apps: []};
+const defaultCustomAppsState = {total: 0, apps: []};
 
 export const useTestApps = (): Result => {
     const fetchTestApps = useFetchTestApps();
 
-    const [testApps, setTestApps] = useState<TestApps>(defaultTestAppsState);
+    const [testApps, setTestApps] = useState<CustomApps>(defaultCustomAppsState);
     const [isLoading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         fetchTestApps()
             .then(setTestApps)
-            .catch(() => setTestApps(defaultTestAppsState))
+            .catch(() => setTestApps(defaultCustomAppsState))
             .finally(() => setLoading(false));
     }, []);
 
