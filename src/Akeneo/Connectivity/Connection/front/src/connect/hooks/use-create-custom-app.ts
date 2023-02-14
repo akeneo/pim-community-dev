@@ -1,7 +1,7 @@
 import {useCallback} from 'react';
 import {useRoute} from '../../shared/router';
 import {useMutation} from 'react-query';
-import {CustomAppCredentials} from '@src/model/Apps/custom-app-credentials';
+import {CustomAppCredentials} from '../../model/Apps/custom-app-credentials';
 import {UseMutationResult} from 'react-query/types/react/types';
 
 export type CustomApp = {
