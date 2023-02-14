@@ -192,6 +192,24 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
+                        'currency' => '',
+                    ],
+                ],
+                'expectedMessage' => 'This value should not be blank.',
+            ],
+            'null currency parameter' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
                         'currency' => null,
                     ],
                 ],
@@ -351,6 +369,9 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'price',
                     'scope' => null,
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -419,6 +440,9 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'price',
                     'locale' => null,
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -487,6 +511,9 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'scope' => null,
                     'locale' => null,
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
