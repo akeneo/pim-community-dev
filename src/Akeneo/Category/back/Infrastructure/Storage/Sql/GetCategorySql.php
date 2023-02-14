@@ -8,7 +8,6 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
-use PHP_CodeSniffer\Generators\Generator;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -40,6 +39,7 @@ class GetCategorySql implements GetCategoryInterface
 
     /**
      * @param array<string> $categoryCodes
+     *
      * @return \Generator<Category>
      */
     public function byCodes(array $categoryCodes): \Generator
@@ -53,6 +53,7 @@ class GetCategorySql implements GetCategoryInterface
 
     /**
      * @param array<int> $categoryIds
+     *
      * @return \Generator<Category>
      */
     public function byIds(array $categoryIds): \Generator
@@ -102,7 +103,6 @@ class GetCategorySql implements GetCategoryInterface
                 LEFT JOIN translation ON translation.code = category.code
                 LEFT JOIN template ON category.code = template.category_code
             WHERE $sqlWhere
-            GROUP BY category.code, template.template_uuid
         SQL;
     }
 
@@ -133,13 +133,13 @@ class GetCategorySql implements GetCategoryInterface
      */
     private function executeAll(array $condition): \Generator
     {
-        $results = $this->connection->executeQuery(
+        $stmt = $this->connection->executeQuery(
             $this->getSQL($condition),
             $condition['params'],
             $condition['types'],
-        )->fetchAllAssociative();
+        );
 
-        foreach ($results as $result) {
+        while (($result = $stmt->fetchAssociative()) !== false) {
             yield Category::fromDatabase($result);
         }
     }

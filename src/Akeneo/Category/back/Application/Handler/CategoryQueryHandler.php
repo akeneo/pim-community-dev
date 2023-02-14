@@ -62,6 +62,7 @@ class CategoryQueryHandler implements CategoryQueryInterface
 
     /**
      * @param array<string> $categoryCodes
+     *
      * @return \Generator<Category>
      */
     public function byCodes(array $categoryCodes): \Generator
@@ -83,6 +84,7 @@ class CategoryQueryHandler implements CategoryQueryInterface
 
     /**
      * @param array<int> $categoryIds
+     *
      * @return \Generator<Category>
      */
     public function byIds(array $categoryIds): \Generator
