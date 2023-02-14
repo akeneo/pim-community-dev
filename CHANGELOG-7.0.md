@@ -7,6 +7,7 @@
 - RAB-1356: [Backport PIM-10844]: Filter empty attribute option labels
 - RAB-1356: [Backport PIM-10778]: Add limit to the number of options to display on the attribute option page
 - RAB-1356: [Backport PIM-10835]: Fix command publish-job-to-queue does not work
+- RAB-1356: [Backport PIM-10823]: Fix cannot import price and measurement with comma as decimal separator with value not saved as string in import file
 
 # 7.0.9 (2023-02-20)
 

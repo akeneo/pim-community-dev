@@ -143,7 +143,7 @@ class ProductSpec extends ObjectBehavior
             ]
         );
 
-        $columnsMerger->merge($item)->willReturn($itemMerged);
+        $columnsMerger->merge($item, ['with_associations' => true, 'default_values' => []])->willReturn($itemMerged);
 
         $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
@@ -460,7 +460,7 @@ class ProductSpec extends ObjectBehavior
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
         $assocColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
-        $columnsMerger->merge($filteredItem)->willReturn($filteredItem);
+        $columnsMerger->merge($filteredItem, ['with_associations' => false, 'default_values' => []])->willReturn($filteredItem);
 
         $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
@@ -526,7 +526,7 @@ class ProductSpec extends ObjectBehavior
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
         $assocColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
-        $columnsMerger->merge($filteredProduct)->willReturn($filteredProduct);
+        $columnsMerger->merge($filteredProduct, ['with_associations' => false, 'default_values' => []])->willReturn($filteredProduct);
 
         $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
