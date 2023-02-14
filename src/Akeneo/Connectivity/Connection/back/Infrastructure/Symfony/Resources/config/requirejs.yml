@@ -53,6 +53,9 @@ config:
                     module: pim/controller/connectivity/connection/connect/connected-apps
                 akeneo_connectivity_connection_connect_connected_apps_catalogs_edit:
                     module: pim/controller/connectivity/connection/connect/connected-apps
+                akeneo_connectivity_connection_connect_connected_apps_regenerate_secret:
+                    module: pim/controller/connectivity/connection/connect/connected-apps
+                    aclResourceId: akeneo_connectivity_connection_manage_test_apps
 
     paths:
         pim/controller/connectivity/connection/connect/apps: akeneoconnectivityconnection/js/controller/apps.tsx
