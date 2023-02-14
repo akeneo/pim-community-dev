@@ -35,8 +35,8 @@ class ItemsCounter
 
         if ($gridName === OroToPimGridFilterAdapter::ATTRIBUTE_GRID_NAME) {
             return $this->countAttributes->byCodes(
-                'IN' === $filters['operator'] ? $filters['values'] : [],
-                'NOT IN' === $filters['operator'] ? $filters['values'] : [],
+                'IN' === $filters['operator'] ? $filters['values'] : null,
+                'NOT IN' === $filters['operator'] ? $filters['values'] : null,
             );
         }
 

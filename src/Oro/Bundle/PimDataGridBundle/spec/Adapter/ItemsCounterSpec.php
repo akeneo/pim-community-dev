@@ -27,8 +27,8 @@ class ItemsCounterSpec extends ObjectBehavior
 
     public function it_counts_items_in_the_attribute_grid(CountAttributes $countAttributes): void
     {
-        $countAttributes->byCodes([], ['an_attribute'])->willReturn(6);
-        
+        $countAttributes->byCodes(null, ['an_attribute'])->willReturn(6);
+
         $this->count('attribute-grid', ['field' => 'code', 'operator' => 'NOT IN', 'values' => ['an_attribute']])->shouldReturn(6);
     }
 

@@ -32,12 +32,14 @@ class SqlCountAttributesIntegration extends TestCase
 
     public function test_it_counts_attributes(): void
     {
-        $this->assertEquals(4, $this->sqlCountAttributes->byCodes([], []));
-        $this->assertEquals(1, $this->sqlCountAttributes->byCodes(['sku'], []));
-        $this->assertEquals(4, $this->sqlCountAttributes->byCodes(['name', 'description', 'sku', 'length'], []));
+        $this->assertEquals(4, $this->sqlCountAttributes->byCodes());
+        $this->assertEquals(1, $this->sqlCountAttributes->byCodes(['sku']));
+        $this->assertEquals(4, $this->sqlCountAttributes->byCodes(['name', 'description', 'sku', 'length']));
         $this->assertEquals(1, $this->sqlCountAttributes->byCodes(['name', 'description'], ['name', 'sku']));
-        $this->assertEquals(3, $this->sqlCountAttributes->byCodes([], ['name']));
-        $this->assertEquals(0, $this->sqlCountAttributes->byCodes([], ['sku', 'name', 'description', 'length']));
+        $this->assertEquals(3, $this->sqlCountAttributes->byCodes(excludeCodes: ['name']));
+        $this->assertEquals(0, $this->sqlCountAttributes->byCodes(excludeCodes: ['sku', 'name', 'description', 'length']));
+        $this->assertEquals(0, $this->sqlCountAttributes->byCodes([]));
+        $this->assertEquals(4, $this->sqlCountAttributes->byCodes(excludeCodes: []));
     }
 
     protected function getConfiguration(): Configuration

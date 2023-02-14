@@ -14,7 +14,7 @@ class SqlCountAttributes implements CountAttributes
     ) {
     }
 
-    public function byCodes(array $includeCodes, array $excludeCodes): int
+    public function byCodes(?array $includeCodes = null, ?array $excludeCodes = null): int
     {
         $sql = <<<SQL
 SELECT count(*) FROM pim_catalog_attribute %s;
@@ -30,11 +30,11 @@ SQL;
         )->fetchOne();
     }
 
-    private function getSqlWherePart(array $includeCodes, array $excludeCodes): string
+    private function getSqlWherePart(?array $includeCodes, ?array $excludeCodes): string
     {
         $conditions = [];
 
-        if (!empty($includeCodes)) {
+        if (null !== $includeCodes) {
             $conditions[] = 'code IN (:include_codes)';
         }
 

@@ -6,5 +6,5 @@ namespace Akeneo\Pim\Structure\Component\Query\InternalApi;
 
 interface CountAttributes
 {
-    public function byCodes(array $includeCodes, array $excludeCodes): int;
+    public function byCodes(?array $includeCodes = null, ?array $excludeCodes = null): int;
 }
