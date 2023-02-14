@@ -66,6 +66,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('CustomApps/controllers.yml');
         $loader->load('CustomApps/handlers.yml');
         $loader->load('CustomApps/persistence.yml');
+        $loader->load('CustomApps/services.yml');
 
         $loader->load('Settings/controllers.yml');
         $loader->load('Settings/handlers.yml');
