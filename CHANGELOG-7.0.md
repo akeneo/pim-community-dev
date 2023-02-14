@@ -6,6 +6,7 @@
 - RAB-1356: [Backport PIM-10831]: Fix severe performance issues with the association product and product model picker
 - RAB-1356: [Backport PIM-10844]: Filter empty attribute option labels
 - RAB-1356: [Backport PIM-10778]: Add limit to the number of options to display on the attribute option page
+- RAB-1356: [Backport PIM-10835]: Fix command publish-job-to-queue does not work
 
 # 7.0.9 (2023-02-20)
 
