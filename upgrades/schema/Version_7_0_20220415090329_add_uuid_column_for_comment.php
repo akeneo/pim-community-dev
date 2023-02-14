@@ -25,7 +25,7 @@ final class Version_7_0_20220415090329_add_uuid_column_for_comment extends Abstr
         }
 
         $addUuidColumnQuery = \strtr(
-            'ALTER TABLE `{table_name}` ADD `{uuid_column_name}` BINARY(16) DEFAULT NULL;',
+            'ALTER TABLE `{table_name}` ADD `{uuid_column_name}` BINARY(16) DEFAULT NULL COMMENT "(DC2Type:uuid_binary)";',
             [
                 '{table_name}' => self::TABLE_NAME,
                 '{uuid_column_name}' => self::COLUMN_NAME,
