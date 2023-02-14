@@ -127,11 +127,30 @@ describe('ListPage', () => {
     render(<ListPage onCreate={jest.fn()} />);
 
     await waitFor(() => {
-      expect(screen.queryByText('pim_identifier_generator.list.max_generator.title')).toBeVisible();
+      expect(screen.queryByText('pim_identifier_generator.list.read_only_list')).toBeVisible();
     });
+
+    expect(screen.queryByText('pim_identifier_generator.list.max_generator.title')).not.toBeInTheDocument();
     expect(screen.queryByText('pim_common.create')).toHaveAttribute('disabled');
     expect(screen.queryByText('pim_common.delete')).not.toBeInTheDocument();
     expect(screen.queryByText('pim_common.edit')).not.toBeInTheDocument();
     expect(screen.queryByText('pim_common.view')).toBeInTheDocument();
+  });
+
+  it('should display a specific message for users without manage acl if list is empty', () => {
+    mockACLs(true, false);
+    mocked(useGetIdentifierGenerators).mockReturnValue({
+      data: [],
+      isLoading: false,
+      refetch: jest.fn(),
+      error: null,
+    });
+
+    render(<ListPage onCreate={jest.fn()} />);
+
+    expect(screen.getByText('pim_identifier_generator.list.read_only_list')).toBeVisible();
+    expect(screen.queryByText('pim_identifier_generator.list.max_generator.title')).not.toBeInTheDocument();
+    expect(screen.queryByText('pim_identifier_generator.list.first_generator')).not.toBeInTheDocument();
+    expect(screen.queryByText('pim_common.create')).toHaveAttribute('disabled');
   });
 });

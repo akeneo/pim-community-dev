@@ -94,21 +94,25 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
             <Table.HeaderCell />
           </Table.Header>
           <Table.Body>
-            {isGeneratorListEmpty && !isLoading && !errorOnGenerators && !errorOnIdentifierAttributes && (
-              <tr>
-                <td colSpan={3}>
-                  <Placeholder
-                    illustration={<AttributesIllustration />}
-                    size="large"
-                    title={translate('pim_identifier_generator.list.first_generator')}
-                  >
-                    <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
-                      {translate('pim_identifier_generator.list.check_help_center')}
-                    </Styled.HelpCenterLink>
-                  </Placeholder>
-                </td>
-              </tr>
-            )}
+            {isGeneratorListEmpty &&
+              !isLoading &&
+              !errorOnGenerators &&
+              !errorOnIdentifierAttributes &&
+              isManageIdentifierGeneratorAclGranted && (
+                <tr>
+                  <td colSpan={3}>
+                    <Placeholder
+                      illustration={<AttributesIllustration />}
+                      size="large"
+                      title={translate('pim_identifier_generator.list.first_generator')}
+                    >
+                      <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
+                        {translate('pim_identifier_generator.list.check_help_center')}
+                      </Styled.HelpCenterLink>
+                    </Placeholder>
+                  </td>
+                </tr>
+              )}
             {(null !== errorOnGenerators || null !== errorOnIdentifierAttributes) && (
               <tr>
                 <td colSpan={3}>
@@ -142,21 +146,38 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                     </Table.ActionCell>
                   </Table.Row>
                 ))}
-                <tr>
-                  <td colSpan={3}>
-                    <Placeholder
-                      illustration={<CodingIllustration />}
-                      size="large"
-                      title={translate('pim_identifier_generator.list.max_generator.title')}
-                    >
-                      {translate('pim_identifier_generator.list.max_generator.info')}
-                      <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
-                        {translate('pim_identifier_generator.list.check_help_center')}
-                      </Styled.HelpCenterLink>
-                    </Placeholder>
-                  </td>
-                </tr>
+                {isManageIdentifierGeneratorAclGranted && (
+                  <tr>
+                    <td colSpan={3}>
+                      <Placeholder
+                        illustration={<CodingIllustration />}
+                        size="large"
+                        title={translate('pim_identifier_generator.list.max_generator.title')}
+                      >
+                        {translate('pim_identifier_generator.list.max_generator.info')}
+                        <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
+                          {translate('pim_identifier_generator.list.check_help_center')}
+                        </Styled.HelpCenterLink>
+                      </Placeholder>
+                    </td>
+                  </tr>
+                )}
               </>
+            )}
+            {!isManageIdentifierGeneratorAclGranted && (
+              <tr>
+                <td colSpan={3}>
+                  <Placeholder
+                    illustration={<AttributesIllustration />}
+                    size="large"
+                    title={translate('pim_identifier_generator.list.read_only_list')}
+                  >
+                    <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
+                      {translate('pim_identifier_generator.list.check_help_center')}
+                    </Styled.HelpCenterLink>
+                  </Placeholder>
+                </td>
+              </tr>
             )}
           </Table.Body>
         </Table>
