@@ -1,5 +1,40 @@
 # 6.0.x
 
+# 6.0.69 (2023-02-13)
+
+## Bug fixes:
+
+- PIM-10834: Fix regression on parent filter in LIST products endpoint
+
+# 6.0.68 (2023-02-09)
+
+## Bug fixes
+
+- PIM-10810: Optimize completeness saving
+
+# 6.0.67 (2023-02-06)
+
+# 6.0.66 (2023-02-02)
+
+## Bug fixes
+
+- [Backport PIM-10802] PIM-10818: Fix wysiwyg-field add link event
+- PIM-10786: Fix misleading message when session expires
+
+# 6.0.65 (2023-01-26)
+
+## Bug fixes
+
+- PIM-10794: Fix error message on search attributes for product and product models GET
+
+# 6.0.64 (2023-01-23)
+
+# 6.0.63 (2023-01-12)
+
+## Bug fixes
+
+- [Backport PIM-10516] PIM-10787: Do not run the remove completeness job when there is no need
+
 # 6.0.62 (2022-12-23)
 
 ## Bug fixes
