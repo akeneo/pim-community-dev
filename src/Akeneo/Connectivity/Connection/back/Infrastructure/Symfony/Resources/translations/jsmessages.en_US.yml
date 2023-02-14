@@ -302,18 +302,18 @@ akeneo_connectivity.connection:
                     client_secret: Client secret
                 errors:
                     name:
-                        min_length: The name of the test app is too short. It must have 3 characters or more.
-                        max_length: The name of the test app is too long. It must have 255 characters or less.
-                        not_blank: The name of the test app is required.
+                        min_length: The name of the app is too short. It must have 3 characters or more.
+                        max_length: The name of the app is too long. It must have 255 characters or less.
+                        not_blank: The name of the app is required.
                     client_id:
-                        max_length: The client id of the test app is too long. It must have 36 characters or less.
+                        max_length: The client id of the app is too long. It must have 36 characters or less.
                         not_blank: The client id is required.
                     activate_url:
-                        max_length: The activate url of the test app is too long. It must have 255 characters or less.
+                        max_length: The activate url of the app is too long. It must have 255 characters or less.
                         must_be_url: The activate url must be a valid URL.
                         not_blank: The activate url is required.
                     callback_url:
-                        max_length: The callback url of the test app is too long. It must have 255 characters or less.
+                        max_length: The callback url of the app is too long. It must have 255 characters or less.
                         must_be_url: The callback url must be a valid URL.
                         not_blank: The callback url is required.
     connections: Connections
