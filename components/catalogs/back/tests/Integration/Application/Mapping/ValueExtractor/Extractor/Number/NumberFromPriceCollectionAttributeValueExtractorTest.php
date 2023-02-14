@@ -162,7 +162,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
     public function inconsistentRawValuesDataProvider(): array
     {
         return [
-            'price collection not a an array' => [
+            'price collection not an array' => [
                 [
                     'raw_values' => [
                         'price' => [
