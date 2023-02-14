@@ -79,40 +79,6 @@ akeneo_connectivity.connection:
             test_apps:
                 title: Custom apps
                 removed_user: Removed user
-                create_a_custom_app: Create a custom app
-                modal:
-                    subtitle: Create a test app
-                    app_information:
-                        title: App information
-                        description: If you need help, please check our article
-                        link: How to test my App before publishing it?
-                        fields:
-                            name: Name
-                            activate_url: Activate url
-                            callback_url: Callback url
-                    credentials :
-                        title: Credentials
-                        warning: Make sure to save these credentials somewhere as we show them only once here.
-                        client_id: Client id
-                        client_secret: Client secret
-                errors:
-                    page_not_found: Page not found
-                    creation:
-                        name:
-                            min_length: The name of the test app is too short. It must have 3 characters or more.
-                            max_length: The name of the test app is too long. It must have 255 characters or less.
-                            not_blank: The name of the test app is required.
-                        client_id:
-                            max_length: The client id of the test app is too long. It must have 36 characters or less.
-                            not_blank: The client id is required.
-                        activate_url:
-                            max_length: The activate url of the test app is too long. It must have 255 characters or less.
-                            must_be_url: The activate url must be a valid URL.
-                            not_blank: The activate url is required.
-                        callback_url:
-                            max_length: The callback url of the test app is too long. It must have 255 characters or less.
-                            must_be_url: The callback url must be a valid URL.
-                            not_blank: The callback url is required.
                 delete:
                     subtitle: Apps
                     title: Confirm deletion
@@ -314,6 +280,42 @@ akeneo_connectivity.connection:
                     must_be_url: The redirect_uri is not a valid url.
                 scope:
                     too_long: The scope list must not contain more than 1000 characters.
+        custom_apps:
+            create_button: Create an app
+            create_modal:
+                subtitle: Create a custom app
+                app_information:
+                    title: App information
+                    description: If you need help, please check our article
+                    link: How to test my App before publishing it?
+                    fields:
+                        name: Name
+                        activate_url: Activate url
+                        callback_url: Callback url
+                    field_placeholder:
+                        name: Define app name
+                        activate_url: Fill activate url
+                        callback_url: Fill callback url
+                credentials:
+                    title: Credentials
+                    client_id: Client id
+                    client_secret: Client secret
+                errors:
+                    name:
+                        min_length: The name of the app is too short. It must have 3 characters or more.
+                        max_length: The name of the app is too long. It must have 255 characters or less.
+                        not_blank: The name of the app is required.
+                    client_id:
+                        max_length: The client id of the app is too long. It must have 36 characters or less.
+                        not_blank: The client id is required.
+                    activate_url:
+                        max_length: The activate url of the app is too long. It must have 255 characters or less.
+                        must_be_url: The activate url must be a valid URL.
+                        not_blank: The activate url is required.
+                    callback_url:
+                        max_length: The callback url of the app is too long. It must have 255 characters or less.
+                        must_be_url: The callback url must be a valid URL.
+                        not_blank: The callback url is required.
     connections: Connections
     secondary_actions:
         title: Other actions

@@ -53,7 +53,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'name',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.name.not_blank',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.name.not_blank',
         );
     }
 
@@ -73,7 +73,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'name',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.name.max_length',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.name.max_length',
         );
     }
 
@@ -90,7 +90,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'name',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.name.min_length',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.name.min_length',
         );
     }
 
@@ -107,7 +107,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'activateUrl',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.activate_url.must_be_url',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.activate_url.must_be_url',
         );
     }
 
@@ -124,7 +124,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'activateUrl',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.activate_url.not_blank',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.activate_url.not_blank',
         );
     }
 
@@ -143,7 +143,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'activateUrl',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.activate_url.max_length',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.activate_url.max_length',
         );
     }
 
@@ -162,7 +162,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'callbackUrl',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.callback_url.max_length',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.callback_url.max_length',
         );
     }
 
@@ -179,7 +179,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'callbackUrl',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.callback_url.must_be_url',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.callback_url.must_be_url',
         );
     }
 
@@ -196,7 +196,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'callbackUrl',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.callback_url.not_blank',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.callback_url.not_blank',
         );
     }
 
@@ -213,7 +213,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'clientId',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.client_id.max_length',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.client_id.max_length',
         );
     }
 
@@ -230,7 +230,7 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
         $this->assertHasViolation(
             $violations,
             'clientId',
-            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.client_id.not_blank',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.client_id.not_blank',
         );
     }
 

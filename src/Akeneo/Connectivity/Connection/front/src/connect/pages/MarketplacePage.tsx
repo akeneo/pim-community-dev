@@ -1,7 +1,7 @@
 import React, {FC, useContext, useEffect, useState} from 'react';
 import {Breadcrumb} from 'akeneo-design-system';
-import {Translate, useTranslate} from '../../shared/translate';
-import {ApplyButton, PageContent, PageHeader} from '../../common';
+import {useTranslate} from '../../shared/translate';
+import {PageContent, PageHeader} from '../../common';
 import {UserButtons, UserContext} from '../../shared/user';
 import {useRouter} from '../../shared/router/use-router';
 import {useHistory} from 'react-router';
@@ -14,10 +14,9 @@ import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 import {useFetchApps} from '../hooks/use-fetch-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {useTestApps} from '../hooks/use-test-apps';
-import {useSecurity} from '../../shared/security';
+import {CreateCustomAppButton} from '../components/CustomApps/CreateCustomAppButton';
 
 export const MarketplacePage: FC = () => {
-    const security = useSecurity();
     const translate = useTranslate();
     const user = useContext(UserContext);
     const history = useHistory();
@@ -64,9 +63,6 @@ export const MarketplacePage: FC = () => {
 
     const isLoading = null === extensions || null === apps || isTestAppsLoading;
     const isUnreachable = false === extensions || false === apps;
-    const handleCreateTestApp = () => {
-        history.push(generateUrl('akeneo_connectivity_connection_connect_custom_apps_create'));
-    };
 
     const breadcrumb = (
         <Breadcrumb>
@@ -75,19 +71,11 @@ export const MarketplacePage: FC = () => {
         </Breadcrumb>
     );
 
-    const CreateTestAppButton = () => {
-        return security.isGranted('akeneo_connectivity_connection_manage_test_apps') ? (
-            <ApplyButton classNames={['AknButtonList-item']} onClick={handleCreateTestApp}>
-                <Translate id='akeneo_connectivity.connection.connect.marketplace.test_apps.create_a_custom_app' />
-            </ApplyButton>
-        ) : null;
-    };
-
     return (
         <>
             <PageHeader
                 breadcrumb={breadcrumb}
-                buttons={[<CreateTestAppButton key={0} />]}
+                buttons={[<CreateCustomAppButton key={0} />]}
                 userButtons={<UserButtons />}
             >
                 {translate('pim_menu.item.marketplace')}

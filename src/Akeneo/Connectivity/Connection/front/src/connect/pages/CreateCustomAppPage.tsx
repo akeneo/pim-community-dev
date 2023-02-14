@@ -1,12 +1,12 @@
-import React, {useCallback, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import {useHistory} from 'react-router';
 import {AppIllustration, getColor, getFontSize, Modal} from 'akeneo-design-system';
 import styled from '../../common/styled-with-theme';
 import {useTranslate} from '../../shared/translate';
 import {useRouter} from '../../shared/router/use-router';
-import {CreateTestAppForm} from '../components/TestApp/CreateTestAppForm';
-import {TestAppCredentials} from '../../model/Apps/test-app-credentials';
-import {CreateTestAppCredentials} from '../components/TestApp/CreateTestAppCredentials';
+import {CreateCustomAppForm} from '../components/CustomApps/CreateCustomAppForm';
+import {CustomAppCredentials} from '../../model/Apps/custom-app-credentials';
+import {CreateCustomAppCredentials} from '../components/CustomApps/CreateCustomAppCredentials';
 
 const Subtitle = styled.h3`
     color: ${getColor('brand', 100)};
@@ -16,11 +16,11 @@ const Subtitle = styled.h3`
     margin: 0 0 6px 0;
 `;
 
-export const TestAppCreatePage = () => {
+export const CreateCustomAppPage: FC = () => {
     const history = useHistory();
     const generateUrl = useRouter();
     const translate = useTranslate();
-    const [credentials, setCredentials] = useState<TestAppCredentials | null>(null);
+    const [credentials, setCredentials] = useState<CustomAppCredentials | null>(null);
 
     const handleCloseModal = useCallback(() => {
         history.push(generateUrl('akeneo_connectivity_connection_connect_marketplace'));
@@ -32,16 +32,12 @@ export const TestAppCreatePage = () => {
             illustration={<AppIllustration />}
             closeTitle={translate('pim_common.cancel')}
         >
-            <Subtitle>
-                {translate('akeneo_connectivity.connection.connect.marketplace.test_apps.modal.subtitle')}
-            </Subtitle>
-            {null === credentials && <CreateTestAppForm onCancel={handleCloseModal} setCredentials={setCredentials} />}
+            <Subtitle>{translate('akeneo_connectivity.connection.connect.custom_apps.create_modal.subtitle')}</Subtitle>
+            {null === credentials && (
+                <CreateCustomAppForm onCancel={handleCloseModal} setCredentials={setCredentials} />
+            )}
             {null !== credentials && (
-                <CreateTestAppCredentials
-                    onClose={handleCloseModal}
-                    credentials={credentials}
-                    setCredentials={setCredentials}
-                />
+                <CreateCustomAppCredentials onClose={handleCloseModal} credentials={credentials} />
             )}
         </Modal>
     );
