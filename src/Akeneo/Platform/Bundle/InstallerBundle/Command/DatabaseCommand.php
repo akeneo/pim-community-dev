@@ -206,12 +206,7 @@ class DatabaseCommand extends Command
             $input->setOption('fixtures', self::LOAD_BASE);
         }
 
-        $this->logger->info(
-            sprintf(
-                '<info>Load jobs for fixtures. (data set: %s)</info>',
-                $catalog
-            )
-        );
+        $this->logger->info(sprintf('Load jobs for fixtures. (data set: %s)',$catalog));
         $this->fixtureJobLoader->loadJobInstances($input->getOption('catalog'));
 
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
