@@ -51,7 +51,7 @@ class DeactivateTemplateSqlIntegration extends CategoryTestCase
         }
     }
 
-    private function retrieveTemplateDeactivationStatus(TemplateUuid $templateUuid): ?bool
+    private function retrieveTemplateDeactivationStatus(TemplateUuid $templateUuid): bool
     {
         $query = <<<SQL
             SELECT is_deactivated 
