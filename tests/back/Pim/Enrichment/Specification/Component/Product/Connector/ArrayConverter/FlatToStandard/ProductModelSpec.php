@@ -80,7 +80,7 @@ class ProductModelSpec extends ObjectBehavior
             'family' => 'family_variant',
         ])->willReturn($flatProductModel);
 
-        $columnsMerger->merge($flatProductModel)->willReturn($flatProductModel);
+        $columnsMerger->merge($flatProductModel, ['with_associations' => false, 'mapping' => ['family' => 'family_variant']])->willReturn($flatProductModel);
 
         $fieldsRequirementChecker->checkFieldsPresence($flatProductModel, ['code'])->shouldBeCalled();
         $attributeColumnsResolver->resolveAttributeColumns()->willReturn(['name-en_US', 'description-en_US-ecommerce', '123456', '0123456', '12.33', '1234567']);
@@ -277,7 +277,7 @@ class ProductModelSpec extends ObjectBehavior
             'family' => 'family_variant',
         ])->willReturn($flatProductModel);
 
-        $columnsMerger->merge($flatProductModel)->willReturn($flatProductModel);
+        $columnsMerger->merge($flatProductModel, ['with_associations' => false, 'mapping' => ['family' => 'family_variant']])->willReturn($flatProductModel);
 
         $fieldsRequirementChecker->checkFieldsPresence($flatProductModel, ['code'])->shouldBeCalled();
         $attributeColumnsResolver->resolveAttributeColumns()->willReturn(['name', 'description-en_US-ecommerce']);

@@ -1,51 +1,38 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import {screen, act} from '@testing-library/react';
+import {screen} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
-import {LocalStorage, MicrosoftAzureStorage} from '../model';
 import {MicrosoftAzureStorageConfigurator} from './MicrosoftAzureStorageConfigurator';
+import {MicrosoftAzureStorage, LocalStorage} from 'models';
 
-beforeEach(() => {
-  global.fetch = mockFetch;
-});
+jest.mock('./CheckStorageConnection', () => ({
+  CheckStorageConnection: () => <button>Check connection</button>,
+}));
 
-const mockFetch = jest.fn().mockImplementation(async (route: string) => {
-  switch (route) {
-    case 'pimee_job_automation_get_storage_connection_check':
-      return {
-        ok: true,
-      };
-    default:
-      throw new Error();
-  }
-});
+const storage: MicrosoftAzureStorage = {
+  type: 'microsoft_azure',
+  file_path: '/tmp/file.xlsx',
+  connection_string: 'connection_string',
+  container_name: 'container_name',
+};
 
-test('it renders the microsoft azure storage configurator', async () => {
-  const storage: MicrosoftAzureStorage = {
-    type: 'microsoft_azure',
-    file_path: '/tmp/file.xlsx',
-    connection_string: 'connection_string',
-    container_name: 'container_name',
-  };
-
-  await act(async () => {
-    renderWithProviders(
-      <MicrosoftAzureStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={jest.fn()}
-      />
-    );
-  });
+test('it renders the microsoft azure storage configurator', () => {
+  renderWithProviders(
+    <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={jest.fn()}
+    />
+  );
 
   expect(screen.getByDisplayValue('/tmp/file.xlsx')).toBeInTheDocument();
   expect(screen.getByDisplayValue('connection_string')).toBeInTheDocument();
   expect(screen.getByDisplayValue('container_name')).toBeInTheDocument();
 });
 
-test('it allows user to fill file_path field', async () => {
+test('it allows user to fill file_path field', () => {
   const storage: MicrosoftAzureStorage = {
     type: 'microsoft_azure',
     file_path: '/tmp/test.xls',
@@ -55,17 +42,15 @@ test('it allows user to fill file_path field', async () => {
 
   const onStorageChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <MicrosoftAzureStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
+  renderWithProviders(
+    <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
 
   const file_pathInput = screen.getByLabelText(
     'pim_import_export.form.job_instance.storage_form.file_path.label pim_common.required_label'
@@ -75,7 +60,7 @@ test('it allows user to fill file_path field', async () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, file_path: '/tmp/test.xlsx'});
 });
 
-test('it allows user to fill connection string field', async () => {
+test('it allows user to fill connection string field', () => {
   const storage: MicrosoftAzureStorage = {
     type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
@@ -85,17 +70,15 @@ test('it allows user to fill connection string field', async () => {
 
   const onStorageChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <MicrosoftAzureStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
+  renderWithProviders(
+    <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
 
   const connectionStringInput = screen.getByLabelText(
     'pim_import_export.form.job_instance.storage_form.connection_string.label pim_common.required_label'
@@ -105,7 +88,7 @@ test('it allows user to fill connection string field', async () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, connection_string: 'connection_string'});
 });
 
-test('it allows user to fill container name field', async () => {
+test('it allows user to fill container name field', () => {
   const storage: MicrosoftAzureStorage = {
     type: 'microsoft_azure',
     file_path: '/tmp/file.xlsx',
@@ -115,17 +98,15 @@ test('it allows user to fill container name field', async () => {
 
   const onStorageChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <MicrosoftAzureStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
+  renderWithProviders(
+    <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
 
   userEvent.paste(
     screen.getByLabelText(
@@ -147,17 +128,15 @@ test('it hides connection string field if the connection string is obfuscated', 
     container_name: 'container_',
   };
 
-  act(() => {
-    renderWithProviders(
-      <MicrosoftAzureStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={jest.fn()}
-      />
-    );
-  });
+  renderWithProviders(
+    <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={jest.fn()}
+    />
+  );
 
   const connectionStringInput = screen.getByLabelText(
     'pim_import_export.form.job_instance.storage_form.connection_string.label pim_common.required_label'
@@ -175,23 +154,22 @@ test('it can edit the connection string field if the connection string is obfusc
   };
 
   const onStorageChange = jest.fn();
-  act(() => {
-    renderWithProviders(
-      <MicrosoftAzureStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
+  renderWithProviders(
+    <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
 
   userEvent.click(screen.getByText('pim_common.edit'));
+
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, connection_string: ''});
 });
 
-test('it throws an exception when passing a non microsoft azure storage', async () => {
+test('it throws an exception when passing a non microsoft azure storage', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
   const storage: LocalStorage = {
@@ -214,14 +192,7 @@ test('it throws an exception when passing a non microsoft azure storage', async 
   mockedConsole.mockRestore();
 });
 
-test('it displays validation errors', async () => {
-  const storage: MicrosoftAzureStorage = {
-    type: 'microsoft_azure',
-    file_path: '/tmp/file.xlsx',
-    connection_string: 'connection_string',
-    container_name: 'container_name',
-  };
-
+test('it displays validation errors', () => {
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.a_file_path_error',
@@ -246,115 +217,31 @@ test('it displays validation errors', async () => {
     },
   ];
 
-  await act(async () => {
-    renderWithProviders(
-      <MicrosoftAzureStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={validationErrors}
-        onStorageChange={jest.fn()}
-      />
-    );
-  });
+  renderWithProviders(
+    <MicrosoftAzureStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={validationErrors}
+      onStorageChange={jest.fn()}
+    />
+  );
 
   expect(screen.getByText('error.key.a_file_path_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.a_connection_string_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.a_container_name_error')).toBeInTheDocument();
 });
 
-test('it can check connection', async () => {
-  const storage: MicrosoftAzureStorage = {
-    type: 'microsoft_azure',
-    file_path: '/tmp/file.xlsx',
-    connection_string: 'connection_string',
-    container_name: 'container_name',
-  };
-
-  const onStorageChange = jest.fn();
-
+test('it can check connection', () => {
   renderWithProviders(
     <MicrosoftAzureStorageConfigurator
       jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
-      onStorageChange={onStorageChange}
+      onStorageChange={jest.fn()}
     />
   );
 
-  const checkButton = screen.getByText('pim_import_export.form.job_instance.connection_checker.label');
-  await act(async () => {
-    userEvent.click(checkButton);
-  });
-
-  expect(checkButton).toBeDisabled();
-  expect(
-    screen.queryByText('pim_import_export.form.job_instance.connection_checker.exception')
-  ).not.toBeInTheDocument();
-});
-
-test('it cannot check connection if a field is empty', async () => {
-  const storage: MicrosoftAzureStorage = {
-    type: 'microsoft_azure',
-    file_path: '/tmp/file.xlsx',
-    connection_string: '',
-    container_name: 'container_name',
-  };
-
-  const onStorageChange = jest.fn();
-
-  renderWithProviders(
-    <MicrosoftAzureStorageConfigurator
-      jobInstanceCode="csv_product_export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={onStorageChange}
-    />
-  );
-
-  const checkButton = screen.getByText('pim_import_export.form.job_instance.connection_checker.label');
-
-  expect(checkButton).toBeDisabled();
-});
-
-test('it can check connection, display message if error', async () => {
-  mockFetch.mockImplementation((route: string) => {
-    switch (route) {
-      case 'pimee_job_automation_get_storage_connection_check':
-        return {
-          ok: false,
-        };
-      default:
-        throw new Error();
-    }
-  });
-
-  const storage: MicrosoftAzureStorage = {
-    type: 'microsoft_azure',
-    file_path: '/tmp/file.xlsx',
-    connection_string: 'connection_string',
-    container_name: 'container_name',
-  };
-
-  const onStorageChange = jest.fn();
-
-  renderWithProviders(
-    <MicrosoftAzureStorageConfigurator
-      jobInstanceCode="csv_product_export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={onStorageChange}
-    />
-  );
-
-  const checkButton = screen.getByText('pim_import_export.form.job_instance.connection_checker.label');
-  await act(async () => {
-    userEvent.click(checkButton);
-  });
-
-  expect(checkButton).not.toBeDisabled();
-  expect(screen.getByText('pim_import_export.form.job_instance.connection_checker.exception')).toBeInTheDocument();
+  expect(screen.getByText('Check connection')).toBeInTheDocument();
 });

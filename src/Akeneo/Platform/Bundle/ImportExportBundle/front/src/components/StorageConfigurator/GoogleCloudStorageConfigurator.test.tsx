@@ -1,45 +1,32 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import {screen, act} from '@testing-library/react';
+import {screen} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
-import {GoogleCloudStorage, LocalStorage} from '../model';
 import {GoogleCloudStorageConfigurator} from './GoogleCloudStorageConfigurator';
+import {GoogleCloudStorage, LocalStorage} from '../../models';
 
-beforeEach(() => {
-  global.fetch = mockFetch;
-});
+jest.mock('./CheckStorageConnection', () => ({
+  CheckStorageConnection: () => <button>Check connection</button>,
+}));
 
-const mockFetch = jest.fn().mockImplementation(async (route: string) => {
-  switch (route) {
-    case 'pimee_job_automation_get_storage_connection_check':
-      return {
-        ok: true,
-      };
-    default:
-      throw new Error();
-  }
-});
+const storage: GoogleCloudStorage = {
+  type: 'google_cloud_storage',
+  file_path: '/tmp/file.xlsx',
+  project_id: 'a_project_id',
+  service_account: '{"type": "service_account"}',
+  bucket: 'a_bucket',
+};
 
-test('it renders the google cloud storage configurator', async () => {
-  const storage: GoogleCloudStorage = {
-    type: 'google_cloud_storage',
-    file_path: '/tmp/file.xlsx',
-    project_id: 'a_project_id',
-    service_account: '{"type": "service_account"}',
-    bucket: 'a_bucket',
-  };
-
-  await act(async () => {
-    renderWithProviders(
-      <GoogleCloudStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={jest.fn()}
-      />
-    );
-  });
+test('it renders the google cloud storage configurator', () => {
+  renderWithProviders(
+    <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={jest.fn()}
+    />
+  );
 
   expect(screen.getByDisplayValue('/tmp/file.xlsx')).toBeInTheDocument();
   expect(screen.getByDisplayValue('a_project_id')).toBeInTheDocument();
@@ -47,7 +34,7 @@ test('it renders the google cloud storage configurator', async () => {
   expect(screen.getByDisplayValue('a_bucket')).toBeInTheDocument();
 });
 
-test('it allows user to fill file_path field', async () => {
+test('it allows user to fill file_path field', () => {
   const storage: GoogleCloudStorage = {
     type: 'google_cloud_storage',
     file_path: '/tmp/file.xls',
@@ -58,17 +45,15 @@ test('it allows user to fill file_path field', async () => {
 
   const onStorageChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <GoogleCloudStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
+  renderWithProviders(
+    <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
 
   const file_pathInput = screen.getByLabelText(
     'pim_import_export.form.job_instance.storage_form.file_path.label pim_common.required_label'
@@ -78,7 +63,7 @@ test('it allows user to fill file_path field', async () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, file_path: '/tmp/file.xlsx'});
 });
 
-test('it allows user to fill project_id field', async () => {
+test('it allows user to fill project_id field', () => {
   const storage: GoogleCloudStorage = {
     type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
@@ -89,17 +74,15 @@ test('it allows user to fill project_id field', async () => {
 
   const onStorageChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <GoogleCloudStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
+  renderWithProviders(
+    <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
 
   const projectIdInput = screen.getByLabelText(
     'pim_import_export.form.job_instance.storage_form.project_id.label pim_common.required_label'
@@ -109,7 +92,7 @@ test('it allows user to fill project_id field', async () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, project_id: 'a_project_id'});
 });
 
-test('it allows user to fill service_account field', async () => {
+test('it allows user to fill service_account field', () => {
   const storage: GoogleCloudStorage = {
     type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
@@ -120,17 +103,15 @@ test('it allows user to fill service_account field', async () => {
 
   const onStorageChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <GoogleCloudStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
+  renderWithProviders(
+    <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
 
   const serviceAccountInput = screen.getByLabelText(
     'pim_import_export.form.job_instance.storage_form.service_account.label pim_common.required_label'
@@ -140,7 +121,7 @@ test('it allows user to fill service_account field', async () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, service_account: '{"type": "service_account"}'});
 });
 
-test('it allows user to fill bucket field', async () => {
+test('it allows user to fill bucket field', () => {
   const storage: GoogleCloudStorage = {
     type: 'google_cloud_storage',
     file_path: '/tmp/file.xlsx',
@@ -151,17 +132,15 @@ test('it allows user to fill bucket field', async () => {
 
   const onStorageChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <GoogleCloudStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
+  renderWithProviders(
+    <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
 
   userEvent.paste(
     screen.getByLabelText('pim_import_export.form.job_instance.storage_form.bucket.label pim_common.required_label'),
@@ -182,17 +161,15 @@ test('it hides the service account field if the service account is obfuscated', 
     bucket: '',
   };
 
-  act(() => {
-    renderWithProviders(
-      <GoogleCloudStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={jest.fn()}
-      />
-    );
-  });
+  renderWithProviders(
+    <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={jest.fn()}
+    />
+  );
 
   const serviceAccountInput = screen.getByLabelText(
     'pim_import_export.form.job_instance.storage_form.service_account.label pim_common.required_label'
@@ -211,23 +188,21 @@ test('it can edit the service account if the service account is obfuscated', () 
   };
 
   const onStorageChange = jest.fn();
-  act(() => {
-    renderWithProviders(
-      <GoogleCloudStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={[]}
-        onStorageChange={onStorageChange}
-      />
-    );
-  });
+  renderWithProviders(
+    <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
 
   userEvent.click(screen.getByText('pim_common.edit'));
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, service_account: ''});
 });
 
-test('it throws an exception when passing a non google cloud storage', async () => {
+test('it throws an exception when passing a non google cloud storage', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
   const storage: LocalStorage = {
@@ -250,15 +225,7 @@ test('it throws an exception when passing a non google cloud storage', async () 
   mockedConsole.mockRestore();
 });
 
-test('it displays validation errors', async () => {
-  const storage: GoogleCloudStorage = {
-    type: 'google_cloud_storage',
-    file_path: '/tmp/file.xlsx',
-    project_id: 'a_project_id',
-    service_account: '{"type": "service_account"}',
-    bucket: 'a_bucket',
-  };
-
+test('it displays validation errors', () => {
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.a_file_path_error',
@@ -290,17 +257,15 @@ test('it displays validation errors', async () => {
     },
   ];
 
-  await act(async () => {
-    renderWithProviders(
-      <GoogleCloudStorageConfigurator
-        jobInstanceCode="csv_product_export"
-        storage={storage}
-        fileExtension="xlsx"
-        validationErrors={validationErrors}
-        onStorageChange={jest.fn()}
-      />
-    );
-  });
+  renderWithProviders(
+    <GoogleCloudStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={validationErrors}
+      onStorageChange={jest.fn()}
+    />
+  );
 
   expect(screen.getByText('error.key.a_file_path_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.a_project_id_error')).toBeInTheDocument();
@@ -308,101 +273,16 @@ test('it displays validation errors', async () => {
   expect(screen.getByText('error.key.a_bucket_error')).toBeInTheDocument();
 });
 
-test('it can check connection', async () => {
-  const storage: GoogleCloudStorage = {
-    type: 'google_cloud_storage',
-    file_path: '/tmp/file.xlsx',
-    project_id: 'a_project_id',
-    service_account: '{"type": "service_account"}',
-    bucket: 'a_bucket',
-  };
-
-  const onStorageChange = jest.fn();
-
+test('it can check connection', () => {
   renderWithProviders(
     <GoogleCloudStorageConfigurator
       jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
-      onStorageChange={onStorageChange}
+      onStorageChange={jest.fn()}
     />
   );
 
-  const checkButton = screen.getByText('pim_import_export.form.job_instance.connection_checker.label');
-  await act(async () => {
-    userEvent.click(checkButton);
-  });
-
-  expect(checkButton).toBeDisabled();
-  expect(
-    screen.queryByText('pim_import_export.form.job_instance.connection_checker.exception')
-  ).not.toBeInTheDocument();
-});
-
-test('it cannot check connection if a field is empty', async () => {
-  const storage: GoogleCloudStorage = {
-    type: 'google_cloud_storage',
-    file_path: '/tmp/file.xlsx',
-    project_id: 'a_project_id',
-    service_account: '',
-    bucket: 'a_bucket',
-  };
-
-  const onStorageChange = jest.fn();
-
-  renderWithProviders(
-    <GoogleCloudStorageConfigurator
-      jobInstanceCode="csv_product_export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={onStorageChange}
-    />
-  );
-
-  const checkButton = screen.getByText('pim_import_export.form.job_instance.connection_checker.label');
-
-  expect(checkButton).toBeDisabled();
-});
-
-test('it can check connection, display message if error', async () => {
-  mockFetch.mockImplementation((route: string) => {
-    switch (route) {
-      case 'pimee_job_automation_get_storage_connection_check':
-        return {
-          ok: false,
-        };
-      default:
-        throw new Error();
-    }
-  });
-
-  const storage: GoogleCloudStorage = {
-    type: 'google_cloud_storage',
-    file_path: '/tmp/file.xlsx',
-    project_id: 'a_project_id',
-    service_account: '{"type": "service_account"}',
-    bucket: 'a_bucket',
-  };
-
-  const onStorageChange = jest.fn();
-
-  renderWithProviders(
-    <GoogleCloudStorageConfigurator
-      jobInstanceCode="csv_product_export"
-      storage={storage}
-      fileExtension="xlsx"
-      validationErrors={[]}
-      onStorageChange={onStorageChange}
-    />
-  );
-
-  const checkButton = screen.getByText('pim_import_export.form.job_instance.connection_checker.label');
-  await act(async () => {
-    userEvent.click(checkButton);
-  });
-
-  expect(checkButton).not.toBeDisabled();
-  expect(screen.getByText('pim_import_export.form.job_instance.connection_checker.exception')).toBeInTheDocument();
+  expect(screen.getByText('Check connection')).toBeInTheDocument();
 });
