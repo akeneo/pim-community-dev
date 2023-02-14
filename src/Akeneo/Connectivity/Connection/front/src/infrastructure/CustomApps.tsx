@@ -4,7 +4,7 @@ import {QueryClientProvider, QueryClient} from 'react-query';
 import {AkeneoThemeProvider} from './akeneo-theme-provider';
 import {withDependencies} from './dependencies-provider';
 import {CreateCustomAppPage} from '../connect/pages/CreateCustomAppPage';
-import {DeleteTestAppPromptPage} from '../connect/pages/DeleteTestAppPromptPage';
+import {DeleteCustomAppPromptPage} from '../connect/pages/DeleteCustomAppPromptPage';
 
 const client = new QueryClient({
     defaultOptions: {
@@ -25,7 +25,7 @@ export const CustomApps = withDependencies(() => (
                             <CreateCustomAppPage />
                         </Route>
                         <Route path='/connect/custom-apps/:customAppId/delete'>
-                            <DeleteTestAppPromptPage />
+                            <DeleteCustomAppPromptPage />
                         </Route>
                     </Switch>
                 </Router>

@@ -1,11 +1,11 @@
 import React, {FC, useCallback} from 'react';
 import {useHistory, useParams} from 'react-router';
-import {Modal, AppIllustration, Button, getColor, getFontSize} from 'akeneo-design-system';
+import {AppIllustration, Button, getColor, getFontSize, Modal} from 'akeneo-design-system';
 import styled from '../../common/styled-with-theme';
 import {useTranslate} from '../../shared/translate';
-import {useRouter} from '../../shared/router/use-router';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import {useDeleteCustomApp} from '../hooks/use-delete-custom-app';
+import {useRoute} from '../../shared/router';
 
 const Subtitle = styled.h3`
     color: ${getColor('brand', 100)};
@@ -31,48 +31,48 @@ const Helper = styled.div`
     margin: 17px 0 0 0;
 `;
 
-export const DeleteTestAppPromptPage: FC = () => {
+export const DeleteCustomAppPromptPage: FC = () => {
     const history = useHistory();
-    const generateUrl = useRouter();
+    const appStoreUrl = useRoute('akeneo_connectivity_connection_connect_marketplace');
     const translate = useTranslate();
     const notify = useNotify();
 
     const {customAppId} = useParams<{customAppId: string}>();
-    const deleteTestApp = useDeleteCustomApp(customAppId);
+    const deleteCustomApp = useDeleteCustomApp(customAppId);
+
+    const redirectToAppStore = useCallback(() => history.push(appStoreUrl), [history, appStoreUrl]);
 
     const handleClick = useCallback(() => {
-        deleteTestApp()
+        deleteCustomApp()
             .then(() =>
                 notify(
                     NotificationLevel.SUCCESS,
-                    translate('akeneo_connectivity.connection.connect.marketplace.test_apps.delete.flash.success')
+                    translate('akeneo_connectivity.connection.connect.custom_apps.delete_modal.flash.success')
                 )
             )
             .catch(() =>
                 notify(
                     NotificationLevel.ERROR,
-                    translate('akeneo_connectivity.connection.connect.marketplace.test_apps.delete.flash.error')
+                    translate('akeneo_connectivity.connection.connect.custom_apps.delete_modal.flash.error')
                 )
             )
-            .finally(() => history.push(generateUrl('akeneo_connectivity_connection_connect_marketplace')));
-    }, [deleteTestApp, notify, translate, history, generateUrl]);
-
-    const handleCancel = useCallback(() => {
-        history.push(generateUrl('akeneo_connectivity_connection_connect_marketplace'));
-    }, [history, generateUrl]);
+            .finally(redirectToAppStore);
+    }, [deleteCustomApp, notify, translate, redirectToAppStore]);
 
     return (
-        <Modal onClose={handleCancel} illustration={<AppIllustration />} closeTitle={translate('pim_common.cancel')}>
-            <Subtitle>
-                {translate('akeneo_connectivity.connection.connect.marketplace.test_apps.delete.subtitle')}
-            </Subtitle>
-            <Title>{translate('akeneo_connectivity.connection.connect.marketplace.test_apps.delete.title')}</Title>
+        <Modal
+            onClose={redirectToAppStore}
+            illustration={<AppIllustration />}
+            closeTitle={translate('pim_common.cancel')}
+        >
+            <Subtitle>{translate('akeneo_connectivity.connection.connect.custom_apps.delete_modal.subtitle')}</Subtitle>
+            <Title>{translate('akeneo_connectivity.connection.connect.custom_apps.delete_modal.title')}</Title>
             <Helper>
-                <p>{translate('akeneo_connectivity.connection.connect.marketplace.test_apps.delete.description')}</p>
-                <p>{translate('akeneo_connectivity.connection.connect.marketplace.test_apps.delete.warning')}</p>
+                <p>{translate('akeneo_connectivity.connection.connect.custom_apps.delete_modal.description')}</p>
+                <p>{translate('akeneo_connectivity.connection.connect.custom_apps.delete_modal.warning')}</p>
             </Helper>
             <Modal.BottomButtons>
-                <Button onClick={handleCancel} level='tertiary'>
+                <Button onClick={redirectToAppStore} level='tertiary'>
                     {translate('pim_common.cancel')}
                 </Button>
                 <Button onClick={handleClick} level='danger'>
