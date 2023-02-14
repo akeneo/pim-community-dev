@@ -390,7 +390,7 @@ test('The connect buttons are disabled and a warning is showed when the limit of
             },
         ],
     };
-    const testApps = {
+    const customApps = {
         total: 0,
         apps: [],
     };
@@ -399,7 +399,7 @@ test('The connect buttons are disabled and a warning is showed when the limit of
         extensions: [],
     };
 
-    renderWithProviders(<Marketplace apps={apps} extensions={extensions} testApps={testApps} />);
+    renderWithProviders(<Marketplace apps={apps} extensions={extensions} customApps={customApps} />);
 
     expect(screen.getByText('App A')).toBeInTheDocument();
 
@@ -455,7 +455,7 @@ test('The connect buttons are disabled and a warning is showed when the user can
             },
         ],
     };
-    const testApps = {
+    const customApps = {
         total: 0,
         apps: [],
     };
@@ -464,7 +464,7 @@ test('The connect buttons are disabled and a warning is showed when the user can
         extensions: [],
     };
 
-    renderWithProviders(<Marketplace apps={apps} extensions={extensions} testApps={testApps} />);
+    renderWithProviders(<Marketplace apps={apps} extensions={extensions} customApps={customApps} />);
 
     expect(screen.getByText('App A')).toBeInTheDocument();
     expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.card.connect')).toBeInTheDocument();
