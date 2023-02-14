@@ -223,6 +223,9 @@ jobs:
         machine:
             image: *executor-machine
         steps:
+            -   add_ssh_keys:
+                    fingerprints:
+                        - "ee:73:a1:e4:ef:57:13:9e:cf:d3:23:fb:e2:c1:d7:92"
             -   attach_workspace:
                     at: ~/
             -   run:
@@ -232,16 +235,15 @@ jobs:
                         APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
                         docker/wait_docker_up.sh
             -   run:
-                    name: Restore permissions on files
-                    command: git checkout -- .
-            -   run:
-                    name: Restore permissions on vendor files
-                    command: |
-                        cd vendor/akeneo/pim-community-dev
-                        git checkout -- .
-            -   run:
                     name: Change owner on project dir after restoring cache
-                    command: sudo chown -R 1000:1000 ../project
+                    command: sudo chown -R circleci:circleci ../project
+            -   run:
+                    name: Unshallow project
+                    command: |
+                        export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                        git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+                        git fetch origin
+                        git reset --hard
             -   run:
                     name: Test missing database and index structure migrations
                     command: vendor/akeneo/pim-community-dev/.circleci/detect_structure_changes.sh $CIRCLE_BRANCH
