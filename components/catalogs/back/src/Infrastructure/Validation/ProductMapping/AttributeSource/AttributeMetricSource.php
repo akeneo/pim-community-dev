@@ -39,6 +39,18 @@ class AttributeMetricSource extends Compound
                             new Assert\Type('string'),
                             new Assert\NotBlank(allowNull: true),
                         ],
+                        'parameters' => [
+                            new Assert\Collection([
+                                'fields' => [
+                                    'unit' => [
+                                        new Assert\Type('string'),
+                                        new Assert\NotBlank(),
+                                    ],
+                                ],
+                                'allowMissingFields' => false,
+                                'allowExtraFields' => false,
+                            ]),
+                        ],
                     ],
                     'allowMissingFields' => false,
                     'allowExtraFields' => false,
