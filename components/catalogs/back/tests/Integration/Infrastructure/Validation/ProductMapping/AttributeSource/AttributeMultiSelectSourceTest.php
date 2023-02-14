@@ -208,7 +208,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
             ],
-            'source with invalid scope' => [
+            'source with unknown scope' => [
                 'attribute' => [
                     'code' => 'video_output',
                     'type' => 'pim_catalog_multiselect',
@@ -252,17 +252,36 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'type' => 'pim_catalog_multiselect',
                     'group' => 'other',
                     'scopable' => false,
-                    'localizable' => true,
+                    'localizable' => false,
                     'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
                 ],
                 'source' => [
                     'source' => 'video_output',
                     'scope' => null,
-                    'locale' => 'kz_KZ',
+                    'locale' => null,
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
-            'source with missing label_locale field' => [
+            'source with missing scope' => [
+                'attribute' => [
+                    'code' => 'video_output',
+                    'type' => 'pim_catalog_multiselect',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                    'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
+                ],
+                'source' => [
+                    'source' => 'video_output',
+                    'scope' => 'unknown_scope',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
+            ],
+            'source with missing locale' => [
                 'attribute' => [
                     'code' => 'video_output',
                     'type' => 'pim_catalog_multiselect',
@@ -274,7 +293,26 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'video_output',
                     'scope' => null,
-                    'locale' => 'kz_KZ',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This locale must not be empty.',
+            ],
+            'source with missing label_locale field' => [
+                'attribute' => [
+                    'code' => 'video_output',
+                    'type' => 'pim_catalog_multiselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                    'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
+                ],
+                'source' => [
+                    'source' => 'video_output',
+                    'scope' => null,
+                    'locale' => null,
                     'parameters' => [
                     ],
                 ],
@@ -286,13 +324,13 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'type' => 'pim_catalog_multiselect',
                     'group' => 'other',
                     'scopable' => false,
-                    'localizable' => true,
+                    'localizable' => false,
                     'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
                 ],
                 'source' => [
                     'source' => 'video_output',
                     'scope' => null,
-                    'locale' => 'kz_KZ',
+                    'locale' => null,
                     'parameters' => [
                         'label_locale' => 42,
                     ],
@@ -305,18 +343,56 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'type' => 'pim_catalog_multiselect',
                     'group' => 'other',
                     'scopable' => false,
-                    'localizable' => true,
+                    'localizable' => false,
                     'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
                 ],
                 'source' => [
                     'source' => 'video_output',
                     'scope' => null,
-                    'locale' => 'kz_KZ',
+                    'locale' => null,
                     'parameters' => [
                         'label_locale' => 'kz_KZ',
                     ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'source with extra field' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_multiselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                    'category' => 'dimension',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This field was not expected.',
+            ],
+            'source with extra parameter field' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_multiselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                        'category' => 'dimension',
+                    ],
+                ],
+                'expectedMessage' => 'This field was not expected.',
             ],
         ];
     }
