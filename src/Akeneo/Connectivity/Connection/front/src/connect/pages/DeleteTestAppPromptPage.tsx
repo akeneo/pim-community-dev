@@ -5,7 +5,7 @@ import styled from '../../common/styled-with-theme';
 import {useTranslate} from '../../shared/translate';
 import {useRouter} from '../../shared/router/use-router';
 import {NotificationLevel, useNotify} from '../../shared/notify';
-import {useDeleteTestApp} from '../hooks/use-delete-test-app';
+import {useDeleteCustomApp} from '../hooks/use-delete-custom-app';
 
 const Subtitle = styled.h3`
     color: ${getColor('brand', 100)};
@@ -38,7 +38,7 @@ export const DeleteTestAppPromptPage: FC = () => {
     const notify = useNotify();
 
     const {customAppId} = useParams<{customAppId: string}>();
-    const deleteTestApp = useDeleteTestApp(customAppId);
+    const deleteTestApp = useDeleteCustomApp(customAppId);
 
     const handleClick = useCallback(() => {
         deleteTestApp()
