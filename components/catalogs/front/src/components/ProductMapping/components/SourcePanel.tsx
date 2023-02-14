@@ -139,7 +139,8 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
                         <SelectMeasurementUnitDropdown
                             source={source}
                             onChange={onChange}
-                            error={errors?.source}
+                            error={errors?.parameters?.unit}
+                            measurementFamily={attribute?.measurement_family ?? null}
                         />
                     )
 

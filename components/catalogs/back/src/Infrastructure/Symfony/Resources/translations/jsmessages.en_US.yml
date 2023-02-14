@@ -142,6 +142,7 @@ akeneo_catalogs:
                 unit:
                     label: Unit
                     placeholder: Select a unit
+                    helper: Select the unit in which the value should be sent.
             select_source:
                 label: Pim source
                 search: Search criterion
