@@ -27,12 +27,7 @@ final class LaunchProductAndProductModelEvaluationNormalizer implements Normaliz
     {
         Assert::isInstanceOf($object, LaunchProductAndProductModelEvaluation::class);
 
-        return [
-            'message_created_at' => $object->messageCreatedAt->format('Y-m-d H:i:s'),
-            'product_uuids' => $object->productUuids->toArrayString(),
-            'product_model_ids' => $object->productModelIds->toArrayString(),
-            'criteria' => $object->criteriaToEvaluate,
-        ];
+        return $object->normalize();
     }
 
     public function supportsNormalization($data, string $format = null)
@@ -42,17 +37,7 @@ final class LaunchProductAndProductModelEvaluationNormalizer implements Normaliz
 
     public function denormalize($data, string $type, string $format = null, array $context = [])
     {
-        Assert::keyExists($data, 'message_created_at');
-        Assert::keyExists($data, 'product_uuids');
-        Assert::keyExists($data, 'product_model_ids');
-        Assert::keyExists($data, 'criteria');
-
-        return new LaunchProductAndProductModelEvaluation(
-            $this->clock->fromString($data['message_created_at']),
-            ProductUuidCollection::fromStrings($data['product_uuids']),
-            ProductModelIdCollection::fromStrings($data['product_model_ids']),
-            $data['criteria']
-        );
+        return LaunchProductAndProductModelEvaluation::fromNormalized($data);
     }
 
     public function supportsDenormalization($data, string $type, string $format = null)

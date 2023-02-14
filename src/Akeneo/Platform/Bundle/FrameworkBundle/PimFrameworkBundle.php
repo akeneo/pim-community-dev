@@ -19,6 +19,7 @@ class PimFrameworkBundle extends Bundle
     public function boot()
     {
         parent::boot();
+        return;
 
         $this->setupRequestContext();
     }

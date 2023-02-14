@@ -41,15 +41,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_user.event_listener.create_user_system:
-        class: '%pim_user.event_listener.create_user_system.class%'
-        arguments:
-            - '@security.token_storage'
-            - '@pim_user.repository.group'
-            - '@pim_user.repository.role'
-            - '@pim_user.factory.user'
-        tags:
-            - { name: kernel.event_listener, event: console.command, method: createUserSystem }
+#    pim_user.event_listener.create_user_system:
+#        class: '%pim_user.event_listener.create_user_system.class%'
+#        arguments:
+#            - '@security.token_storage'
+#            - '@pim_user.repository.group'
+#            - '@pim_user.repository.role'
+#            - '@pim_user.factory.user'
+#        tags:
+#            - { name: kernel.event_listener, event: console.command, method: createUserSystem }
 
     Akeneo\UserManagement\Bundle\EventListener\AddDefaultPrivilegesSubscriber:
         arguments:
