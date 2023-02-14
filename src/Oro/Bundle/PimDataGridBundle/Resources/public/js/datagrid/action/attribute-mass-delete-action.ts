@@ -29,16 +29,7 @@ const LAUNCH_JOB_ROUTE = 'pim_enrich_mass_edit_rest_launch';
 const DELETE_ATTRIBUTES_JOB = 'delete_attributes';
 
 class AttributeMassDeleteAction extends MassAction {
-  public readonly identifierFieldName: string;
-
-  constructor(options?: object) {
-    super(options);
-    this.identifierFieldName = 'code';
-  }
-
-  public initialize(options?: object): void {
-    super.initialize(options);
-  }
+  public readonly identifierFieldName: string = 'code';
 
   public async execute(): Promise<void> {
     const data = await this.getMassActionData();
@@ -50,14 +41,16 @@ class AttributeMassDeleteAction extends MassAction {
     const textToCheck = translate('pim_common.delete').toLowerCase();
 
     const modalProps: DoubleCheckDeleteModalProps = {
-      onConfirm: () => {
-        this.launchJob(data);
-      },
+      onConfirm: () => this.launchJob(data),
       onCancel: this.closeModal.bind(this),
       title: translate('pim_enrich.entity.attribute.module.mass_delete.modal.title'),
-      confirmDeletionTitle: translate('pim_enrich.entity.attribute.module.mass_delete.modal.subtitle', {
-        count: data.itemsCount,
-      }),
+      confirmDeletionTitle: translate(
+        'pim_enrich.entity.attribute.module.mass_delete.modal.subtitle',
+        {
+          count: data.itemsCount,
+        },
+        data.itemsCount
+      ),
       children: translate('pim_enrich.entity.attribute.module.mass_delete.modal.confirm'),
       confirmButtonLabel: translate('pim_common.delete'),
       cancelButtonLabel: translate('pim_common.cancel'),
