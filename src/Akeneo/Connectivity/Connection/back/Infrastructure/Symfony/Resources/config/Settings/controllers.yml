@@ -3,3 +3,8 @@ services:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\Controller\Internal\IsCustomAppsNumberLimitReachedAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsCustomAppsNumberLimitReachedQuery'

@@ -4,6 +4,11 @@ akeneo_connectivity_connection_rest_connections_max_limit_reached:
     controller: Akeneo\Connectivity\Connection\Infrastructure\Settings\Controller\Internal\IsConnectionsNumberLimitReachedAction
     methods: [GET]
 
+akeneo_connectivity_connection_rest_custom_apps_max_limit_reached:
+    path: '/rest/custom-apps/max-limit-reached'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Settings\Controller\Internal\IsCustomAppsNumberLimitReachedAction
+    methods: [GET]
+
 # Front API
 akeneo_connectivity_connection_settings_redirect:
     path: '/connections'
