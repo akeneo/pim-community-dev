@@ -12,19 +12,19 @@ setLogger({
     error: () => null, // explicit error generation triggers react query to log the error
 });
 
-test('it creates the test app and returns credentials', async done => {
+test('it creates the custom app and returns credentials', async done => {
     mockFetchResponses({
         akeneo_connectivity_connection_custom_apps_rest_create: {
             json: {
-                clientId: 'testClientId',
-                clientSecret: 'testSecret',
+                clientId: 'customClientId',
+                clientSecret: 'customSecret',
             },
             status: 200,
         },
     });
 
     const onSuccess = jest.fn();
-    const TestComponent = () => {
+    const CustomComponent = () => {
         const {data, mutate} = useCreateCustomApp();
         return (
             <div>
@@ -35,8 +35,8 @@ test('it creates the test app and returns credentials', async done => {
                         mutate(
                             {
                                 name: 'Custom app bynder',
-                                activateUrl: 'http://any_url.test',
-                                callbackUrl: 'http://activate.test',
+                                activateUrl: 'http://any_url.custom',
+                                callbackUrl: 'http://activate.custom',
                             },
                             {onSuccess}
                         );
@@ -48,19 +48,19 @@ test('it creates the test app and returns credentials', async done => {
         );
     };
 
-    renderWithProviders(<TestComponent />);
+    renderWithProviders(<CustomComponent />);
 
     await waitFor(() => screen.getByText('mutate'));
 
     fireEvent.click(screen.getByText('mutate'));
 
-    await waitFor(() => screen.getByText('testClientId'));
+    await waitFor(() => screen.getByText('customClientId'));
 
-    expect(screen.getByText('testClientId')).toBeInTheDocument();
-    expect(screen.getByText('testSecret')).toBeInTheDocument();
+    expect(screen.getByText('customClientId')).toBeInTheDocument();
+    expect(screen.getByText('customSecret')).toBeInTheDocument();
 
     expect(fetchMock).toBeCalledWith('akeneo_connectivity_connection_custom_apps_rest_create', {
-        body: '{"name":"Custom app bynder","activateUrl":"http://any_url.test","callbackUrl":"http://activate.test"}',
+        body: '{"name":"Custom app bynder","activateUrl":"http://any_url.custom","callbackUrl":"http://activate.custom"}',
         headers: {
             'Content-type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
@@ -70,8 +70,8 @@ test('it creates the test app and returns credentials', async done => {
 
     expect(onSuccess).toBeCalledWith(
         {
-            clientId: 'testClientId',
-            clientSecret: 'testSecret',
+            clientId: 'customClientId',
+            clientSecret: 'customSecret',
         },
         expect.anything(),
         undefined
@@ -94,7 +94,7 @@ test('it returns errors when fields are not valid', async done => {
         },
     });
 
-    const TestComponent = () => {
+    const CustomComponent = () => {
         const {error, mutate, isError, isSuccess} = useCreateCustomApp();
         return (
             <div>
@@ -118,7 +118,7 @@ test('it returns errors when fields are not valid', async done => {
         );
     };
 
-    renderWithProviders(<TestComponent />);
+    renderWithProviders(<CustomComponent />);
 
     await waitFor(() => screen.getByText('mutate'));
 
