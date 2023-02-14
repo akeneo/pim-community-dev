@@ -12,7 +12,7 @@ services:
 
   Akeneo\Category\Application\Command\DeactivateTemplateCommandHandler:
     arguments:
-      - '@Akeneo\Category\Application\Query\MarkTemplateAsDeactivated'
+      - '@Akeneo\Category\Application\Query\DeactivateTemplate'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeactivateTemplateCommand'}
 

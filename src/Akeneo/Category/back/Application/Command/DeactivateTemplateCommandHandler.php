@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Command;
 
-use Akeneo\Category\Application\Query\MarkTemplateAsDeactivated;
+use Akeneo\Category\Application\Query\DeactivateTemplate;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -13,13 +13,13 @@ use Akeneo\Category\Application\Query\MarkTemplateAsDeactivated;
 class DeactivateTemplateCommandHandler
 {
     public function __construct(
-        private readonly MarkTemplateAsDeactivated $markTemplateAsDeactivated
+        private readonly DeactivateTemplate $deactivateTemplate,
     ) {
     }
 
     public function __invoke(DeactivateTemplateCommand $command): void
     {
         $templateUuid = $command->uuid();
-        $this->markTemplateAsDeactivated->execute($templateUuid);
+        $this->deactivateTemplate->execute($templateUuid);
     }
 }

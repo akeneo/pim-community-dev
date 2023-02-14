@@ -68,7 +68,7 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Application\Query\MarkTemplateAsDeactivated:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\MarkTemplateAsDeactivatedSql
+  Akeneo\Category\Application\Query\DeactivateTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeactivateTemplateSql
     arguments:
       - '@database_connection'

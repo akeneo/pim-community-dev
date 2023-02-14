@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\ActivateTemplate;
-use Akeneo\Category\Application\Query\MarkTemplateAsDeactivated;
+use Akeneo\Category\Application\Query\DeactivateTemplate;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
@@ -14,7 +14,7 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MarkTemplateAsDeactivatedSqlIntegration extends CategoryTestCase
+class DeactivateTemplateSqlIntegration extends CategoryTestCase
 {
     public function testTemplateHasBeenDeactivated(): void
     {
@@ -31,7 +31,7 @@ class MarkTemplateAsDeactivatedSqlIntegration extends CategoryTestCase
         );
         $this::assertFalse($this->retrieveTemplateDeactivationStatus($templateUuid));
 
-        $markTemplateAsDeactivated = $this->get(MarkTemplateAsDeactivated::class);
+        $markTemplateAsDeactivated = $this->get(DeactivateTemplate::class);
         $markTemplateAsDeactivated->execute((string) $templateUuid);
         $this::assertTrue($this->retrieveTemplateDeactivationStatus($templateUuid));
     }

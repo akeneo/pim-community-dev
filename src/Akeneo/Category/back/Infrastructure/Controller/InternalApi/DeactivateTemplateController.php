@@ -6,12 +6,9 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\DeactivateTemplateCommand;
-use Akeneo\Category\Application\Query\GetTemplate;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -22,7 +19,6 @@ class DeactivateTemplateController
 {
     public function __construct(
         private readonly SecurityFacade $securityFacade,
-        private readonly GetTemplate $getTemplate,
         private readonly CommandMessageBus $categoryCommandBus,
     ) {
     }
@@ -34,17 +30,9 @@ class DeactivateTemplateController
             throw new AccessDeniedException();
         }
 
-        $template = $this->getTemplate->byUuid(TemplateUuid::fromString($uuid));
+        $command = DeactivateTemplateCommand::create($uuid);
+        $this->categoryCommandBus->dispatch($command);
 
-        if ($template === null) {
-            throw new NotFoundHttpException('Template not found');
-        }
-
-        try {
-            $command = DeactivateTemplateCommand::create($uuid);
-            $this->categoryCommandBus->dispatch($command);
-        } catch (\Exception $e) {
-            throw new \RuntimeException();
-        }
+        return new Response(null, Response::HTTP_ACCEPTED);
     }
 }
