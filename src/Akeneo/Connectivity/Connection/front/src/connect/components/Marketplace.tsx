@@ -87,7 +87,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                     ),
                 };
             }, {}),
-        [apps]
+        [apps, isLimitReached, isManageAppsAuthorized]
     );
 
     const appsList = apps.apps
@@ -122,7 +122,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                 </span>
             </SearchBar>
 
-            <TestAppList testApps={testApps} />
+            <TestAppList testApps={testApps} isLimitReached={isLimitReached} />
 
             {featureFlag.isEnabled('marketplace_activate') && (
                 <Section

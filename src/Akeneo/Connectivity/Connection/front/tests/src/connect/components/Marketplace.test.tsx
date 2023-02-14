@@ -348,3 +348,129 @@ test('The search input filters apps and extensions', async () => {
     expect(screen.queryByText('First Extension')).not.toBeInTheDocument();
     expect(screen.getByText('Second Extension')).toBeInTheDocument();
 });
+
+test('The connect buttons are disabled and a warning is showed when the limit of connected app is reached', async () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) =>
+            ({
+                marketplace_activate: true,
+            }[feature] ?? false),
+    }));
+    (useSecurity as jest.Mock).mockImplementation(() => ({
+        isGranted: (acl: string) =>
+            ({
+                akeneo_connectivity_connection_manage_apps: true,
+                akeneo_connectivity_connection_manage_test_apps: false,
+            }[acl] ?? false),
+    }));
+
+    mockFetchResponses({
+        akeneo_connectivity_connection_rest_connections_max_limit_reached: {
+            json: {limitReached: true},
+        },
+    });
+
+    const apps = {
+        total: 1,
+        apps: [
+            {
+                id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+                name: 'App A',
+                logo: 'http://www.example.com/path/to/logo/a',
+                author: 'author A',
+                partner: 'Akeneo Partner',
+                description: 'Our Akeneo App',
+                url: 'https://marketplace.akeneo.com/apps/app_a',
+                categories: ['E-commerce'],
+                certified: false,
+                activate_url: 'https://example.com/activate',
+                callback_url: 'https://example.com/oauth2',
+                connected: false,
+                isPending: false,
+            },
+        ],
+    };
+    const testApps = {
+        total: 0,
+        apps: [],
+    };
+    const extensions = {
+        total: 0,
+        extensions: [],
+    };
+
+    renderWithProviders(<Marketplace apps={apps} extensions={extensions} testApps={testApps} />);
+
+    expect(screen.getByText('App A')).toBeInTheDocument();
+
+    expect(
+        await screen.findByText('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached')
+    ).toBeInTheDocument();
+    expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.card.connect')).toBeInTheDocument();
+
+    const connectButton = expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.card.connect'));
+
+    connectButton.toHaveAttribute('disabled');
+    connectButton.toHaveAttribute('aria-disabled', 'true');
+});
+
+test('The connect buttons are disabled and a warning is showed when the user cannot manage apps', () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) =>
+            ({
+                marketplace_activate: true,
+            }[feature] ?? false),
+    }));
+    (useSecurity as jest.Mock).mockImplementation(() => ({
+        isGranted: (acl: string) =>
+            ({
+                akeneo_connectivity_connection_manage_apps: false,
+                akeneo_connectivity_connection_manage_test_apps: false,
+            }[acl] ?? false),
+    }));
+
+    mockFetchResponses({
+        akeneo_connectivity_connection_rest_connections_max_limit_reached: {
+            json: {limitReached: false},
+        },
+    });
+
+    const apps = {
+        total: 1,
+        apps: [
+            {
+                id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+                name: 'App A',
+                logo: 'http://www.example.com/path/to/logo/a',
+                author: 'author A',
+                partner: 'Akeneo Partner',
+                description: 'Our Akeneo App',
+                url: 'https://marketplace.akeneo.com/apps/app_a',
+                categories: ['E-commerce'],
+                certified: false,
+                activate_url: 'https://example.com/activate',
+                callback_url: 'https://example.com/oauth2',
+                connected: false,
+                isPending: false,
+            },
+        ],
+    };
+    const testApps = {
+        total: 0,
+        apps: [],
+    };
+    const extensions = {
+        total: 0,
+        extensions: [],
+    };
+
+    renderWithProviders(<Marketplace apps={apps} extensions={extensions} testApps={testApps} />);
+
+    expect(screen.getByText('App A')).toBeInTheDocument();
+    expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.card.connect')).toBeInTheDocument();
+
+    const connectButton = expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.card.connect'));
+
+    connectButton.toHaveAttribute('disabled');
+    connectButton.toHaveAttribute('aria-disabled', 'true');
+});
