@@ -8,9 +8,10 @@ import {useSecurity} from '../../../shared/security';
 
 interface Props {
     testApps: TestApps;
+    isLimitReached: boolean;
 }
 
-export const TestAppList: FC<Props> = ({testApps}) => {
+export const TestAppList: FC<Props> = ({testApps, isLimitReached}) => {
     const security = useSecurity();
     const translate = useTranslate();
 
@@ -27,7 +28,7 @@ export const TestAppList: FC<Props> = ({testApps}) => {
                     key={1}
                     id={testApp.id}
                     isConnected={testApp.connected}
-                    isDisabled={!security.isGranted('akeneo_connectivity_connection_manage_apps')}
+                    isDisabled={!security.isGranted('akeneo_connectivity_connection_manage_apps') || isLimitReached}
                     isPending={false}
                 />,
             ]}
@@ -45,6 +46,11 @@ export const TestAppList: FC<Props> = ({testApps}) => {
                 testApps.total
             )}
             emptyMessage={translate('akeneo_connectivity.connection.connect.marketplace.apps.empty')}
+            warningMessage={
+                !isLimitReached
+                    ? null
+                    : translate('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached')
+            }
         >
             {testAppsList}
         </Section>
