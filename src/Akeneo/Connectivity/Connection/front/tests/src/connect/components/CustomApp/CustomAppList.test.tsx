@@ -2,7 +2,7 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {renderWithProviders} from '../../../../test-utils';
-import {CustomAppList} from '@src/connect/components/CustomApp/CustomAppList';
+import {CustomAppList} from '@src/connect/components/CustomApps/CustomAppList';
 import {SecurityContext} from '@src/shared/security';
 
 beforeEach(() => {

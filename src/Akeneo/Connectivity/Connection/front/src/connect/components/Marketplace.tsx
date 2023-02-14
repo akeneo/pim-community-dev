@@ -12,7 +12,7 @@ import {Section} from './Section';
 import {ActivateAppButton} from './ActivateAppButton';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {useConnectionsLimitReached} from '../../shared/hooks/use-connections-limit-reached';
-import {CustomAppList} from './CustomApp/CustomAppList';
+import {CustomAppList} from './CustomApps/CustomAppList';
 import {useSecurity} from '../../shared/security';
 
 const ScrollToTop = styled(IconButton)`
@@ -103,7 +103,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, customApps}) => {
         apps: filteredCustomApps,
     };
 
-    const searchCount = extensionsList.length + appsList.length;
+    const searchCount = extensionsList.length + appsList.length + filteredCustomApps.length;
 
     const handleScrollTop = () => {
         scrollContainer.scrollTo(0, 0);
