@@ -79,14 +79,6 @@ akeneo_connectivity.connection:
             test_apps:
                 title: Custom apps
                 removed_user: Removed user
-                delete:
-                    subtitle: Apps
-                    title: Confirm deletion
-                    description: You are about to delete your test app from this PIM.
-                    warning: By confirming the deletion, you will delete the test app on the App Store page and the related connected app.
-                    flash:
-                        success: Test app successfully deleted.
-                        error: Sorry, an error occured while deleting the test app.
         connected_apps:
             list:
                 apps:
@@ -316,6 +308,15 @@ akeneo_connectivity.connection:
                         max_length: The callback url of the app is too long. It must have 255 characters or less.
                         must_be_url: The callback url must be a valid URL.
                         not_blank: The callback url is required.
+            delete_modal:
+                subtitle: Delete a custom app
+                title: Confirm deletion
+                description: You are about to delete your app from this PIM.
+                warning: By confirming the deletion, you will delete the app from the App Store page and the related connected app.
+                flash:
+                    success: Custom app successfully deleted.
+                    error: Sorry, an error occured while deleting the custom app.
+
     connections: Connections
     secondary_actions:
         title: Other actions
