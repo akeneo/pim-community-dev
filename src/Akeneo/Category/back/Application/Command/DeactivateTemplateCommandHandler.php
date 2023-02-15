@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Command;
 
 use Akeneo\Category\Application\Query\DeactivateTemplate;
+use Akeneo\Category\Application\Query\GetTemplate;
+use Akeneo\Category\Domain\Event\TemplateDeactivatedEvent;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -15,6 +18,8 @@ class DeactivateTemplateCommandHandler
 {
     public function __construct(
         private readonly DeactivateTemplate $deactivateTemplate,
+        private readonly GetTemplate $getTemplate,
+        private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -22,5 +27,9 @@ class DeactivateTemplateCommandHandler
     {
         $templateUuid = TemplateUuid::fromString($command->uuid());
         $this->deactivateTemplate->execute($templateUuid);
+        $template = $this->getTemplate->byUuid($templateUuid);
+        if ($template) {
+            $this->eventDispatcher->dispatch(new TemplateDeactivatedEvent($template));
+        }
     }
 }

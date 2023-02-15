@@ -14,6 +14,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterDeleteTemplateSubscriber:
+        arguments:
+            - '@akeneo.category.enriched.feature'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
     Akeneo\Category\Infrastructure\EventSubscriber\RemoveCategoryTreeTemplateSubscriber:
         arguments:
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
