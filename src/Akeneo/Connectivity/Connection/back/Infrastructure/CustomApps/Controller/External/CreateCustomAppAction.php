@@ -66,11 +66,7 @@ final class CreateCustomAppAction
 
         $errors = [];
         foreach ($this->validator->validate($createCommand) as $violation) {
-            if ($violation->getPropertyPath() == '') {
-                $snakeCasedPropertyPath = 'customApp';
-            } else {
-                $snakeCasedPropertyPath = \strtolower(\preg_replace("/[A-Z]/", '_$0', $violation->getPropertyPath()));
-            }
+            $snakeCasedPropertyPath = \strtolower(\preg_replace("/[A-Z]/", '_$0', $violation->getPropertyPath()));
             $translatedMessage = $this->translator->trans($violation->getMessage(), [], 'jsmessages');
             $errors[] = [
                 'propertyPath' => $snakeCasedPropertyPath,
