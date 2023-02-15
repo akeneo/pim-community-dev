@@ -34,6 +34,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\PermissionCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
@@ -42,8 +43,14 @@ use Doctrine\DBAL\Driver\Exception;
 
 class CategoryTestCase extends TestCase
 {
+    protected function enableEnrichedCategoryFeature(): void
+    {
+        $this->get('feature_flags')->enable('enriched_category');
+    }
+
     /**
      * @param array<string, string|null>|null $labels
+     * @param array<string, array<array{id: int, label: string}>>|null $permissions
      *
      * @throws Exception
      * @throws \Doctrine\DBAL\Exception
@@ -53,6 +60,7 @@ class CategoryTestCase extends TestCase
         ?int $id = null,
         ?array $labels = [],
         ?int $parentId = null,
+        ?array $permissions = [],
     ): Category {
         $categoryId = (null === $id ? null : new CategoryId($id));
         $parentId = (null === $parentId ? null : new CategoryId($parentId));
@@ -63,6 +71,7 @@ class CategoryTestCase extends TestCase
             templateUuid: null,
             labels: LabelCollection::fromArray($labels),
             parentId: $parentId,
+            permissions: PermissionCollection::fromArray($permissions),
         );
 
         // Insert the category in pim_catalog_category
@@ -81,6 +90,7 @@ class CategoryTestCase extends TestCase
             templateUuid: null,
             labels: $categoryModelToCreate->getLabels(),
             parentId: $parentId,
+            permissions: $categoryModelToCreate->getPermissions(),
         );
         $this->get(UpsertCategoryTranslations::class)->execute($categoryModelWithId);
 
@@ -98,6 +108,7 @@ class CategoryTestCase extends TestCase
             templateUuid: null,
             labels: LabelCollection::fromArray($categoryTranslations),
             parentId: $createdParentId,
+            permissions: $categoryModelToCreate->getPermissions(),
         );
     }
 

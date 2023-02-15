@@ -123,7 +123,7 @@ class VersionBuilder
      *
      * @return array
      */
-    protected function buildChangeset(array $oldSnapshot, array $newSnapshot)
+    public function buildChangeset(array $oldSnapshot, array $newSnapshot)
     {
         return $this->filterChangeset($this->mergeSnapshots($oldSnapshot, $newSnapshot));
     }

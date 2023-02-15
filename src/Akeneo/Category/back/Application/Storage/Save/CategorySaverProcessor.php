@@ -11,13 +11,13 @@ use Akeneo\Category\Application\Storage\Save\Saver\CategoryTranslationsSaver;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 
 /**
- * This is the entry point to save a Category. The categoryModel is used to get the data's values to save.
+ * This is the entry point to save a Category. The category is used to get the data's values to save.
  * The user intents are used to only call the dedicated savers, based on the data actually changed.
  *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategorySaverProcessor
+class CategorySaverProcessor implements SaveCategory
 {
     /**
      * List of expected savers: it also ensures the order in which the savers will be executed.
@@ -30,14 +30,14 @@ class CategorySaverProcessor
     ];
 
     public function __construct(
-        private CategorySaverRegistry $categorySaverRegistry,
+        private readonly CategorySaverRegistry $categorySaverRegistry,
     ) {
     }
 
     /**
      * @param UserIntent[] $userIntents
      */
-    public function save(Category $categoryModel, array $userIntents): void
+    public function save(Category $category, array $userIntents): void
     {
         foreach ($userIntents as $userIntent) {
             $saver = $this->categorySaverRegistry->fromUserIntent($userIntent::class);
@@ -50,7 +50,7 @@ class CategorySaverProcessor
         }
 
         foreach ($this->saversExecutionOrder as $saver) {
-            $saver?->save($categoryModel);
+            $saver?->save($category);
         }
     }
 }

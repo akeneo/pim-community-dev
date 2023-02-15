@@ -16,6 +16,10 @@ internal_api_category_template:
     resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/category_template.yml'
     prefix: /category/template
 
+internal_api_user_group:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/user_group.yml'
+    prefix: /category/user_group
+
 # This was done to stay consistent with existing routes
 pim_category_template_edit:
     path: /enrich/product-category-tree/{treeId}/template/{templateUuid}

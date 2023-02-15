@@ -42,6 +42,7 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('handlers.yml');
         $loader->load('appliers.yml');
         $loader->load('factories.yml');
+        $loader->load('registry.yml');
         $loader->load('subscribers.yml');
         $loader->load('validators.yml');
         $loader->load('storage/save.yml');
@@ -53,5 +54,8 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('parameters.yml');
         $loader->load('preview_generators.yml');
         $loader->load('builders.yml');
+        $loader->load('migration.yml');
+        $loader->load('cleaners.yml');
+        $loader->load('jobs.yml');
     }
 }
