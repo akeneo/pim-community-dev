@@ -1,22 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import {Helper, Button, CheckIcon, getColor} from 'akeneo-design-system';
+import {Button} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
-import {StorageConfiguratorProps, isAmazonS3Storage} from './model';
-import {useCheckStorageConnection} from '../../hooks/useCheckStorageConnection';
-
-const CheckStorageForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const CheckStorageConnection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8.5px;
-  color: ${getColor('green', 100)};
-`;
+import {StorageConfiguratorProps} from './model';
+import {isAmazonS3Storage} from '../../models';
+import {CheckStorageConnection} from './CheckStorageConnection';
 
 const AmazonS3StorageConfigurator = ({
   jobInstanceCode,
@@ -30,7 +17,6 @@ const AmazonS3StorageConfigurator = ({
   }
 
   const translate = useTranslate();
-  const [isValid, canCheckConnection, checkReliability] = useCheckStorageConnection(jobInstanceCode, storage);
   const secretIsStoredOnServer = storage.secret === undefined;
 
   return (
@@ -91,19 +77,7 @@ const AmazonS3StorageConfigurator = ({
         onChange={(secret: string) => onStorageChange({...storage, secret})}
         errors={filterErrors(validationErrors, '[secret]')}
       />
-      <CheckStorageForm>
-        <CheckStorageConnection>
-          <Button onClick={checkReliability} disabled={!canCheckConnection} level="primary">
-            {translate('pim_import_export.form.job_instance.connection_checker.label')}
-          </Button>
-          {isValid && <CheckIcon />}
-        </CheckStorageConnection>
-        {false === isValid && (
-          <Helper inline={true} level="error">
-            {translate('pim_import_export.form.job_instance.connection_checker.exception')}
-          </Helper>
-        )}
-      </CheckStorageForm>
+      <CheckStorageConnection jobInstanceCode={jobInstanceCode} storage={storage} />
     </>
   );
 };

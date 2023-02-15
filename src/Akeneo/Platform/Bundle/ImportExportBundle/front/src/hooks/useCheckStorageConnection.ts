@@ -1,42 +1,19 @@
 import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
-import {AmazonS3Storage, MicrosoftAzureStorage, GoogleCloudStorage, SftpStorage} from '../components';
 import {
+  isSftpStorage,
   isAmazonS3Storage,
   isMicrosoftAzureStorage,
   isGoogleCloudStorage,
-  isSftpStorage,
-} from '../components/StorageConfigurator';
-
-const isSftpConnectionFieldFulfilled = (storage: SftpStorage): boolean => {
-  return (
-    '' !== storage.file_path &&
-    '' !== storage.host &&
-    !isNaN(storage.port) &&
-    '' !== storage.username &&
-    (('password' === storage.login_type && '' !== storage.password) || 'private_key' === storage.login_type)
-  );
-};
-
-const isAmazonS3ConnectionFieldFulfilled = (storage: AmazonS3Storage): boolean => {
-  return (
-    '' !== storage.file_path &&
-    '' !== storage.region &&
-    '' !== storage.bucket &&
-    '' !== storage.key &&
-    '' !== storage.secret
-  );
-};
-
-const isMicrosoftAzureConnectionFieldFulfilled = (storage: MicrosoftAzureStorage): boolean => {
-  return '' !== storage.connection_string && '' !== storage.container_name && '' !== storage.file_path;
-};
-
-const isGoogleCloudConnectionFieldFulfilled = (storage: GoogleCloudStorage): boolean => {
-  return (
-    '' !== storage.file_path && '' !== storage.project_id && '' !== storage.service_account && '' !== storage.bucket
-  );
-};
+  SftpStorage,
+  AmazonS3Storage,
+  GoogleCloudStorage,
+  MicrosoftAzureStorage,
+  isAmazonS3ConnectionFieldFulfilled,
+  isGoogleCloudConnectionFieldFulfilled,
+  isMicrosoftAzureConnectionFieldFulfilled,
+  isSftpConnectionFieldFulfilled,
+} from '../models';
 
 const useCheckStorageConnection = (
   jobInstanceCode: string,
