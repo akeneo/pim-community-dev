@@ -86,7 +86,7 @@ const ConnectedAppCardDescription: FC<Props> = ({connectedApp}) => {
     const theme = useTheme();
     const author =
         connectedApp.author ??
-        translate('akeneo_connectivity.connection.connect.connected_apps.list.test_apps.removed_user');
+        translate('akeneo_connectivity.connection.connect.connected_apps.list.custom_apps.removed_user');
 
     if (true !== connectedApp.is_loaded) {
         return null;

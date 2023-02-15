@@ -48,7 +48,7 @@ test('The Open App button is disabled when the user doesnt have the permission t
     openAppButton.toHaveAttribute('aria-disabled', 'true');
 });
 
-test('The Open App button is disabled for test app when the user doesnt have the permission to manage test apps', () => {
+test('The Open App button is disabled for custom app when the user doesnt have the permission to manage custom apps', () => {
     const isGranted = jest.fn((acl: string) => {
         return acl !== 'akeneo_connectivity_connection_manage_test_apps';
     });
@@ -89,7 +89,7 @@ test('The Open App button is enabled when the user has the permission to manage 
     openAppButton.not.toHaveAttribute('aria-disabled', 'true');
 });
 
-test('The Open App button is enabled for test app when the user has the permission to manage test apps', () => {
+test('The Open App button is enabled for custom app when the user has the permission to manage custom apps', () => {
     const isGranted = jest.fn((acl: string) => {
         return acl === 'akeneo_connectivity_connection_manage_test_apps';
     });
@@ -111,7 +111,7 @@ test('The Open App button is enabled for test app when the user has the permissi
     openAppButton.not.toHaveAttribute('aria-disabled', 'true');
 });
 
-test('The Open App button is in warning state for test app when the connectedApp has a outdated scopes flag', () => {
+test('The Open App button is in warning state for custom app when the connectedApp has a outdated scopes flag', () => {
     renderWithProviders(<OpenAppButton connectedApp={{...connectedApp, has_outdated_scopes: true}} />);
 
     expect(
@@ -119,7 +119,7 @@ test('The Open App button is in warning state for test app when the connectedApp
     ).toHaveStyle('background-color: rgb(249, 181, 63)');
 });
 
-test('The Open App button is in warning state for test app when the connectedApp is pending', () => {
+test('The Open App button is in warning state for custom app when the connectedApp is pending', () => {
     renderWithProviders(<OpenAppButton connectedApp={{...connectedApp, is_pending: true}} />);
 
     expect(

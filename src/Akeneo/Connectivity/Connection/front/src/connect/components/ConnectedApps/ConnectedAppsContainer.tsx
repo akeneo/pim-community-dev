@@ -10,7 +10,7 @@ import ConnectedAppsContainerHelper from './ConnectedAppsContainerHelper';
 import {ConnectedAppCard} from './ConnectedAppCard';
 import {NoConnectedApps} from './NoConnectedApps';
 import {CardGrid} from '../Section';
-import {ConnectedTestAppList} from './ConnectedTestAppList';
+import {ConnectedCustomAppList} from './ConnectedCustomAppList';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -39,7 +39,7 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
 
-    const connectedTestApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.is_custom_app);
+    const connectedCustomApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.is_custom_app);
     const connectedApps = allConnectedApps.filter((connectedApp: ConnectedApp) => !connectedApp.is_custom_app);
     const hasPendingApps = undefined !== allConnectedApps.find((connectedApp: ConnectedApp) => connectedApp.is_pending);
 
@@ -58,7 +58,7 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
             <div ref={ref} />
             <ConnectedAppsContainerHelper count={allConnectedApps.length} />
 
-            <ConnectedTestAppList connectedTestApps={connectedTestApps} />
+            <ConnectedCustomAppList connectedCustomApps={connectedCustomApps} />
 
             {featureFlag.isEnabled('marketplace_activate') && (
                 <>

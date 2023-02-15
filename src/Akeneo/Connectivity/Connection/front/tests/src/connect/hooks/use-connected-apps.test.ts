@@ -183,7 +183,7 @@ test('it fetches connected apps', async () => {
     expect(result.current).toEqual([expectedApp]);
 });
 
-test('it fetches connected test apps', async () => {
+test('it fetches connected custom apps', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) => {
             switch (feature) {
@@ -210,7 +210,7 @@ test('it fetches connected test apps', async () => {
         has_outdated_scopes: false,
     };
 
-    const testApp: CustomApp = {
+    const customApp: CustomApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'Extension 1',
         logo: null,
@@ -223,7 +223,7 @@ test('it fetches connected test apps', async () => {
 
     const expectedApp = {
         ...connectedApp,
-        activate_url: testApp.activate_url,
+        activate_url: customApp.activate_url,
         is_loaded: true,
         is_listed_on_the_appstore: false,
     };
@@ -241,7 +241,7 @@ test('it fetches connected test apps', async () => {
         akeneo_connectivity_connection_custom_apps_rest_get_all: {
             json: {
                 total: 1,
-                apps: [testApp],
+                apps: [customApp],
             },
         },
     });

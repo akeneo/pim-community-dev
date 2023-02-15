@@ -263,7 +263,7 @@ test('The connected app card displays removed user as author when author is null
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(
         screen.queryByText(
-            'akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by?author=akeneo_connectivity.connection.connect.connected_apps.list.test_apps.removed_user'
+            'akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by?author=akeneo_connectivity.connection.connect.connected_apps.list.custom_apps.removed_user'
         )
     ).toBeInTheDocument();
 });
