@@ -18,7 +18,7 @@ type ValidationError = {
 };
 
 type Errors = {
-    [field in keyof CustomApp]?: string;
+    [field in keyof CustomApp | 'limitReached']?: string;
 };
 
 export const useCreateCustomApp = (): UseMutationResult<CustomAppCredentials, Errors, CustomApp> => {
@@ -41,7 +41,10 @@ export const useCreateCustomApp = (): UseMutationResult<CustomAppCredentials, Er
             if (!response.ok && response.status === 422) {
                 const validationErrors = (await response.json()) as ValidationError;
                 const mappedErrors = validationErrors.errors.reduce(
-                    (errors, {propertyPath, message}) => ({...errors, [propertyPath]: message}),
+                    (errors, {propertyPath, message}) => ({
+                        ...errors,
+                        [propertyPath.length == 0 ? 'limitReached' : propertyPath]: message,
+                    }),
                     {}
                 );
 

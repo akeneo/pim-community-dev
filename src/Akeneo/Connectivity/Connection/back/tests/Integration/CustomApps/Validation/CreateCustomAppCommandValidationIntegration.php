@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\Integration\CustomApps\Validation;
 
 use Akeneo\Connectivity\Connection\Application\CustomApps\Command\CreateCustomAppCommand;
+use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Service\GetCustomAppsNumberLimit;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -14,12 +15,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateCustomAppCommandValidationIntegration extends TestCase
 {
     private ?ValidatorInterface $validator;
+    private GetCustomAppsNumberLimit $getCustomAppsNumberLimit;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->validator = $this->get('validator');
+        $this->getCustomAppsNumberLimit = $this->get(GetCustomAppsNumberLimit::class);
+        $this->getCustomAppsNumberLimit->setLimit(20);
     }
 
     protected function getConfiguration(): Configuration
@@ -231,6 +235,25 @@ class CreateCustomAppCommandValidationIntegration extends TestCase
             $violations,
             'clientId',
             'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.client_id.not_blank',
+        );
+    }
+
+    public function test_it_invalidates_a_custom_app_when_limit_is_reached(): void
+    {
+        $this->getCustomAppsNumberLimit->setLimit(0);
+
+        $violations = $this->validator->validate(new CreateCustomAppCommand(
+            'ClientID1234',
+            'New test app',
+            'http://activate-url.test',
+            'http://callback-url.test',
+            42,
+        ));
+
+        $this->assertHasViolation(
+            $violations,
+            '',
+            'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.limit_reached',
         );
     }
 

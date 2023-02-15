@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\CustomApps\Command;
 
+use Akeneo\Connectivity\Connection\Application\CustomApps\Validation\IsCustomAppsNumberLimitReached;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -11,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
+#[IsCustomAppsNumberLimitReached]
 final class CreateCustomAppCommand
 {
     private const MESSAGE_PREFIX = 'akeneo_connectivity.connection.connect.custom_apps.create_modal.errors.';

@@ -84,7 +84,7 @@ export type MockFetchResponses = {
         status?: number;
         statusText?: string;
         headers?: string[][] | {[key: string]: string};
-        json: object | string;
+        json: object | string | boolean;
     };
 };
 

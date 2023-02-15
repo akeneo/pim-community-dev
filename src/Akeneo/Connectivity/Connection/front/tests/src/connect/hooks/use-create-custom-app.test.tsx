@@ -85,6 +85,7 @@ test('it returns errors when fields are not valid', async done => {
         akeneo_connectivity_connection_custom_apps_rest_create: {
             json: {
                 errors: [
+                    {propertyPath: '', message: 'limit_reached'},
                     {propertyPath: 'name', message: 'name_error'},
                     {propertyPath: 'activateUrl', message: 'activate_url_error'},
                     {propertyPath: 'callbackUrl', message: 'callback_url_error'},
@@ -100,6 +101,7 @@ test('it returns errors when fields are not valid', async done => {
             <div>
                 <h1>{isSuccess && 'Success'}</h1>
                 <h1>{isError && 'Error occurred'}</h1>
+                <h1>{error?.limitReached}</h1>
                 <h1>{error?.name}</h1>
                 <h1>{error?.callbackUrl}</h1>
                 <h1>{error?.activateUrl}</h1>
@@ -128,6 +130,7 @@ test('it returns errors when fields are not valid', async done => {
 
     expect(screen.getByText('Error occurred')).toBeInTheDocument();
     expect(screen.queryByText('Success')).not.toBeInTheDocument();
+    expect(screen.getByText('limit_reached')).toBeInTheDocument();
     expect(screen.getByText('name_error')).toBeInTheDocument();
     expect(screen.getByText('activate_url_error')).toBeInTheDocument();
     expect(screen.getByText('callback_url_error')).toBeInTheDocument();

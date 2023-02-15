@@ -260,6 +260,7 @@ $rules = [
             // Exceptions
             'Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface',
             'Symfony\Component\Validator\Constraint',
+            'Symfony\Component\Validator\Exception\UnexpectedTypeException',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\CustomApps'),
 
