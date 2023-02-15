@@ -21,6 +21,7 @@ final class TargetTypeConverter
             'pim_catalog_price_collection',
         ],
         'string' => [
+            'categories',
             'pim_catalog_identifier',
             'pim_catalog_number',
             'pim_catalog_simpleselect',

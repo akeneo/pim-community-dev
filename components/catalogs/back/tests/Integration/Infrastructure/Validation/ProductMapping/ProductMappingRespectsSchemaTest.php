@@ -88,6 +88,11 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'types' => [
+                        'source' => 'categories',
+                        'scope' => null,
+                        'locale' => 'en_US',
+                    ],
                     'name' => [
                         'source' => 'name',
                         'scope' => null,
@@ -140,7 +145,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             ),
         );
 
-        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "released_at", "released", "size".');
+        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "types", "name", "simple_description", "released_at", "released", "size".');
     }
 
     public function testItReturnsViolationsWhenThereIsAdditionalTarget(): void
@@ -177,6 +182,11 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'source' => 'uuid',
                         'scope' => null,
                         'locale' => null,
+                    ],
+                    'types' => [
+                        'source' => 'categories',
+                        'scope' => null,
+                        'locale' => 'en_US',
                     ],
                     'name' => [
                         'source' => 'name',
@@ -227,6 +237,9 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
           "type": "object",
           "properties": {
             "uuid": {
+              "type": "string"
+            },
+            "types": {
               "type": "string"
             },
             "name": {

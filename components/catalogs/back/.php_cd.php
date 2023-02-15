@@ -31,6 +31,9 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI\Query',
             'Akeneo\Catalogs\ServiceAPI\Exception',
             'Symfony\Component\Routing\RouterInterface',
+            'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids',
+            'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\UuidInterface',
         ]
     )->in('Akeneo\Catalogs\Application'),
 

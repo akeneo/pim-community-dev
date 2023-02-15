@@ -25,6 +25,7 @@ class TargetTypeConverterTest extends TestCase
 
     /**
      * @dataProvider validConversionProvider
+     * @param string[] $expectedAttributeTypes
      */
     public function testItConvertsTargetTypeToAttributeTypes(
         string $targetType,
@@ -59,6 +60,7 @@ class TargetTypeConverterTest extends TestCase
                 'string',
                 '',
                 [
+                    'categories',
                     'pim_catalog_identifier',
                     'pim_catalog_number',
                     'pim_catalog_simpleselect',

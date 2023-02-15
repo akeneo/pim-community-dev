@@ -15,6 +15,7 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\Att
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeSimpleSelectSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextareaSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\SystemAttributeCategoriesSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\SystemSource\UuidSource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -110,8 +111,11 @@ final class CatalogProductMappingValidator extends ConstraintValidator
             return $constraint;
         }
 
-        $attribute = $this->findOneAttributeByCodeQuery->execute($source);
+        if ($source === 'categories') {
+            return new SystemAttributeCategoriesSource();
+        }
 
+        $attribute = $this->findOneAttributeByCodeQuery->execute($source);
         return match ($attribute['type'] ?? null) {
             'pim_catalog_boolean' => new AttributeBooleanSource(),
             'pim_catalog_date' => new AttributeDateSource(),

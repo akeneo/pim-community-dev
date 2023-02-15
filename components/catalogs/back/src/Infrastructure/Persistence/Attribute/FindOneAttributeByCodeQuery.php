@@ -23,6 +23,17 @@ final class FindOneAttributeByCodeQuery implements FindOneAttributeByCodeQueryIn
      */
     public function execute(string $code): ?array
     {
+        if ($code === 'categories') {
+            return [
+                'code' => 'categories',
+                'label' => 'Categories',
+                'type' => 'categories',
+                'scopable' => false,
+                'localizable' => true,
+                'attribute_group_code' => 'system',
+                'attribute_group_label' => 'System',
+            ];
+        }
         /** @var AttributeInterface|null $attribute */
         $attribute = $this->repository->findOneByIdentifier($code);
 
