@@ -11,6 +11,7 @@ config:
                     aclResourceId: akeneo_connectivity_connection_manage_test_apps
                 akeneo_connectivity_connection_connect_custom_apps_delete:
                     module: pim/controller/connectivity/connection/connect/custom-apps
+                    aclResourceId: akeneo_connectivity_connection_manage_test_apps
                 akeneo_connectivity_connection_connect_apps_activate:
                     module: pim/controller/connectivity/connection/connect/apps
                 akeneo_connectivity_connection_connect_apps_authorize:
