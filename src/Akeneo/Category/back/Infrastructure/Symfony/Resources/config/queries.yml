@@ -72,3 +72,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteTemplateAndAttributesSql
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Application\Query\DeactivateTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeactivateTemplateSql
+    arguments:
+      - '@database_connection'
