@@ -86,12 +86,6 @@ class DatabaseCommand extends Command
                 'Directory of the fixtures to install',
                 'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal'
             )
-            ->addOption(
-                'doNotDropDatabase',
-                null,
-                InputOption::VALUE_NONE,
-                'Try to use an existing database if it already exists. Beware, the database data will still be deleted'
-            )
         ;
     }
 
@@ -113,30 +107,6 @@ class DatabaseCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->logger->info('Prepare database schema');
-
-        // Needs to try if database already exists or not
-        try {
-            if (!$this->connection->isConnected()) {
-                $this->connection->connect();
-            }
-            if ($input->getOption('doNotDropDatabase')) {
-                $this->commandExecutor->runCommand(
-                    'doctrine:schema:drop',
-                    ['--force' => true, '--full-database' => true]
-                );
-            } else {
-                $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
-            }
-        } catch (ConnectionException $e) {
-            $this->logger->error('Database does not exist yet');
-        }
-
-        $this->commandExecutor->runCommand('doctrine:database:create', ['--if-not-exists' => true]);
-
-        // Needs to close connection if always open
-        if ($this->connection->isConnected()) {
-            $this->connection->close();
-        }
 
         $this->commandExecutor
             ->runCommand('doctrine:schema:create')
@@ -224,11 +194,8 @@ class DatabaseCommand extends Command
                 ]),
                 InstallerEvents::PRE_LOAD_FIXTURE
             );
-            $this->logger->info(
-                sprintf(
-                    'Please wait, the <comment>%s</comment> are processing...',
-                    $jobInstance->getCode()
-                )
+
+            $this->logger->info(sprintf('Please wait, the "%s" are processing...',$jobInstance->getCode())
             );
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
             $this->eventDispatcher->dispatch(
