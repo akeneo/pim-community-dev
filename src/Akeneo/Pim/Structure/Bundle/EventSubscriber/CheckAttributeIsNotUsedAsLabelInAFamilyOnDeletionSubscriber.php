@@ -13,9 +13,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Forbid deletion if the attribute is used as label by any family
- *
  */
-class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
+class CheckAttributeIsNotUsedAsLabelInAFamilyOnDeletionSubscriber implements EventSubscriberInterface
 {
     private Connection $dbConnection;
 

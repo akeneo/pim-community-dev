@@ -78,7 +78,7 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.check_attribute_on_deletion_subscriber:
-        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeOnDeletionSubscriber'
+        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotUsedAsLabelInAFamilyOnDeletionSubscriber'
         arguments:
             - '@database_connection'
         tags:
