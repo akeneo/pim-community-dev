@@ -34,9 +34,9 @@ SELECT
     association_type.is_quantified, 
     association_type.is_two_way,
     labels
-FROM
-    pim_catalog_association_type association_type
-LEFT JOIN association_type_labels ON association_type_id = id
+FROM pim_catalog_association_type association_type
+LEFT JOIN association_type_labels ON association_type_id = association_type.id
+WHERE association_type.code IN (:association_type_code)
 SQL;
 
         $rows = $this->connection->executeQuery(
