@@ -44,8 +44,8 @@ class GetCatalogQueryTest extends IntegrationTestCase
             ownerUsername: 'test',
             isEnabled: false,
             catalogProductValueFilters: [
-                'channels' => ['ecommerce', 'print']
-            ]
+                'channels' => ['ecommerce', 'print'],
+            ],
         );
 
         $result = $this->query->execute($id);
