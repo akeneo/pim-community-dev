@@ -1,14 +1,5 @@
 import {useState} from 'react';
-import {Conditions} from '../../models';
-
-type ItemsGroup = {
-  id: string;
-  text: string;
-  children: {
-    id: string;
-    text: string;
-  }[];
-};
+import {Conditions, ItemsGroup} from '../../models';
 
 const useGetConditionItems: (
   isOpen: boolean,

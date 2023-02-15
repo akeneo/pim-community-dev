@@ -2,15 +2,7 @@ import {useInfiniteQuery} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
 import {ServerError} from '../errors';
 import {useCallback, useMemo} from 'react';
-
-type ItemsGroup = {
-  id: string;
-  text: string;
-  children: {
-    id: string;
-    text: string;
-  }[];
-};
+import {ItemsGroup} from '../models';
 
 type PageParam = {
   number: number;
@@ -24,14 +16,14 @@ type Page = {
 
 const LIMIT = 20;
 
-type Response = {
+const useGetPropertyItems = (
+  search: string,
+  enabled: boolean
+): {
   data?: ItemsGroup[];
-  //hasNextPage: boolean;
   fetchNextPage: () => void;
   error: Error | null;
-};
-
-const useGetPropertyItems = (search: string, enabled: boolean): Response => {
+} => {
   const router = useRouter();
 
   const fetchProperties = useCallback(
@@ -88,13 +80,15 @@ const useGetPropertyItems = (search: string, enabled: boolean): Response => {
     [data]
   );
 
+  const handleFetchNextPage = async () => {
+    if (hasNextPage) {
+      await fetchNextPage();
+    }
+  };
+
   return {
     data: reducedData,
-    fetchNextPage: async () => {
-      if (hasNextPage) {
-        await fetchNextPage();
-      }
-    },
+    fetchNextPage: handleFetchNextPage,
     error,
   };
 };
