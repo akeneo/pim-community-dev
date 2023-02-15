@@ -56,7 +56,7 @@ class ValueSpec extends ObjectBehavior
             'price'                  => '15 EUR, 10 USD',
         ];
 
-        $columnsMerger->merge($item)->willReturn($itemMerged);
+        $columnsMerger->merge($item, [])->willReturn($itemMerged);
 
         $converterRegistry->getConverter(Argument::any())->willReturn($converter);
 
@@ -207,7 +207,7 @@ class ValueSpec extends ObjectBehavior
     ) {
         $item = ['sku' => '1069978', 'enabled' => true];
 
-        $columnsMerger->merge($item)->willReturn($item);
+        $columnsMerger->merge($item, [])->willReturn($item);
 
         $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute]);
         $attribute->getType()->willReturn('sku');
@@ -224,11 +224,11 @@ class ValueSpec extends ObjectBehavior
     {
         $item = ['sku' => '1069978', 'enabled' => true];
 
-        $columnsMerger->merge($item)->willReturn($item);
+        $columnsMerger->merge($item, [])->willReturn($item);
 
         $this->shouldThrow(new \LogicException('Unable to convert the given column "sku"'))->during(
             'convert',
-            [$item]
+            [$item],
         );
     }
 
@@ -243,7 +243,7 @@ class ValueSpec extends ObjectBehavior
         $attributeFieldInfo = ['attribute' => $attribute];
 
         $converterRegistry->getConverter($attributeType)->willReturn($converter);
-        $columnsMerger->merge($values)->willReturn($values);
+        $columnsMerger->merge($values, [])->willReturn($values);
         $fieldExtractor->extractColumnInfo($column)->willReturn($attributeFieldInfo);
         $converter->convert($attributeFieldInfo,$dateTime)->willThrow($e);
 

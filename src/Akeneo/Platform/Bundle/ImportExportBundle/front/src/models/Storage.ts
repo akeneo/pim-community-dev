@@ -1,5 +1,8 @@
 import {FeatureFlags} from '@akeneo-pim-community/shared';
-import {StorageLoginType} from './StorageConfigurator';
+
+const SFTP_STORAGE_LOGIN_TYPES = ['password', 'private_key'] as const;
+
+type SftpStorageLoginType = typeof SFTP_STORAGE_LOGIN_TYPES[number];
 
 type JobType = 'import' | 'export';
 
@@ -14,7 +17,7 @@ type SftpStorage = {
   host: string;
   fingerprint?: string;
   port: number;
-  login_type: StorageLoginType;
+  login_type: SftpStorageLoginType;
   username: string;
   password?: string | null;
 };
@@ -48,7 +51,9 @@ type NoneStorage = {
   file_path: string;
 };
 
-type Storage = LocalStorage | SftpStorage | AmazonS3Storage | MicrosoftAzureStorage | GoogleCloudStorage | NoneStorage;
+type RemoteStorage = SftpStorage | AmazonS3Storage | MicrosoftAzureStorage | GoogleCloudStorage;
+
+type Storage = LocalStorage | RemoteStorage | NoneStorage;
 
 type StorageType = 'none' | 'local' | 'sftp' | 'amazon_s3' | 'microsoft_azure' | 'google_cloud_storage';
 
@@ -81,6 +86,9 @@ const isExport = (jobType: JobType) => 'export' === jobType;
 
 const getDefaultFilePath = (jobType: JobType, fileExtension: string) =>
   isExport(jobType) ? `${jobType}_%job_label%_%datetime%.${fileExtension}` : `myfile.${fileExtension}`;
+
+const isValidSftpLoginType = (loginType: string): loginType is SftpStorageLoginType =>
+  SFTP_STORAGE_LOGIN_TYPES.includes(loginType as SftpStorageLoginType);
 
 const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExtension: string): Storage => {
   switch (storageType) {
@@ -133,23 +141,106 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType, fileExten
   }
 };
 
+const isLocalStorage = (storage: Storage): storage is LocalStorage =>
+  'local' === storage.type && 'file_path' in storage;
+
+const isSftpStorage = (storage: Storage): storage is SftpStorage => {
+  return (
+    'sftp' === storage.type &&
+    'file_path' in storage &&
+    'host' in storage &&
+    'port' in storage &&
+    'username' in storage &&
+    'login_type' in storage &&
+    isValidSftpLoginType(storage.login_type)
+  );
+};
+
+const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
+  return (
+    'amazon_s3' === storage.type &&
+    'file_path' in storage &&
+    'region' in storage &&
+    'bucket' in storage &&
+    'key' in storage
+  );
+};
+
+const isMicrosoftAzureStorage = (storage: Storage): storage is MicrosoftAzureStorage => {
+  return 'microsoft_azure' === storage.type && 'file_path' in storage && 'container_name' in storage;
+};
+
+const isGoogleCloudStorage = (storage: Storage): storage is GoogleCloudStorage => {
+  return (
+    'google_cloud_storage' === storage.type &&
+    'file_path' in storage &&
+    typeof 'file_path' === 'string' &&
+    'project_id' in storage &&
+    typeof 'project_id' === 'string' &&
+    'bucket' in storage &&
+    typeof 'bucket' === 'string'
+  );
+};
+
+const isSftpConnectionFieldFulfilled = (storage: SftpStorage): boolean => {
+  return (
+    '' !== storage.file_path &&
+    '' !== storage.host &&
+    !isNaN(storage.port) &&
+    '' !== storage.username &&
+    (('password' === storage.login_type && '' !== storage.password) || 'private_key' === storage.login_type)
+  );
+};
+
+const isAmazonS3ConnectionFieldFulfilled = (storage: AmazonS3Storage): boolean => {
+  return (
+    '' !== storage.file_path &&
+    '' !== storage.region &&
+    '' !== storage.bucket &&
+    '' !== storage.key &&
+    '' !== storage.secret
+  );
+};
+
+const isMicrosoftAzureConnectionFieldFulfilled = (storage: MicrosoftAzureStorage): boolean => {
+  return '' !== storage.connection_string && '' !== storage.container_name && '' !== storage.file_path;
+};
+
+const isGoogleCloudConnectionFieldFulfilled = (storage: GoogleCloudStorage): boolean => {
+  return (
+    '' !== storage.file_path && '' !== storage.project_id && '' !== storage.service_account && '' !== storage.bucket
+  );
+};
+
 export type {
+  AmazonS3Storage,
+  GoogleCloudStorage,
   JobType,
+  LocalStorage,
+  MicrosoftAzureStorage,
+  NoneStorage,
+  RemoteStorage,
+  SftpStorage,
   Storage,
   StorageType,
-  LocalStorage,
-  SftpStorage,
-  AmazonS3Storage,
-  MicrosoftAzureStorage,
-  GoogleCloudStorage,
-  NoneStorage,
 };
 export {
-  getDefaultStorage,
-  isValidStorageType,
-  isExport,
-  getDefaultFilePath,
-  getEnabledStorageTypes,
   additionalStorageIsEnabled,
+  getDefaultFilePath,
+  getDefaultStorage,
+  getEnabledStorageTypes,
+  isAmazonS3ConnectionFieldFulfilled,
+  isAmazonS3Storage,
+  isExport,
+  isGoogleCloudConnectionFieldFulfilled,
+  isGoogleCloudStorage,
+  isLocalStorage,
+  isMicrosoftAzureConnectionFieldFulfilled,
+  isMicrosoftAzureStorage,
+  isSftpConnectionFieldFulfilled,
+  isSftpStorage,
+  isValidSftpLoginType,
+  isValidStorageType,
   localStorageIsEnabled,
+  SFTP_STORAGE_LOGIN_TYPES,
 };
