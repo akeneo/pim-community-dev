@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
-use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
+use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Exception\ProductMappingSchemaNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class GetProductMappingSchemaAction
 {
     public function __construct(
-        private CatalogsMappingStorageInterface $catalogsMappingStorage,
+        readonly private GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
     ) {
     }
 
@@ -28,31 +29,12 @@ final class GetProductMappingSchemaAction
             return new RedirectResponse('/');
         }
 
-        return new JsonResponse($this->getProductMappingSchema($catalogId));
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function getProductMappingSchema(string $catalogId): array
-    {
-        $productMappingSchemaFile = \sprintf('%s_product.json', $catalogId);
-
-        if (!$this->catalogsMappingStorage->exists($productMappingSchemaFile)) {
+        try {
+            $productMappingSchema = $this->getProductMappingSchemaQuery->execute($catalogId);
+        } catch (ProductMappingSchemaNotFoundException) {
             throw new NotFoundHttpException();
         }
 
-        $productMappingSchemaRaw = \stream_get_contents(
-            $this->catalogsMappingStorage->read($productMappingSchemaFile),
-        );
-
-        if (false === $productMappingSchemaRaw) {
-            throw new \LogicException('Product mapping schema is unreadable.');
-        }
-
-        /** @var array<string, mixed> $productMappingSchema */
-        $productMappingSchema = \json_decode($productMappingSchemaRaw, true, 512, JSON_THROW_ON_ERROR);
-
-        return $productMappingSchema;
+        return new JsonResponse($productMappingSchema);
     }
 }
