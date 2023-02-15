@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query;
+namespace Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence;
 
 interface IsCustomAppsNumberLimitReachedQueryInterface
 {

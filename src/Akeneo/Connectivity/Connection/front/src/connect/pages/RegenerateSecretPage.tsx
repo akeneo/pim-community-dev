@@ -6,8 +6,8 @@ import {NotificationLevel, useNotify} from '../../shared/notify';
 import {useRouter} from '../../shared/router/use-router';
 import {useCustomAppRegenerateSecret} from '../hooks/use-custom-app-regenerate-secret';
 import {useConnectedApp} from '../hooks/use-connected-app';
-import {RegenerateSecretConfirm} from '../components/CustomApp/RegenerateSecret/RegenerateSecretConfirm';
-import {RegenerateSecretNewCredentials} from '../components/CustomApp/RegenerateSecret/RegenerateSecretNewCredentials';
+import {RegenerateSecretConfirm} from '../components/CustomApps/RegenerateSecret/RegenerateSecretConfirm';
+import {RegenerateSecretNewCredentials} from '../components/CustomApps/RegenerateSecret/RegenerateSecretNewCredentials';
 
 type Step = 'confirm' | 'new_credentials';
 

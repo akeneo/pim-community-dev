@@ -68,7 +68,7 @@ export const CreateCustomAppForm: FC<Props> = ({onCancel, setCredentials}) => {
                     </Link>
                 </p>
             </FormHelper>
-
+            {errors?.limitReached && <Helper level='error'>{translate(errors?.limitReached)}</Helper>}
             <Form>
                 <Field
                     requiredLabel={translate('pim_common.required_label')}
