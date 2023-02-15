@@ -19,3 +19,4 @@ export * from './generatorTab';
 export * from './attribute';
 export * from './nomenclatureLineEditProps';
 export * from './nomenclatureFilter';
+export * from './itemsGroup';
