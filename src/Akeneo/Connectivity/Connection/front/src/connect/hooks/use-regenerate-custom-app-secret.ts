@@ -2,7 +2,7 @@ import {useCallback} from 'react';
 import {useRouter} from '../../shared/router/use-router';
 import {useMutation, useQueryClient} from 'react-query';
 
-export const useCustomAppRegenerateSecret = () => {
+export const useRegenerateCustomAppSecret = () => {
     const generateUrl = useRouter();
     const queryClient = useQueryClient();
 
@@ -25,7 +25,7 @@ export const useCustomAppRegenerateSecret = () => {
         return await response.json();
     }, []);
 
-    return useMutation(request, {
+    return useMutation<string, string, string>(request, {
         onSuccess: () => queryClient.invalidateQueries('custom_app_secret'),
     });
 };
