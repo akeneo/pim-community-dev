@@ -13,8 +13,10 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\IsProductBelongingTo
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Application\Service\DispatchInvalidCatalogDisabledEventInterface;
 use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
+use Akeneo\Catalogs\Infrastructure\Exception\ProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
@@ -75,7 +77,12 @@ final class GetMappedProductHandler
             throw new ProductNotFoundException();
         }
 
-        $productMappingSchema = $this->getProductMappingSchemaQuery->execute($catalog->getId());
+        try {
+            $productMappingSchema = $this->getProductMappingSchemaQuery->execute($catalog->getId());
+        } catch (ProductMappingSchemaNotFoundException) {
+            throw new ServiceApiProductMappingSchemaNotFoundException();
+        }
+
         $productMapping = $catalog->getProductMapping();
 
         /** @var RawProduct $product */
