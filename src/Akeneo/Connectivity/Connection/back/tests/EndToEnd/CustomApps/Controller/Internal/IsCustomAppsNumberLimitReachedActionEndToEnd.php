@@ -32,7 +32,7 @@ class IsCustomAppsNumberLimitReachedActionEndToEnd extends WebTestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_returns_custom_app_limit_reached_flag(): void
+    public function test_it_returns_custom_app_not_limit_reached_flag(): void
     {
         $this->featureFlags->enable('app_developer_mode');
         $user = $this->authenticateAsAdmin();
@@ -55,6 +55,6 @@ class IsCustomAppsNumberLimitReachedActionEndToEnd extends WebTestCase
         $result = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        Assert::assertEquals(['limitReached' => false], $result);
+        Assert::assertEquals(false, $result);
     }
 }
