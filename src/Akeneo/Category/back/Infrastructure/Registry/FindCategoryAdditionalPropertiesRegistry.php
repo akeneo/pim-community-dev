@@ -26,4 +26,19 @@ class FindCategoryAdditionalPropertiesRegistry implements FindCategoryAdditional
 
         return $category;
     }
+
+    /**
+     * @param Category[] $categories
+     *
+     * @return Category[]
+     */
+    public function forCategories(array $categories): array
+    {
+        $categoriesWithAdditionalProperties = [];
+        foreach ($categories as $category) {
+            $categoriesWithAdditionalProperties[] = $this->forCategory($category);
+        }
+
+        return $categoriesWithAdditionalProperties;
+    }
 }

@@ -96,3 +96,9 @@ services:
             - '%pim_api.configuration%'
         calls:
             - [ 'setContainer', [ '@service_container' ] ]
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateTemplateController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'

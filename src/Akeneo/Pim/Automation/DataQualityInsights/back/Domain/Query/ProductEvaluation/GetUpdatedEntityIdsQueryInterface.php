@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 
 /**
@@ -13,7 +14,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidColl
 interface GetUpdatedEntityIdsQueryInterface
 {
     /**
-     * @return \Iterator<int, ProductUuidCollection>
+     * @return \Iterator<int, ProductUuidCollection|ProductModelIdCollection>
      */
     public function since(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator;
 }
