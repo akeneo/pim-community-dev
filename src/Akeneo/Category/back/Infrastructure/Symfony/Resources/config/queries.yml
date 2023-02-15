@@ -4,6 +4,11 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Domain\Query\GetCategoryByIds:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryByIdsSql
+    arguments:
+      - '@database_connection'
+
   Akeneo\Category\Application\Query\GetCategoriesInterface:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesSql
     arguments:
