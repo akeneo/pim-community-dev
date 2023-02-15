@@ -1,6 +1,6 @@
 import {useInfiniteQuery} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {ServerError, Unauthorized} from '../errors';
+import {ServerError} from '../errors';
 import {useCallback, useMemo} from 'react';
 
 type ItemsGroup = {
@@ -26,8 +26,9 @@ const LIMIT = 20;
 
 type Response = {
   data?: ItemsGroup[];
-  hasNextPage: boolean;
+  //hasNextPage: boolean;
   fetchNextPage: () => void;
+  error: Error | null;
 };
 
 const useGetPropertyItems = (search: string, enabled: boolean): Response => {
@@ -50,7 +51,6 @@ const useGetPropertyItems = (search: string, enabled: boolean): Response => {
       });
 
       if (!response.ok) {
-        if (response.status === 403) throw new Unauthorized();
         throw new ServerError();
       }
 
@@ -65,14 +65,14 @@ const useGetPropertyItems = (search: string, enabled: boolean): Response => {
     [router, search]
   );
 
-  const {data, isLoading, isFetching, hasNextPage, fetchNextPage} = useInfiniteQuery<Page, Error, Page>(
+  const {data, hasNextPage, fetchNextPage, error} = useInfiniteQuery<Page, Error, Page>(
     ['getPropertyItems', search],
     fetchProperties,
     {
       enabled: enabled,
       keepPreviousData: true,
       getNextPageParam: last => {
-        const total = last.data.map(value => value.children.length).reduce((acc, value) => (acc = acc + value));
+        const total = last.data?.map(value => value.children.length).reduce((acc, value) => (acc = acc + value), 0);
         return total >= LIMIT
           ? {
               number: last.page.number + 1,
@@ -83,11 +83,6 @@ const useGetPropertyItems = (search: string, enabled: boolean): Response => {
     }
   );
 
-  const readyForNextPage = useMemo(
-    () => (!isFetching && !isLoading && hasNextPage) || false,
-    [hasNextPage, isFetching, isLoading]
-  );
-
   const reducedData = useMemo(
     () => data?.pages.reduce((list: ItemsGroup[], page) => list.concat(page.data), []),
     [data]
@@ -95,12 +90,12 @@ const useGetPropertyItems = (search: string, enabled: boolean): Response => {
 
   return {
     data: reducedData,
-    hasNextPage: readyForNextPage,
     fetchNextPage: async () => {
       if (hasNextPage) {
         await fetchNextPage();
       }
     },
+    error,
   };
 };
 
