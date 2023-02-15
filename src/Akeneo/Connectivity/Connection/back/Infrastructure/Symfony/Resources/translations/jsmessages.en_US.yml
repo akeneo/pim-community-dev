@@ -293,6 +293,7 @@ akeneo_connectivity.connection:
                     client_id: Client id
                     client_secret: Client secret
                 errors:
+                    limit_reached: You reached the limit of 20 custom Apps.
                     name:
                         min_length: The name of the app is too short. It must have 3 characters or more.
                         max_length: The name of the app is too long. It must have 255 characters or less.

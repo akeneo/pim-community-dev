@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence;
+namespace Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsCustomAppsNumberLimitReachedQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\IsCustomAppsNumberLimitReachedQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Service\GetCustomAppsNumberLimit;
 use Doctrine\DBAL\Connection;
 

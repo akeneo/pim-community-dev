@@ -68,6 +68,7 @@ test('it displays form errors when invalid data is submitted', async () => {
         akeneo_connectivity_connection_custom_apps_rest_create: {
             json: {
                 errors: [
+                    {propertyPath: '', message: 'Limit Reached'},
                     {propertyPath: 'name', message: 'Invalid name'},
                     {propertyPath: 'activateUrl', message: 'Invalid activate url'},
                     {propertyPath: 'callbackUrl', message: 'Invalid callback url'},
@@ -91,6 +92,7 @@ test('it displays form errors when invalid data is submitted', async () => {
     assertItDoesNotDisplayCustomAppCredentials();
     assertItDisplaysTheForm();
 
+    expect(screen.getByText('Limit Reached')).toBeInTheDocument();
     expect(screen.getByText('Invalid name')).toBeInTheDocument();
     expect(screen.getByText('Invalid activate url')).toBeInTheDocument();
     expect(screen.getByText('Invalid callback url')).toBeInTheDocument();

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Settings\Controller\Internal;
+namespace Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal;
 
-use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsCustomAppsNumberLimitReachedQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\IsCustomAppsNumberLimitReachedQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +26,6 @@ final class IsCustomAppsNumberLimitReachedAction
             return new RedirectResponse('/');
         }
 
-        return new JsonResponse(['limitReached' => $this->isCustomAppsNumberLimitReachedQuery->execute()]);
+        return new JsonResponse($this->isCustomAppsNumberLimitReachedQuery->execute());
     }
 }

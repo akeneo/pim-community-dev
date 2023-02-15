@@ -15,8 +15,3 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository:
         arguments:
             - '@database_connection'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsCustomAppsNumberLimitReachedQuery:
-        arguments:
-            - '@database_connection'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Service\GetCustomAppsNumberLimit'

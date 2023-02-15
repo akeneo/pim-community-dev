@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Settings\Controller\Internal;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\CustomApps\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 class IsCustomAppsNumberLimitReachedActionEndToEnd extends WebTestCase
 {
     private ?FilePersistedFeatureFlags $featureFlags;
-    private ?Connection $connection;
     private ?CustomAppLoader $customAppLoader;
 
     protected function setUp(): void
@@ -28,7 +25,6 @@ class IsCustomAppsNumberLimitReachedActionEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->featureFlags = $this->get('feature_flags');
-        $this->connection = $this->get('database_connection');
         $this->customAppLoader = $this->get(CustomAppLoader::class);
     }
     protected function getConfiguration(): Configuration

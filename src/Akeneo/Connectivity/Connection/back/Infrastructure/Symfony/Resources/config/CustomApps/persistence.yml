@@ -26,3 +26,8 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\UpdateCustomAppSecretQuery:
         arguments:
             - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\IsCustomAppsNumberLimitReachedQuery:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Service\GetCustomAppsNumberLimit'

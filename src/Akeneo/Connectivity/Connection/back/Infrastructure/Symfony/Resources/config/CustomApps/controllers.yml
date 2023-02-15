@@ -38,6 +38,12 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppSecretQuery'
             - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\RegenerateCustomAppSecretHandler'
+            -
+    Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\IsCustomAppsNumberLimitReachedAction:
+          public: true
+          arguments:
+              - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\IsCustomAppsNumberLimitReachedQuery'
+
 
     # EXTERNAL
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\CreateCustomAppAction:

@@ -24,6 +24,11 @@ akeneo_connectivity_connection_custom_apps_rest_regenerate_secret:
     controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\RegenerateCustomAppSecretAction
     methods: [ POST ]
 
+akeneo_connectivity_connection_custom_apps_rest_max_limit_reached:
+    path: '/rest/custom-apps/max-limit-reached'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\IsCustomAppsNumberLimitReachedAction
+    methods: [ GET ]
+
 # External API
 akeneo_connectivity_connection_custom_apps_api_list:
     path: '/api/rest/v1/test-apps'
