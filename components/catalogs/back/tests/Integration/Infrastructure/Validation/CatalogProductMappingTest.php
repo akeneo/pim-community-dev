@@ -133,7 +133,7 @@ class CatalogProductMappingTest extends IntegrationTestCase
     {
         $this->createAttribute([
             'code' => 'name',
-            'type' => 'pim_catalog_number',
+            'type' => 'pim_catalog_boolean',
             'scopable' => false,
             'localizable' => false,
         ]);
