@@ -1,7 +1,9 @@
 import React, {useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search, useBooleanState, useDebounce} from 'akeneo-design-system';
 import {Property, PROPERTY_NAMES, Structure} from '../../models';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {useGetPropertyItems} from '../../hooks/useGetPropertyItems';
+import {getAttributeByCode} from '../../hooks/useGetAttributeByCode';
 
 type PropertiesSelection = {
   code: string;
@@ -17,42 +19,37 @@ type AddPropertyButtonProps = {
   structure: Structure;
 };
 
+type FlatItemsGroup = {
+  id: string;
+  text: string;
+  isSection: boolean;
+};
+
+const defaultValueByAttributeType = {
+  [PROPERTY_NAMES.FREE_TEXT]: {type: PROPERTY_NAMES.FREE_TEXT, string: ''},
+  [PROPERTY_NAMES.AUTO_NUMBER]: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
+  [PROPERTY_NAMES.FAMILY]: {
+    type: PROPERTY_NAMES.FAMILY,
+    process: {
+      type: null,
+    },
+  },
+  pim_catalog_simpleselect: {
+    type: PROPERTY_NAMES.SIMPLE_SELECT,
+    operator: null,
+    value: null,
+  },
+};
+
 const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, structure}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebounce(searchValue);
+  const {data, fetchNextPage} = useGetPropertyItems(debouncedSearchValue, isOpen);
+  const router = useRouter();
 
   const showAutoNumber = useMemo(() => !structure.find(({type}) => type === PROPERTY_NAMES.AUTO_NUMBER), [structure]);
-
-  const items: PropertiesSelection[] = useMemo(
-    () => [
-      {
-        code: 'system',
-        items: [
-          {
-            code: PROPERTY_NAMES.FREE_TEXT,
-            defaultValue: {type: PROPERTY_NAMES.FREE_TEXT, string: ''},
-          },
-          {
-            code: PROPERTY_NAMES.AUTO_NUMBER,
-            defaultValue: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
-            isVisible: showAutoNumber,
-          },
-          {
-            code: PROPERTY_NAMES.FAMILY,
-            defaultValue: {
-              type: PROPERTY_NAMES.FAMILY,
-              process: {
-                type: null,
-              },
-            },
-          },
-        ],
-      },
-    ],
-    [showAutoNumber]
-  );
 
   const addElement = () => {
     open();
@@ -63,25 +60,23 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
     setSearchValue('');
   };
 
-  const addProperty = (defaultValue: Property) => {
+  const handleAddProperty = (defaultValue: Property) => {
     onAddProperty(defaultValue);
     close();
+    setSearchValue('');
   };
 
-  const filterElements = useMemo((): PropertiesSelection[] => {
-    if ('' !== debouncedSearchValue) {
-      return items
-        .map(item => {
-          const filteredItems = item.items.filter(subItem =>
-            subItem.code.toLowerCase().includes(debouncedSearchValue.toLowerCase())
-          );
-          return {...item, items: filteredItems};
-        })
-        .filter(item => item.items.length > 0);
+  const addProperty = (id: string) => {
+    const defaultValue = defaultValueByAttributeType[id];
+    if (!defaultValue) {
+      getAttributeByCode(id, router).then(response => {
+        const defaultValue = defaultValueByAttributeType[response.type];
+        handleAddProperty(defaultValue);
+      });
     } else {
-      return items;
+      handleAddProperty(defaultValue);
     }
-  }, [debouncedSearchValue, items]);
+  };
 
   const searchInputRef = React.useRef<HTMLInputElement | null>(null);
   // We can not use the useAutoFocus here because the element is hidden when dropdown is not open
@@ -94,6 +89,15 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
   }, [searchInputRef, isOpen]);
 
   React.useEffect(focusCallback, [isOpen, focusCallback]);
+
+  const flatItems = useMemo(() => {
+    const tab: FlatItemsGroup[] = [];
+    data?.forEach(item => {
+      tab.push({id: item.id, text: item.text, isSection: true});
+      item.children.forEach(child => tab.push({id: child.id, text: child.text, isSection: false}));
+    });
+    return tab;
+  }, [data]);
 
   return (
     <Dropdown>
@@ -114,22 +118,17 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
           <Dropdown.ItemCollection
             noResultIllustration={React.createElement(GroupsIllustration)}
             noResultTitle={translate('pim_common.no_search_result')}
+            onNextPage={fetchNextPage}
           >
-            {filterElements.map(({code, items}) => (
-              <React.Fragment key={code}>
-                <Dropdown.Section>
-                  {translate(`pim_identifier_generator.structure.property_type.sections.${code}`)}
-                </Dropdown.Section>
-                {items.map(
-                  ({code, defaultValue, isVisible = true}) =>
-                    isVisible && (
-                      <Dropdown.Item key={code} onClick={() => addProperty(defaultValue)}>
-                        {translate(`pim_identifier_generator.structure.property_type.${code}`)}
-                      </Dropdown.Item>
-                    )
-                )}
-              </React.Fragment>
-            ))}
+            {flatItems?.map(({id, text, isSection}) => {
+              return isSection ? (
+                <Dropdown.Section key={id}>{text}</Dropdown.Section>
+              ) : (
+                <Dropdown.Item key={id} onClick={() => addProperty(id)}>
+                  {text}
+                </Dropdown.Item>
+              );
+            })}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}
