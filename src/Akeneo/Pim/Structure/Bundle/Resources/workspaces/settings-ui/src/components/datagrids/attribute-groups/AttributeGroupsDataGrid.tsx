@@ -55,7 +55,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
       ) : (
         <Table
           isDragAndDroppable={sortGranted}
-          isSelectable={true}
+          isSelectable={false}
           onReorder={order => refreshOrder(order.map(index => groups[index]))}
         >
           <Table.Header>
