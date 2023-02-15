@@ -30,7 +30,7 @@ class CategoryVersion
      *    'own_permission': 'Redactor, Manager'
      * ].
      *
-     * @param Snapshot $snapshot
+     * @phpstan-param Snapshot $snapshot
      */
     private function __construct(
         private readonly ?string $resourceId,
@@ -40,7 +40,8 @@ class CategoryVersion
 
     /**
      * @param string|null $resourceId The category id
-     * @param Snapshot $snapshot
+     *
+     * @phpstan-param Snapshot $snapshot
      */
     public static function fromBuilder(?string $resourceId, array $snapshot): self
     {
@@ -53,7 +54,7 @@ class CategoryVersion
     }
 
     /**
-     * @return Snapshot
+     * @phpstan-return Snapshot
      */
     public function getSnapshot(): array
     {
