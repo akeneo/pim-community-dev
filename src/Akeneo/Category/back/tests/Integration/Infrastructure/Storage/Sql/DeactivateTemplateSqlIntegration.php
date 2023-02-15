@@ -32,7 +32,7 @@ class DeactivateTemplateSqlIntegration extends CategoryTestCase
         $this::assertFalse($this->retrieveTemplateDeactivationStatus($templateUuid));
 
         $markTemplateAsDeactivated = $this->get(DeactivateTemplate::class);
-        $markTemplateAsDeactivated->execute((string) $templateUuid);
+        $markTemplateAsDeactivated->execute($templateUuid);
         $this::assertTrue($this->retrieveTemplateDeactivationStatus($templateUuid));
     }
 

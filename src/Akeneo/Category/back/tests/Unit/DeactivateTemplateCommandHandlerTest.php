@@ -24,7 +24,7 @@ class DeactivateTemplateCommandHandlerTest extends CategoryTestCase
             ->with('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
 
         $handler = new DeactivateTemplateCommandHandler($deactivateTemplate);
-        $command = new DeactivateTemplateCommand('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
+        $command = DeactivateTemplateCommand::create('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11');
 
         $handler($command);
     }

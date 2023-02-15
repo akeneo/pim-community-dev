@@ -12,7 +12,7 @@ use Webmozart\Assert\Assert;
  */
 final class DeactivateTemplateCommand
 {
-    public function __construct(
+    private function __construct(
         private readonly string $uuid,
     ) {
         Assert::uuid($uuid);

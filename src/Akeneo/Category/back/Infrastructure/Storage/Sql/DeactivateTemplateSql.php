@@ -18,7 +18,7 @@ class DeactivateTemplateSql implements DeactivateTemplate
     {
     }
 
-    public function execute(string $uuid): void
+    public function execute(TemplateUuid $uuid): void
     {
         $query = <<< SQL
             UPDATE pim_catalog_category_template 
@@ -28,7 +28,7 @@ class DeactivateTemplateSql implements DeactivateTemplate
 
         $this->connection->executeQuery(
             $query,
-            ['template_uuid' => TemplateUuid::fromString($uuid)->toBytes()],
+            ['template_uuid' => $uuid->toBytes()],
             ['template_uuid' => \PDO::PARAM_STR],
         );
     }
