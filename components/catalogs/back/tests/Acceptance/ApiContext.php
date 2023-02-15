@@ -1074,7 +1074,7 @@ class ApiContext implements Context
                 'size' => 'XL',
                 'customization_drawings_count' => 4,
                 'customization_artists_count' => '2',
-                'price_number' => 78,
+                'price_number' => 78.3,
                 'release_date' => '2042-01-01T00:00:00+00:00',
                 'is_released' => false,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
