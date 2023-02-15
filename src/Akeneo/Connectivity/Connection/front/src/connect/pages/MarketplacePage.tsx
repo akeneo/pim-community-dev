@@ -13,7 +13,7 @@ import {Marketplace} from '../components/Marketplace';
 import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 import {useFetchApps} from '../hooks/use-fetch-apps';
 import {useFeatureFlags} from '../../shared/feature-flags';
-import {useTestApps} from '../hooks/use-test-apps';
+import {useCustomApps} from '../hooks/use-custom-apps';
 import {CreateCustomAppButton} from '../components/CustomApps/CreateCustomAppButton';
 
 export const MarketplacePage: FC = () => {
@@ -28,7 +28,7 @@ export const MarketplacePage: FC = () => {
     const [userProfile, setUserProfile] = useState<string | null>(null);
     const [extensions, setExtensions] = useState<Extensions | null | false>(null);
     const [apps, setApps] = useState<Apps | null | false>(null);
-    const {isLoading: isCustomAppsLoading, testApps} = useTestApps();
+    const {isLoading: isCustomAppsLoading, customApps} = useCustomApps();
 
     useEffect(() => {
         const profile = user.get<string | null>('profile');
@@ -84,7 +84,7 @@ export const MarketplacePage: FC = () => {
             <PageContent>
                 {isLoading && <MarketplaceIsLoading />}
                 {isUnreachable && <UnreachableMarketplace />}
-                {!!extensions && !!apps && <Marketplace extensions={extensions} apps={apps} customApps={testApps} />}
+                {!!extensions && !!apps && <Marketplace extensions={extensions} apps={apps} customApps={customApps} />}
             </PageContent>
         </>
     );

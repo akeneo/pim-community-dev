@@ -5,7 +5,7 @@ import {useFeatureFlags} from '../../shared/feature-flags';
 import {useFetchConnectedApps} from './use-fetch-connected-apps';
 import {useFetchApps} from './use-fetch-apps';
 import {useTranslate} from '../../shared/translate';
-import {useFetchTestApps} from './use-fetch-test-apps';
+import {useFetchCustomApps} from './use-fetch-custom-apps';
 import {App} from '../../model/app';
 import {useTriggerConnectedAppRefresh} from './use-trigger-connected-app-refresh';
 
@@ -30,7 +30,7 @@ export const useConnectedApps = (): ConnectedApp[] | null | false => {
     const translate = useTranslate();
     const fetchConnectedApps = useFetchConnectedApps();
     const fetchApps = useFetchApps();
-    const fetchTestApps = useFetchTestApps();
+    const fetchTestApps = useFetchCustomApps();
     const triggerConnectedAppRefresh = useTriggerConnectedAppRefresh();
     const [connectedApps, setConnectedApps] = useState<ConnectedApp[] | null | false>(null);
 

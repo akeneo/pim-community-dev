@@ -3,8 +3,7 @@ import {screen} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {ConnectedAppCard} from '@src/connect/components/ConnectedApps/ConnectedAppCard';
 import {renderWithProviders} from '../../../../test-utils';
-import {ConnectedTestAppList} from '@src/connect/components/ConnectedApps/ConnectedTestAppList';
-import {useFeatureFlags} from '@src/shared/feature-flags';
+import {ConnectedCustomAppList} from '@src/connect/components/ConnectedApps/ConnectedCustomAppList';
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -24,9 +23,9 @@ jest.mock('@src/connect/components/ConnectedApps/ConnectedAppCard', () => ({
     ConnectedAppCard: jest.fn(() => null),
 }));
 
-const connectedTestApps = [
+const connectedCustomApps = [
     {
-        id: 'test_id_a',
+        id: 'custom_id_a',
         name: 'App A',
         scopes: [],
         connection_code: 'connectionCodeA',
@@ -43,7 +42,7 @@ const connectedTestApps = [
         has_outdated_scopes: false,
     },
     {
-        id: 'test_id_b',
+        id: 'custom_id_b',
         name: 'App B',
         scopes: [],
         connection_code: 'connectionCodeB',
@@ -62,24 +61,24 @@ const connectedTestApps = [
 ];
 
 test('it renders list of connected apps', () => {
-    renderWithProviders(<ConnectedTestAppList connectedTestApps={connectedTestApps} />);
+    renderWithProviders(<ConnectedCustomAppList connectedCustomApps={connectedCustomApps} />);
 
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.test_apps.title')
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.custom_apps.title')
     ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total', {exact: false})
     ).toBeInTheDocument();
 
-    expect(ConnectedAppCard).toHaveBeenNthCalledWith(1, {item: connectedTestApps[0]}, {});
-    expect(ConnectedAppCard).toHaveBeenNthCalledWith(2, {item: connectedTestApps[1]}, {});
+    expect(ConnectedAppCard).toHaveBeenNthCalledWith(1, {item: connectedCustomApps[0]}, {});
+    expect(ConnectedAppCard).toHaveBeenNthCalledWith(2, {item: connectedCustomApps[1]}, {});
 });
 
 test('it does not render if list is empty', () => {
-    renderWithProviders(<ConnectedTestAppList connectedTestApps={[]} />);
+    renderWithProviders(<ConnectedCustomAppList connectedCustomApps={[]} />);
 
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.test_apps.title')
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.custom_apps.title')
     ).not.toBeInTheDocument();
 
     expect(ConnectedAppCard).not.toHaveBeenCalled();

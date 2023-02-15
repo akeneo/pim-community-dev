@@ -77,7 +77,7 @@ export const CustomAppCard: FC<Props> = ({customApp, additionalActions}) => {
     const history = useHistory();
 
     const author =
-        customApp.author ?? translate('akeneo_connectivity.connection.connect.marketplace.test_apps.removed_user');
+        customApp.author ?? translate('akeneo_connectivity.connection.connect.marketplace.custom_apps.removed_user');
 
     const onDelete = () => {
         history.push(
