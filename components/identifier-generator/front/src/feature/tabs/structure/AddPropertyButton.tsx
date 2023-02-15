@@ -120,15 +120,15 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
             noResultTitle={translate('pim_common.no_search_result')}
             onNextPage={fetchNextPage}
           >
-            {flatItems?.map(({id, text, isSection}) => {
-              return isSection ? (
+            {flatItems?.map(({id, text, isSection}) =>
+              isSection ? (
                 <Dropdown.Section key={id}>{text}</Dropdown.Section>
               ) : (
                 <Dropdown.Item key={id} onClick={() => addProperty(id)}>
                   {text}
                 </Dropdown.Item>
-              );
-            })}
+              )
+            )}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}
