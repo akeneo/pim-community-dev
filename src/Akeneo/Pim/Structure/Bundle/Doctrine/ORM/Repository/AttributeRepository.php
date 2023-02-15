@@ -366,9 +366,12 @@ class AttributeRepository extends EntityRepository implements
     public function findByNotInCodes(array $codes)
     {
         $qb = $this->createQueryBuilder('attribute')
-            ->select('attribute')
-            ->where('attribute.code NOT IN (:codes)')
-            ->setParameter('codes', $codes);
+            ->select('attribute');
+
+        if (!empty($codes)) {
+            $qb->where('attribute.code NOT IN (:codes)')
+                ->setParameter('codes', $codes);
+        }
 
         return $qb->getQuery()->getResult();
     }
