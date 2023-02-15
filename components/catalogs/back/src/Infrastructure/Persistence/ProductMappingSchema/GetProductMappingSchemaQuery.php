@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\ProductMappingSchema;
 
+use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
-use Akeneo\Catalogs\Infrastructure\Exception\ProductMappingSchemaNotFoundException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
