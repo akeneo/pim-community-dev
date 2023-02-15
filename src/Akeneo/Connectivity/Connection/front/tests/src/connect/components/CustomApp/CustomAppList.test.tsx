@@ -24,8 +24,8 @@ const customApp1 = {
     logo: null,
     author: 'AuthorName',
     url: null,
-    activate_url: 'test_app_1_activate_url',
-    callback_url: 'test_app_1_callback_url',
+    activate_url: 'custom_app_1_activate_url',
+    callback_url: 'custom_app_1_callback_url',
     connected: false,
 };
 
@@ -35,12 +35,12 @@ const customApp2 = {
     logo: null,
     author: null,
     url: null,
-    activate_url: 'test_app_2_activate_url',
-    callback_url: 'test_app_2_callback_url',
+    activate_url: 'custom_app_2_activate_url',
+    callback_url: 'custom_app_2_callback_url',
     connected: true,
 };
 
-test('it displays test app', () => {
+test('it displays custom app', () => {
     const customApps = {
         total: 2,
         apps: [customApp1, customApp2],
@@ -48,7 +48,7 @@ test('it displays test app', () => {
     renderWithProviders(<CustomAppList customApps={customApps} isLimitReached={false} />);
 
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.title')
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.custom_apps.title')
     ).toBeInTheDocument();
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.marketplace.apps.total', {exact: false})
@@ -66,7 +66,7 @@ test('it displays nothing when total is 0', () => {
     renderWithProviders(<CustomAppList customApps={customApps} isLimitReached={false} />);
 
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.title')
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.custom_apps.title')
     ).not.toBeInTheDocument();
 });
 

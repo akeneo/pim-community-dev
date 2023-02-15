@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {mockFetchResponses} from '../../../test-utils';
-import {useFetchTestApps} from '@src/connect/hooks/use-fetch-test-apps';
+import {useFetchCustomApps} from '@src/connect/hooks/use-fetch-custom-apps';
 import {useFeatureFlags} from '@src/shared/feature-flags';
 import fetchMock from 'jest-fetch-mock';
 
@@ -11,7 +11,7 @@ beforeEach(() => {
     fetchMock.resetMocks();
 });
 
-test('it fetches the test apps', async () => {
+test('it fetches the custom apps', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) =>
             ({
@@ -45,7 +45,7 @@ test('it fetches the test apps', async () => {
             json: expected,
         },
     });
-    const {result} = renderHook(() => useFetchTestApps());
+    const {result} = renderHook(() => useFetchCustomApps());
     const response = await result.current();
 
     expect(response).toStrictEqual(expected);

@@ -6,17 +6,17 @@ import {useTranslate} from '../../../shared/translate';
 import {CardGrid} from '../Section';
 
 type Props = {
-    connectedTestApps: ConnectedApp[];
+    connectedCustomApps: ConnectedApp[];
 };
 
-export const ConnectedTestAppList: FC<Props> = ({connectedTestApps}) => {
+export const ConnectedCustomAppList: FC<Props> = ({connectedCustomApps}) => {
     const translate = useTranslate();
 
-    if (connectedTestApps.length === 0) {
+    if (connectedCustomApps.length === 0) {
         return null;
     }
 
-    const connectedAppCards = connectedTestApps.map((connectedApp: ConnectedApp) => (
+    const connectedAppCards = connectedCustomApps.map((connectedApp: ConnectedApp) => (
         <ConnectedAppCard key={connectedApp.id} item={connectedApp} />
     ));
 
@@ -24,16 +24,16 @@ export const ConnectedTestAppList: FC<Props> = ({connectedTestApps}) => {
         <>
             <SectionTitle>
                 <SectionTitle.Title>
-                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.test_apps.title')}
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.custom_apps.title')}
                 </SectionTitle.Title>
                 <SectionTitle.Spacer />
                 <SectionTitle.Information>
                     {translate(
                         'akeneo_connectivity.connection.connect.connected_apps.list.apps.total',
                         {
-                            total: connectedTestApps.length.toString(),
+                            total: connectedCustomApps.length.toString(),
                         },
-                        connectedTestApps.length
+                        connectedCustomApps.length
                     )}
                 </SectionTitle.Information>
             </SectionTitle>

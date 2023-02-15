@@ -2,7 +2,7 @@ import {useRoute} from '../../shared/router';
 import {useCallback} from 'react';
 import {CustomApps} from '../../model/app';
 
-export const useFetchTestApps = (): (() => Promise<CustomApps>) => {
+export const useFetchCustomApps = (): (() => Promise<CustomApps>) => {
     const url = useRoute('akeneo_connectivity_connection_custom_apps_rest_get_all');
 
     const fetchCustomApps = useCallback(async () => {

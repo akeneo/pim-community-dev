@@ -37,7 +37,7 @@ export const CustomAppList: FC<Props> = ({customApps, isLimitReached}) => {
 
     return (
         <Section
-            title={translate('akeneo_connectivity.connection.connect.marketplace.test_apps.title')}
+            title={translate('akeneo_connectivity.connection.connect.marketplace.custom_apps.title')}
             information={translate(
                 'akeneo_connectivity.connection.connect.marketplace.apps.total',
                 {
