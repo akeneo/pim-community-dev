@@ -11,7 +11,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
 
-final class SqlGetAssociationTypesIntegrationTest extends TestCase
+final class SqlGetAssociationTypesIntegration extends TestCase
 {
     public function test_it_gets_association_type_indexed_by_association_type_codes(): void
     {
