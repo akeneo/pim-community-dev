@@ -83,7 +83,7 @@ class CheckAttributeIsNotUsedAsLabelInAFamilyOnDeletionSubscriber implements Eve
         );
 
         if ($this->areAttributesUsedAsLabelInAFamily($attributeIds)) {
-            throw new AttributeRemovalException('pim_enrich.entity.attribute.flash.update.cant_remove_attributes_used_as_label');
+            throw new AttributeRemovalException('flash.attribute.cant_remove_attributes_used_as_label');
         }
     }
 

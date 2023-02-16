@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\AttributeIsAFamilyVariantAxis;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Exception\AttributeRemovalException;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -342,53 +343,13 @@ class AttributeController
             );
         }
 
-        $isAnFamilyVariantAxis = $this->attributeIsAFamilyVariantAxisQuery->execute($code);
-
-        if ($isAnFamilyVariantAxis) {
-            $message = $this->translator->trans('pim_enrich.family.info.cant_remove_attribute_used_as_axis');
-
-            return new JsonResponse(
-                [
-                    'message' => $message,
-                    'global' => true,
-                ],
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
         $attribute = $this->getAttributeOr404($code);
-
-        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
-            $message = $this->translator->trans('flash.attribute.identifier_not_removable');
-
-            return new JsonResponse(
-                [
-                    'message' => $message,
-                    'global' => true,
-                ],
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
-        }
-
-        $channelCodes = $this->channelCodesUsedAsConversionUnit($code);
-        if (count($channelCodes) > 0) {
-            $message = $this->translator->trans('flash.attribute.used_as_conversion_unit', [
-                '%channelCodes%' => join(', ', $channelCodes)
-            ]);
-
-            return new JsonResponse(
-                [
-                    'message' => $message,
-                    'global' => true,
-                ],
-                Response::HTTP_BAD_REQUEST
-            );
-        }
 
         try {
             $this->remover->remove($attribute);
-        } catch (\Exception $e) {
-            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        } catch (AttributeRemovalException $e) {
+            $message = $this->translator->trans($e->messageTemplate, $e->messageParameters);
+            return new JsonResponse(['message' => $message], Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
@@ -474,19 +435,5 @@ class AttributeController
         $attributeAxes = $this->attributeRepository->findAvailableAxes($locale);
 
         return new JsonResponse($attributeAxes);
-    }
-
-    private function channelCodesUsedAsConversionUnit(string $code): array
-    {
-        // TODO This method can be updated with a real SQL query (not in 2.3 because we can't filter on JSON columns)
-        $channelCodes = [];
-        foreach ($this->channelRepository->findAll() as $channel) {
-            $attributeCodes = array_keys($channel->getConversionUnits());
-            if (in_array($code, $attributeCodes)) {
-                $channelCodes[] = $channel->getCode();
-            }
-        }
-
-        return $channelCodes;
     }
 }
