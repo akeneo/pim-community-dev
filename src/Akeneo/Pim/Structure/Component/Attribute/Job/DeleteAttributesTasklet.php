@@ -84,7 +84,7 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
     private function addWarning(string $reason, Attribute $attribute): void
     {
         $this->stepExecution->addWarning(
-            $this->translator->trans($reason),
+            $reason,
             [],
             new DataInvalidItem($attribute),
         );
