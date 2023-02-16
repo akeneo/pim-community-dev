@@ -5,7 +5,7 @@ import fetchMock from 'jest-fetch-mock';
 import {historyMock, renderWithProviders} from '../../../../test-utils';
 import {ConnectedAppsContainer} from '@src/connect/components/ConnectedApps/ConnectedAppsContainer';
 import ConnectedAppsContainerHelper from '@src/connect/components/ConnectedApps/ConnectedAppsContainerHelper';
-import {ConnectedTestAppList} from '@src/connect/components/ConnectedApps/ConnectedTestAppList';
+import {ConnectedCustomAppList} from '@src/connect/components/ConnectedApps/ConnectedCustomAppList';
 import {ConnectedAppCard} from '@src/connect/components/ConnectedApps/ConnectedAppCard';
 import {ConnectedApp} from '@src/model/Apps/connected-app';
 
@@ -34,9 +34,9 @@ jest.mock('@src/connect/components/ConnectedApps/ConnectedAppCard', () => ({
     ConnectedAppCard: jest.fn(() => null),
 }));
 
-jest.mock('@src/connect/components/ConnectedApps/ConnectedTestAppList', () => ({
-    ...jest.requireActual('@src/connect/components/ConnectedApps/ConnectedTestAppList'),
-    ConnectedTestAppList: jest.fn(() => null),
+jest.mock('@src/connect/components/ConnectedApps/ConnectedCustomAppList', () => ({
+    ...jest.requireActual('@src/connect/components/ConnectedApps/ConnectedCustomAppList'),
+    ConnectedCustomAppList: jest.fn(() => null),
 }));
 
 const connectedApps = [
@@ -114,15 +114,15 @@ const connectedApps = [
     },
 ];
 
-test('The connected apps list renders with 2 connected apps card and 2 connected test app', async () => {
+test('The connected apps list renders with 2 connected apps card and 2 connected custom app', async () => {
     renderWithProviders(<ConnectedAppsContainer allConnectedApps={connectedApps} />);
     await waitFor(() => screen.getByText('Helper mock'));
 
     expect(ConnectedAppsContainerHelper).toBeCalledWith({count: 4}, {});
 
-    expect(ConnectedTestAppList).toHaveBeenCalledWith(
+    expect(ConnectedCustomAppList).toHaveBeenCalledWith(
         {
-            connectedTestApps: [connectedApps[1], connectedApps[2]],
+            connectedCustomApps: [connectedApps[1], connectedApps[2]],
         },
         {}
     );
@@ -144,7 +144,7 @@ test('The connected apps list renders without connected apps', async () => {
 
     expect(ConnectedAppsContainerHelper).toBeCalledWith({count: 0}, {});
 
-    expect(ConnectedTestAppList).toHaveBeenCalledWith({connectedTestApps: []}, {});
+    expect(ConnectedCustomAppList).toHaveBeenCalledWith({connectedCustomApps: []}, {});
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')
@@ -221,9 +221,9 @@ test('The connected apps list renders with pending apps', async () => {
 
     expect(ConnectedAppsContainerHelper).toBeCalledWith({count: 5}, {});
 
-    expect(ConnectedTestAppList).toHaveBeenCalledWith(
+    expect(ConnectedCustomAppList).toHaveBeenCalledWith(
         {
-            connectedTestApps: [connectedApps[1], connectedApps[2]],
+            connectedCustomApps: [connectedApps[1], connectedApps[2]],
         },
         {}
     );

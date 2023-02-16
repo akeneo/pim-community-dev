@@ -77,7 +77,7 @@ test('The marketplace renders with apps', () => {
         screen.getByPlaceholderText('akeneo_connectivity.connection.connect.marketplace.search.placeholder')
     ).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.title')
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.custom_apps.title')
     ).not.toBeInTheDocument();
     expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.apps.title')).toBeInTheDocument();
     expect(
@@ -145,7 +145,7 @@ test('The marketplace renders with extensions', () => {
         screen.getByPlaceholderText('akeneo_connectivity.connection.connect.marketplace.search.placeholder')
     ).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.test_apps.title')
+        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.custom_apps.title')
     ).not.toBeInTheDocument();
     expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.apps.title')).toBeInTheDocument();
     expect(
@@ -162,7 +162,7 @@ test('The marketplace renders with extensions', () => {
     expect(screen.getByText('Extension A')).toBeInTheDocument();
 });
 
-test('The marketplace renders with test apps', () => {
+test('The marketplace renders with custom apps', () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) =>
             ({
@@ -192,12 +192,12 @@ test('The marketplace renders with test apps', () => {
         apps: [
             {
                 id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
-                name: 'Test App A',
+                name: 'Custom App A',
                 logo: null,
                 author: null,
                 url: null,
-                activate_url: 'test_app_a_activate_url',
-                callback_url: 'test_app_a_callback_url',
+                activate_url: 'custom_app_a_activate_url',
+                callback_url: 'custom_app_a_callback_url',
                 connected: false,
             },
         ],
@@ -213,8 +213,10 @@ test('The marketplace renders with test apps', () => {
     expect(
         screen.getByPlaceholderText('akeneo_connectivity.connection.connect.marketplace.search.placeholder')
     ).toBeInTheDocument();
-    expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.test_apps.title')).toBeInTheDocument();
-    expect(screen.getByText('Test App A')).toBeInTheDocument();
+    expect(
+        screen.getByText('akeneo_connectivity.connection.connect.marketplace.custom_apps.title')
+    ).toBeInTheDocument();
+    expect(screen.getByText('Custom App A')).toBeInTheDocument();
     expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.apps.title')).toBeInTheDocument();
     expect(
         screen.getByText('akeneo_connectivity.connection.connect.marketplace.apps.total?total=0')
