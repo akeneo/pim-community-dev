@@ -250,10 +250,7 @@ class DatabaseCommand extends Command
     {
         $latestMigration = $this->getLatestMigration($input);
 
-        $this->commandExecutor->runCommand(
-            'doctrine:migrations:sync-metadata-storage',
-            ['-q' => true]
-        );
+        $this->commandExecutor->runCommand('doctrine:migrations:sync-metadata-storage', ['-q' => true]);
 
         $this->commandExecutor->runCommand(
             'doctrine:migrations:version',
