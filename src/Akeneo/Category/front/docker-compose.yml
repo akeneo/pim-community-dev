@@ -1,0 +1,18 @@
+version: '3.7'
+
+services:
+  micro-frontend:
+    image: 'akeneo/node:18'
+    environment:
+      YARN_CACHE_FOLDER: '/home/node/.yarn'
+      CYPRESS_CACHE_FOLDER: '/home/node/.cypress'
+    volumes:
+      - './:/srv/pim'
+      - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
+      - '${HOST_CYPRESS_CACHE_FOLDER:-~/.cache/Cypress}:/home/node/.cypress'
+    working_dir: '/srv/pim'
+    networks:
+      - 'pim'
+    ports:
+      - '3000:3000'
+    command: yarn workspace @akeneo-pim-community/category app:start

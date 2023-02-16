@@ -1,6 +1,6 @@
 .PHONY: category-front-dev
 category-front-dev:
-	$(YARN_RUN) workspace @akeneo-pim-community/category app:start
+	$(DOCKER_COMPOSE) -f docker-compose.yml -f src/Akeneo/Category/front/docker-compose.yml up -d --remove-orphans
 
 .PHONY: category-lint-back
 category-lint-back: #Doc: launch PHPStan for category bounded context
