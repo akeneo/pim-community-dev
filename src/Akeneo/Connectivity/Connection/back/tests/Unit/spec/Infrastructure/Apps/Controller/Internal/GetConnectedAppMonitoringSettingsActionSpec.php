@@ -93,36 +93,6 @@ class GetConnectedAppMonitoringSettingsActionSpec extends ObjectBehavior
             ->during('__invoke', [$request, 'foo']);
     }
 
-    public function it_throws_access_denied_exception_with_missing_manage_custom_apps_acl(
-        FeatureFlag $featureFlag,
-        SecurityFacade $security,
-        FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
-        Request $request,
-    ): void {
-        $featureFlag->isEnabled()->willReturn(true);
-        $request->isXmlHttpRequest()->willReturn(true);
-        $connectedApp = new ConnectedApp(
-            'a_connected_app_id',
-            'a_connected_app_name',
-            ['a_scope'],
-            'random_connection_code',
-            'a/path/to/a/logo',
-            'an_author',
-            'a_group',
-            'an_username',
-            [],
-            false,
-            null,
-            true,
-        );
-        $findOneConnectedAppByConnectionCodeQuery->execute('foo')->willReturn($connectedApp);
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
-
-        $this
-            ->shouldThrow(new AccessDeniedHttpException())
-            ->during('__invoke', [$request, 'foo']);
-    }
-
     public function it_throws_not_found_exception_with_not_existing_connection(
         FeatureFlag $featureFlag,
         SecurityFacade $security,
