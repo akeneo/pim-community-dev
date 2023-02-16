@@ -58,18 +58,6 @@ test('it displays custom app', () => {
     expect(screen.queryByText('customApp2')).toBeInTheDocument();
 });
 
-test('it displays nothing when total is 0', () => {
-    const customApps = {
-        total: 0,
-        apps: [],
-    };
-    renderWithProviders(<CustomAppList customApps={customApps} isConnectLimitReached={false} />);
-
-    expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.marketplace.custom_apps.title')
-    ).not.toBeInTheDocument();
-});
-
 test('it disabled the connect button when the user doesnt have the permission to open Apps', () => {
     const isGranted = jest.fn(acl => {
         if (acl === 'akeneo_connectivity_connection_manage_apps') {

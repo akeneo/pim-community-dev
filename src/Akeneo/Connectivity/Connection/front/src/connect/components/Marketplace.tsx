@@ -131,7 +131,9 @@ export const Marketplace: FC<Props> = ({extensions, apps, customApps}) => {
                 </span>
             </SearchBar>
 
-            <CustomAppList customApps={customAppsList} isConnectLimitReached={isLimitReached} />
+            {customApps.total > 0 && (
+                <CustomAppList customApps={customAppsList} isConnectLimitReached={isLimitReached} />
+            )}
 
             {featureFlag.isEnabled('marketplace_activate') && (
                 <Section
