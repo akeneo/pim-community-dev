@@ -21,6 +21,9 @@ jest.mock('@src/connect/hooks/use-fetch-apps', () => ({
 jest.mock('@src/connect/components/Marketplace', () => ({
     Marketplace: jest.fn().mockImplementation(() => null),
 }));
+jest.mock('@src/connect/hooks/use-custom-apps-limit-reached', () => ({
+    useCustomAppsLimitReached: jest.fn().mockImplementation(() => false),
+}));
 
 test('It displays "create an app" button when user can manage a custom app', async () => {
     const isGranted = jest.fn(acl => {

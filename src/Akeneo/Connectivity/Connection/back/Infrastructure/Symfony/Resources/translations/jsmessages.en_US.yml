@@ -273,6 +273,7 @@ akeneo_connectivity.connection:
                 scope:
                     too_long: The scope list must not contain more than 1000 characters.
         custom_apps:
+            creation_limit_reached: You reached the limit of 20 custom apps.
             create_button: Create an app
             create_modal:
                 subtitle: Create a custom app
@@ -293,6 +294,7 @@ akeneo_connectivity.connection:
                     client_id: Client id
                     client_secret: Client secret
                 errors:
+                    limit_reached: You can create up to 20 custom apps.
                     name:
                         min_length: The name of the app is too short. It must have 3 characters or more.
                         max_length: The name of the app is too long. It must have 255 characters or less.

@@ -1,7 +1,7 @@
 import React from 'react';
-import {screen} from '@testing-library/react';
+import {screen, waitFor} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import {renderWithProviders} from '../../../../test-utils';
+import {mockFetchResponses, renderWithProviders} from '../../../../test-utils';
 import {CustomAppList} from '@src/connect/components/CustomApps/CustomAppList';
 import {SecurityContext} from '@src/shared/security';
 
@@ -45,7 +45,7 @@ test('it displays custom app', () => {
         total: 2,
         apps: [customApp1, customApp2],
     };
-    renderWithProviders(<CustomAppList customApps={customApps} isLimitReached={false} />);
+    renderWithProviders(<CustomAppList customApps={customApps} isConnectLimitReached={false} />);
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.marketplace.custom_apps.title')
@@ -63,7 +63,7 @@ test('it displays nothing when total is 0', () => {
         total: 0,
         apps: [],
     };
-    renderWithProviders(<CustomAppList customApps={customApps} isLimitReached={false} />);
+    renderWithProviders(<CustomAppList customApps={customApps} isConnectLimitReached={false} />);
 
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.marketplace.custom_apps.title')
@@ -85,7 +85,7 @@ test('it disabled the connect button when the user doesnt have the permission to
 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
-            <CustomAppList customApps={customApps} isLimitReached={false} />
+            <CustomAppList customApps={customApps} isConnectLimitReached={false} />
         </SecurityContext.Provider>
     );
 
@@ -112,7 +112,7 @@ test('it disabled the connect button and show a warning when the limit of connec
 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
-            <CustomAppList customApps={customApps} isLimitReached={true} />
+            <CustomAppList customApps={customApps} isConnectLimitReached={true} />
         </SecurityContext.Provider>
     );
 
@@ -126,4 +126,41 @@ test('it disabled the connect button and show a warning when the limit of connec
     expect(
         screen.queryByText('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached')
     ).toBeInTheDocument();
+});
+
+test('it show both warning when the limit of custom app created is reached and the limit of connected app is reached', async () => {
+    const isGranted = jest.fn(acl => {
+        if (acl === 'akeneo_connectivity_connection_manage_apps') {
+            return true;
+        }
+        return true;
+    });
+
+    mockFetchResponses({
+        akeneo_connectivity_connection_custom_apps_rest_max_limit_reached: {
+            json: true,
+            status: 200,
+        },
+    });
+
+    const customApps = {
+        total: 1,
+        apps: [customApp1],
+    };
+
+    renderWithProviders(
+        <SecurityContext.Provider value={{isGranted}}>
+            <CustomAppList customApps={customApps} isConnectLimitReached={true} />
+        </SecurityContext.Provider>
+    );
+
+    expect(screen.queryByText('customApp1')).toBeInTheDocument();
+
+    await waitFor(() =>
+        screen.findByText('akeneo_connectivity.connection.connect.custom_apps.creation_limit_reached', {exact: false})
+    );
+
+    screen.findByText('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached', {
+        exact: false,
+    });
 });
