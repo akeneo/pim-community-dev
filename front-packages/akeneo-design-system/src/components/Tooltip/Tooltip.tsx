@@ -5,50 +5,53 @@ import {HelpPlainIcon} from '../../icons';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {useTheme} from '../../hooks';
 
-const TooltipMargin = '5px';
-
-const TooltipContainer = styled.div`
+const TooltipContainer = styled.div<{size: number}>`
   position: relative;
-  display: inline-block;
+  height: ${({size}) => size}px;
 `;
 
-const TooltipContent = styled.div<{direction: string; zIndex: number} & AkeneoThemedProps>`
+const TooltipIcon = styled(HelpPlainIcon)`
+  margin: 5px;
+`;
+
+const TooltipContent = styled.div<{direction: string; zIndex: number; width: number} & AkeneoThemedProps>`
   position: absolute;
   border-radius: 4px;
   left: 50%;
   padding: 10px;
-  color: ${getColor('blue', 120)};
+  width: ${({width}) => width}px;
+  color: ${getColor('grey', 120)};
   background: ${getColor('blue', 10)};
   border: 1px solid ${getColor('blue', 40)};
   font-size: ${getFontSize('default')};
   line-height: 1;
+  text-transform: none;
   z-index: ${({zIndex}) => zIndex};
-  white-space: nowrap;
-  box-shadow: 0px 0px 16px rgba(89, 146, 199, 0.25);
+  box-shadow: 0 0 16px rgba(89, 146, 199, 0.25);
 
   ${({direction}) => {
     switch (direction) {
       case 'bottom':
         return `
-                top: calc(100% + ${TooltipMargin});
+                top: calc(100%);
                 transform: translateX(-50%);
               `;
       case 'left':
         return `
                 left: auto;
                 top: 50%;
-                right: calc(100% + ${TooltipMargin});
+                right: calc(100%);
                 transform: translateY(-50%);
               `;
       case 'right':
         return `
                 top: 50%;
-                left: calc(100% + ${TooltipMargin});
+                left: calc(100%);
                 transform: translateY(-50%);
               `;
       default:
         return `
-                bottom: calc(100% + ${TooltipMargin});
+                bottom: calc(100%);
                 transform: translateX(-50%);
               `;
     }
@@ -74,12 +77,16 @@ type TooltipProps = Override<
      * Content of the tooltip
      */
     children: React.ReactNode;
+    /**
+     * Define the width of the tooltip
+     */
+    width?: number;
   }
 >;
 
 const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
   (
-    {direction = 'top', zIndex = 100, iconSize = 24, children, ...rest}: TooltipProps,
+    {direction = 'top', zIndex = 100, iconSize = 24, width = 200, children, ...rest}: TooltipProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const [visible, setVisible] = useState(false);
@@ -88,10 +95,16 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
     const theme = useTheme();
 
     return (
-      <TooltipContainer ref={forwardedRef} {...rest} onMouseEnter={showTooltip} onMouseLeave={hideTooltip}>
-        <HelpPlainIcon size={iconSize} color={theme.color.blue100} />
+      <TooltipContainer
+        ref={forwardedRef}
+        {...rest}
+        size={iconSize}
+        onMouseEnter={showTooltip}
+        onMouseLeave={hideTooltip}
+      >
+        <TooltipIcon size={iconSize} color={theme.color.blue100} />
         {visible && (
-          <TooltipContent direction={direction} zIndex={zIndex}>
+          <TooltipContent direction={direction} zIndex={zIndex} width={width}>
             {children}
           </TooltipContent>
         )}
