@@ -20,7 +20,7 @@ jobs:
             -   start_test_containers
             -   run:
                     name: Integration back
-                    command: PIM_CONTEXT=category APP_ENV=test make category-integration-back
+                    command: PIM_CONTEXT=category APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 make category-integration-back
             -   run:
                     name: End to End back
                     command: PIM_CONTEXT=category APP_ENV=test make category-end-to-end-back
