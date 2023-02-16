@@ -150,13 +150,17 @@ test('it show both warning when the limit of custom app created is reached and t
 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
-            <CustomAppList customApps={customApps} isConnectLimitReached={true}/>
+            <CustomAppList customApps={customApps} isConnectLimitReached={true} />
         </SecurityContext.Provider>
     );
 
     expect(screen.queryByText('customApp1')).toBeInTheDocument();
 
-    await waitFor(() => screen.findByText('akeneo_connectivity.connection.connect.custom_apps.creation_limit_reached', {exact:false}));
+    await waitFor(() =>
+        screen.findByText('akeneo_connectivity.connection.connect.custom_apps.creation_limit_reached', {exact: false})
+    );
 
-    screen.findByText('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached', {exact:false})
+    screen.findByText('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached', {
+        exact: false,
+    });
 });

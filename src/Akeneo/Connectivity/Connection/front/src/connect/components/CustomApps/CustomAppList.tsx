@@ -21,9 +21,11 @@ export const CustomAppList: FC<Props> = ({customApps, isConnectLimitReached}) =>
         return null;
     }
 
-    let warningMessages = [];
+    const warningMessages = [];
     if (isConnectLimitReached) {
-        warningMessages.push(translate('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached'));
+        warningMessages.push(
+            translate('akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached')
+        );
     }
     if (isCreateLimitReached) {
         warningMessages.push(translate('akeneo_connectivity.connection.connect.custom_apps.creation_limit_reached'));
@@ -39,7 +41,9 @@ export const CustomAppList: FC<Props> = ({customApps, isConnectLimitReached}) =>
                     key={1}
                     id={customApp.id}
                     isConnected={customApp.connected}
-                    isDisabled={!security.isGranted('akeneo_connectivity_connection_manage_apps') || isConnectLimitReached}
+                    isDisabled={
+                        !security.isGranted('akeneo_connectivity_connection_manage_apps') || isConnectLimitReached
+                    }
                     isPending={false}
                 />,
             ]}
