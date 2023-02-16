@@ -107,7 +107,7 @@ const StructureTab: React.FC<StructureTabProps> = ({
           <SectionTitle>
             <SectionTitle.Title>{translate('pim_identifier_generator.structure.title')}</SectionTitle.Title>
             <SectionTitle.Spacer />
-            {!isLimitReached && <AddPropertyButton onAddProperty={onAddProperty} />}
+            {!isLimitReached && <AddPropertyButton onAddProperty={onAddProperty} structure={structure} />}
           </SectionTitle>
           {structure.length > 0 && (
             <>
