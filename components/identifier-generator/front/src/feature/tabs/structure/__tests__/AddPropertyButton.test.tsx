@@ -161,8 +161,8 @@ describe('AddPropertyButton', () => {
     await waitFor(() => {
       expect(screen.getByText('Free text')).toBeInTheDocument();
     });
-    expect(screen.getByText('pim_identifier_generator.structure.property_type.free_text')).toBeInTheDocument();
-    expect(screen.getByText('pim_identifier_generator.structure.property_type.auto_number')).toBeInTheDocument();
+    expect(screen.getByText('Free text')).toBeInTheDocument();
+    expect(screen.getByText('Auto Number')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Free text'));
     expect(onAddProperty).toBeCalledWith({
@@ -173,7 +173,7 @@ describe('AddPropertyButton', () => {
 
   it('adds a select property', async () => {
     const onAddProperty = jest.fn();
-    render(<AddPropertyButton onAddProperty={onAddProperty} />);
+    render(<AddPropertyButton onAddProperty={onAddProperty} structure={[]} />);
     const button = screen.getByRole('button');
     expect(screen.getByText('pim_identifier_generator.structure.add_element')).toBeInTheDocument();
     expect(button).toBeInTheDocument();
@@ -193,7 +193,7 @@ describe('AddPropertyButton', () => {
     });
   });
 
-  it('should not be able to add an auto number twice', () => {
+  it('should not be able to add an auto number twice', async () => {
     const structureWithAutoNumber: Structure = [
       {
         type: PROPERTY_NAMES.AUTO_NUMBER,
@@ -208,7 +208,7 @@ describe('AddPropertyButton', () => {
     expect(button).toBeInTheDocument();
 
     fireEvent.click(button);
-    expect(screen.getByText('pim_identifier_generator.structure.property_type.free_text')).toBeInTheDocument();
-    expect(screen.queryByText('pim_identifier_generator.structure.property_type.auto_number')).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Free text')).toBeInTheDocument());
+    expect(screen.queryByText('Auto Number')).not.toBeInTheDocument();
   });
 });
