@@ -1,0 +1,6 @@
+services:
+    Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\Command\TestCommand:
+        arguments:
+            - '@messenger.default_bus'
+        tags:
+            - { name: console.command }

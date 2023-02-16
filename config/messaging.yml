@@ -1,0 +1,8 @@
+queues:
+    launch_product_and_product_model_evaluations_queue:
+        messageClass: Akeneo\Pim\Automation\DataQualityInsights\Domain\Message\LaunchProductAndProductModelEvaluationsMessage
+        consumers:
+            - name: dqi_launch_product_and_product_model_evaluations_consumer
+              handler_service: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\LaunchProductAndProductModelEvaluationsHandler'
+            - name: second_consumer_for_tests
+              handler_service: todo_service
