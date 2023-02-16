@@ -40,9 +40,9 @@ type Props = {
 };
 
 type PimVersion = {
-  pim_version: string,
-  pim_edition: string
-}
+  pim_version: string;
+  pim_edition: string;
+};
 
 const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode, freeTrialEnabled = false}) => {
   const translate = useTranslate();
@@ -52,7 +52,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
   const [pimVersion, setPimVersion] = useState<PimVersion | undefined>();
 
   useEffect(() => {
-    fetch(router.generate('pim_analytics_data_collect')).then((response) => {
+    fetch(router.generate('pim_analytics_data_collect')).then(response => {
       response.json().then(data => {
         setPimVersion(data);
       });
@@ -86,13 +86,11 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
 
   const helpCenterUrl = useMemo(() => {
     const isSerenity = pimVersion?.pim_version.split('.').length === 1;
-    const version = isSerenity ? 'serenity': `v${pimVersion?.pim_version.split('.')[0]}`;
-    const campaign = isSerenity ? 'serenity': `${pimVersion?.pim_edition}${pimVersion?.pim_version}`;
+    const version = isSerenity ? 'serenity' : `v${pimVersion?.pim_version.split('.')[0]}`;
+    const campaign = isSerenity ? 'serenity' : `${pimVersion?.pim_edition}${pimVersion?.pim_version}`;
 
     return `https://help.akeneo.com/pim/${version}/index.html?utm_source=akeneo-app&utm_medium=interrogation-icon&utm_campaign=${campaign}`;
   }, [pimVersion]);
-
-
 
   return (
     <NavContainer aria-label="Main navigation">
@@ -128,26 +126,18 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
           ))}
         </MenuContainer>
         <HelpContainer>
-          <MainNavigationItem
-            icon={<HelpIcon />}
-          >
+          <MainNavigationItem icon={<HelpIcon />}>
             {translate('pim_menu.tab.help.title')}
-            <Tag tint="blue">
-              {translate('pim_menu.tab.help.new')}
-            </Tag>
+            <Tag tint="blue">{translate('pim_menu.tab.help.new')}</Tag>
           </MainNavigationItem>
           <div className="dropdown-content">
-            <a
-              href={helpCenterUrl}
-              target="_blank"
-              title={translate('pim_menu.tab.help.helper')}
-            >
+            <a href={helpCenterUrl} target="_blank" title={translate('pim_menu.tab.help.helper')}>
               {translate('pim_menu.tab.help.help_center')}
             </a>
-            <a href="https://akademy.akeneo.com/" target="_blank">
+            <LinkContainer href="https://akademy.akeneo.com/" target="_blank">
               {translate('pim_menu.tab.help.akademy_training')}
-              <StyledNewTag tint={"blue"}>{translate('pim_menu.tab.help.new')}</StyledNewTag>
-            </a>
+              <StyledNewTag tint={'blue'}>{translate('pim_menu.tab.help.new')}</StyledNewTag>
+            </LinkContainer>
             <a href="https://help.akeneo.com/pim/serenity/updates/index.html" target="_blank">
               {translate('pim_menu.tab.help.news')}
             </a>
@@ -243,13 +233,13 @@ const HelpContainer = styled.div`
       :hover {
         color: ${({theme}) => theme.color.purple100};
       }
-      
+
       .AknBadge {
         margin-left: 10px;
       }
     }
   }
-  
+
   .tag-container {
     overflow: hidden;
     position: absolute;
@@ -257,12 +247,17 @@ const HelpContainer = styled.div`
     top: 7px;
     width: 50%;
   }
-  
+
   :hover {
     .dropdown-content {
       display: flex;
     }
   }
+`;
+
+const LinkContainer = styled.a`
+  display: flex;
+  align-items: center;
 `;
 
 const StyledNewTag = styled(Tag)`
