@@ -5,15 +5,6 @@ import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {useGetPropertyItems} from '../../hooks/useGetPropertyItems';
 import {getAttributeByCode} from '../../hooks/useGetAttributeByCode';
 
-type PropertiesSelection = {
-  code: string;
-  items: {
-    code: string;
-    defaultValue: Property;
-    isVisible?: boolean;
-  }[];
-};
-
 type AddPropertyButtonProps = {
   onAddProperty: (property: Property) => void;
   structure: Structure;
@@ -23,6 +14,7 @@ type FlatItemsGroup = {
   id: string;
   text: string;
   isSection: boolean;
+  isVisible?: boolean;
 };
 
 const defaultValueByAttributeType = {
@@ -90,14 +82,25 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
 
   React.useEffect(focusCallback, [isOpen, focusCallback]);
 
+
   const flatItems = useMemo(() => {
+    const visibilityConditions = {
+      [PROPERTY_NAMES.AUTO_NUMBER]: showAutoNumber,
+    };
     const tab: FlatItemsGroup[] = [];
     data?.forEach(item => {
       tab.push({id: item.id, text: item.text, isSection: true});
-      item.children.forEach(child => tab.push({id: child.id, text: child.text, isSection: false}));
+      item.children.forEach(child =>
+        tab.push({
+          id: child.id,
+          text: child.text,
+          isSection: false,
+          isVisible: visibilityConditions[child.id] !== undefined ? visibilityConditions[child.id] : true,
+        })
+      );
     });
     return tab;
-  }, [data]);
+  }, [data, showAutoNumber]);
 
   return (
     <Dropdown>
@@ -120,10 +123,10 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
             noResultTitle={translate('pim_common.no_search_result')}
             onNextPage={fetchNextPage}
           >
-            {flatItems?.map(({id, text, isSection}) =>
+            {flatItems?.map(({id, text, isSection, isVisible}) =>
               isSection ? (
                 <Dropdown.Section key={id}>{text}</Dropdown.Section>
-              ) : (
+              ) : isVisible && (
                 <Dropdown.Item key={id} onClick={() => addProperty(id)}>
                   {text}
                 </Dropdown.Item>
