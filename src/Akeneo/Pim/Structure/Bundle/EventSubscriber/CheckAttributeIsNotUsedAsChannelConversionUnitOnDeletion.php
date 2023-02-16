@@ -25,11 +25,12 @@ class CheckAttributeIsNotUsedAsChannelConversionUnitOnDeletion implements EventS
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_REMOVE => 'onPreRemove'
+            StorageEvents::PRE_REMOVE => 'onPreRemove',
         ];
     }
 
-    public function onPreRemove(RemoveEvent $event): void {
+    public function onPreRemove(RemoveEvent $event): void
+    {
         $attribute = $event->getSubject();
 
         if (!$attribute instanceof AttributeInterface) {
