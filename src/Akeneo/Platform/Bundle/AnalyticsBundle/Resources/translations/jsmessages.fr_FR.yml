@@ -11,7 +11,7 @@ pim_analytics:
     pim_version: Version
     pim_storage_driver: Stockage
     pim_environment: Environnement
-    pim_install_time: Durée de l'installation
+    pim_install_time: Date d'installation
     registered_bundles: Paquets installés
     nb_channels: Nombre de canaux
     nb_products: Nombre de produits
