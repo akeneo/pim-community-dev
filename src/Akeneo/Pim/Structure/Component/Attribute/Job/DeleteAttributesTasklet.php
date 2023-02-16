@@ -73,8 +73,9 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
             $this->remover->remove($attribute);
             $this->stepExecution->incrementSummaryInfo('deleted_attributes');
             $this->stepExecution->incrementProcessedItems();
-        } catch (AttributeRemovalException $e) {
-            $message = $this->translator->trans($e->messageTemplate, $e->messageParameters);
+        } catch (\Exception|AttributeRemovalException $e) {
+            $message = $e instanceof AttributeRemovalException ? $this->translator->trans($e->messageTemplate, $e->messageParameters) : $e->getMessage();
+
             $this->addWarning($message, $attribute);
             $this->stepExecution->incrementSummaryInfo('skipped_attributes');
         }
