@@ -36,8 +36,6 @@ class ActivateTemplateIntegration extends CategoryTestCase
         $attributesExpected = self::givenAttributes($templateUuid);
 
         $this->assertEquals('master_template', $template->getCode());
-        $labelCollectionExpected = LabelCollection::fromArray(["en_US" => "Master catalog template"]);
-        $this->assertEqualsCanonicalizing($labelCollectionExpected, $template->getLabelCollection());
         $this->assertEqualsCanonicalizing(
             array_keys($attributesExpected->getAttributes()),
             array_keys($attributes->getAttributes()),

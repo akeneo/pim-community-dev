@@ -27,6 +27,7 @@ category-coupling-back: #Doc: launch coupling detector for category bounded cont
 .PHONY: category-unit-back
 category-unit-back: #Doc: launch PHPSpec for category bounded context
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Category/back/tests/Specification
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Category/back/tests --testsuite Category_Unit_Test $(F)
 
 .PHONY: category-unit-front
 category-unit-front:

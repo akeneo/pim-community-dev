@@ -38,6 +38,33 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         ]);
 
         $this->createCategory([
+            'code' => 'boots',
+            'labels' => [
+                'fr_FR' => 'Bottes',
+                'en_US' => 'Boots'
+            ],
+            'parent' => $categoryShoes->getCode(),
+        ]);
+
+        $this->createCategory([
+            'code' => 'sandals',
+            'labels' => [
+                'fr_FR' => 'Sandales',
+                'en_US' => 'Sandals'
+            ],
+            'parent' => $categoryShoes->getCode(),
+        ]);
+
+        $this->createCategory([
+            'code' => 'slippers',
+            'labels' => [
+                'fr_FR' => 'Pantoufles',
+                'en_US' => 'Slippers'
+            ],
+            'parent' => $categoryShoes->getCode(),
+        ]);
+
+        $this->createCategory([
             'code' => 'pants',
             'labels' => [
                 'fr_FR' => 'Pantalons',
@@ -55,10 +82,12 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
             params: [
                 'category_codes' => ['shoes'],
                 'with_enriched_attributes' => false,
+                'with_position' => false,
             ],
             types : [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
             ],
             limitAndOffset: 'LIMIT 10',
         );
@@ -73,11 +102,13 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
             sqlWhere: 'category.code IN (:category_codes)',
             params: [
                 'category_codes' => ['wrong code'],
-                'with_enriched_attributes' => true
+                'with_enriched_attributes' => true,
+                'with_position' => false,
             ],
             types : [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
             ],
             limitAndOffset: 'LIMIT 10',
         );
@@ -88,23 +119,17 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
 
     public function testGetCategoryByCodes(): void
     {
-        $parameters['sqlWhere'] = '';
-        $parameters['sqlLimitOffset'] = 'LIMIT 10';
-        $parameters['params'] = [
-
-        ];
-        $parameters['types'] = [
-
-        ];
         $parameters = new ExternalApiSqlParameters(
             sqlWhere: 'category.code IN (:category_codes)',
             params: [
                 'category_codes' => ['socks', 'shoes'],
                 'with_enriched_attributes' => true,
+                'with_position' => false,
             ],
             types : [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
             ],
             limitAndOffset: 'LIMIT 10',
         );
@@ -149,6 +174,57 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $this->assertNull($socksCategory->getValues());
     }
 
+    public function testGetCategoryByCodesWithPosition(): void
+    {
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: '1=1',
+            params: [
+                'category_codes' => [],
+                'with_enriched_attributes' => true,
+                'with_position' => true,
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
+        $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
+        $this->assertIsArray($retrievedCategories);
+
+        /**
+         * Categories are organized like this in DB:
+         *
+         * category_code        : position
+         * master               : 1
+         * shoes                : 1
+         *  |_ boots            : 1
+         *  |_ sandals          : 2
+         *  |_ slippers         : 3
+         * socks                : 1
+         * pants                : 1
+         */
+        foreach ($retrievedCategories as $category) {
+            switch ($category->getCode()) {
+                case 'shoes':
+                case 'boots':
+                case 'socks':
+                case 'pants':
+                    $this->assertPositionIs(1, $category);
+                    break;
+                case 'sandals':
+                    $this->assertPositionIs(2, $category);
+                    break;
+                case 'slippers':
+                    $this->assertPositionIs(3, $category);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     public function testGetCategoryByCodesWithoutEnrichedCategories(): void
     {
         $parameters = new ExternalApiSqlParameters(
@@ -156,10 +232,12 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
             params: [
                 'category_codes' => ['shoes'],
                 'with_enriched_attributes' => false,
+                'with_position' => false,
             ],
             types : [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
             ],
             limitAndOffset: 'LIMIT 10',
         );
@@ -194,9 +272,11 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
             sqlWhere: '1=1',
             params: [
                 'with_enriched_attributes' => false,
+                'with_position' => false,
             ],
             types : [
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
             ],
             limitAndOffset: 'LIMIT 1 OFFSET 2',
         );
@@ -216,7 +296,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $numberOfCategories = $this->get(GetCategoriesInterface::class)->count($parameters);
 
         $this->assertIsInt($numberOfCategories);
-        $this->assertSame(4, $numberOfCategories);
+        $this->assertSame(7, $numberOfCategories);
     }
 
     public function testCountCategoriesByCodes(): void
@@ -235,5 +315,10 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    private function assertPositionIs(int $expectedPosition, ExternalApiCategory $category): void
+    {
+        $this->assertEquals($expectedPosition, $category->getPosition(), sprintf('Position of %s', $category->getCode()));
     }
 }

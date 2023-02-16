@@ -1,0 +1,36 @@
+services:
+
+    # TODO check all use of 'clean_removed_attribute_job' to make sure this new job is added in all fixtures and stuff like taht
+    # Clean categories enriched values linked to removed channel
+    pim_catalog.job.clean_categories_enriched_values:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'clean_categories_enriched_values'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.clean_categories.clean_enriched_values'
+            - false
+            - false
+        public: false
+        tags:
+            - { name: akeneo_batch.job, connector: 'Cleaning categories enriched values', type: 'clean_categories_enriched_values' }
+
+    pim_catalog.step.clean_categories.clean_enriched_values:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_enriched_values_from_deleted_channels'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet'
+
+    Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet:
+        arguments:
+            - '@Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel'
+
+    # job parameters
+    akeneo.category.clean_categories.clean_enriched_values.job_parameters:
+        class: 'Akeneo\Category\Infrastructure\Job\CleanCategoryEnrichedValuesProvider'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

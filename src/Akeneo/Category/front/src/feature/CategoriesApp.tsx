@@ -5,19 +5,23 @@ import {EditCategoryProvider} from './components';
 import {useFeatureFlags} from '@akeneo-pim-community/shared';
 import {LegacyCategoryEditPage} from './legacy/pages/LegacyCategoryEditPage';
 import {TemplatePage} from './pages';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 type Props = {
   setCanLeavePage: (canLeavePage: boolean) => void;
 };
 
 const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
+  const queryClient = new QueryClient();
   const featureFlags = useFeatureFlags();
 
   return (
     <Router basename="/enrich/product-category-tree">
       <Switch>
         <Route path="/:treeId/tree">
-          <CategoriesTreePage />
+          <QueryClientProvider client={queryClient}>
+            <CategoriesTreePage />
+          </QueryClientProvider>
         </Route>
         <Route path="/:categoryId/edit">
           <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
@@ -26,13 +30,15 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
         </Route>
         {featureFlags.isEnabled('enriched_category') && (
           <Route path="/:treeId/template/:templateId">
-            <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
+            <QueryClientProvider client={queryClient}>
               <TemplatePage />
-            </EditCategoryProvider>
+            </QueryClientProvider>
           </Route>
         )}
         <Route path="/">
-          <CategoriesIndex />
+          <QueryClientProvider client={queryClient}>
+            <CategoriesIndex />
+          </QueryClientProvider>
         </Route>
       </Switch>
     </Router>

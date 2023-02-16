@@ -226,7 +226,7 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $client->request('GET', 'api/rest/v1/products?search={"wrong_attribute":[{"operator":"EMPTY"}]}');
-        $this->assert($client, 'Filter on property "wrong_attribute" is not supported or does not support operator "EMPTY"', Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->assert($client, '"wrong_attribute" does not exist or you do not have permission to access it.', Response::HTTP_NOT_FOUND);
     }
 
     public function testMaxPageWithOffsetPaginationType()

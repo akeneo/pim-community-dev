@@ -34,14 +34,14 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
     const imageInfo = !isImageAttributeInputValue(value) ? null : value;
     const downloadFilename = imageInfo?.originalFilename;
     const downloadUrl = imageInfo ? getImageDownloadUrl(router, imageInfo) : '';
-    const previewUrl = getMediaPreviewUrl(router, {
+    const thumbnailUrl = getMediaPreviewUrl(router, {
       type: MediaPreviewType.Thumbnail,
       attributeCode: attribute.code,
       data: imageInfo ? imageInfo.filePath : '',
     });
 
     return (
-      <Field channel={channel} label={getLabelFromAttribute(attribute, locale)} locale={locale}>
+      <Field channel={channel.label} label={getLabelFromAttribute(attribute, locale)} locale={locale}>
         <MediaFileInput
           value={imageInfo}
           onChange={onChange}
@@ -49,16 +49,18 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
           uploadingLabel={translate('pim_common.media_uploading')}
           uploadErrorLabel={translate('pim_common.media_upload_error')}
           clearTitle={translate('pim_common.clear_value')}
-          thumbnailUrl={previewUrl}
+          thumbnailUrl={thumbnailUrl}
           uploader={uploader}
         >
-          <IconButton
-            href={downloadUrl}
-            target="_blank"
-            download={downloadFilename}
-            icon={<DownloadIcon />}
-            title="Download"
-          />
+          {downloadUrl && downloadFilename && (
+            <IconButton
+              href={downloadUrl}
+              target="_blank"
+              download={downloadFilename}
+              icon={<DownloadIcon />}
+              title="Download"
+            />
+          )}
           {!inModal && <IconButton onClick={openFullscreenModal} icon={<FullscreenIcon />} title="Fullscreen" />}
         </MediaFileInput>
         {isFullscreenModalOpen && !inModal && imageInfo && (
