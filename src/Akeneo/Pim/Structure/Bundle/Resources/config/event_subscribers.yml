@@ -84,6 +84,22 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotAFamilyVariantAxisOnDeletion:
+        arguments:
+            - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotIdentifierOnDeletion:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotUsedAsChannelConversionUnitOnDeletion:
+        arguments:
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: kernel.event_subscriber }
+
     Akeneo\Pim\Structure\Bundle\EventSubscriber\TimestampableAttributeSubscriber:
         arguments:
             - '@doctrine.orm.entity_manager'
