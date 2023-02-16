@@ -15,7 +15,6 @@ import {getLabel} from 'pimui/js/i18n';
 import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
 import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-const FeatureFlags = require('pim/feature-flags');
 
 type Props = {
   attributeGroups: AttributeGroup[];
@@ -70,13 +69,9 @@ const AttributeGroupsDataGrid: FC<Props> = ({
     debouncedSearch(searchValue);
   };
 
-  const onReorder = async (order: number[]) => {
-    await refreshOrder(order.map(index => groups[index]));
-  };
-
   useEffect(() => {
     onGroupCountChange(filteredGroups.length);
-  }, [filteredGroups.length]);
+  }, [filteredGroups.length, onGroupCountChange]);
 
   return (
     <Wrapper>

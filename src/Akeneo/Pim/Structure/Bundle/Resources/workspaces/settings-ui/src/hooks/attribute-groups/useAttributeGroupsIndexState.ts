@@ -62,9 +62,8 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
       });
       setAttributeGroups(reorderedGroups);
       await saveOrder(reorderedGroups);
-      await saveOrder(reorderedGroups);
     },
-    [refresh, saveOrder]
+    [saveOrder]
   );
 
   return {
