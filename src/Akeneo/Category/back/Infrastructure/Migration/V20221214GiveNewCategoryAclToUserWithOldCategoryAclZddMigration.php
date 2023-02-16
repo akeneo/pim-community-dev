@@ -51,10 +51,10 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigration implements
 
                 // Roles with ACL to create category will also have the right to manage category template
                 if (
-                    isset($this->grantedPermissions['action:' . self::ACL_CATEGORY_CREATE])
-                    && true === $this->grantedPermissions['action:' . self::ACL_CATEGORY_CREATE]
+                    isset($this->grantedPermissions['action:'.self::ACL_CATEGORY_CREATE])
+                    && true === $this->grantedPermissions['action:'.self::ACL_CATEGORY_CREATE]
                 ) {
-                    $this->grantPermission('action:' . self::ACL_ENRICH_CATEGORY_TEMPLATE);
+                    $this->grantPermission('action:'.self::ACL_ENRICH_CATEGORY_TEMPLATE);
                 }
 
                 // Roles with ACL to edit category will also have the right to:
@@ -62,12 +62,12 @@ class V20221214GiveNewCategoryAclToUserWithOldCategoryAclZddMigration implements
                 // - edit category attributes
                 // - order category trees
                 if (
-                    isset($this->grantedPermissions['action:' . self::ACL_CATEGORY_EDIT])
-                    && true === $this->grantedPermissions['action:' . self::ACL_CATEGORY_EDIT]
+                    isset($this->grantedPermissions['action:'.self::ACL_CATEGORY_EDIT])
+                    && true === $this->grantedPermissions['action:'.self::ACL_CATEGORY_EDIT]
                 ) {
-                    $this->grantPermission('action:' . self::ACL_ENRICH_CATEGORY_TEMPLATE);
-                    $this->grantPermission('action:' . self::ACL_ENRICH_CATEGORY_EDIT_ATTRIBUTES);
-                    $this->grantPermission('action:' . self::ACL_ENRICH_CATEGORY_ORDER_TREES);
+                    $this->grantPermission('action:'.self::ACL_ENRICH_CATEGORY_TEMPLATE);
+                    $this->grantPermission('action:'.self::ACL_ENRICH_CATEGORY_EDIT_ATTRIBUTES);
+                    $this->grantPermission('action:'.self::ACL_ENRICH_CATEGORY_ORDER_TREES);
                 }
 
                 $roleWithPermissions->setPermissions($this->grantedPermissions);
