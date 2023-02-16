@@ -105,7 +105,9 @@ define([
      * Executes the search by setting the value.
      */
     doSearch: function () {
-      this.setValue(this._readDOMValue());
+      const readDOMValue = this._readDOMValue();
+      readDOMValue.value = readDOMValue.value.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, "\\$&");
+      this.setValue(readDOMValue);
     },
   });
 });
