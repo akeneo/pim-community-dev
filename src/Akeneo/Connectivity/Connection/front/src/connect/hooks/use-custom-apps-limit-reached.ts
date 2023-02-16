@@ -14,6 +14,7 @@ export const useCustomAppsLimitReached = (): Result => {
 
     return useQuery<boolean, Error, boolean>(['custom-apps-limit-reached'], async () => {
         const response = await fetch(url, {
+            method: 'GET',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
             },
