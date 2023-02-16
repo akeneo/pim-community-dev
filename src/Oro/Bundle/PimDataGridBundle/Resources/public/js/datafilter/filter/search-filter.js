@@ -106,7 +106,11 @@ define([
      */
     doSearch: function () {
       const readDOMValue = this._readDOMValue();
-      readDOMValue.value = readDOMValue.value.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, "\\$&");
+
+      if (readDOMValue.value !== undefined && typeof readDOMValue.value === 'string') {
+        readDOMValue.value = readDOMValue.value.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, "\\$&");
+      }
+
       this.setValue(readDOMValue);
     },
   });
