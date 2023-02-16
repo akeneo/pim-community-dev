@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Exception\ProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Exception\ProductMappingSchemaNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
