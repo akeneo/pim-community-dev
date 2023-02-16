@@ -3,6 +3,7 @@
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource;
 
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidLocale;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidMetricUnit;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidScope;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -44,7 +45,7 @@ class AttributeMetricSource extends Compound
                                 'fields' => [
                                     'unit' => [
                                         new Assert\Type('string'),
-                                        new Assert\NotBlank(),
+                                        new Assert\NotBlank(null, 'akeneo_catalogs.validation.product_mapping.source.measurement.unit.not_empty'),
                                     ],
                                 ],
                                 'allowMissingFields' => false,
@@ -57,6 +58,7 @@ class AttributeMetricSource extends Compound
                 ]),
                 new AttributeSourceContainsValidScope(),
                 new AttributeSourceContainsValidLocale(),
+                new AttributeSourceContainsValidMetricUnit(),
             ]),
         ];
     }

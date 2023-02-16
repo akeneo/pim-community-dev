@@ -27,12 +27,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  *    type: string
  * }
  */
-class AttributeSourceContainsValidMetricUnitValidator extends ConstraintValidator
+final class AttributeSourceContainsValidMetricUnitValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
-        private GetMeasurementsFamilyQueryInterface $getMeasurementsFamilyQuery
-
+        private readonly GetMeasurementsFamilyQueryInterface $getMeasurementsFamilyQuery
     )
     {}
 
@@ -57,20 +56,31 @@ class AttributeSourceContainsValidMetricUnitValidator extends ConstraintValidato
         $this->validateMetricUnitExists($attribute, $value);
     }
 
+    /**
+     * @param array $value
+     * @return void
+     */
     private function validateMetricHasUnit(array $value): void {
         if(!$value['parameters']['unit']) {
             $this->context
-                ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.measurement.unit.not_empty')
+                ->buildViolation('akeneo_catalogs.validation.product_mapping.source.measurement.unit.not_empty')
                 ->atPath('[parameters][unit]')
                 ->addViolation();
         }
     }
 
+    /**
+     * @param array $attribute
+     * @param array $value
+     * @return void
+     */
     private function validateMetricUnitExists(array $attribute, array $value): void {
-        $unitsOfThisMeasurementFamily = $this->getMeasurementsFamilyQuery->execute($attribute['measurement_family']);
-        if (!\in_array($value['unit'], $unitsOfThisMeasurementFamily)) {
+        $measurementFamilies = $this->getMeasurementsFamilyQuery->execute($attribute['measurement_family']);
+        $units = \array_map(static fn (array $row) => $row['code'], $measurementFamilies['units']);
+
+        if (!\in_array($value['parameters']['unit'], $units)) {
             $this->context
-                ->buildViolation('akeneo_catalogs.validation.product_selection.criteria.measurement.unit.not_exist')
+                ->buildViolation('akeneo_catalogs.validation.product_mapping.source.measurement.unit.not_exist')
                 ->atPath('[parameters][unit]')
                 ->addViolation();
         }
