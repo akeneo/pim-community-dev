@@ -17,6 +17,7 @@
 - PIM-10843: Rework get association query to avoid group concat max lenght limit
 - PIM-10835: Fix command publish-job-to-queue does not work
 - PIM-10778: Add limit to the number of options to display on the attribute option page
+- PIM-10828: Fix search bars don't take into account special characters
 
 ## Improvements
 
