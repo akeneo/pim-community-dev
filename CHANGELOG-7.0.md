@@ -5,6 +5,7 @@
 - RAB-1356: [Backport PIM-10849]: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
 - RAB-1356: [Backport PIM-10831]: Fix severe performance issues with the association product and product model picker
 - RAB-1356: [Backport PIM-10844]: Filter empty attribute option labels
+- RAB-1356: [Backport PIM-10778]: Add limit to the number of options to display on the attribute option page
 
 # 7.0.9 (2023-02-20)
 
