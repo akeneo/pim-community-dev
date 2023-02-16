@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\AttributeGroup\Infrastructure\Query\Sql;
 
-use Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql\GetAttributeGroups;
+use Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -95,7 +95,7 @@ class GetAttributeGroupsIntegration extends TestCase
 
     private function getQuery(): GetAttributeGroups
     {
-        return $this->get('Akeneo\Pim\Structure\Bundle\infrastructure\Query\Sql\GetAttributeGroups');
+        return $this->get('Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups');
     }
 
     private function createAttributeGroup(string $code, int $sortOrder, array $labels, ?bool $isDqiActivated): int
