@@ -982,3 +982,8 @@ jobs:
         alias: clean_categories_enriched_values
         label: Clean Categories Enriched Values on channel or locale change
         type: clean_categories_enriched_values
+    update_category_children_versions:
+        connector: internal
+        alias: update_category_children_versions
+        label: Update category children versions
+        type: update_category_children_versions
