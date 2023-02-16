@@ -10,6 +10,8 @@ import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
 import {Source} from './models/Source';
 import {Target} from './models/Target';
+import {createTargetsFromProductMapping} from './utils/createTargetsFromProductMapping';
+import {sourceHasError} from './utils/sourceHasError';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -23,32 +25,6 @@ const TargetContainer = styled.div`
 const SourceContainer = styled.div`
     flex-basis: 50%;
 `;
-
-const createTargetsFromProductMapping = (mapping: ProductMappingType): [string, Source][] => {
-    const targets = Object.entries(mapping);
-
-    // move UUID to the top
-    const index = targets.findIndex(([target]) => target === 'uuid');
-    const uuid = targets.splice(index, 1)[0];
-    targets.unshift(uuid);
-
-    return targets;
-};
-
-const hasError = (errors: object | undefined): boolean => {
-    if (errors === undefined) {
-        return false;
-    }
-
-    return (
-        Object.entries(errors).filter(([, value]) => {
-            if (typeof value === 'object' && hasError(value)) {
-                return true;
-            }
-            return typeof value === 'string';
-        }).length > 0
-    );
-};
 
 type Props = {
     productMapping: ProductMappingType;
@@ -136,7 +112,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                                             targetCode={targetCode}
                                             targetLabel={productMappingSchema.properties[targetCode]?.title}
                                             source={source}
-                                            hasError={hasError(errors[targetCode])}
+                                            hasError={sourceHasError(errors[targetCode])}
                                         />
                                     );
                                 })}
@@ -145,7 +121,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                     </Table.Body>
                 </Table>
             </TargetContainer>
-            <SourceContainer>
+            <SourceContainer data-testid='source-panel'>
                 <SourcePanel
                     target={selectedTarget}
                     source={selectedSource}
