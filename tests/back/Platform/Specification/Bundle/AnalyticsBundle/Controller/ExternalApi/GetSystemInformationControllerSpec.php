@@ -29,7 +29,7 @@ class GetSystemInformationControllerSpec extends ObjectBehavior
         $response->getContent()->shouldReturn(json_encode(
             [
                 'version' => '12345678',
-                'edition' => 'ce'
+                'edition' => 'CE'
             ]
         ));
     }
@@ -45,7 +45,7 @@ class GetSystemInformationControllerSpec extends ObjectBehavior
         $response->getContent()->shouldReturn(json_encode(
             [
                 'version' => '12345678',
-                'edition' => 'ee'
+                'edition' => 'EE'
             ]
         ));
     }

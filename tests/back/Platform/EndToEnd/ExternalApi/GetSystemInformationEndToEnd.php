@@ -16,7 +16,7 @@ class GetSystemInformationEndToEnd extends ApiTestCase
     /**
      * @group ce
      */
-    public function test_to_get_system_information_through_the_api(): void
+    public function test_to_get_ce_system_information_through_the_api(): void
     {
         $apiConnectionEcommerce = $this->createConnection('ecommerce', 'Ecommerce');
         $apiClient = $this->createAuthenticatedClient(
@@ -37,7 +37,7 @@ class GetSystemInformationEndToEnd extends ApiTestCase
         Assert::assertSame(
             [
                 'version' => strtolower(constant(sprintf('%s::VERSION', $this->versionClass))),
-                'edition' => strtolower(constant(sprintf('%s::EDITION', $this->versionClass))),
+                'edition' => 'CE',
             ],
             $content
         );

@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10826: Fix GET system-information endpoint with wrong answers
+
 # 6.0.69 (2023-02-13)
 
 ## Bug fixes:
