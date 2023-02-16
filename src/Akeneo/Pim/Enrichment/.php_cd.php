@@ -137,6 +137,7 @@ $rules = [
         'Akeneo\Category\Domain\Model\Classification\CategoryTree',
         'Akeneo\Category\Domain\Query\GetCategoryInterface',
         'Akeneo\Category\Domain\Query\GetCategoryTreesInterface',
+        'Akeneo\Category\Domain\ValueObject\Template\TemplateUuid',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',

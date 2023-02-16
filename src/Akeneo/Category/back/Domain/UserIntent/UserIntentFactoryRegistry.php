@@ -39,7 +39,7 @@ class UserIntentFactoryRegistry
     /**
      * @return UserIntent[]
      */
-    public function fromStandardFormatField(string $fieldName, mixed $data): array
+    public function fromStandardFormatField(string $fieldName, int $categoryId, mixed $data): array
     {
         $factory = $this->userIntentFactoriesWithFieldName[$fieldName] ?? null;
         if (\in_array($fieldName, $this->ignoredFieldNames)) {
@@ -49,6 +49,6 @@ class UserIntentFactoryRegistry
             throw new \InvalidArgumentException(\sprintf('Cannot create userIntent from %s fieldName', $fieldName));
         }
 
-        return $factory->create($fieldName, $data);
+        return $factory->create($fieldName, $categoryId, $data);
     }
 }

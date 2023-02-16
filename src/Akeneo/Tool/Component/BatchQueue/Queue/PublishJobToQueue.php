@@ -47,7 +47,7 @@ class PublishJobToQueue implements PublishJobToQueueInterface
     ): JobExecution {
         $jobInstance = $this->getJobInstance($jobInstanceCode);
         $jobExecution = $this->createJobExecutionHandler->createFromJobInstance($jobInstance, $config, $username);
-        $options = $this->getOptions($noLog, $emails);
+        $options = $this->getOptions($noLog, $emails ?? []);
 
         $this->batchLogHandler->setSubDirectory((string) $jobExecution->getId());
 

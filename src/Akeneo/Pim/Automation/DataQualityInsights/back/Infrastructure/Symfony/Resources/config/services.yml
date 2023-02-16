@@ -184,20 +184,6 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.product_model.get_enrichment_images_masks'
             - '@pim_catalog.repository.product_model'
 
-    akeneo.pim.automation.data_quality_insights.mark_product_criteria_to_evaluate:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\MarkCriteriaToEvaluate
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_ids_query'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQuery'
-            - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
-
-    akeneo.pim.automation.data_quality_insights.mark_product_model_criteria_to_evaluate:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\MarkCriteriaToEvaluate
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_model_ids_query'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery'
-            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeJobs:
         public: true
         arguments:

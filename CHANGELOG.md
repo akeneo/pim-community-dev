@@ -14,6 +14,7 @@
 - PIM-10806: Allow to delete product's attributes with type 'identifier' and ensure grey cross is displayed
 - PIM-10825: Fix transfer to external storage does not give enough information
 - PIM-10823: Fix cannot import price and measurement with comma as decimal separator with value not saved as string in import file
+- PIM-10835: Fix command publish-job-to-queue does not work
 - PIM-10778: Add limit to the number of options to display on the attribute option page
 
 ## Improvements

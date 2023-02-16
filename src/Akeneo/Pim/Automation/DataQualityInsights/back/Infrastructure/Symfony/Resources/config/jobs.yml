@@ -1,3 +1,6 @@
+parameters:
+    akeneo.pim.automation.data_quality_insights.job.mark_evaluations.bulk_size: 100
+
 services:
     #Jobs
     akeneo.pim.automation.data_quality_insights.job.prepare_evaluations:
@@ -7,8 +10,10 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo.pim.automation.data_quality_insights.connector.step.prepare_products_criteria_evaluation'
-                - '@akeneo.pim.automation.data_quality_insights.connector.step.prepare_product_models_criteria_evaluation'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.mark_products_evaluation_impacted_by_updated_products'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.mark_product_models_evaluation_impacted_by_updated_product_models'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.mark_products_evaluation_impacted_by_updated_attribute_group_activation'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.mark_product_models_evaluation_impacted_by_updated_attribute_group_activation'
             - true
             - false
         tags:
@@ -87,21 +92,37 @@ services:
             - '@akeneo_batch.job_repository'
             - '@akeneo.pim.automation.data_quality_insights.connector.tasklet.evaluate_products_and_product_models_criteria'
 
-    akeneo.pim.automation.data_quality_insights.connector.step.prepare_products_criteria_evaluation:
+    akeneo.pim.automation.data_quality_insights.connector.step.mark_products_evaluation_impacted_by_updated_products:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
-            - 'prepare_products_criteria_evaluation'
+            - 'mark_products_evaluation_impacted_by_updated_products'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_products_criteria_evaluation'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\MarkEvaluation\MarkProductsEvaluationImpactedByUpdatedProductsTasklet'
 
-    akeneo.pim.automation.data_quality_insights.connector.step.prepare_product_models_criteria_evaluation:
+    akeneo.pim.automation.data_quality_insights.connector.step.mark_products_evaluation_impacted_by_updated_attribute_group_activation:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
-            - 'prepare_product_models_criteria_evaluation'
+            - 'mark_products_evaluation_impacted_by_updated_attribute_group_activation'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_product_models_criteria_evaluation'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\MarkEvaluation\MarkProductsEvaluationImpactedByUpdatedAttributeGroupActivationTasklet'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.mark_product_models_evaluation_impacted_by_updated_product_models:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'mark_product_models_evaluation_impacted_by_updated_product_models'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\MarkEvaluation\MarkProductModelsEvaluationImpactedByUpdatedProductModelsTasklet'
+
+    akeneo.pim.automation.data_quality_insights.connector.step.mark_product_models_evaluation_impacted_by_updated_attribute_group_activation:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'mark_product_models_evaluation_impacted_by_updated_attribute_group_activation'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\MarkEvaluation\MarkProductModelsEvaluationImpactedByUpdatedAttributeGroupActivationTasklet'
 
     akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates:
         class: '%pim_connector.step.tasklet.class%'
@@ -146,17 +167,33 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels'
 
-    akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_products_criteria_evaluation:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PrepareProductsCriteriaEvaluationTasklet
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\MarkEvaluation\MarkProductsEvaluationImpactedByUpdatedProductsTasklet:
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.mark_product_criteria_to_evaluate'
+            - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_ids_query'
             - '@logger'
+            - '%akeneo.pim.automation.data_quality_insights.job.mark_evaluations.bulk_size%'
 
-    akeneo.pim.automation.data_quality_insights.infrastructure.connector.tasklet.prepare_product_models_criteria_evaluation:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PrepareProductModelsCriteriaEvaluationTasklet
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\MarkEvaluation\MarkProductsEvaluationImpactedByUpdatedAttributeGroupActivationTasklet:
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.mark_product_model_criteria_to_evaluate'
+            - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQuery'
             - '@logger'
+            - '%akeneo.pim.automation.data_quality_insights.job.mark_evaluations.bulk_size%'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\MarkEvaluation\MarkProductModelsEvaluationImpactedByUpdatedProductModelsTasklet:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_model_ids_query'
+            - '@logger'
+            - '%akeneo.pim.automation.data_quality_insights.job.mark_evaluations.bulk_size%'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\MarkEvaluation\MarkProductModelsEvaluationImpactedByUpdatedAttributeGroupActivationTasklet:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery'
+            - '@logger'
+            - '%akeneo.pim.automation.data_quality_insights.job.mark_evaluations.bulk_size%'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\ConsolidateDashboardRatesTasklet:
         arguments:

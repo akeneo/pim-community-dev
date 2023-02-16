@@ -20,5 +20,5 @@ interface UserIntentFactory
     /**
      * @return UserIntent[]
      */
-    public function create(string $fieldName, mixed $data): array;
+    public function create(string $fieldName, int $categoryId, mixed $data): array;
 }
