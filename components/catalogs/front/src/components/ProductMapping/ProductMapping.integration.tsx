@@ -1957,6 +1957,8 @@ test('it displays requirements', async () => {
             name: {
                 type: 'string',
                 description: 'Name description',
+                minLength: 3,
+                maxLength: 50,
             },
         },
     };
@@ -1977,9 +1979,15 @@ test('it displays requirements', async () => {
     await clickOnMappingTarget('name');
     expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.title')).toBeInTheDocument();
     expect(screen.queryByText('Name description')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.minLength')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maxLength')
+    ).toBeInTheDocument();
 });
 
-test('it doesnt displays requirements when there is no description', async () => {
+test('it does not displays requirements', async () => {
     const onChange = jest.fn();
 
     mockFetchResponses([
@@ -2060,4 +2068,10 @@ test('it doesnt displays requirements when there is no description', async () =>
 
     await clickOnMappingTarget('name');
     expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.title')).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.minLength')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maxLength')
+    ).not.toBeInTheDocument();
 });
