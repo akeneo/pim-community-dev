@@ -48,7 +48,7 @@ class GetCategorySql implements GetCategoryInterface
         $condition['params'] = ['category_codes' => $categoryCodes];
         $condition['types'] = ['category_codes' => Connection::PARAM_STR_ARRAY];
 
-        return $this->executeAll($condition, true);
+        return $this->executeAll($condition);
     }
 
     /**
@@ -62,7 +62,7 @@ class GetCategorySql implements GetCategoryInterface
         $condition['params'] = ['category_ids' => $categoryIds];
         $condition['types'] = ['category_ids' => Connection::PARAM_INT_ARRAY];
 
-        return $this->executeAll($condition, true);
+        return $this->executeAll($condition);
     }
 
     /**
