@@ -285,6 +285,14 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with a simple_select condition with color_localizable_and_scopable attribute and ecommerce scope and en_US locale
     Then I should get an error on update with message 'conditions[0][locale]: The "en_US" locale is not active for the "ecommerce" channel.'
 
+  Scenario: Cannot update a multiselect condition by using the simple select attribute
+    When I try to update an identifier generator with a multi_select condition with color attribute
+    Then I should get an error on update with message 'conditions[0][value]: The following attribute options do not exist for the attribute "color": "option_a", "option_b".'
+
+  Scenario: Cannot update an identifier generator using multi_select with operator IN and array of simple_select options
+    When I try to update an identifier generator with a multi_select condition with operator IN and ["red", "green"] as value
+    Then I should get an error on update with message 'conditions[0][value]: The following attribute options do not exist for the attribute "a_multi_select": "red", "green".'
+
   # Label
   Scenario: Can update an identifier generator without label
     When I update an identifier generator without label

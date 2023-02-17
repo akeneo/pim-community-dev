@@ -431,9 +431,9 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to create an identifier generator with a (?P<type>family|simple_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     * @When /^I try to create an identifier generator with a (?P<type>family|simple_select|multi_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue($type, $operator, $value): void
+    public function iTryToCreateAnIdentifierGeneratorWithAConditionWithOperatorAndValue($type, $operator, $value): void
     {
         $defaultCondition = $this->getValidCondition($type, operator: $operator);
 

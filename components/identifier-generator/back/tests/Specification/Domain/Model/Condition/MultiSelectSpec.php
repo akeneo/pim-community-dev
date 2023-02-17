@@ -25,7 +25,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(MultiSelect::class);
     }
 
-    public function it_should_throw_exception_if_type_is_not_family()
+    public function it_cant_be_instanciated_with_invalid_type()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'bad',
@@ -34,7 +34,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_no_attribute_code_is_defined()
+    public function it_cant_be_instanciated_if_no_attribute_code_is_defined()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -43,7 +43,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_attribute_code_is_not_a_string()
+    public function it_cant_be_instanciated_if_attribute_code_is_not_a_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -53,7 +53,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_scope_is_not_a_string()
+    public function it_cant_be_instanciated_if_scope_is_not_a_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -64,7 +64,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_locale_is_not_a_string()
+    public function it_cant_be_instanciated_if_locale_is_not_a_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -75,7 +75,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_no_operator_is_defined()
+    public function it_cant_be_instanciated_if_no_operator_is_defined()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -84,7 +84,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_operator_is_not_a_string()
+    public function it_cant_be_instanciated_if_operator_is_not_a_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -94,7 +94,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_operator_is_invalid()
+    public function it_cant_be_instanciated_if_operator_is_invalid()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -104,7 +104,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_value_is_not_defined()
+    public function it_cant_be_instanciated_if_value_is_not_defined()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -114,7 +114,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_value_is_not_an_array()
+    public function it_cant_be_instanciated_if_value_is_not_an_array()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -125,7 +125,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_value_is_not_an_array_of_strings()
+    public function it_cant_be_instanciated_if_value_is_not_an_array_of_strings()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -136,7 +136,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_value_is_empty()
+    public function it_cant_be_instanciated_if_value_is_empty_for_in_operator()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -147,7 +147,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_value_is_defined_and_operator_is_empty()
+    public function it_cant_be_instanciated_if_value_is_defined_and_operator_is_empty()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -158,7 +158,7 @@ class MultiSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_normalize_with_value()
+    public function it_can_be_normalized_with_value_and_in_operator()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -174,7 +174,7 @@ class MultiSelectSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_should_normalize_without_value()
+    public function it_can_be_normalized_without_value_and_empty_operator()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',
@@ -188,7 +188,7 @@ class MultiSelectSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_should_normalize_with_scope_and_locale()
+    public function it_can_be_normalized_with_scope_and_locale()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'multi_select',

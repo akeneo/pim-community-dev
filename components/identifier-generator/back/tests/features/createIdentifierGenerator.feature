@@ -344,9 +344,14 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][locale]: The "en_US" locale is not active for the "ecommerce" channel.'
     And the identifier should not be created
 
-  Scenario: Cannot create a multiselect condition by using options of the color attribute
+  Scenario: Cannot create a multiselect condition by using the simple select attribute
     When I try to create an identifier generator with a multi_select condition with color attribute
     Then I should get an error with message 'conditions[0][value]: The following attribute options do not exist for the attribute "color": "option_a", "option_b".'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator using multi_select with operator IN and array of simple_select options
+    When I try to create an identifier generator with a multi_select condition with operator IN and ["red", "green"] as value
+    Then I should get an error with message 'conditions[0][value]: The following attribute options do not exist for the attribute "a_multi_select": "red", "green".'
     And the identifier should not be created
 
   # Label

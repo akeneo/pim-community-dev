@@ -32,7 +32,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public const DEFAULT_IDENTIFIER_GENERATOR_CODE = 'default';
 
     public function __construct(
-        private UpdateGeneratorHandler        $updateGeneratorHandler,
+        private UpdateGeneratorHandler $updateGeneratorHandler,
         private IdentifierGeneratorRepository $generatorRepository,
     ) {
     }
@@ -447,7 +447,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to update an identifier generator with a (?P<type>family|simple_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
+     * @When /^I try to update an identifier generator with a (?P<type>family|simple_select|multi_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
      */
     public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue(string $type, string $operator, string $value): void
     {
@@ -482,6 +482,19 @@ final class UpdateIdentifierGeneratorContext implements Context
         } elseif ('' !== $locale) {
             $defaultCondition['locale'] = $locale;
         }
+        $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a multi_select condition with (?P<attributeCode>[^']*) attribute?$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithAMultiSelectConditionWithNameAttribute(
+        string $attributeCode,
+        string $scope = '',
+        string $locale = ''
+    ): void {
+        $defaultCondition = $this->getValidCondition('multi_select');
+        $defaultCondition['attributeCode'] = $attributeCode;
         $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
     }
 
