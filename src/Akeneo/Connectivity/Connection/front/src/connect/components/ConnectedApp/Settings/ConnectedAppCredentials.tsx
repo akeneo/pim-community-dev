@@ -8,6 +8,7 @@ import {Credential} from '../../../../settings/components/credentials/Credential
 import {useFetchCustomAppSecret} from '../../../hooks/use-fetch-custom-app-secret';
 import {useHistory} from 'react-router';
 import {useRouter} from '../../../../shared/router/use-router';
+import {useSecurity} from '../../../../shared/security';
 
 export const CredentialList = styled.div`
     display: grid;
@@ -22,6 +23,7 @@ export const ConnectedAppCredentials: FC<Props> = ({connectedApp}) => {
     const translate = useTranslate();
     const history = useHistory();
     const generateUrl = useRouter();
+    const security = useSecurity();
 
     const {data: secret} = useFetchCustomAppSecret(connectedApp.id);
 
@@ -31,6 +33,8 @@ export const ConnectedAppCredentials: FC<Props> = ({connectedApp}) => {
             connectionCode: connectedApp.connection_code,
         }
     )}`;
+
+    const showRegenerateButton = security.isGranted('akeneo_connectivity_connection_manage_test_apps');
 
     return (
         <>
@@ -53,7 +57,7 @@ export const ConnectedAppCredentials: FC<Props> = ({connectedApp}) => {
                     label={translate(
                         'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.client_secret'
                     )}
-                    actions={
+                    actions={showRegenerateButton &&
                         <Button ghost level='secondary' size='small' onClick={() => history.push(regenerateSecretUrl)}>
                             {translate(
                                 'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.regenerate_button'

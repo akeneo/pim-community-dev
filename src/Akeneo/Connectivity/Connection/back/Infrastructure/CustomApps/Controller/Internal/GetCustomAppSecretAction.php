@@ -33,10 +33,6 @@ final class GetCustomAppSecretAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
-            throw new AccessDeniedHttpException();
-        }
-
         $customApp = $this->getCustomAppQuery->execute($customAppId);
         if (null === $customApp) {
             throw new NotFoundHttpException(\sprintf('Custom app with id %s was not found.', $customAppId));
