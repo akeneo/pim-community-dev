@@ -180,7 +180,7 @@ class Product implements ArrayConverterInterface
         $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
         $this->validateItem($filteredItem);
 
-        $mergedItem = $this->columnsMerger->merge($filteredItem);
+        $mergedItem = $this->columnsMerger->merge($filteredItem, $options);
         $convertedItem = $this->convertItem($mergedItem);
 
         return $convertedItem;

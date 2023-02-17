@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 use Akeneo\Category\Domain\Model\Classification\CategoryTree;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface;
@@ -103,6 +104,7 @@ class CategoryTreeController extends AbstractController
                 'label' => $tree->getLabel($this->userContext->getCurrentLocaleCode()),
                 'templateUuid' => (string) $tree->getCategoryTreeTemplate()?->getTemplateUuid(),
                 'templateLabel' => $tree->getCategoryTreeTemplate()?->getTemplateLabel($this->userContext->getCurrentLocaleCode()),
+                'templateCode' => (string) $tree->getCategoryTreeTemplate()?->getTemplateCode(),
                 'selected' => $tree->getId()?->getValue() === $selectedTreeId ? 'true' : 'false'
             ];
         }, $trees);
@@ -319,8 +321,11 @@ class CategoryTreeController extends AbstractController
 
         $category = $this->findCategory($id);
 
+        $templateUuid = $this->getTemplateUuid($category);
+        $options = $templateUuid ? ['templateUuid' => $templateUuid] : [];
+
         try {
-            $this->categoryRemover->remove($category);
+            $this->categoryRemover->remove($category, $options);
         } catch (ConflictHttpException $exception) {
             return new JsonResponse(
                 [
@@ -423,6 +428,11 @@ class CategoryTreeController extends AbstractController
     protected function buildAclName($name)
     {
         return $this->rawConfiguration['acl'] . '_' . $name;
+    }
+
+    public function getTemplateUuid(CategoryInterface $ormCategory): ?TemplateUuid
+    {
+        return $this->getCategory->byId($ormCategory->getId())?->getTemplateUuid();
     }
 
     /**

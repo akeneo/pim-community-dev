@@ -29,6 +29,7 @@ class InternalApiToStdSpec extends ObjectBehavior
     public function it_converts($checker)
     {
         $data = [
+            'id' => 1,
             'properties' => [
                 'code' => 'mycode',
                 'labels' => [
@@ -48,6 +49,7 @@ class InternalApiToStdSpec extends ObjectBehavior
             ]
         ];
         $expected = [
+            'id' => 1,
             'code' => 'mycode',
             'labels' => [
                 'fr_FR' => 'Chaussettes',

@@ -114,7 +114,7 @@ class Value implements ArrayConverterInterface
      */
     public function convert(array $values, array $options = [])
     {
-        $mergedValues = $this->columnsMerger->merge($values);
+        $mergedValues = $this->columnsMerger->merge($values, $options);
         $convertedValues = [];
 
         foreach ($mergedValues as $column => $value) {

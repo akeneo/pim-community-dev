@@ -25,7 +25,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 final class ValueUserIntentFactory implements UserIntentFactory
 {
-    public function __construct(private GetAttribute $getAttribute)
+    public function __construct(private readonly GetAttribute $getAttribute)
     {
     }
 
@@ -38,11 +38,11 @@ final class ValueUserIntentFactory implements UserIntentFactory
     }
 
     /**
-     * @param array<string, AttributeValueApi> $data
+     * @phpstan-param array<string, AttributeValueApi> $data
      *
      * @return array|UserIntent[]
      */
-    public function create(string $fieldName, mixed $data): array
+    public function create(string $fieldName, int $categoryId, mixed $data): array
     {
         if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($fieldName, ValueUserIntentFactory::class, $data);
@@ -59,6 +59,10 @@ final class ValueUserIntentFactory implements UserIntentFactory
                     continue;
                 }
 
+                if (is_string($value['data']) && $this->isDataStringEmpty($value['data'])) {
+                    $value['data'] = null;
+                }
+
                 $userIntents[] = $this->addValueUserIntent($attributeType, $value);
             }
         }
@@ -67,10 +71,23 @@ final class ValueUserIntentFactory implements UserIntentFactory
     }
 
     /**
+     * Sanitize data from html tags and special characters.
+     * (i.e <p>data</p>\n will return "data").
+     */
+    private function isDataStringEmpty(string $data): bool
+    {
+        return empty(trim(strip_tags($data)));
+    }
+
+    /**
      * @param array<string, AttributeValueApi> $attributes
      */
     private function getAttributeCollectionByAttributeValues(array $attributes): AttributeCollection
     {
+        if (!$attributes) {
+            return AttributeCollection::fromArray([]);
+        }
+
         $categoryAttributeUuids = $this->extractCategoryAttributeUuids(array_keys($attributes));
 
         return $this->getAttribute->byUuids($categoryAttributeUuids);

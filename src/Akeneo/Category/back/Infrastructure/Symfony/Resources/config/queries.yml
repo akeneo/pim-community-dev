@@ -4,6 +4,11 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Domain\Query\GetCategoryByIds:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryByIdsSql
+    arguments:
+      - '@database_connection'
+
   Akeneo\Category\Application\Query\GetCategoriesInterface:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesSql
     arguments:
@@ -53,7 +58,22 @@ services:
     arguments:
       - '@Akeneo\Category\Application\Handler\SearchFilters'
 
-  Akeneo\Category\Application\Query\GetDirectChildrenCategoryCodesInterface:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\GetDirectChildrenCategoryCodes
+  Akeneo\Category\Application\Query\GetCategoryChildrenIds:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryChildrenIdsSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryTreeTemplateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\DeleteTemplateAndAttributes:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteTemplateAndAttributesSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\DeactivateTemplate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeactivateTemplateSql
     arguments:
       - '@database_connection'
