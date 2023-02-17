@@ -112,6 +112,6 @@ final class SimpleOrMultiSelectShouldBeValidValidator extends ConstraintValidato
             ],
             'scope' => [new Optional()],
             'locale' => [new Optional()],
-        ]), new SimpleSelectOptionCodesShouldExist()]);
+        ]), new SelectOptionShouldExist()]);
     }
 }
