@@ -89,17 +89,19 @@ pim_identifier_generator:
                 numberMin_label: 'Min number'
             family:
                 title: 'Family'
-                abbrev_type: 'Define the format of this property'
-                abbrev_type_empty_label: 'Select the format'
-                operator: 'Operator'
-                chars_number: 'Number of characters'
             code_format:
                 type:
                     truncate: 'Use first characters'
                     code: 'Use the entire code'
                     nomenclature: 'Use your own nomenclature'
             operator:
+                title: 'Operator'
                 placeholder: 'Select the operator'
+            simple_select:
+                title: 'Attribute'
+            abbrev_type: 'Define the format of this property'
+            abbrev_type_empty_label: 'Select the format'
+            chars_number: 'Number of characters'
         empty:
             title: 'Create your identifier structure'
             text: 'Click on "Add new property" on the top right'

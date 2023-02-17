@@ -13,13 +13,7 @@ type Props = {
   isHorizontal?: boolean;
 };
 
-const LocaleSelector: React.FC<Props> = ({
-  value,
-  onChange,
-  scopable,
-  scope,
-  isHorizontal = true,
-}) => {
+const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope, isHorizontal = true}) => {
   const translate = useTranslate();
   const {data, isLoading, error} = useGetScopes();
   const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();

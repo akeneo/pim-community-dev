@@ -30,7 +30,7 @@ const defaultValueByAttributeType = {
     type: PROPERTY_NAMES.SIMPLE_SELECT,
     process: {
       type: null,
-    }
+    },
   },
 };
 

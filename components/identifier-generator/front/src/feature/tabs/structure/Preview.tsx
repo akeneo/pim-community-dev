@@ -5,7 +5,7 @@ import {
   DelimiterPreview,
   FamilyCodePreview,
   FreeTextPreview,
-  SimpleSelectPreview
+  SimpleSelectPreview,
 } from './preview/index';
 import {Styled} from '../../components/Styled';
 

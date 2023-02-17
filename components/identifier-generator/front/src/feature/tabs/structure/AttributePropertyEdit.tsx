@@ -1,18 +1,24 @@
 import React, {useCallback} from 'react';
-import {ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
-import {AbbreviationType, FamilyPropertyOperators, Operator, SimpleSelectProperty} from '../../models';
-import {Styled} from '../../components/Styled';
 import {Field, NumberInput, SelectInput} from 'akeneo-design-system';
+import {AbbreviationType, FamilyProperty, Operator, SimpleSelectProperty} from '../../models';
 import {OperatorSelector} from '../../components';
-import {PropertyEditFieldsProps} from './PropertyEdit';
-import {ScopeAndLocaleSelector} from '../../components/ScopeAndLocaleSelector';
+import {useTranslate} from '@akeneo-pim-community/shared';
+import {Styled} from '../../components/Styled';
+
+type Props = {
+  selectedProperty: FamilyProperty | SimpleSelectProperty;
+  onChange: (property: FamilyProperty | SimpleSelectProperty) => void;
+  children?: React.ReactNode;
+};
+
+const Operators: Operator[] = [Operator.EQUAL, Operator.EQUAL_OR_LESS];
 
 const options = [
   {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.truncate'},
   {value: AbbreviationType.NO, label: 'pim_identifier_generator.structure.settings.code_format.type.code'},
 ];
 
-const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = ({selectedProperty, onChange}) => {
+const AttributePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, children}) => {
   const translate = useTranslate();
 
   const onChangeProcessType = useCallback(
@@ -20,7 +26,6 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
       if (type === AbbreviationType.TRUNCATE) {
         onChange({
           type: selectedProperty.type,
-          attributeCode: selectedProperty.attributeCode,
           process: {
             type: AbbreviationType.TRUNCATE,
             value: 3,
@@ -30,14 +35,13 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
       } else {
         onChange({
           type: selectedProperty.type,
-          attributeCode: selectedProperty.attributeCode,
           process: {
             type: AbbreviationType.NO,
           },
         });
       }
     },
-    [onChange, selectedProperty.attributeCode, selectedProperty.type]
+    [onChange, selectedProperty.type]
   );
 
   const onChangeOperator = useCallback(
@@ -64,22 +68,15 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
     [onChange, selectedProperty]
   );
 
-  const handleScopeAndLocaleChange = (newValue: {scope?: ChannelCode | null; locale?: LocaleCode | null}) => {
-    onChange({
-      ...selectedProperty,
-      ...newValue,
-    });
-  };
-
   return (
     <Styled.EditionContainer>
       <Field
-        label={translate('pim_identifier_generator.structure.settings.family.abbrev_type')}
+        label={translate('pim_identifier_generator.structure.settings.abbrev_type')}
         requiredLabel={translate('pim_common.required_label')}
       >
         <SelectInput
           value={selectedProperty.process.type}
-          emptyResultLabel={translate('pim_identifier_generator.structure.settings.family.abbrev_type_empty_label')}
+          emptyResultLabel={translate('pim_identifier_generator.structure.settings.abbrev_type_empty_label')}
           openLabel={translate('pim_common.open')}
           onChange={onChangeProcessType}
           clearable={false}
@@ -94,32 +91,26 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
       {selectedProperty.process.type === AbbreviationType.TRUNCATE && (
         <>
           <Field
-            label={translate('pim_identifier_generator.structure.settings.family.operator')}
+            label={translate('pim_identifier_generator.structure.settings.operator.title')}
             requiredLabel={translate('pim_common.required_label')}
           >
             <OperatorSelector
               operator={selectedProperty.process.operator || null}
               onChange={onChangeOperator}
-              operators={FamilyPropertyOperators}
+              operators={Operators}
             />
           </Field>
           <Field
-            label={translate('pim_identifier_generator.structure.settings.family.chars_number')}
+            label={translate('pim_identifier_generator.structure.settings.chars_number')}
             requiredLabel={translate('pim_common.required_label')}
           >
             <NumberInput value={`${selectedProperty.process.value}`} onChange={onChangeCharsNumber} max={5} min={1} />
           </Field>
         </>
       )}
-      <ScopeAndLocaleSelector
-        attributeCode={selectedProperty.attributeCode}
-        locale={selectedProperty.locale}
-        scope={selectedProperty.scope}
-        onChange={handleScopeAndLocaleChange}
-        isHorizontal={false}
-      />
+      {children}
     </Styled.EditionContainer>
   );
 };
 
-export {SimpleSelectPropertyEdit};
+export {AttributePropertyEdit};

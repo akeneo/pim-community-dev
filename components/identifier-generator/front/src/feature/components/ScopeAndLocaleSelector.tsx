@@ -53,7 +53,7 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({
     <Styled.ConditionLineSkeleton>This is Loading</Styled.ConditionLineSkeleton>
   ) : (
     <>
-      {data?.scopable && <ScopeSelector value={scope} onChange={handleScopeChange} isHorizontal={isHorizontal}/>}
+      {data?.scopable && <ScopeSelector value={scope} onChange={handleScopeChange} isHorizontal={isHorizontal} />}
       {data?.localizable && (
         <LocaleSelector
           value={locale}
