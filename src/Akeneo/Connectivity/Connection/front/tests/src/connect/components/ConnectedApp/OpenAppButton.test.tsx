@@ -48,25 +48,6 @@ test('The Open App button is disabled when the user doesnt have the permission t
     openAppButton.toHaveAttribute('aria-disabled', 'true');
 });
 
-test('The Open App button is disabled for custom app when the user doesnt have the permission to manage custom apps', () => {
-    const isGranted = jest.fn((acl: string) => {
-        return acl !== 'akeneo_connectivity_connection_manage_test_apps';
-    });
-
-    renderWithProviders(
-        <SecurityContext.Provider value={{isGranted}}>
-            <OpenAppButton connectedApp={{...connectedApp, is_custom_app: true}} />
-        </SecurityContext.Provider>
-    );
-
-    const openAppButton = expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.label')
-    );
-    openAppButton.not.toHaveAttribute('href');
-    openAppButton.toHaveAttribute('disabled');
-    openAppButton.toHaveAttribute('aria-disabled', 'true');
-});
-
 test('The Open App button is enabled when the user has the permission to manage apps', () => {
     const isGranted = jest.fn((acl: string) => {
         return acl === 'akeneo_connectivity_connection_open_apps';
@@ -75,28 +56,6 @@ test('The Open App button is enabled when the user has the permission to manage 
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
             <OpenAppButton connectedApp={connectedApp} />
-        </SecurityContext.Provider>
-    );
-
-    const openAppButton = expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.label')
-    );
-    openAppButton.toHaveAttribute(
-        'href',
-        '#akeneo_connectivity_connection_connect_connected_apps_open?connectionCode=some_connection_code'
-    );
-    openAppButton.not.toHaveAttribute('disabled');
-    openAppButton.not.toHaveAttribute('aria-disabled', 'true');
-});
-
-test('The Open App button is enabled for custom app when the user has the permission to manage custom apps', () => {
-    const isGranted = jest.fn((acl: string) => {
-        return acl === 'akeneo_connectivity_connection_manage_test_apps';
-    });
-
-    renderWithProviders(
-        <SecurityContext.Provider value={{isGranted}}>
-            <OpenAppButton connectedApp={{...connectedApp, is_custom_app: true}} />
         </SecurityContext.Provider>
     );
 

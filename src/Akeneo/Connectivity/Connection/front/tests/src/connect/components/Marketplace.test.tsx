@@ -31,7 +31,6 @@ test('The marketplace renders with apps', () => {
         isGranted: (acl: string) =>
             ({
                 akeneo_connectivity_connection_manage_apps: true,
-                akeneo_connectivity_connection_manage_test_apps: false,
             }[acl] ?? false),
     }));
 
@@ -402,7 +401,6 @@ test('The connect buttons are disabled and a warning is showed when the limit of
         isGranted: (acl: string) =>
             ({
                 akeneo_connectivity_connection_manage_apps: true,
-                akeneo_connectivity_connection_manage_test_apps: false,
             }[acl] ?? false),
     }));
 
@@ -470,7 +468,6 @@ test('The connect buttons are disabled and a warning is showed when the user can
         isGranted: (acl: string) =>
             ({
                 akeneo_connectivity_connection_manage_apps: false,
-                akeneo_connectivity_connection_manage_test_apps: false,
             }[acl] ?? false),
     }));
 
