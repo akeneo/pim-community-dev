@@ -6,18 +6,18 @@ import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 
 type SimpleSelectProperty = {
   type: PROPERTY_NAMES.SIMPLE_SELECT;
-  attributeCode: AttributeCode;
+  attributeCode?: AttributeCode;
   locale?: LocaleCode | null;
   scope?: ChannelCode | null;
   process:
     | {
-    type: AbbreviationType.NO;
-  }
+        type: AbbreviationType.NO;
+      }
     | {
-    type: AbbreviationType.TRUNCATE;
-    operator: Operator | null;
-    value: number | null;
-  }
+        type: AbbreviationType.TRUNCATE;
+        operator: Operator | null;
+        value: number | null;
+      }
     | {type: null};
 };
 
