@@ -18,6 +18,7 @@
 - PIM-10835: Fix command publish-job-to-queue does not work
 - PIM-10778: Add limit to the number of options to display on the attribute option page
 - PIM-10828: Fix search bars don't take into account special characters
+- PIM-10844: Filter empty attribute option labels
 
 ## Improvements
 
