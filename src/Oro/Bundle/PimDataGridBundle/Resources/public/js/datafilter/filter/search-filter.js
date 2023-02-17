@@ -108,7 +108,7 @@ define([
       const readDOMValue = this._readDOMValue();
 
       if (readDOMValue.value !== undefined && typeof readDOMValue.value === 'string') {
-        readDOMValue.value = readDOMValue.value.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, "\\$&");
+        readDOMValue.value = readDOMValue.value.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, '\\$&');
       }
 
       this.setValue(readDOMValue);
