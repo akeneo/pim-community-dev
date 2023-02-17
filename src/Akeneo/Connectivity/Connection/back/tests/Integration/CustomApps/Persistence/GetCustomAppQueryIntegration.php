@@ -29,7 +29,6 @@ class GetCustomAppQueryIntegration extends TestCase
         $this->customAppLoader = $this->get(CustomAppLoader::class);
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
         $this->getCustomAppQuery = $this->get(GetCustomAppQuery::class);
-        $this->connection = $this->get('database_connection');
     }
 
     protected function getConfiguration(): Configuration
