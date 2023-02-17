@@ -17,10 +17,6 @@ export const CustomAppList: FC<Props> = ({customApps, isConnectLimitReached}) =>
     const translate = useTranslate();
     const {data: isCreateLimitReached} = useCustomAppsLimitReached();
 
-    if (customApps.total <= 0) {
-        return null;
-    }
-
     const warningMessages = [];
     if (isConnectLimitReached) {
         warningMessages.push(

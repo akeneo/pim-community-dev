@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import fetchMock from 'jest-fetch-mock';
 import {historyMock, mockFetchResponses, renderWithProviders} from '../../../test-utils';
-import {act, screen, waitFor} from '@testing-library/react';
+import {act, screen} from '@testing-library/react';
 import {Marketplace} from '@src/connect/components/Marketplace';
 import {MarketplaceHelper} from '@src/connect/components/MarketplaceHelper';
 import {useFeatureFlags} from '@src/shared/feature-flags';
@@ -38,6 +38,9 @@ test('The marketplace renders with apps', () => {
     mockFetchResponses({
         akeneo_connectivity_connection_rest_connections_max_limit_reached: {
             json: {limitReached: false},
+        },
+        akeneo_connectivity_connection_custom_apps_rest_max_limit_reached: {
+            json: false,
         },
     });
 
@@ -111,6 +114,9 @@ test('The marketplace renders with extensions', () => {
         akeneo_connectivity_connection_rest_connections_max_limit_reached: {
             json: {limitReached: false},
         },
+        akeneo_connectivity_connection_custom_apps_rest_max_limit_reached: {
+            json: false,
+        },
     });
 
     const apps = {
@@ -181,6 +187,9 @@ test('The marketplace renders with custom apps', () => {
         akeneo_connectivity_connection_rest_connections_max_limit_reached: {
             json: {limitReached: false},
         },
+        akeneo_connectivity_connection_custom_apps_rest_max_limit_reached: {
+            json: false,
+        },
     });
 
     const apps = {
@@ -229,7 +238,7 @@ test('The marketplace renders with custom apps', () => {
     expect(screen.getByText('akeneo_connectivity.connection.connect.marketplace.extensions.empty')).toBeInTheDocument();
 });
 
-test('The search input filters apps and extensions', async () => {
+test('The search input filters custom apps, apps and extensions', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) =>
             ({
@@ -247,6 +256,9 @@ test('The search input filters apps and extensions', async () => {
     mockFetchResponses({
         akeneo_connectivity_connection_rest_connections_max_limit_reached: {
             json: {limitReached: false},
+        },
+        akeneo_connectivity_connection_custom_apps_rest_max_limit_reached: {
+            json: false,
         },
     });
 
@@ -286,8 +298,29 @@ test('The search input filters apps and extensions', async () => {
         ],
     };
     const customApps = {
-        total: 0,
-        apps: [],
+        total: 2,
+        apps: [
+            {
+                id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+                name: 'First Custom App',
+                logo: null,
+                author: null,
+                url: null,
+                activate_url: 'custom_app_a_activate_url',
+                callback_url: 'custom_app_a_callback_url',
+                connected: false,
+            },
+            {
+                id: '313a25ae-ae96-11ed-afa1-0242ac120002',
+                name: 'Second Custom App',
+                logo: null,
+                author: null,
+                url: null,
+                activate_url: 'custom_app_b_activate_url',
+                callback_url: 'custom_app_b_callback_url',
+                connected: false,
+            },
+        ],
     };
     const extensions = {
         total: 2,
@@ -319,11 +352,15 @@ test('The search input filters apps and extensions', async () => {
 
     renderWithProviders(<Marketplace apps={apps} extensions={extensions} customApps={customApps} />);
 
-    expect(
-        screen.getByText('akeneo_connectivity.connection.connect.marketplace.apps.total?total=2')
-    ).toBeInTheDocument();
+    expect(screen.getAllByText('akeneo_connectivity.connection.connect.marketplace.apps.total?total=2')).toHaveLength(
+        2
+    );
     expect(screen.getByText('First App')).toBeInTheDocument();
     expect(screen.getByText('Second App')).toBeInTheDocument();
+
+    expect(screen.getByText('First Custom App')).toBeInTheDocument();
+    expect(screen.getByText('Second Custom App')).toBeInTheDocument();
+
     expect(
         screen.getByText('akeneo_connectivity.connection.connect.marketplace.extensions.total?total=2')
     ).toBeInTheDocument();
@@ -338,11 +375,14 @@ test('The search input filters apps and extensions', async () => {
         await userEvent.type(searchInput, 'second', {delay: 0.00001});
     });
 
-    expect(
-        screen.getByText('akeneo_connectivity.connection.connect.marketplace.apps.total?total=1')
-    ).toBeInTheDocument();
+    expect(screen.getAllByText('akeneo_connectivity.connection.connect.marketplace.apps.total?total=1')).toHaveLength(
+        2
+    );
     expect(screen.queryByText('First App')).not.toBeInTheDocument();
     expect(screen.getByText('Second App')).toBeInTheDocument();
+
+    expect(screen.queryByText('First Custom App')).not.toBeInTheDocument();
+    expect(screen.getByText('Second Custom App')).toBeInTheDocument();
 
     expect(
         screen.getByText('akeneo_connectivity.connection.connect.marketplace.extensions.total?total=1')
@@ -369,6 +409,9 @@ test('The connect buttons are disabled and a warning is showed when the limit of
     mockFetchResponses({
         akeneo_connectivity_connection_rest_connections_max_limit_reached: {
             json: {limitReached: true},
+        },
+        akeneo_connectivity_connection_custom_apps_rest_max_limit_reached: {
+            json: false,
         },
     });
 
@@ -434,6 +477,9 @@ test('The connect buttons are disabled and a warning is showed when the user can
     mockFetchResponses({
         akeneo_connectivity_connection_rest_connections_max_limit_reached: {
             json: {limitReached: false},
+        },
+        akeneo_connectivity_connection_custom_apps_rest_max_limit_reached: {
+            json: false,
         },
     });
 
