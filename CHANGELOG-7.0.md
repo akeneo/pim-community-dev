@@ -2,6 +2,7 @@
 
 - RAB-1356: [Backport PIM-10840]: Fix attribute update date on attribute options change above 10000 options
 - RAB-1356: [Backport PIM-10853]: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
+- RAB-1356: [Backport PIM-10849]: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
 
 # 7.0.9 (2023-02-20)
 
