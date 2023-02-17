@@ -46,7 +46,7 @@ final class RedirectToEditCatalogAction
             throw new NotFoundHttpException();
         }
 
-        $this->denyAccessUnlessGrantedToManage($connectedApp);
+        $this->denyAccessUnlessGrantedToManage();
 
         return new RedirectResponse(
             '/#' . $this->router->generate('akeneo_connectivity_connection_connect_connected_apps_catalogs_edit', [
@@ -56,22 +56,10 @@ final class RedirectToEditCatalogAction
         );
     }
 
-    private function denyAccessUnlessGrantedToManage(ConnectedApp $app): void
+    private function denyAccessUnlessGrantedToManage(): void
     {
-        if (!$this->isGrantedToManage($app)) {
+        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
             throw new AccessDeniedHttpException();
         }
-    }
-
-    private function isGrantedToManage(ConnectedApp $app): bool
-    {
-        return
-            (
-                $app->isCustomApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
-            ) || (
-                !$app->isCustomApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_apps')
-            );
     }
 }
