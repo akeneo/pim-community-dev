@@ -103,7 +103,7 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier generator with family process type no and operator = and undefined as value
     When I try to update an identifier generator with a family process with type no and operator = and undefined as value
-    Then I should get an error on update with message 'structure[0][operator]: This field was not expected.'
+    Then I should get an error on update with message 'structure[0][process][operator]: This field was not expected.'
 
   Scenario: Cannot update an identifier generator with a family containing invalid truncate process
     When I try to update an identifier generator with a family containing invalid truncate process
@@ -111,20 +111,20 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier generator with a family containing truncate process missing fields
     When I try to update an identifier generator with a family process with type truncate and operator undefined and "undefined" as value
-    Then I should get an error on update with message 'structure[0][operator]: This field is missing.'
-    Then I should get an error on update with message 'structure[0][value]: This field is missing.'
+    Then I should get an error on update with message 'structure[0][process][operator]: This field is missing.'
+    Then I should get an error on update with message 'structure[0][process][value]: This field is missing.'
 
   Scenario: Cannot update an identifier generator with a family containing truncate process and unknown operator
     When I try to update an identifier generator with a family process with type truncate and operator ope and 1 as value
-    Then I should get an error on update with message 'structure[0][operator]: Operator "ope" can only be one of the following: "=", "<=".'
+    Then I should get an error on update with message 'structure[0][process][operator]: Operator "ope" can only be one of the following: "=", "<=".'
 
   Scenario: Cannot update an identifier generator with a family containing truncate process and bad value type
     When I try to update an identifier generator with a family process with type truncate and operator = and "bad" as value
-    Then I should get an error on update with message 'structure[0][value]: This value should be of type integer.'
+    Then I should get an error on update with message 'structure[0][process][value]: This value should be of type integer.'
 
   Scenario: Cannot update an identifier generator with a family containing truncate process and value not in range
     When I try to update an identifier generator with a family process with type truncate and operator = and 0 as value
-    Then I should get an error on update with message 'structure[0][value]: This value should be between 1 and 5.'
+    Then I should get an error on update with message 'structure[0][process][value]: This value should be between 1 and 5.'
 
   Scenario: Can update an identifier generator with a family property and no process
     When I try to update an identifier generator with a family process with type no and operator undefined and "undefined" as value
@@ -136,14 +136,42 @@ Feature: Update Identifier Generator
     Then The identifier generator is updated in the repository
     And I should not get any update error
 
-  Scenario: Can create an identifier generator with a family property and a nomenclature process
+  Scenario: Can update an identifier generator with a family property and a nomenclature process
     When I try to update an identifier generator with a family process with type nomenclature and operator undefined and "undefined" as value
     Then The identifier generator is updated in the repository
     And I should not get any update error
 
   Scenario: Cannot update an identifier generator with family process type nomenclature and operator = and undefined as value
     When I try to update an identifier generator with a family process with type nomenclature and operator = and undefined as value
-    Then I should get an error on update with message 'structure[0][operator]: This field was not expected.'
+    Then I should get an error on update with message 'structure[0][process][operator]: This field was not expected.'
+
+  # Structure : Simple Select
+  Scenario: Cannot update an identifier generator with simple select property without attribute code
+    When I try to update an identifier generator with a simple select property without attribute code
+    Then I should get an error on update with message 'structure[0]: "attributeCode" field is required for "simple_select" type.'
+
+  Scenario: Cannot update an identifier generator with simple select property without process field
+    When I try to update an identifier generator with simple select property without process field
+    Then I should get an error on update with message 'structure[0]: "process" field is required for "simple_select" type.'
+
+  Scenario: Cannot update an identifier generator with an unknown attribute in a simple select property
+    When I try to update an identifier generator with a simple_select property with unknown attribute
+    Then I should get an error on update with message 'structure[0][attributeCode]: The "unknown" attribute does not exist.'
+
+  Scenario: Can update an identifier generator with a simple select property and a truncate process
+    When I try to update an identifier generator with a simple select process with type truncate and operator = and 1 as value
+    Then The identifier generator is updated in the repository
+    And I should not get any update error
+
+  Scenario: Cannot update an identifier generator with wrong attribute type in a simple select property
+    When I try to update an identifier generator with a simple_select property with name attribute
+    Then I should get an error on update with message 'structure[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
+
+  Scenario: Can update an identifier generator with localizable and scopable simple select
+    Given the 'mobile' channel having 'en_US', 'fr_FR' as locales
+    And the 'brand' localizable and scopable attribute of type 'pim_catalog_simpleselect'
+    When I try to update an identifier generator with a simple_select property with brand attribute and mobile scope and en_US locale
+    Then I should not get any update error
 
   # Conditions
   Scenario: Cannot update another condition type than defined ones
