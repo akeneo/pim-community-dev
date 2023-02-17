@@ -7,6 +7,7 @@ import {ConnectedAppCredentials} from '@src/connect/components/ConnectedApp/Sett
 import userEvent from '@testing-library/user-event';
 import {createMemoryHistory} from 'history';
 import {Router} from 'react-router-dom';
+import {SecurityContext} from '@src/shared/security';
 
 beforeEach(() => {
     fetchMock.resetMocks();
@@ -49,11 +50,56 @@ test('The connected app credentials renders with secret', async () => {
     expect(await screen.findByText('******************************ZmNQ')).toBeInTheDocument();
 });
 
+test('The regenerate button does not renders when the user does not have manage custom app acl', () => {
+    mockFetchResponses({
+        '/rest/custom-apps/0dfce574-2238-4b13-b8cc-8d257ce7645b/secret': {
+            json: '******************************ZmNQ',
+        },
+    });
+
+    const isGranted = jest.fn((acl: string) => {
+        return acl === 'other_acl';
+    });
+
+    const connectedApp = {
+        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+        name: 'Custom App A',
+        scopes: ['view_catalog_structure', 'read_products'],
+        connection_code: 'custom_app_a',
+        logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+        author: 'Author A',
+        user_group_name: 'app_123456abcde',
+        connection_username: 'Connection Username',
+        categories: ['e-commerce', 'print'],
+        certified: false,
+        partner: null,
+        is_custom_app: true,
+        is_pending: false,
+        has_outdated_scopes: false,
+    };
+
+    renderWithProviders(
+        <SecurityContext.Provider value={{isGranted}}>
+            <ConnectedAppCredentials connectedApp={connectedApp} />
+        </SecurityContext.Provider>
+    );
+
+    expect(
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.regenerate_button'
+        )
+    ).not.toBeInTheDocument();
+});
+
 test('The regenerate button redirect to regenerate secret modal', () => {
     mockFetchResponses({
         '/rest/custom-apps/0dfce574-2238-4b13-b8cc-8d257ce7645b/secret': {
             json: '******************************ZmNQ',
         },
+    });
+
+    const isGranted = jest.fn((acl: string) => {
+        return acl === 'akeneo_connectivity_connection_manage_test_apps';
     });
 
     const connectedApp = {
@@ -76,7 +122,9 @@ test('The regenerate button redirect to regenerate secret modal', () => {
     const history = createMemoryHistory();
     renderWithProviders(
         <Router history={history}>
-            <ConnectedAppCredentials connectedApp={connectedApp} />
+            <SecurityContext.Provider value={{isGranted}}>
+                <ConnectedAppCredentials connectedApp={connectedApp} />
+            </SecurityContext.Provider>
         </Router>
     );
 

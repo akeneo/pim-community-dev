@@ -13,7 +13,6 @@ type Props = {
 };
 
 export const ConnectedAppSettings: FC<Props> = ({connectedApp, monitoringSettings, handleSetMonitoringSettings}) => {
-
     return (
         <>
             <ConnectedAppMonitoringSettings
