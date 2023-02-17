@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {SectionTitle} from 'akeneo-design-system';
+import {DangerIcon, Helper, SectionTitle} from 'akeneo-design-system';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {ConnectedAppCard} from './ConnectedAppCard';
 import {useTranslate} from '../../../shared/translate';
@@ -15,6 +15,9 @@ export const ConnectedCustomAppList: FC<Props> = ({connectedCustomApps}) => {
     if (connectedCustomApps.length === 0) {
         return null;
     }
+
+    const hasPendingApps =
+        undefined !== connectedCustomApps.find((connectedApp: ConnectedApp) => connectedApp.is_pending);
 
     const connectedAppCards = connectedCustomApps.map((connectedApp: ConnectedApp) => (
         <ConnectedAppCard key={connectedApp.id} item={connectedApp} />
@@ -37,6 +40,11 @@ export const ConnectedCustomAppList: FC<Props> = ({connectedCustomApps}) => {
                     )}
                 </SectionTitle.Information>
             </SectionTitle>
+            {hasPendingApps && (
+                <Helper icon={<DangerIcon />} level='warning'>
+                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.apps.pending_apps')}
+                </Helper>
+            )}
             <CardGrid>{connectedAppCards}</CardGrid>
         </>
     );

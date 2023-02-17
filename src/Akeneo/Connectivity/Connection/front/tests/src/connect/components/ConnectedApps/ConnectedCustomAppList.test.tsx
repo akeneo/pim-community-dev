@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {ConnectedAppCard} from '@src/connect/components/ConnectedApps/ConnectedAppCard';
 import {renderWithProviders} from '../../../../test-utils';
 import {ConnectedCustomAppList} from '@src/connect/components/ConnectedApps/ConnectedCustomAppList';
+import {ConnectedApp} from '@src/model/Apps/connected-app';
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -82,4 +83,30 @@ test('it does not render if list is empty', () => {
     ).not.toBeInTheDocument();
 
     expect(ConnectedAppCard).not.toHaveBeenCalled();
+});
+
+test('The connected custom apps list renders with pending apps', () => {
+    const pendingApp: ConnectedApp = {
+        id: 'custom_id_a',
+        name: 'App A',
+        scopes: [],
+        connection_code: 'connectionCodeA',
+        logo: 'http://www.example.test/path/to/logo/a',
+        author: 'author A',
+        user_group_name: 'user_group_a',
+        connection_username: 'Connection Username',
+        categories: ['category A1', 'category A2'],
+        certified: false,
+        partner: 'partner A',
+        activate_url: 'http://www.example.com/activate',
+        is_custom_app: true,
+        is_pending: true,
+        has_outdated_scopes: false,
+    };
+
+    renderWithProviders(<ConnectedCustomAppList connectedCustomApps={[pendingApp]} />);
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.pending_apps')
+    ).toBeInTheDocument();
 });
