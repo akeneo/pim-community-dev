@@ -159,31 +159,6 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
             ->during('__invoke', [$request, $clientId]);
     }
 
-    public function it_throws_access_denied_exception_when_the_custom_app_is_found_but_manage_custom_apps_permission_is_missing(
-        FeatureFlag $marketplaceActivateFeatureFlag,
-        Request $request,
-        GetAppQueryInterface $getAppQuery,
-        SecurityFacade $security,
-    ): void {
-        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
-        $request->isXmlHttpRequest()->willReturn(true);
-
-        $clientId = 'a_client_id';
-        $app = App::fromCustomAppValues([
-            'id' => $clientId,
-            'name' => 'test app',
-            'activate_url' => 'http://url.test',
-            'callback_url' => 'http://url.test',
-        ]);
-        $getAppQuery->execute($clientId)->willReturn($app);
-
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
-
-        $this
-            ->shouldThrow(AccessDeniedHttpException::class)
-            ->during('__invoke', [$request, $clientId]);
-    }
-
     public function it_throws_invalid_app_authorization_request_because_create_app_validation_failed(
         CreateConnectedAppWithAuthorizationHandler $createConnectedAppWithAuthorizationHandler,
         FeatureFlag $marketplaceActivateFeatureFlag,
