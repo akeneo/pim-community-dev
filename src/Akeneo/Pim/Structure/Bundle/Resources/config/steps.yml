@@ -437,7 +437,7 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.remover.attribute'
-            - '@translator'
+            - '@pim_connector.doctrine.cache_clearer'
 
     pim_connector.step.delete_attributes:
         class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
