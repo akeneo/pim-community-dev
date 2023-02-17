@@ -131,8 +131,8 @@ const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
   ${props => props.isInSelection && 'flex-basis: 160px;'}
 `;
 
-const SelectCondition = styled(SelectInput)`
-  flex-basis: 120px;
+const SelectCondition = styled(SelectInput)<{isHorizontal: boolean}>`
+  ${({isHorizontal}) => isHorizontal && 'flex-basis: 120px;'}
 `;
 
 const SingleSelectCondition = styled(SelectInput)`

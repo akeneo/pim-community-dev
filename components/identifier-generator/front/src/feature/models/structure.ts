@@ -1,4 +1,4 @@
-import {AutoNumber, FamilyProperty, FreeText} from './properties';
+import {AutoNumber, FamilyProperty, FreeText, SimpleSelectProperty} from './properties';
 
 enum PROPERTY_NAMES {
   AUTO_NUMBER = 'auto_number',
@@ -9,7 +9,7 @@ enum PROPERTY_NAMES {
 
 const ALLOWED_PROPERTY_NAMES = [PROPERTY_NAMES.FREE_TEXT, PROPERTY_NAMES.AUTO_NUMBER, PROPERTY_NAMES.FAMILY];
 
-type Property = {type: PROPERTY_NAMES} & (AutoNumber | FreeText | FamilyProperty);
+type Property = {type: PROPERTY_NAMES} & (AutoNumber | FreeText | FamilyProperty | SimpleSelectProperty);
 
 type Structure = Property[];
 

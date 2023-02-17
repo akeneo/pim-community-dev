@@ -12,9 +12,16 @@ type Props = {
   locale?: LocaleCode | null;
   scope?: ChannelCode | null;
   onChange: ({scope, locale}: {scope?: ChannelCode; locale?: LocaleCode}) => void;
+  isHorizontal?: boolean;
 };
 
-const ScopeAndLocaleSelector: React.FC<Props> = ({attributeCode, locale = null, scope = null, onChange}) => {
+const ScopeAndLocaleSelector: React.FC<Props> = ({
+  attributeCode,
+  locale = null,
+  scope = null,
+  onChange,
+  isHorizontal = true,
+}) => {
   const translate = useTranslate();
   const {data, isLoading, error} = useGetAttributeByCode(attributeCode);
   const {data: scopes} = useGetScopes();
@@ -46,9 +53,15 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({attributeCode, locale = null, 
     <Styled.ConditionLineSkeleton>This is Loading</Styled.ConditionLineSkeleton>
   ) : (
     <>
-      {data?.scopable && <ScopeSelector value={scope} onChange={handleScopeChange} />}
+      {data?.scopable && <ScopeSelector value={scope} onChange={handleScopeChange} isHorizontal={isHorizontal}/>}
       {data?.localizable && (
-        <LocaleSelector value={locale} onChange={handleLocaleChange} scopable={data?.scopable} scope={selectedScope} />
+        <LocaleSelector
+          value={locale}
+          onChange={handleLocaleChange}
+          scopable={data?.scopable}
+          scope={selectedScope}
+          isHorizontal={isHorizontal}
+        />
       )}
     </>
   );
