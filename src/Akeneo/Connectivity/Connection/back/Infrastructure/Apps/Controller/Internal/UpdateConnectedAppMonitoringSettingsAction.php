@@ -53,7 +53,7 @@ final class UpdateConnectedAppMonitoringSettingsAction
             throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");
         }
 
-        $this->denyAccessUnlessGrantedToManage($connectedApp);
+        $this->denyAccessUnlessGrantedToManage();
 
         $connection = $this->findAConnectionHandler->handle(new FindAConnectionQuery($connectionCode));
 
@@ -93,13 +93,9 @@ final class UpdateConnectedAppMonitoringSettingsAction
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function denyAccessUnlessGrantedToManage(ConnectedApp $connectedApp): void
+    private function denyAccessUnlessGrantedToManage(): void
     {
-        if (!$connectedApp->isCustomApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
-        }
-
-        if ($connectedApp->isCustomApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
             throw new AccessDeniedHttpException();
         }
     }
