@@ -57,12 +57,19 @@ export const ConnectedAppCredentials: FC<Props> = ({connectedApp}) => {
                     label={translate(
                         'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.client_secret'
                     )}
-                    actions={showRegenerateButton &&
-                        <Button ghost level='secondary' size='small' onClick={() => history.push(regenerateSecretUrl)}>
-                            {translate(
-                                'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.regenerate_button'
-                            )}
-                        </Button>
+                    actions={
+                        showRegenerateButton && (
+                            <Button
+                                ghost
+                                level='secondary'
+                                size='small'
+                                onClick={() => history.push(regenerateSecretUrl)}
+                            >
+                                {translate(
+                                    'akeneo_connectivity.connection.connect.connected_apps.edit.settings.credentials.regenerate_button'
+                                )}
+                            </Button>
+                        )
                     }
                 >
                     {secret ?? ''}
