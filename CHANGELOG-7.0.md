@@ -4,6 +4,7 @@
 - RAB-1356: [Backport PIM-10853]: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
 - RAB-1356: [Backport PIM-10849]: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
 - RAB-1356: [Backport PIM-10831]: Fix severe performance issues with the association product and product model picker
+- RAB-1356: [Backport PIM-10844]: Filter empty attribute option labels
 
 # 7.0.9 (2023-02-20)
 
