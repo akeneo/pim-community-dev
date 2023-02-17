@@ -152,31 +152,6 @@ class AuthorizeActionSpec extends ObjectBehavior
             ->during('__invoke', [$request]);
     }
 
-    public function it_throws_access_denied_exception_when_the_custom_app_is_found_but_permissions_are_missing(
-        FeatureFlag $marketplaceActivateFeatureFlag,
-        Request $request,
-        GetAppQueryInterface $getAppQuery,
-        SecurityFacade $security,
-    ): void {
-        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
-        $clientId = 'a_client_id';
-        $request->query = new InputBag(['client_id' => $clientId]);
-
-        $app = App::fromCustomAppValues([
-            'id' => $clientId,
-            'name' => 'custom app',
-            'activate_url' => 'http://url.test',
-            'callback_url' => 'http://url.test',
-        ]);
-        $getAppQuery->execute($clientId)->willReturn($app);
-
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
-
-        $this
-            ->shouldThrow(AccessDeniedHttpException::class)
-            ->during('__invoke', [$request, $clientId]);
-    }
-
     public function it_redirects_when_there_are_new_scopes(
         FeatureFlag $marketplaceActivateFeatureFlag,
         RouterInterface $router,
@@ -483,6 +458,6 @@ class AuthorizeActionSpec extends ObjectBehavior
 
         $clientProvider->findOrCreateClient($app)->willReturn(new Client());
 
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
     }
 }
