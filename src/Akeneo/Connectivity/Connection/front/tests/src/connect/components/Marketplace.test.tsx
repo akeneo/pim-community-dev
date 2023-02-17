@@ -105,7 +105,6 @@ test('The marketplace renders with extensions', () => {
         isGranted: (acl: string) =>
             ({
                 akeneo_connectivity_connection_manage_apps: true,
-                akeneo_connectivity_connection_manage_test_apps: false,
             }[acl] ?? false),
     }));
 
@@ -178,7 +177,6 @@ test('The marketplace renders with custom apps', () => {
         isGranted: (acl: string) =>
             ({
                 akeneo_connectivity_connection_manage_apps: true,
-                akeneo_connectivity_connection_manage_test_apps: true,
             }[acl] ?? false),
     }));
 
@@ -248,7 +246,6 @@ test('The search input filters custom apps, apps and extensions', async () => {
         isGranted: (acl: string) =>
             ({
                 akeneo_connectivity_connection_manage_apps: true,
-                akeneo_connectivity_connection_manage_test_apps: false,
             }[acl] ?? false),
     }));
 
