@@ -187,8 +187,10 @@ describe('AddPropertyButton', () => {
     await waitFor(() => {
       expect(onAddProperty).toBeCalledWith({
         type: PROPERTY_NAMES.SIMPLE_SELECT,
-        operator: null,
-        value: null,
+        attributeCode: 'simple_select',
+        process: {
+          type: null,
+        }
       });
     });
   });
