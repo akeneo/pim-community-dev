@@ -20,6 +20,7 @@
 - PIM-10828: Fix search bars don't take into account special characters
 - PIM-10844: Filter empty attribute option labels
 - PIM-10831: Fix severe performance issues with the association product and product model picker
+- PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel  
 
 ## Improvements
 
