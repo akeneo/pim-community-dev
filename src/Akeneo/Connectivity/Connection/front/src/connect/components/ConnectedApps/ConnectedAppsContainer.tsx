@@ -41,7 +41,7 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
 
     const connectedCustomApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.is_custom_app);
     const connectedApps = allConnectedApps.filter((connectedApp: ConnectedApp) => !connectedApp.is_custom_app);
-    const hasPendingApps = undefined !== allConnectedApps.find((connectedApp: ConnectedApp) => connectedApp.is_pending);
+    const hasPendingApps = undefined !== connectedApps.find((connectedApp: ConnectedApp) => connectedApp.is_pending);
 
     const atLeastOneAppIsNotListedOnTheAppStore: boolean =
         undefined !== connectedApps.find(connectedApp => false === connectedApp.is_listed_on_the_appstore);
