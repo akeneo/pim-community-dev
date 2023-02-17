@@ -20,6 +20,7 @@ import isGrantedOnCatalog from '../../is-granted-on-catalog';
 import {CatalogList} from '@akeneo-pim-community/catalogs';
 import styled from 'styled-components';
 import {OpenAppButton} from './OpenAppButton';
+import {useSecurity} from '../../../shared/security';
 
 const ConnectedAppCatalogList = styled.div`
     margin-top: 10px;
@@ -35,6 +36,7 @@ const catalogsTabName = '#connected-app-tab-catalogs';
 const errorMonitoringTabName = '#connected-app-tab-error-monitoring';
 
 export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
+    const security = useSecurity();
     const history = useHistory();
     const translate = useTranslate();
     const generateUrl = useRouter();
@@ -182,23 +184,30 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const isAtLeastGrantedToViewProducts = isGrantedOnProduct(connectedApp, 'view');
     const isAtLeastGrantedToViewCatalogs = isGrantedOnCatalog(connectedApp, 'view');
 
+    const actionButtons = [<OpenAppButton connectedApp={connectedApp} key={2} />, <SaveButton key={1} />];
+
+    if (
+        !connectedApp.is_custom_app ||
+        (connectedApp.is_custom_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps'))
+    ) {
+        actionButtons.unshift(
+            <SecondaryActionsDropdownButton key={0}>
+                <DropdownLink
+                    onClick={() => {
+                        history.push(`/connect/connected-apps/${connectedApp.connection_code}/delete`);
+                    }}
+                >
+                    <Translate id='pim_common.delete' />
+                </DropdownLink>
+            </SecondaryActionsDropdownButton>
+        );
+    }
+
     return (
         <>
             <PageHeader
                 breadcrumb={breadcrumb}
-                buttons={[
-                    <SecondaryActionsDropdownButton key={0}>
-                        <DropdownLink
-                            onClick={() => {
-                                history.push(`/connect/connected-apps/${connectedApp.connection_code}/delete`);
-                            }}
-                        >
-                            <Translate id='pim_common.delete' />
-                        </DropdownLink>
-                    </SecondaryActionsDropdownButton>,
-                    <OpenAppButton connectedApp={connectedApp} key={2} />,
-                    <SaveButton key={1} />,
-                ]}
+                buttons={actionButtons}
                 userButtons={<UserButtons />}
                 state={<FormState />}
                 imageSrc={connectedApp.logo ?? undefined}
