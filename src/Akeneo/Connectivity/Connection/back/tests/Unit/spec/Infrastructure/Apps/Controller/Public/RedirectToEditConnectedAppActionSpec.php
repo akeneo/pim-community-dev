@@ -71,7 +71,6 @@ class RedirectToEditConnectedAppActionSpec extends ObjectBehavior
                 true,
             ));
 
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
 
@@ -100,7 +99,6 @@ class RedirectToEditConnectedAppActionSpec extends ObjectBehavior
                 false,
             ));
 
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
 
@@ -130,7 +128,6 @@ class RedirectToEditConnectedAppActionSpec extends ObjectBehavior
                 false,
             ));
 
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
 
