@@ -82,7 +82,6 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
 
   React.useEffect(focusCallback, [isOpen, focusCallback]);
 
-
   const flatItems = useMemo(() => {
     const visibilityConditions = {
       [PROPERTY_NAMES.AUTO_NUMBER]: showAutoNumber,
@@ -125,11 +124,13 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
           >
             {flatItems?.map(({id, text, isSection, isVisible}) =>
               isSection ? (
-                <Dropdown.Section key={id}>{text}</Dropdown.Section>
-              ) : isVisible && (
-                <Dropdown.Item key={id} onClick={() => addProperty(id)}>
-                  {text}
-                </Dropdown.Item>
+                <Dropdown.Section key={`section-${id}`}>{text}</Dropdown.Section>
+              ) : (
+                isVisible && (
+                  <Dropdown.Item key={id} onClick={() => addProperty(id)}>
+                    {text}
+                  </Dropdown.Item>
+                )
               )
             )}
           </Dropdown.ItemCollection>
