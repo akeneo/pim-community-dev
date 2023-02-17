@@ -5,15 +5,6 @@ import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {useGetPropertyItems} from '../../hooks/useGetPropertyItems';
 import {getAttributeByCode} from '../../hooks/useGetAttributeByCode';
 
-type PropertiesSelection = {
-  code: string;
-  items: {
-    code: string;
-    defaultValue: Property;
-    isVisible?: boolean;
-  }[];
-};
-
 type AddPropertyButtonProps = {
   onAddProperty: (property: Property) => void;
   structure: Structure;
