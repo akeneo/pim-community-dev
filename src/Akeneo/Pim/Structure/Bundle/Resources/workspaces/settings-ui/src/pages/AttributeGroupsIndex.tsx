@@ -74,31 +74,33 @@ const AttributeGroupsIndex: FC = () => {
           onSelectAllChange={onSelectAllChange}
         />
       </Content>
-      <Toolbar isVisible={!!selectionState}>
-        <Toolbar.SelectionContainer>
-          <Checkbox checked={selectionState} onChange={() => {}} />
-          <Dropdown>
-            <ArrowDownIcon onClick={openDropdown} />
-            {isDropdownOpen && (
-              <Dropdown.Overlay onClose={closeDropdown}>
-                <Dropdown.Header>
-                  <Dropdown.Title>Select</Dropdown.Title>
-                </Dropdown.Header>
-                <Dropdown.ItemCollection>
-                  <Dropdown.Item onClick={() => onSelectAllChange(true)}>All Attribute groups</Dropdown.Item>
-                  <Dropdown.Item onClick={() => onSelectAllChange(false)}>No Attribute groups</Dropdown.Item>
-                </Dropdown.ItemCollection>
-              </Dropdown.Overlay>
-            )}
-          </Dropdown>
-        </Toolbar.SelectionContainer>
-        <Toolbar.LabelContainer>
-          {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}
-        </Toolbar.LabelContainer>
-        <Toolbar.ActionsContainer>
-          <MassDeleteAttributeGroups attributeGroups={selection.collection} />
-        </Toolbar.ActionsContainer>
-      </Toolbar>
+      {!isPending && (
+        <Toolbar isVisible={!!selectionState}>
+          <Toolbar.SelectionContainer>
+            <Checkbox checked={selectionState} onChange={() => {}} />
+            <Dropdown>
+              <ArrowDownIcon onClick={openDropdown} />
+              {isDropdownOpen && (
+                <Dropdown.Overlay onClose={closeDropdown}>
+                  <Dropdown.Header>
+                    <Dropdown.Title>Select</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={() => onSelectAllChange(true)}>All Attribute groups</Dropdown.Item>
+                    <Dropdown.Item onClick={() => onSelectAllChange(false)}>No Attribute groups</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
+          </Toolbar.SelectionContainer>
+          <Toolbar.LabelContainer>
+            {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}
+          </Toolbar.LabelContainer>
+          <Toolbar.ActionsContainer>
+            <MassDeleteAttributeGroups attributeGroups={selection.collection} />
+          </Toolbar.ActionsContainer>
+        </Toolbar>
+      )}
     </Page>
   );
 };
