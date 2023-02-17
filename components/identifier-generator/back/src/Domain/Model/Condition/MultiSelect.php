@@ -108,7 +108,7 @@ final class MultiSelect implements ConditionInterface
         }
 
         return match ($this->operator) {
-            'IN' => [] !== \array_intersect((array) $value, (array) $this->value),
+            'IN' => null !== $value && [] !== \array_intersect((array) $value, (array) $this->value),
             'NOT IN' => null !== $value && [] === \array_intersect((array) $value, (array) $this->value),
             'EMPTY' => null === $value,
             'NOT EMPTY' => null !== $value
