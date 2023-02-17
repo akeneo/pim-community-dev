@@ -65,7 +65,7 @@ final class ConfirmAuthenticationAction
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $this->denyAccessUnlessGrantedToOpen($app);
+        $this->denyAccessUnlessGrantedToOpen();
 
         $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
 
@@ -102,13 +102,9 @@ final class ConfirmAuthenticationAction
         ]);
     }
 
-    private function denyAccessUnlessGrantedToOpen(App $app): void
+    private function denyAccessUnlessGrantedToOpen(): void
     {
-        if (!$app->isCustomApp() && !$this->security->isGranted('akeneo_connectivity_connection_open_apps')) {
-            throw new AccessDeniedHttpException();
-        }
-
-        if ($app->isCustomApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+        if (!$this->security->isGranted('akeneo_connectivity_connection_open_apps')) {
             throw new AccessDeniedHttpException();
         }
     }
