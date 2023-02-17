@@ -28,8 +28,9 @@ const defaultValueByAttributeType = {
   },
   pim_catalog_simpleselect: {
     type: PROPERTY_NAMES.SIMPLE_SELECT,
-    operator: null,
-    value: null,
+    process: {
+      type: null,
+    }
   },
 };
 
@@ -63,7 +64,7 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
     if (!defaultValue) {
       getAttributeByCode(id, router).then(response => {
         const defaultValue = defaultValueByAttributeType[response.type];
-        handleAddProperty(defaultValue);
+        handleAddProperty({...defaultValue, attributeCode: response.code});
       });
     } else {
       handleAddProperty(defaultValue);
