@@ -112,7 +112,7 @@ const AttributeGroupsIndex: FC = () => {
             {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}
           </Toolbar.LabelContainer>
           <Toolbar.ActionsContainer>
-            <ModalMassDeleteAttributeGroups attributeGroups={selection.collection} />
+            <ModalMassDeleteAttributeGroups attributeGroups={selection.collection} onConfirm={() => {}} />
           </Toolbar.ActionsContainer>
         </Toolbar>
       )}

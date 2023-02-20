@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 type MassDeleteAttributeGroupsProps = {
   attributeGroups: AttributeGroup[];
+  onConfirm: () => void;
 };
 
 const ModalContent = styled.div`
@@ -15,17 +16,13 @@ const ModalContent = styled.div`
   gap: 20px;
 `;
 
-const ModalMassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsProps) => {
+const ModalMassDeleteAttributeGroups = ({attributeGroups, onConfirm}: MassDeleteAttributeGroupsProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
   const [numberOfAttribute] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useAutoFocus(inputRef);
-
-  const handleConfirm = async () => {
-    //onConfirm();
-  };
 
   const handleCancel = () => {
     closeMassDeleteModal();
@@ -43,7 +40,7 @@ const ModalMassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGr
             confirmation_word: translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word'),
           })}
           textToCheck={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word')}
-          onConfirm={handleConfirm}
+          onConfirm={() => onConfirm()}
           onCancel={handleCancel}
         >
           <ModalContent>
