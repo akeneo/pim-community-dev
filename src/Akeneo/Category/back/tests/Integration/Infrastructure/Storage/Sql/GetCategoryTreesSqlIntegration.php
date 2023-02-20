@@ -52,7 +52,7 @@ class GetCategoryTreesSqlIntegration extends CategoryTestCase
         ],  $categoryTrees[0]->getCategoryTreeTemplate()->getTemplateLabels()->normalize());
     }
 
-    public function testItIgnoresDeactivateTemplate(): void
+    public function testItIgnoresDeactivatedTemplate(): void
     {
         $this->deactivateTemplate(self::TEMPLATE_UUID);
 

@@ -35,7 +35,7 @@ class GetCategoryTemplateSqlIntegration extends CategoryTestCase
         $this->assertEquals($templateModel->getUuid(), $retrievedTemplate->getUuid());
     }
 
-    public function testItIgnoresDeactivateTemplate(): void
+    public function testItIgnoresDeactivatedTemplate(): void
     {
         /** @var Category $category */
         $category = $this->get(GetCategoryInterface::class)->byCode('master');

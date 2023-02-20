@@ -145,7 +145,7 @@ class GetCategorySqlIntegration extends CategoryTestCase
         $this->assertSame($hatsCategory->getLabels()->getTranslations(), []);
     }
 
-    public function testItIgnoresDeactivateTemplate(): void
+    public function testItIgnoresDeactivatedTemplate(): void
     {
         $category = $this->get(GetCategoryInterface::class)->byId($this->category->getId());
 

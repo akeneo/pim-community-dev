@@ -32,7 +32,7 @@ class CheckTemplateSqlIntegration extends CategoryTestCase
         $this->assertTrue($retrievedTemplate);
     }
 
-    public function testItIgnoresDeactivateTemplate(): void
+    public function testItIgnoresDeactivatedTemplate(): void
     {
         /** @var Category $category */
         $category = $this->get(GetCategoryInterface::class)->byCode('master');

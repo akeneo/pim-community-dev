@@ -33,7 +33,7 @@ class GetCategoryTemplateByCategoryTreeSqlIntegration extends CategoryTestCase
         $this->assertEquals($templateModel->getCode(), $retrievedTemplate->getCode());
     }
 
-    public function testItIgnoresDeactivateTemplate(): void
+    public function testItIgnoresDeactivatedTemplate(): void
     {
         /** @var Category $category */
         $category = $this->get(GetCategoryInterface::class)->byCode('master');

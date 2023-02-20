@@ -34,7 +34,7 @@ class GetCategoryTreeByCategoryTemplateSqlIntegration extends CategoryTestCase
         $this->assertEquals($templateModel->getLabelCollection(), $retrievedCategoryTree->getCategoryTreeTemplate()->getTemplateLabels());
     }
 
-    public function testItIgnoresDeactivateTemplate(): void
+    public function testItIgnoresDeactivatedTemplate(): void
     {
         /** @var Category $category */
         $category = $this->get(GetCategoryInterface::class)->byCode('master');
