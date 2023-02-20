@@ -20,8 +20,10 @@ services:
         class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTreeTemplateSaver'
         arguments:
             - '@database_connection'
+            - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'
 
     Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver:
         class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTemplateAttributeSaver'
         arguments:
             - '@database_connection'
+            - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'

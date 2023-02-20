@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
+use Akeneo\Category\Application\Query\IsTemplateDeactivated;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Doctrine\DBAL\Connection;
@@ -16,7 +17,8 @@ use Doctrine\DBAL\Exception;
 class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
 {
     public function __construct(
-        private Connection $connection,
+        private readonly Connection $connection,
+        private readonly IsTemplateDeactivated $isTemplateDeactivated,
     ) {
     }
 
@@ -25,12 +27,15 @@ class SqlCategoryTreeTemplateSaver implements CategoryTreeTemplateSaver
      */
     public function insert(Template $templateModel): void
     {
+        if (($this->isTemplateDeactivated)($templateModel->getUuid())) {
+            return;
+        }
+
         $query = <<< SQL
             INSERT INTO pim_catalog_category_tree_template
                 (category_template_uuid, category_tree_id)
             VALUES
-                (UUID_TO_BIN(:template_uuid), :category_tree_id)
-            ;
+                (UUID_TO_BIN(:template_uuid), :category_tree_id);
         SQL;
 
         $this->connection->executeQuery(

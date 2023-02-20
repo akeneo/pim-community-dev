@@ -10,8 +10,11 @@ declare(strict_types=1);
 namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Save\Query;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
@@ -69,7 +72,7 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         );
     }
 
-    public function testUpdateExistingCategoryInDatabase(): void
+    public function testUpdateExistingCategoryWithEnrichedAttributesInDatabase(): void
     {
         $categoryCode = new Code('myCategory');
         $categoryInserted = $this->insertBaseCategory($categoryCode);
@@ -125,6 +128,36 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
             $expectedData->getValues()[0]->getValue(),
             $valueUpdated['data']
         );
+    }
+
+    public function testItDoesNotUpdateExistingCategoryWithEnrichedAttributesOnDeactivatedTemplate(): void
+    {
+        $categoryCode = new Code('myCategory');
+        $category = $this->insertBaseCategory($categoryCode);
+
+        $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $category->getId()->getValue());
+        $category->setTemplateUuid($templateModel->getUuid());
+
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+
+        $this->deactivateTemplate($templateModel->getUuid()->getValue());
+
+        $category->setAttributes(ValueCollection::fromArray([
+            TextValue::fromApplier(
+                value: 'Meta shoes',
+                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                code: 'seo_meta_description',
+                channel: 'ecommerce',
+                locale: 'en_US'
+            )
+        ]));
+
+        $this->get(UpsertCategoryBase::class)->execute($category);
+
+        $retrievedCategory = $this->get(GetCategoryInterface::class)->byId($category->getId()->getValue());
+
+        $this->assertNull($retrievedCategory->getAttributes());
     }
 
     public function testUpdateCategoryValueCollectionWithNullValue(): void
