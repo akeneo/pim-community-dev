@@ -170,6 +170,42 @@ catalogs-lint-back_fix:
 	$(PHP_RUN) vendor/bin/rector process --config=$(CATALOGS_PATH)/back/rector.php
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=$(CATALOGS_PATH)/back/.php_cs.php
 
+.PHONY: catalogs-mutation-integration-back-only-new-files
+catalogs-mutation-integration-back-only-new-files:
+	XDEBUG_MODE=coverage APP_ENV=test $(PHP_RUN) var/infection.phar \
+		--configuration=$(CATALOGS_PATH)/back/infection.json \
+		--only-covered \
+		--show-mutations \
+		--test-framework-options="--filter=` \
+				{ \
+					git diff --name-only -- $(CATALOGS_PATH)/back/tests/Integration ; \
+					git diff --name-only -- $(CATALOGS_PATH)/back/tests/Unit ; \
+					git ls-files --other --exclude-standard -- $(CATALOGS_PATH)/back/tests/Integration ; \
+					git ls-files --other --exclude-standard -- $(CATALOGS_PATH)/back/tests/Unit ; \
+				} \
+				| sed 's/.*\///' \
+				| sed 's/\.php//' \
+				| paste -sd '|' \
+			`"
+
+.PHONY: catalogs-integration-back-only-new-files
+catalogs-integration-back-only-new-files:
+	APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 $(PHP_RUN) vendor/bin/phpunit \
+		--configuration $(CATALOGS_PATH)/back/ \
+		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
+		--order-by random \
+		--filter "` \
+			{ \
+				git diff --name-only -- $(CATALOGS_PATH)/back/tests/Integration ; \
+				git diff --name-only -- $(CATALOGS_PATH)/back/tests/Unit ; \
+				git ls-files --other --exclude-standard -- $(CATALOGS_PATH)/back/tests/Integration ; \
+				git ls-files --other --exclude-standard -- $(CATALOGS_PATH)/back/tests/Unit ; \
+			} \
+			| sed 's/.*\///' \
+			| sed 's/\.php//' \
+			| paste -sd '|' \
+		`"
+
 # BINARIES
 
 .PHONY: yarn-policies
