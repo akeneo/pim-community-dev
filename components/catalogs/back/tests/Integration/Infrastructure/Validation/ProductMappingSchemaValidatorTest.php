@@ -77,11 +77,11 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
     private function readFilesFromDirectory(string $directory): array
     {
         $files = \scandir($directory);
-        $files = \array_filter($files, fn ($file) => !\str_starts_with($file, '.'));
+        $files = \array_filter($files, fn ($file): bool => !\str_starts_with($file, '.'));
 
         return \array_combine(
             $files,
-            \array_map(fn ($file) => [
+            \array_map(fn ($file): array => [
                 'raw' => \file_get_contents($directory . '/' . $file),
             ], $files),
         );

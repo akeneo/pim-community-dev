@@ -64,7 +64,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
     private function validateTargetsList(array $value, array $schema): bool
     {
         $missingTargets = \array_diff_key($schema['properties'], $value);
-        if (!empty($missingTargets)) {
+        if ([] !== $missingTargets) {
             $this->context
                 ->buildViolation(
                     'akeneo_catalogs.validation.product_mapping.schema.missing_targets',
@@ -76,7 +76,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
         }
 
         $additionalTargets = \array_diff_key($value, $schema['properties']);
-        if (!empty($additionalTargets)) {
+        if ([] !== $additionalTargets) {
             $this->context
                 ->buildViolation(
                     'akeneo_catalogs.validation.product_mapping.schema.additional_targets',

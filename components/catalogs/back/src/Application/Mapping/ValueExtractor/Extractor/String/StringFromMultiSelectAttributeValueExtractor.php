@@ -41,7 +41,7 @@ final class StringFromMultiSelectAttributeValueExtractor implements StringValueE
 
         $translatedValues = [];
         foreach ($values as $value) {
-            $translatedValue = \array_values(\array_filter($options, fn ($option) => $option['code'] === $value));
+            $translatedValue = \array_values(\array_filter($options, fn ($option): bool => $option['code'] === $value));
             $translatedValues[] = $translatedValue[0]['label'] ?? \sprintf('[%s]', $value);
         }
 
@@ -64,7 +64,7 @@ final class StringFromMultiSelectAttributeValueExtractor implements StringValueE
     }
 
     /**
-     * @param array<mixed> $rawValues
+     * @param array<mixed>|null $rawValues
      * @return array<string>
      */
     private function convertRawValuesToStringArray(?array $rawValues): array

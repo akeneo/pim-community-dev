@@ -56,7 +56,7 @@ final class CatalogProductMappingValidator extends ConstraintValidator
             new Assert\Sequentially([
                 new Assert\Type('array'),
                 new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context): void {
-                    if (!\is_array($array) || empty($array)) {
+                    if (!\is_array($array) || [] === $array) {
                         return;
                     }
 
