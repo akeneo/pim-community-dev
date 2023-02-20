@@ -42,11 +42,7 @@ final class StringFromMultiSelectAttributeValueExtractor implements StringValueE
         $translatedValues = [];
         foreach ($values as $value) {
             $translatedValue = \array_values(\array_filter($options, fn ($option) => $option['code'] === $value));
-            if (\count($translatedValue) > 0 && isset($translatedValue[0]['label'])) {
-                $translatedValues[] = $translatedValue[0]['label'];
-            } else {
-                $translatedValues[] = \sprintf('[%s]', $value);
-            }
+            $translatedValues[] = $translatedValue[0]['label'] ?? \sprintf('[%s]', $value);
         }
 
         return \implode(', ', $translatedValues);
