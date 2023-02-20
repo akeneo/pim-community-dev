@@ -15,6 +15,7 @@ import {AttributeGroup} from '../models';
 import styled from 'styled-components';
 
 const Content = styled('div')`
+  flex: 1;
   overflow-y: auto;
   padding: 0 40px;
 `;
