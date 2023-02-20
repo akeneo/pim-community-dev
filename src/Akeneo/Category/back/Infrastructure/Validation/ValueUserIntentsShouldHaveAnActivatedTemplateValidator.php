@@ -38,13 +38,13 @@ final class ValueUserIntentsShouldHaveAnActivatedTemplateValidator extends Const
         Assert::isArray($value);
         Assert::allImplementsInterface($value, UserIntent::class);
 
-        $this->validUniqueConstraint($value, $constraint);
+        $this->validateAttributesLinkedToActivatedTemplate($value, $constraint);
     }
 
     /**
      * @param UserIntent[] $valueUserIntents
      */
-    private function validUniqueConstraint(array $valueUserIntents, Constraint $constraint): void
+    private function validateAttributesLinkedToActivatedTemplate(array $valueUserIntents, Constraint $constraint): void
     {
         /** @var ValueUserIntent[] $valueUserIntents */
         $valueUserIntents = array_values(array_filter($valueUserIntents, function ($userIntent) {
