@@ -28,7 +28,7 @@ final class TestCommand extends Command
         $message = new LaunchProductAndProductModelEvaluationsMessage('toto');
         $this->bus->dispatch($message);
 
-        echo "Done\n";
+        echo "Message sent\n";
 
         return 0;
     }

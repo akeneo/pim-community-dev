@@ -42,17 +42,6 @@ framework:
                     auto_setup: false
                 serializer: akeneo_batch_queue.messenger.serializer
 
-            pim_messages:
-                dsn: sync://
-#                dsn: in-memory://
-#                dsn: doctrine://default
-#                options:
-#                    table_name: messenger_messages
-#                    queue_name: pim_message
-#                    redeliver_timeout: 86400
-#                    auto_setup: false
-#                serializer: akeneo_batch_queue.messenger.serializer
-
         routing:
             'Akeneo\Platform\Component\EventQueue\Event': webhook
             'Akeneo\Platform\Component\EventQueue\BulkEvent': webhook
@@ -61,4 +50,3 @@ framework:
             'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': import_export_job
             'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage': data_maintenance_job
             'Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessage': scheduled_job
-            'Akeneo\Pim\Platform\Messaging\Domain\PimMessageInterface': pim_messages
