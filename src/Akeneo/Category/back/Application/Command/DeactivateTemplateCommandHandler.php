@@ -29,7 +29,7 @@ class DeactivateTemplateCommandHandler
         $this->deactivateTemplate->execute($templateUuid);
         $template = $this->getTemplate->byUuid($templateUuid);
         if ($template) {
-            $this->eventDispatcher->dispatch(new TemplateDeactivatedEvent($template));
+            $this->eventDispatcher->dispatch(new TemplateDeactivatedEvent($template->getUuid()));
         }
     }
 }

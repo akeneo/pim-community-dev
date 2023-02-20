@@ -38,7 +38,7 @@ final class Version_8_0_20230215115800_add_clean_category_template_enriched_valu
     {
         $this->connection->executeStatement(
             <<<SQL
-            DELETE FROM akeneo_batch_job_instance WHERE code = 'clean_categories_template_enriched_values';
+            DELETE FROM akeneo_batch_job_instance WHERE code = 'clean_category_template_and_enriched_values';
             SQL
         );
         Assert::assertFalse($this->jobInstanceExists());
@@ -56,7 +56,7 @@ final class Version_8_0_20230215115800_add_clean_category_template_enriched_valu
         return (bool) $this->connection->fetchOne(
             <<<SQL
             SELECT EXISTS(
-                SELECT * FROM akeneo_batch_job_instance WHERE code = 'clean_categories_template_enriched_values'
+                SELECT * FROM akeneo_batch_job_instance WHERE code = 'clean_category_template_and_enriched_values'
             );
             SQL
         );

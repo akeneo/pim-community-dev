@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class CleanCategoryTemplateEnrichedValuesProvider implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
-    private const JOB_NAME = 'clean_categories_template_enriched_values';
+    private const JOB_NAME = 'clean_category_template_and_enriched_values';
 
     public function supports(JobInterface $job): bool
     {

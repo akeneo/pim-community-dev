@@ -15,12 +15,12 @@ final class Version_8_0_20230215115800_add_clean_category_template_enriched_valu
 {
     public function getDescription(): string
     {
-        return 'Adds the clean_categories_template_enriched_values job instance';
+        return 'Adds the clean_category_template_and_enriched_values job instance';
     }
 
     public function up(Schema $schema): void
     {
-        if (!$this->jobInstanceExists('clean_categories_template_enriched_values')) {
+        if (!$this->jobInstanceExists('clean_category_template_and_enriched_values')) {
             $this->addSql(
                 <<<SQL
                 INSERT INTO akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type)
@@ -28,13 +28,13 @@ final class Version_8_0_20230215115800_add_clean_category_template_enriched_valu
                 ON DUPLICATE KEY UPDATE code = code;
                 SQL,
                 [
-                    'code' => 'clean_categories_template_enriched_values',
-                    'label' => 'Clean categories template enriched values',
-                    'job_name' => 'clean_categories_template_enriched_values',
+                    'code' => 'clean_category_template_and_enriched_values',
+                    'label' => 'Clean category template and enriched values',
+                    'job_name' => 'clean_category_template_and_enriched_values',
                     'status' => 0,
                     'connector' => 'internal',
                     'raw_parameters' => \serialize([]),
-                    'type' => 'clean_categories_template_enriched_values',
+                    'type' => 'clean_category_template_and_enriched_values',
                 ]
             );
         }

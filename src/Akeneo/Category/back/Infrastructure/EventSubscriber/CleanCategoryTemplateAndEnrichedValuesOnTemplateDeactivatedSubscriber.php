@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class CleanCategoryDataAfterDeleteTemplateSubscriber implements EventSubscriberInterface
+class CleanCategoryTemplateAndEnrichedValuesOnTemplateDeactivatedSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly FeatureFlag $enrichedCategoryFeature,
@@ -31,18 +31,14 @@ class CleanCategoryDataAfterDeleteTemplateSubscriber implements EventSubscriberI
 
     public function cleanCategoryDataForTemplate(TemplateDeactivatedEvent $event): void
     {
-        if (!$this->enrichedCategoryFeature->isEnabled()) {
-            return;
-        }
-
         /** @var JobInstance|null $jobInstance */
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('clean_categories_template_enriched_values');
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('clean_category_template_and_enriched_values');
         if (!$jobInstance instanceof JobInstance) {
             return;
         }
 
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
-            'template_uuid' => $event->getTemplate()->getUuid()->getValue(),
+            'template_uuid' => $event->getTemplateUuid()->getValue(),
         ]);
     }
 }

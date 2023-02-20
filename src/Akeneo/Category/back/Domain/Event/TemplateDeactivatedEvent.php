@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\Event;
 
-use Akeneo\Category\Domain\Model\Enrichment\Template;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -12,12 +12,12 @@ use Akeneo\Category\Domain\Model\Enrichment\Template;
  */
 class TemplateDeactivatedEvent
 {
-    public function __construct(private readonly Template $template)
+    public function __construct(private readonly TemplateUuid $templateUuid)
     {
     }
 
-    public function getTemplate(): Template
+    public function getTemplateUuid(): TemplateUuid
     {
-        return $this->template;
+        return $this->templateUuid;
     }
 }
