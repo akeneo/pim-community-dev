@@ -1,13 +1,7 @@
 version: '3.7'
 
 services:
-  micro-frontend:
-    extends:
-      file: ../../../../docker-compose.yml
-      service: node
+  node:
     ports:
       - '3000:3000'
     command: yarn workspace @akeneo-pim-community/category app:start
-
-networks:
-  pim:
