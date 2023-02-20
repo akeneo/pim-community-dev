@@ -31,50 +31,54 @@ const Information = styled.p`
 export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute('uuid' !== target?.code && source?.source ? source.source : '');
-    const handleSourceSelection = useCallback(
-        (value: Attribute) => {
-            onChange(initSource(value));
-        },
-        [onChange]
-    );
 
-    const initSource = function (attribute: Attribute): Source {
-        let source: Source = {
-            source: attribute.code,
-            locale: null,
-            scope: null,
-        };
-        switch (attribute.type) {
-            case 'pim_catalog_simpleselect':
-                source = {...source, parameters: {...source.parameters, label_locale: null}};
-                break;
-        }
-
-        return source;
-    };
-
-    const onChangeMiddleware = useCallback(
-        source => {
-            if (
-                attribute?.type === 'pim_catalog_simpleselect' &&
-                (source.parameters.label_locale === undefined || source.parameters.label_locale === null)
-            ) {
-                source = {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
-            }
-            onChange(source);
-        },
-        [onChange, attribute]
-    );
-
+    const attributeType: string = attribute?.type ?? '';
+    const shouldDisplayTranslationValue =
+        source !== null &&
+        (attributeType === 'pim_catalog_simpleselect' || attributeType === 'pim_catalog_multiselect');
     const shouldDisplayChannel = source !== null && attribute?.scopable;
     const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
     const shouldDisplayChannelLocale = source !== null && attribute?.localizable && attribute?.scopable;
-    const shouldDisplayTranslationValue = source !== null && attribute?.type === 'pim_catalog_simpleselect';
     const shouldDisplayNoParametersMessage = !(
         shouldDisplayLocale ||
         shouldDisplayChannel ||
         shouldDisplayChannelLocale ||
         shouldDisplayTranslationValue
+    );
+
+    const initSource = useCallback(
+        (attribute: Attribute): Source => {
+            let source: Source = {
+                source: attribute.code,
+                locale: null,
+                scope: null,
+            };
+            if (shouldDisplayTranslationValue) {
+                source = {...source, parameters: {...source.parameters, label_locale: null}};
+            }
+            return source;
+        },
+        [shouldDisplayTranslationValue]
+    );
+
+    const handleSourceSelection = useCallback(
+        (value: Attribute) => {
+            onChange(initSource(value));
+        },
+        [onChange, initSource]
+    );
+
+    const onChangeMiddleware = useCallback(
+        source => {
+            if (
+                shouldDisplayTranslationValue &&
+                (source.parameters?.label_locale === undefined || source.parameters?.label_locale === null)
+            ) {
+                source = {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
+            }
+            onChange(source);
+        },
+        [onChange, shouldDisplayTranslationValue]
     );
 
     return (

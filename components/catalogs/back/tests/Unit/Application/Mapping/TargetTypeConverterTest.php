@@ -38,6 +38,20 @@ class TargetTypeConverterTest extends TestCase
     public function validConversionProvider(): array
     {
         return [
+            'boolean' => [
+                'boolean',
+                '',
+                [
+                    'pim_catalog_boolean',
+                ],
+            ],
+            'number' => [
+                'number',
+                '',
+                [
+                    'pim_catalog_number',
+                ],
+            ],
             'string' => [
                 'string',
                 '',
@@ -47,6 +61,7 @@ class TargetTypeConverterTest extends TestCase
                     'pim_catalog_simpleselect',
                     'pim_catalog_text',
                     'pim_catalog_textarea',
+                    'pim_catalog_multiselect',
                 ],
             ],
             'string+uri' => [
@@ -56,25 +71,11 @@ class TargetTypeConverterTest extends TestCase
                     'pim_catalog_image',
                 ],
             ],
-            'boolean' => [
-                'boolean',
-                '',
-                [
-                    'pim_catalog_boolean',
-                ],
-            ],
             'string+date-time' => [
                 'string',
                 'date-time',
                 [
                     'pim_catalog_date',
-                ],
-            ],
-            'number' => [
-                'number',
-                '',
-                [
-                    'pim_catalog_number',
                 ],
             ],
         ];

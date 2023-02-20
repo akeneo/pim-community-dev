@@ -23,6 +23,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -856,6 +857,14 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'countries' => [
+                        'source' => 'sale_countries',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'label_locale' => 'en_US',
+                        ],
+                    ],
                     'thumbnail' => [
                         'source' => 'picture',
                         'scope' => null,
@@ -892,6 +901,10 @@ class ApiContext implements Context
                 'is_released' => true,
                 'picture' => $this->files['akeneoLogoImage'],
                 'enabled' => true,
+                'sale_countries' => [
+                    'canada',
+                    'brazil',
+                ],
             ],
             [
                 'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
@@ -905,6 +918,10 @@ class ApiContext implements Context
                 'is_released' => true,
                 'picture' => $this->files['akeneoLogoImage'],
                 'enabled' => false,
+                'sale_countries' => [
+                    'canada',
+                    'italy',
+                ],
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -918,6 +935,10 @@ class ApiContext implements Context
                 'is_released' => false,
                 'picture' => $this->files['ziggyImage'],
                 'enabled' => true,
+                'sale_countries' => [
+                    'france',
+                    'brazil',
+                ],
             ],
         ];
 
@@ -970,6 +991,13 @@ class ApiContext implements Context
             'scopable' => false,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'sale_countries',
+            'type' => 'pim_catalog_multiselect',
+            'scopable' => false,
+            'localizable' => false,
+            'options' => ['France', 'Canada', 'Italy', 'Brazil'],
+        ]);
 
         $this->createFamily('t-shirt', [
             'sku',
@@ -980,6 +1008,7 @@ class ApiContext implements Context
             'artists_customization_count',
             'released_at',
             'is_released',
+            'sale_countries',
         ]);
 
         $bus = $this->container->get('pim_enrich.product.message_bus');
@@ -999,6 +1028,7 @@ class ApiContext implements Context
                     new SetNumberValue('artists_customization_count', null, null, $product['artists_customization_count']),
                     new SetDateValue('released_at', null, null, $product['released_at']),
                     new SetBooleanValue('is_released', null, null, $product['is_released']),
+                    new SetMultiSelectValue('sale_countries', null, null, $product['sale_countries']),
                     new SetImageValue('picture', null, null, $product['picture']),
                 ],
             );
@@ -1047,6 +1077,7 @@ class ApiContext implements Context
                 'release_date' => '2023-01-12T00:00:00+00:00',
                 'is_released' => true,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
+                'countries' => 'Brazil, Canada',
                 'type' => 't-shirt',
             ],
             [
@@ -1060,6 +1091,7 @@ class ApiContext implements Context
                 'release_date' => '2042-01-01T00:00:00+00:00',
                 'is_released' => false,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
+                'countries' => 'Brazil, France',
                 'type' => 't-shirt',
             ],
         ];
@@ -1102,6 +1134,7 @@ class ApiContext implements Context
             'release_date' => '2023-01-12T00:00:00+00:00',
             'is_released' => true,
             'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
+            'countries' => 'Brazil, Canada',
             'type' => 't-shirt',
         ];
 
