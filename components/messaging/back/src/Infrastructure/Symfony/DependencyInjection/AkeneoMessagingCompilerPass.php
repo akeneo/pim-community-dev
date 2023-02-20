@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Message\LaunchProductAndProductModelEvaluationsMessage;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\LaunchProductAndProductModelEvaluationsHandler;
+use Akeneo\Pim\Platform\Messaging\Infrastructure\Handler\PimMessageHandler;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Messenger\MessageBus;
-use Symfony\Component\Messenger\Transport\Sync\SyncTransport;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 
 /**
+ * @TODO: remove
+ *
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -26,7 +27,9 @@ final class AkeneoMessagingCompilerPass  implements CompilerPassInterface
     {
         // See vendor/symfony/framework-bundle/DependencyInjection/FrameworkExtension.php !
 
-        
+        return;
+
+
         // Create transport
         $queue = 'launch_product_and_product_model_evaluations_queue';
         $this->createTransport($queue, ['dsn' => 'sync://'], $container);

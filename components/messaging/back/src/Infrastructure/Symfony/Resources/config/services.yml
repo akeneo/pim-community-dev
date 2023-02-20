@@ -4,3 +4,7 @@ services:
             - '@messenger.default_bus'
         tags:
             - { name: console.command }
+
+    Akeneo\Pim\Platform\Messaging\Infrastructure\Handler\PimMessageHandler:
+        tags:
+            - { name: messenger.message_handler }
