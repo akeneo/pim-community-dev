@@ -8,14 +8,14 @@ const AutoNumberEdit: PropertyEditFieldsProps<AutoNumber> = ({selectedProperty, 
   const translate = useTranslate();
   const onDigitsMinChange = useCallback(
     (value: string) => {
-      onChange({...selectedProperty, digitsMin: Math.max(1, Number(value))});
+      onChange({...selectedProperty, digitsMin: '' !== value ? Math.max(1, Number(value)) : null});
     },
     [onChange, selectedProperty]
   );
 
   const onNumberMinChange = useCallback(
     (value: string) => {
-      onChange({...selectedProperty, numberMin: Number(value)});
+      onChange({...selectedProperty, numberMin: '' !== value ? Number(value) : null});
     },
     [onChange, selectedProperty]
   );

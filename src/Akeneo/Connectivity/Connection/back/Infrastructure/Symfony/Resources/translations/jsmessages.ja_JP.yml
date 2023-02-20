@@ -146,6 +146,10 @@ akeneo_connectivity.connection:
         flash:
           error: 申し訳ございません、接続されたアプリリストを取得中にエラーが発生しました。
       edit:
+        header:
+          open_app_button:
+            label: アプリに移動
+            icon_alt: アプリに移動アイコン
         not_found: アプリが見つかりません
         tabs:
           settings: 設定
@@ -243,6 +247,9 @@ akeneo_connectivity.connection:
           helper: アプリの承認について詳しくは、
           helper_link: ヘルプセンターの記事をご覧ください。
           is_allowed_to: '次が既に許可されています:'
+          certification_consent:
+            label: '証明書に関する以下の免責事項を読み、それに同意します。'
+            subtext: 'Akeneo は、お客様によるアプリの使用およびその機能に対する責任を負いません。証明書はアプリの相互運用性やお客様の環境で正しく動作することを保証するものではありません。'
         flash:
           success: アプリが正常に構成されました。
           error: 申し訳ございません、アプリを接続中にエラーが発生しました。

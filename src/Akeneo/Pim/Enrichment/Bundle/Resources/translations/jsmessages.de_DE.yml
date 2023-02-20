@@ -24,6 +24,7 @@ pim_enrich.entity.product:
       fields_not_ready: "Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       file_upload: Beim Datei-Upload ist ein Fehler aufgetreten
+      identifier_warning: Ihr Produkt wurde gespeichert, aber Ihre Kennung konnte nicht generiert werden.
     delete:
       success: Produkt erfolgreich gelöscht.
       fail: Das Produkt konnte nicht gelöscht werden.
@@ -41,6 +42,7 @@ pim_enrich.entity.product:
       title: Wählen Sie eine Aktion aus
       choose_family: Wählen Sie eine Produktfamilie
       choose_family_variant: Wählen Sie eine Variante der Produktfamilie
+      helper: Der Bezeichner ist jetzt ein optionales Feld. <a class="AknMessageBox-link" href="{{ link }}" target="_blank">Lesen Sie mehr</a> über diese Änderung und die möglichen Auswirkungen auf Ihre Produkte.
     variant_navigation:
       common: Allgemein
     status:
@@ -70,6 +72,7 @@ pim_enrich.entity.product:
     meta:
       updated: Letzte Aktualisierung
       groups: Gruppen
+      uuid: UUID
     show_group:
       title: Gruppe {{ group }}
       view_group: Gruppe ansehen
@@ -108,6 +111,7 @@ pim_enrich.entity.product:
       variant_products: Produktvarianten
       quantified:
         quantity: Quantität
+        unlinked: Nicht verknüpft
       search:
         placeholder: In Label oder Bezeichner suchen
       no_data: Es gibt keine verbundenen Produkte
@@ -219,6 +223,7 @@ pim_enrich.entity.category:
       columns:
         label: Baumbezeichnung
         number_of_categories: Anzahl der Kategorien
+        actions: Aktionen
         count_categories: ']-Inf, 1]{{ count }} Kategorie|]1, Inf[{{ count }} Kategorien'
     tree:
       not_found: Kategoriebaum nicht gefunden
@@ -435,6 +440,8 @@ pim_datagrid:
         all_attributes: Alle Attribute
         with_codes: Mit Codes
         with_labels: Mit Labels
+        without_uuid: Ohne UUID
+        with_uuid: Mit UUID
         without_media: Ohne Medien
         with_media: Mit Medien
       flash:
@@ -490,6 +497,8 @@ pim_datagrid:
       label: Eltern
     identifier:
       label: Kennung
+    uuid:
+      label: UUID
   search: Suche in {{ label }}
 batch_jobs:
   add_association:

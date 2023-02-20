@@ -160,6 +160,7 @@ test('it prevents redirection without user consent', async () => {
                 oldScopeMessages: null,
                 authenticationScopes: [],
                 oldAuthenticationScopes: null,
+                displayCheckboxConsent: true,
             },
         },
         'akeneo_connectivity_connection_apps_rest_confirm_authentication?clientId=0dfce574-2238-4b13-b8cc-8d257ce7645b':
@@ -189,6 +190,49 @@ test('it prevents redirection without user consent', async () => {
     act(() => {
         userEvent.click(screen.getByText('authentication-component'));
     });
+
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));
+    });
+
+    await waitFor(() => expect(notify).toHaveBeenCalledTimes(1));
+
+    expect(notify).toBeCalledWith(
+        NotificationLevel.SUCCESS,
+        'akeneo_connectivity.connection.connect.apps.wizard.flash.success'
+    );
+});
+
+test('it allows redirection when checkbox consent is not displayed', async () => {
+    mockFetchResponses({
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=0dfce574-2238-4b13-b8cc-8d257ce7645b': {
+            json: {
+                appName: 'Extension 1',
+                appLogo: 'https://extension-1.test/logo.png',
+                scopeMessages: [],
+                oldScopeMessages: null,
+                authenticationScopes: [],
+                oldAuthenticationScopes: null,
+                displayCheckboxConsent: false,
+            },
+        },
+        'akeneo_connectivity_connection_apps_rest_confirm_authentication?clientId=0dfce574-2238-4b13-b8cc-8d257ce7645b':
+            {
+                json: {
+                    redirectUrl: 'https://extension-1.test/callback',
+                },
+            },
+    });
+
+    renderWithProviders(
+        <NotifyContext.Provider value={notify}>
+            <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' />
+        </NotifyContext.Provider>
+    );
+
+    await waitFor(() => screen.queryByText('authentication-component'));
+
+    expect(screen.queryByText('authentication-component')).toBeInTheDocument();
 
     act(() => {
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'));

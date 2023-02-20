@@ -29,7 +29,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
             [
                 'limit' => $limit,
                 'page' => $page,
-                'types' => empty($types) ? null : $types,
+                'types' => $types === [] ? null : $types,
             ],
         );
 

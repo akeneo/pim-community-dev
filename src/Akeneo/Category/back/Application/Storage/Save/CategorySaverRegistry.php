@@ -22,9 +22,9 @@ class CategorySaverRegistry
      * @param iterable<string, CategorySaver> $categorySavers
      */
     public function __construct(
-        private iterable $categorySavers,
+        private readonly iterable $categorySavers,
     ) {
-        $this->sortCategorySaversByUserIntent($this->categorySavers);
+        $this->sortCategorySaversByUserIntent();
     }
 
     public function fromUserIntent(string $userIntentClassName): CategorySaver
@@ -37,10 +37,7 @@ class CategorySaverRegistry
         return $saver;
     }
 
-    /**
-     * @param iterable<string, CategorySaver> $categorySavers
-     */
-    private function sortCategorySaversByUserIntent(iterable $categorySavers): void
+    private function sortCategorySaversByUserIntent(): void
     {
         foreach ($this->categorySavers as $categorySaver) {
             Assert::isInstanceOf($categorySaver, CategorySaver::class);

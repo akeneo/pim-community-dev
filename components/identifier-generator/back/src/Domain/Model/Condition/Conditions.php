@@ -12,8 +12,8 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-import-type EnabledNormalized from Enabled
- * @phpstan-type ConditionsNormalized list<EnabledNormalized>
+ * @phpstan-import-type ConditionNormalized from ConditionInterface
+ * @phpstan-type ConditionsNormalized list<ConditionNormalized>
  */
 final class Conditions
 {
@@ -47,7 +47,9 @@ final class Conditions
             Assert::stringNotEmpty($normalizedCondition['type'] ?? null);
             $conditions[] = match ($normalizedCondition['type']) {
                 Enabled::type() => Enabled::fromNormalized($normalizedCondition),
-                default => throw new \InvalidArgumentException(sprintf('The type %s does not exist', $normalizedCondition['type'])),
+                Family::type() => Family::fromNormalized($normalizedCondition),
+                SimpleSelect::type() => SimpleSelect::fromNormalized($normalizedCondition),
+                default => throw new \InvalidArgumentException(sprintf('The Condition type "%s" does not exist', $normalizedCondition['type'])),
             };
         }
 
@@ -69,5 +71,13 @@ final class Conditions
             fn (bool $prev, $condition): bool => $prev && $condition->match($productProjection),
             true
         );
+    }
+
+    /**
+     * @param ConditionInterface[] $otherConditions
+     */
+    public function and(array $otherConditions): Conditions
+    {
+        return new self(\array_merge($this->conditions, $otherConditions));
     }
 }

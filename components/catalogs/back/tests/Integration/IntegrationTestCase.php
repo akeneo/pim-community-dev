@@ -17,6 +17,7 @@ use Akeneo\Catalogs\Test\Integration\Fakes\TimestampableSubscriber;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
@@ -28,6 +29,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -81,6 +83,8 @@ abstract class IntegrationTestCase extends WebTestCase
 
         self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
         self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
+
+        self::getContainer()->get(FeatureFlags::class)->enable('catalogs');
     }
 
     protected function overrideServices(): void
@@ -200,7 +204,6 @@ abstract class IntegrationTestCase extends WebTestCase
     private function addAllPermissionsUserGroup(string $group): void
     {
         $this->callPermissionsSaver(
-            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver',
             group: $group,
             permissions: [
@@ -215,7 +218,6 @@ abstract class IntegrationTestCase extends WebTestCase
             ],
         );
         $this->callPermissionsSaver(
-            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
             group: $group,
             permissions: [
@@ -230,7 +232,6 @@ abstract class IntegrationTestCase extends WebTestCase
             ],
         );
         $this->callPermissionsSaver(
-            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
             group: $group,
             permissions: [
@@ -281,7 +282,7 @@ abstract class IntegrationTestCase extends WebTestCase
                 \implode(
                     '","',
                     \array_map(
-                        fn (ConstraintViolationInterface $violation) => $violation->getMessage(),
+                        fn (ConstraintViolationInterface $violation): string|\Stringable => $violation->getMessage(),
                         \iterator_to_array($violations),
                     ),
                 ),
@@ -660,6 +661,27 @@ abstract class IntegrationTestCase extends WebTestCase
     protected function waitForQueuedJobs(): void
     {
         self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();
+    }
+
+    protected function addSubscriberForReadProductEvent(\Closure $onEventCallback): void
+    {
+        $subscriber = new class($onEventCallback) implements EventSubscriberInterface {
+            public function __construct(private readonly \Closure $closure)
+            {
+            }
+
+            public static function getSubscribedEvents(): array
+            {
+                return [ReadProductsEvent::class => 'onReadProductsEvent'];
+            }
+
+            public function onReadProductsEvent(ReadProductsEvent $event): void
+            {
+                ($this->closure)($event->getCount());
+            }
+        };
+
+        self::getContainer()->get('event_dispatcher')->addSubscriber($subscriber);
     }
 
     protected function addSubscriberForInvalidCatalogDisabledEvent(\Closure $onEventCallback): void

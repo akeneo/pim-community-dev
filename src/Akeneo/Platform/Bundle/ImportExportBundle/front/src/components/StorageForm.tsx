@@ -1,10 +1,11 @@
 import React from 'react';
 import {SectionTitle, Field, SelectInput, Helper} from 'akeneo-design-system';
 import {Section, useTranslate, ValidationError, filterErrors, useFeatureFlags} from '@akeneo-pim-community/shared';
-import {Storage, isValidStorageType, getDefaultStorage, JobType, getEnabledStorageTypes} from './model';
 import {getStorageConfigurator} from './StorageConfigurator';
+import {getDefaultStorage, getEnabledStorageTypes, isValidStorageType, JobType, Storage} from '../models';
 
 type StorageFormProps = {
+  jobInstanceCode: string;
   jobType: JobType;
   fileExtension: string;
   storage: Storage;
@@ -12,7 +13,14 @@ type StorageFormProps = {
   onStorageChange: (storage: Storage) => void;
 };
 
-const StorageForm = ({jobType, fileExtension, storage, validationErrors, onStorageChange}: StorageFormProps) => {
+const StorageForm = ({
+  jobInstanceCode,
+  jobType,
+  fileExtension,
+  storage,
+  validationErrors,
+  onStorageChange,
+}: StorageFormProps) => {
   const translate = useTranslate();
   const featureFlags = useFeatureFlags();
 
@@ -49,6 +57,7 @@ const StorageForm = ({jobType, fileExtension, storage, validationErrors, onStora
       </Field>
       {null !== StorageConfigurator && (
         <StorageConfigurator
+          jobInstanceCode={jobInstanceCode}
           storage={storage}
           fileExtension={fileExtension}
           validationErrors={validationErrors}

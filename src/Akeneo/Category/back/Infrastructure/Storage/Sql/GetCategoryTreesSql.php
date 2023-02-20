@@ -53,12 +53,13 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
                 category.code,
                 category_tree_translation.translations,
                 BIN_TO_UUID(template.uuid) as template_uuid,
+                template.code as template_code,
                 template.labels as template_labels
             FROM 
                 pim_catalog_category category
                 LEFT JOIN category_tree_translation ON category_tree_translation.code = category.code
                 LEFT JOIN pim_catalog_category_tree_template ctt ON ctt.category_tree_id = category.id
-                LEFT JOIN pim_catalog_category_template template ON template.uuid = ctt.category_template_uuid
+                LEFT JOIN pim_catalog_category_template template ON template.uuid = ctt.category_template_uuid AND (template.is_deactivated IS NULL OR template.is_deactivated = 0)
             WHERE category.parent_id IS NULL 
             AND category.root = category.id
             $sqlAnd

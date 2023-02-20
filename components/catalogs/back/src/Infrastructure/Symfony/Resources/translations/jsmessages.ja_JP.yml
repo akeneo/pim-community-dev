@@ -1,4 +1,9 @@
 akeneo_catalogs:
+  common:
+    select:
+      open: 開く
+      remove: 削除
+      no_matches: 一致するものが見つかりません
   catalog_list:
     catalogs_name: カタログ名
     status: ステータス
@@ -14,6 +19,9 @@ akeneo_catalogs:
       product_value_filters: 値をフィルタ
       product_mapping: マッピング
   catalog_status_widget:
+    fields:
+      enable_catalog: カタログを有効化
+    helper: 既定では、新しいカタログは無効になっています。アプリで商品データを取得できるようにするには、カタログを有効化してください。
     inputs:
       yes: Yes
       no: No
@@ -36,6 +44,9 @@ akeneo_catalogs:
         placeholder: 通貨を選択
   product_selection:
     empty: 検索基準を追加して、商品選択を作成します
+    count:
+      products: '{0} 商品がありません|{1} 1 個の商品|[2,Inf[ {{ count }} 個の商品'
+      error: 商品数を計算できません
     more_information: 詳細についてはヘルプセンターをご確認ください。
     add_criteria:
       label: 選択基準を追加
@@ -54,6 +65,7 @@ akeneo_catalogs:
       empty: チャンネルが見つかりません
     criteria:
       unknown: この属性は削除されました。
+      max_reached: '{{ maxCount }} 件の選択基準の上限に達しました。'
       status:
         label: ステータス
         enabled: 有効
@@ -113,6 +125,14 @@ akeneo_catalogs:
         illustration_title: 使用できるカタログのターゲットがありません
     source:
       title: ソースを選択
+      parameters:
+        title: ソースパラメータ
+        channel:
+          label: チャンネル
+          placeholder: チャンネルを選択してください
+        locale:
+          label: ロケール
+          placeholder: ロケールを選択してください
       select_source:
         label: PIMソース
         search: 検索条件
@@ -124,3 +144,7 @@ akeneo_catalogs:
         illustration_title: 右パネルのターゲットをクリックして、カタログのマッピングを構成します。
         subtitle: そうすると、PIM属性を選択したターゲットに一致させることができます。
         link: 詳細についてはヘルプセンターをご確認ください。
+      uuid_placeholder:
+        illustration_title: UUID は技術的な商品識別子です。
+        subtitle: ターゲットとしてすべてのアプリで必要です。Akeneo 商品 UUID に自動的にマッピングされるため、このターゲットには何も構成する必要はありません。
+        link: UUID に関する詳細について。

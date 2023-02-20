@@ -9,6 +9,7 @@ use Akeneo\UserManagement\Bundle\Model\LockedAccountException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Event\CheckPassportEvent;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\Event\LoginSuccessEvent;
@@ -81,7 +82,7 @@ final class LoginRateLimitListener implements EventSubscriberInterface
 
     private function getUserFromPassport($passport): ?UserInterface
     {
-        if (!$passport->hasBadge(UserBadge::class)) {
+        if (!$passport instanceof Passport || !$passport->hasBadge(UserBadge::class)) {
             return null;
         }
 

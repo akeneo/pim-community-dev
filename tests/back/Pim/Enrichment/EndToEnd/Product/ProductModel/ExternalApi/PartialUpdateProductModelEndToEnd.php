@@ -519,6 +519,29 @@ JSON;
         $this->assertEventCount(1, ProductModelUpdated::class);
     }
 
+    public function testUpdateCaseInsensitiveProductModel()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+{
+    "code": "sweat",
+    "family_variant": "fAmIlYVaRiAnTA1"
+}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/product-models/sweat',
+            $response->headers->get('location')
+        );
+    }
+
     public function testSubProductModelCreation()
     {
         $client = $this->createAuthenticatedClient();

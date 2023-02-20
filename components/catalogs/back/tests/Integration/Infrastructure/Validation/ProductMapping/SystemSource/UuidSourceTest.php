@@ -42,7 +42,7 @@ class UuidSourceTest extends IntegrationTestCase
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testItReturnsViolationsWhenInvalid(array $source, $expectedMessage): void
+    public function testItReturnsViolationsWhenInvalid(array $source, string $expectedMessage): void
     {
         $violations = $this->validator->validate($source, new UuidSource());
 

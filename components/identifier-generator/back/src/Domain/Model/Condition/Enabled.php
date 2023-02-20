@@ -8,15 +8,21 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Webmozart\Assert\Assert;
 
 /**
- * @phpstan-type EnabledNormalized array{type: string, value: bool}
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-type EnabledNormalized array{type: 'enabled', value: bool}
  */
-class Enabled implements ConditionInterface
+final class Enabled implements ConditionInterface
 {
     public function __construct(
-        private bool $value
+        private readonly bool $value
     ) {
     }
 
+    /**
+     * @return 'enabled'
+     */
     public static function type(): string
     {
         return 'enabled';

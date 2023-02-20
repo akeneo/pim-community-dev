@@ -1,43 +1,35 @@
 import {useEffect, useState} from 'react';
 import {useRoute} from '@akeneo-pim-community/shared';
-import {AmazonS3Storage, MicrosoftAzureStorage, SftpStorage} from '../components';
-import {isAmazonS3Storage, isMicrosoftAzureStorage, isSftpStorage} from '../components/StorageConfigurator';
+import {
+  isSftpStorage,
+  isAmazonS3Storage,
+  isMicrosoftAzureStorage,
+  isGoogleCloudStorage,
+  SftpStorage,
+  AmazonS3Storage,
+  GoogleCloudStorage,
+  MicrosoftAzureStorage,
+  isAmazonS3ConnectionFieldFulfilled,
+  isGoogleCloudConnectionFieldFulfilled,
+  isMicrosoftAzureConnectionFieldFulfilled,
+  isSftpConnectionFieldFulfilled,
+} from '../models';
 
-const isSftpConnectionFieldFulfilled = (storage: SftpStorage): boolean => {
-  return (
-    '' !== storage.file_path &&
-    '' !== storage.host &&
-    !isNaN(storage.port) &&
-    '' !== storage.username &&
-    (('password' === storage.login_type && '' !== storage.password) || 'private_key' === storage.login_type)
-  );
-};
-
-const isAmazonS3ConnectionFieldFulfilled = (storage: AmazonS3Storage): boolean => {
-  return (
-    '' !== storage.file_path &&
-    '' !== storage.region &&
-    '' !== storage.bucket &&
-    '' !== storage.key &&
-    '' !== storage.secret
-  );
-};
-
-const isMicrosoftAzureConnectionFieldFulfilled = (storage: MicrosoftAzureStorage): boolean => {
-  return '' !== storage.connection_string && '' !== storage.container_name && '' !== storage.file_path;
-};
-
-const useCheckStorageConnection = (storage: SftpStorage | AmazonS3Storage | MicrosoftAzureStorage) => {
+const useCheckStorageConnection = (
+  jobInstanceCode: string,
+  storage: SftpStorage | AmazonS3Storage | MicrosoftAzureStorage | GoogleCloudStorage
+) => {
   const [isValid, setValid] = useState<boolean | undefined>(undefined);
   const [isChecking, setIsChecking] = useState<boolean>(false);
-  const route = useRoute('pimee_job_automation_get_storage_connection_check');
+  const route = useRoute('pimee_job_automation_get_storage_connection_check', {jobInstanceCode});
 
   const canCheckConnection =
     !isChecking &&
     !isValid &&
     ((isSftpStorage(storage) && isSftpConnectionFieldFulfilled(storage)) ||
       (isAmazonS3Storage(storage) && isAmazonS3ConnectionFieldFulfilled(storage)) ||
-      (isMicrosoftAzureStorage(storage) && isMicrosoftAzureConnectionFieldFulfilled(storage)));
+      (isMicrosoftAzureStorage(storage) && isMicrosoftAzureConnectionFieldFulfilled(storage)) ||
+      (isGoogleCloudStorage(storage) && isGoogleCloudConnectionFieldFulfilled(storage)));
 
   useEffect(() => {
     return () => {

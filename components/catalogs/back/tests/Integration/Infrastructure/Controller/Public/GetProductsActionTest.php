@@ -54,6 +54,11 @@ class GetProductsActionTest extends IntegrationTestCase
         );
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
+        $productCountFromEvent = 0;
+        $this->addSubscriberForReadProductEvent(function ($productCount) use (&$productCountFromEvent): void {
+            $productCountFromEvent = $productCount;
+        });
+
         $this->client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
@@ -98,6 +103,8 @@ class GetProductsActionTest extends IntegrationTestCase
         Assert::assertEquals([
             '9fe842c4-6185-470b-b9a8-abc2306b0e4b',
         ], $uuids);
+
+        Assert::assertEquals(2, $productCountFromEvent, 'Wrong dispatched product count');
     }
 
     public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsDisabled(): void

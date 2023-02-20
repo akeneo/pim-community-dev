@@ -1,7 +1,7 @@
 import {act} from '@testing-library/react-hooks';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {SftpStorage} from '../components';
 import {useCheckStorageConnection} from './useCheckStorageConnection';
+import {SftpStorage} from '../models';
 
 test('connection healthy', async () => {
   global.fetch = jest.fn().mockImplementation(async () => ({
@@ -17,7 +17,7 @@ test('connection healthy', async () => {
     username: 'sftp',
     password: 'password',
   };
-  const {result} = renderHookWithProviders(() => useCheckStorageConnection(storage));
+  const {result} = renderHookWithProviders(() => useCheckStorageConnection('csv_product_export', storage));
   const [, , checkReliability] = result.current;
 
   await act(async () => {
@@ -44,7 +44,7 @@ test('connection not healthy returns false', async () => {
     username: 'sftp',
     password: 'password',
   };
-  const {result} = renderHookWithProviders(() => useCheckStorageConnection(storage));
+  const {result} = renderHookWithProviders(() => useCheckStorageConnection('csv_product_export', storage));
   const [, , checkReliability] = result.current;
 
   await act(async () => {

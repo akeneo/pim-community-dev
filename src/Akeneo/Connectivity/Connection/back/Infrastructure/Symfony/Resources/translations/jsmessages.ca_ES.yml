@@ -146,6 +146,10 @@ akeneo_connectivity.connection:
         flash:
           error: Ho sentim, s'ha produït un error en obtenir la llista d'aplicacions connectades.
       edit:
+        header:
+          open_app_button:
+            label: Vés a l'aplicació
+            icon_alt: Vés a l'icona d'aplicació
         not_found: No s'ha trobat l'aplicació
         tabs:
           settings: Preferències
@@ -243,6 +247,9 @@ akeneo_connectivity.connection:
           helper: Per obtenir més informació sobre l'autorització d'aplicacions,
           helper_link: Consulteu l'article del nostre Centre d'ajuda.
           is_allowed_to: 'Ja es permet:'
+          certification_consent:
+            label: 'He llegit i accepto la següent exempció de responsabilitat sobre la certificació.'
+            subtext: 'Akeneo renuncia a qualsevol responsabilitat per l''ús de l''aplicació per part del client, així com les seves funcionalitats. La certificació no garanteix la interoperabilitat de l''aplicació ni que funcioni correctament en l''entorn del client.'
         flash:
           success: L'aplicació s'ha configurat correctament.
           error: Ho sentim, s'ha produït un error al intentar connectar l'aplicació.

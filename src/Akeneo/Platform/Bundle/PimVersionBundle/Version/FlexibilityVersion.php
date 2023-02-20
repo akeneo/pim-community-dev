@@ -18,7 +18,7 @@ namespace Akeneo\Platform\Bundle\PimVersionBundle\Version;
 final class FlexibilityVersion implements PimVersion
 {
     /** @staticvar string */
-    const VERSION_CODENAME = 'Buttercup';
+    const VERSION_CODENAME = 'Buckwheat';
 
     /** @staticvar string */
     const EDITION_NAME = 'EE';
@@ -38,7 +38,7 @@ final class FlexibilityVersion implements PimVersion
 
     public function isSaas(): bool
     {
-        return true;
+        return false;
     }
 
     public function isEditionCode(string $editionCode): bool

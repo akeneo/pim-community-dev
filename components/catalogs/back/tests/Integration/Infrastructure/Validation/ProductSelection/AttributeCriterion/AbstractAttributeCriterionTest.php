@@ -89,10 +89,10 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
                 function ($code, $options): array {
                     $intersection = \array_filter(
                         $this->attributeOptions[$code] ?? [],
-                        static fn ($option) => \in_array($option, $options),
+                        static fn ($option): bool => \in_array($option, $options),
                     );
 
-                    return \array_map(static fn ($option) => [
+                    return \array_map(static fn ($option): array => [
                         'code' => $option,
                         'label' => '['.$option.']',
                     ], $intersection);
@@ -103,7 +103,7 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
         $this->getChannelQuery = $this->createMock(GetChannelQueryInterface::class);
         $this->getChannelQuery
             ->method('execute')
-            ->willReturnCallback(fn ($code) => $this->channels[$code] ?? null);
+            ->willReturnCallback(fn ($code): ?array => $this->channels[$code] ?? null);
         self::getContainer()->set(GetChannelQuery::class, $this->getChannelQuery);
 
         $this->getLocalesQuery = $this->createMock(GetLocalesQueryInterface::class);

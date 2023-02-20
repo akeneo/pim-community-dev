@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -11,13 +12,15 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type AutoNumberNormalized array{type: string, numberMin: int, digitsMin: int}
+ * @phpstan-type AutoNumberNormalized array{type: 'auto_number', numberMin: int, digitsMin: int}
  */
 final class AutoNumber implements PropertyInterface
 {
     public const LIMIT_NUMBER_MIN = 0;
     public const LIMIT_DIGITS_MIN = 1;
     public const LIMIT_DIGITS_MAX = 15;
+
+    private const TYPE = 'auto_number';
 
     public function __construct(
         private readonly int $numberMin,
@@ -30,7 +33,7 @@ final class AutoNumber implements PropertyInterface
 
     public static function type(): string
     {
-        return 'auto_number';
+        return self::TYPE;
     }
 
     /**
@@ -57,7 +60,7 @@ final class AutoNumber implements PropertyInterface
     public function normalize(): array
     {
         return [
-            'type' => $this->type(),
+            'type' => self::TYPE,
             'numberMin' => $this->numberMin,
             'digitsMin' => $this->digitsMin,
         ];
@@ -71,5 +74,10 @@ final class AutoNumber implements PropertyInterface
     public function digitsMin(): int
     {
         return $this->digitsMin;
+    }
+
+    public function getImplicitCondition(): ?ConditionInterface
+    {
+        return null;
     }
 }

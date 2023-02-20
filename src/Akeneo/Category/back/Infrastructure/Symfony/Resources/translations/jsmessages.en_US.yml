@@ -32,3 +32,15 @@ akeneo.category:
             header: Label
             code: Code
             type: Type
+
+    tag:
+        new: New
+
+    discover_enriched_categories_information:
+        title: Discover Enriched Categories Early Access
+        content:
+            activate_template: Activate category enrichment through pre-configured templates
+            enrich_attribute_values: Enrich Text, Text Area and Image attributes in categories
+            deactivate_template: Enrichment deactivation and custom template will be coming shortly
+        survey_link_label: Tell us what you think
+        learn_more_link_label: Learn more about Enriched Categories

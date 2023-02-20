@@ -23,6 +23,7 @@ class CheckTemplateSql implements CheckTemplate
         $query = <<<SQL
             SELECT count(1) FROM pim_catalog_category_template
             WHERE code=:template_code
+            AND (is_deactivated IS NULL OR is_deactivated = 0)
         SQL;
 
         $result = $this->connection->executeQuery(

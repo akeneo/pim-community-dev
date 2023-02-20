@@ -38,8 +38,8 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: Apps connectées
   akeneo_connectivity_connection_connect_connected_apps_edit: Paramètres des apps
   akeneo_connectivity_connection_connect_connected_apps_delete: Suppression de l'app
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Créer une app de test
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Supprimer l'app de test
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Créer une application de test
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Supprimer l'application de test
   akeneo_connectivity_connection_connect_connected_apps_open: Ouvrir l'app
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Modifier le catalogue
 akeneo_connectivity.connection:
@@ -68,7 +68,7 @@ akeneo_connectivity.connection:
         total: '{0} Aucun connecteurs|{1} 1 connecteur|[2,Inf] {{ total }} connecteurs'
         empty: Aucun connecteur compatible avec votre version
       apps:
-        title: Apps connectées
+        title: Apps
         total: '{0} Aucune app|{1} 1 app|[2,Inf] {{ total }} apps'
         empty: Aucune app compatible avec votre version
       unreachable: Impossible d'accéder à l'App Store, revenez plus tard.
@@ -80,9 +80,9 @@ akeneo_connectivity.connection:
         modal:
           subtitle: Créer une app de test
           app_information:
-            title: Informations de l'app
+            title: Informations sur l'application
             description: Si vous avez besoin d'aide, veuillez consulter notre article
-            link: Comment tester mon app avant de la publier ?
+            link: Comment tester mon application avant de la publier ?
             fields:
               name: Nom
               activate_url: URL d'activation (activate)
@@ -91,7 +91,7 @@ akeneo_connectivity.connection:
             title: Identifiants
             warning: Assurez-vous de sauvegarder ces informations d'identification quelque part car nous ne les affichons qu'une seule fois ici.
             client_id: ID Client
-            client_secret: Clé secrète du client (client secret)
+            client_secret: Clé secrète du client
         errors:
           page_not_found: Page introuvable
           creation:
@@ -111,20 +111,20 @@ akeneo_connectivity.connection:
               must_be_url: L'URL de retour (callback) doit être une URL valide.
               not_blank: L'URL de retour (callback) est requise.
         delete:
-          subtitle: Apps connectées
+          subtitle: Applications
           title: Confirmer la suppression
           description: Vous êtes sur le point de supprimer votre app de test de ce PIM.
           warning: En confirmant la suppression, vous supprimerez l'app de test sur la page App Store et l'app connectée correspondante.
           flash:
-            success: L'app de test a bien été supprimée.
-            error: Une erreur s'est produite lors de la suppression de l'app de test.
+            success: L'application de test a bien été supprimée.
+            error: Une erreur s'est produite lors de la suppression de l'application de test.
     connected_apps:
       list:
         apps:
           title: Apps connectées
           total: '{0} Aucune app|{1} 1 app|[2,Inf] {{ total }} apps'
           empty: Aucune app connectée pour le moment.
-          check_marketplace: 'Rendez-vous sur l''{{ marketplaceLink }} pour parcourir les extensions disponibles et connecter votre première app.'
+          check_marketplace: 'Rendez-vous sur la {{ marketplaceLink }} pour parcourir les extensions disponibles et connecter votre première app.'
           marketplace_link_anchor: App Store
           at_least_one_is_not_listed_on_the_appstore: Certaines de vos apps connectées ne sont pas compatibles avec votre version du PIM ou n'existent plus sur l'Akeneo App Store. Contactez-nous pour obtenir plus d'informations.
           pending_apps: Certaines de vos apps ne sont pas connectées à votre PIM.
@@ -137,10 +137,10 @@ akeneo_connectivity.connection:
           description_2: Vous voulez en savoir plus sur les apps ?
           link: Consultez notre Help Center pour plus d'informations.
         card:
-          developed_by: 'Développée par {{ author }}'
+          developed_by: 'Développé par {{ author }}'
           new_access_authorization_required: Nouvelles autorisations requises.
           not_listed_on_the_appstore: Cette app n'est plus listée sur l'Akeneo App Store. Veuillez contacter le support de l'app.
-          manage_app: Gérer l'app
+          manage_app: Paramètres
           open_app: Ouvrir l'app
           pending: App non connectée. L'ouverture de l'app devrait résoudre le problème.
         flash:
@@ -175,11 +175,11 @@ akeneo_connectivity.connection:
           error: Oups, quelque chose a mal tourné !
           helper:
             description: Ici, vous pouvez voir le détail de chaque erreur pour cette application au cours des 7 derniers jours. Le nombre d'erreurs est limité à 100.
-          not_data_source: Pour l'instant, la page de suivi n'est disponible que pour les apps de type source.
+          not_data_source: Pour l'instant, la page de suivi n'est disponible que pour l'application source.
           not_auditable:
-            title: App non surveillée
+            title: Application non surveillée
             description:
-              1: Pour suivre les erreurs sur cette app,
+              1: Pour suivre les erreurs sur cette application,
               2: activer la surveillance
               3: dans les paramètres.
         catalogs:
@@ -197,10 +197,10 @@ akeneo_connectivity.connection:
           success: Paramètres mis à jour avec succès.
           monitoring_settings_error.description: Désolé, une erreur s'est produite lors de la modification de l'app.
       delete:
-        subtitle: Apps connectées
+        subtitle: Apps
         title: Confirmer la suppression
         description: Êtes-vous sûr de vouloir supprimer cette app ? Vous n'êtes pas sûr des impacts ?
-        link: Découvrez-le ici.
+        link: Découvrez-les ici.
         flash:
           success: App supprimée avec succès.
           error: Désolé, une erreur s'est produite lors de la suppression de l'app.
@@ -270,10 +270,10 @@ akeneo_connectivity.connection:
           channel_settings: les canaux
           association_types: les types d'association
           products: les produits et modèles de produits
-          reference_entity: les entités référentielles
-          reference_entity_record: les enregistrements des entités référentielles
-          asset_families: les familles de ressources
-          assets: les ressources
+          reference_entity: entités référentielles
+          reference_entity_record: enregistrements des entités référentielles
+          asset_families: familles de ressources
+          assets: ressources
           catalogs: catalogues
         new: NOUVEAU
       error:
@@ -281,15 +281,15 @@ akeneo_connectivity.connection:
         app_not_found: Le "client_id" ne correspond à aucune app connue.
       constraint:
         client_id:
-          not_blank: L'ID client est requis.
-          must_be_valid: L'ID client ne correspond à aucun client connu.
-          must_have_ongoing_authorization: L'ID client n'a pas de processus d'autorisation en cours pour le moment
+          not_blank: Le client_id est requis.
+          must_be_valid: Le client_id ne correspond à aucun client connu.
+          must_have_ongoing_authorization: Le client_id n'a pas de processus d'autorisation en cours pour le moment
         response_type:
-          not_blank: Le "response_type" est requis.
-          must_be_code: Le "response_type" doit être "code".
+          not_blank: Le response_type est requis.
+          must_be_code: Le response_type doit être "code".
         redirect_uri:
-          not_blank: La "redirect_uri" est requise.
-          must_be_url: Le "redirect_uri" n'est pas une URL valide.
+          not_blank: La redirect_uri est requise.
+          must_be_url: Le redirect_uri n'est pas une URL valide.
         scope:
           too_long: La liste des scopes ne peut pas dépasser 1000 caractères.
   connections: Connexions

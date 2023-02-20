@@ -38,9 +38,14 @@ akeneo_catalogs:
         unknown: 'De taal "{{ locale_name }}" is gedeactiveerd. Controleer uw taalinstellingen of verwijder dit filter.'
     product_mapping:
       source:
+        invalid: 'Dit attribuut is verwijderd.'
+        unknown: 'Onbekende bronwaarde'
         channel:
           not_empty: 'Dit kanaal moet leeg zijn.'
           empty: 'Dit kanaal mag niet leeg zijn.'
+          unknown: 'Dit kanaal is verwijderd. Controleer uw kanaalinstellingen of werk deze waarde bij.'
         locale:
           not_empty: 'Deze taal moet leeg zijn.'
           empty: 'Deze taal mag niet leeg zijn.'
+          unknown: 'Deze taal is uitgeschakeld of bestaat niet meer. Controleer uw kanaal- en taalinstellingen.'
+          disabled: 'Deze taal is uitgeschakeld. Controleer uw kanaal- en taalinstellingen of werk deze waarde bij.'
