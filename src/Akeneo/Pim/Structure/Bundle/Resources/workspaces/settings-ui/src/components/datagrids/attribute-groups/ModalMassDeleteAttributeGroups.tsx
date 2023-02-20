@@ -15,7 +15,7 @@ const ModalContent = styled.div`
   gap: 20px;
 `;
 
-const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsProps) => {
+const ModalMassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
   const [numberOfAttribute] = useState<number>(0);
@@ -66,4 +66,4 @@ const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsP
   );
 };
 
-export {MassDeleteAttributeGroups};
+export {ModalMassDeleteAttributeGroups};

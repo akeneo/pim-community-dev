@@ -274,7 +274,7 @@ pim_enrich.entity.attribute_group:
         columns:
             name: Attribute groups name
         no_search_result: Sorry, there is no result for your search.
-    selected: '{0}0 attribute groups selected|{1}1 attribute group selected|]1, Inf[{{ count }} attribute groups selected'
+    selected: '{0}0 attribute group selected|{1}1 attribute group selected|]1, Inf[{{ count }} attribute groups selected'
     mass_delete:
         title: Attribute Groups
         confirm: 'Are you sure you want to delete these {{ count }} attribute groups ?'

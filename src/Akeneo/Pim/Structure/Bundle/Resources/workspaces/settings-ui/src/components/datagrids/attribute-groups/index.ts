@@ -1,2 +1,2 @@
 export * from './AttributeGroupsDataGrid';
-export * from './MassDeleteAttributeGroups';
+export * from './ModalMassDeleteAttributeGroups';
