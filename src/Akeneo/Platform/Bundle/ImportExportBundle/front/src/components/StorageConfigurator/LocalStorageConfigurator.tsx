@@ -1,6 +1,7 @@
 import React from 'react';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
-import {StorageConfiguratorProps, isLocalStorage} from './model';
+import {StorageConfiguratorProps} from './model';
+import {isLocalStorage} from '../../models';
 
 const LocalStorageConfigurator = ({
   storage,

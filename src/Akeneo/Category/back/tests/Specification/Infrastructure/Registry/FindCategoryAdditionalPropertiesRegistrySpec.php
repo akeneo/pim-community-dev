@@ -26,7 +26,7 @@ class FindCategoryAdditionalPropertiesRegistrySpec extends ObjectBehavior
         $this->shouldHaveType(FindCategoryAdditionalPropertiesRegistry::class);
     }
 
-    function it_executes_only_supported_finder(
+    function it_executes_only_supported_finder_for_category(
         CategoryAdditionalPropertiesFinder $supportedFinder,
         CategoryAdditionalPropertiesFinder $unsupportedFinder,
         Category $category
@@ -37,5 +37,19 @@ class FindCategoryAdditionalPropertiesRegistrySpec extends ObjectBehavior
         $supportedFinder->execute($category)->shouldBeCalled();
 
         $this->forCategory($category);
+    }
+
+    function it_executes_only_supported_finder_for_categories(
+        CategoryAdditionalPropertiesFinder $supportedFinder,
+        CategoryAdditionalPropertiesFinder $unsupportedFinder,
+        Category $category
+    ) {
+        $unsupportedFinder->isSupportedAdditionalProperties()->willReturn(false);
+        $unsupportedFinder->execute($category)->shouldNotBeCalled();
+
+        $supportedFinder->isSupportedAdditionalProperties()->willReturn(true);
+        $supportedFinder->execute($category)->shouldBeCalled();
+
+        $this->forCategories([$category]);
     }
 }

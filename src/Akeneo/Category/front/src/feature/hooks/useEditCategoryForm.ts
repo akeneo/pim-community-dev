@@ -107,7 +107,7 @@ const useEditCategoryForm = (categoryId: number) => {
 
       if (Array.isArray(categoryEdited.properties.labels) && !categoryEdited.properties.labels.length) {
         categoryEdited['properties']['labels'] = {
-          [localeCode]: label
+          [localeCode]: label,
         };
       }
 

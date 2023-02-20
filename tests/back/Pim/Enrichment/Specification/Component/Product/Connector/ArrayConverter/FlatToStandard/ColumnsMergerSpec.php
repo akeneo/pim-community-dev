@@ -30,7 +30,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn([]);
 
         $mergedRow = $row;
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_does_not_merge_columns_which_represents_text_attribute_value(
@@ -50,7 +50,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $name->getBackendType()->willReturn('text');
 
         $mergedRow = $row;
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_does_not_merge_columns_which_represents_metric_attribute_value_in_a_single_column(
@@ -71,7 +71,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $weight->getBackendType()->willReturn('metric');
 
         $mergedRow = $row;
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_does_not_merge_columns_which_represents_a_localizable_metric_attribute_value_in_a_single_column(
@@ -93,7 +93,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $weight->getBackendType()->willReturn('metric');
 
         $mergedRow = $row;
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_merges_price_attribute_value_columns(
@@ -129,7 +129,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
         $mergedRow = ['price' => '10 EUR,14 CHF'];
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_merges_columns_which_represents_metric_attribute_value_in_two_columns(
@@ -160,7 +160,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $weight->getBackendType()->willReturn('metric');
 
         $mergedRow = ['weight' => '10 KILOGRAM'];
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_merges_columns_which_represents_metric_attribute_value_with_scientific_notation_in_two_columns(
@@ -191,7 +191,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $weight->getBackendType()->willReturn('metric');
 
         $mergedRow = ['weight' => '0.000075000000 GRAM'];
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_merges_columns_which_represents_metric_attribute_value_with_large_decimal_number(
@@ -222,7 +222,38 @@ class ColumnsMergerSpec extends ObjectBehavior
         $weight->getBackendType()->willReturn('metric');
 
         $mergedRow = ['weight' => '80000.750000000000 GRAM'];
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
+    }
+
+    public function it_merges_columns_which_represents_metric_attribute_value_with_the_decimal_separator(
+        $fieldExtractor,
+        AttributeInterface $weight
+    ) {
+        $row = [
+            'weight' => 80000.75,
+            'weight-unit' => 'GRAM',
+        ];
+        $attributeInfoData = [
+            'attribute' => $weight,
+            'locale_code' => null,
+            'scope_code' => null,
+            'metric_unit' => null,
+        ];
+        $fieldExtractor->extractColumnInfo('weight')->willReturn($attributeInfoData);
+
+        $attributeInfoUnit = [
+            'attribute' => $weight,
+            'locale_code' => null,
+            'scope_code' => null,
+            'metric_unit' => 'unit',
+        ];
+        $fieldExtractor->extractColumnInfo('weight-unit')->willReturn($attributeInfoUnit);
+
+        $weight->getCode()->willReturn('weight');
+        $weight->getBackendType()->willReturn('metric');
+
+        $mergedRow = ['weight' => '80000,750000000000 GRAM'];
+        $this->merge($row, ['decimal_separator' => ','])->shouldReturn($mergedRow);
     }
 
     public function it_merges_columns_which_represents_a_localizable_metric_attribute_value_in_a_two_columns(
@@ -253,7 +284,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $weight->getBackendType()->willReturn('metric');
 
         $mergedRow = ['weight-fr_FR' => '10 KILOGRAM'];
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_does_not_merge_columns_which_represents_a_localizable_price_attribute_value_in_a_single_column(
@@ -274,7 +305,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $price->getBackendType()->willReturn('prices');
 
         $mergedRow = $row;
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_does_not_create_price_when_price_is_empty(
@@ -293,7 +324,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
 
-        $this->merge($row)->shouldReturn(['price' => '']);
+        $this->merge($row, [])->shouldReturn(['price' => '']);
     }
 
     public function it_merges_columns_which_represents_price_attribute_value_in_many_columns(
@@ -302,8 +333,9 @@ class ColumnsMergerSpec extends ObjectBehavior
     ) {
         $row = [
             'price-EUR' => '10',
-            'price-USD' => '12',
+            'price-USD' => 12,
             'price-CHF' => '14',
+            'price-ARS' => 12.23,
         ];
         $attributeInfoEur = [
             'attribute' => $price,
@@ -329,11 +361,41 @@ class ColumnsMergerSpec extends ObjectBehavior
         ];
         $fieldExtractor->extractColumnInfo('price-CHF')->willReturn($attributeInfoChf);
 
+        $attributeInfoArs = [
+            'attribute' => $price,
+            'locale_code' => null,
+            'scope_code' => null,
+            'price_currency' => 'ARS',
+        ];
+        $fieldExtractor->extractColumnInfo('price-ARS')->willReturn($attributeInfoArs);
+
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
 
-        $mergedRow = ['price' => '10 EUR,12 USD,14 CHF'];
-        $this->merge($row)->shouldReturn($mergedRow);
+        $mergedRow = ['price' => '10 EUR,12 USD,14 CHF,12.23 ARS'];
+        $this->merge($row, [])->shouldReturn($mergedRow);
+    }
+
+    public function it_merges_columns_which_represents_price_attribute_with_decimal_separator(
+        $fieldExtractor,
+        AttributeInterface $price
+    ) {
+        $row = [
+            'price-EUR' => 10.63,
+        ];
+        $attributeInfoEur = [
+            'attribute' => $price,
+            'locale_code' => null,
+            'scope_code' => null,
+            'price_currency' => 'EUR',
+        ];
+        $fieldExtractor->extractColumnInfo('price-EUR')->willReturn($attributeInfoEur);
+
+        $price->getCode()->willReturn('price');
+        $price->getBackendType()->willReturn('prices');
+
+        $mergedRow = ['price' => '10,63 EUR'];
+        $this->merge($row, ['decimal_separator' => ','])->shouldReturn($mergedRow);
     }
 
     public function it_throws_an_exception_when_an_attribute_price_value_is_a_datetime(
@@ -353,7 +415,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
 
-        $this->shouldThrow(BusinessArrayConversionException::class)->during('merge', [$row]);
+        $this->shouldThrow(BusinessArrayConversionException::class)->during('merge', [$row, []]);
     }
 
     public function it_merges_columns_which_represents_quantified_associations_in_two_columns_with_uuids(
@@ -383,7 +445,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             ],
             'PACK-product_models' => [],
         ];
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_merges_columns_which_represents_quantified_associations_in_two_columns_with_identifiers(
@@ -413,7 +475,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             ],
             'PACK-product_models' => [],
         ];
-        $this->merge($row)->shouldReturn($mergedRow);
+        $this->merge($row, [])->shouldReturn($mergedRow);
     }
 
     public function it_removes_line_breaks_from_measurements(
@@ -444,7 +506,7 @@ class ColumnsMergerSpec extends ObjectBehavior
         $associationColumnResolver->resolveQuantifiedQuantityAssociationColumns()->willReturn([]);
         $associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn([]);
 
-        $this->merge($row)->shouldReturn(['weight' => "10 CENTIMETER"]);
+        $this->merge($row, [])->shouldReturn(['weight' => "10 CENTIMETER"]);
     }
 
     public function it_throw_an_exception_on_missing_column_for_quantified_association(
@@ -465,6 +527,6 @@ class ColumnsMergerSpec extends ObjectBehavior
             ->shouldThrow(
                 new \LogicException('A "PACK-products-quantity" column is missing for quantified association')
             )
-            ->during('merge', [$row]);
+            ->during('merge', [$row, []]);
     }
 }

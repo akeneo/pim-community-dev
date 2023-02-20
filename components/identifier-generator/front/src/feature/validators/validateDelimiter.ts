@@ -8,10 +8,16 @@ const validateDelimiter: Validator<Delimiter | null> = (delimiter, path) => {
   if (delimiter === '') {
     violations.push({
       path,
-      message: 'Please add a valid delimiter or untick the box if you don’t want to add a delimiter',
+      message: 'A valid delimiter must be added. If you do not want to have a delimiter, untick the box.',
     });
   }
 
+  if (delimiter !== null && /[ ,;]/.exec(delimiter)) {
+    violations.push({
+      path,
+      message: 'The property must not contain a comma, a semicolon or any space',
+    });
+  }
   return violations;
 };
 

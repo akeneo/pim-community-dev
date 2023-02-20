@@ -36,6 +36,7 @@ class MigrateToUuidCommand extends Command
         MigrateToUuidStep $migrateToUuidFillJson,
         MigrateToUuidStep $migrateToUuidSetNotNullableUuidColumns,
         MigrateToUuidStep $migrateToUuidAddConstraints,
+        MigrateToUuidStep $migrateToUuidCompletenessTable,
         MigrateToUuidStep $migrateToUuidReindexElasticsearch,
         private LoggerInterface $logger,
         private Connection $connection
@@ -50,6 +51,7 @@ class MigrateToUuidCommand extends Command
             $migrateToUuidFillJson,
             $migrateToUuidSetNotNullableUuidColumns,
             $migrateToUuidAddConstraints,
+            $migrateToUuidCompletenessTable,
             $migrateToUuidReindexElasticsearch,
         ];
     }

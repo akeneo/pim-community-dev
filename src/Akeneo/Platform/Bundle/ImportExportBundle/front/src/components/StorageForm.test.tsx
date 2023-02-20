@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import {screen, act} from '@testing-library/react';
 import {renderWithProviders, ValidationError, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {StorageForm} from './StorageForm';
-import {LocalStorage, NoneStorage, SftpStorage} from './model';
+import {NoneStorage, LocalStorage, SftpStorage} from '../models';
 
 const mockedUseFeatureFlags = useFeatureFlags as jest.Mock;
 
@@ -196,7 +196,7 @@ test('it can select a local storage', async () => {
 
   expect(onStorageChange).toBeCalledWith({
     type: 'local',
-    file_path: 'export_%job_label%_%datetime%.xlsx',
+    file_path: '/tmp/export_%job_label%_%datetime%.xlsx',
   });
 });
 

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\EmptyIdentifier;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -13,17 +15,19 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
  * @phpstan-import-type ConditionsNormalized from Conditions
  * @phpstan-import-type StructureNormalized from Structure
  * @phpstan-import-type LabelsNormalized from LabelCollection
+ * @phpstan-import-type TextTransformationNormalized from TextTransformation
  */
 final class IdentifierGenerator
 {
     public function __construct(
-        private IdentifierGeneratorId $id,
-        private IdentifierGeneratorCode $code,
-        private Conditions $conditions,
-        private Structure $structure,
-        private LabelCollection $labelCollection,
-        private Target $target,
-        private ?Delimiter $delimiter,
+        private readonly IdentifierGeneratorId $id,
+        private readonly IdentifierGeneratorCode $code,
+        private readonly Conditions $conditions,
+        private readonly Structure $structure,
+        private readonly LabelCollection $labelCollection,
+        private readonly Target $target,
+        private readonly Delimiter $delimiter,
+        private readonly TextTransformation $textTransformation,
     ) {
     }
 
@@ -57,34 +61,98 @@ final class IdentifierGenerator
         return $this->target;
     }
 
-    public function delimiter(): ?Delimiter
+    public function delimiter(): Delimiter
     {
         return $this->delimiter;
     }
 
-    public function setStructure(Structure $structure): void
+    public function textTransformation(): TextTransformation
     {
-        $this->structure = $structure;
+        return $this->textTransformation;
     }
 
-    public function setConditions(Conditions $conditions): void
+    public function withStructure(Structure $structure): self
     {
-        $this->conditions = $conditions;
+        return new IdentifierGenerator(
+            $this->id,
+            $this->code,
+            $this->conditions,
+            $structure,
+            $this->labelCollection,
+            $this->target,
+            $this->delimiter,
+            $this->textTransformation
+        );
     }
 
-    public function setLabelCollection(LabelCollection $labelCollection): void
+    public function withConditions(Conditions $conditions): self
     {
-        $this->labelCollection = $labelCollection;
+        return new IdentifierGenerator(
+            $this->id,
+            $this->code,
+            $conditions,
+            $this->structure,
+            $this->labelCollection,
+            $this->target,
+            $this->delimiter,
+            $this->textTransformation
+        );
     }
 
-    public function setTarget(Target $target): void
+    public function withLabelCollection(LabelCollection $labelCollection): self
     {
-        $this->target = $target;
+        return new IdentifierGenerator(
+            $this->id,
+            $this->code,
+            $this->conditions,
+            $this->structure,
+            $labelCollection,
+            $this->target,
+            $this->delimiter,
+            $this->textTransformation
+        );
     }
 
-    public function setDelimiter(?Delimiter $delimiter): void
+    public function withTarget(Target $target): self
     {
-        $this->delimiter = $delimiter;
+        return new IdentifierGenerator(
+            $this->id,
+            $this->code,
+            $this->conditions,
+            $this->structure,
+            $this->labelCollection,
+            $target,
+            $this->delimiter,
+            $this->textTransformation
+        );
+    }
+
+    public function withDelimiter(Delimiter $delimiter): self
+    {
+        return new IdentifierGenerator(
+            $this->id,
+            $this->code,
+            $this->conditions,
+            $this->structure,
+            $this->labelCollection,
+            $this->target,
+            $delimiter,
+            $this->textTransformation
+        );
+    }
+
+    public function withTextTransformation(TextTransformation $textTransformation): self
+    {
+        return new IdentifierGenerator(
+            $this->id,
+            $this->code,
+            $this->conditions,
+            $this->structure,
+            $this->labelCollection,
+            $this->target,
+            $this->delimiter,
+            $textTransformation
+        );
     }
 
     /**
@@ -96,6 +164,7 @@ final class IdentifierGenerator
      *     labels: LabelsNormalized,
      *     target: string,
      *     delimiter: string | null,
+     *     text_transformation: TextTransformationNormalized
      * }
      */
     public function normalize(): array
@@ -107,14 +176,25 @@ final class IdentifierGenerator
             'structure' => $this->structure->normalize(),
             'labels' => $this->labelCollection->normalize(),
             'target' => $this->target->asString(),
-            'delimiter' => $this->delimiter?->asString(),
+            'delimiter' => $this->delimiter->asString(),
+            'text_transformation' => $this->textTransformation->normalize(),
         ];
     }
 
     public function match(ProductProjection $productProjection): bool
     {
-        $identifierValue = $productProjection->identifier();
+        $conditionsWithImplicitOnes = $this->conditions->and($this->getImplicitConditions());
 
-        return (null === $identifierValue || '' === $identifierValue) && $this->conditions->match($productProjection);
+        return $conditionsWithImplicitOnes->match($productProjection);
+    }
+
+    /**
+     * @return ConditionInterface[]
+     */
+    private function getImplicitConditions(): array
+    {
+        $conditions = [new EmptyIdentifier($this->target()->asString())];
+
+        return \array_merge($conditions, $this->structure->getImplicitConditions());
     }
 }

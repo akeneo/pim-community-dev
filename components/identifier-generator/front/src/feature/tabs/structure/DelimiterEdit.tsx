@@ -3,6 +3,7 @@ import {Delimiter} from '../../models';
 import {Checkbox, Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
 import {TranslationWithLink} from '../../components';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {Styled} from '../../components/Styled';
 
 type DelimiterProps = {
   delimiter: Delimiter | null;
@@ -24,9 +25,11 @@ const DelimiterEdit: React.FC<DelimiterProps> = ({delimiter, onToggleDelimiter, 
           linkKey={'pim_identifier_generator.structure.delimiters.helper_link'}
         />
       </Helper>
-      <Checkbox checked={delimiter !== null} onChange={onToggleDelimiter}>
-        {translate('pim_identifier_generator.structure.delimiters.checkbox_label')}
-      </Checkbox>
+      <Styled.CheckboxContainer>
+        <Checkbox checked={delimiter !== null} onChange={onToggleDelimiter}>
+          {translate('pim_identifier_generator.structure.delimiters.checkbox_label')}
+        </Checkbox>
+      </Styled.CheckboxContainer>
       {delimiter !== null && (
         <Field label={translate('pim_identifier_generator.structure.delimiters.input_label')}>
           <TextInput value={delimiter} onChange={onChangeDelimiter} maxLength={100} />

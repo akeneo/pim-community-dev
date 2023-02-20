@@ -104,7 +104,7 @@ final class AttributeCriterionContainsValidLocaleValidator extends ConstraintVal
 
         $locales = $this->getLocalesQuery->execute();
 
-        $exists = \count(\array_filter($locales, static fn (array $locale) => $locale['code'] === $value['locale'])) > 0;
+        $exists = \count(\array_filter($locales, static fn (array $locale): bool => $locale['code'] === $value['locale'])) > 0;
 
         if (!$exists) {
             $this->context
@@ -139,7 +139,7 @@ final class AttributeCriterionContainsValidLocaleValidator extends ConstraintVal
             return;
         }
 
-        $exists = \count(\array_filter($locales, static fn (array $locale) => $locale['code'] === $value['locale'])) > 0;
+        $exists = \count(\array_filter($locales, static fn (array $locale): bool => $locale['code'] === $value['locale'])) > 0;
 
         if (!$exists) {
             $this->context

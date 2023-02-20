@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Security;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -56,11 +57,20 @@ class CatalogScopeMapper implements ScopeMapperInterface
         ],
     ];
 
+    public function __construct(
+        private FeatureFlags $featureFlags,
+    ) {
+    }
+
     /**
      * {@inheritDoc}
      */
     public function getScopes(): array
     {
+        if (!$this->featureFlags->isEnabled('catalogs')) {
+            return [];
+        }
+
         return [
             self::SCOPE_READ_CATALOGS,
             self::SCOPE_WRITE_CATALOGS,
@@ -73,6 +83,10 @@ class CatalogScopeMapper implements ScopeMapperInterface
      */
     public function getAcls(string $scopeName): array
     {
+        if (!$this->featureFlags->isEnabled('catalogs')) {
+            return [];
+        }
+
         return self::SCOPE_ACL_MAP[$scopeName] ?? [];
     }
 
@@ -81,6 +95,10 @@ class CatalogScopeMapper implements ScopeMapperInterface
      */
     public function getMessage(string $scopeName): ?array
     {
+        if (!$this->featureFlags->isEnabled('catalogs')) {
+            return null;
+        }
+
         return self::SCOPE_MESSAGE_MAP[$scopeName] ?? null;
     }
 
@@ -89,6 +107,10 @@ class CatalogScopeMapper implements ScopeMapperInterface
      */
     public function getLowerHierarchyScopes(string $scopeName): array
     {
+        if (!$this->featureFlags->isEnabled('catalogs')) {
+            return [];
+        }
+
         return self::SCOPE_HIERARCHY[$scopeName] ?? [];
     }
 }

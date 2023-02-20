@@ -1,0 +1,57 @@
+pim_error:
+  general: "Une erreur s'est produite lors de l'affichage de cette page. Veuillez contacter votre administrateur."
+  unexpected: "Une erreur s'est produite lors de l'affichage de cette page. Veuillez contacter votre administrateur."
+  404: 'A 404 error occurred...'
+pim_identifier_generator:
+  tabs:
+    general: "Général"
+    product_selection: "Sélection produit"
+    identifier_structure: "Structure de l'identifiant"
+  general:
+    title: "Propriétés générales"
+    text_transformation:
+      label: 'Transformation de texte'
+      no: 'Sans transformation de texte'
+      lowercase: 'Minuscule'
+      uppercase: 'Majuscule'
+  flash:
+    create:
+      success: 'Le générateur d''identifiant "{{ code }}" a été créé avec succès'
+      error: 'Le générateur d''identifiant n''a pas pu être créé'
+    update:
+      success: 'Le générateur d''identifiant "{{ code }}" a été mis à jour avec succès'
+      error: 'Le générateur d''identifiant n''a pas pu être mis à jour'
+    delete:
+      success: 'Le générateur d''identifiant "{{ code }}" a été supprimé'
+      error: 'Le générateur d''identifiant n''a pas pu être supprimé'
+  list:
+    identifier: 'Identifiant'
+    first_generator: 'Créez votre premier générateur d''identifiant !'
+    confirmation: 'Confirmez-vous la suppression de cette propriété ?'
+  selection:
+    helper:
+      title: 'Ajoutez des conditions à votre sélection de produits, si vous voulez :'
+    settings:
+      enabled:
+        disabled: 'Désactivé'
+      family:
+        placeholder: 'Veuillez sélectionner au moins une famille'
+      select_option:
+        placeholder: 'Veuillez sélectionner au moins une option'
+  structure:
+    title: 'Structure de l''identifiant'
+    property_type:
+      sections:
+        system: 'Système'
+      free_text: 'Texte'
+      auto_number: 'Nombre incrémental'
+      family: 'Famille'
+    settings:
+      free_text:
+        title: 'Paramètres du texte'
+      family:
+        title: 'Famille'
+        operator: 'Opérateur'
+        chars_number: 'Nombre de caractères'
+    delimiters:
+      title: 'Délimiteur'

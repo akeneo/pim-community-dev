@@ -1,4 +1,9 @@
 akeneo_catalogs:
+  common:
+    select:
+      open: Apri
+      remove: Rimuovi
+      no_matches: Nessuna corrispondenza trovata
   catalog_list:
     catalogs_name: Nome catalogo
     status: Stato
@@ -14,6 +19,9 @@ akeneo_catalogs:
       product_value_filters: Filtra i valori
       product_mapping: Mappatura
   catalog_status_widget:
+    fields:
+      enable_catalog: Abilita catalogo
+    helper: Per impostazione predefinita, i nuovi cataloghi non sono abilitati. Abilita il catalogo per consentire all'app di recuperare i dati dei prodotti.
     inputs:
       yes: Yes
       no: No
@@ -36,6 +44,9 @@ akeneo_catalogs:
         placeholder: Seleziona una valuta
   product_selection:
     empty: Aggiungi criteri di selezione per creare la tua selezione di prodotti
+    count:
+      products: '{0} Nessun prodotto|{1} 1 prodotto|[2,Inf[ {{ count }} prodotti'
+      error: Impossibile calcolare il numero di prodotti
     more_information: Consulta il nostro Help Center per ulteriori informazioni.
     add_criteria:
       label: aggiungi criteri di selezione
@@ -54,6 +65,7 @@ akeneo_catalogs:
       empty: Nessun canale trovato
     criteria:
       unknown: Questo attributo è stato cancellato.
+      max_reached: Hai raggiunto il limite di {{ maxCount }} criteri di selezione.
       status:
         label: Stato
         enabled: Abilitato
@@ -113,6 +125,14 @@ akeneo_catalogs:
         illustration_title: Non sono disponibili destinazioni nel catalogo
     source:
       title: Seleziona origine
+      parameters:
+        title: Parametri origine
+        channel:
+          label: Canale
+          placeholder: Seleziona un canale
+        locale:
+          label: Impostazione locale
+          placeholder: Seleziona un'impostazione locale
       select_source:
         label: Origine Pim
         search: Criterio di ricerca
@@ -124,3 +144,7 @@ akeneo_catalogs:
         illustration_title: Fai clic su una destinazione nel pannello di destra per configurare la mappatura del catalogo.
         subtitle: Successivamente potrai associare un attributo PIM alla destinazione selezionata.
         link: Consulta il nostro Help Center per ulteriori informazioni.
+      uuid_placeholder:
+        illustration_title: L'UUID è un identificatore tecnico del prodotto.
+        subtitle: Tutte le app lo richiedono come destinazione. Per questa destinazione non devi configurare nulla perché la associamo automaticamente con l'UUID di prodotto Akeneo.
+        link: Ulteriori informazioni sull'UUID.

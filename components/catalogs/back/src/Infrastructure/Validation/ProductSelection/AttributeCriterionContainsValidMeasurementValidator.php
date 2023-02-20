@@ -54,7 +54,7 @@ final class AttributeCriterionContainsValidMeasurementValidator extends Constrai
             throw new \LogicException('Measurement family not found');
         }
 
-        $units = \array_map(static fn (array $row) => $row['code'], $measurementFamily['units']);
+        $units = \array_map(static fn (array $row): string => $row['code'], $measurementFamily['units']);
 
         if (!\in_array($value['value']['unit'], $units, true)) {
             $this->context

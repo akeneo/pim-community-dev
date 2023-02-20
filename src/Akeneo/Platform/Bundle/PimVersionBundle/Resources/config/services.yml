@@ -5,7 +5,7 @@ services:
         arguments:
             - !tagged_iterator pim_version
             - '%env(string:PIM_EDITION)%'
-            - '%kernel.project_dir%'
+            - '%version_file_folder_location%'
 
     Akeneo\Platform\Bundle\PimVersionBundle\Version\CommunityVersion:
         public: true
