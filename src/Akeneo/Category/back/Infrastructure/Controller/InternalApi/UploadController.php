@@ -19,9 +19,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UploadController
 {
     public function __construct(
-        private ValidatorInterface $validator,
-        private NormalizerInterface $normalizer,
-        private StoreUploadedFile $storeUploadedFile,
+        private readonly ValidatorInterface $validator,
+        private readonly NormalizerInterface $normalizer,
+        private readonly StoreUploadedFile $storeUploadedFile,
+        private readonly ?array $supportedMimeTypes = [],
     ) {
     }
 
@@ -39,7 +40,7 @@ class UploadController
 
         $violations = $this->validator->validate($uploadedFile, [
             new Assert\Valid(),
-            new Assert\File(),
+            new Assert\File(mimeTypes: $this->supportedMimeTypes),
         ]);
 
         if (count($violations) > 0) {

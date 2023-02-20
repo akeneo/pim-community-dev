@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Family;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
@@ -20,7 +22,8 @@ class StructureSpec extends ObjectBehavior
     {
         $freeText = FreeText::fromString('ABC');
         $autoNumber = AutoNumber::fromValues(5, 2);
-        $this->beConstructedThrough('fromArray', [[$freeText, $autoNumber]]);
+        $family = FamilyProperty::fromNormalized(['type' => 'family', 'process' => ['type' => 'no']]);
+        $this->beConstructedThrough('fromArray', [[$freeText, $autoNumber, $family]]);
     }
 
     public function it_is_a_structure(): void
@@ -28,7 +31,7 @@ class StructureSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(Structure::class);
     }
 
-    public function it_throws_an_exception_when_en_empty_array(): void
+    public function it_throws_an_exception_when_an_empty_array(): void
     {
         $this->beConstructedThrough('fromArray', [[]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
@@ -43,9 +46,10 @@ class StructureSpec extends ObjectBehavior
     public function it_has_properties_values(): void
     {
         $properties = $this->getProperties();
-        $properties->shouldHaveCount(2);
+        $properties->shouldHaveCount(3);
         $properties[0]->shouldBeAnInstanceOf(PropertyInterface::class);
         $properties[1]->shouldBeAnInstanceOf(PropertyInterface::class);
+        $properties[2]->shouldBeAnInstanceOf(PropertyInterface::class);
     }
 
     public function it_normalize_a_structure(): void
@@ -54,11 +58,15 @@ class StructureSpec extends ObjectBehavior
             [
                 'type' => 'free_text',
                 'string' => 'ABC',
-            ],
-            [
+            ], [
                 'type' => 'auto_number',
                 'numberMin' => 5,
                 'digitsMin' => 2,
+            ], [
+                'type' => 'family',
+                'process' => [
+                    'type' => 'no',
+                ],
             ],
         ]);
     }
@@ -79,5 +87,12 @@ class StructureSpec extends ObjectBehavior
             FreeText::fromString('CBA'),
             AutoNumber::fromValues(5, 6),
         ]));
+    }
+
+    public function it_should_get_implicit_conditions(): void
+    {
+        $this->getImplicitConditions()->shouldBeLike([
+            Family::fromNormalized(['type' => 'family', 'operator' => 'NOT EMPTY']),
+        ]);
     }
 }

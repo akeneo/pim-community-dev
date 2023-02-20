@@ -55,7 +55,7 @@ final class GetWizardDataAction
             throw new NotFoundHttpException("Invalid app identifier");
         }
 
-        [$oldAuthorizationScopeMessages, $newAuthorizationScopeMessages] = $this->getAuthorizationScopes($app->getId(), $appAuthorization);
+        [$oldAuthorizationScopeMessages, $newAuthorizationScopeMessages, $isFirstConnection] = $this->getAuthorizationScopes($app->getId(), $appAuthorization);
         [$oldAuthenticationScopes, $newAuthenticationScopes] = $this->getAuthenticationScopes($app->getId(), $appAuthorization);
 
         return new JsonResponse([
@@ -67,6 +67,7 @@ final class GetWizardDataAction
             'scopeMessages' => $newAuthorizationScopeMessages,
             'oldAuthenticationScopes' => $oldAuthenticationScopes,
             'authenticationScopes' => $newAuthenticationScopes,
+            'displayCheckboxConsent' => $isFirstConnection,
         ]);
     }
 
@@ -86,7 +87,7 @@ final class GetWizardDataAction
         $oldAuthorizationScopeMessages = $isFirstConnection ? null : $this->scopeMapperRegistry->getMessages($originalScopes);
         $newAuthorizationScopeMessages = $this->scopeMapperRegistry->getMessages($newScopes);
 
-        return [$oldAuthorizationScopeMessages, $newAuthorizationScopeMessages];
+        return [$oldAuthorizationScopeMessages, $newAuthorizationScopeMessages, $isFirstConnection];
     }
 
     private function getAuthenticationScopes(string $appId, AppAuthorization $appAuthorization): array

@@ -24,6 +24,7 @@ pim_enrich.entity.product:
       fields_not_ready: "Het product kan nu niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
       already_in_upload: Voor dit attribuut is al een bestand geüpload in de locale "{{ locale }}" en scope "{{ scope }}"
       file_upload: Er deed zich een fout voor tijdens het uploaden van dit bestand
+      identifier_warning: Uw product is opgeslagen, maar er kon geen ID worden gegenereerd.
     delete:
       success: Product succesvol verwijderd.
       fail: Het product kon niet worden verwijderd.
@@ -496,6 +497,8 @@ pim_datagrid:
       label: Bovenliggende
     identifier:
       label: Identifier
+    uuid:
+      label: Uuid
   search: Zoeken op {{ label }}
 batch_jobs:
   add_association:

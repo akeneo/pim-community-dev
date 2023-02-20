@@ -5,6 +5,8 @@ namespace Akeneo\Category\Domain\ValueObject;
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-type Permission array{id: int, label: string}
  */
 final class PermissionCollection
 {
@@ -21,7 +23,7 @@ final class PermissionCollection
     }
 
     /**
-     * @param array<string, array<array{id: int, label: string}>>|null $permissions
+     * @param array<string, array<Permission>>|null $permissions
      */
     public static function fromArray(?array $permissions): self
     {
@@ -67,19 +69,19 @@ final class PermissionCollection
         return new self($this->permissions);
     }
 
-    /** @return array<array{id: int, label: string}> */
+    /** @return array<Permission> */
     public function getViewUserGroups(): array
     {
         return $this->permissions[self::VIEW] ?? [];
     }
 
-    /** @return array<array{id: int, label: string}> */
+    /** @return array<Permission> */
     public function getEditUserGroups(): array
     {
         return $this->permissions[self::EDIT] ?? [];
     }
 
-    /** @return array<array{id: int, label: string}> */
+    /** @return array<Permission> */
     public function getOwnUserGroups(): array
     {
         return $this->permissions[self::OWN] ?? [];

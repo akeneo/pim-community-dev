@@ -31,9 +31,10 @@ type Props = {
     isChecked: boolean;
     onChange: (newValue: boolean) => void;
     appUrl: string | null;
+    displayCheckbox: boolean;
 };
 
-export const ConsentCheckbox: FC<Props> = ({isChecked, onChange, appUrl}) => {
+export const ConsentCheckbox: FC<Props> = ({isChecked, onChange, appUrl, displayCheckbox}) => {
     const translate = useTranslate();
 
     const label = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.consent.label', {
@@ -53,9 +54,9 @@ export const ConsentCheckbox: FC<Props> = ({isChecked, onChange, appUrl}) => {
 
     return (
         <Container>
-            <Checkbox checked={isChecked} onChange={onChange} />
+            {displayCheckbox && <Checkbox checked={isChecked} onChange={onChange} />}
             <LabelContainer>
-                <CheckboxLabel dangerouslySetInnerHTML={{__html: label}} />
+                {displayCheckbox && <CheckboxLabel dangerouslySetInnerHTML={{__html: label}} />}
                 <CheckboxSubText dangerouslySetInnerHTML={{__html: subtext}} />
             </LabelContainer>
         </Container>

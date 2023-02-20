@@ -9,7 +9,7 @@ services:
             - '@liip_imagine.filter.manager'
             - '@Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\DefaultImageProviderInterface'
             - '@logger'
-            - '%supported_image_mime_types%'
+            - '%supported_category_image_mime_types%'
         tags:
             - { name: pim_category.preview_generator }
 

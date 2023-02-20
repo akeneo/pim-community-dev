@@ -71,6 +71,7 @@ services:
             - '@validator'
             - '@category_serializer'
             - '@Akeneo\Category\Application\Handler\StoreUploadedFile'
+            - '%supported_category_image_mime_types%'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:
         public: true
@@ -95,3 +96,9 @@ services:
             - '%pim_api.configuration%'
         calls:
             - [ 'setContainer', [ '@service_container' ] ]
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateTemplateController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'

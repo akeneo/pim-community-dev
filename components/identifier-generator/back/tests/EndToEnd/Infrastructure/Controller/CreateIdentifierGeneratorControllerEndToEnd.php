@@ -24,6 +24,7 @@ final class CreateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
             'string' => 'AKN',
         ]],
         'delimiter' => null,
+        'text_transformation' => 'no',
     ];
 
     /** @test */
@@ -52,7 +53,7 @@ final class CreateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         $uuid = $this->getUuidFromCode('my_new_generator');
         Assert::assertSame(
             sprintf(
-                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"}],"labels":{"en_US":"My new generator","fr_FR":"Mon nouveau g\u00e9n\u00e9rateur"},"target":"sku","delimiter":null}',
+                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"}],"labels":{"en_US":"My new generator","fr_FR":"Mon nouveau g\u00e9n\u00e9rateur"},"target":"sku","delimiter":null,"text_transformation":"no"}',
                 $uuid
             ),
             $response->getContent()
@@ -92,7 +93,7 @@ final class CreateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         Assert::assertSame(
-            '[{"path":"structure[1][type]","message":"Type \u0022unknown_type\u0022 can only be one of the following: \u0022free_text\u0022, \u0022auto_number\u0022"}]',
+            '[{"path":"structure[1][type]","message":"Type \u0022unknown_type\u0022 can only be one of the following: \u0022free_text\u0022, \u0022auto_number\u0022, \u0022family\u0022."}]',
             $response->getContent()
         );
     }

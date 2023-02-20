@@ -59,17 +59,33 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         // when it locks the completeness table as a last attempt after failing 5 times due to deadlocks
         $localeIdsFromCode = $this->localeIdsIndexedByLocaleCodes();
         $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
+        $channelLocales = $this->getChannelLocales();
 
-        $deleteAndInsertFunction = function () use ($productCompletenessCollections, $localeIdsFromCode, $channelIdsFromCode) {
+        $deleteAndInsertFunction = function () use ($productCompletenessCollections, $localeIdsFromCode, $channelIdsFromCode, $channelLocales) {
             $productUuidsAsBytes = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
                 return Uuid::fromString($productCompletenessCollection->productId())->getBytes();
             }, $productCompletenessCollections));
 
-            $this->connection->executeQuery(
-                'DELETE FROM pim_catalog_completeness WHERE product_uuid IN (:product_uuids)',
-                ['product_uuids' => $productUuidsAsBytes],
-                ['product_uuids' => Connection::PARAM_STR_ARRAY]
-            );
+            $productUuidPlaceHolders = \implode(',', \array_fill(0, count($productUuidsAsBytes), '?'));
+            $channelLocalesPlaceholders = implode(',', array_fill(0, count($channelLocales), '(?, ?)'));
+            $deleteSql = <<<SQL
+                DELETE FROM pim_catalog_completeness
+                WHERE product_uuid IN ($productUuidPlaceHolders)
+                AND (locale_id, channel_id) NOT IN ($channelLocalesPlaceholders)
+            SQL;
+
+            $deleteStatement = $this->connection->prepare($deleteSql);
+            $placeholderIndex = 1;
+            foreach ($productUuidsAsBytes as $productUuid) {
+                $deleteStatement->bindValue($placeholderIndex++, $productUuid, ParameterType::BINARY);
+            }
+
+            foreach ($channelLocales as $channelLocale) {
+                $deleteStatement->bindValue($placeholderIndex++, $channelLocale['locale_id'], ParameterType::INTEGER);
+                $deleteStatement->bindValue($placeholderIndex++, $channelLocale['channel_id'], ParameterType::INTEGER);
+            }
+
+            $deleteStatement->executeStatement();
 
             $numberCompletenessRow = 0;
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
@@ -86,6 +102,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                     (locale_id, channel_id, product_uuid, missing_count, required_count)
                 VALUES
                     $placeholders
+                ON DUPLICATE KEY UPDATE missing_count=VALUES(missing_count), required_count=VALUES(required_count)
             SQL;
 
             $stmt = $this->connection->prepare($insert);
@@ -133,6 +150,22 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         $result = [];
         foreach ($rows as $row) {
             $result[$row['channel_code']] = $row['channel_id'];
+        }
+
+        return $result;
+    }
+
+    private function getChannelLocales(): array
+    {
+        $query = 'SELECT channel_id, locale_id FROM pim_catalog_channel_locale';
+        $rows = $this->connection->fetchAllAssociative($query);
+
+        $result = [];
+        foreach ($rows as $row) {
+            $result[] = [
+                'channel_id' => $row['channel_id'],
+                'locale_id' => $row['locale_id'],
+            ];
         }
 
         return $result;

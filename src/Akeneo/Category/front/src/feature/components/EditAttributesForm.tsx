@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useMemo, useState} from 'react';
 import styled from 'styled-components';
 import {Helper, SectionTitle} from 'akeneo-design-system';
-import {LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {Locale, LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ChannelSelector} from './channel';
 import {
   Attribute,
@@ -64,12 +64,19 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
   const translate = useTranslate();
   const {channels} = useContext(EditCategoryContext);
   const userContext = useUserContext();
-  const catalogLocale = userContext.get('catalogLocale');
-  const [locale, setLocale] = useState(catalogLocale);
   const catalogChannel = userContext.get('catalogScope');
+  const catalogLocale = userContext.get('catalogLocale');
+
   const [channel, setChannel] = useState(catalogChannel);
   const channelList = useMemo(() => Object.values(channels), [channels]);
 
+  let selectedLocaleCode = catalogLocale;
+  if (channels[channel]) {
+    const selectedLocale = channels[channel]?.locales.find(locale => locale.code === locale.code);
+    selectedLocaleCode = selectedLocale ? selectedLocale.code : channels[channel]?.locales[0].code;
+  }
+
+  const [locale, setLocale] = useState(selectedLocaleCode);
   const handleLocaleChange = (value: string): void => {
     setLocale(value);
     userContext.set('catalogLocale', value, {});
@@ -157,14 +164,13 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
       ></AttributeField>
     );
   });
-
   return (
     <FormContainer>
       <SectionTitle sticky={44}>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <ChannelSelector value={channel} values={channelList} onChange={handleChannelChange} />
-        <LocaleSelector value={locale} values={channels[channel]?.locales} onChange={handleLocaleChange} />
+        {channels[channel] && <LocaleSelector value={locale} values={channels[channel].locales} onChange={handleLocaleChange} />}
       </SectionTitle>
       {attributeFields}
     </FormContainer>

@@ -79,16 +79,6 @@ interface MigrateToUuidStep
             self::INDEXES_INDEX => ['IDX_E0768BA35C977207' => ['product_uuid']],
             self::TEMPORARY_INDEXES_INDEX => [],
         ],
-        'pim_catalog_completeness' => [
-            self::ID_COLUMN_INDEX => 'product_id',
-            self::UUID_COLUMN_INDEX => 'product_uuid',
-            self::UUID_COLUMN_INDEX_NAME_INDEX => 'product_uuid',
-            self::PRIMARY_KEY_UUID_INDEX => null,
-            self::FOREIGN_KEY_INDEX => null,
-            self::UNIQUE_CONSTRAINTS_INDEX => ['channel_locale_product_unique_idx' => ['channel_id', 'locale_id', 'product_uuid']],
-            self::INDEXES_INDEX => [],
-            self::TEMPORARY_INDEXES_INDEX => [],
-        ],
         'pim_data_quality_insights_product_criteria_evaluation' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',

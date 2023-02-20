@@ -34,6 +34,7 @@ class AkeneoVersioningExtension extends Extension
         $loader->load('savers.yml');
         $loader->load('cli_commands.yml');
         $loader->load('jobs.yml');
+        $loader->load('service_api.yml');
 
         $file = __DIR__.'/../Resources/config/pim_versioning_entities.yml';
         $entities = Yaml::parse(file_get_contents(realpath($file)));

@@ -92,6 +92,20 @@ class CompletenessSorterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assertOrder($result, ['empty_product', 'product_one', 'product_two', 'product_three', 'no_family']);
     }
 
+    public function testWithLocaleNotBoundToChannel(): void
+    {
+        $result = $this->executeSorter(
+            [
+                // the first sort clause will have no effect as there is no completeness for the ecommerce/fr_FR couple
+                ['completeness', Directions::ASCENDING, ['locale' => 'fr_FR', 'scope' => 'ecommerce']],
+                // so only the second clause will be taken into account
+                ['identifier', Directions::ASCENDING],
+            ],
+            ['default_locale' => 'fr_FR', 'default_scope' => 'ecommerce'],
+        );
+        $this->assertOrder($result, ['empty_product', 'no_family', 'product_one', 'product_three', 'product_two']);
+    }
+
     public function testErrorOperatorNotSupported()
     {
         $this->expectException(InvalidDirectionException::class);

@@ -36,19 +36,6 @@ class ExternalApiCategoryIntegration extends CategoryTestCase
         ];
     }
 
-    public function testCreateExternalCategoryApiFromDatabase(): void
-    {
-        $externalCategoryApi = ExternalApiCategory::fromDatabase($this->categoryDatabaseData);
-
-        $this->assertInstanceOf(ExternalApiCategory::class, $externalCategoryApi);
-        $this->assertEquals('my_category', $externalCategoryApi->getCode());
-        $this->assertEquals(2, $externalCategoryApi->getParentId());
-        $this->assertEquals('my_parent_category', $externalCategoryApi->getParentCode());
-        $this->assertEquals('2022-12-13T14:08:10+01:00', $externalCategoryApi->getUpdated());
-        $this->assertEquals([], $externalCategoryApi->getLabels());
-        $this->assertNull($externalCategoryApi->getValues());
-    }
-
     public function testThrowInvalidArgumentFromWrongDatabaseArray(): void
     {
         $categoryDatabaseData = [
@@ -78,6 +65,14 @@ class ExternalApiCategoryIntegration extends CategoryTestCase
         $this->assertSame($expectedNormalizedArray, $normalizedExternalApiCategory);
     }
 
+    public function testNormalizeExternalCategoryApiWithEmptyValues(): void
+    {
+        $normalizedExternalApiCategory = ExternalApiCategory::fromDatabase($this->categoryDatabaseData)
+            ->normalize(withPosition: false, withEnrichedAttributes: true);
+
+        $this->assertIsObject($normalizedExternalApiCategory['values']);
+    }
+
     public function testNormalizeExternalCategoryApiWithPosition(): void
     {
         $expectedNormalizedArray = [
@@ -103,13 +98,13 @@ class ExternalApiCategoryIntegration extends CategoryTestCase
             'parent' => 'my_parent_category',
             'updated' => '2022-12-13T14:08:10+01:00',
             'labels' => [],
-            'values' => null,
+            'values' => (object) [],
         ];
 
         $normalizedExternalApiCategory = ExternalApiCategory::fromDatabase($this->categoryDatabaseData)
             ->normalize(withPosition: false, withEnrichedAttributes: true);
 
         $this->assertIsArray($normalizedExternalApiCategory);
-        $this->assertSame($expectedNormalizedArray, $normalizedExternalApiCategory);
+        $this->assertEquals($expectedNormalizedArray, $normalizedExternalApiCategory);
     }
 }
