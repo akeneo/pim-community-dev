@@ -2,10 +2,19 @@ import React, {useRef, useState} from 'react';
 import {AttributeGroup} from '../../../models';
 import {Button, useBooleanState, useAutoFocus, Helper} from 'akeneo-design-system';
 import {DoubleCheckDeleteModal, useTranslate} from '@akeneo-pim-community/shared';
+import styled from 'styled-components';
 
 type MassDeleteAttributeGroupsProps = {
   attributeGroups: AttributeGroup[];
 };
+
+const ModalContent = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
 const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
@@ -37,20 +46,20 @@ const MassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGroupsP
           onConfirm={handleConfirm}
           onCancel={handleCancel}
         >
-          <p>
-            {translate(
-              'pim_enrich.entity.attribute_group.mass_delete.confirm',
-              {assetCount: attributeGroups.length},
-              attributeGroups.length
-            )}
-          </p>
-          {numberOfAttribute > 0 && (
-            <Helper level={'error'}>
-              {translate('pim_enrich.entity.attribute_group.mass_delete.attribute_warning', {
-                number_of_attribute: numberOfAttribute,
+          <ModalContent>
+            <p>
+              {translate('pim_enrich.entity.attribute_group.mass_delete.confirm', {
+                count: String(attributeGroups.length),
               })}
-            </Helper>
-          )}
+            </p>
+            {numberOfAttribute > 0 && (
+              <Helper level={'error'}>
+                {translate('pim_enrich.entity.attribute_group.mass_delete.attribute_warning', {
+                  number_of_attribute: numberOfAttribute,
+                })}
+              </Helper>
+            )}
+          </ModalContent>
         </DoubleCheckDeleteModal>
       )}
     </>

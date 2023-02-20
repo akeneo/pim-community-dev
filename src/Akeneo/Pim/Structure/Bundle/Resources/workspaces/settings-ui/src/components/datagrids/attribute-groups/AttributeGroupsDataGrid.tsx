@@ -94,7 +94,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({
       ) : (
         <>
           <InfoTop>
-            <Checkbox checked={selectionState} onChange={() => {}} />
+            <Checkbox checked={selectionState} onChange={value => onSelectAllChange(value)} />
             <Dropdown>
               <ArrowDownIcon onClick={openDropdown} />
               {isDropdownOpen && (
@@ -103,8 +103,22 @@ const AttributeGroupsDataGrid: FC<Props> = ({
                     <Dropdown.Title>Select</Dropdown.Title>
                   </Dropdown.Header>
                   <Dropdown.ItemCollection>
-                    <Dropdown.Item onClick={() => onSelectAllChange(true)}>All Attribute groups</Dropdown.Item>
-                    <Dropdown.Item onClick={() => onSelectAllChange(false)}>No Attribute groups</Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        onSelectAllChange(true);
+                        closeDropdown();
+                      }}
+                    >
+                      All Attribute groups
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        onSelectAllChange(false);
+                        closeDropdown();
+                      }}
+                    >
+                      No Attribute groups
+                    </Dropdown.Item>
                   </Dropdown.ItemCollection>
                 </Dropdown.Overlay>
               )}
