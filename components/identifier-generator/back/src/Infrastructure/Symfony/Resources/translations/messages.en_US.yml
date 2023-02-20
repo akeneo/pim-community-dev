@@ -5,3 +5,10 @@ pim_catalog_identifier_generator:
       enabled: Status
     field_groups:
       system: System
+  structure:
+    fields:
+      free_text: Free text
+      auto_number: Auto Number
+      family: Family
+    field_groups:
+      system: System

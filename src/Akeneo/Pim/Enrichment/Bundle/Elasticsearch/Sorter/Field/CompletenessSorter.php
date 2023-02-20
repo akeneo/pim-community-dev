@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
@@ -9,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
  * Sorts products by completeness, for a provided locale and channel (it is not
  * possible to sort without).
  *
- * Product without completeness (meaning without family) are always last, no
+ * Products without completeness (meaning without family) are always last, no
  * matter they are sorted ascending or descending.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -25,9 +27,28 @@ class CompletenessSorter extends BaseFieldSorter
     {
         $this->checkLocaleAndChannel($locale, $channel);
 
-        $field .= sprintf('.%s.%s', $channel, $locale);
+        if (null === $this->searchQueryBuilder) {
+            throw new \LogicException('The search query builder is not initialized in the sorter.');
+        }
 
-        return parent::addFieldSorter($field, $direction, $locale, $channel);
+        $field = \sprintf('completeness.%s.%s', $channel, $locale);
+        $order = match ($direction) {
+            Directions::ASCENDING => 'ASC',
+            Directions::DESCENDING => 'DESC',
+            default => throw InvalidDirectionException::notSupported($direction, static::class),
+        };
+
+        $this->searchQueryBuilder->addSort(
+            [
+                $field => [
+                    'order' => $order,
+                    'missing' => '_last',
+                    'unmapped_type' => 'integer',
+                ],
+            ]
+        );
+
+        return $this;
     }
 
     /**

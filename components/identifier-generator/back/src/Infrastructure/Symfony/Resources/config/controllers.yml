@@ -52,3 +52,11 @@ services:
       - '@pim_user.context.user'
       - '@translator'
       - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailablePropertiesController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetGroupedAttributes'
+      - '@pim_user.context.user'
+      - '@translator'
+      - '@oro_security.security_facade'
