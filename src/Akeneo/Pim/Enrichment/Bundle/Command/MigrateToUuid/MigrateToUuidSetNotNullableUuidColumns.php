@@ -19,6 +19,16 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
         'pim_comment_comment',
     ];
 
+    private const TABLE_WITHOUT_UUID_COMMENT = [
+        'pim_catalog_completeness',
+        'pim_data_quality_insights_product_criteria_evaluation',
+        'pim_data_quality_insights_product_score',
+        'pimee_teamwork_assistant_completeness_per_attribute_group',
+        'pimee_teamwork_assistant_project_product',
+        'pimee_workflow_product_draft',
+        'pimee_workflow_published_product'
+    ];
+
     use MigrateToUuidTrait;
     use StatusAwareTrait;
 
@@ -128,7 +138,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
     {
         $sql = <<<SQL
             ALTER TABLE `{table_name}`
-            MODIFY {uuid_column_name} BINARY(16) NOT NULL{algorithmInplace};
+            MODIFY {uuid_column_name} BINARY(16) NOT NULL {comment} {algorithmInplace};
         SQL;
 
         $query = \strtr(
@@ -137,6 +147,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumnName,
                 '{algorithmInplace}' => $lockTables ? '' : ', ALGORITHM=INPLACE, LOCK=NONE',
+                '{comment}' => in_array($tableName, self::TABLE_WITHOUT_UUID_COMMENT) ? '' : 'COMMENT "(DC2Type:uuid_binary)"'
             ]
         );
 
