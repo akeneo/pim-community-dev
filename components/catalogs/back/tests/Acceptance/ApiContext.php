@@ -778,6 +778,9 @@ class ApiContext implements Context
                     "customization_artists_count": {
                       "type": "string"
                     },
+                    "price_number": {
+                      "type": "number"
+                    },
                     "release_date": {
                       "type": "string",
                       "format": "date-time"
@@ -788,6 +791,9 @@ class ApiContext implements Context
                     "thumbnail": {
                       "type": "string",
                       "format": "uri"
+                    },
+                    "countries": {
+                      "type": "string"
                     },
                     "type": {
                       "type": "string"
@@ -943,7 +949,7 @@ class ApiContext implements Context
                 'size' => 'xl',
                 'drawings_customization_count' => '4',
                 'artists_customization_count' => '2',
-                'price' => ['USD' => 78.30],
+                'price' => ['USD' => 78.3],
                 'released_at' => new \DateTimeImmutable('2042-01-01T00:00:00+00:00'),
                 'is_released' => false,
                 'picture' => $this->files['ziggyImage'],
@@ -989,6 +995,7 @@ class ApiContext implements Context
         $this->createAttribute([
             'code' => 'price',
             'type' => 'pim_catalog_price_collection',
+            'decimals_allowed' => true,
             'scopable' => false,
             'localizable' => false,
         ]);
@@ -1051,7 +1058,7 @@ class ApiContext implements Context
                     new SetMultiSelectValue('sale_countries', null, null, $product['sale_countries']),
                     new SetImageValue('picture', null, null, $product['picture']),
                     new SetPriceCollectionValue('price', null, null, \array_map(
-                        static fn (int $amount, string $currency): PriceValue => new PriceValue($amount, $currency),
+                        static fn (float $amount, string $currency): PriceValue => new PriceValue($amount, $currency),
                         $product['price'],
                         \array_keys($product['price']),
                     )),

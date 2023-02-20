@@ -38,6 +38,10 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
     const shouldDisplayTranslationValue =
         source !== null &&
         (attributeType === 'pim_catalog_simpleselect' || attributeType === 'pim_catalog_multiselect');
+    const shouldDisplayCurrency =
+        source !== null && !attribute?.scopable && attribute?.type === 'pim_catalog_price_collection';
+    const shouldDisplayChannelCurrency =
+        source !== null && attribute?.scopable && attribute?.type === 'pim_catalog_price_collection';
     const shouldDisplayChannel = source !== null && attribute?.scopable;
     const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
     const shouldDisplayChannelLocale = source !== null && attribute?.localizable && attribute?.scopable;
@@ -58,7 +62,7 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
             if (shouldDisplayTranslationValue) {
                 source = {...source, parameters: {...source.parameters, label_locale: null}};
             }
-            if (attribute.type === 'pim_catalog_price_collection') {
+            if (shouldDisplayCurrency) {
                 source = {...source, parameters: {...source.parameters, currency: null}};
             }
             return source;
