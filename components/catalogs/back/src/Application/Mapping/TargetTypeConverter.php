@@ -18,6 +18,7 @@ final class TargetTypeConverter
         ],
         'number' => [
             'pim_catalog_number',
+            'pim_catalog_price_collection',
         ],
         'string' => [
             'pim_catalog_identifier',

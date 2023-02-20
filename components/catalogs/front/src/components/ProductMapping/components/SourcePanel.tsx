@@ -15,6 +15,8 @@ import styled from 'styled-components';
 import {Target} from '../models/Target';
 import {SelectLabelLocaleDropdown} from './SelectLabelLocaleDropdown';
 import {RequirementsCollapse} from './RequirementsCollapse';
+import {SelectCurrencyDropdown} from './SelectCurrencyDropdown';
+import {SelectChannelCurrencyDropdown} from './SelectChannelCurrenciesDropdown';
 
 type Props = {
     target: Target | null;
@@ -36,6 +38,10 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
     const shouldDisplayTranslationValue =
         source !== null &&
         (attributeType === 'pim_catalog_simpleselect' || attributeType === 'pim_catalog_multiselect');
+    const shouldDisplayCurrency =
+        source !== null && !attribute?.scopable && attribute?.type === 'pim_catalog_price_collection';
+    const shouldDisplayChannelCurrency =
+        source !== null && attribute?.scopable && attribute?.type === 'pim_catalog_price_collection';
     const shouldDisplayChannel = source !== null && attribute?.scopable;
     const shouldDisplayLocale = source !== null && attribute?.localizable && !attribute?.scopable;
     const shouldDisplayChannelLocale = source !== null && attribute?.localizable && attribute?.scopable;
@@ -55,6 +61,9 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
             };
             if (shouldDisplayTranslationValue) {
                 source = {...source, parameters: {...source.parameters, label_locale: null}};
+            }
+            if (shouldDisplayCurrency) {
+                source = {...source, parameters: {...source.parameters, currency: null}};
             }
             return source;
         },
@@ -76,67 +85,85 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
             ) {
                 source = {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
             }
+
+            if (attribute?.type === 'pim_catalog_price_collection' && !(source.parameters.currency ?? false)) {
+                source = {...source, parameters: {...source.parameters, currency: source.currency ?? null}};
+            }
             onChange(source);
         },
+
         [onChange, shouldDisplayTranslationValue]
     );
 
+    if (null === target) {
+        return <SourcePlaceholder />;
+    }
+
+    if ('uuid' === target.code) {
+        return <SourceUuidPlaceholder targetLabel={target.label} />;
+    }
+
     return (
         <>
-            {null === target && <SourcePlaceholder />}
-            {null !== target && 'uuid' === target.code && <SourceUuidPlaceholder targetLabel={target.label} />}
-            {null !== target && 'uuid' !== target.code && (
-                <>
-                    <SectionTitle>
-                        <SectionTitle.Title>{target.label}</SectionTitle.Title>
-                    </SectionTitle>
-                    <RequirementsCollapse target={target} />
-                    <SectionTitle>
-                        <Tag tint='purple'>1</Tag>
-                        <SectionTitle.Title level='secondary'>
-                            {translate('akeneo_catalogs.product_mapping.source.title')}
-                        </SectionTitle.Title>
-                    </SectionTitle>
-                    <SelectSourceAttributeDropdown
-                        selectedCode={source?.source ?? ''}
-                        target={target}
-                        onChange={handleSourceSelection}
-                        error={errors?.source}
-                    />
-                    <SectionTitle>
-                        <Tag tint='purple'>2</Tag>
-                        <SectionTitle.Title level='secondary'>
-                            {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
-                        </SectionTitle.Title>
-                    </SectionTitle>
-                    {shouldDisplayChannel && (
-                        <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
-                    )}
-                    {shouldDisplayLocale && (
-                        <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
-                    )}
-                    {shouldDisplayChannelLocale && (
-                        <SelectChannelLocaleDropdown
-                            source={source}
-                            onChange={onChangeMiddleware}
-                            error={errors?.locale}
-                            disabled={attribute && source ? attribute.scopable && source.scope === null : false}
-                        />
-                    )}
-                    {shouldDisplayTranslationValue && (
-                        <SelectLabelLocaleDropdown
-                            source={source}
-                            onChange={onChange}
-                            error={errors?.parameters?.label_locale}
-                            disabled={attribute && source ? attribute.scopable && source.scope === null : false}
-                        />
-                    )}
-                    {shouldDisplayNoParametersMessage && (
-                        <Information key={'no_parameters'}>
-                            {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
-                        </Information>
-                    )}
-                </>
+            <SectionTitle>
+                <SectionTitle.Title>{target.label}</SectionTitle.Title>
+            </SectionTitle>
+            <RequirementsCollapse target={target} />
+            <SectionTitle>
+                <Tag tint='purple'>1</Tag>
+                <SectionTitle.Title level='secondary'>
+                    {translate('akeneo_catalogs.product_mapping.source.title')}
+                </SectionTitle.Title>
+            </SectionTitle>
+            <SelectSourceAttributeDropdown
+                selectedCode={source?.source ?? ''}
+                target={target}
+                onChange={handleSourceSelection}
+                error={errors?.source}
+            />
+            <SectionTitle>
+                <Tag tint='purple'>2</Tag>
+                <SectionTitle.Title level='secondary'>
+                    {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
+                </SectionTitle.Title>
+            </SectionTitle>
+            {shouldDisplayChannel && (
+                <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
+            )}
+            {shouldDisplayLocale && (
+                <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
+            )}
+            {shouldDisplayChannelLocale && (
+                <SelectChannelLocaleDropdown
+                    source={source}
+                    onChange={onChangeMiddleware}
+                    error={errors?.locale}
+                    disabled={attribute && source ? attribute.scopable && source.scope === null : false}
+                />
+            )}
+            {shouldDisplayTranslationValue && (
+                <SelectLabelLocaleDropdown
+                    source={source}
+                    onChange={onChange}
+                    error={errors?.parameters?.label_locale}
+                    disabled={attribute && source ? attribute.scopable && source.scope === null : false}
+                />
+            )}
+            {shouldDisplayCurrency && (
+                <SelectCurrencyDropdown source={source} onChange={onChange} error={errors?.parameters?.currency} />
+            )}
+            {shouldDisplayChannelCurrency && (
+                <SelectChannelCurrencyDropdown
+                    source={source}
+                    onChange={onChange}
+                    error={errors?.parameters?.currency}
+                    disabled={attribute && source ? attribute.scopable && source.scope === null : false}
+                />
+            )}
+            {shouldDisplayNoParametersMessage && (
+                <Information key={'no_parameters'}>
+                    {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
+                </Information>
             )}
         </>
     );
