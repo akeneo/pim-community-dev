@@ -27,7 +27,6 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\Internal\GetCustomAppSecretAction:
         public: true
         arguments:
-            - '@oro_security.security_facade'
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppSecretQuery'
 

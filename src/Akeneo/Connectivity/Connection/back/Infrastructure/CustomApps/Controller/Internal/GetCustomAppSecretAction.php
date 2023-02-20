@@ -21,7 +21,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class GetCustomAppSecretAction
 {
     public function __construct(
-        private readonly SecurityFacade $security,
         private readonly GetCustomAppQueryInterface $getCustomAppQuery,
         private readonly GetCustomAppSecretQueryInterface $getCustomAppSecretQuery,
     ) {
