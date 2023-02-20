@@ -39,19 +39,18 @@ class GetCategoryTreeByCategoryTemplateSql implements GetCategoryTreeByCategoryT
                 category.id AS id,
                 category.code AS code,
                 translation.translations AS translations,
-                BIN_TO_UUID(category_tree_template.category_template_uuid) AS template_uuid,
+                BIN_TO_UUID(category_template.uuid) AS template_uuid,
                 category_template.labels AS template_labels,
                 category_template.code AS template_code            
             FROM pim_catalog_category category
-                JOIN pim_catalog_category_tree_template category_tree_template
+                LEFT JOIN pim_catalog_category_tree_template category_tree_template
                      ON category_tree_template.category_tree_id=category.id
-                JOIN pim_catalog_category_template category_template
-                    ON category_template.uuid=category_tree_template.category_template_uuid 
-                JOIN translation 
+                LEFT JOIN pim_catalog_category_template category_template
+                    ON category_template.uuid=category_tree_template.category_template_uuid AND (category_template.is_deactivated IS NULL OR category_template.is_deactivated = 0)
+                LEFT JOIN translation 
                      ON category.code = translation.code
             WHERE category_template_uuid=:template_uuid
-                AND category.parent_id IS NULL
-            ;
+            AND category.parent_id IS NULL
         SQL;
 
         $result = $this->connection->executeQuery(
@@ -64,12 +63,10 @@ class GetCategoryTreeByCategoryTemplateSql implements GetCategoryTreeByCategoryT
             ],
         )->fetchAssociative();
 
-        $category = null;
-
-        if ($result) {
-            $category = CategoryTree::fromDatabase($result);
+        if (!$result) {
+            return null;
         }
 
-        return $category;
+        return CategoryTree::fromDatabase($result);
     }
 }
