@@ -22,3 +22,4 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'

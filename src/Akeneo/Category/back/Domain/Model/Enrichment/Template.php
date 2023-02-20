@@ -92,9 +92,9 @@ class Template
         $labelCollection = $result['labels'] ?
             LabelCollection::fromArray(
                 json_decode($result['labels'], true, 512, JSON_THROW_ON_ERROR),
-            ) : null;
+            ) : LabelCollection::fromArray([]);
         $categoryId = new CategoryId((int) $result['category_id']);
 
-        return new self($id, $code, $labelCollection, $categoryId, null);
+        return new self($id, $code, $labelCollection, $categoryId, AttributeCollection::fromArray([]));
     }
 }

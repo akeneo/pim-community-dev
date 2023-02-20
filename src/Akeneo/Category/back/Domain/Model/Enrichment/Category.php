@@ -172,6 +172,11 @@ class Category
         return $this->templateUuid;
     }
 
+    public function setTemplateUuid(TemplateUuid $templateUuid): void
+    {
+        $this->templateUuid = $templateUuid;
+    }
+
     public function getPosition(): ?Position
     {
         return $this->position;
