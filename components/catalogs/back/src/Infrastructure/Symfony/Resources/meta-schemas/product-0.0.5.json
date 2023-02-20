@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://api.akeneo.com/mapping/product/0.0.6/schema",
+  "$id": "https://api.akeneo.com/mapping/product/0.0.5/schema",
   "type": "object",
   "properties": {
     "$id": { "$ref": "#/$defs/$id" },
@@ -39,7 +39,7 @@
     "description": {
       "type": "string"
     },
-    "property": {
+    "propertyWithSimpleType": {
       "type": "object",
       "properties": {
         "title": { "$ref": "#/$defs/title" },
@@ -49,12 +49,6 @@
             "string",
             "number",
             "boolean"
-          ]
-        },
-        "format": {
-          "enum": [
-            "date-time",
-            "uri"
           ]
         },
         "minLength": {
@@ -67,19 +61,40 @@
         }
       },
       "additionalProperties": false,
-      "required": ["type"],
-      "dependentSchemas": {
+      "required": ["type"]
+    },
+    "propertyWithTypeAndFormat": {
+      "type": "object",
+      "properties": {
+        "title": { "$ref": "#/$defs/title" },
+        "description": { "$ref": "#/$defs/description" },
+        "type": {
+          "enum": [
+            "string"
+          ]
+        },
         "format": {
-          "properties": {
-            "type": {
-              "enum": [
-                "string"
-              ]
-            }
-          },
-          "required": ["type"]
+          "enum": [
+            "date-time"
+          ]
+        },
+        "minLength": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxLength": {
+          "type": "integer",
+          "minimum": 0
         }
-      }
+      },
+      "additionalProperties": false,
+      "required": ["type", "format"]
+    },
+    "property": {
+      "oneOf": [
+        { "$ref": "#/$defs/propertyWithSimpleType" },
+        { "$ref": "#/$defs/propertyWithTypeAndFormat" }
+      ]
     },
     "uriString": {
       "type": "string",

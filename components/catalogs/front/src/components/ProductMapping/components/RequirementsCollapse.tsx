@@ -2,16 +2,41 @@ import React, {FC, useState} from 'react';
 import {Badge, Collapse, Helper} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Target} from '../models/Target';
+import styled from 'styled-components';
+
+const ACCEPTED_CONSTRAINTS = ['minLength', 'maxLength'] as const;
 
 type Props = {
     target: Target;
 };
 
+type TargetWithOnlyConstraints = Pick<Target, typeof ACCEPTED_CONSTRAINTS[number]>;
+type TargetWith<K extends keyof TargetWithOnlyConstraints> = Required<Pick<TargetWithOnlyConstraints, K>>;
+
+type Constraint = {
+    key: keyof TargetWithOnlyConstraints;
+    value: string | number;
+};
+
+const WarningHelper = styled(Helper)`
+    margin-bottom: 10px;
+`;
+
 export const RequirementsCollapse: FC<Props> = ({target}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState(true);
+    const translationKey = 'akeneo_catalogs.product_mapping.source.requirements.constraints';
 
-    if (undefined === target.description || null === target.description) {
+    const constraints: Constraint[] = ACCEPTED_CONSTRAINTS.filter(
+        constraint => target[constraint] !== undefined && target[constraint] !== null
+    ).map(constraint => ({
+        key: constraint,
+        value: (target as TargetWith<typeof constraint>)[constraint],
+    }));
+
+    const shouldDisplayWarning = constraints.length > 0;
+
+    if ((undefined === target.description || null === target.description) && !shouldDisplayWarning) {
         return null;
     }
 
@@ -30,6 +55,21 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
                 isOpen={isOpen}
                 onCollapse={setIsOpen}
             >
+                {shouldDisplayWarning && (
+                    <WarningHelper inline level='warning'>
+                        {constraints.map((constraint, i) => (
+                            <p key={i}>
+                                {translate(
+                                    `${translationKey}.${constraint.key}`,
+                                    {
+                                        value: constraint.value,
+                                    },
+                                    parseInt(constraint.value.toString())
+                                )}
+                            </p>
+                        ))}
+                    </WarningHelper>
+                )}
                 {target.description && (
                     <Helper inline level='info'>
                         {target.description}

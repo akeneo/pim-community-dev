@@ -9,7 +9,7 @@ use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductMappingSchemaNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -705,14 +705,14 @@ class ApiContext implements Context
      */
     public function theCatalogProductMappingSchemaShouldBeEmptyInThePim(): void
     {
-        $productSchemaMappingNotFoundExceptionThrown = false;
+        $productMappingSchemaNotFoundExceptionThrown = false;
         try {
             $this->queryBus->execute(new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
-        } catch (ServiceApiProductSchemaMappingNotFoundException) {
-            $productSchemaMappingNotFoundExceptionThrown = true;
+        } catch (ServiceApiProductMappingSchemaNotFoundException) {
+            $productMappingSchemaNotFoundExceptionThrown = true;
         }
 
-        Assert::assertTrue($productSchemaMappingNotFoundExceptionThrown);
+        Assert::assertTrue($productMappingSchemaNotFoundExceptionThrown);
     }
 
     /**
@@ -723,21 +723,91 @@ class ApiContext implements Context
         $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
         $this->authentication->logAs($connectedAppUserIdentifier);
 
-        // create enabled catalog with product selection criteria and product mapping
+        // create enabled catalog with product selection criteria
+        $catalog = new Catalog(
+            id:'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name:'Store US',
+            ownerUsername: $connectedAppUserIdentifier,
+            enabled:  true,
+            productSelectionCriteria: [
+                [
+                    'field' => 'enabled',
+                    'operator' => '=',
+                    'value' => true,
+                ],
+            ],
+            productValueFilters: [],
+            productMapping: [],
+        );
+        $this->upsertCatalogQuery->execute($catalog);
+
+        // add product mapping schema
+        $commandBus = $this->container->get(CommandBus::class);
+        $commandBus->execute(new UpdateProductMappingSchemaCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            \json_decode(
+                <<<'JSON_WRAP'
+                {
+                  "$id": "https://example.com/product",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.6/schema",
+                  "$comment": "My first schema !",
+                  "title": "Product Mapping",
+                  "description": "JSON Schema describing the structure of products expected by our application",
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string"
+                    },
+                    "identifier": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "short_description": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "string"
+                    },
+                    "customization_drawings_count": {
+                      "type": "number"
+                    },
+                    "customization_artists_count": {
+                      "type": "string"
+                    },
+                    "release_date": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "is_released": {
+                      "type": "boolean"
+                    },
+                    "thumbnail": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  }
+                }
+                JSON_WRAP,
+                false,
+                512,
+                JSON_THROW_ON_ERROR,
+            ),
+        ));
+
+        // update product mapping (after product mapping schema as been added)
         $this->upsertCatalogQuery->execute(
             new Catalog(
-                id:'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-                name:'Store US',
-                ownerUsername: $connectedAppUserIdentifier,
-                enabled:  true,
-                productSelectionCriteria: [
-                    [
-                        'field' => 'enabled',
-                        'operator' => '=',
-                        'value' => true,
-                    ],
-                ],
-                productValueFilters: [],
+                id: $catalog->getId(),
+                name: $catalog->getName(),
+                ownerUsername: $catalog->getOwnerUsername(),
+                enabled: $catalog->isEnabled(),
+                productSelectionCriteria: $catalog->getProductSelectionCriteria(),
+                productValueFilters: $catalog->getProductValueFilters(),
                 productMapping: [
                     'uuid' => [
                         'source' => 'uuid',
@@ -808,67 +878,6 @@ class ApiContext implements Context
                 ],
             ),
         );
-
-        // add product mapping schema
-        $commandBus = $this->container->get(CommandBus::class);
-        $commandBus->execute(new UpdateProductMappingSchemaCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            \json_decode(
-                <<<'JSON_WRAP'
-                {
-                  "$id": "https://example.com/product",
-                  "$schema": "https://api.akeneo.com/mapping/product/0.0.6/schema",
-                  "$comment": "My first schema !",
-                  "title": "Product Mapping",
-                  "description": "JSON Schema describing the structure of products expected by our application",
-                  "type": "object",
-                  "properties": {
-                    "uuid": {
-                      "type": "string"
-                    },
-                    "identifier": {
-                      "type": "string"
-                    },
-                    "title": {
-                      "type": "string"
-                    },
-                    "short_description": {
-                      "type": "string"
-                    },
-                    "size": {
-                      "type": "string"
-                    },
-                    "customization_drawings_count": {
-                      "type": "number"
-                    },
-                    "customization_artists_count": {
-                      "type": "string"
-                    },
-                    "release_date": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "is_released": {
-                      "type": "boolean"
-                    },
-                    "thumbnail": {
-                      "type": "string",
-                      "format": "uri"
-                    },
-                    "countries": {
-                      "type": "string"
-                    },
-                    "type": {
-                      "type": "string"
-                    }
-                  }
-                }
-                JSON_WRAP,
-                false,
-                512,
-                JSON_THROW_ON_ERROR,
-            ),
-        ));
 
         // create products
         $adminUser = $this->authentication->getAdminUser();
