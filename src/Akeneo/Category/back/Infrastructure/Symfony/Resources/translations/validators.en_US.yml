@@ -5,6 +5,7 @@ akeneo.category:
                 wrong_format: Category code may contain only letters, numbers and underscores
                 line_feed: Category code may not contain line-feed characters
             duplicated_value_user_intents: The value for attribute {{ attributeCode }} is being updated multiple times
+            value_user_intents_on_deactivated_template: There is no active category attributes associated to this category
             value:
                 text_too_long: The value cannot be longer than {{ limit }} characters
                 textarea_too_long: The value cannot be longer than {{ limit }} characters
