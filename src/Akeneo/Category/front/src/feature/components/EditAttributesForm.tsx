@@ -170,7 +170,9 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         <SectionTitle.Spacer />
         <ChannelSelector value={channel} values={channelList} onChange={handleChannelChange} />
-        {channels[channel] && <LocaleSelector value={locale} values={channels[channel].locales} onChange={handleLocaleChange} />}
+        {channels[channel] && (
+          <LocaleSelector value={locale} values={channels[channel].locales} onChange={handleLocaleChange} />
+        )}
       </SectionTitle>
       {attributeFields}
     </FormContainer>
