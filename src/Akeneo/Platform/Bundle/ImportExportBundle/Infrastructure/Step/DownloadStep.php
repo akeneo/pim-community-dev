@@ -25,16 +25,13 @@ final class DownloadStep extends AbstractStep
 {
     private const STORAGE_KEY = 'storage';
 
-    private DownloadFileFromStorageHandler $downloadFileFromStorageHandler;
-
     public function __construct(
         string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
-        DownloadFileFromStorageHandler $downloadFileFromStorageHandler,
+        private DownloadFileFromStorageHandler $downloadFileFromStorageHandler,
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
-        $this->downloadFileFromStorageHandler = $downloadFileFromStorageHandler;
     }
 
     public function doExecute(StepExecution $stepExecution)
@@ -50,12 +47,11 @@ final class DownloadStep extends AbstractStep
             throw new \LogicException('malformed job parameters, missing storage configuration');
         }
 
-        if (NoneStorage::TYPE === $jobParameters[self::STORAGE_KEY]['type'] || LocalStorage::TYPE === $jobParameters[self::STORAGE_KEY]['type']) {
+        if (NoneStorage::TYPE === $jobParameters[self::STORAGE_KEY]['type']) {
             return;
         }
 
         $this->eventDispatcher->addSubscriber(new UpdateJobExecutionStorageSummarySubscriber());
-
         $command = new DownloadFileFromStorageCommand(
             $jobParameters[self::STORAGE_KEY],
             $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER),

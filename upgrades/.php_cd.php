@@ -23,6 +23,9 @@ $rules = [
             'Symfony\Component\DependencyInjection\ContainerAwareInterface',
             'Symfony\Component\DependencyInjection\ContainerInterface',
             'Symfony\Component\DependencyInjection\ContainerAwareTrait',
+            // ZDD migrations
+            'Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220516171405SetProductIdentifierNullableZddMigration',
+            'Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns',
 
             // Dangerous dependencies, migrations shouldn't rely on services
             'Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys',

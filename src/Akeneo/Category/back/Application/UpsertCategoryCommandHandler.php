@@ -8,7 +8,7 @@ use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Api\Command\UpsertCategoryCommand;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Storage\Save\SaveCategory;
-use Akeneo\Category\Domain\Event\CategoryCreatedEvent;
+use Akeneo\Category\Domain\Event\CategoryUpdatedEvent;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
@@ -54,7 +54,7 @@ class UpsertCategoryCommandHandler
 
         $this->saver->save($category, $command->userIntents());
 
-        $this->eventDispatcher->dispatch(new CategoryCreatedEvent((string) $category->getCode()));
+        $this->eventDispatcher->dispatch(new CategoryUpdatedEvent($category));
     }
 
     private function updateCategory(Category $category, UpsertCategoryCommand $command): void

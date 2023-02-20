@@ -31,3 +31,32 @@ services:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetFamiliesController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamiliesWithLabels'
+      - '@pim_user.context.user'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAttributeOptionsController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\FindAttributeOptions'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailableConditionsController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetGroupedAttributes'
+      - '@pim_user.context.user'
+      - '@translator'
+      - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailablePropertiesController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetGroupedAttributes'
+      - '@pim_user.context.user'
+      - '@translator'
+      - '@oro_security.security_facade'

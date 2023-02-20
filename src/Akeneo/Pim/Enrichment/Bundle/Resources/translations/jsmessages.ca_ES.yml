@@ -24,6 +24,7 @@ pim_enrich.entity.product:
       fields_not_ready: "Ara no es pot guardar el producte. Els següents camps no estan preparats: {{ fields }}"
       already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
       file_upload: S'ha produït un error duran la càrrega
+      identifier_warning: El vostre producte s'ha desat però no s'ha pogut generar el vostre identificador.
     delete:
       success: Producte suprimit correctament.
       fail: No s'ha pogut suprimir el producte.
@@ -71,6 +72,7 @@ pim_enrich.entity.product:
     meta:
       updated: Darrera actualització
       groups: Grups
+      uuid: UUID
     show_group:
       title: Grup {{ group }}
       view_group: Veure grup
@@ -495,6 +497,8 @@ pim_datagrid:
       label: Pare
     identifier:
       label: Identificador
+    uuid:
+      label: Uuid
   search: Cercar per {{ label }}
 batch_jobs:
   add_association:

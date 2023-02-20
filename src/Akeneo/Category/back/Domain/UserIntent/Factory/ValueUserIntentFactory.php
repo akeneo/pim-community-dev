@@ -38,7 +38,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
     }
 
     /**
-     * @param array<string, AttributeValueApi> $data
+     * @phpstan-param array<string, AttributeValueApi> $data
      *
      * @return array|UserIntent[]
      */
@@ -60,7 +60,7 @@ final class ValueUserIntentFactory implements UserIntentFactory
                 }
 
                 if (is_string($value['data']) && $this->isDataStringEmpty($value['data'])) {
-                    continue;
+                    $value['data'] = null;
                 }
 
                 $userIntents[] = $this->addValueUserIntent($attributeType, $value);

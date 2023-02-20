@@ -38,9 +38,14 @@ akeneo_catalogs:
         unknown: 'Wersja językowa „{{ locale_name }}” została zdezaktywowana. Sprawdź ustawienia wersji językowej lub usuń ten filtr.'
     product_mapping:
       source:
+        invalid: 'Ten atrybut został usunięty.'
+        unknown: 'Nieznana wartość źródłowa'
         channel:
           not_empty: 'Ten kanał musi być pusty.'
           empty: 'Ten kanał nie może być pusty.'
+          unknown: 'Ten kanał został usunięty. Sprawdź ustawienia kanału lub zaktualizuj tę wartość.'
         locale:
           not_empty: 'Ta wersja językowa musi być pusta.'
           empty: 'Ta wersja językowa nie może być pusta.'
+          unknown: 'Ta wersja językowa jest wyłączona lub już nie istnieje. Sprawdź ustawienia kanałów i wersji językowych.'
+          disabled: 'Ta wersja językowa jest wyłączona. Sprawdź ustawienia kanałów i wersji językowych lub zaktualizuj tę wartość.'

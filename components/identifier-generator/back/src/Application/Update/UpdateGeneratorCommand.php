@@ -14,12 +14,9 @@ use Webmozart\Assert\Assert;
 final class UpdateGeneratorCommand implements CommandInterface
 {
     /**
-     * @param string $code
      * @param list<array<string, mixed>> $conditions
      * @param list<array<string, mixed>> $structure
      * @param array<string, string> $labels
-     * @param string $target
-     * @param string|null $delimiter
      */
     public function __construct(
         public string $code,
@@ -28,6 +25,7 @@ final class UpdateGeneratorCommand implements CommandInterface
         public array $labels,
         public string $target,
         public ?string $delimiter,
+        public string $textTransformation,
     ) {
     }
 
@@ -36,7 +34,7 @@ final class UpdateGeneratorCommand implements CommandInterface
      */
     public static function fromNormalized(string $code, array $normalizedGenerator): self
     {
-        foreach (['conditions', 'structure', 'labels', 'target', 'delimiter'] as $key) {
+        foreach (['conditions', 'structure', 'labels', 'target', 'delimiter', 'text_transformation'] as $key) {
             Assert::keyExists($normalizedGenerator, $key);
         }
         Assert::isArray($normalizedGenerator['conditions']);
@@ -44,6 +42,7 @@ final class UpdateGeneratorCommand implements CommandInterface
         Assert::isArray($normalizedGenerator['labels']);
         Assert::string($normalizedGenerator['target']);
         Assert::nullOrString($normalizedGenerator['delimiter']);
+        Assert::string($normalizedGenerator['text_transformation']);
 
         return new self(
             $code,
@@ -51,7 +50,8 @@ final class UpdateGeneratorCommand implements CommandInterface
             $normalizedGenerator['structure'],
             $normalizedGenerator['labels'],
             $normalizedGenerator['target'],
-            $normalizedGenerator['delimiter']
+            $normalizedGenerator['delimiter'],
+            $normalizedGenerator['text_transformation'],
         );
     }
 }

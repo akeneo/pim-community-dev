@@ -56,5 +56,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('builders.yml');
         $loader->load('migration.yml');
         $loader->load('cleaners.yml');
+        $loader->load('jobs.yml');
     }
 }

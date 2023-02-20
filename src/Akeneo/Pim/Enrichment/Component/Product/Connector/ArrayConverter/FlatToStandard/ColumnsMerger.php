@@ -48,7 +48,7 @@ class ColumnsMerger
      *
      * @return array merged $row
      */
-    public function merge(array $row)
+    public function merge(array $row, array $options)
     {
         $resultRow = [];
         $collectedMetrics = [];
@@ -66,7 +66,7 @@ class ColumnsMerger
                         throw new BusinessArrayConversionException("Can not convert cell {$fieldName} with date format to attribute of type date", 'pim_import_export.notification.import.warnings.xlsx_cell_date_conversion_error', ['{cellName}' => $fieldName, '{attributeType}' => 'price']);
                     }
 
-                    $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue);
+                    $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue, $options);
                 } else {
                     $resultRow[$fieldName] = $fieldValue;
                 }
@@ -81,7 +81,7 @@ class ColumnsMerger
             }
         }
 
-        $resultRow = $this->mergeMetricData($resultRow, $collectedMetrics);
+        $resultRow = $this->mergeMetricData($resultRow, $collectedMetrics, $options);
         $resultRow = $this->mergePriceData($resultRow, $collectedPrices);
         $resultRow = $this->mergeQuantifiedAssociationData($resultRow, $collectedQuantifiedAssociations);
 
@@ -137,13 +137,18 @@ class ColumnsMerger
      *
      * @return array
      */
-    protected function mergeMetricData(array $resultRow, array $collectedMetrics)
+    protected function mergeMetricData(array $resultRow, array $collectedMetrics, array $options): array
     {
         foreach ($collectedMetrics as $fieldName => $metricData) {
             $metricValue = $metricData['data'];
 
             if (is_float($metricValue)) {
-                $metricValue = number_format($metricValue, decimals: MeasureConverter::SCALE, thousands_separator: '');
+                $metricValue = number_format(
+                    $metricValue,
+                    decimals: MeasureConverter::SCALE,
+                    decimal_separator: $options['decimal_separator'] ?? '.',
+                    thousands_separator: ''
+                );
             }
 
             $resultRow[$fieldName] = trim(
@@ -166,7 +171,7 @@ class ColumnsMerger
      *
      * @return array collected metrics
      */
-    protected function collectPriceData(array $collectedPrices, array $attributeInfos, $fieldValue)
+    protected function collectPriceData(array $collectedPrices, array $attributeInfos, mixed $fieldValue, array $options)
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
         if (null !== $attributeInfos['price_currency']) {
@@ -174,6 +179,11 @@ class ColumnsMerger
             if ('' === trim($fieldValue)) {
                 return $collectedPrices;
             }
+
+            if (is_float($fieldValue)) {
+                $fieldValue = str_replace('.', $options['decimal_separator'] ?? '.', $fieldValue);
+            }
+
             $collectedPrices[$cleanField][] = sprintf(
                 '%s%s%s',
                 $fieldValue,

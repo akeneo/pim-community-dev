@@ -6,6 +6,7 @@ use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\CodingStyle\Rector\ClassMethod\MakeInheritedMethodVisibilitySameAsParentRector;
 use Rector\CodingStyle\Rector\FuncCall\CountArrayToEmptyArrayComparisonRector;
 use Rector\Config\RectorConfig;
+use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
 use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
@@ -20,7 +21,7 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->sets([
         SetList::CODE_QUALITY,
-        SetList::TYPE_DECLARATION_STRICT,
+        SetList::TYPE_DECLARATION,
         LevelSetList::UP_TO_PHP_80,
     ]);
 
@@ -32,5 +33,9 @@ return static function (RectorConfig $rectorConfig): void {
         FlipTypeControlToUseExclusiveTypeRector::class,
         CountArrayToEmptyArrayComparisonRector::class,
         AddLiteralSeparatorToNumberRector::class,
+        StringClassNameToClassConstantRector::class => [
+            __DIR__ . '/tests/Acceptance/AuthenticationContext.php',
+            __DIR__ . '/tests/Integration/IntegrationTestCase.php',
+        ],
     ]);
 };

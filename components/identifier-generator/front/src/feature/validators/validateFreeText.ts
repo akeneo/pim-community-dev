@@ -8,7 +8,14 @@ const validateFreeText: Validator<FreeText> = (freeText, path) => {
   if (freeText.string.length === 0) {
     violations.push({
       path: `${path}.string`,
-      message: 'The text should not be empty',
+      message: 'The empty values must be filled',
+    });
+  }
+
+  if (/[ ,;]/.exec(freeText.string)) {
+    violations.push({
+      path,
+      message: 'The property must not contain a comma, a semicolon or any space',
     });
   }
 

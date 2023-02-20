@@ -204,7 +204,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
     /**
      * @dataProvider validVersionedProductMappingSchemaProvider
      */
-    public function testItCreatesTheProductMapping(string $productMappingSchema, $expectedProductMapping): void
+    public function testItCreatesTheProductMapping(string $productMappingSchema, array $expectedProductMapping): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
@@ -277,7 +277,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
     /**
      * @dataProvider validVersionedProductMappingSchemaProviderWithMoreAndLessTargets
      */
-    public function testItUpdatesTheProductMapping(string $productMappingSchema, $expectedProductMapping): void
+    public function testItUpdatesTheProductMapping(string $productMappingSchema, array $expectedProductMapping): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',

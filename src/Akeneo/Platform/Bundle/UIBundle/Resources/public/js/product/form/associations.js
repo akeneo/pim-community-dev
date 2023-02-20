@@ -335,16 +335,16 @@ define([
           this.getRoot().trigger('pim_enrich:form:entity:update_state');
         },
         onOpenPicker: () =>
-          this.launchProductAndProductModelPicker().then(identifiers =>
-            identifiers.map(item => {
-              const matchProductModel = item.match(/^product_model;(.*)$/);
-              const quantifiedLink = matchProductModel
-                ? {identifier: matchProductModel[1], quantity: 1}
-                : {uuid: item.match(/^product;(.*)$/)[1], quantity: 1};
+          this.launchProductAndProductModelPicker().then(items =>
+            items.map(item => {
+              const quantifiedLink =
+                'product_model' === item.document_type
+                  ? {identifier: item.id, quantity: 1}
+                  : {uuid: item.technical_id, quantity: 1};
 
               return {
                 quantifiedLink: quantifiedLink,
-                productType: matchProductModel ? 'product_model' : 'product',
+                productType: item.document_type,
                 errors: [],
                 product: null,
               };
@@ -797,16 +797,15 @@ define([
      * Opens the panel to select new products to associate
      */
     addAssociations: function () {
-      this.launchProductPicker().then(productAndProductModelIdentifiers => {
+      this.launchProductPicker().then(items => {
         let productUuids = [];
         let productModelIds = [];
-        productAndProductModelIdentifiers.forEach(item => {
-          const matchProductModel = item.match(/^product_model;(.*)$/);
-          if (matchProductModel) {
-            productModelIds.push(matchProductModel[1]);
-          } else {
-            const matchProduct = item.match(/^product;(.*)$/);
-            productUuids.push(matchProduct[1]);
+
+        items.forEach(item => {
+          if ('product' === item.document_type) {
+            productUuids.push(item.technical_id);
+          } else if ('product_model' === item.document_type) {
+            productModelIds.push(item.id);
           }
         });
 

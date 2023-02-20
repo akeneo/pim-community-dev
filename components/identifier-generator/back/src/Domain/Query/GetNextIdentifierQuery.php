@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -12,5 +12,9 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
  */
 interface GetNextIdentifierQuery
 {
-    public function fromPrefix(Target $target, string $prefix): int;
+    public function fromPrefix(
+        IdentifierGenerator $identifierGenerator,
+        string $prefix,
+        int $numberMin,
+    ): int;
 }
