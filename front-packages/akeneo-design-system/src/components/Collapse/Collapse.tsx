@@ -14,6 +14,7 @@ const CollapseContainer = styled.div`
   &:first-child {
     border-width: 1px 0;
   }
+  padding-bottom: ${({isOpen}) => (isOpen ? '10px' : 0)};
 `;
 
 const Content = styled.div<{$height: number; $overflow: string; shouldAnimate: boolean}>`
@@ -24,7 +25,6 @@ const Content = styled.div<{$height: number; $overflow: string; shouldAnimate: b
     `
     transition: max-height ${ANIMATION_DURATION}ms ease-in-out;
   `}
-  padding-bottom: ${({$height}) => (0 === $height ? 0 : 10)}px;
 `;
 
 const LabelContainer = styled.div`
@@ -103,7 +103,7 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
     }, [children]);
 
     return (
-      <CollapseContainer ref={forwardedRef} {...rest}>
+      <CollapseContainer ref={forwardedRef} isOpen={isOpen} {...rest}>
         <LabelContainer onClick={handleCollapse}>
           <Label>{label}</Label>
           <IconButton

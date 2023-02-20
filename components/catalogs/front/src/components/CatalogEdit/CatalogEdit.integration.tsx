@@ -32,7 +32,7 @@ test('it can enable a catalog', async () => {
         },
         {
             url: '/rest/catalogs/product-selection-criteria/product/count',
-            json: {},
+            json: 0,
         },
     ]);
 
@@ -53,7 +53,7 @@ test('it can enable a catalog', async () => {
         const [headerContextContainer, setHeaderContextContainer] = useState<HTMLDivElement | undefined>(undefined);
         useLayoutEffect(() => {
             setHeaderContextContainer(ref.current);
-        });
+        }, [ref]);
 
         return (
             <ThemeProvider theme={pimTheme}>
@@ -92,7 +92,7 @@ test('it can change criteria in the product selection', async () => {
         },
         {
             url: '/rest/catalogs/product-selection-criteria/product/count',
-            json: {},
+            json: 0,
         },
     ]);
 
@@ -178,7 +178,7 @@ test('it can add a product value filter on the channel', async () => {
         },
         {
             url: '/rest/catalogs/product-selection-criteria/product/count',
-            json: {},
+            json: 0,
         },
     ]);
 

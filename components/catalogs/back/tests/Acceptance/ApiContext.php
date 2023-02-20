@@ -9,7 +9,7 @@ use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductMappingSchemaNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -24,6 +24,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
@@ -706,14 +707,14 @@ class ApiContext implements Context
      */
     public function theCatalogProductMappingSchemaShouldBeEmptyInThePim(): void
     {
-        $productSchemaMappingNotFoundExceptionThrown = false;
+        $productMappingSchemaNotFoundExceptionThrown = false;
         try {
             $this->queryBus->execute(new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
-        } catch (ServiceApiProductSchemaMappingNotFoundException) {
-            $productSchemaMappingNotFoundExceptionThrown = true;
+        } catch (ServiceApiProductMappingSchemaNotFoundException) {
+            $productMappingSchemaNotFoundExceptionThrown = true;
         }
 
-        Assert::assertTrue($productSchemaMappingNotFoundExceptionThrown);
+        Assert::assertTrue($productMappingSchemaNotFoundExceptionThrown);
     }
 
     /**
@@ -724,21 +725,91 @@ class ApiContext implements Context
         $connectedAppUserIdentifier = $this->getConnectedApp()->getUsername();
         $this->authentication->logAs($connectedAppUserIdentifier);
 
-        // create enabled catalog with product selection criteria and product mapping
+        // create enabled catalog with product selection criteria
+        $catalog = new Catalog(
+            id:'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name:'Store US',
+            ownerUsername: $connectedAppUserIdentifier,
+            enabled:  true,
+            productSelectionCriteria: [
+                [
+                    'field' => 'enabled',
+                    'operator' => '=',
+                    'value' => true,
+                ],
+            ],
+            productValueFilters: [],
+            productMapping: [],
+        );
+        $this->upsertCatalogQuery->execute($catalog);
+
+        // add product mapping schema
+        $commandBus = $this->container->get(CommandBus::class);
+        $commandBus->execute(new UpdateProductMappingSchemaCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            \json_decode(
+                <<<'JSON_WRAP'
+                {
+                  "$id": "https://example.com/product",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.6/schema",
+                  "$comment": "My first schema !",
+                  "title": "Product Mapping",
+                  "description": "JSON Schema describing the structure of products expected by our application",
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string"
+                    },
+                    "identifier": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "short_description": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "string"
+                    },
+                    "customization_drawings_count": {
+                      "type": "number"
+                    },
+                    "customization_artists_count": {
+                      "type": "string"
+                    },
+                    "release_date": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "is_released": {
+                      "type": "boolean"
+                    },
+                    "thumbnail": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  }
+                }
+                JSON_WRAP,
+                false,
+                512,
+                JSON_THROW_ON_ERROR,
+            ),
+        ));
+
+        // update product mapping (after product mapping schema as been added)
         $this->upsertCatalogQuery->execute(
             new Catalog(
-                id:'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-                name:'Store US',
-                ownerUsername: $connectedAppUserIdentifier,
-                enabled:  true,
-                productSelectionCriteria: [
-                    [
-                        'field' => 'enabled',
-                        'operator' => '=',
-                        'value' => true,
-                    ],
-                ],
-                productValueFilters: [],
+                id: $catalog->getId(),
+                name: $catalog->getName(),
+                ownerUsername: $catalog->getOwnerUsername(),
+                enabled: $catalog->isEnabled(),
+                productSelectionCriteria: $catalog->getProductSelectionCriteria(),
+                productValueFilters: $catalog->getProductValueFilters(),
                 productMapping: [
                     'uuid' => [
                         'source' => 'uuid',
@@ -796,6 +867,14 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'countries' => [
+                        'source' => 'sale_countries',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'label_locale' => 'en_US',
+                        ],
+                    ],
                     'thumbnail' => [
                         'source' => 'picture',
                         'scope' => null,
@@ -809,67 +888,6 @@ class ApiContext implements Context
                 ],
             ),
         );
-
-        // add product mapping schema
-        $commandBus = $this->container->get(CommandBus::class);
-        $commandBus->execute(new UpdateProductMappingSchemaCommand(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            \json_decode(
-                <<<'JSON_WRAP'
-                {
-                  "$id": "https://example.com/product",
-                  "$schema": "https://api.akeneo.com/mapping/product/0.0.6/schema",
-                  "$comment": "My first schema !",
-                  "title": "Product Mapping",
-                  "description": "JSON Schema describing the structure of products expected by our application",
-                  "type": "object",
-                  "properties": {
-                    "uuid": {
-                      "type": "string"
-                    },
-                    "identifier": {
-                      "type": "string"
-                    },
-                    "title": {
-                      "type": "string"
-                    },
-                    "short_description": {
-                      "type": "string"
-                    },
-                    "size": {
-                      "type": "string"
-                    },
-                    "customization_drawings_count": {
-                      "type": "number"
-                    },
-                    "customization_artists_count": {
-                      "type": "string"
-                    },
-                    "price_number": {
-                      "type": "number"
-                    },
-                    "release_date": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "is_released": {
-                      "type": "boolean"
-                    },
-                    "thumbnail": {
-                      "type": "string",
-                      "format": "uri"
-                    },
-                    "type": {
-                      "type": "string"
-                    }
-                  }
-                }
-                JSON_WRAP,
-                false,
-                512,
-                JSON_THROW_ON_ERROR,
-            ),
-        ));
 
         // create products
         $adminUser = $this->authentication->getAdminUser();
@@ -894,6 +912,10 @@ class ApiContext implements Context
                 'is_released' => true,
                 'picture' => $this->files['akeneoLogoImage'],
                 'enabled' => true,
+                'sale_countries' => [
+                    'canada',
+                    'brazil',
+                ],
             ],
             [
                 'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
@@ -908,6 +930,10 @@ class ApiContext implements Context
                 'is_released' => true,
                 'picture' => $this->files['akeneoLogoImage'],
                 'enabled' => false,
+                'sale_countries' => [
+                    'canada',
+                    'italy',
+                ],
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -922,6 +948,10 @@ class ApiContext implements Context
                 'is_released' => false,
                 'picture' => $this->files['ziggyImage'],
                 'enabled' => true,
+                'sale_countries' => [
+                    'france',
+                    'brazil',
+                ],
             ],
         ];
 
@@ -980,6 +1010,13 @@ class ApiContext implements Context
             'scopable' => false,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'sale_countries',
+            'type' => 'pim_catalog_multiselect',
+            'scopable' => false,
+            'localizable' => false,
+            'options' => ['France', 'Canada', 'Italy', 'Brazil'],
+        ]);
 
         $this->createFamily('t-shirt', [
             'sku',
@@ -991,6 +1028,7 @@ class ApiContext implements Context
             'price',
             'released_at',
             'is_released',
+            'sale_countries',
         ]);
 
         $bus = $this->container->get('pim_enrich.product.message_bus');
@@ -1010,6 +1048,7 @@ class ApiContext implements Context
                     new SetNumberValue('artists_customization_count', null, null, $product['artists_customization_count']),
                     new SetDateValue('released_at', null, null, $product['released_at']),
                     new SetBooleanValue('is_released', null, null, $product['is_released']),
+                    new SetMultiSelectValue('sale_countries', null, null, $product['sale_countries']),
                     new SetImageValue('picture', null, null, $product['picture']),
                     new SetPriceCollectionValue('price', null, null, \array_map(
                         static fn (int $amount, string $currency): PriceValue => new PriceValue($amount, $currency),
@@ -1064,6 +1103,7 @@ class ApiContext implements Context
                 'release_date' => '2023-01-12T00:00:00+00:00',
                 'is_released' => true,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
+                'countries' => 'Brazil, Canada',
                 'type' => 't-shirt',
             ],
             [
@@ -1078,6 +1118,7 @@ class ApiContext implements Context
                 'release_date' => '2042-01-01T00:00:00+00:00',
                 'is_released' => false,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
+                'countries' => 'Brazil, France',
                 'type' => 't-shirt',
             ],
         ];
@@ -1121,6 +1162,7 @@ class ApiContext implements Context
             'release_date' => '2023-01-12T00:00:00+00:00',
             'is_released' => true,
             'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
+            'countries' => 'Brazil, Canada',
             'type' => 't-shirt',
         ];
 
