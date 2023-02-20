@@ -16,7 +16,7 @@ use Akeneo\Catalogs\Application\Service\DispatchInvalidCatalogDisabledEventInter
 use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductMappingSchemaNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 
 /**

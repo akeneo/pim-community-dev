@@ -9,7 +9,7 @@ use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductMappingSchemaNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -704,14 +704,14 @@ class ApiContext implements Context
      */
     public function theCatalogProductMappingSchemaShouldBeEmptyInThePim(): void
     {
-        $productSchemaMappingNotFoundExceptionThrown = false;
+        $productMappingSchemaNotFoundExceptionThrown = false;
         try {
             $this->queryBus->execute(new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
-        } catch (ServiceApiProductSchemaMappingNotFoundException) {
-            $productSchemaMappingNotFoundExceptionThrown = true;
+        } catch (ServiceApiProductMappingSchemaNotFoundException) {
+            $productMappingSchemaNotFoundExceptionThrown = true;
         }
 
-        Assert::assertTrue($productSchemaMappingNotFoundExceptionThrown);
+        Assert::assertTrue($productMappingSchemaNotFoundExceptionThrown);
     }
 
     /**

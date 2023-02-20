@@ -7,7 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping;
 use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
 use Akeneo\Catalogs\Application\Mapping\TargetTypeConverter;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
-use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
+use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
 {
     public function __construct(
-        private CatalogsMappingStorageInterface $catalogsMappingStorage,
+        private GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
         private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
         private TargetTypeConverter $targetTypeConverter,
     ) {
@@ -48,31 +48,13 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
         }
 
         /** @var ProductMappingSchema $schema */
-        $schema = \json_decode(
-            $this->fetchProductMappingSchema(\sprintf('%s_product.json', $value->getId())),
-            true,
-            512,
-            JSON_THROW_ON_ERROR,
-        );
+        $schema = $this->getProductMappingSchemaQuery->execute($value->getId());
 
         if (!$this->validateTargetsList($value->getProductMapping(), $schema)) {
             return;
         }
 
         $this->validateTargetsTypes($value->getProductMapping(), $schema);
-    }
-
-    private function fetchProductMappingSchema(string $productMappingSchemaFile): string
-    {
-        $productMappingSchema = \stream_get_contents(
-            $this->catalogsMappingStorage->read($productMappingSchemaFile),
-        );
-
-        if (false === $productMappingSchema) {
-            throw new \LogicException('Product mapping schema is unreadable.');
-        }
-
-        return $productMappingSchema;
     }
 
     /**
