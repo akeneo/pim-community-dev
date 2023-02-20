@@ -85,7 +85,10 @@ const useEditCategoryForm = (categoryId: number) => {
       setHistoryVersion((prevVersion: number) => prevVersion + 1);
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
     } else {
-      notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
+      notify(NotificationLevel.ERROR, response.error);
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
     }
   }, [
     router,
