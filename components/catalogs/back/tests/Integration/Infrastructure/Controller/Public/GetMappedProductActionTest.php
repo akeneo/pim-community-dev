@@ -321,28 +321,6 @@ class GetMappedProductActionTest extends IntegrationTestCase
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
-            catalogProductMapping: [
-                'uuid' => [
-                    'source' => 'uuid',
-                    'scope' => null,
-                    'locale' => null,
-                ],
-                'title' => [
-                    'source' => 'name',
-                    'scope' => 'print',
-                    'locale' => 'en_US',
-                ],
-                'short_description' => [
-                    'source' => 'description',
-                    'scope' => 'print',
-                    'locale' => null,
-                ],
-                'size_label' => [
-                    'source' => 'size',
-                    'scope' => null,
-                    'locale' => null,
-                ],
-            ],
         );
 
         $this->client->request(
