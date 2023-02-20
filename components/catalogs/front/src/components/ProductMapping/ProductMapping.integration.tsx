@@ -244,21 +244,6 @@ test('it displays the target description and requirements in the source panel', 
         },
     };
 
-    const productMappingSchema = {
-        properties: {
-            uuid: {
-                type: 'string',
-            },
-            name: {
-                type: 'string',
-                description: 'Name description',
-                minLength: 3,
-                maxLength: 50,
-                pattern: '[a-zA-Z].',
-            },
-        },
-    };
-
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
