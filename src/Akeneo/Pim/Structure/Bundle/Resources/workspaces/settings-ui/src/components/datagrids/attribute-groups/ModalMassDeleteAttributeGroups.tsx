@@ -34,7 +34,7 @@ const ModalMassDeleteAttributeGroups = ({attributeGroups}: MassDeleteAttributeGr
   return (
     <>
       <Button level="danger" onClick={() => openMassDeleteModal()}>
-        Delete
+        {translate('pim_enrich.entity.attribute_group.mass_delete.button')}
       </Button>
       {isMassDeleteModalOpen && null !== attributeGroups && (
         <DoubleCheckDeleteModal
