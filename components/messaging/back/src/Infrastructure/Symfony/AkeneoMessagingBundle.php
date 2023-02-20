@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony;
 
-use Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\DependencyInjection\AkeneoMessagingCompilerPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -14,13 +12,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoMessagingBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container): void
-    {
-        $container
-            ->addCompilerPass(new AkeneoMessagingCompilerPass())
-        ;
-    }
 }

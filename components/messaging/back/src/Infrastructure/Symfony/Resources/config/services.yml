@@ -5,6 +5,6 @@ services:
         tags:
             - { name: console.command }
 
-    Akeneo\Pim\Platform\Messaging\Infrastructure\Handler\PimMessageHandler:
+    Akeneo\Pim\Platform\Messaging\Infrastructure\Normalizer\MessageNormalizer:
         tags:
-            - { name: messenger.message_handler }
+            - { name: akeneo_batch_queue.messenger.normalizer, priority: 0 }

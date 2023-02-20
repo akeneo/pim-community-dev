@@ -15,5 +15,7 @@ services:
             - '@feature_flags'
 
     # TODO: move this file
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\LaunchProductAndProductModelEvaluationsHandler: ~
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\LaunchProductAndProductModelEvaluationsHandler:
+        tags:
+            - { name: 'messenger.message_handler', handles: 'Akeneo\Pim\Automation\DataQualityInsights\Domain\Message\LaunchProductAndProductModelEvaluationsMessage' }
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\SecondHandler: ~
