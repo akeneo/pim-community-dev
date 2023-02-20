@@ -73,9 +73,6 @@ const SettingsIndex = () => {
   const canAccessAssociationTypes = isGranted('pim_enrich_associationtype_index');
   const canAccessGroupTypes = isGranted('pim_enrich_grouptype_index');
   const canAccessGroups = isGranted('pim_enrich_group_index');
-  const canAccessRules = isGranted('pimee_catalog_rule_rule_view_permissions');
-  const canAccessIdentifierGenerator =
-    isGranted('pim_identifier_generator_view') || isGranted('pim_identifier_generator_manage');
 
   const canAccessProductSettings =
     canAccessAttributeGroups ||
@@ -84,9 +81,13 @@ const SettingsIndex = () => {
     canAccessMeasurements ||
     canAccessAssociationTypes ||
     canAccessGroupTypes ||
-    canAccessGroups ||
-    canAccessRules ||
-    canAccessIdentifierGenerator;
+    canAccessGroups;
+
+  const canAccessRules = isGranted('pimee_catalog_rule_rule_view_permissions');
+  const canAccessIdentifierGenerator =
+    isGranted('pim_identifier_generator_view') || isGranted('pim_identifier_generator_manage');
+
+  const canAccessAutomationSettings = canAccessRules || canAccessIdentifierGenerator;
 
   const redirectToRoute = (route: string) => {
     router.redirect(router.generate(route));
@@ -138,7 +139,7 @@ const SettingsIndex = () => {
                       <>
                         {translate('pim_enrich.entity.category.plural_label')}
                         {featureFlags.isEnabled('enriched_category') && (
-                          <StyledBadge level="secondary">{translate('akeneo.category.tag.new')}</StyledBadge>
+                          <StyledBadge level="secondary">{translate('pim_menu.tag.new')}</StyledBadge>
                         )}
                       </>
                     }
@@ -319,6 +320,17 @@ const SettingsIndex = () => {
                     )}
                   />
                 )}
+              </IconCardGrid>
+            </SectionContent>
+          </>
+        )}
+        {canAccessAutomationSettings && (
+          <>
+            <SectionTitle>
+              <SectionTitle.Title>{translate('pim_settings.automation_settings')}</SectionTitle.Title>
+            </SectionTitle>
+            <SectionContent>
+              <IconCardGrid>
                 {canAccessRules && featureFlags.isEnabled('product_rules') && (
                   <IconCard
                     id="pim-enrich-rule"
@@ -337,7 +349,12 @@ const SettingsIndex = () => {
                   <IconCard
                     id="pim-enrich-identifier-generator"
                     icon={<IdIcon />}
-                    label={translate('pim_title.akeneo_identifier_generator_index')}
+                    label={
+                      <>
+                        {translate('pim_title.akeneo_identifier_generator_index')}
+                        <StyledBadge level="secondary">{translate('pim_menu.tag.new')}</StyledBadge>
+                      </>
+                    }
                     onClick={() => redirectToRoute('akeneo_identifier_generator_index')}
                     content={getPluralizedTranslation(
                       translate,
