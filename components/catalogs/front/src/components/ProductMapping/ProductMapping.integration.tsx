@@ -28,6 +28,10 @@ const PRODUCT_MAPPING_SCHEMA = {
             minimum: 0,
             maximum: 100,
         },
+        size: {
+            type: 'string',
+            enum: ['S', 'M', 'L'],
+        },
     },
 };
 
@@ -374,8 +378,8 @@ test('it displays requirements', async () => {
         )
     ).toBeInTheDocument();
 
-
-    // expect(
-    //     screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')
-    // ).toBeInTheDocument();
+    fireEvent.click(await screen.findByText('size'));
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')
+    ).toBeInTheDocument();
 });
