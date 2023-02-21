@@ -132,5 +132,4 @@ pim_identifier_generator:
         flash:
             success: 'Your nomenclature was successfully saved'
             error: 'Your nomenclature cannot be saved'
-            warning: 'Your nomenclature was successfully saved, but some values will not be generated'
-
+            warning: 'Your nomenclature was successfully saved, but some values will not be generated. Edit your nomenclature to modify the values in error.'
