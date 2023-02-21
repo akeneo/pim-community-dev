@@ -44,7 +44,6 @@ class GetCustomAppsActionEndToEnd extends ApiTestCase
     public function test_it_lists_custom_apps(): void
     {
         $this->developerModeFeatureFlag->enable();
-        $this->aclLoader->addAclToRoles('akeneo_connectivity_connection_manage_test_apps', ['ROLE_ADMINISTRATOR']);
 
         $connection = $this->createConnection();
         $client = $this->createAuthenticatedClient(

@@ -69,6 +69,5 @@ services:
         public: true
         arguments:
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
-            - '@oro_security.security_facade'
             - '@security.token_storage'
             - '@Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Persistence\GetCustomAppsQuery'

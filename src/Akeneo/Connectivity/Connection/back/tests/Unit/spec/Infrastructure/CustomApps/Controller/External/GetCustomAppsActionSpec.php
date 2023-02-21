@@ -7,10 +7,8 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controll
 use Akeneo\Connectivity\Connection\Domain\CustomApps\Persistence\GetCustomAppsQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\CustomApps\Controller\External\GetCustomAppsAction;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -23,13 +21,11 @@ class GetCustomAppsActionSpec extends ObjectBehavior
 {
     public function let(
         FeatureFlag $developerModeFeatureFlag,
-        SecurityFacade $security,
         TokenStorageInterface $tokenStorage,
         GetCustomAppsQueryInterface $getCustomAppsQuery,
     ) {
         $this->beConstructedWith(
             $developerModeFeatureFlag,
-            $security,
             $tokenStorage,
             $getCustomAppsQuery,
         );
@@ -51,27 +47,12 @@ class GetCustomAppsActionSpec extends ObjectBehavior
             ->during('__invoke', [$request]);
     }
 
-    public function it_throws_an_access_denied_exception_when_connection_cannot_manage_custom_apps(
-        FeatureFlag $developerModeFeatureFlag,
-        Request $request,
-        SecurityFacade $security,
-    ): void {
-        $developerModeFeatureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
-
-        $this
-            ->shouldThrow(new AccessDeniedHttpException('Access forbidden. You are not allowed to manage test apps.'))
-            ->during('__invoke', [$request]);
-    }
-
     public function it_throws_a_bad_request_exception_when_token_storage_have_no_token(
         FeatureFlag $developerModeFeatureFlag,
         Request $request,
-        SecurityFacade $security,
         TokenStorageInterface $tokenStorage,
     ): void {
         $developerModeFeatureFlag->isEnabled()->willReturn(true);
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
         $tokenStorage->getToken()->willReturn(null);
 
         $this
