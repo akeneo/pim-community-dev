@@ -26,7 +26,6 @@ const MassDeleteAttributeGroupsModal = ({
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
   const [numberOfAttribute, setNumberOfAttribute] = useState<number>(0);
-  const [replacementAttributeGroup, setReplacementAttributeGroup] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const userContext = useUserContext();
 
@@ -81,7 +80,7 @@ const MassDeleteAttributeGroupsModal = ({
                 >
                   <SelectInput
                     emptyResultLabel={translate('pim_enrich.entity.attribute_group.mass_delete.empty_result_label')}
-                    onChange={(attributeGroupCode: string) => setReplacementAttributeGroup(attributeGroupCode)}
+                    onChange={() => {}}
                     placeholder={translate('pim_enrich.entity.attribute_group.mass_delete.placeholder')}
                     value={null}
                     openLabel={translate('pim_enrich.entity.attribute_group.mass_delete.open_label')}
