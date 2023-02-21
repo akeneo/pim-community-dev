@@ -1,5 +1,4 @@
 import {FeatureFlags} from '@akeneo-pim-community/shared';
-import {StorageLoginType} from './StorageConfigurator';
 
 type JobType = 'import' | 'export';
 
@@ -8,16 +7,28 @@ type LocalStorage = {
   file_path: string;
 };
 
-type SftpStorage = {
+type SftpPasswordStorage = {
   type: 'sftp';
   file_path: string;
   host: string;
   fingerprint?: string;
   port: number;
-  login_type: StorageLoginType;
   username: string;
-  password?: string | null;
+  login_type: 'password';
+  password?: string;
 };
+
+type SftpPrivateKeyStorage = {
+  type: 'sftp';
+  file_path: string;
+  host: string;
+  fingerprint?: string;
+  port: number;
+  username: string;
+  login_type: 'private_key';
+};
+
+type SftpStorage = SftpPasswordStorage | SftpPrivateKeyStorage;
 
 type AmazonS3Storage = {
   type: 'amazon_s3';
@@ -139,6 +150,7 @@ export type {
   StorageType,
   LocalStorage,
   SftpStorage,
+  SftpPasswordStorage,
   AmazonS3Storage,
   MicrosoftAzureStorage,
   GoogleCloudStorage,

@@ -6,6 +6,7 @@ import {
   AmazonS3Storage,
   Storage,
   StorageType,
+  SftpPasswordStorage,
   additionalStorageIsEnabled,
   localStorageIsEnabled,
   MicrosoftAzureStorage,
@@ -82,6 +83,9 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
   );
 };
 
+const isSftpPasswordStorage = (sftpStorage: SftpStorage): sftpStorage is SftpPasswordStorage =>
+  sftpStorage.login_type === 'password';
+
 const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
   return (
     'amazon_s3' === storage.type &&
@@ -116,6 +120,7 @@ export {
   isMicrosoftAzureStorage,
   isGoogleCloudStorage,
   isValidLoginType,
+  isSftpPasswordStorage,
   getStorageConfigurator,
   STORAGE_LOGIN_TYPES,
 };
