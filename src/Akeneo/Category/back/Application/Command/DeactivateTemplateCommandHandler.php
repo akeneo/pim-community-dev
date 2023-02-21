@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Command;
 
 use Akeneo\Category\Application\Query\DeactivateTemplate;
-use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\Domain\Event\TemplateDeactivatedEvent;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
