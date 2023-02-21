@@ -95,7 +95,7 @@ pim_identifier_generator:
                 type:
                     truncate: 'Use first characters'
                     code: 'Use the entire code'
-                    nomenclature: 'Use nomenclature'
+                    nomenclature: 'Use your own nomenclature'
             operator:
                 placeholder: 'Select the operator'
         empty:
@@ -116,7 +116,7 @@ pim_identifier_generator:
         edit: 'Edit nomenclature'
         section_title: 'Generating my identifiers for {{ property }}'
         title: 'Manage nomenclature'
-        characters_number: 'Characters number'
+        characters_number: 'Number of characters'
         operator_placeholder: 'Choose your operator'
         value_placeholder: 'Choose your characters'
         nomenclature: 'Nomenclature'

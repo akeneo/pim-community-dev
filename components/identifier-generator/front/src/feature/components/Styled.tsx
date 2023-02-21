@@ -160,7 +160,7 @@ const NomenclatureModalContent = styled.div`
 `;
 
 const NomenclatureDefinition = styled(Table)`
-  width: auto;
+  width: 100%;
   margin-bottom: 20px;
   td:nth-child(3),
   td:nth-child(2) {
