@@ -1,8 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {AttributeGroup} from '../../../models';
 import {Button, useBooleanState, useAutoFocus, Helper, SelectInput, Field} from 'akeneo-design-system';
-import {DoubleCheckDeleteModal, useTranslate} from '@akeneo-pim-community/shared';
+import {DoubleCheckDeleteModal, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
+import {getLabel} from 'pimui/js/i18n';
 
 type MassDeleteAttributeGroupsModalProps = {
   selectedAttributeGroups: AttributeGroup[];
@@ -27,6 +28,7 @@ const MassDeleteAttributeGroupsModal = ({
   const [numberOfAttribute, setNumberOfAttribute] = useState<number>(0);
   const [replacementAttributeGroup, setReplacementAttributeGroup] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const userContext = useUserContext();
 
   useAutoFocus(inputRef);
 
@@ -86,7 +88,7 @@ const MassDeleteAttributeGroupsModal = ({
                   >
                     {unselectAttributeGroups.map(attributeGroup => (
                       <SelectInput.Option key={attributeGroup.code} value={attributeGroup.code}>
-                        {attributeGroup.code}
+                        {getLabel(attributeGroup.labels, userContext.get('catalogLocale'), attributeGroup.code)}
                       </SelectInput.Option>
                     ))}
                   </SelectInput>

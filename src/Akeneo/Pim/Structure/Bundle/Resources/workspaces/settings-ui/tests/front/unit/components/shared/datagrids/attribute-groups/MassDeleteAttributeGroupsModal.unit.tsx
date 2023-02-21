@@ -51,3 +51,53 @@ test('it display number of attribute affected', async () => {
   expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group')).toBeInTheDocument();
   expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.confirm')).toBeInTheDocument();
 });
+
+test('I can select an attribute group to assign affected attributes', async () => {
+  renderWithProviders(
+    <ModalMassDeleteAttributeGroups
+      selectedAttributeGroups={[
+        {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
+        {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
+      ]}
+      unselectAttributeGroups={[
+        {
+          code: 'attribute_group_3',
+          labels: {en_US: 'attribute group 3'},
+          sort_order: 3,
+          is_dqi_activated: false,
+          attribute_count: 4,
+        },
+        {
+          code: 'attribute_group_4',
+          labels: {en_US: 'attribute group 4'},
+          sort_order: 4,
+          is_dqi_activated: false,
+          attribute_count: 4,
+        },
+        {
+          code: 'attribute_group_5',
+          labels: {en_US: 'attribute group 5'},
+          sort_order: 5,
+          is_dqi_activated: false,
+          attribute_count: 4,
+        },
+      ]}
+      onConfirm={() => {}}
+    />
+  );
+
+  await act(async () => {
+    fireEvent.click(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button'));
+  });
+
+  expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group')).toBeInTheDocument();
+  expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.confirm')).toBeInTheDocument();
+
+  await act(async () => {
+    fireEvent.click(screen.getByLabelText('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group'));
+  });
+
+  expect(screen.getByText('attribute group 3')).toBeInTheDocument();
+  expect(screen.getByText('attribute group 4')).toBeInTheDocument();
+  expect(screen.getByText('attribute group 5')).toBeInTheDocument();
+});
