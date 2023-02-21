@@ -5,11 +5,19 @@ services:
         tags:
             - { name: console.command }
 
+    Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\Command\ProcessMessage:
+        arguments:
+            - '@akeneo_batch_queue.messenger.serializer'
+        tags:
+            - { name: console.command }
+
     Akeneo\Pim\Platform\Messaging\Infrastructure\Normalizer\MessageNormalizer:
         tags:
             - { name: akeneo_batch_queue.messenger.normalizer, priority: 0 }
 
 #    Akeneo\Pim\Platform\Messaging\Infrastructure\MessageHandler:
+#        arguments:
+#            - '@akeneo_batch_queue.messenger.serializer'
 #        tags:
 #            - name: 'messenger.message_handler'
 #              handles: 'Akeneo\Pim\Platform\Messaging\Domain\MessageTenantAwareInterface'
@@ -17,7 +25,8 @@ services:
     handler1:
         class: Akeneo\Pim\Platform\Messaging\Infrastructure\MessageHandler
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\LaunchProductAndProductModelEvaluationsHandler'
+            - '@akeneo_batch_queue.messenger.serializer'
+            - 'dqi_launch_product_and_product_model_evaluations_consumer'
         tags:
             - name: 'messenger.message_handler'
               handles: 'Akeneo\Pim\Platform\Messaging\Domain\MessageTenantAwareInterface'
@@ -26,7 +35,8 @@ services:
     handler2:
         class: Akeneo\Pim\Platform\Messaging\Infrastructure\MessageHandler
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\SecondHandler'
+            - '@akeneo_batch_queue.messenger.serializer'
+            - 'second_consumer_for_tests'
         tags:
             - name: 'messenger.message_handler'
               handles: 'Akeneo\Pim\Platform\Messaging\Domain\MessageTenantAwareInterface'
