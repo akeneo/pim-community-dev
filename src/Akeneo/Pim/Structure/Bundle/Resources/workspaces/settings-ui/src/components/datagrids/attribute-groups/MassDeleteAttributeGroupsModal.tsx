@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {AttributeGroup} from '../../../models';
 import {Button, useBooleanState, useAutoFocus, Helper} from 'akeneo-design-system';
 import {DoubleCheckDeleteModal, useTranslate} from '@akeneo-pim-community/shared';
@@ -19,10 +19,20 @@ const ModalContent = styled.div`
 const MassDeleteAttributeGroupsModal = ({attributeGroups, onConfirm}: MassDeleteAttributeGroupsModalProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
-  const [numberOfAttribute] = useState<number>(0);
+  const [numberOfAttribute, setNumberOfAttribute] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useAutoFocus(inputRef);
+
+  useEffect(() => {
+    if (null !== attributeGroups) {
+      let numberOfAttribute = 0;
+      attributeGroups.forEach(attributeGroup => {
+        numberOfAttribute += attributeGroup.attribute_count;
+      });
+      setNumberOfAttribute(numberOfAttribute);
+    }
+  }, [attributeGroups]);
 
   return (
     <>
