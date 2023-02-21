@@ -54,4 +54,7 @@ test('it does not display warnings if there is only a description', () => {
     expect(
         screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maximum')
     ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')
+    ).not.toBeInTheDocument();
 });

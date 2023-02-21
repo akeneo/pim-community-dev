@@ -29,10 +29,16 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
 
     const constraints: Constraint[] = ACCEPTED_CONSTRAINTS.filter(
         constraint => target[constraint] !== undefined && target[constraint] !== null
-    ).map(constraint => ({
-        key: constraint,
-        value: (target as TargetWith<typeof constraint>)[constraint],
-    }));
+    ).map(constraint => {
+        let value = (target as TargetWith<typeof constraint>)[constraint];
+        if (Array.isArray(value)) {
+            value = value.join(',');
+        }
+        return {
+            key: constraint,
+            value: value,
+        };
+    });
 
     const shouldDisplayWarning = constraints.length > 0;
 

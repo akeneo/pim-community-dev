@@ -68,6 +68,16 @@ beforeEach(() => {
             },
         },
         {
+            url: '/rest/catalogs/attributes/size',
+            json: {
+                code: 'size',
+                label: 'Size',
+                type: 'pim_catalog_text',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
             url: '/rest/catalogs/channels?page=1&limit=20',
             json: [
                 {
@@ -105,6 +115,13 @@ beforeEach(() => {
                 {
                     code: 'ean',
                     label: 'EAN',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+                {
+                    code: 'size',
+                    label: 'Size',
                     type: 'pim_catalog_text',
                     scopable: false,
                     localizable: false,
@@ -326,6 +343,11 @@ test('it displays requirements', async () => {
             locale: null,
             scope: null,
         },
+        size: {
+            source: 'size',
+            locale: null,
+            scope: null,
+        },
     };
 
     render(
@@ -380,6 +402,8 @@ test('it displays requirements', async () => {
 
     fireEvent.click(await screen.findByText('size'));
     expect(
-        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')
+        await within(await SourcePanel()).findByText(
+            'akeneo_catalogs.product_mapping.source.requirements.constraints.enum'
+        )
     ).toBeInTheDocument();
 });
