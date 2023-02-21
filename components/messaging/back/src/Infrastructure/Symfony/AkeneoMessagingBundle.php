@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony;
 
+use Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\DependencyInjection\CompilerPass\RegisterHandlersCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -12,4 +14,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoMessagingBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new RegisterHandlersCompilerPass());
+    }
 }
