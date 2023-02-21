@@ -14,10 +14,10 @@ const NomenclatureLineEdit: React.FC<Props> = ({nomenclature, nomenclatureLine: 
   const {isValid, getPlaceholder} = useNomenclatureDisplay(nomenclature);
 
   const handleChangeValue = useCallback(
-    (value: string) => {
-      onChange(code, value);
+    (newValue: string) => {
+      onChange(code, nomenclature.value ? newValue.substr(0, nomenclature.value) : newValue);
     },
-    [code, onChange]
+    [code, onChange, nomenclature.value]
   );
 
   return (
