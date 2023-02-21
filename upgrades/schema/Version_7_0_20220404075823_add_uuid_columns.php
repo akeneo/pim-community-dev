@@ -27,6 +27,16 @@ final class Version_7_0_20220404075823_add_uuid_columns extends AbstractMigratio
         'pim_versioning_version' => 'resource_uuid',
     ];
 
+    private const TABLE_WITHOUT_UUID_COMMENT = [
+        'pim_catalog_completeness',
+        'pim_data_quality_insights_product_criteria_evaluation',
+        'pim_data_quality_insights_product_score',
+        'pimee_teamwork_assistant_completeness_per_attribute_group',
+        'pimee_teamwork_assistant_project_product',
+        'pimee_workflow_product_draft',
+        'pimee_workflow_published_product'
+    ];
+
     public function getDescription(): string
     {
         return 'Add uuid columns for product table and every foreign table';
@@ -52,7 +62,7 @@ final class Version_7_0_20220404075823_add_uuid_columns extends AbstractMigratio
     private function addUuidColumn(string $tableName, string $uuidColumName): void
     {
         $addUuidColumnSql = <<<SQL
-            ALTER TABLE `{table_name}` ADD `{uuid_column_name}` BINARY(16) DEFAULT NULL;
+            ALTER TABLE `{table_name}` ADD `{uuid_column_name}` BINARY(16) DEFAULT NULL {comment};
         SQL;
 
         $addUuidColumnQuery = \strtr(
@@ -60,6 +70,7 @@ final class Version_7_0_20220404075823_add_uuid_columns extends AbstractMigratio
             [
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumName,
+                '{comment}' => in_array($tableName, self::TABLE_WITHOUT_UUID_COMMENT) ? '' : 'COMMENT "(DC2Type:uuid_binary)"'
             ]
         );
 

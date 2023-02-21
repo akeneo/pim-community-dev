@@ -1,11 +1,5 @@
-pim_error:
-  general: "Une erreur s'est produite lors de l'affichage de cette page. Veuillez contacter votre administrateur."
-  unexpected: "Une erreur s'est produite lors de l'affichage de cette page. Veuillez contacter votre administrateur."
-  404: 'A 404 error occurred...'
 pim_identifier_generator:
   tabs:
-    general: "Général"
-    product_selection: "Sélection produit"
     identifier_structure: "Structure de l'identifiant"
   general:
     title: "Propriétés générales"
@@ -17,9 +11,7 @@ pim_identifier_generator:
   flash:
     create:
       success: 'Le générateur d''identifiant "{{ code }}" a été créé avec succès'
-      error: 'Le générateur d''identifiant n''a pas pu être créé'
     update:
-      success: 'Le générateur d''identifiant "{{ code }}" a été mis à jour avec succès'
       error: 'Le générateur d''identifiant n''a pas pu être mis à jour'
     delete:
       success: 'Le générateur d''identifiant "{{ code }}" a été supprimé'
@@ -27,10 +19,8 @@ pim_identifier_generator:
   list:
     identifier: 'Identifiant'
     first_generator: 'Créez votre premier générateur d''identifiant !'
-    confirmation: 'Confirmez-vous la suppression de cette propriété ?'
+    check_help_center: 'Consultez notre Help Center pour plus d''informations.'
   selection:
-    helper:
-      title: 'Ajoutez des conditions à votre sélection de produits, si vous voulez :'
     settings:
       enabled:
         disabled: 'Désactivé'
@@ -39,7 +29,9 @@ pim_identifier_generator:
       select_option:
         placeholder: 'Veuillez sélectionner au moins une option'
   structure:
+    helper_link: 'Consultez notre Help Center pour plus d''informations.'
     title: 'Structure de l''identifiant'
+    limit_reached: 'Vous avez atteint la limite des 20 propriétés. '
     property_type:
       sections:
         system: 'Système'
@@ -49,9 +41,7 @@ pim_identifier_generator:
     settings:
       free_text:
         title: 'Paramètres du texte'
+      auto_number:
+        title: 'Nombre incrémental'
       family:
         title: 'Famille'
-        operator: 'Opérateur'
-        chars_number: 'Nombre de caractères'
-    delimiters:
-      title: 'Délimiteur'
