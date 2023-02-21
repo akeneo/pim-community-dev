@@ -52,7 +52,7 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
                         </Badge>
                     </>
                 }
-                isOpen={isOpen}
+                isOpen={isOpdependenciesdependenciesen}
                 onCollapse={setIsOpen}
             >
                 {shouldDisplayWarning && (
