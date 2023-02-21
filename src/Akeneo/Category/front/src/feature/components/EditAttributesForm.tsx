@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useMemo, useState} from 'react';
 import styled from 'styled-components';
 import {Helper, SectionTitle} from 'akeneo-design-system';
-import {Locale, LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {LocaleSelector, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ChannelSelector} from './channel';
 import {
   Attribute,
@@ -72,7 +72,7 @@ export const EditAttributesForm = ({attributeValues, template, onAttributeValueC
 
   let selectedLocaleCode = catalogLocale;
   if (channels[channel]) {
-    const selectedLocale = channels[channel]?.locales.find(locale => locale.code === locale.code);
+    const selectedLocale = channels[channel]?.locales.find(locale => selectedLocaleCode === locale.code);
     selectedLocaleCode = selectedLocale ? selectedLocale.code : channels[channel]?.locales[0].code;
   }
 
