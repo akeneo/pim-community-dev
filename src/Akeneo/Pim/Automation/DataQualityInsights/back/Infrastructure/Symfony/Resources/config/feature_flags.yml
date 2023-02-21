@@ -15,7 +15,14 @@ services:
             - '@feature_flags'
 
     # TODO: move this file
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\LaunchProductAndProductModelEvaluationsHandler:
-        tags:
-            - { name: 'messenger.message_handler', handles: 'Akeneo\Pim\Automation\DataQualityInsights\Domain\Message\LaunchProductAndProductModelEvaluationsMessage' }
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\LaunchProductAndProductModelEvaluationsHandler: ~
+#        tags:
+#            - name: 'messenger.message_handler'
+#              handles: 'Akeneo\Pim\Automation\DataQualityInsights\Domain\Message\LaunchProductAndProductModelEvaluationsMessage'
+#              from_transport: dqi_launch_product_and_product_model_evaluations_consumer
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\SecondHandler: ~
+#        tags:
+#            - name: 'messenger.message_handler'
+#              handles: 'Akeneo\Pim\Automation\DataQualityInsights\Domain\Message\LaunchProductAndProductModelEvaluationsMessage'
+#              from_transport: second_consumer_for_tests
