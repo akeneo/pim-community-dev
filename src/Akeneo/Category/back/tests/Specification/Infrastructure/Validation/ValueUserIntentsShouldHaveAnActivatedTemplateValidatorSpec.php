@@ -106,6 +106,7 @@ class ValueUserIntentsShouldHaveAnActivatedTemplateValidatorSpec extends ObjectB
             ->buildViolation($constraint->message)
             ->shouldBeCalledOnce()
             ->willReturn($violationBuilder);
+        $violationBuilder->setCode('deactivated_template')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalledOnce();
 
         $getAttribute->byUuids([$textAreaSEOMetaDescriptionAttribute->getUuid()])->willReturn(

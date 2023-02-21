@@ -28,7 +28,7 @@ final class ViolationsException extends \LogicException
     }
 
     /**
-     * @return array<array{code: string|null, message: string}>
+     * @return array<int, array{error: array{code: string|null, message: string}}>
      */
     public function normalize(): array
     {
@@ -41,8 +41,8 @@ final class ViolationsException extends \LogicException
             $constraints[] = [
                 'error' => [
                     'code' => $constraintViolation->getCode(),
-                    'message' => $constraintViolation->getMessage()
-                ]
+                    'message' => $constraintViolation->getMessage(),
+                ],
             ];
         }
 

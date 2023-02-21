@@ -72,9 +72,7 @@ class UpdateCategoryController
             $this->categoryCommandBus->dispatch($command);
             $this->eventDispatcher->dispatch(new CategoryEditedEvent($category, $filteredUserIntents));
         } catch (ViolationsException $exception) {
-            $test = $exception->normalize();
-
-            return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST,);
+            return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         }
 
         $category = $this->getCategory->byId($category->getId()->getValue());
