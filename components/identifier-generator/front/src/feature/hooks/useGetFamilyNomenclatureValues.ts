@@ -61,6 +61,13 @@ const useGetFamilyNomenclatureValues = (
     [getValueBeforeUserUpdate, getPlaceholder]
   );
 
+  const getValueAfterUserUpdateOrPlaceholder = useCallback(
+    (familyCode: FamilyCode) => {
+      return getValueAfterUserUpdate(familyCode) || getPlaceholder(familyCode);
+    },
+    [getValueAfterUserUpdate, getPlaceholder]
+  );
+
   const getFamilyLabel = useCallback(
     (family: Family) => {
       return getLabel(family.labels, userContext.get('catalogLocale'), family.code);
@@ -127,7 +134,7 @@ const useGetFamilyNomenclatureValues = (
 
     for (const family of families) {
       hasNomenclatureValueInvalid =
-        hasNomenclatureValueInvalid || !isValid(getValueBeforeUserUpdateOrPlaceholder(family.code));
+        hasNomenclatureValueInvalid || !isValid(getValueAfterUserUpdateOrPlaceholder(family.code));
 
       if (familyMatchSearch(family) && familyMatchFilter(family.code)) addFilteredData(family);
     }
@@ -142,7 +149,7 @@ const useGetFamilyNomenclatureValues = (
     page,
     itemsPerPage,
     isValid,
-    getValueBeforeUserUpdateOrPlaceholder,
+    getValueAfterUserUpdateOrPlaceholder,
     familyMatchSearch,
     familyMatchFilter,
   ]);
