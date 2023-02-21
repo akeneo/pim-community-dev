@@ -48,6 +48,11 @@ services:
             - '@akeneo_elasticsearch.client_builder'
             - ['%index_hosts%']
 
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\IndexUpdaterClient:
+        - '@logger'
+        - '@akeneo_elasticsearch.client_builder'
+        - ['%index_hosts%']
+
     Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Repository\IndexMigrationRepository:
         arguments:
             - '@database_connection'
