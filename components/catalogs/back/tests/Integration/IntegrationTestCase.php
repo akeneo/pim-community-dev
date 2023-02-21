@@ -12,9 +12,11 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
+use Akeneo\Catalogs\Test\Integration\Fakes\CleanCategoryDataAfterChannelChangeSubscriber as FakeCleanCategoryDataAfterChannelChangeSubscriber;
 use Akeneo\Catalogs\Test\Integration\Fakes\Clock;
 use Akeneo\Catalogs\Test\Integration\Fakes\TimestampableSubscriber;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
@@ -96,6 +98,10 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->set(
             'pim_versioning.event_subscriber.timestampable',
             new TimestampableSubscriber($this->clock),
+        );
+        self::getContainer()->set(
+            CleanCategoryDataAfterChannelChangeSubscriber::class,
+            new FakeCleanCategoryDataAfterChannelChangeSubscriber(),
         );
     }
 

@@ -94,7 +94,7 @@ catalogs-unit-back:
 
 .PHONY: catalogs-integration-back
 catalogs-integration-back:
-	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
+	APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Integration \
