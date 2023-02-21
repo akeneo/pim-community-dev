@@ -32,7 +32,7 @@ test('The catalog container renders', () => {
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
-        is_test_app: false,
+        is_custom_app: false,
         is_pending: false,
         has_outdated_scopes: true,
     };
@@ -123,7 +123,7 @@ function renderCatalogContainerAndSave(saveMock: jest.Mock, notifyMock: jest.Moc
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
-        is_test_app: false,
+        is_custom_app: false,
         is_pending: false,
         has_outdated_scopes: true,
     };

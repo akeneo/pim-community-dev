@@ -34,7 +34,7 @@ const Section: FC<Props> = ({title, information, emptyMessage, warningMessage, c
                 <SectionTitle.Spacer />
                 <SectionTitle.Information>{information}</SectionTitle.Information>
             </SectionTitle>
-            {warningMessage && <Helper level={'warning'}> {warningMessage}</Helper>}
+            {warningMessage && <Helper level={'warning'}>{warningMessage}</Helper>}
             {Children.count(children) === 0 ? (
                 <EmptyContainer>
                     <AppIllustration size={128} />

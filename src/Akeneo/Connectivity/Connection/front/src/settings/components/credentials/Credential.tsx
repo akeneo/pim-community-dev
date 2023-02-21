@@ -29,7 +29,7 @@ export const Credential = ({
 );
 
 const Column = styled.div<{withHelper: boolean}>`
-    border-bottom: ${({withHelper = false, theme}) => (withHelper ? 'none' : `1px solid ${theme.color.grey80}`)};
+    border-bottom: ${({withHelper = false, theme}) => (withHelper ? 'none' : `1px solid ${theme.color.grey60}`)};
     height: 54px;
     line-height: 54px;
     padding: 0 10px;
