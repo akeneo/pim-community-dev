@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
 use Akeneo\Category\Domain\Event\TemplateDeactivatedEvent;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -15,7 +14,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class CleanCategoryTemplateAndEnrichedValuesOnTemplateDeactivatedSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly FeatureFlag $enrichedCategoryFeature,
         private readonly JobInstanceRepository $jobInstanceRepository,
         private readonly JobLauncherInterface $jobLauncher,
         private readonly TokenStorageInterface $tokenStorage,

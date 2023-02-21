@@ -1,6 +1,7 @@
 parameters:
-    pim_category.job_name.clean_category_template_and_enriched_values: 'clean_category_template_and_enriched_values'
     pim_category.job_name.clean_categories_enriched_values: 'clean_categories_enriched_values'
+    pim_category.job_name.clean_category_template_and_enriched_values: 'clean_category_template_and_enriched_values'
+
 
 services:
     # TODO check all use of 'clean_removed_attribute_job' to make sure this new job is added in all fixtures and stuff like taht
@@ -58,6 +59,8 @@ services:
     # job parameters
     akeneo.category.clean_categories.clean_enriched_values.job_parameters:
         class: 'Akeneo\Category\Infrastructure\Job\CleanCategoryEnrichedValuesProvider'
+        arguments:
+            - '%pim_category.job_name.clean_categories_enriched_values%'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
@@ -65,6 +68,8 @@ services:
 
     akeneo.category.clean_categories.clean_template_enriched_values.job_parameters:
         class: 'Akeneo\Category\Infrastructure\Job\CleanCategoryTemplateEnrichedValuesProvider'
+        arguments:
+            - '%pim_category.job_name.clean_category_template_and_enriched_values%'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
