@@ -18,7 +18,6 @@ class DeactivateTemplateCommandHandler
 {
     public function __construct(
         private readonly DeactivateTemplate $deactivateTemplate,
-        private readonly GetTemplate $getTemplate,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -27,9 +26,6 @@ class DeactivateTemplateCommandHandler
     {
         $templateUuid = TemplateUuid::fromString($command->uuid());
         $this->deactivateTemplate->execute($templateUuid);
-        $template = $this->getTemplate->byUuid($templateUuid);
-        if ($template) {
-            $this->eventDispatcher->dispatch(new TemplateDeactivatedEvent($template->getUuid()));
-        }
+        $this->eventDispatcher->dispatch(new TemplateDeactivatedEvent($templateUuid));
     }
 }
