@@ -8,8 +8,6 @@ use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Category\Api\Command\UserIntents\ValueUserIntent;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Query\IsTemplateDeactivated;
-use Akeneo\Category\Domain\Model\Attribute\Attribute;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Symfony\Component\Validator\Constraint;
@@ -24,10 +22,9 @@ final class ValueUserIntentsShouldHaveAnActivatedTemplateValidator extends Const
 {
     public function __construct(
         private readonly GetAttribute $getAttribute,
-        private readonly IsTemplateDeactivated $isTemplateDeactivated
+        private readonly IsTemplateDeactivated $isTemplateDeactivated,
     ) {
     }
-
 
     /**
      * @param array<UserIntent> $value
@@ -54,7 +51,7 @@ final class ValueUserIntentsShouldHaveAnActivatedTemplateValidator extends Const
         $firstValue = $valueUserIntents[0];
         $attributeCollection = $this->getAttribute->byUuids([AttributeUuid::fromString($firstValue->attributeUuid())]);
         $attribute = $attributeCollection->getAttributeByIdentifier(
-            sprintf('%s%s%s', $firstValue->attributeCode(), AbstractValue::SEPARATOR , $firstValue->attributeUuid())
+            sprintf('%s%s%s', $firstValue->attributeCode(), AbstractValue::SEPARATOR, $firstValue->attributeUuid()),
         );
         $isTemplateDeactivated = ($this->isTemplateDeactivated)($attribute->getTemplateUuid());
 

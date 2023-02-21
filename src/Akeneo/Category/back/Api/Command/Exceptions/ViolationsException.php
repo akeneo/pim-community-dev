@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Api\Command\Exceptions;
 
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
