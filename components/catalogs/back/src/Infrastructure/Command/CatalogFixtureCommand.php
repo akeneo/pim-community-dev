@@ -142,8 +142,6 @@ class CatalogFixtureCommand extends Command
                 ],
             ];
 
-            $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
-
             /** @var object $productMappingSchema */
             $productMappingSchema = \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR);
 
@@ -151,6 +149,8 @@ class CatalogFixtureCommand extends Command
                 $catalogWithMappingId,
                 $productMappingSchema,
             ));
+
+            $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
 
             $this->connection->commit();
 
