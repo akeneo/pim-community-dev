@@ -22,6 +22,14 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class UpdateIndexVersionIntegration extends TestCase
 {
+    private string $productAndProductModelIndexName;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->productAndProductModelIndexName = $this->getParameter('product_and_product_model_index_name');
+    }
+
     public function testCommandResetsAllIndexes()
     {
         $productIndexNameBeforeMigration = $this->getProductAndProductModelIndexName();
@@ -54,7 +62,7 @@ class UpdateIndexVersionIntegration extends TestCase
         $commandTester = new CommandTester($command);
         $exitCode = $commandTester->execute([
             'command' => $command->getName(),
-            'indices' => ['akeneo_pim_product_and_product_model']
+            'indices' => [$this->productAndProductModelIndexName]
         ]);
 
         $this->assertSame(0, $exitCode);
@@ -74,7 +82,7 @@ class UpdateIndexVersionIntegration extends TestCase
         $clientBuilder->setHosts([$this->getParameter('index_hosts')]);
         $client = $clientBuilder->build();
 
-        $aliasConfiguration = $client->indices()->get(['index' => 'akeneo_pim_product_and_product_model']);
+        $aliasConfiguration = $client->indices()->get(['index' => $this->productAndProductModelIndexName]);
         $indexNames = array_keys($aliasConfiguration);
 
         if (count($indexNames) !== 1) {
@@ -86,14 +94,14 @@ class UpdateIndexVersionIntegration extends TestCase
 
     private function getNumberOfIndexedProductAndProductModel(): int
     {
-        $response = $this->getClient()->count(['index' => 'akeneo_pim_product_and_product_model']);
+        $response = $this->getClient()->count(['index' => $this->productAndProductModelIndexName]);
 
         return $response['count'];
     }
 
     private function getFirstProductAndProductModel()
     {
-        $response = $this->getClient()->search(['index' => 'akeneo_pim_product_and_product_model', "size" => 1]);
+        $response = $this->getClient()->search(['index' => $this->productAndProductModelIndexName, "size" => 1]);
 
         return $response['hits']['hits'][0]['_source'];
     }
