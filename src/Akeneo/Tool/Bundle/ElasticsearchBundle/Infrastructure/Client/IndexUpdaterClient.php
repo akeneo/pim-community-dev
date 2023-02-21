@@ -175,8 +175,8 @@ final class IndexUpdaterClient
                         ],
                     ],
                 ]
-            ]
-        ));
+            ])
+        );
     }
 
     public function resetIndexSettings(string $destinationIndexName, string $sourceIndexName): void

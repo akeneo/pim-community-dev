@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Improvements
+
+- PIM-1353: Add script to check that PIM is ready to be upgraded to v7
+
 # 6.0.70 (2023-02-16)
 
 ## Bug fixes

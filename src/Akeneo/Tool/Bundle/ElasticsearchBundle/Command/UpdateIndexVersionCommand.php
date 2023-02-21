@@ -60,11 +60,21 @@ class UpdateIndexVersionCommand extends Command
                 return Command::SUCCESS;
             }
 
-            $this->updateIndexWithoutDowntime(
-                $sourceAliasName,
-                $destinationAliasName,
-                $destinationIndexName
-            );
+            try {
+                $this->updateIndexWithoutDowntime(
+                    $sourceAliasName,
+                    $destinationAliasName,
+                    $destinationIndexName
+                );
+            } catch (\Exception $e) {
+                $output->writeln(sprintf(
+                    "<error>Index %s have not been updated du to the following error: \n%s</error>",
+                    $sourceAliasName,
+                    $e->getMessage()
+                ));
+
+                return Command::FAILURE;
+            }
 
             $output->writeln("<info>Index $sourceAliasName have been updated</info>");
         }
@@ -72,7 +82,7 @@ class UpdateIndexVersionCommand extends Command
         return Command::SUCCESS;
     }
 
-    function updateIndexWithoutDowntime(
+    private function updateIndexWithoutDowntime(
         string $sourceAliasName,
         string $destinationAliasName,
         string $destinationIndexName,

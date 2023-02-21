@@ -3,8 +3,8 @@
 namespace Akeneo\Platform\Bundle\FrameworkBundle\Command;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
-use Elasticsearch\ClientBuilder;
 use Elasticsearch\Client;
+use Elasticsearch\ClientBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,7 +27,7 @@ class CheckUpdateRequirementsCommand extends Command
         $this->client = $clientBuilder->setHosts($elasticsearchHosts)->build();
     }
 
-    function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $requirements = new RequirementCollection();
 
@@ -65,7 +65,7 @@ class CheckUpdateRequirementsCommand extends Command
                     str_starts_with($versionCreated, '7') || str_starts_with($versionCreated, '8'),
                     "Index $indexName creation version",
                     !in_array($indexName, $registeredIndexes) ?
-                        "The index $indexName seems to not be used by the PIM, please check if you use it.\n   If you didn't use it delete it: curl --location --request DELETE 'http://$firstElasticsearchHost/$indexName'. \n   If you want to keep it, reindex it with ElasticSearch 7: bin/console akeneo:elasticsearch:update-index-version $aliasName"
+                        "The index $indexName seems to not be used by the PIM, please check if you use it. If you didn't use it delete it: curl --location --request DELETE 'http://$firstElasticsearchHost/$indexName'. If you want to keep it, reindex it with ElasticSearch 7: bin/console akeneo:elasticsearch:update-index-version $aliasName"
                         : "The index $indexName should be re-indexed in order to be created with Elasticsearch 7, run: bin/console akeneo:elasticsearch:update-index-version $aliasName"
                 )
             );
@@ -83,7 +83,7 @@ class CheckUpdateRequirementsCommand extends Command
         return $registeredIndexNames;
     }
 
-    protected function renderRequirements(RequirementCollection $requirements, OutputInterface $output): void
+    private function renderRequirements(RequirementCollection $requirements, OutputInterface $output): void
     {
         $table = new Table($output);
 
@@ -100,7 +100,7 @@ class CheckUpdateRequirementsCommand extends Command
         $table->render();
     }
 
-    protected function renderFailedRequirements(RequirementCollection $requirements, OutputInterface $output): void
+    private function renderFailedRequirements(RequirementCollection $requirements, OutputInterface $output): void
     {
         $table = new Table($output);
 
