@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\DependencyInjection;
 
+use Akeneo\Pim\Platform\Messaging\Infrastructure\MessageHandler;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
@@ -22,5 +24,7 @@ final class AkeneoMessagingExtension  extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+//        $container->setDefinition('a', new Definition(MessageHandler::class, [[]]))
     }
 }
