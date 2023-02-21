@@ -82,6 +82,36 @@
             }
           },
           "required": ["type"]
+        },
+        "minLength": {
+          "properties": {
+            "type": {
+              "enum": [
+                "string"
+              ]
+            }
+          },
+          "required": ["type"]
+        },
+        "maxLength": {
+          "properties": {
+            "type": {
+              "enum": [
+                "string"
+              ]
+            }
+          },
+          "required": ["type"]
+        },
+        "pattern": {
+          "properties": {
+            "type": {
+              "enum": [
+                "string"
+              ]
+            }
+          },
+          "required": ["type"]
         }
       }
     },
