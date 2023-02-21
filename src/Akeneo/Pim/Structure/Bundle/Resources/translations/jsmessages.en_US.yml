@@ -283,10 +283,14 @@ pim_enrich.entity.attribute_group:
     mass_delete:
         button: Delete
         title: Attribute Groups
-        confirm: 'Are you sure you want to delete these {{ count }} attribute groups ?'
+        confirm: '{1}Are you sure you want to delete these attribute group ?|]1, Inf[Are you sure you want to delete these {{ count }} attribute groups ?'
         confirmation_phrase: 'Please type "{{ confirmation_word }}" to confirm.'
         confirmation_word: delete
         attribute_warning: 'Deleting these attribute groups will impact {{ number_of_attribute }} child attributes. You will need to move these child attributes to a new attribute group.'
+        select_attribute_group: 'Please select the attribute group to move the {{ number_of_attribute }} child attributes to:'
+        empty_result_label: 'No attribute group found'
+        placeholder: 'Select attribute group'
+        open_label: 'attribute group list'
 pim_enrich.mass_edit.family:
     title: Families bulk action
     confirm: "{1}You are about to update a family with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} families with the following information, please confirm."

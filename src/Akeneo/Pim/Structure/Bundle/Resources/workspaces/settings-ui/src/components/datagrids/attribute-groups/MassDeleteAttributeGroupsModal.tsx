@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {AttributeGroup} from '../../../models';
-import {Button, useBooleanState, useAutoFocus, Helper} from 'akeneo-design-system';
+import {Button, useBooleanState, useAutoFocus, Helper, SelectInput, Field} from 'akeneo-design-system';
 import {DoubleCheckDeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
 type MassDeleteAttributeGroupsModalProps = {
-  attributeGroups: AttributeGroup[];
+  selectedAttributeGroups: AttributeGroup[];
+  unselectAttributeGroups: AttributeGroup[];
   onConfirm: () => void;
 };
 
@@ -16,30 +17,35 @@ const ModalContent = styled.div`
   gap: 20px;
 `;
 
-const MassDeleteAttributeGroupsModal = ({attributeGroups, onConfirm}: MassDeleteAttributeGroupsModalProps) => {
+const MassDeleteAttributeGroupsModal = ({
+  selectedAttributeGroups,
+  unselectAttributeGroups,
+  onConfirm,
+}: MassDeleteAttributeGroupsModalProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
   const [numberOfAttribute, setNumberOfAttribute] = useState<number>(0);
+  const [replacementAttributeGroup, setReplacementAttributeGroup] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useAutoFocus(inputRef);
 
   useEffect(() => {
-    if (null !== attributeGroups) {
+    if (null !== selectedAttributeGroups) {
       let numberOfAttribute = 0;
-      attributeGroups.forEach(attributeGroup => {
+      selectedAttributeGroups.forEach(attributeGroup => {
         numberOfAttribute += attributeGroup.attribute_count;
       });
       setNumberOfAttribute(numberOfAttribute);
     }
-  }, [attributeGroups]);
+  }, [selectedAttributeGroups]);
 
   return (
     <>
       <Button level="danger" onClick={openMassDeleteModal}>
         {translate('pim_enrich.entity.attribute_group.mass_delete.button')}
       </Button>
-      {isMassDeleteModalOpen && null !== attributeGroups && (
+      {isMassDeleteModalOpen && null !== selectedAttributeGroups && (
         <DoubleCheckDeleteModal
           title={translate('pim_enrich.entity.attribute_group.mass_delete.title')}
           doubleCheckInputLabel={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_phrase', {
@@ -51,16 +57,41 @@ const MassDeleteAttributeGroupsModal = ({attributeGroups, onConfirm}: MassDelete
         >
           <ModalContent>
             <p>
-              {translate('pim_enrich.entity.attribute_group.mass_delete.confirm', {
-                count: attributeGroups.length,
-              })}
+              {translate(
+                'pim_enrich.entity.attribute_group.mass_delete.confirm',
+                {
+                  count: selectedAttributeGroups.length,
+                },
+                selectedAttributeGroups.length
+              )}
             </p>
             {numberOfAttribute > 0 && (
-              <Helper level="error">
-                {translate('pim_enrich.entity.attribute_group.mass_delete.attribute_warning', {
-                  number_of_attribute: numberOfAttribute,
-                })}
-              </Helper>
+              <>
+                <Helper level="error">
+                  {translate('pim_enrich.entity.attribute_group.mass_delete.attribute_warning', {
+                    number_of_attribute: numberOfAttribute,
+                  })}
+                </Helper>
+                <Field
+                  label={translate('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group', {
+                    number_of_attribute: numberOfAttribute,
+                  })}
+                >
+                  <SelectInput
+                    emptyResultLabel={translate('pim_enrich.entity.attribute_group.mass_delete.empty_result_label')}
+                    onChange={(attributeGroupCode: string) => setReplacementAttributeGroup(attributeGroupCode)}
+                    placeholder={translate('pim_enrich.entity.attribute_group.mass_delete.placeholder')}
+                    value={null}
+                    openLabel={translate('pim_enrich.entity.attribute_group.mass_delete.open_label')}
+                  >
+                    {unselectAttributeGroups.map(attributeGroup => (
+                      <SelectInput.Option key={attributeGroup.code} value={attributeGroup.code}>
+                        {attributeGroup.code}
+                      </SelectInput.Option>
+                    ))}
+                  </SelectInput>
+                </Field>
+              </>
             )}
           </ModalContent>
         </DoubleCheckDeleteModal>
