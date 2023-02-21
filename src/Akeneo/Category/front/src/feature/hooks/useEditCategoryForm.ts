@@ -10,6 +10,7 @@ import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from
 import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
 import {CategoryPermissions} from '../models/CategoryPermission';
 import {UserGroup} from './useFetchUserGroups';
+import {DEACTIVATED_TEMPLATE} from '../models/ResponseStatus';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
@@ -85,10 +86,13 @@ const useEditCategoryForm = (categoryId: number) => {
       setHistoryVersion((prevVersion: number) => prevVersion + 1);
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
     } else {
-      notify(NotificationLevel.ERROR, response.error);
-      setTimeout(() => {
-        location.reload();
-      }, 3000);
+      notify(NotificationLevel.ERROR, response.error.message);
+
+      if (response.error.code && response.error.code === DEACTIVATED_TEMPLATE) {
+        setTimeout(() => {
+          location.reload();
+        }, 5000);
+      }
     }
   }, [
     router,

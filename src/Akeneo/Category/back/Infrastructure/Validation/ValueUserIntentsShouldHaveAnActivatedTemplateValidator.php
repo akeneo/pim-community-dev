@@ -20,6 +20,8 @@ use Webmozart\Assert\Assert;
  */
 final class ValueUserIntentsShouldHaveAnActivatedTemplateValidator extends ConstraintValidator
 {
+    private const ERROR_CODE = 'deactivated_template';
+
     public function __construct(
         private readonly GetAttribute $getAttribute,
         private readonly IsTemplateDeactivated $isTemplateDeactivated,
@@ -61,6 +63,7 @@ final class ValueUserIntentsShouldHaveAnActivatedTemplateValidator extends Const
 
         $this->context
             ->buildViolation($constraint->message)
+            ->setCode(self::ERROR_CODE)
             ->addViolation();
     }
 }

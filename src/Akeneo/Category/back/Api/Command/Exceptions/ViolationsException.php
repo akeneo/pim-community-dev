@@ -17,7 +17,7 @@ final class ViolationsException extends \LogicException
     {
         parent::__construct(
             $this->constraintViolationList instanceof ConstraintViolationList
-                ? $this->normalize()
+                ? (string) $this->constraintViolationList
                 : 'Some violation(s) are raised',
         );
     }
@@ -27,17 +27,25 @@ final class ViolationsException extends \LogicException
         return $this->constraintViolationList;
     }
 
-    public function normalize(): string
+    /**
+     * @return array<array{code: string|null, message: string}>
+     */
+    public function normalize(): array
     {
         if (count($this->constraintViolationList) === 0) {
-            return '';
+            return [];
         }
 
         $constraints = [];
         foreach ($this->constraintViolationList as $constraintViolation) {
-            $constraints[] = $constraintViolation->getMessage();
+            $constraints[] = [
+                'error' => [
+                    'code' => $constraintViolation->getCode(),
+                    'message' => $constraintViolation->getMessage()
+                ]
+            ];
         }
 
-        return implode("\n", $constraints);
+        return $constraints;
     }
 }

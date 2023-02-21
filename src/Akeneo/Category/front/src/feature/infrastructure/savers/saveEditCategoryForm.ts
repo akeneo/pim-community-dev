@@ -10,7 +10,10 @@ interface EditCategoryResponseOK {
 
 interface EditCategoryResponseKO {
   success: false;
-  error: string;
+  error: {
+    code?: string;
+    message: string;
+  };
 }
 
 type EditCategoryResponse = EditCategoryResponseOK | EditCategoryResponseKO;
@@ -52,11 +55,17 @@ const saveEditCategoryForm = async (
     return {success: true, category: populateResponseCategory(category)};
   }
 
-  const errorContent = responseContent
-    ? (responseContent as EditCategoryResponseKO).error
-    : translate('pim_enrich.entity.category.content.edit.fail');
+  if (responseContent) {
+    if (Array.isArray(responseContent)) {
+      for (let i = 0; i < responseContent.length; i++) {
+        return {success: false, error: (responseContent[i] as EditCategoryResponseKO).error};
+      }
+    }
 
-  return {success: false, error: errorContent};
+    return {success: false, error: (responseContent as EditCategoryResponseKO).error};
+  }
+
+  return {success: false, error: {message: translate('pim_enrich.entity.category.content.edit.fail')}};
 };
 
 export {saveEditCategoryForm};
