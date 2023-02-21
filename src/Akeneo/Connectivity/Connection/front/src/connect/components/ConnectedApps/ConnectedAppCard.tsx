@@ -81,13 +81,9 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
     })}`;
     const logo = item.logo ? <Logo src={item.logo} alt={item.name} /> : <AppIllustration width={100} height={100} />;
 
-    const canManageApp =
-        (!item.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_apps')) ||
-        (item.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps'));
+    const canManageApp = security.isGranted('akeneo_connectivity_connection_manage_apps');
 
-    const canOpenApp =
-        (!item.is_test_app && security.isGranted('akeneo_connectivity_connection_open_apps')) ||
-        (item.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps'));
+    const canOpenApp = security.isGranted('akeneo_connectivity_connection_open_apps');
 
     return (
         <CardContainer>

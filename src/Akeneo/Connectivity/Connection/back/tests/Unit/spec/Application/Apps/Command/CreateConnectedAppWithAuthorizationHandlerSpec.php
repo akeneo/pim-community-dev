@@ -163,7 +163,7 @@ class CreateConnectedAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ->validate($command)
             ->willReturn(new ConstraintViolationList([]));
 
-        $app->isTestApp()->willReturn(false);
+        $app->isCustomApp()->willReturn(false);
         $getAppQuery->execute('an_app_id')->willReturn($app);
         $appAuthorizationSession->getAppAuthorization('an_app_id')->willReturn($appAuthorization);
         $clientProvider->findClientByAppId('an_app_id')->willReturn($client);
