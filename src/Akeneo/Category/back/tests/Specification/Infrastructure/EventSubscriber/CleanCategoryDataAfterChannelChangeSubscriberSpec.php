@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
+use Akeneo\Category\Application\Enrichment\Filter\ChannelAndLocalesFilter;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
@@ -68,7 +68,7 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
             [
                 'channel_code' => 'deleted_channel_code',
                 'locales_codes' => ['en_US'],
-                'action' => CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_LOCALE_ACTION,
+                'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_LOCALE_ACTION,
             ]
 
         )->shouldBeCalled();
@@ -102,7 +102,7 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
             [
                 'channel_code' => 'deleted_channel_code',
                 'locales_codes' => ['en_US'],
-                'action' => CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_ACTION,
+                'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_ACTION,
             ]
 
         )->shouldBeCalled();

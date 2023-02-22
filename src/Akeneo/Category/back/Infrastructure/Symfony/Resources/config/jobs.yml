@@ -51,7 +51,7 @@ services:
 
     Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet:
         arguments:
-            - '@Akeneo\Category\Application\Enrichment\CleanCategoryData'
+            - '@Akeneo\Category\Application\Enrichment\CategoryDataCleaner'
 
     Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateEnrichedValuesTasklet:
 

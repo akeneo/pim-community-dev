@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Category\Application\Enrichment;
+namespace Akeneo\Category\Application\Enrichment\Filter;
 
 interface CategoryDataFilter
 {

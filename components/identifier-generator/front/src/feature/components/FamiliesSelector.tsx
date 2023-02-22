@@ -5,6 +5,7 @@ import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shar
 import {Family, FamilyCode} from '../models';
 import {Unauthorized} from '../errors';
 import {Styled} from './Styled';
+import {useIdentifierGeneratorAclContext} from '../context';
 
 type FamiliesSelectorProps = {
   familyCodes: FamilyCode[];
@@ -15,6 +16,7 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
   const translate = useTranslate();
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const {
     families: paginatedFamilies,
     handleNextPage,
@@ -65,6 +67,7 @@ const FamiliesSelector: FC<FamiliesSelectorProps> = ({familyCodes, onChange}) =>
       onChange={onChange}
       value={familyCodes}
       invalidValue={debouncedInvalidFamilyCodes}
+      readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
     >
       {familiesList.map(family => (
         <MultiSelectInput.Option value={family.code} key={family.code}>

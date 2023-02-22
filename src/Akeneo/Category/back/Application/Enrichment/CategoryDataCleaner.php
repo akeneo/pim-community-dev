@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\Application\Enrichment;
+namespace Akeneo\Category\Application\Enrichment;
 
-use Akeneo\Category\Application\Enrichment\CategoryDataFilter;
+use Akeneo\Category\Application\Enrichment\Filter\CategoryDataFilter;
 use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 

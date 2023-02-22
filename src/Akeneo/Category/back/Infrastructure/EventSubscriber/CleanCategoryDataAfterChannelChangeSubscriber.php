@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Application\Enrichment\ChannelAndLocalesFilter;
+use Akeneo\Category\Application\Enrichment\Filter\ChannelAndLocalesFilter;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;

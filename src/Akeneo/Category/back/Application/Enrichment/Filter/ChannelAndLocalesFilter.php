@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Category\Application\Enrichment;
+namespace Akeneo\Category\Application\Enrichment\Filter;
 
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 
@@ -28,11 +28,11 @@ class ChannelAndLocalesFilter implements CategoryDataFilter
         $action = $filteringKeys['action'] ?? null;
 
         // TODO find better regex to find channel in these keys:
-        // TODO - attribute_code|attribute_uuid|channel_code|locale-code
+        // TODO - attribute_code|attribute_uuid|channel_code|locale_code
         // TODO - attribute_code|attribute_uuid|channel_code
         // TODO - attribute_code|attribute_uuid|locale_code
         // TODO - quid of the action to do when the channel is not scopable? check all locales?
-        $matchingString = '.*\\'.AbstractValue::SEPARATOR.'.*\\'.AbstractValue::SEPARATOR.$channelCode.AbstractValue::SEPARATOR.'(\w{2}_\w{2})';
+        $matchingString = '.*\\'.AbstractValue::SEPARATOR.'.*\\'.AbstractValue::SEPARATOR.$channelCode.'\\'.AbstractValue::SEPARATOR.'(\w{2}_\w{2})';
         foreach ($enrichedValues as $key => $value) {
             if ($key === 'attribute_codes') {
                 continue;

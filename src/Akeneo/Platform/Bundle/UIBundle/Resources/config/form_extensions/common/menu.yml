@@ -127,6 +127,7 @@ extensions:
         config:
             title: pim_enrich.entity.category.plural_label
             to: pim_enrich_categorytree_index
+            new: true
 
     pim-menu-settings-channel:
         module: pim/menu/item
@@ -217,6 +218,14 @@ extensions:
         config:
             title: pim_menu.item.group
             to: pim_enrich_group_index
+
+    pim-menu-automation-settings-block:
+        module: pim/menu/navigation-block
+        parent: pim-menu-settings-column
+        position: 110
+        targetZone: navigation
+        config:
+            title: pim_menu.navigation.settings.automation
 
     # System
     pim-menu-system:

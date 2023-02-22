@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Job;
 
-use Akeneo\Category\Application\Enrichment\ChannelAndLocalesFilter;
-use Akeneo\Category\back\Application\Enrichment\CategoryDataCleaner;
+use Akeneo\Category\Application\Enrichment\Filter\ChannelAndLocalesFilter;
+use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 

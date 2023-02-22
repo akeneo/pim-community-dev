@@ -1,13 +1,13 @@
 extensions:
   pim-menu-settings-identifier-generator:
     module: pim/menu/item
-    parent: pim-menu-catalog-settings-block
-    # Drop this line to display menu
-    aclResourceId: this_is_here_to_hide_feature
-    position: 100
+    parent: pim-menu-automation-settings-block
+    aclResourceId: "pim_identifier_generator_view || pim_identifier_generator_manage"
+    position: 20
     config:
       title: pim_title.akeneo_identifier_generator_index
       to: akeneo_identifier_generator_index
+      new: true
     feature: identifier_generator
 
   pim-identifier-generator-user-navigation:

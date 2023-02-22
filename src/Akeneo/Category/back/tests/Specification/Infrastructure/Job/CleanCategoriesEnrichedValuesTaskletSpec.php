@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Job;
 
-use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
+use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
+use Akeneo\Category\Application\Enrichment\Filter\ChannelAndLocalesFilter;
 use Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -18,11 +19,11 @@ use PhpSpec\ObjectBehavior;
 class CleanCategoriesEnrichedValuesTaskletSpec extends ObjectBehavior
 {
     function let(
-        CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
+        CategoryDataCleaner $categoryDataCleaner,
     )
     {
         $this->beConstructedWith(
-            $cleanCategoryDataLinkedToChannel,
+            $categoryDataCleaner,
         );
     }
 
@@ -35,7 +36,8 @@ class CleanCategoriesEnrichedValuesTaskletSpec extends ObjectBehavior
     function it_calls_cleaning_service_with_deleted_channel_code(
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-        CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
+        CategoryDataCleaner $categoryDataCleaner,
+        ChannelAndLocalesFilter $channelAndLocalesFilter,
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
 
@@ -43,9 +45,15 @@ class CleanCategoriesEnrichedValuesTaskletSpec extends ObjectBehavior
         $localesCodes = ['en_US'];
         $jobParameters->get('channel_code')->willReturn($deletedChannel);
         $jobParameters->get('locales_codes')->willReturn($localesCodes);
-        $jobParameters->get('action')->willReturn(CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_ACTION);
+        $jobParameters->get('action')->willReturn(ChannelAndLocalesFilter::CLEAN_CHANNEL_ACTION);
 
-        $cleanCategoryDataLinkedToChannel->__invoke($deletedChannel, $localesCodes,CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_ACTION)->shouldBeCalled();
+        $categoryDataCleaner->__invoke(
+            [
+                'channel_code' => $deletedChannel,
+                'locales_codes' => $localesCodes,
+                'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_ACTION,
+            ],
+            $channelAndLocalesFilter)->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute();
