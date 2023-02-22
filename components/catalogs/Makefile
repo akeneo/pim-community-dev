@@ -56,6 +56,14 @@ endif
 		--configuration $(CATALOGS_PATH)/back/phpstan.neon \
 		--level=8 \
 		$(CATALOGS_PATH)/back/src
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--configuration $(CATALOGS_PATH)/back/phpstan-deprecations.neon \
+		--level=8 \
+		$(CATALOGS_PATH)/back/src
+	$(PHP_RUN) vendor/bin/phpstan analyse \
+		--configuration $(CATALOGS_PATH)/back/phpstan-deprecations.neon\
+		--level=5 \
+		$(CATALOGS_PATH)/back/tests
 	$(PHP_RUN) vendor/bin/psalm $(PSALM_ARGS) -c $(CATALOGS_PATH)/back/psalm.xml
 
 .PHONY: catalogs-check-configuration-back
@@ -86,7 +94,7 @@ catalogs-unit-back:
 
 .PHONY: catalogs-integration-back
 catalogs-integration-back:
-	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
+	APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Integration \
@@ -115,7 +123,8 @@ catalogs-coverage-back:
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--log-junit var/tests/phpunit/phpunit_catalogs_global.xml \
 		--coverage-html coverage/Catalogs/Back/Global/ \
-		--coverage-filter $(CATALOGS_PATH)/back/src/
+		--coverage-filter $(CATALOGS_PATH)/back/src/ \
+		--testsuite Catalogs_Unit,Catalogs_Integration
 
 .PHONY: catalogs-mutation-back
 catalogs-mutation-back: var/infection.phar

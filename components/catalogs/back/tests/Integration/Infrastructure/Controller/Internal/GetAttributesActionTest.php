@@ -26,7 +26,7 @@ class GetAttributesActionTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'name',
             'type' => 'pim_catalog_text',
-            'group' => 'marketing'
+            'group' => 'marketing',
         ]);
         $this->createAttribute([
             'code' => 'description',

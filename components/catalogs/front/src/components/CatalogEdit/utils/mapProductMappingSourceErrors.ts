@@ -7,9 +7,13 @@ export const mapProductMappingSourceErrors = (errors: CatalogFormErrors, keys: s
 
     keys.forEach(key => {
         map[key] = {
-            source: findFirstError(errors, `[product_mapping][${key}][source]`),
-            locale: findFirstError(errors, `[product_mapping][${key}][locale]`),
-            scope: findFirstError(errors, `[product_mapping][${key}][scope]`),
+            source: findFirstError(errors, `productMapping[${key}][source]`),
+            locale: findFirstError(errors, `productMapping[${key}][locale]`),
+            scope: findFirstError(errors, `productMapping[${key}][scope]`),
+            parameters: {
+                label_locale: findFirstError(errors, `productMapping[${key}][parameters][label_locale]`),
+                currency: findFirstError(errors, `productMapping[${key}][parameters][currency]`),
+            },
         };
     });
 

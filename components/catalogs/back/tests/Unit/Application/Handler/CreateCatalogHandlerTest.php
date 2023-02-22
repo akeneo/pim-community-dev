@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Handler\CreateCatalogHandler;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 class CreateCatalogHandlerTest extends TestCase
 {
-    private ?UpsertCatalogQueryInterface $upsertCatalogQuery;
+    private UpsertCatalogQueryInterface&MockObject $upsertCatalogQuery;
     private ?CreateCatalogHandler $handler;
 
     protected function setUp(): void
@@ -48,7 +49,7 @@ class CreateCatalogHandlerTest extends TestCase
                     ],
                     [],
                     [],
-                )
+                ),
             );
 
         $command = new CreateCatalogCommand(

@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\IsCatalogsNumberLimitReached
 use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUserValidator;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateCatalogCommandValidationTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
-    private ?IsCatalogsNumberLimitReachedQueryInterface $isCatalogsNumberLimitReachedQuery;
+    private IsCatalogsNumberLimitReachedQueryInterface&MockObject $isCatalogsNumberLimitReachedQuery;
 
     protected function setUp(): void
     {
@@ -90,7 +91,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
                 id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
                 name: 'Store US',
                 ownerUsername: 'shopifi',
-            )
+            ),
         );
 
         $this->assertViolationsListContains($violations, 'You can create up to 15 catalogs');
