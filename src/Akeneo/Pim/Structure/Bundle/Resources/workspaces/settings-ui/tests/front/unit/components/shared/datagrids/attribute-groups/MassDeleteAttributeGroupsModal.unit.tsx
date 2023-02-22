@@ -5,7 +5,9 @@ import {MassDeleteAttributeGroupsModal} from '../../../../../../../src';
 import {fireEvent, screen, act} from '@testing-library/react';
 
 test('it renders a confirm modal delete', () => {
-  renderWithProviders(<MassDeleteAttributeGroupsModal selectedAttributeGroups={[]} unselectAttributeGroups={[]} onConfirm={() => {}} />);
+  renderWithProviders(
+    <MassDeleteAttributeGroupsModal selectedAttributeGroups={[]} unselectAttributeGroups={[]} onConfirm={() => {}} />
+  );
 
   expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button')).toBeInTheDocument();
 });
