@@ -139,6 +139,6 @@ services:
             - '@oro_security.acl.manager'
             - '@pim_user.repository.role'
 
-    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\TestAppLoader:
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\CustomAppLoader:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommandHandler'
+            - '@Akeneo\Connectivity\Connection\Application\CustomApps\Command\CreateCustomAppCommandHandler'

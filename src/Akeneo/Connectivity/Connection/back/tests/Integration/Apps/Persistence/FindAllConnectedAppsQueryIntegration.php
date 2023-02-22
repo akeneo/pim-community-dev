@@ -40,22 +40,22 @@ class FindAllConnectedAppsQueryIntegration extends TestCase
         // Test App
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '0dfce574-2238-4b13-b8cc-8d257ce7645b',
-            'connected_test_app',
+            'connected_custom_app',
             ['read_products'],
             true,
         );
-        $expectedTestApp = [
+        $expectedCustomApp = [
             'id' => '0dfce574-2238-4b13-b8cc-8d257ce7645b',
-            'name' => 'connected_test_app',
-            'connection_code' => 'connected_test_app',
+            'name' => 'connected_custom_app',
+            'connection_code' => 'connected_custom_app',
             'author' => 'Akeneo',
             'logo' => null,
-            'user_group_name' => 'app_connected_test_app',
-            'connection_username' => $this->findConnectionUsername('connected_test_app'),
+            'user_group_name' => 'app_connected_custom_app',
+            'connection_username' => $this->findConnectionUsername('connected_custom_app'),
             'categories' => [],
             'partner' => null,
             'certified' => false,
-            'is_test_app' => true,
+            'is_custom_app' => true,
             'is_pending' => false,
             'scopes' => ['read_products'],
             'has_outdated_scopes' => false,
@@ -75,7 +75,7 @@ class FindAllConnectedAppsQueryIntegration extends TestCase
             'logo' => 'http://example.com/logo.png',
             'author' => 'Akeneo',
             'categories' => ['ecommerce'],
-            'is_test_app' => false,
+            'is_custom_app' => false,
             'scopes' => ['read_products'],
             'partner' => null,
             'certified' => false,
@@ -103,7 +103,7 @@ class FindAllConnectedAppsQueryIntegration extends TestCase
             'categories' => ['ecommerce'],
             'certified' => false,
             'partner' => null,
-            'is_test_app' => false,
+            'is_custom_app' => false,
             'is_pending' => true,
             'has_outdated_scopes' => false,
         ];
@@ -111,18 +111,18 @@ class FindAllConnectedAppsQueryIntegration extends TestCase
         $connectedApps = $this->query->execute();
 
         Assert::assertEquals($expectedApp, $connectedApps[0]->normalize());
-        Assert::assertEquals($expectedTestApp, $connectedApps[1]->normalize());
+        Assert::assertEquals($expectedCustomApp, $connectedApps[1]->normalize());
         Assert::assertEquals($expectedPendingApp, $connectedApps[2]->normalize());
     }
 
     private function findConnectionUsername(string $code): string
     {
         $query = <<<SQL
-SELECT oro_user.username
-FROM akeneo_connectivity_connection
-JOIN oro_user ON oro_user.id = akeneo_connectivity_connection.user_id
-WHERE code = :code
-SQL;
+        SELECT oro_user.username
+        FROM akeneo_connectivity_connection
+        JOIN oro_user ON oro_user.id = akeneo_connectivity_connection.user_id
+        WHERE code = :code
+        SQL;
 
         return $this->dbalConnection->fetchOne($query, [
             'code' => $code,

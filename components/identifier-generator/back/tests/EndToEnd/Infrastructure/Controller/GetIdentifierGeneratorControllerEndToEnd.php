@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +24,15 @@ final class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndT
         $response = $this->client->getResponse();
         Assert::AssertSame(Response::HTTP_FOUND, $response->getStatusCode());
         Assert::assertTrue($response->isRedirect('/'));
+    }
+
+    /** @test */
+    public function it_should_return_http_forbidden_without_the_view_generators_acl(): void
+    {
+        $this->loginAs('kevin');
+        $this->callGetRoute('akeneo_identifier_generator_rest_get', 'code');
+        $response = $this->client->getResponse();
+        Assert::AssertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     /** @test */
@@ -76,11 +84,6 @@ final class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndT
             ),
             $response->getContent()
         );
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog(['identifier_generator']);
     }
 
     private function getUuidFromCode(string $code): string
