@@ -59,7 +59,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
             return;
         }
 
-        $validationResponse = $this->validateFamilyVariants($subject);
+        $validationResponse = $this->validateFamilyVariants([$subject]);
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
@@ -90,8 +90,14 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
      */
     public function onBulkSave(GenericEvent $event): void
     {
-        $subject = $event->getSubject();
-        if (!$subject instanceof FamilyInterface) {
+        $subjects = $event->getSubject();
+        if (!\is_array($subjects)) {
+            return;
+        }
+
+        $families = \array_filter($subjects, static fn ($subject): bool => $subject instanceof FamilyInterface);
+
+        if (\count($families) === 0) {
             return;
         }
 
@@ -99,7 +105,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
             return;
         }
 
-        $validationResponse = $this->validateFamilyVariants($subject);
+        $validationResponse = $this->validateFamilyVariants($subjects);
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
@@ -137,18 +143,24 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         return $errorMessage;
     }
 
-    private function validateFamilyVariants(FamilyInterface $family): array
+    /**
+     * @param FamilyInterface[] $families
+     * @return array
+     */
+    private function validateFamilyVariants(array $families): array
     {
         $validFamilyVariants = [];
         $allViolations = [];
 
-        foreach ($family->getFamilyVariants() as $familyVariant) {
-            $violations = $this->validator->validate($familyVariant);
+        foreach ($families as $family) {
+            foreach ($family->getFamilyVariants() as $familyVariant) {
+                $violations = $this->validator->validate($familyVariant);
 
-            if (0 === $violations->count()) {
-                $validFamilyVariants[] = $familyVariant;
-            } else {
-                $allViolations[$familyVariant->getCode()] = $violations;
+                if (0 === $violations->count()) {
+                    $validFamilyVariants[] = $familyVariant;
+                } else {
+                    $allViolations[$familyVariant->getCode()] = $violations;
+                }
             }
         }
 
