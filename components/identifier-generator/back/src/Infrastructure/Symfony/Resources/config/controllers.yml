@@ -4,33 +4,39 @@ services:
     arguments:
       - '@akeneo.pim.structure.query.find_flatten_attributes'
       - '@pim_user.context.user'
+      - '@oro_security.security_facade'
 
   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\CreateIdentifierGeneratorController:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@oro_security.security_facade'
 
   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\ListIdentifierGeneratorController:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@oro_security.security_facade'
 
   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\DeleteIdentifierGeneratorController:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@oro_security.security_facade'
 
   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetIdentifierGeneratorController:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@oro_security.security_facade'
 
   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\UpdateIdentifierGeneratorController:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@oro_security.security_facade'
 
   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetFamiliesController:
     public: true

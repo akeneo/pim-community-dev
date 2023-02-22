@@ -24,7 +24,7 @@ const connectedApp = {
     categories: ['e-commerce', 'print'],
     certified: false,
     partner: null,
-    is_test_app: false,
+    is_custom_app: false,
     is_pending: false,
     has_outdated_scopes: true,
 };
@@ -37,25 +37,6 @@ test('The Open App button is disabled when the user doesnt have the permission t
     renderWithProviders(
         <SecurityContext.Provider value={{isGranted}}>
             <OpenAppButton connectedApp={connectedApp} />
-        </SecurityContext.Provider>
-    );
-
-    const openAppButton = expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.label')
-    );
-    openAppButton.not.toHaveAttribute('href');
-    openAppButton.toHaveAttribute('disabled');
-    openAppButton.toHaveAttribute('aria-disabled', 'true');
-});
-
-test('The Open App button is disabled for test app when the user doesnt have the permission to manage test apps', () => {
-    const isGranted = jest.fn((acl: string) => {
-        return acl !== 'akeneo_connectivity_connection_manage_test_apps';
-    });
-
-    renderWithProviders(
-        <SecurityContext.Provider value={{isGranted}}>
-            <OpenAppButton connectedApp={{...connectedApp, is_test_app: true}} />
         </SecurityContext.Provider>
     );
 
@@ -89,29 +70,7 @@ test('The Open App button is enabled when the user has the permission to manage 
     openAppButton.not.toHaveAttribute('aria-disabled', 'true');
 });
 
-test('The Open App button is enabled for test app when the user has the permission to manage test apps', () => {
-    const isGranted = jest.fn((acl: string) => {
-        return acl === 'akeneo_connectivity_connection_manage_test_apps';
-    });
-
-    renderWithProviders(
-        <SecurityContext.Provider value={{isGranted}}>
-            <OpenAppButton connectedApp={{...connectedApp, is_test_app: true}} />
-        </SecurityContext.Provider>
-    );
-
-    const openAppButton = expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.header.open_app_button.label')
-    );
-    openAppButton.toHaveAttribute(
-        'href',
-        '#akeneo_connectivity_connection_connect_connected_apps_open?connectionCode=some_connection_code'
-    );
-    openAppButton.not.toHaveAttribute('disabled');
-    openAppButton.not.toHaveAttribute('aria-disabled', 'true');
-});
-
-test('The Open App button is in warning state for test app when the connectedApp has a outdated scopes flag', () => {
+test('The Open App button is in warning state for custom app when the connectedApp has a outdated scopes flag', () => {
     renderWithProviders(<OpenAppButton connectedApp={{...connectedApp, has_outdated_scopes: true}} />);
 
     expect(
@@ -119,7 +78,7 @@ test('The Open App button is in warning state for test app when the connectedApp
     ).toHaveStyle('background-color: rgb(249, 181, 63)');
 });
 
-test('The Open App button is in warning state for test app when the connectedApp is pending', () => {
+test('The Open App button is in warning state for custom app when the connectedApp is pending', () => {
     renderWithProviders(<OpenAppButton connectedApp={{...connectedApp, is_pending: true}} />);
 
     expect(

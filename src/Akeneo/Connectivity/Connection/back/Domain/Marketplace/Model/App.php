@@ -21,7 +21,7 @@ class App
         'callback_url',
     ];
 
-    private const TEST_APP_REQUIRED_KEYS = [
+    private const CUSTOM_APP_REQUIRED_KEYS = [
         'id',
         'name',
         'activate_url',
@@ -29,36 +29,23 @@ class App
     ];
 
     /**
-     * @param string $id
-     * @param string $name
-     * @param string|null $logo
-     * @param string|null $author
-     * @param string|null $partner
-     * @param string|null $description
-     * @param string|null $url
-     * @param bool $certified
      * @param array<string> $categories
-     * @param string $activateUrl
-     * @param string $callbackUrl
-     * @param bool $connected
-     * @param bool $isPending
-     * @param bool $isTestApp
      */
     private function __construct(
-        private string $id,
-        private string $name,
-        private ?string $logo,
-        private ?string $author,
-        private ?string $partner,
-        private ?string $description,
-        private ?string $url,
-        private bool $certified,
-        private array $categories,
+        private readonly string $id,
+        private readonly string $name,
+        private readonly ?string $logo,
+        private readonly ?string $author,
+        private readonly ?string $partner,
+        private readonly ?string $description,
+        private readonly ?string $url,
+        private readonly bool $certified,
+        private readonly array $categories,
         private string $activateUrl,
-        private string $callbackUrl,
-        private bool $connected,
-        private bool $isPending,
-        private bool $isTestApp,
+        private readonly string $callbackUrl,
+        private readonly bool $connected,
+        private readonly bool $isPending,
+        private readonly bool $isCustomApp,
     ) {
         if (true === $this->isPending && true === $this->connected) {
             throw new \DomainException('An App can not be both connected and pending.');
@@ -136,9 +123,9 @@ class App
      *     isPending?: bool,
      * } $values
      */
-    public static function fromTestAppValues(array $values): self
+    public static function fromCustomAppValues(array $values): self
     {
-        foreach (self::TEST_APP_REQUIRED_KEYS as $key) {
+        foreach (self::CUSTOM_APP_REQUIRED_KEYS as $key) {
             if (!isset($values[$key])) {
                 throw new \InvalidArgumentException(\sprintf('Missing property "%s" in given app', $key));
             }
@@ -236,7 +223,7 @@ class App
             $this->callbackUrl,
             $isConnected,
             $this->isPending,
-            $this->isTestApp,
+            $this->isCustomApp,
         );
     }
 
@@ -270,7 +257,7 @@ class App
      *  activate_url: string,
      *  callback_url: string,
      *  connected: bool,
-     *  isTestApp: bool,
+     *  isCustomApp: bool,
      * }
      */
     public function normalize(): array
@@ -289,7 +276,7 @@ class App
             'callback_url' => $this->callbackUrl,
             'connected' => $this->connected,
             'isPending' => $this->isPending,
-            'isTestApp' => $this->isTestApp,
+            'isCustomApp' => $this->isCustomApp,
         ];
     }
 
@@ -351,9 +338,9 @@ class App
         return $this->categories;
     }
 
-    public function isTestApp(): bool
+    public function isCustomApp(): bool
     {
-        return $this->isTestApp;
+        return $this->isCustomApp;
     }
 
     public function isPending(): bool
@@ -377,7 +364,7 @@ class App
             $this->callbackUrl,
             false,
             true,
-            $this->isTestApp,
+            $this->isCustomApp,
         );
     }
 }

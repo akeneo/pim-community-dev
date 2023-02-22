@@ -30,6 +30,18 @@ final class GetAvailablePropertiesControllerEndToEnd extends ControllerEndToEndT
     }
 
     /** @test */
+    public function it_returns_http_forbidden_without_manage_generator_acl(): void
+    {
+        $this->loginAs('kevin');
+        $this->callGetRouteWithQueryParam(
+            'akeneo_identifier_generator_get_properties',
+            ['systemFields' => ['free_text', 'auto_number', 'family']],
+        );
+        $response = $this->client->getResponse();
+        Assert::AssertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    /** @test */
     public function it_gets_a_list_of_available_properties(): void
     {
         $this->assertResponse(
