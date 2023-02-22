@@ -21,7 +21,8 @@
 - PIM-10858: Fix password is set on sftp storage using private key
 - PIM-10844: Filter empty attribute option labels
 - PIM-10831: Fix severe performance issues with the association product and product model picker
-- PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel  
+- PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
+- PIM-10853: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
 
 ## Improvements
 
