@@ -35,7 +35,8 @@ SELECT
     (SELECT COUNT(*) FROM akeneo_measurement) AS count_measurements,
     (SELECT COUNT(*) FROM pim_catalog_association_type) AS count_association_types,
     (SELECT COUNT(*) FROM pim_catalog_group_type) AS count_group_types,
-    (SELECT COUNT(*) FROM pim_catalog_group) AS count_groups
+    (SELECT COUNT(*) FROM pim_catalog_group) AS count_groups,
+    (SELECT COUNT(*) FROM pim_catalog_identifier_generator) AS count_identifier_generators
 SQL;
 
         $result = $this->dbConnection->executeQuery($query)->fetchAssociative();

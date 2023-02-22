@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render, screen} from '../../tests/test-utils';
+import {fireEvent, mockACLs, render, screen} from '../../tests/test-utils';
 import {CreateOrEditGeneratorPage} from '../';
 import {createMemoryHistory} from 'history';
 import {Router} from 'react-router';
@@ -198,5 +198,22 @@ describe('CreateOrEditGeneratorPage', () => {
     expect(screen.getByText('[{"type":"enabled","value":true}]')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Update selection'));
     expect(screen.getByText('[{"type":"enabled","value":false}]')).toBeInTheDocument();
+  });
+
+  it('should disallow saving or deleting a generator if ACL is not granted', () => {
+    mockACLs(true, false);
+
+    render(
+      <CreateOrEditGeneratorPage
+        isMainButtonDisabled={false}
+        initialGenerator={initialGenerator}
+        validationErrors={[]}
+        mainButtonCallback={jest.fn()}
+        isNew={false}
+      />
+    );
+
+    expect(screen.queryByText('pim_common.save')).not.toBeInTheDocument();
+    expect(screen.queryByText('pim_common.delete')).not.toBeInTheDocument();
   });
 });
