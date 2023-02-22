@@ -1,7 +1,6 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Breadcrumb, SkeletonPlaceholder, TabBar, useTabBar} from 'akeneo-design-system';
 import {
-  FullScreenError,
   getLabel, NotificationLevel,
   PageContent,
   PageHeader,
