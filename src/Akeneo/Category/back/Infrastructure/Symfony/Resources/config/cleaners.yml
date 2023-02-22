@@ -1,5 +1,5 @@
 services:
-    Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel:
+    Akeneo\Category\Application\Enrichment\CleanCategoryData:
         arguments:
             - '@Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode'
             - '@Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues'
