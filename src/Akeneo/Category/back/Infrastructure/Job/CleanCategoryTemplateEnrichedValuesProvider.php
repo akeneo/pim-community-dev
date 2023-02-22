@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\Type;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CleanCategoryEnrichedValuesProvider implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
+class CleanCategoryTemplateEnrichedValuesProvider implements ConstraintCollectionProviderInterface, DefaultValuesProviderInterface
 {
     public function __construct(
         private readonly string $jobName,
@@ -29,23 +29,19 @@ class CleanCategoryEnrichedValuesProvider implements ConstraintCollectionProvide
     public function getDefaultValues(): array
     {
         return [
-            'channel_code' => null,
-            'locales_codes' => [],
-            'action' => '',
+            'template_uuid' => null,
         ];
     }
 
     /**
-     * channel_code: deleted channel's code to be cleaned from category enriched values.
+     * template_uuid: deleted template's uuid to be cleaned from category enriched values.
      */
     public function getConstraintCollection(): Collection
     {
         return new Collection(
             [
                 'fields' => [
-                    'channel_code' => new Type('string'),
-                    'locales_codes' => new Type('array'),
-                    'action' => new Type('string'),
+                    'template_uuid' => new Type('string'),
                 ],
             ],
         );
