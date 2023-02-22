@@ -1,6 +1,8 @@
 includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
     - vendor/phpstan/phpstan-webmozart-assert/extension.neon
+rules:
+    - Akeneo\Tool\Component\PhpStan\Rule\InvalidLazyCommandRule
 parameters:
     reportUnmatchedIgnoredErrors: false
     symfony:
