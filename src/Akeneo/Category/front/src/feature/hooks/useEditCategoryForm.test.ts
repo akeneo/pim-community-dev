@@ -340,7 +340,9 @@ describe('useEditCategoryForm', () => {
   test('it saves a category and refreshes the category data on fail', async () => {
     mockedSaveEditCategoryForm.mockResolvedValue({
       success: false,
-      errors: {},
+      error: {
+        message: ''
+      },
     });
 
     const modifiedCategory: EnrichCategory = set(['properties', 'labels', 'en_US'], 'Foo', aCategory);

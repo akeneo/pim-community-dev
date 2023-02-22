@@ -13,6 +13,7 @@ Akeneo\Category\Api\Command\UpsertCategoryCommand:
         userIntents:
             - Akeneo\Category\Infrastructure\Validation\LocalizeUserIntentsShouldBeUnique: ~
             - Akeneo\Category\Infrastructure\Validation\ValueUserIntentsShouldBeUnique: ~
+            - Akeneo\Category\Infrastructure\Validation\ValueUserIntentsShouldHaveAnActivatedTemplate: ~
             - Valid:
                   traverse: true
 
