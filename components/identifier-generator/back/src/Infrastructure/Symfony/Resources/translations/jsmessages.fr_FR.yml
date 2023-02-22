@@ -1,0 +1,47 @@
+pim_identifier_generator:
+  tabs:
+    identifier_structure: "Structure de l'identifiant"
+  general:
+    title: "Propriétés générales"
+    text_transformation:
+      label: 'Transformation de texte'
+      no: 'Sans transformation de texte'
+      lowercase: 'Minuscule'
+      uppercase: 'Majuscule'
+  flash:
+    create:
+      success: 'Le générateur d''identifiant "{{ code }}" a été créé avec succès'
+    update:
+      error: 'Le générateur d''identifiant n''a pas pu être mis à jour'
+    delete:
+      success: 'Le générateur d''identifiant "{{ code }}" a été supprimé'
+      error: 'Le générateur d''identifiant n''a pas pu être supprimé'
+  list:
+    identifier: 'Identifiant'
+    first_generator: 'Créez votre premier générateur d''identifiant !'
+    check_help_center: 'Consultez notre Help Center pour plus d''informations.'
+  selection:
+    settings:
+      enabled:
+        disabled: 'Désactivé'
+      family:
+        placeholder: 'Veuillez sélectionner au moins une famille'
+      select_option:
+        placeholder: 'Veuillez sélectionner au moins une option'
+  structure:
+    helper_link: 'Consultez notre Help Center pour plus d''informations.'
+    title: 'Structure de l''identifiant'
+    limit_reached: 'Vous avez atteint la limite des 20 propriétés. '
+    property_type:
+      sections:
+        system: 'Système'
+      free_text: 'Texte'
+      auto_number: 'Nombre incrémental'
+      family: 'Famille'
+    settings:
+      free_text:
+        title: 'Paramètres du texte'
+      auto_number:
+        title: 'Nombre incrémental'
+      family:
+        title: 'Famille'

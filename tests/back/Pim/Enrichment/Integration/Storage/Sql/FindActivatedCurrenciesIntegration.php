@@ -46,6 +46,24 @@ class FindActivatedCurrenciesIntegration extends TestCase
         );
     }
 
+    public function testThatItReturnsActivatedCurrenciesIndexedByChannelCode()
+    {
+        $this->addAdditionalCurrenciesToMobile();
+        $actual = $this->get('pim_catalog.query.find_activated_currencies')->forAllChannelsIndexedByChannelCode();
+        \ksort($actual);
+        foreach ($actual as $channelCode => $currencies) {
+            \sort($actual[$channelCode]);
+        }
+
+        Assert::assertSame(
+            [
+                'ecommerce' => ['USD'],
+                'mobile' => ['ADP', 'AFA', 'EUR'],
+            ],
+            $actual
+        );
+    }
+
     /**
      * {@inheritdoc}
      */

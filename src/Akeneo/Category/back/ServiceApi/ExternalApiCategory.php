@@ -23,10 +23,9 @@ class ExternalApiCategory
         private readonly string $code,
         private readonly ?array $values,
         private readonly string $updated,
-        private readonly ?int $parentId = null,
         private readonly ?string $parentCode = null,
         private readonly ?array $labels = null,
-        private ?int $position = null, // TODO: Handle position GRF-633
+        private readonly ?int $position = null,
     ) {
     }
 
@@ -35,22 +34,17 @@ class ExternalApiCategory
         return $this->code;
     }
 
-    public function getParentId(): ?int
+    /**
+     * @return array<string, NormalizedValue>|null $values
+     */
+    public function getValues(): ?array
     {
-        return $this->parentId;
+        return $this->values;
     }
 
-    public function getParentCode(): ?string
-    {
-        return $this->parentCode;
-    }
-
-    public function getUpdated(): ?string
-    {
-        return $this->updated;
-    }
-
-    /** @return array<string, string>|null */
+    /**
+     * @return array<string, string>|null
+     */
     public function getLabels(): ?array
     {
         return $this->labels;
@@ -61,22 +55,10 @@ class ExternalApiCategory
         return $this->position;
     }
 
-    public function setPosition(int $position): void
-    {
-        $this->position = $position;
-    }
-
-    /** @return array<string, NormalizedValue> $values */
-    public function getValues(): ?array
-    {
-        return $this->values;
-    }
-
     /**
      * @param array{
      *     id: string,
      *     code: string,
-     *     parent_id: string|null,
      *     parent_code: string|null,
      *     root_id: string|null,
      *     updated: string,
@@ -85,6 +67,7 @@ class ExternalApiCategory
      *     lvl: string|null,
      *     translations: string|null,
      *     value_collection: string|null,
+     *     position: string|null
      * } $category
      */
     public static function fromDatabase(array $category): self
@@ -99,15 +82,13 @@ class ExternalApiCategory
             $valueCollection = ValueCollection::fromDatabase($valueCollection)->normalize();
         }
 
-        // TODO: Handle position GRF-633
         return new self(
             code: $category['code'],
             values: $valueCollection,
             updated: $updatedDate,
-            parentId: isset($category['parent_id']) ? (int) $category['parent_id'] : null,
             parentCode: $category['parent_code'],
             labels: $translations,
-            position: null,
+            position: (isset($category['position']) && '' !== $category['position']) ? (int) $category['position'] : null,
         );
     }
 
@@ -124,18 +105,19 @@ class ExternalApiCategory
     public function normalize(bool $withPosition, bool $withEnrichedAttributes): array
     {
         $normalizedCategory = [
-            'code' => $this->getCode(),
-            'parent' => $this->getParentCode(),
-            'updated' => $this->getUpdated(),
-            'labels' => $this->getLabels(),
+            'code' => $this->code,
+            'parent' => $this->parentCode,
+            'updated' => $this->updated,
+            'labels' => $this->labels,
         ];
 
         if ($withPosition) {
-            $normalizedCategory['position'] = $this->getPosition();
+            $normalizedCategory['position'] = $this->position;
         }
 
         if ($withEnrichedAttributes) {
-            $normalizedCategory['values'] = $this->getValues();
+            // cast as object when array is empty to output "values: {}"
+            $normalizedCategory['values'] = empty($this->values) ? (object) [] : $this->values;
         }
 
         return $normalizedCategory;
@@ -145,7 +127,6 @@ class ExternalApiCategory
      * @param array{
      *     id: string,
      *     code: string,
-     *     parent_id: string|null,
      *     parent_code: string|null,
      *     root_id: string|null,
      *     updated: string,
@@ -154,6 +135,7 @@ class ExternalApiCategory
      *     lvl: string|null,
      *     translations: string|null,
      *     value_collection: string|null,
+     *     position: int|null,
      * } $category
      */
     private static function assertArrayFromDatabase(array $category): void
@@ -162,8 +144,6 @@ class ExternalApiCategory
         Assert::nullOrString($category['id']);
         Assert::keyExists($category, 'code');
         Assert::string($category['code'], 'code');
-        Assert::keyExists($category, 'parent_id');
-        Assert::nullOrString($category['parent_id']);
         Assert::keyExists($category, 'parent_code');
         Assert::nullOrString($category['parent_code']);
         Assert::keyExists($category, 'root_id');
@@ -180,5 +160,7 @@ class ExternalApiCategory
         Assert::nullOrString($category['translations']);
         Assert::keyExists($category, 'value_collection');
         Assert::nullOrString($category['value_collection']);
+        Assert::keyExists($category, 'position');
+        Assert::nullOrString($category['position']);
     }
 }

@@ -60,6 +60,9 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddConstraints:
         parent: base_uuid_migration_step
 
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCompletenessTable:
+        parent: base_uuid_migration_step
+
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch:
         arguments:
             - '@database_connection'
@@ -78,6 +81,7 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidSetNotNullableUuidColumns'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddConstraints'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCompletenessTable'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch'
             - '@monolog.logger'
             - '@database_connection'
@@ -89,6 +93,7 @@ services:
             - '@database_connection'
         tags:
             - { name: 'akeneo.pim.zdd_migration' }
+        public: true
 
     Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns:
         arguments:
@@ -96,6 +101,7 @@ services:
             - '@monolog.logger'
         tags:
             - { name: 'akeneo.pim.zdd_migration' }
+        public: true
 
     Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedProductsCommand:
         arguments:

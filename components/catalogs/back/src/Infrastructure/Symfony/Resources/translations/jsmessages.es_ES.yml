@@ -1,4 +1,9 @@
 akeneo_catalogs:
+  common:
+    select:
+      open: Abrir
+      remove: Eliminar
+      no_matches: No se encontraron coincidencias
   catalog_list:
     catalogs_name: Nombre del catálogo
     status: Estado
@@ -14,6 +19,9 @@ akeneo_catalogs:
       product_value_filters: Filtrar los valores
       product_mapping: Asignación
   catalog_status_widget:
+    fields:
+      enable_catalog: Activar catálogo
+    helper: Por defecto, los nuevos catálogos están desactivados. Habilite el catálogo para permitir que la aplicación recupere los datos de sus productos.
     inputs:
       yes: Yes
       no: No
@@ -36,6 +44,9 @@ akeneo_catalogs:
         placeholder: Seleccione una moneda
   product_selection:
     empty: Añada criterios de selección para crear su selección de productos
+    count:
+      products: '{0} Ningún producto|{1} 1 producto|[2,Inf[ {{ count }} productos'
+      error: Imposible calcular el número de productos
     more_information: Consulte nuestro Centro de ayuda para obtener más información.
     add_criteria:
       label: añadir criterios de selección
@@ -54,6 +65,7 @@ akeneo_catalogs:
       empty: No se encontró ningún canal
     criteria:
       unknown: Este atributo ha sido eliminado.
+      max_reached: Ha alcanzado el límite de {{ maxCount }} criterios de selección.
       status:
         label: Estado
         enabled: Habilitado
@@ -113,6 +125,14 @@ akeneo_catalogs:
         illustration_title: No hay ningún objetivo de catálogo disponible
     source:
       title: Seleccionar fuente
+      parameters:
+        title: Parámetros de origen
+        channel:
+          label: Canal
+          placeholder: Seleccione un canal
+        locale:
+          label: Configuración regional
+          placeholder: Seleccione una configuración regional
       select_source:
         label: Fuente PIM
         search: Criterio de búsqueda
@@ -124,3 +144,7 @@ akeneo_catalogs:
         illustration_title: Haga clic en un objetivo en el panel de la derecha para configurar la asignación de su catálogo.
         subtitle: Entonces podrá hacer coincidir un atributo PIM con el objetivo seleccionado.
         link: Consulte nuestro Centro de ayuda para obtener más información.
+      uuid_placeholder:
+        illustration_title: El UUID es un identificador técnico de producto.
+        subtitle: Todas las aplicaciones deben requerirlo como objetivo. No tiene nada que configurar para este objetivo ya que lo mapeamos automáticamente con el UUID del producto Akeneo.
+        link: Más información sobre el UUID.

@@ -1,0 +1,75 @@
+parameters:
+    pim_category.job_name.clean_categories_enriched_values: 'clean_categories_enriched_values'
+    pim_category.job_name.clean_category_template_and_enriched_values: 'clean_category_template_and_enriched_values'
+
+
+services:
+    # TODO check all use of 'clean_removed_attribute_job' to make sure this new job is added in all fixtures and stuff like taht
+    # Clean categories enriched values linked to removed channel
+    pim_catalog.job.clean_categories_enriched_values:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_category.job_name.clean_categories_enriched_values%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.clean_categories.clean_enriched_values'
+            - false
+            - false
+        public: false
+        tags:
+            - { name: akeneo_batch.job, connector: 'Cleaning categories enriched values', type: '%pim_category.job_name.clean_categories_enriched_values%' }
+
+    pim_catalog.job.clean_category_template_and_enriched_values:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_category.job_name.clean_category_template_and_enriched_values%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.clean_categories.clean_enriched_template_values'
+            - false
+            - false
+        public: false
+        tags:
+            - { name: akeneo_batch.job, connector: 'Cleaning categories template enriched values', type: '%pim_category.job_name.clean_category_template_and_enriched_values%' }
+
+    pim_catalog.step.clean_categories.clean_enriched_values:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_enriched_values_from_deleted_channels'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet'
+
+    pim_catalog.step.clean_categories.clean_enriched_template_values:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_enriched_values_from_deactivate_template'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateEnrichedValuesTasklet'
+
+    Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet:
+        arguments:
+            - '@Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel'
+
+    Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateEnrichedValuesTasklet:
+
+    # job parameters
+    akeneo.category.clean_categories.clean_enriched_values.job_parameters:
+        class: 'Akeneo\Category\Infrastructure\Job\CleanCategoryEnrichedValuesProvider'
+        arguments:
+            - '%pim_category.job_name.clean_categories_enriched_values%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+
+    akeneo.category.clean_categories.clean_template_enriched_values.job_parameters:
+        class: 'Akeneo\Category\Infrastructure\Job\CleanCategoryTemplateEnrichedValuesProvider'
+        arguments:
+            - '%pim_category.job_name.clean_category_template_and_enriched_values%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

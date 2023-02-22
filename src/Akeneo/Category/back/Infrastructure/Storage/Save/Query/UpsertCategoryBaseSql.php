@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
+use Akeneo\Category\Application\Query\IsTemplateDeactivated;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Types;
@@ -21,8 +23,9 @@ use Doctrine\DBAL\Types\Types;
 class UpsertCategoryBaseSql implements UpsertCategoryBase
 {
     public function __construct(
-        private Connection $connection,
-        private GetCategoryInterface $getCategory,
+        private readonly Connection $connection,
+        private readonly GetCategoryInterface $getCategory,
+        private readonly IsTemplateDeactivated $isTemplateDeactivated,
     ) {
     }
 
@@ -32,7 +35,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     public function execute(Category $categoryModel): void
     {
         if ($this->getCategory->byCode((string) $categoryModel->getCode())) {
-            $this->updateCategory($categoryModel);
+            $this->updateEnrichedCategory($categoryModel);
         } else {
             $this->insertCategory($categoryModel);
         }
@@ -51,11 +54,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             ;
         SQL;
 
-        $attributeValues = $categoryModel->getAttributes()?->normalize();
-        if (null !== $attributeValues) {
-            $attributeValues['attribute_codes'] = $categoryModel->getAttributeCodes();
-        }
-
         $this->connection->executeQuery(
             $query,
             [
@@ -65,7 +63,10 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'lvl' => 0,
                 'lft' => 1,
                 'rgt' => 2,
-                'value_collection' => $attributeValues,
+                'value_collection' => $this->normalizeValueCollection(
+                    $categoryModel->getAttributeCodes(),
+                    $categoryModel->getAttributes(),
+                ),
             ],
             [
                 'parent_id' => \PDO::PARAM_INT,
@@ -100,33 +101,51 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     /**
      * @throws Exception
      */
-    private function updateCategory(Category $categoryModel): void
+    private function updateEnrichedCategory(Category $categoryModel): void
     {
-        $query = <<< SQL
-                UPDATE pim_catalog_category
-                SET
-                    created = pim_catalog_category.created,
-                    updated = NOW(),
-                    value_collection = :value_collection
-                WHERE code = :category_code
-                ;
-            SQL;
-
-        $attributeValues = $categoryModel->getAttributes()?->normalize();
-        if (null !== $attributeValues) {
-            $attributeValues['attribute_codes'] = $categoryModel->getAttributeCodes();
+        $templateUuid = $categoryModel->getTemplateUuid();
+        if ($templateUuid && ($this->isTemplateDeactivated)($templateUuid)) {
+            return;
         }
+
+        $query = <<<SQL
+            UPDATE pim_catalog_category
+            SET
+                created = pim_catalog_category.created,
+                updated = NOW(),
+                value_collection = :value_collection
+            WHERE code = :category_code;
+        SQL;
 
         $this->connection->executeQuery(
             $query,
             [
                 'category_code' => (string) $categoryModel->getCode(),
-                'value_collection' => $attributeValues,
+                'value_collection' => $this->normalizeValueCollection(
+                    $categoryModel->getAttributeCodes(),
+                    $categoryModel->getAttributes(),
+                ),
             ],
             [
                 'category_code' => \PDO::PARAM_STR,
                 'value_collection' => Types::JSON,
             ],
         );
+    }
+
+    private function normalizeValueCollection(array $attributeCodes, ?ValueCollection $valueCollection): ?array
+    {
+        if (null === $valueCollection) {
+            return null;
+        }
+
+        $attributeValues = array_filter(
+            $valueCollection->normalize(),
+            fn (array $attributeValue) => null !== $attributeValue['data'],
+        );
+
+        $attributeValues['attribute_codes'] = $attributeCodes;
+
+        return $attributeValues;
     }
 }

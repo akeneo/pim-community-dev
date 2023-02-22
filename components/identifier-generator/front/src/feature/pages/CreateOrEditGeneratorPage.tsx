@@ -1,23 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Button, Helper, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
+import {Button, Pill, TabBar, useBooleanState} from 'akeneo-design-system';
+import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
-import {Conditions, Delimiter, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
-import {validateIdentifierGenerator, Violation} from '../validators/';
+import {Conditions, Delimiter, GeneratorTab, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
+import {Violation} from '../validators';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
-import {useIdentifierGeneratorContext} from '../context';
+import {useIdentifierGeneratorAclContext, useIdentifierGeneratorContext} from '../context';
 import styled from 'styled-components';
-import {GeneratorTab} from '../models';
 import {useStructureTabs} from '../hooks';
-
-// TODO: replace this component by PageContent when there we delete the warning message (DO NOT USE...)
-const Container = styled.div`
-  padding: 0 40px;
-  overflow: auto;
-  height: calc(100vh - 190px);
-`;
 
 type CreateOrEditGeneratorProps = {
   isMainButtonDisabled: boolean;
@@ -41,9 +33,18 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   const changeTab = useCallback(tabName => () => setCurrentTab(tabName), [setCurrentTab]);
   const onSave = useCallback(() => mainButtonCallback(generator), [generator, mainButtonCallback]);
   const identifierGeneratorContext = useIdentifierGeneratorContext();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
+  const getErrorByPathNames = useCallback(
+    (pathNames: string[]) => validationErrors.filter(item => pathNames.some(v => item?.path?.includes(v))),
+    [validationErrors]
+  );
+
+  const generalValidationErrors = getErrorByPathNames(['labels']);
+  const selectionValidationErrors = getErrorByPathNames(['conditions']);
+  const structureValidationErrors = getErrorByPathNames(['structure', 'delimiter']);
 
   useEffect(() => {
     setGenerator(initialGenerator);
@@ -77,7 +78,11 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
 
   const onStructureChange = (structure: Structure) => {
     const updatedGenerator = {...generator, structure};
-    onChangeGenerator(updatedGenerator);
+    if (structure.length === 0) {
+      onChangeGenerator({...updatedGenerator, delimiter: null});
+    } else {
+      onChangeGenerator(updatedGenerator);
+    }
   };
 
   const onConditionsChange = (conditions: Conditions) => {
@@ -90,55 +95,55 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
     onChangeGenerator(updatedGenerator);
   };
 
-  const isGeneratorValid = validateIdentifierGenerator(generator, '').length === 0;
-
   return (
     <>
       <Header>
-        <PageHeader.Actions>
-          {!isNew && (
-            <SecondaryActions>
-              <SecondaryActions.Item onClick={handleDeleteModal}>
-                {translate('pim_common.delete')}
-              </SecondaryActions.Item>
-            </SecondaryActions>
-          )}
-          <Button disabled={isMainButtonDisabled || !isGeneratorValid} onClick={onSave}>
-            {translate('pim_common.save')}
-          </Button>
-        </PageHeader.Actions>
-      </Header>
-      <Container>
-        {validationErrors.length > 0 && (
-          <Helper level="error">
-            {validationErrors.map(({path, message}) => (
-              <div key={`${path || ''}${message}`}>
-                {path && `${path}: `}
-                {message}
-              </div>
-            ))}
-          </Helper>
+        {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+          <PageHeader.Actions>
+            {!isNew && (
+              <SecondaryActions>
+                <SecondaryActions.Item onClick={handleDeleteModal}>
+                  {translate('pim_common.delete')}
+                </SecondaryActions.Item>
+              </SecondaryActions>
+            )}
+            <Button onClick={onSave} disabled={isMainButtonDisabled}>
+              {translate('pim_common.save')}
+            </Button>
+          </PageHeader.Actions>
         )}
-
+      </Header>
+      <PageContent>
         <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={currentTab === GeneratorTab.GENERAL} onClick={changeTab(GeneratorTab.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
+            {generalValidationErrors.length > 0 && <Pill level="danger" />}
           </TabBar.Tab>
           <TabBar.Tab
             isActive={currentTab === GeneratorTab.PRODUCT_SELECTION}
             onClick={changeTab(GeneratorTab.PRODUCT_SELECTION)}
           >
             {translate('pim_identifier_generator.tabs.product_selection')}
+            {selectionValidationErrors.length > 0 && <Pill level="danger" />}
           </TabBar.Tab>
           <TabBar.Tab isActive={currentTab === GeneratorTab.STRUCTURE} onClick={changeTab(GeneratorTab.STRUCTURE)}>
             {translate('pim_identifier_generator.tabs.identifier_structure')}
+            {structureValidationErrors.length > 0 && <Pill level="danger" />}
           </TabBar.Tab>
         </TabBar>
         {currentTab === GeneratorTab.GENERAL && (
-          <GeneralPropertiesTab generator={generator} onGeneratorChange={onChangeGenerator} />
+          <GeneralPropertiesTab
+            generator={generator}
+            onGeneratorChange={onChangeGenerator}
+            validationErrors={generalValidationErrors}
+          />
         )}
         {currentTab === GeneratorTab.PRODUCT_SELECTION && (
-          <SelectionTab target={generator.target} conditions={generator.conditions} onChange={onConditionsChange} />
+          <SelectionTab
+            generator={generator}
+            onChange={onConditionsChange}
+            validationErrors={selectionValidationErrors}
+          />
         )}
         {currentTab === GeneratorTab.STRUCTURE && (
           <StructureTab
@@ -146,9 +151,11 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             delimiter={generator.delimiter}
             onStructureChange={onStructureChange}
             onDelimiterChange={onDelimiterChange}
+            validationErrors={structureValidationErrors}
+            textTransformation={generator.text_transformation}
           />
         )}
-      </Container>
+      </PageContent>
       {isDeleteGeneratorModalOpen && generatorCodeToDelete && (
         <DeleteGeneratorModal generatorCode={generatorCodeToDelete} onClose={closeModal} onDelete={redirectToList} />
       )}

@@ -29,8 +29,7 @@ class PopulateAccessTokenCommand extends Command
         private readonly ClientManagerInterface $clientManager,
         private readonly CreateUserInterface $createUser,
         private readonly Connection $connection
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -79,7 +78,7 @@ class PopulateAccessTokenCommand extends Command
         $remainder = $rowCount % $batchSize;
         $rowInserted = 0;
 
-        while ($rowInserted < $rowCount){
+        while ($rowInserted < $rowCount) {
             $rowsToInsert =  $rowInserted < $rowCount - $batchSize ? $batchSize : $remainder;
             $rowsToInsert = $rowsToInsert === 0 ? $batchSize : $rowsToInsert;
 

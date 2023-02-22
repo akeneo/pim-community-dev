@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -11,11 +12,13 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type FreeTextNormalized array{type: string, string: string}
+ * @phpstan-type FreeTextNormalized array{type: 'free_text', string: string}
  */
 final class FreeText implements PropertyInterface
 {
     public const LENGTH_LIMIT = 100;
+
+    private const TYPE = 'free_text';
 
     private function __construct(
         private string $value,
@@ -26,7 +29,7 @@ final class FreeText implements PropertyInterface
 
     public static function type(): string
     {
-        return 'free_text';
+        return self::TYPE;
     }
 
     /**
@@ -48,7 +51,7 @@ final class FreeText implements PropertyInterface
     public function normalize(): array
     {
         return [
-            'type' => $this->type(),
+            'type' => self::TYPE,
             'string' => $this->value,
         ];
     }
@@ -61,5 +64,10 @@ final class FreeText implements PropertyInterface
     public function asString(): string
     {
         return $this->value;
+    }
+
+    public function getImplicitCondition(): ?ConditionInterface
+    {
+        return null;
     }
 }

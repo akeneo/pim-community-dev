@@ -15,7 +15,7 @@ class SetRichText implements ValueUserIntent
         private readonly string $attributeCode,
         private readonly ?string $channelCode,
         private readonly ?string $localeCode,
-        private readonly string $value,
+        private readonly ?string $value,
     ) {
     }
 
@@ -39,7 +39,7 @@ class SetRichText implements ValueUserIntent
         return $this->localeCode;
     }
 
-    public function value(): string
+    public function value(): ?string
     {
         return $this->value;
     }

@@ -9,11 +9,13 @@ import {
   useTranslate,
   Translate,
   useAnalytics,
+  useFeatureFlags,
 } from '@akeneo-pim-community/shared';
 import {
   AssociateIcon,
   AttributeFileIcon,
   AttributeLinkIcon,
+  Badge,
   Breadcrumb,
   CategoryIcon,
   ComponentIcon,
@@ -21,6 +23,7 @@ import {
   GroupsIcon,
   IconCard,
   IconCardGrid,
+  IdIcon,
   LocaleIcon,
   LockIcon,
   MetricIcon,
@@ -32,8 +35,6 @@ import {
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {CountEntities, useCountEntities} from '../hooks/settings';
-
-const featureFlags = require('pim/feature-flags');
 
 const SectionContent = styled.div`
   margin-top: 20px;
@@ -72,7 +73,6 @@ const SettingsIndex = () => {
   const canAccessAssociationTypes = isGranted('pim_enrich_associationtype_index');
   const canAccessGroupTypes = isGranted('pim_enrich_grouptype_index');
   const canAccessGroups = isGranted('pim_enrich_group_index');
-  const canAccessRules = isGranted('pimee_catalog_rule_rule_view_permissions');
 
   const canAccessProductSettings =
     canAccessAttributeGroups ||
@@ -81,12 +81,19 @@ const SettingsIndex = () => {
     canAccessMeasurements ||
     canAccessAssociationTypes ||
     canAccessGroupTypes ||
-    canAccessGroups ||
-    canAccessRules;
+    canAccessGroups;
+
+  const canAccessRules = isGranted('pimee_catalog_rule_rule_view_permissions');
+  const canAccessIdentifierGenerator =
+    isGranted('pim_identifier_generator_view') || isGranted('pim_identifier_generator_manage');
+
+  const canAccessAutomationSettings = canAccessRules || canAccessIdentifierGenerator;
 
   const redirectToRoute = (route: string) => {
     router.redirect(router.generate(route));
   };
+
+  const featureFlags = useFeatureFlags();
 
   if (!canAccessCatalogSettings && !canAccessProductSettings) {
     return (
@@ -128,7 +135,14 @@ const SettingsIndex = () => {
                   <IconCard
                     id="pim-settings-product-category"
                     icon={<CategoryIcon />}
-                    label={translate('pim_enrich.entity.category.plural_label')}
+                    label={
+                      <>
+                        {translate('pim_enrich.entity.category.plural_label')}
+                        {featureFlags.isEnabled('enriched_category') && (
+                          <StyledBadge level="secondary">{translate('pim_menu.tag.new')}</StyledBadge>
+                        )}
+                      </>
+                    }
                     onClick={() => redirectToRoute('pim_enrich_categorytree_index')}
                     content={
                       countEntities.hasOwnProperty('count_category_trees') &&
@@ -306,6 +320,17 @@ const SettingsIndex = () => {
                     )}
                   />
                 )}
+              </IconCardGrid>
+            </SectionContent>
+          </>
+        )}
+        {canAccessAutomationSettings && (
+          <>
+            <SectionTitle>
+              <SectionTitle.Title>{translate('pim_settings.automation_settings')}</SectionTitle.Title>
+            </SectionTitle>
+            <SectionContent>
+              <IconCardGrid>
                 {canAccessRules && featureFlags.isEnabled('product_rules') && (
                   <IconCard
                     id="pim-enrich-rule"
@@ -317,6 +342,25 @@ const SettingsIndex = () => {
                       'pim_settings.count.rules',
                       countEntities,
                       'count_rules'
+                    )}
+                  />
+                )}
+                {canAccessIdentifierGenerator && featureFlags.isEnabled('identifier_generator') && (
+                  <IconCard
+                    id="pim-enrich-identifier-generator"
+                    icon={<IdIcon />}
+                    label={
+                      <>
+                        {translate('pim_title.akeneo_identifier_generator_index')}
+                        <StyledBadge level="secondary">{translate('pim_menu.tag.new')}</StyledBadge>
+                      </>
+                    }
+                    onClick={() => redirectToRoute('akeneo_identifier_generator_index')}
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.identifier_generators',
+                      countEntities,
+                      'count_identifier_generators'
                     )}
                   />
                 )}
@@ -364,6 +408,10 @@ const LockIconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const StyledBadge = styled(Badge)`
+  margin-left: 10px;
 `;
 
 export {SettingsIndex};

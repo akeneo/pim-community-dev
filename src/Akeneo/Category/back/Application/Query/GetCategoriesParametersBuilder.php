@@ -13,5 +13,11 @@ interface GetCategoriesParametersBuilder
     /**
      * @param array<string, mixed> $searchFilters
      */
-    public function build(array $searchFilters, int $limit, int $offset, bool $isEnrichedAttributes): ExternalApiSqlParameters;
+    public function build(
+        array $searchFilters,
+        int $limit,
+        int $offset,
+        bool $withPosition,
+        bool $isEnrichedAttributes,
+    ): ExternalApiSqlParameters;
 }

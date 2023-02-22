@@ -95,19 +95,13 @@ jobs:
                   command: |
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       git ls-remote --exit-code --heads git@github.com:akeneo/pim-onboarder.git ${CIRCLE_BRANCH} && \
-                      sed -i "s#akeneo/pim-onboarder\": \"^7.0.0#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json || \
+                      sed -i "s#akeneo/pim-onboarder\": \"^8.0.0#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json || \
                       echo "No pim-onboarder branch $CIRCLE_BRANCH found. I don't touch the dependencies."
             - run:
                   name: Require proper dev CE branch
                   command: |
                       sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json
                       sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" grth/composer.json
-            - run:
-                  name: Require proper dev onboarder bundle branch
-                  command: |
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                      ONBOARDER_BRANCH=$(if [[ -z $(git ls-remote --exit-code --heads git@github.com:akeneo/pim-onboarder.git ${CIRCLE_BRANCH}) ]]; then echo "master"; else echo ${CIRCLE_BRANCH}; fi)
-                      sed -i "s#akeneo/pim-onboarder\": \"^5.0.9#akeneo/pim-onboarder\": \"dev-${ONBOARDER_BRANCH}#" composer.json
             - run:
                   name: Checkout CE
                   command: git clone --depth 1 https://github.com/akeneo/pim-community-dev vendor/akeneo/pim-community-dev -b ${CIRCLE_BRANCH}
@@ -187,8 +181,8 @@ jobs:
                       - run:
                             name: Save the CE image as a tar
                             command: |
-                                docker pull akeneo/pim-php-dev:master
-                                docker save -o php-pim-image.tar akeneo/pim-php-dev:master
+                                docker pull akeneo/pim-php-dev:8.1
+                                docker save -o php-pim-image.tar akeneo/pim-php-dev:8.1
             - run:
                   name: Setup tests results folder and log folder
                   command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer

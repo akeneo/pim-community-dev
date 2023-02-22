@@ -24,18 +24,19 @@ final class SqlGetAssociationTypes implements GetAssociationTypesInterface
     public function forCodes(array $associationTypeCodes): array
     {
         $query = <<<SQL
+WITH association_type_labels AS (
+    SELECT foreign_key as association_type_id, JSON_OBJECTAGG(locale, label) as labels
+    FROM pim_catalog_association_type_translation
+    GROUP BY foreign_key
+)
 SELECT
     association_type.code,
-    is_quantified, 
-    is_two_way,
-    CONCAT('{', GROUP_CONCAT(CONCAT('"', translation.locale, '":"',translation.label,'"')), '}') labels
-FROM
-    pim_catalog_association_type association_type
-LEFT JOIN pim_catalog_association_type_translation translation
-          ON association_type.id = translation.foreign_key
+    association_type.is_quantified, 
+    association_type.is_two_way,
+    labels
+FROM pim_catalog_association_type association_type
+LEFT JOIN association_type_labels ON association_type_id = association_type.id
 WHERE association_type.code IN (:association_type_code)
-GROUP BY
-    association_type.code;
 SQL;
 
         $rows = $this->connection->executeQuery(

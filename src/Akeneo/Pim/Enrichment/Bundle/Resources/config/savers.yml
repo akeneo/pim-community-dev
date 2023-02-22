@@ -19,6 +19,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '@pim_catalog.synchronizer.product_unique_data'
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlUpdateIdentifierPrefixesQuery'
 
     pim_catalog.saver.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelSaver'

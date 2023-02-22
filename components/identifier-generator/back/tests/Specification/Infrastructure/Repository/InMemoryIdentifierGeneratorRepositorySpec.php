@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use PhpSpec\ObjectBehavior;
 
@@ -37,6 +38,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
 
         $this->save($identifierGenerator);
@@ -53,6 +55,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
 
         $this->save($identifierGenerator2);
@@ -72,6 +75,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
 
         $this->save($identifierGenerator);
@@ -88,6 +92,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
             LabelCollection::fromNormalized(['fr' => 'Générateur update']),
             Target::fromString('sku'),
             Delimiter::fromString('='),
+            TextTransformation::fromString('no'),
         );
 
         $this->update($identifierGenerator2);
@@ -106,6 +111,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
         $this->save($identifierGenerator);
 
@@ -129,6 +135,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
         $this->save($identifierGenerator);
 
@@ -145,6 +152,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
         $this->save($identifierGenerator);
 
@@ -168,6 +176,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
             Target::fromString('sku'),
             Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
         );
         $this->save($identifierGenerator);
 

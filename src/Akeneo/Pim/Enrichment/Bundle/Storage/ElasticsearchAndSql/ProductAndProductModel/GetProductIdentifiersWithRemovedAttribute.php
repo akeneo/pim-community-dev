@@ -29,11 +29,6 @@ final class GetProductIdentifiersWithRemovedAttribute implements GetProductIdent
                 'attributes_for_this_level' => $attributesCodes,
             ],
         ]);
-        foreach ($attributesCodes as $attributeCode) {
-            $this->searchQueryBuilder->addShould([
-                'exists' => ['field' => sprintf('values.%s-*', $attributeCode)],
-            ]);
-        }
 
         $this->searchQueryBuilder->addSort([
             'identifier' => 'asc',

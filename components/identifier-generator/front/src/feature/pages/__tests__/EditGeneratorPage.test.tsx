@@ -3,7 +3,8 @@ import {mockResponse, render, screen, waitFor} from '../../tests/test-utils';
 import {EditGeneratorPage} from '../';
 import userEvent from '@testing-library/user-event';
 import {NotificationLevel} from '@akeneo-pim-community/shared';
-import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import initialGenerator from '../../tests/fixtures/initialGenerator';
+import {act, fireEvent} from '@testing-library/react';
 
 const mockNotify = jest.fn();
 
@@ -17,6 +18,11 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   },
   useNotify: () => {
     return mockNotify;
+  },
+  useSecurity: () => {
+    return {
+      isGranted: (acl: string) => true,
+    };
   },
 }));
 
@@ -94,5 +100,18 @@ describe('EditGeneratorPage', () => {
 
     expect(mockNotify).toHaveBeenCalled();
     expect(mockNotify).toHaveBeenCalledWith(NotificationLevel.ERROR, 'pim_identifier_generator.flash.create.error');
+  });
+
+  it('should check generator validation on save', () => {
+    render(<EditGeneratorPage initialGenerator={{...initialGenerator, structure: []}} />);
+    expect(screen.getByText('pim_common.save')).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(screen.getByText('pim_common.save'));
+    });
+
+    expect(mockNotify).not.toHaveBeenCalled();
+    // we should see a red pill to know there is an error
+    expect(screen.getByRole('alert')).toBeInTheDocument();
   });
 });

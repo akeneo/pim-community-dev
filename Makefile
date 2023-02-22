@@ -60,7 +60,7 @@ javascript-dev: javascript-extensions
 .PHONY: javascript-dev-strict
 javascript-dev-strict: javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
-	$(YARN_RUN) run webpack-dev --strict
+	$(YARN_RUN) run webpack-dev-strict
 
 .PHONY: javascript-test
 javascript-test: javascript-extensions

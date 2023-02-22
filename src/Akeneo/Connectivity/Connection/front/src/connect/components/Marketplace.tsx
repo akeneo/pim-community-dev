@@ -7,14 +7,13 @@ import {useTranslate} from '../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../shared/scroll/hooks/useDisplayScrollTopButton';
 import findScrollParent from '../../shared/scroll/utils/findScrollParent';
-import {App, Apps, TestApps} from '../../model/app';
+import {App, Apps, CustomApps} from '../../model/app';
 import {Section} from './Section';
 import {ActivateAppButton} from './ActivateAppButton';
 import {useFeatureFlags} from '../../shared/feature-flags';
 import {useConnectionsLimitReached} from '../../shared/hooks/use-connections-limit-reached';
-import {TestAppList} from './TestApp/TestAppList';
+import {CustomAppList} from './CustomApps/CustomAppList';
 import {useSecurity} from '../../shared/security';
-import {useAppDeveloperMode} from '../hooks/use-app-developer-mode';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -40,16 +39,15 @@ const SearchBar = styled(Search)`
 type Props = {
     extensions: Extensions;
     apps: Apps;
-    testApps: TestApps;
+    customApps: CustomApps;
 };
 
-export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
+export const Marketplace: FC<Props> = ({extensions, apps, customApps}) => {
     const translate = useTranslate();
     const featureFlag = useFeatureFlags();
     const ref = useRef(null);
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
-    const isDeveloperModeEnabled = useAppDeveloperMode();
     const security = useSecurity();
     const isManageAppsAuthorized = security.isGranted('akeneo_connectivity_connection_manage_apps');
     const isLimitReached = useConnectionsLimitReached();
@@ -89,14 +87,23 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                     ),
                 };
             }, {}),
-        [apps]
+        [apps, isLimitReached, isManageAppsAuthorized]
     );
 
     const appsList = apps.apps
         .filter(app => '' === search || app.name.toLowerCase().includes(search.toLowerCase()))
         .map((app: App) => appsComponents[app.id]);
 
-    const searchCount = extensionsList.length + appsList.length;
+    const filteredCustomApps = customApps.apps.filter(
+        app => '' === search || app.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const customAppsList = {
+        total: filteredCustomApps.length,
+        apps: filteredCustomApps,
+    };
+
+    const searchCount = extensionsList.length + appsList.length + filteredCustomApps.length;
 
     const handleScrollTop = () => {
         scrollContainer.scrollTo(0, 0);
@@ -105,7 +112,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
     return (
         <>
             <div ref={ref} />
-            <MarketplaceHelper count={extensions.total + apps.total + testApps.total} />
+            <MarketplaceHelper count={extensions.total + apps.total + customApps.total} />
 
             <SearchBar
                 onSearchChange={setSearch}
@@ -124,7 +131,9 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                 </span>
             </SearchBar>
 
-            {isDeveloperModeEnabled && <TestAppList testApps={testApps} />}
+            {customApps.total > 0 && (
+                <CustomAppList customApps={customAppsList} isConnectLimitReached={isLimitReached} />
+            )}
 
             {featureFlag.isEnabled('marketplace_activate') && (
                 <Section

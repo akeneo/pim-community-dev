@@ -130,3 +130,8 @@ akeneo_connectivity_connection_connect_connected_apps_catalogs_edit:
     requirements:
         connectionCode: '[a-zA-Z0-9_-]+'
         catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+
+akeneo_connectivity_connection_connect_connected_apps_regenerate_secret:
+    path: '/connect/connected-apps/{connectionCode}/regenerate-secret'
+    requirements:
+        connectionCode: '[a-zA-Z0-9_-]+'

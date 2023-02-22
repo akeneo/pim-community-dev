@@ -14,7 +14,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 final class TextValue extends AbstractValue
 {
     private function __construct(
-        private readonly string $value,
+        private readonly ?string $value,
         AttributeUuid $uuid,
         AttributeCode $code,
         ?ChannelValue $channel,
@@ -28,7 +28,7 @@ final class TextValue extends AbstractValue
         );
     }
 
-    public static function fromApplier(string $value, string $uuid, string $code, ?string $channel, ?string $locale): self
+    public static function fromApplier(?string $value, string $uuid, string $code, ?string $channel, ?string $locale): self
     {
         return new self(
             value: $value,
@@ -41,7 +41,7 @@ final class TextValue extends AbstractValue
 
     /**
      * @param array{
-     *     data: string,
+     *     data: ?string,
      *     type: string,
      *     channel: string|null,
      *     locale: string|null,
@@ -64,14 +64,14 @@ final class TextValue extends AbstractValue
         );
     }
 
-    public function getValue(): string
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
     /**
      * @return array<string, array{
-     *     data: string,
+     *     data: ?string,
      *     type: string,
      *     channel: string|null,
      *     locale: string|null,

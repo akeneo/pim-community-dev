@@ -18,5 +18,5 @@ interface ValueUserIntent extends UserIntent
 
     public function localeCode(): ?string;
 
-    public function value(): string;
+    public function value(): ?string;
 }

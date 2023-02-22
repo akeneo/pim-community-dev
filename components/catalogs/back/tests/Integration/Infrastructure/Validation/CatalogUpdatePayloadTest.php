@@ -88,7 +88,7 @@ class CatalogUpdatePayloadTest extends IntegrationTestCase
     {
         $violations = $this->validator->validate([
             'enabled' => true,
-            'product_selection_criteria' => \array_map(fn () => [
+            'product_selection_criteria' => \array_map(fn (): array => [
                 'field' => 'enabled',
                 'operator' => '=',
                 'value' => true,

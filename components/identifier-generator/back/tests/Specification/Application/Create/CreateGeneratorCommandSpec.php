@@ -25,6 +25,7 @@ class CreateGeneratorCommandSpec extends ObjectBehavior
             'string' => 'AKN',
         ]],
         'delimiter' => null,
+        'text_transformation' => 'no',
     ];
 
     public function it_should_create_a_command(): void

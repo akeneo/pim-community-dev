@@ -33,7 +33,7 @@ class DeleteExpiredRefreshTokenQuery
         $statement->bindValue('row_count', $batchSize, ParameterType::INTEGER);
         $statement->bindValue('now_timestamp', $nowTimestamp, ParameterType::INTEGER);
 
-        for($i = 0; $i < self::NUMBER_OF_LOOP; $i++) {
+        for ($i = 0; $i < self::NUMBER_OF_LOOP; $i++) {
             $affectedRows = $statement->executeStatement();
             if ($affectedRows < $batchSize) {
                 break;

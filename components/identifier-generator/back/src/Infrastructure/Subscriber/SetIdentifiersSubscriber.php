@@ -14,6 +14,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetIdentifierEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -69,19 +70,15 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         }
 
         foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
-            $identifier = null;
-            $identifierValue = $product->getValue($identifierGenerator->target()->asString());
-            if (null !== $identifierValue) {
-                Assert::isInstanceOf($identifierValue, ScalarValue::class);
-                $identifier = $identifierValue->getData();
-                Assert::string($identifier);
-            }
-            $productProjection = new ProductProjection($identifier, $product->isEnabled());
+            $productProjection = new ProductProjection(
+                $product->isEnabled(),
+                $product->getFamily()?->getCode(),
+                $this->flatValues($product),
+            );
             if ($identifierGenerator->match($productProjection)) {
                 try {
-                    $this->setGeneratedIdentifier($identifierGenerator, $product);
+                    $this->setGeneratedIdentifier($identifierGenerator, $productProjection, $product);
                 } catch (UnableToSetIdentifierException $e) {
-                    // TODO CPM-808: A warning should be displayed as flash message when saving from PEF
                     $this->eventDispatcher->dispatch(new UnableToSetIdentifierEvent($e));
                 }
             }
@@ -90,9 +87,10 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
     private function setGeneratedIdentifier(
         IdentifierGenerator $identifierGenerator,
+        ProductProjection $productProjection,
         ProductInterface $product
     ): void {
-        $command = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator);
+        $command = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator, $productProjection);
         $newIdentifier = ($this->generateIdentifierCommandHandler)($command);
 
         $value = ScalarValue::value($identifierGenerator->target()->asString(), $newIdentifier);
@@ -196,6 +194,17 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
                 ),
                 \iterator_to_array($constraintViolationList)
             )
+        );
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function flatValues(ProductInterface $product): array
+    {
+        return \array_map(
+            static fn (ValueInterface $value) => $value->getData(),
+            $product->getValues()->toArray()
         );
     }
 }
