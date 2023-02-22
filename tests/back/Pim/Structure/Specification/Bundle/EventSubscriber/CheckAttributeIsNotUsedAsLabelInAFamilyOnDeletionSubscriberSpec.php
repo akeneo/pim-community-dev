@@ -10,7 +10,7 @@ use Doctrine\DBAL\Statement;
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 
-class CheckAttributeIsNotUsedAsLabelInAFamilyOnDeletionSubscriberSpec extends ObjectBehavior
+class CheckAttributeOnDeletionSubscriberSpec extends ObjectBehavior
 {
     public function let(
         Connection $dbConnection

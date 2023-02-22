@@ -10,7 +10,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Webmozart\Assert\Assert;
 
-class CheckAttributeIsNotUsedAsLabelInAFamilyOnDeletionSubscriberIntegration extends TestCase
+class CheckAttributeOnDeletionSubscriberSpec extends TestCase
 {
 
     public function test_it_throws_an_exception_when_the_attribute_is_used_as_label_by_a_family()

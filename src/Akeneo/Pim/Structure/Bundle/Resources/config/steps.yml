@@ -438,6 +438,8 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.remover.attribute'
             - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
+            - '@pim_catalog.repository.channel'
 
     pim_connector.step.delete_attributes:
         class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'

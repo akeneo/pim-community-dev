@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Attribute\Job;
 
-use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\AttributeIsAFamilyVariantAxisInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -24,6 +28,8 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
         private readonly AttributeRepositoryInterface $attributeRepository,
         private readonly BulkRemoverInterface $remover,
         private readonly EntityManagerClearerInterface $cacheClearer,
+        private readonly AttributeIsAFamilyVariantAxisInterface $attributeIsAFamilyVariantAxis,
+        private readonly ChannelRepositoryInterface $channelRepository,
         private readonly int $batchSize = 100,
     ) {
     }
@@ -52,20 +58,96 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
     }
 
     /**
-     * @param Attribute[] $attributes
+     * @param AttributeInterface[] $attributes
      */
     private function delete(array $attributes): void
     {
+        $initialAttributeCount = count($attributes);
+
+        foreach ($attributes as $key => $attribute) {
+            if ($this->isAttributeIdentifier($attribute)
+                || $this->isAttributeAFamilyVariantAxis($attribute)
+                || $this->isAttributeUsedAsLabelInAFamily($attribute)
+                || $this->isAttributeUsedAsChannelConversionUnit($attribute)
+            ) {
+                unset($attributes[$key]);
+            }
+        }
+
         $this->remover->removeAll($attributes);
 
         $this->stepExecution->incrementSummaryInfo('deleted_attributes', count($attributes));
-        $this->stepExecution->incrementProcessedItems(count($attributes));
+        $this->stepExecution->incrementProcessedItems($initialAttributeCount);
 
         $this->cacheClearer->clear();
     }
 
+    private function isAttributeIdentifier(AttributeInterface $attribute): bool
+    {
+        $isIdentifierType = AttributeTypes::IDENTIFIER === $attribute->getType();
+
+        if ($isIdentifierType) {
+            $this->stepExecution->addWarning(
+                'flash.attribute.identifier_not_removable',
+                [],
+                new DataInvalidItem($attribute),
+            );
+            $this->stepExecution->incrementSummaryInfo('skipped_attributes', 1);
+        }
+
+        return $isIdentifierType;
+    }
+
+    private function isAttributeAFamilyVariantAxis(AttributeInterface $attribute): bool
+    {
+        $isAFamilyVariantAxis = $this->attributeIsAFamilyVariantAxis->execute($attribute->getCode());
+
+        if ($isAFamilyVariantAxis) {
+            $this->stepExecution->addWarning(
+                'pim_enrich.family.info.cant_remove_attribute_used_as_axis',
+                [],
+                new DataInvalidItem($attribute),
+            );
+            $this->stepExecution->incrementSummaryInfo('skipped_attributes', 1);
+        }
+
+        return $isAFamilyVariantAxis;
+    }
+
+    private function isAttributeUsedAsLabelInAFamily(AttributeInterface $attribute): bool
+    {
+        // TODO
+        return false;
+    }
+
+    private function isAttributeUsedAsChannelConversionUnit(AttributeInterface $attribute): bool
+    {
+        $channelCodes = [];
+
+        foreach ($this->channelRepository->findAll() as $channel) {
+            $attributeCodes = array_keys($channel->getConversionUnits());
+
+            if (in_array($attribute->getCode(), $attributeCodes)) {
+                $channelCodes[] = $channel->getCode();
+            }
+        }
+
+        $isChannelConversionUnit = (bool) count($channelCodes);
+
+        if ($isChannelConversionUnit) {
+            $this->stepExecution->addWarning(
+                'flash.attribute.used_as_conversion_unit',
+                ['%channelCodes%' => join(', ', $channelCodes)],
+                new DataInvalidItem($attribute),
+            );
+            $this->stepExecution->incrementSummaryInfo('skipped_attributes', 1);
+        }
+
+        return $isChannelConversionUnit;
+    }
+
     /**
-     * @return Attribute[]
+     * @return AttributeInterface[]
      */
     private function getAttributesToDelete(): array
     {
