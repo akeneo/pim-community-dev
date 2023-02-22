@@ -2,7 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Platform\Messaging\Domain\Config;
+namespace Akeneo\Pim\Platform\Messaging\Infrastructure\Config;
+
+use Akeneo\Pim\Platform\Messaging\Domain\Config\TransportType;
+use Symfony\Component\Yaml\Yaml;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -10,17 +14,22 @@ namespace Akeneo\Pim\Platform\Messaging\Domain\Config;
  */
 final class MessengerConfigBuilder
 {
+    private const CONFIG_FILE = __DIR__ . '/../../../../../../config/messaging.yml';
+
     public function __construct(private readonly string $env)
     {
     }
 
-    public function build(array $messagingConfigs, TransportType $transportType): array
+    public function build(TransportType $transportType): array
     {
+        Assert::fileExists(self::CONFIG_FILE);
+        $config = Yaml::parse(file_get_contents(self::CONFIG_FILE));
+
         $transports = [];
         $routing = [];
 
         $allTransportNames = [];
-        foreach ($messagingConfigs['queues'] as $queueName => $pimMessageConfig) {
+        foreach ($config['queues'] as $queueName => $pimMessageConfig) {
             $transportNames = [];
 
             if ($transportType === TransportType::PUB_SUB) {
