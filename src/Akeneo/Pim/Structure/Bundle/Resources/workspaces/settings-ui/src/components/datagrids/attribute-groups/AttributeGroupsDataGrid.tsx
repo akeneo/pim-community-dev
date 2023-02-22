@@ -1,21 +1,42 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {Search, useAutoFocus, Table, Badge} from 'akeneo-design-system';
-import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
-import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
 import {AttributeGroup} from '../../../models';
 import {NoResults} from '../../shared';
+import {Search, useAutoFocus, Table, Badge} from 'akeneo-design-system';
 import {getLabel} from 'pimui/js/i18n';
+import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
+import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
+import styled from 'styled-components';
 
 type Props = {
-  groups: AttributeGroup[];
+  attributeGroups: AttributeGroup[];
   onGroupCountChange: (newGroupCount: number) => void;
+  isItemSelected: (attributeGroup: AttributeGroup) => boolean;
+  selectionState: boolean | 'mixed';
+  onSelectionChange: (attributeGroup: AttributeGroup, selected: boolean) => void;
+  selectedCount: number;
+  onSelectAllChange: (mode: boolean) => void;
 };
 
-const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TableWrapper = styled.div`
+  margin-left: -40px;
+`;
+
+const AttributeGroupsDataGrid: FC<Props> = ({
+  attributeGroups,
+  onGroupCountChange,
+  isItemSelected,
+  selectionState,
+  onSelectionChange,
+}) => {
   const {refreshOrder} = useAttributeGroupsIndexState();
   const {sortGranted} = useAttributeGroupPermissions();
   const userContext = useUserContext();
-  const {filteredGroups, search} = useFilteredAttributeGroups(groups);
+  const {filteredGroups, search} = useFilteredAttributeGroups(attributeGroups);
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -30,16 +51,12 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
     debouncedSearch(searchValue);
   };
 
-  const onReorder = async (order: number[]) => {
-    await refreshOrder(order.map(index => groups[index]));
-  };
-
   useEffect(() => {
     onGroupCountChange(filteredGroups.length);
-  }, [filteredGroups.length]);
+  }, [filteredGroups.length, onGroupCountChange]);
 
   return (
-    <>
+    <Wrapper>
       <Search
         sticky={0}
         placeholder={translate('pim_common.search')}
@@ -57,36 +74,50 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
           subtitle={translate('pim_datagrid.no_results_subtitle')}
         />
       ) : (
-        <Table isDragAndDroppable={sortGranted} isSelectable={false} onReorder={order => onReorder(order)}>
-          <Table.Header>
-            <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
-            {featureFlags.isEnabled('data_quality_insights') && (
-              <Table.HeaderCell>
-                {translate('akeneo_data_quality_insights.attribute_group.dqi_status')}
-              </Table.HeaderCell>
-            )}
-          </Table.Header>
-          <Table.Body>
-            {filteredGroups.map(group => (
-              <Table.Row key={group.code} isSelected={false} onSelectToggle={() => {}}>
-                <Table.Cell>{getLabel(group.labels, userContext.get('catalogLocale'), group.code)}</Table.Cell>
+        <>
+          <TableWrapper>
+            <Table
+              isDragAndDroppable={sortGranted && 'mixed' !== selectionState && !selectionState}
+              isSelectable={true}
+              onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
+            >
+              <Table.Header>
+                <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
                 {featureFlags.isEnabled('data_quality_insights') && (
-                  <Table.Cell>
-                    <Badge level={group.is_dqi_activated ? 'primary' : 'danger'}>
-                      {translate(
-                        `akeneo_data_quality_insights.attribute_group.${
-                          group.is_dqi_activated ? 'activated' : 'disabled'
-                        }`
-                      )}
-                    </Badge>
-                  </Table.Cell>
+                  <Table.HeaderCell>
+                    {translate('akeneo_data_quality_insights.attribute_group.dqi_status')}
+                  </Table.HeaderCell>
                 )}
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+              </Table.Header>
+              <Table.Body>
+                {filteredGroups.map(attributeGroup => (
+                  <Table.Row
+                    key={attributeGroup.code}
+                    isSelected={isItemSelected(attributeGroup)}
+                    onSelectToggle={(selected: boolean) => onSelectionChange(attributeGroup, selected)}
+                  >
+                    <Table.Cell>
+                      {getLabel(attributeGroup.labels, userContext.get('catalogLocale'), attributeGroup.code)}
+                    </Table.Cell>
+                    {featureFlags.isEnabled('data_quality_insights') && (
+                      <Table.Cell>
+                        <Badge level={attributeGroup.is_dqi_activated ? 'primary' : 'danger'}>
+                          {translate(
+                            `akeneo_data_quality_insights.attribute_group.${
+                              attributeGroup.is_dqi_activated ? 'activated' : 'disabled'
+                            }`
+                          )}
+                        </Badge>
+                      </Table.Cell>
+                    )}
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </TableWrapper>
+        </>
       )}
-    </>
+    </Wrapper>
   );
 };
 

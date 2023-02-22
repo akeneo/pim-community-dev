@@ -18,8 +18,8 @@ const useAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
 const ATTRIBUTE_GROUP_INDEX_ROUTE = 'pim_structure_attributegroup_rest_index';
 
 const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
-  const [groups, setAttributeGroups] = useState<AttributeGroup[]>([]);
-  const [isPending, setIsPending] = useState(true);
+  const [attributeGroups, setAttributeGroups] = useState<AttributeGroup[]>([]);
+  const [isPending, setIsPending] = useState<boolean>(true);
   const router = useRouter();
 
   const redirect = useRedirectToAttributeGroup();
@@ -36,11 +36,11 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
 
     const route = router.generate(ATTRIBUTE_GROUP_INDEX_ROUTE);
     const response = await fetch(route);
-    const groups = await response.json();
+    const attributeGroups = await response.json();
 
-    setAttributeGroups(groups);
+    setAttributeGroups(attributeGroups);
     setIsPending(false);
-  }, [router]);
+  }, [refresh, router]);
 
   const saveOrder = useCallback(async (reorderedGroups: AttributeGroup[]) => {
     const order: {[code: string]: number} = {};
@@ -62,23 +62,17 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
       });
       setAttributeGroups(reorderedGroups);
       await saveOrder(reorderedGroups);
-      await saveOrder(reorderedGroups);
     },
-    [refresh, saveOrder]
+    [saveOrder]
   );
 
-  const compare = (source: AttributeGroup, target: AttributeGroup) => {
-    return source.code.localeCompare(target.code);
-  };
-
   return {
-    groups,
+    attributeGroups,
     load,
     saveOrder,
     redirect,
     refresh,
     refreshOrder,
-    compare,
     isPending,
   };
 };
