@@ -7,6 +7,7 @@ use Akeneo\UserManagement\Bundle\Security\SystemUserToken;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\DBALException;
 use Doctrine\Persistence\ObjectRepository;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -20,34 +21,22 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class CreateUserSystemListener
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private array $commandsThatNeedUserSystem = [];
 
-    /** @var ObjectRepository */
-    private $groupRepository;
-
-    /** @var ObjectRepository */
-    private $roleRepository;
-
-    /** @var SimpleFactoryInterface */
-    private $userFactory;
-
-    /**
-     * @param TokenStorageInterface  $tokenStorage
-     * @param ObjectRepository       $groupRepository
-     * @param ObjectRepository       $roleRepository
-     * @param SimpleFactoryInterface $userFactory
-     */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        ObjectRepository $groupRepository,
-        ObjectRepository $roleRepository,
-        SimpleFactoryInterface $userFactory
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly ObjectRepository $groupRepository,
+        private readonly ObjectRepository $roleRepository,
+        private readonly SimpleFactoryInterface $userFactory
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->groupRepository = $groupRepository;
-        $this->roleRepository = $roleRepository;
-        $this->userFactory = $userFactory;
+    }
+
+    public function registerCommand(Command $command): void
+    {
+        $commandName = $command::getDefaultName();
+        if (null !== $commandName) {
+            $this->commandsThatNeedUserSystem[] = $command::getDefaultName();
+        }
     }
 
     /**
@@ -55,7 +44,7 @@ class CreateUserSystemListener
      */
     public function createUserSystem(ConsoleCommandEvent $event): void
     {
-        if (0 === preg_match('#^pim|akeneo#', $event->getCommand()->getName())) {
+        if (!\in_array($event->getCommand()->getName(), $this->commandsThatNeedUserSystem)) {
             return;
         }
 
