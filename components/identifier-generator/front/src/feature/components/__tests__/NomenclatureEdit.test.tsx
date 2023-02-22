@@ -153,10 +153,10 @@ describe('NomenclatureEdit', () => {
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
-    // Update 1 valid valid to too long value
+    // Update 1 valid valid to too short value
     // ['FA1', 'FAM2', 'fam' (placeholder)], = 3 chars, display all
-    updateValue('FA2', 'FAM2');
-    expect(screen.getByTitle('FAM2')).toBeInvalid();
+    updateValue('FA2', 'F');
+    expect(screen.getByTitle('F')).toBeInvalid();
 
     // Filter with errors
     // ['FA1', 'FAM2', 'fam' (placeholder)], = 3 chars, display errors
@@ -171,8 +171,8 @@ describe('NomenclatureEdit', () => {
     fireEvent.change(screen.getByTitle('3'), {target: {value: '4'}});
 
     // Only errored values is displayed
-    // Valid ones: ['FAM2', 'fami']
-    await familiesShouldBeInTheDocument(['family1']);
+    // Valid ones: ['fami']
+    await familiesShouldBeInTheDocument(['family1', 'family2']);
 
     // Update operator
     // ['FA1', 'FAM2', 'fami' (placeholder)], <= 4 chars, display errors
@@ -189,8 +189,8 @@ describe('NomenclatureEdit', () => {
     await updateFilter('error', 'error');
 
     // Only errored values is displayed
-    // Valid ones: ['FAM2']
-    await familiesShouldBeInTheDocument(['family1', 'family3']);
+    // Valid ones: []
+    await familiesShouldBeInTheDocument(['family1', 'family2', 'family3']);
   });
 
   it('should navigate with filters', async () => {
@@ -257,15 +257,13 @@ describe('NomenclatureEdit', () => {
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
-    updateValue('FA2', 'INVALIDVALUE');
+    updateValue('FA2', 'A');
     await updateFilter('all', 'error');
     await familiesShouldBeInTheDocument(['family2']);
 
     await act(async () => {
       fireEvent.click(await screen.findByText('pim_common.save'));
     });
-
-    expect(screen.queryByText('pim_identifier_generator.nomenclature.section_title')).not.toBeInTheDocument();
 
     expect(mockNotify).toHaveBeenCalled();
     expect(mockNotify).toHaveBeenCalledWith(

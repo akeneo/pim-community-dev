@@ -109,11 +109,11 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
             notify(NotificationLevel.ERROR, translate('pim_identifier_generator.nomenclature.flash.error'));
           },
           onSuccess: () => {
-            close();
             setViolations([]);
             if (hasValueInvalid) {
               notify(NotificationLevel.WARNING, translate('pim_identifier_generator.nomenclature.flash.warning'));
             } else {
+              close();
               notify(NotificationLevel.SUCCESS, translate('pim_identifier_generator.nomenclature.flash.success'));
             }
           },
@@ -124,7 +124,9 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
 
   return (
     <>
-      <Button onClick={open}>{translate('pim_identifier_generator.nomenclature.edit')}</Button>
+      <Button ghost level="secondary" onClick={open}>
+        {translate('pim_identifier_generator.nomenclature.edit')}
+      </Button>
       {isOpen && (
         <Modal closeTitle={translate('pim_common.close')} onClose={close}>
           <Modal.TopRightButtons>
