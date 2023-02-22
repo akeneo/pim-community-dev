@@ -56,7 +56,7 @@ const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
           <Link href={surveyLink} target="_blank">
             {translate('akeneo.category.discover_enriched_categories_information.survey_link_label')}
           </Link>
-          <Link href="https://help.akeneo.com/pim/serenity/index.html" target="_blank">
+          <Link href="https://help.akeneo.com/pim/serenity/articles/enrich-your-category.html" target="_blank">
             {translate('akeneo.category.discover_enriched_categories_information.learn_more_link_label')}
           </Link>
         </Footer>

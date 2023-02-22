@@ -19,7 +19,7 @@ class GetMeasurementsFamilyUnitsActionTest extends TestCase
     {
         $getMeasurementsFamilyQuery = $this->createMock(GetMeasurementsFamilyQueryInterface::class);
         $this->getMeasurementsFamilyMeasurementsAction = new GetMeasurementsFamilyUnitsAction(
-            $getMeasurementsFamilyQuery
+            $getMeasurementsFamilyQuery,
         );
     }
 
@@ -28,7 +28,7 @@ class GetMeasurementsFamilyUnitsActionTest extends TestCase
         $this->assertInstanceOf(
             RedirectResponse::class,
             ($this->getMeasurementsFamilyMeasurementsAction)(new Request(),
-            'code')
+            'code'),
         );
     }
 

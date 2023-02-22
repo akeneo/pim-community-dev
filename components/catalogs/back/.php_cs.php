@@ -26,6 +26,10 @@ $rules['binary_operator_spaces'] = [
     'default' => 'single_space',
 ];
 
+$rules['trailing_comma_in_multiline'] = [
+    'elements' => ['arguments', 'arrays', 'match', 'parameters'],
+];
+
 $config
     ->setRiskyAllowed(true)
     ->setRules($rules)

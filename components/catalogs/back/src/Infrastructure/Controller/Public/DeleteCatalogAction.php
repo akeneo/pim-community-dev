@@ -57,7 +57,7 @@ final class DeleteCatalogAction
     private function notFound(string $id): NotFoundHttpException
     {
         return new NotFoundHttpException(
-            \sprintf('Catalog "%s" does not exist or you can\'t access it.', $id)
+            \sprintf('Catalog "%s" does not exist or you can\'t access it.', $id),
         );
     }
 }

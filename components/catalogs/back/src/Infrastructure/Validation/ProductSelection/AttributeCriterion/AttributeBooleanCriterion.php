@@ -42,7 +42,7 @@ final class AttributeBooleanCriterion extends Compound
                                 Operator::EQUALS,
                                 Operator::NOT_EQUAL,
                                 Operator::IS_EMPTY,
-                                Operator::IS_NOT_EMPTY
+                                Operator::IS_NOT_EMPTY,
                             ]),
                         ],
                         'value' => [

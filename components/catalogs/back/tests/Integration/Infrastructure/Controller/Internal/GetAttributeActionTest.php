@@ -19,7 +19,7 @@ class GetAttributeActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItGetAnAttribute(): void
+    public function testItGetsAnAttribute(): void
     {
         $client = $this->getAuthenticatedInternalApiClient('admin');
         $this->createAttribute([

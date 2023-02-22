@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type MappedProduct array<string, string>
+ * @phpstan-type MappedProduct array<string, mixed>
  *
  * @implements QueryInterface<array<array-key,MappedProduct>>
  */
