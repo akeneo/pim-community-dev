@@ -11,6 +11,7 @@ use Webmozart\Assert\Assert;
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-type ProcessOperator '='|'<='
+ * @phpstan-type ProcessType 'no'|'truncate'|'nomenclature'
  * @phpstan-type ProcessNormalized array{type: 'no'}|array{type: 'truncate', operator: string, value: int}|array{type: 'nomenclature'}
  */
 final class Process
@@ -22,6 +23,10 @@ final class Process
     public const PROCESS_OPERATOR_EQ = '=';
     public const PROCESS_OPERATOR_LTE = '<=';
 
+    /**
+     * @param ProcessType $type
+     * @param ProcessOperator|null $operator
+     */
     private function __construct(
         private string $type,
         private ?string $operator,
@@ -29,11 +34,17 @@ final class Process
     ) {
     }
 
+    /**
+     * @return ProcessType
+     */
     public function type(): string
     {
         return $this->type;
     }
 
+    /**
+     * @return ProcessOperator|null
+     */
     public function operator(): ?string
     {
         return $this->operator;
@@ -67,8 +78,6 @@ final class Process
                 return [
                     'type' => self::PROCESS_TYPE_NO,
                 ];
-            default:
-                throw new \InvalidArgumentException('Not implemented');
         }
     }
 

@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Propert
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToGenerateIdentifierFromFamilyNomenclature;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedFamilyNomenclatureException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
@@ -54,11 +55,7 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
                 $familyCode = $productProjection->familyCode();
                 $nomenclatureFamily = $this->nomenclatureRepository->get('family');
                 if (null === $nomenclatureFamily) {
-                    throw new UnableToGenerateIdentifierFromFamilyNomenclature(
-                        sprintf('%s%s', $prefix, $familyCode),
-                        $identifierGenerator->target()->asString(),
-                        $familyCode
-                    );
+                    throw new UndefinedFamilyNomenclatureException();
                 }
                 $values = $nomenclatureFamily->values();
 
@@ -94,8 +91,6 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
                 return $value;
             case Process::PROCESS_TYPE_NO:
                 return $productProjection->familyCode();
-            default:
-                throw new \InvalidArgumentException('Not implemented');
         }
     }
 

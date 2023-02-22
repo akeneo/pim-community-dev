@@ -101,4 +101,14 @@ class FamilyPropertyShouldBeValidValidatorSpec extends ObjectBehavior
 
         $this->validate($structure, new FamilyPropertyShouldBeValid());
     }
+
+    public function it_should_validate_a_property_with_nomenclature_process(ExecutionContext $context, ValidatorInterface $validator): void
+    {
+        $process = ['type' => 'nomenclature'];
+        $structure = ['type' => 'family', 'process' => $process];
+        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
+        $validator->validate($process, Argument::any())->shouldBeCalledTimes(1);
+
+        $this->validate($structure, new FamilyPropertyShouldBeValid());
+    }
 }
