@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\DependencyInjecti
 
 use Akeneo\Pim\Platform\Messaging\Domain\MessageTenantAwareInterface;
 use Akeneo\Pim\Platform\Messaging\Infrastructure\MessageHandler;
+use Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\Command\ProcessMessageCommand;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -22,13 +23,13 @@ final class AkeneoMessagingExtension  extends Extension
     /**
      * {@inheritDoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        // @fixme: Find a better way to load the config file
-        $messagingConfigs = Yaml::parse(file_get_contents(__DIR__ . '/../../../../../../../config/messaging.yml'));
+        $projectDir = $container->getParameter('kernel.project_dir');
+        $messagingConfigs = Yaml::parse(file_get_contents($projectDir . '/config/messaging.yml'));
 
         // Register a handler for each consumer of each queue
         foreach ($messagingConfigs['queues'] as $queueConfig) {
