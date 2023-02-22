@@ -58,10 +58,6 @@
         "maxLength": {
           "type": "integer",
           "minimum": 0
-        },
-        "pattern": {
-          "type": "string",
-          "format": "regex"
         }
       },
       "additionalProperties": false,

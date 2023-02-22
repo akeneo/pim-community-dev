@@ -1,6 +1,6 @@
 {
     "$id": "https://example.com/product",
-    "$schema": "https://api.akeneo.com/mapping/product/0.0.8/schema",
+    "$schema": "https://api.akeneo.com/mapping/product/0.0.9/schema",
     "$comment": "My first schema !",
     "title": "Product Mapping",
     "description": "JSON Schema describing the structure of products expected by our application",
@@ -34,6 +34,10 @@
         "thumbnail": {
             "type": "string",
             "format": "uri"
+        },
+        "size": {
+            "type": "string",
+            "enum": ["S", "M", "L"]
         }
     }
 }

@@ -11,8 +11,7 @@
             "type": "string"
         },
         "name": {
-            "type": "string",
-            "pattern": ".*"
+            "type": "string"
         },
         "body_html": {
             "title": "Description",
@@ -29,10 +28,6 @@
             "type": "string",
             "minLength": 50,
             "maxLength": 160
-        },
-        "size": {
-            "type": "string",
-            "enum": ["S", "M", "L"]
         }
     }
 }
