@@ -165,6 +165,7 @@ pim_import_export:
           sftp: SFTP
           amazon_s3: Amazon S3
           microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
           none: No s'ha configurat emmagatzematge
         file_path:
           label: Ruta de l'arxiu
@@ -209,6 +210,12 @@ pim_import_export:
         container_name:
           label: Nom del contenidor
           placeholder: Introdueix el teu nom del contenidor
+        project_id:
+          label: Identificació del projecte
+          placeholder: Introdueix el teu nom ID del projecte
+        service_account:
+          label: Compte del servei
+          placeholder: Introduïu el vostre compte de servei
       validation:
         storage:
           unavailable_type: Aquest emmagatzematge no està disponible, només hi ha {{ available_types }} disponibles.
