@@ -192,7 +192,7 @@ class CatalogFixtureCommand extends Command
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.7/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.8/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
@@ -228,7 +228,9 @@ class CatalogFixtureCommand extends Command
             },
             "zoom": {
               "type": "number",
-              "title": "Optical Zoom"
+              "title": "Optical Zoom",
+              "minimum": 0,
+              "maximum": 1000
             },
             "thumbnail": {
               "type": "string",
@@ -236,10 +238,8 @@ class CatalogFixtureCommand extends Command
               "title": "Thumbnail"
             },
             "phone_number": {
-              "type": "number",
-              "pattern": "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$",
-              "minimum": 5,
-              "maximum": 15
+              "type": "string",
+              "pattern": "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$"
             }
           }
         }
