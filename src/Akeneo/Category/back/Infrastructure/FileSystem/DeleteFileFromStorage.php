@@ -10,19 +10,20 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteImageFromStorage
+class DeleteFileFromStorage
 {
     public function __construct(
         private readonly FileSystemProvider $fileSystemProvider,
     ) {
-
     }
 
-    public function deleteImage(): void
+    public function deleteFiles(array $fileKeys): void
     {
-        $imageKey = '5/1/b/e/51be07a8cf706c0d4534e960ba4f1b15cc0f7f81_me_batman.jpg';
+//        $fileKeys = ['0/c/e/3/0ce3f361699f459316c2a120c67057e76a3dc67b_Screenshot_from_2023_01_18_10_57_52.png'];
         $fileSystem = $this->fileSystemProvider->getFilesystem('categoryStorage');
-        $fileSystem->delete($imageKey);
-        $toto = '';
+        foreach ($fileKeys as $fileKey){
+            $fileSystem->delete($fileKey);
+        }
+        $toto = 'http://localhost:8080/category/template/yolo';
     }
 }
