@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelLocalesAction;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,8 +21,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class GetChannelLocalesActionTest extends TestCase
 {
     private ?GetChannelLocalesAction $getChannelLocalesAction;
-    private ?GetChannelQueryInterface $getChannelQuery;
-    private ?GetChannelLocalesQueryInterface $getChannelLocalesQuery;
+    private GetChannelQueryInterface&MockObject $getChannelQuery;
+    private GetChannelLocalesQueryInterface&MockObject $getChannelLocalesQuery;
 
     protected function setUp(): void
     {
@@ -80,7 +81,7 @@ class GetChannelLocalesActionTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertJsonStringEqualsJsonString(
             \json_encode(['en_US', 'fr_FR'], JSON_THROW_ON_ERROR),
-            $response->getContent()
+            $response->getContent(),
         );
     }
 }

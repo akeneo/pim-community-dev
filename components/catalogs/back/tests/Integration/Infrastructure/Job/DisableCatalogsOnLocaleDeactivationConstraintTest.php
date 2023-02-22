@@ -26,7 +26,7 @@ class DisableCatalogsOnLocaleDeactivationConstraintTest extends IntegrationTestC
     public function testItProvidesConstraintToValidateParameters(): void
     {
         $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
-        $parameters = ['locale_codes' => ['fr_FR']];
+        $parameters = ['locale_codes' => ['fr_FR', 'en_US']];
         $violations = $this->validator->validate($parameters, $constraintCollection);
 
         $this->assertEmpty($violations);

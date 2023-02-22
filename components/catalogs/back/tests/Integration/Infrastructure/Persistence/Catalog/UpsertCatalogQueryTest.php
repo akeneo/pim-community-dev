@@ -50,7 +50,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         $productValueFilters = ['channels' => ['ecommerce', 'mobile']];
         $productMapping = [
             'name' => [
-                'attribute' => 'title',
+                'source' => 'title',
                 'scope' => 'ecommerce',
                 'locale' => 'en_US',
             ],
@@ -95,7 +95,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         $productValueFiltersLocale = ['locales' => ['en_US', 'fr_FR']];
         $productMapping = [
             'name' => [
-                'attribute' => 'title',
+                'source' => 'title',
                 'scope' => 'ecommerce',
                 'locale' => 'en_US',
             ],

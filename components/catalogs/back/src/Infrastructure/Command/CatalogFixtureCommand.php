@@ -67,7 +67,7 @@ class CatalogFixtureCommand extends Command
                     'write_catalogs',
                     'delete_catalogs',
                     'read_products',
-                ]
+                ],
             );
 
             /** @var UserInterface|null $user */
@@ -120,9 +120,27 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => 'en_US',
                 ],
+                'release_date' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'is_released' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'zoom' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'thumbnail' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ];
-
-            $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
 
             /** @var object $productMappingSchema */
             $productMappingSchema = \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR);
@@ -131,6 +149,8 @@ class CatalogFixtureCommand extends Command
                 $catalogWithMappingId,
                 $productMappingSchema,
             ));
+
+            $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
 
             $this->connection->commit();
 
@@ -158,7 +178,7 @@ class CatalogFixtureCommand extends Command
             ],
             [
                 'productMapping' => Types::JSON,
-            ]
+            ],
         );
     }
 
@@ -167,7 +187,7 @@ class CatalogFixtureCommand extends Command
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.6/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
@@ -177,7 +197,10 @@ class CatalogFixtureCommand extends Command
               "type": "string"
             },
             "name": {
-              "type": "string"
+              "type": "string",
+              "description": "A word or phrase that best describes the product. This will help Amazon.com locate the product when customers perform searches on our site. This is in addition to the valid values that you must submit for your product. It is in your best interest to fill in all search terms.",
+              "minLength": 3,
+              "maxLength": 20
             },
             "description": {
               "type": "string"
@@ -189,6 +212,23 @@ class CatalogFixtureCommand extends Command
             "meta_title": {
               "type": "string",
               "title": "Meta title"
+            },
+            "release_date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "is_released": {
+              "type": "boolean",
+              "title": "Is released"
+            },
+            "zoom": {
+              "type": "number",
+              "title": "Optical Zoom"
+            },
+            "thumbnail": {
+              "type": "string",
+              "format": "uri",
+              "title": "Thumbnail"
             }
           }
         }

@@ -65,7 +65,7 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
                 'product_selection_criteria' => Types::JSON,
                 'product_value_filters' => Types::JSON,
                 'product_mapping' => Types::JSON,
-            ]
+            ],
         );
     }
 }

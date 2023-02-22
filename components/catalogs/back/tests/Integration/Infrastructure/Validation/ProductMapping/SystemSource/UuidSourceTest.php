@@ -33,7 +33,7 @@ class UuidSourceTest extends IntegrationTestCase
                 'scope' => null,
                 'locale' => null,
             ],
-            new UuidSource()
+            new UuidSource(),
         );
 
         $this->assertEmpty($violations);

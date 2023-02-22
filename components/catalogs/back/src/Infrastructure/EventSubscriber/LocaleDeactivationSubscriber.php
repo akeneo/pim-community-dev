@@ -22,7 +22,7 @@ class LocaleDeactivationSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         private readonly TokenStorageInterface $tokenStorage,
-        private readonly JobLauncherInterface $jobLauncher
+        private readonly JobLauncherInterface $jobLauncher,
     ) {
     }
 

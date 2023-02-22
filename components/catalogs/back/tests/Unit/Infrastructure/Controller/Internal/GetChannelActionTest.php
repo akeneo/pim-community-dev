@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelAction;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class GetChannelActionTest extends TestCase
 {
     private ?GetChannelAction $getChannelAction;
-    private ?GetChannelQueryInterface $getChannelQuery;
+    private GetChannelQueryInterface&MockObject $getChannelQuery;
 
     protected function setUp(): void
     {
@@ -72,7 +73,7 @@ class GetChannelActionTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertJsonStringEqualsJsonString(
             \json_encode(['label' => 'channelA'], JSON_THROW_ON_ERROR),
-            $response->getContent()
+            $response->getContent(),
         );
     }
 }

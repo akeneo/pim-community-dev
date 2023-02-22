@@ -41,7 +41,7 @@ final class AttributeSimpleSelectCriterion extends Compound
                                 Operator::IN_LIST,
                                 Operator::NOT_IN_LIST,
                                 Operator::IS_EMPTY,
-                                Operator::IS_NOT_EMPTY
+                                Operator::IS_NOT_EMPTY,
                             ]),
                         ],
                         'value' => [
