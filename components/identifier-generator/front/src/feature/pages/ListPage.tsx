@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {PageContent, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {PageContent, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {
   AttributesIllustration,
   Button,
@@ -28,14 +28,19 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
 
   const history = useHistory();
   const translate = useTranslate();
+  const security = useSecurity();
   const {setCurrentTab} = useStructureTabs();
 
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
   const [generatorToDelete, setGeneratorToDelete] = useState<string>('');
 
   const locale = useUserContext().get('catalogLocale');
+  const isManageIdentifierGeneratorAclGranted = security.isGranted('pim_identifier_generator_manage');
   const {data: generators = [], isLoading, error: errorOnGenerators} = useGetIdentifierGenerators();
-  const isCreateDisabled = useMemo(() => generators.length >= 1, [generators]);
+  const isCreateDisabled = useMemo(
+    () => !isManageIdentifierGeneratorAclGranted || generators.length >= 1,
+    [generators, isManageIdentifierGeneratorAclGranted]
+  );
   const isGeneratorListEmpty = useMemo(() => generators.length === 0, [generators]);
 
   useEffect(() => {
@@ -89,21 +94,25 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
             <Table.HeaderCell />
           </Table.Header>
           <Table.Body>
-            {isGeneratorListEmpty && !isLoading && !errorOnGenerators && !errorOnIdentifierAttributes && (
-              <tr>
-                <td colSpan={3}>
-                  <Placeholder
-                    illustration={<AttributesIllustration />}
-                    size="large"
-                    title={translate('pim_identifier_generator.list.first_generator')}
-                  >
-                    <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
-                      {translate('pim_identifier_generator.list.check_help_center')}
-                    </Styled.HelpCenterLink>
-                  </Placeholder>
-                </td>
-              </tr>
-            )}
+            {isGeneratorListEmpty &&
+              !isLoading &&
+              !errorOnGenerators &&
+              !errorOnIdentifierAttributes &&
+              isManageIdentifierGeneratorAclGranted && (
+                <tr>
+                  <td colSpan={3}>
+                    <Placeholder
+                      illustration={<AttributesIllustration />}
+                      size="large"
+                      title={translate('pim_identifier_generator.list.first_generator')}
+                    >
+                      <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
+                        {translate('pim_identifier_generator.list.check_help_center')}
+                      </Styled.HelpCenterLink>
+                    </Placeholder>
+                  </td>
+                </tr>
+              )}
             {(null !== errorOnGenerators || null !== errorOnIdentifierAttributes) && (
               <tr>
                 <td colSpan={3}>
@@ -127,29 +136,48 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                     </Table.Cell>
                     <Table.ActionCell>
                       <Button onClick={goToEditPage(code)} ghost>
-                        {translate('pim_common.edit')}
+                        {translate(isManageIdentifierGeneratorAclGranted ? 'pim_common.edit' : 'pim_common.view')}
                       </Button>
-                      <Button onClick={onDelete(code)} ghost level="danger">
-                        {translate('pim_common.delete')}
-                      </Button>
+                      {isManageIdentifierGeneratorAclGranted && (
+                        <Button onClick={onDelete(code)} ghost level="danger">
+                          {translate('pim_common.delete')}
+                        </Button>
+                      )}
                     </Table.ActionCell>
                   </Table.Row>
                 ))}
-                <tr>
-                  <td colSpan={3}>
-                    <Placeholder
-                      illustration={<CodingIllustration />}
-                      size="large"
-                      title={translate('pim_identifier_generator.list.max_generator.title')}
-                    >
-                      {translate('pim_identifier_generator.list.max_generator.info')}
-                      <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
-                        {translate('pim_identifier_generator.list.check_help_center')}
-                      </Styled.HelpCenterLink>
-                    </Placeholder>
-                  </td>
-                </tr>
+                {isManageIdentifierGeneratorAclGranted && (
+                  <tr>
+                    <td colSpan={3}>
+                      <Placeholder
+                        illustration={<CodingIllustration />}
+                        size="large"
+                        title={translate('pim_identifier_generator.list.max_generator.title')}
+                      >
+                        {translate('pim_identifier_generator.list.max_generator.info')}
+                        <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
+                          {translate('pim_identifier_generator.list.check_help_center')}
+                        </Styled.HelpCenterLink>
+                      </Placeholder>
+                    </td>
+                  </tr>
+                )}
               </>
+            )}
+            {!isManageIdentifierGeneratorAclGranted && (
+              <tr>
+                <td colSpan={3}>
+                  <Placeholder
+                    illustration={<AttributesIllustration />}
+                    size="large"
+                    title={translate('pim_identifier_generator.list.read_only_list')}
+                  >
+                    <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
+                      {translate('pim_identifier_generator.list.check_help_center')}
+                    </Styled.HelpCenterLink>
+                  </Placeholder>
+                </td>
+              </tr>
             )}
           </Table.Body>
         </Table>
