@@ -4,7 +4,7 @@ import {Button, useBooleanState, useAutoFocus, Helper} from 'akeneo-design-syste
 import {DoubleCheckDeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
-type MassDeleteAttributeGroupsProps = {
+type MassDeleteAttributeGroupsModalProps = {
   attributeGroups: AttributeGroup[];
   onConfirm: () => void;
 };
@@ -16,7 +16,7 @@ const ModalContent = styled.div`
   gap: 20px;
 `;
 
-const ModalMassDeleteAttributeGroups = ({attributeGroups, onConfirm}: MassDeleteAttributeGroupsProps) => {
+const MassDeleteAttributeGroupsModal = ({attributeGroups, onConfirm}: MassDeleteAttributeGroupsModalProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
   const [numberOfAttribute] = useState<number>(0);
@@ -63,4 +63,4 @@ const ModalMassDeleteAttributeGroups = ({attributeGroups, onConfirm}: MassDelete
   );
 };
 
-export {ModalMassDeleteAttributeGroups};
+export {MassDeleteAttributeGroupsModal};

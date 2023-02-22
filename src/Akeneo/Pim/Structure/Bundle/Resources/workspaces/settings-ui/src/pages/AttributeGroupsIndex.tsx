@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
-import {AttributeGroupsCreateButton, AttributeGroupsDataGrid, ModalMassDeleteAttributeGroups} from '../components';
+import {AttributeGroupsCreateButton, AttributeGroupsDataGrid, MassDeleteAttributeGroupsModal} from '../components';
 import {useAttributeGroupsIndexState} from '../hooks';
 import {
   Breadcrumb,
@@ -112,7 +112,7 @@ const AttributeGroupsIndex: FC = () => {
             {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}
           </Toolbar.LabelContainer>
           <Toolbar.ActionsContainer>
-            <ModalMassDeleteAttributeGroups attributeGroups={selection.collection} onConfirm={() => {}} />
+            <MassDeleteAttributeGroupsModal attributeGroups={selection.collection} onConfirm={() => {}} />
           </Toolbar.ActionsContainer>
         </Toolbar>
       )}
