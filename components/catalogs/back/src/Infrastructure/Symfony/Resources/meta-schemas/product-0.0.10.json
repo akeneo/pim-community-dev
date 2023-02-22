@@ -101,6 +101,16 @@
           },
           "required": ["type"]
         },
+        "items": {
+          "properties": {
+            "type": {
+              "enum": [
+                "array"
+              ]
+            }
+          },
+          "required": ["type"]
+        },
         "minLength": {
           "properties": {
             "type": {

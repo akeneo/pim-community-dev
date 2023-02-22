@@ -1,0 +1,13 @@
+{
+    "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
+    "description": "The data (integer) must match the type: object at #/properties/colors/items",
+    "properties": {
+        "uuid": {
+            "type": "string"
+        },
+        "colors": {
+            "type": "array",
+            "items": 42
+        }
+    }
+}
