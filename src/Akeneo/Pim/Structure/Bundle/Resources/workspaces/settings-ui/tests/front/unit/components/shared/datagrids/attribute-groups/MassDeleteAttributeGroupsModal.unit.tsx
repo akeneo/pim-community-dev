@@ -56,7 +56,7 @@ test('it display number of attribute affected', async () => {
 
 test('I can select an attribute group to assign affected attributes', async () => {
   renderWithProviders(
-    <ModalMassDeleteAttributeGroups
+    <MassDeleteAttributeGroupsModal
       selectedAttributeGroups={[
         {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
         {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
