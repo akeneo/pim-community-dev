@@ -23,6 +23,7 @@ const TextTransformationSelector: FC<TextTransformationSelectorProps> = ({value,
       value={value}
       emptyResultLabel={''}
       onChange={handleChange}
+      clearable={false}
       readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
     >
       {[TEXT_TRANSFORMATION.NO, TEXT_TRANSFORMATION.UPPERCASE, TEXT_TRANSFORMATION.LOWERCASE].map(

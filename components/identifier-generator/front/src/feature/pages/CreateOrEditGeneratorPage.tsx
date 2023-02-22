@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Pill, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
 import {Conditions, Delimiter, GeneratorTab, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {Violation} from '../validators';
@@ -10,13 +10,6 @@ import {useHistory} from 'react-router-dom';
 import {useIdentifierGeneratorAclContext, useIdentifierGeneratorContext} from '../context';
 import styled from 'styled-components';
 import {useStructureTabs} from '../hooks';
-
-// TODO: replace this component by PageContent when there we delete the warning message (DO NOT USE...)
-const Container = styled.div`
-  padding: 0 40px;
-  overflow: auto;
-  height: calc(100vh - 190px);
-`;
 
 type CreateOrEditGeneratorProps = {
   isMainButtonDisabled: boolean;
@@ -120,7 +113,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
           </PageHeader.Actions>
         )}
       </Header>
-      <Container>
+      <PageContent>
         <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={currentTab === GeneratorTab.GENERAL} onClick={changeTab(GeneratorTab.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
@@ -162,7 +155,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             textTransformation={generator.text_transformation}
           />
         )}
-      </Container>
+      </PageContent>
       {isDeleteGeneratorModalOpen && generatorCodeToDelete && (
         <DeleteGeneratorModal generatorCode={generatorCodeToDelete} onClose={closeModal} onDelete={redirectToList} />
       )}
