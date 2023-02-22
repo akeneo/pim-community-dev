@@ -33,10 +33,13 @@ test('it can get the total number of impacted attribute groups children & target
     mode: 'in',
   };
 
-  expect(getImpactedAndTargetAttributeGroups(attributeGroups, selection)).toEqual([6, [attributeGroups[1]]]);
+  expect(getImpactedAndTargetAttributeGroups(attributeGroups, selection)).toEqual([
+    [attributeGroups[0], attributeGroups[2]],
+    [attributeGroups[1]],
+  ]);
 
   expect(getImpactedAndTargetAttributeGroups(attributeGroups, {...selection, mode: 'not_in'})).toEqual([
-    5,
+    [attributeGroups[1]],
     [attributeGroups[0], attributeGroups[2]],
   ]);
 });

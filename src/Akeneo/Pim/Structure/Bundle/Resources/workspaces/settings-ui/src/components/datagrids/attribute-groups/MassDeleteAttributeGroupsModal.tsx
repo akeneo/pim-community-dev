@@ -1,8 +1,16 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {Button, useBooleanState, useAutoFocus, Helper, SelectInput, Field} from 'akeneo-design-system';
-import {DoubleCheckDeleteModal, getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {
+  DoubleCheckDeleteModal,
+  NotificationLevel,
+  getLabel,
+  useTranslate,
+  useNotify,
+  useUserContext,
+} from '@akeneo-pim-community/shared';
 import {AttributeGroup} from '../../../models';
+import {useMassDeleteAttributeGroups} from '../../../hooks';
 
 const ModalContent = styled.div`
   margin-bottom: 20px;
@@ -12,28 +20,42 @@ const ModalContent = styled.div`
 `;
 
 type MassDeleteAttributeGroupsModalProps = {
-  selectedCount: number;
-  impactedAttributesCount: number;
+  impactedAttributeGroups: AttributeGroup[];
   availableTargetAttributeGroups: AttributeGroup[];
 };
 
 const MassDeleteAttributeGroupsModal = ({
-  selectedCount,
-  impactedAttributesCount,
+  impactedAttributeGroups,
   availableTargetAttributeGroups,
 }: MassDeleteAttributeGroupsModalProps) => {
   const translate = useTranslate();
+  const notify = useNotify();
+  const userContext = useUserContext();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
   const [replacementAttributeGroup, setReplacementAttributeGroup] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
   const catalogLocale = useUserContext().get('catalogLocale');
 
-  const handleConfirm = () => {
-    closeMassDeleteModal();
-    // TODO launch job, will be implemented in RAB-1278
-  };
+  const [isLoading, launchMassDeleteAttributeGroups] = useMassDeleteAttributeGroups();
+  const impactedAttributesCount = impactedAttributeGroups.reduce(
+    (totalCount, {attribute_count}) => totalCount + attribute_count,
+    0
+  );
 
   useAutoFocus(inputRef);
+
+  const handleLaunchMassDelete = async () => {
+    if (isLoading) return;
+
+    try {
+      await launchMassDeleteAttributeGroups(impactedAttributeGroups);
+      notify(NotificationLevel.INFO, translate('pim_enrich.entity.attribute_group.flash.mass_delete.success'));
+      closeMassDeleteModal();
+    } catch (error) {
+      notify(NotificationLevel.ERROR, translate('pim_enrich.entity.attribute_group.flash.mass_delete.fail'));
+    }
+  };
 
   return (
     <>
@@ -47,7 +69,8 @@ const MassDeleteAttributeGroupsModal = ({
             confirmation_word: translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word'),
           })}
           textToCheck={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word')}
-          onConfirm={handleConfirm}
+          canConfirmDelete={!isLoading && (null !== replacementAttributeGroup || 0 === impactedAttributesCount)}
+          onConfirm={handleLaunchMassDelete}
           onCancel={closeMassDeleteModal}
         >
           <ModalContent>
@@ -55,9 +78,9 @@ const MassDeleteAttributeGroupsModal = ({
               {translate(
                 'pim_enrich.entity.attribute_group.mass_delete.confirm',
                 {
-                  count: selectedCount,
+                  count: impactedAttributeGroups.length,
                 },
-                selectedCount
+                impactedAttributeGroups.length
               )}
             </p>
             {0 < impactedAttributesCount && (

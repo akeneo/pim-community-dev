@@ -233,8 +233,16 @@ services:
             - '@pim_reference_data.registry'
             - '@pim_internal_api_serializer'
 
-    Akeneo\Pim\Structure\Bundle\Infrastructure\controller\GetAttributeGroupController:
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\GetAttributeGroupController:
         public: true
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Pim\Structure\Bundle\Application\GetAttributeGroup\GetAttributeGroupHandler'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\MassDeleteAttributeGroupsController:
+        public: true
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@oro_security.security_facade'

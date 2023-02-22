@@ -10,8 +10,13 @@ pim_enrich_attributegroup_rest_search:
 
 pim_structure_attributegroup_rest_index:
     path: '/list'
-    defaults: { _controller: Akeneo\Pim\Structure\Bundle\Infrastructure\controller\GetAttributeGroupController }
+    defaults: { _controller: Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\GetAttributeGroupController }
     methods: [GET]
+
+pim_structure_attributegroup_rest_mass_delete:
+    path: '/mass-delete'
+    defaults: { _controller: Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\MassDeleteAttributeGroupsController }
+    methods: [POST]
 
 pim_enrich_attributegroup_rest_create:
     path: '/'
