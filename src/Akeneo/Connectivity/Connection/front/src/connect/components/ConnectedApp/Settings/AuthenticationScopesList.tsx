@@ -5,7 +5,7 @@ import {AkeneoThemedProps, getColor, getFontSize, MailIcon, UserIcon} from 'aken
 import {AuthenticationScopes} from '../../../../model/Apps/authentication-scopes';
 
 const List = styled.ul<AkeneoThemedProps>`
-    margin: 10px 20px;
+    margin: 10px 20px 20px;
     font-size: ${getFontSize('default')};
 `;
 

@@ -7,15 +7,12 @@ import {useRouter} from '../../shared/router/use-router';
 import {ConnectedAppsContainerIsLoading} from '../components/ConnectedApps/ConnectedAppsContainerIsLoading';
 import {ConnectedAppsContainer} from '../components/ConnectedApps/ConnectedAppsContainer';
 import {useConnectedApps} from '../hooks/use-connected-apps';
-import {DeveloperModeTag} from '../components/DeveloperModeTag';
-import {useAppDeveloperMode} from '../hooks/use-app-developer-mode';
 
 export const ConnectedAppsListPage: FC = () => {
     const translate = useTranslate();
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const connectedApps = useConnectedApps();
-    const isAppDeveloperModeEnabled = useAppDeveloperMode();
 
     const breadcrumb = (
         <Breadcrumb>
@@ -24,11 +21,9 @@ export const ConnectedAppsListPage: FC = () => {
         </Breadcrumb>
     );
 
-    const tag = isAppDeveloperModeEnabled ? <DeveloperModeTag /> : null;
-
     return (
         <>
-            <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />} tag={tag}>
+            <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
                 {translate('pim_menu.item.connected_apps')}
             </PageHeader>
 

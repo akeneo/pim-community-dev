@@ -5,7 +5,7 @@ import {useFeatureFlags} from '../../shared/feature-flags';
 import {useFetchConnectedApps} from './use-fetch-connected-apps';
 import {useFetchApps} from './use-fetch-apps';
 import {useTranslate} from '../../shared/translate';
-import {useFetchTestApps} from './use-fetch-test-apps';
+import {useFetchCustomApps} from './use-fetch-custom-apps';
 import {App} from '../../model/app';
 import {useTriggerConnectedAppRefresh} from './use-trigger-connected-app-refresh';
 
@@ -30,7 +30,7 @@ export const useConnectedApps = (): ConnectedApp[] | null | false => {
     const translate = useTranslate();
     const fetchConnectedApps = useFetchConnectedApps();
     const fetchApps = useFetchApps();
-    const fetchTestApps = useFetchTestApps();
+    const fetchTestApps = useFetchCustomApps();
     const triggerConnectedAppRefresh = useTriggerConnectedAppRefresh();
     const [connectedApps, setConnectedApps] = useState<ConnectedApp[] | null | false>(null);
 
@@ -79,7 +79,7 @@ export const useConnectedApps = (): ConnectedApp[] | null | false => {
                             ...connectedApp,
                             activate_url: app?.activate_url || undefined,
                             is_loaded: true,
-                            is_listed_on_the_appstore: false === connectedApp.is_test_app && undefined !== app,
+                            is_listed_on_the_appstore: false === connectedApp.is_custom_app && undefined !== app,
                         };
                     });
                 });
