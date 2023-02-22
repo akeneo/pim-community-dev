@@ -4,13 +4,6 @@
 
 The goal of this component is to facilitate the set up of queues and consumers.
 
-## How it works
-
-- Define your queues and/or your consumers in a simple config file
-- If you add a queue: create your object message
-- If you add a consumer: create your handler
-- Generate the new terraform code to deploy them (TODO)
-
 The component uses Symfony Messenger to configure the queue according to the environment
 
 | Env       | Transport         |
@@ -20,6 +13,30 @@ The component uses Symfony Messenger to configure the queue according to the env
 | test_fake | In Memory         |
 | behat     | PubSub            |
 | prod      | doctrine / PubSub |
+
+## How it works
+
+```mermaid
+flowchart LR
+    subgraph Tenant aware process
+        action[Something happens in the PIM]
+    end
+    action -- Publish message in topic --> queue[(Multi-tenant queue)]
+    Consumer1 <-- Ask messages for subscription1? --> queue
+    subgraph Tenant agnostic daemon
+        Consumer1 -- Launch command in a subprocess with tenant --> ProcessMessageCommand1
+        subgraph Tenant aware process
+            ProcessMessageCommand1 -- Launch the final handler --> Handler1
+        end
+    end
+    Consumer2 <-- Ask messages for subscription2? --> queue
+    subgraph Tenant agnostic daemon
+        Consumer2 -- Launch command in a subprocess with tenant --> ProcessMessageCommand2
+        subgraph Tenant aware process
+            ProcessMessageCommand2 -- Launch the final handler --> Handler2
+        end
+    end
+```
 
 ## Documentation
 

@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Message;
 
 use Akeneo\Pim\Platform\Messaging\Domain\MessageTenantAwareInterface;
 use Akeneo\Pim\Platform\Messaging\Domain\SerializableMessageInterface;
-use Akeneo\Pim\Platform\Messaging\Domain\TenantAware;
+use Akeneo\Pim\Platform\Messaging\Domain\TenantAwareTrait;
 use Webmozart\Assert\Assert;
 
 /**
@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
  */
 final class LaunchProductAndProductModelEvaluationsMessage implements MessageTenantAwareInterface, SerializableMessageInterface
 {
-    use TenantAware;
+    use TenantAwareTrait;
 
     public function __construct(public readonly string $text)
     {
