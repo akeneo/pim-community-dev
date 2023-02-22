@@ -1,6 +1,7 @@
 # 7.0.x
 
 - RAB-1356: [Backport PIM-10840]: Fix attribute update date on attribute options change above 10000 options
+- RAB-1356: [Backport PIM-10853]: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
 
 # 7.0.9 (2023-02-20)
 
