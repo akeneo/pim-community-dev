@@ -1,53 +1,33 @@
 <?php
 
-namespace Akeneo\UserManagement\Bundle\EventListener;
+namespace Akeneo\UserManagement\Infrastructure\Cli\EventListener;
 
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Bundle\Security\SystemUserToken;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\DBAL\DBALException;
+use Akeneo\UserManagement\Infrastructure\Cli\Registry\AuthenticatedAsAdminCommandRegistry;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * Create a user system if token is null on CLI command "pim" or "akeneo"
+ * Create a user system for the commands that need to be authenticated as admin user before executing
  * This listener is called before each command.
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateUserSystemListener
+class AuthenticateCommandAsAdminUser
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var ObjectRepository */
-    private $groupRepository;
-
-    /** @var ObjectRepository */
-    private $roleRepository;
-
-    /** @var SimpleFactoryInterface */
-    private $userFactory;
-
-    /**
-     * @param TokenStorageInterface  $tokenStorage
-     * @param ObjectRepository       $groupRepository
-     * @param ObjectRepository       $roleRepository
-     * @param SimpleFactoryInterface $userFactory
-     */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        ObjectRepository $groupRepository,
-        ObjectRepository $roleRepository,
-        SimpleFactoryInterface $userFactory
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly ObjectRepository $groupRepository,
+        private readonly ObjectRepository $roleRepository,
+        private readonly SimpleFactoryInterface $userFactory,
+        private readonly AuthenticatedAsAdminCommandRegistry $commandRegistry,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->groupRepository = $groupRepository;
-        $this->roleRepository = $roleRepository;
-        $this->userFactory = $userFactory;
     }
 
     /**
@@ -55,7 +35,7 @@ class CreateUserSystemListener
      */
     public function createUserSystem(ConsoleCommandEvent $event): void
     {
-        if (0 === preg_match('#^pim|akeneo#', $event->getCommand()->getName())) {
+        if (!$this->commandRegistry->isCommandAuthenticatedAsAdminUser($event->getCommand()->getName())) {
             return;
         }
 

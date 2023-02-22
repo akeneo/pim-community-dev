@@ -4,7 +4,6 @@ parameters:
     pim_user.event_subscriber.remove_role.class:      Akeneo\UserManagement\Bundle\EventListener\RemoveRoleSubscriber
     # Move this class
     pim_locale.locale_subscriber.class:               Akeneo\UserManagement\Bundle\EventListener\LocaleSubscriber
-    pim_user.event_listener.create_user_system.class: Akeneo\UserManagement\Bundle\EventListener\CreateUserSystemListener
 
 services:
     pim_user.event_listener.user_preferences:
@@ -41,13 +40,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_user.event_listener.create_user_system:
-        class: '%pim_user.event_listener.create_user_system.class%'
+    Akeneo\UserManagement\Infrastructure\Cli\Registry\AuthenticatedAsAdminCommandRegistry: ~
+
+    Akeneo\UserManagement\Infrastructure\Cli\EventListener\AuthenticateCommandAsAdminUser:
         arguments:
             - '@security.token_storage'
             - '@pim_user.repository.group'
             - '@pim_user.repository.role'
             - '@pim_user.factory.user'
+            - '@Akeneo\UserManagement\Infrastructure\Cli\Registry\AuthenticatedAsAdminCommandRegistry'
         tags:
             - { name: kernel.event_listener, event: console.command, method: createUserSystem }
 
