@@ -4,7 +4,7 @@ namespace Akeneo\UserManagement\ServiceApi\UserGroup;
 
 class UserGroupQuery
 {
-    public const DEFAULT_LIMIT = 25;
+    public const DEFAULT_LIMIT = 1000;
 
     // @todo add arguments to allow filter on label and pagination
     // @todo validate the pagination consistency
