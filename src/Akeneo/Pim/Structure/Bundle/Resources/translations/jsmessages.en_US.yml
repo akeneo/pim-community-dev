@@ -255,6 +255,10 @@ pim_enrich.entity.attribute_group:
         title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
         subtitle: To discover all the attributes of this group, just click below!
         button: View all attributes
+    dropdown:
+        label: Select
+        all: All Attribute groups
+        none: No Attribute groups
     flash:
         update:
             success: Attribute group successfully updated

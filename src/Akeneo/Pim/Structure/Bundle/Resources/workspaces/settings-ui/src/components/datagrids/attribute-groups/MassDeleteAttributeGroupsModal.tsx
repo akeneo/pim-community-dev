@@ -24,13 +24,9 @@ const MassDeleteAttributeGroupsModal = ({attributeGroups, onConfirm}: MassDelete
 
   useAutoFocus(inputRef);
 
-  const handleCancel = () => {
-    closeMassDeleteModal();
-  };
-
   return (
     <>
-      <Button level="danger" onClick={() => openMassDeleteModal()}>
+      <Button level="danger" onClick={openMassDeleteModal}>
         {translate('pim_enrich.entity.attribute_group.mass_delete.button')}
       </Button>
       {isMassDeleteModalOpen && null !== attributeGroups && (
@@ -41,16 +37,16 @@ const MassDeleteAttributeGroupsModal = ({attributeGroups, onConfirm}: MassDelete
           })}
           textToCheck={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word')}
           onConfirm={() => onConfirm()}
-          onCancel={handleCancel}
+          onCancel={closeMassDeleteModal}
         >
           <ModalContent>
             <p>
               {translate('pim_enrich.entity.attribute_group.mass_delete.confirm', {
-                count: String(attributeGroups.length),
+                count: attributeGroups.length,
               })}
             </p>
             {numberOfAttribute > 0 && (
-              <Helper level={'error'}>
+              <Helper level="error">
                 {translate('pim_enrich.entity.attribute_group.mass_delete.attribute_warning', {
                   number_of_attribute: numberOfAttribute,
                 })}

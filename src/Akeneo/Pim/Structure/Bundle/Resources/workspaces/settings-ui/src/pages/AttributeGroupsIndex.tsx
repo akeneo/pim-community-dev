@@ -84,7 +84,7 @@ const AttributeGroupsIndex: FC = () => {
               {isDropdownOpen && (
                 <Dropdown.Overlay onClose={closeDropdown}>
                   <Dropdown.Header>
-                    <Dropdown.Title>Select</Dropdown.Title>
+                    <Dropdown.Title>{translate('pim_enrich.entity.attribute_group.dropdown.label')}</Dropdown.Title>
                   </Dropdown.Header>
                   <Dropdown.ItemCollection>
                     <Dropdown.Item
@@ -93,7 +93,7 @@ const AttributeGroupsIndex: FC = () => {
                         closeDropdown();
                       }}
                     >
-                      All Attribute groups
+                      {translate('pim_enrich.entity.attribute_group.dropdown.all')}
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={() => {
@@ -101,7 +101,7 @@ const AttributeGroupsIndex: FC = () => {
                         closeDropdown();
                       }}
                     >
-                      No Attribute groups
+                      {translate('pim_enrich.entity.attribute_group.dropdown.none')}
                     </Dropdown.Item>
                   </Dropdown.ItemCollection>
                 </Dropdown.Overlay>
