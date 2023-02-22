@@ -33,13 +33,12 @@ const MassDeleteAttributeGroupsModal = ({
   useAutoFocus(inputRef);
 
   useEffect(() => {
-    if (null !== selectedAttributeGroups) {
-      let numberOfAttribute = 0;
-      selectedAttributeGroups.forEach(attributeGroup => {
-        numberOfAttribute += attributeGroup.attribute_count;
-      });
-      setNumberOfAttribute(numberOfAttribute);
-    }
+    setNumberOfAttribute(
+      selectedAttributeGroups.reduce(
+        (accumulator: number, attributeGroup: AttributeGroup) => accumulator + attributeGroup.attribute_count,
+        0
+      )
+    );
   }, [selectedAttributeGroups]);
 
   return (
@@ -47,7 +46,7 @@ const MassDeleteAttributeGroupsModal = ({
       <Button level="danger" onClick={openMassDeleteModal}>
         {translate('pim_enrich.entity.attribute_group.mass_delete.button')}
       </Button>
-      {isMassDeleteModalOpen && null !== selectedAttributeGroups && (
+      {isMassDeleteModalOpen && (
         <DoubleCheckDeleteModal
           title={translate('pim_enrich.entity.attribute_group.mass_delete.title')}
           doubleCheckInputLabel={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_phrase', {
