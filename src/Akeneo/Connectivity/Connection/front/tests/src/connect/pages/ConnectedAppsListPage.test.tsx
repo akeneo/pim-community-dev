@@ -93,25 +93,3 @@ test('The connected apps list page renders with internal api errors', async () =
         'akeneo_connectivity.connection.connect.connected_apps.list.flash.error'
     );
 });
-
-test('The connected apps list display the developer mode tag when enabled', async () => {
-    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: () => true,
-    }));
-
-    renderWithProviders(<ConnectedAppsListPage />);
-
-    await waitFor(() => expect(ConnectedAppsContainer).toHaveBeenCalled());
-    expect(screen.queryByText('akeneo_connectivity.connection.developer_mode')).toBeInTheDocument();
-});
-
-test('The connected apps list do not display the developer mode tag when not enabled', async () => {
-    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
-        isEnabled: () => false,
-    }));
-
-    renderWithProviders(<ConnectedAppsListPage />);
-
-    await waitFor(() => expect(ConnectedAppsContainer).toHaveBeenCalled());
-    expect(screen.queryByText('akeneo_connectivity.connection.developer_mode')).not.toBeInTheDocument();
-});

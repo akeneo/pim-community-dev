@@ -14,7 +14,7 @@ export type App = {
     isPending: boolean;
 };
 
-export type TestApp = {
+export type CustomApp = {
     id: string;
     name: string;
     logo: null;
@@ -30,7 +30,7 @@ export type Apps = {
     apps: App[];
 };
 
-export type TestApps = {
+export type CustomApps = {
     total: number;
-    apps: TestApp[];
+    apps: CustomApp[];
 };

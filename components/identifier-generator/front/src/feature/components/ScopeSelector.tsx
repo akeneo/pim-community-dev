@@ -3,6 +3,7 @@ import {Helper, SelectInput, SkeletonPlaceholder} from 'akeneo-design-system';
 import {ChannelCode, LabelCollection, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useGetScopes} from '../hooks';
 import {Styled} from './Styled';
+import {useIdentifierGeneratorAclContext} from '../context';
 
 type ScopeSelectorProps = {
   value: ChannelCode | null;
@@ -13,6 +14,7 @@ const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
   const translate = useTranslate();
   const currentCatalogLocale = useUserContext().get('catalogLocale');
   const {data: options, isLoading, error} = useGetScopes();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   const getLabel = (labels: LabelCollection, code: string) => labels[currentCatalogLocale] || `[${code}]`;
 
@@ -30,6 +32,7 @@ const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange}) => {
       onChange={onChange}
       placeholder={translate('pim_common.channel')}
       clearable={false}
+      readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
     >
       {options?.map(({code, labels}) => (
         <SelectInput.Option value={code} key={code}>

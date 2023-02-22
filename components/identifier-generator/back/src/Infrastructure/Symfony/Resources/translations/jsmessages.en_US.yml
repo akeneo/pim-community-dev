@@ -39,13 +39,14 @@ pim_identifier_generator:
     list:
         identifier: 'Identifier'
         first_generator: 'Create your first identifier generator!'
+        read_only_list: 'Please contact your administrator to have access to this feature.'
         helper:
             title: 'Automate the generation of identifiers.'
             info: 'Once an identifier generator is created, an identifier will be assigned automatically to every new product you create.'
         check_help_center: 'Check out our help center for more information.'
         max_generator:
             title: 'It is only possible to create one Identifier Generator for the moment.'
-            info: 'You will soon be able to configure multiple generators matching all your usecases.'
+            info: 'You will soon be able to configure multiple generators matching all your use cases.'
         confirmation: 'Are you sure you want to delete this property?'
     selection:
         helper:

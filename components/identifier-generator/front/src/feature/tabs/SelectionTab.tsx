@@ -8,6 +8,7 @@ import {AddConditionButton, EnabledLine, FamilyLine, ImplicitConditionsList} fro
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
 import {SimpleSelectLine} from './conditions/SimpleSelectLine';
+import {useIdentifierGeneratorAclContext} from '../context';
 
 type SelectionTabProps = {
   generator: IdentifierGenerator;
@@ -39,6 +40,7 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
 const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validationErrors}) => {
   const translate = useTranslate();
   const [conditionIdToDelete, setConditionIdToDelete] = useState<ConditionIdentifier | undefined>();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const [conditionsWithId, setConditionsWithId] = useState<ConditionsWithIdentifier>(
     generator.conditions?.map(condition => ({
       id: uuid(),
@@ -110,7 +112,9 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validat
       <SectionTitle>
         <SectionTitle.Title>{translate('pim_identifier_generator.tabs.product_selection')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <AddConditionButton conditions={conditionsWithId} onAddCondition={onAddCondition} />
+        {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+          <AddConditionButton conditions={conditionsWithId} onAddCondition={onAddCondition} />
+        )}
       </SectionTitle>
       <Table>
         <Table.Body>
