@@ -35,7 +35,7 @@ category-unit-front:
 
 .PHONY: category-integration-back
 category-integration-back: #Doc: launch PHPUnit integration tests for category bounded context
-	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Category/back/tests --testsuite Category_Integration_Test $(F)
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Category/back/tests --bootstrap config/bootstrap.php --testsuite Category_Integration_Test --order-by random $(F)
 
 .PHONY: category-end-to-end-back
 category-end-to-end-back: #Doc: launch PHPUnit end-to-end tests for category bounded context
