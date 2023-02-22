@@ -2,10 +2,10 @@ import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Breadcrumb, SkeletonPlaceholder, TabBar, useTabBar} from 'akeneo-design-system';
 import {
   FullScreenError,
-  getLabel,
+  getLabel, NotificationLevel,
   PageContent,
   PageHeader,
-  PimView,
+  PimView, useNotify,
   useRouter,
   useSessionStorageState,
   useTranslate,
@@ -17,6 +17,7 @@ import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePr
 import {cloneDeep, set} from 'lodash/fp';
 import {Template} from '../models';
 import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm';
+import { useHistory } from 'react-router';
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -33,6 +34,8 @@ const TemplatePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const userContext = useUserContext();
+  const notify = useNotify();
+  const history = useHistory();
 
   const catalogLocale = userContext.get('catalogLocale');
 
@@ -75,10 +78,13 @@ const TemplatePage: FC = () => {
   }, [tree]);
 
   useEffect(() => {
-    if (templateFetchingStatus === 'fetched') {
-      if (fetchedTemplate) {
-        setTemplateEdited(cloneDeep(fetchedTemplate));
-      }
+    if (templateFetchingStatus === 'fetched' && fetchedTemplate) {
+      setTemplateEdited(cloneDeep(fetchedTemplate));
+    }
+
+    if (templateFetchingStatus === 'error') {
+      history.push('/');
+      notify(NotificationLevel.ERROR, translate('akeneo.category.template.not_found'));
     }
   }, [catalogLocale, fetchedTemplate, templateFetchingStatus]);
 
@@ -96,16 +102,6 @@ const TemplatePage: FC = () => {
     },
     [templateEdited]
   );
-
-  if (loadingStatus === 'error' || templateFetchingStatus === 'error') {
-    return (
-      <FullScreenError
-        title={translate('error.exception', {status_code: '404'})}
-        message={translate('pim_enrich.entity.category.content.tree.not_found')}
-        code={404}
-      />
-    );
-  }
 
   return (
     <>
