@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\DependencyInjection\CompilerPass;
 
-use Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\Command\ProcessMessage;
+use Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\Command\ProcessMessageCommand;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -15,15 +16,18 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 final class RegisterHandlersCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
-        $processMessageCommandDefinition = $container->getDefinition(ProcessMessage::class);
-        $handlersIds = $container->findTaggedServiceIds('akeneo.message_handler');
+        $processMessageCommandDefinition = $container->getDefinition(ProcessMessageCommand::class);
 
-        foreach ($handlersIds as $handlerId => $tags) {
-            foreach ($tags as $tag) {
+        $projectDir = $container->getParameter('kernel.project_dir');
+        $messagingConfigs = Yaml::parse(file_get_contents($projectDir . '/config/messaging.yml'));
+
+        foreach ($messagingConfigs['queues'] as $queueConfig) {
+            foreach ($queueConfig['consumers'] as $consumerConfig) {
                 $processMessageCommandDefinition->addMethodCall('registerHandler', [
-                    new Reference($handlerId), $tag['consumer']
+                    new Reference($consumerConfig['service_handler']),
+                    $consumerConfig['name']
                 ]);
             }
         }
