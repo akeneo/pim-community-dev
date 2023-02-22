@@ -191,7 +191,7 @@ SQL;
         $definition = $this->connection->fetchOne($sql, [
             'property_code' => $propertyCode,
         ]);
-        if (!$definition) {
+        if (false === $definition) {
             return null;
         }
         Assert::string($definition);

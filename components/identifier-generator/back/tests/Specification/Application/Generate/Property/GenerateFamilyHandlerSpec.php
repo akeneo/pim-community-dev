@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Ge
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToGenerateIdentifierFromFamilyNomenclature;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedFamilyNomenclatureException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -178,7 +179,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(null);
 
-        $this->shouldThrow(UnableToGenerateIdentifierFromFamilyNomenclature::class)->during(
+        $this->shouldThrow(UndefinedFamilyNomenclatureException::class)->during(
             '__invoke',
             [
                 $family,
@@ -205,7 +206,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(null);
 
-        $this->shouldThrow(UnableToGenerateIdentifierFromFamilyNomenclature::class)->during(
+        $this->shouldThrow(UndefinedFamilyNomenclatureException::class)->during(
             '__invoke',
             [
                 $family,
