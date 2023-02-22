@@ -1,10 +1,12 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Breadcrumb, SkeletonPlaceholder, TabBar, useTabBar} from 'akeneo-design-system';
 import {
-  getLabel, NotificationLevel,
+  getLabel,
+  NotificationLevel,
   PageContent,
   PageHeader,
-  PimView, useNotify,
+  PimView,
+  useNotify,
   useRouter,
   useSessionStorageState,
   useTranslate,
@@ -16,7 +18,7 @@ import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePr
 import {cloneDeep, set} from 'lodash/fp';
 import {Template} from '../models';
 import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm';
-import { useHistory } from 'react-router';
+import {useHistory} from 'react-router';
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
