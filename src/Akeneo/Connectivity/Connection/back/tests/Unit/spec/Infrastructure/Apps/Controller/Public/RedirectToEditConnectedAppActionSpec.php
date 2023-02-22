@@ -49,7 +49,7 @@ class RedirectToEditConnectedAppActionSpec extends ObjectBehavior
         $this->shouldThrow(new NotFoundHttpException())->during('__invoke', [$badId]);
     }
 
-    public function it_denies_user_that_cannot_manage_a_test_app(
+    public function it_denies_user_that_cannot_manage_a_custom_app(
         FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
         SecurityFacade $security,
     ): void {
@@ -71,8 +71,7 @@ class RedirectToEditConnectedAppActionSpec extends ObjectBehavior
                 true,
             ));
 
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
-        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
 
         $this->shouldThrow(new AccessDeniedHttpException())->during('__invoke', [$appId]);
@@ -100,7 +99,6 @@ class RedirectToEditConnectedAppActionSpec extends ObjectBehavior
                 false,
             ));
 
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
 
@@ -130,7 +128,6 @@ class RedirectToEditConnectedAppActionSpec extends ObjectBehavior
                 false,
             ));
 
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
 

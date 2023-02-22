@@ -7,7 +7,6 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace\Persisten
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -21,7 +20,6 @@ class GetAppQueryIntegration extends TestCase
 {
     private GetAppQuery $query;
     private FakeWebMarketplaceApi $webMarketplaceApi;
-    private FakeFeatureFlag $appDeveloperFeatureFlag;
     private Connection $connection;
 
     protected function setUp(): void
@@ -29,7 +27,6 @@ class GetAppQueryIntegration extends TestCase
         parent::setUp();
 
         $this->query = $this->get(GetAppQuery::class);
-        $this->appDeveloperFeatureFlag = $this->get('akeneo_connectivity.connection.app_developer_mode.feature');
         $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->connection = $this->get('database_connection');
 
@@ -64,10 +61,8 @@ class GetAppQueryIntegration extends TestCase
         $this->webMarketplaceApi->setApps($apps);
     }
 
-    public function test_it_returns_an_app()
+    public function test_it_returns_an_app(): void
     {
-        $this->appDeveloperFeatureFlag->disable();
-
         $result = $this->query->execute('90741597-54c5-48a1-98da-a68e7ee0a715');
 
         $this->assertEquals(
@@ -90,20 +85,17 @@ class GetAppQueryIntegration extends TestCase
         );
     }
 
-    public function test_it_returns_null_when_app_does_not_exist()
+    public function test_it_returns_null_when_app_does_not_exist(): void
     {
-        $this->appDeveloperFeatureFlag->disable();
-
         $result = $this->query->execute('wrong_id');
 
         $this->assertNull($result);
     }
 
-    public function test_it_returns_a_test_app()
+    public function test_it_returns_a_custom_app(): void
     {
-        $this->appDeveloperFeatureFlag->enable();
         $user = $this->createAdminUser();
-        $this->createTestApp([
+        $this->createCustomApp([
             'client_id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
             'client_secret' => 'foobar',
             'name' => 'My test app',
@@ -115,7 +107,7 @@ class GetAppQueryIntegration extends TestCase
         $result = $this->query->execute('100eedac-ff5c-497b-899d-e2d64b6c59f9');
 
         $this->assertEquals(
-            App::fromTestAppValues([
+            App::fromCustomAppValues([
                 'id' => '100eedac-ff5c-497b-899d-e2d64b6c59f9',
                 'secret' => 'foobar',
                 'name' => 'My test app',
@@ -128,10 +120,8 @@ class GetAppQueryIntegration extends TestCase
         );
     }
 
-    public function test_it_returns_null_when_test_app_does_not_exist()
+    public function test_it_returns_null_when_custom_app_does_not_exist(): void
     {
-        $this->appDeveloperFeatureFlag->enable();
-
         $result = $this->query->execute('wrong_id');
 
         $this->assertNull($result);
@@ -147,7 +137,7 @@ class GetAppQueryIntegration extends TestCase
      *     user_id: string|null,
      * } $data
      */
-    private function createTestApp(array $data): void
+    private function createCustomApp(array $data): void
     {
         $this->connection->insert('akeneo_connectivity_test_app', $data);
     }
