@@ -4,12 +4,16 @@
 Each queue has its own message object.
 
 Example:
-```php
-use Akeneo\Pim\Platform\Messaging\Domain\SerializableMessageInterface;
-use Webmozart\Assert\Assert;
 
-final class YourMessage implements SerializableMessageInterface
+```php
+use Akeneo\Pim\Platform\Messaging\Domain\MessageTenantAwareInterface;
+use Akeneo\Pim\Platform\Messaging\Domain\SerializableMessageInterface;
+use Akeneo\Pim\Platform\Messaging\Domain\TenantAwareTrait;
+
+final class YourMessage implements MessageTenantAwareInterface, SerializableMessageInterface
 {
+    use TenantAwareTrait;
+
     public function __construct(public readonly string $text)
     {
     }
@@ -40,9 +44,7 @@ Now you certainly need to add a consumer, this is the next section.
 - If you want to add a consumer: create your handler
 
 ```php
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-
-final class YourMessageHandler implements MessageHandlerInterface
+final class YourMessageHandler
 {
     public function __invoke(YourMessage $message)
     {
@@ -55,10 +57,7 @@ And define the service with the tag:
 
 ```yaml
 services:
-    handler_service:
-        tags:
-            - { name: 'messenger.message_handler', handles: 'Akeneo\..\YourMessage' }
-
+    your_service_handler: ~
 ```
 
 
@@ -72,7 +71,7 @@ queues:
         messageClass: Akeneo\..\YourMessage
         consumers:
             - name: dqi_launch_product_and_product_model_evaluations_consumer
-              service_handler: 'service_handler'
+              service_handler: 'your_service_handler'
 
 ```
 
