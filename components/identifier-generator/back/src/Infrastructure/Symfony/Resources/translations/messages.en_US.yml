@@ -3,7 +3,7 @@ pim_catalog_identifier_generator:
     view: 'View identifier generators'
     manage: 'Manage identifier generators'
   acl_group:
-    identifier_generator: 'Identifier Generators'
+    identifier_generator: 'Identifier Generator'
   condition:
     fields:
       family: Family
