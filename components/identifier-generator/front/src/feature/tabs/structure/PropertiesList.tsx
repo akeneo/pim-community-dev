@@ -7,6 +7,7 @@ import {AutoNumberLine, FamilyCodeLine, FreeTextLine} from './line';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SimpleDeleteModal} from '../../pages';
 import {Violation} from '../../validators';
+import {useIdentifierGeneratorAclContext} from '../../context';
 
 type PropertiesListProps = {
   structure: StructureWithIdentifiers;
@@ -26,6 +27,7 @@ const PropertiesList: React.FC<PropertiesListProps> = ({
   validationErrors,
 }) => {
   const translate = useTranslate();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const [propertyIdToDelete, setPropertyIdToDelete] = useState<PropertyId | undefined>();
   const structureWithErrors = useMemo(
     () =>
@@ -53,7 +55,10 @@ const PropertiesList: React.FC<PropertiesListProps> = ({
 
   return (
     <>
-      <Table isDragAndDroppable={true} onReorder={onReorder}>
+      <Table
+        isDragAndDroppable={identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+        onReorder={onReorder}
+      >
         <Table.Body>
           {structureWithErrors.map(property => (
             <Table.Row key={property.id} onClick={() => onSelect(property.id)} isSelected={property.id === selectedId}>
@@ -68,9 +73,11 @@ const PropertiesList: React.FC<PropertiesListProps> = ({
                 )}
               </Styled.TitleCell>
               <Table.ActionCell>
-                <Button onClick={openModal(property.id)} ghost level="danger">
-                  {translate('pim_common.delete')}
-                </Button>
+                {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+                  <Button onClick={openModal(property.id)} ghost level="danger">
+                    {translate('pim_common.delete')}
+                  </Button>
+                )}
               </Table.ActionCell>
             </Table.Row>
           ))}

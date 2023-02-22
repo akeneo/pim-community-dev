@@ -38,7 +38,13 @@ final class GetFamiliesController
             return new RedirectResponse('/');
         }
 
-        if (false === $this->securityFacade->isGranted('pim_enrich_family_index')) {
+        if (!(
+            $this->securityFacade->isGranted('pim_enrich_family_index') &&
+            (
+                $this->securityFacade->isGranted('pim_identifier_generator_manage') ||
+                $this->securityFacade->isGranted('pim_identifier_generator_view')
+            )
+        )) {
             throw new AccessDeniedException();
         }
 

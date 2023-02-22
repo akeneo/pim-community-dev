@@ -5,6 +5,7 @@ import {useUiLocales} from '../hooks';
 import {LabelCollection} from '../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {LabelTranslationsSkeleton} from './LabelTranslationsSkeleton';
+import {useIdentifierGeneratorAclContext} from '../context';
 
 type LabelTranslationsProps = {
   labelCollection: LabelCollection;
@@ -13,6 +14,7 @@ type LabelTranslationsProps = {
 
 const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, onLabelsChange}) => {
   const translate = useTranslate();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const {data: locales = [], error, isLoading} = useUiLocales();
   const [value, setValue] = useState<LabelCollection>(labelCollection);
 
@@ -36,7 +38,11 @@ const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, o
         {error && <Helper level="error">{translate('pim_error.general')}</Helper>}
         {locales.map(locale => (
           <Field label={locale.label} key={locale.code} locale={locale.code}>
-            <TextInput value={value[locale.code] || ''} onChange={onLabelChange(locale.code)} />
+            <TextInput
+              value={value[locale.code] || ''}
+              onChange={onLabelChange(locale.code)}
+              readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+            />
           </Field>
         ))}
       </Styled.FormContainer>
