@@ -9,7 +9,7 @@ use Akeneo\Tool\Bundle\ApiBundle\Doctrine\DBAL\DeleteExpiredRefreshTokenQuery;
 use Psr\Log\LoggerInterface;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class DeleteExpiredTokensHandler
@@ -23,14 +23,14 @@ class DeleteExpiredTokensHandler
 
     public function handle(): void
     {
-        $this->logger->info('Start expired tokens removal');
+        $this->logger->notice('Start expired tokens removal');
 
         $this->deleteExpiredAccessTokenQuery->execute();
 
-        $this->logger->info('Expired access tokens removed');
+        $this->logger->notice('Expired access tokens removed');
 
         $this->deleteExpiredRefreshTokenQuery->execute();
 
-        $this->logger->info('End expired tokens removal');
+        $this->logger->notice('End expired tokens removal');
     }
 }

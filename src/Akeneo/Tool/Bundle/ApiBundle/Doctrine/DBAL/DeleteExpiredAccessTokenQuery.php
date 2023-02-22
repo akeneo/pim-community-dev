@@ -14,6 +14,7 @@ use Doctrine\DBAL\ParameterType;
 class DeleteExpiredAccessTokenQuery
 {
     private const DEFAULT_BATCH_SIZE = 100_000;
+    private const NUMBER_OF_LOOP = 500;
     public function __construct(private readonly Connection $connection)
     {
     }
@@ -32,8 +33,11 @@ class DeleteExpiredAccessTokenQuery
         $statement->bindValue('row_count', $batchSize, ParameterType::INTEGER);
         $statement->bindValue('now_timestamp', $nowTimestamp, ParameterType::INTEGER);
 
-        do {
+        for($i = 0; $i < self::NUMBER_OF_LOOP; $i++) {
             $affectedRows = $statement->executeStatement();
-        } while ($affectedRows >= $batchSize);
+            if ($affectedRows < $batchSize) {
+                break;
+            }
+        }
     }
 }
