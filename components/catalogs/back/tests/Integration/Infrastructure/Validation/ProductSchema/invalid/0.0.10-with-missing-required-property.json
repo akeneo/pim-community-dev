@@ -1,6 +1,6 @@
 {
   "$id": "https://example.com/product",
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.5/schema",
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
   "description": "You must provide a schema with valid property keys.",
   "properties": {
     "uuid": {
