@@ -132,13 +132,13 @@ class ConnectedAppSpec extends ObjectBehavior
             'categories' => ['E-commerce', 'print'],
             'certified' => true,
             'partner' => 'Akeneo partner',
-            'is_test_app' => true,
+            'is_custom_app' => true,
             'is_pending' => false,
             'has_outdated_scopes' => true,
         ]);
     }
 
-    public function it_is_neither_a_test_app_nor_pending_by_default(): void
+    public function it_is_neither_a_custom_app_nor_pending_by_default(): void
     {
         $this->beConstructedWith(
             '4028c158-d620-4903-9859-958b66a059e2',
@@ -166,7 +166,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'categories' => ['E-commerce', 'print'],
             'certified' => true,
             'partner' => 'Akeneo partner',
-            'is_test_app' => false,
+            'is_custom_app' => false,
             'is_pending' => false,
             'has_outdated_scopes' => false,
         ]);
@@ -195,7 +195,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'categories' => ['new category'],
             'certified' => true,
             'partner' => 'Akeneo Premium Partner',
-            'is_test_app' => true,
+            'is_custom_app' => true,
             'is_pending' => false,
             'has_outdated_scopes' => true,
         ]);
@@ -229,7 +229,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'categories' => ['E-commerce', 'print'],
             'certified' => true,
             'partner' => 'Akeneo partner',
-            'is_test_app' => false,
+            'is_custom_app' => false,
             'is_pending' => false,
             'has_outdated_scopes' => false,
         ]);

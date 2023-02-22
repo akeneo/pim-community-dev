@@ -1,5 +1,4 @@
 import React from 'react';
-import {Common} from './Common';
 import {PageHeader, PimView, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
 import {Breadcrumb} from 'akeneo-design-system';
 import {useIdentifierGeneratorContext} from '../context';
@@ -14,7 +13,6 @@ const Header: React.FC<HeaderProps> = ({children}) => {
 
   return (
     <>
-      <Common.Helper />
       <PageHeader>
         <PageHeader.Breadcrumb>
           <Breadcrumb>

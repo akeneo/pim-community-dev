@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
@@ -41,6 +42,9 @@ final class GetAvailablePropertiesController
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->securityFacade->isGranted('pim_identifier_generator_manage')) {
+            throw new AccessDeniedException();
         }
 
         $search = $request->query->getAlpha('search');

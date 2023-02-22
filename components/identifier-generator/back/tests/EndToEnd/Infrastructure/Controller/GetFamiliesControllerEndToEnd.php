@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,14 +27,21 @@ final class GetFamiliesControllerEndToEnd extends ControllerEndToEndTestCase
     }
 
     /** @test */
-    public function it_returns_http_forbidden_without_acl(): void
+    public function it_returns_http_forbidden_without_list_families_acl(): void
     {
-        $this->removeAclFromRole('action:pim_enrich_family_index');
-        $this->loginAs('admin');
-
+        $this->setAcls('ROLE_USER', ['action:pim_enrich_family_index' => false]);
+        $this->loginAs('mary');
         $this->callGetRouteWithQueryParam('akeneo_identifier_generator_get_families', ['codes' => 'familyA1,familyA2']);
         $response = $this->client->getResponse();
+        Assert::AssertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
 
+    /** @test */
+    public function it_returns_http_forbidden_without_view_generator_acl(): void
+    {
+        $this->loginAs('kevin');
+        $this->callGetRouteWithQueryParam('akeneo_identifier_generator_get_families', ['codes' => 'familyA1,familyA2']);
+        $response = $this->client->getResponse();
         Assert::AssertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
@@ -122,10 +128,5 @@ final class GetFamiliesControllerEndToEnd extends ControllerEndToEndTestCase
         ];
 
         Assert::assertSame($expected, json_decode($response->getContent(), true));
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useTechnicalCatalog(['identifier_generator']);
     }
 }

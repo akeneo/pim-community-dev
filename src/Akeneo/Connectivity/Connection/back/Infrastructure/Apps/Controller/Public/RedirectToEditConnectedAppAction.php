@@ -51,13 +51,6 @@ final class RedirectToEditConnectedAppAction
 
     private function isGrantedToManage(ConnectedApp $app): bool
     {
-        return
-            (
-                $app->isTestApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
-            ) || (
-                !$app->isTestApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_apps')
-            );
+        return $this->security->isGranted('akeneo_connectivity_connection_manage_apps');
     }
 }

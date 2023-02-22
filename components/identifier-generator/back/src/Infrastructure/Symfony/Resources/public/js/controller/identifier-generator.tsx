@@ -30,10 +30,7 @@ class IdentifierGeneratorController extends ReactController {
 
   renderRoute() {
     mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-settings'});
-    // TODO Put this back to highlight the right item.
-    // @see form_extensions.yml
-    // mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-settings-identifier-generator'});
-    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-settings-product-category'});
+    mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-settings-identifier-generator'});
 
     return super.renderRoute();
   }

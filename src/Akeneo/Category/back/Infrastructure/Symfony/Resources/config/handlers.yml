@@ -13,6 +13,7 @@ services:
   Akeneo\Category\Application\Command\DeactivateTemplateCommandHandler:
     arguments:
       - '@Akeneo\Category\Application\Query\DeactivateTemplate'
+      - '@event_dispatcher'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeactivateTemplateCommand'}
 
