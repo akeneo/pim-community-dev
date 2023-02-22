@@ -6,21 +6,21 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
-            -   fix_files_permissions
             -   load_docker_image_php
+            -   fix_files_permissions
             -   run:
                     name: Coupling back
                     command: PIM_CONTEXT=category make category-coupling-back
             -   run:
                     name: Lint back
                     command: PIM_CONTEXT=category make category-lint-back
+            -   start_test_containers
             -   run:
                     name: Unit back
                     command: PIM_CONTEXT=category make category-unit-back
-            -   start_test_containers
             -   run:
                     name: Integration back
-                    command: PIM_CONTEXT=category APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 make category-integration-back
+                    command: PIM_CONTEXT=category APP_ENV=test make category-integration-back
             -   run:
                     name: End to End back
                     command: PIM_CONTEXT=category APP_ENV=test make category-end-to-end-back
