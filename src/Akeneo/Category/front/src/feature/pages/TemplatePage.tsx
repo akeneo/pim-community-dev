@@ -1,5 +1,3 @@
-import React, {FC, useCallback, useEffect, useState} from 'react';
-import {Breadcrumb, SkeletonPlaceholder, TabBar, useTabBar} from 'akeneo-design-system';
 import {
   FullScreenError,
   getLabel,
@@ -11,12 +9,16 @@ import {
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
-import {useParams} from 'react-router';
-import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm';
+import {Breadcrumb, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
+import {DeactivateTemplateModal} from '../components/templates/DeactivateTemplateModal';
 import {cloneDeep, set} from 'lodash/fp';
-import {Template} from '../models';
+import {FC, useCallback, useEffect, useState} from 'react';
+import {useParams} from 'react-router';
 import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm';
+import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm';
+import {TemplateOtherActions} from '../components/templates/TemplateOtherActions';
+import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
+import {Template} from '../models';
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -97,6 +99,8 @@ const TemplatePage: FC = () => {
     [templateEdited]
   );
 
+  const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
+
   if (loadingStatus === 'error' || templateFetchingStatus === 'error') {
     return (
       <FullScreenError
@@ -130,6 +134,9 @@ const TemplatePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
+        <PageHeader.Actions>
+          <TemplateOtherActions onDeactivateTemplate={openDeactivateTemplateModal} />
+        </PageHeader.Actions>
         <PageHeader.Title>{templateLabel ?? templateId}</PageHeader.Title>
       </PageHeader>
       <PageContent>
@@ -158,6 +165,13 @@ const TemplatePage: FC = () => {
 
         {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (
           <EditTemplatePropertiesForm template={templateEdited} onChangeLabel={onChangeTemplateLabel} />
+        )}
+
+        {isDeactivateTemplateModelOpen && (
+          <DeactivateTemplateModal
+            template={{id: templateId, label: templateLabel}}
+            onClose={closeDeactivateTemplateModal}
+          />
         )}
       </PageContent>
     </>
