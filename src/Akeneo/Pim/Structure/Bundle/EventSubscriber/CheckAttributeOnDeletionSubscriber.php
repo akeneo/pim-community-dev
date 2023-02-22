@@ -31,7 +31,6 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::PRE_REMOVE => 'preRemove',
-            StorageEvents::PRE_REMOVE_ALL => 'bulkPreRemove',
         ];
     }
 
@@ -53,37 +52,6 @@ class CheckAttributeOnDeletionSubscriber implements EventSubscriberInterface
 
         if ($this->areAttributesUsedAsLabelInAFamily([$attribute->getId()])) {
             throw new AttributeRemovalException('pim_enrich.entity.attribute.flash.update.cant_remove_attributes_used_as_label');
-        }
-    }
-
-    /**
-     * Check if the attributes are used as label by any family
-     *
-     * @param RemoveEvent $event
-     * @throws AttributeRemovalException
-     */
-    public function bulkPreRemove(RemoveEvent $event)
-    {
-        $attributes = $event->getSubject();
-
-        if (!is_array($attributes)) {
-            return;
-        }
-        $attributes = array_filter(
-            $attributes,
-            fn ($attr): bool => $attr instanceof AttributeInterface
-        );
-        if ([] === $attributes) {
-            return;
-        }
-
-        $attributeIds = array_map(
-            fn (AttributeInterface $attr):int => $attr->getId(),
-            $attributes
-        );
-
-        if ($this->areAttributesUsedAsLabelInAFamily($attributeIds)) {
-            throw new AttributeRemovalException('flash.attribute.cant_remove_attributes_used_as_label');
         }
     }
 

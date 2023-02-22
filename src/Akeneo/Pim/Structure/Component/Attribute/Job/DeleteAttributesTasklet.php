@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -30,6 +31,7 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
         private readonly EntityManagerClearerInterface $cacheClearer,
         private readonly AttributeIsAFamilyVariantAxisInterface $attributeIsAFamilyVariantAxis,
         private readonly ChannelRepositoryInterface $channelRepository,
+        private readonly Connection $dbConnection,
         private readonly int $batchSize = 100,
     ) {
     }
@@ -48,26 +50,27 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
         }
 
         $attributesToDelete = $this->getAttributesToDelete();
+        $attributeIdsUsedAsLabelInAFamily = $this->getAllAttributeIdsUsedAsLabelInAFamily();
 
         $this->stepExecution->setTotalItems(count($attributesToDelete));
         $this->stepExecution->addSummaryInfo('deleted_attributes', 0);
 
         foreach (array_chunk($attributesToDelete, $this->batchSize) as $batchAttributes) {
-            $this->delete($batchAttributes);
+            $this->delete($batchAttributes, $attributeIdsUsedAsLabelInAFamily);
         }
     }
 
     /**
      * @param AttributeInterface[] $attributes
      */
-    private function delete(array $attributes): void
+    private function delete(array $attributes, array $attributeIdsUsedAsLabelInAFamily): void
     {
         $initialAttributeCount = count($attributes);
 
         foreach ($attributes as $key => $attribute) {
             if ($this->isAttributeIdentifier($attribute)
                 || $this->isAttributeAFamilyVariantAxis($attribute)
-                || $this->isAttributeUsedAsLabelInAFamily($attribute)
+                || $this->isAttributeUsedAsLabelInAFamily($attribute, $attributeIdsUsedAsLabelInAFamily)
                 || $this->isAttributeUsedAsChannelConversionUnit($attribute)
             ) {
                 unset($attributes[$key]);
@@ -114,10 +117,20 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
         return $isAFamilyVariantAxis;
     }
 
-    private function isAttributeUsedAsLabelInAFamily(AttributeInterface $attribute): bool
+    private function isAttributeUsedAsLabelInAFamily(AttributeInterface $attribute, array $attributeIdsUsedAsLabelInAFamily): bool
     {
-        // TODO
-        return false;
+        $isAttributeUsedAsLabelInAFamily = in_array($attribute->getId(), $attributeIdsUsedAsLabelInAFamily);
+
+        if ($isAttributeUsedAsLabelInAFamily) {
+            $this->stepExecution->addWarning(
+                'flash.attribute.cant_remove_attributes_used_as_label',
+                [],
+                new DataInvalidItem($attribute),
+            );
+            $this->stepExecution->incrementSummaryInfo('skipped_attributes', 1);
+        }
+
+        return $isAttributeUsedAsLabelInAFamily;
     }
 
     private function isAttributeUsedAsChannelConversionUnit(AttributeInterface $attribute): bool
@@ -158,6 +171,19 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
             'NOT IN' => $this->attributeRepository->findByNotInCodes($filters['values']),
             default => new \LogicException('Operator should be "IN" or "NOT IN"'),
         };
+    }
+
+    private function getAllAttributeIdsUsedAsLabelInAFamily(): array
+    {
+        // TODO: to move in a dedicated service api ?
+        $sql = <<<SQL
+            SELECT DISTINCT (label_attribute_id) FROM pim_catalog_family
+        SQL;
+
+        return array_map(
+            fn (array $result) => $result['label_attribute_id'],
+            $this->dbConnection->executeQuery($sql)->fetchAllAssociative()
+        );
     }
 
     public function isTrackable(): bool
