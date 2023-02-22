@@ -106,4 +106,4 @@ services:
     Akeneo\Category\Infrastructure\Controller\InternalApi\YoloController:
         public: true
         arguments:
-            - '@Akeneo\Category\Infrastructure\FileSystem\DeleteFileFromStorage'
+            - '@Akeneo\Category\Infrastructure\FileSystem\DeleteFilesFromStorage'

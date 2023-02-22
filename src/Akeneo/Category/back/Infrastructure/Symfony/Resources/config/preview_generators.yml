@@ -20,6 +20,6 @@ services:
         tags:
             - { name: liip_imagine.binary.loader, loader: flysystem_category_data_loader }
 
-    Akeneo\Category\Infrastructure\FileSystem\DeleteFileFromStorage:
+    Akeneo\Category\Infrastructure\FileSystem\DeleteFilesFromStorage:
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'

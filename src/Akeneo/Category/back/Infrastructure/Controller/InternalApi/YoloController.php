@@ -6,7 +6,7 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\DeactivateTemplateCommand;
-use Akeneo\Category\Infrastructure\FileSystem\DeleteFileFromStorage;
+use Akeneo\Category\Infrastructure\FileSystem\DeleteFilesFromStorage;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,13 +20,13 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class YoloController
 {
     public function __construct(
-        private readonly DeleteFileFromStorage $deleteImageFromStorage,
+        private readonly DeleteFilesFromStorage $deleteImageFromStorage,
     ) {
     }
 
     public function __invoke(Request $request): Response
     {
-        $this->deleteImageFromStorage->deleteImage();
+        $this->deleteImageFromStorage->delete();
 
         return new Response(null, Response::HTTP_ACCEPTED);
     }
