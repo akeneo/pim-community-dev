@@ -164,7 +164,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
             [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
         )->shouldBeCalled();
 
-        $event->getSubject()->willReturn($family);
+        $event->getSubject()->willReturn([$family]);
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(false);
         $this->onBulkSave($event);
@@ -208,7 +208,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
             [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
         )->shouldBeCalled();
 
-        $event->getSubject()->willReturn($family);
+        $event->getSubject()->willReturn([$family]);
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(false);
         $errorMessage = 'One or more errors occurred while updating the following family variants:\n' .
