@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
+use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
@@ -17,6 +21,8 @@ use Doctrine\DBAL\Connection;
  */
 class GetCategoriesSqlIntegration extends CategoryTestCase
 {
+    private CategoryDoctrine|Category $categoryShoes;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -29,7 +35,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
             ]
         ]);
 
-        $categoryShoes = $this->createCategory([
+        $this->categoryShoes = $this->createCategory([
             'code' => 'shoes',
             'labels' => [
                 'fr_FR' => 'Chaussures',
@@ -43,7 +49,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'fr_FR' => 'Bottes',
                 'en_US' => 'Boots'
             ],
-            'parent' => $categoryShoes->getCode(),
+            'parent' => $this->categoryShoes->getCode(),
         ]);
 
         $this->createCategory([
@@ -52,7 +58,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'fr_FR' => 'Sandales',
                 'en_US' => 'Sandals'
             ],
-            'parent' => $categoryShoes->getCode(),
+            'parent' => $this->categoryShoes->getCode(),
         ]);
 
         $this->createCategory([
@@ -61,7 +67,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'fr_FR' => 'Pantoufles',
                 'en_US' => 'Slippers'
             ],
-            'parent' => $categoryShoes->getCode(),
+            'parent' => $this->categoryShoes->getCode(),
         ]);
 
         $this->createCategory([
@@ -71,8 +77,6 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'en_US' => 'Pants'
             ]
         ]);
-
-        $this->updateCategoryWithValues($categoryShoes->getCode());
     }
 
     public function testReturnExternalCategoryApiList(): void
@@ -123,7 +127,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
             sqlWhere: 'category.code IN (:category_codes)',
             params: [
                 'category_codes' => ['socks', 'shoes'],
-                'with_enriched_attributes' => true,
+                'with_enriched_attributes' => false,
                 'with_position' => false,
             ],
             types : [
@@ -218,6 +222,99 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                     break;
                 case 'slippers':
                     $this->assertPositionIs(3, $category);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public function testGetCategoryByCodesWithEnrichedAttributes(): void
+    {
+        $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $this->categoryShoes->getId());
+
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+
+        $this->updateCategoryWithValues($this->categoryShoes->getCode());
+
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: '1=1',
+            params: [
+                'category_codes' => [],
+                'with_enriched_attributes' => true,
+                'with_position' => false,
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
+        $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
+        $this->assertIsArray($retrievedCategories);
+
+        /** @var ExternalApiCategory $category */
+        foreach ($retrievedCategories as $category) {
+            switch ($category->getCode()) {
+                case 'shoes':
+                    $this->assertIsArray($category->getValues());
+                    $this->assertArrayHasKey('photo|8587cda6-58c8-47fa-9278-033e1d8c735c', $category->getValues());
+                    $this->assertArrayHasKey('title|87939c45-1d85-4134-9579-d594fff65030|ecommerce|en_US', $category->getValues());
+                    $this->assertArrayHasKey('title|87939c45-1d85-4134-9579-d594fff65030|ecommerce|fr_FR', $category->getValues());
+                    break;
+                case 'boots':
+                case 'socks':
+                case 'pants':
+                case 'sandals':
+                case 'slippers':
+                    $this->assertNull($category->getValues());
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public function testGetCategoryByCodesWithIgnoredEnrichedAttributes(): void
+    {
+        $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $this->categoryShoes->getId());
+
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+
+        $this->updateCategoryWithValues($this->categoryShoes->getCode());
+
+        $this->deactivateTemplate($templateModel->getUuid()->getValue());
+
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: '1=1',
+            params: [
+                'category_codes' => [],
+                'with_enriched_attributes' => true,
+                'with_position' => false,
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
+        $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
+        $this->assertIsArray($retrievedCategories);
+
+        /** @var ExternalApiCategory $category */
+        foreach ($retrievedCategories as $category) {
+            switch ($category->getCode()) {
+                case 'shoes':
+                case 'boots':
+                case 'socks':
+                case 'pants':
+                case 'sandals':
+                case 'slippers':
+                    $this->assertNull($category->getValues());
                     break;
                 default:
                     break;

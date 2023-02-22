@@ -68,6 +68,11 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Application\Query\IsTemplateDeactivated:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\IsTemplateDeactivatedSql
+    arguments:
+      - '@database_connection'
+
   Akeneo\Category\Application\Query\DeleteTemplateAndAttributes:
     class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteTemplateAndAttributesSql
     arguments:
