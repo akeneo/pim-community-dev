@@ -45,7 +45,6 @@ pim_identifier_generator:
     check_help_center: 'Consulteu el nostre centre d''ajuda per obtenir més informació.'
     max_generator:
       title: 'De moment només és possible crear un generador d''identificadors.'
-      info: 'Aviat podreu configurar diversos generadors que coincideixen amb tots els vostres casos d''ús.'
     confirmation: 'Està segur que vol suprimir aquesta propietat?'
   selection:
     helper:

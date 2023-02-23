@@ -133,12 +133,13 @@ akeneo_catalogs:
         locale:
           label: Configuració Regional
           placeholder: Seleccioneu un local
+        currency:
+          label: Moneda
+          placeholder: Seleccioneu una moneda
       select_source:
         label: Font del Pim
         search: Criteri de cerca
-        no_results: No hi ha resultats
-        section_system: sistema
-        section_attributes: atributs
+        no_results: No s’han trobat coincidències
       placeholder:
         title: Seleccionar font
         illustration_title: Feu clic a un objectiu al tauler dret per configurar el mapa de catàleg.
