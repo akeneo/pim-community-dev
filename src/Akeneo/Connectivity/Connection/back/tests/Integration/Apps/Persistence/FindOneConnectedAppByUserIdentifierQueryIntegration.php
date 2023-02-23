@@ -78,7 +78,7 @@ class FindOneConnectedAppByUserIdentifierQueryIntegration extends TestCase
         Assert::assertEquals($expectedApp, $retrievedApp);
     }
 
-    public function test_it_can_retrieve_a_connected_app_by_id_related_to_a_test_app(): void
+    public function test_it_can_retrieve_a_connected_app_by_id_related_to_a_custom_app(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '0dfce574-2238-4b13-b8cc-8d257ce7645b',

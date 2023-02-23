@@ -19,6 +19,11 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   useNotify: () => {
     return mockNotify;
   },
+  useSecurity: () => {
+    return {
+      isGranted: (acl: string) => true,
+    };
+  },
 }));
 
 const defaultUiLocales = [

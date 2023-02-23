@@ -115,7 +115,7 @@ class GetCatalogActionTest extends IntegrationTestCase
 
         Assert::assertJsonStringEqualsJsonString(
             \json_encode($catalogProductMapping, JSON_THROW_ON_ERROR),
-            \json_encode($payload['product_mapping'], JSON_THROW_ON_ERROR)
+            \json_encode($payload['product_mapping'], JSON_THROW_ON_ERROR),
         );
         Assert::assertTrue($payload['has_product_mapping_schema']);
     }

@@ -78,6 +78,7 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
         $this->findOneAttributeByCodeQuery = $this->createMock(FindOneAttributeByCodeQueryInterface::class);
         $this->findOneAttributeByCodeQuery
             ->method('execute')
+            // @phpstan-ignore-next-line
             ->willReturnCallback(fn ($code) => $this->attributes[$code] ?? null);
         self::getContainer()->set(FindOneAttributeByCodeQuery::class, $this->findOneAttributeByCodeQuery);
 
@@ -88,14 +89,14 @@ abstract class AbstractAttributeCriterionTest extends IntegrationTestCase
                 function ($code, $options): array {
                     $intersection = \array_filter(
                         $this->attributeOptions[$code] ?? [],
-                        static fn ($option): bool => \in_array($option, $options)
+                        static fn ($option): bool => \in_array($option, $options),
                     );
 
                     return \array_map(static fn ($option): array => [
                         'code' => $option,
                         'label' => '['.$option.']',
                     ], $intersection);
-                }
+                },
             );
         self::getContainer()->set(GetAttributeOptionsByCodeQuery::class, $this->getAttributeOptionsByCodeQuery);
 

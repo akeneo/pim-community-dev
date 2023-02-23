@@ -136,16 +136,17 @@ class GetOpenAppUrlActionSpec extends ObjectBehavior
             ->during('__invoke', [$request, 'connection_code']);
     }
 
-    public function it_denies_access_to_users_who_cannot_manage_test_apps(
+    public function it_denies_access_to_users_who_cannot_manage_custom_apps(
         Request $request,
         SecurityFacade $security,
         GetAppQueryInterface $getAppQuery,
     ): void {
-        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(false);
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(false);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
 
-        $getAppQuery->execute('connected_app_id')->willReturn(App::fromTestAppValues([
+        $getAppQuery->execute('connected_app_id')->willReturn(App::fromCustomAppValues([
             'id' => 'connected_app_id',
-            'name' => 'test app',
+            'name' => 'custom app',
             'activate_url' => 'http://url.test',
             'callback_url' => 'http://url.test',
         ]));

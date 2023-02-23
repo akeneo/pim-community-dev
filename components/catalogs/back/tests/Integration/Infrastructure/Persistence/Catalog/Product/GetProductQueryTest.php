@@ -112,17 +112,19 @@ class GetProductQueryTest extends IntegrationTestCase
         ]);
 
         $catalog = new Catalog(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'owner',
-            true,
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            enabled: true,
+            productSelectionCriteria: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-            ['channels' => ['ecommerce']],
-            [],
+            productValueFilters: ['channels' => ['ecommerce']],
+            productMapping: [],
         );
 
         $product = $this->createProduct('tshirt-blue', [
@@ -199,17 +201,19 @@ class GetProductQueryTest extends IntegrationTestCase
         ]);
 
         $catalog = new Catalog(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'owner',
-            true,
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            enabled: true,
+            productSelectionCriteria: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-            ['locales' => ['en_US', 'fr_FR']],
-            [],
+            productValueFilters: ['locales' => ['en_US', 'fr_FR']],
+            productMapping: [],
         );
 
 
@@ -292,17 +296,19 @@ class GetProductQueryTest extends IntegrationTestCase
         ]);
 
         $catalog = new Catalog(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'owner',
-            true,
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            enabled: true,
+            productSelectionCriteria: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-            ['currencies' => ['USD', 'EUR']],
-            [],
+            productValueFilters: ['currencies' => ['USD', 'EUR']],
+            productMapping: [],
         );
 
         $product = $this->createProduct('tshirt-blue', [
@@ -392,21 +398,23 @@ class GetProductQueryTest extends IntegrationTestCase
         ]);
 
         $catalog = new Catalog(
-            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            'Store US',
-            'owner',
-            true,
-            [
-                'field' => 'enabled',
-                'operator' => Operator::EQUALS,
-                'value' => true,
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            enabled: true,
+            productSelectionCriteria: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
             ],
-            [
+            productValueFilters: [
                 'channels' => ['print'],
                 'locales' => ['en_US'],
                 'currencies' => ['USD'],
             ],
-            [],
+            productMapping: [],
         );
 
         $product = $this->createProduct('tshirt-blue', [

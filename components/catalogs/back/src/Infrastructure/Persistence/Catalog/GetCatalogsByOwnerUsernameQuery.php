@@ -49,7 +49,7 @@ final class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernam
             [
                 'limit' => Types::INTEGER,
                 'offset' => Types::INTEGER,
-            ]
+            ],
         )->fetchAllAssociative();
 
         return \array_map(static fn ($row): Catalog => new Catalog(

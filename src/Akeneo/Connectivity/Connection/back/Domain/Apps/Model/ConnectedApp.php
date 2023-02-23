@@ -15,20 +15,20 @@ final class ConnectedApp
      * @param string[] $categories
      */
     public function __construct(
-        private string $id,
-        private string $name,
-        private array $scopes,
-        private string $connectionCode,
-        private ?string $logo,
-        private ?string $author,
-        private string $userGroupName,
-        private string $connectionUsername,
-        private array $categories = [],
-        private bool $certified = false,
-        private ?string $partner = null,
-        private bool $isTestApp = false,
-        private bool $isPending = false,
-        private bool $hasOutdatedScopes = false,
+        private readonly string $id,
+        private readonly string $name,
+        private readonly array $scopes,
+        private readonly string $connectionCode,
+        private readonly ?string $logo,
+        private readonly ?string $author,
+        private readonly string $userGroupName,
+        private readonly string $connectionUsername,
+        private readonly array $categories = [],
+        private readonly bool $certified = false,
+        private readonly ?string $partner = null,
+        private readonly bool $isCustomApp = false,
+        private readonly bool $isPending = false,
+        private readonly bool $hasOutdatedScopes = false,
     ) {
     }
 
@@ -93,9 +93,9 @@ final class ConnectedApp
         return $this->certified;
     }
 
-    public function isTestApp(): bool
+    public function isCustomApp(): bool
     {
-        return $this->isTestApp;
+        return $this->isCustomApp;
     }
 
     public function isPending(): bool
@@ -121,7 +121,7 @@ final class ConnectedApp
      *  categories: array<string>,
      *  certified: bool,
      *  partner: string|null,
-     *  is_test_app: bool,
+     *  is_custom_app: bool,
      *  is_pending: bool,
      *  has_outdated_scopes: bool
      * }
@@ -140,7 +140,7 @@ final class ConnectedApp
             'categories' => $this->categories,
             'certified' => $this->certified,
             'partner' => $this->partner,
-            'is_test_app' => $this->isTestApp,
+            'is_custom_app' => $this->isCustomApp,
             'is_pending' => $this->isPending,
             'has_outdated_scopes' => $this->hasOutdatedScopes,
         ];
@@ -169,7 +169,7 @@ final class ConnectedApp
             $categories,
             $certified,
             $partner,
-            $this->isTestApp,
+            $this->isCustomApp,
             $this->isPending,
             $this->hasOutdatedScopes,
         );

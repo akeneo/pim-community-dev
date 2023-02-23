@@ -13,7 +13,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 final class ViolationsException extends \LogicException
 {
-    public function __construct(private ConstraintViolationListInterface $constraintViolationList)
+    public function __construct(private readonly ConstraintViolationListInterface $constraintViolationList)
     {
         parent::__construct(
             $this->constraintViolationList instanceof ConstraintViolationList
@@ -25,5 +25,27 @@ final class ViolationsException extends \LogicException
     public function violations(): ConstraintViolationListInterface
     {
         return $this->constraintViolationList;
+    }
+
+    /**
+     * @return array<int, array{error: array{code: string|null, message: string}}>
+     */
+    public function normalize(): array
+    {
+        if (count($this->constraintViolationList) === 0) {
+            return [];
+        }
+
+        $constraints = [];
+        foreach ($this->constraintViolationList as $constraintViolation) {
+            $constraints[] = [
+                'error' => [
+                    'code' => $constraintViolation->getCode(),
+                    'message' => $constraintViolation->getMessage(),
+                ],
+            ];
+        }
+
+        return $constraints;
     }
 }

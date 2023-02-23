@@ -23,14 +23,14 @@ class DeactivateTemplateController
     ) {
     }
 
-    public function __invoke(Request $request, string $uuid): Response
+    public function __invoke(Request $request, string $templateUuid): Response
     {
         if (!$this->securityFacade->isGranted('pim_enrich_product_category_template')
         ) {
             throw new AccessDeniedException();
         }
 
-        $command = DeactivateTemplateCommand::create($uuid);
+        $command = DeactivateTemplateCommand::create($templateUuid);
         $this->categoryCommandBus->dispatch($command);
 
         return new Response(null, Response::HTTP_ACCEPTED);

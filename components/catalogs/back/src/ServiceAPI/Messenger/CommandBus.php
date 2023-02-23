@@ -18,7 +18,7 @@ final class CommandBus implements CommandBusInterface
     use HandleTrait;
 
     public function __construct(
-        MessageBusInterface $messageBus
+        MessageBusInterface $messageBus,
     ) {
         $this->messageBus = $messageBus;
     }
