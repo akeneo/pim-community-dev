@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Platform\Messaging\Infrastructure\Config;
+namespace Akeneo\Tool\Bundle\MessengerBundle\Config;
 
-use Akeneo\Pim\Platform\Messaging\Domain\Config\TransportType;
+use Akeneo\Tool\Component\Messenger\Config\TransportType;
 use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
 

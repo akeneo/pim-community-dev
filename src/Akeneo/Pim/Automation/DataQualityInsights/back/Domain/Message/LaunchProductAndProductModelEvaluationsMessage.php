@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Message;
 
-use Akeneo\Pim\Platform\Messaging\Domain\MessageTenantAwareInterface;
-use Akeneo\Pim\Platform\Messaging\Domain\SerializableMessageInterface;
-use Akeneo\Pim\Platform\Messaging\Domain\TenantAwareTrait;
+use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
+use Akeneo\Tool\Component\Messenger\SerializableMessageInterface;
+use Akeneo\Tool\Component\Messenger\TraceableMessageTrait;
 use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class LaunchProductAndProductModelEvaluationsMessage implements MessageTenantAwareInterface, SerializableMessageInterface
+final class LaunchProductAndProductModelEvaluationsMessage implements TraceableMessageInterface, SerializableMessageInterface
 {
-    use TenantAwareTrait;
+    use TraceableMessageTrait;
 
     public function __construct(public readonly string $text)
     {

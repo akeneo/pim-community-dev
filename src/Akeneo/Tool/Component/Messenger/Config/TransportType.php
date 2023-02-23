@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Platform\Messaging\Domain\Config;
+namespace Akeneo\Tool\Component\Messenger\Config;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)

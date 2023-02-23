@@ -59,5 +59,4 @@ return [
     Akeneo\Platform\Bundle\PimVersionBundle\PimVersionBundle::class => ['all' => true],
     Akeneo\Category\Infrastructure\Symfony\AkeneoCategoryBundle::class => ['all' => true],
     Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Symfony\AkeneoIdentifierGeneratorBundle::class => ['all' => true],
-    Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\AkeneoMessagingBundle::class => ['all' => true],
 ];

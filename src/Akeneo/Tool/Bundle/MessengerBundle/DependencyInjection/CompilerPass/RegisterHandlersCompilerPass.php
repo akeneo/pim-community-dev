@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\DependencyInjection\CompilerPass;
+namespace Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection\CompilerPass;
 
-use Akeneo\Pim\Platform\Messaging\Infrastructure\Symfony\Command\ProcessMessageCommand;
+use Akeneo\Tool\Bundle\MessengerBundle\Command\ProcessMessageCommand;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
