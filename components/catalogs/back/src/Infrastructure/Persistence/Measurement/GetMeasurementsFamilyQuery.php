@@ -31,6 +31,7 @@ final class GetMeasurementsFamilyQuery implements GetMeasurementsFamilyQueryInte
         $unitNormalizer = static fn (array $unit): array => [
             'code' => (string) $unit['code'],
             'label' => (string) ($unit['labels'][$locale] ?? \sprintf('[%s]', (string) $unit['code'])),
+            'convert_from_standard' => $unit['convert_from_standard'],
         ];
 
         $normalizedUnits = \array_map($unitNormalizer, $measurementFamily->units);
@@ -38,6 +39,7 @@ final class GetMeasurementsFamilyQuery implements GetMeasurementsFamilyQueryInte
         return [
             'code' => $measurementFamily->code,
             'units' => $normalizedUnits,
+            'standard_unit' => $measurementFamily->standardUnitCode
         ];
     }
 }

@@ -19,6 +19,7 @@ services:
             - '../../../../ServiceAPI/'
             - '../../../../Application/Exception'
             - '../../../../Infrastructure/Validation'
+            - '../../../../Infrastructure/Measurement/Exception'
 
     Akeneo\Catalogs\Application\Handler\:
         resource: '../../../../Application/Handler/'

@@ -16,10 +16,13 @@ type Props = {
     measurementFamily: string | null;
 };
 
-export const SelectMeasurementUnitDropdown: FC<Props> = ({source, onChange, error, measurementFamily}) => {
+export const SelectMeasurementUnitDropdown: FC<Props> = (
+    {
+        source, onChange,
+        error,
+        measurementFamily}) => {
     const translate = useTranslate();
     const {data: measurementUnits} = useMeasurements(measurementFamily ?? '');
-
     return (
         <>
         <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.unit.label')}>
@@ -31,11 +34,12 @@ export const SelectMeasurementUnitDropdown: FC<Props> = ({source, onChange, erro
                 emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                 openLabel={translate('akeneo_catalogs.common.select.open')}
                 placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.unit.placeholder')}
+                data-testid='metric-source-parameter-unit-dropdown'
             >
                 {measurementUnits?.map(unit => (
-                    <SelectInput.Option key={unit.code} title={unit.label} value={unit.code}>
-                        {unit.label}
-                    </SelectInput.Option>
+                        <option key={unit.code} title={unit.label} value={unit.code}>
+                            {unit.label}
+                        </option>
                 ))}
             </SelectInput>
             {undefined !== error && (

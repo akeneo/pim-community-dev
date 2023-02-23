@@ -50,7 +50,7 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
                 source = {...source, parameters: {...source.parameters, label_locale: null}};
                 break;
             case 'pim_catalog_metric':
-                source = {...source, parameters: {...source.parameters, unit: null}};
+                source = {...source, parameters: {...source.parameters, unit: attribute.default_measurement_unit}};
                 break;
         }
 

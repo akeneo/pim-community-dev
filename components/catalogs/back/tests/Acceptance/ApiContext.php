@@ -23,6 +23,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -796,6 +797,14 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'weight' => [
+                        'source' => 'weight',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'unit' => 'GRAM',
+                        ],
+                    ],
                 ],
             ),
         );
@@ -848,6 +857,9 @@ class ApiContext implements Context
                     },
                     "type": {
                       "type": "string"
+                    },
+                    "weight": {
+                      "type": "number"
                     }
                   }
                 }
@@ -880,6 +892,10 @@ class ApiContext implements Context
                 'is_released' => true,
                 'picture' => $this->files['akeneoLogoImage'],
                 'enabled' => true,
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 12000,
+                ],
             ],
             [
                 'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
@@ -893,6 +909,10 @@ class ApiContext implements Context
                 'is_released' => true,
                 'picture' => $this->files['akeneoLogoImage'],
                 'enabled' => false,
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 125.50,
+                ],
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -906,6 +926,10 @@ class ApiContext implements Context
                 'is_released' => false,
                 'picture' => $this->files['ziggyImage'],
                 'enabled' => true,
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 125,
+                ],
             ],
         ];
 
@@ -958,6 +982,15 @@ class ApiContext implements Context
             'scopable' => false,
             'localizable' => false,
         ]);
+        $this->createAttribute([
+            'code' => 'weight',
+            'type' => 'pim_catalog_metric',
+            'scopable' => false,
+            'localizable' => false,
+            'metric_family' => 'Weight',
+            'default_metric_unit' => 'KILOGRAM',
+            'decimals_allowed' => true,
+        ]);
 
         $this->createFamily('t-shirt', [
             'sku',
@@ -968,6 +1001,7 @@ class ApiContext implements Context
             'artists_customization_count',
             'released_at',
             'is_released',
+            'weight',
         ]);
 
         $bus = $this->container->get('pim_enrich.product.message_bus');
@@ -988,6 +1022,7 @@ class ApiContext implements Context
                     new SetDateValue('released_at', null, null, $product['released_at']),
                     new SetBooleanValue('is_released', null, null, $product['is_released']),
                     new SetImageValue('picture', null, null, $product['picture']),
+                    new SetMeasurementValue('weight', null, null, $product['weight']['amount'], $product['weight']['unit']),
                 ],
             );
 
@@ -1036,6 +1071,7 @@ class ApiContext implements Context
                 'is_released' => true,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
                 'type' => 't-shirt',
+                'weight' => 12000000,
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -1049,6 +1085,7 @@ class ApiContext implements Context
                 'is_released' => false,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
                 'type' => 't-shirt',
+                'weight' => 125000,
             ],
         ];
 
@@ -1091,6 +1128,7 @@ class ApiContext implements Context
             'is_released' => true,
             'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
             'type' => 't-shirt',
+            'weight' => 12000000,
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload);
