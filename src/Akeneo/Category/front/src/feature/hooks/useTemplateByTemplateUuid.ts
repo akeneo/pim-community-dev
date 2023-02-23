@@ -49,12 +49,10 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
       });
   }, [uuid, url]);
 
-  const options = useMemo(() => {
-    return {
+  const options = {
       enabled: uuid !== null && url !== null,
       staleTime: TEMPLATE_FETCH_STALE_TIME,
-    }
-  }, [uuid, url]);
+  };
 
   const response = useQuery<Template, any>(['template'], fetchTemplate, options);
 
