@@ -39,7 +39,7 @@ export const TargetSourceAssociation: FC<Props> = memo(
             <Table.Row key={targetCode} onClick={() => onClick(targetCode, source)} isSelected={isSelected}>
                 <TargetCell>
                     {targetLabel ?? targetCode}
-                    {isRequired && <RequiredPill level='warning' />}
+                    {isRequired && <RequiredPill level='warning' data-testid='required-pill'/>}
                 </TargetCell>
                 {(null === source || null === source.source) && (
                     <PlaceholderCell>

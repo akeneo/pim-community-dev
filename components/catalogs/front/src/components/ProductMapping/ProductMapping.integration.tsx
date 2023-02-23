@@ -33,6 +33,7 @@ const PRODUCT_MAPPING_SCHEMA = {
             enum: ['S', 'M', 'L'],
         },
     },
+    required: ['name'],
 };
 
 beforeEach(() => {
@@ -405,5 +406,37 @@ test('it displays requirements', async () => {
         await within(await SourcePanel()).findByText(
             'akeneo_catalogs.product_mapping.source.requirements.constraints.enum'
         )
+    ).toBeInTheDocument();
+});
+
+test('it displays a pill for a required target', async () => {
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMappingSchema={PRODUCT_MAPPING_SCHEMA}
+                    productMapping={productMapping}
+                    errors={{}}
+                    onChange={jest.fn()}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(
+        await within(await screen.findByText('Product name')).findByTestId('required-pill')
     ).toBeInTheDocument();
 });
