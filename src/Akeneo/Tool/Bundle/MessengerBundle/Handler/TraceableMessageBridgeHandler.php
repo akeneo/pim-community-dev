@@ -41,24 +41,35 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
             $env['APP_TENANT_ID'] = $tenantId;
         };
 
-        $process = new Process([
-            'php',
-            'bin/console',
-            'akeneo:process-message',
-            \json_encode($this->serializer->encode(new Envelope($message))),
-            $this->consumerName,
-        ], null, $env);
+        try {
+            $process = new Process([
+                'php',
+                'bin/console',
+                'akeneo:process-message',
+                // @TODO: don't use this serializer? because we need to use an envelope...
+                \json_encode($this->serializer->encode(new Envelope($message))),
+                $this->consumerName,
+            ], null, $env);
 
-        $process->start();
-        $process->wait();
+            $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
-        $this->logger->info('akeneo_messenger.message_treated', [
-            'tenant_id' => $tenantId,
-            'correlation_id' => $correlationId,
-        ]);
+            $startTime = time();
+            $process->start();
+            $process->wait();
 
-        $output = $process->getOutput();
-        $exitCode = $process->getExitCode();
-        echo "Output = " . $output . ", exitCode = $exitCode" . PHP_EOL;
+            $this->logger->info('akeneo_messenger.message_treated', [
+                'tenant_id' => $tenantId,
+                'correlation_id' => $correlationId,
+                'execution_time_in_sec' => time() - $startTime,
+                'process_exit_code' => $process->getExitCode(),
+            ]);
+
+            $this->logger->debug(sprintf('Command exit code: "%s"', $process->getExitCode()));
+            $this->logger->debug(sprintf('Command output: "%s"', $process->getOutput()));
+        } catch (\Throwable $t) {
+            $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), [
+                'trace' => $t->getTraceAsString(),
+            ]);
+        }
     }
 }
