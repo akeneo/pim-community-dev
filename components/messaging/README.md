@@ -6,13 +6,13 @@ The goal of this component is to facilitate the set up of queues and consumers.
 
 The component uses Symfony Messenger to configure the queue according to the environment
 
-| Env       | Transport         |
----------------------------------
-| dev       | doctrine          |
-| test      | PubSub            |
-| test_fake | In Memory         |
-| behat     | PubSub            |
-| prod      | doctrine / PubSub |
+| Env        | Transport         |
+|------------|-------------------|
+| dev        | doctrine          |
+| test       | PubSub            |
+| test_fake  | In Memory         |
+| behat      | PubSub            |
+| prod       | doctrine / PubSub |
 
 ## How it works
 
@@ -24,16 +24,16 @@ flowchart LR
     action -- Publish message in topic --> queue[(Multi-tenant queue)]
     Consumer1 <-- Ask messages for subscription1? --> queue
     subgraph Tenant agnostic daemon
-        Consumer1 -- Launch command in a subprocess with tenant --> ProcessMessageCommand1
+        Consumer1 -- Launch command in a subprocess with tenant --> pmc1[processMessageCommand]
         subgraph Tenant aware process
-            ProcessMessageCommand1 -- Launch the final handler --> Handler1
+            pmc1[processMessageCommand] -- Launch the final handler --> Handler1
         end
     end
     Consumer2 <-- Ask messages for subscription2? --> queue
     subgraph Tenant agnostic daemon
-        Consumer2 -- Launch command in a subprocess with tenant --> ProcessMessageCommand2
+        Consumer2 -- Launch command in a subprocess with tenant --> pmc2[processMessageCommand]
         subgraph Tenant aware process
-            ProcessMessageCommand2 -- Launch the final handler --> Handler2
+            pmc2[processMessageCommand] -- Launch the final handler --> Handler2
         end
     end
 ```
