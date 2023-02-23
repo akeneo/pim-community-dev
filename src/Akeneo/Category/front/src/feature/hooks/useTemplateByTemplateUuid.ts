@@ -38,20 +38,19 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
       return {};
     }
 
-    return fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          history.push('/');
-          notify(NotificationLevel.ERROR, translate('akeneo.category.template.not_found'));
-        }
+    return fetch(url).then(response => {
+      if (!response.ok) {
+        history.push('/');
+        notify(NotificationLevel.ERROR, translate('akeneo.category.template.not_found'));
+      }
 
-        return response.json();
-      });
+      return response.json();
+    });
   }, [uuid, url]);
 
   const options = {
-      enabled: uuid !== null && url !== null,
-      staleTime: TEMPLATE_FETCH_STALE_TIME,
+    enabled: uuid !== null && url !== null,
+    staleTime: TEMPLATE_FETCH_STALE_TIME,
   };
 
   const response = useQuery<Template, any>(['template'], fetchTemplate, options);
