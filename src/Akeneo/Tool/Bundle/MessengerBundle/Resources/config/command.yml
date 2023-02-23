@@ -2,6 +2,7 @@ services:
     Akeneo\Tool\Bundle\MessengerBundle\Command\ProcessMessageCommand:
         arguments:
             - '@akeneo_batch_queue.messenger.serializer'
+            - '@logger'
         tags:
             - { name: console.command }
 
