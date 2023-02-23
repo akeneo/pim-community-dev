@@ -20,7 +20,7 @@ class GetCategoriesAction
 {
     public function __construct(
         private GetCategoryTreeRootsQueryInterface $getCategoryTreeRootsQuery,
-        private GetCategoriesByCodeQueryInterface $getCategoriesByCodeQuery
+        private GetCategoriesByCodeQueryInterface $getCategoriesByCodeQuery,
     ) {
     }
 

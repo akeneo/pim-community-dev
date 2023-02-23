@@ -58,7 +58,7 @@ class GetProductIdentifiersAction
                     $catalog->getId(),
                     $searchAfter,
                     $limit,
-                )
+                ),
             );
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException($e->getViolations());
@@ -68,8 +68,8 @@ class GetProductIdentifiersAction
                     'error' => \sprintf(
                         'No products to synchronize. The catalog %s has been disabled on the PIM side.' .
                         ' Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.',
-                        $catalog->getId()
-                    )
+                        $catalog->getId(),
+                    ),
                 ],
                 Response::HTTP_OK,
             );

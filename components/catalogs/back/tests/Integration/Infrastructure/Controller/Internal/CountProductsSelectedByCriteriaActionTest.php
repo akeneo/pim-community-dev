@@ -43,7 +43,7 @@ class CountProductsSelectedByCriteriaActionTest extends IntegrationTestCase
                     'operator' => Operator::EQUALS,
                     'value' => true,
                 ],
-            ])
+            ]),
         );
 
         $response = $client->getResponse();
@@ -71,7 +71,7 @@ class CountProductsSelectedByCriteriaActionTest extends IntegrationTestCase
                     'operator' => Operator::EQUALS,
                     'value' => true,
                 ],
-            ])
+            ]),
         );
 
         $response = $client->getResponse();

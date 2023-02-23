@@ -9,10 +9,24 @@ import {mocked} from 'ts-jest/utils';
 import {StatusCriterionState} from './criteria/StatusCriterion';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {ProductSelectionErrors} from './models/ProductSelectionErrors';
+import {mockFetchResponses} from '../../../tests/mockFetchResponses';
 
 jest.mock('./utils/generateRandomId');
 
 const MAX_CRITERIA_PER_CATALOG = 25;
+
+beforeEach(() => {
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/attributes?page=1&limit=20&search=&types=pim_catalog_identifier%2Cpim_catalog_text%2Cpim_catalog_textarea%2Cpim_catalog_simpleselect%2Cpim_catalog_multiselect%2Cpim_catalog_number%2Cpim_catalog_metric%2Cpim_catalog_boolean%2Cpim_catalog_date',
+            json: {},
+        },
+        {
+            url: '/rest/catalogs/product-selection-criteria/product/count',
+            json: 0,
+        },
+    ]);
+});
 
 test('it displays an empty message if there is no criteria', () => {
     render(
