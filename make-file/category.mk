@@ -2,13 +2,9 @@
 category-front-up:
 	$(DOCKER_COMPOSE) -f docker-compose.yml -f src/Akeneo/Category/front/docker-compose.micro-frontend.yml up -d --remove-orphans
 
-.PHONY: category-front-dev
-category-front-dev:
-	$(DOCKER_COMPOSE) -f src/Akeneo/Category/front/docker-compose.yml up -d --remove-orphans
-
 .PHONY: category-front-down
 category-front-down:
-	$(DOCKER_COMPOSE) -f src/Akeneo/Category/front/docker-compose.yml down
+	$(DOCKER_COMPOSE) -f docker-compose.yml down
 
 .PHONY: category-lint-back
 category-lint-back: #Doc: launch PHPStan for category bounded context
