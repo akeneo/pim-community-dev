@@ -176,6 +176,14 @@ SQL;
         $consoleApp->setAutoExit(false);
 
         $input = new ArrayInput([
+            'command' => 'doctrine:schema:drop',
+            '--force' => true,
+            '--full-database' => true,
+        ]);
+        $output = new BufferedOutput();
+        $consoleApp->run($input, $output);
+
+        $input = new ArrayInput([
             'command' => 'pim:installer:db',
         ]);
         $output = new BufferedOutput();
