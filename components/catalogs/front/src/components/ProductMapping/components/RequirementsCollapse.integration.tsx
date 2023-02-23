@@ -121,22 +121,8 @@ test('it does not display warnings if there is only a description', () => {
 
     expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.title')).toBeInTheDocument();
     expect(screen.queryByText('Description')).toBeInTheDocument();
+
     expect(
-        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.minLength')
-    ).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maxLength')
-    ).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.pattern')
-    ).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.minimum')
-    ).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maximum')
-    ).not.toBeInTheDocument();
-    expect(
-        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')
-    ).not.toBeInTheDocument();
+        screen.queryAllByText('akeneo_catalogs.product_mapping.source.requirements.constraints', {exact: false})
+    ).toHaveLength(0);
 });
