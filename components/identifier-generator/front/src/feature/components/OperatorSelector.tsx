@@ -3,6 +3,7 @@ import {SelectInput} from 'akeneo-design-system';
 import {Operator} from '../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Styled} from './Styled';
+import {useIdentifierGeneratorAclContext} from '../context';
 
 type OperatorSelectorProps = {
   operator: Operator | null;
@@ -21,6 +22,7 @@ const OperatorSelector: FC<OperatorSelectorProps> = ({
   ...rest
 }) => {
   const translate = useTranslate();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   return (
     <Styled.OperatorSelectCondition
@@ -32,6 +34,7 @@ const OperatorSelector: FC<OperatorSelectorProps> = ({
       onChange={(operator: string) => onChange(operator as Operator)}
       clearable={false}
       isInSelection={isInSelection}
+      readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
     >
       {operators.map(operator => (
         <SelectInput.Option key={operator} value={operator}>

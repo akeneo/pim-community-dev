@@ -6,8 +6,6 @@ namespace Specification\Akeneo\Category\Infrastructure\Job;
 
 use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
 use Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet;
-use Akeneo\Channel\API\Query\Channel;
-use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;

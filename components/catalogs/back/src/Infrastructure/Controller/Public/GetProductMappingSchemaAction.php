@@ -6,7 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductMappingSchemaNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -48,7 +48,7 @@ final class GetProductMappingSchemaAction
             $productMappingSchema = $this->queryBus->execute(new GetProductMappingSchemaQuery($catalogId));
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException($e->getViolations());
-        } catch (ServiceApiProductSchemaMappingNotFoundException $e) {
+        } catch (ServiceApiProductMappingSchemaNotFoundException $e) {
             throw new NotFoundHttpException(\sprintf('Catalog "%s" does not have a product mapping schema.', $catalogId), $e);
         }
 

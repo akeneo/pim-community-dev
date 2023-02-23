@@ -18,9 +18,11 @@
 - PIM-10835: Fix command publish-job-to-queue does not work
 - PIM-10778: Add limit to the number of options to display on the attribute option page
 - PIM-10828: Fix search bars don't take into account special characters
+- PIM-10858: Fix password is set on sftp storage using private key
 - PIM-10844: Filter empty attribute option labels
 - PIM-10831: Fix severe performance issues with the association product and product model picker
-- PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel  
+- PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
+- PIM-10853: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
 
 ## Improvements
 

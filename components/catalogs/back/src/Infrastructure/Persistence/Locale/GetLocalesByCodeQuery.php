@@ -33,7 +33,7 @@ final class GetLocalesByCodeQuery implements GetLocalesByCodeQueryInterface
             ],
             [],
             $limit,
-            ($page - 1) * $limit
+            ($page - 1) * $limit,
         );
 
         foreach ($activatedLocales as $locale) {

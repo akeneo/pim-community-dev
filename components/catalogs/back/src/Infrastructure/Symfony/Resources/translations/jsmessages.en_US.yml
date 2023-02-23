@@ -126,6 +126,7 @@ akeneo_catalogs:
         source:
             title: Select source
             parameters:
+                placeholder: Select an attribute
                 title: Source parameters
                 channel:
                     label: Channel
@@ -133,12 +134,21 @@ akeneo_catalogs:
                 locale:
                     label: Locale
                     placeholder: Select a locale
+                label_locale:
+                    label: Value translation
+                    placeholder: Select a translation
+                    helper: Select the language in which the value should be sent.
+                currency:
+                    label: Currency
+                    placeholder: Select a currency
+                    helper: Select the currency in which the value should be sent.
+                no_parameters_message: No parameters for this source.
             select_source:
                 label: Pim source
                 search: Search criterion
-                no_results: no matches found
-                section_system: system
-                section_attributes: attributes
+                no_results: No matches found
+                section_system: System
+                section_attributes: Attributes
             placeholder:
                 title: Select source
                 illustration_title: Click on a target in the right panel to configure your catalog mapping.
@@ -148,3 +158,9 @@ akeneo_catalogs:
                 illustration_title: The UUID is a technical product identifier.
                 subtitle: All apps must require it as a target. You have nothing to configure for this target as we automatically map it with the Akeneo product UUID.
                 link: More information about the UUID.
+            requirements:
+                title: App requirements
+                help: Help
+                constraints:
+                    minLength: '{0,1} This target must have at least {{ value }} character.|[2,Inf[ This target must have at least {{ value }} characters.'
+                    maxLength: '{0,1} This target must not exceed {{ value }} character.|[2,Inf[ This target must not exceed {{ value }} characters.'

@@ -26,19 +26,19 @@ class DisableCatalogsOnCurrencyDeactivationTaskletTest extends IntegrationTestCa
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['currencies' => ['EUR', 'USD']]
+            catalogProductValueFilters: ['currencies' => ['EUR', 'USD']],
         );
         $this->createCatalog(
             id: 'b79b09a3-cb4c-45f8-a086-4f70cc17f521',
             name: 'Store FR',
             ownerUsername: 'magenta',
-            catalogProductValueFilters: ['currencies' => ['USD']]
+            catalogProductValueFilters: ['currencies' => ['USD']],
         );
         $this->createCatalog(
             id: '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             name: 'Store UK',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['currencies' => ['EUR']]
+            catalogProductValueFilters: ['currencies' => ['EUR']],
         );
 
         $this->disableCurrency('EUR');

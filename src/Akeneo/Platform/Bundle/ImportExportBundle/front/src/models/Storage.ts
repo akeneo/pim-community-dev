@@ -11,16 +11,28 @@ type LocalStorage = {
   file_path: string;
 };
 
-type SftpStorage = {
+type SftpPasswordStorage = {
   type: 'sftp';
   file_path: string;
   host: string;
   fingerprint?: string;
   port: number;
-  login_type: SftpStorageLoginType;
   username: string;
-  password?: string | null;
+  login_type: 'password';
+  password?: string;
 };
+
+type SftpPrivateKeyStorage = {
+  type: 'sftp';
+  file_path: string;
+  host: string;
+  fingerprint?: string;
+  port: number;
+  username: string;
+  login_type: 'private_key';
+};
+
+type SftpStorage = SftpPasswordStorage | SftpPrivateKeyStorage;
 
 type AmazonS3Storage = {
   type: 'amazon_s3';
@@ -156,6 +168,9 @@ const isSftpStorage = (storage: Storage): storage is SftpStorage => {
   );
 };
 
+const isSftpPasswordStorage = (sftpStorage: SftpStorage): sftpStorage is SftpPasswordStorage =>
+  sftpStorage.login_type === 'password';
+
 const isAmazonS3Storage = (storage: Storage): storage is AmazonS3Storage => {
   return (
     'amazon_s3' === storage.type &&
@@ -223,6 +238,7 @@ export type {
   SftpStorage,
   Storage,
   StorageType,
+  SftpStorageLoginType,
 };
 export {
   additionalStorageIsEnabled,
@@ -243,4 +259,5 @@ export {
   isValidStorageType,
   localStorageIsEnabled,
   SFTP_STORAGE_LOGIN_TYPES,
+  isSftpPasswordStorage,
 };

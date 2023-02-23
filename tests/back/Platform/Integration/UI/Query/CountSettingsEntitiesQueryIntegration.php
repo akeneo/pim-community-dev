@@ -34,6 +34,7 @@ final class CountSettingsEntitiesQueryIntegration extends TestCase
           'count_association_types' => 4,
           'count_group_types' => 1,
           'count_groups' => 2,
+          'count_identifier_generators' => 0,
         ];
 
         $this->assertEqualsCanonicalizing($expectedCounts, array_intersect_assoc($result, $expectedCounts));

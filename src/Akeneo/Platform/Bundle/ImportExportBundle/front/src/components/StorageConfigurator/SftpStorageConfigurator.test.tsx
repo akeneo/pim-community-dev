@@ -198,8 +198,8 @@ test('it allows user to fill port field', () => {
   expect(onStorageChange).toHaveBeenLastCalledWith({...storage, port: 22});
 });
 
-test('it allows user to change login type', () => {
-  const storage: SftpStorage = {
+test('it allows user to change login type from password to private key', () => {
+  const passwordStorage: SftpStorage = {
     type: 'sftp',
     file_path: '',
     host: 'example.com',
@@ -209,12 +209,21 @@ test('it allows user to change login type', () => {
     password: '',
   };
 
+  const privateKeyStorage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: 'example.com',
+    port: 22,
+    login_type: 'private_key',
+    username: '',
+  };
+
   const onStorageChange = jest.fn();
 
   renderWithProviders(
     <SftpStorageConfigurator
       jobInstanceCode="csv_product_export"
-      storage={storage}
+      storage={passwordStorage}
       fileExtension="xlsx"
       validationErrors={[]}
       onStorageChange={onStorageChange}
@@ -224,10 +233,45 @@ test('it allows user to change login type', () => {
   userEvent.click(screen.getByLabelText('pim_import_export.form.job_instance.storage_form.login_type.label'));
   userEvent.click(screen.getByText('pim_import_export.form.job_instance.storage_form.login_type.private_key'));
 
-  expect(onStorageChange).toHaveBeenLastCalledWith({
-    ...storage,
+  expect(onStorageChange).toHaveBeenLastCalledWith(privateKeyStorage);
+});
+
+test('it allows user to change login type from private key to password', () => {
+  const passwordStorage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: 'example.com',
+    port: 22,
+    login_type: 'password',
+    username: '',
+    password: '',
+  };
+
+  const privateKeyStorage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: 'example.com',
+    port: 22,
     login_type: 'private_key',
-  });
+    username: '',
+  };
+
+  const onStorageChange = jest.fn();
+
+  renderWithProviders(
+    <SftpStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={privateKeyStorage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('pim_import_export.form.job_instance.storage_form.login_type.label'));
+  userEvent.click(screen.getByText('pim_import_export.form.job_instance.storage_form.login_type.password'));
+
+  expect(onStorageChange).toHaveBeenLastCalledWith(passwordStorage);
 });
 
 test('it displays a public key field', () => {
@@ -238,7 +282,6 @@ test('it displays a public key field', () => {
     port: 22,
     login_type: 'private_key',
     username: '',
-    password: '',
   };
 
   const onStorageChange = jest.fn();
@@ -266,7 +309,6 @@ test('it copy to clipboard a public key', () => {
     port: 22,
     login_type: 'private_key',
     username: '',
-    password: '',
   };
 
   const onStorageChange = jest.fn();

@@ -13,9 +13,10 @@ type Props = {
     source: Source;
     onChange: (source: Source) => void;
     error: string | undefined;
+    disabled: boolean;
 };
 
-export const SelectChannelLocaleDropdown: FC<Props> = ({source, onChange, error}) => {
+export const SelectChannelLocaleDropdown: FC<Props> = ({source, onChange, error, disabled}) => {
     const translate = useTranslate();
     const {data: locales} = useChannelLocales(source.scope);
 
@@ -30,6 +31,7 @@ export const SelectChannelLocaleDropdown: FC<Props> = ({source, onChange, error}
                 openLabel={translate('akeneo_catalogs.common.select.open')}
                 placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.locale.placeholder')}
                 data-testid='source-parameter-locale-dropdown'
+                readOnly={disabled}
             >
                 {locales?.map(locale => (
                     <SelectInput.Option key={locale.code} title={locale.label} value={locale.code}>

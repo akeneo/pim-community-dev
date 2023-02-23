@@ -1,5 +1,8 @@
-import {Source} from './Source';
+import {SourceParameterErrors} from './SourceParameterErrors';
 
 export type SourceErrors = {
-    [key in keyof Source]?: string | undefined;
+    source: string | undefined;
+    locale: string | undefined;
+    scope: string | undefined;
+    parameters?: SourceParameterErrors | undefined;
 };

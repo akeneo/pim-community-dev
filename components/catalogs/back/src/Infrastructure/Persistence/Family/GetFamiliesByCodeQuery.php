@@ -36,7 +36,7 @@ final class GetFamiliesByCodeQuery implements GetFamiliesByCodeQueryInterface
 
         return \array_map(
             static fn (FamilyInterface $family): array => ['code' => $family->getCode(), 'label' => $family->getLabel()],
-            $families
+            $families,
         );
     }
 }

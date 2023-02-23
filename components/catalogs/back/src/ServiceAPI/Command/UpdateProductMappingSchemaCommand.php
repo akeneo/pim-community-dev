@@ -20,7 +20,7 @@ final class UpdateProductMappingSchemaCommand implements CommandInterface
         #[Assert\Uuid]
         private string $catalogId,
         #[Assert\NotBlank]
-        #[CatalogAssert\ProductSchema]
+        #[CatalogAssert\ProductMappingSchema]
         private object $productMappingSchema,
     ) {
     }

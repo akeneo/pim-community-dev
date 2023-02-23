@@ -35,6 +35,11 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   useUserContext: () => {
     return userContext;
   },
+  useSecurity: () => {
+    return {
+      isGranted: (acl: string) => true,
+    };
+  },
 }));
 
 const defaultUiLocales = [

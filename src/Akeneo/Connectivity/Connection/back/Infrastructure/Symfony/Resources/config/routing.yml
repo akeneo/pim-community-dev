@@ -13,6 +13,9 @@ akeneo_connectivity_connection_error_management:
 akeneo_connectivity_connection_marketplace:
     resource: ./Marketplace/routing.yml
 
+akeneo_connectivity_connection_custom_apps:
+    resource: ./CustomApps/routing.yml
+
 akeneo_connectivity_connection_webhook:
     resource: ./Webhook/routing.yml
 

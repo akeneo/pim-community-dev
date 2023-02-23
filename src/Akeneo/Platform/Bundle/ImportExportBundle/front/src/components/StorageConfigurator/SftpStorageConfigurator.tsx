@@ -4,7 +4,13 @@ import {Field, Helper, NumberInput, Button, getColor, getFontSize, SelectInput, 
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps} from './model';
 import {useGetPublicKey} from '../../hooks/';
-import {isSftpStorage, isValidSftpLoginType, SFTP_STORAGE_LOGIN_TYPES} from '../../models';
+import {
+  isSftpPasswordStorage,
+  isSftpStorage,
+  isValidSftpLoginType,
+  SFTP_STORAGE_LOGIN_TYPES,
+  SftpStorageLoginType,
+} from '../../models';
 import {CheckStorageConnection} from './CheckStorageConnection';
 
 const CopyableInputContainer = styled.div`
@@ -67,6 +73,20 @@ const SftpStorageConfigurator = ({
   const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
   const copyToClipboard = (publicKey: string) => canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
 
+  const handleLoginTypeChange = (newLoginType: SftpStorageLoginType) => {
+    if ('password' === newLoginType) {
+      onStorageChange({...storage, login_type: newLoginType, password: ''});
+    } else if ('private_key' === newLoginType) {
+      const newStorage = {...storage};
+
+      if (isSftpPasswordStorage(newStorage)) {
+        delete newStorage.password;
+      }
+
+      onStorageChange({...newStorage, login_type: newLoginType});
+    }
+  };
+
   return (
     <>
       <TextField
@@ -123,7 +143,7 @@ const SftpStorageConfigurator = ({
           value={storage.login_type}
           onChange={login_type => {
             if (isValidSftpLoginType(login_type)) {
-              onStorageChange({...storage, login_type});
+              handleLoginTypeChange(login_type);
             }
           }}
           emptyResultLabel={translate('pim_common.no_result')}
