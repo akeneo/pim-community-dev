@@ -47,19 +47,30 @@ class GetCategoryTreesSql implements GetCategoryTreesInterface
                 AND category.root = category.id
                 $sqlAnd
                 GROUP BY category.code
+            ),
+            category_tree_template as (
+            SELECT
+                category.id as category_id, template.uuid, template.code, template.labels        
+            FROM 
+                pim_catalog_category category
+                JOIN pim_catalog_category_tree_template ctt ON ctt.category_tree_id = category.id
+                JOIN pim_catalog_category_template template ON template.uuid = ctt.category_template_uuid AND (template.is_deactivated IS NULL OR template.is_deactivated = 0)
+                WHERE category.parent_id IS NULL 
+                AND category.root = category.id
+                $sqlAnd
+                GROUP BY category.id, template.uuid
             )
             SELECT
                 category.id,
                 category.code,
                 category_tree_translation.translations,
-                BIN_TO_UUID(template.uuid) as template_uuid,
-                template.code as template_code,
-                template.labels as template_labels
+                BIN_TO_UUID(category_tree_template.uuid) as template_uuid,
+                category_tree_template.code as template_code,
+                category_tree_template.labels as template_labels
             FROM 
                 pim_catalog_category category
                 LEFT JOIN category_tree_translation ON category_tree_translation.code = category.code
-                LEFT JOIN pim_catalog_category_tree_template ctt ON ctt.category_tree_id = category.id
-                LEFT JOIN pim_catalog_category_template template ON template.uuid = ctt.category_template_uuid AND (template.is_deactivated IS NULL OR template.is_deactivated = 0)
+                LEFT JOIN category_tree_template ON category_tree_template.category_id = category.id
             WHERE category.parent_id IS NULL 
             AND category.root = category.id
             $sqlAnd
