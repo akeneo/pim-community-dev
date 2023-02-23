@@ -82,11 +82,6 @@ const TemplatePage: FC = () => {
     if (templateFetchingStatus === 'fetched' && fetchedTemplate) {
       setTemplateEdited(cloneDeep(fetchedTemplate));
     }
-
-    if (templateFetchingStatus === 'error') {
-      history.push('/');
-      notify(NotificationLevel.ERROR, translate('akeneo.category.template.not_found'));
-    }
   }, [catalogLocale, fetchedTemplate, templateFetchingStatus]);
 
   useEffect(() => {

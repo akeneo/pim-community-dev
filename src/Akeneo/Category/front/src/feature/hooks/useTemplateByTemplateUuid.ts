@@ -1,7 +1,8 @@
 import {useQuery} from 'react-query';
 import {Template} from '../models';
-import {FetchStatus, useRouter} from '@akeneo-pim-community/shared';
+import {FetchStatus, NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {useCallback, useMemo} from 'react';
+import {useHistory} from 'react-router';
 
 const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
 
@@ -19,6 +20,10 @@ const getFetchingStatus = (status: 'idle' | 'loading' | 'error' | 'success'): Fe
 
 export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
   const router = useRouter();
+  const translate = useTranslate();
+  const notify = useNotify();
+  const history = useHistory();
+
   const url = useMemo(() => {
     if (uuid === null) {
       return null;
@@ -33,15 +38,23 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
       return {};
     }
 
-    return fetch(url).then(response => {
-      return response.json();
-    });
+    return fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          history.push('/');
+          notify(NotificationLevel.ERROR, translate('akeneo.category.template.not_found'));
+        }
+
+        return response.json();
+      });
   }, [uuid, url]);
 
-  const options = {
-    enabled: uuid !== null && url !== null,
-    staleTime: TEMPLATE_FETCH_STALE_TIME,
-  };
+  const options = useMemo(() => {
+    return {
+      enabled: uuid !== null && url !== null,
+      staleTime: TEMPLATE_FETCH_STALE_TIME,
+    }
+  }, [uuid, url]);
 
   const response = useQuery<Template, any>(['template'], fetchTemplate, options);
 
