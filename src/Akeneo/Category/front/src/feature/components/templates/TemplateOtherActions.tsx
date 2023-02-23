@@ -1,4 +1,4 @@
-import {useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {Dropdown, IconButton, MoreIcon, useBooleanState} from 'akeneo-design-system';
 
 type Props = {
@@ -6,7 +6,6 @@ type Props = {
 };
 
 export const TemplateOtherActions = ({onDeactivateTemplate}: Props) => {
-  const featureFlags = useFeatureFlags();
   const translate = useTranslate();
 
   const [isOpen, open, close] = useBooleanState(false);
@@ -15,10 +14,6 @@ export const TemplateOtherActions = ({onDeactivateTemplate}: Props) => {
     close();
     onDeactivateTemplate();
   };
-
-  if (false === featureFlags.isEnabled('category_template_deactivation')) {
-    return null;
-  }
 
   return (
     <Dropdown>

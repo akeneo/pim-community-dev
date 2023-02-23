@@ -4,6 +4,7 @@ import {
   PageContent,
   PageHeader,
   PimView,
+  useFeatureFlags,
   useRouter,
   useSessionStorageState,
   useTranslate,
@@ -35,6 +36,7 @@ const TemplatePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const userContext = useUserContext();
+  const featureFlags = useFeatureFlags();
 
   const catalogLocale = userContext.get('catalogLocale');
 
@@ -134,9 +136,11 @@ const TemplatePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        <PageHeader.Actions>
-          <TemplateOtherActions onDeactivateTemplate={openDeactivateTemplateModal} />
-        </PageHeader.Actions>
+        {featureFlags.isEnabled('category_template_deactivation') && (
+          <PageHeader.Actions>
+            <TemplateOtherActions onDeactivateTemplate={openDeactivateTemplateModal} />
+          </PageHeader.Actions>
+        )}
         <PageHeader.Title>{templateLabel ?? templateId}</PageHeader.Title>
       </PageHeader>
       <PageContent>

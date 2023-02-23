@@ -11,7 +11,7 @@ import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
 import {CategoryPermissions} from '../models/CategoryPermission';
 import {UserGroup} from './useFetchUserGroups';
 import {DEACTIVATED_TEMPLATE} from '../models/ResponseStatus';
-import { useHistory } from 'react-router';
+import {useHistory} from 'react-router';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
