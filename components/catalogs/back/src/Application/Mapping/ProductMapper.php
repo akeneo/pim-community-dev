@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorN
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetAttributeTypeByCodesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 
@@ -18,6 +19,7 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  * @phpstan-import-type MappedProduct from GetMappedProductsQuery
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  * @phpstan-import-type ProductMapping from Catalog
+ * @phpstan-import-type ProductMappingSchema from GetProductMappingSchemaQueryInterface
  */
 class ProductMapper implements ProductMapperInterface
 {
@@ -29,7 +31,7 @@ class ProductMapper implements ProductMapperInterface
 
     /**
      * @param RawProduct $product
-     * @param array{properties: array<array-key, mixed>, required?: string[]} $productMappingSchema
+     * @param ProductMappingSchema $productMappingSchema
      * @param ProductMapping $productMapping
      *
      * @return MappedProduct

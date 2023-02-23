@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
+use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Infrastructure\Persistence\ProductMappingSchema\GetProductMappingSchemaQuery;
 use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -150,7 +151,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
     {
         try {
             $productMappingSchema = $this->productMappingSchemaQuery->execute($catalog->getId());
-        } catch (ProductSchemaMappingNotFoundException $exception) {
+        } catch (ProductMappingSchemaNotFoundException $exception) {
             return [];
         }
 
@@ -166,7 +167,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
             $filter = [
                 'field' => $productMapping[$targetCode]['source'],
                 'value' => '',
-                'operator' => 'NOT EMPTY',
+                'operator' => Operator::IS_NOT_EMPTY,
             ];
 
             $context = [];
