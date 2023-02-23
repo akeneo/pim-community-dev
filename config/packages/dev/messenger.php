@@ -2,8 +2,8 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Akeneo\Pim\Platform\Messaging\Domain\Config\TransportType;
-use Akeneo\Pim\Platform\Messaging\Infrastructure\Config\MessengerConfigBuilder;
+use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
+use Akeneo\Tool\Component\Messenger\Config\TransportType;
 
 return static function (ContainerConfigurator $containerConfigurator) {
     $configBuilder = new MessengerConfigBuilder($containerConfigurator->env());

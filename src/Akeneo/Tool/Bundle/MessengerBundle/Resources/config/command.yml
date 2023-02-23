@@ -1,0 +1,13 @@
+services:
+    Akeneo\Tool\Bundle\MessengerBundle\Command\ProcessMessageCommand:
+        arguments:
+            - '@akeneo_batch_queue.messenger.serializer'
+        tags:
+            - { name: console.command }
+
+    # @TODO: Remove
+    Akeneo\Tool\Bundle\MessengerBundle\Command\SendTestCommand:
+        arguments:
+            - '@messenger.default_bus'
+        tags:
+            - { name: console.command }

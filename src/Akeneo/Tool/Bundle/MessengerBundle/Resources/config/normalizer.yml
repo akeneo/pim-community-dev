@@ -1,0 +1,4 @@
+services:
+    Akeneo\Tool\Bundle\MessengerBundle\Normalizer\SerializableMessageNormalizer:
+        tags:
+            - { name: akeneo_batch_queue.messenger.normalizer, priority: 0 }
