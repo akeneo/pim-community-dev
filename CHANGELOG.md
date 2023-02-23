@@ -23,6 +23,7 @@
 - PIM-10831: Fix severe performance issues with the association product and product model picker
 - PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
 - PIM-10853: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
+- PIM-10829: Fix case-sensitive locale on translatable business objects
 
 ## Improvements
 

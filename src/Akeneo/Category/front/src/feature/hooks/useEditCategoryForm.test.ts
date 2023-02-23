@@ -341,7 +341,7 @@ describe('useEditCategoryForm', () => {
     mockedSaveEditCategoryForm.mockResolvedValue({
       success: false,
       error: {
-        message: ''
+        message: '',
       },
     });
 

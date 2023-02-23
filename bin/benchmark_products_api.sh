@@ -38,6 +38,8 @@ boot_and_install_pim()
     rm -rf var/cache/*
     bin/docker/pim-setup.sh
     docker-compose exec -T fpm bin/console cache:warmup -e behat
+    docker-compose exec -T fpm bin/console doctrine:database:drop --force
+    docker-compose exec -T fpm bin/console doctrine:database:create --if-not-exists
     docker-compose exec -T fpm bin/console pim:installer:db -e behat
     CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
     export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
