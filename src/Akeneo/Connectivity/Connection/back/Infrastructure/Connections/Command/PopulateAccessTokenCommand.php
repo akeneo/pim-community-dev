@@ -111,6 +111,7 @@ class PopulateAccessTokenCommand extends Command
     private function getClientId(): int
     {
         $fosClient = $this->clientManager->createClient();
+        /** @phpstan-ignore-next-line */
         $fosClient->setLabel('test_client');
         $fosClient->setAllowedGrantTypes([OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN]);
 
