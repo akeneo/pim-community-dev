@@ -1,0 +1,15 @@
+pim_identifier_generator_manage:
+  type: action
+  label: pim_catalog_identifier_generator.acl.manage
+  group_name: pim_catalog_identifier_generator.acl_group.identifier_generator
+  order: 1
+  enabled_at_creation: false
+  feature: identifier_generator
+
+pim_identifier_generator_view:
+  type: action
+  label: pim_catalog_identifier_generator.acl.view
+  group_name: pim_catalog_identifier_generator.acl_group.identifier_generator
+  order: 2
+  enabled_at_creation: true
+  feature: identifier_generator

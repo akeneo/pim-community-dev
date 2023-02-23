@@ -65,7 +65,7 @@ export const PageHeader = ({
     <Header>
         <div className='AknTitleContainer-line'>
             {imageSrc && (
-                <div className='AknImage AknImage--readOnly'>
+                <div className='AknTitleContainer-imageContainer AknImage--readOnly'>
                     <img className='AknImage-display' src={imageSrc} />
                 </div>
             )}

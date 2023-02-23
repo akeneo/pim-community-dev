@@ -3,6 +3,7 @@ import {Channel, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {useGetScopes} from '../hooks';
 import {Helper, Locale, SelectInput, SkeletonPlaceholder} from 'akeneo-design-system';
 import {Styled} from './Styled';
+import {useIdentifierGeneratorAclContext} from '../context';
 
 type Props = {
   value: LocaleCode | null;
@@ -14,6 +15,7 @@ type Props = {
 const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope}) => {
   const translate = useTranslate();
   const {data, isLoading, error} = useGetScopes();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   const catalogLocales = useMemo(() => {
     if (!data || isLoading || error) return [];
@@ -48,6 +50,7 @@ const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope}) => 
       onChange={onChange}
       placeholder={translate('pim_common.locale')}
       clearable={false}
+      readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
     >
       {locales?.map(locale => (
         <SelectInput.Option value={locale.code} key={locale.code}>

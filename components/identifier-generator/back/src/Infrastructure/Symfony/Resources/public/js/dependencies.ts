@@ -5,6 +5,7 @@ const identifierGeneratorDependencies = {
             identifierGeneratorDependencies.unsavedChanges.hasUnsavedChanges = newValue;
         },
     },
+    isManageIdentifierGeneratorAclGranted: true
 };
 
 export {identifierGeneratorDependencies};

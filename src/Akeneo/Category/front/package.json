@@ -7,7 +7,7 @@
         "application_path": "../../../.."
     },
     "main": "lib/index.js",
-    "proxy": "http://localhost:8080",
+    "proxy": "http://httpd",
     "dependencies": {
         "@akeneo-pim-community/shared": "link:../../../../front-packages/shared",
         "akeneo-design-system": "link:../../../../front-packages/akeneo-design-system",

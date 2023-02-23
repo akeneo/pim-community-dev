@@ -94,3 +94,9 @@ Feature:
     Given an existing catalog with a product mapping
     When the external application gets mapped products using the API
     Then the response should contain the mapped products
+
+  @database
+  Scenario: Get mapped product of a catalog
+    Given an existing catalog with a product mapping
+    When the external application gets mapped product using the API
+    Then the response should contain the mapped product

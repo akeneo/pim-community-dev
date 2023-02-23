@@ -5,23 +5,36 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Acceptance;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductMappingSchemaNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
+use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Behat\Behat\Context\Context;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Types;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -39,6 +52,8 @@ class ApiContext implements Context
     private ?Response $response = null;
     private ?ConnectedAppWithValidToken $connectedApp = null;
     private ?KernelBrowser $client = null;
+    /** @var array<string, string> $files  */
+    private array $files = [];
 
     public function __construct(
         KernelInterface $kernel,
@@ -47,6 +62,18 @@ class ApiContext implements Context
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
     ) {
         $this->container = $kernel->getContainer()->get('test.service_container');
+    }
+
+    protected function getFileInfoKey(string $path): string
+    {
+        if (!\is_file($path)) {
+            throw new \Exception(\sprintf('The path "%s" does not exist.', $path));
+        }
+
+        $fileStorer = $this->container->get('akeneo_file_storage.file_storage.file.file_storer');
+        $fileInfo = $fileStorer->store(new \SplFileInfo($path), FileStorage::CATALOG_STORAGE_ALIAS);
+
+        return $fileInfo->getKey();
     }
 
     private function getConnectedApp(): ConnectedAppWithValidToken
@@ -133,20 +160,20 @@ class ApiContext implements Context
         // create enabled catalog with product selection criteria
         $this->upsertCatalogQuery->execute(
             new Catalog(
-                'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-                'Store US',
-                $connectedAppUserIdentifier,
-                true,
-                [
+                id:'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+                name:'Store US',
+                ownerUsername: $connectedAppUserIdentifier,
+                enabled:  true,
+                productSelectionCriteria: [
                     [
                         'field' => 'enabled',
                         'operator' => '=',
                         'value' => true,
                     ],
                 ],
-                [],
-                [],
-            )
+                productValueFilters: [],
+                productMapping: [],
+            ),
         );
 
         // create products
@@ -180,7 +207,7 @@ class ApiContext implements Context
                 [
                     new SetIdentifierValue('sku', $product['identifier']),
                     new SetEnabled((bool) $product['enabled']),
-                ]
+                ],
             );
 
             $bus->dispatch($command);
@@ -525,7 +552,7 @@ class ApiContext implements Context
                 JSON_WRAP,
                 false,
                 512,
-                JSON_THROW_ON_ERROR
+                JSON_THROW_ON_ERROR,
             ),
         ));
     }
@@ -597,7 +624,7 @@ class ApiContext implements Context
     {
         $productMappingSchema = \json_encode(
             $this->queryBus->execute(new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')),
-            JSON_THROW_ON_ERROR
+            JSON_THROW_ON_ERROR,
         );
 
         Assert::assertJsonStringEqualsJsonString(
@@ -680,14 +707,14 @@ class ApiContext implements Context
      */
     public function theCatalogProductMappingSchemaShouldBeEmptyInThePim(): void
     {
-        $productSchemaMappingNotFoundExceptionThrown = false;
+        $productMappingSchemaNotFoundExceptionThrown = false;
         try {
             $this->queryBus->execute(new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
-        } catch (ServiceApiProductSchemaMappingNotFoundException) {
-            $productSchemaMappingNotFoundExceptionThrown = true;
+        } catch (ServiceApiProductMappingSchemaNotFoundException) {
+            $productMappingSchemaNotFoundExceptionThrown = true;
         }
 
-        Assert::assertTrue($productSchemaMappingNotFoundExceptionThrown);
+        Assert::assertTrue($productMappingSchemaNotFoundExceptionThrown);
     }
 
     /**
@@ -699,23 +726,22 @@ class ApiContext implements Context
         $this->authentication->logAs($connectedAppUserIdentifier);
 
         // create enabled catalog with product selection criteria
-        $this->upsertCatalogQuery->execute(
-            new Catalog(
-                'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-                'Store US',
-                $connectedAppUserIdentifier,
-                true,
+        $catalog = new Catalog(
+            id:'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name:'Store US',
+            ownerUsername: $connectedAppUserIdentifier,
+            enabled:  true,
+            productSelectionCriteria: [
                 [
-                    [
-                        'field' => 'enabled',
-                        'operator' => '=',
-                        'value' => true,
-                    ],
+                    'field' => 'enabled',
+                    'operator' => '=',
+                    'value' => true,
                 ],
-                [],
-                [],
-            )
+            ],
+            productValueFilters: [],
+            productMapping: [],
         );
+        $this->upsertCatalogQuery->execute($catalog);
 
         // add product mapping schema
         $commandBus = $this->container->get(CommandBus::class);
@@ -725,7 +751,7 @@ class ApiContext implements Context
                 <<<'JSON_WRAP'
                 {
                   "$id": "https://example.com/product",
-                  "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.6/schema",
                   "$comment": "My first schema !",
                   "title": "Product Mapping",
                   "description": "JSON Schema describing the structure of products expected by our application",
@@ -734,10 +760,42 @@ class ApiContext implements Context
                     "uuid": {
                       "type": "string"
                     },
+                    "identifier": {
+                      "type": "string"
+                    },
                     "title": {
                       "type": "string"
                     },
-                    "description": {
+                    "short_description": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "string"
+                    },
+                    "customization_drawings_count": {
+                      "type": "number"
+                    },
+                    "customization_artists_count": {
+                      "type": "string"
+                    },
+                    "price_number": {
+                      "type": "number"
+                    },
+                    "release_date": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "is_released": {
+                      "type": "boolean"
+                    },
+                    "thumbnail": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "countries": {
+                      "type": "string"
+                    },
+                    "type": {
                       "type": "string"
                     }
                   }
@@ -745,48 +803,161 @@ class ApiContext implements Context
                 JSON_WRAP,
                 false,
                 512,
-                JSON_THROW_ON_ERROR
+                JSON_THROW_ON_ERROR,
             ),
         ));
 
-        // add product mapping to catalog
-        $this->setCatalogProductMapping('db1079b6-f397-4a6a-bae4-8658e64ad47c', [
-            'uuid' => [
-                'source' => 'uuid',
-                'scope' => null,
-                'locale' => null,
-            ],
-            'title' => [
-                'source' => 'name',
-                'scope' => 'ecommerce',
-                'locale' => 'en_US',
-            ],
-        ]);
+        // update product mapping (after product mapping schema as been added)
+        $this->upsertCatalogQuery->execute(
+            new Catalog(
+                id: $catalog->getId(),
+                name: $catalog->getName(),
+                ownerUsername: $catalog->getOwnerUsername(),
+                enabled: $catalog->isEnabled(),
+                productSelectionCriteria: $catalog->getProductSelectionCriteria(),
+                productValueFilters: $catalog->getProductValueFilters(),
+                productMapping: [
+                    'uuid' => [
+                        'source' => 'uuid',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'identifier' => [
+                        'source' => 'sku',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'title' => [
+                        'source' => 'name',
+                        'scope' => 'ecommerce',
+                        'locale' => 'en_US',
+                    ],
+                    'short_description' => [
+                        'source' => 'description',
+                        'scope' => 'ecommerce',
+                        'locale' => 'en_US',
+                    ],
+                    'size' => [
+                        'source' => 'size',
+                        'scope' => 'ecommerce',
+                        'locale' => 'en_US',
+                        'parameters' => [
+                            'label_locale' => 'en_US',
+                        ],
+                    ],
+                    'customization_drawings_count' => [
+                        'source' => 'drawings_customization_count',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'customization_artists_count' => [
+                        'source' => 'artists_customization_count',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'price_number' => [
+                        'source' => 'price',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'currency' => 'USD',
+                        ],
+                    ],
+                    'release_date' => [
+                        'source' => 'released_at',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'is_released' => [
+                        'source' => 'is_released',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'countries' => [
+                        'source' => 'sale_countries',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'label_locale' => 'en_US',
+                        ],
+                    ],
+                    'thumbnail' => [
+                        'source' => 'picture',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'type' => [
+                        'source' => 'family',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                ],
+            ),
+        );
 
         // create products
         $adminUser = $this->authentication->getAdminUser();
         $this->authentication->logAs($adminUser->getUserIdentifier());
 
-        $bus = $this->container->get('pim_enrich.product.message_bus');
+        $this->files = [
+            'akeneoLogoImage' => $this->getFileInfoKey(__DIR__ . '/fixtures/akeneo.jpg'),
+            'ziggyImage' => $this->getFileInfoKey(__DIR__ . '/fixtures/ziggy.png'),
+        ];
 
         $products = [
             [
                 'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
-                'identifier' => 't-shirt blue',
+                'sku' => 't-shirt blue',
                 'name' => 'T-shirt blue',
+                'description' => 'Description blue',
+                'size' => 'l',
+                'drawings_customization_count' => '12',
+                'artists_customization_count' => '7',
+                'price' => ['USD' => 21],
+                'released_at' => new \DateTimeImmutable('2023-01-12T00:00:00+00:00'),
+                'is_released' => true,
+                'picture' => $this->files['akeneoLogoImage'],
                 'enabled' => true,
+                'sale_countries' => [
+                    'canada',
+                    'brazil',
+                ],
             ],
             [
                 'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
-                'identifier' => 't-shirt green',
+                'sku' => 't-shirt green',
                 'name' => 'T-shirt green',
+                'description' => 'Description green',
+                'size' => 'm',
+                'drawings_customization_count' => '8',
+                'artists_customization_count' => '5',
+                'price' => ['USD' => 34],
+                'released_at' => new \DateTimeImmutable('2023-01-10T00:00:00+00:00'),
+                'is_released' => true,
+                'picture' => $this->files['akeneoLogoImage'],
                 'enabled' => false,
+                'sale_countries' => [
+                    'canada',
+                    'italy',
+                ],
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
-                'identifier' => 't-shirt red',
+                'sku' => 't-shirt red',
                 'name' => 'T-shirt red',
+                'description' => 'Description red',
+                'size' => 'xl',
+                'drawings_customization_count' => '4',
+                'artists_customization_count' => '2',
+                'price' => ['USD' => 78.3],
+                'released_at' => new \DateTimeImmutable('2042-01-01T00:00:00+00:00'),
+                'is_released' => false,
+                'picture' => $this->files['ziggyImage'],
                 'enabled' => true,
+                'sale_countries' => [
+                    'france',
+                    'brazil',
+                ],
             ],
         ];
 
@@ -796,16 +967,102 @@ class ApiContext implements Context
             'scopable' => true,
             'localizable' => true,
         ]);
+        $this->createAttribute([
+            'code' => 'description',
+            'type' => 'pim_catalog_textarea',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+        $this->createAttribute([
+            'code' => 'size',
+            'type' => 'pim_catalog_simpleselect',
+            'scopable' => true,
+            'localizable' => true,
+            'options' => ['XS', 'S', 'M', 'L', 'XL'],
+        ]);
+        $this->createAttribute([
+            'code' => 'drawings_customization_count',
+            'type' => 'pim_catalog_number',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'artists_customization_count',
+            'type' => 'pim_catalog_number',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'price',
+            'type' => 'pim_catalog_price_collection',
+            'decimals_allowed' => true,
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'released_at',
+            'type' => 'pim_catalog_date',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'is_released',
+            'type' => 'pim_catalog_boolean',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'picture',
+            'type' => 'pim_catalog_image',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        $this->createAttribute([
+            'code' => 'sale_countries',
+            'type' => 'pim_catalog_multiselect',
+            'scopable' => false,
+            'localizable' => false,
+            'options' => ['France', 'Canada', 'Italy', 'Brazil'],
+        ]);
+
+        $this->createFamily('t-shirt', [
+            'sku',
+            'name',
+            'description',
+            'size',
+            'drawings_customization_count',
+            'artists_customization_count',
+            'price',
+            'released_at',
+            'is_released',
+            'sale_countries',
+        ]);
+
+        $bus = $this->container->get('pim_enrich.product.message_bus');
 
         foreach ($products as $product) {
             $command = UpsertProductCommand::createWithUuid(
                 $adminUser->getId(),
                 ProductUuid::fromUuid(Uuid::fromString($product['uuid'])),
                 [
-                    new SetIdentifierValue('sku', $product['identifier']),
+                    new SetIdentifierValue('sku', $product['sku']),
+                    new SetFamily('t-shirt'),
                     new SetEnabled((bool) $product['enabled']),
                     new SetTextValue('name', 'ecommerce', 'en_US', $product['name']),
-                ]
+                    new SetTextareaValue('description', 'ecommerce', 'en_US', $product['description']),
+                    new SetSimpleSelectValue('size', 'ecommerce', 'en_US', $product['size']),
+                    new SetNumberValue('drawings_customization_count', null, null, $product['drawings_customization_count']),
+                    new SetNumberValue('artists_customization_count', null, null, $product['artists_customization_count']),
+                    new SetDateValue('released_at', null, null, $product['released_at']),
+                    new SetBooleanValue('is_released', null, null, $product['is_released']),
+                    new SetMultiSelectValue('sale_countries', null, null, $product['sale_countries']),
+                    new SetImageValue('picture', null, null, $product['picture']),
+                    new SetPriceCollectionValue('price', null, null, \array_map(
+                        static fn (float $amount, string $currency): PriceValue => new PriceValue($amount, $currency),
+                        $product['price'],
+                        \array_keys($product['price']),
+                    )),
+                ],
             );
 
             $bus->dispatch($command);
@@ -843,33 +1100,80 @@ class ApiContext implements Context
         $expectedMappedProducts = [
             [
                 'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
+                'identifier' => 't-shirt blue',
                 'title' => 'T-shirt blue',
-                'description' => '',
+                'short_description' => 'Description blue',
+                'size' => 'L',
+                'customization_drawings_count' => 12,
+                'customization_artists_count' => '7',
+                'price_number' => 21,
+                'release_date' => '2023-01-12T00:00:00+00:00',
+                'is_released' => true,
+                'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
+                'countries' => 'Brazil, Canada',
+                'type' => 't-shirt',
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
+                'identifier' => 't-shirt red',
                 'title' => 'T-shirt red',
-                'description' => '',
+                'short_description' => 'Description red',
+                'size' => 'XL',
+                'customization_drawings_count' => 4,
+                'customization_artists_count' => '2',
+                'price_number' => 78.3,
+                'release_date' => '2042-01-01T00:00:00+00:00',
+                'is_released' => false,
+                'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
+                'countries' => 'Brazil, France',
+                'type' => 't-shirt',
             ],
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload['_embedded']['items']);
     }
 
-    /** @todo replace by a command bus when existing */
-    private function setCatalogProductMapping(string $id, array $productMapping): void
+    /**
+     * @When the external application gets mapped product using the API
+     */
+    public function theExternalApplicationGetsMappedProductUsingTheApi(): void
     {
-        $connection = $this->container->get(Connection::class);
-        $connection->executeQuery(
-            'UPDATE akeneo_catalog SET product_mapping = :productMapping WHERE id = :id',
-            [
-                'id' => Uuid::fromString($id)->getBytes(),
-                'productMapping' => $productMapping,
-            ],
-            [
-                'productMapping' => Types::JSON,
-            ]
+        $this->authentication->logAs($this->getConnectedApp()->getUsername());
+
+        $this->getConnectedAppClient()->request(
+            method: 'GET',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products/21a28f70-9cc8-4470-904f-aeda52764f73',
         );
+
+        $this->response = $this->getConnectedAppClient()->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the response should contain the mapped product
+     */
+    public function theResponseShouldContainTheMappedProduct(): void
+    {
+        $payload = \json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedMappedProducts = [
+            'uuid' => '21a28f70-9cc8-4470-904f-aeda52764f73',
+            'identifier' => 't-shirt blue',
+            'title' => 'T-shirt blue',
+            'short_description' => 'Description blue',
+            'size' => 'L',
+            'customization_drawings_count' => 12,
+            'customization_artists_count' => '7',
+            'price_number' => 21,
+            'release_date' => '2023-01-12T00:00:00+00:00',
+            'is_released' => true,
+            'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
+            'countries' => 'Brazil, Canada',
+            'type' => 't-shirt',
+        ];
+
+        Assert::assertSame($expectedMappedProducts, $payload);
     }
 
     /**
@@ -880,6 +1184,7 @@ class ApiContext implements Context
      *     group?: string,
      *     scopable: bool,
      *     localizable: bool,
+     *     options?: array<string>
      * } $data
      */
     private function createAttribute(array $data): void
@@ -888,8 +1193,61 @@ class ApiContext implements Context
             'group' => 'other',
         ], $data);
 
+        $options = $data['options'] ?? [];
+        unset($data['options']);
+
         $attribute = $this->container->get('pim_catalog.factory.attribute')->create();
         $this->container->get('pim_catalog.updater.attribute')->update($attribute, $data);
         $this->container->get('pim_catalog.saver.attribute')->save($attribute);
+
+        if ([] !== $options) {
+            $this->createAttributeOptions($attribute, $options);
+            $this->container->get('pim_connector.doctrine.cache_clearer')->clear();
+        }
+    }
+
+    private function createAttributeOptions(AttributeInterface $attribute, array $codes): void
+    {
+        $factory = $this->container->get('pim_catalog.factory.attribute_option');
+        $locales = \array_map(
+            static fn ($locale) => $locale['code'],
+            $this->container->get(GetLocalesQueryInterface::class)->execute(),
+        );
+
+        $options = [];
+
+        foreach ($codes as $i => $code) {
+            /** @var AttributeOptionInterface $option */
+            $option = $factory->create();
+            $option->setCode(\strtolower(\trim(\preg_replace('/[^A-Za-z0-9-]+/', '_', $code))));
+            $option->setAttribute($attribute);
+            $option->setSortOrder($i);
+
+            foreach ($locales as $locale) {
+                $value = new AttributeOptionValue();
+                $value->setOption($option);
+                $value->setLocale($locale);
+                $value->setLabel($code);
+
+                $option->addOptionValue($value);
+            }
+
+            $options[] = $option;
+        }
+
+        $this->container->get('pim_catalog.saver.attribute_option')->saveAll($options);
+    }
+
+    /**
+     * @param array<string> $attributes
+     */
+    private function createFamily(string $code, array $attributes): void
+    {
+        $family = $this->container->get('pim_catalog.factory.family')->create();
+        $this->container->get('pim_catalog.updater.family')->update($family, [
+            'code' => $code,
+            'attributes' => $attributes,
+        ]);
+        $this->container->get('pim_catalog.saver.family')->save($family);
     }
 }

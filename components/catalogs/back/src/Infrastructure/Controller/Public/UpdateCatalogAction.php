@@ -59,7 +59,7 @@ final class UpdateCatalogAction
         try {
             $this->commandBus->execute(new UpdateCatalogCommand(
                 $id,
-                $payload['name'] ?? ''
+                $payload['name'] ?? '',
             ));
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException($e->getViolations());
@@ -76,7 +76,7 @@ final class UpdateCatalogAction
     private function notFound(string $id): NotFoundHttpException
     {
         return new NotFoundHttpException(
-            \sprintf('Catalog "%s" does not exist or you can\'t access it.', $id)
+            \sprintf('Catalog "%s" does not exist or you can\'t access it.', $id),
         );
     }
 }
