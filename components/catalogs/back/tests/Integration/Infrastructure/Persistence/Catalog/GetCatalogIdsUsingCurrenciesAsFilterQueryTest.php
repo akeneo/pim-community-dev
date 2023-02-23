@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsUsingCurrenciesAsFilterQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -17,7 +16,6 @@ use Doctrine\DBAL\Connection;
 final class GetCatalogIdsUsingCurrenciesAsFilterQueryTest extends IntegrationTestCase
 {
     private ?GetCatalogIdsUsingCurrenciesAsFilterQuery $query;
-    private ?Connection $connection;
 
     protected function setUp(): void
     {
@@ -25,7 +23,6 @@ final class GetCatalogIdsUsingCurrenciesAsFilterQueryTest extends IntegrationTes
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->connection = self::getContainer()->get(Connection::class);
         $this->query = self::getContainer()->get(GetCatalogIdsUsingCurrenciesAsFilterQuery::class);
     }
 
@@ -44,18 +41,18 @@ final class GetCatalogIdsUsingCurrenciesAsFilterQueryTest extends IntegrationTes
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['currencies' => $currenciesFirstCatalog]
+            catalogProductValueFilters: ['currencies' => $currenciesFirstCatalog],
         );
         $this->createCatalog(
             id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             name: 'Store FR',
             ownerUsername: 'shopifi',
-            catalogProductValueFilters: ['currencies' => $currenciesSecondCatalog]
+            catalogProductValueFilters: ['currencies' => $currenciesSecondCatalog],
         );
         $this->createCatalog(
             id: '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             name: 'Store UK',
-            ownerUsername: 'shopifi'
+            ownerUsername: 'shopifi',
         );
 
         $resultBothCatalogs = $this->query->execute($currenciesQueried);
@@ -69,25 +66,25 @@ final class GetCatalogIdsUsingCurrenciesAsFilterQueryTest extends IntegrationTes
                 'currencies_first_catalog' => ['USD'],
                 'currencies_second_catalog' => ['EUR'],
                 'currencies_queried' => ['USD', 'EUR'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07'],
             ],
             'gets two catalogs with one currency' => [
                 'currencies_first_catalog' => ['USD', 'EUR'],
                 'currencies_second_catalog' => ['EUR'],
                 'currencies_queried' => ['EUR'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07'],
             ],
             'gets only one catalog with one currency' => [
                 'currencies_first_catalog' => ['USD', 'EUR'],
                 'currencies_second_catalog' => ['EUR'],
                 'currencies_queried' => ['USD'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c'],
             ],
             'gets no catalogs with one currency' => [
                 'currencies_first_catalog' => ['USD', 'EUR'],
                 'currencies_second_catalog' => ['EUR'],
                 'currencies_queried' => ['GBP'],
-                'expected_catalog' => []
+                'expected_catalog' => [],
             ],
         ];
     }

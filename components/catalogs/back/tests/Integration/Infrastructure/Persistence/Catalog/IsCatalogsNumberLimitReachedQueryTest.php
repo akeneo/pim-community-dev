@@ -36,7 +36,7 @@ class IsCatalogsNumberLimitReachedQueryTest extends IntegrationTestCase
             $this->createCatalog(
                 Uuid::uuid4()->toString(),
                 "Store $i",
-                'shopifi'
+                'shopifi',
             );
         }
 

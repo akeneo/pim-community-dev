@@ -31,7 +31,7 @@ final class MaxNumberOfCatalogsPerUserValidator extends ConstraintValidator
                 \sprintf(
                     'MaxNumberOfCatalogsPerUserValidator can only be used on instances of "%s"',
                     CreateCatalogCommand::class,
-                )
+                ),
             );
         }
 

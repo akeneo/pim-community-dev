@@ -30,7 +30,7 @@ final class GetLocalesQuery implements GetLocalesQueryInterface
             ],
             [],
             $limit,
-            ($page - 1) * $limit
+            ($page - 1) * $limit,
         );
 
         return \array_map(static fn (LocaleInterface $locale): array => [

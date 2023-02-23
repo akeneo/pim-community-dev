@@ -7,7 +7,7 @@ namespace Akeneo\Catalogs\Application\Handler;
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
+use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\DeleteProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\DeleteProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
@@ -19,9 +19,9 @@ use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiC
 final class DeleteProductMappingSchemaHandler
 {
     public function __construct(
-        private GetCatalogQueryInterface $getCatalogQuery,
-        private UpsertCatalogQueryInterface $upsertCatalogQuery,
-        private CatalogsMappingStorageInterface $catalogsMappingStorage,
+        readonly private GetCatalogQueryInterface $getCatalogQuery,
+        readonly private UpsertCatalogQueryInterface $upsertCatalogQuery,
+        readonly private DeleteProductMappingSchemaQueryInterface $deleteProductMappingSchemaQuery,
     ) {
     }
 
@@ -33,7 +33,7 @@ final class DeleteProductMappingSchemaHandler
             throw new ServiceApiCatalogNotFoundException();
         }
 
-        $this->catalogsMappingStorage->delete(\sprintf('%s_product.json', $catalog->getId()));
+        $this->deleteProductMappingSchemaQuery->execute($catalog->getId());
 
         $this->upsertCatalogQuery->execute(new Catalog(
             $catalog->getId(),

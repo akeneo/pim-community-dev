@@ -106,7 +106,7 @@ class AuthenticationContext implements Context
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
         $this->callPermissionsSaver(
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
@@ -120,7 +120,7 @@ class AuthenticationContext implements Context
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
         $this->callPermissionsSaver(
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
@@ -138,7 +138,7 @@ class AuthenticationContext implements Context
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
     }
 

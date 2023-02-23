@@ -22,7 +22,7 @@ trait DenyAccessUnlessGrantedTrait
     {
         if ($catalog->getOwnerUsername() !== $username) {
             throw new NotFoundHttpException(
-                \sprintf('Catalog "%s" does not exist or you can\'t access it.', $catalog->getId())
+                \sprintf('Catalog "%s" does not exist or you can\'t access it.', $catalog->getId()),
             );
         }
     }
