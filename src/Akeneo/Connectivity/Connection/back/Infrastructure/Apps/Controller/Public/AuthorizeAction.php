@@ -70,7 +70,7 @@ final class AuthorizeAction
             );
         }
 
-        $this->denyAccessUnlessGrantedToManageOrOpen($app);
+        $this->denyAccessUnlessGrantedToManageOrOpen();
 
         $this->clientProvider->findOrCreateClient($app);
 
@@ -109,10 +109,10 @@ final class AuthorizeAction
         ));
 
         if (null === $appConfirmation) {
-            $this->denyAccessUnlessGrantedToManage($app);
+            $this->denyAccessUnlessGrantedToManage();
         }
 
-        if ((null === $appConfirmation || $hasNewScopes) && $this->isGrantedToManage($app)) {
+        if ((null === $appConfirmation || $hasNewScopes) && $this->isGrantedToManage()) {
             return new RedirectResponse(
                 '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
                     'client_id' => $command->getClientId(),
@@ -120,7 +120,7 @@ final class AuthorizeAction
             );
         }
 
-        if ($this->isGrantedToManage($app)) {
+        if ($this->isGrantedToManage()) {
             $this->updateConnectedAppScopesWithAuthorizationHandler->handle(
                 new UpdateConnectedAppScopesWithAuthorizationCommand($clientId)
             );
@@ -151,40 +151,26 @@ final class AuthorizeAction
         return new RedirectResponse($redirectUrl);
     }
 
-    private function isGrantedToManage(App $app): bool
+    private function isGrantedToManage(): bool
     {
-        return
-            (
-                $app->isTestApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
-            ) || (
-                !$app->isTestApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_apps')
-            );
+        return $this->security->isGranted('akeneo_connectivity_connection_manage_apps');
     }
 
-    private function isGrantedToOpen(App $app): bool
+    private function isGrantedToOpen(): bool
     {
-        return
-            (
-                $app->isTestApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
-            ) || (
-                !$app->isTestApp() &&
-                $this->security->isGranted('akeneo_connectivity_connection_open_apps')
-            );
+        return $this->security->isGranted('akeneo_connectivity_connection_open_apps');
     }
 
-    private function denyAccessUnlessGrantedToManage(App $app): void
+    private function denyAccessUnlessGrantedToManage(): void
     {
-        if (!$this->isGrantedToManage($app)) {
+        if (!$this->isGrantedToManage()) {
             throw new AccessDeniedHttpException();
         }
     }
 
-    private function denyAccessUnlessGrantedToManageOrOpen(App $app): void
+    private function denyAccessUnlessGrantedToManageOrOpen(): void
     {
-        if (!$this->isGrantedToManage($app) && !$this->isGrantedToOpen($app)) {
+        if (!$this->isGrantedToManage() && !$this->isGrantedToOpen()) {
             throw new AccessDeniedHttpException();
         }
     }

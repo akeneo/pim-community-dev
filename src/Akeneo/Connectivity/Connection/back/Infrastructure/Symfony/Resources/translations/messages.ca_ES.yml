@@ -1,7 +1,7 @@
 akeneo_connectivity.connection:
   acl.manage_settings: Administrar la configuració de les connexions
   acl.manage_apps: Gestió d'apps
-  acl.manage_test_apps: Gestionar aplicacions de prova
+  acl.create_and_delete_custom_apps: Creeu i suprimiu aplicacions personalitzades
   acl.open_apps: Obrir aplicacions
 pim_notification:
   connected_app_authorizations:

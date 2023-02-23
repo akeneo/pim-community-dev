@@ -14,8 +14,16 @@
 - PIM-10806: Allow to delete product's attributes with type 'identifier' and ensure grey cross is displayed
 - PIM-10825: Fix transfer to external storage does not give enough information
 - PIM-10823: Fix cannot import price and measurement with comma as decimal separator with value not saved as string in import file
+- PIM-10843: Rework get association query to avoid group concat max lenght limit
 - PIM-10835: Fix command publish-job-to-queue does not work
 - PIM-10778: Add limit to the number of options to display on the attribute option page
+- PIM-10828: Fix search bars don't take into account special characters
+- PIM-10858: Fix password is set on sftp storage using private key
+- PIM-10844: Filter empty attribute option labels
+- PIM-10831: Fix severe performance issues with the association product and product model picker
+- PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
+- PIM-10853: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
+- PIM-10829: Fix case-sensitive locale on translatable business objects
 
 ## Improvements
 

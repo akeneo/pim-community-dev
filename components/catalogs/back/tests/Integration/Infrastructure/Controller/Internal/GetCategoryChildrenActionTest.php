@@ -30,13 +30,13 @@ class GetCategoryChildrenActionTest extends IntegrationTestCase
         $this->createCategory([
             'code' => 'child1',
             'parent' => 'parent_category',
-            'labels' => ['en_US' => 'Child category']
+            'labels' => ['en_US' => 'Child category'],
         ]);
 
         $this->createCategory([
             'code' => 'child2',
             'parent' => 'parent_category',
-            'labels' => ['en_US' => 'Child 2 category']
+            'labels' => ['en_US' => 'Child 2 category'],
         ]);
 
         $this->createCategory(['code' => 'grand_child', 'parent' => 'child1']);
@@ -66,7 +66,7 @@ class GetCategoryChildrenActionTest extends IntegrationTestCase
                 'code' => 'child2',
                 'label' => 'Child 2 category',
                 'isLeaf' => true,
-            ]
+            ],
         ], $children);
     }
 }

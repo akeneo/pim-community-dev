@@ -134,12 +134,12 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function getTranslation(?string $locale = null): ?CategoryTranslationInterface
     {
-        $locale = ($locale) ? $locale : $this->locale;
+        $locale = $locale ?: $this->locale;
         if (null === $locale) {
             return null;
         }
         foreach ($this->getTranslations() as $translation) {
-            if (strtolower($translation->getLocale()) === strtolower($locale)) {
+            if (\strtolower($translation->getLocale()) === \strtolower($locale)) {
                 return $translation;
             }
         }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
+use Akeneo\Category\Application\Query\IsTemplateDeactivated;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
@@ -22,8 +23,9 @@ use Doctrine\DBAL\Types\Types;
 class UpsertCategoryBaseSql implements UpsertCategoryBase
 {
     public function __construct(
-        private Connection $connection,
-        private GetCategoryInterface $getCategory,
+        private readonly Connection $connection,
+        private readonly GetCategoryInterface $getCategory,
+        private readonly IsTemplateDeactivated $isTemplateDeactivated,
     ) {
     }
 
@@ -33,7 +35,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     public function execute(Category $categoryModel): void
     {
         if ($this->getCategory->byCode((string) $categoryModel->getCode())) {
-            $this->updateCategory($categoryModel);
+            $this->updateEnrichedCategory($categoryModel);
         } else {
             $this->insertCategory($categoryModel);
         }
@@ -99,17 +101,21 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     /**
      * @throws Exception
      */
-    private function updateCategory(Category $categoryModel): void
+    private function updateEnrichedCategory(Category $categoryModel): void
     {
-        $query = <<< SQL
-                UPDATE pim_catalog_category
-                SET
-                    created = pim_catalog_category.created,
-                    updated = NOW(),
-                    value_collection = :value_collection
-                WHERE code = :category_code
-                ;
-            SQL;
+        $templateUuid = $categoryModel->getTemplateUuid();
+        if ($templateUuid && ($this->isTemplateDeactivated)($templateUuid)) {
+            return;
+        }
+
+        $query = <<<SQL
+            UPDATE pim_catalog_category
+            SET
+                created = pim_catalog_category.created,
+                updated = NOW(),
+                value_collection = :value_collection
+            WHERE code = :category_code;
+        SQL;
 
         $this->connection->executeQuery(
             $query,

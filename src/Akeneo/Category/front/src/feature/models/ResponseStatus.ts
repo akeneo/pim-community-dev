@@ -1,3 +1,5 @@
+export const DEACTIVATED_TEMPLATE = 'deactivated_template';
+
 export enum ResponseStatusEnum {
   idle = 'idle',
   loading = 'loading',

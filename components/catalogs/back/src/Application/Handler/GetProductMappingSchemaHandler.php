@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
+use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductMappingSchemaNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 
 /**
@@ -19,7 +20,7 @@ final class GetProductMappingSchemaHandler
 {
     public function __construct(
         private GetCatalogQueryInterface $getCatalogQuery,
-        private CatalogsMappingStorageInterface $catalogsMappingStorage,
+        private GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
     ) {
     }
 
@@ -35,20 +36,12 @@ final class GetProductMappingSchemaHandler
             throw new ServiceApiCatalogNotFoundException();
         }
 
-        $productMappingSchemaFile = \sprintf('%s_product.json', $catalog->getId());
-
-        if (!$this->catalogsMappingStorage->exists($productMappingSchemaFile)) {
-            throw new ServiceApiProductSchemaMappingNotFoundException();
+        try {
+            $productMappingSchema = $this->getProductMappingSchemaQuery->execute($catalog->getId());
+        } catch (ProductMappingSchemaNotFoundException) {
+            throw new ServiceApiProductMappingSchemaNotFoundException();
         }
 
-        $productMappingSchema = \stream_get_contents(
-            $this->catalogsMappingStorage->read($productMappingSchemaFile)
-        );
-
-        if (false === $productMappingSchema) {
-            throw new \LogicException('Product mapping schema is unreadable.');
-        }
-
-        return \json_decode($productMappingSchema, false, 512, JSON_THROW_ON_ERROR);
+        return (object) $productMappingSchema;
     }
 }

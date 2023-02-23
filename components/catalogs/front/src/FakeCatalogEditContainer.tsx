@@ -36,7 +36,7 @@ const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
     const [headerContextContainer, setHeaderContextContainer] = useState<HTMLDivElement | undefined>(undefined);
     useLayoutEffect(() => {
         setHeaderContextContainer(ref.current);
-    });
+    }, [ref]);
 
     const saveHandler = async () => {
         const isSaveSuccessful = await save();

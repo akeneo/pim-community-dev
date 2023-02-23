@@ -6,7 +6,7 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogQuery;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductMappingSchemaNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
@@ -73,16 +73,16 @@ class DeleteProductMappingSchemaActionTest extends IntegrationTestCase
 
         Assert::assertEquals(204, $response->getStatusCode());
 
-        $this->expectException(ServiceApiProductSchemaMappingNotFoundException::class);
+        $this->expectException(ServiceApiProductMappingSchemaNotFoundException::class);
         $this->queryBus->execute(
-            new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c')
+            new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'),
         );
 
         /** @var Catalog $catalog */
         $catalog = self::getContainer()->get(GetCatalogQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
         Assert::assertJsonStringEqualsJsonString(
             '[]',
-            \json_encode($catalog->getProductMapping(), JSON_THROW_ON_ERROR)
+            \json_encode($catalog->getProductMapping(), JSON_THROW_ON_ERROR),
         );
     }
 

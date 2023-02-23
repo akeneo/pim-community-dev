@@ -72,8 +72,8 @@ class GetProductsAction
                     'error' => \sprintf(
                         'No products to synchronize. The catalog %s has been disabled on the PIM side.' .
                         ' Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.',
-                        $catalog->getId()
-                    )
+                        $catalog->getId(),
+                    ),
                 ],
                 Response::HTTP_OK,
             );

@@ -40,6 +40,7 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Exception;
+use Ramsey\Uuid\Uuid;
 
 class CategoryTestCase extends TestCase
 {
@@ -222,6 +223,19 @@ class CategoryTestCase extends TestCase
             $templateLabels,
             $categoryTreeId,
             $templateAttributes,
+        );
+    }
+
+    protected function givenTemplate(string $templateUuidRaw, ?CategoryId $categoryId): Template
+    {
+        $templateUuid = TemplateUuid::fromString($templateUuidRaw);
+
+        return new Template(
+            $templateUuid,
+            new TemplateCode('default_template'),
+            LabelCollection::fromArray(['en_US' => 'Default template']),
+            $categoryId,
+            null,
         );
     }
 
@@ -445,6 +459,17 @@ SQL;
             $template->getUuid(),
             $template->getAttributeCollection(),
         );
+    }
+
+    protected function deactivateTemplate(string $uuid): void
+    {
+        $query = <<<SQL
+UPDATE pim_catalog_category_template SET is_deactivated = 1 WHERE uuid = :uuid;
+SQL;
+
+        $this->get('database_connection')->executeQuery($query, [
+            'uuid' => Uuid::fromString($uuid)->getBytes(),
+        ]);
     }
 
     protected function getConfiguration()

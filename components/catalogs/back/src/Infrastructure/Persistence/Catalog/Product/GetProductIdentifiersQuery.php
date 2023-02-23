@@ -54,7 +54,7 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
         return \array_map(
             fn (IdentifierResult $result) => $result->getIdentifier() ?:
                 $this->getUuidFromIdentifierResult($result->getId()),
-            \iterator_to_array($results)
+            \iterator_to_array($results),
         );
     }
 
@@ -84,7 +84,7 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
         if (!\preg_match(
             '/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/',
             $esId,
-            $matches
+            $matches,
         )) {
             throw new \InvalidArgumentException(\sprintf('Invalid Elasticsearch identifier %s', $esId));
         }

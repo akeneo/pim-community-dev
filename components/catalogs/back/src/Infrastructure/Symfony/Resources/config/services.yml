@@ -18,6 +18,7 @@ services:
             - '../../../../Domain/'
             - '../../../../ServiceAPI/'
             - '../../../../Application/Exception'
+            - '../../../../Infrastructure/Validation'
 
     Akeneo\Catalogs\Application\Handler\:
         resource: '../../../../Application/Handler/'
@@ -68,6 +69,19 @@ services:
             - '@Akeneo\Catalogs\Infrastructure\TemporaryEnrichmentBridge\SearchAfterSizeUuidResultCursorFactory'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
 
+    # Validation
+    Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid: ~
+
+    Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface: '@Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid'
+
+    Akeneo\Catalogs\Infrastructure\Validation\:
+        resource: '../../../Validation/**/*Validator.php'
+
+    Akeneo\Catalogs\Infrastructure\Validation\CatalogProductSelectionCriteriaValidator:
+        arguments:
+            $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'
+
+    # Persistence
     Akeneo\Catalogs\Infrastructure\Persistence\Catalog\IsCatalogsNumberLimitReachedQuery:
         arguments:
             $limit: '%akeneo_catalog.max_number_of_catalogs_per_user%'
@@ -152,14 +166,16 @@ services:
         arguments:
             - '@pim_catalog.repository.currency'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetChannelCurrenciesQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    # Storage
     Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
         arguments:
             $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'
 
-    Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayloadValidator:
-        arguments:
-            $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'
-
+    # EventSubscriber
     Akeneo\Catalogs\Infrastructure\EventSubscriber\CurrencyDeactivationSubscriber:
         arguments:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
@@ -174,3 +190,19 @@ services:
         arguments:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
             $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
+
+    Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry:
+        arguments:
+            -
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromMultiSelectAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromNumberAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromIdentifierAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromSimpleSelectAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextareaAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringUri\StringUriFromImageAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromNumberAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromPriceCollectionAttributeValueExtractor'

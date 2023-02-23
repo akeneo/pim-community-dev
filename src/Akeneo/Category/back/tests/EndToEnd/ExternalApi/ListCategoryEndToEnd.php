@@ -2,6 +2,9 @@
 
 namespace Akeneo\Test\Category\EndToEnd\ExternalApi;
 
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
@@ -522,8 +525,14 @@ JSON;
      */
     public function testListCategoriesWithEnrichedValues(): void
     {
+        $category = $this->get(GetCategoryInterface::class)->byCode('master');
         $this->enableEnrichedCategoryFeature();
         $this->updateCategoryWithValues('master');
+
+        $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $category->getId()->getValue());
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/categories?search={"code":[{"operator":"IN","value":["master"]}]}&with_enriched_attributes=true');
@@ -543,6 +552,48 @@ JSON;
             '_embedded' => [
                 'items' => [
                     $categories['master'],
+                ],
+            ],
+        ];
+
+        $this->assertSameResponse($expected, $client->getResponse());
+    }
+
+    /**
+     * @group enriched_category
+     */
+    public function testListCategoriesWithEnrichedValuesOnDeactivateTemplate(): void
+    {
+        $category = $this->get(GetCategoryInterface::class)->byCode('master');
+        $this->enableEnrichedCategoryFeature();
+        $this->updateCategoryWithValues('master');
+
+        $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $category->getId()->getValue());
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+        $this->deactivateTemplate($templateModel->getUuid()->getValue());
+
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/categories?search={"code":[{"operator":"IN","value":["master"]}]}&with_enriched_attributes=true');
+
+        $categories = $this->getStandardizedCategories(false, false);
+
+        $expectedCategory = $categories['master'];
+        $expectedCategory['values'] = [];
+        $expected = [
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22master%22%5D%7D%5D%7D&with_enriched_attributes=true',
+                ],
+                'first' => [
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22master%22%5D%7D%5D%7D&with_enriched_attributes=true',
+                ],
+            ],
+            'current_page' => 1,
+            '_embedded' => [
+                'items' => [
+                    $expectedCategory,
                 ],
             ],
         ];

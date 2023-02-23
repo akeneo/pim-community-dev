@@ -31,24 +31,24 @@ test('it returns undefined if there is not matches', () => {
 const pathErrors: CatalogFormErrors = [
     {
         message: 'This value must not be empty.',
-        propertyPath: '[product_selection_criteria][0][value]',
+        propertyPath: 'productSelectionCriteria[0][value]',
     },
     {
         message: 'This value must not be empty.',
-        propertyPath: '[product_selection_criteria][1][value][amount]',
+        propertyPath: 'productSelectionCriteria[1][value][amount]',
     },
     {
         message: 'The unit must not be empty.',
-        propertyPath: '[product_selection_criteria][2][value][unit]',
+        propertyPath: 'productSelectionCriteria[2][value][unit]',
     },
 ];
 
 const pathTests: [string, string | undefined][] = [
-    ['[product_selection_criteria][0][value]', 'This value must not be empty.'],
-    ['[product_selection_criteria][1][value]', 'This value must not be empty.'],
-    ['[product_selection_criteria][2][value]', 'The unit must not be empty.'],
-    ['[product_selection_criteria][3][value]', undefined],
-    ['[product_selection_criteria][0][operator]', undefined],
+    ['productSelectionCriteria[0][value]', 'This value must not be empty.'],
+    ['productSelectionCriteria[1][value]', 'This value must not be empty.'],
+    ['productSelectionCriteria[2][value]', 'The unit must not be empty.'],
+    ['productSelectionCriteria[3][value]', undefined],
+    ['productSelectionCriteria[0][operator]', undefined],
 ];
 
 test.each(pathTests)('it returns an error message from "%s"', (input, output) => {

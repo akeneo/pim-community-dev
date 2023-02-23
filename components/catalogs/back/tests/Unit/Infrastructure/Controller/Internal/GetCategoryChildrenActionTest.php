@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Persistence\Category\GetCategoryChildrenQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCategoryChildrenAction;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class GetCategoryChildrenActionTest extends TestCase
 {
     private ?GetCategoryChildrenAction $getCategoryChildrenAction;
-    private ?GetCategoryChildrenQueryInterface $getCategoryChildrenQuery;
+    private GetCategoryChildrenQueryInterface&MockObject $getCategoryChildrenQuery;
 
     protected function setUp(): void
     {
@@ -55,7 +56,7 @@ class GetCategoryChildrenActionTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertJsonStringEqualsJsonString(
             \json_encode(['categoryA', 'categoryB', 'categoryC'], JSON_THROW_ON_ERROR),
-            $response->getContent()
+            $response->getContent(),
         );
     }
 
@@ -79,7 +80,7 @@ class GetCategoryChildrenActionTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertJsonStringEqualsJsonString(
             \json_encode(['categoryA', 'categoryB', 'categoryC'], JSON_THROW_ON_ERROR),
-            $response->getContent()
+            $response->getContent(),
         );
     }
 

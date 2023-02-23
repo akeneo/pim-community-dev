@@ -1,22 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Pill, TabBar, useBooleanState} from 'akeneo-design-system';
-import {PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, SecondaryActions, useTranslate} from '@akeneo-pim-community/shared';
 import {GeneralPropertiesTab, SelectionTab, StructureTab} from '../tabs';
 import {Conditions, Delimiter, GeneratorTab, IdentifierGenerator, IdentifierGeneratorCode, Structure} from '../models';
 import {Violation} from '../validators';
 import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
-import {useIdentifierGeneratorContext} from '../context';
+import {useIdentifierGeneratorAclContext, useIdentifierGeneratorContext} from '../context';
 import styled from 'styled-components';
 import {useStructureTabs} from '../hooks';
-
-// TODO: replace this component by PageContent when there we delete the warning message (DO NOT USE...)
-const Container = styled.div`
-  padding: 0 40px;
-  overflow: auto;
-  height: calc(100vh - 190px);
-`;
 
 type CreateOrEditGeneratorProps = {
   isMainButtonDisabled: boolean;
@@ -40,6 +33,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   const changeTab = useCallback(tabName => () => setCurrentTab(tabName), [setCurrentTab]);
   const onSave = useCallback(() => mainButtonCallback(generator), [generator, mainButtonCallback]);
   const identifierGeneratorContext = useIdentifierGeneratorContext();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   const [generatorCodeToDelete, setGeneratorCodeToDelete] = useState<IdentifierGeneratorCode | undefined>();
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
@@ -104,20 +98,22 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
   return (
     <>
       <Header>
-        <PageHeader.Actions>
-          {!isNew && (
-            <SecondaryActions>
-              <SecondaryActions.Item onClick={handleDeleteModal}>
-                {translate('pim_common.delete')}
-              </SecondaryActions.Item>
-            </SecondaryActions>
-          )}
-          <Button onClick={onSave} disabled={isMainButtonDisabled}>
-            {translate('pim_common.save')}
-          </Button>
-        </PageHeader.Actions>
+        {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+          <PageHeader.Actions>
+            {!isNew && (
+              <SecondaryActions>
+                <SecondaryActions.Item onClick={handleDeleteModal}>
+                  {translate('pim_common.delete')}
+                </SecondaryActions.Item>
+              </SecondaryActions>
+            )}
+            <Button onClick={onSave} disabled={isMainButtonDisabled}>
+              {translate('pim_common.save')}
+            </Button>
+          </PageHeader.Actions>
+        )}
       </Header>
-      <Container>
+      <PageContent>
         <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={currentTab === GeneratorTab.GENERAL} onClick={changeTab(GeneratorTab.GENERAL)}>
             {translate('pim_identifier_generator.tabs.general')}
@@ -159,7 +155,7 @@ const CreateOrEditGeneratorPage: React.FC<CreateOrEditGeneratorProps> = ({
             textTransformation={generator.text_transformation}
           />
         )}
-      </Container>
+      </PageContent>
       {isDeleteGeneratorModalOpen && generatorCodeToDelete && (
         <DeleteGeneratorModal generatorCode={generatorCodeToDelete} onClose={closeModal} onDelete={redirectToList} />
       )}
