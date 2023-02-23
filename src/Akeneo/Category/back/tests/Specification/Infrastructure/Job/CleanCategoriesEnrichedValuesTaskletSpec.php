@@ -42,18 +42,18 @@ class CleanCategoriesEnrichedValuesTaskletSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
 
         $deletedChannel = 'deleted_channel_code';
-        $localesCodes = ['en_US'];
         $jobParameters->get('channel_code')->willReturn($deletedChannel);
-        $jobParameters->get('locales_codes')->willReturn($localesCodes);
+        $jobParameters->get('locales_codes')->willReturn(null);
         $jobParameters->get('action')->willReturn(ChannelAndLocalesFilter::CLEAN_CHANNEL_ACTION);
 
         $categoryDataCleaner->__invoke(
             [
                 'channel_code' => $deletedChannel,
-                'locales_codes' => $localesCodes,
-                'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_ACTION,
+                'locales_codes' => null,
+                'action' => 'cleanChannel',
             ],
-            $channelAndLocalesFilter)->shouldBeCalled();
+            new ChannelAndLocalesFilter()
+        )->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute();

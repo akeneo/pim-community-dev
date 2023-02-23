@@ -101,7 +101,6 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
             $user,
             [
                 'channel_code' => 'deleted_channel_code',
-                'locales_codes' => ['en_US'],
                 'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_ACTION,
             ]
 

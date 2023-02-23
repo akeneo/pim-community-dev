@@ -2,13 +2,14 @@
 
 namespace Akeneo\Category\back\tests\Integration\Application\Enrichment;
 
-use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
+use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
+use Akeneo\Category\Application\Enrichment\Filter\ChannelAndLocalesFilter;
 use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 
-class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
+class CategoryDataCleanerIntegration extends CategoryTestCase
 {
     protected function setUp(): void
     {
@@ -42,7 +43,13 @@ class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
         $this->assertTrue(array_key_exists($this->getMobileTitleKey('en_US'), json_decode($currentValuesByCategoryCode['pants'], true)));
 
         // clean enriched categories data linked to 'mobile' channel
-        $this->get(CleanCategoryDataLinkedToChannel::class)->__invoke('mobile', [], CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_ACTION);
+        $this->get(CategoryDataCleaner::class)->__invoke(
+            [
+                'channel_code' => 'mobile',
+                'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_ACTION,
+            ],
+            new ChannelAndLocalesFilter()
+        );
         $cleanedValuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
 
         $cleanedSocksValueCollection = json_decode($cleanedValuesByCategoryCode['socks'], true);
@@ -63,6 +70,9 @@ class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
         );
         $this->assertFalse(array_key_exists($this->getMobileTitleKey('en_US'), $cleanedPantsValueCollection));
         $this->assertFalse(array_key_exists($this->getMobileTitleKey('fr_FR'), $cleanedPantsValueCollection));
+
+        $this->assertTrue(array_key_exists($this->getNotScopableNotLocalizablePhotoKey(), $cleanedSocksValueCollection));
+        $this->assertTrue(array_key_exists($this->getNotScopableNotLocalizablePhotoKey(), $cleanedPantsValueCollection));
     }
 
     public function testItCleanEnrichedValuesLinkedToDeactivateChannelLocale(): void
@@ -72,7 +82,14 @@ class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
         $this->assertTrue(array_key_exists($this->getMobileTitleKey('en_US'), json_decode($currentValuesByCategoryCode['pants'], true)));
 
         // clean enriched categories data linked to 'mobile' channel
-        $this->get(CleanCategoryDataLinkedToChannel::class)->__invoke('mobile', ['fr_FR'], CleanCategoryDataLinkedToChannel::CLEAN_CHANNEL_LOCALE_ACTION);
+        $this->get(CategoryDataCleaner::class)->__invoke(
+            [
+                'channel_code' => 'mobile',
+                'locales_codes' => ['fr_FR'],
+                'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_LOCALE_ACTION,
+            ],
+            new ChannelAndLocalesFilter()
+        );
         $cleanedValuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
 
         $cleanedSocksValueCollection = json_decode($cleanedValuesByCategoryCode['socks'], true);
@@ -159,5 +176,10 @@ class CleanCategoryDataLinkedToChannelIntegration extends CategoryTestCase
             .AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'
             .AbstractValue::SEPARATOR.'ecommerce'
             .AbstractValue::SEPARATOR.$localCode;
+    }
+
+    private function getNotScopableNotLocalizablePhotoKey(): string
+    {
+        return 'photo'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c';
     }
 }
