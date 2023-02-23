@@ -6,8 +6,10 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
-            -   load_docker_image_php
-            -   fix_files_permissions
+            - install_yq_v3
+            - set_docker_gcp_mirror
+            - load_docker_image_php
+            - fix_files_permissions
             -   run:
                     name: Coupling back
                     command: PIM_CONTEXT=category make category-coupling-back
