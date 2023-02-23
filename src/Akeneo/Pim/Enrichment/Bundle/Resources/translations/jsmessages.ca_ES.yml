@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: Producte actualitzat correctament.
       fail: El producte podria no actualitzar-se.
+      fail_session_expired: El producte no es pot actualitzar. La vostra sessió d'usuari ha caducat. Si us plau, torneu a iniciar sessió.
       fields_not_ready: "Ara no es pot guardar el producte. Els següents camps no estan preparats: {{ fields }}"
       already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
       file_upload: S'ha produït un error duran la càrrega
@@ -243,6 +244,9 @@ pim_enrich.entity.category:
     success: L'arbre "{{ tree }}" s'ha suprimit correctament
     error: L'arbre "{{ tree }}" no s'ha pogut suprimir
     confirmation: Esteu segur que voleu suprimir l'arbre {{ name }}? Totes les categories d'aquest arbre se suprimiran i els productes s'eliminaran de totes aquestes categories.
+    confirmation_question: Segur que voleu suprimir {{ name }} ?
+    warning_categories_number: Se suprimiran les {{ categoriesNumber }} categories associades i els productes s'eliminaran de totes aquestes categories.
+    warning_products: Tots els productes associats s'eliminaran de {{ name }}
     products_limit_exceeded:
       title: Aquest arbre no es pot suprimir
       message: L'arbre "{{ tree }}" conté més de {{ limit }} productes i, per tant, no es pot suprimir.
@@ -250,6 +254,7 @@ pim_enrich.entity.category:
     success: La categoria "{{ name }}" s'ha suprimit correctament
     error: La categoria "{{ name }}" no s'ha pogut suprimir
     confirmation: Esteu segur que voleu suprimir la categoria {{ name }}? Els productes d'aquesta categoria no s'eliminaran.
+    confirmation_question: Segur que voleu suprimir {{ name }} ?
     products_limit_exceeded:
       title: Aquesta categoria no es pot suprimir
       message: La categoria "{{ name }}" conté més de {{ limit }} productes i, per tant, no es pot suprimir.
