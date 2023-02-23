@@ -67,16 +67,22 @@ class GetCategoryTreesSqlIntegration extends CategoryTestCase
         $tamplateUuid3 = TemplateUuid::fromString('69232ec4-b383-11ed-afa1-0242ac120002');
 
         $this->insertTemplate($tamplateUuid2);
-        $this->deactivateTemplate($tamplateUuid2->getValue());
+
         $this->insertTemplate($tamplateUuid3);
+
+        $expectedCategoryTrees = $this->get(GetCategoryTreesInterface::class)->byIds([$this->categoryParent->getId()]);
+        $this->assertCount(3, $expectedCategoryTrees);
+        $this->deactivateTemplate($tamplateUuid2->getValue());
         $this->deactivateTemplate($tamplateUuid3->getValue());
 
         $expectedCategoryTrees = $this->get(GetCategoryTreesInterface::class)->byIds([$this->categoryParent->getId()]);
+        $this->assertCount(1, $expectedCategoryTrees);
         $this->assertNotNull($expectedCategoryTrees[0]->getCategoryTreeTemplate());
 
         $this->deactivateTemplate(self::TEMPLATE_UUID);
 
         $expectedCategoryTrees = $this->get(GetCategoryTreesInterface::class)->byIds([$this->categoryParent->getId()]);
+        $this->assertCount(1, $expectedCategoryTrees);
         $this->assertNull($expectedCategoryTrees[0]->getCategoryTreeTemplate());
     }
 
@@ -90,7 +96,7 @@ class GetCategoryTreesSqlIntegration extends CategoryTestCase
         $this->insertTemplate($templateUuid);
     }
 
-    private function insertTemplate(TemplateUuid $templateUuid) {
+    private function insertTemplate(TemplateUuid $templateUuid): void {
         $sqlInsertTemplate = <<<SQL
             INSERT INTO pim_catalog_category_template (uuid, code, labels)
             VALUES (:uuid, 'the_template', :labels);
