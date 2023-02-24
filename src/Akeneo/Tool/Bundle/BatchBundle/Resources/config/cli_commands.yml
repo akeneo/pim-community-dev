@@ -9,6 +9,7 @@ services:
             - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Tool\Bundle\BatchBundle\Command\CreateJobInstanceCommand:
         arguments:
