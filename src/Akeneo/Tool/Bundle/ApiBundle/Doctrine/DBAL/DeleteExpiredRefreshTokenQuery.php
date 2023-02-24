@@ -13,8 +13,11 @@ use Doctrine\DBAL\ParameterType;
  */
 class DeleteExpiredRefreshTokenQuery
 {
-    private const DEFAULT_BATCH_SIZE = 100_000;
-    private const NUMBER_OF_LOOP = 500;
+    /**
+     * 50 million (10000 * 5000) is an arbitrary choice that allows expired tokens to be removed in less than 24 hours.
+     */
+    private const DEFAULT_BATCH_SIZE = 10_000;
+    private const NUMBER_OF_LOOP = 5_000;
     public function __construct(private readonly Connection $connection)
     {
     }
