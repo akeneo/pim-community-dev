@@ -39,7 +39,7 @@ But implementing the `SerializableMessageInterface` is optional. Normalization a
 By implementing `SerializableMessageInterface` the message will be automatically normalized/denormalized using the
 according methods. 
 If you need more complex (de)normalization (for instance injecting some extra values), don't implement `SerializableMessageInterface`, 
-you can create your own normalizer service and tag it with `akeneo_batch_queue.messenger.normalizer`.
+you can create your own normalizer service and tag it with `akeneo_messenger.message.normalizer`.
 
 Now you certainly need to add a handler, this is the next section.
 

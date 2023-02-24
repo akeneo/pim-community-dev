@@ -47,7 +47,7 @@ class AkeneoMessengerExtension extends Extension
                     TraceableMessageBridgeHandler::class
                 )
                     ->setArguments([
-                        new Reference('akeneo_batch_queue.messenger.serializer'),
+                        new Reference('akeneo_messenger.message.serializer'),
                         new Reference('logger'),
                         $consumerConfig['name'],
                     ])

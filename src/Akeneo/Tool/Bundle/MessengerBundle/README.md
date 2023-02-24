@@ -122,16 +122,16 @@ flowchart LR
     action -- Publish message in topic --> queue[(Multi-tenant queue)]
     Consumer1 <-- Ask messages for subscription1? --> queue
     subgraph Tenant agnostic daemon
-        Consumer1 -- Launch command in a subprocess with tenant --> pmc1[processMessageCommand]
+        Consumer1 -- Launch command in a subprocess with tenant --> pmc1[ProcessMessageCommand]
         subgraph Tenant aware process
-            pmc1[processMessageCommand] -- Launch the final handler --> Handler1
+            pmc1 -- Launch the final handler --> Handler1
         end
     end
     Consumer2 <-- Ask messages for subscription2? --> queue
     subgraph Tenant agnostic daemon
-        Consumer2 -- Launch command in a subprocess with tenant --> pmc2[processMessageCommand]
+        Consumer2 -- Launch command in a subprocess with tenant --> pmc2[ProcessMessageCommand]
         subgraph Tenant aware process
-            pmc2[processMessageCommand] -- Launch the final handler --> Handler2
+            pmc2 -- Launch the final handler --> Handler2
         end
     end
 ```

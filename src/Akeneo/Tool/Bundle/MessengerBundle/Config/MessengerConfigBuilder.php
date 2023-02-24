@@ -14,6 +14,8 @@ use Webmozart\Assert\Assert;
  */
 final class MessengerConfigBuilder
 {
+    private const SERIALIZER = 'akeneo_messenger.envelope.serializer';
+
     public static string $configFile = 'config/events.yml';
 
     public function __construct(private readonly string $env)
@@ -85,7 +87,7 @@ final class MessengerConfigBuilder
                 'redeliver_timeout' => 86400,
                 'auto_setup' => false,
             ],
-            'serializer' => 'akeneo_batch_queue.messenger.serializer',
+            'serializer' => self::SERIALIZER,
         ];
     }
 
@@ -100,7 +102,7 @@ final class MessengerConfigBuilder
                 ],
                 static fn ($value): bool => null !== $value
             ),
-            'serializer' => 'akeneo_batch_queue.messenger.serializer',
+            'serializer' => self::SERIALIZER,
         ];
     }
 
