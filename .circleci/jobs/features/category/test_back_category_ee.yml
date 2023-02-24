@@ -1,7 +1,9 @@
+executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
+
 jobs:
     test_back_category_ee:
         machine:
-            image: 'ubuntu-2004:2022.04.1'
+            image: *executor-machine
             docker_layer_caching: true
         parameters:
             notify:
@@ -10,12 +12,18 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
-            -   load_docker_image_php
             -   fix_files_permissions
-            -   start_test_containers
+            -   load_docker_image_php
             -   run:
                     name: Lint back
                     command: PIM_CONTEXT=category APP_ENV=test make category-lint-back
+            -   run:
+                    name: Coupling back
+                    command: PIM_CONTEXT=category make category-coupling-back
+            -   start_test_containers
+            -   run:
+                    name: Unit back
+                    command: PIM_CONTEXT=category make category-unit-back
             -   run:
                     name: Integration back
                     command: PIM_CONTEXT=category APP_ENV=test make category-integration-back

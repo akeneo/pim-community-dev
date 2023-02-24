@@ -1,22 +1,22 @@
+executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
+
 jobs:
     test_back_category_ce:
         machine:
-            image: 'ubuntu-2004:2022.04.1'
+            image: *executor-machine
             docker_layer_caching: true
         steps:
             -   attach_workspace:
                     at: ~/
-            - install_yq_v3
-            - set_docker_gcp_mirror
             - load_docker_image_php
             - fix_files_permissions
             -   run:
-                    name: Coupling back
-                    command: PIM_CONTEXT=category make category-coupling-back
-            -   run:
                     name: Lint back
                     command: PIM_CONTEXT=category make category-lint-back
-            -   start_test_containers
+            -   run:
+                    name: Coupling back
+                    command: PIM_CONTEXT=category make category-coupling-back
+            - start_test_containers
             -   run:
                     name: Unit back
                     command: PIM_CONTEXT=category make category-unit-back
