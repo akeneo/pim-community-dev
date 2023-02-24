@@ -111,7 +111,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                     \sprintf(
                         'The combination type "%s" and format "%s" are not supported.',
                         $schema['properties'][$targetCode]['type'],
-                        $schema['properties'][$targetCode]['format'],
+                        $schema['properties'][$targetCode]['format'] ?? '',
                     ),
                     0,
                     $exception,
