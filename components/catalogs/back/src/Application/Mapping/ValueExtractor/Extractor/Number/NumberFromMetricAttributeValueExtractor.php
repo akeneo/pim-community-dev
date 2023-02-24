@@ -1,34 +1,40 @@
 <?php
- declare(strict_types=1);
+declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\NumberValueExtractorInterface;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Measurement\MeasurementConverter;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @phpstan-import-type Attribute from FindOneAttributeByCodeQueryInterface
+ * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  */
 final class NumberFromMetricAttributeValueExtractor implements NumberValueExtractorInterface
 {
     public function __construct(
-        readonly private MeasurementConverter $measurementConverter,
-        private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery
+        readonly private MeasurementConverter        $measurementConverter,
+        private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
     )
     {
     }
 
-    public function extract(array $product, string $code, ?string $locale, ?string $scope, ?array $parameters): null|float|int
+    /**
+     * @param RawProduct $product
+     */
+    public function extract(array $product, string $code, ?string $locale, ?string $scope, ?array $parameters): float|int|null
     {
         $metricUnit = $parameters['unit'] ?? null;
-        /** @var mixed $value */
         $metricValue = $product['raw_values'][$code][$scope][$locale] ?? null;
 
         if (!\is_string($metricUnit) || !\is_array($metricValue)) {
             return null;
         }
+
         $attribute = $this->getAttributeByCode($code);
         return $this->findMetricUnitValue($attribute, $metricUnit, $metricValue);
     }
@@ -48,25 +54,43 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
         return null;
     }
 
+    /**
+     * @return Attribute|null
+     */
     private function getAttributeByCode(string $attributeCode): array|null
     {
-        $attribute = $this->findOneAttributeByCodeQuery->execute($attributeCode);
-        if (null === $attribute) {
-            return null;
-        }
-        return $attribute;
+        return $this->findOneAttributeByCodeQuery->execute($attributeCode);
     }
 
-    private function findMetricUnitValue(array $attribute, string $unit, array $metricValue): float|int|string|null
+    /**
+     * @param Attribute|null $attribute
+     * @param array<array-key, mixed> $metricValue
+     */
+    private function findMetricUnitValue(?array $attribute, string $unit, array $metricValue): float|int|null
     {
-        $amount = $this->measurementConverter->convert($attribute['measurement_family'], $metricValue['unit'], $unit, $metricValue['amount']);
-        if (\is_numeric($amount)) {
-            $castInIntAmount = (int) $amount;
-            if ($castInIntAmount == $amount) {
-                return $castInIntAmount;
-            }
-            return (float) $amount;
+        if (empty($attribute['measurement_family'])) {
+            return null;
         }
-        return null;
+
+        if (!isset($metricValue['unit']) || !\is_string($metricValue['unit'])) {
+            return null;
+        }
+
+        if (!isset($metricValue['amount']) || !\is_numeric($metricValue['amount'])) {
+            return null;
+        }
+
+        try {
+            $amount = $this->measurementConverter->convert($attribute['measurement_family'], $metricValue['unit'], $unit, $metricValue['amount']);
+        } catch (\Exception) {
+            return null;
+        }
+
+        $castInIntAmount = (int)$amount;
+        if ($castInIntAmount == $amount) {
+            return $castInIntAmount;
+        }
+
+        return $amount;
     }
 }

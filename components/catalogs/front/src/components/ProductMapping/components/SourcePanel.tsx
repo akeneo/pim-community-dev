@@ -145,9 +145,7 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
                             error={errors?.parameters?.unit}
                             measurementFamily={attribute?.measurement_family ?? null}
                         />
-                    )
-
-                    }
+                    )}
                 </>
             )}
         </>
