@@ -55,7 +55,10 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
                 $familyCode = $productProjection->familyCode();
                 $nomenclatureFamily = $this->nomenclatureRepository->get('family');
                 if (null === $nomenclatureFamily) {
-                    throw new UndefinedFamilyNomenclatureException();
+                    throw new UndefinedFamilyNomenclatureException(
+                        sprintf('%s%s', $prefix, $familyCode),
+                        $identifierGenerator->target()->asString(),
+                    );
                 }
                 $values = $nomenclatureFamily->values();
 
