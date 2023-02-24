@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Messenger\Config\TransportType;
 
 return static function (ContainerConfigurator $containerConfigurator) {
     $configBuilder = new MessengerConfigBuilder($containerConfigurator->env());
-    $config = $configBuilder->build(__DIR__ . '/../../..', TransportType::DOCTRINE);
+    $config = $configBuilder->build(__DIR__ . '/../../..', TransportType::PUB_SUB);
 
     $containerConfigurator->extension('framework', ['messenger' => $config]);
 };

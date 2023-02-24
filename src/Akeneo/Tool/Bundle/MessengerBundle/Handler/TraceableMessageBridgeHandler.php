@@ -66,6 +66,7 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
 
             $this->logger->debug(sprintf('Command exit code: "%s"', $process->getExitCode()));
             $this->logger->debug(sprintf('Command output: "%s"', $process->getOutput()));
+            $this->logger->debug(sprintf('Command error output: "%s"', $process->getErrorOutput()));
         } catch (\Throwable $t) {
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), [
                 'trace' => $t->getTraceAsString(),

@@ -36,7 +36,8 @@ class AkeneoMessengerExtension extends Extension
      */
     private function registerMessengerHandlers(ContainerBuilder $container): void
     {
-        $config = MessengerConfigBuilder::loadConfig();
+        $projectDir = $container->getParameter('kernel.project_dir');
+        $config = MessengerConfigBuilder::loadConfig($projectDir);
 
         // Register a handler for each consumer of each queue
         foreach ($config['queues'] as $queueConfig) {

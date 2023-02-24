@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Akeneo\Tool\Bundle\MessengerBundle\tests\config;
+
+use Akeneo\Tool\Component\Messenger\SerializableMessageInterface;
+use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
+use Akeneo\Tool\Component\Messenger\TraceableMessageTrait;
+use Webmozart\Assert\Assert;
+
+/**
+ * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+final class Message1 implements TraceableMessageInterface, SerializableMessageInterface
+{
+    use TraceableMessageTrait;
+
+    public function __construct(public readonly string $text)
+    {
+    }
+
+    public function normalize(): array
+    {
+        return ['text' => $this->text];
+    }
+
+    public static function denormalize(array $normalized): Message1
+    {
+        Assert::keyExists($normalized, 'text');
+        Assert::string($normalized['text']);
+
+        return new Message1($normalized['text']);
+    }
+}
