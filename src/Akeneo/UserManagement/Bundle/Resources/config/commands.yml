@@ -17,3 +17,4 @@ services:
             - '@Akeneo\UserManagement\Application\RestoreAdminRolePermissions'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
