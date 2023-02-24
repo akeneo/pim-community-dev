@@ -132,12 +132,13 @@ akeneo_catalogs:
         locale:
           label: Locale
           placeholder: Sélectionner une locale
+        currency:
+          label: Devise
+          placeholder: Sélectionnez une devise
       select_source:
         label: Source
         search: Rechercher un critère
-        no_results: Aucune correspondance trouvée
-        section_system: Système
-        section_attributes: Attributs
+        no_results: Aucun résultat trouvé
       placeholder:
         title: Sélectionner une source 
         illustration_title: Cliquez sur une cible dans la partie droite de l'écran pour configurer le mapping de votre catalogue.
