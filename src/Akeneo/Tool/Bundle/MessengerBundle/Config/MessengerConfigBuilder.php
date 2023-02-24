@@ -14,17 +14,21 @@ use Webmozart\Assert\Assert;
  */
 final class MessengerConfigBuilder
 {
+    private const CONFIG_FILEPATH = 'config/events.yml';
+    private const CONFIG_FILEPATH_FOR_TEST = 'config/events_test.yml';
     private const SERIALIZER = 'akeneo_messenger.envelope.serializer';
-
-    public static string $configFile = 'config/events.yml';
 
     public function __construct(private readonly string $env)
     {
     }
 
-    public static function loadConfig(string $projectDir): array
+    public static function loadConfig(string $projectDir, string $env): array
     {
-        $file = $projectDir . '/' . self::$configFile;
+        $file = $projectDir . '/' . self::CONFIG_FILEPATH;
+        $fileForTest = $projectDir . '/' . self::CONFIG_FILEPATH_FOR_TEST;
+        if ($env === 'test' && \file_exists($fileForTest)) {
+            $file = $fileForTest;
+        }
         Assert::fileExists($file);
 
         return Yaml::parse(file_get_contents($file));
@@ -32,7 +36,7 @@ final class MessengerConfigBuilder
 
     public function build(string $projectDir, TransportType $transportType): array
     {
-        $config = self::loadConfig($projectDir);
+        $config = self::loadConfig($projectDir, $this->env);
 
         $transports = [];
         $routing = [];
@@ -45,7 +49,7 @@ final class MessengerConfigBuilder
                 // Create 1 transport to send event on the topic
                 $transportNames[] = $queueName;
                 $allTransportNames[$queueName] = ($allTransportNames[$queueName] ?? 0) + 1;
-                $transports[$queueName] = $this->createPubSubProducerTransport($queueName, null);
+                $transports[$queueName] = $this->createPubSubProducerTransport($queueName);
 
                 // Create 1 transport by subscription/consumer to receive the messages.
                 foreach ($pimMessageConfig['consumers'] as $consumer) {
@@ -78,7 +82,8 @@ final class MessengerConfigBuilder
         ];
     }
 
-    private function createDoctrineTransport($queueName): array {
+    private function createDoctrineTransport($queueName): array
+    {
         return [
             'dsn' => 'doctrine://default',
             'options' => [
@@ -91,7 +96,8 @@ final class MessengerConfigBuilder
         ];
     }
 
-    private function createPubSubProducerTransport(string $topicName): array {
+    private function createPubSubProducerTransport(string $topicName): array
+    {
         return [
             'dsn' => 'gps:',
             'options' => \array_filter(
@@ -106,20 +112,23 @@ final class MessengerConfigBuilder
         ];
     }
 
-    private function createPubSubReceiverTransport(string $topicName, string $subscriptionName): array {
+    private function createPubSubReceiverTransport(string $topicName, string $subscriptionName): array
+    {
         $transport = $this->createPubSubProducerTransport($topicName);
         $transport['options']['subscription_name'] = $subscriptionName;
 
         return $transport;
     }
 
-    private function createInMemoryTransport(): array {
+    private function createInMemoryTransport(): array
+    {
         return [
             'dsn' => 'in-memory://',
         ];
     }
 
-    private function createSyncTransport(): array {
+    private function createSyncTransport(): array
+    {
         return [
             'dsn' => 'sync://',
         ];
