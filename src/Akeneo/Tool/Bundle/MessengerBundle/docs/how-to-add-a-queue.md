@@ -61,7 +61,7 @@ final class YourMessageHandler
 Service definition: you know how to do it ;)
 
 
-- Edit the `config/messaging.yml` file.
+- Edit the `config/events.yml` file.
 You can add many queues and many consumers by queue
 
 ```yaml

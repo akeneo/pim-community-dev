@@ -14,16 +14,22 @@ use Webmozart\Assert\Assert;
  */
 final class MessengerConfigBuilder
 {
-    private const CONFIG_FILE = __DIR__ . '/../../../../../../config/messaging.yml';
+    private const CONFIG_FILE = __DIR__ . '/../../../../../../config/events.yml';
 
     public function __construct(private readonly string $env)
     {
     }
 
-    public function build(TransportType $transportType): array
+    public static function loadConfig(): array
     {
         Assert::fileExists(self::CONFIG_FILE);
-        $config = Yaml::parse(file_get_contents(self::CONFIG_FILE));
+
+        return Yaml::parse(file_get_contents(self::CONFIG_FILE));
+    }
+
+    public function build(TransportType $transportType): array
+    {
+        $config = self::loadConfig();
 
         $transports = [];
         $routing = [];
