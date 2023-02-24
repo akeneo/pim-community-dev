@@ -10,8 +10,9 @@ import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
 import {Source} from './models/Source';
 import {Target} from './models/Target';
-import {createTargetsFromProductMapping} from './utils/createTargetsFromProductMapping';
+import {createTargetSourceAssociationsFromProductMapping} from './utils/createTargetSourceAssociationsFromProductMapping';
 import {sourceHasError} from './utils/sourceHasError';
+import {createTargetFromProductMappingSchema} from './utils/createTargetFromProductMappingSchema';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -44,12 +45,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             if (productMappingSchema === undefined) {
                 return;
             }
-            const target: Target = {
-                code: targetCode,
-                label: productMappingSchema.properties[targetCode]?.title ?? targetCode,
-                type: productMappingSchema.properties[targetCode].type,
-                format: productMappingSchema.properties[targetCode].format ?? null,
-            };
+            const target = createTargetFromProductMappingSchema(targetCode, productMappingSchema);
             if (undefined !== productMappingSchema.properties[targetCode].description) {
                 target.description = productMappingSchema.properties[targetCode].description;
             }
@@ -90,7 +86,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
         [selectedTarget, onChange, productMapping]
     );
 
-    const targets = createTargetsFromProductMapping(productMapping);
+    const targetSourceAssociations = createTargetSourceAssociationsFromProductMapping(productMapping);
 
     return (
         <MappingContainer data-testid={'product-mapping'}>
@@ -112,10 +108,10 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                         </Table.HeaderCell>
                     </Table.Header>
                     <Table.Body>
-                        {(targets.length === 0 || undefined === productMappingSchema) && <TargetPlaceholder />}
-                        {targets.length > 0 && undefined !== productMappingSchema && (
+                        {(targetSourceAssociations.length === 0 || undefined === productMappingSchema) && <TargetPlaceholder />}
+                        {targetSourceAssociations.length > 0 && undefined !== productMappingSchema && (
                             <>
-                                {targets.map(([targetCode, source]) => {
+                                {targetSourceAssociations.map(([targetCode, source]) => {
                                     return (
                                         <TargetSourceAssociation
                                             isSelected={selectedTarget?.code === targetCode}

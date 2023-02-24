@@ -1,10 +1,10 @@
-import {createTargetsFromProductMapping} from './createTargetsFromProductMapping';
+import {createTargetSourceAssociationsFromProductMapping} from './createTargetSourceAssociationsFromProductMapping';
 
-jest.unmock('./createTargetsFromProductMapping');
+jest.unmock('./createTargetSourceAssociationsFromProductMapping');
 
 test('it creates targets from the product mapping with UUID first', () => {
     expect(
-        createTargetsFromProductMapping({
+        createTargetSourceAssociationsFromProductMapping({
             title: {
                 source: 'title',
                 locale: null,

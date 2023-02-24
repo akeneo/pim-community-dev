@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorN
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetAttributeTypeByCodesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 
@@ -18,18 +19,21 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  * @phpstan-import-type MappedProduct from GetMappedProductsQuery
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  * @phpstan-import-type ProductMapping from Catalog
+ * @phpstan-import-type ProductMappingSchema from GetProductMappingSchemaQueryInterface
+ * @phpstan-import-type ProductMappingSchemaTarget from GetProductMappingSchemaQueryInterface
  */
 class ProductMapper implements ProductMapperInterface
 {
     public function __construct(
         private readonly GetAttributeTypeByCodesQueryInterface $getAttributeTypeByCodesQuery,
         private readonly ValueExtractorRegistry $valueExtractorRegistry,
+        private readonly TargetTypeConverter $targetTypeConverter,
     ) {
     }
 
     /**
      * @param RawProduct $product
-     * @param array{properties: array<array-key, mixed>} $productMappingSchema
+     * @param ProductMappingSchema $productMappingSchema
      * @param ProductMapping $productMapping
      *
      * @return MappedProduct
@@ -88,7 +92,7 @@ class ProductMapper implements ProductMapperInterface
         try {
             $productValueExtractor = $this->valueExtractorRegistry->find(
                 $attributeTypeBySource[$productMapping[$targetCode]['source']] ?? $productMapping[$targetCode]['source'],
-                $target['type'],
+                $this->targetTypeConverter->flattenTargetType($target),
                 $target['format'] ?? null,
             );
 

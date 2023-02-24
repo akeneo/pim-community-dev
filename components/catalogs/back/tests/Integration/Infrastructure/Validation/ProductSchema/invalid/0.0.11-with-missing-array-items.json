@@ -1,5 +1,5 @@
 {
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
   "description": "The required properties (items) are missing at #/properties/colors",
   "properties": {
     "uuid": {

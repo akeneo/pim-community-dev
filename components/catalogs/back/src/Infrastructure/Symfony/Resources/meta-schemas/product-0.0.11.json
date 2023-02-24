@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://api.akeneo.com/mapping/product/0.0.10/schema",
+  "$id": "https://api.akeneo.com/mapping/product/0.0.11/schema",
   "type": "object",
   "properties": {
     "$id": { "$ref": "#/$defs/$id" },
@@ -18,6 +18,15 @@
       "additionalProperties": { "$ref": "#/$defs/property" },
       "default": {},
       "required": ["uuid"]
+    },
+    "required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "default": [],
+      "minItems": 1
     }
   },
   "$defs": {
@@ -67,6 +76,7 @@
               ]
             }
           },
+          "additionalProperties": false,
           "required": ["type"]
         },
         "minLength": {
@@ -80,9 +90,28 @@
         "pattern": {
           "type": "string",
           "format": "regex"
+        },
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        },
+        "enum": {
+          "type": "array"
         }
       },
       "additionalProperties": false,
+      "if": {
+        "properties": {
+          "type": {
+            "const": "array"
+          }
+        }
+      },
+      "then": {
+        "required": ["items"]
+      },
       "required": ["type"],
       "dependentSchemas": {
         "format": {
@@ -131,6 +160,63 @@
               "enum": [
                 "string"
               ]
+            }
+          },
+          "required": ["type"]
+        },
+        "minimum": {
+          "properties": {
+            "type": {
+              "enum": [
+                "number"
+              ]
+            }
+          },
+          "required": ["type"]
+        },
+        "maximum": {
+          "properties": {
+            "type": {
+              "enum": [
+                "number"
+              ]
+            }
+          },
+          "required": ["type"]
+        },
+        "enum": {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "string"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "enum": {
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "else": {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "number"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "enum": {
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
             }
           },
           "required": ["type"]

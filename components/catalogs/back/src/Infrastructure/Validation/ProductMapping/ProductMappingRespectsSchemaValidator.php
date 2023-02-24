@@ -17,10 +17,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type ProductMappingSchema array{
- *      properties: array<string, array{type: string, format: string}>
- * }
  * @phpstan-import-type ProductMapping from Catalog
+ * @phpstan-import-type ProductMappingSchema from GetProductMappingSchemaQueryInterface
+ * @phpstan-import-type ProductMappingSchemaTarget from GetProductMappingSchemaQueryInterface
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
@@ -103,7 +102,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
 
             try {
                 $attributeTypes = $this->targetTypeConverter->toAttributeTypes(
-                    $schema['properties'][$targetCode]['type'],
+                    $this->targetTypeConverter->flattenTargetType($schema['properties'][$targetCode]),
                     $schema['properties'][$targetCode]['format'] ?? '',
                 );
             } catch (NoCompatibleAttributeTypeFoundException $exception) {
@@ -111,7 +110,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                     \sprintf(
                         'The combination type "%s" and format "%s" are not supported.',
                         $schema['properties'][$targetCode]['type'],
-                        $schema['properties'][$targetCode]['format'],
+                        $schema['properties'][$targetCode]['format'] ?? '',
                     ),
                     0,
                     $exception,

@@ -1,6 +1,6 @@
 {
     "$id": "https://example.com/product",
-    "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
+    "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
     "$comment": "My first schema !",
     "title": "Product Mapping",
     "description": "JSON Schema describing the structure of products expected by our application",
@@ -23,7 +23,9 @@
             "type": "boolean"
         },
         "height": {
-            "type": "number"
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
         },
         "release_date": {
             "type": "string",
@@ -38,11 +40,16 @@
             "minLength": 50,
             "maxLength": 160
         },
+        "size": {
+            "type": "string",
+            "enum": ["S", "M", "L"]
+        },
         "colors": {
             "type": "array",
             "items": {
                 "type": "string"
             }
         }
-    }
+    },
+    "required": ["name", "body_html"]
 }

@@ -150,6 +150,11 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => null,
                 ],
+                'colors' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ];
 
             /** @var object $productMappingSchema */
@@ -197,7 +202,7 @@ class CatalogFixtureCommand extends Command
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.9/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
@@ -249,6 +254,13 @@ class CatalogFixtureCommand extends Command
             "size": {
               "type": "string",
               "enum": ["S", "M", "L"]
+            },
+            "colors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Colors"
             }
           }
         }
