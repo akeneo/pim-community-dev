@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://api.akeneo.com/mapping/product/0.0.10/schema",
+  "$id": "https://api.akeneo.com/mapping/product/0.0.11/schema",
   "type": "object",
   "properties": {
     "$id": { "$ref": "#/$defs/$id" },
@@ -57,7 +57,8 @@
           "enum": [
             "string",
             "number",
-            "boolean"
+            "boolean",
+            "array"
           ]
         },
         "format": {
@@ -65,6 +66,18 @@
             "date-time",
             "uri"
           ]
+        },
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "string"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": ["type"]
         },
         "minLength": {
           "type": "integer",
@@ -89,6 +102,16 @@
         }
       },
       "additionalProperties": false,
+      "if": {
+        "properties": {
+          "type": {
+            "const": "array"
+          }
+        }
+      },
+      "then": {
+        "required": ["items"]
+      },
       "required": ["type"],
       "dependentSchemas": {
         "format": {

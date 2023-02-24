@@ -20,12 +20,14 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  * @phpstan-import-type ProductMapping from Catalog
  * @phpstan-import-type ProductMappingSchema from GetProductMappingSchemaQueryInterface
+ * @phpstan-import-type ProductMappingSchemaTarget from GetProductMappingSchemaQueryInterface
  */
 class ProductMapper implements ProductMapperInterface
 {
     public function __construct(
         private readonly GetAttributeTypeByCodesQueryInterface $getAttributeTypeByCodesQuery,
         private readonly ValueExtractorRegistry $valueExtractorRegistry,
+        private readonly TargetTypeConverter $targetTypeConverter,
     ) {
     }
 
@@ -90,7 +92,7 @@ class ProductMapper implements ProductMapperInterface
         try {
             $productValueExtractor = $this->valueExtractorRegistry->find(
                 $attributeTypeBySource[$productMapping[$targetCode]['source']] ?? $productMapping[$targetCode]['source'],
-                $target['type'],
+                $this->targetTypeConverter->flattenTargetType($target),
                 $target['format'] ?? null,
             );
 

@@ -1,7 +1,7 @@
 import {ProductMapping as ProductMappingType} from '../models/ProductMapping';
 import {Source} from '../models/Source';
 
-export const createTargetsFromProductMapping = (mapping: ProductMappingType): [string, Source][] => {
+export const createTargetSourceAssociationsFromProductMapping = (mapping: ProductMappingType): [string, Source][] => {
     const targets = Object.entries(mapping);
 
     // move UUID to the top
