@@ -7,7 +7,6 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\DeactivateTemplateCommand;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -23,10 +22,9 @@ class DeactivateTemplateController
     ) {
     }
 
-    public function __invoke(Request $request, string $templateUuid): Response
+    public function __invoke(string $templateUuid): Response
     {
-        if (!$this->securityFacade->isGranted('pim_enrich_product_category_template')
-        ) {
+        if (!$this->securityFacade->isGranted('pim_enrich_product_category_template')) {
             throw new AccessDeniedException();
         }
 

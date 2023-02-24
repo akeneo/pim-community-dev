@@ -41,9 +41,9 @@ class CategoryTree
                 json_decode($result['translations'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
 
-        $categoryTreeTemplate = !$result['template_uuid'] && !$result['template_code'] && !$result['template_labels']
-                ? null
-                : CategoryTreeTemplate::fromDatabase($result)
+        $categoryTreeTemplate = $result['template_uuid'] && $result['template_code'] && $result['template_labels']
+                ? CategoryTreeTemplate::fromDatabase($result)
+                : null
         ;
 
         return new self($id, $code, $labelCollection, $categoryTreeTemplate);
