@@ -151,7 +151,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
     {
         try {
             $productMappingSchema = $this->productMappingSchemaQuery->execute($catalog->getId());
-        } catch (ProductMappingSchemaNotFoundException $exception) {
+        } catch (ProductMappingSchemaNotFoundException) {
             return [];
         }
 

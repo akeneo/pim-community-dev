@@ -17,11 +17,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type ProductMappingSchema array{
- *      properties: array<string, array{type: string, format: string}>,
- *      required?: string[]
- * }
  * @phpstan-import-type ProductMapping from Catalog
+ * @phpstan-import-type ProductMappingSchema from GetProductMappingSchemaQueryInterface
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */

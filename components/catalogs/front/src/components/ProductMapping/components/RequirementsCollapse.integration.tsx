@@ -58,7 +58,7 @@ test('it display the description of the target', () => {
     expect(screen.queryByText('ERP name description')).toBeInTheDocument();
 });
 
-test('it displays string type requirements', async () => {
+test('it displays string type requirements', () => {
     const target: Target = {
         code: 'erp_name',
         label: 'ERP name',
@@ -76,13 +76,21 @@ test('it displays string type requirements', async () => {
         </ThemeProvider>
     );
 
-    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.minLength')).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maxLength')).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.pattern')).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.minLength')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maxLength')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.pattern')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')
+    ).toBeInTheDocument();
 });
 
-test('it displays number type requirements', async () => {
+test('it displays number type requirements', () => {
     const target: Target = {
         code: 'weight',
         label: 'Weight',
@@ -99,9 +107,15 @@ test('it displays number type requirements', async () => {
         </ThemeProvider>
     );
 
-    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.minimum')).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maximum')).toBeInTheDocument();
-    expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.minimum')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.maximum')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.constraints.enum')
+    ).toBeInTheDocument();
 });
 
 test('it does not display warnings if there is only a description', () => {

@@ -338,7 +338,5 @@ test('it displays a pill for a required target', async () => {
         </ThemeProvider>
     );
 
-    expect(
-        await within(await screen.findByText('Product name')).findByTestId('required-pill')
-    ).toBeInTheDocument();
+    expect(await within(await screen.findByText('Product name')).findByTestId('required-pill')).toBeInTheDocument();
 });
