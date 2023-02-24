@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Message;
 
-use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Akeneo\Tool\Component\Messenger\SerializableMessageInterface;
+use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Akeneo\Tool\Component\Messenger\TraceableMessageTrait;
 use Webmozart\Assert\Assert;
 

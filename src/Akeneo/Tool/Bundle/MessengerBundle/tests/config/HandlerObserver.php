@@ -41,7 +41,7 @@ final class HandlerObserver
 
         return \count(\array_filter(
             $this->executedHandlers,
-            static fn ($execution): bool  => $execution['class'] === $handlerClass
+            static fn ($execution): bool => $execution['class'] === $handlerClass
         ));
     }
 

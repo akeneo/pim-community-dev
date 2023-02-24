@@ -34,8 +34,6 @@ final class EventQueuesAndConsumersIntegration extends TestCase
 
     protected function setUp(): void
     {
-        // Override the config file to have a specific config for tests
-        MessengerConfigBuilder::$configFile = 'src/Akeneo/Tool/Bundle/MessengerBundle/tests/config/events.yml';
         parent::setUp();
 
         $this->bus = $this->get('messenger.default_bus');
@@ -46,6 +44,13 @@ final class EventQueuesAndConsumersIntegration extends TestCase
             'consumer2' => $this->get('akeneo_integration_tests.pub_sub_queue_status.consumer2'),
             'consumer3' => $this->get('akeneo_integration_tests.pub_sub_queue_status.consumer3'),
         ];
+        $this->flushQueues();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
         $this->flushQueues();
     }
 
