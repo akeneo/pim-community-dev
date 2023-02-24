@@ -120,16 +120,18 @@ flowchart LR
         action[Something happens in the PIM]
     end
     action -- Publish message in topic --> queue[(Multi-tenant queue)]
-    Consumer1 <-- Ask messages for subscription1? --> queue
+    Consumer1 -- Pull messages for subscription1 --> queue
     subgraph Tenant agnostic daemon
-        Consumer1 -- Launch command in a subprocess with tenant --> pmc1[ProcessMessageCommand]
+        Consumer1 --> traceableHandler1[TraceableMessageBridgeHandler]
+        traceableHandler1 -- Launch subprocess with tenant --> pmc1[ProcessMessageCommand]
         subgraph Tenant aware process
             pmc1 -- Launch the final handler --> Handler1
         end
     end
-    Consumer2 <-- Ask messages for subscription2? --> queue
+    Consumer2 -- Pull messages for subscription2 --> queue
     subgraph Tenant agnostic daemon
-        Consumer2 -- Launch command in a subprocess with tenant --> pmc2[ProcessMessageCommand]
+        Consumer2 --> traceableHandler2[TraceableMessageBridgeHandler]
+        traceableHandler2 -- Launch subprocess with tenant --> pmc2[ProcessMessageCommand]
         subgraph Tenant aware process
             pmc2 -- Launch the final handler --> Handler2
         end

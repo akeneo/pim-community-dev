@@ -6,7 +6,6 @@ namespace Akeneo\Tool\Bundle\MessengerBundle\Handler;
 
 use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Serializer\SerializerInterface;
