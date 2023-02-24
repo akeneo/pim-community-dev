@@ -12,15 +12,24 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
-            -   fix_files_permissions
-            -   load_docker_image_php
+            - install_yq_v3
+            - set_docker_gcp_mirror
+            - fix_files_permissions
+            - load_docker_image_php
+            -   run:
+                    name: Start containers
+                    command: |
+                        APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                        docker/wait_docker_up.sh
             -   run:
                     name: Lint back
                     command: PIM_CONTEXT=category APP_ENV=test make category-lint-back
             -   run:
                     name: Coupling back
                     command: PIM_CONTEXT=category make category-coupling-back
-            -   start_test_containers
+            -   run:
+                    name: Install database
+                    command: APP_ENV=test make database
             -   run:
                     name: Unit back
                     command: PIM_CONTEXT=category make category-unit-back
