@@ -40,7 +40,7 @@ final class MeasurementConverter
         $amountConvertedInTargetedUnit = $this->convertFromDefaultMeasurementFamilyUnitToTargetedUnit($measurementFamily, $targetedUnit, $amountConvertedInDefaultUnit);
 
         if (!\is_numeric($amountConvertedInTargetedUnit)) {
-            $amountConvertedInTargetedUnit = (float)$amountConvertedInTargetedUnit;
+            $amountConvertedInTargetedUnit = (float) $amountConvertedInTargetedUnit;
         }
         if (!\is_int($amountConvertedInTargetedUnit)) {
             $amountConvertedInTargetedUnit = (int) $amountConvertedInTargetedUnit;

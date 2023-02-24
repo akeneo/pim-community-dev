@@ -19,8 +19,7 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
     public function __construct(
         readonly private MeasurementConverter        $measurementConverter,
         private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
-    )
-    {
+    ) {
     }
 
     /**
@@ -86,7 +85,7 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
             return null;
         }
 
-        $castInIntAmount = (int)$amount;
+        $castInIntAmount = (int) $amount;
         if ($castInIntAmount == $amount) {
             return $castInIntAmount;
         }
