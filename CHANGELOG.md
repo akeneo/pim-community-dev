@@ -24,6 +24,7 @@
 - PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
 - PIM-10853: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
 - PIM-10829: Fix case-sensitive locale on translatable business objects
+- PIM-10793: Add a command to delete expired tokens
 
 ## Improvements
 
