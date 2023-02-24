@@ -76,6 +76,27 @@ final class EventQueuesAndConsumersIntegration extends TestCase
         Assert::assertFalse($this->pubSubQueueStatuses['consumer3']->hasMessageInQueue());
     }
 
+    public function test_it_keeps_correlation_id_all_along_the_chain(): void
+    {
+        $message1 = new Message1('hello');
+        $correlationId1 = $message1->getCorrelationId();
+        $this->bus->dispatch($message1);
+
+        $this->launchConsumer('consumer1');
+        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($correlationId1, Handler1ForMessage1::class));
+        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($correlationId1, Handler2ForMessage1::class));
+        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($correlationId1, Handler1ForMessage2::class));
+
+        $this->launchConsumer('consumer2');
+        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($correlationId1, Handler2ForMessage1::class));
+
+        $message2 = new Message2(10);
+        $correlationId2 = $message2->getCorrelationId();
+        $this->bus->dispatch($message2);
+        $this->launchConsumer('consumer3');
+        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($correlationId2, Handler1ForMessage2::class));
+    }
+
     private function launchConsumer(string $consumerName): void
     {
         $command = [
@@ -84,7 +105,7 @@ final class EventQueuesAndConsumersIntegration extends TestCase
             \sprintf('--env=%s', $this->getParameter('kernel.environment')),
             '--limit=1',
             '-vvv',
-            \sprintf('--time-limit=%d', 2),
+            \sprintf('--time-limit=%d', 5),
             $consumerName,
         ];
 
