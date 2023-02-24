@@ -23,7 +23,7 @@ final class YourMessage implements TraceableMessageInterface, SerializableMessag
         return ['text' => $this->text];
     }
 
-    public static function denormalize(array $normalized): SerializableMessageInterface
+    public static function denormalize(array $normalized): YourMessage
     {
         Assert::keyExists($normalized, 'text');
         Assert::string($normalized['text']);
