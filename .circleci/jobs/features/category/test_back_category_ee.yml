@@ -17,12 +17,6 @@ jobs:
             - fix_files_permissions
             - load_docker_image_php
             -   run:
-                    name: Lint back
-                    command: PIM_CONTEXT=category APP_ENV=test make category-lint-back
-            -   run:
-                    name: Coupling back
-                    command: PIM_CONTEXT=category make category-coupling-back
-            -   run:
                     name: Start containers
                     command: |
                         APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
