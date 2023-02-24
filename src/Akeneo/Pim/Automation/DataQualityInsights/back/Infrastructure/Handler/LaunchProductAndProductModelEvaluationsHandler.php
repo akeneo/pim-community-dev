@@ -16,5 +16,7 @@ final class LaunchProductAndProductModelEvaluationsHandler implements MessageHan
     public function __invoke(LaunchProductAndProductModelEvaluationsMessage $message)
     {
         print_r(get_class($this) . ': ' . $message->text . "\n");
+        print_r('correlation_id = ' . $message->getCorrelationId() . "\n");
+        print_r('tenant_id = ' . $message->getTenantId() . "\n");
     }
 }
