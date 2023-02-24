@@ -13,7 +13,7 @@ use Doctrine\DBAL\ParameterType;
  */
 class DeleteExpiredRefreshTokenQuery
 {
-    private const DEFAULT_BATCH_SIZE = 100_000;
+    private const DEFAULT_BATCH_SIZE = 100;
     private const NUMBER_OF_LOOP = 500;
     public function __construct(private readonly Connection $connection)
     {
