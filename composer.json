@@ -27,8 +27,7 @@
             "Akeneo\\Catalogs\\": "components/catalogs/back/src",
             "Akeneo\\Category\\": "src/Akeneo/Category/back",
             "Akeneo\\UserManagement\\": "src/Akeneo/UserManagement/back",
-            "Akeneo\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/src",
-            "Akeneo\\Pim\\Platform\\Messaging\\": "components/messaging/back/src"
+            "Akeneo\\Pim\\Automation\\IdentifierGenerator\\": "components/identifier-generator/back/src"
         }
     },
     "autoload-dev": {

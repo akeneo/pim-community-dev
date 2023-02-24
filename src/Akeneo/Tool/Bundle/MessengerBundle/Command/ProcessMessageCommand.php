@@ -10,7 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * This command should be executed by the TraceableMessageBridgeHandler. On contrary of the handler, this
@@ -42,16 +42,19 @@ final class ProcessMessageCommand extends Command
     protected function configure()
     {
         $this
+            ->addArgument('consumer_name', InputArgument::REQUIRED, 'consumer name')
             ->addArgument('message', InputArgument::REQUIRED, 'message in json')
-            ->addArgument('consumer_name', InputArgument::REQUIRED, 'Consumer name');
+            ->addArgument('messageClass', InputArgument::REQUIRED, 'class of the message')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $rawEnvelope = \json_decode($input->getArgument('message'), true, 512, JSON_THROW_ON_ERROR);
-
-        $envelope = $this->serializer->decode($rawEnvelope);
-        $message = $envelope->getMessage();
+        $message = $this->serializer->deserialize(
+            $input->getArgument('message'),
+            $input->getArgument('messageClass'),
+            'json'
+        );
 
         $consumerName = $input->getArgument('consumer_name');
         $handler = $this->handlers[$consumerName] ?? null;

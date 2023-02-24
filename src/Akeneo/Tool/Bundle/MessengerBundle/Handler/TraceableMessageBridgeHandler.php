@@ -8,8 +8,8 @@ use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -46,9 +46,9 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
                 'php',
                 'bin/console',
                 'akeneo:process-message',
-                // @TODO: don't use this serializer? because we need to use an envelope...
-                \json_encode($this->serializer->encode(new Envelope($message))),
                 $this->consumerName,
+                $this->serializer->serialize($message, 'json'),
+                \get_class($message),
             ], null, $env);
 
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
