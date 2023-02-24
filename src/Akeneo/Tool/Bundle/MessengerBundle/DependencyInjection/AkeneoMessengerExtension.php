@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
 use Akeneo\Tool\Bundle\MessengerBundle\Handler\TraceableMessageBridgeHandler;
 use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Symfony\Component\Config\FileLocator;
@@ -11,7 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -36,11 +36,10 @@ class AkeneoMessengerExtension extends Extension
      */
     private function registerMessengerHandlers(ContainerBuilder $container): void
     {
-        $projectDir = $container->getParameter('kernel.project_dir');
-        $messagingConfigs = Yaml::parse(file_get_contents($projectDir . '/config/messaging.yml'));
+        $config = MessengerConfigBuilder::loadConfig();
 
         // Register a handler for each consumer of each queue
-        foreach ($messagingConfigs['queues'] as $queueConfig) {
+        foreach ($config['queues'] as $queueConfig) {
             foreach ($queueConfig['consumers'] as $consumerConfig) {
                 $container->register(
                     'akeneo.messaging.handler.'.$consumerConfig['name'],

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection\CompilerPass;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Command\ProcessMessageCommand;
+use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -20,10 +20,9 @@ final class RegisterHandlersCompilerPass implements CompilerPassInterface
     {
         $processMessageCommandDefinition = $container->getDefinition(ProcessMessageCommand::class);
 
-        $projectDir = $container->getParameter('kernel.project_dir');
-        $messagingConfigs = Yaml::parse(file_get_contents($projectDir . '/config/messaging.yml'));
+        $config = MessengerConfigBuilder::loadConfig();
 
-        foreach ($messagingConfigs['queues'] as $queueConfig) {
+        foreach ($config['queues'] as $queueConfig) {
             foreach ($queueConfig['consumers'] as $consumerConfig) {
                 $processMessageCommandDefinition->addMethodCall('registerHandler', [
                     new Reference($consumerConfig['service_handler']),
