@@ -29,7 +29,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
     {
         errors: [
             {
-                propertyPath: '[product_selection_criteria][0][value]',
+                propertyPath: 'productSelectionCriteria[0][value]',
                 message: 'Invalid.',
             },
         ],
@@ -42,7 +42,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
     {
         errors: [
             {
-                propertyPath: '[product_value_filters][0][value]',
+                propertyPath: 'productValueFilters[0][value]',
                 message: 'Invalid.',
             },
         ],
@@ -55,7 +55,7 @@ const tests: {errors: CatalogFormErrors; result: {[key in Tabs]: boolean}}[] = [
     {
         errors: [
             {
-                propertyPath: '[product_mapping][0][value]',
+                propertyPath: 'productMapping[0][value]',
                 message: 'Invalid.',
             },
         ],

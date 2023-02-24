@@ -181,7 +181,7 @@ class AttributeMultiSelectCriterionTest extends AbstractAttributeCriterionTest
     public function testItReturnsViolationsWhenInvalid(
         array $attribute,
         array $criterion,
-        string $expectedMessage
+        string $expectedMessage,
     ): void {
         $this->createAttribute($attribute);
 

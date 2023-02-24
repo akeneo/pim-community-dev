@@ -18,6 +18,6 @@ interface SearchAttributeOptionsQueryInterface
         string $locale = 'en_US',
         ?string $search = null,
         int $page = 1,
-        int $limit = 20
+        int $limit = 20,
     ): array;
 }

@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
@@ -301,5 +302,15 @@ class FamilyVariantSpec extends ObjectBehavior
         $size->setId(2);
         $this->updateAttributesForLevel(1, [$size]);
         $this->releaseEvents()->shouldReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
+    }
+
+    public function it_gets_a_translation_even_if_the_locale_case_is_wrong(
+        FamilyVariantTranslation $translationEn,
+    )
+    {
+        $translationEn->getLocale()->willReturn('EN_US');
+        $this->addTranslation($translationEn);
+
+        $this->getTranslation('en_US')->shouldReturn($translationEn);
     }
 }

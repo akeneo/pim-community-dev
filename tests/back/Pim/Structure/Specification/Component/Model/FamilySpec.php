@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Structure\Component\Model;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
@@ -84,5 +85,15 @@ class FamilySpec extends ObjectBehavior
         $this->updateAttributes([$skuAttribute, $nameAttribute]);
 
         $this->getAttributeCodes()->shouldReturn(['sku', 'name']);
+    }
+
+    public function it_gets_a_translation_even_if_the_locale_case_is_wrong(
+        FamilyTranslation $translationEn,
+    )
+    {
+        $translationEn->getLocale()->willReturn('EN_US');
+        $this->addTranslation($translationEn);
+
+        $this->getTranslation('en_US')->shouldReturn($translationEn);
     }
 }

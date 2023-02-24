@@ -6,7 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
+use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\ExistsProductMappingSchemaQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +20,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class GetCatalogAction
 {
     public function __construct(
-        private GetCatalogQueryInterface $getCatalogQuery,
-        private CatalogsMappingStorageInterface $catalogsMappingStorage,
+        readonly private GetCatalogQueryInterface $getCatalogQuery,
+        readonly private ExistsProductMappingSchemaQueryInterface $existsProductMappingSchemaQuery,
     ) {
     }
 
@@ -37,11 +37,9 @@ final class GetCatalogAction
             throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
-        $productMappingSchemaFile = \sprintf('%s_product.json', $catalogId);
-
         return new JsonResponse([
             ...$catalog->normalize(),
-            'has_product_mapping_schema' => $this->catalogsMappingStorage->exists($productMappingSchemaFile),
+            'has_product_mapping_schema' => $this->existsProductMappingSchemaQuery->execute($catalogId),
         ]);
     }
 }

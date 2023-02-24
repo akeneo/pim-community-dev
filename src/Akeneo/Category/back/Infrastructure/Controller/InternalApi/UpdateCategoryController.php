@@ -71,31 +71,8 @@ class UpdateCategoryController
             );
             $this->categoryCommandBus->dispatch($command);
             $this->eventDispatcher->dispatch(new CategoryEditedEvent($category, $filteredUserIntents));
-        } catch (ViolationsException $e) {
-            // Todo: Handle violations exceptions when all stubbed services have been replaced by real ones
-            // The data structure to be returned to the UI must allow to display the violation messages
-            // next to the violating attribute
-            // (so at minimum : a mapping from the attribute code to a i18n key for the error message)
-            return new JsonResponse(
-                [
-                    'success' => false,
-                    'errors' => [
-                        'attributes' => [
-                            [
-                                'path' => ['attribute', 'somecode'],
-                                'locale' => 'fr_FR', // optional
-                                'message' => [
-                                    'key' => 'i18n key for some constraint violation message, maybe with some {{a}} arguments',
-                                    'args' => [
-                                        'a' => 123,
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                Response::HTTP_BAD_REQUEST,
-            );
+        } catch (ViolationsException $exception) {
+            return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         }
 
         $category = $this->getCategory->byId($category->getId()->getValue());

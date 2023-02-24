@@ -14,14 +14,11 @@ jobs:
             -   fix_files_permissions
             -   start_test_containers
             -   run:
-                    name: Lint back
-                    command: PIM_CONTEXT=catalogs APP_ENV=test make catalogs-lint-back
-            -   run:
                     name: Integration back
-                    command: PIM_CONTEXT=catalogs APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 make catalogs-integration-back
+                    command: PIM_CONTEXT=catalogs make catalogs-integration-back
             -   run:
                     name: Acceptance back
-                    command: PIM_CONTEXT=catalogs APP_ENV=test make catalogs-acceptance-back
+                    command: PIM_CONTEXT=catalogs make catalogs-acceptance-back
             -   when:
                     condition: << pipeline.parameters.run-database-tests >>
                     steps:

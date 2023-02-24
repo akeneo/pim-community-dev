@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
@@ -22,17 +21,7 @@ final class IsCatalogValid implements IsCatalogValidInterface
 
     public function __invoke(Catalog $catalog): bool
     {
-        $violations = $this->validator->validate(
-            [
-                'enabled' => $catalog->isEnabled(),
-                'product_selection_criteria' => $catalog->getProductSelectionCriteria(),
-                'product_value_filters' => $catalog->getProductValueFilters(),
-                'product_mapping' => $catalog->getProductMapping(),
-            ],
-            [
-                new CatalogUpdatePayload(),
-            ]
-        );
+        $violations = $this->validator->validate($catalog);
 
         return \count($violations) === 0;
     }

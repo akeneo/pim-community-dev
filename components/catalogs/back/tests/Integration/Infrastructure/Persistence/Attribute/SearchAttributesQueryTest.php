@@ -37,16 +37,16 @@ class SearchAttributesQueryTest extends IntegrationTestCase
             1,
             100,
             [
-                'identifier',
-                'text',
-                'textarea',
-                'simpleselect',
-                'multiselect',
-                'number',
-                'metric',
-                'boolean',
-                'date'
-            ]
+                'pim_catalog_identifier',
+                'pim_catalog_text',
+                'pim_catalog_textarea',
+                'pim_catalog_simpleselect',
+                'pim_catalog_multiselect',
+                'pim_catalog_number',
+                'pim_catalog_metric',
+                'pim_catalog_boolean',
+                'pim_catalog_date',
+            ],
         );
 
         $this->assertEquals([
@@ -159,7 +159,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'localizable' => false,
                 'attribute_group_code' => 'marketing',
                 'attribute_group_label' => '[marketing]',
-            ]
+            ],
         ], $result);
     }
 
@@ -167,7 +167,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
     {
         $this->loadAttributes();
 
-        $result = $this->query->execute(null, 1, 100, ['text','simpleselect']);
+        $result = $this->query->execute(null, 1, 100, ['pim_catalog_text','pim_catalog_simpleselect']);
 
         $this->assertEquals([
             [
@@ -245,7 +245,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'notice',
             'type' => 'pim_catalog_file',
-            'group' => 'technical'
+            'group' => 'technical',
         ]);
         $this->createAttribute([
             'code' => 'picture',

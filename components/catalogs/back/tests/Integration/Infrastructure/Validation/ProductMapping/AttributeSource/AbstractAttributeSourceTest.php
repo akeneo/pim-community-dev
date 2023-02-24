@@ -6,10 +6,14 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductMapp
 
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Currency\GetChannelCurrenciesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Currency\IsCurrencyActivatedQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\Attribute\FindOneAttributeByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetChannelCurrenciesQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Currency\IsCurrencyActivatedQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetChannelLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetLocalesQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
@@ -24,11 +28,15 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
     protected ?GetChannelQueryInterface $getChannelQuery;
     protected ?GetLocalesQueryInterface $getLocalesQuery;
     protected ?GetChannelLocalesQueryInterface $getChannelLocalesQuery;
+    protected ?IsCurrencyActivatedQueryInterface $isCurrencyActivatedQuery;
+    protected ?GetChannelCurrenciesQueryInterface $getChannelCurrenciesQuery;
 
     private array $attributes = [];
     private array $channels = [];
     private array $channelLocales = [];
     private array $locales = [];
+    private array $currencies = [];
+    private array $channelCurrencies = [];
 
     public static function setUpBeforeClass(): void
     {
@@ -65,10 +73,15 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
                 'label' => 'German',
             ],
         ];
+        $this->currencies = ['USD', 'EUR'];
+        $this->channelCurrencies = [
+            'ecommerce' => ['USD'],
+        ];
 
         $this->findOneAttributeByCodeQuery = $this->createMock(FindOneAttributeByCodeQueryInterface::class);
         $this->findOneAttributeByCodeQuery
             ->method('execute')
+            // @phpstan-ignore-next-line
             ->willReturnCallback(fn ($code) => $this->attributes[$code] ?? null);
         self::getContainer()->set(FindOneAttributeByCodeQuery::class, $this->findOneAttributeByCodeQuery);
 
@@ -95,6 +108,24 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
                 return \array_map(fn ($locale) => $this->locales[$locale], $this->channelLocales[$code]);
             });
         self::getContainer()->set(GetChannelLocalesQuery::class, $this->getChannelLocalesQuery);
+
+        $this->isCurrencyActivatedQuery = $this->createMock(IsCurrencyActivatedQueryInterface::class);
+        $this->isCurrencyActivatedQuery
+            ->method('execute')
+            ->willReturnCallback(fn ($code): bool => \in_array($code, $this->currencies, true));
+        self::getContainer()->set(IsCurrencyActivatedQuery::class, $this->isCurrencyActivatedQuery);
+
+        $this->getChannelCurrenciesQuery = $this->createMock(GetChannelCurrenciesQueryInterface::class);
+        $this->getChannelCurrenciesQuery
+            ->method('execute')
+            ->willReturnCallback(function ($code): array {
+                if (!isset($this->channelCurrencies[$code])) {
+                    throw new \LogicException();
+                }
+
+                return $this->channelCurrencies[$code];
+            });
+        self::getContainer()->set(GetChannelCurrenciesQuery::class, $this->getChannelCurrenciesQuery);
     }
 
     protected function createAttribute(array $data): void
