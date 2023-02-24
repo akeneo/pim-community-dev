@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Validation;
 
+use Akeneo\Category\Api\Command\UserIntents\SetLabel;
 use Akeneo\Category\Api\Command\UserIntents\SetTextArea;
+use Akeneo\Category\Api\Command\UserIntents\ValueUserIntent;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Query\IsTemplateDeactivated;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
@@ -54,39 +56,41 @@ class ValueUserIntentsShouldHaveAnActivatedTemplateValidatorSpec extends ObjectB
         $this->shouldThrow(\InvalidArgumentException::class)->duringValidate(1, new Type([]));
     }
 
+    public function it_does_nothing_when_the_attribute_value_does_not_include_value_user_intent(
+        ExecutionContext $context,
+        GetAttribute $getAttribute,
+        IsTemplateDeactivated $isTemplateDeactivated
+    ): void {
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+        $getAttribute->byUuids(Argument::cetera())->shouldNotBeCalled();
+        $isTemplateDeactivated->__invoke(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate([new SetLabel('en_US', 'The label')], new ValueUserIntentsShouldHaveAnActivatedTemplate());
+    }
+
     public function it_does_nothing_when_the_attribute_value_is_linked_to_an_activated_template(
         ExecutionContext $context,
         GetAttribute $getAttribute,
         IsTemplateDeactivated $isTemplateDeactivated
     ): void {
-        /** @var AttributeTextArea $textAreaSEOMetaDescriptionAttribute */
-        $textAreaSEOMetaDescriptionAttribute = $this->getAttributes()[0];
-        /** @var AttributeTextArea $textAreaSEOKeyWordsAttribute */
-        $textAreaSEOKeyWordsAttribute = $this->getAttributes()[1];
+        /** @var ValueUserIntent $textAreaSEOMetaDescriptionValue */
+        $textAreaSEOMetaDescriptionValue = $this->getValueUserIntents()[0];
+        /** @var ValueUserIntent $textAreaSEOKeyWordsValue */
+        $textAreaSEOKeyWordsValue = $this->getValueUserIntents()[1];
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $getAttribute->byUuids([$textAreaSEOMetaDescriptionAttribute->getUuid()])->willReturn(
+        /** @var AttributeTextArea $textAreaSEOMetaDescriptionAttribute */
+        $textAreaSEOMetaDescriptionAttribute = $this->getAttributes()[0];
+        $getAttribute->byUuids([$textAreaSEOMetaDescriptionValue->attributeUuid()])->shouldBeCalled()->willReturn(
             AttributeCollection::fromArray([$textAreaSEOMetaDescriptionAttribute])
         );
 
-        $isTemplateDeactivated->__invoke($textAreaSEOKeyWordsAttribute->getTemplateUuid())->willReturn(false)->shouldBeCalled();
+        $isTemplateDeactivated->__invoke($textAreaSEOMetaDescriptionAttribute->getTemplateUuid())->willReturn(false)->shouldBeCalled();
 
         $this->validate([
-            new SetTextArea(
-                (string) $textAreaSEOMetaDescriptionAttribute->getUuid(),
-                (string) $textAreaSEOMetaDescriptionAttribute->getCode(),
-                'ecommerce',
-                'en_US',
-                'SEO meta description'
-            ),
-            new SetTextArea(
-                (string) $textAreaSEOKeyWordsAttribute->getUuid(),
-                (string) $textAreaSEOKeyWordsAttribute->getCode(),
-                'ecommerce',
-                'en_US',
-                'SEO keywords'
-            ),
+            $textAreaSEOMetaDescriptionValue,
+            $textAreaSEOKeyWordsValue,
         ], new ValueUserIntentsShouldHaveAnActivatedTemplate());
     }
 
@@ -96,10 +100,10 @@ class ValueUserIntentsShouldHaveAnActivatedTemplateValidatorSpec extends ObjectB
         GetAttribute $getAttribute,
         IsTemplateDeactivated $isTemplateDeactivated
     ): void {
-        /** @var AttributeTextArea $textAreaSEOMetaDescriptionAttribute */
-        $textAreaSEOMetaDescriptionAttribute = $this->getAttributes()[0];
-        /** @var AttributeTextArea $textAreaSEOKeyWordsAttribute */
-        $textAreaSEOKeyWordsAttribute = $this->getAttributes()[1];
+        /** @var ValueUserIntent $textAreaSEOMetaDescriptionValue */
+        $textAreaSEOMetaDescriptionValue = $this->getValueUserIntents()[0];
+        /** @var ValueUserIntent $textAreaSEOKeyWordsValue */
+        $textAreaSEOKeyWordsValue = $this->getValueUserIntents()[1];
 
         $constraint = new ValueUserIntentsShouldHaveAnActivatedTemplate();
         $context
@@ -109,28 +113,38 @@ class ValueUserIntentsShouldHaveAnActivatedTemplateValidatorSpec extends ObjectB
         $violationBuilder->setCode('deactivated_template')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalledOnce();
 
-        $getAttribute->byUuids([$textAreaSEOMetaDescriptionAttribute->getUuid()])->willReturn(
+        /** @var AttributeTextArea $textAreaSEOMetaDescriptionAttribute */
+        $textAreaSEOMetaDescriptionAttribute = $this->getAttributes()[0];
+        $getAttribute->byUuids([$textAreaSEOMetaDescriptionValue->attributeUuid()])->shouldBeCalled()->willReturn(
             AttributeCollection::fromArray([$textAreaSEOMetaDescriptionAttribute])
         );
 
-        $isTemplateDeactivated->__invoke($textAreaSEOKeyWordsAttribute->getTemplateUuid())->willReturn(true)->shouldBeCalled();
+        $isTemplateDeactivated->__invoke($textAreaSEOMetaDescriptionAttribute->getTemplateUuid())->willReturn(true)->shouldBeCalled();
 
         $this->validate([
+            $textAreaSEOMetaDescriptionValue,
+            $textAreaSEOKeyWordsValue,
+        ], new ValueUserIntentsShouldHaveAnActivatedTemplate());
+    }
+
+    private function getValueUserIntents(): array
+    {
+        return [
             new SetTextArea(
-                (string) $textAreaSEOMetaDescriptionAttribute->getUuid(),
-                (string) $textAreaSEOMetaDescriptionAttribute->getCode(),
+                'b777dfe6-2518-4d0e-958d-ddb07c81b7b6',
+                'seo_meta_description',
                 'ecommerce',
                 'en_US',
                 'SEO meta description'
             ),
             new SetTextArea(
-                (string) $textAreaSEOKeyWordsAttribute->getUuid(),
-                (string) $textAreaSEOKeyWordsAttribute->getCode(),
+                '1efc3af6-e89c-4281-9bd5-b827d9397cf7',
+                'seo_keywords',
                 'ecommerce',
                 'en_US',
                 'SEO keywords'
-            ),
-        ], new ValueUserIntentsShouldHaveAnActivatedTemplate());
+            )
+        ];
     }
 
     private function getAttributes(): array
