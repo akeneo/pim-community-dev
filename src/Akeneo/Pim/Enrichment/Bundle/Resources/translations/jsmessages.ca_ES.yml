@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: Producte actualitzat correctament.
       fail: El producte podria no actualitzar-se.
+      fail_session_expired: El producte no es pot actualitzar. La vostra sessió d'usuari ha caducat. Si us plau, torneu a iniciar sessió.
       fields_not_ready: "Ara no es pot guardar el producte. Els següents camps no estan preparats: {{ fields }}"
       already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
       file_upload: S'ha produït un error duran la càrrega
