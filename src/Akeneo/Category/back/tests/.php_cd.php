@@ -129,7 +129,6 @@ $rules = [
         'Symfony\Component\Security',
         'Symfony\Component\Serializer',
         'Symfony\Component\Validator',
-        'Symfony\Bundle\FrameworkBundle',
         'Doctrine\Common',
         'Doctrine\DBAL',
         'Doctrine\ORM',
