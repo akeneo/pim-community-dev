@@ -247,6 +247,9 @@ akeneo_connectivity.connection:
           helper: Pour en savoir plus sur les autorisations accordées aux apps,
           helper_link: consultez notre Help Center.
           is_allowed_to: 'Est déjà autorisée à:'
+          certification_consent:
+            label: 'J''ai lu et j''accepte l''avertissement suivant au sujet de la certification.'
+            subtext: 'Akeneo décline toute responsabilité quant à l''utilisation de l''application par le client ainsi que de ses fonctionnalités. La certification ne garantit pas l''interopérabilité de l''application ni qu''elle fonctionne correctement dans l''environnement du client.'
         flash:
           success: App configurée avec succès.
           error: Désolé, une erreur s'est produite lors de la connexion à l'app.
