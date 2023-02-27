@@ -49,6 +49,8 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
         shouldDisplayLocale ||
         shouldDisplayChannel ||
         shouldDisplayChannelLocale ||
+        shouldDisplayCurrency ||
+        shouldDisplayChannelCurrency ||
         shouldDisplayTranslationValue
     );
 
@@ -62,7 +64,7 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
             if (shouldDisplayTranslationValue) {
                 source = {...source, parameters: {...source.parameters, label_locale: null}};
             }
-            if (shouldDisplayCurrency) {
+            if (attribute.type === 'pim_catalog_price_collection') {
                 source = {...source, parameters: {...source.parameters, currency: null}};
             }
             return source;
@@ -150,12 +152,16 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
                 />
             )}
             {shouldDisplayCurrency && (
-                <SelectCurrencyDropdown source={source} onChange={onChange} error={errors?.parameters?.currency} />
+                <SelectCurrencyDropdown
+                    source={source}
+                    onChange={onChangeMiddleware}
+                    error={errors?.parameters?.currency}
+                />
             )}
             {shouldDisplayChannelCurrency && (
                 <SelectChannelCurrencyDropdown
                     source={source}
-                    onChange={onChange}
+                    onChange={onChangeMiddleware}
                     error={errors?.parameters?.currency}
                     disabled={attribute && source ? attribute.scopable && source.scope === null : false}
                 />

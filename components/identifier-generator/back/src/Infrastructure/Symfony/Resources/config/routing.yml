@@ -78,3 +78,17 @@ akeneo_identifier_generator_rest_update:
     methods: [PATCH]
     defaults:
         _feature: identifier_generator
+
+akeneo_identifier_generator_nomenclature_rest_update:
+    path: '/rest/identifier-generator-nomenclature/{propertyCode}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\UpdateNomenclatureController
+    methods: [PATCH]
+    defaults:
+        _feature: identifier_generator
+
+akeneo_identifier_generator_nomenclature_rest_get:
+    path: '/rest/identifier-generator-nomenclature/{propertyCode}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetNomenclatureController
+    methods: [ GET ]
+    defaults:
+        _feature: identifier_generator

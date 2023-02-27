@@ -50,6 +50,10 @@ final class ValueUserIntentsShouldHaveAnActivatedTemplateValidator extends Const
             return is_subclass_of($userIntent, ValueUserIntent::class);
         }));
 
+        if (empty($valueUserIntents)) {
+            return;
+        }
+
         $firstValue = $valueUserIntents[0];
         $attributeCollection = $this->getAttribute->byUuids([AttributeUuid::fromString($firstValue->attributeUuid())]);
         $attribute = $attributeCollection->getAttributeByIdentifier(
