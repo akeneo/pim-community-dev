@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormaliz
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
@@ -27,45 +28,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductAssociationProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var ProductRepositoryInterface */
     protected $repository;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var ObjectDetacherInterface */
-    protected $detacher;
-
-    /** @var FilterInterface */
-    protected $productAssocFilter;
 
     /** @var bool */
     protected $enabledComparison = true;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $repository         product repository
-     * @param ObjectUpdaterInterface                $updater            product updater
-     * @param ValidatorInterface                    $validator          validator of the object
-     * @param FilterInterface                       $productAssocFilter product association filter
-     * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
-     */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $repository,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        FilterInterface $productAssocFilter,
-        ObjectDetacherInterface $detacher
+        ProductRepositoryInterface $repository,
+        protected ObjectUpdaterInterface $updater,
+        protected ValidatorInterface $validator,
+        protected FilterInterface $productAssocFilter,
+        protected ObjectDetacherInterface $detacher,
     ) {
         parent::__construct($repository);
 
         $this->repository = $repository;
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->productAssocFilter = $productAssocFilter;
-        $this->detacher = $detacher;
     }
 
     /**
@@ -87,13 +65,20 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
             $item
         );
 
-        if (!isset($item['identifier'])) {
-            $this->skipItemWithMessage($item, 'The identifier must be filled');
+        if (!isset($item['identifier']) && !isset($item['uuid'])) {
+            $this->skipItemWithMessage($item, 'Either the identifier or the uuid must be filled');
         }
 
-        $product = $this->findProduct($item['identifier'], $item);
-        if (null === $product) {
-            $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $item['identifier']));
+        if (isset($item['uuid'])) {
+            $product = $this->findProductByUuid($item['uuid'], $item);
+            if (null === $product) {
+                $this->skipItemWithMessage($item, sprintf('No product with uuid "%s" has been found', $item['uuid']));
+            }
+        } else {
+            $product = $this->findProduct($item['identifier'], $item);
+            if (null === $product) {
+                $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $item['identifier']));
+            }
         }
 
         $parameters = $this->stepExecution->getJobParameters();
@@ -161,6 +146,17 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
     {
         try {
             return $this->repository->findOneByIdentifier($identifier);
+        } catch (AccessDeniedException $e) {
+            $this->skipItemWithMessage($item, $e->getMessage(), $e);
+        }
+
+        return null;
+    }
+
+    public function findProductByUuid(string $uuid, array $item): ?ProductInterface
+    {
+        try {
+            return $this->repository->find($uuid);
         } catch (AccessDeniedException $e) {
             $this->skipItemWithMessage($item, $e->getMessage(), $e);
         }

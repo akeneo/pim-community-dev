@@ -244,18 +244,11 @@ class Product implements ArrayConverterInterface
 
         $convertedValues = $this->productValueConverter->convert($convertedValues);
 
-        if (empty($convertedValues)) {
-            throw new \LogicException('Cannot find any values. There should be at least one identifier attribute');
-        }
-
         $convertedItem['values'] = $convertedValues;
 
         $identifierCode = $this->attributeRepository->getIdentifierCode();
-        if (!isset($convertedItem['values'][$identifierCode])) {
-            throw new \LogicException(sprintf('Unable to find the column "%s"', $identifierCode));
-        }
 
-        $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'];
+        $convertedItem['identifier'] = $convertedItem['values'][$identifierCode][0]['data'] ?? null;
 
         return $convertedItem;
     }
@@ -265,8 +258,6 @@ class Product implements ArrayConverterInterface
      */
     protected function validateItem(array $item): void
     {
-        $requiredField = $this->attrColumnsResolver->resolveIdentifierField();
-        $this->fieldChecker->checkFieldsPresence($item, [$requiredField]);
         $this->validateOptionalFields($item);
         $this->validateFieldValueTypes($item);
     }

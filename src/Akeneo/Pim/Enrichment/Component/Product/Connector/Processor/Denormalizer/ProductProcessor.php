@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -18,7 +19,6 @@ use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -44,7 +44,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     private array $nonBlockingWarnings = [];
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $repository,
+        ProductRepositoryInterface $repository,
         private FindProductToImport $findProductToImport,
         private AddParent $addParent,
         protected ObjectUpdaterInterface $updater,
@@ -208,7 +208,12 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             return $item['family'];
         }
 
-        $product = $this->repository->findOneByIdentifier($item['identifier']);
+        $product = null;
+        if (null !== $item['uuid']) {
+            $product = $this->repository->find(Uuid::fromString($item['uuid']));
+        } elseif (null !== $item['identifier']) {
+            $product = $this->repository->findOneByIdentifier($item['identifier']);
+        }
         if (null === $product) {
             return '';
         }
