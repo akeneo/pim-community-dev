@@ -41,14 +41,17 @@ final class MessengerConfigBuilder
 
     public static function loadConfig(string $projectDir, string $env): array
     {
+        $config = [];
         $file = $projectDir . '/' . self::CONFIG_FILEPATH;
-        Assert::fileExists($file);
-        $config = Yaml::parse(file_get_contents($file));
+        if (\file_exists($file)) {
+            Assert::fileExists($file);
+            $config = Yaml::parse(file_get_contents($file));
+        }
 
         $fileForTest = $projectDir . '/' . self::CONFIG_FILEPATH_FOR_TEST;
         if ($env === 'test' && \file_exists($fileForTest)) {
             $testConfig = Yaml::parse(file_get_contents($fileForTest));
-            $config['queues'] = \array_merge($config['queues'], $testConfig['queues']);
+            $config['queues'] = \array_merge($config['queues'] ?? [], $testConfig['queues']);
         }
 
         return $config;
@@ -99,10 +102,10 @@ final class MessengerConfigBuilder
             throw new \LogicException('These transports are defined more than once: ' . \implode(', ', $duplicateTransportNames));
         }
 
-        return [
-            'transports' => $transports,
-            'routing' => $routing,
-        ];
+        return [] !== $transports
+            ? ['transports' => $transports, 'routing' => $routing]
+            : []
+            ;
     }
 
     /**
