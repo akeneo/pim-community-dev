@@ -1,31 +1,46 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {Search, useAutoFocus} from 'akeneo-design-system';
-import {useDebounceCallback, useTranslate} from '@akeneo-pim-community/shared';
-import {
-  useAttributeGroupPermissions,
-  useAttributeGroupsIndexState,
-  useFilteredAttributeGroups,
-  useGetAttributeGroupLabel,
-} from '../../../hooks';
 import {AttributeGroup} from '../../../models';
-import {DataGrid, NoResults} from '../../shared';
-import {StatusBadge} from './StatusBadge';
-
-const FeatureFlags = require('pim/feature-flags');
+import {NoResults} from '../../shared';
+import {Search, useAutoFocus, Table, Badge} from 'akeneo-design-system';
+import {getLabel} from 'pimui/js/i18n';
+import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
+import {useDebounceCallback, useTranslate, useFeatureFlags, useUserContext} from '@akeneo-pim-community/shared';
+import styled from 'styled-components';
 
 type Props = {
-  groups: AttributeGroup[];
+  attributeGroups: AttributeGroup[];
   onGroupCountChange: (newGroupCount: number) => void;
+  isItemSelected: (attributeGroup: AttributeGroup) => boolean;
+  selectionState: boolean | 'mixed';
+  onSelectionChange: (attributeGroup: AttributeGroup, selected: boolean) => void;
+  selectedCount: number;
+  onSelectAllChange: (mode: boolean) => void;
 };
 
-const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
-  const {refreshOrder, compare, saveOrder, redirect} = useAttributeGroupsIndexState();
-  const {sortGranted, editGranted} = useAttributeGroupPermissions();
-  const getLabel = useGetAttributeGroupLabel();
-  const {filteredGroups, search} = useFilteredAttributeGroups(groups);
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TableWrapper = styled.div`
+  margin-left: -40px;
+`;
+
+const AttributeGroupsDataGrid: FC<Props> = ({
+  attributeGroups,
+  onGroupCountChange,
+  isItemSelected,
+  selectionState,
+  onSelectionChange,
+}) => {
+  const {refreshOrder} = useAttributeGroupsIndexState();
+  const {sortGranted} = useAttributeGroupPermissions();
+  const userContext = useUserContext();
+  const {filteredGroups, search} = useFilteredAttributeGroups(attributeGroups);
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const featureFlags = useFeatureFlags();
 
   useAutoFocus(inputRef);
 
@@ -38,10 +53,10 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
 
   useEffect(() => {
     onGroupCountChange(filteredGroups.length);
-  }, [filteredGroups.length]);
+  }, [filteredGroups.length, onGroupCountChange]);
 
   return (
-    <>
+    <Wrapper>
       <Search
         sticky={0}
         placeholder={translate('pim_common.search')}
@@ -59,46 +74,54 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups, onGroupCountChange}) => {
           subtitle={translate('pim_datagrid.no_results_subtitle')}
         />
       ) : (
-        <DataGrid
-          isReorderAllowed={sortGranted}
-          isReorderActive={filteredGroups.length === groups.length}
-          dataSource={filteredGroups}
-          handleAfterMove={refreshOrder}
-          compareData={compare}
-          isFilterable={true}
-        >
-          <DataGrid.HeaderRow>
-            <DataGrid.Cell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</DataGrid.Cell>
-            {FeatureFlags.isEnabled('data_quality_insights') && (
-              <DataGrid.Cell>{translate('akeneo_data_quality_insights.attribute_group.dqi_status')}</DataGrid.Cell>
-            )}
-          </DataGrid.HeaderRow>
-          <DataGrid.Body
-            onRowClick={(group: AttributeGroup) => {
-              if (editGranted) {
-                redirect(group);
-              }
-            }}
-            onRowMoveEnd={() => {
-              (async () => saveOrder())();
-            }}
-          >
-            {filteredGroups.map(group => (
-              <DataGrid.Row key={group.code} data={group}>
-                <DataGrid.Cell rowTitle style={{width: 71}}>
-                  {getLabel(group)}
-                </DataGrid.Cell>
-                {FeatureFlags.isEnabled('data_quality_insights') && (
-                  <DataGrid.Cell>
-                    <StatusBadge isActivated={group.isDqiActivated ? true : false} />
-                  </DataGrid.Cell>
+        <>
+          <TableWrapper>
+            <Table
+              isDragAndDroppable={sortGranted && 'mixed' !== selectionState && !selectionState}
+              isSelectable={true}
+              onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
+            >
+              <Table.Header>
+                <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
+                <Table.HeaderCell>
+                  {translate('pim_enrich.entity.attribute_group.grid.columns.attribute_count')}
+                </Table.HeaderCell>
+                {featureFlags.isEnabled('data_quality_insights') && (
+                  <Table.HeaderCell>
+                    {translate('akeneo_data_quality_insights.attribute_group.dqi_status')}
+                  </Table.HeaderCell>
                 )}
-              </DataGrid.Row>
-            ))}
-          </DataGrid.Body>
-        </DataGrid>
+              </Table.Header>
+              <Table.Body>
+                {filteredGroups.map(attributeGroup => (
+                  <Table.Row
+                    key={attributeGroup.code}
+                    isSelected={isItemSelected(attributeGroup)}
+                    onSelectToggle={(selected: boolean) => onSelectionChange(attributeGroup, selected)}
+                  >
+                    <Table.Cell>
+                      {getLabel(attributeGroup.labels, userContext.get('catalogLocale'), attributeGroup.code)}
+                    </Table.Cell>
+                    <Table.Cell>{attributeGroup.attribute_count}</Table.Cell>
+                    {featureFlags.isEnabled('data_quality_insights') && (
+                      <Table.Cell>
+                        <Badge level={attributeGroup.is_dqi_activated ? 'primary' : 'danger'}>
+                          {translate(
+                            `akeneo_data_quality_insights.attribute_group.${
+                              attributeGroup.is_dqi_activated ? 'activated' : 'disabled'
+                            }`
+                          )}
+                        </Badge>
+                      </Table.Cell>
+                    )}
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+          </TableWrapper>
+        </>
       )}
-    </>
+    </Wrapper>
   );
 };
 

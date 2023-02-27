@@ -231,3 +231,9 @@ services:
         arguments:
             - '@pim_reference_data.registry'
             - '@pim_internal_api_serializer'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\controller\GetAttributeGroupController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Pim\Structure\Bundle\Application\GetAttributeGroup\GetAttributeGroupHandler'
