@@ -7,7 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\Prod
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductUuidsNotSynchronisedBetweenEsAndMysql;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Lazy\LazyUuidFromString;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -41,9 +41,10 @@ SQL;
         $diff = $this->getProductNotSynchronisedBetweenEsAndMysql()->byBatchesOf(2);
         $result = [...$diff];
 
-        $this->assertCount(2, $result);
-        $this->assertContainsOnlyInstancesOf(LazyUuidFromString::class, $result[0]);
-        $this->assertContainsOnlyInstancesOf(LazyUuidFromString::class, $result[1]);
+        $this->assertCount(3, $result);
+        $this->assertContainsOnlyInstancesOf(UuidInterface::class, $result[0]);
+        $this->assertContainsOnlyInstancesOf(UuidInterface::class, $result[1]);
+        $this->assertContainsOnlyInstancesOf(UuidInterface::class, $result[2]);
     }
 
     private function getProductNotSynchronisedBetweenEsAndMysql(): GetProductUuidsNotSynchronisedBetweenEsAndMysql
