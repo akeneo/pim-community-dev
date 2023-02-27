@@ -274,21 +274,6 @@ test('it updates the state when a source changes', async () => {
         },
     };
 
-    const productMappingSchema = {
-        properties: {
-            uuid: {
-                type: 'string',
-            },
-            name: {
-                type: 'string',
-                description: 'Name description',
-                minLength: 3,
-                maxLength: 50,
-                pattern: '[a-zA-Z].',
-            },
-        },
-    };
-
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>

@@ -40,8 +40,6 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
         return null;
     }
 
-    console.log()
-
     return (
         <>
             <Collapse
