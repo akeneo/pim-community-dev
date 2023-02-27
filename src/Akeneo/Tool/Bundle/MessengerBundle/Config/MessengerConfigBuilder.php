@@ -100,14 +100,11 @@ final class MessengerConfigBuilder
     {
         return [
             'dsn' => 'gps:',
-            'options' => \array_filter(
-                [
-                    'project_id' => '%env(GOOGLE_CLOUD_PROJECT)%',
-                    'topic_name' => $topicName,
-                    'auto_setup' => \in_array($this->env, ['dev', 'test', 'test_fake']),
-                ],
-                static fn ($value): bool => null !== $value
-            ),
+            'options' => [
+                'project_id' => '%env(GOOGLE_CLOUD_PROJECT)%',
+                'topic_name' => $topicName,
+                'auto_setup' => \in_array($this->env, ['dev', 'test', 'test_fake']),
+            ],
             'serializer' => self::SERIALIZER,
         ];
     }
