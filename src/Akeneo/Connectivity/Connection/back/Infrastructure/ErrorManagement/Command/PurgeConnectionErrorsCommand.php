@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Command;
 
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\PurgeConnectionErrorsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\ErrorManagement\Persistence\SelectAllAuditableConnectionCodeQuery;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,6 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PurgeConnectionErrorsCommand extends Command
 {
+    private const TABLE_NOT_FOUND_ERROR_CODE = 42;
+
     /**
      * @var string
      */
@@ -34,12 +37,22 @@ class PurgeConnectionErrorsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->logger->info('Start purge connection error');
+        try {
+            $this->logger->info('Start purge connection error');
 
-        $codes = $this->selectAllAuditableConnectionCodes->execute();
-        $this->purgeErrors->execute($codes);
+            $codes = $this->selectAllAuditableConnectionCodes->execute();
+            $this->purgeErrors->execute($codes);
 
-        $this->logger->info('End purge connection error');
+            $this->logger->info('End purge connection error');
+        } catch (TableNotFoundException $exception) {
+            if ($exception->getPrevious()?->getCode() === self::TABLE_NOT_FOUND_ERROR_CODE) {
+                $this->logger->warning('Table not found', ['exception' => $exception]);
+
+                return Command::FAILURE;
+            }
+
+            throw $exception;
+        }
 
         return Command::SUCCESS;
     }
