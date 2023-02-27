@@ -159,7 +159,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
             'values' => [
                 'a_multi_select' => [
                     [
-                        'data' => ['OptiONB', 'optionA'],
+                        'data' => ['optionA', 'optionB'],
                         'locale' => null,
                         'scope' => null,
                         'linked_data' => [
@@ -170,7 +170,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
                                     'en_US' => 'Option A',
                                 ],
                             ],
-                            'OptiONB' => [
+                            'optionB' => [
                                 'attribute' => 'a_multi_select',
                                 'code' => 'optionB',
                                 'labels' => [
