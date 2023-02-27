@@ -19,8 +19,8 @@ class ProcessSpec extends ObjectBehavior
             [
                 'type' => 'truncate',
                 'operator' => '=',
-                'value' => 3
-            ]
+                'value' => 3,
+            ],
         ]);
     }
 
@@ -39,7 +39,7 @@ class ProcessSpec extends ObjectBehavior
         $this->normalize()->shouldReturn([
             'type' => 'truncate',
             'operator' => '=',
-            'value' => 3
+            'value' => 3,
         ]);
     }
 
@@ -55,45 +55,57 @@ class ProcessSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_an_exception_when_no_operator(): void
+    public function it_should_not_throw_an_exception_when_type_no_is_well_formed(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [['type' => 'no']]);
+        $this->shouldNotThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_should_throw_an_exception_when_type_truncate_and_no_operator(): void
     {
         $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'value' => 3]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_an_exception_when_empty_operator(): void
+    public function it_should_throw_an_exception_when_type_truncate_and_empty_operator(): void
     {
         $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => null, 'value' => 3]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_an_exception_when_unknown_operator(): void
+    public function it_should_throw_an_exception_when_type_truncate_and_unknown_operator(): void
     {
         $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => 'unknown', 'value' => 3]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_an_exception_when_no_value(): void
+    public function it_should_throw_an_exception_when_type_truncate_and_no_value(): void
     {
         $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => '=']]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_an_exception_when_not_numeric_value(): void
+    public function it_should_throw_an_exception_when_type_truncate_and_not_numeric_value(): void
     {
         $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => '=', 'value' => 'bar']]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_an_exception_when_too_high_value(): void
+    public function it_should_throw_an_exception_when_type_truncate_and_too_high_value(): void
     {
         $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => '=', 'value' => 6]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_an_exception_when_too_low_value(): void
+    public function it_should_throw_an_exception_when_type_truncate_and_too_low_value(): void
     {
         $this->beConstructedThrough('fromNormalized', [['type' => 'truncate', 'operator' => '=', 'value' => 0]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    public function it_should_not_throw_an_exception_when_type_nomenclature_is_well_formed(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [['type' => 'nomenclature']]);
+        $this->shouldNotThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

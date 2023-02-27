@@ -2,18 +2,6 @@ import React from 'react';
 import {Pagination} from './Pagination';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 
-test('it throws an error if there is no item', () => {
-  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
-
-  const paginationRender = () => {
-    render(<Pagination currentPage={1} totalItems={0} followPage={jest.fn()} />);
-  };
-
-  expect(paginationRender).toThrowError();
-
-  mockConsole.mockRestore();
-});
-
 test('it throws an error if the current page is out of bound', () => {
   const mockConsole = jest.spyOn(console, 'error').mockImplementation();
 

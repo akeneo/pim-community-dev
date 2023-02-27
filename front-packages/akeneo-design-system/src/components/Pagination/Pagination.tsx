@@ -39,12 +39,12 @@ const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage 
 
   const numberOfPages = Math.ceil(totalItems / itemsPerPage);
 
-  if (currentPage > numberOfPages) {
-    throw new Error('The current page cannot be greater than the total number of pages');
-  }
-
   if (numberOfPages <= 1) {
     return null;
+  }
+
+  if (currentPage > numberOfPages) {
+    throw new Error('The current page cannot be greater than the total number of pages');
   }
 
   const pages = computePages(currentPage, numberOfPages);
