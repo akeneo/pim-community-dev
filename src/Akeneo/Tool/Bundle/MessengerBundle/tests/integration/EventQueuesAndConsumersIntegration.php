@@ -6,7 +6,6 @@ namespace Akeneo\Tool\Bundle\MessengerBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
 use Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler1ForMessage1;
 use Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler1ForMessage2;
 use Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler2ForMessage1;
