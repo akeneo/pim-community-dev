@@ -37,6 +37,28 @@ final class GetCategoriesSql implements GetCategoriesInterface
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
                 WHERE $sqlWhere
                 GROUP BY category.code
+            ),
+            enriched_values as (
+                SELECT category.id, category.value_collection
+                FROM pim_catalog_category category
+                JOIN pim_catalog_category_tree_template ctt ON ctt.category_tree_id = category.id
+                JOIN pim_catalog_category_template template ON template.uuid = ctt.category_template_uuid AND (template.is_deactivated IS NULL OR template.is_deactivated = 0)
+                WHERE $sqlWhere
+            ),
+            position as (
+                SELECT code, position 
+                FROM (
+                    SELECT
+                        category.code,
+                        category.id as category_id,
+                        sibling.id as sibling_id,
+                        ROW_NUMBER() over (PARTITION BY category.parent_id ORDER BY sibling.lft) as position
+                    FROM pim_catalog_category category
+                        JOIN pim_catalog_category sibling on category.id = sibling.id
+                    WHERE $sqlWhere
+                    AND category.parent_id IS NOT NULL
+                ) r
+                WHERE sibling_id = category_id
             )
             SELECT
                 category.id,
@@ -49,10 +71,13 @@ final class GetCategoriesSql implements GetCategoriesInterface
                 category.rgt,
                 category.lvl,
                 translation.translations,
-                IF(:with_enriched_attributes, category.value_collection, '') as value_collection
+                IF(:with_position, COALESCE(position.position, 1), '') as position,
+                IF(:with_enriched_attributes, enriched_values.value_collection, '') as value_collection
             FROM 
                 pim_catalog_category category
                 LEFT JOIN translation ON translation.code = category.code
+                LEFT JOIN position on position.code = category.code
+                LEFT JOIN enriched_values on enriched_values.id = category.id
                 LEFT JOIN pim_catalog_category as parent_category on category.parent_id = parent_category.id
             WHERE $sqlWhere
             ORDER BY category.root, category.lft

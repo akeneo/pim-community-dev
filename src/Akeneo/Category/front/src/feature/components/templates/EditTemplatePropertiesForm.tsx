@@ -77,9 +77,11 @@ const EditTemplatePropertiesForm = ({template, onChangeLabel}: Props) => {
       <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
         <TextInput name="code" readOnly={true} value={template.code} />
       </Field>
-      <SectionTitle sticky={44}>
-        <SectionTitle.Title>{translate('pim_common.label')}</SectionTitle.Title>
-      </SectionTitle>
+      {labelsFields.length > 0 && (
+        <SectionTitle sticky={44}>
+          <SectionTitle.Title>{translate('pim_common.label')}</SectionTitle.Title>
+        </SectionTitle>
+      )}
       {labelsFields}
     </FormContainer>
   );

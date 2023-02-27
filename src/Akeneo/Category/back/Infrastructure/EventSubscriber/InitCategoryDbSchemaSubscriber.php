@@ -50,7 +50,8 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
         CREATE TABLE IF NOT EXISTS pim_catalog_category_template (
             uuid binary(16) PRIMARY KEY,
             code VARCHAR(100) NOT NULL,
-            labels JSON NOT NULL DEFAULT ('{}')
+            labels JSON NOT NULL DEFAULT ('{}'),
+            is_deactivated BOOLEAN
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         SQL;
 
@@ -79,14 +80,17 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
                 `uuid` BINARY(16) PRIMARY KEY,
                 `code` VARCHAR(100) NOT NULL,  
                 `category_template_uuid` binary(16) NOT NULL,
-                `labels` JSON NOT NULL,
+                `labels` JSON NULL,
                 `attribute_type` VARCHAR(100) NOT NULL,
                 `attribute_order` INT NOT NULL,
                 `is_required` TINYINT(1) NOT NULL,
                 `is_scopable` TINYINT(1) NOT NULL,
                 `is_localizable` TINYINT(1) NOT NULL,
-                `additional_properties` JSON NOT NULL,
-                CONSTRAINT `FK_ATTRIBUTE_template_uiid` FOREIGN KEY (`category_template_uuid`) REFERENCES `pim_catalog_category_template` (`uuid`)
+                `additional_properties` JSON NULL,
+                CONSTRAINT `FK_ATTRIBUTE_template_uuid` 
+                    FOREIGN KEY (`category_template_uuid`) 
+                    REFERENCES `pim_catalog_category_template` (`uuid`)
+                    ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
         SQL;
 

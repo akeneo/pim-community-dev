@@ -1,7 +1,7 @@
 import React, {FC, useEffect} from 'react';
 import {Breadcrumb, Button, useBooleanState} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {CategoryTreesDataGrid, EmptyCategoryTreeList} from '../components';
+import {CategoryTreesDataGrid, DiscoverEnrichedCategoriesInformationHelper, EmptyCategoryTreeList} from '../components';
 import {useCategoryTreeList} from '../hooks';
 import {NewCategoryModal} from './NewCategoryModal';
 
@@ -49,7 +49,10 @@ const CategoriesIndex: FC = () => {
         {trees.length === 0 ? (
           <EmptyCategoryTreeList />
         ) : (
-          <CategoryTreesDataGrid trees={trees} refreshCategoryTrees={loadTrees} />
+          <>
+            <DiscoverEnrichedCategoriesInformationHelper />
+            <CategoryTreesDataGrid trees={trees} refreshCategoryTrees={loadTrees} />
+          </>
         )}
       </PageContent>
       {isModalOpen && <NewCategoryModal closeModal={closeModal} onCreate={loadTrees} />}

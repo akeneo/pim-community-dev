@@ -1,6 +1,10 @@
-.PHONY: category-front-dev
-category-front-dev:
-	$(YARN_RUN) workspace @akeneo-pim-community/category app:start
+.PHONY: category-front-up
+category-front-up:
+	$(DOCKER_COMPOSE) -f docker-compose.yml -f src/Akeneo/Category/front/docker-compose.micro-frontend.yml up -d --remove-orphans
+
+.PHONY: category-front-down
+category-front-down:
+	$(DOCKER_COMPOSE) -f docker-compose.yml down
 
 .PHONY: category-lint-back
 category-lint-back: #Doc: launch PHPStan for category bounded context
@@ -27,6 +31,7 @@ category-coupling-back: #Doc: launch coupling detector for category bounded cont
 .PHONY: category-unit-back
 category-unit-back: #Doc: launch PHPSpec for category bounded context
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Category/back/tests/Specification
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Category/back/tests --testsuite Category_Unit_Test $(F)
 
 .PHONY: category-unit-front
 category-unit-front:

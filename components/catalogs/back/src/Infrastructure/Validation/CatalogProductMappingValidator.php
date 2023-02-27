@@ -10,7 +10,9 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\Att
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeIdentifierSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeImageSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeMetricSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeMultiSelectSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeNumberSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributePriceCollectionSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeSimpleSelectSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextareaSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource;
@@ -55,7 +57,7 @@ final class CatalogProductMappingValidator extends ConstraintValidator
             new Assert\Sequentially([
                 new Assert\Type('array'),
                 new Assert\Callback(static function (mixed $array, ExecutionContextInterface $context): void {
-                    if (!\is_array($array) || empty($array)) {
+                    if (!\is_array($array) || [] === $array) {
                         return;
                     }
 
@@ -116,11 +118,13 @@ final class CatalogProductMappingValidator extends ConstraintValidator
             'pim_catalog_date' => new AttributeDateSource(),
             'pim_catalog_identifier' => new AttributeIdentifierSource(),
             'pim_catalog_image' => new AttributeImageSource(),
+            'pim_catalog_metric' => new AttributeMetricSource(),
+            'pim_catalog_multiselect' => new AttributeMultiSelectSource(),
             'pim_catalog_number' => new AttributeNumberSource(),
+            'pim_catalog_price_collection' => new AttributePriceCollectionSource(),
             'pim_catalog_simpleselect' => new AttributeSimpleSelectSource(),
             'pim_catalog_text' => new AttributeTextSource(),
             'pim_catalog_textarea' => new AttributeTextareaSource(),
-            'pim_catalog_metric' => new AttributeMetricSource(),
             default => null,
         };
     }

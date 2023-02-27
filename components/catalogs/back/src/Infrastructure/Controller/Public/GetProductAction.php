@@ -13,8 +13,10 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductQuery;
+use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +39,7 @@ class GetProductAction
         private QueryBus $queryBus,
         private TokenStorageInterface $tokenStorage,
         private SecurityFacadeInterface $security,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -51,6 +54,8 @@ class GetProductAction
 
         try {
             $product = $this->getProduct($catalog->getId(), $uuid);
+
+            $this->eventDispatcher->dispatch(new ReadProductsEvent(1));
         } catch (CatalogDisabledException) {
             return new JsonResponse([
                 'error' => \sprintf('No products to synchronize. The catalog "%s" has been disabled on PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.', $id),

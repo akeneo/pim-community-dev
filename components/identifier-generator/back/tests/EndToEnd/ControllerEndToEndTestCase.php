@@ -20,11 +20,14 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
     protected KernelBrowser $client;
     protected CatalogInterface $catalog;
 
-    private const DEFAULT_HEADER = [
+    protected const DEFAULT_HEADER = [
         'HTTP_X-Requested-With' => 'XMLHttpRequest',
     ];
 
-    abstract protected function getConfiguration(): Configuration;
+    private function getConfiguration(): Configuration
+    {
+        return $this->catalog->useTechnicalCatalog(['identifier_generator']);
+    }
 
     protected function setUp(): void
     {
@@ -32,7 +35,7 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         $this->client->disableReboot();
 
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
-        /** @var FilePersistedFeatureFlags $featureFlags*/
+        /** @var FilePersistedFeatureFlags $featureFlags */
         $featureFlags = $this->get('feature_flags');
         $featureFlags->deleteFile();
         $featureFlags->enable('identifier_generator');
@@ -43,10 +46,7 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($configuration);
 
-        // authentication should be done after loading the database as the user is created with first activated locale as default locale
-        $authenticator = $this->get('akeneo_integration_tests.security.system_user_authenticator');
-        $authenticator->createSystemUser();
-
+        $this->initAcls();
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
@@ -71,12 +71,26 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         $this->getAuthenticated()->logIn($username, $this->client);
     }
 
-    protected function callRoute(string $routeName, ?array $header = self::DEFAULT_HEADER): void
+    protected function callRoute(string $routeName, ?array $header = self::DEFAULT_HEADER, $routeParams = []): void
     {
         $this->getWebClientHelper()->callRoute(
             $this->client,
             $routeName,
-            [],
+            $routeParams,
+            'GET',
+            $header
+        );
+    }
+
+    protected function callGetRouteWithQueryParam(
+        string $routeName,
+        array $queryParam,
+        ?array $header = self::DEFAULT_HEADER
+    ): void {
+        $this->getWebClientHelper()->callRoute(
+            $this->client,
+            $routeName,
+            $queryParam,
             'GET',
             $header
         );
@@ -99,8 +113,11 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         );
     }
 
-    protected function callDeleteRoute(string $routeName, ?array $routeArguments = [], ?array $header = self::DEFAULT_HEADER): void
-    {
+    protected function callDeleteRoute(
+        string $routeName,
+        ?array $routeArguments = [],
+        ?array $header = self::DEFAULT_HEADER
+    ): void {
         $this->getWebClientHelper()->callRoute(
             $this->client,
             $routeName,
@@ -150,9 +167,40 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
 
     private function getWebClientHelper(): WebClientHelper
     {
-        /** @var WebClientHelper $webClientHelper */
-        $webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
+        return $this->get('akeneo_integration_tests.helper.web_client');
+    }
 
-        return $webClientHelper;
+    private function initAcls(): void
+    {
+        $acls = [
+            'ROLE_ADMINISTRATOR' => [
+                'action:pim_identifier_generator_manage' => true,
+                'action:pim_identifier_generator_view' => true,
+            ],
+            'ROLE_CATALOG_MANAGER' => [
+                'action:pim_identifier_generator_manage' => true,
+                'action:pim_identifier_generator_view' => false,
+            ],
+            'ROLE_USER' => [
+                'action:pim_identifier_generator_manage' => false,
+                'action:pim_identifier_generator_view' => true,
+            ],
+            'ROLE_TRAINEE' => [
+                'action:pim_identifier_generator_manage' => false,
+                'action:pim_identifier_generator_view' => false,
+            ],
+        ];
+
+        foreach ($acls as $role => $newPermissions) {
+            $this->setAcls($role, $newPermissions);
+        }
+    }
+
+    public function setAcls(string $role, array $newPermissions): void
+    {
+        $roleWithPermissions = $this->get('pim_user.repository.role_with_permissions')->findOneByIdentifier($role);
+        $roleWithPermissions->setPermissions(\array_merge($roleWithPermissions->permissions(), $newPermissions));
+
+        $this->get('pim_user.saver.role_with_permissions')->saveAll([$roleWithPermissions]);
     }
 }

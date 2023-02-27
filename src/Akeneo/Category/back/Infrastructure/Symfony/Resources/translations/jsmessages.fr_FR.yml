@@ -13,6 +13,7 @@ akeneo.category:
     edit: Afficher le template
     notification_success: "Le template a été activé avec succès.\n"
     attribute:
+      description_title: Paramètres de la description
       type:
         text: Texte
         textarea: Zone de texte
@@ -20,5 +21,16 @@ akeneo.category:
         image: Image
   template_list:
     columns:
+      header: Libellé
       code: Code
       type: Type
+  tag:
+    new: Nouveau
+  discover_enriched_categories_information:
+    title: Découvrez les Catégories Enrichies en Accès Anticipé
+    content:
+      activate_template: Activez l'enrichissement des catégories grâce à des modèles préconfigurés
+      enrich_attribute_values: Enrichissez les attributs de type texte, zone de texte et image dans les catégories
+      deactivate_template: La désactivation de l'enrichissement et le modèle personnalisé seront bientôt disponibles
+    survey_link_label: Dites-nous ce que vous pensez
+    learn_more_link_label: En savoir plus sur les Catégories Enrichies

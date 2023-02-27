@@ -16,19 +16,24 @@ final class TargetTypeConverter
         'boolean' => [
             'pim_catalog_boolean',
         ],
+        'number' => [
+            'pim_catalog_metric',
+            'pim_catalog_number',
+            'pim_catalog_price_collection',
+        ],
         'string' => [
             'pim_catalog_identifier',
             'pim_catalog_number',
             'pim_catalog_simpleselect',
             'pim_catalog_text',
             'pim_catalog_textarea',
+            'pim_catalog_multiselect',
         ],
         'string+date-time' => [
             'pim_catalog_date',
         ],
         'number' => [
             'pim_catalog_number',
-            'pim_catalog_metric',
         ],
         'string+uri' => [
             'pim_catalog_image',

@@ -16,6 +16,34 @@ akeneo_identifier_generator_get_identifier_attributes:
     defaults:
         _feature: identifier_generator
 
+akeneo_identifier_generator_get_families:
+    path: '/identifier-generator/families'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetFamiliesController
+    methods: [GET]
+    defaults:
+        _feature: identifier_generator
+
+akeneo_identifier_generator_get_attribute_options:
+    path: '/identifier-generator/attribute-options/{attributeCode}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAttributeOptionsController
+    methods: [GET]
+    defaults:
+        _feature: identifier_generator
+
+akeneo_identifier_generator_get_conditions:
+    path: '/identifier-generator/conditions'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailableConditionsController
+    methods: [GET]
+    defaults:
+        _feature: identifier_generator
+
+akeneo_identifier_generator_get_properties:
+    path: '/identifier-generator/properties'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailablePropertiesController
+    methods: [GET]
+    defaults:
+        _feature: identifier_generator
+
 akeneo_identifier_generator_rest_list:
     path: '/rest/identifier-generator'
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\ListIdentifierGeneratorController
@@ -48,5 +76,19 @@ akeneo_identifier_generator_rest_update:
     path: '/rest/identifier-generator/{code}'
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\UpdateIdentifierGeneratorController
     methods: [PATCH]
+    defaults:
+        _feature: identifier_generator
+
+akeneo_identifier_generator_nomenclature_rest_update:
+    path: '/rest/identifier-generator-nomenclature/{propertyCode}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\UpdateNomenclatureController
+    methods: [PATCH]
+    defaults:
+        _feature: identifier_generator
+
+akeneo_identifier_generator_nomenclature_rest_get:
+    path: '/rest/identifier-generator-nomenclature/{propertyCode}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetNomenclatureController
+    methods: [ GET ]
     defaults:
         _feature: identifier_generator

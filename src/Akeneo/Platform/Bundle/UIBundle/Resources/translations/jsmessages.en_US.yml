@@ -273,6 +273,7 @@ pim_common:
     product_models: Product models
     more: More
     public_view: Public view
+    view: View
 
 error:
     exception: A {{ status_code }} error occurred...
@@ -290,6 +291,7 @@ pim_enrich.entity.fallback:
         generic_error: An error occurred
         update:
             fail: Update failed
+            fail_session_expired: Your user session has expired. Please log in again.
             success: Successfully updated
         delete:
             fail: Cannot delete this item
@@ -359,6 +361,7 @@ pim_title:
     pim_system_index:                      System
 
 pim_menu:
+    tag.new: New
     tab:
         activity: Activity
         imports: Imports
@@ -399,6 +402,7 @@ pim_menu:
           product: Product settings
           catalog: Catalog settings
           collapsed_label: Settings navigation
+          automation: Automation
         product: Product navigation
         product_infos: Product infos
 
@@ -417,6 +421,7 @@ pim_settings:
   settings_menu: Settings menu
   catalog_settings: Catalog settings
   product_settings: Product settings
+  automation_settings: Automation
   count:
     category_trees: '{0}You have 0 trees |{1}You have 1 tree |]1, Inf[You have {{ count }} trees '
     categories: '{0}and 0 categories|{1}and 1 category|]1, Inf[and {{ count }} categories'
@@ -431,6 +436,7 @@ pim_settings:
     group_types: '{0}You have 0 group types|{1}You have 1 group type|]1, Inf[You have {{ count }} group types'
     groups: '{0}You have 0 groups|{1}You have 1 group|]1, Inf[You have {{ count }} groups'
     rules: '{0}You have 0 enabled rules|{1}You have 1 enabled rule|]1, Inf[You have {{ count }} enabled rules'
+    identifier_generators: '{0}You have 0 identifier generator|{1}You have 1 identifier generator|]1, Inf[You have {{ count }} identifier generators'
 
 pim_system:
   system_menu: System menu

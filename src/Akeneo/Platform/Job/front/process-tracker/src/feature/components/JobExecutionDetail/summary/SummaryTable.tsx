@@ -65,7 +65,9 @@ const SummaryTable = ({jobExecution}: SummaryTableProps) => {
         {jobExecution.stepExecutions.map(step => (
           <React.Fragment key={getStepKey(step)}>
             <Table.Row>
-              <Table.Cell rowTitle={true}>{getStepLabel(translate, step)}</Table.Cell>
+              <Table.Cell rowTitle={true} title={getStepLabel(translate, step)}>
+                {getStepLabel(translate, step)}
+              </Table.Cell>
               <Table.Cell>
                 <Badge level={getStepStatusLevel(step)}>{step.status}</Badge>
               </Table.Cell>

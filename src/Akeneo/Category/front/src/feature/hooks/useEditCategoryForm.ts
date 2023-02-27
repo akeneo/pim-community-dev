@@ -5,21 +5,19 @@ import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim
 import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
-import {
-  buildCompositeKey,
-  Attribute,
-  CategoryAttributeValueData,
-  CategoryPermissions,
-  EnrichCategory,
-  Template,
-} from '../models';
+import {buildCompositeKey, Attribute, CategoryAttributeValueData, EnrichCategory, Template} from '../models';
 import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from '../helpers';
 import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
+import {CategoryPermissions} from '../models/CategoryPermission';
+import {UserGroup} from './useFetchUserGroups';
+import {DEACTIVATED_TEMPLATE} from '../models/ResponseStatus';
+import {useHistory} from 'react-router';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
   const notify = useNotify();
   const translate = useTranslate();
+  const history = useHistory();
 
   const {load: loadCategory, category: fetchedCategory, status: categoryStatus} = useCategory(categoryId);
 
@@ -90,7 +88,11 @@ const useEditCategoryForm = (categoryId: number) => {
       setHistoryVersion((prevVersion: number) => prevVersion + 1);
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
     } else {
-      notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
+      notify(NotificationLevel.ERROR, response.error.message);
+
+      if (response.error.code && response.error.code === DEACTIVATED_TEMPLATE) {
+        history.push('/');
+      }
     }
   }, [
     router,
@@ -110,19 +112,25 @@ const useEditCategoryForm = (categoryId: number) => {
         return;
       }
 
+      if (Array.isArray(categoryEdited.properties.labels) && !categoryEdited.properties.labels.length) {
+        categoryEdited['properties']['labels'] = {
+          [localeCode]: label,
+        };
+      }
+
       setCategoryEdited(set(['properties', 'labels', localeCode], label, categoryEdited));
     },
     [categoryEdited]
   );
 
-  const onChangePermissions = (type: keyof CategoryPermissions, values: number[]) => {
+  const onChangePermissions = (userGroups: UserGroup[], type: keyof CategoryPermissions, values: number[]) => {
     if (categoryEdited === null) {
       return;
     }
 
-    const consistentPermissions = alterPermissionsConsistently(categoryEdited.permissions, {type, values});
+    const consistentPermissions = alterPermissionsConsistently(userGroups, categoryEdited.permissions, {type, values});
 
-    setCategoryEdited(set(['permissions'], consistentPermissions, categoryEdited));
+    setCategoryEdited(set('permissions', consistentPermissions, categoryEdited));
   };
 
   const onChangeAttribute = useCallback(

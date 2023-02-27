@@ -258,16 +258,14 @@ define([
      * Opens the panel to select new products to associate
      */
     addAssociations: function () {
-      this.manageProducts().then(productAndProductModelIdentifiers => {
+      this.manageProducts().then(items => {
         let productUuids = [];
         let productModelIds = [];
-        productAndProductModelIdentifiers.forEach(item => {
-          const matchProductModel = item.match(/^product_model;(.*)$/);
-          if (matchProductModel) {
-            productModelIds.push(matchProductModel[1]);
-          } else {
-            const matchProduct = item.match(/^product;(.*)$/);
-            productUuids.push(matchProduct[1]);
+        items.forEach(item => {
+          if ('product' === item.document_type) {
+            productUuids.push(item.technical_id);
+          } else if ('product_model' === item.document_type) {
+            productModelIds.push(item.id);
           }
         });
 

@@ -38,8 +38,9 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: Aplicacions connectades
   akeneo_connectivity_connection_connect_connected_apps_edit: Configuració de l'aplicació
   akeneo_connectivity_connection_connect_connected_apps_delete: Eliminació de l'aplicació
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Crear una aplicació de prova
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Eliminar aplicació de prova
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: Regenerar credencials
+  akeneo_connectivity_connection_connect_custom_apps_create: Crea una aplicació personalitzada
+  akeneo_connectivity_connection_connect_custom_apps_delete: Suprimeix l'aplicació personalitzada
   akeneo_connectivity_connection_connect_connected_apps_open: Obre l'aplicació
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Edita el catàleg
 akeneo_connectivity.connection:
@@ -73,51 +74,9 @@ akeneo_connectivity.connection:
         empty: No hi ha aplicacions compatibles amb la vostra versió
       unreachable: No podem arribar a l'App Store, torneu més tard.
       scroll_to_top: Desplaça't a fins a dalt
-      test_apps:
-        title: Les meves aplicacions de prova
+      custom_apps:
+        title: Les meves aplicacions personalitzades
         removed_user: Usuari suprimit
-        create_a_test_app: Crear una aplicació de prova
-        modal:
-          subtitle: Crear una aplicació de prova
-          app_information:
-            title: Informació de l'app
-            description: Si necessita ajuda, consulta el nostre article
-            link: Com provar la meva aplicació abans de publicar-la?
-            fields:
-              name: Nom
-              activate_url: URL d'activació
-              callback_url: URL de Callback
-          credentials:
-            title: Credencials
-            warning: Guarda't bé les credencials en un lloc, ja que les mostrarem només una vegada aquí.
-            client_id: Identificador del client
-            client_secret: Secret del client
-        errors:
-          page_not_found: No s'ha trobat la pàgina
-          creation:
-            name:
-              min_length: El nom de l'aplicació de prova és massa curt. Ha de tenir 3 caràcters o més.
-              max_length: El nom de l'aplicació de prova és massa llarg. Ha de tenir 255 caràcters o menys.
-              not_blank: Es requereix el nom de l'aplicació de prova.
-            client_id:
-              max_length: L'ID del client de la l'aplicació de prova és massa llarg. Ha de tenir 36 caràcters o menys.
-              not_blank: L'ID de client és obligatori.
-            activate_url:
-              max_length: La URL d'activació de l'aplicació de prova és massa llarg. Ha de tenir 255 caràcters o menys.
-              must_be_url: La URL d'activació ha de ser vàlida.
-              not_blank: La URL d'activació és obligatori.
-            callback_url:
-              max_length: La URL de callback de l'aplicació de prova és massa llarg. Ha de tenir 255 caràcters o menys.
-              must_be_url: La URL de callback ha de ser vàlida.
-              not_blank: La URL de callback és obligatori.
-        delete:
-          subtitle: Aplicacions
-          title: Confirmar l'eliminació
-          description: Esteu a punt d'eliminar la vostra aplicació de prova d'aquest PIM.
-          warning: En confirmar la supressió, suprimiràs l'aplicació de prova de la pàgina de l'App Store i l'aplicació connectada relacionada.
-          flash:
-            success: Aplicació de prova eliminada correctament.
-            error: Ho sentim, s'ha produït un error durant l'eliminació de l'aplicació de prova.
     connected_apps:
       list:
         apps:
@@ -128,8 +87,8 @@ akeneo_connectivity.connection:
           marketplace_link_anchor: App Store
           at_least_one_is_not_listed_on_the_appstore: Algunes de les vostres aplicacions connectades no són compatibles amb la vostra versió PIM o ja no existeixen a l'Akeneo App Store. Contacta amb nosaltres per obtenir més informació.
           pending_apps: Algunes de les teves aplicacions no estan connectades amb el teu PIM.
-        test_apps:
-          title: Les meves aplicacions de prova
+        custom_apps:
+          title: Les meves aplicacions personalitzades connectades
           removed_user: Usuari suprimit
         helper:
           title: '[0,1] El vostre PIM està connectat amb l''aplicació {{ count }}.|[2,Inf] El vostre PIM està connectat amb {{ count }} aplicacions.'
@@ -146,6 +105,10 @@ akeneo_connectivity.connection:
         flash:
           error: Ho sentim, s'ha produït un error en obtenir la llista d'aplicacions connectades.
       edit:
+        header:
+          open_app_button:
+            label: Vés a l'aplicació
+            icon_alt: Vés a l'icona d'aplicació
         not_found: No s'ha trobat l'aplicació
         tabs:
           settings: Preferències
@@ -167,6 +130,22 @@ akeneo_connectivity.connection:
             information_link_anchor: Article del Centre d'ajuda
             openid_only: Aquesta aplicació utilitza l'autenticació de l'aplicació Akeneo sense utilitzar les vostres dades personals.
           pending: Aquesta aplicació no està connectada al vostre PIM. L'obertura de l'aplicació hauria de solucionar el problema de connexió. Si persisteix, poseu-vos en contacte amb l'assistència de l'aplicació.
+          credentials:
+            title: Credencials
+            client_id: Identificador del client
+            client_secret: Secret del client
+            regenerate_button: Regenera
+            regenerate_secret:
+              flash_error: Ho sentim, s'ha produït un error durant la regeneració de la connexió secreta.
+              confirm:
+                title: Confirmeu la regeneració
+                description: La regeneració del secret afectarà la connexió de l'aplicació personalitzada amb el PIM. Esteu segur que voleu continuar?
+                regenerate_button: Regenera
+                cancel_button: Cancel·lar
+              new_credentials:
+                title: Noves credencials
+                subtitle: Regenerar credencials
+                done_button: Fet
         error_monitoring:
           error: Ups, alguna cosa va fallar!
           helper:
@@ -243,6 +222,9 @@ akeneo_connectivity.connection:
           helper: Per obtenir més informació sobre l'autorització d'aplicacions,
           helper_link: Consulteu l'article del nostre Centre d'ajuda.
           is_allowed_to: 'Ja es permet:'
+          certification_consent:
+            label: 'He llegit i accepto la següent exempció de responsabilitat sobre la certificació.'
+            subtext: 'Akeneo renuncia a qualsevol responsabilitat per l''ús de l''aplicació per part del client, així com les seves funcionalitats. La certificació no garanteix la interoperabilitat de l''aplicació ni que funcioni correctament en l''entorn del client.'
         flash:
           success: L'aplicació s'ha configurat correctament.
           error: Ho sentim, s'ha produït un error al intentar connectar l'aplicació.
@@ -288,6 +270,52 @@ akeneo_connectivity.connection:
           must_be_url: El redirect_uri no és una url vàlida.
         scope:
           too_long: La llista d'abast no ha de contenir més de 1000 caràcters.
+    custom_apps:
+      creation_limit_reached: Has arribat al límit de 20 aplicacions personalitzades.
+      create_button: Crea una aplicació
+      create_modal:
+        subtitle: Crea una aplicació personalitzada
+        app_information:
+          title: Informació de l'app
+          description: Si necessita ajuda, consulta el nostre article
+          link: Com provar la meva aplicació abans de publicar-la?
+          fields:
+            name: Nom
+            activate_url: URL d'activació
+            callback_url: URL de Callback
+          field_placeholder:
+            name: Definiu el nom de l'aplicació
+            activate_url: Ompliu l'URL d'activació
+            callback_url: Ompliu l'URL callback
+        credentials:
+          title: Credencials
+          client_id: Identificador del client
+          client_secret: Secret del client
+        errors:
+          limit_reached: Podeu crear fins a 20 aplicacions personalitzades.
+          name:
+            min_length: El nom de l'aplicació és massa curt. Ha de tenir 3 caràcters o més.
+            max_length: El nom de l'aplicació és massa llarg. Ha de tenir 255 caràcters o menys.
+            not_blank: Es requereix el nom de l'aplicació.
+          client_id:
+            max_length: L'ID del client de la l'aplicació és massa llarg. Ha de tenir 36 caràcters o menys.
+            not_blank: L'ID de client és obligatori.
+          activate_url:
+            max_length: La URL d'activació de l'aplicació és massa llarg. Ha de tenir 255 caràcters o menys.
+            must_be_url: La URL d'activació ha de ser vàlida.
+            not_blank: La URL d'activació és obligatori.
+          callback_url:
+            max_length: La URL de callback de l'aplicació és massa llarg. Ha de tenir 255 caràcters o menys.
+            must_be_url: La URL de callback ha de ser vàlida.
+            not_blank: La URL de callback és obligatori.
+      delete_modal:
+        subtitle: Suprimeix una aplicació personalitzada
+        title: Confirmar l'eliminació
+        description: Esteu a punt d'eliminar la vostra aplicació d'aquest PIM.
+        warning: En confirmar la supressió, suprimiràs l'aplicació de la pàgina de l'App Store i l'aplicació connectada relacionada.
+        flash:
+          success: L'aplicació personalitzada s'ha suprimit correctament.
+          error: Ho sentim, s'ha produït un error en suprimir l'aplicació personalitzada.
   connections: Connexions
   secondary_actions:
     title: Altres accions

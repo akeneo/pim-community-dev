@@ -7,7 +7,7 @@
         "application_path": "../../../.."
     },
     "main": "lib/index.js",
-    "proxy": "http://localhost:8080",
+    "proxy": "http://httpd",
     "dependencies": {
         "@akeneo-pim-community/shared": "link:../../../../front-packages/shared",
         "akeneo-design-system": "link:../../../../front-packages/akeneo-design-system",
@@ -26,15 +26,15 @@
         "styled-components": "^5.1.1"
     },
     "scripts": {
-        "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
+        "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts --openssl-legacy-provider start",
         "translation:build": "cp $npm_package_config_application_path/public/js/translation/en_US.js ./src/translations.json",
         "route:build": "cp $npm_package_config_application_path/public/js/fos_js_routes.json ./src/routes.json",
         "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system run lib:build && yarn --cwd=$npm_package_config_front_packages_path/shared run lib:build",
         "lib:build": "tsc -p ./tsconfig.build.json",
         "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
         "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && yarn eslint --max-warnings 0 --ext .tsx,.ts ./src",
-        "test:unit:run": "react-scripts test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",
-        "test:unit:watch": "react-scripts test --maxWorkers=3"
+        "test:unit:run": "react-scripts --openssl-legacy-provider test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",
+        "test:unit:watch": "react-scripts --openssl-legacy-provider test --maxWorkers=3"
     },
     "eslintConfig": {
         "extends": [

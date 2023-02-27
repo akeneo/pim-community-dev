@@ -5,19 +5,22 @@ services:
       - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
       - '@Akeneo\Category\Application\Applier\UserIntentApplierRegistry'
       - '@event_dispatcher'
-      - '@Akeneo\Category\Application\Storage\Save\CategorySaverProcessor'
+      - '@Akeneo\Category\Application\Storage\Save\SaveCategory'
+      - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Api\Command\UpsertCategoryCommand'}
+
+  Akeneo\Category\Application\Command\DeactivateTemplateCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Application\Query\DeactivateTemplate'
+      - '@event_dispatcher'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeactivateTemplateCommand'}
 
   Akeneo\Category\Application\Handler\StoreUploadedFile:
     arguments:
       - '@akeneo_file_storage.file_storage.file.file_storer'
       - '@akeneo_file_storage.repository.file_info'
-
-  Akeneo\Category\Application\Handler\GetPositionInterface:
-    class: Akeneo\Category\Infrastructure\Handler\GetPositionHandler
-    arguments:
-      - '@Akeneo\Category\Application\Query\GetDirectChildrenCategoryCodesInterface'
 
   Akeneo\Category\Application\Handler\SearchFilters:
     class: Akeneo\Category\Infrastructure\Handler\SearchFiltersSql

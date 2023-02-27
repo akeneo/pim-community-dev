@@ -77,6 +77,7 @@ pim_common:
   updated: Mis à jour
   view: Afficher
   yes: "Oui"
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -454,6 +455,8 @@ pim_datagrid:
       label: Parent
     identifier:
       label: Identifiant
+    uuid:
+      label: UUID
 #Versioning / history
 Change History: Historique des modifications
 Data Audit: Historique des données
@@ -543,4 +546,4 @@ pim_login:
   footer:
     powered: Powered by
     powered_image_title: logo Akeneo
-pim_system.acl_group.developer_mode: Mode Développeur
+pim_system.acl_group.connect: Connect

@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import {screen, act} from '@testing-library/react';
 import {renderWithProviders, ValidationError, useFeatureFlags} from '@akeneo-pim-community/shared';
 import {StorageForm} from './StorageForm';
-import {LocalStorage, NoneStorage, SftpStorage} from './model';
+import {NoneStorage, LocalStorage, SftpStorage} from '../models';
 
 const mockedUseFeatureFlags = useFeatureFlags as jest.Mock;
 
@@ -44,6 +44,7 @@ test('it renders the storage form', async () => {
   await act(async () => {
     renderWithProviders(
       <StorageForm
+        jobInstanceCode="csv_product_export"
         jobType="export"
         storage={storage}
         fileExtension="xlsx"
@@ -67,6 +68,7 @@ test('it triggers onStorageChange callback when storage configurator onStorageCh
   await act(async () => {
     renderWithProviders(
       <StorageForm
+        jobInstanceCode="csv_product_export"
         jobType="export"
         storage={storage}
         fileExtension="xlsx"
@@ -96,6 +98,7 @@ test('it does not render the storage form configurator if storage is none', asyn
   await act(async () => {
     renderWithProviders(
       <StorageForm
+        jobInstanceCode="csv_product_export"
         jobType="export"
         storage={storage}
         fileExtension="xlsx"
@@ -119,6 +122,7 @@ test('it renders the storage form configurator if storage is local', async () =>
   await act(async () => {
     renderWithProviders(
       <StorageForm
+        jobInstanceCode="csv_product_export"
         jobType="export"
         storage={storage}
         fileExtension="xlsx"
@@ -148,6 +152,7 @@ test('it renders the storage form configurator if storage is sftp', async () => 
   await act(async () => {
     renderWithProviders(
       <StorageForm
+        jobInstanceCode="csv_product_export"
         jobType="export"
         storage={storage}
         fileExtension="xlsx"
@@ -176,6 +181,7 @@ test('it can select a local storage', async () => {
   await act(async () => {
     renderWithProviders(
       <StorageForm
+        jobInstanceCode="csv_product_export"
         jobType="export"
         storage={storage}
         fileExtension="xlsx"
@@ -190,7 +196,7 @@ test('it can select a local storage', async () => {
 
   expect(onStorageChange).toBeCalledWith({
     type: 'local',
-    file_path: 'export_%job_label%_%datetime%.xlsx',
+    file_path: '/tmp/export_%job_label%_%datetime%.xlsx',
   });
 });
 
@@ -205,6 +211,7 @@ test('it can select a sftp storage', async () => {
   await act(async () => {
     renderWithProviders(
       <StorageForm
+        jobInstanceCode="csv_product_export"
         jobType="export"
         storage={storage}
         fileExtension="csv"
@@ -254,6 +261,7 @@ test('it displays validation errors', async () => {
   await act(async () => {
     renderWithProviders(
       <StorageForm
+        jobInstanceCode="csv_product_export"
         jobType="export"
         storage={storage}
         fileExtension="xlsx"

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute]
 final class ProductMappingRespectsSchema extends Constraint
 {
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

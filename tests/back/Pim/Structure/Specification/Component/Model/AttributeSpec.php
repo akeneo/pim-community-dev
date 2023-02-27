@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use PhpSpec\ObjectBehavior;
 
 class AttributeSpec extends ObjectBehavior
@@ -21,5 +22,15 @@ class AttributeSpec extends ObjectBehavior
             'en_US' => 'the guidelines',
             'fr_FR' => 'les indications',
         ]);
+    }
+
+    public function it_gets_a_translation_even_if_the_locale_case_is_wrong(
+        AttributeTranslation $translationEn,
+    )
+    {
+        $translationEn->getLocale()->willReturn('EN_US');
+        $this->addTranslation($translationEn);
+
+        $this->getTranslation('en_US')->shouldReturn($translationEn);
     }
 }

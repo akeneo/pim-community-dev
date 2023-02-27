@@ -2,8 +2,8 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen} from '@testing-library/react';
 import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
-import {LocalStorage, SftpStorage} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
+import {LocalStorage, SftpStorage} from '../../models';
 
 test('it renders the local storage configurator', () => {
   const storage: LocalStorage = {
@@ -13,6 +13,7 @@ test('it renders the local storage configurator', () => {
 
   renderWithProviders(
     <LocalStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -32,6 +33,7 @@ test('it allows user to fill local storage file_path field', () => {
 
   renderWithProviders(
     <LocalStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={[]}
@@ -66,6 +68,7 @@ test('it throws an exception when passing a non-local storage', () => {
   expect(() =>
     renderWithProviders(
       <LocalStorageConfigurator
+        jobInstanceCode="csv_product_export"
         storage={storage}
         fileExtension="xlsx"
         validationErrors={[]}
@@ -95,6 +98,7 @@ test('it displays validation errors', () => {
 
   renderWithProviders(
     <LocalStorageConfigurator
+      jobInstanceCode="csv_product_export"
       storage={storage}
       fileExtension="xlsx"
       validationErrors={validationErrors}

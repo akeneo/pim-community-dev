@@ -137,7 +137,7 @@ class CatalogProductSelectionCriteriaTest extends IntegrationTestCase
                 'willy',
                 false,
                 \array_map(
-                    fn () => [
+                    fn (): array => [
                         'field' => 'enabled',
                         'operator' => '=',
                         'value' => true,

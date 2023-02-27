@@ -5,6 +5,8 @@ export type ProductMappingSchema = {
             type: string;
             format?: string;
             description?: string;
+            minLength?: number;
+            maxLength?: number;
         };
     };
 };

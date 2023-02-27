@@ -56,7 +56,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         $results = $pqb->execute();
 
         return \array_map(
-            fn (IdentifierResult $result) => $this->getUuidFromIdentifierResult($result->getId()),
+            fn (IdentifierResult $result): string => $this->getUuidFromIdentifierResult($result->getId()),
             \iterator_to_array($results),
         );
     }

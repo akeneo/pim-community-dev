@@ -32,7 +32,7 @@ final class GetChannelsQuery implements GetChannelsQueryInterface
         );
 
         return \array_map(
-            static fn (ChannelInterface $channel) => [
+            static fn (ChannelInterface $channel): array => [
                 'code' => $channel->getCode(),
                 'label' => $channel->getLabel(),
             ],

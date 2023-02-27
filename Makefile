@@ -60,7 +60,7 @@ javascript-dev: javascript-extensions
 .PHONY: javascript-dev-strict
 javascript-dev-strict: javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
-	$(YARN_RUN) run webpack-dev --strict
+	$(YARN_RUN) run webpack-dev-strict
 
 .PHONY: javascript-test
 javascript-test: javascript-extensions
@@ -97,6 +97,8 @@ check-requirements:
 
 .PHONY: database
 database:
+	$(PHP_RUN) bin/console doctrine:database:drop --force
+	$(PHP_RUN) bin/console doctrine:database:create --if-not-exists
 	$(PHP_RUN) bin/console pim:installer:db ${O}
 
 .PHONY: start-job-worker

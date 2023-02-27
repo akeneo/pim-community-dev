@@ -85,7 +85,7 @@ class PublishJobToQueueCommand extends Command
             ->addOption(
                 'email',
                 null,
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'The email to notify at the end of the job execution'
             )
             ->addOption(

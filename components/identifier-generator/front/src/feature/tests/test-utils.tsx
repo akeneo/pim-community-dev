@@ -1,10 +1,12 @@
 import React, {FC} from 'react';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {pimTheme} from 'akeneo-design-system';
-import {DependenciesContext} from '@akeneo-pim-community/shared';
+import {DependenciesContext, useSecurity} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
 import {render, RenderOptions, RenderResult} from '@testing-library/react';
-import {IdentifierGeneratorContextProvider} from '../context';
+import {IdentifierGeneratorAclContextProvider, IdentifierGeneratorContextProvider} from '../context';
+
+// By default, the tests should behave as if all identifier generator ACLs are granted
 
 const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
   const queryClient = new QueryClient({
@@ -18,9 +20,11 @@ const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
 
   return (
     <ThemeProvider theme={pimTheme}>
-      <DependenciesContext.Provider value={{translate: k => k}}>
+      <DependenciesContext.Provider value={{translate: k => k, security: {isGranted: acl => true}}}>
         <QueryClientProvider client={queryClient}>
-          <IdentifierGeneratorContextProvider>{children}</IdentifierGeneratorContextProvider>
+          <IdentifierGeneratorContextProvider>
+            <IdentifierGeneratorAclContextProvider>{children}</IdentifierGeneratorAclContextProvider>
+          </IdentifierGeneratorContextProvider>
         </QueryClientProvider>
       </DependenciesContext.Provider>
     </ThemeProvider>
@@ -73,5 +77,15 @@ const mockResponse: (
   };
 };
 
+const mockACLs: (view: boolean, manage: boolean) => void = (view: boolean, manage: boolean) => {
+  (useSecurity as jest.Mock).mockImplementation(() => ({
+    isGranted: (acl: string) =>
+      ({
+        pim_identifier_generator_view: view,
+        pim_identifier_generator_manage: manage,
+      }[acl] ?? false),
+  }));
+};
+
 export * from '@testing-library/react';
-export {customRender as render, mockResponse};
+export {customRender as render, mockResponse, mockACLs};

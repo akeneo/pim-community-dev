@@ -1,5 +1,16 @@
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor, SkeletonPlaceholder, Table} from 'akeneo-design-system';
+import {
+  AkeneoThemedProps,
+  getColor,
+  Helper,
+  MultiSelectInput,
+  Preview as PreviewComponent,
+  SelectInput,
+  SkeletonPlaceholder,
+  Table,
+  TextInput,
+} from 'akeneo-design-system';
+import {TEXT_TRANSFORMATION, TextTransformation} from '../models';
 
 const FormContainer = styled.div`
   display: flex;
@@ -7,6 +18,13 @@ const FormContainer = styled.div`
   gap: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+`;
+
+const EditionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: baseline;
 `;
 
 const FullPageCenteredContent = styled.div`
@@ -20,9 +38,10 @@ const FullPageCenteredContent = styled.div`
   }
 `;
 
-const TitleCell = styled(Table.Cell)`
+const TitleCell = styled(Table.Cell)<{withWidth: boolean} & AkeneoThemedProps>`
   font-style: italic;
   color: ${getColor('brand', 100)};
+  ${({withWidth = true}) => withWidth && 'width: 120px;'}
 `;
 
 const InputContainer = styled.div`
@@ -50,19 +69,148 @@ const TranslationsTextFieldSkeleton = styled(SkeletonPlaceholder)`
   height: 38px;
 `;
 
+const MainErrorHelper = styled(Helper)`
+  margin-top: 10px;
+  ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  ul:has(li:only-child) {
+    padding: 0;
+  }
+  li:only-child {
+    margin: 0;
+    list-style-type: none;
+  }
+`;
+
+const ErrorContainer = styled.div`
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  color: ${getColor('grey', 120)};
+  font-style: normal;
+  margin-left: 10px;
+`;
+
+const ConditionLineSkeleton = styled(SkeletonPlaceholder)`
+  width: 100%;
+  height: 40px;
+`;
+
 const CellInputContainer = styled(Table.Cell)`
   width: calc(10vw + 20px);
 `;
 
+const BoldContainer = styled.div`
+  font-weight: bold;
+`;
+
+// Overriding to not be impacted by the global style
+const ListItems = styled.ul`
+  margin-bottom: 0;
+  margin-block-start: 0;
+  padding-inline-start: 40px;
+  li {
+    list-style: disc;
+  }
+`;
+
+const SelectionInputsContainer = styled(Table.Cell)`
+  > div:first-child {
+    display: flex;
+    gap: 20px;
+  }
+`;
+
+const MultiSelectCondition = styled(MultiSelectInput)`
+  flex-basis: 300px;
+`;
+
+const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
+  ${props => props.isInSelection && 'flex-basis: 160px;'}
+`;
+
+const SelectCondition = styled(SelectInput)`
+  flex-basis: 120px;
+`;
+
+const SingleSelectCondition = styled(SelectInput)`
+  flex-basis: 300px;
+`;
+
+const OperatorContainer = styled.div`
+  max-width: 160px;
+`;
+
+const CheckboxContainer = styled.div`
+  margin: 10px 0;
+`;
+
+const PreviewWithTextTransformation = styled(PreviewComponent)<
+  {textTransformation: TextTransformation} & AkeneoThemedProps
+>`
+  ${({textTransformation}) => (textTransformation === TEXT_TRANSFORMATION.LOWERCASE ? 'text-transform: lowercase' : '')}
+  ${({textTransformation}) => (textTransformation === TEXT_TRANSFORMATION.UPPERCASE ? 'text-transform: uppercase' : '')}
+`;
+
+const NomenclatureModalContent = styled.div`
+  width: calc(100vw - 240px);
+  height: calc(100vh - 160px);
+`;
+
+const NomenclatureDefinition = styled(Table)`
+  width: 100%;
+  margin-bottom: 20px;
+  td:nth-child(3),
+  td:nth-child(2) {
+    width: 250px;
+  }
+  label {
+    font-size: inherit;
+  }
+`;
+
+const NomenclatureInput = styled(TextInput)`
+  max-width: 200px;
+`;
+
+const NomenclatureTable = styled.div`
+  overflow: auto;
+  height: calc(100vh - 340px);
+  td:nth-child(2) {
+    width: 1px;
+    padding-right: 20px;
+  }
+`;
+
 const Styled = {
+  BoldContainer,
   CellInputContainer,
+  CheckboxContainer,
+  ConditionLineSkeleton,
+  EditionContainer,
+  ErrorContainer,
   FormContainer,
   FullPageCenteredContent,
   InputContainer,
+  ListItems,
+  MainErrorHelper,
+  MultiSelectCondition,
+  OperatorContainer,
+  OperatorSelectCondition,
+  SelectCondition,
+  SelectionInputsContainer,
+  SingleSelectCondition,
   TitleCell,
-  TwoColumns,
   TranslationsLabelSkeleton,
   TranslationsTextFieldSkeleton,
+  TwoColumns,
+  PreviewWithTextTransformation,
+  NomenclatureModalContent,
+  NomenclatureDefinition,
+  NomenclatureInput,
+  NomenclatureTable,
 };
 
 export {Styled};

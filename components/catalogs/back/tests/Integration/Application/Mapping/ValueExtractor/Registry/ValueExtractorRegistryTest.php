@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorN
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromMetricAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromNumberAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromPriceCollectionAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromIdentifierAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromNumberAttributeValueExtractor;
@@ -64,6 +65,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
                 'targetType' => 'number',
                 'targetFormat' => null,
                 'extractorClassName' => NumberFromNumberAttributeValueExtractor::class,
+            ],
+            NumberFromPriceCollectionAttributeValueExtractor::class => [
+                'sourceType' => 'pim_catalog_price_collection',
+                'targetType' => 'number',
+                'targetFormat' => null,
+                'extractorClassName' => NumberFromPriceCollectionAttributeValueExtractor::class,
             ],
             NumberFromMetricAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_metric',

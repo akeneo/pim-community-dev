@@ -147,8 +147,6 @@ class CatalogFixtureCommand extends Command
                 ],
             ];
 
-            $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
-
             /** @var object $productMappingSchema */
             $productMappingSchema = \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR);
 
@@ -156,6 +154,8 @@ class CatalogFixtureCommand extends Command
                 $catalogWithMappingId,
                 $productMappingSchema,
             ));
+
+            $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
 
             $this->connection->commit();
 
@@ -203,7 +203,9 @@ class CatalogFixtureCommand extends Command
             },
             "name": {
               "type": "string",
-              "description": "A word or phrase that best describes the product. This will help Amazon.com locate the product when customers perform searches on our site. This is in addition to the valid values that you must submit for your product. It is in your best interest to fill in all search terms."
+              "description": "A word or phrase that best describes the product. This will help Amazon.com locate the product when customers perform searches on our site. This is in addition to the valid values that you must submit for your product. It is in your best interest to fill in all search terms.",
+              "minLength": 3,
+              "maxLength": 20
             },
             "description": {
               "type": "string"

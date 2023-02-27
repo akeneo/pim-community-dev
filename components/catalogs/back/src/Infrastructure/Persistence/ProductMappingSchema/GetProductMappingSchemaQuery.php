@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\ProductMappingSchema;
 
+use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException as ServiceApiProductSchemaMappingNotFoundException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -24,7 +24,7 @@ final class GetProductMappingSchemaQuery implements GetProductMappingSchemaQuery
         $productMappingSchemaFile = \sprintf('%s_product.json', $catalogId);
 
         if (!$this->catalogsMappingStorage->exists($productMappingSchemaFile)) {
-            throw new ServiceApiProductSchemaMappingNotFoundException();
+            throw new ProductMappingSchemaNotFoundException();
         }
 
         $productMappingSchemaRaw = \stream_get_contents(
