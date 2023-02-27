@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Catalogs\Infrastructure\Measurement\Exception;
+namespace Akeneo\Catalogs\Application\Mapping\Measurement\Exception;
 
 class MeasurementFamilyNotFoundForThisUnitException extends \Exception
 {

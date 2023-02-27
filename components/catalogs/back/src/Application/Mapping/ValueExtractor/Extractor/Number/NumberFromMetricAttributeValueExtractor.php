@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number;
 
+use Akeneo\Catalogs\Application\Mapping\Measurement\MeasurementConverter;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\NumberValueExtractorInterface;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Measurement\MeasurementConverter;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)

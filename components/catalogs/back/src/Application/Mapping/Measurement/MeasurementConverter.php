@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\Catalogs\Infrastructure\Measurement;
+namespace Akeneo\Catalogs\Application\Mapping\Measurement;
 
+use Akeneo\Catalogs\Application\Mapping\Measurement\Exception\MeasurementFamilyNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\Measurement\Exception\OperationsOfThisUnitNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\Measurement\Exception\UseOfUnknownOperatorException;
 use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Measurement\Exception\MeasurementFamilyNotFoundException;
-use Akeneo\Catalogs\Infrastructure\Measurement\Exception\OperationsOfThisUnitNotFoundException;
-use Akeneo\Catalogs\Infrastructure\Measurement\Exception\UseOfUnknownOperatorException;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)

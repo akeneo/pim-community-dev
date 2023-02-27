@@ -2,7 +2,7 @@
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Measurement;
 
-use Akeneo\Catalogs\Infrastructure\Measurement\MeasurementConverter;
+use Akeneo\Catalogs\Application\Mapping\Measurement\MeasurementConverter;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 class MeasurementConverterTest extends IntegrationTestCase
