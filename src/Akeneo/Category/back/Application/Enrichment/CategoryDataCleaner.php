@@ -23,7 +23,9 @@ class CategoryDataCleaner
     }
 
     /**
-     * @param array<string> $filteringKeys
+     * @param array $filteringKeys
+     * @param CategoryDataFilter $filter
+     * @return void
      */
     public function __invoke(array $filteringKeys, CategoryDataFilter $filter): void
     {

@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Job;
 
+use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
+use Akeneo\Category\Application\Enrichment\Filter\AttributesFilter;
+use Akeneo\Category\Application\Query\GetAttribute;
+use Akeneo\Category\Domain\Model\Attribute\Attribute;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -16,6 +21,8 @@ class CleanCategoriesTemplateEnrichedValuesTasklet implements TaskletInterface
     private StepExecution $stepExecution;
 
     public function __construct(
+        private readonly CategoryDataCleaner $categoryDataCleaner,
+        private GetAttribute $getAttribute,
     ) {
     }
 
@@ -29,6 +36,21 @@ class CleanCategoriesTemplateEnrichedValuesTasklet implements TaskletInterface
     public function execute(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $template_uuid = $jobParameters->get('template_uuid');
+        $templateUuid = $jobParameters->get('template_uuid');
+
+        $attributeCollection = $this->getAttribute->byTemplateUuid(TemplateUuid::fromString($templateUuid));
+
+        $attributeUuidList = [];
+        foreach ($attributeCollection as $attribute) {
+            /* @var Attribute $attribute */
+            $attributeUuidList[] = (string)$attribute->getUuid();
+        }
+
+        ($this->categoryDataCleaner)(
+            [
+                'attribute_list' => $attributeUuidList,
+            ],
+            new AttributesFilter(),
+        );
     }
 }
