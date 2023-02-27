@@ -39,9 +39,9 @@ final class MeasurementConverter
 
         $amountConvertedInTargetedUnit = $this->convertFromDefaultMeasurementFamilyUnitToTargetedUnit($measurementFamily, $targetedUnit, $amountConvertedInDefaultUnit);
 
-            if (\is_string($amountConvertedInTargetedUnit)) {
-                $amountConvertedInTargetedUnit = (float) $amountConvertedInTargetedUnit;
-            }
+        if (\is_string($amountConvertedInTargetedUnit)) {
+            $amountConvertedInTargetedUnit = (float) $amountConvertedInTargetedUnit;
+        }
 
         return $amountConvertedInTargetedUnit;
     }
