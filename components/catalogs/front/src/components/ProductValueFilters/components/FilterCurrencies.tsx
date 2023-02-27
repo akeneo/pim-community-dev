@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {MultiSelectInput} from 'akeneo-design-system';
 import {ProductValueFiltersValues} from '../models/ProductValueFiltersValues';
-import {useCurrencies} from '../hooks/useCurrencies';
+import {useCurrencies} from '../../../hooks/useCurrencies';
 
 type Props = {
     productValueFilters: ProductValueFiltersValues;

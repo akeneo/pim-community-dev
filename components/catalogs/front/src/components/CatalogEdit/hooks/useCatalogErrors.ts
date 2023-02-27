@@ -11,13 +11,17 @@ type Result = {
 };
 
 export const useCatalogErrors = (catalogId: string): Result => {
-    return useQuery<Data, Error, Data>('catalogErrors', async () => {
-        const response = await fetch(`/rest/catalogs/${catalogId}/errors`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        });
+    return useQuery<Data, Error, Data>(
+        'catalogErrors',
+        async () => {
+            const response = await fetch(`/rest/catalogs/${catalogId}/errors`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
 
-        return await response.json();
-    });
+            return await response.json();
+        },
+        {cacheTime: 0}
+    );
 };

@@ -298,12 +298,14 @@ class Family implements FamilyInterface
      */
     public function getTranslation(?string $locale = null): ?FamilyTranslationInterface
     {
-        $locale = ($locale) ? $locale : $this->locale;
+        $locale = $locale ?: $this->locale;
         if (null === $locale) {
             return null;
         }
-        if ($this->translations->containsKey($locale)) {
-            return $this->translations->get($locale);
+        foreach ($this->getTranslations() as $translation) {
+            if (\strtolower($translation->getLocale()) === \strtolower($locale)) {
+                return $translation;
+            }
         }
 
         $translationClass = $this->getTranslationFQCN();

@@ -63,6 +63,14 @@ final class Version_7_0_20220927080024_add_identifier_generator_table_Integratio
         $consoleApp->setAutoExit(false);
 
         $input = new ArrayInput([
+            'command' => 'doctrine:schema:drop',
+            '--force' => true,
+            '--full-database' => true,
+        ]);
+        $output = new BufferedOutput();
+        $consoleApp->run($input, $output);
+
+        $input = new ArrayInput([
             'command' => 'pim:installer:db',
         ]);
         $output = new BufferedOutput();

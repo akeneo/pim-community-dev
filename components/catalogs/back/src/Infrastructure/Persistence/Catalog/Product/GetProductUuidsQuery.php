@@ -57,7 +57,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
 
         return \array_map(
             fn (IdentifierResult $result): string => $this->getUuidFromIdentifierResult($result->getId()),
-            \iterator_to_array($results)
+            \iterator_to_array($results),
         );
     }
 
@@ -103,21 +103,21 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
                     [
                         $updatedAfterDateTime->format('Y-m-d H:i:s'),
                         $updatedBeforeDateTime->format('Y-m-d H:i:s'),
-                    ]
+                    ],
                 ];
             }
         } elseif (null !== $updatedAfter) {
             if (false !== $updatedAfterDateTime) {
                 return [
                     Operators::GREATER_THAN,
-                    $updatedAfterDateTime->format('Y-m-d H:i:s')
+                    $updatedAfterDateTime->format('Y-m-d H:i:s'),
                 ];
             }
         } elseif (null !== $updatedBefore) {
             if (false !== $updatedBeforeDateTime) {
                 return [
                     Operators::LOWER_THAN,
-                    $updatedBeforeDateTime->format('Y-m-d H:i:s')
+                    $updatedBeforeDateTime->format('Y-m-d H:i:s'),
                 ];
             }
         }
@@ -131,7 +131,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         if (!\preg_match(
             '/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/',
             $esId,
-            $matches
+            $matches,
         )) {
             throw new \InvalidArgumentException(\sprintf('Invalid Elasticsearch identifier %s', $esId));
         }

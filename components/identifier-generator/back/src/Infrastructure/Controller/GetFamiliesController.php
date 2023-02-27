@@ -48,11 +48,14 @@ final class GetFamiliesController
             throw new AccessDeniedException();
         }
 
+        $limit = (int)$request->query->get('limit', (string)self::DEFAULT_LIMIT_PAGINATION);
+        $returnAllFamilies = $limit === -1;
+
         $families = $this->findFamiliesWithLabels->fromQuery(new FamilyQuery(
             search: new FamilyQuerySearch($request->query->get('search', ''), $this->userContext->getCurrentLocaleCode()),
-            pagination: new FamilyQueryPagination(
+            pagination: $returnAllFamilies ? null : new FamilyQueryPagination(
                 (int)$request->query->get('page', (string)self::DEFAULT_PAGE_PAGINATION),
-                (int)$request->query->get('limit', (string)self::DEFAULT_LIMIT_PAGINATION),
+                $limit,
             ),
             includeCodes: ($request->query->get('codes') ? (array)$request->query->get('codes') : null)
         ));

@@ -8,6 +8,7 @@ import {
   SelectInput,
   SkeletonPlaceholder,
   Table,
+  TextInput,
 } from 'akeneo-design-system';
 import {TEXT_TRANSFORMATION, TextTransformation} from '../models';
 
@@ -23,6 +24,7 @@ const EditionContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: baseline;
 `;
 
 const FullPageCenteredContent = styled.div`
@@ -152,6 +154,36 @@ const PreviewWithTextTransformation = styled(PreviewComponent)<
   ${({textTransformation}) => (textTransformation === TEXT_TRANSFORMATION.UPPERCASE ? 'text-transform: uppercase' : '')}
 `;
 
+const NomenclatureModalContent = styled.div`
+  width: calc(100vw - 240px);
+  height: calc(100vh - 160px);
+`;
+
+const NomenclatureDefinition = styled(Table)`
+  width: 100%;
+  margin-bottom: 20px;
+  td:nth-child(3),
+  td:nth-child(2) {
+    width: 250px;
+  }
+  label {
+    font-size: inherit;
+  }
+`;
+
+const NomenclatureInput = styled(TextInput)`
+  max-width: 200px;
+`;
+
+const NomenclatureTable = styled.div`
+  overflow: auto;
+  height: calc(100vh - 340px);
+  td:nth-child(2) {
+    width: 1px;
+    padding-right: 20px;
+  }
+`;
+
 const Styled = {
   BoldContainer,
   CellInputContainer,
@@ -175,6 +207,10 @@ const Styled = {
   TranslationsTextFieldSkeleton,
   TwoColumns,
   PreviewWithTextTransformation,
+  NomenclatureModalContent,
+  NomenclatureDefinition,
+  NomenclatureInput,
+  NomenclatureTable,
 };
 
 export {Styled};

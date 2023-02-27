@@ -20,10 +20,10 @@ jobs:
             -   start_test_containers
             -   run:
                     name: Integration back
-                    command: APP_ENV=test EXPERIMENTAL_TEST_DATABASE=1 make catalogs-integration-back
+                    command: make catalogs-integration-back
             -   run:
                     name: Acceptance back
-                    command: APP_ENV=test make catalogs-acceptance-back
+                    command: make catalogs-acceptance-back
             -   when:
                     condition: << pipeline.parameters.run-database-tests >>
                     steps:
