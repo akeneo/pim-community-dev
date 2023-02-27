@@ -59,7 +59,14 @@ test('it triggers open', async () => {
     return Promise.resolve([]);
   });
 
-  renderWithProviders(<RecursiveCategoryTree tree={simpleTree} childrenCallback={childrenCallback} />);
+  renderWithProviders(
+    <RecursiveCategoryTree
+      tree={simpleTree}
+      childrenCallback={childrenCallback}
+      internalSetChecked={jest.fn()}
+      internalSetChildren={jest.fn()}
+    />
+  );
 
   await act(async () => {
     fireEvent.click(screen.getAllByRole('button')[0]);
@@ -71,7 +78,13 @@ test('it triggers open', async () => {
 test('it triggers change', async () => {
   const handleChange = jest.fn();
 
-  renderWithProviders(<RecursiveCategoryTree tree={{...simpleTree, selectable: true}} onChange={handleChange} />);
+  renderWithProviders(
+    <RecursiveCategoryTree
+      tree={{...simpleTree, selectable: true}}
+      internalSetChecked={handleChange}
+      internalSetChildren={jest.fn()}
+    />
+  );
 
   await act(async () => {
     fireEvent.click(screen.getByRole('checkbox'));
