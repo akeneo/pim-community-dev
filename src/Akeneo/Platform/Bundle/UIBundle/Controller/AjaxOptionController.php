@@ -36,10 +36,9 @@ class AjaxOptionController
      */
     public function listAction(Request $request)
     {
-        $query = $request->query;
-        $search = $query->get('search');
-        $referenceDataName = $query->get('referenceDataName');
-        $class = $query->get('class');
+        $search = $request->get('search');
+        $referenceDataName = $request->get('referenceDataName');
+        $class = $request->get('class');
 
         if (null !== $referenceDataName) {
             $class = $this->registry->get($referenceDataName)->getClass();
@@ -50,31 +49,31 @@ class AjaxOptionController
         if ($repository instanceof ReferenceDataRepositoryInterface) {
             $choices['results'] = $repository->findBySearch(
                 $search,
-                $query->get('options', [])
+                $request->get('options', [])
             );
         } elseif ($repository instanceof SearchableRepositoryInterface) {
             $choices['results'] = $repository->findBySearch(
                 $search,
-                $query->get('options', [])
+                $request->get('options', [])
             );
         } elseif (method_exists($repository, 'getOptions')) {
             $choices = $repository->getOptions(
-                $query->get('dataLocale'),
-                $query->get('collectionId'),
+                $request->get('dataLocale'),
+                $request->get('collectionId'),
                 $search,
-                $query->get('options', [])
+                $request->get('options', [])
             );
         } else {
             throw new \LogicException(
                 sprintf(
                     'The repository of the class "%s" can not retrieve options via Ajax.',
-                    $query->get('class')
+                    $request->get('class')
                 )
             );
         }
 
         if (
-            $query->get('isCreatable') &&
+            $request->get('isCreatable') &&
             !empty($search) &&
             !in_array(['id' => $search, 'text' => $search], $choices['results'])
         ) {
