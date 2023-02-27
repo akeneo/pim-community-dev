@@ -11,7 +11,7 @@ namespace Akeneo\Tool\Component\Messenger\Config;
 enum TransportType: string
 {
     case DOCTRINE = 'DOCTRINE';
-    case PUB_SUB = 'PUB_SUB';
     case IN_MEMORY = 'IN_MEMORY';
+    case PUB_SUB = 'PUB_SUB';
     case SYNC = 'SYNC';
 }

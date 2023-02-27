@@ -9,6 +9,23 @@ use Symfony\Component\Yaml\Yaml;
 use Webmozart\Assert\Assert;
 
 /**
+ * Using PubSub transport is different from other transport, because one queue
+ * can be consumed by different subscriptions.
+ * So a message that need to be consumed by multiple consumers can be sent once in the topic.
+ *
+ * For other types of transport, a queue can be consumed only once because the messages
+ * are removed as soon they are acked.
+ * So a message that need to be consumed by multiple consumers need to be sent multiple times,
+ * once by each queue.
+ *
+ * PubSub:
+ *  - 1 transport to send message (= we send a message in a PubSub topic).
+ *    This transport cannot receive/treat messages
+ *  - 1 transport by consumer (= for each subscription)
+ *
+ *  Doctrine/sync/...:
+ *  - 1 transport by consumer. Messages are sent on every transport.
+ *
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -37,6 +54,9 @@ final class MessengerConfigBuilder
         return $config;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function build(string $projectDir, TransportType $transportType): array
     {
         $config = self::loadConfig($projectDir, $this->env);
@@ -59,7 +79,7 @@ final class MessengerConfigBuilder
                     $transports[$consumer['name']] = $this->createPubSubReceiverTransport($queueName, $consumer['name']);
                 }
             } else {
-                // Create 1 queue by consumers
+                // Create 1 queue by consumer
                 foreach ($pimMessageConfig['consumers'] as $consumer) {
                     $transportNames[] = $consumer['name'];
                     $allTransportNames[$consumer['name']] = ($allTransportNames[$consumer['name']] ?? 0) + 1;
@@ -85,6 +105,9 @@ final class MessengerConfigBuilder
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function createDoctrineTransport($queueName): array
     {
         return [
@@ -99,6 +122,9 @@ final class MessengerConfigBuilder
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function createPubSubProducerTransport(string $topicName): array
     {
         return [
@@ -112,6 +138,9 @@ final class MessengerConfigBuilder
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function createPubSubReceiverTransport(string $topicName, string $subscriptionName): array
     {
         $transport = $this->createPubSubProducerTransport($topicName);
@@ -120,6 +149,9 @@ final class MessengerConfigBuilder
         return $transport;
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function createInMemoryTransport(): array
     {
         return [
@@ -127,6 +159,9 @@ final class MessengerConfigBuilder
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function createSyncTransport(): array
     {
         return [

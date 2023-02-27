@@ -43,8 +43,8 @@ final class ProcessMessageCommand extends Command
     {
         $this
             ->addArgument('consumer_name', InputArgument::REQUIRED, 'consumer name')
-            ->addArgument('message', InputArgument::REQUIRED, 'message in json')
             ->addArgument('messageClass', InputArgument::REQUIRED, 'class of the message')
+            ->addArgument('message', InputArgument::REQUIRED, 'message in json')
         ;
     }
 
