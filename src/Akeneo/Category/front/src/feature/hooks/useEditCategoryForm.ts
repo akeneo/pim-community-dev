@@ -11,11 +11,13 @@ import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
 import {CategoryPermissions} from '../models/CategoryPermission';
 import {UserGroup} from './useFetchUserGroups';
 import {DEACTIVATED_TEMPLATE} from '../models/ResponseStatus';
+import {useHistory} from 'react-router';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
   const notify = useNotify();
   const translate = useTranslate();
+  const history = useHistory();
 
   const {load: loadCategory, category: fetchedCategory, status: categoryStatus} = useCategory(categoryId);
 
@@ -89,9 +91,7 @@ const useEditCategoryForm = (categoryId: number) => {
       notify(NotificationLevel.ERROR, response.error.message);
 
       if (response.error.code && response.error.code === DEACTIVATED_TEMPLATE) {
-        setTimeout(() => {
-          location.reload();
-        }, 5000);
+        history.push('/');
       }
     }
   }, [

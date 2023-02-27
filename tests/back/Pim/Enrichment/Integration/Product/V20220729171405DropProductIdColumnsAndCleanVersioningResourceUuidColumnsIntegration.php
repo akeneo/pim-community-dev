@@ -23,8 +23,8 @@ class V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumnsIn
     private const PRODUCT_VERSION_ID = 1;
     private const NON_PRODUCT_VERSION_ID = 2;
 
-    private Connection $connection;
-    private V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns $migrationToTest;
+    private readonly Connection $connection;
+    private readonly V20220729171405DropProductIdColumnsAndCleanVersioningResourceUuidColumns $migrationToTest;
 
     protected function setUp(): void
     {
@@ -111,19 +111,20 @@ SQL;
     private function createDummyTriggersToBeRemoved(): void
     {
         $createDummyTriggerQuery = <<<SQL
-Create Trigger %s
-BEFORE INSERT ON pim_catalog_category_product FOR EACH ROW  
-BEGIN  
-IF NEW.product_uuid IS NULL THEN SET NEW.category_id = 1;  
-END IF;  
-END
-SQL;
+        DROP TRIGGER IF EXISTS %s;
+        CREATE TRIGGER %s
+        BEFORE INSERT ON pim_catalog_category_product FOR EACH ROW  
+        BEGIN  
+            IF NEW.product_uuid IS NULL THEN SET NEW.category_id = 1;  
+            END IF;  
+        END
+        SQL;
         foreach($this->migrationToTest::TABLES_TO_UPDATE as $tableName => $properties) {
             if (!$this->connection->getSchemaManager()->tablesExist([$tableName])) {
                 continue;
             }
             foreach ($properties['triggers'] as $triggerName) {
-                $query = \sprintf($createDummyTriggerQuery, $triggerName);
+                $query = \sprintf($createDummyTriggerQuery, $triggerName, $triggerName);
                 $this->connection->executeStatement($query);
             }
         }
@@ -177,6 +178,14 @@ SQL;
         $kernel = new \Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
         $consoleApp = new Application($kernel);
         $consoleApp->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'doctrine:schema:drop',
+            '--force' => true,
+            '--full-database' => true,
+        ]);
+        $output = new BufferedOutput();
+        $consoleApp->run($input, $output);
 
         $input = new ArrayInput([
             'command' => 'pim:installer:db',

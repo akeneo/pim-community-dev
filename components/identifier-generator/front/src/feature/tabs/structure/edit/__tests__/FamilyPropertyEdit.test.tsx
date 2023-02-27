@@ -4,6 +4,8 @@ import {FamilyPropertyEdit} from '../FamilyPropertyEdit';
 import {AbbreviationType, FamilyProperty, Operator, PROPERTY_NAMES} from '../../../../models';
 import {fireEvent} from '@testing-library/react';
 
+jest.mock('../../../../components/NomenclatureEdit');
+
 describe('FamilyPropertyEdit', () => {
   it('should update the family property', () => {
     const familyProperty: FamilyProperty = {
@@ -48,6 +50,22 @@ describe('FamilyPropertyEdit', () => {
         operator: null,
       },
     });
+
+    // With nomenclature option
+    fireEvent.click(input);
+
+    const nomenclatureOption = screen.getByText(
+      'pim_identifier_generator.structure.settings.code_format.type.nomenclature'
+    );
+    expect(nomenclatureOption).toBeInTheDocument();
+    fireEvent.click(nomenclatureOption);
+
+    expect(mockedOnChange).toHaveBeenCalledWith({
+      ...familyProperty,
+      process: {
+        type: AbbreviationType.NOMENCLATURE,
+      },
+    });
   });
 
   it('should display the operator and value for truncate option', () => {
@@ -55,7 +73,7 @@ describe('FamilyPropertyEdit', () => {
       type: PROPERTY_NAMES.FAMILY,
       process: {
         type: AbbreviationType.TRUNCATE,
-        operator: Operator.EQUAL_OR_LESS,
+        operator: Operator.LOWER_OR_EQUAL_THAN,
         value: 3,
       },
     };
@@ -74,7 +92,7 @@ describe('FamilyPropertyEdit', () => {
       process: {
         type: AbbreviationType.TRUNCATE,
         value: 3,
-        operator: Operator.EQUAL,
+        operator: Operator.EQUALS,
       },
     });
 
@@ -83,7 +101,7 @@ describe('FamilyPropertyEdit', () => {
       ...familyProperty,
       process: {
         type: AbbreviationType.TRUNCATE,
-        operator: Operator.EQUAL_OR_LESS,
+        operator: Operator.LOWER_OR_EQUAL_THAN,
         value: 4,
       },
     });
