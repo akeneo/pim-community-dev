@@ -25,7 +25,7 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
   const history = useHistory();
 
   const url = useMemo(() => {
-    if (uuid === null) {
+    if (uuid === null || uuid === undefined) {
       return null;
     }
     return router.generate('pim_category_template_rest_get_by_template_uuid', {
