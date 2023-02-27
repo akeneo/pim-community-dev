@@ -1,0 +1,4 @@
+services:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\LaunchProductAndProductModelEvaluationsHandler:
+        arguments:
+            - '@logger'

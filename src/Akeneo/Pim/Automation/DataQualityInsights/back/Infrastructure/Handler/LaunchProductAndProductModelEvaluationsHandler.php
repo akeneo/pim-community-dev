@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Message\LaunchProductAndProductModelEvaluationsMessage;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 /**
@@ -13,10 +14,16 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
  */
 final class LaunchProductAndProductModelEvaluationsHandler implements MessageHandlerInterface
 {
-    public function __invoke(LaunchProductAndProductModelEvaluationsMessage $message)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        print_r(get_class($this) . ': ' . $message->text . "\n");
-        print_r('correlation_id = ' . $message->getCorrelationId() . "\n");
-        print_r('tenant_id = ' . $message->getTenantId() . "\n");
+    }
+
+    public function __invoke(LaunchProductAndProductModelEvaluationsMessage $message): void
+    {
+        // @TODO: JEL-228
+        $this->logger->debug('Handler ' . get_class($this) . ' received a message: ' . $message->text, [
+            'correlation_id' => $message->getCorrelationId(),
+            'tenant_id' => $message->getTenantId(),
+        ]);
     }
 }

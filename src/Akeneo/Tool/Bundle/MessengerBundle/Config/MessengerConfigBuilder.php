@@ -25,13 +25,16 @@ final class MessengerConfigBuilder
     public static function loadConfig(string $projectDir, string $env): array
     {
         $file = $projectDir . '/' . self::CONFIG_FILEPATH;
+        Assert::fileExists($file);
+        $config = Yaml::parse(file_get_contents($file));
+
         $fileForTest = $projectDir . '/' . self::CONFIG_FILEPATH_FOR_TEST;
         if ($env === 'test' && \file_exists($fileForTest)) {
-            $file = $fileForTest;
+            $testConfig = Yaml::parse(file_get_contents($fileForTest));
+            $config['queues'] = \array_merge($config['queues'], $testConfig['queues']);
         }
-        Assert::fileExists($file);
 
-        return Yaml::parse(file_get_contents($file));
+        return $config;
     }
 
     public function build(string $projectDir, TransportType $transportType): array
