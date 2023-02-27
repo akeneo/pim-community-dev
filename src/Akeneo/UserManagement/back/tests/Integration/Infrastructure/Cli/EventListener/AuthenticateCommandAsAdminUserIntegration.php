@@ -67,7 +67,7 @@ final class AuthenticateCommandAsAdminUserIntegration extends TestCase
     private function assertAuthenticatedUserNameEquals(string $expectedUserName): void
     {
         $token = $this->tokenStorage->getToken();
-        $userName = $token?->getUser()?->getUsername();
+        $userName = $token?->getUser()?->getUserIdentifier();
 
         Assert::assertSame($expectedUserName, $userName);
     }
