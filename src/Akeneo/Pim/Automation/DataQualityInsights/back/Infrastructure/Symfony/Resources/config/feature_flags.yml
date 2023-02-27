@@ -13,8 +13,3 @@ services:
         arguments:
             - '@akeneo.feature_flag.service.only_enterprise_edition_feature'
             - '@feature_flags'
-
-    # TODO: move this file
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\LaunchProductAndProductModelEvaluationsHandler: ~
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\SecondHandler: ~
