@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UpdateAuditDataCommand extends Command
 {
     private const MYSQL_IS_UNAVAILABLE_ERROR_CODE = 2002;
-    private const TABLE_NOT_FOUND_ERROR_CODE = 42;
+    private const TABLE_NOT_FOUND_ERROR_CODE = '42S02';
 
     protected static $defaultName = 'akeneo:connectivity-audit:update-data';
 
