@@ -11,6 +11,10 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
+ * Handler for all TraceableMessageInterface messages.
+ * It extract the tenant id in order to launch the real treatment of the message
+ * in a tenant aware process.
+ *
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -46,8 +50,8 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
                 'bin/console',
                 'akeneo:process-message',
                 $this->consumerName,
-                $this->serializer->serialize($message, 'json'),
                 \get_class($message),
+                $this->serializer->serialize($message, 'json'),
             ], null, $env);
 
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
@@ -62,10 +66,11 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
                 'execution_time_in_sec' => time() - $startTime,
                 'process_exit_code' => $process->getExitCode(),
             ]);
-
-            $this->logger->debug(sprintf('Command exit code: "%s"', $process->getExitCode()));
-            $this->logger->debug(sprintf('Command output: "%s"', $process->getOutput()));
-            $this->logger->debug(sprintf('Command error output: "%s"', $process->getErrorOutput()));
+            $this->logger->debug('Command akeneo:process-message executed', [
+                'exit_code' => $process->getExitCode(),
+                'output' => $process->getOutput(),
+                'error_output' => $process->getErrorOutput(),
+            ]);
         } catch (\Throwable $t) {
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), [
                 'trace' => $t->getTraceAsString(),

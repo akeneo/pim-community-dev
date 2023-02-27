@@ -21,11 +21,17 @@ final class Message1 implements TraceableMessageInterface, SerializableMessageIn
     {
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function normalize(): array
     {
         return ['text' => $this->text];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function denormalize(array $normalized): Message1
     {
         Assert::keyExists($normalized, 'text');
