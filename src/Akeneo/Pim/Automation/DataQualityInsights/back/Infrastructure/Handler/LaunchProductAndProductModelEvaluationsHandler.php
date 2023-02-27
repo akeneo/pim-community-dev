@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Message\LaunchProductAndProductModelEvaluationsMessage;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Message\LaunchProductAndProductModelEvaluationsMessage;
 use Akeneo\Tool\Component\Messenger\TraceableMessageHandlerInterface;
 use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Psr\Log\LoggerInterface;
