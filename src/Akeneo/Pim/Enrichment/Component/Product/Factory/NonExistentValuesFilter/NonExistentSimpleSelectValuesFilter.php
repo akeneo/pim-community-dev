@@ -25,17 +25,16 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
             return $onGoingFilteredRawValues;
         }
 
-        $optionCodes = $this->getExistingOptionCodes($selectValues);
+        $optionCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
 
         $filteredValues = [];
         foreach ($selectValues as $attributeCode => $productValueCollection) {
-            $existingCodes = $optionCodes[$attributeCode] ?? [];
             foreach ($productValueCollection as $productValues) {
                 $simpleSelectValues = [];
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!\is_array($value)) {
-                            $simpleSelectValues[$channel][$locale] = \in_array($value, $existingCodes) ? $value : '';
+                            $simpleSelectValues[$channel][$locale] = ($optionCodes[$attributeCode] ?? [])[strtolower($value ?? '')] ?? '';
                         }
                     }
                 }
@@ -52,26 +51,19 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingOptionCodes(array $selectValues): array
+    private function getExistingCaseInsensitiveOptionCodes(array $selectValues): array
     {
         $optionCodes = $this->getOptionCodes($selectValues);
         $existingOptionCodes = $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes);
 
-        foreach ($optionCodes as $attributeCode => $optionCodesForThisAttribute) {
-            $existingOptionCodesForAttribute = $existingOptionCodes[$attributeCode] ?? [];
-            if (empty($existingOptionCodesForAttribute)) {
-                $optionCodes[$attributeCode] = [];
-                continue;
+        $caseInsensitiveOptionsCodes = [];
+        foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
+            foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
+                $caseInsensitiveOptionsCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
             }
-
-            $existingOptionCodesForAttribute = \array_map('strtolower', $existingOptionCodesForAttribute);
-            $optionCodes[$attributeCode] = \array_filter(
-                $optionCodesForThisAttribute,
-                fn ($code) => \in_array(\strtolower($code), $existingOptionCodesForAttribute)
-            );
         }
 
-        return $optionCodes;
+        return $caseInsensitiveOptionsCodes;
     }
 
     private function getOptionCodes(array $selectValues): array
@@ -92,7 +84,7 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
 
         $uniqueOptionCodes = [];
         foreach ($optionCodes as $attributeCode => $optionCodeForThisAttribute) {
-            $uniqueOptionCodes[$attributeCode] = \array_unique($optionCodeForThisAttribute);
+            $uniqueOptionCodes[$attributeCode] = array_unique($optionCodeForThisAttribute);
         }
 
         return $uniqueOptionCodes;
