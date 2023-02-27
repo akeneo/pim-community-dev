@@ -27,7 +27,7 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
     ) {
     }
 
-    public function __invoke(TraceableMessageInterface $message)
+    public function __invoke(TraceableMessageInterface $message): void
     {
         $tenantId = $message->getTenantId();
         $correlationId = $message->getCorrelationId();
