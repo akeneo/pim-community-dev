@@ -36,8 +36,7 @@ final class YourMessage implements TraceableMessageInterface, SerializableMessag
 Your message *need* to implement `TraceableMessageInterface` in order to be taken in charge by the bundle.
 
 But implementing the `SerializableMessageInterface` is optional. Normalization and denormalization are needed to store the message in the queue system. 
-By implementing `SerializableMessageInterface` the message will be automatically normalized/denormalized using the
-according methods. 
+By implementing `SerializableMessageInterface` the message will be automatically normalized/denormalized using the according methods.
 If you need more complex (de)normalization (for instance injecting some extra values), don't implement `SerializableMessageInterface`, 
 you can create your own normalizer service and tag it with `akeneo_messenger.message.normalizer`.
 
@@ -49,10 +48,15 @@ Now you certainly need to add a handler, this is the next section.
 It's as simple as create a service with an `__invoke()` method.
 
 ```php
-final class YourMessageHandler
+use Akeneo\Tool\Component\Messenger\TraceableMessageHandlerInterface;
+use Webmozart\Assert\Assert;
+
+final class YourMessageHandler implements TraceableMessageHandlerInterface
 {
-    public function __invoke(YourMessage $message)
+    public function __invoke(YourMessage $message): void
     {
+        Assert::isInstanceOf($message, LaunchProductAndProductModelEvaluationsMessage::class);
+
         // Your logic
     }
 }

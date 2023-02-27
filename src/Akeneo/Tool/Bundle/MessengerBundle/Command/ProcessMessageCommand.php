@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MessengerBundle\Command;
 
 use Akeneo\Tool\Component\Messenger\CorrelationAwareInterface;
+use Akeneo\Tool\Component\Messenger\TraceableMessageHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,7 +25,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class ProcessMessageCommand extends Command
 {
     protected static $defaultName = 'akeneo:process-message';
-
+    /** @var array<string, TraceableMessageHandlerInterface> */
     private array $handlers = [];
 
     public function __construct(
@@ -34,7 +35,7 @@ final class ProcessMessageCommand extends Command
         parent::__construct();
     }
 
-    public function registerHandler(object $handler, string $consumerName)
+    public function registerHandler(TraceableMessageHandlerInterface $handler, string $consumerName)
     {
         $this->handlers[$consumerName] = $handler;
     }
