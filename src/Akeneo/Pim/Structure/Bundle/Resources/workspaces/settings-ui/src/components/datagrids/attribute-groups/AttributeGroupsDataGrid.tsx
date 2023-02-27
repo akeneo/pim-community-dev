@@ -83,6 +83,9 @@ const AttributeGroupsDataGrid: FC<Props> = ({
             >
               <Table.Header>
                 <Table.HeaderCell>{translate('pim_enrich.entity.attribute_group.grid.columns.name')}</Table.HeaderCell>
+                <Table.HeaderCell>
+                  {translate('pim_enrich.entity.attribute_group.grid.columns.attribute_count')}
+                </Table.HeaderCell>
                 {featureFlags.isEnabled('data_quality_insights') && (
                   <Table.HeaderCell>
                     {translate('akeneo_data_quality_insights.attribute_group.dqi_status')}
@@ -99,6 +102,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({
                     <Table.Cell>
                       {getLabel(attributeGroup.labels, userContext.get('catalogLocale'), attributeGroup.code)}
                     </Table.Cell>
+                    <Table.Cell>{attributeGroup.attribute_count}</Table.Cell>
                     {featureFlags.isEnabled('data_quality_insights') && (
                       <Table.Cell>
                         <Badge level={attributeGroup.is_dqi_activated ? 'primary' : 'danger'}>

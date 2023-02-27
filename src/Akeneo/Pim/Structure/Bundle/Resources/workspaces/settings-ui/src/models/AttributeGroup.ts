@@ -7,6 +7,7 @@ type AttributeGroup = {
   sort_order: number;
   labels: AttributeGroupLabels;
   is_dqi_activated: boolean;
+  attribute_count: number;
 };
 
 type AttributeGroupCollection = {

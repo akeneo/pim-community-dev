@@ -112,7 +112,15 @@ const AttributeGroupsIndex: FC = () => {
             {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}
           </Toolbar.LabelContainer>
           <Toolbar.ActionsContainer>
-            <MassDeleteAttributeGroupsModal attributeGroups={selection.collection} onConfirm={() => {}} />
+            {selection.collection.length > 0 && (
+              <MassDeleteAttributeGroupsModal
+                selectedAttributeGroups={selection.collection}
+                unselectAttributeGroups={attributeGroups.filter(
+                  (attributeGroup: AttributeGroup) => !selection.collection.includes(attributeGroup)
+                )}
+                onConfirm={() => {}}
+              />
+            )}
           </Toolbar.ActionsContainer>
         </Toolbar>
       )}
