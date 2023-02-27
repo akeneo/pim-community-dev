@@ -25,11 +25,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CatalogFixtureCommand extends Command
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected static $defaultName = 'akeneo:catalogs:fixtures';
     /**
-     * @var string
+     * @var string|null
      */
     protected static $defaultDescription = 'Do not run this command in production env. Installs fixtures for dev only.';
 
