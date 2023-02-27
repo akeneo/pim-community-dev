@@ -40,6 +40,8 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
         return null;
     }
 
+    console.log()
+
     return (
         <>
             <Collapse
@@ -64,7 +66,7 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
                                     {
                                         value: constraint.value,
                                     },
-                                    parseInt(constraint.value.toString())
+                                    typeof constraint.value === 'string' ? 0 : constraint.value
                                 )}
                             </p>
                         ))}
