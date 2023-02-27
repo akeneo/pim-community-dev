@@ -43,7 +43,7 @@ final class ProcessMessageCommand extends Command
     {
         $this
             ->addArgument('consumer_name', InputArgument::REQUIRED, 'consumer name')
-            ->addArgument('messageClass', InputArgument::REQUIRED, 'class of the message')
+            ->addArgument('message_class', InputArgument::REQUIRED, 'class of the message')
             ->addArgument('message', InputArgument::REQUIRED, 'message in json')
         ;
     }
@@ -52,7 +52,7 @@ final class ProcessMessageCommand extends Command
     {
         $message = $this->serializer->deserialize(
             $input->getArgument('message'),
-            $input->getArgument('messageClass'),
+            $input->getArgument('message_class'),
             'json'
         );
 
