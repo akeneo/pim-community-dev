@@ -10,15 +10,18 @@ namespace Akeneo\UserManagement\Infrastructure\Cli\Registry;
  */
 final class AuthenticatedAsAdminCommandRegistry
 {
+    /**
+     * @var array<string, bool>
+     */
     private array $commandsAuthenticatedAsAdminUser = [];
 
     public function registerCommand(string $commandName): void
     {
-        $this->commandsAuthenticatedAsAdminUser[] = $commandName;
+        $this->commandsAuthenticatedAsAdminUser[$commandName] = true;
     }
 
     public function isCommandAuthenticatedAsAdminUser(string $commandName): bool
     {
-        return \in_array($commandName, $this->commandsAuthenticatedAsAdminUser);
+        return \array_key_exists($commandName, $this->commandsAuthenticatedAsAdminUser);
     }
 }

@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class AuthenticateCommandAsAdminUserIntegration extends TestCase
+final class AuthenticateCommandAsAdminUserListenerIntegration extends TestCase
 {
     private TokenStorageInterface $tokenStorage;
 
