@@ -445,10 +445,10 @@ SQL;
         ]);
     }
 
-    protected function useTemplateFunctionalCatalog(string $templateUuid, string $productCode): void
+    protected function useTemplateFunctionalCatalog(string $templateUuid, string $categoryCode): Category
     {
         $category = $this->createOrUpdateCategory(
-            code: $productCode,
+            code: $categoryCode,
             labels: ['en_US' => 'socks'],
         );
 
@@ -459,6 +459,8 @@ SQL;
             $template->getUuid(),
             $template->getAttributeCollection(),
         );
+
+        return $category;
     }
 
     protected function deactivateTemplate(string $uuid): void
