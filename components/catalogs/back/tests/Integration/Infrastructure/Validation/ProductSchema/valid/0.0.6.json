@@ -31,6 +31,11 @@
         "thumbnail": {
             "type": "string",
             "format": "uri"
+        },
+        "meta_description": {
+            "type": "string",
+            "minLength": 50,
+            "maxLength": 160
         }
     }
 }
