@@ -74,7 +74,7 @@ final class ProcessMessageCommand extends Command
 
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), $context);
 
-            throw $t;
+            return Command::FAILURE;
         }
 
         return Command::SUCCESS;
