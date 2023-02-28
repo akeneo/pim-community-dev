@@ -35,7 +35,7 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute(source?.source ?? '');
 
-    if (attribute === undefined || source === null || source.parameters === undefined) {
+    if (undefined === attribute || null === source || undefined === source.parameters) {
         return (
             <>
                 <SectionSubtitle />
