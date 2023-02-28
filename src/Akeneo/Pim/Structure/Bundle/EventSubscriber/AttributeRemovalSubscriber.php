@@ -9,8 +9,10 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -20,11 +22,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class AttributeRemovalSubscriber implements EventSubscriberInterface
 {
     private const JOB_NAME = 'clean_removed_attribute_job';
+    private const BATCH_SIZE = 1000;
 
     private AttributeCodeBlacklister $attributeCodeBlacklister;
     private JobLauncherInterface $jobLauncher;
     private IdentifiableObjectRepositoryInterface $jobInstanceRepository;
     private TokenStorageInterface $tokenStorage;
+
+    private array $attributeCodesToClean = [];
 
     public function __construct(
         AttributeCodeBlacklister $attributeCodeBlacklister,
@@ -42,52 +47,40 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::POST_REMOVE => 'blacklistAttributeCodeAndLaunchJob',
-            StorageEvents::POST_REMOVE_ALL => 'bulkBlacklistAttributeCodeAndLaunchJob',
+            TerminateEvent::class => 'flushEvents',
+            ConsoleTerminateEvent::class => 'flushEvents',
         ];
     }
 
     public function blacklistAttributeCodeAndLaunchJob(GenericEvent $event): void
     {
         $subject = $event->getSubject();
-
         if (!$subject instanceof AttributeInterface) {
-            return;
-        }
-        if (!$event->hasArgument('unitary') || true !== $event->getArgument('unitary')) {
             return;
         }
 
         $attributeCode = $subject->getCode();
+
+        $this->attributeCodesToClean[] = $attributeCode;
         $this->attributeCodeBlacklister->blacklist([$attributeCode]);
 
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_NAME);
-        $jobExecution = $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
-            'attribute_codes' => [$attributeCode]
-        ]);
-
-        $this->attributeCodeBlacklister->registerJob([$attributeCode], $jobExecution->getId());
+        if (count($this->attributeCodesToClean) >= self::BATCH_SIZE) {
+            $this->flushEvents();
+        }
     }
 
-    public function bulkBlacklistAttributeCodeAndLaunchJob(GenericEvent $event): void
+    public function flushEvents()
     {
-        $attributes = $event->getSubject();
-        $attributeCodes = [];
-
-        foreach ($attributes as $attribute) {
-            if (!$attribute instanceof AttributeInterface) {
-                return;
-            }
-
-            $attributeCodes[] = $attribute->getCode();
+        if (empty($this->attributeCodesToClean)) {
+            return;
         }
-
-        $this->attributeCodeBlacklister->blacklist($attributeCodes);
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_NAME);
         $jobExecution = $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
-            'attribute_codes' => $attributeCodes
+            'attribute_codes' => $this->attributeCodesToClean
         ]);
 
-        $this->attributeCodeBlacklister->registerJob($attributeCodes, $jobExecution->getId());
+        $this->attributeCodeBlacklister->registerJob($this->attributeCodesToClean, $jobExecution->getId());
+        $this->attributeCodesToClean = [];
     }
 }
