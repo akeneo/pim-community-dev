@@ -18,6 +18,9 @@ const PRODUCT_MAPPING_SCHEMA = {
             type: 'string',
             title: 'Product name',
             description: 'This is the name of the product shown on the ecommerce',
+            minLength: 3,
+            maxLength: 50,
+            pattern: '[a-zA-Z].',
         },
     },
 };
