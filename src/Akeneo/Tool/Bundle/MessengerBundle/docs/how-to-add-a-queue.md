@@ -72,7 +72,7 @@ You can add many queues and many consumers by queue
 queues:
 
     your_queue:
-        messageClass: Akeneo\..\YourMessage
+        message_class: Akeneo\..\YourMessage
         consumers:
             - name: 'my_super_consumer_for_my_context'
               service_handler: 'your_service_handler'

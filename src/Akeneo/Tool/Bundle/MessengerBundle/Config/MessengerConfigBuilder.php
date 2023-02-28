@@ -31,8 +31,8 @@ use Webmozart\Assert\Assert;
  */
 final class MessengerConfigBuilder
 {
-    private const CONFIG_FILEPATH = 'config/events.yml';
-    private const CONFIG_FILEPATH_FOR_TEST = 'config/events_test.yml';
+    private const CONFIG_FILEPATH = 'config/messages.yml';
+    private const CONFIG_FILEPATH_FOR_TEST = 'config/messages_test.yml';
     private const SERIALIZER = 'akeneo_messenger.envelope.serializer';
 
     public function __construct(private readonly string $env)
@@ -97,7 +97,8 @@ final class MessengerConfigBuilder
                     };
                 }
             }
-            $routing[$pimMessageConfig['messageClass']] = $transportNames;
+
+            $routing[$pimMessageConfig['message_class']] = $transportNames;
         }
 
         $duplicateTransportNames = \array_filter($allTransportNames, static fn (int $count) => $count > 1);
