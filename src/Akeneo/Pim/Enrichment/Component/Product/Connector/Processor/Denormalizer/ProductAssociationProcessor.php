@@ -13,11 +13,13 @@ use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Product association import processor
@@ -28,21 +30,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductAssociationProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    /** @var ProductRepositoryInterface */
-    protected $repository;
-
     /** @var bool */
     protected $enabledComparison = true;
 
     public function __construct(
-        ProductRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         protected ObjectUpdaterInterface $updater,
         protected ValidatorInterface $validator,
         protected FilterInterface $productAssocFilter,
         protected ObjectDetacherInterface $detacher,
     ) {
-        parent::__construct($repository);
-
         $this->repository = $repository;
     }
 
@@ -153,17 +150,6 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         return null;
     }
 
-    public function findProductByUuid(string $uuid, array $item): ?ProductInterface
-    {
-        try {
-            return $this->repository->find($uuid);
-        } catch (AccessDeniedException $e) {
-            $this->skipItemWithMessage($item, $e->getMessage(), $e);
-        }
-
-        return null;
-    }
-
     /**
      * @throws \InvalidArgumentException
      */
@@ -227,5 +213,17 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         }
 
         return false;
+    }
+
+    private function findProductByUuid(string $uuid, array $item): ?ProductInterface
+    {
+        try {
+            Assert::methodExists($this->repository, 'findOneByUuid');
+            return $this->repository->findOneByUuid(Uuid::fromString($uuid));
+        } catch (AccessDeniedException $e) {
+            $this->skipItemWithMessage($item, $e->getMessage(), $e);
+        }
+
+        return null;
     }
 }

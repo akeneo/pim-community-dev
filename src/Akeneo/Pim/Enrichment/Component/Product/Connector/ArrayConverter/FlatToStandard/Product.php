@@ -41,9 +41,6 @@ class Product implements ArrayConverterInterface
     /** @var ColumnsMapper */
     protected $columnsMapper;
 
-    /** @var FieldsRequirementChecker */
-    protected $fieldChecker;
-
     /** @var array */
     protected $optionalAssocFields;
 
@@ -59,7 +56,6 @@ class Product implements ArrayConverterInterface
      * @param FieldConverter                  $fieldConverter
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
-     * @param FieldsRequirementChecker        $fieldChecker
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ArrayConverterInterface         $productValueConverter
      */
@@ -69,7 +65,6 @@ class Product implements ArrayConverterInterface
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
-        FieldsRequirementChecker $fieldChecker,
         AttributeRepositoryInterface $attributeRepository,
         ArrayConverterInterface $productValueConverter
     ) {
@@ -78,7 +73,6 @@ class Product implements ArrayConverterInterface
         $this->fieldConverter = $fieldConverter;
         $this->columnsMerger = $columnsMerger;
         $this->columnsMapper = $columnsMapper;
-        $this->fieldChecker = $fieldChecker;
         $this->optionalAssocFields = [];
         $this->attributeRepository = $attributeRepository;
         $this->productValueConverter = $productValueConverter;

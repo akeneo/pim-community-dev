@@ -151,9 +151,6 @@ CSV;
         return \intval($id);
     }
 
-    /**
-     * @return mixed
-     */
     private function getJobLauncher(): JobLauncher
     {
         return $this->get('akeneo_integration_tests.launcher.job_launcher');
