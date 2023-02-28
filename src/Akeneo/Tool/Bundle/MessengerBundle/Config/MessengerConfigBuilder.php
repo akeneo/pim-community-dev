@@ -63,6 +63,9 @@ final class MessengerConfigBuilder
     public function build(string $projectDir, TransportType $transportType): array
     {
         $config = self::loadConfig($projectDir, $this->env);
+        if ([] === $config) {
+            return [];
+        }
 
         $transports = [];
         $routing = [];
@@ -105,7 +108,7 @@ final class MessengerConfigBuilder
         return [] !== $transports
             ? ['transports' => $transports, 'routing' => $routing]
             : []
-            ;
+        ;
     }
 
     /**

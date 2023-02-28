@@ -39,6 +39,9 @@ class AkeneoMessengerExtension extends Extension
         $projectDir = $container->getParameter('kernel.project_dir');
         $env = $container->getParameter('kernel.environment');
         $config = MessengerConfigBuilder::loadConfig($projectDir, $env);
+        if ([] === $config) {
+            return;
+        }
 
         // Register a handler for each consumer of each queue
         foreach ($config['queues'] as $queueConfig) {
