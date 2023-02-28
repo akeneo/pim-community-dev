@@ -1,0 +1,44 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {DateInput} from './DateInput.tsx';
+
+<Meta
+  title="Components/Inputs/Date input"
+  component={DateInput}
+  argTypes={{
+    readOnly: {
+      control: {type: 'boolean'},
+      description:
+        'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
+      table: {type: {summary: 'boolean'}},
+    },
+    onChange: {
+      description: 'The handler called when the value of the input changes.',
+      table: {type: {summary: '(newValue: string) => void'}},
+    },
+  }}
+  args={{
+    value: '',
+    placeholder: 'Please enter a value in the DateInput',
+  }}
+/>
+
+# DateInput (Beta)
+
+## Usage
+
+Date input allows the user to enter content and data when the expected user input is a date.
+
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value, setValue] = useState(args.value);
+      return <DateInput {...args} value={value} onChange={setValue} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
