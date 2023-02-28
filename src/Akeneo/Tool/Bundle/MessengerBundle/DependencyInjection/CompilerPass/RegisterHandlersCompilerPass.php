@@ -23,6 +23,9 @@ final class RegisterHandlersCompilerPass implements CompilerPassInterface
         $projectDir = $container->getParameter('kernel.project_dir');
         $env = $container->getParameter('kernel.environment');
         $config = MessengerConfigBuilder::loadConfig($projectDir, $env);
+        if ([] === $config) {
+            return;
+        }
 
         foreach ($config['queues'] as $queueConfig) {
             foreach ($queueConfig['consumers'] as $consumerConfig) {
