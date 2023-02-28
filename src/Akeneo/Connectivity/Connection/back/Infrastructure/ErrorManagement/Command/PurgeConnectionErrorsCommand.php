@@ -47,6 +47,9 @@ class PurgeConnectionErrorsCommand extends Command
             $this->logger->info('End purge connection error');
         } catch (TableNotFoundException $exception) {
             if ($exception->getPrevious()?->getCode() === self::TABLE_NOT_FOUND_ERROR_CODE) {
+                // Errors are thrown when the database or ElasticSearch are off following a deployment
+                // but the cron is still active and executing this command.
+                // We decided to make these errors silent to avoid noise in our alert monitoring
                 $this->logger->warning('Table not found', ['exception' => $exception]);
 
                 return Command::FAILURE;
