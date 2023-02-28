@@ -5,13 +5,16 @@ import {HelpPlainIcon} from '../../icons';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {useTheme} from '../../hooks';
 
+const TooltipIconMargin = 5;
 const TooltipContainer = styled.div<{size: number}>`
   position: relative;
-  height: ${({size}) => size}px;
+  height: ${({size}) => size + TooltipIconMargin * 2}px;
+  width: ${({size}) => size + TooltipIconMargin * 2}px;
+  display: inline-block;
 `;
 
 const TooltipIcon = styled(HelpPlainIcon)`
-  margin: 5px;
+  margin: ${TooltipIconMargin}px;
 `;
 
 const TooltipContent = styled.div<{direction: string; zIndex: number; width: number} & AkeneoThemedProps>`
