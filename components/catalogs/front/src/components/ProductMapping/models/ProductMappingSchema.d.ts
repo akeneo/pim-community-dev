@@ -10,6 +10,7 @@ export type ProductMappingSchema = {
             pattern?: string;
             minimum?: number;
             maximum?: number;
+            enum?: string[] | number[];
         };
     };
 };

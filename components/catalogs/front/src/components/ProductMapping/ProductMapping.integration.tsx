@@ -28,6 +28,10 @@ const PRODUCT_MAPPING_SCHEMA = {
             minimum: 0,
             maximum: 100,
         },
+        size: {
+            type: 'string',
+            enum: ['S', 'M', 'L'],
+        },
     },
 };
 
@@ -59,6 +63,16 @@ beforeEach(() => {
                 code: 'weight',
                 label: 'Weight',
                 type: 'pim_catalog_number',
+                scopable: false,
+                localizable: false,
+            },
+        },
+        {
+            url: '/rest/catalogs/attributes/size',
+            json: {
+                code: 'size',
+                label: 'Size',
+                type: 'pim_catalog_text',
                 scopable: false,
                 localizable: false,
             },
@@ -101,6 +115,13 @@ beforeEach(() => {
                 {
                     code: 'ean',
                     label: 'EAN',
+                    type: 'pim_catalog_text',
+                    scopable: false,
+                    localizable: false,
+                },
+                {
+                    code: 'size',
+                    label: 'Size',
                     type: 'pim_catalog_text',
                     scopable: false,
                     localizable: false,
@@ -322,6 +343,11 @@ test('it displays requirements', async () => {
             locale: null,
             scope: null,
         },
+        size: {
+            source: 'size',
+            locale: null,
+            scope: null,
+        },
     };
 
     render(
@@ -371,6 +397,13 @@ test('it displays requirements', async () => {
     expect(
         await within(await SourcePanel()).findByText(
             'akeneo_catalogs.product_mapping.source.requirements.constraints.maximum'
+        )
+    ).toBeInTheDocument();
+
+    fireEvent.click(await screen.findByText('size'));
+    expect(
+        await within(await SourcePanel()).findByText(
+            'akeneo_catalogs.product_mapping.source.requirements.constraints.enum'
         )
     ).toBeInTheDocument();
 });
