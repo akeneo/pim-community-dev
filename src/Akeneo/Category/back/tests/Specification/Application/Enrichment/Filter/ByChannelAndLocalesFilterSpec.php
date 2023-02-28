@@ -10,20 +10,16 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelAndLocalesFilterSpec extends ObjectBehavior
+class ByChannelAndLocalesFilterSpec extends ObjectBehavior
 {
     function it_returns_the_list_of_enriched_values_to_clean_while_cleaning_channel()
     {
         $valuesToFilter = $this->getEnrichedValues();
 
-        $filteringKeys = [
-            'action' => 'cleanChannel',
-            'channel_code' => 'mobile',
-        ];
-
-        $this->filterCategoryToClean($valuesToFilter, $filteringKeys)->shouldReturn(
+        $this->getEnrichedValueCompositeKeysToClean($valuesToFilter, 'mobile', [])->shouldReturn(
             [
                 "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|fr_FR",
+                "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|en_US",
             ]
         );
     }
@@ -32,29 +28,26 @@ class ChannelAndLocalesFilterSpec extends ObjectBehavior
     {
         $valuesToFilter = $this->getEnrichedValues();
 
-        $filteringKeys = [
-            'action' => 'cleanChannel',
-            'channel_code' => '',
-        ];
-
-        $this->filterCategoryToClean($valuesToFilter, $filteringKeys)->shouldReturn([]);
+        $this->getEnrichedValueCompositeKeysToClean($valuesToFilter, '', [])->shouldReturn([]);
     }
 
     function it_returns_the_list_of_enriched_values_to_clean_while_cleaning_locales()
     {
         $valuesToFilter = $this->getEnrichedValues();
 
-        $filteringKeys = [
-            'action' => 'cleanChannel',
-            'channel_code' => 'ecommerce',
-            'locales_codes' => ['en_US'],
-        ];
-
-        $this->filterCategoryToClean($valuesToFilter, $filteringKeys)->shouldReturn(
+        $this->getEnrichedValueCompositeKeysToClean($valuesToFilter, 'mobile', ['en_US'])->shouldReturn(
             [
-                "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|ecommerce|fr_FR",
+                "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|fr_FR",
             ]
         );
+    }
+
+    function it_returns_an_empty_list_of_enriched_values_to_clean_when_no_values_has_to_be_cleaned()
+    {
+        $valuesToFilter = $this->getEnrichedValues();
+
+        $this->getEnrichedValueCompositeKeysToClean($valuesToFilter, 'unknown_channel', [])->shouldReturn([]);
+        $this->getEnrichedValueCompositeKeysToClean($valuesToFilter, 'mobile', ['en_US', 'fr_FR'])->shouldReturn([]);
     }
 
     private function getEnrichedValues(): array
@@ -86,6 +79,13 @@ class ChannelAndLocalesFilterSpec extends ObjectBehavior
                 "data": "<p>Ma description enrichie pour le mobile</p>\n",
                 "type": "textarea",
                 "locale": "fr_FR",
+                "channel": "mobile",
+                "attribute_code": "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233"
+            },
+            "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|en_US": {
+                "data": "<p>My enriched description for mobile</p>\n",
+                "type": "textarea",
+                "locale": "en_US",
                 "channel": "mobile",
                 "attribute_code": "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233"
             },

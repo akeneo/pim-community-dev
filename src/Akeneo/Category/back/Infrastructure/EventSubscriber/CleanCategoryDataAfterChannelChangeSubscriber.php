@@ -48,7 +48,7 @@ class CleanCategoryDataAfterChannelChangeSubscriber implements EventSubscriberIn
         }
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
             'channel_code' => $channel->getCode(),
-            'locale_codes' => [],
+            'locales_codes' => [],
         ]);
     }
 

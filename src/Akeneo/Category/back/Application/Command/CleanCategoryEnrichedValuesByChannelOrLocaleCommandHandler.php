@@ -19,8 +19,7 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler
     public function __construct(
         private readonly GetEnrichedCategoryValuesOrderedByCategoryCode $getEnrichedCategoryValuesOrderedByCategoryCode,
         private readonly UpdateCategoryEnrichedValues $updateCategoryEnrichedValues,
-    )
-    {
+    ) {
     }
 
     public function __invoke(CleanCategoryEnrichedValuesByChannelOrLocaleCommand $command): void
@@ -37,7 +36,7 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler
                 $valueKeysToRemove = ByChannelAndLocalesFilter::getEnrichedValueCompositeKeysToClean(
                     $enrichedValues,
                     $command->channelCode,
-                    $command->localeCodes
+                    $command->localeCodes,
                 );
                 if (!empty($valueKeysToRemove)) {
                     foreach ($valueKeysToRemove as $key) {

@@ -5,18 +5,18 @@ namespace Akeneo\Category\Application\Enrichment\Filter;
 class ByChannelAndLocalesFilter
 {
     /**
-     * @param array<string, array> $enrichedValues
-     * @param array<string, mixed> $filteringKeys
+     * @param array<string, mixed> $enrichedValues
+     * @param array<string> $localeCodes
+     *
      * @return array<string>
      */
     public static function getEnrichedValueCompositeKeysToClean(
         array $enrichedValues,
         string $channelCode,
-        ?array $localeCodes
-    ): array
-    {
+        array $localeCodes,
+    ): array {
         $keysToRemove = [];
-        if ($channelCode === '' || $channelCode === null) {
+        if ($channelCode === '') {
             return [];
         }
 
@@ -24,7 +24,7 @@ class ByChannelAndLocalesFilter
             if ($key === 'attribute_codes') {
                 continue;
             }
-            $valueChannel = $value['channel']?? null;
+            $valueChannel = $value['channel'] ?? null;
             if (empty($localeCodes)) {
                 // we do not clean non-scopable values
                 if ($valueChannel !== null && $valueChannel === $channelCode) {
@@ -42,6 +42,7 @@ class ByChannelAndLocalesFilter
                 }
             }
         }
+
         return $keysToRemove;
     }
 }

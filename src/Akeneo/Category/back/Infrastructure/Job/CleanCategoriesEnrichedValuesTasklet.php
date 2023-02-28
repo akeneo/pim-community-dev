@@ -6,8 +6,6 @@ namespace Akeneo\Category\Infrastructure\Job;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocaleCommand;
-use Akeneo\Category\Application\Enrichment\Filter\ByChannelAndLocalesFilter;
-use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -35,7 +33,7 @@ class CleanCategoriesEnrichedValuesTasklet implements TaskletInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $channelCode = $jobParameters->get('channel_code');
-        $locales = $jobParameters->get('locales_codes');
+        $locales = $jobParameters->get('locales_codes') ?? [];
 
         $this->commandBus->dispatch(
             new CleanCategoryEnrichedValuesByChannelOrLocaleCommand($channelCode, $locales),

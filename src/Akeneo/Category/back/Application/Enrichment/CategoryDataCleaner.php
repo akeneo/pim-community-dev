@@ -23,9 +23,7 @@ class CategoryDataCleaner
     }
 
     /**
-     * @param array $filteringKeys
-     * @param CategoryDataFilter $filter
-     * @return void
+     * @param array<string, mixed> $filteringKeys
      */
     public function __invoke(array $filteringKeys, CategoryDataFilter $filter): void
     {
@@ -57,9 +55,5 @@ class CategoryDataCleaner
                 $this->updateCategoryEnrichedValues->execute($cleanedBatch);
             }
         } while (!empty($valuesByCode));
-    }
-
-    private function removeAttributeKey(array $enrichedValues, $key) {
-        // TODO remove key from enriched values + manage deletion of media file linked to attributes with a media type (i.e. image)
     }
 }
