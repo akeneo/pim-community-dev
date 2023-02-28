@@ -78,7 +78,7 @@ class ProductModel implements ArrayConverterInterface
         $filteredItem = $this->filterFields($mappedFlatProductModel, isset($options['with_associations']) ? $options['with_associations'] : true);
         $this->validateItem($filteredItem);
 
-        $mergedFlatProductModel = $this->columnsMerger->merge($filteredItem);
+        $mergedFlatProductModel = $this->columnsMerger->merge($filteredItem, $options);
         $convertedProductModel = $this->convertItem($mergedFlatProductModel);
 
         return $convertedProductModel;
