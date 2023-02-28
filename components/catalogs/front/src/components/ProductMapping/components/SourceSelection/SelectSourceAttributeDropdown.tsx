@@ -1,11 +1,11 @@
 import React, {FC, useCallback, useState} from 'react';
 import {Dropdown, Field, GroupsIllustration, Helper, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useInfiniteSourceAttributes} from '../hooks/useInfiniteSourceAttributes';
-import {Attribute} from '../../../models/Attribute';
-import {useAttribute} from '../../../hooks/useAttribute';
+import {useInfiniteSourceAttributes} from '../../hooks/useInfiniteSourceAttributes';
+import {Attribute} from '../../../../models/Attribute';
+import {useAttribute} from '../../../../hooks/useAttribute';
 import styled from 'styled-components';
-import {Target} from '../models/Target';
+import {Target} from '../../models/Target';
 
 const SelectAttributeDropdownField = styled(Field)`
     margin-top: 10px;
