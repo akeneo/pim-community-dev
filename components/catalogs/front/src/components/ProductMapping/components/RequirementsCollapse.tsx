@@ -4,7 +4,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {Target} from '../models/Target';
 import styled from 'styled-components';
 
-const ACCEPTED_CONSTRAINTS = ['minLength', 'maxLength', 'pattern'] as const;
+const ACCEPTED_CONSTRAINTS = ['minLength', 'maxLength', 'pattern', 'minimum', 'maximum'] as const;
 
 type Props = {
     target: Target;
@@ -64,7 +64,7 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
                                     {
                                         value: constraint.value,
                                     },
-                                    parseInt(constraint.value.toString())
+                                    typeof constraint.value === 'string' ? 0 : constraint.value
                                 )}
                             </p>
                         ))}

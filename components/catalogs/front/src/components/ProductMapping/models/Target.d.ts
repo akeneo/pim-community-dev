@@ -7,4 +7,6 @@ export type Target = {
     minLength?: number;
     maxLength?: number;
     pattern?: string;
+    minimum?: number;
+    maximum?: number;
 };
