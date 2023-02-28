@@ -7,10 +7,10 @@ Example:
 
 ```php
 use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
-use Akeneo\Tool\Component\Messenger\SerializableMessageInterface;
+use Akeneo\Tool\Component\Messenger\NormalizableMessageInterface;
 use Akeneo\Tool\Component\Messenger\TraceableMessageTrait;
 
-final class YourMessage implements TraceableMessageInterface, SerializableMessageInterface
+final class YourMessage implements TraceableMessageInterface, NormalizableMessageInterface
 {
     use TraceableMessageTrait;
 
@@ -35,9 +35,9 @@ final class YourMessage implements TraceableMessageInterface, SerializableMessag
 
 Your message *need* to implement `TraceableMessageInterface` in order to be taken in charge by the bundle.
 
-But implementing the `SerializableMessageInterface` is optional. Normalization and denormalization are needed to store the message in the queue system. 
-By implementing `SerializableMessageInterface` the message will be automatically normalized/denormalized using the according methods.
-If you need more complex (de)normalization (for instance injecting some extra values), don't implement `SerializableMessageInterface`, 
+But implementing the `NormalizableMessageInterface` is optional. Normalization and denormalization are needed to store the message in the queue system. 
+By implementing `NormalizableMessageInterface` the message will be automatically normalized/denormalized using the according methods.
+If you need more complex (de)normalization (for instance injecting some extra values), don't implement `NormalizableMessageInterface`, 
 you can create your own normalizer service and tag it with `akeneo_messenger.message.normalizer`.
 
 Now you certainly need to add a handler, this is the next section.

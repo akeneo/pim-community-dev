@@ -151,6 +151,21 @@ but we can find more details in the `config/packages/*/messenger.php` files.
 | behat      | PubSub            |
 | prod       | doctrine / PubSub |
 
-### More information please
+### More details
+
+- How to send/consume message
+
+Send a message:
+
+```php
+// Bus service 'messenger.default_bus'
+$this->bus->dispatch($message);
+```
+
+Launch consumer:
+
+```bash
+bin/console messenger:consume <consumer_name>
+```
 
 - [How to add a queue?](docs/how-to-add-a-queue.md)
