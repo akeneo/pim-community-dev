@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Command;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Registry\TraceableMessageHandlerRegistry;
 use Akeneo\Tool\Component\Messenger\CorrelationAwareInterface;
-use Akeneo\Tool\Component\Messenger\TraceableMessageHandlerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -25,19 +25,13 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class ProcessMessageCommand extends Command
 {
     protected static $defaultName = 'akeneo:process-message';
-    /** @var array<string, TraceableMessageHandlerInterface> */
-    private array $handlers = [];
 
     public function __construct(
         private readonly SerializerInterface $serializer,
+        private readonly TraceableMessageHandlerRegistry $traceableMessageHandlerRegistry,
         private readonly LoggerInterface $logger
     ) {
         parent::__construct();
-    }
-
-    public function registerHandler(TraceableMessageHandlerInterface $handler, string $consumerName)
-    {
-        $this->handlers[$consumerName] = $handler;
     }
 
     protected function configure()
@@ -58,11 +52,7 @@ final class ProcessMessageCommand extends Command
         );
 
         $consumerName = $input->getArgument('consumer_name');
-        $handler = $this->handlers[$consumerName] ?? null;
-
-        if (null === $handler) {
-            throw new \Exception(sprintf('No handler found for the "%s" consumer', $consumerName));
-        }
+        $handler = $this->traceableMessageHandlerRegistry->getHandler($consumerName);
 
         try {
             ($handler)($message);
