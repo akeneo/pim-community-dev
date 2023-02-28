@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\AttributeIsAFamilyVariantAxis;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -324,11 +323,6 @@ class AttributeController
     }
 
     /**
-     * @param Request $request
-     * @param string  $code
-     *
-     * @return JsonResponse
-     *
      * @AclAncestor("pim_enrich_attribute_remove")
      */
     public function removeAction(Request $request, string $code): JsonResponse
@@ -347,8 +341,9 @@ class AttributeController
 
         try {
             $this->remover->remove($attribute);
-        } catch (CannotRemoveAttributeException $e) {
-            $message = $this->translator->trans($e->messageTemplate, $e->messageParameters);
+        } catch (CannotRemoveAttributeException $exception) {
+            $message = $this->translator->trans($exception->messageTemplate, $exception->messageParameters);
+
             return new JsonResponse(['message' => $message], Response::HTTP_BAD_REQUEST);
         }
 
@@ -356,11 +351,7 @@ class AttributeController
     }
 
     /**
-     * @param string $identifier
-     *
      * @throws NotFoundHttpException
-     *
-     * @return AttributeInterface
      */
     protected function getAttributeOr404(string $identifier): AttributeInterface
     {

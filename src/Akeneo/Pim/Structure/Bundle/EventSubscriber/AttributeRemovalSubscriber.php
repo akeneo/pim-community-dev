@@ -17,30 +17,21 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 /**
  * This subscriber listens on attribute removals, blacklists the removed attribute code
- * and launches the cleaning removed attribute values job
+ * and launches the cleaning removed attribute values job when the batch size is reached
  */
 class AttributeRemovalSubscriber implements EventSubscriberInterface
 {
     private const JOB_NAME = 'clean_removed_attribute_job';
     private const BATCH_SIZE = 1000;
 
-    private AttributeCodeBlacklister $attributeCodeBlacklister;
-    private JobLauncherInterface $jobLauncher;
-    private IdentifiableObjectRepositoryInterface $jobInstanceRepository;
-    private TokenStorageInterface $tokenStorage;
-
     private array $attributeCodesToClean = [];
 
     public function __construct(
-        AttributeCodeBlacklister $attributeCodeBlacklister,
-        JobLauncherInterface $jobLauncher,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        TokenStorageInterface $tokenStorage
+        private AttributeCodeBlacklister $attributeCodeBlacklister,
+        private JobLauncherInterface $jobLauncher,
+        private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        private TokenStorageInterface $tokenStorage,
     ) {
-        $this->attributeCodeBlacklister = $attributeCodeBlacklister;
-        $this->jobLauncher = $jobLauncher;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public static function getSubscribedEvents(): array
@@ -69,7 +60,7 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function flushEvents()
+    public function flushEvents(): void
     {
         if (empty($this->attributeCodesToClean)) {
             return;
@@ -77,7 +68,7 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_NAME);
         $jobExecution = $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
-            'attribute_codes' => $this->attributeCodesToClean
+            'attribute_codes' => $this->attributeCodesToClean,
         ]);
 
         $this->attributeCodeBlacklister->registerJob($this->attributeCodesToClean, $jobExecution->getId());

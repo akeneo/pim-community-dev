@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CheckAttributeIsNotUsedAsLabelOnDeletionSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private Connection $dbConnection
+        private Connection $connection,
     ) {
     }
 
@@ -52,8 +52,6 @@ SELECT EXISTS(
 )
 SQL;
 
-        $result = $this->dbConnection->executeQuery($sql, ['attribute_id' => $attributeId])->fetchOne();
-
-        return (bool) $result;
+        return (bool) $this->connection->executeQuery($sql, ['attribute_id' => $attributeId])->fetchOne();
     }
 }
