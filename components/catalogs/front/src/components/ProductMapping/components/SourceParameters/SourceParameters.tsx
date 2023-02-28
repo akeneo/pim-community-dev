@@ -1,5 +1,4 @@
 import React, {FC} from 'react';
-import {SectionTitle, Tag} from 'akeneo-design-system';
 import {Source} from '../../models/Source';
 import {SourceErrors} from '../../models/SourceErrors';
 import {SelectLabelLocaleDropdown} from './SelectLabelLocaleDropdown';
@@ -8,29 +7,19 @@ import {SelectChannelCurrencyDropdown} from './SelectChannelCurrenciesDropdown';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useAttribute} from '../../../../hooks/useAttribute';
+import {SourceSectionTitle} from '../SourceSectionTitle';
 
 const Information = styled.p`
     font-style: italic;
     margin-top: 10px;
 `;
 
-const SectionSubtitle = () => {
-    const translate = useTranslate();
-    return (
-        <SectionTitle>
-            <Tag tint='purple'>2</Tag>
-            <SectionTitle.Title level='secondary'>
-                {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
-            </SectionTitle.Title>
-        </SectionTitle>
-    );
-};
-
 type Props = {
     source: Source | null;
     errors: SourceErrors | null;
     onChange: (value: Source) => void;
 };
+
 export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute(source?.source ?? '');
@@ -38,7 +27,9 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
     if (undefined === attribute || null === source || undefined === source.parameters) {
         return (
             <>
-                <SectionSubtitle />
+                <SourceSectionTitle order={2}>
+                    {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
+                </SourceSectionTitle>
                 <Information key={'no_parameters'}>
                     {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
                 </Information>
@@ -48,7 +39,9 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
 
     return (
         <>
-            <SectionSubtitle />
+            <SourceSectionTitle order={2}>
+                {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
+            </SourceSectionTitle>
             {undefined !== source.parameters.label_locale && (
                 <SelectLabelLocaleDropdown
                     source={source}

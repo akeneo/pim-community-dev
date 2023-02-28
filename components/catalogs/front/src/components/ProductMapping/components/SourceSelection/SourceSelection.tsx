@@ -4,11 +4,11 @@ import {Target} from '../../models/Target';
 import {SourceErrors} from '../../models/SourceErrors';
 import {useAttribute} from '../../../../hooks/useAttribute';
 import {Attribute} from '../../../../models/Attribute';
-import {SectionTitle, Tag} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourceSettings} from './SourceSettings';
 import {createSourceFromAttribute} from '../../utils/createSourceFromAttribute';
 import {SelectSourceAttributeDropdown} from './SelectSourceAttributeDropdown';
+import {SourceSectionTitle} from '../SourceSectionTitle';
 
 type Props = {
     source: Source | null;
@@ -26,12 +26,9 @@ export const SourceSelection: FC<Props> = ({source, target, errors, onChange}) =
 
     return (
         <>
-            <SectionTitle>
-                <Tag tint='purple'>1</Tag>
-                <SectionTitle.Title level='secondary'>
-                    {translate('akeneo_catalogs.product_mapping.source.title')}
-                </SectionTitle.Title>
-            </SectionTitle>
+            <SourceSectionTitle order={1}>
+                {translate('akeneo_catalogs.product_mapping.source.title')}
+            </SourceSectionTitle>
             <SelectSourceAttributeDropdown
                 selectedCode={source?.source ?? ''}
                 target={target}
