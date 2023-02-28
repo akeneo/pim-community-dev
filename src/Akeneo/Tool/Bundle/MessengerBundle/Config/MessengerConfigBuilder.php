@@ -32,7 +32,8 @@ use Webmozart\Assert\Assert;
 final class MessengerConfigBuilder
 {
     private const CONFIG_FILEPATH = 'config/messages.yml';
-    private const CONFIG_FILEPATH_FOR_TEST = 'config/messages_test.yml';
+    private const CONFIG_FILEPATH_FOR_ENV = 'config/messages_%s.yml';
+
     private const SERIALIZER = 'akeneo_messenger.envelope.serializer';
 
     public function __construct(private readonly string $env)
@@ -42,15 +43,15 @@ final class MessengerConfigBuilder
     public static function loadConfig(string $projectDir, string $env): array
     {
         $config = [];
-        $file = $projectDir . '/' . self::CONFIG_FILEPATH;
-        if (\file_exists($file)) {
-            Assert::fileExists($file);
-            $config = Yaml::parse(file_get_contents($file));
+        $configFile = $projectDir . '/' . self::CONFIG_FILEPATH;
+        if (\file_exists($configFile)) {
+            Assert::fileExists($configFile);
+            $config = Yaml::parse(file_get_contents($configFile));
         }
 
-        $fileForTest = $projectDir . '/' . self::CONFIG_FILEPATH_FOR_TEST;
-        if ($env === 'test' && \file_exists($fileForTest)) {
-            $testConfig = Yaml::parse(file_get_contents($fileForTest));
+        $configFileForEnv = $projectDir . '/' . \sprintf(self::CONFIG_FILEPATH_FOR_ENV, $env);
+        if (\file_exists($configFileForEnv)) {
+            $testConfig = Yaml::parse(file_get_contents($configFileForEnv));
             $config['queues'] = \array_merge($config['queues'] ?? [], $testConfig['queues']);
         }
 
