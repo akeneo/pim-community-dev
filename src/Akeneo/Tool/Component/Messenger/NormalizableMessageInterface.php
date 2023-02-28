@@ -8,9 +8,9 @@ namespace Akeneo\Tool\Component\Messenger;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface SerializableMessageInterface
+interface NormalizableMessageInterface
 {
     public function normalize(): array;
 
-    public static function denormalize(array $normalized): SerializableMessageInterface;
+    public static function denormalize(array $normalized): NormalizableMessageInterface;
 }

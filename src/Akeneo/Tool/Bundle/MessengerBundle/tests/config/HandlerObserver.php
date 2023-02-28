@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MessengerBundle\tests\config;
 
 use Akeneo\Tool\Component\Messenger\CorrelationAwareInterface;
-use Akeneo\Tool\Component\Messenger\SerializableMessageInterface;
+use Akeneo\Tool\Component\Messenger\NormalizableMessageInterface;
 use Akeneo\Tool\Component\Messenger\Tenant\TenantAwareInterface;
 use Doctrine\DBAL\Connection;
 
@@ -24,7 +24,7 @@ final class HandlerObserver
     {
     }
 
-    public function handlerWasExecuted(string $class, SerializableMessageInterface $message): void
+    public function handlerWasExecuted(string $class, NormalizableMessageInterface $message): void
     {
         $this->executedHandlers[] = [
             'class' => $class,
