@@ -63,6 +63,7 @@ class ApiContext implements Context
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
     ) {
         $this->container = $kernel->getContainer()->get('test.service_container');
+        $this->container->get('feature_flags')->enable('catalogs');
     }
 
     protected function getFileInfoKey(string $path): string
