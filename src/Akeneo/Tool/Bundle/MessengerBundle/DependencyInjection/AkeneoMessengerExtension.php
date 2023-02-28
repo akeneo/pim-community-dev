@@ -25,6 +25,7 @@ class AkeneoMessengerExtension extends Extension
         $loader->load('command.yml');
         $loader->load('normalizer.yml');
         $loader->load('purge.yml');
+        $loader->load('registry.yml');
         $loader->load('transport.yml');
 
         $this->registerMessengerHandlers($container);
