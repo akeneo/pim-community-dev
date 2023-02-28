@@ -20,7 +20,7 @@ services:
   Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler:
     arguments:
       - '@Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode'
-      - '@Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues'
+      - '@Akeneo\Category\Application\Enrichment\CategoryDataCleaner'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocaleCommand' }
 

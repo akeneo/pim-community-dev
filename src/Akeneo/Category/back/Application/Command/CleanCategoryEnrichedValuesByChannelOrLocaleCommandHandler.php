@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Command;
 
-use Akeneo\Category\Application\Enrichment\Filter\ByChannelAndLocalesFilter;
+use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
 use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
-use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -18,43 +17,26 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler
 
     public function __construct(
         private readonly GetEnrichedCategoryValuesOrderedByCategoryCode $getEnrichedCategoryValuesOrderedByCategoryCode,
-        private readonly UpdateCategoryEnrichedValues $updateCategoryEnrichedValues,
+        private readonly CategoryDataCleaner $categoryDataCleaner
     ) {
     }
 
     public function __invoke(CleanCategoryEnrichedValuesByChannelOrLocaleCommand $command): void
     {
         $offset = 0;
-        $cleanedBatch = [];
 
         do {
-            $valuesByCode = $this->getEnrichedCategoryValuesOrderedByCategoryCode->byLimitAndOffset(self::CATEGORY_BATCH_SIZE, $offset);
+            $valuesByCode = $this->getEnrichedCategoryValuesOrderedByCategoryCode->byLimitAndOffset(
+                self::CATEGORY_BATCH_SIZE,
+                $offset
+            );
             $offset += self::CATEGORY_BATCH_SIZE;
 
-            foreach ($valuesByCode as $categoryCode => $json) {
-                $enrichedValues = json_decode($json, true);
-                $valueKeysToRemove = ByChannelAndLocalesFilter::getEnrichedValueCompositeKeysToClean(
-                    $enrichedValues,
-                    $command->channelCode,
-                    $command->localeCodes,
-                );
-                if (!empty($valueKeysToRemove)) {
-                    foreach ($valueKeysToRemove as $key) {
-                        unset($enrichedValues[$key]);
-                    }
-                    $cleanedBatch[$categoryCode] = json_encode($enrichedValues);
-                }
-
-                if (\count($cleanedBatch) >= self::CATEGORY_BATCH_SIZE) {
-                    $this->updateCategoryEnrichedValues->execute($cleanedBatch);
-                    $cleanedBatch = [];
-                }
-            }
-
-            // no new enriched values are found in database and there are still cleaned values to update
-            if (empty($valuesByCode) && !empty($cleanedBatch)) {
-                $this->updateCategoryEnrichedValues->execute($cleanedBatch);
-            }
+            $this->categoryDataCleaner->cleanByChannelOrLocales(
+                $valuesByCode,
+                $command->channelCode,
+                $command->localeCodes
+            );
         } while (!empty($valuesByCode));
     }
 }

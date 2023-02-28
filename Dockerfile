@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as base
+dockerFROM debian:bullseye-slim as base
 
 ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_EXECUTION_TIME=60 \

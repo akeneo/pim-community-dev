@@ -36,7 +36,7 @@ class ByChannelAndLocalesFilter
                 if (
                     $valueLocale !== null
                     && $valueChannel === $channelCode
-                    && !in_array($valueLocale, $localeCodes)
+                    && !in_array($valueLocale, $localeCodes, true)
                 ) {
                     $keysToRemove[] = $key;
                 }
