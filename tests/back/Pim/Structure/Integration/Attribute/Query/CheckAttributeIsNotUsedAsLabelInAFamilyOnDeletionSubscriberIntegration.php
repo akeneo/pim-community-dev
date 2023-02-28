@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Attribute\Query;
 
-use Akeneo\Pim\Structure\Component\Exception\AttributeRemovalException;
+use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
@@ -37,7 +37,7 @@ class CheckAttributeIsNotUsedAsLabelInAFamilyOnDeletionSubscriberIntegration ext
         ]);
 
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('name');
-        $this->expectException(AttributeRemovalException::class);
+        $this->expectException(CannotRemoveAttributeException::class);
         $this->get('pim_catalog.remover.attribute')->remove($attribute);
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
         $this->assertNotNull($this->get('pim_catalog.repository.attribute')->findOneByIdentifier('name'));
@@ -71,7 +71,7 @@ class CheckAttributeIsNotUsedAsLabelInAFamilyOnDeletionSubscriberIntegration ext
             $this->markTestSkipped('There is no bulk attribute remover');
         }
         $attributes = $this->get('pim_catalog.repository.attribute')->findBy(['code' => ['name', 'title']]);
-        $this->expectException(AttributeRemovalException::class);
+        $this->expectException(CannotRemoveAttributeException::class);
         $attributeRemover->removeAll($attributes);
         $this->assertNotNull($this->get('pim_catalog.repository.attribute')->findOneByIdentifier('name'));
         $this->assertNotNull($this->get('pim_catalog.repository.attribute')->findOneByIdentifier('title'));

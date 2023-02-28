@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Structure\Component\Attribute\Job;
 
 use Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet;
-use Akeneo\Pim\Structure\Component\Exception\AttributeRemovalException;
+use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -124,7 +124,7 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
         $stepExecution->addSummaryInfo('deleted_attributes', 0)->shouldBeCalled();
         $stepExecution->addSummaryInfo('skipped_attributes', 0)->shouldBeCalled();
 
-        $attributeRemover->remove($attribute1)->willThrow(new AttributeRemovalException('an error'));
+        $attributeRemover->remove($attribute1)->willThrow(new CannotRemoveAttributeException('an error'));
         $translator->trans('an error')->willReturn('an error');
         $stepExecution->addWarning('an error', [], Argument::type(DataInvalidItem::class))->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_attributes')->shouldBeCalled();

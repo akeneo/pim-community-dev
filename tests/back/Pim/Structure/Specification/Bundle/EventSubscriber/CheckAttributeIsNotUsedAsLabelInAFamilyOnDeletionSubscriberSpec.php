@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Structure\Component\Exception\AttributeRemovalException;
+use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Doctrine\DBAL\Connection;
@@ -29,7 +29,7 @@ class CheckAttributeIsNotUsedAsLabelInAFamilyOnDeletionSubscriberSpec extends Ob
         $attribute->getId()->willReturn(42);
         $statement->fetchOne()->willReturn('1');
         $dbConnection->executeQuery(Argument::type('string'), ['attributeIds' => [42]], Argument::cetera())->shouldBeCalled()->willReturn($statement);
-        $this->shouldThrow(AttributeRemovalException::class)->during('preRemove', [$event]);
+        $this->shouldThrow(CannotRemoveAttributeException::class)->during('preRemove', [$event]);
     }
 
     public function it_does_nothing_if_it_is_not_an_attribute(

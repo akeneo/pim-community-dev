@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Attribute\Job;
 
-use Akeneo\Pim\Structure\Component\Exception\AttributeRemovalException;
+use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -72,22 +72,20 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
         try {
             $this->remover->remove($attribute);
             $this->stepExecution->incrementSummaryInfo('deleted_attributes');
-            $this->stepExecution->incrementProcessedItems();
-        } catch (\Exception|AttributeRemovalException $e) {
-            $message = $e instanceof AttributeRemovalException ? $this->translator->trans($e->messageTemplate, $e->messageParameters) : $e->getMessage();
-
-            $this->addWarning($message, $attribute);
+        } catch (CannotRemoveAttributeException $e) {
+            $this->addWarning($this->translator->trans($e->messageTemplate, $e->messageParameters), $attribute);
+            $this->stepExecution->incrementSummaryInfo('skipped_attributes');
+        } catch (\Exception $e) {
+            $this->addWarning($e->getMessage(), $attribute);
             $this->stepExecution->incrementSummaryInfo('skipped_attributes');
         }
+
+        $this->stepExecution->incrementProcessedItems();
     }
 
     private function addWarning(string $reason, Attribute $attribute): void
     {
-        $this->stepExecution->addWarning(
-            $reason,
-            [],
-            new DataInvalidItem($attribute),
-        );
+        $this->stepExecution->addWarning($reason, [], new DataInvalidItem($attribute));
     }
 
     public function isTrackable(): bool

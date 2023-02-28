@@ -2,11 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Exception;
 
-/**
- * Exception raised when trying to remove an attribute used as label for any family
- *
- */
-class AttributeRemovalException extends \RuntimeException
+class CannotRemoveAttributeException extends \RuntimeException
 {
     public function __construct(
         public readonly string $messageTemplate,
