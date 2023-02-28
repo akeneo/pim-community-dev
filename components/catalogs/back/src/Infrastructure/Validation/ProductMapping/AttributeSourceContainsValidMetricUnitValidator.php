@@ -64,9 +64,9 @@ final class AttributeSourceContainsValidMetricUnitValidator extends ConstraintVa
     {
         $attributeUnits = [];
         if (isset($attribute['measurement_family'])) {
-            /** @var RawMeasurementFamily $measurementFamilies */
-            $measurementFamilies = $this->getMeasurementsFamilyQuery->execute($attribute['measurement_family']);
-            $attributeUnits = \array_map(static fn (array $row): string => $row['code'], $measurementFamilies['units']);
+            /** @var RawMeasurementFamily $measurementFamily */
+            $measurementFamily = $this->getMeasurementsFamilyQuery->execute($attribute['measurement_family']);
+            $attributeUnits = \array_map(static fn (array $row): string => $row['code'], $measurementFamily['units']);
         }
 
         if (!\in_array($unit, $attributeUnits)) {

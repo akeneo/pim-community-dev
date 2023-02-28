@@ -12,7 +12,7 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  *
  * @phpstan-import-type RawProduct from GetRawProductsQueryInterface
  *
- * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromPriceCollectionAttributeValueExtractor
+ * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromMetricAttributeValueExtractor
  */
 class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
 {
@@ -81,7 +81,7 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
             code: 'weight',
             locale: 'en_US',
             scope: 'ecommerce',
-            parameters: ['unit' => 'OHM'],
+            parameters: ['unit' => 'GRAM'],
         );
 
         $this->assertNull($result);
@@ -100,16 +100,16 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
 
         /** @var RawProduct $product */
         $product = [
-          'raw_values' => [
-              'weight' => [
-                  'ecommerce' => [
-                      'en_US' => [
-                          'unit' => 'GRAM',
-                          'amount' => 51,
-                      ],
-                  ],
-              ],
-          ],
+            'raw_values' => [
+                'weight' => [
+                    'ecommerce' => [
+                        'en_US' => [
+                            'unit' => 'GRAM',
+                            'amount' => 51,
+                        ],
+                    ],
+                ],
+            ],
         ];
         $result = $this->extractor->extract(
             product: $product,
@@ -122,7 +122,7 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
         $this->assertNull($result);
     }
 
-    public function testItReturnsNullIfNotFound(): void
+    public function testItReturnsNullIfProductNotFound(): void
     {
         /** @var RawProduct $product */
         $product = [
@@ -142,6 +142,59 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
             code: 'weight',
             locale: 'fr_FR',
             scope: 'journal',
+            parameters: ['unit' => 'GRAM'],
+        );
+
+        $this->assertNull($result);
+    }
+
+    public function testItReturnsNullIfRawValueNotFound(): void
+    {
+        /** @var RawProduct $product */
+        $product = [
+            'raw_values' => [],
+            'weight' => [
+                'ecommerce' =>
+                    [
+                        'en_US' => [
+                            'unit' => 'GRAM',
+                            'amount' => 51,
+                        ],
+                    ],
+            ],
+        ];
+        $result = $this->extractor->extract(
+            product: $product,
+            code: 'weight',
+            locale: 'en_US',
+            scope: 'ecommerce',
+            parameters: ['unit' => 'GRAM'],
+        );
+
+        $this->assertNull($result);
+    }
+
+    public function testItReturnsNullIfAttributeNotFound(): void
+    {
+        /** @var RawProduct $product */
+        $product = [
+            'raw_values' => [
+                'density' => [
+                    'ecommerce' =>
+                        [
+                            'en_US' => [
+                                'unit' => 'GRAM',
+                                'amount' => 51,
+                            ],
+                        ],
+                ],
+            ],
+        ];
+        $result = $this->extractor->extract(
+            product: $product,
+            code: 'density',
+            locale: 'en_US',
+            scope: 'ecommerce',
             parameters: ['unit' => 'GRAM'],
         );
 
@@ -194,8 +247,24 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
                     'raw_values' => [
                         'weight' => [
                             'ecommerce' => [
-                                'unit' => 'CENTIMETER',
-                                'amount' => 'apple pie',
+                                'en_US' => [
+                                    'unit' => 'KILOGRAM',
+                                    'amount' => 'apple pie',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'unknown unit' => [
+                'product' => [
+                    'raw_values' => [
+                        'weight' => [
+                            'ecommerce' => [
+                                'en_US' => [
+                                    'unit' => 'KILOGRAMOU',
+                                    'amount' => 21,
+                                ],
                             ],
                         ],
                     ],

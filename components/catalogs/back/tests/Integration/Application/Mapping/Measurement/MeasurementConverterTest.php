@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Measurement;
+namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\Measurement;
 
 use Akeneo\Catalogs\Application\Mapping\Measurement\MeasurementConverter;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;

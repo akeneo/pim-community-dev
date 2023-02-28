@@ -2,9 +2,6 @@
 
 namespace Akeneo\Catalogs\Application\Mapping\Measurement;
 
-use Akeneo\Catalogs\Application\Mapping\Measurement\Exception\MeasurementFamilyNotFoundException;
-use Akeneo\Catalogs\Application\Mapping\Measurement\Exception\OperationsOfThisUnitNotFoundException;
-use Akeneo\Catalogs\Application\Mapping\Measurement\Exception\UseOfUnknownOperatorException;
 use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
 
 /**
@@ -16,46 +13,42 @@ use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQue
  */
 final class MeasurementConverter
 {
-    public const SCALE = 12;
+    public const DECIMAL_NUMBER = 12;
 
     public function __construct(readonly private GetMeasurementsFamilyQueryInterface $getMeasurementsFamilyQuery)
     {
     }
 
-    /**
-     * @throws OperationsOfThisUnitNotFoundException
-     * @throws UseOfUnknownOperatorException
-     * @throws MeasurementFamilyNotFoundException
-     */
-    public function convert(string $measurementFamilyCode, string $targetedUnit, string $initialUnit, int|float|string $initialAmount): int|float
+    public function convert(string $measurementFamilyCode, string $targetedUnit, string $initialUnit, int|float|string $amount): int|float
     {
         $measurementFamily = $this->getMeasurementsFamilyQuery->execute($measurementFamilyCode);
 
         if (null === $measurementFamily) {
-            throw new MeasurementFamilyNotFoundException($measurementFamilyCode);
+            throw new \LogicException(\sprintf(
+                'The measurement family with this code : %s have not been found.',
+                $measurementFamilyCode,
+            ));
         }
 
-        $amountConvertedInDefaultUnit = $this->convertAmountToDefaultMeasurementFamilyUnit($measurementFamily, $initialUnit, $initialAmount);
+        $amount = $this->convertAmountToDefaultMeasurementFamilyUnit($measurementFamily, $initialUnit, $amount);
 
-        $amountConvertedInTargetedUnit = $this->convertFromDefaultMeasurementFamilyUnitToTargetedUnit($measurementFamily, $targetedUnit, $amountConvertedInDefaultUnit);
+        $amount = $this->convertFromDefaultMeasurementFamilyUnitToTargetedUnit($measurementFamily, $targetedUnit, $amount);
 
-        if (\is_string($amountConvertedInTargetedUnit)) {
-            $amountConvertedInTargetedUnit = (float) $amountConvertedInTargetedUnit;
+        if (\is_string($amount)) {
+            $amount = (float) $amount;
         }
 
-        return $amountConvertedInTargetedUnit;
+        return $amount;
     }
 
     /**
      * @param RawMeasurementFamily $measurementFamily
-     * @throws OperationsOfThisUnitNotFoundException
-     * @throws UseOfUnknownOperatorException
      */
-    private function convertAmountToDefaultMeasurementFamilyUnit(array $measurementFamily, string $initialUnit, int|float|string $initialAmount): int|float|string
+    private function convertAmountToDefaultMeasurementFamilyUnit(array $measurementFamily, string $initialUnit, int|float|string $amount): int|float|string
     {
         $operations = $this->getUnitOperations($measurementFamily, $initialUnit);
 
-        $toStandardAmount = $initialAmount;
+        $toStandardAmount = $amount;
         foreach ($operations as $operation) {
             $toStandardAmount = $this->applyOperation($toStandardAmount, $operation['operator'], $operation['value']);
         }
@@ -65,14 +58,12 @@ final class MeasurementConverter
 
     /**
      * @param RawMeasurementFamily $measurementFamily
-     * @throws OperationsOfThisUnitNotFoundException
-     * @throws UseOfUnknownOperatorException
      */
-    private function convertFromDefaultMeasurementFamilyUnitToTargetedUnit(array $measurementFamily, string $targetedUnit, int|float|string $standardAmount): int|float|string
+    private function convertFromDefaultMeasurementFamilyUnitToTargetedUnit(array $measurementFamily, string $targetedUnit, int|float|string $amount): int|float|string
     {
         $operations = $this->getUnitOperations($measurementFamily, $targetedUnit);
 
-        $toTargetedUnitAmount = $standardAmount;
+        $toTargetedUnitAmount = $amount;
 
         foreach (\array_reverse($operations) as $operation) {
             $toTargetedUnitAmount = $this->applyReversedOperation($toTargetedUnitAmount, $operation['operator'], $operation['value']);
@@ -84,8 +75,6 @@ final class MeasurementConverter
     /**
      * @param RawMeasurementFamily $measurementFamily
      * @return array<RawMeasurementOperation>
-     *
-     * @throws OperationsOfThisUnitNotFoundException
      */
     private function getUnitOperations(array $measurementFamily, string $unitCode): array
     {
@@ -95,36 +84,43 @@ final class MeasurementConverter
             }
         }
 
-        throw new OperationsOfThisUnitNotFoundException($unitCode, $measurementFamily['code']);
+        throw new \LogicException(\sprintf(
+            'The Operations of this unit : %s of the measurement family : %s have not been found.',
+            $unitCode,
+            $measurementFamily['code'],
+        ));
     }
 
     private function applyOperation(int|float|string $amount, string $operator, float|int $operand): string
     {
         if (!\is_numeric($amount)) {
-            return '0';
+            throw new \Exception('The value of amount must be a numeric value.');
         }
         /** @var numeric-string $processedAmount */
-        $processedAmount = \is_float($amount) ? \number_format($amount, MeasurementConverter::SCALE, '.', '') : (string) $amount;
+        $processedAmount = \is_float($amount) ? \number_format($amount, self::DECIMAL_NUMBER, '.', '') : (string) $amount;
         /** @var numeric-string $operand */
-        $operand = \number_format($operand, MeasurementConverter::SCALE, '.', '');
+        $operand = \number_format($operand, self::DECIMAL_NUMBER, '.', '');
 
         switch ($operator) {
             case 'div':
                 if ($operand != 0) {
-                    $processedAmount = \bcdiv($processedAmount, $operand, MeasurementConverter::SCALE);
+                    $processedAmount = \bcdiv($processedAmount, $operand, self::DECIMAL_NUMBER);
                 }
                 break;
             case 'mul':
-                $processedAmount = \bcmul($processedAmount, $operand, MeasurementConverter::SCALE);
+                $processedAmount = \bcmul($processedAmount, $operand, self::DECIMAL_NUMBER);
                 break;
             case 'add':
-                $processedAmount = \bcadd($processedAmount, $operand, MeasurementConverter::SCALE);
+                $processedAmount = \bcadd($processedAmount, $operand, self::DECIMAL_NUMBER);
                 break;
             case 'sub':
-                $processedAmount = \bcsub($processedAmount, $operand, MeasurementConverter::SCALE);
+                $processedAmount = \bcsub($processedAmount, $operand, self::DECIMAL_NUMBER);
                 break;
             default:
-                throw new UseOfUnknownOperatorException($operator);
+                throw new \LogicException(\sprintf(
+                    'The operator : %s used for this operation is not listed in the configured operator for this measurement unit.',
+                    $operator,
+                ));
         }
 
         return $processedAmount;
@@ -135,25 +131,28 @@ final class MeasurementConverter
         /** @var numeric-string $processedAmount */
         $processedAmount = (string) $value;
         /** @var numeric-string $operand */
-        $operand = \number_format($operand, MeasurementConverter::SCALE, '.', '');
+        $operand = \number_format($operand, self::DECIMAL_NUMBER, '.', '');
 
         switch ($operator) {
             case 'div':
-                $processedAmount = \bcmul($processedAmount, $operand, MeasurementConverter::SCALE);
+                $processedAmount = \bcmul($processedAmount, $operand, self::DECIMAL_NUMBER);
                 break;
             case 'mul':
                 if ($operand != 0) {
-                    $processedAmount = \bcdiv($processedAmount, $operand, MeasurementConverter::SCALE);
+                    $processedAmount = \bcdiv($processedAmount, $operand, self::DECIMAL_NUMBER);
                 }
                 break;
             case 'add':
-                $processedAmount = \bcsub($processedAmount, $operand, MeasurementConverter::SCALE);
+                $processedAmount = \bcsub($processedAmount, $operand, self::DECIMAL_NUMBER);
                 break;
             case 'sub':
-                $processedAmount = \bcadd($processedAmount, $operand, MeasurementConverter::SCALE);
+                $processedAmount = \bcadd($processedAmount, $operand, self::DECIMAL_NUMBER);
                 break;
             default:
-                throw new UseOfUnknownOperatorException($operator);
+                throw new \LogicException(\sprintf(
+                    'The operator : %s used for this operation is not listed in the configured operator for this measurement unit.',
+                    $operator,
+                ));
         }
 
         return $processedAmount;

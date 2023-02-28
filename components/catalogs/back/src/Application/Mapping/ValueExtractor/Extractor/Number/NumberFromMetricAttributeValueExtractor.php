@@ -17,8 +17,8 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
 final class NumberFromMetricAttributeValueExtractor implements NumberValueExtractorInterface
 {
     public function __construct(
-        readonly private MeasurementConverter        $measurementConverter,
-        private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
+        readonly private MeasurementConverter                 $measurementConverter,
+        readonly private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
     ) {
     }
 
@@ -28,6 +28,10 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
     public function extract(array $product, string $code, ?string $locale, ?string $scope, ?array $parameters): float|int|null
     {
         $metricUnit = $parameters['unit'] ?? null;
+
+        if (empty($product['raw_values'])) {
+            return null;
+        }
         $metricValue = $product['raw_values'][$code][$scope][$locale] ?? null;
 
         if (!\is_string($metricUnit) || !\is_array($metricValue)) {
@@ -35,6 +39,10 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
         }
 
         $attribute = $this->getAttributeByCode($code);
+        if (null === $attribute) {
+            return null;
+        }
+
         return $this->findMetricUnitValue($attribute, $metricUnit, $metricValue);
     }
 
@@ -62,10 +70,10 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
     }
 
     /**
-     * @param Attribute|null $attribute
+     * @param Attribute $attribute
      * @param array<array-key, mixed> $metricValue
      */
-    private function findMetricUnitValue(?array $attribute, string $unit, array $metricValue): float|int|null
+    private function findMetricUnitValue(array $attribute, string $unit, array $metricValue): float|int|null
     {
         if (empty($attribute['measurement_family'])) {
             return null;
@@ -81,7 +89,7 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
 
         try {
             $amount = $this->measurementConverter->convert($attribute['measurement_family'], $metricValue['unit'], $unit, $metricValue['amount']);
-        } catch (\Exception) {
+        } catch (\LogicException) {
             return null;
         }
 
