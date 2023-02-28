@@ -54,21 +54,7 @@ final class AttributeSourceContainsValidMetricUnitValidator extends ConstraintVa
             throw new \LogicException('Attribute not found');
         }
 
-        $this->validateMetricHasUnit($value);
         $this->validateMetricUnitExists($value['parameters']['unit'], $attribute);
-    }
-
-    /**
-     * @param AttributeSource $value
-     */
-    private function validateMetricHasUnit(array $value): void
-    {
-        if (!$value['parameters']['unit']) {
-            $this->context
-                ->buildViolation('akeneo_catalogs.validation.product_mapping.source.measurement.unit.not_empty')
-                ->atPath('[parameters][unit]')
-                ->addViolation();
-        }
     }
 
     /**

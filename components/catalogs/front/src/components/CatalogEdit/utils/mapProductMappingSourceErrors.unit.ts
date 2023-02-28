@@ -22,6 +22,10 @@ test('it maps API errors to ProductMapping errors indexed by key', () => {
             propertyPath: 'productMapping[size][parameters][label_locale]',
             message: 'Locale invalid.',
         },
+        {
+            propertyPath: 'productMapping[size][parameters][unit]',
+            message: 'Measurement unit invalid.',
+        },
     ];
     const keys = ['uuid', 'name', 'body_html', 'erp_name', 'size'];
     expect(mapProductMappingSourceErrors(errors, keys)).toEqual({
@@ -63,6 +67,14 @@ test('it maps API errors to ProductMapping errors indexed by key', () => {
             locale: undefined,
             parameters: {
                 label_locale: 'Locale invalid.',
+            },
+        },
+        weight: {
+            source: undefined,
+            scope: undefined,
+            locale: undefined,
+            parameters: {
+                unit: 'Measurement unit invalid.',
             },
         },
     });
