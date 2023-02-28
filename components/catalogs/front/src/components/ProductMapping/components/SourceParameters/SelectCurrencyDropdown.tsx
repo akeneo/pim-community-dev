@@ -2,8 +2,8 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Source} from '../models/Source';
-import {useChannelCurrencies} from '../hooks/useChannelCurrencies';
+import {Source} from '../../models/Source';
+import {useCurrencies} from '../../../../hooks/useCurrencies';
 
 const DropdownField = styled(Field)`
     margin-top: 10px;
@@ -13,12 +13,10 @@ type Props = {
     source: Source;
     onChange: (source: Source) => void;
     error: string | undefined;
-    disabled: boolean;
 };
-
-export const SelectChannelCurrencyDropdown: FC<Props> = ({source, onChange, error, disabled}) => {
+export const SelectCurrencyDropdown: FC<Props> = ({source, onChange, error}) => {
     const translate = useTranslate();
-    const {data: currencies} = useChannelCurrencies(source.scope);
+    const {data: currencies} = useCurrencies();
 
     return (
         <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.currency.label')}>
@@ -33,7 +31,6 @@ export const SelectChannelCurrencyDropdown: FC<Props> = ({source, onChange, erro
                 openLabel={translate('akeneo_catalogs.common.select.open')}
                 placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.currency.placeholder')}
                 data-testid='source-parameter-currency-dropdown'
-                readOnly={disabled}
             >
                 {currencies?.map(currency => (
                     <SelectInput.Option key={currency} title={currency} value={currency}>
