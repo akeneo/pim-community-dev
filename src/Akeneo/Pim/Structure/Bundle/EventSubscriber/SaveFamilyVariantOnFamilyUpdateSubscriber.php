@@ -76,7 +76,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         // caller know who are the listener. It means it introduced accidental coupling between the two components that
         // should not know each other.
         $this->bulkFamilyVariantSaver->saveAll($validFamilyVariants, [
-            ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true,
+            ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => false,
         ]);
 
         if (!empty($allViolations)) {

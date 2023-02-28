@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- [Backport PIM-10606] PIM-10865: Fix computeFamilyVariantStructureChange on attribute removal
+
 # 6.0.72 (2023-02-27)
 
 # 6.0.71 (2023-02-21)
