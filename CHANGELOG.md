@@ -28,6 +28,7 @@
 - PIM-10868: Fix checkboxes on category trees
 - PIM-10832: Fix compute completeness job after removing an attribute from a family
 - PIM-10820: Partially revert [PIM-10350] to fix case sensitivity on options import
+- PIM-10856: Prevent the creation of a useless PHP session when a new token is created in the API
 
 ## Improvements
 
