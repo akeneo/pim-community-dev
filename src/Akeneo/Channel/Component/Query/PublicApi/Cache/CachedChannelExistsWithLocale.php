@@ -4,25 +4,49 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Component\Query\PublicApi\Cache;
 
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetCaseSensitiveLocaleCodeInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInterface, CachedQueryInterface
+final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInterface, CachedQueryInterface, GetCaseSensitiveLocaleCodeInterface
 {
-    private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes;
+    /**
+     * // TODO Should we check the case where channel codes are integers ?
+     *
+     * Contains the list of lowercase activated locale codes for each existing channel
+     * Example: [
+     *   'ecommerce' => ['en_us', 'fr_fr'],
+     *   'mobile' => ['de_de', 'fr_fr'],
+     * ]
+     *
+     * @var null|array<string, string[]>
+     */
+    private ?array $indexedChannelsWithLocales = null;
 
-    /** @var null|array */
-    private $indexedChannelsWithLocales = null;
+    /**
+     * Contains the mapping of the lowercase version of each activated locale code to the original one
+     * Example: [
+     *   'fr_fr' => 'fr_FR',
+     *   'de_de' => 'de_DE',
+     *   'en_us' => 'en_US',
+     * ]
+     *
+     * @var null|array<string, string>
+     */
+    private ?array $indexedLocales = null;
 
-    public function __construct(GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes)
-    {
-        $this->getChannelCodeWithLocaleCodes = $getChannelCodeWithLocaleCodes;
+    public function __construct(
+        private readonly GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
+    ) {
     }
 
     /**
@@ -41,14 +65,9 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
     public function isLocaleActive(string $localeCode): bool
     {
         $this->initializeCache();
+        Assert::isArray($this->indexedLocales);
 
-        foreach ($this->indexedChannelsWithLocales as $channelWithLocales) {
-            if (in_array($localeCode, $channelWithLocales['localeCodes'])) {
-                return true;
-            }
-        }
-
-        return false;
+        return \array_key_exists(\mb_strtolower($localeCode), $this->indexedLocales);
     }
 
     /**
@@ -57,11 +76,23 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
     public function isLocaleBoundToChannel(string $localeCode, string $channelCode): bool
     {
         $this->initializeCache();
+        Assert::isArray($this->indexedChannelsWithLocales);
 
-        return isset($this->indexedChannelsWithLocales[$channelCode])
-            ? in_array($localeCode, $this->indexedChannelsWithLocales[$channelCode]['localeCodes'])
-            : false
-            ;
+        return \array_key_exists($channelCode, $this->indexedChannelsWithLocales) &&
+            \in_array(\mb_strtolower($localeCode), $this->indexedChannelsWithLocales[$channelCode]);
+    }
+
+    public function forLocaleCode(string $localeCode): string
+    {
+        $this->initializeCache();;
+        Assert::isArray($this->indexedLocales);
+        $lowercaseLocaleCode = \mb_strtolower($localeCode);
+
+        if (!\array_key_exists($lowercaseLocaleCode, $this->indexedLocales)) {
+            throw new \LogicException(sprintf('Locale "%s" does not exist or is not activated.', $localeCode));
+        }
+
+        return $this->indexedLocales[$lowercaseLocaleCode];
     }
 
     /**
@@ -73,19 +104,26 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
      * - if this cache is not cleared, then en_US is not considered activated when querying with this service
      *
      * The correct way to handle that is to clear the cache after saving a channel.
-     * As it never occur in real use case (except tests), it will not impact performance
+     * As it never occurs in real use case (except tests), it will not impact performance
      */
     public function clearCache(): void
     {
         $this->indexedChannelsWithLocales = null;
+        $this->indexedLocales = null;
     }
 
     private function initializeCache(): void
     {
-        if (null == $this->indexedChannelsWithLocales) {
+        if (null === $this->indexedChannelsWithLocales) {
             $channelsWithLocales = $this->getChannelCodeWithLocaleCodes->findAll();
             foreach ($channelsWithLocales as $channelWithLocales) {
-                $this->indexedChannelsWithLocales[$channelWithLocales['channelCode']] = $channelWithLocales;
+                $channelCode = $channelWithLocales['channelCode'];
+                $localeCodes = $channelWithLocales['localeCodes'];
+                foreach ($localeCodes as $localeCode) {
+                    $this->indexedLocales[\mb_strtolower($localeCode)] = $localeCode;
+                }
+                $lowercaseLocaleCodes = \array_map(static fn (string $localeCode): string => \mb_strtolower($localeCode), $localeCodes);
+                $this->indexedChannelsWithLocales[$channelCode] = $lowercaseLocaleCodes;
             }
         }
     }
