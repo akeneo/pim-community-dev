@@ -14,12 +14,12 @@ final class AuthenticatedAsAdminCommandRegistrySpec extends ObjectBehavior
 {
     public function it_registers_authenticated_as_admin_commands(): void
     {
-        $this->isCommandAuthenticatedAsAdminUser('akeneo:batch:job')->shouldReturn(false);
+        $this->isCommandRegistered('akeneo:batch:job')->shouldReturn(false);
 
         $this->registerCommand('akeneo:batch:job');
         $this->registerCommand('pim:install');
 
-        $this->isCommandAuthenticatedAsAdminUser('akeneo:batch:job')->shouldReturn(true);
-        $this->isCommandAuthenticatedAsAdminUser('debug:router')->shouldReturn(false);
+        $this->isCommandRegistered('akeneo:batch:job')->shouldReturn(true);
+        $this->isCommandRegistered('debug:router')->shouldReturn(false);
     }
 }

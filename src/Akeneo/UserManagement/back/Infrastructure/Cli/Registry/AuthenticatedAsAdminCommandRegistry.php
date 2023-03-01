@@ -13,15 +13,15 @@ final class AuthenticatedAsAdminCommandRegistry
     /**
      * @var array<string, bool>
      */
-    private array $commandsAuthenticatedAsAdminUser = [];
+    private array $commands = [];
 
     public function registerCommand(string $commandName): void
     {
-        $this->commandsAuthenticatedAsAdminUser[$commandName] = true;
+        $this->commands[$commandName] = true;
     }
 
-    public function isCommandAuthenticatedAsAdminUser(string $commandName): bool
+    public function isCommandRegistered(string $commandName): bool
     {
-        return \array_key_exists($commandName, $this->commandsAuthenticatedAsAdminUser);
+        return \array_key_exists($commandName, $this->commands);
     }
 }
