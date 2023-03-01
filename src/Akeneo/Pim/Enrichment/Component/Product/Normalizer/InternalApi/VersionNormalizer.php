@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
@@ -37,7 +39,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     protected AttributeRepositoryInterface $attributeRepository;
     protected UserContext $userContext;
 
-    const ATTRIBUTE_HEADER_SEPARATOR = "-";
+    public const ATTRIBUTE_HEADER_SEPARATOR = "-";
 
     public function __construct(
         UserManager $userManager,
@@ -144,11 +146,11 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             $attributeCode = $this->extractAttributeCode($valueHeader);
             $context['attribute'] = $attributeCode;
 
-            if (!isset($attributeTypes[$attributeCode])) {
-                continue;
+            if (isset($attributeTypes[$attributeCode])) {
+                $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
+            } else {
+                $presenter = $this->presenterRegistry->getPresenterByFieldCode($valueHeader);
             }
-
-            $presenter = $this->presenterRegistry->getPresenterByAttributeType($attributeTypes[$attributeCode]);
             if (null === $presenter) {
                 continue;
             }

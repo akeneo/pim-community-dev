@@ -11,4 +11,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 interface FindIdentifier
 {
     public function fromUuid(string $uuid): null|string;
+
+    /**
+     * @param string[] $uuids
+     * @return array<string, string>
+     */
+    public function fromUuids(array $uuids): array;
 }

@@ -5,6 +5,7 @@ parameters:
     pim_catalog.localization.presenter.number.class:   Akeneo\Tool\Component\Localization\Presenter\NumberPresenter
     pim_catalog.localization.presenter.date.class:     Akeneo\Tool\Component\Localization\Presenter\DatePresenter
     pim_catalog.localization.presenter.boolean.class:  Akeneo\Tool\Component\Localization\Presenter\BooleanPresenter
+    pim_catalog.localization.presenter.product_quantified_association.class: Akeneo\Tool\Component\Localization\Presenter\ProductQuantifiedAssociationPresenter
 
 services:
     pim_catalog.localization.presenter.registry:
@@ -87,3 +88,11 @@ services:
             - ['date_min', 'date_max']
         tags:
             - { name: pim_catalog.localization.presenter, type: 'attribute_option' }
+
+    # Association
+    pim_catalog.localization.presenter.product_quantified_association:
+        class: '%pim_catalog.localization.presenter.product_quantified_association.class%'
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier'
+        tags:
+            - { name: pim_catalog.localization.presenter, type: 'product_field' }

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Product;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
@@ -29,6 +31,18 @@ class SqlFindProductIdentifierIntegration extends TestCase
         Assert::assertNull($findIdentifier->fromUuid($unknownId->toString()));
     }
 
+    /** @test */
+    public function it_gets_the_identifiers_of_products_from_its_uuids(): void
+    {
+        $findIdentifier = $this->get('Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier');
+        Assert::assertSame(
+            [$this->fooUuid => 'foo'],
+            $findIdentifier->fromUuids([$this->fooUuid])
+        );
+        $unknownId = Uuid::uuid4();
+        Assert::assertEmpty($findIdentifier->fromUuids([$unknownId->toString()]));
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -45,7 +59,7 @@ SQL;
         $userId = $this->createAdminUser()->getId();
 
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
-        $command = UpsertProductCommand::createFromCollection((int) $userId, 'foo', []);
+        $command = UpsertProductCommand::createWithIdentifier((int) $userId, ProductIdentifier::fromIdentifier('foo'), []);
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
@@ -53,7 +67,7 @@ SQL;
         $this->fooUuid = $product->getUuid()->toString();
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

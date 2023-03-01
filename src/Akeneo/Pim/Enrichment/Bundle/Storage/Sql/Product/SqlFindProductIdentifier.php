@@ -27,4 +27,28 @@ final class SqlFindProductIdentifier implements FindIdentifier
 
         return false === $identifier ? null : $identifier;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fromUuids(array $uuids): array
+    {
+        if ([] === $uuids) {
+            return [];
+        }
+        $uuidsAsBytes = \array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), $uuids);
+
+        $stmt = $this->connection->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) AS uuid, identifier FROM pim_catalog_product WHERE uuid IN (:uuids)',
+            ['uuids' => $uuidsAsBytes],
+            ['uuids' => Connection::PARAM_STR_ARRAY]
+        );
+
+        $identifiers = [];
+        while ($row = $stmt->fetchAssociative()) {
+            $identifiers[$row['uuid']] = $row['identifier'];
+        }
+
+        return $identifiers;
+    }
 }
