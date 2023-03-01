@@ -396,8 +396,7 @@ final class UpdateIdentifierGeneratorContext implements Context
         string $locale = '',
         string $value = '',
         string $unknown = '',
-    ): void
-    {
+    ): void {
         var_dump($value);
         $defaultCondition = $this->getValidCondition($type);
         if ($attributeCode !== '') {

@@ -172,6 +172,7 @@ final class GetAvailableConditionsController
             $results[$groupCode]['children'][] = [
                 'id' => $attribute['code'],
                 'text' => $attribute['label'],
+                'type' => $attribute['type'],
             ];
         }
 

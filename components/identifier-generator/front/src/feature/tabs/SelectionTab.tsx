@@ -9,7 +9,7 @@ import {
   EnabledLine,
   FamilyLine,
   ImplicitConditionsList,
-  SimpleOrMultiSelectLine
+  SimpleOrMultiSelectLine,
 } from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';

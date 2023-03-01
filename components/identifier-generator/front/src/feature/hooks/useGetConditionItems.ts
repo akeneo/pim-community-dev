@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {Conditions} from '../models';
+import {AttributeType, Conditions} from '../models';
 
 const DEFAULT_LIMIT = 20;
 
@@ -10,6 +10,7 @@ type ItemsGroup = {
   children: {
     id: string;
     text: string;
+    type?: AttributeType;
   }[];
 };
 
