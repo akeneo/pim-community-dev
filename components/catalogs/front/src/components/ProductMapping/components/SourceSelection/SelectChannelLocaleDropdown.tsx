@@ -2,8 +2,8 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {Field, Helper, Locale, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Source} from '../models/Source';
-import {useChannelLocales} from '../../../hooks/useChannelLocales';
+import {Source} from '../../models/Source';
+import {useChannelLocales} from '../../../../hooks/useChannelLocales';
 
 const DropdownField = styled(Field)`
     margin-top: 10px;

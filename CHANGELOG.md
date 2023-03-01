@@ -24,7 +24,10 @@
 - PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
 - PIM-10853: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
 - PIM-10829: Fix case-sensitive locale on translatable business objects
-- PIM-10840: Fix attribute update date on attribute options change above 10000 options
+- PIM-10840: Fix attribute update date on attribute options change above 10000 options 
+- PIM-10868: Fix checkboxes on category trees
+- PIM-10832: Fix compute completeness job after removing an attribute from a family
+- PIM-10820: Partially revert [PIM-10350] to fix case sensitivity on options import
 
 ## Improvements
 

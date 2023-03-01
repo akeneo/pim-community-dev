@@ -95,7 +95,6 @@ pim_identifier_generator:
         type:
           truncate: 'Utiliser les premiers charactères'
           code: 'Utiliser le code entier'
-          nomenclature: 'Utiliser la nomenclature'
       operator:
         placeholder: 'Sélectionner un opérateur'
     empty:
