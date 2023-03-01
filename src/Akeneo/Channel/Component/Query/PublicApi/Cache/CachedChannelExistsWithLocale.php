@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Component\Query\PublicApi\Cache;
 
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetCaseSensitiveChannelCodeInterface;
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetCaseSensitiveLocaleCodeInterface;
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetCaseSensitiveChannelCodeInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetCaseSensitiveLocaleCodeInterface;
 use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Webmozart\Assert\Assert;
@@ -21,8 +19,6 @@ use Webmozart\Assert\Assert;
 final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInterface, CachedQueryInterface, GetCaseSensitiveLocaleCodeInterface, GetCaseSensitiveChannelCodeInterface
 {
     /**
-     * // TODO Should we check the case where channel codes are integers ?
-     *
      * Contains the list of lowercase activated locale codes for each existing lowercase channel
      * Example: [
      *   'ecommerce' => ['en_us', 'fr_fr'],
@@ -57,7 +53,7 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
     private ?array $indexedChannels = null;
 
     public function __construct(
-        private readonly GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
+        private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
     ) {
     }
 

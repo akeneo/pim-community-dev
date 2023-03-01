@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetCaseSensitiveChannelCodeInterface;
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetCaseSensitiveLocaleCodeInterface;
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetCaseSensitiveChannelCodeInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetCaseSensitiveLocaleCodeInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
 /**
@@ -17,10 +16,10 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
 {
     public function __construct(
-        private readonly ChannelExistsWithLocaleInterface $channelsLocales,
-        private readonly GetCaseSensitiveLocaleCodeInterface $getCaseSensitiveLocaleCode,
-        private readonly GetCaseSensitiveChannelCodeInterface $getCaseSensitiveChannelCode,
-        private readonly GetAttributes $getAttributes
+        private ChannelExistsWithLocaleInterface $channelsLocales,
+        private GetCaseSensitiveLocaleCodeInterface $getCaseSensitiveLocaleCode,
+        private GetCaseSensitiveChannelCodeInterface $getCaseSensitiveChannelCode,
+        private GetAttributes $getAttributes
     ) {
     }
 

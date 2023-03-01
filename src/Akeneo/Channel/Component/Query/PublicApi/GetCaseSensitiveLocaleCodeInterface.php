@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Channel\Infrastructure\Component\Query\PublicApi;
+namespace Akeneo\Channel\Component\Query\PublicApi;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
@@ -8,6 +8,9 @@ namespace Akeneo\Channel\Infrastructure\Component\Query\PublicApi;
  */
 interface GetCaseSensitiveLocaleCodeInterface
 {
-
+    /**
+     * Returns the case sensitive locale code from any locale code
+     * Example: forLocaleCode('EN_us') => 'en_US'
+     */
     public function forLocaleCode(string $localeCode): string;
 }

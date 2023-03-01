@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetCaseSensitiveChannelCodeInterface;
-use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetCaseSensitiveLocaleCodeInterface;
+use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetCaseSensitiveChannelCodeInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetCaseSensitiveLocaleCodeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
