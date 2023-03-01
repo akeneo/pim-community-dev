@@ -22,25 +22,7 @@ test('it returns null if there is nothing to display', () => {
     expect(screen.queryByText('akeneo_catalogs.product_mapping.source.requirements.title')).not.toBeInTheDocument();
 });
 
-test('it display the description of the target', () => {
-    const target: Target = {
-        code: 'erp_name',
-        label: 'ERP name',
-        type: 'string',
-        description: 'Name description',
-        format: null,
-    };
-
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <RequirementsCollapse target={target}></RequirementsCollapse>
-        </ThemeProvider>
-    );
-
-    expect(screen.queryByText('Name description')).toBeInTheDocument();
-});
-
-test('it display the description of the target', () => {
+test('it displays the description of the target', () => {
     const target: Target = {
         code: 'erp_name',
         label: 'ERP name',

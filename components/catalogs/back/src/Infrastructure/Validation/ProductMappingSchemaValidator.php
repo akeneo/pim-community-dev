@@ -144,10 +144,10 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
         return false;
     }
 
-    private function containsMissingRequiredPropertyKeys(object $schema): bool
+    private function containsMissingRequiredPropertyKeys(object $schemaObject): bool
     {
-        /** @var array{properties: array<string, array<string, string>>, required?: string[]} $schema */
-        $schema = \json_decode(\json_encode($schema, JSON_THROW_ON_ERROR) ?: '{}', true, 512, JSON_THROW_ON_ERROR);
+        /** @var ProductMappingSchemaType $schema */
+        $schema = \json_decode(\json_encode($schemaObject, JSON_THROW_ON_ERROR) ?: '{}', true, 512, JSON_THROW_ON_ERROR);
 
         if (!isset($schema['required'])) {
             return false;
