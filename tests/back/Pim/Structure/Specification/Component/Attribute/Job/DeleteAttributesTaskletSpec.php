@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Structure\Component\Attribute\Job;
 
 use Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet;
@@ -125,9 +127,10 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
         $stepExecution->addSummaryInfo('skipped_attributes', 0)->shouldBeCalled();
 
         $attributeRemover->remove($attribute1)->willThrow(new CannotRemoveAttributeException('an error'));
-        $translator->trans('an error')->willReturn('an error');
+        $translator->trans('an error', [])->willReturn('an error');
         $stepExecution->addWarning('an error', [], Argument::type(DataInvalidItem::class))->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_attributes')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $this->execute();
     }
