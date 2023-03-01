@@ -33,13 +33,13 @@ class UpdateAuditDataCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        // Errors are thrown when the database is off following a deployment
+        // but the cron is still active and executing this command.
+        // We decided to make these errors silent to avoid noise in our alert monitoring
         try {
             $this->updateAuditData->execute();
         } catch (ConnectionException $exception) {
             if ($exception->getPrevious()?->getCode() === self::MYSQL_IS_UNAVAILABLE_ERROR_CODE) {
-                // Errors are thrown when the database is off following a deployment
-                // but the cron is still active and executing this command.
-                // We decided to make these errors silent to avoid noise in our alert monitoring
                 $this->logger->warning('Mysql is unavailable', ['exception' => $exception]);
 
                 return Command::FAILURE;
