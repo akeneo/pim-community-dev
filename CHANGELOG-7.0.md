@@ -1,5 +1,18 @@
 # 7.0.x
 
+# 7.0.10 (2023-02-28)
+
+- RAB-1356: [Backport PIM-10840]: Fix attribute update date on attribute options change above 10000 options
+- RAB-1356: [Backport PIM-10853]: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
+- RAB-1356: [Backport PIM-10849]: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
+- RAB-1356: [Backport PIM-10831]: Fix severe performance issues with the association product and product model picker
+- RAB-1356: [Backport PIM-10844]: Filter empty attribute option labels
+- RAB-1356: [Backport PIM-10778]: Add limit to the number of options to display on the attribute option page
+- RAB-1356: [Backport PIM-10835]: Fix command publish-job-to-queue does not work
+- RAB-1356: [Backport PIM-10823]: Fix cannot import price and measurement with comma as decimal separator with value not saved as string in import file
+- RAB-1356: [Backport PIM-10825]: Fix transfer to external storage does not give enough information
+- RAB-1356: [Backport PIM-10858]: Fix password is set on sftp storage using private key
+
 # 7.0.9 (2023-02-20)
 
 # 7.0.8 (2023-02-13)
