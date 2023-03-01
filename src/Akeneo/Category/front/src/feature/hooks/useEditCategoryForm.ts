@@ -10,11 +10,14 @@ import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from
 import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
 import {CategoryPermissions} from '../models/CategoryPermission';
 import {UserGroup} from './useFetchUserGroups';
+import {DEACTIVATED_TEMPLATE} from '../models/ResponseStatus';
+import {useHistory} from 'react-router';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
   const notify = useNotify();
   const translate = useTranslate();
+  const history = useHistory();
 
   const {load: loadCategory, category: fetchedCategory, status: categoryStatus} = useCategory(categoryId);
 
@@ -85,7 +88,11 @@ const useEditCategoryForm = (categoryId: number) => {
       setHistoryVersion((prevVersion: number) => prevVersion + 1);
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
     } else {
-      notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
+      notify(NotificationLevel.ERROR, response.error.message);
+
+      if (response.error.code && response.error.code === DEACTIVATED_TEMPLATE) {
+        history.push('/');
+      }
     }
   }, [
     router,

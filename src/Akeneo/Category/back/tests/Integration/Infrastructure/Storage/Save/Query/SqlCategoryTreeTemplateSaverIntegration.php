@@ -31,4 +31,21 @@ class SqlCategoryTreeTemplateSaverIntegration extends CategoryTestCase
 
         $this->assertEquals($category->getId(), $retrievedCategoryTree->getId());
     }
+
+    public function testItDoesNotInsertNewCategoryTemplateOnDeactivatedTemplate(): void
+    {
+        /** @var Category $category */
+        $category = $this->get(GetCategoryInterface::class)->byCode('master');
+        $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $category->getId()->getValue());
+
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+
+        $this->deactivateTemplate($templateModel->getUuid()->getValue());
+
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+
+        $retrievedCategoryTree = ($this->get(GetCategoryTreeByCategoryTemplate::class))($templateModel->getUuid());
+
+        $this->assertNull($retrievedCategoryTree);
+    }
 }

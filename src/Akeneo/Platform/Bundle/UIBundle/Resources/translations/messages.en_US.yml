@@ -587,4 +587,4 @@ pim_login:
     powered: Powered by
     powered_image_title: logo Akeneo
 
-pim_system.acl_group.developer_mode: Developer mode
+pim_system.acl_group.connect: Connect

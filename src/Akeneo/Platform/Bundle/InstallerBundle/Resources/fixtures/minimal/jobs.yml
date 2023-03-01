@@ -221,3 +221,8 @@ jobs:
         alias: delete_attributes
         label: Mass delete attributes
         type: attribute_mass_delete
+    clean_category_template_and_enriched_values:
+        connector: internal
+        alias: clean_category_template_and_enriched_values
+        label: Clean Category Template and Enriched Values
+        type: clean_category_template_and_enriched_values

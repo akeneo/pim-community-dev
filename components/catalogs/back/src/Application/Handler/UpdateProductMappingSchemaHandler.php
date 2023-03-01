@@ -7,7 +7,7 @@ namespace Akeneo\Catalogs\Application\Handler;
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\UpsertCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
+use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\UpdateProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiCatalogNotFoundException;
@@ -19,9 +19,9 @@ use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException as ServiceApiC
 final class UpdateProductMappingSchemaHandler
 {
     public function __construct(
-        private GetCatalogQueryInterface $getCatalogQuery,
-        private CatalogsMappingStorageInterface $catalogsMappingStorage,
-        private UpsertCatalogQueryInterface $upsertCatalogQuery,
+        readonly private GetCatalogQueryInterface $getCatalogQuery,
+        readonly private UpdateProductMappingSchemaQueryInterface $updateProductMappingSchemaQuery,
+        readonly private UpsertCatalogQueryInterface $upsertCatalogQuery,
     ) {
     }
 
@@ -33,8 +33,8 @@ final class UpdateProductMappingSchemaHandler
             throw new ServiceApiCatalogNotFoundException();
         }
 
-        $this->catalogsMappingStorage->write(
-            \sprintf('%s_product.json', $catalog->getId()),
+        $this->updateProductMappingSchemaQuery->execute(
+            $catalog->getId(),
             \json_encode($command->getProductMappingSchema(), JSON_THROW_ON_ERROR),
         );
 

@@ -32,19 +32,19 @@ class GetCategoryChildrenQueryTest extends IntegrationTestCase
         $this->createCategory([
             'code' => 'child1',
             'parent' => 'parent_category',
-            'labels' => ['en_US' => 'Child category']
+            'labels' => ['en_US' => 'Child category'],
         ]);
 
         $this->createCategory([
             'code' => 'child2',
             'parent' => 'parent_category',
-            'labels' => ['en_US' => 'Child 2 category', 'fr_FR' => 'Categorie enfant 2']
+            'labels' => ['en_US' => 'Child 2 category', 'fr_FR' => 'Categorie enfant 2'],
         ]);
 
         $this->createCategory([
             'code' => 'child3',
             'parent' => 'parent_category',
-            'labels' => []
+            'labels' => [],
         ]);
 
         $this->createCategory(['code' => 'grand_child', 'parent' => 'child1']);

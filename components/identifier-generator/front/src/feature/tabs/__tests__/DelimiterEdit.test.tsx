@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render, screen} from '../../tests/test-utils';
+import {fireEvent, mockACLs, render, screen} from '../../tests/test-utils';
 import {DelimiterEdit} from '../structure';
 
 describe('SelectionTab', () => {
@@ -37,5 +37,14 @@ describe('SelectionTab', () => {
 
     fireEvent.click(screen.getByText('pim_identifier_generator.structure.delimiters.checkbox_label'));
     expect(onToggleDelimiter).toBeCalled();
+  });
+
+  it('should make the delimiter toggle readonly if the user doesnt have the correct acl', () => {
+    mockACLs(true, false);
+    render(<DelimiterEdit delimiter={null} onToggleDelimiter={jest.fn()} onChangeDelimiter={jest.fn()} />);
+
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toBeInTheDocument;
+    expect(checkbox).toHaveAttribute('readonly');
   });
 });

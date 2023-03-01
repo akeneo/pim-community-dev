@@ -37,7 +37,7 @@ final class CreateCatalogHandler
                 ],
                 [],
                 [],
-            )
+            ),
         );
     }
 }

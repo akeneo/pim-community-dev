@@ -79,6 +79,14 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
         $consoleApp->setAutoExit(false);
 
         $input = new ArrayInput([
+            'command' => 'doctrine:schema:drop',
+            '--force' => true,
+            '--full-database' => true,
+        ]);
+        $output = new BufferedOutput();
+        $consoleApp->run($input, $output);
+
+        $input = new ArrayInput([
             'command' => 'pim:installer:db',
         ]);
         $output = new BufferedOutput();

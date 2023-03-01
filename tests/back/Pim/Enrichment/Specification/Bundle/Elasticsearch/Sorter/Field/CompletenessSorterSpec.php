@@ -2,13 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field;
 
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\CompletenessSorter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use PhpSpec\ObjectBehavior;
 
 class CompletenessSorterSpec extends ObjectBehavior
 {
@@ -40,9 +40,10 @@ class CompletenessSorterSpec extends ObjectBehavior
         $sqb->addSort(
             [
                 'completeness.mobile.en_US' => [
-                    "order"   => 'ASC',
-                    "missing" => "_last"
-                ]
+                    'order' => 'ASC',
+                    'missing' => '_last',
+                    'unmapped_type' => 'integer',
+                ],
             ]
         )->shouldBeCalled();
 
@@ -56,9 +57,10 @@ class CompletenessSorterSpec extends ObjectBehavior
         $sqb->addSort(
             [
                 'completeness.mobile.en_US' => [
-                    "order"   => 'DESC',
-                    "missing" => "_last"
-                ]
+                    'order' => 'DESC',
+                    'missing' => '_last',
+                    'unmapped_type' => 'integer',
+                ],
             ]
         )->shouldBeCalled();
 

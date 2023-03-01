@@ -24,7 +24,7 @@ describe('FamilyCodePreview', () => {
       type: PROPERTY_NAMES.FAMILY,
       process: {
         type: AbbreviationType.TRUNCATE,
-        operator: Operator.EQUAL,
+        operator: Operator.EQUALS,
         value: 3,
       },
     };

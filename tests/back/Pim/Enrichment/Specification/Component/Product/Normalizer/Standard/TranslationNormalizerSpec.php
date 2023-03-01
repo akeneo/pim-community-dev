@@ -12,9 +12,27 @@ use PhpSpec\ObjectBehavior;
 
 class TranslationNormalizerSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $localeRepository)
+    function let(
+        IdentifiableObjectRepositoryInterface $localeRepository,
+        LocaleInterface $enLocale,
+        LocaleInterface $frLocale,
+        LocaleInterface $deLocale
+    )
     {
         $this->beConstructedWith($localeRepository);
+
+        $enLocale->isActivated()->willReturn(true);
+        $enLocale->getCode()->willReturn('en_US');
+        $frLocale->isActivated()->willReturn(true);
+        $frLocale->getCode()->willReturn('fr_FR');
+        $deLocale->isActivated()->willReturn(true);
+        $deLocale->getCode()->willReturn('de_DE');
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
+        $localeRepository->findOneByIdentifier('FR_FR')->willReturn($frLocale);
+        $localeRepository->findOneByIdentifier('de_DE')->willReturn($deLocale);
+        $localeRepository->findOneByIdentifier(null)->willReturn(null);
     }
 
     function it_is_initializable()
@@ -36,12 +54,9 @@ class TranslationNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_translatable_object_using_activated_locales(
-        $localeRepository,
         TranslatableInterface $translatable,
         AttributeTranslation $english,
         AttributeTranslation $french,
-        LocaleInterface $enLocale,
-        LocaleInterface $frLocale
     ) {
         $translatable->getTranslations()->willReturn([
             $english, $french
@@ -52,11 +67,6 @@ class TranslationNormalizerSpec extends ObjectBehavior
 
         $french->getLocale()->willReturn('fr_FR');
         $french->getLabel()->willReturn('bar');
-
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $enLocale->isActivated()->willReturn(true);
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
-        $frLocale->isActivated()->willReturn(true);
 
         $this->normalize($translatable, 'standard', ['locales' => ['en_US', 'de_DE', 'fr_FR', 'fr_BE']])->shouldReturn(
             [
@@ -112,14 +122,10 @@ class TranslationNormalizerSpec extends ObjectBehavior
     }
 
     function it_provides_all_locales_if_no_list_provided_in_context(
-        $localeRepository,
         TranslatableInterface $translatable,
         AttributeTranslation $english,
         AttributeTranslation $french,
         AttributeTranslation $german,
-        LocaleInterface $enLocale,
-        LocaleInterface $frLocale,
-        LocaleInterface $deLocale
     ) {
         $translatable->getTranslations()->willReturn([
             $english, $french, $german
@@ -133,13 +139,6 @@ class TranslationNormalizerSpec extends ObjectBehavior
 
         $german->getLocale()->willReturn('de_DE');
         $german->getLabel()->willReturn('baz');
-
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $enLocale->isActivated()->willReturn(true);
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
-        $frLocale->isActivated()->willReturn(true);
-        $localeRepository->findOneByIdentifier('de_DE')->willReturn($deLocale);
-        $deLocale->isActivated()->willReturn(true);
 
         $this->normalize($translatable, 'standard', [
             'locales'  => [],
@@ -154,14 +153,10 @@ class TranslationNormalizerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_method_not_exists(
-        $localeRepository,
         TranslatableInterface $translatable,
         AttributeTranslation $english,
         AttributeTranslation $french,
         AttributeTranslation $german,
-        LocaleInterface $enLocale,
-        LocaleInterface $frLocale,
-        LocaleInterface $deLocale
     ) {
         $translatable->getTranslations()->willReturn([
             $english, $french, $german
@@ -175,14 +170,6 @@ class TranslationNormalizerSpec extends ObjectBehavior
 
         $german->getLocale()->willReturn('de_DE');
         $german->getLabel()->willReturn('baz');
-
-
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $enLocale->isActivated()->willReturn(true);
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
-        $frLocale->isActivated()->willReturn(true);
-        $localeRepository->findOneByIdentifier('de_DE')->willReturn($deLocale);
-        $deLocale->isActivated()->willReturn(true);
 
         $this->shouldThrow('\LogicException')->duringNormalize($translatable, 'standard', [
             'locales'  => [],
@@ -196,9 +183,7 @@ class TranslationNormalizerSpec extends ObjectBehavior
         AttributeTranslation $english,
         AttributeTranslation $french,
         AttributeTranslation $german,
-        LocaleInterface $enLocale,
-        LocaleInterface $frLocale,
-        LocaleInterface $deLocale
+        LocaleInterface $deLocale,
     ) {
         $translatable->getTranslations()->willReturn([
             $english, $french, $german
@@ -213,12 +198,9 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $german->getLocale()->willReturn('de_DE');
         $german->getLabel()->willReturn('baz');
 
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $enLocale->isActivated()->willReturn(true);
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frLocale);
-        $frLocale->isActivated()->willReturn(true);
         $localeRepository->findOneByIdentifier('de_DE')->willReturn($deLocale);
         $deLocale->isActivated()->willReturn(false);
+        $deLocale->getCode()->willReturn('de_DE');
 
         $this->normalize($translatable, 'standard', [
             'locales'  => [],
@@ -226,6 +208,57 @@ class TranslationNormalizerSpec extends ObjectBehavior
         ])->shouldReturn(
             [
                 'en_US' => 'foo',
+                'fr_FR' => 'bar',
+            ]
+        );
+    }
+
+    public function it_normalize_even_if_the_locale_case_is_wrong(
+        TranslatableInterface $translatable,
+        AttributeTranslation $english,
+        AttributeTranslation $french,
+    ) {
+        $translatable->getTranslations()->willReturn([
+            $english, $french
+        ]);
+        $english->getLocale()->willReturn('en_US');
+        $english->getLabel()->willReturn('foo');
+
+        $french->getLocale()->willReturn('FR_FR');
+        $french->getLabel()->willReturn('bar');
+
+        $this->normalize($translatable, 'standard', [
+            'property' => 'label',
+            'locales' => ['en_US', 'fr_FR']
+        ])->shouldReturn(
+            [
+                'en_US' => 'foo',
+                'fr_FR' => 'bar',
+            ]
+        );
+    }
+
+    public function it_normalize_even_if_the_context_locale_case_is_wrong(
+        TranslatableInterface $translatable,
+        AttributeTranslation $english,
+        AttributeTranslation $french,
+    ) {
+        $translatable->getTranslations()->willReturn([
+            $english, $french
+        ]);
+        $english->getLocale()->willReturn('en_US');
+        $english->getLabel()->willReturn('foo');
+
+        $french->getLocale()->willReturn('fr_FR');
+        $french->getLabel()->willReturn('bar');
+
+        $this->normalize($translatable, 'standard', [
+            'property' => 'label',
+            'locales' => ['en_US', 'FR_FR']
+        ])->shouldReturn(
+            [
+                'en_US' => 'foo',
+                'FR_FR' => null,
                 'fr_FR' => 'bar',
             ]
         );

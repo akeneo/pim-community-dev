@@ -9,7 +9,7 @@ import {
   Tag,
   useBooleanState,
 } from 'akeneo-design-system';
-import {useFeatureFlags, useRouter, useTranslate} from '../../hooks';
+import {useRouter, useTranslate} from '../../hooks';
 import {SubNavigationDropdown} from './SubNavigationDropdown';
 import {useTheme} from 'akeneo-design-system';
 
@@ -61,7 +61,6 @@ const SubNavigation: FC<Props> = ({
   const [isSubNavigationOpened, openSubNavigation, closeSubNavigation] = useBooleanState(
     subNavigationState === null || subNavigationState === '1'
   );
-  const featureFlags = useFeatureFlags();
 
   useEffect(() => {
     sessionStorage.setItem(`collapsedColumn_${stateCode}`, isSubNavigationOpened ? '1' : '0');
@@ -113,10 +112,7 @@ const SubNavigation: FC<Props> = ({
                         <StyledLockIcon size={16} color={theme.color.blue100} />
                       </Tag>
                     )}
-                    {subEntry.title === 'Categories' && featureFlags.isEnabled('enriched_category') && (
-                      <StyledBadge level="secondary">{translate('akeneo.category.tag.new')}</StyledBadge>
-                    )}
-                    {subEntry.new && <Tag tint="green">New</Tag>}
+                    {subEntry.new && <StyledBadge level="secondary">{translate('pim_menu.tag.new')}</StyledBadge>}
                   </StyledSubNavigationItem>
                 ))}
             </Section>

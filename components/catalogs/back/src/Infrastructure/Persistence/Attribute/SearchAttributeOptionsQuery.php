@@ -27,7 +27,7 @@ final class SearchAttributeOptionsQuery implements SearchAttributeOptionsQueryIn
         string $locale = 'en_US',
         ?string $search = null,
         int $page = 1,
-        int $limit = 20
+        int $limit = 20,
     ): array {
         $options = $this->searchableAttributeOptionsRepository->findBySearch(
             $search,

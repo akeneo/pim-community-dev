@@ -9,6 +9,9 @@ import {TargetSourceAssociation} from './components/TargetSourceAssociation';
 import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
 import {Source} from './models/Source';
+import {Target} from './models/Target';
+import {createTargetsFromProductMapping} from './utils/createTargetsFromProductMapping';
+import {sourceHasError} from './utils/sourceHasError';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -33,14 +36,42 @@ type Props = {
 export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema, errors, onChange}) => {
     const translate = useTranslate();
 
-    const [selectedTarget, setSelectedTarget] = useState<string | null>(null);
-    const [selectedTargetLabel, setSelectedTargetLabel] = useState<string | null>(null);
+    const [selectedTarget, setSelectedTarget] = useState<Target | null>(null);
     const [selectedSource, setSelectedSource] = useState<Source | null>(null);
 
     const handleClick = useCallback(
         (targetCode, source) => {
-            setSelectedTarget(targetCode);
-            setSelectedTargetLabel(productMappingSchema?.properties[targetCode]?.title ?? targetCode);
+            if (productMappingSchema === undefined) {
+                return;
+            }
+            const target: Target = {
+                code: targetCode,
+                label: productMappingSchema.properties[targetCode]?.title ?? targetCode,
+                type: productMappingSchema.properties[targetCode].type,
+                format: productMappingSchema.properties[targetCode].format ?? null,
+            };
+            if (undefined !== productMappingSchema.properties[targetCode].description) {
+                target.description = productMappingSchema.properties[targetCode].description;
+            }
+            if (undefined !== productMappingSchema.properties[targetCode].minLength) {
+                target.minLength = productMappingSchema.properties[targetCode].minLength;
+            }
+            if (undefined !== productMappingSchema.properties[targetCode].maxLength) {
+                target.maxLength = productMappingSchema.properties[targetCode].maxLength;
+            }
+            if (undefined !== productMappingSchema.properties[targetCode].pattern) {
+                target.pattern = productMappingSchema.properties[targetCode].pattern;
+            }
+            if (undefined !== productMappingSchema.properties[targetCode].minimum) {
+                target.minimum = productMappingSchema.properties[targetCode].minimum;
+            }
+            if (undefined !== productMappingSchema.properties[targetCode].maximum) {
+                target.maximum = productMappingSchema.properties[targetCode].maximum;
+            }
+            if (undefined !== productMappingSchema.properties[targetCode].enum) {
+                target.enum = productMappingSchema.properties[targetCode].enum;
+            }
+            setSelectedTarget(target);
             setSelectedSource(source);
         },
         [productMappingSchema]
@@ -51,7 +82,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             if (selectedTarget !== null) {
                 onChange({
                     ...productMapping,
-                    [selectedTarget]: source,
+                    [selectedTarget.code]: source,
                 });
                 setSelectedSource(source);
             }
@@ -59,31 +90,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
         [selectedTarget, onChange, productMapping]
     );
 
-    const buildTargetsWithUuidFirst = function (productMapping: {(key: string): Source} | {}): [string, Source][] {
-        const targets = Object.entries(productMapping);
-
-        targets.forEach(function (target, i) {
-            if ('uuid' === target[0]) {
-                targets.splice(i, 1);
-                targets.unshift(target);
-            }
-        });
-
-        return targets;
-    };
-
-    const targets = buildTargetsWithUuidFirst(productMapping ?? {});
-
-    const targetsWithErrors = Object.keys(
-        Object.fromEntries(
-            Object.entries(errors).filter(([, value]) => {
-                const properties = Object.entries(value ?? {});
-                const propertiesWithErrors = properties.filter(([, value]) => typeof value === 'string');
-
-                return propertiesWithErrors.length > 0;
-            })
-        )
-    );
+    const targets = createTargetsFromProductMapping(productMapping);
 
     return (
         <MappingContainer data-testid={'product-mapping'}>
@@ -111,13 +118,13 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                                 {targets.map(([targetCode, source]) => {
                                     return (
                                         <TargetSourceAssociation
-                                            isSelected={selectedTarget === targetCode}
+                                            isSelected={selectedTarget?.code === targetCode}
                                             key={targetCode}
                                             onClick={handleClick}
                                             targetCode={targetCode}
                                             targetLabel={productMappingSchema.properties[targetCode]?.title}
                                             source={source}
-                                            hasError={targetsWithErrors.includes(targetCode)}
+                                            hasError={sourceHasError(errors[targetCode])}
                                         />
                                     );
                                 })}
@@ -126,14 +133,13 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                     </Table.Body>
                 </Table>
             </TargetContainer>
-            <SourceContainer>
+            <SourceContainer data-testid='source-panel'>
                 <SourcePanel
                     target={selectedTarget}
-                    targetLabel={selectedTargetLabel}
                     source={selectedSource}
                     onChange={handleSourceUpdate}
-                    errors={selectedTarget === null ? null : errors[selectedTarget]}
-                ></SourcePanel>
+                    errors={selectedTarget === null ? null : errors[selectedTarget?.code]}
+                />
             </SourceContainer>
         </MappingContainer>
     );

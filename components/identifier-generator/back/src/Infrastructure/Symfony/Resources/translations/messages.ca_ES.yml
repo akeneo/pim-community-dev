@@ -1,0 +1,14 @@
+pim_catalog_identifier_generator:
+  condition:
+    fields:
+      family: Família
+      enabled: Estat
+    field_groups:
+      system: Sistema
+  structure:
+    fields:
+      free_text: Text lliure
+      auto_number: Número automàtic
+      family: Família
+    field_groups:
+      system: Sistema

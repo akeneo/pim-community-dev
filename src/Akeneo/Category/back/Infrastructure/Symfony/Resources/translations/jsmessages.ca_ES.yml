@@ -4,8 +4,6 @@ akeneo.category:
       category_templates: Plantilles de categoria
   attributes: Atributs
   edition_form:
-    error:
-      unhandled_attribute_type: No s'ha pogut trobar el creador de camps d'atribut per al tipus d'atribut "{{type}}"
     template:
       title: Plantilla
       fetching_failed: S'ha produït un error en obtenir la plantilla
@@ -16,7 +14,6 @@ akeneo.category:
   template:
     create: Activa la plantilla
     edit: Veure plantilla
-    delete: Esborrar plantilla
     notification_success: La plantilla s'ha activat correctament
     notification_error: No s'ha pogut activar la plantilla
     attribute:
@@ -31,3 +28,13 @@ akeneo.category:
       header: Etiqueta
       code: Codi
       type: Tipus
+  tag:
+    new: Nou
+  discover_enriched_categories_information:
+    title: Descobriu les categories enriquides a l'Accés Anticipat
+    content:
+      activate_template: Activeu l'enriquiment de categories mitjançant plantilles preconfigurades
+      enrich_attribute_values: Enriquiu els atributs de text, àrea de text i imatge en categories
+      deactivate_template: La desactivació de l'enriquiment i la plantilla personalitzada arribaran en breu
+    survey_link_label: Diguen's el que penses
+    learn_more_link_label: Més informació sobre les categories enriquides

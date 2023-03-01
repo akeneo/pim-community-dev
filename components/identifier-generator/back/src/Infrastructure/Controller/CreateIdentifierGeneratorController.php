@@ -8,18 +8,21 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGenerator
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Webmozart\Assert\Assert;
 
 class CreateIdentifierGeneratorController
 {
     public function __construct(
-        private CreateGeneratorHandler $createGeneratorHandler,
-        private IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly CreateGeneratorHandler $createGeneratorHandler,
+        private readonly IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly SecurityFacadeInterface $security,
     ) {
     }
 
@@ -27,6 +30,9 @@ class CreateIdentifierGeneratorController
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->security->isGranted('pim_identifier_generator_manage')) {
+            throw new AccessDeniedException();
         }
 
         try {

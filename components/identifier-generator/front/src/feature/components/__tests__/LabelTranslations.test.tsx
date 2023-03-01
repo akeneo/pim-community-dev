@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, mockResponse, render, screen, waitFor} from '../../tests/test-utils';
+import {fireEvent, mockACLs, mockResponse, render, screen, waitFor} from '../../tests/test-utils';
 import {LabelTranslations} from '../LabelTranslations';
 
 const defaultUiLocales = [
@@ -32,6 +32,18 @@ const labelCollection = {
 };
 
 describe('LabelTranslations', () => {
+  it('should make the labels readonly without ACL', async () => {
+    mockACLs(true, false);
+    mockResponse('pim_localization_locale_index', 'GET', {json: defaultUiLocales});
+
+    const onLabelsChange = jest.fn();
+    render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
+
+    await waitFor(() => screen.getByText('English (United States)'));
+    fireEvent.change(screen.getByTitle(''), {target: {value: 'German Label'}});
+    expect(onLabelsChange).not.toBeCalledWith();
+  });
+
   it('should render the initial values', async () => {
     mockResponse('pim_localization_locale_index', 'GET', {json: defaultUiLocales});
 
