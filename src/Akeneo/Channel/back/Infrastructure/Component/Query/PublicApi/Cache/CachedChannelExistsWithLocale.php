@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Channel\Infrastructure\Component\Query\PublicApi\Cache;
 
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetCaseSensitiveChannelCodeInterface;
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetCaseSensitiveLocaleCodeInterface;
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
@@ -15,12 +16,12 @@ use Webmozart\Assert\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInterface, CachedQueryInterface, GetCaseSensitiveLocaleCodeInterface
+final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInterface, CachedQueryInterface, GetCaseSensitiveLocaleCodeInterface, GetCaseSensitiveChannelCodeInterface
 {
     /**
      * // TODO Should we check the case where channel codes are integers ?
      *
-     * Contains the list of lowercase activated locale codes for each existing channel
+     * Contains the list of lowercase activated locale codes for each existing lowercase channel
      * Example: [
      *   'ecommerce' => ['en_us', 'fr_fr'],
      *   'mobile' => ['de_de', 'fr_fr'],
@@ -42,6 +43,17 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
      */
     private ?array $indexedLocales = null;
 
+    /**
+     * Contains the mapping of the lowercase version of each channel code to the original one
+     * Example: [
+     *   'ecommerce' => 'eCommerce',
+     *   'mobile' => 'mobile',
+     * ]
+     *
+     * @var null|array<string, string>
+     */
+    private ?array $indexedChannels = null;
+
     public function __construct(
         private readonly GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
     ) {
@@ -54,7 +66,7 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
     {
         $this->initializeCache();
 
-        return array_key_exists($channelCode, $this->indexedChannelsWithLocales);
+        return array_key_exists(\mb_strtolower($channelCode), $this->indexedChannels);
     }
 
     /**
@@ -76,8 +88,8 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
         $this->initializeCache();
         Assert::isArray($this->indexedChannelsWithLocales);
 
-        return \array_key_exists($channelCode, $this->indexedChannelsWithLocales) &&
-            \in_array(\mb_strtolower($localeCode), $this->indexedChannelsWithLocales[$channelCode]);
+        return \array_key_exists(\mb_strtolower($channelCode), $this->indexedChannelsWithLocales) &&
+            \in_array(\mb_strtolower($localeCode), $this->indexedChannelsWithLocales[\mb_strtolower($channelCode)]);
     }
 
     public function forLocaleCode(string $localeCode): string
@@ -91,6 +103,19 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
         }
 
         return $this->indexedLocales[$lowercaseLocaleCode];
+    }
+
+    public function forChannelCode(string $channelCode): string
+    {
+        $this->initializeCache();;
+        Assert::isArray($this->indexedChannels);
+        $lowercaseChannelCode = \mb_strtolower($channelCode);
+
+        if (!\array_key_exists($lowercaseChannelCode, $this->indexedChannels)) {
+            throw new \LogicException(sprintf('Channel "%s" does not exist.', $channelCode));
+        }
+
+        return $this->indexedChannels[$lowercaseChannelCode];
     }
 
     /**
@@ -108,6 +133,7 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
     {
         $this->indexedChannelsWithLocales = null;
         $this->indexedLocales = null;
+        $this->indexedChannels = null;
     }
 
     private function initializeCache(): void
@@ -116,12 +142,14 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
             $channelsWithLocales = $this->getChannelCodeWithLocaleCodes->findAll();
             foreach ($channelsWithLocales as $channelWithLocales) {
                 $channelCode = $channelWithLocales['channelCode'];
+                $lowercaseChannelCode = \mb_strtolower($channelCode);
+                $this->indexedChannels[$lowercaseChannelCode] = $channelCode;
                 $localeCodes = $channelWithLocales['localeCodes'];
                 foreach ($localeCodes as $localeCode) {
                     $this->indexedLocales[\mb_strtolower($localeCode)] = $localeCode;
                 }
                 $lowercaseLocaleCodes = \array_map(static fn (string $localeCode): string => \mb_strtolower($localeCode), $localeCodes);
-                $this->indexedChannelsWithLocales[$channelCode] = $lowercaseLocaleCodes;
+                $this->indexedChannelsWithLocales[$lowercaseChannelCode] = $lowercaseLocaleCodes;
             }
         }
     }
