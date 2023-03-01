@@ -61,7 +61,7 @@ class CategoryTestCase extends TestCase
         ?int $id = null,
         ?array $labels = [],
         ?int $parentId = null,
-        ?array $permissions = [],
+        ?array $permissions = null,
     ): Category {
         $categoryId = (null === $id ? null : new CategoryId($id));
         $parentId = (null === $parentId ? null : new CategoryId($parentId));
@@ -82,8 +82,8 @@ class CategoryTestCase extends TestCase
         $categoryBase = $this->get(GetCategoryInterface::class)->byCode((string) $categoryModelToCreate->getCode());
         $parentId =
             $categoryBase->getParentId() === null
-                ? null
-                : new CategoryId($categoryBase->getParentId()->getValue());
+            ? null
+            : new CategoryId($categoryBase->getParentId()->getValue());
 
         $categoryModelWithId = new Category(
             id: new CategoryId($categoryBase->getId()->getValue()),
