@@ -42,6 +42,10 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
     color: ${getColor('grey', 100)};
   }
 
+  &::-webkit-datetime-edit-fields-wrapper {
+    color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
+  }
+
   &::-webkit-calendar-picker-indicator {
     position: absolute;
     top: 0;
@@ -61,7 +65,7 @@ const commonIconStyles = css<{readOnly: boolean; invalid: boolean} & AkeneoTheme
   margin: 12px 12px 12px 0;
   padding-left: 12px;
   pointer-events: none;
-  
+
   z-index: 1;
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
 `;
@@ -133,6 +137,15 @@ const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
     const internalRef = useRef<HTMLInputElement | null>(null);
     forwardedRef = forwardedRef ?? internalRef;
 
+    const handleClick = useCallback((event: MouseEvent) => {
+      if (!readOnly && event.target && typeof event.target?.showPicker === 'function') {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          event.target.showPicker();
+        } catch (e) {}
+      }
+    }, []);
+
     const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
       if (!readOnly && onChange) {
         onChange(event.currentTarget.value);
@@ -156,6 +169,7 @@ const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
           invalid={invalid}
           title={value}
           pattern="\d{4}-\d{2}-\d{2}"
+          onClick={handleClick}
           {...rest}
         />
         {readOnly && <ReadOnlyIcon size={16} />}
