@@ -34,7 +34,7 @@ final class ProductMappingRequiredFilters implements PqbFiltersInterface
         $filters = [];
 
         foreach ($productMappingSchema['required'] as $targetCode) {
-            if ($productMapping[$targetCode]['source'] === null) {
+            if (!isset($productMapping[$targetCode]) || $productMapping[$targetCode]['source'] === null) {
                 throw new ProductMappingRequiredSourceMissingException();
             }
 
