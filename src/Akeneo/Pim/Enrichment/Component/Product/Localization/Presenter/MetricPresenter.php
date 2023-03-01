@@ -54,16 +54,19 @@ class MetricPresenter extends NumberPresenter
         }
 
         $unitLabel = '';
-        if (isset($options['attribute']) && isset($value['unit']) && isset($options['locale'])) {
+
+        if (isset($options['attribute']) && isset($options['locale'])) {
             try {
-                $measurementFamilyCode = $this->baseCachedObjectRepository->findOneByIdentifier($options['attribute'])
-                    ->getMetricFamily();
-                $measurementFamily = $this->measurementFamilyRepository
-                    ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
-                $unitLabel = $measurementFamily->getUnitLabel(
-                    UnitCode::fromString($value['unit']),
-                    LocaleIdentifier::fromCode($options['locale'])
-                );
+                if (isset($value['unit']) && $value['unit'] !== '') {
+                    $measurementFamilyCode = $this->baseCachedObjectRepository->findOneByIdentifier($options['attribute'])
+                        ->getMetricFamily();
+                    $measurementFamily = $this->measurementFamilyRepository
+                        ->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
+                    $unitLabel = $measurementFamily->getUnitLabel(
+                        UnitCode::fromString($value['unit']),
+                        LocaleIdentifier::fromCode($options['locale'])
+                    );
+                }
             } catch (\Exception $e) {
                 $this->logger->warning('An error occurred while trying to fetch the measurement family of a metric value to present it.', [
                     'error_message' => $e->getMessage(),
@@ -81,9 +84,8 @@ class MetricPresenter extends NumberPresenter
         }
 
         $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;
-        $unit = isset($value['unit']) && $value['unit'] !== '' ? $unitLabel : null;
 
-        return join(' ', array_filter([$amount, $unit], fn ($value) => null !== $value && '' !== $value));
+        return join(' ', array_filter([$amount, $unitLabel], fn ($value) => null !== $value && '' !== $value));
     }
 
     /**
