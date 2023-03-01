@@ -35,7 +35,7 @@ class AuthenticateCommandAsAdminUserListener
      */
     public function createUserSystem(ConsoleCommandEvent $event): void
     {
-        if (!$this->commandRegistry->isCommandAuthenticatedAsAdminUser($event->getCommand()->getName())) {
+        if (!$this->commandRegistry->isCommandRegistered($event->getCommand()->getName())) {
             return;
         }
 
