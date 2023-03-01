@@ -6,7 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\Prod
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetAllProductUuids;
 use Akeneo\Test\Integration\TestCase;
-use Ramsey\Uuid\Lazy\LazyUuidFromString;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -26,9 +26,10 @@ final class GetAllProductIntegration extends TestCase
         $productUuids = $this->getAllProduct()->byBatchesOf(2);
         $result = [...$productUuids];
 
-        $this->assertCount(2, $result);
-        $this->assertContainsOnlyInstancesOf(LazyUuidFromString::class, $result[0]);
-        $this->assertContainsOnlyInstancesOf(LazyUuidFromString::class, $result[1]);
+        $this->assertCount(3, $result);
+        $this->assertContainsOnlyInstancesOf(UuidInterface::class, $result[0]);
+        $this->assertContainsOnlyInstancesOf(UuidInterface::class, $result[1]);
+        $this->assertContainsOnlyInstancesOf(UuidInterface::class, $result[2]);
     }
 
     private function getAllProduct(): GetAllProductUuids
