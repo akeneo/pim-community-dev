@@ -92,7 +92,7 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
 
     public function forLocaleCode(string $localeCode): string
     {
-        $this->initializeCache();;
+        $this->initializeCache();
         Assert::isArray($this->indexedLocales);
         $lowercaseLocaleCode = \mb_strtolower($localeCode);
 
@@ -105,7 +105,7 @@ final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInte
 
     public function forChannelCode(string $channelCode): string
     {
-        $this->initializeCache();;
+        $this->initializeCache();
         Assert::isArray($this->indexedChannels);
         $lowercaseChannelCode = \mb_strtolower($channelCode);
 
