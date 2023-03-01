@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10780: Fix PEF display for localizable values with locale codes with wrong case
+
 # 6.0.73 (2023-02-28)
 
 ## Bug fixes
