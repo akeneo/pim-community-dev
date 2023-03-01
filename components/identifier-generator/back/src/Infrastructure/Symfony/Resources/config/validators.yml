@@ -25,6 +25,9 @@ services:
     Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateGeneratorCommandValidator:
         arguments:
             - '@validator'
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateNomenclatureCommandValidator:
+        arguments:
+            - '@validator'
     Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValidValidator:
         arguments:
             - '@validator'

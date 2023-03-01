@@ -8,14 +8,14 @@ const DEFAULT_LIMIT_PAGINATION = 20;
 type QueryKey = (string | number | FamilyCode[] | undefined)[];
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const useGetFamilies = (params: {page?: number; search?: string; codes?: FamilyCode[]}) => {
+const useGetFamilies = (params: {page?: number; search?: string; codes?: FamilyCode[]; limit?: number}) => {
   const router = useRouter();
 
   return useQuery<Family[], Error, Family[], QueryKey>({
     queryKey: ['getFamilies', params.page ?? 1, params.search ?? '', params.codes],
     queryFn: async (parameters: {queryKey: QueryKey}) => {
       const queryParameters: {[key: string]: string | number | FamilyCode[] | undefined} = {
-        limit: DEFAULT_LIMIT_PAGINATION,
+        limit: params.limit || DEFAULT_LIMIT_PAGINATION,
         page: parameters.queryKey[1],
         search: parameters.queryKey[2],
       };

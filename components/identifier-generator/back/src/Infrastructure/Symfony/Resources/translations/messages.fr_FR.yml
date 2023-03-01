@@ -1,4 +1,9 @@
 pim_catalog_identifier_generator:
+  acl:
+    view: 'Afficher les générateurs d''identifiants'
+    manage: 'Editer les générateurs d''identifiants'
+  acl_group:
+    identifier_generator: 'Générateur d''identifiants'
   condition:
     fields:
       family: Famille
