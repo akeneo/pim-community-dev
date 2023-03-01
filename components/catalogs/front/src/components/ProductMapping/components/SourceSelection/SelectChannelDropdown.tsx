@@ -2,11 +2,11 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useInfiniteChannels} from '../../../hooks/useInfiniteChannels';
-import {useUniqueEntitiesByCode} from '../../../hooks/useUniqueEntitiesByCode';
-import {Channel} from '../../../models/Channel';
-import {useChannel} from '../../../hooks/useChannel';
-import {Source} from '../models/Source';
+import {useInfiniteChannels} from '../../../../hooks/useInfiniteChannels';
+import {useUniqueEntitiesByCode} from '../../../../hooks/useUniqueEntitiesByCode';
+import {Channel} from '../../../../models/Channel';
+import {useChannel} from '../../../../hooks/useChannel';
+import {Source} from '../../models/Source';
 
 const DropdownField = styled(Field)`
     margin-top: 10px;
