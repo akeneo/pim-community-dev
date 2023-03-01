@@ -10,10 +10,9 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class AttributeShouldHaveTypes extends Constraint
+final class AttributeShouldHaveType extends Constraint
 {
-    /** @var array<string> */
-    public array $types;
+    public string $type;
 
     public string $message = 'validation.identifier_generator.attribute_should_have_type';
 
@@ -27,11 +26,11 @@ final class AttributeShouldHaveTypes extends Constraint
 
     public function getDefaultOption(): string
     {
-        return 'types';
+        return 'type';
     }
 
     public function getRequiredOptions(): array
     {
-        return ['types'];
+        return ['type'];
     }
 }

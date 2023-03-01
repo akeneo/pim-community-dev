@@ -68,8 +68,11 @@ final class SimpleOrMultiSelectShouldBeValidValidator extends ConstraintValidato
             'attributeCode' => [
                 new Type('string'),
                 new AttributeShouldExist(),
-                new AttributeShouldHaveTypes([
-                    'types' => ['pim_catalog_simpleselect', 'pim_catalog_multiselect'],
+                new AttributeShouldHaveType([
+                    'type' => [
+                        SimpleSelect::type() => 'pim_catalog_simpleselect',
+                        MultiSelect::type() => 'pim_catalog_multiselect',
+                    ][$condition['type']],
                 ]),
             ],
             'scope' => [new Optional()],

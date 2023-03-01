@@ -294,7 +294,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create an identifier generator with wrong attribute type
     When I try to create an identifier generator with a simple_select condition and name attribute
-    Then I should get an error with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect, pim_catalog_multiselect".'
+    Then I should get an error with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator without scope
@@ -346,7 +346,7 @@ Feature: Create Identifier Generator
 
   Scenario: Cannot create a multiselect condition by using the simple select attribute
     When I try to create an identifier generator with a multi_select condition and color attribute
-    Then I should get an error with message 'conditions[0][value]: The following attribute options do not exist for the attribute "color": "option_a", "option_b".'
+    Then I should get an error with message 'conditions[0][attributeCode]: The "color" attribute code is "pim_catalog_simpleselect" type and should be of type "pim_catalog_multiselect".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator using multi_select with IN operator and array of simple_select options

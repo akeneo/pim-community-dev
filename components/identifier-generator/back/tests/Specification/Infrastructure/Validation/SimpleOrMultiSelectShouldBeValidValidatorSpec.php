@@ -92,7 +92,7 @@ class SimpleOrMultiSelectShouldBeValidValidatorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ExecutionContext $context,
     ): void {
-        $condition = ['type' => 'multi_select', 'operator' => 'EMPTY', 'value' => ['color', 'size']];
+        $condition = ['type' => 'multi_select', 'operator' => 'EMPTY', 'value' => ['option_a', 'option_b']];
 
         $validator->validate($condition, Argument::any())->shouldBeCalledTimes(2);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();

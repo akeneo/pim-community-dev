@@ -4,7 +4,7 @@ services:
             - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: validator.constraint_validator }
-    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldHaveTypesValidator:
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldHaveTypeValidator:
         arguments:
             - '@akeneo.pim.structure.query.get_attributes'
         tags:

@@ -243,7 +243,7 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier generator with wrong attribute type
     When I try to update an identifier generator with a simple_select condition with name attribute
-    Then I should get an error on update with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect, pim_catalog_multiselect".'
+    Then I should get an error on update with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
 
   Scenario: Cannot update an identifier generator without scope
     Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
@@ -287,7 +287,7 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update a multiselect condition by using the simple select attribute
     When I try to update an identifier generator with a multi_select condition with color attribute
-    Then I should get an error on update with message 'conditions[0][value]: The following attribute options do not exist for the attribute "color": "option_a", "option_b".'
+    Then I should get an error on update with message 'conditions[0][attributeCode]: The "color" attribute code is "pim_catalog_simpleselect" type and should be of type "pim_catalog_multiselect".'
 
   Scenario: Cannot update an identifier generator using multi_select with IN operator and array of simple_select options
     When I try to update an identifier generator with a multi_select condition with IN operator and ["red", "green"] as value
