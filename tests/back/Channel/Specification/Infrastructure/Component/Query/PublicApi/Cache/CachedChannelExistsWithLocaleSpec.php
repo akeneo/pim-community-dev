@@ -50,12 +50,14 @@ class CachedChannelExistsWithLocaleSpec extends ObjectBehavior
         $this->isLocaleActive('en_US')->shouldReturn(true);
         $this->isLocaleActive('de_DE')->shouldReturn(true);
         $this->isLocaleActive('es_ES')->shouldReturn(false);
+        $this->isLocaleActive('fr_fr')->shouldReturn(true); // Works with lowercase
     }
 
     function it_tests_the_locale_is_bound_to_locale()
     {
         $this->isLocaleBoundToChannel('fr_FR', 'ecommerce')->shouldReturn(true);
         $this->isLocaleBoundToChannel('en_US', 'ecommerce')->shouldReturn(true);
+        $this->isLocaleBoundToChannel('en_us', 'ecommerce')->shouldReturn(true); // Works with lowercase
         $this->isLocaleBoundToChannel('de_DE', 'ecommerce')->shouldReturn(false);
 
         $this->isLocaleBoundToChannel('de_DE', 'mobile')->shouldReturn(true);
@@ -65,5 +67,12 @@ class CachedChannelExistsWithLocaleSpec extends ObjectBehavior
 
         $this->isLocaleBoundToChannel('en_US', 'unknown')->shouldReturn(false);
         $this->isLocaleBoundToChannel('unknown', 'unknown')->shouldReturn(false);
+    }
+
+    function it_returns_original_locale_code()
+    {
+        $this->forLocaleCode('en_US')->shouldReturn('en_US');
+        $this->forLocaleCode('EN_us')->shouldReturn('en_US');
+        $this->shouldThrow(\LogicException::class)->during('forLocaleCode', ['unknown']);
     }
 }

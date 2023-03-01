@@ -28,6 +28,7 @@
 - PIM-10868: Fix checkboxes on category trees
 - PIM-10832: Fix compute completeness job after removing an attribute from a family
 - PIM-10820: Partially revert [PIM-10350] to fix case sensitivity on options import
+- PIM-10780: Fix PEF display for localizable values with locale codes with wrong case
 
 ## Improvements
 

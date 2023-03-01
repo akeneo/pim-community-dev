@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetCaseSensitiveLocaleCodeInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
 /**
@@ -14,8 +15,9 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
 {
     public function __construct(
-        private ChannelExistsWithLocaleInterface $channelsLocales,
-        private GetAttributes $getAttributes
+        private readonly ChannelExistsWithLocaleInterface $channelsLocales,
+        private readonly GetCaseSensitiveLocaleCodeInterface $getCaseSensitiveLocaleCode,
+        private readonly GetAttributes $getAttributes
     ) {
     }
 
@@ -41,9 +43,10 @@ class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
         $filteredProductValues = [];
         foreach ($productValues as $channel => $localeValues) {
             if ($this->doesChannelExist($channel)) {
-                foreach ($localeValues as $locale => $value) {
-                    if ($this->isLocaleActivatedForChannel($locale, $channel)) {
-                        $filteredProductValues[$channel][$locale] = $value;
+                foreach ($localeValues as $localeCode => $value) {
+                    if ($this->isLocaleActivatedForChannel($localeCode, $channel)) {
+                        $originalLocaleCode = $localeCode === '<all_locales>' ? '<all_locales>' : $this->getCaseSensitiveLocaleCode->forLocaleCode($localeCode);
+                        $filteredProductValues[$channel][$originalLocaleCode] = $value;
                     }
                 }
             }
