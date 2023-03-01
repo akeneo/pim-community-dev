@@ -348,64 +348,13 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with enabled condition without value
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithoutValue(): void
-    {
-        $this->tryToCreateGenerator(conditions: [
-            ['type' => 'enabled'],
-        ]);
-    }
-
-    /**
-     * @When I try to create an identifier generator with enabled condition with string value
-     */
-    public function iCreateAnIdentifierGeneratorWithEnabledConditionWithStringValue(): void
-    {
-        $this->tryToCreateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => 'true'],
-        ]);
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with (?P<type>enabled|simple_select) condition with an unknown property$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty($type): void
-    {
-        $defaultValue = $this->getValidCondition($type);
-        $defaultValue['unknown'] = 'unknown property';
-
-        $this->tryToCreateGenerator(conditions: [$defaultValue]);
-    }
-
-    /**
      * @When I try to create an identifier generator with 2 enabled conditions
      */
-    public function iTryToCreateAnIdentifierGeneratorWithEnabledConditions(): void
+    public function iTryToCreateAnIdentifierGeneratorWith2EnabledConditions(): void
     {
         $this->tryToCreateGenerator(conditions: [
             ['type' => 'enabled', 'value' => true],
             ['type' => 'enabled', 'value' => true],
-        ]);
-    }
-
-    /**
-     * @When I try to create an identifier generator with a family condition with an unknown operator
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator(): void
-    {
-        $this->tryToCreateGenerator(conditions: [
-            ['type' => 'family', 'operator' => 'unknown'],
-        ]);
-    }
-
-    /**
-     * @When I try to create an identifier generator with a family condition with unknown property
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty(): void
-    {
-        $this->tryToCreateGenerator(conditions: [
-            ['type' => 'family', 'operator' => 'EMPTY', 'unknown' => 'unknown_field'],
         ]);
     }
 
@@ -421,41 +370,21 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with a family without operator
+     * @When /^I try to create an identifier generator with an? (?P<type>simple_select|multi_select|family|enabled) condition(?:(?: with| and|,) (?P<attributeCode>[^ ]*) attribute)?(?:(?: with| and|,) (?P<operator>[^ ]*) operator)?(?:(?: with| and|,) (?P<scope>[^ ]*) scope)?(?:(?: with| and|,) (?P<locale>[^ ]*) locale)?(?:(?: with| and|,) (?P<value>.*) as value)?(?P<unknown>(?: with| and|,) an unknown property)?$/
      */
-    public function iTryToCreateAnIdentifierGeneratorWithAFamilyWithoutOperator(): void
-    {
-        $this->tryToCreateGenerator(conditions: [
-            ['type' => 'family', 'value' => ['shirts']],
-        ]);
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with a (?P<type>family|simple_select|multi_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithAConditionWithOperatorAndValue($type, $operator, $value): void
-    {
-        $defaultCondition = $this->getValidCondition($type, operator: $operator);
-
-        if ($value === 'undefined') {
-            unset($defaultCondition['value']);
-            $this->tryToCreateGenerator(conditions: [$defaultCondition]);
-        } else {
-            $defaultCondition['value'] = \json_decode($value);
-            $this->tryToCreateGenerator(conditions: [$defaultCondition]);
-        }
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with a simple_select condition with (?P<attributeCode>[^']*) attribute(?: and (?P<scope>.*) scope)?(?: and (?P<locale>.*) locale)?$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(
-        string $attributeCode,
+    public function iTryToCreateAnIdentifierGeneratorWithCondition(
+        string $type,
+        string $attributeCode = '',
+        string $operator = '',
         string $scope = '',
-        string $locale = ''
+        string $locale = '',
+        string $value = '',
+        string $unknown = '',
     ): void {
-        $defaultCondition = $this->getValidCondition('simple_select');
-        $defaultCondition['attributeCode'] = $attributeCode;
+        $defaultCondition = $this->getValidCondition($type);
+        if ($attributeCode !== '') {
+            $defaultCondition['attributeCode'] = $attributeCode;
+        }
         if ('undefined' === $scope) {
             unset($defaultCondition['scope']);
         } elseif ('' !== $scope) {
@@ -466,19 +395,19 @@ final class CreateIdentifierGeneratorContext implements Context
         } elseif ('' !== $locale) {
             $defaultCondition['locale'] = $locale;
         }
-        $this->tryToCreateGenerator(conditions: [$defaultCondition]);
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with a multi_select condition with (?P<attributeCode>[^']*) attribute?$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithAMultiSelectConditionWithNameAttribute(
-        string $attributeCode,
-        string $scope = '',
-        string $locale = ''
-    ): void {
-        $defaultCondition = $this->getValidCondition('multi_select');
-        $defaultCondition['attributeCode'] = $attributeCode;
+        if ('undefined' === $value) {
+            unset($defaultCondition['value']);
+        } elseif ($value !== '') {
+            $defaultCondition['value'] = \json_decode($value);
+        }
+        if ('undefined' === $operator) {
+            unset($defaultCondition['operator']);
+        } elseif ($operator !== '') {
+            $defaultCondition['operator'] = $operator;
+        }
+        if ($unknown !== '') {
+            $defaultCondition['unknown'] = 'unknown property';
+        }
         $this->tryToCreateGenerator(conditions: [$defaultCondition]);
     }
 

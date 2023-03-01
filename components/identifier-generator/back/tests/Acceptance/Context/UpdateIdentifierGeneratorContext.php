@@ -364,37 +364,6 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an identifier generator with enabled condition without value
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithoutValue(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'enabled'],
-        ]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with enabled condition with string value
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithStringValue(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => 'true'],
-        ]);
-    }
-
-    /**
-     * @When /^I try to update an identifier generator with (?P<type>enabled|simple_select) condition with an unknown property$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty($type): void
-    {
-        $defaultValue = $this->getValidCondition($type);
-        $defaultValue['unknown'] = 'unknown property';
-
-        $this->tryToUpdateGenerator(conditions: [$defaultValue]);
-    }
-
-    /**
      * @When I try to update an identifier generator with :arg1 enabled conditions
      */
     public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditions($arg1): void
@@ -402,26 +371,6 @@ final class UpdateIdentifierGeneratorContext implements Context
         $this->tryToUpdateGenerator(conditions: [
             ['type' => 'enabled', 'value' => true],
             ['type' => 'enabled', 'value' => true],
-        ]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with a family condition with an unknown operator
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'family', 'operator' => 'unknown'],
-        ]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with a family condition with unknown property
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'family', 'operator' => 'EMPTY', 'unknown' => 'unknown_field'],
         ]);
     }
 
@@ -437,41 +386,23 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an identifier generator with a family without operator
+     * @When /^I try to update an identifier generator with an? (?P<type>simple_select|multi_select|family|enabled) condition(?:(?: with| and|,) (?P<attributeCode>[^ ]*) attribute)?(?:(?: with| and|,) (?P<operator>[^ ]*) operator)?(?:(?: with| and|,) (?P<scope>[^ ]*) scope)?(?:(?: with| and|,) (?P<locale>[^ ]*) locale)?(?:(?: with| and|,) (?P<value>.*) as value)?(?P<unknown>(?: with| and|,) an unknown property)?$/
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyWithoutOperator(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'family', 'value' => ['shirts']],
-        ]);
-    }
-
-    /**
-     * @When /^I try to update an identifier generator with a (?P<type>family|simple_select|multi_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue(string $type, string $operator, string $value): void
-    {
-        $defaultCondition = $this->getValidCondition($type, operator: $operator);
-
-        if ($value === 'undefined') {
-            unset($defaultCondition['value']);
-            $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
-        } else {
-            $defaultCondition['value'] = \json_decode($value);
-            $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
-        }
-    }
-
-    /**
-     * @When /^I try to update an identifier generator with a simple_select condition with (?P<attributeCode>[^']*) attribute(?: and (?P<scope>.*) scope)?(?: and (?P<locale>.*) locale)?$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(
-        string $attributeCode,
+    public function iTryToUpdateAnIdentifierGeneratorWithCondition(
+        string $type,
+        string $attributeCode = '',
+        string $operator = '',
         string $scope = '',
-        string $locale = ''
-    ): void {
-        $defaultCondition = $this->getValidCondition('simple_select');
-        $defaultCondition['attributeCode'] = $attributeCode;
+        string $locale = '',
+        string $value = '',
+        string $unknown = '',
+    ): void
+    {
+        var_dump($value);
+        $defaultCondition = $this->getValidCondition($type);
+        if ($attributeCode !== '') {
+            $defaultCondition['attributeCode'] = $attributeCode;
+        }
         if ('undefined' === $scope) {
             unset($defaultCondition['scope']);
         } elseif ('' !== $scope) {
@@ -482,19 +413,19 @@ final class UpdateIdentifierGeneratorContext implements Context
         } elseif ('' !== $locale) {
             $defaultCondition['locale'] = $locale;
         }
-        $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
-    }
-
-    /**
-     * @When /^I try to update an identifier generator with a multi_select condition with (?P<attributeCode>[^']*) attribute?$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAMultiSelectConditionWithNameAttribute(
-        string $attributeCode,
-        string $scope = '',
-        string $locale = ''
-    ): void {
-        $defaultCondition = $this->getValidCondition('multi_select');
-        $defaultCondition['attributeCode'] = $attributeCode;
+        if ('undefined' === $value) {
+            unset($defaultCondition['value']);
+        } elseif ($value !== '') {
+            $defaultCondition['value'] = \json_decode($value);
+        }
+        if ('undefined' === $operator) {
+            unset($defaultCondition['operator']);
+        } elseif ($operator !== '') {
+            $defaultCondition['operator'] = $operator;
+        }
+        if ($unknown !== '') {
+            $defaultCondition['unknown'] = 'unknown property';
+        }
         $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
     }
 

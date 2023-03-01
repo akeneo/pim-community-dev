@@ -4,11 +4,16 @@ import {Helper, NoResultsIllustration, Placeholder, SectionTitle, Table, uuid} f
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Styled} from '../components/Styled';
 import {TabValidationErrors} from '../components';
-import {AddConditionButton, EnabledLine, FamilyLine, ImplicitConditionsList} from './conditions';
+import {
+  AddConditionButton,
+  EnabledLine,
+  FamilyLine,
+  ImplicitConditionsList,
+  SimpleOrMultiSelectLine
+} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
 import {useIdentifierGeneratorAclContext} from '../context';
-import {SimpleOrMultiSelectLine} from './conditions/SimpleOrMultiSelectLine';
 
 type SelectionTabProps = {
   generator: IdentifierGenerator;
