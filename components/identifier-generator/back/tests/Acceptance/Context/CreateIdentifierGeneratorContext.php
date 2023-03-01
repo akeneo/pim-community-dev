@@ -370,7 +370,14 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to create an identifier generator with an? (?P<type>simple_select|multi_select|family|enabled) condition(?:(?: with| and|,) (?P<attributeCode>[^ ]*) attribute)?(?:(?: with| and|,) (?P<operator>[^ ]*) operator)?(?:(?: with| and|,) (?P<scope>[^ ]*) scope)?(?:(?: with| and|,) (?P<locale>[^ ]*) locale)?(?:(?: with| and|,) (?P<value>.*) as value)?(?P<unknown>(?: with| and|,) an unknown property)?$/
+     * @When /^I try to create an identifier generator \
+     *     with an? (?P<type>simple_select|multi_select|family|enabled) condition\
+     *     (?:(?: with| and|,) (?P<attributeCode>[^ ]*) attribute)?\
+     *     (?:(?: with| and|,) (?P<operator>[^ ]*) operator)?\
+     *     (?:(?: with| and|,) (?P<scope>[^ ]*) scope)?\
+     *     (?:(?: with| and|,) (?P<locale>[^ ]*) locale)?\
+     *     (?:(?: with| and|,) (?P<value>.*) as value)?\
+     *     (?P<unknown>(?: with| and|,) an unknown property)?$/
      */
     public function iTryToCreateAnIdentifierGeneratorWithCondition(
         string $type,
