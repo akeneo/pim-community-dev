@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-10780: Fix PEF display for localizable values with locale codes with wrong case
+
 # 7.0.10 (2023-02-28)
 
 - RAB-1356: [Backport PIM-10840]: Fix attribute update date on attribute options change above 10000 options

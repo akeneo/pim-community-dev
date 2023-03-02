@@ -29,7 +29,7 @@ $rules = [
         'Akeneo\UserManagement\Bundle\Context\UserContext',
 
         // Rules from Akeneo\Channel\Component
-
+        'Webmozart\Assert\Assert',
         'Symfony\Component',
         'Symfony\Contracts',
         'Doctrine\Common',

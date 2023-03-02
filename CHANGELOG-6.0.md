@@ -1,5 +1,11 @@
 # 6.0.x
 
+# 6.0.74 (2023-03-02)
+
+## Bug fixes
+
+- PIM-10780: Fix PEF display for localizable values with locale codes with wrong case
+
 # 6.0.73 (2023-02-28)
 
 ## Bug fixes
@@ -203,7 +209,7 @@
 - PIM-10449: Remove old table related to old queue system
 - PIM-10451: Add migration to add an index on start_time on the job_execution table
 - MW-373: Prepare the marketplace migration to another subdomain
-- PIM-10452, PIM-10454, PIM-10455, PIM-10456 : Fix migration to set some fields to NOT NULL on job & step execution tables 
+- PIM-10452, PIM-10454, PIM-10455, PIM-10456 : Fix migration to set some fields to NOT NULL on job & step execution tables
 - PIM-10453: Add migration to add an index on updated on pim_catalog_category table
 
 # 6.0.28 (2022-05-13)
