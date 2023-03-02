@@ -179,7 +179,7 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'conditions[0][type]: Type "unknown" can only be one of the following: "enabled"'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with too much conditions
+  Scenario: Cannot create an identifier generator with too many conditions
     When I try to create an identifier generator with 11 conditions
     Then I should get an error with message 'conditions: This collection should contain 10 elements or less.'
     And the identifier should not be created
