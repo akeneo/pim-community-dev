@@ -134,6 +134,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
 
         $this->onPostUpdate($event);
     }
+    
     function it_sets_locale_to_en_us_on_kernel_request_when_the_firewall_name_is_oauth_token(
         RequestEvent $event,
         Request $request,
