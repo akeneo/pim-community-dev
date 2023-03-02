@@ -30,7 +30,8 @@
 - PIM-10832: Fix compute completeness job after removing an attribute from a family
 - PIM-10820: Partially revert [PIM-10350] to fix case sensitivity on options import
 - PIM-10870: Fix display of permissions when empty
-- PIM-10860: [SLA] Announcements aren't shown 
+- PIM-10860: [SLA] Announcements aren't shown
+- PIM-10874: fix labels api type consistency
 
 ## Improvements
 
