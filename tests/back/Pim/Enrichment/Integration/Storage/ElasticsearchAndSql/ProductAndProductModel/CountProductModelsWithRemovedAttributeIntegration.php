@@ -19,6 +19,13 @@ class CountProductModelsWithRemovedAttributeIntegration extends TestCase
     {
         $count = $this->getCountProductModelsWithRemovedAttribute()->count(['an_attribute', 'a_third_attribute']);
 
+        self::assertEquals(3, $count);
+    }
+
+    public function test_it_only_counts_product_models_with_a_removed_attribute_only_with_value()
+    {
+        $count = $this->getCountProductModelsWithRemovedAttribute()->count(['an_attribute', 'a_third_attribute'], false);
+
         self::assertEquals(2, $count);
     }
 
