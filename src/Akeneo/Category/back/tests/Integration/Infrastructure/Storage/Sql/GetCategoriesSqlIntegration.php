@@ -277,6 +277,110 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         }
     }
 
+    public function testGetAllCategoriesWithTheirValuesWhenTemplateActivatedAndEnrichedCategories(): void
+    {
+        // Given an enriched parent category and attached a template.
+        $parentCategory = $this->useTemplateFunctionalCatalog(
+            templateUuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+            categoryCode: 'myParentCategory'
+        );
+        $this->updateCategoryWithValues((string) $parentCategory->getCode());
+
+        // Given an enriched child category
+        $childCategory = $this->createOrUpdateCategory(
+            code: "myChildCategory",
+            labels: [
+                'fr_FR' => 'Ma categorie enfant',
+                'en_US' => 'My child category'
+            ],
+            parentId: $parentCategory->getId()?->getValue()
+        );
+        $this->updateCategoryWithValues((string) $childCategory->getCode());
+
+        // When
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN (:category_codes)',
+            params: [
+                'category_codes' => ['myParentCategory', 'myChildCategory'],
+                'with_enriched_attributes' => true,
+                'with_position' => false,
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
+
+        /** @var ExternalApiCategory[] $retrievedCategories */
+        $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
+
+        // Then
+        $this->assertIsArray($retrievedCategories);
+        $this->assertCount(2, $retrievedCategories);
+        $this->assertContainsOnlyInstancesOf(ExternalApiCategory::class, $retrievedCategories);
+        $this->assertNotEmpty($retrievedCategories[0]->getValues());
+        $this->assertNotEmpty($retrievedCategories[1]->getValues());
+    }
+
+    public function testGetCategoriesWithTheirValuesIfAnyWhenTemplateActivatedAndEnrichedCategories(): void
+    {
+        // Given a non enriched parent category and attached a template.
+        $parentCategory = $this->useTemplateFunctionalCatalog(
+            templateUuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+            categoryCode: 'myParentCategory'
+        );
+
+        // Given an enriched child category
+        $childCategory = $this->createOrUpdateCategory(
+            code: "myChildCategory",
+            labels: [
+                'fr_FR' => 'Ma categorie enfant',
+                'en_US' => 'My child category'
+            ],
+            parentId: $parentCategory->getId()?->getValue()
+        );
+        $this->updateCategoryWithValues((string) $childCategory->getCode());
+
+        // Given a non enriched child category
+        $this->createOrUpdateCategory(
+            code: "mySecondChildCategory",
+            labels: [
+                'fr_FR' => 'Ma seconde categorie enfant',
+                'en_US' => 'My second child category'
+            ],
+            parentId: $parentCategory->getId()?->getValue()
+        );
+
+        // When
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN (:category_codes)',
+            params: [
+                'category_codes' => ['myParentCategory', 'myChildCategory', 'mySecondChildCategory'],
+                'with_enriched_attributes' => true,
+                'with_position' => false,
+            ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
+            ],
+            limitAndOffset: 'LIMIT 10',
+        );
+
+        /** @var ExternalApiCategory[] $retrievedCategories */
+        $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
+
+        // Then
+        $this->assertIsArray($retrievedCategories);
+        $this->assertCount(3, $retrievedCategories);
+        $this->assertContainsOnlyInstancesOf(ExternalApiCategory::class, $retrievedCategories);
+        $this->assertNull($retrievedCategories[0]->getValues());
+        $this->assertNotEmpty($retrievedCategories[1]->getValues());
+        $this->assertNull($retrievedCategories[2]->getValues());
+    }
+
     public function testGetCategoryByCodesWithIgnoredEnrichedAttributes(): void
     {
         $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $this->categoryShoes->getId());

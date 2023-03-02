@@ -53,7 +53,7 @@ class Category
     public static function fromDatabase(array $category): self
     {
         $translations = $category['translations'] ? json_decode($category['translations'], true, 512, JSON_THROW_ON_ERROR) : [];
-        $permissions = isset($category['permissions']) && $category['permissions'] ? json_decode($category['permissions'], true) : [];
+        $permissions = isset($category['permissions']) && $category['permissions'] ? json_decode($category['permissions'], true) : null;
 
         return new self(
             id: new CategoryId((int) $category['id']),

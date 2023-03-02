@@ -87,15 +87,15 @@ pim_identifier_generator:
         numberMin_label: 'Nombre min.'
       family:
         title: 'Famille'
-        abbrev_type: 'Définir le format de cette propriété'
+        abbrev_type: 'Définir le format de la propriété'
         abbrev_type_empty_label: 'Sélectionner le format'
         operator: 'Opérateur'
         chars_number: 'Nombre de caractères'
       code_format:
         type:
-          truncate: 'Utiliser les premiers charactères'
+          truncate: 'Utiliser les premiers caractères'
           code: 'Utiliser le code entier'
-          nomenclature: 'Utiliser la nomenclature'
+          nomenclature: 'Utilisez votre nomenclature'
       operator:
         placeholder: 'Sélectionner un opérateur'
     empty:
@@ -107,8 +107,29 @@ pim_identifier_generator:
       helper: 'Consultez l''article de notre {{link}} pour apprendre à customiser vos délimiteurs.'
       helper_link: 'notre Help center'
       checkbox_label: 'Utiliser des délimiteurs entre chaque propriété'
-      input_label: 'Définir vos délimiteurs'
+      input_label: 'Définir les délimiteurs'
   deletion:
     operations: 'Opérations'
     confirmation: 'Êtes-vous sûr(e) de vouloir supprimer ce générateur d''identifiant ?'
     type: 'Veuillez saisir "{{ text }}"'
+  nomenclature:
+    edit: 'Editer la nomenclature'
+    section_title: 'Générer mes identifiants pour {{ property }}'
+    title: 'Gérer la nomenclature'
+    characters_number: 'Nombre de caractères'
+    operator_placeholder: 'Choisissez un opérateur'
+    value_placeholder: 'Nombre de caractères'
+    nomenclature: 'Nomenclature'
+    generate_if_empty: 'Générer automatiquement la nomenclature'
+    display: 'Affichage'
+    filters:
+      all: 'Tous les éléments'
+      error: 'Erreurs'
+      empty: 'Vides'
+      filled: 'Complétés'
+    empty:
+      title: 'Aucune nomenclature n''a été trouvée'
+    flash:
+      success: 'Votre nomenclature a été sauvegardée !'
+      error: 'Votre nomenclature n''a pas pu être sauvegardée.'
+      warning: 'Votre nomenclature a été sauvegardée, mais certaines valeurs n''ont pas pu être générées. Éditez votre nomenclature pour modifier les valeurs en erreur.'

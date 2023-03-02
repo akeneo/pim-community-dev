@@ -103,10 +103,10 @@ class CategorySpec extends ObjectBehavior
             'parent_id' => 1,
             'updated' => '2021-03-24 16:00:00',
             'value_collection' => '{}',
-            "permissions" => '{}',
+            "permissions" => null,
         ]);
 
-        $category->getPermissions()->normalize()->shouldReturn([]);
+        $category->getPermissions()->normalize()->shouldReturn(null);
 
         $category = $this::fromCategoryWithPermissions(
             $category,

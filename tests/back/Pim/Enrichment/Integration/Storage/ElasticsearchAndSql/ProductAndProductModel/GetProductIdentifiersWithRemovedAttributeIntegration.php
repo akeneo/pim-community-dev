@@ -22,7 +22,7 @@ class GetProductIdentifiersWithRemovedAttributeIntegration extends TestCase
         $batchCount = 0;
         foreach ($result as $batch) {
             $batchCount++;
-            self::assertEquals(['product_1', 'product_2', 'product_4'], $batch);
+            self::assertEquals(['product_1', 'product_2', 'product_4', 'product_5'], $batch);
         }
         self::assertEquals(1, $batchCount);
     }
