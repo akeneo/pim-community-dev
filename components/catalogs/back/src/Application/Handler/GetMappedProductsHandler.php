@@ -86,7 +86,7 @@ final class GetMappedProductsHandler
 
         $productMapping = $catalog->getProductMapping();
 
-        $this->hydrateCaches($productMapping, \array_column($products, 'uuid'));
+        $this->hydrateCachedCategoryCodesAndLocales($productMapping, \array_column($products, 'uuid'));
 
         return \array_map(
             /** @param RawProduct $product */
@@ -99,7 +99,7 @@ final class GetMappedProductsHandler
      * @param ProductMapping $productMapping
      * @param UuidInterface[] $productUuids
      */
-    private function hydrateCaches(array $productMapping, array $productUuids): void
+    private function hydrateCachedCategoryCodesAndLocales(array $productMapping, array $productUuids): void
     {
         /** @var array<array-key, string> $categoryCodes */
         $categoryCodes = \array_reduce(
