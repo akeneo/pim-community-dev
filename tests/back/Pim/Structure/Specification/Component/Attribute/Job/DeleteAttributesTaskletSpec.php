@@ -1,47 +1,50 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Structure\Component\Attribute\Job;
 
 use Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet;
+use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DeleteAttributesTaskletSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         AttributeRepositoryInterface $attributeRepository,
-        BulkRemoverInterface $attributeRemover,
-        EntityManagerClearerInterface $cacheClearer,
-    )
-    {
+        RemoverInterface $attributeRemover,
+        TranslatorInterface $translator,
+    ): void {
         $this->beConstructedWith(
             $attributeRepository,
             $attributeRemover,
-            $cacheClearer,
-            2,
+            $translator,
         );
     }
 
-    function it_is_a_tasklet()
+    public function it_is_a_tasklet(): void
     {
         $this->shouldHaveType(DeleteAttributesTasklet::class);
         $this->shouldImplement(TaskletInterface::class);
     }
 
-    function it_track_processed_items()
+    public function it_track_processed_items(): void
     {
         $this->shouldImplement(TrackableTaskletInterface::class);
         $this->isTrackable()->shouldReturn(true);
     }
 
-    function it_throws_an_exception_if_step_execution_is_not_set()
+    public function it_throws_an_exception_if_step_execution_is_not_set(): void
     {
         $this
             ->shouldThrow(
@@ -55,13 +58,12 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
             ->during('execute');
     }
 
-    function it_deletes_attributes(
+    public function it_deletes_attributes(
         AttributeRepositoryInterface $attributeRepository,
-        BulkRemoverInterface $attributeRemover,
-        EntityManagerClearerInterface $cacheClearer,
+        RemoverInterface $attributeRemover,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-    ) {
+    ): void {
         $this->setStepExecution($stepExecution);
         $filters = [
             'field' => 'id',
@@ -81,16 +83,54 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
 
         $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->addSummaryInfo('deleted_attributes', 0)->shouldBeCalled();
+        $stepExecution->addSummaryInfo('skipped_attributes', 0)->shouldBeCalled();
 
-        $attributeRemover->removeAll([$attribute1, $attribute2])->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('deleted_attributes', 2)->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
+        $attributeRemover->remove($attribute1)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('deleted_attributes')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
-        $attributeRemover->removeAll([$attribute3])->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('deleted_attributes', 1)->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(1)->shouldBeCalledOnce();
+        $attributeRemover->remove($attribute2)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('deleted_attributes')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
-        $cacheClearer->clear()->shouldBeCalledTimes(2);
+        $attributeRemover->remove($attribute3)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('deleted_attributes')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
+
+        $this->execute();
+    }
+
+    public function it_catches_attribute_removal_exceptions(
+        AttributeRepositoryInterface $attributeRepository,
+        RemoverInterface $attributeRemover,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        TranslatorInterface $translator,
+    ): void {
+        $this->setStepExecution($stepExecution);
+        $filters = [
+            'field' => 'id',
+            'operator' => 'IN',
+            'values' => ['attribute_1'],
+        ];
+
+        $attribute1 = new Attribute();
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($filters);
+
+        $attributeRepository->findByCodes(['attribute_1'])
+            ->willReturn([$attribute1]);
+
+        $stepExecution->setTotalItems(1)->shouldBeCalledOnce();
+        $stepExecution->addSummaryInfo('deleted_attributes', 0)->shouldBeCalled();
+        $stepExecution->addSummaryInfo('skipped_attributes', 0)->shouldBeCalled();
+
+        $attributeRemover->remove($attribute1)->willThrow(new CannotRemoveAttributeException('an error'));
+        $translator->trans('an error', [])->willReturn('an error');
+        $stepExecution->addWarning('an error', [], Argument::type(DataInvalidItem::class))->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skipped_attributes')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $this->execute();
     }
