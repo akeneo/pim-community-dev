@@ -1,5 +1,6 @@
 import React from 'react';
 import {Delimiter, PROPERTY_NAMES, Structure, TextTransformation} from '../../models';
+// Do not fix this import, it will break build for others otherwise
 import {
   AutoNumberPreview,
   DelimiterPreview,
