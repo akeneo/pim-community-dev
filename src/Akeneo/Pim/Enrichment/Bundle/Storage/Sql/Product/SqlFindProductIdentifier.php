@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -36,7 +37,14 @@ final class SqlFindProductIdentifier implements FindIdentifier
         if ([] === $uuids) {
             return [];
         }
-        $uuidsAsBytes = \array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), $uuids);
+        Assert::allString($uuids);
+
+        $uuidsAsBytes = \array_map(function (string $uuid) {
+            if (!Uuid::isValid($uuid)) {
+                throw new \InvalidArgumentException(sprintf('Uuid should be a valid uuid, %s given', $uuid));
+            }
+            return Uuid::fromString($uuid)->getBytes();
+        }, $uuids);
 
         $stmt = $this->connection->executeQuery(
             'SELECT BIN_TO_UUID(uuid) AS uuid, identifier FROM pim_catalog_product WHERE uuid IN (:uuids)',

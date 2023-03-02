@@ -15,6 +15,7 @@ interface FindIdentifier
     /**
      * @param string[] $uuids
      * @return array<string, string>
+     * @throws \InvalidArgumentException if any of the $uuids is not a valid Uuid string
      */
     public function fromUuids(array $uuids): array;
 }

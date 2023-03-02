@@ -94,5 +94,6 @@ services:
         class: '%pim_catalog.localization.presenter.product_quantified_association.class%'
         arguments:
             - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier'
+            - '@pim_connector.array_converter.flat_to_standard.product.association_columns_resolver'
         tags:
             - { name: pim_catalog.localization.presenter, type: 'product_field' }

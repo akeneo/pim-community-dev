@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Component\Localization\Presenter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier;
 use Akeneo\Tool\Component\Localization\Presenter\ProductQuantifiedAssociationPresenter;
 use PhpSpec\ObjectBehavior;
@@ -15,9 +16,16 @@ use Ramsey\Uuid\Uuid;
  */
 class ProductQuantifiedAssociationPresenterSpec extends ObjectBehavior
 {
-    public function let(FindIdentifier $findIdentifier): void
+    public function let(FindIdentifier $findIdentifier, AssociationColumnsResolver $associationColumnsResolver): void
     {
-        $this->beConstructedWith($findIdentifier);
+        $associationColumnsResolver->resolveQuantifiedIdentifierAssociationColumns()->willReturn([
+            'QUANTIFIED-products',
+            'QUANTIFIED-product_models',
+            'PACKAGE-products',
+            'PACKAGE-product_models',
+        ]);
+
+        $this->beConstructedWith($findIdentifier, $associationColumnsResolver);
     }
 
     public function it_is_initializable(): void
@@ -27,10 +35,11 @@ class ProductQuantifiedAssociationPresenterSpec extends ObjectBehavior
 
     public function it_only_supports_product_association(): void
     {
-        $this->supports('association-products-quantity')->shouldReturn(false);
-        $this->supports('products')->shouldReturn(false);
-        $this->supports('association-products')->shouldReturn(true);
-        $this->supports('asso-products')->shouldReturn(true);
+        $this->supports('QUANTIFIED-products')->shouldBe(true);
+        $this->supports('QUANTIFIED-product_models')->shouldBe(false);
+        $this->supports('PACKAGE-products')->shouldBe(true);
+        $this->supports('X_SELL-products')->shouldBe(false);
+        $this->supports('name-en_US')->shouldBe(false);
     }
 
     public function it_presents_identifier_when_product_uuid_is_passed(
@@ -82,7 +91,7 @@ class ProductQuantifiedAssociationPresenterSpec extends ObjectBehavior
             ->willReturn([]);
 
         $value = 'invalid_uuid';
-        $this->present($value)->shouldReturn('[invalid_uuid]');
+        $this->present($value)->shouldReturn('invalid_uuid');
     }
 
     public function it_presents_uuid_when_product_is_not_found(
@@ -110,6 +119,6 @@ class ProductQuantifiedAssociationPresenterSpec extends ObjectBehavior
             ->willReturn([$uuid => 'my-identifier', $uuid2 => null]);
 
         $value = implode(',', [$uuid, $uuid2, $uuid3, $uuid4]);
-        $this->present($value)->shouldReturn(sprintf('%s,[%s],[%s],[%s]', 'my-identifier', $uuid2, $uuid3, $uuid4));
+        $this->present($value)->shouldReturn(sprintf('%s,[%s],[%s],%s', 'my-identifier', $uuid2, $uuid3, $uuid4));
     }
 }

@@ -35,12 +35,28 @@ class SqlFindProductIdentifierIntegration extends TestCase
     public function it_gets_the_identifiers_of_products_from_its_uuids(): void
     {
         $findIdentifier = $this->get('Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier');
+        $unknownId = Uuid::uuid4();
+
         Assert::assertSame(
             [$this->fooUuid => 'foo'],
             $findIdentifier->fromUuids([$this->fooUuid])
         );
-        $unknownId = Uuid::uuid4();
+
         Assert::assertEmpty($findIdentifier->fromUuids([$unknownId->toString()]));
+
+        Assert::assertSame(
+            [$this->fooUuid => 'foo'],
+            $findIdentifier->fromUuids([$this->fooUuid, $unknownId->toString()])
+        );
+    }
+
+    /** @test */
+    public function it_throws_exception_when_uuid_is_bad()
+    {
+        $findIdentifier = $this->get('Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier');
+        $this->expectException(\InvalidArgumentException::class);
+
+        $findIdentifier->fromUuids(['invalid_uuid']);
     }
 
     protected function setUp(): void
