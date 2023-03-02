@@ -89,7 +89,9 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
     };
     const tab: FlatItemsGroup[] = [];
     data?.forEach(item => {
-      tab.push({id: item.id, text: item.text, isSection: true});
+      if (tab.findIndex((section: FlatItemsGroup) => section.isSection && section.id === item.id) === -1) {
+        tab.push({id: item.id, text: item.text, isSection: true});
+      }
       item.children.forEach(child =>
         tab.push({
           id: child.id,
