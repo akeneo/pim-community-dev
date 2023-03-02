@@ -11,4 +11,4 @@ export * from './TableInput/TableInput';
 export * from './TagInput/TagInput';
 export * from './TextAreaInput/TextAreaInput';
 export * from './TextInput/TextInput';
-export * from './TextInput/DateInput';
+export * from './DateInput/DateInput';
