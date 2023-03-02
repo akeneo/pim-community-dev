@@ -25,7 +25,7 @@ type MassActionData = {
 };
 
 const GET_FILTERS_ROUTE = 'pim_enrich_mass_edit_rest_get_filter';
-const LAUNCH_JOB_ROUTE = 'pim_enrich_mass_edit_rest_launch';
+const LAUNCH_JOB_ROUTE = 'pim_structure_launch_mass_delete_attribute';
 const DELETE_ATTRIBUTES_JOB = 'delete_attributes';
 
 class AttributeMassDeleteAction extends MassAction {
@@ -83,7 +83,9 @@ class AttributeMassDeleteAction extends MassAction {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          filters: data.filters,
+        }),
       });
 
       if (response.ok) {
