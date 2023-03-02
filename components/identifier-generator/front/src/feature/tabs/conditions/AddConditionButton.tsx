@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Dropdown, GroupsIllustration, Search, useBooleanState} from 'akeneo-design-system';
-import {Condition, CONDITION_NAMES, Operator} from '../../models';
+import {ATTRIBUTE_TYPE, AttributeType, Condition, CONDITION_NAMES, Operator} from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useGetConditionItems} from '../../hooks';
 
@@ -24,15 +24,18 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
     setSearchValue('');
   };
 
-  const addCondition = (id: string) => {
+  const addCondition = (id: string, type?: AttributeType) => {
     if (id === 'family') {
       onAddCondition({type: CONDITION_NAMES.FAMILY, operator: Operator.IN, value: []});
       close();
     } else if (id === 'enabled') {
       onAddCondition({type: CONDITION_NAMES.ENABLED});
       close();
-    } else {
+    } else if (type === ATTRIBUTE_TYPE.SIMPLE_SELECT) {
       onAddCondition({type: CONDITION_NAMES.SIMPLE_SELECT, operator: Operator.IN, value: [], attributeCode: id});
+      close();
+    } else if (type === ATTRIBUTE_TYPE.MULTI_SELECT) {
+      onAddCondition({type: CONDITION_NAMES.MULTI_SELECT, operator: Operator.IN, value: [], attributeCode: id});
       close();
     }
   };
@@ -52,8 +55,8 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
   const flatItems: {id: string; text: string; onClick: (() => void) | undefined}[] = [];
   conditionItems.forEach(({id, text, children}) => {
     flatItems.push({id: `section-${id}`, text, onClick: undefined});
-    children.forEach(({id, text}) => {
-      flatItems.push({id: `item-${id}`, text, onClick: () => addCondition(id)});
+    children.forEach(({id, text, type}) => {
+      flatItems.push({id: `item-${id}`, text, onClick: () => addCondition(id, type)});
     });
   });
 

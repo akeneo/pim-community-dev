@@ -70,7 +70,7 @@ final class GetAvailableConditionsController
                 $localeCode,
                 $limit,
                 $offset,
-                [AttributeTypes::OPTION_SIMPLE_SELECT],
+                [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT],
                 $search
             );
         }
@@ -172,6 +172,7 @@ final class GetAvailableConditionsController
             $results[$groupCode]['children'][] = [
                 'id' => $attribute['code'],
                 'text' => $attribute['label'],
+                'type' => $attribute['type'],
             ];
         }
 

@@ -1,7 +1,7 @@
-import {validateSimpleSelect} from '../validateSimpleSelect';
-import {CONDITION_NAMES, Operator, SimpleSelectCondition} from '../../models';
+import {validateSimpleOrMultiSelect} from '../validateSimpleOrMultiSelect';
+import {CONDITION_NAMES, Operator, SimpleOrMultiSelectCondition} from '../../models';
 
-const commonSimpleSelectCondition: SimpleSelectCondition = {
+const commonSimpleSelectCondition: SimpleOrMultiSelectCondition = {
   type: CONDITION_NAMES.SIMPLE_SELECT,
   locale: null,
   scope: null,
@@ -12,12 +12,12 @@ const commonSimpleSelectCondition: SimpleSelectCondition = {
 
 describe('validateSimpleSelect', () => {
   it('should add a violation when operator is IN or NOT_IN and no value is given', () => {
-    expect(validateSimpleSelect(commonSimpleSelectCondition, 'path')).toEqual([
+    expect(validateSimpleOrMultiSelect(commonSimpleSelectCondition, 'path')).toEqual([
       {message: 'A value is required for the my_attribute attribute', path: 'path'},
     ]);
 
     expect(
-      validateSimpleSelect(
+      validateSimpleOrMultiSelect(
         {
           ...commonSimpleSelectCondition,
           operator: Operator.NOT_IN,
@@ -29,7 +29,7 @@ describe('validateSimpleSelect', () => {
 
   it('should not add a violation when attribute is correct', () => {
     expect(
-      validateSimpleSelect(
+      validateSimpleOrMultiSelect(
         {
           ...commonSimpleSelectCondition,
           value: ['option_a'],
@@ -39,7 +39,7 @@ describe('validateSimpleSelect', () => {
     ).toEqual([]);
 
     expect(
-      validateSimpleSelect(
+      validateSimpleOrMultiSelect(
         {
           ...commonSimpleSelectCondition,
           operator: Operator.EMPTY,
@@ -50,7 +50,7 @@ describe('validateSimpleSelect', () => {
     ).toEqual([]);
 
     expect(
-      validateSimpleSelect(
+      validateSimpleOrMultiSelect(
         {
           ...commonSimpleSelectCondition,
           operator: Operator.NOT_EMPTY,
