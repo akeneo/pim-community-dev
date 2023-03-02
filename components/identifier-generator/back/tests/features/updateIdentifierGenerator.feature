@@ -150,7 +150,7 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with unknown condition type
     Then I should get an error on update with message 'conditions[0][type]: Type "unknown" can only be one of the following: "enabled"'
 
-  Scenario: Cannot update an identifier generator with too much conditions
+  Scenario: Cannot update an identifier generator with too many conditions
     When I try to update an identifier generator with 11 conditions
     Then I should get an error on update with message 'conditions: This collection should contain 10 elements or less.'
 
