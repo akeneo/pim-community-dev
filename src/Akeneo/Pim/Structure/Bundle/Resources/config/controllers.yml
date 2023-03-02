@@ -145,6 +145,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '@akeneo.pim.structure.query.find_attribute_codes_for_attribute_groups'
+            - '@translator'
 
     pim_enrich.controller.rest.family:
         public: true
