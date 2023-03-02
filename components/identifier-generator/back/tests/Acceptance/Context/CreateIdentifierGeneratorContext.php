@@ -348,6 +348,14 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When /^I try to create an identifier generator with (\d+) conditions$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithConditions(string $count): void
+    {
+        $this->tryToCreateGenerator(conditions: array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
+    }
+
+    /**
      * @When I try to create an identifier generator with 2 enabled conditions
      */
     public function iTryToCreateAnIdentifierGeneratorWith2EnabledConditions(): void

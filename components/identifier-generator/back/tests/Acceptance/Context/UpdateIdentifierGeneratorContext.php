@@ -364,6 +364,14 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When /^I try to update an identifier generator with (\d+) conditions$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithConditions(string $count): void
+    {
+        $this->tryToUpdateGenerator(conditions: array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
+    }
+
+    /**
      * @When I try to update an identifier generator with :arg1 enabled conditions
      */
     public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditions($arg1): void
