@@ -190,7 +190,7 @@ describe('AddPropertyButton', () => {
         attributeCode: 'simple_select',
         process: {
           type: null,
-        }
+        },
       });
     });
   });
