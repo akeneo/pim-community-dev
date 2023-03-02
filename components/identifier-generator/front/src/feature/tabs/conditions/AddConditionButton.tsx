@@ -9,7 +9,7 @@ type AddConditionButtonProps = {
   conditions: Condition[];
 };
 
-const MAX_CONDITIONS_COUNT = 10;
+export const MAX_CONDITIONS_COUNT = 10;
 
 const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAddCondition}) => {
   const translate = useTranslate();

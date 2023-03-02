@@ -10,6 +10,7 @@ import {
   FamilyLine,
   ImplicitConditionsList,
   SimpleOrMultiSelectLine,
+  MAX_CONDITIONS_COUNT,
 } from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
@@ -122,6 +123,9 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validat
           <AddConditionButton conditions={conditionsWithId} onAddCondition={onAddCondition} />
         )}
       </SectionTitle>
+      {conditionsWithId.length >= MAX_CONDITIONS_COUNT && (
+        <Helper>{translate('pim_identifier_generator.selection.limit_reached', {count: MAX_CONDITIONS_COUNT})}</Helper>
+      )}
       <Table>
         <Table.Body>
           {conditionsWithId.map(({id, ...condition}) => (

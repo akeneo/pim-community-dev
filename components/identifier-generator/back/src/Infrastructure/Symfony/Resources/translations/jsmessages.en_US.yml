@@ -49,6 +49,7 @@ pim_identifier_generator:
             info: 'You will soon be able to configure multiple generators matching all your use cases.'
         confirmation: 'Are you sure you want to delete this property?'
     selection:
+        limit_reached: 'You have reached the limit of {{ count }} conditions'
         helper:
             title: 'Add conditions to your product selection, if you want to:'
             automate: 'automate the creation of identifiers for a targeted selection of products'
@@ -70,7 +71,7 @@ pim_identifier_generator:
         helper_link: 'check our help center for more information'
         title: 'Identifier Structure'
         add_element: 'Add new property'
-        limit_reached: 'You have reached the limit of 20 properties'
+        limit_reached: 'You have reached the limit of {{ count }} properties'
         property_type:
             sections:
                 system: 'System'
