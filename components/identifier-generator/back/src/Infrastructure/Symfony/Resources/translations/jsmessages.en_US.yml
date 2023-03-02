@@ -9,6 +9,7 @@ pim_error:
     unexpected: "Unexpected error occurred. Please contact system administrator."
     404: 'A 404 error occurred...'
     identifier_generator_not_found: 'Identifier generator not found'
+    selection_attribute_not_found: 'An attribute from your product selection has been deleted from your catalog. Please delete this property from your product selection.'
 pim_identifier_generator:
     create:
         form:

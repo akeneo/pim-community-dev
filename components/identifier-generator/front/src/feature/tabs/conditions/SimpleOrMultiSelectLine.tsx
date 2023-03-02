@@ -15,7 +15,7 @@ import {SimpleSelectOptionsSelector} from '../../components/SimpleSelectOptionsS
 import {OptionCode} from '../../models/option';
 import {ScopeAndLocaleSelector} from '../../components/ScopeAndLocaleSelector';
 import {useGetAttributeByCode} from '../../hooks/useGetAttributeByCode';
-import {Unauthorized} from '../../errors';
+import {Unauthorized, AttributeNotFound} from '../../errors';
 import {useIdentifierGeneratorAclContext} from '../../context';
 
 type SimpleOrMultiSelectLineProps = {
@@ -74,13 +74,7 @@ const SimpleOrMultiSelectLine: React.FC<SimpleOrMultiSelectLineProps> = ({condit
 
   return (
     <>
-      {error ? (
-        <Table.Cell colSpan={3}>
-          <Helper level="error">
-            {translate(error instanceof Unauthorized ? 'pim_error.unauthorized_list_attributes' : 'pim_error.general')}
-          </Helper>
-        </Table.Cell>
-      ) : isLoading ? (
+      {isLoading ? (
         <Table.Cell colSpan={3}>
           <Styled.ConditionLineSkeleton aria-colspan={3}>This is loading</Styled.ConditionLineSkeleton>
         </Table.Cell>
@@ -88,27 +82,41 @@ const SimpleOrMultiSelectLine: React.FC<SimpleOrMultiSelectLineProps> = ({condit
         <>
           <Styled.TitleCell>{label}</Styled.TitleCell>
           <Styled.SelectionInputsContainer>
-            <OperatorSelector
-              operator={condition.operator}
-              onChange={handleOperatorChange}
-              operators={SimpleSelectOperators}
-              isInSelection={true}
-            />
+            {error ? (
+              <Helper level="error">
+                {translate(
+                  error instanceof Unauthorized
+                    ? 'pim_error.unauthorized_list_attributes'
+                    : error instanceof AttributeNotFound
+                    ? 'pim_error.selection_attribute_not_found'
+                    : 'pim_error.general'
+                )}
+              </Helper>
+            ) : (
+              <>
+                <OperatorSelector
+                  operator={condition.operator}
+                  onChange={handleOperatorChange}
+                  operators={SimpleSelectOperators}
+                  isInSelection={true}
+                />
 
-            {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
-              <SimpleSelectOptionsSelector
-                attributeCode={condition.attributeCode}
-                optionCodes={condition.value || []}
-                onChange={handleSelectCodesChange}
-              />
+                {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
+                  <SimpleSelectOptionsSelector
+                    attributeCode={condition.attributeCode}
+                    optionCodes={condition.value || []}
+                    onChange={handleSelectCodesChange}
+                  />
+                )}
+
+                <ScopeAndLocaleSelector
+                  locale={condition.locale}
+                  scope={condition.scope}
+                  attributeCode={condition.attributeCode}
+                  onChange={handleScopeAndLocaleChange}
+                />
+              </>
             )}
-
-            <ScopeAndLocaleSelector
-              locale={condition.locale}
-              scope={condition.scope}
-              attributeCode={condition.attributeCode}
-              onChange={handleScopeAndLocaleChange}
-            />
           </Styled.SelectionInputsContainer>
           <Table.ActionCell colSpan={1}>
             {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
