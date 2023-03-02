@@ -33,7 +33,7 @@ services:
             - '@validator'
         tags:
             - { name: validator.constraint_validator }
-    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectShouldBeValidValidator:
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleOrMultiSelectShouldBeValidValidator:
         arguments:
             - '@validator'
         tags:
@@ -43,7 +43,7 @@ services:
             - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes'
         tags:
             - { name: validator.constraint_validator }
-    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectOptionCodesShouldExistValidator:
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SelectOptionShouldExistValidator:
         arguments:
             - '@akeneo.pim.structure.query.get_existing_attribute_options_with_values'
         tags:

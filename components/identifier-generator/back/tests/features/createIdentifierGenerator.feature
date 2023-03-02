@@ -7,6 +7,8 @@ Feature: Create Identifier Generator
     And the 'name' attribute of type 'pim_catalog_text'
     And the 'color' attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color' attribute
+    And the 'a_multi_select' attribute of type 'pim_catalog_multiselect'
+    And the 'option_a', 'option_b' and 'option_c' options for 'a_multi_select' attribute
 
   Scenario: Can create a valid identifier generator
     When I create an identifier generator
@@ -179,17 +181,17 @@ Feature: Create Identifier Generator
 
   # Conditions: enabled
   Scenario: Cannot create an enabled condition without value
-    When I try to create an identifier generator with enabled condition without value
+    When I try to create an identifier generator with an enabled condition and undefined as value
     Then I should get an error with message 'conditions[0]: Enabled should contain "value" key'
     And the identifier should not be created
 
   Scenario: Cannot create an enabled condition with a non boolean value
-    When I try to create an identifier generator with enabled condition with string value
+    When I try to create an identifier generator with an enabled condition and "true" as value
     Then I should get an error with message 'conditions[0].value: This value should be a boolean.'
     And the identifier should not be created
 
   Scenario: Cannot create an enabled condition with an unknown property
-    When I try to create an identifier generator with enabled condition with an unknown property
+    When I try to create an identifier generator with an enabled condition and an unknown property
     Then I should get an error with message 'conditions[0][unknown]: This field was not expected.'
     And the identifier should not be created
 
@@ -200,42 +202,42 @@ Feature: Create Identifier Generator
 
   # Conditions: Family
   Scenario: Cannot create an identifier generator with unknown operator
-    When I try to create an identifier generator with a family condition with an unknown operator
+    When I try to create an identifier generator with a family condition and unknown operator
     Then I should get an error with message 'conditions[0][operator]: Operator "unknown" can only be one of the following: "IN", "NOT IN", "EMPTY", "NOT EMPTY".'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator EMPTY and a value
-    When I try to create an identifier generator with a family condition with operator EMPTY and ["shirts"] as value
+  Scenario: Cannot create an identifier generator with EMPTY operator and a value
+    When I try to create an identifier generator with a family condition, EMPTY operator and ["shirts"] as value
     Then I should get an error with message 'conditions[0][value]: This field was not expected.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator IN and a non array value
-    When I try to create an identifier generator with a family condition with operator IN and "shirts" as value
+  Scenario: Cannot create an identifier generator with IN operator and a non array value
+    When I try to create an identifier generator with a family condition, IN operator and "shirts" as value
     Then I should get an error with message 'conditions[0][value]: This value should be of type iterable.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator IN and a non array of string value
-    When I try to create an identifier generator with a family condition with operator IN and [true] as value
+  Scenario: Cannot create an identifier generator with IN operator and a non array of string value
+    When I try to create an identifier generator with a family condition, IN operator and [true] as value
     Then I should get an error with message 'conditions[0][value][0]: This value should be of type string.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator IN and no values
-    When I try to create an identifier generator with a family condition with operator IN and [] as value
+  Scenario: Cannot create an identifier generator with IN operator and no values
+    When I try to create an identifier generator with a family condition, IN operator and [] as value
     Then I should get an error with message 'conditions[0][value]: This collection should contain 1 element or more.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator IN and no value
-    When I try to create an identifier generator with a family condition with operator IN and undefined as value
+  Scenario: Cannot create an identifier generator with IN operator and no value
+    When I try to create an identifier generator with a family condition, IN operator and undefined as value
     Then I should get an error with message 'conditions[0][value]: This field is missing.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with non existing families
-    When I try to create an identifier generator with a family condition with operator IN and ["non_existing1", "non_existing_2"] as value
+    When I try to create an identifier generator with a family condition, IN operator and ["non_existing1", "non_existing_2"] as value
     Then I should get an error with message 'conditions[0][value]: The following families have been deleted from your catalog: "non_existing1", "non_existing_2". You can remove them from your product selection.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with non existing field
-    When I try to create an identifier generator with a family condition with unknown property
+    When I try to create an identifier generator with a family condition and an unknown property
     Then I should get an error with message 'conditions[0][unknown]: This field was not expected.'
     And the identifier should not be created
 
@@ -245,91 +247,91 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator without operator
-    When I try to create an identifier generator with a family without operator
+    When I try to create an identifier generator with a family condition and undefined operator
     Then I should get an error with message 'conditions[0][operator]: This field is missing.'
     And the identifier should not be created
 
   # Conditions: Simple Select
   Scenario: Cannot create an identifier generator with unknown values
-    When I try to create an identifier generator with simple_select condition with an unknown property
+    When I try to create an identifier generator with a simple_select condition and an unknown property
     Then I should get an error with message 'conditions[0][unknown]: This field was not expected.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator IN and no value
-    When I try to create an identifier generator with a simple_select condition with operator IN and undefined as value
+  Scenario: Cannot create an identifier generator with IN operator and no value
+    When I try to create an identifier generator with a simple_select condition, IN operator and undefined as value
     Then I should get an error with message 'conditions[0][value]: This field is missing.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator IN and no values
-    When I try to create an identifier generator with a simple_select condition with operator IN and [] as value
+  Scenario: Cannot create an identifier generator with IN operator and no values
+    When I try to create an identifier generator with a simple_select condition, IN operator and [] as value
     Then I should get an error with message 'conditions[0][value]: This collection should contain 1 element or more.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator IN and a non array value
-    When I try to create an identifier generator with a simple_select condition with operator IN and "green" as value
+  Scenario: Cannot create an identifier generator with IN operator and a non array value
+    When I try to create an identifier generator with a simple_select condition, IN operator and "green" as value
     Then I should get an error with message 'conditions[0][value]: This value should be of type iterable.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator IN and a non array of string value
-    When I try to create an identifier generator with a simple_select condition with operator IN and [true] as value
+  Scenario: Cannot create an identifier generator with IN operator and a non array of string value
+    When I try to create an identifier generator with a simple_select condition, IN operator and [true] as value
     Then I should get an error with message 'conditions[0][value][0]: This value should be of type string.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with unknown options
-    When I try to create an identifier generator with a simple_select condition with operator IN and ["unknown1", "green", "unknown2"] as value
+    When I try to create an identifier generator with a simple_select condition, IN operator and ["unknown1", "green", "unknown2"] as value
     Then I should get an error with message 'conditions[0][value]: The following attribute options do not exist for the attribute "color": "unknown1", "unknown2".'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with operator EMPTY and a value
-    When I try to create an identifier generator with a simple_select condition with operator EMPTY and ["green"] as value
+  Scenario: Cannot create an identifier generator with EMPTY operator and a value
+    When I try to create an identifier generator with a simple_select condition, EMPTY operator and ["green"] as value
     Then I should get an error with message 'conditions[0][value]: This field was not expected.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with an unknown attribute
-    When I try to create an identifier generator with a simple_select condition with unknown attribute
+    When I try to create an identifier generator with a simple_select condition and unknown attribute
     Then I should get an error with message 'conditions[0][attributeCode]: The "unknown" attribute does not exist.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with wrong attribute type
-    When I try to create an identifier generator with a simple_select condition with name attribute
+    When I try to create an identifier generator with a simple_select condition and name attribute
     Then I should get an error with message 'conditions[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator without scope
     Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
-    When I try to create an identifier generator with a simple_select condition with color_scopable attribute and undefined scope
+    When I try to create an identifier generator with a simple_select condition, color_scopable attribute and undefined scope
     Then I should get an error with message 'conditions[0][scope]: A channel is required for the "color_scopable" attribute.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with scope
-    When I try to create an identifier generator with a simple_select condition with color attribute and ecommerce scope
+    When I try to create an identifier generator with a simple_select condition, color attribute and ecommerce scope
     Then I should get an error with message 'conditions[0][scope]: This field was not expected.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator without locale
     Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
-    When I try to create an identifier generator with a simple_select condition with color_localizable attribute and undefined locale
+    When I try to create an identifier generator with a simple_select condition, color_localizable attribute and undefined locale
     Then I should get an error with message 'conditions[0][locale]: A locale is required for the "color_localizable" attribute.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with locale
-    When I try to create an identifier generator with a simple_select condition with color attribute and en_US locale
+    When I try to create an identifier generator with a simple_select condition, color attribute and en_US locale
     Then I should get an error with message 'conditions[0][locale]: This field was not expected.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with undefined scope
     Given the 'color_scopable' scopable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_scopable' attribute
-    When I try to create an identifier generator with a simple_select condition with color_scopable attribute and unknown scope
+    When I try to create an identifier generator with a simple_select condition, color_scopable attribute and unknown scope
     Then I should get an error with message 'conditions[0][scope]: The "unknown" scope does not exist.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with undefined locale
     Given the 'color_localizable' localizable attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color_localizable' attribute
-    When I try to create an identifier generator with a simple_select condition with color_localizable attribute and unknown locale
+    When I try to create an identifier generator with a simple_select condition, color_localizable attribute and unknown locale
     Then I should get an error with message 'conditions[0][locale]: The "unknown" locale does not exist or is not activated.'
     And the identifier should not be created
 
@@ -338,8 +340,18 @@ Feature: Create Identifier Generator
     And the 'red', 'green' and 'blue' options for 'color_localizable_and_scopable' attribute
     And the 'website' channel having 'en_US' as locale
     And the 'ecommerce' channel having 'de_DE' as locale
-    When I try to create an identifier generator with a simple_select condition with color_localizable_and_scopable attribute and ecommerce scope and en_US locale
+    When I try to create an identifier generator with a simple_select condition, color_localizable_and_scopable attribute, ecommerce scope and en_US locale
     Then I should get an error with message 'conditions[0][locale]: The "en_US" locale is not active for the "ecommerce" channel.'
+    And the identifier should not be created
+
+  Scenario: Cannot create a multiselect condition by using the simple select attribute
+    When I try to create an identifier generator with a multi_select condition and color attribute
+    Then I should get an error with message 'conditions[0][attributeCode]: The "color" attribute code is "pim_catalog_simpleselect" type and should be of type "pim_catalog_multiselect".'
+    And the identifier should not be created
+
+  Scenario: Cannot create an identifier generator using multi_select with IN operator and array of simple_select options
+    When I try to create an identifier generator with a multi_select condition, a_multi_select attribute, IN operator and ["red", "green"] as value
+    Then I should get an error with message 'conditions[0][value]: The following attribute options do not exist for the attribute "a_multi_select": "red", "green".'
     And the identifier should not be created
 
   # Label

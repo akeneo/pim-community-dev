@@ -1,8 +1,8 @@
-import {Operator, SimpleSelectCondition} from '../models';
+import {Operator, SimpleOrMultiSelectCondition} from '../models';
 import {Violation} from './Violation';
 import {Validator} from './Validator';
 
-const validateSimpleSelect: Validator<SimpleSelectCondition> = (condition, path) => {
+const validateSimpleOrMultiSelect: Validator<SimpleOrMultiSelectCondition> = (condition, path) => {
   const violations: Violation[] = [];
 
   if ([Operator.IN, Operator.NOT_IN].includes(condition?.operator) && condition.value?.length === 0) {
@@ -15,4 +15,4 @@ const validateSimpleSelect: Validator<SimpleSelectCondition> = (condition, path)
   return violations;
 };
 
-export {validateSimpleSelect};
+export {validateSimpleOrMultiSelect};

@@ -5,27 +5,27 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\SimpleSelect;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\MultiSelect;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use PhpSpec\ObjectBehavior;
 
 /**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleSelectSpec extends ObjectBehavior
+class MultiSelectSpec extends ObjectBehavior
 {
     public function let(): void
     {
     }
 
-    public function it_is_a_simple_select(): void
+    public function it_is_a_multi_select(): void
     {
         $this->shouldImplement(ConditionInterface::class);
-        $this->shouldBeAnInstanceOf(SimpleSelect::class);
+        $this->shouldBeAnInstanceOf(MultiSelect::class);
     }
 
-    public function it_should_throw_exception_if_type_is_not_family()
+    public function it_cant_be_instanciated_with_invalid_type()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'bad',
@@ -34,29 +34,29 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_no_attribute_code_is_defined()
+    public function it_cant_be_instanciated_if_no_attribute_code_is_defined()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'operator' => 'EMPTY',
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_attribute_code_is_not_a_string()
+    public function it_cant_be_instanciated_if_attribute_code_is_not_a_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'operator' => 'EMPTY',
             'attributeCode' => true,
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_scope_is_not_a_string()
+    public function it_cant_be_instanciated_if_scope_is_not_a_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'operator' => 'EMPTY',
             'attributeCode' => 'color',
             'scope' => true,
@@ -64,10 +64,10 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_locale_is_not_a_string()
+    public function it_cant_be_instanciated_if_locale_is_not_a_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'operator' => 'EMPTY',
             'attributeCode' => 'color',
             'locale' => true,
@@ -75,49 +75,49 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_no_operator_is_defined()
+    public function it_cant_be_instanciated_if_no_operator_is_defined()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_operator_is_not_a_string()
+    public function it_cant_be_instanciated_if_operator_is_not_a_string()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => true,
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_operator_is_invalid()
+    public function it_cant_be_instanciated_if_operator_is_invalid()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'UNKNOWN',
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_value_is_not_defined()
+    public function it_cant_be_instanciated_if_value_is_not_defined()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'IN',
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_value_is_not_an_array()
+    public function it_cant_be_instanciated_if_value_is_not_an_array()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'IN',
             'value' => 'red',
@@ -125,10 +125,10 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_value_is_not_an_array_of_strings()
+    public function it_cant_be_instanciated_if_value_is_not_an_array_of_strings()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'IN',
             'value' => ['red', true],
@@ -136,10 +136,10 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_value_is_empty()
+    public function it_cant_be_instanciated_if_value_is_empty_for_in_operator()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'IN',
             'value' => [],
@@ -147,10 +147,10 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_throw_exception_if_value_is_defined_and_operator_is_empty()
+    public function it_cant_be_instanciated_if_value_is_defined_and_operator_is_empty()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'EMPTY',
             'value' => ['red', 'blue'],
@@ -158,47 +158,47 @@ class SimpleSelectSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_should_normalize_with_value()
+    public function it_can_be_normalized_with_value_and_in_operator()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'IN',
             'value' => ['red', 'blue'],
         ]]);
         $this->normalize()->shouldReturn([
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'IN',
             'value' => ['red', 'blue']
         ]);
     }
 
-    public function it_should_normalize_without_value()
+    public function it_can_be_normalized_without_value_and_empty_operator()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'EMPTY',
         ]]);
         $this->normalize()->shouldReturn([
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'EMPTY',
         ]);
     }
 
-    public function it_should_normalize_with_scope_and_locale()
+    public function it_can_be_normalized_with_scope_and_locale()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'EMPTY',
             'scope' => 'ecommerce',
             'locale' => 'en_US',
         ]]);
         $this->normalize()->shouldReturn([
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'EMPTY',
             'scope' => 'ecommerce',
@@ -209,7 +209,7 @@ class SimpleSelectSpec extends ObjectBehavior
     public function it_should_match_empty()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'EMPTY',
         ]]);
@@ -222,45 +222,45 @@ class SimpleSelectSpec extends ObjectBehavior
     public function it_should_match_not_empty()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'NOT EMPTY',
         ]]);
         $this->match(new ProductProjection(true, null, []))->shouldReturn(false);
         $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'red',
+            'color-<all_channels>-<all_locales>' => ['red'],
         ]))->shouldReturn(true);
     }
 
     public function it_should_match_in_list()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'IN',
             'value' => ['red', 'pink']
         ]]);
         $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'red',
+            'color-<all_channels>-<all_locales>' => ['red', 'blue'],
         ]))->shouldReturn(true);
         $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'blue',
+            'color-<all_channels>-<all_locales>' => ['blue', 'yellow'],
         ]))->shouldReturn(false);
     }
 
     public function it_should_match_not_in_list()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
+            'type' => 'multi_select',
             'attributeCode' => 'color',
             'operator' => 'NOT IN',
             'value' => ['red', 'pink']
         ]]);
         $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'red',
+            'color-<all_channels>-<all_locales>' => ['red'],
         ]))->shouldReturn(false);
         $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'blue',
+            'color-<all_channels>-<all_locales>' => ['blue'],
         ]))->shouldReturn(true);
         $this->match(new ProductProjection(true, null, []))->shouldReturn(false);
     }
