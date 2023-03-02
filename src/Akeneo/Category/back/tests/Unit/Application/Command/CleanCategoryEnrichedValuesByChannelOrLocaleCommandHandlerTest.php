@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Unit;
+namespace Akeneo\Category\back\tests\Unit\Application\Command;
 
 use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocaleCommand;
 use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler;
+use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
 use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
-use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 
 /**
@@ -16,9 +16,11 @@ use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
  */
 class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandlerTest extends CategoryTestCase
 {
-    public function testItCleansCategoryEnrichedValuesByChannel(): void
+    public function testItCallsCategoryDataCleaner(): void
     {
-        $getEnrichedCategoryValuesOrderedByCategoryCode = $this->createMock(GetEnrichedCategoryValuesOrderedByCategoryCode::class);
+        $getEnrichedCategoryValuesOrderedByCategoryCode = $this->createMock(
+            GetEnrichedCategoryValuesOrderedByCategoryCode::class,
+        );
 
         $getEnrichedCategoryValuesOrderedByCategoryCode
             ->method('byLimitAndOffset')
@@ -26,18 +28,17 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandlerTest extends Cat
             ->willReturnOnConsecutiveCalls(['my_category' => $this->getEnrichedValues()], [])
         ;
 
-        $expectedValueCollection = json_decode($this->getEnrichedValues(), true);
-        unset($expectedValueCollection['long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|fr_FR']);
-        unset($expectedValueCollection['long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|en_US']);
-        $expectedResult = ['my_category' => json_encode($expectedValueCollection)];
-
-        $updateCategoryEnrichedValues = $this->createMock(UpdateCategoryEnrichedValues::class);
-        $updateCategoryEnrichedValues
+        $CategoryDataCleaner = $this->createMock(CategoryDataCleaner::class);
+        $CategoryDataCleaner
             ->expects($this->once())
-            ->method('execute')
-            ->with($expectedResult);
+            ->method('cleanByChannelOrLocales')
+            ->with(['my_category' => $this->getEnrichedValues()], 'mobile', []);
 
-        $handler = new CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler($getEnrichedCategoryValuesOrderedByCategoryCode, $updateCategoryEnrichedValues);
+        $handler = new CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler(
+            $getEnrichedCategoryValuesOrderedByCategoryCode,
+            $CategoryDataCleaner,
+        )
+        ;
         $command = new CleanCategoryEnrichedValuesByChannelOrLocaleCommand('mobile', []);
 
         $handler($command);
@@ -45,7 +46,9 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandlerTest extends Cat
 
     public function testItCleansCategoryEnrichedValuesByChannelAndLocales(): void
     {
-        $getEnrichedCategoryValuesOrderedByCategoryCode = $this->createMock(GetEnrichedCategoryValuesOrderedByCategoryCode::class);
+        $getEnrichedCategoryValuesOrderedByCategoryCode = $this->createMock(
+            GetEnrichedCategoryValuesOrderedByCategoryCode::class,
+        );
 
         $getEnrichedCategoryValuesOrderedByCategoryCode
             ->method('byLimitAndOffset')
@@ -53,43 +56,17 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandlerTest extends Cat
             ->willReturnOnConsecutiveCalls(['my_category' => $this->getEnrichedValues()], [])
         ;
 
-        $expectedValueCollection = json_decode($this->getEnrichedValues(), true);
-        unset($expectedValueCollection['long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|fr_FR']);
-        $expectedResult = ['my_category' => json_encode($expectedValueCollection)];
-
-        $updateCategoryEnrichedValues = $this->createMock(UpdateCategoryEnrichedValues::class);
-        $updateCategoryEnrichedValues
+        $CategoryDataCleaner = $this->createMock(CategoryDataCleaner::class);
+        $CategoryDataCleaner
             ->expects($this->once())
-            ->method('execute')
-            ->with($expectedResult);
+            ->method('cleanByChannelOrLocales')
+            ->with(['my_category' => $this->getEnrichedValues()], 'mobile', ['en_US']);
 
-        $handler = new CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler($getEnrichedCategoryValuesOrderedByCategoryCode, $updateCategoryEnrichedValues);
+        $handler = new CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler(
+            $getEnrichedCategoryValuesOrderedByCategoryCode,
+            $CategoryDataCleaner,
+        );
         $command = new CleanCategoryEnrichedValuesByChannelOrLocaleCommand('mobile', ['en_US']);
-
-        $handler($command);
-    }
-
-    public function testItDoesNotCleanCategoryEnrichedValuesWhenNoValueHasToBeCleaned(): void
-    {
-        $getEnrichedCategoryValuesOrderedByCategoryCode = $this->createMock(GetEnrichedCategoryValuesOrderedByCategoryCode::class);
-
-        $getEnrichedCategoryValuesOrderedByCategoryCode
-            ->method('byLimitAndOffset')
-            ->withAnyParameters()
-            ->willReturnOnConsecutiveCalls(['my_category' => $this->getEnrichedValues()], [])
-        ;
-
-        // $expectedValueCollection = json_decode($this->getEnrichedValues(), true);
-        // unset($expectedValueCollection['long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|fr_FR']);
-        // $expectedResult = ['my_category' => json_encode($expectedValueCollection)];
-
-        $updateCategoryEnrichedValues = $this->createMock(UpdateCategoryEnrichedValues::class);
-        $updateCategoryEnrichedValues
-            ->expects($this->never())
-            ->method('execute');
-
-        $handler = new CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler($getEnrichedCategoryValuesOrderedByCategoryCode, $updateCategoryEnrichedValues);
-        $command = new CleanCategoryEnrichedValuesByChannelOrLocaleCommand('unknown_channel', []);
 
         $handler($command);
     }

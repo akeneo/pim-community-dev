@@ -17,7 +17,7 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler
 
     public function __construct(
         private readonly GetEnrichedCategoryValuesOrderedByCategoryCode $getEnrichedCategoryValuesOrderedByCategoryCode,
-        private readonly CategoryDataCleaner $categoryDataCleaner
+        private readonly CategoryDataCleaner $categoryDataCleaner,
     ) {
     }
 
@@ -28,15 +28,17 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler
         do {
             $valuesByCode = $this->getEnrichedCategoryValuesOrderedByCategoryCode->byLimitAndOffset(
                 self::CATEGORY_BATCH_SIZE,
-                $offset
+                $offset,
             );
             $offset += self::CATEGORY_BATCH_SIZE;
 
-            $this->categoryDataCleaner->cleanByChannelOrLocales(
-                $valuesByCode,
-                $command->channelCode,
-                $command->localeCodes
-            );
+            if (!empty($valuesByCode)) {
+                $this->categoryDataCleaner->cleanByChannelOrLocales(
+                    $valuesByCode,
+                    $command->channelCode,
+                    $command->localeCodes,
+                );
+            }
         } while (!empty($valuesByCode));
     }
 }

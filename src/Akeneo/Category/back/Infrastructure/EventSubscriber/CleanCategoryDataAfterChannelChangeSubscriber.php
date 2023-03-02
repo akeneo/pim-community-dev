@@ -66,7 +66,7 @@ class CleanCategoryDataAfterChannelChangeSubscriber implements EventSubscriberIn
             return;
         }
 
-        $locales = array_map(function (Locale $locale) {
+        $locales = array_map(static function (Locale $locale) {
             return $locale->getCode();
         }, $channel->getLocales()->getValues());
 

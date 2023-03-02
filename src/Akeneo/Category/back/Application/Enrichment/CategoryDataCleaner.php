@@ -18,6 +18,12 @@ class CategoryDataCleaner
     ) {
     }
 
+    /**
+     * @param array<string, string> $valuesByCode
+     * @param array<string> $localeCodes
+     *
+     * @throws \JsonException
+     */
     public function cleanByChannelOrLocales(array $valuesByCode, string $channelCode, array $localeCodes): void
     {
         $cleanedEnrichedValues = [];
