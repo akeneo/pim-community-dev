@@ -432,3 +432,13 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.tasklet.mass_edit_family.index_family_products_and_product_models'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\DeleteAttributeGroupsTasklet: ~
+
+    pim_connector.step.delete_attribute_groups:
+        class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
+        arguments:
+            - 'delete_attributes'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\DeleteAttributeGroupsTasklet'
