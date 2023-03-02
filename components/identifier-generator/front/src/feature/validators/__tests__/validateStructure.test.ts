@@ -56,10 +56,17 @@ describe('validateStructure', () => {
             digitsMin: 2,
             numberMin: null,
           },
+          {
+            type: PROPERTY_NAMES.SIMPLE_SELECT,
+            attributeCode: 'color',
+            locale: null,
+            scope: null,
+            process: {type: null},
+          },
         ],
         'structure'
       )
-    ).toHaveLength(1);
+    ).toHaveLength(3);
   });
 
   it('should add a violation when there are no properties', () => {
