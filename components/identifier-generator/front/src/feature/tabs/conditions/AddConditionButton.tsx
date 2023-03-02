@@ -9,6 +9,8 @@ type AddConditionButtonProps = {
   conditions: Condition[];
 };
 
+const MAX_CONDITIONS_COUNT = 10;
+
 const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAddCondition}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
@@ -62,7 +64,14 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
 
   return (
     <Dropdown>
-      <Button active ghost level="secondary" onClick={addElement} size="small">
+      <Button
+        active
+        ghost
+        level="secondary"
+        onClick={addElement}
+        size="small"
+        disabled={conditions.length >= MAX_CONDITIONS_COUNT}
+      >
         {translate('pim_identifier_generator.structure.add_element')}
       </Button>
       {isOpen && (
