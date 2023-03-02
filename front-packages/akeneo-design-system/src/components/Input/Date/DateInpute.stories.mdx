@@ -19,7 +19,6 @@ import {DateInput} from './DateInput.tsx';
   }}
   args={{
     value: '',
-    placeholder: 'Please enter a value in the DateInput',
   }}
 />
 
@@ -42,3 +41,47 @@ Date input allows the user to enter content and data when the expected user inpu
 </Canvas>
 
 <ArgsTable story="Standard" />
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="Read only">
+    {args => {
+      return (
+        <>
+          <DateInput {...args} readOnly={false} />
+          <DateInput {...args}  readOnly={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      return (
+        <>
+          <DateInput {...args}  invalid={false} />
+          <DateInput value="not a date" invalid={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on HTML props (max, min)
+
+<Canvas>
+  <Story name="HTML props (max, min)">
+    {args => {
+      return (
+        <>
+          <DateInput {...args}  min="1955-11-05" max="1985-11-05" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

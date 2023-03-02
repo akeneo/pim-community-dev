@@ -12,6 +12,7 @@ const InputContainer = styled.div`
   flex-direction: column;
   width: 100%;
 `;
+
 const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
   z-index: 0;
   width: 100%;
@@ -27,12 +28,12 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   padding: 0 ${({readOnly}) => (readOnly ? '35px' : '15px')} 0 15px;
   outline-style: none;
   cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'auto')};
-  ${({readOnly}) =>
-    readOnly &&
-    css`
-      overflow: hidden;
-      text-overflow: ellipsis;
-    `}
+  
+  ${({readOnly}) =>  readOnly && css`
+    overflow: hidden;
+    text-overflow: ellipsis;
+  `}
+  
   &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
@@ -58,6 +59,7 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
     background: transparent;
   }
 `;
+
 const commonIconStyles = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
   position: absolute;
   right: 0;
@@ -65,16 +67,17 @@ const commonIconStyles = css<{readOnly: boolean; invalid: boolean} & AkeneoTheme
   margin: 12px 12px 12px 0;
   padding-left: 12px;
   pointer-events: none;
-
   z-index: 1;
-  background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
 `;
+
 const DatePickerIcon = styled(DateIcon)`
+  background: ${getColor('white')};
   ${commonIconStyles}
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`
   color: ${getColor('grey', 100)};
+  background: ${getColor('grey', 20)};
   ${commonIconStyles}
 `;
 
@@ -91,35 +94,9 @@ type DateInputProps = Override<
   ) & {
     /**
      * Value of the input.
+     * The value is based on the ISO-8601 standard an always formatted yyyy-mm-dd.
      */
     value?: string;
-
-    /**
-     * Placeholder displayed when the input is empty.
-     */
-    placeholder?: string;
-
-    /**
-     * The minimum date value to accept for this input.
-     * This attribute is not used to validate the field nor constraint user input.
-     */
-    min?: number;
-
-    /**
-     * The maximum date value to accept for this input.
-     * This attribute is not used to validate the field nor constraint user input.
-     */
-    max?: number;
-
-    /**
-     * A stepping interval to use when using up and down arrows to adjust the value, as well as for validation
-     */
-    step?: number;
-
-    /**
-     * The language of the input
-     */
-    lang?: string;
 
     /**
      * Defines if the input is valid on not.
@@ -168,6 +145,7 @@ const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
           aria-invalid={invalid}
           invalid={invalid}
           title={value}
+          value={value}
           pattern="\d{4}-\d{2}-\d{2}"
           onClick={handleClick}
           {...rest}
