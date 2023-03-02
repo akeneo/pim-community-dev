@@ -1,17 +1,8 @@
 import React from 'react';
 import {mockResponse, render} from '../../../../tests/test-utils';
 import {SimpleSelectPropertyEdit} from '../SimpleSelectPropertyEdit';
-import {
-  AbbreviationType,
-  Attribute,
-  AttributeCode,
-  Operator,
-  PROPERTY_NAMES,
-  SimpleSelectProperty
-} from '../../../../models';
+import {AbbreviationType, PROPERTY_NAMES, SimpleSelectProperty} from '../../../../models';
 import {fireEvent} from '@testing-library/react';
-import {LabelCollection} from '@akeneo-pim-community/shared';
-import scopes from '../../../../tests/fixtures/scopes';
 
 jest.mock('../../../../components/ScopeAndLocaleSelector');
 
@@ -21,18 +12,19 @@ describe('SimpleSelectPropertyEdit', () => {
       ok: true,
       json: {
         code: 'simple_select_localizable_scopable',
-        labels: {'en_US':'simple_select_localizable_scopable'},
+        labels: {en_US: 'simple_select_localizable_scopable'},
         localizable: true,
         scopable: true,
         type: 'pim_catalog_simpleselect',
-    }});
+      },
+    });
 
     const simpleSelectProperty: SimpleSelectProperty = {
       type: PROPERTY_NAMES.SIMPLE_SELECT,
       attributeCode: 'simple_select',
       process: {
-        type: null
-      }
+        type: null,
+      },
     };
     const mockedOnChange = jest.fn();
 
@@ -65,7 +57,7 @@ describe('SimpleSelectPropertyEdit', () => {
     expect(mockedOnChange).toHaveBeenCalledWith({
       ...simpleSelectProperty,
       locale: 'new_locale',
-      scope: 'new_scope'
+      scope: 'new_scope',
     });
   });
 });
