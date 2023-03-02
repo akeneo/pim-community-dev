@@ -1,9 +1,14 @@
 import React from 'react';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
-import {FamilyProperty, SimpleSelectProperty} from '../../../models';
+import {AbbreviationType, FamilyProperty, SimpleSelectProperty} from '../../../models';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
 import {ScopeAndLocaleSelector} from '../../../components/ScopeAndLocaleSelector';
-import {AttributePropertyEdit} from '../AttributePropertyEdit';
+import {ProcessablePropertyEdit} from '../ProcessablePropertyEdit';
+
+const options = [
+  {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.truncate'},
+  {value: AbbreviationType.NO, label: 'pim_identifier_generator.structure.settings.code_format.type.code'},
+];
 
 const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = ({selectedProperty, onChange}) => {
   const handleScopeAndLocaleChange = (newValue: {scope?: ChannelCode | null; locale?: LocaleCode | null}) => {
@@ -21,7 +26,7 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
   };
 
   return (
-    <AttributePropertyEdit selectedProperty={selectedProperty} onChange={handleChange}>
+    <ProcessablePropertyEdit selectedProperty={selectedProperty} onChange={handleChange} options={options}>
       {selectedProperty.attributeCode && (
         <ScopeAndLocaleSelector
           attributeCode={selectedProperty.attributeCode}
@@ -31,7 +36,7 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
           isHorizontal={false}
         />
       )}
-    </AttributePropertyEdit>
+    </ProcessablePropertyEdit>
   );
 };
 

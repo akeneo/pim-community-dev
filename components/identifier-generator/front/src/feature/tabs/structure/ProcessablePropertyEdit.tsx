@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {Field, NumberInput, SelectInput} from 'akeneo-design-system';
-import {AbbreviationType, FamilyProperty, Operator, SimpleSelectProperty} from '../../models';
-import {OperatorSelector} from '../../components';
+import {AbbreviationType, FamilyProperty, Operator, PROPERTY_NAMES, SimpleSelectProperty} from '../../models';
+import {NomenclatureEdit, OperatorSelector} from '../../components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Styled} from '../../components/Styled';
 
@@ -9,16 +9,12 @@ type Props = {
   selectedProperty: FamilyProperty | SimpleSelectProperty;
   onChange: (property: FamilyProperty | SimpleSelectProperty) => void;
   children?: React.ReactNode;
+  options: {value: AbbreviationType; label: string}[];
 };
 
-const Operators: Operator[] = [Operator.EQUAL, Operator.EQUAL_OR_LESS];
+const Operators: Operator[] = [Operator.EQUALS, Operator.LOWER_OR_EQUAL_THAN];
 
-const options = [
-  {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.truncate'},
-  {value: AbbreviationType.NO, label: 'pim_identifier_generator.structure.settings.code_format.type.code'},
-];
-
-const AttributePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, children}) => {
+const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, children, options}) => {
   const translate = useTranslate();
 
   const onChangeProcessType = useCallback(
@@ -32,13 +28,23 @@ const AttributePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, chi
             operator: null,
           },
         });
-      } else {
+      } else if (type === AbbreviationType.NO) {
         onChange({
           type: selectedProperty.type,
           process: {
             type: AbbreviationType.NO,
           },
         });
+      } else {
+        // TODO CPM-964: remove this condition once simple select has nomenclature
+        if (selectedProperty.type === PROPERTY_NAMES.FAMILY) {
+          onChange({
+            type: selectedProperty.type,
+            process: {
+              type: AbbreviationType.NOMENCLATURE,
+            },
+          });
+        }
       }
     },
     [onChange, selectedProperty.type]
@@ -109,8 +115,9 @@ const AttributePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, chi
         </>
       )}
       {children}
+      {selectedProperty.process.type === AbbreviationType.NOMENCLATURE && <NomenclatureEdit />}
     </Styled.EditionContainer>
   );
 };
 
-export {AttributePropertyEdit};
+export {ProcessablePropertyEdit};

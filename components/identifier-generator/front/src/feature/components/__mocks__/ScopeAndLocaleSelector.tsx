@@ -14,13 +14,13 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({attributeCode, locale = null, 
   };
 
   return (
-    <div>
+    <>
       ScopeAndLocaleSelectorMock
       <span>Attribute code: {attributeCode}</span>
       <span>locale selected : {locale}</span>
       <span>Channel selected : {scope}</span>
       <button onClick={handleChangeLocale}>Change values</button>
-    </div>
+    </>
   );
 };
 

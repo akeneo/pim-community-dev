@@ -1,5 +1,5 @@
 export * from './AddPropertyButton';
-export * from './AttributePropertyEdit';
+export * from './ProcessablePropertyEdit';
 export * from './DelimiterEdit';
 export * from './Preview';
 export * from './PropertyEdit';
