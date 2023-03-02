@@ -32,7 +32,35 @@ describe('ImplicitConditionsList', () => {
     const screen = render(<ImplicitConditionsList generator={generator} />);
 
     await waitFor(() => {
-      expect(screen.getByText('Family')).toBeInTheDocument();
+      expect(screen.getByText('pim_identifier_generator.structure.property_type.family')).toBeInTheDocument();
+    });
+  });
+
+  it('should add simple selects not empty when there are simple select structure properties', async () => {
+    const generator: IdentifierGenerator = {
+      ...initialGenerator,
+      structure: [
+        {
+          type: PROPERTY_NAMES.SIMPLE_SELECT,
+          attributeCode: 'color',
+          scope: null,
+          locale: null,
+          process: {type: AbbreviationType.NO},
+        },
+        {
+          type: PROPERTY_NAMES.SIMPLE_SELECT,
+          attributeCode: 'brand',
+          scope: null,
+          locale: null,
+          process: {type: AbbreviationType.NO},
+        },
+      ],
+    };
+    const screen = render(<ImplicitConditionsList generator={generator} />);
+
+    await waitFor(() => {
+      expect(screen.getByText('color')).toBeInTheDocument();
+      expect(screen.getByText('brand')).toBeInTheDocument();
     });
   });
 });
