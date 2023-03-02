@@ -28,12 +28,14 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   padding: 0 ${({readOnly}) => (readOnly ? '35px' : '15px')} 0 15px;
   outline-style: none;
   cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'auto')};
-  
-  ${({readOnly}) =>  readOnly && css`
-    overflow: hidden;
-    text-overflow: ellipsis;
-  `}
-  
+
+  ${({readOnly}) =>
+    readOnly &&
+    css`
+      overflow: hidden;
+      text-overflow: ellipsis;
+    `}
+
   &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
@@ -115,12 +117,8 @@ const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
     forwardedRef = forwardedRef ?? internalRef;
 
     const handleClick = useCallback((event: MouseEvent) => {
-      if (!readOnly && event.target && typeof event.target?.showPicker === 'function') {
-        try {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-          event.target.showPicker();
-        } catch (e) {}
-      }
+      const input = event?.target as (HTMLInputElement & {showPicker?: () => void}) | null;
+      !readOnly && input?.showPicker?.();
     }, []);
 
     const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
