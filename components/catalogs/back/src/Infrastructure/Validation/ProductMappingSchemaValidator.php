@@ -73,6 +73,12 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
 
             $this->logger->debug('A Product Mapping Schema validation failed', $errors);
         }
+
+        if ($this->containsInvalidRegexes($value)) {
+            $this->context
+                ->buildViolation('You must provide a schema with valid regexes.')
+                ->addViolation();
+        }
     }
 
     /**
@@ -98,7 +104,27 @@ final class ProductMappingSchemaValidator extends ConstraintValidator
             'https://api.akeneo.com/mapping/product/0.0.4/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.4.json',
             'https://api.akeneo.com/mapping/product/0.0.5/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.5.json',
             'https://api.akeneo.com/mapping/product/0.0.6/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.6.json',
+            'https://api.akeneo.com/mapping/product/0.0.7/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.7.json',
+            'https://api.akeneo.com/mapping/product/0.0.8/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.8.json',
+            'https://api.akeneo.com/mapping/product/0.0.9/schema' => __DIR__.'/../Symfony/Resources/meta-schemas/product-0.0.9.json',
             default => null,
         };
+    }
+
+    private function containsInvalidRegexes(object $schema): bool
+    {
+        /** @var array{properties: array<string, array<string, string>>} $schema */
+        $schema = \json_decode(\json_encode($schema, JSON_THROW_ON_ERROR) ?: '{}', true, 512, JSON_THROW_ON_ERROR);
+
+        foreach ($schema['properties'] as $property) {
+            if (!isset($property['pattern'])) {
+                continue;
+            }
+
+            if (@\preg_match(\sprintf('/%s/', \preg_quote($property['pattern'], '/')), '') === false) {
+                return true;
+            }
+        }
+        return false;
     }
 }

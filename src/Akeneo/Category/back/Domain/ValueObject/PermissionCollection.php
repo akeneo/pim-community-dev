@@ -2,6 +2,8 @@
 
 namespace Akeneo\Category\Domain\ValueObject;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -17,9 +19,19 @@ final class PermissionCollection
     /** @var array<string, array<int>> */
     private array $removedUserGroupIdsFromPermissions;
 
-    // @phpstan-ignore-next-line
+    /**
+     * @param array<string,array<Permission>>|null $permissions
+     */
     private function __construct(private ?array $permissions)
     {
+        if (null !== $permissions) {
+            Assert::keyExists($permissions, self::VIEW);
+            Assert::isArray($permissions[self::VIEW]);
+            Assert::keyExists($permissions, self::EDIT);
+            Assert::isArray($permissions[self::EDIT]);
+            Assert::keyExists($permissions, self::OWN);
+            Assert::isArray($permissions[self::OWN]);
+        }
     }
 
     /**
