@@ -20,7 +20,7 @@ const DoubleCheckDeleteModal = ({
   return (
     <DeleteModal {...deleteModalProps} canConfirmDelete={canConfirmDelete} onConfirm={onConfirm}>
       {children}
-      <TextField value={value} label={doubleCheckInputLabel} onChange={setValue} onSubmit={onConfirm}/>
+      <TextField value={value} label={doubleCheckInputLabel} onChange={setValue} onSubmit={onConfirm} />
     </DeleteModal>
   );
 };
