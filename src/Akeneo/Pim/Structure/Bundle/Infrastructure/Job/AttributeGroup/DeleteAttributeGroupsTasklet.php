@@ -35,6 +35,8 @@ final class DeleteAttributeGroupsTasklet implements TaskletInterface, TrackableT
         if (null === $this->stepExecution) {
             throw new \InvalidArgumentException(sprintf('In order to execute "%s" you need to set a step execution.', DeleteAttributeGroupsTasklet::class));
         }
+
+        // TODO RAB-1285
     }
 
     public function isTrackable(): bool
