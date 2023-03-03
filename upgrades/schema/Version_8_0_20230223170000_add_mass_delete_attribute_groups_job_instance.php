@@ -12,7 +12,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version_8_0_20230223170000_add_mass_delete_attribute_group_job_instance extends AbstractMigration
+final class Version_8_0_20230223170000_add_mass_delete_attribute_groups_job_instance extends AbstractMigration
 {
     public function up(Schema $schema): void
     {

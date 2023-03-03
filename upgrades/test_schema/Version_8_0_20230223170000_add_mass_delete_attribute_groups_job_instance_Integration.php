@@ -13,11 +13,11 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-final class Version_8_0_20230223170000_add_mass_delete_attribute_group_job_instance_Integration extends TestCase
+final class Version_8_0_20230223170000_add_mass_delete_attribute_groups_job_instance_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
-    private const MIGRATION_LABEL = '_8_0_20230126141000_add_mass_delete_attributes_jobs';
+    private const MIGRATION_LABEL = '_8_0_20230223170000_add_mass_delete_attribute_groups_job_instance';
 
     private Connection $connection;
 
@@ -48,7 +48,7 @@ final class Version_8_0_20230223170000_add_mass_delete_attribute_group_job_insta
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function deleteJobInstance(string $jobInstanceCode)
+    private function deleteJobInstance(string $jobInstanceCode): void
     {
         $this->connection->executeStatement(
             'DELETE FROM akeneo_batch_job_instance WHERE code = :job_instance_code',
@@ -62,7 +62,11 @@ final class Version_8_0_20230223170000_add_mass_delete_attribute_group_job_insta
     {
         $sql = 'SELECT id FROM akeneo_batch_job_instance WHERE code = :job_code';
 
-        return $this->connection->executeQuery($sql, ['job_code' => $jobCode])
-            ->fetchFirstColumn()[0] ?? null;
+        $jobInstanceId = $this->connection->executeQuery($sql, ['job_code' => $jobCode])->fetchOne();
+        if ($jobInstanceId === false) {
+            return null;
+        }
+
+        return (int) $jobInstanceId;
     }
 }

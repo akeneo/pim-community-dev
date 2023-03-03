@@ -292,18 +292,18 @@ pim_enrich.entity.attribute_group:
         placeholder: 'Select attribute group'
         open_label: 'attribute group list'
     batch_jobs:
-        delete_attributes:
-            delete_attributes:
+        delete_attribute_groups:
+            delete_attribute_groups:
                 label: Delete attribute groups
     job_execution:
         summary:
-            deleted_attributes: Deleted attribute groups
+            attribute_group_mass_delete: Deleted attribute groups
 pim_import_export:
     notification:
         mass_delete_attribute_groups:
-            error: Mass delete of attributes failed
-            warning: Mass delete of attributes finished with some warnings
-            success: Mass delete of attributes finished
+            error: Mass delete of attribute groups failed
+            warning: Mass delete of attribute groups finished with some warnings
+            success: Mass delete of attribute groups finished
 
 pim_enrich.mass_edit.family:
     title: Families bulk action
