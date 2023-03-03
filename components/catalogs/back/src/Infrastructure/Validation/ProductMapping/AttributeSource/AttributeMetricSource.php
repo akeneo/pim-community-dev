@@ -45,7 +45,7 @@ class AttributeMetricSource extends Compound
                                 'fields' => [
                                     'unit' => [
                                         new Assert\Type('string'),
-                                        new Assert\NotBlank(null, 'akeneo_catalogs.validation.product_mapping.source.measurement.unit.not_empty'),
+                                        new Assert\NotBlank(message: 'akeneo_catalogs.validation.product_mapping.source.measurement.unit.not_empty'),
                                     ],
                                 ],
                                 'allowMissingFields' => false,

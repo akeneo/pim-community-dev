@@ -17,7 +17,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
 final class NumberFromMetricAttributeValueExtractor implements NumberValueExtractorInterface
 {
     public function __construct(
-        readonly private MeasurementConverter                 $measurementConverter,
+        readonly private MeasurementConverter $measurementConverter,
         readonly private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
     ) {
     }
@@ -27,11 +27,11 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
      */
     public function extract(array $product, string $code, ?string $locale, ?string $scope, ?array $parameters): float|int|null
     {
-        $metricUnit = $parameters['unit'] ?? null;
-
         if (empty($product['raw_values'])) {
             return null;
         }
+        $metricUnit = $parameters['unit'] ?? null;
+
         $metricValue = $product['raw_values'][$code][$scope][$locale] ?? null;
 
         if (!\is_string($metricUnit) || !\is_array($metricValue)) {

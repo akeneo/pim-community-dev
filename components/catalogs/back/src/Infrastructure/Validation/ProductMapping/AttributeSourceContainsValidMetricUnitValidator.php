@@ -47,7 +47,6 @@ final class AttributeSourceContainsValidMetricUnitValidator extends ConstraintVa
         }
 
         /** @var AttributeSource $value */
-
         $attribute = $this->findOneAttributeByCodeQuery->execute($value['source']);
 
         if (null === $attribute) {
