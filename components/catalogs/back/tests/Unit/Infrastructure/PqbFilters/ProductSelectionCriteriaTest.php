@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Service;
+namespace Akeneo\Catalogs\Test\Unit\Infrastructure\PqbFilters;
 
 use Akeneo\Catalogs\Domain\Operator;
-use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
+use Akeneo\Catalogs\Infrastructure\PqbFilters\ProductSelectionCriteria;
 use PHPUnit\Framework\TestCase;
 
-class FormatProductSelectionCriteriaTest extends TestCase
+class ProductSelectionCriteriaTest extends TestCase
 {
     /**
      * @dataProvider productSelectionCriteriaProvider
@@ -19,7 +19,7 @@ class FormatProductSelectionCriteriaTest extends TestCase
     ): void {
         $this->assertEquals(
             $expectedPQBFilters,
-            FormatProductSelectionCriteria::toPQBFilters($productSelectionCriteria),
+            ProductSelectionCriteria::toPQBFilters($productSelectionCriteria),
         );
     }
 

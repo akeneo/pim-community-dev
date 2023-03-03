@@ -4,15 +4,16 @@ import {OptionCode} from '../option';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 import {AttributeCode} from '../attribute';
 
-type SimpleSelectCondition = {
-  type: CONDITION_NAMES.SIMPLE_SELECT;
+type SimpleOrMultiSelect = CONDITION_NAMES.SIMPLE_SELECT | CONDITION_NAMES.MULTI_SELECT;
+type SimpleOrMultiSelectCondition = {
+  type: SimpleOrMultiSelect;
   attributeCode: AttributeCode;
   locale?: LocaleCode | null;
   scope?: ChannelCode | null;
   value?: OptionCode[];
 } & (
   | {
-      type: CONDITION_NAMES.SIMPLE_SELECT;
+      type: SimpleOrMultiSelect;
       attributeCode: AttributeCode;
       locale?: LocaleCode | null;
       scope?: ChannelCode | null;
@@ -20,7 +21,7 @@ type SimpleSelectCondition = {
       value: OptionCode[];
     }
   | {
-      type: CONDITION_NAMES.SIMPLE_SELECT;
+      type: SimpleOrMultiSelect;
       attributeCode: AttributeCode;
       locale?: LocaleCode | null;
       scope?: ChannelCode | null;
@@ -31,4 +32,4 @@ type SimpleSelectCondition = {
 const SimpleSelectOperators: Operator[] = [Operator.IN, Operator.NOT_IN, Operator.EMPTY, Operator.NOT_EMPTY];
 
 export {SimpleSelectOperators};
-export type {SimpleSelectCondition};
+export type {SimpleOrMultiSelectCondition};
