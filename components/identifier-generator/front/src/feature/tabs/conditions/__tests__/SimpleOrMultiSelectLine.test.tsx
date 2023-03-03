@@ -177,7 +177,7 @@ describe('SimpleOrMultiSelectLine', () => {
     });
   });
 
-  it('displays unauthorized error when attribute does not exists or is not authorized to see it', async () => {
+  it('displays unauthorized error when user is not authorized to see attribute', async () => {
     mockSimpleSelectCalls({inError: true, errorStatus: '401'});
 
     const condition: SimpleOrMultiSelectCondition = {
@@ -220,6 +220,28 @@ describe('SimpleOrMultiSelectLine', () => {
 
     await waitFor(() => {
       expect(screen.getByText('pim_error.general')).toBeInTheDocument();
+    });
+  });
+
+  it('displays custom error when attribute was deleted', async () => {
+    mockSimpleSelectCalls({inError: true, errorStatus: '404'});
+
+    const condition: SimpleOrMultiSelectCondition = {
+      attributeCode: 'deleted_simple_select',
+      type: CONDITION_NAMES.SIMPLE_SELECT,
+      value: ['option_a'],
+      operator: Operator.IN,
+      scope: null,
+      locale: null,
+    };
+    const screen = render(
+      <TableMock>
+        <SimpleOrMultiSelectLine condition={condition} onChange={jest.fn()} onDelete={jest.fn()} />
+      </TableMock>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('pim_error.selection_attribute_not_found')).toBeInTheDocument();
     });
   });
 
