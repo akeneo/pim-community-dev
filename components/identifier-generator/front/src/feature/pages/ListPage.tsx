@@ -15,7 +15,7 @@ import {
 import {useGetIdentifierGenerators, useIdentifierAttributes, useStructureTabs} from '../hooks';
 import {GeneratorTab, LabelCollection, Target} from '../models';
 import {Styled} from './styles';
-import {Header, ListSkeleton} from '../components';
+import {CategoriesSelector, Header, ListSkeleton} from '../components';
 import {useHistory} from 'react-router-dom';
 import {DeleteGeneratorModal} from './';
 
@@ -71,6 +71,9 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
 
   return (
     <>
+      <CategoriesSelector categoryCodes={['foo']} onChange={(a) => {
+        console.log('change', a);
+      }}/>
       <Header>
         <Button onClick={onCreate} disabled={isCreateDisabled}>
           {translate('pim_common.create')}
