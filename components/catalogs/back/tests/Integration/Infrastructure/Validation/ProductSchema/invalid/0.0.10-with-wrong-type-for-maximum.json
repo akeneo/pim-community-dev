@@ -1,0 +1,13 @@
+{
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
+  "description": "The data should match one item from enum at #/properties/weight/type",
+  "properties": {
+    "uuid": {
+      "type": "string"
+    },
+    "weight": {
+      "type": "string",
+      "maximum": 100
+    }
+  }
+}

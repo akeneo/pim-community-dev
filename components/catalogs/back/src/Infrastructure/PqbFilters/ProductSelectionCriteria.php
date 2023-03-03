@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Service;
+namespace Akeneo\Catalogs\Infrastructure\PqbFilters;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type PqbFilter from PqbFiltersInterface
  */
-final class FormatProductSelectionCriteria
+final class ProductSelectionCriteria
 {
     /**
      * @param array<
@@ -17,18 +19,7 @@ final class FormatProductSelectionCriteria
      *     array{field: string, operator: string, value?: mixed, scope?: string|null, locale?: string|null}
      * > $productSelectionCriteria
      *
-     * @return array<
-     *     array-key,
-     *     array{
-     *         field: string,
-     *         operator: string,
-     *         value?: mixed,
-     *         context?: array{
-     *             scope?: string,
-     *             locale?: string,
-     *         }
-     *     }
-     * > $productSelectionCriteria
+     * @return array<array-key, PqbFilter>
      */
     public static function toPQBFilters(array $productSelectionCriteria): array
     {

@@ -13,4 +13,6 @@ export type ProductMappingSchema = {
             enum?: string[] | number[];
         };
     };
+
+    required?: string[];
 };
