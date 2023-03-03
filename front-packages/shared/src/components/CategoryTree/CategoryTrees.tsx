@@ -18,9 +18,11 @@ const CategoryTreeContainer = styled.div`
   overflow: hidden auto;
 `;
 
+type CategoryTreeCode = string;
+
 type CategoryTreeRoot = {
   id: number;
-  code: string;
+  code: CategoryTreeCode;
   label: string;
   selected: boolean;
   tree?: CategoryTreeModel;
@@ -163,5 +165,5 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
   );
 };
 
-export type {CategoryTreeRoot};
+export type {CategoryTreeRoot, CategoryTreeCode};
 export {CategoryTrees};
