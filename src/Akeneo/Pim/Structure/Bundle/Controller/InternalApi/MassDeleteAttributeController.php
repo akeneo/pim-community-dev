@@ -36,6 +36,7 @@ class MassDeleteAttributeController
 
         $configuration = json_decode($request->getContent(), true);
         $configuration['users_to_notify'] = [$user->getUserIdentifier()];
+        $configuration['send_email'] = true;
 
         $this->jobLauncher->launch($jobInstance, $user, $configuration);
 
