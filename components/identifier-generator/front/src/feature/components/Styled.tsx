@@ -189,6 +189,20 @@ const NomenclatureContent = styled.div`
   overflow: auto;
 `;
 
+const CategoryTreeContainer = styled.div`
+  max-height: calc(100vh - 100px);
+  overflow: auto;
+  margin: 0 20px 0 0;
+  padding: 0 0 0 20px;
+  ul {
+    padding-left: 0;
+  }
+  & > *:first-child {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+`;
+
 const Styled = {
   BoldContainer,
   CellInputContainer,
@@ -217,6 +231,7 @@ const Styled = {
   NomenclatureDefinition,
   NomenclatureInput,
   NomenclatureTable,
+  CategoryTreeContainer
 };
 
 export {Styled};
