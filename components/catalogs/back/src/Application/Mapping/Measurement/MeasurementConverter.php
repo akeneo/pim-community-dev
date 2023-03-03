@@ -30,15 +30,15 @@ final class MeasurementConverter
             ));
         }
 
-        $amount = $this->convertAmountToDefaultMeasurementFamilyUnit($measurementFamily, $initialUnit, $amount);
+        $amountInDefaultUnit = $this->convertAmountToDefaultMeasurementFamilyUnit($measurementFamily, $initialUnit, $amount);
 
-        $amount = $this->convertFromDefaultMeasurementFamilyUnitToTargetedUnit($measurementFamily, $targetedUnit, $amount);
+        $amountInTargetUnit = $this->convertFromDefaultMeasurementFamilyUnitToTargetedUnit($measurementFamily, $targetedUnit, $amountInDefaultUnit);
 
-        if (\is_string($amount)) {
-            $amount = (float) $amount;
+        if (\is_string($amountInTargetUnit)) {
+            $amountInTargetUnit = (float) $amountInTargetUnit;
         }
 
-        return $amount;
+        return $amountInTargetUnit;
     }
 
     /**
@@ -46,14 +46,16 @@ final class MeasurementConverter
      */
     private function convertAmountToDefaultMeasurementFamilyUnit(array $measurementFamily, string $initialUnit, int|float|string $amount): int|float|string
     {
-        $operations = $this->getUnitOperations($measurementFamily, $initialUnit);
-
-        $toStandardAmount = $amount;
-        foreach ($operations as $operation) {
-            $toStandardAmount = $this->applyOperation($toStandardAmount, $operation['operator'], $operation['value']);
-        }
-
-        return $toStandardAmount;
+        return \array_reduce(
+            $this->getUnitOperations($measurementFamily, $initialUnit),
+            function (float|int|string $carry, array $operation): string {
+                $operator = (string) $operation['operator'];
+                /** @var numeric-string $operand */
+                $operand = (string) $operation['value'];
+                return $this->applyOperation($carry, $operator, $operand);
+            },
+            $amount,
+        );
     }
 
     /**
@@ -61,15 +63,16 @@ final class MeasurementConverter
      */
     private function convertFromDefaultMeasurementFamilyUnitToTargetedUnit(array $measurementFamily, string $targetedUnit, int|float|string $amount): int|float|string
     {
-        $operations = $this->getUnitOperations($measurementFamily, $targetedUnit);
-
-        $toTargetedUnitAmount = $amount;
-
-        foreach (\array_reverse($operations) as $operation) {
-            $toTargetedUnitAmount = $this->applyReversedOperation($toTargetedUnitAmount, $operation['operator'], $operation['value']);
-        }
-
-        return $toTargetedUnitAmount;
+        return \array_reduce(
+            \array_reverse($this->getUnitOperations($measurementFamily, $targetedUnit)),
+            function (float|int|string $currentAmount, array $operation): string {
+                $operator = (string) $operation['operator'];
+                /** @var numeric-string $operand */
+                $operand = (string) $operation['value'];
+                return $this->applyReversedOperation($currentAmount, $operator, $operand);
+            },
+            $amount,
+        );
     }
 
     /**
@@ -91,70 +94,53 @@ final class MeasurementConverter
         ));
     }
 
-    private function applyOperation(int|float|string $amount, string $operator, float|int $operand): string
+    /**
+     * @param numeric-string $operand
+     */
+    private function applyOperation(int|float|string $amount, string $operator, string $operand): string
     {
         if (!\is_numeric($amount)) {
             throw new \Exception('The value of amount must be a numeric value.');
         }
         /** @var numeric-string $processedAmount */
         $processedAmount = \is_float($amount) ? \number_format($amount, self::DECIMAL_NUMBER, '.', '') : (string) $amount;
-        /** @var numeric-string $operand */
-        $operand = \number_format($operand, self::DECIMAL_NUMBER, '.', '');
-
-        switch ($operator) {
-            case 'div':
-                if ($operand != 0) {
-                    $processedAmount = \bcdiv($processedAmount, $operand, self::DECIMAL_NUMBER);
-                }
-                break;
-            case 'mul':
-                $processedAmount = \bcmul($processedAmount, $operand, self::DECIMAL_NUMBER);
-                break;
-            case 'add':
-                $processedAmount = \bcadd($processedAmount, $operand, self::DECIMAL_NUMBER);
-                break;
-            case 'sub':
-                $processedAmount = \bcsub($processedAmount, $operand, self::DECIMAL_NUMBER);
-                break;
-            default:
-                throw new \LogicException(\sprintf(
-                    'The operator : %s used for this operation is not listed in the configured operator for this measurement unit.',
-                    $operator,
-                ));
+        if ($operator === 'div' && $operand == 0) {
+            return $processedAmount;
         }
-
-        return $processedAmount;
+        // Gérer le cas du 0 => renvoi processedAmount
+        return match ($operator) {
+            'div' => \bcdiv($processedAmount, $operand, self::DECIMAL_NUMBER),
+            'mul' => \bcmul($processedAmount, $operand, self::DECIMAL_NUMBER),
+            'add' => \bcadd($processedAmount, $operand, self::DECIMAL_NUMBER),
+            'sub' => \bcsub($processedAmount, $operand, self::DECIMAL_NUMBER),
+            default => throw new \LogicException(\sprintf(
+                'The operator : %s used for this operation is not listed in the configured operator for this measurement unit.',
+                $operator,
+            )),
+        };
     }
 
-    private function applyReversedOperation(int|float|string $value, string $operator, float|int $operand): string
+    /**
+     * @param numeric-string $operand
+     */
+    private function applyReversedOperation(int|float|string $value, string $operator, string $operand): string
     {
         /** @var numeric-string $processedAmount */
         $processedAmount = (string) $value;
-        /** @var numeric-string $operand */
-        $operand = \number_format($operand, self::DECIMAL_NUMBER, '.', '');
 
-        switch ($operator) {
-            case 'div':
-                $processedAmount = \bcmul($processedAmount, $operand, self::DECIMAL_NUMBER);
-                break;
-            case 'mul':
-                if ($operand != 0) {
-                    $processedAmount = \bcdiv($processedAmount, $operand, self::DECIMAL_NUMBER);
-                }
-                break;
-            case 'add':
-                $processedAmount = \bcsub($processedAmount, $operand, self::DECIMAL_NUMBER);
-                break;
-            case 'sub':
-                $processedAmount = \bcadd($processedAmount, $operand, self::DECIMAL_NUMBER);
-                break;
-            default:
-                throw new \LogicException(\sprintf(
-                    'The operator : %s used for this operation is not listed in the configured operator for this measurement unit.',
-                    $operator,
-                ));
+        if ($operator === 'div' && $operand == 0) {
+            return $processedAmount;
         }
 
-        return $processedAmount;
+        return match ($operator) {
+            'div' => \bcmul($processedAmount, $operand, self::DECIMAL_NUMBER),
+            'mul' => \bcdiv($processedAmount, $operand, self::DECIMAL_NUMBER),
+            'add' => \bcsub($processedAmount, $operand, self::DECIMAL_NUMBER),
+            'sub' => \bcadd($processedAmount, $operand, self::DECIMAL_NUMBER),
+            default => throw new \LogicException(\sprintf(
+                'The operator : %s used for this operation is not listed in the configured operator for this measurement unit.',
+                $operator,
+            )),
+        };
     }
 }
