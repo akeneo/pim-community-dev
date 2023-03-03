@@ -50,6 +50,7 @@ attribute_group AS (
 )
 SELECT
     attribute.code,
+    attribute.attribute_type AS type,
     COALESCE(translation.label, CONCAT('[', attribute.code, ']')) AS label,
     attribute_group.code AS group_code,
     attribute_group.label AS group_label

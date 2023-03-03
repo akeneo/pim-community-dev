@@ -9,6 +9,7 @@ pim_error:
     unexpected: "Unexpected error occurred. Please contact system administrator."
     404: 'A 404 error occurred...'
     identifier_generator_not_found: 'Identifier generator not found'
+    selection_attribute_not_found: 'An attribute from your product selection has been deleted from your catalog. Please delete this property from your product selection.'
 pim_identifier_generator:
     create:
         form:
@@ -49,6 +50,7 @@ pim_identifier_generator:
             info: 'You will soon be able to configure multiple generators matching all your use cases.'
         confirmation: 'Are you sure you want to delete this property?'
     selection:
+        limit_reached: 'You have reached the limit of {{ count }} conditions'
         helper:
             title: 'Add conditions to your product selection, if you want to:'
             automate: 'automate the creation of identifiers for a targeted selection of products'
@@ -70,7 +72,7 @@ pim_identifier_generator:
         helper_link: 'check our help center for more information'
         title: 'Identifier Structure'
         add_element: 'Add new property'
-        limit_reached: 'You have reached the limit of 20 properties'
+        limit_reached: 'You have reached the limit of {{ count }} properties'
         property_type:
             sections:
                 system: 'System'

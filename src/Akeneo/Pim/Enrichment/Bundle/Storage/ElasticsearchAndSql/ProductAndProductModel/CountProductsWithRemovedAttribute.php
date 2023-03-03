@@ -9,15 +9,15 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 final class CountProductsWithRemovedAttribute implements CountProductsWithRemovedAttributeInterface
 {
-    private SearchQueryBuilder $searchQueryBuilder;
+    private readonly SearchQueryBuilder $searchQueryBuilder;
 
     public function __construct(
-        private Client $elasticsearchClient
+        private readonly Client $elasticsearchClient
     ) {
         $this->searchQueryBuilder = new SearchQueryBuilder();
     }
 
-    public function count(array $attributesCodes): int
+    public function count(array $attributesCodes, bool $includeProductsWithoutValue = true): int
     {
         $this->searchQueryBuilder->addFilter([
             'term' => [
@@ -29,6 +29,14 @@ final class CountProductsWithRemovedAttribute implements CountProductsWithRemove
                 'attributes_for_this_level' => $attributesCodes,
             ],
         ]);
+
+        if (!$includeProductsWithoutValue) {
+            foreach ($attributesCodes as $attributeCode) {
+                $this->searchQueryBuilder->addShould([
+                    'exists' => ['field' => sprintf('values.%s-*', $attributeCode)],
+                ]);
+            }
+        }
 
         $body = $this->searchQueryBuilder->getQuery();
         unset($body['_source']);

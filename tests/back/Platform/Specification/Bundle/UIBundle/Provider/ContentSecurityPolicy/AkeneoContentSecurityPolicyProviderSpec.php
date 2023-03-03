@@ -50,8 +50,8 @@ class AkeneoContentSecurityPolicyProviderSpec extends ObjectBehavior
             'connect-src' =>
                 [
                     "'self'",
+                    "updates.akeneo.com",
                 ],
         ]);
     }
 }
-

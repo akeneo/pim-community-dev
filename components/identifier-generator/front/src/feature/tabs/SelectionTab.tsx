@@ -4,10 +4,16 @@ import {Helper, NoResultsIllustration, Placeholder, SectionTitle, Table, uuid} f
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Styled} from '../components/Styled';
 import {TabValidationErrors} from '../components';
-import {AddConditionButton, EnabledLine, FamilyLine, ImplicitConditionsList} from './conditions';
+import {
+  AddConditionButton,
+  EnabledLine,
+  FamilyLine,
+  ImplicitConditionsList,
+  SimpleOrMultiSelectLine,
+  MAX_CONDITIONS_COUNT,
+} from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
-import {SimpleSelectLine} from './conditions/SimpleSelectLine';
 import {useIdentifierGeneratorAclContext} from '../context';
 
 type SelectionTabProps = {
@@ -33,7 +39,8 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
     case CONDITION_NAMES.FAMILY:
       return <FamilyLine condition={condition} onChange={onChange} onDelete={onDelete} />;
     case CONDITION_NAMES.SIMPLE_SELECT:
-      return <SimpleSelectLine condition={condition} onChange={onChange} onDelete={onDelete} />;
+    case CONDITION_NAMES.MULTI_SELECT:
+      return <SimpleOrMultiSelectLine condition={condition} onChange={onChange} onDelete={onDelete} />;
   }
 };
 
@@ -116,6 +123,9 @@ const SelectionTab: React.FC<SelectionTabProps> = ({generator, onChange, validat
           <AddConditionButton conditions={conditionsWithId} onAddCondition={onAddCondition} />
         )}
       </SectionTitle>
+      {conditionsWithId.length >= MAX_CONDITIONS_COUNT && (
+        <Helper>{translate('pim_identifier_generator.selection.limit_reached', {count: MAX_CONDITIONS_COUNT})}</Helper>
+      )}
       <Table>
         <Table.Body>
           {conditionsWithId.map(({id, ...condition}) => (

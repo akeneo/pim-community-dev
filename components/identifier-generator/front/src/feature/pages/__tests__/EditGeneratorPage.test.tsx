@@ -37,7 +37,7 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   },
   useSecurity: () => {
     return {
-      isGranted: (acl: string) => true,
+      isGranted: () => true,
     };
   },
 }));
