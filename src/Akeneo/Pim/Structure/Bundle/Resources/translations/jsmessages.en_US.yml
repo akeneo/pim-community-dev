@@ -277,9 +277,7 @@ pim_enrich.entity.attribute_group:
             confirm: Are you sure you want to delete this attribute group?
     grid:
         columns:
-            name: Attribute groups name
-            attribute_count: Related Attributes
-        no_search_result: Sorry, there is no result for your search.
+            attribute_count: Related attributes count
     selected: '{0}0 attribute group selected|{1}1 attribute group selected|]1, Inf[{{ count }} attribute groups selected'
     mass_delete:
         button: Delete

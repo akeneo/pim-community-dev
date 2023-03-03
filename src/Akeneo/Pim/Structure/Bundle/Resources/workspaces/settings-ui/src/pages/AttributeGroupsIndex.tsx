@@ -1,7 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
-import {AttributeGroupsCreateButton, AttributeGroupsDataGrid, MassDeleteAttributeGroupsModal} from '../components';
-import {useAttributeGroupsIndexState} from '../hooks';
+import styled from 'styled-components';
 import {
   Breadcrumb,
   Checkbox,
@@ -11,16 +9,18 @@ import {
   Dropdown,
   ArrowDownIcon,
 } from 'akeneo-design-system';
-import {AttributeGroup} from '../models';
-import styled from 'styled-components';
+import {PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
+import {AttributeGroupsCreateButton, AttributeGroupsDataGrid, MassDeleteAttributeGroupsModal} from '../components';
+import {useAttributeGroupsIndexState} from '../hooks';
+import {AttributeGroup, getImpactedAndTargetAttributeGroups} from '../models';
 
-const Content = styled('div')`
+const Content = styled.div`
   flex: 1;
   overflow-y: auto;
   padding: 0 40px;
 `;
 
-const Page = styled('div')`
+const Page = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -33,8 +33,12 @@ const AttributeGroupsIndex: FC = () => {
     useSelection<AttributeGroup>(attributeGroups.length);
   const translate = useTranslate();
   const settingsHomePageRoute = `#${useRoute('pim_settings_index')}`;
-
   const [groupCount, setGroupCount] = useState<number>(attributeGroups.length);
+
+  const [childrenAttributesCount, targetAttributeGroups] = getImpactedAndTargetAttributeGroups(
+    attributeGroups,
+    selection
+  );
 
   useEffect(() => {
     (async () => {
@@ -47,7 +51,7 @@ const AttributeGroupsIndex: FC = () => {
       <PageHeader showPlaceholder={isPending}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
-            <Breadcrumb.Step href={`#${settingsHomePageRoute}`}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={settingsHomePageRoute}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
             <Breadcrumb.Step>{translate('pim_enrich.entity.attribute_group.plural_label')}</Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
@@ -61,7 +65,7 @@ const AttributeGroupsIndex: FC = () => {
           <AttributeGroupsCreateButton />
         </PageHeader.Actions>
         <PageHeader.Title>
-          {translate('pim_enrich.entity.attribute_group.result_count', {count: groupCount.toString()}, groupCount)}
+          {translate('pim_enrich.entity.attribute_group.result_count', {count: groupCount}, groupCount)}
         </PageHeader.Title>
       </PageHeader>
       <Content>
@@ -112,13 +116,11 @@ const AttributeGroupsIndex: FC = () => {
             {translate('pim_enrich.entity.attribute_group.selected', {count: selectedCount}, selectedCount)}
           </Toolbar.LabelContainer>
           <Toolbar.ActionsContainer>
-            {selection.collection.length > 0 && (
+            {0 < selectedCount && (
               <MassDeleteAttributeGroupsModal
-                selectedAttributeGroups={selection.collection}
-                unselectAttributeGroups={attributeGroups.filter(
-                  (attributeGroup: AttributeGroup) => !selection.collection.includes(attributeGroup)
-                )}
-                onConfirm={() => {}}
+                selectedCount={selectedCount}
+                childrenAttributesCount={childrenAttributesCount}
+                targetAttributeGroups={targetAttributeGroups}
               />
             )}
           </Toolbar.ActionsContainer>
