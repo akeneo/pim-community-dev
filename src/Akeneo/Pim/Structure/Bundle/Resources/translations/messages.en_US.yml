@@ -47,12 +47,12 @@ pim_enrich_attribute_form:
     group: Attribute group
     useableAsGridFilter: Usable in grid
 
-pim_mass_edit:
+pim_import_export:
     notification:
         attribute_mass_delete:
-            error: Mass delete <strong>%label%</strong> failed
-            warning: Mass delete <strong>%label%</strong> finished with some warnings
-            success: Mass delete <strong>%label%</strong> finished
+            error: Mass delete of attributes failed
+            warning: Mass delete of attributes finished with some warnings
+            success: Mass delete of attributes finished
 
 job_execution:
     summary:
