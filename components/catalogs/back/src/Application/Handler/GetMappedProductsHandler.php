@@ -6,11 +6,10 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\GetCachedCategoryLabelsByLocaleAndProduct;
 use Akeneo\Catalogs\Application\Mapping\ProductMapperInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetCachedCategoriesByCodesQuery;
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetCachedCategoryCodesByProductUuidsQuery;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
@@ -41,8 +40,7 @@ final class GetMappedProductsHandler
         private readonly DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
         private ProductMapperInterface $productMapper,
         private GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
-        private readonly GetCachedCategoryCodesByProductUuidsQuery $getCachedCategoryCodesByProductUuidsQuery,
-        private readonly GetCachedCategoriesByCodesQuery $getCachedCategoriesByCodesQuery,
+        private readonly GetCachedCategoryLabelsByLocaleAndProduct $getCachedCategoryLabelsByLocaleAndProduct,
     ) {
     }
 
@@ -101,13 +99,7 @@ final class GetMappedProductsHandler
      */
     private function hydrateCachedCategoryCodesAndLocales(array $productMapping, array $productUuids): void
     {
-        /** @var array<array-key, string> $categoryCodes */
-        $categoryCodes = \array_reduce(
-            $this->getCachedCategoryCodesByProductUuidsQuery->fetch($productUuids),
-            fn (array $carry, array $item): array => \array_unique(\array_merge($carry, $item)),
-            [],
-        );
-
+        /** @var string[] */
         $categoryLocales = \array_reduce(
             $productMapping,
             fn (array $carry, array $item): array => $item['source'] === 'categories' ?
@@ -118,11 +110,12 @@ final class GetMappedProductsHandler
             [],
         );
 
-        \array_walk(
-            $categoryLocales,
-            function (string $locale) use ($categoryCodes): void {
-                $this->getCachedCategoriesByCodesQuery->hydrateCache($categoryCodes, $locale);
-            },
-        );
+        /** @var string[] $uuids */
+        $uuids = \array_map(function (UuidInterface $uuid): string {
+            /** @var string */
+            $serialized = $uuid->serialize();
+            return $serialized;
+        }, $productUuids);
+        $this->getCachedCategoryLabelsByLocaleAndProduct->hydrateCache($uuids, $categoryLocales);
     }
 }

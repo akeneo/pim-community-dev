@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String;
 
+use Akeneo\Catalogs\Application\Mapping\GetCachedCategoryLabelsByLocaleAndProduct;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetCachedCategoriesByCodesQuery;
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetCachedCategoryCodesByProductUuidsQuery;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
@@ -15,8 +14,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetCachedCategoryCod
 final class StringFromCategoriesValueExtractor implements StringValueExtractorInterface
 {
     public function __construct(
-        private GetCachedCategoryCodesByProductUuidsQuery $getCachedCategoryCodesByProductUuidsQuery,
-        private GetCachedCategoriesByCodesQuery $getCachedCategoriesByCodesQuery,
+        private GetCachedCategoryLabelsByLocaleAndProduct $getCachedCategoryLabelsByLocaleAndProduct,
     ) {
     }
 
@@ -27,17 +25,16 @@ final class StringFromCategoriesValueExtractor implements StringValueExtractorIn
         ?string $scope,
         ?array $parameters,
     ): null | string {
-        $categoriesCodes = \array_values(
-            $this->getCachedCategoryCodesByProductUuidsQuery->fetch([$product['uuid']]),
-        )[0];
-        if (\count($categoriesCodes) === 0 || $locale === null) {
+        if (\is_null($locale)) {
             return null;
         }
-        $categoriesLabels = \array_column(
-            $this->getCachedCategoriesByCodesQuery->fetch($categoriesCodes, $locale),
-            'label',
-        );
-        return \implode(', ', $categoriesLabels);
+        /** @var string */
+        $uuid = $product['uuid']->serialize();
+        $categoriesLabels = $this->getCachedCategoryLabelsByLocaleAndProduct->fetch([$uuid], [$locale]);
+        if (\count($categoriesLabels[$uuid][$locale]) === 0) {
+            return null;
+        }
+        return \implode(', ', $categoriesLabels[$uuid][$locale]);
     }
 
     public function getSupportedSourceType(): string
