@@ -9,6 +9,9 @@ const HeaderContainer = styled.div`
   height: 34px;
   line-height: 34px;
   margin: 0 20px 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 `;
 
 type HeaderProps = Override<
