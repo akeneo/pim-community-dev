@@ -5,13 +5,13 @@ import {CloseIcon, LockIcon} from '../../../icons';
 import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps} from '../common';
 
-const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps & {isErrored: boolean}>`
+const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps & {$isErrored: boolean}>`
   min-width: 12px;
   width: 12px;
   height: 12px;
   margin-right: 2px;
   cursor: pointer;
-  color: ${({isErrored}) => (isErrored ? getColor('red', 100) : getColor('grey', 120))};
+  color: ${({$isErrored}) => ($isErrored ? getColor('red', 100) : getColor('grey', 120))};
 `;
 
 const TagContainer = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
@@ -248,7 +248,7 @@ const TagInput: FC<TagInputProps> = ({
               <RemoveTagIcon
                 onClick={() => removeTag(index)}
                 data-testid={`remove-${index}`}
-                isErrored={invalidValue.includes(tag)}
+                $isErrored={invalidValue.includes(tag)}
               />
             )}
             <TagText>{getLabel(tag)}</TagText>

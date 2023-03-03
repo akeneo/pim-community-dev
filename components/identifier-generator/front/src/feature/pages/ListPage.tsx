@@ -69,11 +69,11 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     return identifierAttributes.find(attribute => attribute.code === target)?.label;
   };
 
+  const [categoryCodes, setCategoryCodes] = useState<string[]>(['master_accessories']);
+
   return (
     <>
-      <CategoriesSelector categoryCodes={['foo']} onChange={(a) => {
-        console.log('change', a);
-      }}/>
+      <CategoriesSelector categoryCodes={categoryCodes} onChange={setCategoryCodes}/>
       <Header>
         <Button onClick={onCreate} disabled={isCreateDisabled}>
           {translate('pim_common.create')}
