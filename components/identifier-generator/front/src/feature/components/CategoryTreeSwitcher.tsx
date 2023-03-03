@@ -1,10 +1,10 @@
 import React, {FC, useState, useEffect} from 'react';
-import {CategoryTreeCode, CategoryTreeRoot, useRouter} from '@akeneo-pim-community/shared';
+import {CategoryTreeCode, CategoryTreeModel, CategoryTreeRoot, useRouter} from '@akeneo-pim-community/shared';
 import {Dropdown, SwitcherButton, useBooleanState} from 'akeneo-design-system';
 
 type CategoryTreeSwitcherProps = {
   value?: CategoryTreeCode;
-  onChange: (categoryTreeCode: CategoryTreeCode) => void;
+  onChange: (categoryTreeRoot: CategoryTreeRoot) => void;
 };
 
 const CategoryTreeSwitcher: FC<CategoryTreeSwitcherProps> = ({
@@ -25,21 +25,28 @@ const CategoryTreeSwitcher: FC<CategoryTreeSwitcherProps> = ({
 
     fetch(url).then(response => {
       response.json().then(json => {
-        const trees: CategoryTreeRoot[] = json.map((tree: any) => {
+        const trees: CategoryTreeRoot[] = json.map((tree: {
+          id: number,
+          code: CategoryTreeCode,
+          label: string,
+          selected: 'true'|'false',
+          tree?: CategoryTreeModel,
+        }) => {
           return {...tree, selected: tree.selected === 'true'};
         });
         setTrees(trees);
         const currentTree = trees.find(tree => tree.selected);
         if (currentTree) {
-          onChange(currentTree.code);
+          onChange(currentTree);
         }
       });
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleChange = (treeCode: CategoryTreeCode) => {
+  const handleChange = (tree: CategoryTreeRoot) => {
     close();
-    onChange(treeCode)
+    onChange(tree);
   };
 
   return <Dropdown>
@@ -56,7 +63,7 @@ const CategoryTreeSwitcher: FC<CategoryTreeSwitcherProps> = ({
         {trees.map(tree => <Dropdown.Item
           isActive={tree.code === value}
           key={tree.code}
-          onClick={() => handleChange(tree.code)}
+          onClick={() => handleChange(tree)}
         >
           {tree.label}
         </Dropdown.Item>)}
