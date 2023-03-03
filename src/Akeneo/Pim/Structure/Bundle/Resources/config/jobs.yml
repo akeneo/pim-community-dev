@@ -433,4 +433,4 @@ services:
             -
                 - '@pim_connector.step.delete_attributes'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: 'attribute_mass_delete' }

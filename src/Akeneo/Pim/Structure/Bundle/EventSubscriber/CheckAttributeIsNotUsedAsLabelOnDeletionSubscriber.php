@@ -39,7 +39,7 @@ class CheckAttributeIsNotUsedAsLabelOnDeletionSubscriber implements EventSubscri
         }
 
         if ($this->attributeIsUsedAsLabel($attribute->getId())) {
-            throw new CannotRemoveAttributeException('pim_enrich.entity.attribute.flash.update.cant_remove_attributes_used_as_label');
+            throw new CannotRemoveAttributeException('flash.attribute.cant_remove_attributes_used_as_label');
         }
     }
 
