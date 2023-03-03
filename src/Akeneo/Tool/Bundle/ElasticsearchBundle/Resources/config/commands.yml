@@ -7,6 +7,12 @@ services:
         tags:
             - {name: console.command}
 
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Command\UpdateIndexVersionCommand:
+        arguments:
+            - '@Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\IndexUpdaterClient'
+        tags:
+            - {name: console.command}
+
     Akeneo\Tool\Bundle\ElasticsearchBundle\Command\UpdateTotalFieldsLimitCommand:
         arguments:
             - '@akeneo_elasticsearch.registry.clients'

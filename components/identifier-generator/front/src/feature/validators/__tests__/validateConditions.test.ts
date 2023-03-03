@@ -9,6 +9,7 @@ describe('validateConditions', () => {
           {type: CONDITION_NAMES.ENABLED, value: true},
           {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY},
           {type: CONDITION_NAMES.SIMPLE_SELECT, operator: Operator.EMPTY, attributeCode: 'code'},
+          {type: CONDITION_NAMES.MULTI_SELECT, operator: Operator.EMPTY, attributeCode: 'code'},
         ],
         'conditions'
       )
@@ -29,7 +30,7 @@ describe('validateConditions', () => {
       {
         message:
           'The condition type "unknown" is unknown. ' +
-          'Please choose one of the following: enabled, family, simple_select',
+          'Please choose one of the following: enabled, family, simple_select, multi_select',
         path: 'conditions[0]',
       },
     ]);
