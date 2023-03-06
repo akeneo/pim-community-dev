@@ -44,6 +44,13 @@ akeneo_identifier_generator_get_properties:
     defaults:
         _feature: identifier_generator
 
+akeneo_identifier_generator_get_category_labels:
+    path: '/identifier-generator/categories'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetCategoryLabelsController
+    methods: [GET]
+    defaults:
+        _feature: identifier_generator
+
 akeneo_identifier_generator_rest_list:
     path: '/rest/identifier-generator'
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\ListIdentifierGeneratorController
