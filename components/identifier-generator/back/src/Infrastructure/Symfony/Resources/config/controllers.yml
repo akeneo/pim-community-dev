@@ -76,3 +76,9 @@ services:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetCategoryLabelsController:
+    public: true
+    arguments:
+      - '@akeneo.pim.structure.query.get_category_translations'
+      - '@pim_user.context.user'
