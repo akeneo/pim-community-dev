@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Handler for all TraceableMessageInterface messages.
- * It extract the tenant id in order to launch the real treatment of the message
+ * It extracts the tenant id in order to launch the real treatment of the message
  * in a tenant aware process.
  *
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -20,6 +20,9 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 final class TraceableMessageBridgeHandler implements MessageHandlerInterface
 {
+    private const RUNNING_PROCESS_CHECK_INTERVAL_MICROSECONDS = 1000;
+    private const LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS = 300;
+
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly LoggerInterface $logger,
@@ -30,11 +33,10 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
     public function __invoke(TraceableMessageInterface $message): void
     {
         $tenantId = $message->getTenantId();
-        $correlationId = $message->getCorrelationId();
 
-        $this->logger->info('akeneo_messenger.message_bridge.message_received', [
+        $this->logger->debug('Message received', [
             'tenant_id' => $tenantId,
-            'correlation_id' => $correlationId,
+            'correlation_id' => $message->getCorrelationId(),
         ]);
 
         $env = [
@@ -54,27 +56,41 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
                 $this->serializer->serialize($message, 'json'),
             ], null, $env);
 
-            $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
-
-            $startTime = time();
-            $process->start();
-            $process->wait();
-
-            $this->logger->info('akeneo_messenger.message_treated', [
-                'tenant_id' => $tenantId,
-                'correlation_id' => $correlationId,
-                'execution_time_in_sec' => time() - $startTime,
-                'process_exit_code' => $process->getExitCode(),
-            ]);
-            $this->logger->debug('Command akeneo:process-message executed', [
-                'exit_code' => $process->getExitCode(),
-                'output' => $process->getOutput(),
-                'error_output' => $process->getErrorOutput(),
-            ]);
+            $this->runProcess($process, $message);
         } catch (\Throwable $t) {
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), [
                 'trace' => $t->getTraceAsString(),
             ]);
         }
+    }
+
+    private function runProcess(Process $process, TraceableMessageInterface $message): void
+    {
+        $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
+
+        $startTime = time();
+        $warningLogIsSent = false;
+        $process->start();
+        while ($process->isRunning()) {
+            if (!$warningLogIsSent && self::LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS <= time() - $startTime) {
+                $this->logger->warning('Message handler has a long running process', [
+                    'tenant_id' => $message->getTenantId(),
+                    'correlation_id' => $message->getCorrelationId(),
+                    'message_class' => \get_class($message),
+                    'command_line' => $process->getCommandLine(),
+                ]);
+                $warningLogIsSent = true;
+            }
+            usleep(self::RUNNING_PROCESS_CHECK_INTERVAL_MICROSECONDS);
+        }
+
+        $this->logger->debug('Command akeneo:process-message executed', [
+            'tenant_id' => $message->getTenantId(),
+            'correlation_id' => $message->getCorrelationId(),
+            'execution_time_in_sec' => time() - $startTime,
+            'process_exit_code' => $process->getExitCode(),
+            'process_output' => $process->getOutput(),
+            'process_error_output' => $process->getErrorOutput(),
+        ]);
     }
 }
