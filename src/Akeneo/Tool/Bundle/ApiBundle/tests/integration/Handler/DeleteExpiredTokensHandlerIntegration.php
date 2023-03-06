@@ -46,24 +46,24 @@ class DeleteExpiredTokensHandlerIntegration extends ApiTestCase
         $this->connection->insert('pim_api_access_token', [
             'client' => $clientId,
             'user' => $userId,
-            'token' => 'invalid_access_token',
+            'token' => 'expired_access_token',
             'expires_at' => $expiredTimestamp,
         ]);
 
         $this->connection->insert('pim_api_refresh_token', [
             'client' => $clientId,
             'user' => $userId,
-            'token' => 'invalid_refresh_token',
+            'token' => 'expired_refresh_token',
             'expires_at' => $expiredTimestamp,
         ]);
 
-        $this->assertTrue($this->accessTokenExists('invalid_access_token'));
-        $this->assertTrue($this->refreshTokenExists('invalid_refresh_token'));
+        $this->assertTrue($this->accessTokenExists('expired_access_token'));
+        $this->assertTrue($this->refreshTokenExists('expired_refresh_token'));
 
         $this->deleteExpiredTokensHandler->handle();
 
-        $this->assertFalse($this->accessTokenExists('invalid_access_token'));
-        $this->assertFalse($this->refreshTokenExists('invalid_refresh_token'));
+        $this->assertFalse($this->accessTokenExists('expired_access_token'));
+        $this->assertFalse($this->refreshTokenExists('expired_refresh_token'));
     }
 
     private function createFosAuthClient(): int
@@ -76,7 +76,7 @@ class DeleteExpiredTokensHandlerIntegration extends ApiTestCase
 
         $sqlQuery = "SELECT id FROM pim_api_client WHERE label = 'test_client'";
 
-        return (int) $this->connection->executeQuery($sqlQuery)->fetchOne();
+        return (int)$this->connection->executeQuery($sqlQuery)->fetchOne();
     }
 
     private function createUser(string $username): int
@@ -86,7 +86,7 @@ class DeleteExpiredTokensHandlerIntegration extends ApiTestCase
         $user->setFirstName($username);
         $user->setLastName($username);
         $user->setPassword('password');
-        $user->setEmail($username.'@example.com');
+        $user->setEmail($username . '@example.com');
 
         $this->get('validator')->validate($user);
         $this->get('pim_user.saver.user')->save($user);

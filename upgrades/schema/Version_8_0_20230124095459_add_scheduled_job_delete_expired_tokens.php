@@ -6,6 +6,7 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+
 final class Version_8_0_20230124095459_add_scheduled_job_delete_expired_tokens extends AbstractMigration
 {
     public function up(Schema $schema): void
@@ -22,7 +23,6 @@ final class Version_8_0_20230124095459_add_scheduled_job_delete_expired_tokens e
             (
                 :code,
                 :label,
-             
                 :code,
                 0,
                 'internal',

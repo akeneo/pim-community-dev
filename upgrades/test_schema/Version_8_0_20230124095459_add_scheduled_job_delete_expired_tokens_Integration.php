@@ -30,7 +30,7 @@ class Version_8_0_20230124095459_add_scheduled_job_delete_expired_tokens_Integra
         $this->assertTrue($this->jobInstanceExists('delete_expired_tokens'));
     }
 
-    public function test_it_does_not_adds_an_instance_if_present()
+    public function test_it_does_not_add_an_instance_if_present()
     {
         $this->assertTrue($this->jobInstanceExists('delete_expired_tokens'));
         $this->reExecuteMigration(self::MIGRATION_LABEL);
@@ -59,6 +59,6 @@ class Version_8_0_20230124095459_add_scheduled_job_delete_expired_tokens_Integra
             ['job_instance_code' => $jobInstanceCode]
         );
 
-        return  $id !== false;
+        return $id !== false;
     }
 }
