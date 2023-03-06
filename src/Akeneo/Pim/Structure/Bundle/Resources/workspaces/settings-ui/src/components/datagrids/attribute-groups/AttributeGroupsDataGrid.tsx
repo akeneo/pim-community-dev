@@ -1,7 +1,7 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, useCallback, useEffect, useRef, useState, MouseEvent} from 'react';
 import styled from 'styled-components';
 import {Search, useAutoFocus, Table, Badge, CheckboxChecked} from 'akeneo-design-system';
-import {useTranslate, useFeatureFlags, useUserContext, getLabel} from '@akeneo-pim-community/shared';
+import {useTranslate, useFeatureFlags, useUserContext, getLabel, useRouter} from '@akeneo-pim-community/shared';
 import {AttributeGroup} from '../../../models';
 import {NoResults} from '../../shared';
 import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
@@ -32,11 +32,12 @@ const AttributeGroupsDataGrid: FC<Props> = ({
   selectionState,
   onSelectionChange,
 }) => {
-  const {refreshOrder, redirect} = useAttributeGroupsIndexState();
-  const {sortGranted} = useAttributeGroupPermissions();
+  const {refreshOrder} = useAttributeGroupsIndexState();
+  const {sortGranted, editGranted} = useAttributeGroupPermissions();
   const catalogLocale = useUserContext().get('catalogLocale');
   const {filteredGroups, search} = useFilteredAttributeGroups(attributeGroups);
   const translate = useTranslate();
+  const router = useRouter();
   const [searchString, setSearchString] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const {isEnabled} = useFeatureFlags();
@@ -47,6 +48,24 @@ const AttributeGroupsDataGrid: FC<Props> = ({
     setSearchString(searchValue);
     search(searchValue);
   };
+
+  const handleRowClick = useCallback(
+    (attributeGroup: AttributeGroup) => (event: MouseEvent<HTMLTableRowElement>) => {
+      const url = router.generate('pim_enrich_attributegroup_edit', {
+        identifier: attributeGroup.code,
+      });
+
+      if (event.metaKey || event.ctrlKey) {
+        const newTab = window.open(`#${url}`, '_blank');
+        newTab?.focus();
+
+        return;
+      }
+
+      router.redirect(url);
+    },
+    [router]
+  );
 
   useEffect(() => {
     onGroupCountChange(filteredGroups.length);
@@ -98,7 +117,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({
                   key={attributeGroup.code}
                   isSelected={isItemSelected(attributeGroup)}
                   onSelectToggle={selected => onSelectionChange(attributeGroup, selected)}
-                  onClick={() => redirect(attributeGroup)}
+                  onClick={editGranted ? event => handleRowClick(attributeGroup)(event) : undefined}
                 >
                   <Table.Cell rowTitle={true}>
                     {getLabel(attributeGroup.labels, catalogLocale, attributeGroup.code)}

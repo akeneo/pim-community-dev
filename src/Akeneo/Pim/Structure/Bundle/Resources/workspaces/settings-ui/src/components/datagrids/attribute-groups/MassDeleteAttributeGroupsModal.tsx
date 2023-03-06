@@ -13,14 +13,14 @@ const ModalContent = styled.div`
 
 type MassDeleteAttributeGroupsModalProps = {
   selectedCount: number;
-  childrenAttributesCount: number;
-  targetAttributeGroups: AttributeGroup[];
+  impactedAttributesCount: number;
+  availableTargetAttributeGroups: AttributeGroup[];
 };
 
 const MassDeleteAttributeGroupsModal = ({
   selectedCount,
-  childrenAttributesCount,
-  targetAttributeGroups,
+  impactedAttributesCount,
+  availableTargetAttributeGroups,
 }: MassDeleteAttributeGroupsModalProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
@@ -60,18 +60,18 @@ const MassDeleteAttributeGroupsModal = ({
                 selectedCount
               )}
             </p>
-            {0 < childrenAttributesCount && (
+            {0 < impactedAttributesCount && (
               <>
                 <Helper level="error">
                   {translate('pim_enrich.entity.attribute_group.mass_delete.attribute_warning', {
-                    number_of_attribute: childrenAttributesCount,
-                    childrenAttributesCount,
+                    number_of_attribute: impactedAttributesCount,
+                    impactedAttributesCount,
                   })}
                 </Helper>
                 <Field
                   label={translate('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group', {
-                    number_of_attribute: childrenAttributesCount,
-                    childrenAttributesCount,
+                    number_of_attribute: impactedAttributesCount,
+                    impactedAttributesCount,
                   })}
                 >
                   <SelectInput
@@ -81,7 +81,7 @@ const MassDeleteAttributeGroupsModal = ({
                     value={replacementAttributeGroup}
                     openLabel={translate('pim_enrich.entity.attribute_group.mass_delete.open_label')}
                   >
-                    {targetAttributeGroups.map(attributeGroup => (
+                    {availableTargetAttributeGroups.map(attributeGroup => (
                       <SelectInput.Option key={attributeGroup.code} value={attributeGroup.code}>
                         {getLabel(attributeGroup.labels, catalogLocale, attributeGroup.code)}
                       </SelectInput.Option>

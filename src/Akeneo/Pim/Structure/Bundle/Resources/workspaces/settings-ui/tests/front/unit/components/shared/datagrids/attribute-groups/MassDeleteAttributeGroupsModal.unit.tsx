@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 
 test('it renders a confirm modal delete button', () => {
   renderWithProviders(
-    <MassDeleteAttributeGroupsModal selectedCount={0} childrenAttributesCount={0} targetAttributeGroups={[]} />
+    <MassDeleteAttributeGroupsModal selectedCount={0} impactedAttributesCount={0} availableTargetAttributeGroups={[]} />
   );
 
   expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button')).toBeInTheDocument();
@@ -17,8 +17,8 @@ test('it opens a modal with a confirmation input & helper if there are child att
   renderWithProviders(
     <MassDeleteAttributeGroupsModal
       selectedCount={1}
-      childrenAttributesCount={3}
-      targetAttributeGroups={[
+      impactedAttributesCount={3}
+      availableTargetAttributeGroups={[
         {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 2},
       ]}
     />
@@ -37,8 +37,8 @@ test('it can select an attribute group to assign affected attributes', () => {
   renderWithProviders(
     <MassDeleteAttributeGroupsModal
       selectedCount={1}
-      childrenAttributesCount={3}
-      targetAttributeGroups={[
+      impactedAttributesCount={3}
+      availableTargetAttributeGroups={[
         {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
         {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
       ]}
@@ -62,8 +62,8 @@ test('it can close the modal when confirming with the correct word', () => {
   renderWithProviders(
     <MassDeleteAttributeGroupsModal
       selectedCount={1}
-      childrenAttributesCount={3}
-      targetAttributeGroups={[
+      impactedAttributesCount={3}
+      availableTargetAttributeGroups={[
         {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
         {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
       ]}

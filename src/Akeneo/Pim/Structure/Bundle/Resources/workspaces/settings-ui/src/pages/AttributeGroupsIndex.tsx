@@ -35,7 +35,7 @@ const AttributeGroupsIndex: FC = () => {
   const settingsHomePageRoute = `#${useRoute('pim_settings_index')}`;
   const [groupCount, setGroupCount] = useState<number>(attributeGroups.length);
 
-  const [childrenAttributesCount, targetAttributeGroups] = getImpactedAndTargetAttributeGroups(
+  const [impactedAttributesCount, availableTargetAttributeGroups] = getImpactedAndTargetAttributeGroups(
     attributeGroups,
     selection
   );
@@ -119,8 +119,8 @@ const AttributeGroupsIndex: FC = () => {
             {0 < selectedCount && (
               <MassDeleteAttributeGroupsModal
                 selectedCount={selectedCount}
-                childrenAttributesCount={childrenAttributesCount}
-                targetAttributeGroups={targetAttributeGroups}
+                impactedAttributesCount={impactedAttributesCount}
+                availableTargetAttributeGroups={availableTargetAttributeGroups}
               />
             )}
           </Toolbar.ActionsContainer>

@@ -37,6 +37,6 @@ test('it can get the total number of impacted attribute groups children & target
 
   expect(getImpactedAndTargetAttributeGroups(attributeGroups, {...selection, mode: 'not_in'})).toEqual([
     5,
-    selection.collection,
+    [attributeGroups[0], attributeGroups[2]],
   ]);
 });
