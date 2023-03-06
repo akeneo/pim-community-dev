@@ -1,18 +1,10 @@
-import React, {FC, useState, useEffect} from 'react';
-import {
-  CategoryCode,
-  CategoryTree,
-  CategoryTreeModel,
-  CategoryTreeRoot,
-  CategoryValue,
-  ParentCategoryTree,
-  useRouter,
-  parseResponse,
-  CategoryResponse,
-} from '@akeneo-pim-community/shared';
+import React, {FC, useCallback, useState, useMemo} from 'react';
+import {CategoryCode, CategoryTree, CategoryTreeRoot, CategoryValue} from '@akeneo-pim-community/shared';
 import {Dropdown, TagInput, useBooleanState} from 'akeneo-design-system';
 import {CategoryTreeSwitcher} from './CategoryTreeSwitcher';
 import {Styled} from './Styled';
+import {useCategoryLabels} from '../hooks/useCategoryLabels';
+import {useCategoryTree} from '../hooks/useCategoryTree';
 
 type CategoriesSelectorProps = {
   categoryCodes: CategoryCode[];
@@ -23,84 +15,40 @@ const CategoriesSelector: FC<CategoriesSelectorProps> = ({
   categoryCodes,
   onChange
 }) => {
-  const router = useRouter();
   const [isOpen, open, close] = useBooleanState();
   const [currentTree, setCurrentTree] = useState<CategoryTreeRoot | undefined>(undefined);
-  const handleTreeChange = (tree: CategoryTreeRoot) => {
-    setCurrentTree(tree);
-  };
+  const categoryLabels = useCategoryLabels(categoryCodes);
 
-  const [categoryLabels, setCategoryLabels] = useState<any>({});
+  const filledCategoryLabels = useMemo(() => {
+    return categoryCodes.reduce((categoryCodes, categoryCode) => {
+      if (categoryLabels[categoryCode] !== null) {
+        categoryCodes[categoryCode] = categoryLabels[categoryCode];
+      }
 
-  const getChildrenUrl = (id: number) => {
-    return router.generate('pim_enrich_categorytree_children', {
-      _format: 'json',
-      id,
-    });
-  };
+      return categoryCodes;
+    }, {});
+  }, [categoryCodes, categoryLabels]);
 
-  useEffect(() => {
-    fetch(router.generate('akeneo_identifier_generator_get_category_labels', {categoryCodes}), {
-      method: 'GET',
-      headers: [['X-Requested-With', 'XMLHttpRequest']],
-    }).then(response => {
-      response.json().then(json => {
-        setCategoryLabels(json);
-      })
-    });
+  const invalidValue = useMemo(() => {
+    return categoryCodes.filter(categoryCode => categoryLabels[categoryCode] === null);
+  }, [categoryCodes, categoryLabels]);
+
+  const {init, childrenCallback} = useCategoryTree(currentTree);
+
+  const isCategorySelected = useCallback((category: CategoryValue) => {
+    return categoryCodes.includes(category.code);
   }, [categoryCodes]);
 
-  const invalidValue = categoryCodes.filter(categoryCode => !(categoryCode in categoryLabels));
-
-  const init = async () => {
-    if (currentTree) {
-      const response = await fetch(getChildrenUrl(currentTree.id));
-      const json: CategoryResponse[] = await response.json();
-
-      return {
-        id: currentTree.id,
-        code: currentTree.code,
-        label: currentTree.label,
-        selectable: false,
-        children: json.map(child =>
-          parseResponse(child, {
-            selectable: true,
-          })
-        ),
-      };
-    }
-    throw new Error('Not possible');
-  };
-
-  const childrenCallback: (id: number) => Promise<CategoryTreeModel[]> = async id => {
-    const response = await fetch(getChildrenUrl(id));
-    const json: CategoryResponse[] = await response.json();
-
-    return json.map(child =>
-      parseResponse(child, {
-        selectable: true,
-      })
-    );
-  };
-
-  const isCategorySelected: (category: CategoryValue, _: ParentCategoryTree) => boolean = category => {
-    return categoryCodes.includes(category.code);
-  };
-
-  const handleChange = (value: string, checked: boolean) => {
-    if (checked) {
-      onChange([...categoryCodes, value]);
-    } else {
-      onChange(categoryCodes.filter(code => code !== value));
-    }
-  };
+  const handleChange = useCallback((value: string, checked: boolean) => {
+    onChange(checked ? [...categoryCodes, value] : categoryCodes.filter(code => code !== value));
+  }, [categoryCodes, onChange]);
 
   return <Dropdown>
     <TagInput
       value={categoryCodes}
       onChange={onChange}
       onFocus={open}
-      labels={categoryLabels}
+      labels={filledCategoryLabels}
       invalidValue={invalidValue}
     />
     {isOpen && <Dropdown.Overlay onClose={close} horizontalPosition={'left'}>
@@ -108,7 +56,7 @@ const CategoriesSelector: FC<CategoriesSelectorProps> = ({
         <Dropdown.Title>
             Categories
         </Dropdown.Title>
-        <CategoryTreeSwitcher onChange={handleTreeChange} value={currentTree?.code} />
+        <CategoryTreeSwitcher onChange={setCurrentTree} value={currentTree?.code} />
       </Dropdown.Header>
       {currentTree && <Styled.CategoryTreeContainer>
         <CategoryTree
