@@ -45,7 +45,7 @@ class SimpleSelectPropertySpec extends ObjectBehavior
         $this->process()->shouldBeLike($process);
     }
 
-    public function it_normalize_a_simple_select_property(): void
+    public function it_normalizes_itself(): void
     {
         $this->normalize()->shouldReturn([
             'type' => 'simple_select',
