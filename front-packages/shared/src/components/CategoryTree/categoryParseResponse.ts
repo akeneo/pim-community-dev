@@ -1,6 +1,5 @@
 import {CategoryTreeModel} from './CategoryTree';
 
-// TODO This type and the next method are copy paste, we should remove the old ones
 type CategoryResponse = {
   attr: {
     id: string;
@@ -17,7 +16,7 @@ type CategoryResponse = {
   selectedChildrenCount?: number;
 };
 
-const categoryParseResponse: (
+const parseResponse: (
   json: CategoryResponse,
   options?: {
     readOnly?: boolean;
@@ -42,7 +41,7 @@ const categoryParseResponse: (
       return [];
     }
     if (json.children) {
-      return json.children.map(child => categoryParseResponse(child, {readOnly, lockedCategoryIds, isRoot: false, selectable}));
+      return json.children.map(child => parseResponse(child, {readOnly, lockedCategoryIds, isRoot: false, selectable}));
     }
     return undefined;
   };
@@ -60,5 +59,5 @@ const categoryParseResponse: (
   };
 };
 
-export {categoryParseResponse};
+export {parseResponse};
 export type {CategoryResponse};
