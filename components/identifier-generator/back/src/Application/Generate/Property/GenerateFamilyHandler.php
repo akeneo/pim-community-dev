@@ -43,7 +43,7 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
                         Assert::minLength($productProjection->familyCode(), $familyProperty->process()->value());
                     } catch (\InvalidArgumentException) {
                         throw new UnableToTruncateException(
-                            sprintf('%s%s', $prefix, $productProjection->familyCode()),
+                            \sprintf('%s%s', $prefix, $productProjection->familyCode()),
                             $identifierGenerator->target()->asString(),
                             $productProjection->familyCode()
                         );
@@ -56,7 +56,7 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
                 $nomenclatureFamily = $this->nomenclatureRepository->get('family');
                 if (null === $nomenclatureFamily) {
                     throw new UndefinedFamilyNomenclatureException(
-                        sprintf('%s%s', $prefix, $familyCode),
+                        \sprintf('%s%s', $prefix, $familyCode),
                         $identifierGenerator->target()->asString(),
                     );
                 }
@@ -70,14 +70,14 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
                 }
                 if (null === $value) {
                     throw new UnableToGenerateIdentifierFromFamilyNomenclature(
-                        sprintf('%s%s', $prefix, $familyCode),
+                        \sprintf('%s%s', $prefix, $familyCode),
                         $identifierGenerator->target()->asString(),
                         $familyCode
                     );
                 }
                 if (\strlen($value) > $nomenclatureFamily->value()) {
                     throw new UnableToTruncateException(
-                        sprintf('%s%s', $prefix, $familyCode),
+                        \sprintf('%s%s', $prefix, $familyCode),
                         $identifierGenerator->target()->asString(),
                         $familyCode
                     );
@@ -85,7 +85,7 @@ final class GenerateFamilyHandler implements GeneratePropertyHandlerInterface
 
                 if (Process::PROCESS_OPERATOR_EQ === $nomenclatureFamily->operator() && \strlen($value) < $nomenclatureFamily->value()) {
                     throw new UnableToTruncateException(
-                        sprintf('%s%s', $prefix, $familyCode),
+                        \sprintf('%s%s', $prefix, $familyCode),
                         $identifierGenerator->target()->asString(),
                         $familyCode
                     );
