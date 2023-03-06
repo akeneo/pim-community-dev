@@ -101,8 +101,7 @@ datagrid:
                 type: attribute_mass_delete
                 label: pim_common.delete
                 entity_name: attribute
-                # TODO: add a new ACL for mass delete
-                acl_resource: pim_enrich_family_edit_attributes
+                acl_resource: pim_enrich_attribute_mass_delete
                 handler: attribute_mass_delete
                 className: 'AknButton AknButton--important AknButtonList-item'
                 messages:
