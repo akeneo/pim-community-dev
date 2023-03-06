@@ -141,6 +141,17 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->addFieldFilter('categories', Operators::UNCLASSIFIED, [], 'en_US', 'ecommerce', []);
     }
 
+    function it_adds_a_filter_with_operator_IS_NOT_EMPTY(SearchQueryBuilder $sqb) {
+        $sqb->addFilter(
+            [
+                'exists' => ['field' => 'categories'],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addFieldFilter('categories', Operators::IS_NOT_EMPTY, [], 'en_US', 'ecommerce', []);
+    }
+
     function it_adds_a_filter_with_operator_IN_LIST_OR_UNCLASSIFIED(
         SearchQueryBuilder $sqb,
         CategoryRepositoryInterface $categoryRepository,
