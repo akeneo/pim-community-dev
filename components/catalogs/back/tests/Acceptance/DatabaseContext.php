@@ -43,9 +43,9 @@ class DatabaseContext implements Context
         $catalogMappingFilesystem = $this->container->get('oneup_flysystem.catalogs_mapping_filesystem');
 
         $paths = $catalogMappingFilesystem->listContents('/')->filter(
-            fn(StorageAttributes $attributes): bool => $attributes instanceof FileAttributes,
+            fn (StorageAttributes $attributes): bool => $attributes instanceof FileAttributes,
         )->map(
-            fn(FileAttributes $attributes): string => $attributes->path(),
+            fn (FileAttributes $attributes): string => $attributes->path(),
         );
 
         foreach ($paths as $path) {
