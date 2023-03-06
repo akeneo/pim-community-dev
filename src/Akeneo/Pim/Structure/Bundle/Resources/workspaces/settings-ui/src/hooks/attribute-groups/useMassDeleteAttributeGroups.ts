@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {useBooleanState} from 'akeneo-design-system';
 import {useRouter} from '@akeneo-pim-community/shared';
 import {AttributeGroup} from '../../models';

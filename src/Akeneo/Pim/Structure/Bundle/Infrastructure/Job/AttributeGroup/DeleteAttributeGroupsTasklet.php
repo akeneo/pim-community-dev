@@ -46,38 +46,45 @@ final class DeleteAttributeGroupsTasklet implements TaskletInterface, TrackableT
             throw new \InvalidArgumentException(sprintf('In order to execute "%s" you need to set a step execution.', DeleteAttributeGroupsTasklet::class));
         }
 
-        $attributeGroupsToDelete = $this->getAttributeGroupsToDelete();
+        $attributeGroupCodesToDelete = $this->stepExecution->getJobParameters()->get('filters')['codes'];
 
-        $this->stepExecution->setTotalItems(count($attributeGroupsToDelete));
+        $this->stepExecution->setTotalItems(count($attributeGroupCodesToDelete));
         $this->stepExecution->addSummaryInfo('deleted_attribute_groups', 0);
         $this->stepExecution->addSummaryInfo('skipped_attribute_groups', 0);
 
-        $loopCount = 0;
-        foreach ($attributeGroupsToDelete as $batchAttributeGroup) {
-            $this->delete($batchAttributeGroup);
-            if ($this->batchSizeIsReached($loopCount)) {
-                if ($this->jobStopper->isStopping($this->stepExecution)) {
-                    $this->jobStopper->stop($this->stepExecution);
-                    return;
-                }
-
-                $this->cacheClearer->clear();
-                $this->jobRepository->updateStepExecution($this->stepExecution);
+        foreach (array_chunk($attributeGroupCodesToDelete, $this->batchSize) as $attributeGroupCodes) {
+            $this->deleteAttributeGroups($attributeGroupCodes);
+            if ($this->jobStopper->isStopping($this->stepExecution)) {
+                $this->jobStopper->stop($this->stepExecution);
+                return;
             }
+
+            $this->cacheClearer->clear();
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 
     /**
      * @return AttributeGroup[]
      */
-    private function getAttributeGroupsToDelete(): array
+    private function getAttributeGroups(array $attributeCodes): array
     {
-        $filters = $this->stepExecution->getJobParameters()->get('filters');
-
-        return $this->attributeGroupRepository->findBy(['code' => $filters['codes']]);
+        return $this->attributeGroupRepository->findBy(['code' => $attributeCodes]);
     }
 
-    private function delete(AttributeGroup $attributeGroup): void
+    /**
+     * @param string[] $attributeGroupCodes
+     */
+    private function deleteAttributeGroups(array $attributeGroupCodes): void
+    {
+        $attributeGroups = $this->getAttributeGroups($attributeGroupCodes);
+
+        foreach ($attributeGroups as $attributeGroup) {
+            $this->deleteAttributeGroup($attributeGroup);
+        }
+    }
+
+    private function deleteAttributeGroup(AttributeGroup $attributeGroup): void
     {
         try {
             $this->remover->remove($attributeGroup);
@@ -90,11 +97,6 @@ final class DeleteAttributeGroupsTasklet implements TaskletInterface, TrackableT
         }
 
         $this->stepExecution->incrementProcessedItems();
-    }
-
-    private function batchSizeIsReached(int $loopCount): bool
-    {
-        return 0 === $loopCount % $this->batchSize;
     }
 
     public function isTrackable(): bool

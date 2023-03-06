@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components';
 import {Button, useBooleanState, useAutoFocus, Helper, SelectInput, Field} from 'akeneo-design-system';
 import {
@@ -30,7 +30,6 @@ const MassDeleteAttributeGroupsModal = ({
 }: MassDeleteAttributeGroupsModalProps) => {
   const translate = useTranslate();
   const notify = useNotify();
-  const userContext = useUserContext();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
   const [replacementAttributeGroup, setReplacementAttributeGroup] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
