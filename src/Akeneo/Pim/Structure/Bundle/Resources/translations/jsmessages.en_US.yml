@@ -290,6 +290,20 @@ pim_enrich.entity.attribute_group:
         empty_result_label: 'No attribute group found'
         placeholder: 'Select attribute group'
         open_label: 'attribute group list'
+    batch_jobs:
+        delete_attribute_groups:
+            delete_attribute_groups:
+                label: Delete attribute groups
+    job_execution:
+        summary:
+            attribute_group_mass_delete: Deleted attribute groups
+pim_import_export:
+    notification:
+        mass_delete_attribute_groups:
+            error: Mass delete of attribute groups failed
+            warning: Mass delete of attribute groups finished with some warnings
+            success: Mass delete of attribute groups finished
+
 pim_enrich.mass_edit.family:
     title: Families bulk action
     confirm: "{1}You are about to update a family with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} families with the following information, please confirm."

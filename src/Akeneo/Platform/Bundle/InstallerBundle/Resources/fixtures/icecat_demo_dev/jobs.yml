@@ -987,3 +987,8 @@ jobs:
         alias: clean_category_template_and_enriched_values
         label: Clean Category Template and Enriched Values
         type: clean_category_template_and_enriched_values
+    delete_attribute_groups:
+        connector: Akeneo Mass Edit Connector
+        alias: delete_attribute_groups
+        label: Mass delete attribute groups
+        type: attribute_group_mass_delete
