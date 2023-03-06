@@ -34,6 +34,11 @@ define([
       this.listenTo(this.getRoot(), 'pim_enrich:form:to-fill:cleared', this.render);
       this.listenTo(this.getRoot(), 'pim_enrich:form:switch_attribute_group', this.setAttributeGroup.bind(this));
 
+      const attributeGroup = this.getQueryParam('attribute-group');
+      if (attributeGroup) {
+          this.setCurrent(attributeGroup);
+      }
+
       return GroupSelectorForm.prototype.configure.apply(this, arguments);
     },
 
@@ -150,5 +155,21 @@ define([
     setAttributeGroup: function (attributeGroupCode) {
       this.setCurrent(attributeGroupCode, {silent: true});
     },
+
+    /**
+    * Get query parameter
+    *
+    * @param {string} paramName [description]
+    */
+    getQueryParam: function(paramName) {
+      const urlString = window.location.href;
+      const index = urlString.indexOf('?');
+      if (index < 0) {
+          return null;
+      }
+      const params = new URLSearchParams(urlString.substring(index + 1));
+
+      return params.get(paramName);
+    }
   });
 });
