@@ -31,6 +31,7 @@
 - PIM-10820: Partially revert [PIM-10350] to fix case sensitivity on options import
 - PIM-10870: Fix display of permissions when empty
 - PIM-10860: [SLA] Announcements aren't shown
+- PIM-10745: Fix history display for product's quantified association
 - PIM-10874: fix labels api type consistency
 
 ## Improvements

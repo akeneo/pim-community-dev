@@ -480,6 +480,7 @@ pim_datagrid:
             label: Updated
         label_or_identifier:
             label: Label or identifier
+            label_with_uuid: Label, identifier or UUID
         parent:
             label: Parent
         identifier:

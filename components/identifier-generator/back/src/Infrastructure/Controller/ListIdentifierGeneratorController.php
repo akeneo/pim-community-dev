@@ -29,14 +29,14 @@ final class ListIdentifierGeneratorController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->security->isGranted('pim_identifier_generator_view') &&
-            !$this->security->isGranted('pim_identifier_generator_manage')
+        if (!$this->security->isGranted('pim_identifier_generator_view')
+            && !$this->security->isGranted('pim_identifier_generator_manage')
         ) {
             throw new AccessDeniedException();
         }
 
         $identifiersGenerators = $this->identifierGeneratorRepository->getAll();
-        $result = array_map(fn ($identifierGenerator) => $identifierGenerator->normalize(), $identifiersGenerators);
+        $result = \array_map(fn ($identifierGenerator) => $identifierGenerator->normalize(), $identifiersGenerators);
 
         return new JsonResponse($result, Response::HTTP_OK);
     }

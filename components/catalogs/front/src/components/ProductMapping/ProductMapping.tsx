@@ -125,6 +125,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                                             targetLabel={productMappingSchema.properties[targetCode]?.title}
                                             source={source}
                                             hasError={sourceHasError(errors[targetCode])}
+                                            isRequired={productMappingSchema?.required?.includes(targetCode) || false}
                                         />
                                     );
                                 })}

@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {ServerError, Unauthorized} from '../errors';
+import {ServerError, AttributeNotFound, Unauthorized} from '../errors';
 import {Attribute} from '../models';
 
 type Response = {data?: Attribute; error: Error | null; isLoading: boolean};
@@ -18,6 +18,7 @@ const useGetAttributeByCode = (identifier: string): Response => {
 
       if (!response.ok) {
         if (response.status === 401) throw new Unauthorized();
+        if (response.status === 404) throw new AttributeNotFound();
         throw new ServerError();
       }
 

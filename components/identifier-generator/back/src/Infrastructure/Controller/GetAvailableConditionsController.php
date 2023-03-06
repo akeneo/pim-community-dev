@@ -70,7 +70,7 @@ final class GetAvailableConditionsController
                 $localeCode,
                 $limit,
                 $offset,
-                [AttributeTypes::OPTION_SIMPLE_SELECT],
+                [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT],
                 $search
             );
         }
@@ -98,8 +98,8 @@ final class GetAvailableConditionsController
         return \array_filter(
             $fields,
             fn (string $field): bool =>
-                \str_contains(\strtolower($field), \strtolower($search)) ||
-                \str_contains(
+                \str_contains(\strtolower($field), \strtolower($search))
+                || \str_contains(
                     \strtolower(
                         $this->translator->trans(
                             \sprintf('%s%s', static::FIELD_TRANSLATION_BASE, $field),
@@ -172,6 +172,7 @@ final class GetAvailableConditionsController
             $results[$groupCode]['children'][] = [
                 'id' => $attribute['code'],
                 'text' => $attribute['label'],
+                'type' => $attribute['type'],
             ];
         }
 

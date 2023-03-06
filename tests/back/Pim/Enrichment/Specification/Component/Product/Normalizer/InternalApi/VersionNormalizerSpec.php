@@ -1,22 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
 use Akeneo\UserManagement\Component\Model\User;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VersionNormalizerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         UserManager $userManager,
         TranslatorInterface $translator,
         LocaleAwareInterface $localeAware,
@@ -24,7 +27,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         PresenterRegistryInterface $presenterRegistry,
         AttributeRepositoryInterface $attributeRepository,
         UserContext $userContext
-    ) {
+    ): void {
         $this->beConstructedWith(
             $userManager,
             $translator,
@@ -36,14 +39,13 @@ class VersionNormalizerSpec extends ObjectBehavior
         );
     }
 
-    function it_supports_versions(Version $version)
+    public function it_supports_versions(Version $version): void
     {
         $this->supportsNormalization($version, 'internal_api')->shouldReturn(true);
     }
 
-    function it_normalize_versions(
+    public function it_normalize_versions(
         $userManager,
-        $translator,
         $datetimePresenter,
         $presenterRegistry,
         $userContext,
@@ -53,14 +55,17 @@ class VersionNormalizerSpec extends ObjectBehavior
         PresenterInterface $numberPresenter,
         PresenterInterface $pricesPresenter,
         PresenterInterface $metricPresenter,
+        PresenterInterface $productAssociationPresenter,
         AttributeRepositoryInterface $attributeRepository
-    ) {
+    ): void {
         $versionTime = new \DateTime();
+        $uuid = Uuid::uuid4()->toString();
 
         $changeset = [
             'maximum_frame_rate' => ['old' => '', 'new' => '200.7890'],
             'price-EUR'          => ['old' => '5.00', 'new' => '5.15'],
             'weight'             => ['old' => '', 'new' => '10.1234'],
+            'asso-products'      => ['old' => '', 'new' => $uuid],
         ];
 
         $version->getId()->willReturn(12);
@@ -78,10 +83,11 @@ class VersionNormalizerSpec extends ObjectBehavior
         $steve->getFirstName()->willReturn('Steve');
         $steve->getLastName()->willReturn('Jobs');
 
-        $changeset = [
+        $normalizedChangeset = [
             'maximum_frame_rate' => ['old' => '', 'new' => '200,7890'],
             'price-EUR'          => ['old' => '5,00 €', 'new' => '5,15 €'],
             'weight'             => ['old' => '', 'new' => '10,1234'],
+            'asso-products'      => ['old' => '', 'new' => 'my-identifier'],
         ];
 
         $options = [
@@ -95,50 +101,71 @@ class VersionNormalizerSpec extends ObjectBehavior
         $userContext->getUserTimezone()->willReturn('Europe/Paris');
 
         $attributeRepository
-            ->getAttributeTypeByCodes(['maximum_frame_rate', 'price', 'weight'])
+            ->getAttributeTypeByCodes(['maximum_frame_rate', 'price', 'weight', 'asso'])
             ->willReturn([
                 'maximum_frame_rate' => 'pim_catalog_number',
                 'price' => 'pim_catalog_price_collection',
-                'weight' => 'pim_catalog_metric'
+                'weight' => 'pim_catalog_metric',
             ]);
 
         $presenterRegistry->getPresenterByAttributeType('pim_catalog_number')->willReturn($numberPresenter);
         $presenterRegistry->getPresenterByAttributeType('pim_catalog_price_collection')->willReturn($pricesPresenter);
         $presenterRegistry->getPresenterByAttributeType('pim_catalog_metric')->willReturn($metricPresenter);
+        $presenterRegistry->getPresenterByFieldCode('asso-products')->willReturn($productAssociationPresenter);
 
         $numberPresenter
             ->present('200.7890', $options + ['versioned_attribute' => 'maximum_frame_rate', 'attribute' => 'maximum_frame_rate'])
             ->willReturn('200,7890');
-        $pricesPresenter->present('5.00', $options + ['versioned_attribute' => 'price-EUR', 'attribute' => 'price'])->willReturn('5,00 €');
-        $pricesPresenter->present('5.15', $options + ['versioned_attribute' => 'price-EUR', 'attribute' => 'price'])->willReturn('5,15 €');
-        $metricPresenter->present('10.1234', $options + ['versioned_attribute' => 'weight', 'attribute' => 'weight'])->willReturn('10,1234');
+        $pricesPresenter
+            ->present('5.00', $options + ['versioned_attribute' => 'price-EUR', 'attribute' => 'price'])
+            ->willReturn('5,00 €');
+        $pricesPresenter
+            ->present('5.15', $options + ['versioned_attribute' => 'price-EUR', 'attribute' => 'price'])
+            ->willReturn('5,15 €');
+        $metricPresenter
+            ->present('10.1234', $options + ['versioned_attribute' => 'weight', 'attribute' => 'weight'])
+            ->willReturn('10,1234');
+        $productAssociationPresenter
+            ->present($uuid, $options + ['versioned_attribute' => 'asso-products', 'attribute' => 'asso'])
+            ->willReturn('my-identifier');
 
-        $numberPresenter->present('', $options + ['versioned_attribute' => 'maximum_frame_rate', 'attribute' => 'maximum_frame_rate'])->willReturn('');
-        $pricesPresenter->present('', $options)->willReturn('');
-        $metricPresenter->present('', $options + ['versioned_attribute' => 'weight', 'attribute' => 'weight'])->willReturn('');
-        $datetimePresenter->present($versionTime, $datetimePresenterOtions)->willReturn('01/01/1985 09:41 AM');
+        $numberPresenter
+            ->present('', $options + ['versioned_attribute' => 'maximum_frame_rate', 'attribute' => 'maximum_frame_rate'])
+            ->willReturn('');
+        $pricesPresenter
+            ->present('', $options)
+            ->willReturn('');
+        $metricPresenter
+            ->present('', $options + ['versioned_attribute' => 'weight', 'attribute' => 'weight'])
+            ->willReturn('');
+        $datetimePresenter
+            ->present($versionTime, $datetimePresenterOtions)
+            ->willReturn('01/01/1985 09:41 AM');
+        $productAssociationPresenter
+            ->present('', $options + ['versioned_attribute' => 'asso-products', 'attribute' => 'asso'])
+            ->willReturn('');
 
         $this->normalize($version, 'internal_api')->shouldReturn([
             'id'          => 12,
             'author'      => 'Steve Jobs',
             'resource_id' => '112',
             'snapshot'    => 'a nice snapshot',
-            'changeset'   => $changeset,
+            'changeset'   => $normalizedChangeset,
             'context'     => ['locale' => 'en_US', 'channel' => 'mobile'],
             'version'     => 12,
             'logged_at'   => '01/01/1985 09:41 AM',
-            'pending'     => false
+            'pending'     => false,
         ]);
     }
 
-    function it_normalize_versions_with_deleted_user(
+    public function it_normalize_versions_with_deleted_user(
         $userManager,
         $translator,
         $datetimePresenter,
         $userContext,
         LocaleAwareInterface $localeAware,
         Version $version
-    ) {
+    ): void {
         $versionTime = new \DateTime();
 
         $version->getId()->willReturn(12);
@@ -168,7 +195,7 @@ class VersionNormalizerSpec extends ObjectBehavior
             'context'     => ['locale' => 'en_US', 'channel' => 'mobile'],
             'version'     => 12,
             'logged_at'   => '01/01/1985 09:41 AM',
-            'pending'     => false
+            'pending'     => false,
         ]);
     }
 }

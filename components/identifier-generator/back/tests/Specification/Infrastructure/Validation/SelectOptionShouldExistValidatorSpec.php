@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberShouldBeValid;
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberShouldBeValidValidator;
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectOptionCodesShouldExist;
-use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectOptionCodesShouldExistValidator;
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SelectOptionShouldExist;
+use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SelectOptionShouldExistValidator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -19,7 +17,7 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleSelectOptionCodesShouldExistValidatorSpec extends ObjectBehavior
+class SelectOptionShouldExistValidatorSpec extends ObjectBehavior
 {
     public function let(
         GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues,
@@ -31,7 +29,7 @@ class SimpleSelectOptionCodesShouldExistValidatorSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(SimpleSelectOptionCodesShouldExistValidator::class);
+        $this->shouldHaveType(SelectOptionShouldExistValidator::class);
     }
 
     public function it_can_only_validate_the_right_constraint(): void
@@ -46,7 +44,7 @@ class SimpleSelectOptionCodesShouldExistValidatorSpec extends ObjectBehavior
     {
         $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
-        $this->validate(new \stdClass(), new SimpleSelectOptionCodesShouldExist());
+        $this->validate(new \stdClass(), new SelectOptionShouldExist());
     }
 
     public function it_should_not_validate_if_attribute_code_is_missing(ExecutionContext $context): void
@@ -55,7 +53,7 @@ class SimpleSelectOptionCodesShouldExistValidatorSpec extends ObjectBehavior
 
         $this->validate(
             ['type' => 'simple_select', 'operator' => 'IN', 'value' => ['green', 'red']],
-            new SimpleSelectOptionCodesShouldExist()
+            new SelectOptionShouldExist()
         );
     }
 
@@ -65,7 +63,7 @@ class SimpleSelectOptionCodesShouldExistValidatorSpec extends ObjectBehavior
 
         $this->validate(
             ['type' => 'simple_select', 'attributeCode' => 'color', 'operator' => 'IN'],
-            new SimpleSelectOptionCodesShouldExist()
+            new SelectOptionShouldExist()
         );
     }
 
@@ -75,7 +73,7 @@ class SimpleSelectOptionCodesShouldExistValidatorSpec extends ObjectBehavior
 
         $this->validate(
             ['type' => 'simple_select', 'attributeCode' => 'color', 'operator' => 'IN', 'value' => 'green'],
-            new SimpleSelectOptionCodesShouldExist()
+            new SelectOptionShouldExist()
         );
     }
 
@@ -85,7 +83,7 @@ class SimpleSelectOptionCodesShouldExistValidatorSpec extends ObjectBehavior
 
         $this->validate(
             ['type' => 'simple_select', 'attributeCode' => 'color', 'operator' => 'IN', 'value' => []],
-            new SimpleSelectOptionCodesShouldExist()
+            new SelectOptionShouldExist()
         );
     }
 
@@ -95,7 +93,7 @@ class SimpleSelectOptionCodesShouldExistValidatorSpec extends ObjectBehavior
 
         $this->validate(
             ['type' => 'simple_select', 'attributeCode' => 'color', 'operator' => 'IN', 'value' => ['green', 0]],
-            new SimpleSelectOptionCodesShouldExist()
+            new SelectOptionShouldExist()
         );
     }
 
@@ -123,7 +121,7 @@ class SimpleSelectOptionCodesShouldExistValidatorSpec extends ObjectBehavior
 
         $this->validate(
             ['type' => 'simple_select', 'attributeCode' => 'color', 'operator' => 'IN', 'value' => ['green', 'unknown1', 'red', 'unknown2']],
-            new SimpleSelectOptionCodesShouldExist()
+            new SelectOptionShouldExist()
         );
     }
 }
