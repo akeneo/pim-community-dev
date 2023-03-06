@@ -225,7 +225,7 @@ const Styled = {
   NomenclatureDefinition,
   NomenclatureInput,
   NomenclatureTable,
-  CategoryTreeContainer
+  CategoryTreeContainer,
 };
 
 export {Styled};

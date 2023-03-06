@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 import {CategoryCode, useRouter} from '@akeneo-pim-community/shared';
 
-type CategoryLabels = {[categoryCode: string]: string | null}
+type CategoryLabels = {[categoryCode: string]: string | null};
 
 const useCategoryLabels: (categoryCodes: CategoryCode[]) => CategoryLabels = categoryCodes => {
   const router = useRouter();
@@ -13,11 +13,13 @@ const useCategoryLabels: (categoryCodes: CategoryCode[]) => CategoryLabels = cat
       headers: [['X-Requested-With', 'XMLHttpRequest']],
     }).then(response => {
       response.json().then(json => {
-        setCategoryLabels(categoryCodes.reduce((categoryCodes, categoryCode) => {
-          categoryCodes[categoryCode] = json[categoryCode] ?? null;
+        setCategoryLabels(
+          categoryCodes.reduce((categoryCodes, categoryCode) => {
+            categoryCodes[categoryCode] = json[categoryCode] ?? null;
 
-          return categoryCodes;
-        }, {}));
+            return categoryCodes;
+          }, {})
+        );
       });
     });
   }, [categoryCodes, router]);
