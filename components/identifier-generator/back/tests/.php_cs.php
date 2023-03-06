@@ -29,6 +29,9 @@ return (new PhpCsFixer\Config())
         'operator_linebreak' => [
             'only_booleans' => true
         ],
+        'whitespace_after_comma_in_array' => [
+            'ensure_single_space' => true
+        ]
     ))
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(
