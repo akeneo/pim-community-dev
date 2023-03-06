@@ -11,6 +11,8 @@ use Akeneo\Catalogs\Application\Storage\CatalogsMappingStorageInterface;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type ProductMappingSchema from GetProductMappingSchemaQueryInterface
  */
 final class GetProductMappingSchemaQuery implements GetProductMappingSchemaQueryInterface
 {
@@ -36,9 +38,7 @@ final class GetProductMappingSchemaQuery implements GetProductMappingSchemaQuery
         }
 
         /**
-         * @var array{
-         *      properties: array<array-key, mixed>
-         * } $productMappingSchema
+         * @var ProductMappingSchema $productMappingSchema
          */
         $productMappingSchema = \json_decode($productMappingSchemaRaw, true, 512, JSON_THROW_ON_ERROR);
 

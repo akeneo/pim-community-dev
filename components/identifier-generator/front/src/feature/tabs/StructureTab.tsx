@@ -115,7 +115,9 @@ const StructureTab: React.FC<StructureTabProps> = ({
           </SectionTitle>
           {structure.length > 0 && (
             <>
-              {isLimitReached && <Helper>{translate('pim_identifier_generator.structure.limit_reached')}</Helper>}
+              {isLimitReached && (
+                <Helper>{translate('pim_identifier_generator.structure.limit_reached', {count: LIMIT_NUMBER})}</Helper>
+              )}
               <Preview structure={structure} delimiter={delimiter} textTransformation={textTransformation} />
               <StructureDataContainer>
                 <PropertiesList

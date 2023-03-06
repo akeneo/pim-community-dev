@@ -208,7 +208,7 @@ class CatalogFixtureCommand extends Command
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.9/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
@@ -253,10 +253,6 @@ class CatalogFixtureCommand extends Command
               "format": "uri",
               "title": "Thumbnail"
             },
-            "weight": {
-              "type": "number",
-              "title": "Weight"
-            },
             "phone_number": {
               "type": "string",
               "pattern": "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$"
@@ -264,8 +260,13 @@ class CatalogFixtureCommand extends Command
             "size": {
               "type": "string",
               "enum": ["S", "M", "L"]
-            }
-          }
+            },
+            "weight": {
+              "type": "number",
+              "title": "Weight"
+            },
+          },
+          "required": ["name", "size"]
         }
         JSON_WRAP;
     }

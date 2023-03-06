@@ -514,12 +514,74 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         ], $payload['_embedded']['items']);
     }
 
+    public function testItReturnsAnErrorPayloadWhenTheCatalogIsEnabledAndMissingRequiredMappingSource(): void
+    {
+        $this->logAs('admin');
+
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Enabled invalid catalog',
+            ownerUsername: 'shopifi',
+            productMappingSchema: $this->getProductMappingSchemaRawWithRequiredTitle(),
+            catalogProductMapping: [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'title' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'short_description' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'size_label' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        );
+
+        $catalogIdFromEvent = null;
+        $this->addSubscriberForInvalidCatalogDisabledEvent(function ($catalogId) use (&$catalogIdFromEvent): void {
+            $catalogIdFromEvent = $catalogId;
+        });
+
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedMessage = 'No products to synchronize. The catalog db1079b6-f397-4a6a-bae4-8658e64ad47c has been ' .
+            'disabled on the PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.';
+
+        Assert::assertEquals(200, $response->getStatusCode());
+        Assert::assertEquals($expectedMessage, $payload['error']);
+        Assert::assertFalse($this->getCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c')->isEnabled());
+        Assert::assertEquals('db1079b6-f397-4a6a-bae4-8658e64ad47c', $catalogIdFromEvent);
+    }
+
     private function getProductMappingSchemaRaw(): string
     {
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.1/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
@@ -538,6 +600,35 @@ class GetMappedProductsActionTest extends IntegrationTestCase
               "type": "string"
             }
           }
+        }
+        JSON_WRAP;
+    }
+
+    private function getProductMappingSchemaRawWithRequiredTitle(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "short_description": {
+              "type": "string"
+            },
+            "size_label": {
+              "type": "string"
+            }
+          },
+          "required": ["title"]
         }
         JSON_WRAP;
     }

@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo} from 'react';
-import {Operator, SimpleSelectCondition, SimpleSelectOperators} from '../../models';
+import {Operator, SimpleOrMultiSelectCondition, SimpleSelectOperators} from '../../models';
 import {Button, Helper, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {OperatorSelector} from '../../components';
@@ -15,16 +15,16 @@ import {SimpleSelectOptionsSelector} from '../../components/SimpleSelectOptionsS
 import {OptionCode} from '../../models/option';
 import {ScopeAndLocaleSelector} from '../../components/ScopeAndLocaleSelector';
 import {useGetAttributeByCode} from '../../hooks/useGetAttributeByCode';
-import {Unauthorized} from '../../errors';
+import {Unauthorized, AttributeNotFound} from '../../errors';
 import {useIdentifierGeneratorAclContext} from '../../context';
 
-type SimpleSelectLineProps = {
-  condition: SimpleSelectCondition;
-  onChange: (condition: SimpleSelectCondition) => void;
+type SimpleOrMultiSelectLineProps = {
+  condition: SimpleOrMultiSelectCondition;
+  onChange: (condition: SimpleOrMultiSelectCondition) => void;
   onDelete: () => void;
 };
 
-const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange, onDelete}) => {
+const SimpleOrMultiSelectLine: React.FC<SimpleOrMultiSelectLineProps> = ({condition, onChange, onDelete}) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const locale = useUserContext().get('catalogLocale');
@@ -74,13 +74,7 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
 
   return (
     <>
-      {error ? (
-        <Table.Cell colSpan={3}>
-          <Helper level="error">
-            {translate(error instanceof Unauthorized ? 'pim_error.unauthorized_list_attributes' : 'pim_error.general')}
-          </Helper>
-        </Table.Cell>
-      ) : isLoading ? (
+      {isLoading ? (
         <Table.Cell colSpan={3}>
           <Styled.ConditionLineSkeleton aria-colspan={3}>This is loading</Styled.ConditionLineSkeleton>
         </Table.Cell>
@@ -88,27 +82,41 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
         <>
           <Styled.TitleCell>{label}</Styled.TitleCell>
           <Styled.SelectionInputsContainer>
-            <OperatorSelector
-              operator={condition.operator}
-              onChange={handleOperatorChange}
-              operators={SimpleSelectOperators}
-              isInSelection={true}
-            />
+            {error ? (
+              <Helper level="error">
+                {translate(
+                  error instanceof Unauthorized
+                    ? 'pim_error.unauthorized_list_attributes'
+                    : error instanceof AttributeNotFound
+                    ? 'pim_error.selection_attribute_not_found'
+                    : 'pim_error.general'
+                )}
+              </Helper>
+            ) : (
+              <>
+                <OperatorSelector
+                  operator={condition.operator}
+                  onChange={handleOperatorChange}
+                  operators={SimpleSelectOperators}
+                  isInSelection={true}
+                />
 
-            {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
-              <SimpleSelectOptionsSelector
-                attributeCode={condition.attributeCode}
-                optionCodes={condition.value || []}
-                onChange={handleSelectCodesChange}
-              />
+                {(condition.operator === Operator.IN || condition.operator === Operator.NOT_IN) && (
+                  <SimpleSelectOptionsSelector
+                    attributeCode={condition.attributeCode}
+                    optionCodes={condition.value || []}
+                    onChange={handleSelectCodesChange}
+                  />
+                )}
+
+                <ScopeAndLocaleSelector
+                  locale={condition.locale}
+                  scope={condition.scope}
+                  attributeCode={condition.attributeCode}
+                  onChange={handleScopeAndLocaleChange}
+                />
+              </>
             )}
-
-            <ScopeAndLocaleSelector
-              locale={condition.locale}
-              scope={condition.scope}
-              attributeCode={condition.attributeCode}
-              onChange={handleScopeAndLocaleChange}
-            />
           </Styled.SelectionInputsContainer>
           <Table.ActionCell colSpan={1}>
             {identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
@@ -123,4 +131,4 @@ const SimpleSelectLine: React.FC<SimpleSelectLineProps> = ({condition, onChange,
   );
 };
 
-export {SimpleSelectLine};
+export {SimpleOrMultiSelectLine};
