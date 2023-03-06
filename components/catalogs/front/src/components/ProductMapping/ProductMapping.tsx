@@ -10,7 +10,6 @@ import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
 import {Source} from './models/Source';
 import {Target} from './models/Target';
-import {createTargetSourceAssociationsFromProductMapping} from './utils/createTargetSourceAssociationsFromProductMapping';
 import {sourceHasError} from './utils/sourceHasError';
 import {createTargetFromProductMappingSchema} from './utils/createTargetFromProductMappingSchema';
 
@@ -45,28 +44,9 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             if (productMappingSchema === undefined) {
                 return;
             }
+
             const target = createTargetFromProductMappingSchema(targetCode, productMappingSchema);
-            if (undefined !== productMappingSchema.properties[targetCode].description) {
-                target.description = productMappingSchema.properties[targetCode].description;
-            }
-            if (undefined !== productMappingSchema.properties[targetCode].minLength) {
-                target.minLength = productMappingSchema.properties[targetCode].minLength;
-            }
-            if (undefined !== productMappingSchema.properties[targetCode].maxLength) {
-                target.maxLength = productMappingSchema.properties[targetCode].maxLength;
-            }
-            if (undefined !== productMappingSchema.properties[targetCode].pattern) {
-                target.pattern = productMappingSchema.properties[targetCode].pattern;
-            }
-            if (undefined !== productMappingSchema.properties[targetCode].minimum) {
-                target.minimum = productMappingSchema.properties[targetCode].minimum;
-            }
-            if (undefined !== productMappingSchema.properties[targetCode].maximum) {
-                target.maximum = productMappingSchema.properties[targetCode].maximum;
-            }
-            if (undefined !== productMappingSchema.properties[targetCode].enum) {
-                target.enum = productMappingSchema.properties[targetCode].enum;
-            }
+
             setSelectedTarget(target);
             setSelectedSource(source);
         },
@@ -86,7 +66,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
         [selectedTarget, onChange, productMapping]
     );
 
-    const targetSourceAssociations = createTargetSourceAssociationsFromProductMapping(productMapping);
+    const targetSourceAssociations = Object.entries(productMapping);
 
     return (
         <MappingContainer data-testid={'product-mapping'}>
