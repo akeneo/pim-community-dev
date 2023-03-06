@@ -15,9 +15,9 @@ import {
 import {useGetIdentifierGenerators, useIdentifierAttributes, useStructureTabs} from '../hooks';
 import {GeneratorTab, LabelCollection, Target} from '../models';
 import {Styled} from './styles';
-import {CategoriesSelector, Header, ListSkeleton} from '../components';
 import {useHistory} from 'react-router-dom';
 import {DeleteGeneratorModal} from './';
+import {Header, ListSkeleton} from '../components';
 
 type ListPageProps = {
   onCreate: () => void;
@@ -69,11 +69,8 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     return identifierAttributes.find(attribute => attribute.code === target)?.label;
   };
 
-  const [categoryCodes, setCategoryCodes] = useState<string[]>(['master_accessories']);
-
   return (
     <>
-      <CategoriesSelector categoryCodes={categoryCodes} onChange={setCategoryCodes}/>
       <Header>
         <Button onClick={onCreate} disabled={isCreateDisabled}>
           {translate('pim_common.create')}

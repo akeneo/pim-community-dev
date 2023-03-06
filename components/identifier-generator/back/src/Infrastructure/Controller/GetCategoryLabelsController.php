@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
@@ -27,7 +29,7 @@ class GetCategoryLabelsController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        $categoryCodes = $request->query->get('categoryCodes', []);
+        $categoryCodes = $request->get('categoryCodes', []);
         Assert::isArray($categoryCodes);
 
         $userLocale = $this->userContext->getCurrentLocaleCode();
