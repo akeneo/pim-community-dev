@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 `;
 
 const TableWrapper = styled.div`
-  margin-left: -40px;
+  // TODO uncomment when bringing back selectable margin-left: -40px;
 `;
 
 type Props = {
@@ -97,7 +97,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({
         <TableWrapper>
           <Table
             isDragAndDroppable={canDragAndDrop}
-            isSelectable={true}
+            isSelectable={false}
             onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
           >
             <Table.Header>
