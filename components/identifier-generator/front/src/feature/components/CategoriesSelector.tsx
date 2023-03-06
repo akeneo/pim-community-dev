@@ -7,7 +7,7 @@ import {
   CategoryValue,
   ParentCategoryTree,
   useRouter,
-  categoryParseResponse,
+  parseResponse,
   CategoryResponse,
 } from '@akeneo-pim-community/shared';
 import {Dropdown, TagInput, useBooleanState} from 'akeneo-design-system';
@@ -48,7 +48,7 @@ const CategoriesSelector: FC<CategoriesSelectorProps> = ({
         label: currentTree.label,
         selectable: false,
         children: json.map(child =>
-          categoryParseResponse(child, {
+          parseResponse(child, {
             selectable: true,
           })
         ),
@@ -62,7 +62,7 @@ const CategoriesSelector: FC<CategoriesSelectorProps> = ({
     const json: CategoryResponse[] = await response.json();
 
     return json.map(child =>
-      categoryParseResponse(child, {
+      parseResponse(child, {
         selectable: true,
       })
     );
