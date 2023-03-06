@@ -368,7 +368,7 @@ final class UpdateIdentifierGeneratorContext implements Context
      */
     public function iTryToUpdateAnIdentifierGeneratorWithConditions(string $count): void
     {
-        $this->tryToUpdateGenerator(conditions: array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
+        $this->tryToUpdateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
     }
 
     /**
@@ -412,7 +412,7 @@ final class UpdateIdentifierGeneratorContext implements Context
         string $value = '',
         string $unknown = '',
     ): void {
-        var_dump($value);
+        \var_dump($value);
         $defaultCondition = $this->getValidCondition($type);
         if ($attributeCode !== '') {
             $defaultCondition['attributeCode'] = $attributeCode;

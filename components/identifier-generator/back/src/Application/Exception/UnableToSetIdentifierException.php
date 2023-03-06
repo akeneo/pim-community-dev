@@ -13,7 +13,7 @@ class UnableToSetIdentifierException extends \Exception
         private string $target,
         private ErrorList $errorList
     ) {
-        parent::__construct(sprintf(
+        parent::__construct(\sprintf(
             "Your product has been saved but your identifier could not be generated:\n%s",
             $errorList->__toString()
         ));

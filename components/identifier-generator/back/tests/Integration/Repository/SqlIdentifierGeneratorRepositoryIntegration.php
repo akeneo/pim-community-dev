@@ -129,7 +129,7 @@ SQL;
         Assert::assertEquals($identifierGenerator->structure()->normalize(), [[
             'type' => 'free_text',
             'string' => 'default_structure',
-        ],]);
+        ], ]);
     }
 
     /** @test */
@@ -203,7 +203,7 @@ SQL;
         Assert::assertEquals($firstIdentifier->structure()->normalize(), [[
             'type' => 'free_text',
             'string' => 'default_structure',
-        ],]);
+        ], ]);
     }
 
     /** @test */
