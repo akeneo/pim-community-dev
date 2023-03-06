@@ -1002,6 +1002,10 @@ class ApiContext implements Context
                     'france',
                     'brazil',
                 ],
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 125,
+                ],
             ],
         ];
 
