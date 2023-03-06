@@ -1,3 +1,6 @@
+export * from './useCategoryLabels';
+export * from './useCategoryTree';
+export * from './useCategoryTrees';
 export * from './useCreateIdentifierGenerator';
 export * from './useGetNomenclature';
 export * from './useDeleteIdentifierGenerator';
