@@ -190,7 +190,7 @@ const NomenclatureContent = styled.div`
 `;
 
 const CategoryTreeContainer = styled.div`
-  max-height: calc(100vh - 100px);
+  max-height: 400px;
   overflow: auto;
   margin: 0 20px 0 0;
   padding: 0 0 0 20px;

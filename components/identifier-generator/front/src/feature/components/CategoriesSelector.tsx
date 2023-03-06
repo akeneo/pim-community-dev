@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useState, useEffect} from 'react';
 import {
   CategoryCode,
   CategoryTree,
@@ -23,19 +23,34 @@ const CategoriesSelector: FC<CategoriesSelectorProps> = ({
   categoryCodes,
   onChange
 }) => {
-  const Router = useRouter();
+  const router = useRouter();
   const [isOpen, open, close] = useBooleanState();
   const [currentTree, setCurrentTree] = useState<CategoryTreeRoot | undefined>(undefined);
   const handleTreeChange = (tree: CategoryTreeRoot) => {
     setCurrentTree(tree);
   };
 
+  const [categoryLabels, setCategoryLabels] = useState<any>({});
+
   const getChildrenUrl = (id: number) => {
-    return Router.generate('pim_enrich_categorytree_children', {
+    return router.generate('pim_enrich_categorytree_children', {
       _format: 'json',
       id,
     });
   };
+
+  useEffect(() => {
+    fetch(router.generate('akeneo_identifier_generator_get_category_labels', {categoryCodes}), {
+      method: 'GET',
+      headers: [['X-Requested-With', 'XMLHttpRequest']],
+    }).then(response => {
+      response.json().then(json => {
+        setCategoryLabels(json);
+      })
+    });
+  }, [categoryCodes]);
+
+  const invalidValue = categoryCodes.filter(categoryCode => !(categoryCode in categoryLabels));
 
   const init = async () => {
     if (currentTree) {
@@ -81,8 +96,14 @@ const CategoriesSelector: FC<CategoriesSelectorProps> = ({
   };
 
   return <Dropdown>
-    <TagInput value={categoryCodes} onChange={onChange} onFocus={open} labels={{}} />
-    {isOpen && <Dropdown.Overlay onClose={close} horizontalPosition={'left'} fullWidth={true}>
+    <TagInput
+      value={categoryCodes}
+      onChange={onChange}
+      onFocus={open}
+      labels={categoryLabels}
+      invalidValue={invalidValue}
+    />
+    {isOpen && <Dropdown.Overlay onClose={close} horizontalPosition={'left'}>
       <Dropdown.Header>
         <Dropdown.Title>
             Categories
