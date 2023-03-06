@@ -106,6 +106,9 @@ The retention time can be specified with the option `--retention-time=<seconds>`
 ## Easy configuration of queues and consumers
 
 This bundle also provides a way to facilitate the setup of multi-tenant queues and consumers.
+This stack is built to consume messages quickly and to launch short processes, **5 minutes maximum**.
+If your process exceed 5 minutes, please consider cut your process in shorter ones, or use the job stack
+that is designed for long-running job.
 
 ### How it works
 
