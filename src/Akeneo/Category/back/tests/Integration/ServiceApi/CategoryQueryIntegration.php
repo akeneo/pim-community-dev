@@ -153,7 +153,7 @@ SQL;
         $searchCategoriesByCode = ['bike','paddle'];
         $categories = $this->getHandler()->byCodes($searchCategoriesByCode);
 
-        Assert::assertCount(0, $categories);
+        Assert::assertCount(0, iterator_to_array($categories, false));
     }
 
     public function testItDoNotGetCategoriesByIds(): void
@@ -161,7 +161,7 @@ SQL;
         $searchCategoriesByIds = [999,1000];
         $categories = $this->getHandler()->byIds($searchCategoriesByIds);
 
-        Assert::assertCount(0, $categories);
+        Assert::assertCount(0, iterator_to_array($categories, false));
     }
 
     protected function getConfiguration(): Configuration
