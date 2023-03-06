@@ -1,15 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {AttributeGroup} from '../../../models';
-import {Button, useBooleanState, useAutoFocus, Helper, SelectInput, Field} from 'akeneo-design-system';
-import {DoubleCheckDeleteModal, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components';
-import {getLabel} from 'pimui/js/i18n';
-
-type MassDeleteAttributeGroupsModalProps = {
-  selectedAttributeGroups: AttributeGroup[];
-  unselectAttributeGroups: AttributeGroup[];
-  onConfirm: () => void;
-};
+import {Button, useBooleanState, useAutoFocus, Helper, SelectInput, Field} from 'akeneo-design-system';
+import {DoubleCheckDeleteModal, getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {AttributeGroup} from '../../../models';
 
 const ModalContent = styled.div`
   margin-bottom: 20px;
@@ -18,28 +11,29 @@ const ModalContent = styled.div`
   gap: 20px;
 `;
 
+type MassDeleteAttributeGroupsModalProps = {
+  selectedCount: number;
+  impactedAttributesCount: number;
+  availableTargetAttributeGroups: AttributeGroup[];
+};
+
 const MassDeleteAttributeGroupsModal = ({
-  selectedAttributeGroups,
-  unselectAttributeGroups,
-  onConfirm,
+  selectedCount,
+  impactedAttributesCount,
+  availableTargetAttributeGroups,
 }: MassDeleteAttributeGroupsModalProps) => {
   const translate = useTranslate();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
-  const [numberOfAttribute, setNumberOfAttribute] = useState<number>(0);
   const [replacementAttributeGroup, setReplacementAttributeGroup] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const userContext = useUserContext();
+  const catalogLocale = useUserContext().get('catalogLocale');
+
+  const handleConfirm = () => {
+    closeMassDeleteModal();
+    // TODO launch job, will be implemented in RAB-1278
+  };
 
   useAutoFocus(inputRef);
-
-  useEffect(() => {
-    setNumberOfAttribute(
-      selectedAttributeGroups.reduce(
-        (accumulator: number, attributeGroup: AttributeGroup) => accumulator + attributeGroup.attribute_count,
-        0
-      )
-    );
-  }, [selectedAttributeGroups]);
 
   return (
     <>
@@ -53,7 +47,7 @@ const MassDeleteAttributeGroupsModal = ({
             confirmation_word: translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word'),
           })}
           textToCheck={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word')}
-          onConfirm={() => onConfirm()}
+          onConfirm={handleConfirm}
           onCancel={closeMassDeleteModal}
         >
           <ModalContent>
@@ -61,30 +55,24 @@ const MassDeleteAttributeGroupsModal = ({
               {translate(
                 'pim_enrich.entity.attribute_group.mass_delete.confirm',
                 {
-                  count: selectedAttributeGroups.length,
+                  count: selectedCount,
                 },
-                selectedAttributeGroups.length
+                selectedCount
               )}
             </p>
-            {numberOfAttribute > 0 && (
+            {0 < impactedAttributesCount && (
               <>
                 <Helper level="error">
-                  {translate(
-                    'pim_enrich.entity.attribute_group.mass_delete.attribute_warning',
-                    {
-                      number_of_attribute: numberOfAttribute,
-                    },
-                    numberOfAttribute
-                  )}
+                  {translate('pim_enrich.entity.attribute_group.mass_delete.attribute_warning', {
+                    number_of_attribute: impactedAttributesCount,
+                    impactedAttributesCount,
+                  })}
                 </Helper>
                 <Field
-                  label={translate(
-                    'pim_enrich.entity.attribute_group.mass_delete.select_attribute_group',
-                    {
-                      number_of_attribute: numberOfAttribute,
-                    },
-                    numberOfAttribute
-                  )}
+                  label={translate('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group', {
+                    number_of_attribute: impactedAttributesCount,
+                    impactedAttributesCount,
+                  })}
                 >
                   <SelectInput
                     emptyResultLabel={translate('pim_enrich.entity.attribute_group.mass_delete.empty_result_label')}
@@ -93,9 +81,9 @@ const MassDeleteAttributeGroupsModal = ({
                     value={replacementAttributeGroup}
                     openLabel={translate('pim_enrich.entity.attribute_group.mass_delete.open_label')}
                   >
-                    {unselectAttributeGroups.map(attributeGroup => (
+                    {availableTargetAttributeGroups.map(attributeGroup => (
                       <SelectInput.Option key={attributeGroup.code} value={attributeGroup.code}>
-                        {getLabel(attributeGroup.labels, userContext.get('catalogLocale'), attributeGroup.code)}
+                        {getLabel(attributeGroup.labels, catalogLocale, attributeGroup.code)}
                       </SelectInput.Option>
                     ))}
                   </SelectInput>

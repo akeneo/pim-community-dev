@@ -1,3 +1,5 @@
+import {Selection} from 'akeneo-design-system';
+
 type AttributeGroupLabels = {
   [locale: string]: string;
 };
@@ -20,4 +22,29 @@ const toSortedAttributeGroupsArray = (collection: AttributeGroupCollection): Att
   });
 };
 
-export {AttributeGroup, AttributeGroupCollection, AttributeGroupLabels, toSortedAttributeGroupsArray};
+const getImpactedAndTargetAttributeGroups = (
+  attributeGroups: AttributeGroup[],
+  selection: Selection<AttributeGroup>
+): [number, AttributeGroup[]] => {
+  const excludedAttributeGroups = attributeGroups.filter(
+    attributeGroup => !selection.collection.includes(attributeGroup)
+  );
+
+  const [impactedAttributeGroups, targetAttributeGroups] =
+    'in' === selection.mode
+      ? [selection.collection, excludedAttributeGroups]
+      : [excludedAttributeGroups, selection.collection];
+
+  return [
+    impactedAttributeGroups.reduce((totalCount, {attribute_count}) => totalCount + attribute_count, 0),
+    targetAttributeGroups,
+  ];
+};
+
+export {
+  AttributeGroup,
+  AttributeGroupCollection,
+  AttributeGroupLabels,
+  getImpactedAndTargetAttributeGroups,
+  toSortedAttributeGroupsArray,
+};
