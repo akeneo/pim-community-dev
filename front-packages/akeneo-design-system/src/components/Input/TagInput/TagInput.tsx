@@ -222,7 +222,7 @@ const TagInput: FC<TagInputProps> = ({
 
   const getLabel: (tag: string) => string = useCallback(
     tag => {
-      return 'undefined' === typeof labels ? tag : labels[tag] ?? `[${tag}}`;
+      return 'undefined' === typeof labels ? tag : labels[tag] ?? `[${tag}]`;
     },
     [labels]
   );
