@@ -98,6 +98,27 @@ describe('AddConditionButton', () => {
     });
   });
 
+  it('adds a multi select condition', async () => {
+    const onAddCondition = jest.fn();
+    render(<AddConditionButton onAddCondition={onAddCondition} conditions={[]} />);
+    const button = screen.getByRole('button');
+    expect(screen.getByText('pim_identifier_generator.structure.add_element')).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
+
+    fireEvent.click(button);
+    await waitFor(() => {
+      expect(screen.getByText('Main color')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('Main color'));
+    expect(onAddCondition).toBeCalledWith({
+      type: CONDITION_NAMES.MULTI_SELECT,
+      attributeCode: 'main_color',
+      operator: Operator.IN,
+      value: [],
+    });
+  });
+
   it('should not display limited conditions', async () => {
     const onAddCondition = jest.fn();
     render(

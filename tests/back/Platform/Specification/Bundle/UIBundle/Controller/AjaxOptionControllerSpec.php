@@ -15,112 +15,106 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AjaxOptionControllerSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $doctrine, ConfigurationRegistryInterface $registry)
+    public function let(ManagerRegistry $doctrine, ConfigurationRegistryInterface $registry)
     {
         $this->beConstructedWith($doctrine, $registry);
     }
 
-    function it_returns_options_with_option_repository(
+    public function it_returns_options_with_option_repository(
         $doctrine,
         Request $request,
         ParameterBag $query,
         AttributeOptionRepository $repository
-    ) {
-        $request->query = $query;
-        $query->get('search')->willReturn('hello');
-        $query->get('referenceDataName')->willReturn(null);
-        $query->get('class')->willReturn('Foo\Bar');
+    ): void {
+        $request->get('search')->willReturn('hello');
+        $request->get('referenceDataName')->willReturn(null);
+        $request->get('class')->willReturn('Foo\Bar');
 
         $doctrine->getRepository('Foo\Bar')->willReturn($repository);
 
-        $query->get('dataLocale')->willReturn('fr_FR');
-        $query->get('collectionId')->willReturn(42);
-        $query->get('options', [])->willReturn([]);
+        $request->get('dataLocale')->willReturn('fr_FR');
+        $request->get('collectionId')->willReturn(42);
+        $request->get('options', [])->willReturn([]);
 
         $repository->getOptions('fr_FR', 42, 'hello', [])->shouldBeCalled();
-        $query->get('isCreatable')->willReturn(false);
+        $request->get('isCreatable')->willReturn(false);
 
         $this->listAction($request);
     }
 
-    function it_returns_options_with_reference_data_repository(
+    public function it_returns_options_with_reference_data_repository(
         $doctrine,
         $registry,
         ReferenceDataConfigurationInterface $configuration,
         Request $request,
         ParameterBag $query,
         ReferenceDataRepositoryInterface $repository
-    ) {
-        $request->query = $query;
-        $query->get('search')->willReturn('hello');
-        $query->get('referenceDataName')->willReturn('color');
-        $query->get('class')->willReturn('undefined');
+    ): void {
+        $request->get('search')->willReturn('hello');
+        $request->get('referenceDataName')->willReturn('color');
+        $request->get('class')->willReturn('undefined');
 
         $registry->get('color')->willReturn($configuration);
         $configuration->getClass()->willReturn('Foo\RefData');
 
         $doctrine->getRepository('Foo\RefData')->willReturn($repository);
-        $query->get('options', [])->willReturn([]);
+        $request->get('options', [])->willReturn([]);
         $repository->findBySearch('hello', [])->shouldBeCalled();
-        $query->get('isCreatable')->willReturn(false);
+        $request->get('isCreatable')->willReturn(false);
 
         $this->listAction($request);
     }
 
-    function it_returns_options_with_searchable_repository(
+    public function it_returns_options_with_searchable_repository(
         $doctrine,
         Request $request,
         ParameterBag $query,
         SearchableRepositoryInterface $repository
-    ) {
-        $request->query = $query;
-        $query->get('search')->willReturn('hello');
-        $query->get('referenceDataName')->willReturn(null);
-        $query->get('class')->willReturn('Foo\Bar');
+    ): void {
+        $request->get('search')->willReturn('hello');
+        $request->get('referenceDataName')->willReturn(null);
+        $request->get('class')->willReturn('Foo\Bar');
 
         $doctrine->getRepository('Foo\Bar')->willReturn($repository);
 
-        $query->get('options', [])->willReturn([]);
+        $request->get('options', [])->willReturn([]);
 
         $repository->findBySearch('hello', [])->shouldBeCalled();
-        $query->get('isCreatable')->willReturn(false);
+        $request->get('isCreatable')->willReturn(false);
 
         $this->listAction($request);
     }
 
-    function it_returns_options_with_other_repository(
+    public function it_returns_options_with_other_repository(
         $doctrine,
         Request $request,
         ParameterBag $query,
         GroupRepositoryInterface $repository
-    ) {
-        $request->query = $query;
-        $query->get('search')->willReturn('hello');
-        $query->get('referenceDataName')->willReturn(null);
-        $query->get('class')->willReturn('Foo\Bar');
+    ): void {
+        $request->get('search')->willReturn('hello');
+        $request->get('referenceDataName')->willReturn(null);
+        $request->get('class')->willReturn('Foo\Bar');
 
         $doctrine->getRepository('Foo\Bar')->willReturn($repository);
 
-        $query->get('dataLocale')->willReturn('fr_FR');
-        $query->get('collectionId')->willReturn(42);
-        $query->get('options', [])->willReturn([]);
+        $request->get('dataLocale')->willReturn('fr_FR');
+        $request->get('collectionId')->willReturn(42);
+        $request->get('options', [])->willReturn([]);
 
         $repository->getOptions('fr_FR', 42, 'hello', [])->shouldBeCalled();
-        $query->get('isCreatable')->willReturn(false);
+        $request->get('isCreatable')->willReturn(false);
 
         $this->listAction($request);
     }
 
-    function it_throws_an_exception_if_no_repository_can_be_found(
+    public function it_throws_an_exception_if_no_repository_can_be_found(
         $doctrine,
         Request $request,
-        ParameterBag $query,
         \stdClass $repository
-    ) {
-        $request->query = $query;
-        $query->get('search')->willReturn('hello');
-        $query->get('referenceDataName')->willReturn(null);
-        $query->get('class')->willReturn('Foo\Bar');
+    ): void {
+        $request->get('search')->willReturn('hello');
+        $request->get('referenceDataName')->willReturn(null);
+        $request->get('class')->willReturn('Foo\Bar');
 
         $doctrine->getRepository('Foo\Bar')->willReturn($repository);
 
