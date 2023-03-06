@@ -55,9 +55,14 @@ class MetricPresenter extends NumberPresenter
 
         $unitLabel = '';
 
-        if (isset($options['attribute']) && isset($options['locale'])) {
-            try {
-                if (isset($value['unit']) && $value['unit'] !== '') {
+        if (
+            isset($options['attribute'])
+            && isset($options['locale'])
+            && is_array($value)
+            && array_key_exists('unit', $value)
+        ) {
+            if (!empty($value['unit'])) {
+                try {
                     $measurementFamilyCode = $this->baseCachedObjectRepository->findOneByIdentifier($options['attribute'])
                         ->getMetricFamily();
                     $measurementFamily = $this->measurementFamilyRepository
@@ -66,18 +71,18 @@ class MetricPresenter extends NumberPresenter
                         UnitCode::fromString($value['unit']),
                         LocaleIdentifier::fromCode($options['locale'])
                     );
+                } catch (\Exception $e) {
+                    $this->logger->warning('An error occurred while trying to fetch the measurement family of a metric value to present it.', [
+                        'error_message' => $e->getMessage(),
+                        'error_trace' => $e->getTrace(),
+                    ]);
                 }
-            } catch (\Exception $e) {
-                $this->logger->warning('An error occurred while trying to fetch the measurement family of a metric value to present it.', [
-                    'error_message' => $e->getMessage(),
-                    'error_trace' => $e->getTrace(),
-                ]);
             }
         } else {
             $this->logger->warning('Expected to have an attribute code given in the options of the presenter, none given.', [
                 'options' => [
                     'attribute' => $options['attribute'] ?? 'undefined',
-                    'unit' => $options['unit'] ?? 'undefined',
+                    'unit' => $value['unit'] ?? 'undefined',
                     'locale' => $options['locale'] ?? 'undefined',
                 ],
             ]);
