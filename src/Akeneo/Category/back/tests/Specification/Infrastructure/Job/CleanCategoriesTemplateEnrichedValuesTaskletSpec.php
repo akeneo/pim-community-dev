@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Category\Infrastructure\Job;
 
 use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
-use Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet;
 use Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateEnrichedValuesTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -18,13 +17,6 @@ use PhpSpec\ObjectBehavior;
  */
 class CleanCategoriesTemplateEnrichedValuesTaskletSpec extends ObjectBehavior
 {
-    function let(
-    )
-    {
-        $this->beConstructedWith(
-        );
-    }
-
     function it_is_initializable()
     {
         $this->shouldImplement(TaskletInterface::class);

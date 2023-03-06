@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Application\Enrichment\Filter\ChannelAndLocalesFilter;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -49,7 +48,7 @@ class CleanCategoryDataAfterChannelChangeSubscriber implements EventSubscriberIn
         }
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
             'channel_code' => $channel->getCode(),
-            'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_ACTION,
+            'locales_codes' => [],
         ]);
     }
 
@@ -74,7 +73,6 @@ class CleanCategoryDataAfterChannelChangeSubscriber implements EventSubscriberIn
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
             'channel_code' => $channel->getCode(),
             'locales_codes' => $locales,
-            'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_LOCALE_ACTION,
         ]);
     }
 }

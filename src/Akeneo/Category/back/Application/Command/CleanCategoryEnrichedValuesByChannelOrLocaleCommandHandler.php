@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Enrichment;
+namespace Akeneo\Category\Application\Command;
 
-use Akeneo\Category\Application\Enrichment\Filter\CategoryDataFilter;
+use Akeneo\Category\Application\Enrichment\Filter\ByChannelAndLocalesFilter;
 use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 
@@ -12,7 +12,7 @@ use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryDataCleaner
+class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler
 {
     private const CATEGORY_BATCH_SIZE = 100;
 
@@ -22,10 +22,7 @@ class CategoryDataCleaner
     ) {
     }
 
-    /**
-     * @param array<string, mixed> $filteringKeys
-     */
-    public function __invoke(array $filteringKeys, CategoryDataFilter $filter): void
+    public function __invoke(CleanCategoryEnrichedValuesByChannelOrLocaleCommand $command): void
     {
         $offset = 0;
         $cleanedBatch = [];
@@ -36,7 +33,11 @@ class CategoryDataCleaner
 
             foreach ($valuesByCode as $categoryCode => $json) {
                 $enrichedValues = json_decode($json, true);
-                $valueKeysToRemove = $filter->filterCategoryToClean($enrichedValues, $filteringKeys);
+                $valueKeysToRemove = ByChannelAndLocalesFilter::getEnrichedValueCompositeKeysToClean(
+                    $enrichedValues,
+                    $command->channelCode,
+                    $command->localeCodes,
+                );
                 if (!empty($valueKeysToRemove)) {
                     foreach ($valueKeysToRemove as $key) {
                         unset($enrichedValues[$key]);

@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Application\Enrichment\Filter\ChannelAndLocalesFilter;
+use Akeneo\Category\Application\Enrichment\Filter\ByChannelAndLocalesFilter;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
@@ -57,8 +57,7 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($channel);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);
         $channel->getCode()->willReturn('deleted_channel_code');
-        $enUs = new ArrayCollection([(new Locale())->setCode('en_US')]);
-        $channel->getLocales()->willReturn($enUs);
+        $channel->getLocales()->willReturn(new ArrayCollection([]));
         $jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values')->willReturn($cleanCategoriesJobInstance);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -67,8 +66,7 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
             $user,
             [
                 'channel_code' => 'deleted_channel_code',
-                'locales_codes' => ['en_US'],
-                'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_LOCALE_ACTION,
+                'locales_codes' => [],
             ]
 
         )->shouldBeCalled();
@@ -86,13 +84,16 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         UserInterface $user,
+        Locale $locale,
+        ArrayCollection $localesCollection,
     )
     {
         $event->getSubject()->willReturn($channel);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);
         $channel->getCode()->willReturn('deleted_channel_code');
-        $enUs = new ArrayCollection([(new Locale())->setCode('en_US')]);
-        $channel->getLocales()->willReturn($enUs);
+        $locale->getCode()->willReturn('en_US');
+        $localesCollection->getValues()->willReturn([$locale]);
+        $channel->getLocales()->willReturn($localesCollection);
         $jobInstanceRepository->findOneByIdentifier('clean_categories_enriched_values')->willReturn($cleanCategoriesJobInstance);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -101,12 +102,12 @@ class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
             $user,
             [
                 'channel_code' => 'deleted_channel_code',
-                'action' => ChannelAndLocalesFilter::CLEAN_CHANNEL_ACTION,
+                'locales_codes' => ['en_US'],
             ]
 
         )->shouldBeCalled();
 
-        $this->cleanCategoryDataForChannel($event);
+        $this->cleanCategoryDataForChannelLocale($event);
     }
 
     function it_does_not_puts_in_queue_the_job_cleaning_category_if_subject_is_not_a_channel(
