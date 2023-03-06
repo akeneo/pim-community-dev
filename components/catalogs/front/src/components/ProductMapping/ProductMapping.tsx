@@ -108,7 +108,9 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                         </Table.HeaderCell>
                     </Table.Header>
                     <Table.Body>
-                        {(targetSourceAssociations.length === 0 || undefined === productMappingSchema) && <TargetPlaceholder />}
+                        {(targetSourceAssociations.length === 0 || undefined === productMappingSchema) && (
+                            <TargetPlaceholder />
+                        )}
                         {targetSourceAssociations.length > 0 && undefined !== productMappingSchema && (
                             <>
                                 {targetSourceAssociations.map(([targetCode, source]) => {

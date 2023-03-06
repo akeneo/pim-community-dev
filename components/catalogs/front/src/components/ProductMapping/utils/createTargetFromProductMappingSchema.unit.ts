@@ -11,7 +11,7 @@ test('it creates target from the product mapping schema', () => {
             colors: {
                 type: 'array',
                 items: {
-                    type: 'string'
+                    type: 'string',
                 },
                 title: 'All colors',
                 description: 'This is the list of the colors',
@@ -19,12 +19,10 @@ test('it creates target from the product mapping schema', () => {
         },
     };
 
-    expect(
-        createTargetFromProductMappingSchema('colors', PRODUCT_MAPPING_SCHEMA)
-    ).toEqual({
+    expect(createTargetFromProductMappingSchema('colors', PRODUCT_MAPPING_SCHEMA)).toEqual({
         code: 'colors',
         label: 'All colors',
         type: 'array<string>',
-        format: null
+        format: null,
     });
 });
