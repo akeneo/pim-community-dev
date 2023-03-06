@@ -17,6 +17,18 @@ return (new PhpCsFixer\Config())
         'native_function_invocation' => [
             'include' => ['@all'],
         ],
+        'no_spaces_around_offset' => true,
+        'no_useless_return' => true,
+        'array_indentation' => true,
+        'method_chaining_indentation' => true,
+        'multiline_whitespace_before_semicolons' => [
+            'strategy' => 'no_multi_line'
+        ],
+        'no_superfluous_elseif' => true,
+        'no_useless_else' => true,
+        'operator_linebreak' => [
+            'only_booleans' => true
+        ],
     ))
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(
