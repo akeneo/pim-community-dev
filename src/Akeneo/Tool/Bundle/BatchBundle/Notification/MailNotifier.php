@@ -32,6 +32,8 @@ class MailNotifier implements Notifier
     ) {
     }
 
+    // This one can be reusable
+    // Used for jobs
     public function notify(JobExecution $jobExecution): void
     {
         $emailsToNotify = $this->getEmailsToNotify();

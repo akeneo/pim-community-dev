@@ -19,6 +19,8 @@ class MailNotifier implements MailNotifierInterface
     ) {
     }
 
+    // This one is easily reusable
+    // Used for reset password
     /**
      * @param string[] $recipients
      */
