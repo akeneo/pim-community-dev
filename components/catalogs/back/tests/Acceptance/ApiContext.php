@@ -999,6 +999,7 @@ class ApiContext implements Context
                     'france',
                     'brazil',
                 ],
+                'groups' => [],
             ],
         ];
 
