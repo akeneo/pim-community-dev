@@ -1,10 +1,10 @@
 import {
   addProductToRows,
-  getAssociationIdentifiers,
-  filterOnLabelOrIdentifier,
-  updateRowInCollection,
-  removeRowFromCollection,
   addRowsToCollection,
+  filterOnLabelOrIdentifier,
+  getAssociationIdentifiers,
+  removeRowFromCollection,
+  updateRowInCollection,
 } from '../../../../Resources/public/js/product/form/quantified-associations/models/row';
 import {ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models/product';
 
@@ -68,11 +68,12 @@ describe('row', () => {
     });
   });
 
-  it('can filter a row on its label or identifier', () => {
+  it('can filter a row on its label or identifier or uuid', () => {
     expect(filterOnLabelOrIdentifier('b')(productRow)).toEqual(false);
     expect(filterOnLabelOrIdentifier('ba')(productRow)).toEqual(false);
     expect(filterOnLabelOrIdentifier('Nice')({...productRow, product})).toEqual(true);
     expect(filterOnLabelOrIdentifier('ba')({...productRow, product})).toEqual(true);
+    expect(filterOnLabelOrIdentifier('3fa79b52-5900-49e8-a197-1181f58ec3cb')({...productRow, product})).toEqual(true);
     expect(filterOnLabelOrIdentifier('k')(productRow)).toEqual(false);
   });
 

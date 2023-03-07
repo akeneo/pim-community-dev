@@ -273,8 +273,9 @@ services:
     pim_catalog.query.elasticsearch.filter.label_or_identifier:
         class: '%pim_catalog.query.elasticsearch.filter.label_or_identifier.class%'
         arguments:
-            - ['label_or_identifier']
-            - ['CONTAINS']
+            - [ 'label_or_identifier' ]
+            - [ 'CONTAINS' ]
+            - [ 'product_' ]
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
