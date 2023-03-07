@@ -33,6 +33,9 @@ const AddConditionButton: React.FC<AddConditionButtonProps> = ({conditions, onAd
     } else if (id === 'enabled') {
       onAddCondition({type: CONDITION_NAMES.ENABLED});
       close();
+    } else if (id === 'categories') {
+      onAddCondition({type: CONDITION_NAMES.CATEGORIES, operator: Operator.IN, value: []});
+      close();
     } else if (type === ATTRIBUTE_TYPE.SIMPLE_SELECT) {
       onAddCondition({type: CONDITION_NAMES.SIMPLE_SELECT, operator: Operator.IN, value: [], attributeCode: id});
       close();
