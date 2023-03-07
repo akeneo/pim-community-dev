@@ -352,7 +352,7 @@ final class CreateIdentifierGeneratorContext implements Context
      */
     public function iTryToCreateAnIdentifierGeneratorWithConditions(string $count): void
     {
-        $this->tryToCreateGenerator(conditions: array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
+        $this->tryToCreateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
     }
 
     /**

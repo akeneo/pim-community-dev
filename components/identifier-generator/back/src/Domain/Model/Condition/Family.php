@@ -73,8 +73,8 @@ final class Family implements ConditionInterface
     {
         return match ($this->operator) {
             'IN' => \in_array($productProjection->familyCode(), (array) $this->value),
-            'NOT IN' => null !== $productProjection->familyCode() &&
-                !\in_array($productProjection->familyCode(), (array) $this->value),
+            'NOT IN' => null !== $productProjection->familyCode()
+                && !\in_array($productProjection->familyCode(), (array) $this->value),
             'EMPTY' => null === $productProjection->familyCode(),
             default => null !== $productProjection->familyCode(),
         };
