@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10878: Fix filtering products with identifiers would not display some product models
+
 # 6.0.75 (2023-03-02)
 
 # 6.0.74 (2023-03-02)
