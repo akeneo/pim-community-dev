@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetCategoryCodesByProductQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetCategoryLabelsForALocaleQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Category\GetCategoriesByCodeQueryInterface;
 
 /**
@@ -21,8 +20,8 @@ final class GetCachedCategoryLabelsByLocaleAndProduct
     private array $categoryLabelsByLocale = [];
 
     public function __construct(
-        private readonly GetCategoryLabelsForALocaleQueryInterface $getCategoryLabelsForALocaleQuery,
-        private readonly GetCategoryCodesByProductQueryInterface   $getCategoryCodesByProductQuery,
+        private readonly GetCategoryCodesByProductQueryInterface $getCategoryCodesByProductQuery,
+        private readonly GetCategoriesByCodeQueryInterface $getCategoriesByCodeQuery,
     ) {
     }
 
@@ -95,11 +94,11 @@ final class GetCachedCategoryLabelsByLocaleAndProduct
             if (\count($categoryCodesToLocalize) > 0) {
                 /** @var array<string, string> */
                 $newCategoryLabelsByLocale = \array_reduce(
-                    $this->getCategoryLabelsForALocaleQuery->execute($categoryCodesToLocalize, $locale),
-                    /** @param string[] $category */
+                    $this->getCategoriesByCodeQuery->execute($categoryCodesToLocalize, $locale),
+                    /** @param array{code: string, label: string, isLeaf: bool} $category */
                     fn (array $carry, array $category) => \array_merge(
                         $carry,
-                        [$category['category_code'] => $category['category_label']],
+                        [$category['code'] => $category['label']],
                     ),
                     [],
                 );
