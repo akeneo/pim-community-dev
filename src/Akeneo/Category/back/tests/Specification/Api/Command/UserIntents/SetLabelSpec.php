@@ -34,4 +34,10 @@ class SetLabelSpec extends ObjectBehavior
     {
         $this->label()->shouldReturn('The label');
     }
+
+    function it_can_set_label_null()
+    {
+        $this->beConstructedWith('en_US', null);
+        $this->label()->shouldReturn(null);
+    }
 }

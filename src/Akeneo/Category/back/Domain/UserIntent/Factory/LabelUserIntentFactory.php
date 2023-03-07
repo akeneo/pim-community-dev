@@ -28,7 +28,7 @@ class LabelUserIntentFactory implements UserIntentFactory
         $userIntents = [];
 
         foreach ($data as $localeCode => $label) {
-            if (is_string($label)) {
+            if (is_string($label) || $label === null) {
                 $userIntents[] = new SetLabel($localeCode, $label);
             }
         }

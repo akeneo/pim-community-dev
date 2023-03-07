@@ -11,17 +11,17 @@ namespace Akeneo\Category\Api\Command\UserIntents;
 final class SetLabel implements UserIntent, LocalizeUserIntent
 {
     public function __construct(
-        private ?string $localeCode,
-        private string $label,
+        private string $localeCode,
+        private ?string $label,
     ) {
     }
 
-    public function localeCode(): ?string
+    public function localeCode(): string
     {
         return $this->localeCode;
     }
 
-    public function label(): string
+    public function label(): ?string
     {
         return $this->label;
     }
