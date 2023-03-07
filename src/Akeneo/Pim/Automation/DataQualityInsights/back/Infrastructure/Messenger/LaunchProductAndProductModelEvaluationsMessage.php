@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Message;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger;
 
 use Akeneo\Tool\Component\Messenger\NormalizableMessageInterface;
 use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;

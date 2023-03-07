@@ -1,6 +1,6 @@
 queues:
     launch_product_and_product_model_evaluations_queue:
-        message_class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Message\LaunchProductAndProductModelEvaluationsMessage
+        message_class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsMessage
         consumers:
             - name: dqi_launch_product_and_product_model_evaluations_consumer
-              service_handler: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Handler\LaunchProductAndProductModelEvaluationsHandler'
+              service_handler: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsHandler'
