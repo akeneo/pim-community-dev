@@ -111,10 +111,10 @@ describe('FamilyPropertyEdit', () => {
     const validateFamilyProperty: FamilyProperty = {
       type: PROPERTY_NAMES.FAMILY,
       process: {
-        type: AbbreviationType.NOMENCLATURE
-      }
+        type: AbbreviationType.NOMENCLATURE,
+      },
     };
-    const screen = render(<FamilyPropertyEdit selectedProperty={validateFamilyProperty} onChange={jest.fn()}/>);
+    const screen = render(<FamilyPropertyEdit selectedProperty={validateFamilyProperty} onChange={jest.fn()} />);
 
     expect(screen.getByText('NomenclatureEditMock')).toBeInTheDocument();
   });

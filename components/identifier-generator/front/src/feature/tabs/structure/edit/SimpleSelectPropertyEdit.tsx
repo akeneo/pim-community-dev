@@ -4,6 +4,8 @@ import {AbbreviationType, FamilyProperty, SimpleSelectProperty} from '../../../m
 import {PropertyEditFieldsProps} from '../PropertyEdit';
 import {ScopeAndLocaleSelector} from '../../../components/ScopeAndLocaleSelector';
 import {ProcessablePropertyEdit} from '../ProcessablePropertyEdit';
+import {SectionTitle} from 'akeneo-design-system';
+import {useGetAttributeLabel} from '../../../hooks';
 
 const options = [
   {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.truncate'},
@@ -11,6 +13,7 @@ const options = [
 ];
 
 const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = ({selectedProperty, onChange}) => {
+  const label = useGetAttributeLabel(selectedProperty.attributeCode);
   const handleScopeAndLocaleChange = (newValue: {scope?: ChannelCode | null; locale?: LocaleCode | null}) => {
     onChange({
       ...selectedProperty,
@@ -26,17 +29,22 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
   };
 
   return (
-    <ProcessablePropertyEdit selectedProperty={selectedProperty} onChange={handleChange} options={options}>
-      {selectedProperty.attributeCode && (
-        <ScopeAndLocaleSelector
-          attributeCode={selectedProperty.attributeCode}
-          locale={selectedProperty.locale}
-          scope={selectedProperty.scope}
-          onChange={handleScopeAndLocaleChange}
-          isHorizontal={false}
-        />
-      )}
-    </ProcessablePropertyEdit>
+    <>
+      <SectionTitle>
+        <SectionTitle.Title>{label}</SectionTitle.Title>
+      </SectionTitle>
+      <ProcessablePropertyEdit selectedProperty={selectedProperty} onChange={handleChange} options={options}>
+        {selectedProperty.attributeCode && (
+          <ScopeAndLocaleSelector
+            attributeCode={selectedProperty.attributeCode}
+            locale={selectedProperty.locale}
+            scope={selectedProperty.scope}
+            onChange={handleScopeAndLocaleChange}
+            isHorizontal={false}
+          />
+        )}
+      </ProcessablePropertyEdit>
+    </>
   );
 };
 

@@ -66,7 +66,7 @@ const PropertiesList: React.FC<PropertiesListProps> = ({
                 {property.type === PROPERTY_NAMES.FREE_TEXT && <FreeTextLine freeTextProperty={property} />}
                 {property.type === PROPERTY_NAMES.AUTO_NUMBER && <AutoNumberLine property={property} />}
                 {property.type === PROPERTY_NAMES.FAMILY && <FamilyCodeLine />}
-                {property.type === PROPERTY_NAMES.SIMPLE_SELECT && <SimpleSelectPropertyLine />}
+                {property.type === PROPERTY_NAMES.SIMPLE_SELECT && <SimpleSelectPropertyLine property={property} />}
                 {property.errorMessage && (
                   <Styled.ErrorContainer>
                     <Pill level="danger" />

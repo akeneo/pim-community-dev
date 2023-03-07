@@ -47,22 +47,22 @@ const properties = [
   {
     id: 'marketing',
     text: 'Marketing',
-    children: [{id: 'brand', text: 'Brand'}],
+    children: [{id: 'brand', text: 'Brand', type: 'pim_catalog_simpleselect'}],
   },
   {
     id: 'erp',
     text: 'ERP',
-    children: [{id: 'supplier', text: 'Supplier'}],
+    children: [{id: 'supplier', text: 'Supplier', type: 'pim_catalog_simpleselect'}],
   },
   {
     id: 'technical',
     text: 'Technical',
     children: [
-      {id: 'maximum_print_size', text: 'Maximum print size'},
-      {id: 'sensor_type', text: 'Sensor type'},
-      {id: 'camera_type', text: 'Camera type'},
-      {id: 'headphone_connectivity', text: 'Headphone connectivity'},
-      {id: 'maximum_video_resolution', text: 'Maximum video resolution'},
+      {id: 'maximum_print_size', text: 'Maximum print size', type: 'pim_catalog_simpleselect'},
+      {id: 'sensor_type', text: 'Sensor type', type: 'pim_catalog_simpleselect'},
+      {id: 'camera_type', text: 'Camera type', type: 'pim_catalog_simpleselect'},
+      {id: 'headphone_connectivity', text: 'Headphone connectivity', type: 'pim_catalog_simpleselect'},
+      {id: 'maximum_video_resolution', text: 'Maximum video resolution', type: 'pim_catalog_simpleselect'},
     ],
   },
   {
@@ -93,20 +93,6 @@ describe('AddPropertyButton', () => {
           return Promise.resolve({
             ok: true,
             json: () => Promise.resolve(requestArgs.params.search === 'toto' ? [] : properties),
-            statusText: '',
-            status: 200,
-          } as Response);
-        } else if (requestArgs.key === 'pim_enrich_attribute_rest_get') {
-          return Promise.resolve({
-            ok: true,
-            json: () =>
-              Promise.resolve({
-                type: 'pim_catalog_simpleselect',
-                code: 'simple_select',
-                labels: {en_US: 'Simple select', fr_FR: 'Select simple'},
-                localizable: false,
-                scopable: false,
-              }),
             statusText: '',
             status: 200,
           } as Response);
@@ -187,7 +173,7 @@ describe('AddPropertyButton', () => {
     await waitFor(() => {
       expect(onAddProperty).toBeCalledWith({
         type: PROPERTY_NAMES.SIMPLE_SELECT,
-        attributeCode: 'simple_select',
+        attributeCode: 'brand',
         process: {
           type: null,
         },

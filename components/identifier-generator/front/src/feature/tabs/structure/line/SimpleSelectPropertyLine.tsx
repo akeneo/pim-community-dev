@@ -1,10 +1,13 @@
-import {useTranslate} from '@akeneo-pim-community/shared';
 import React from 'react';
+import {SimpleSelectProperty} from '../../../models';
+import {useGetAttributeLabel} from '../../../hooks';
 
-const SimpleSelectPropertyLine: React.FC = () => {
-  const translate = useTranslate();
+type Props = {property: SimpleSelectProperty};
 
-  return <>{translate('pim_identifier_generator.structure.settings.simple_select.title')}</>;
+const SimpleSelectPropertyLine: React.FC<Props> = ({property}) => {
+  const label = useGetAttributeLabel(property.attributeCode);
+
+  return <>{label}</>;
 };
 
 export {SimpleSelectPropertyLine};

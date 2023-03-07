@@ -1,8 +1,6 @@
 import React from 'react';
 import {Property, PROPERTY_NAMES} from '../../models';
 import {AutoNumberEdit, FamilyPropertyEdit, FreeTextEdit, SimpleSelectPropertyEdit} from './edit/';
-import {SectionTitle} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
 
 type PropertyEditProps = {
   selectedProperty: Property;
@@ -22,17 +20,10 @@ const components = {
 };
 
 const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange}) => {
-  const translate = useTranslate();
-
   const Component = components[selectedProperty.type] as PropertyEditFieldsProps<Property>;
 
   return (
     <div>
-      <SectionTitle>
-        <SectionTitle.Title>
-          {translate(`pim_identifier_generator.structure.settings.${selectedProperty.type}.title`)}
-        </SectionTitle.Title>
-      </SectionTitle>
       <Component selectedProperty={selectedProperty} onChange={onChange} />
     </div>
   );
