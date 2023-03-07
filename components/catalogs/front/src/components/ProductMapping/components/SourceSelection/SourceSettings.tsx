@@ -5,8 +5,12 @@ import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 import {Source} from '../../models/Source';
 import {Attribute} from '../../../../models/Attribute';
 import {SourceErrors} from '../../models/SourceErrors';
-import {ArrowIcon} from 'akeneo-design-system';
+import {ArrowIcon, getColor} from 'akeneo-design-system';
 import styled from 'styled-components';
+
+const Bullet = styled(ArrowIcon)`
+    color: ${getColor('grey', 100)};
+`;
 
 const BulletLine = styled.div`
     display: flex;
@@ -48,19 +52,19 @@ export const SourceSettings: FC<Props> = ({source, attribute, errors, onChange})
         <>
             {attribute.scopable && (
                 <BulletLine>
-                    <ArrowIcon color='#a1a9b7' size={24} />
+                    <Bullet />
                     <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
                 </BulletLine>
             )}
             {attribute.localizable && !attribute.scopable && (
                 <BulletLine>
-                    <ArrowIcon color='#a1a9b7' size={24} />
+                    <Bullet />
                     <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
                 </BulletLine>
             )}
             {attribute.localizable && attribute.scopable && (
                 <BulletLine>
-                    <ArrowIcon color='#a1a9b7' size={24} />
+                    <Bullet />
                     <SelectChannelLocaleDropdown
                         source={source}
                         onChange={onChangeMiddleware}
