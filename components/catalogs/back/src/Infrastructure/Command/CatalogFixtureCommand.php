@@ -48,6 +48,7 @@ class CatalogFixtureCommand extends Command
     {
         if ('dev' !== $this->env) {
             $output->writeln('This command must be run in dev environment.');
+            $output->writeln('This command must be run in dev environment.');
 
             return self::INVALID;
         }
