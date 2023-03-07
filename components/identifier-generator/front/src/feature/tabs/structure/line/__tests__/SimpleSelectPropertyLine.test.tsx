@@ -21,7 +21,7 @@ describe('SimpleSelectPropertyLine', () => {
       attributeCode: 'brand',
       process: {type: null},
       scope: null,
-      locale: null
+      locale: null,
     };
     const screen = render(<SimpleSelectPropertyLine property={simpleSelectProperty} />);
 

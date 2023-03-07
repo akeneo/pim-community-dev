@@ -20,13 +20,6 @@ const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const EditionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: baseline;
-`;
-
 const FullPageCenteredContent = styled.div`
   display: flex;
   align-items: center;
@@ -189,7 +182,6 @@ const Styled = {
   CellInputContainer,
   CheckboxContainer,
   ConditionLineSkeleton,
-  EditionContainer,
   ErrorContainer,
   FormContainer,
   FullPageCenteredContent,
