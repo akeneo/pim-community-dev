@@ -6,7 +6,7 @@ export class BadRequestError<T> extends Error {
 
 export class ForbiddenError extends Error {}
 
-export const apiFetch = async <T = void, E extends Error = Error>(url: string, init: RequestInit): Promise<T> => {
+export const apiFetch = async <T = void, E = unknown>(url: string, init: RequestInit): Promise<T> => {
   const response = await fetch(url, {
     ...init,
     headers: {
