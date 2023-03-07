@@ -30,7 +30,7 @@ describe('validateConditions', () => {
       {
         message:
           'The condition type "unknown" is unknown. ' +
-          'Please choose one of the following: enabled, family, simple_select, multi_select',
+          'Please choose one of the following: enabled, family, simple_select, multi_select, categories',
         path: 'conditions[0]',
       },
     ]);
