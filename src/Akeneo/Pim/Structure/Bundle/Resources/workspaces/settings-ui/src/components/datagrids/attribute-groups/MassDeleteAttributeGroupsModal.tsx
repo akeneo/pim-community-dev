@@ -85,16 +85,22 @@ const MassDeleteAttributeGroupsModal = ({
             {0 < impactedAttributesCount && (
               <>
                 <Helper level="error">
-                  {translate('pim_enrich.entity.attribute_group.mass_delete.attribute_warning', {
-                    number_of_attribute: impactedAttributesCount,
-                    impactedAttributesCount,
-                  })}
+                  {translate(
+                    'pim_enrich.entity.attribute_group.mass_delete.attribute_warning',
+                    {
+                      number_of_attribute: impactedAttributesCount,
+                    },
+                    impactedAttributesCount
+                  )}
                 </Helper>
                 <Field
-                  label={translate('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group', {
-                    number_of_attribute: impactedAttributesCount,
-                    impactedAttributesCount,
-                  })}
+                  label={translate(
+                    'pim_enrich.entity.attribute_group.mass_delete.select_attribute_group',
+                    {
+                      number_of_attribute: impactedAttributesCount,
+                    },
+                    impactedAttributesCount
+                  )}
                 >
                   <SelectInput
                     emptyResultLabel={translate('pim_enrich.entity.attribute_group.mass_delete.empty_result_label')}
