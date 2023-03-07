@@ -65,14 +65,28 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select',
                             'text' => 'A simple select',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_color',
                             'text' => 'The color',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_size',
                             'text' => 'The size',
+                            'type' => 'pim_catalog_simpleselect',
+                        ],
+                    ],
+                ],
+                [
+                    'id' => 'attributeGroupC',
+                    'text' => 'Attribute group C',
+                    'children' => [
+                        [
+                            'id' => 'a_multi_select',
+                            'text' => 'A multi select',
+                            'type' => 'pim_catalog_multiselect',
                         ],
                     ],
                 ],
@@ -103,10 +117,12 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select',
                             'text' => 'A simple select',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_color',
                             'text' => 'The color',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                     ],
                 ],
@@ -122,6 +138,18 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select_size',
                             'text' => 'The size',
+                            'type' => 'pim_catalog_simpleselect',
+                        ],
+                    ],
+                ],
+                [
+                    'id' => 'attributeGroupC',
+                    'text' => 'Attribute group C',
+                    'children' => [
+                        [
+                            'id' => 'a_multi_select',
+                            'text' => 'A multi select',
+                            'type' => 'pim_catalog_multiselect',
                         ],
                     ],
                 ],
@@ -141,10 +169,12 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select_color',
                             'text' => 'The color',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_size',
                             'text' => 'The size',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                     ],
                 ],
@@ -194,14 +224,28 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select',
                             'text' => '[a_simple_select]',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_color',
                             'text' => 'La couleur',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_size',
                             'text' => 'La taille',
+                            'type' => 'pim_catalog_simpleselect',
+                        ],
+                    ],
+                ],
+                [
+                    'id' => 'attributeGroupC',
+                    'text' => 'Groupe d\'attribut C',
+                    'children' => [
+                        [
+                            'id' => 'a_multi_select',
+                            'text' => '[a_multi_select]',
+                            'type' => 'pim_catalog_multiselect',
                         ],
                     ],
                 ],
@@ -242,6 +286,7 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
         $this->updateAttributeLabels('a_simple_select', ['en_US' => 'A simple select']);
         $this->updateAttributeLabels('a_simple_select_color', ['en_US' => 'The color', 'fr_FR' => 'La couleur']);
         $this->updateAttributeLabels('a_simple_select_size', ['en_US' => 'The size', 'fr_FR' => 'La taille']);
+        $this->updateAttributeLabels('a_multi_select', ['en_US' => 'A multi select']);
 
         // update French system translations
         /** @var MessageCatalogueInterface $frenchCatalogue */

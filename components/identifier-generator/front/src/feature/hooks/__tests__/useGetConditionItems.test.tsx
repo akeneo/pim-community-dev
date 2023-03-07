@@ -2,7 +2,7 @@ import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {mockResponse} from '../../tests/test-utils';
 import {useGetConditionItems} from '../useGetConditionItems';
 import {act, renderHook} from '@testing-library/react-hooks';
-import {CONDITION_NAMES, Conditions, Operator} from '../../models';
+import {ATTRIBUTE_TYPE, CONDITION_NAMES, Conditions, Operator} from '../../models';
 
 describe('useGetConditionItems', () => {
   test('it paginate items', async () => {
@@ -15,12 +15,20 @@ describe('useGetConditionItems', () => {
           {id: 'enabled', text: 'Enabled'},
         ],
       },
-      {id: 'marketing', text: 'Marketing', children: [{id: 'brand', text: 'Brand'}]},
+      {id: 'marketing', text: 'Marketing', children: [{id: 'brand', text: 'Brand', type: ATTRIBUTE_TYPE.TEXT}]},
     ];
 
     const resultsPage2 = [
-      {id: 'marketing', text: 'Marketing', children: [{id: 'color', text: 'Color'}]},
-      {id: 'design', text: 'Design', children: [{id: 'main_color', text: 'Main Color'}]},
+      {
+        id: 'marketing',
+        text: 'Marketing',
+        children: [{id: 'color', text: 'Color', type: ATTRIBUTE_TYPE.SIMPLE_SELECT}],
+      },
+      {
+        id: 'design',
+        text: 'Design',
+        children: [{id: 'main_color', text: 'Main Color', type: ATTRIBUTE_TYPE.MULTI_SELECT}],
+      },
     ];
 
     const mergedResults = [
@@ -36,11 +44,15 @@ describe('useGetConditionItems', () => {
         id: 'marketing',
         text: 'Marketing',
         children: [
-          {id: 'brand', text: 'Brand'},
-          {id: 'color', text: 'Color'},
+          {id: 'brand', text: 'Brand', type: ATTRIBUTE_TYPE.TEXT},
+          {id: 'color', text: 'Color', type: ATTRIBUTE_TYPE.SIMPLE_SELECT},
         ],
       },
-      {id: 'design', text: 'Design', children: [{id: 'main_color', text: 'Main Color'}]},
+      {
+        id: 'design',
+        text: 'Design',
+        children: [{id: 'main_color', text: 'Main Color', type: ATTRIBUTE_TYPE.MULTI_SELECT}],
+      },
     ];
 
     const expectCallPage1 = mockResponse('akeneo_identifier_generator_get_conditions', 'GET', {

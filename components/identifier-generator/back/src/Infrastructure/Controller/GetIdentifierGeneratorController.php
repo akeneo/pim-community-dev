@@ -29,15 +29,15 @@ final class GetIdentifierGeneratorController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->security->isGranted('pim_identifier_generator_view') &&
-            !$this->security->isGranted('pim_identifier_generator_manage')
+        if (!$this->security->isGranted('pim_identifier_generator_view')
+            && !$this->security->isGranted('pim_identifier_generator_manage')
         ) {
             throw new AccessDeniedException();
         }
 
         $identifierGenerator = $this->identifierGeneratorRepository->get($code);
         if (!$identifierGenerator) {
-            return new JsonResponse(sprintf("Identifier generator \"%s\" does not exist or you do not have permission to access it.", $code), Response::HTTP_NOT_FOUND);
+            return new JsonResponse(\sprintf("Identifier generator \"%s\" does not exist or you do not have permission to access it.", $code), Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse($identifierGenerator->normalize());

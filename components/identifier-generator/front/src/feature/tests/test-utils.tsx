@@ -20,7 +20,7 @@ const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
 
   return (
     <ThemeProvider theme={pimTheme}>
-      <DependenciesContext.Provider value={{translate: k => k, security: {isGranted: acl => true}}}>
+      <DependenciesContext.Provider value={{translate: k => k, security: {isGranted: () => true}}}>
         <QueryClientProvider client={queryClient}>
           <IdentifierGeneratorContextProvider>
             <IdentifierGeneratorAclContextProvider>{children}</IdentifierGeneratorAclContextProvider>

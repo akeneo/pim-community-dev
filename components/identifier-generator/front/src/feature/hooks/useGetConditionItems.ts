@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {Conditions} from '../models';
+import {AttributeType, Conditions} from '../models';
 
 const DEFAULT_LIMIT = 20;
 
@@ -10,6 +10,7 @@ type ItemsGroup = {
   children: {
     id: string;
     text: string;
+    type?: AttributeType;
   }[];
 };
 
@@ -29,7 +30,11 @@ function mergeItems(items: ItemsGroup[], newPage: ItemsGroup[]) {
   newPage.forEach(({id, text, children}) => {
     const existingGroupIndex = mergedItems.findIndex(item => item.id === id);
     if (existingGroupIndex !== -1) {
-      mergedItems[existingGroupIndex].children.push(...children);
+      children.forEach(child => {
+        if ('undefined' === typeof mergedItems[existingGroupIndex].children.find(c => c.id === child.id)) {
+          mergedItems[existingGroupIndex].children.push(child);
+        }
+      });
     } else {
       mergedItems.push({id, text, children});
     }
@@ -61,6 +66,7 @@ const useGetConditionItems: (
     setState(STATE.CONDITIONS_CHANGED);
     setItems([]);
     setAreRemainingElements(true);
+    setPage(1);
   }, [conditions]);
 
   useEffect(() => {

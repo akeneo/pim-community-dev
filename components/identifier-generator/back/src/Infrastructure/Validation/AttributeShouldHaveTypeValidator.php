@@ -27,7 +27,7 @@ final class AttributeShouldHaveTypeValidator extends ConstraintValidator
         }
 
         $attribute = $this->getAttributes->forCode($target);
-        if (null !== $attribute && $constraint->type !== $attribute->type()) {
+        if (null !== $attribute && $attribute->type() !== $constraint->type) {
             $this->context
                 ->buildViolation($constraint->message, [
                     '{{ code }}' => $target,

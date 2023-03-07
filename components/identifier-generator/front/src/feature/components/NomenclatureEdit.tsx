@@ -20,6 +20,7 @@ import {NomenclatureLineEdit} from './NomenclatureLineEdit';
 import {NomenclatureValuesDisplayFilter} from './NomenclatureValuesDisplayFilter';
 import {Violation} from '../validators';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
+import {useIdentifierGeneratorAclContext} from '../context';
 
 type NomenclatureEditProps = {
   itemsPerPage?: number;
@@ -45,6 +46,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
     hasValueInvalid,
   } = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave, itemsPerPage);
   const {save, isLoading: isSaving} = useSaveNomenclature();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   const onFilterChange = (value: NomenclatureFilter) => {
     if (nomenclature) setNomenclature({...nomenclature, values: valuesToSave});
@@ -124,7 +126,12 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
 
   return (
     <>
-      <Button ghost level="secondary" onClick={open}>
+      <Button
+        ghost
+        level="secondary"
+        onClick={open}
+        disabled={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+      >
         {translate('pim_identifier_generator.nomenclature.edit')}
       </Button>
       {isOpen && (
