@@ -31,7 +31,7 @@ final class UpdateGeneratorHandler
         $this->validator->validate($command);
 
         $identifierGenerator = $this->identifierGeneratorRepository->get($command->code);
-        Assert::notNull($identifierGenerator, sprintf("Identifier generator \"%s\" does not exist or you do not have permission to access it.", $command->code));
+        Assert::notNull($identifierGenerator, \sprintf("Identifier generator \"%s\" does not exist or you do not have permission to access it.", $command->code));
 
         $updatedIdentifierGenerator = $identifierGenerator
             ->withStructure(Structure::fromNormalized($command->structure))

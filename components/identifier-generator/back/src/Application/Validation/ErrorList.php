@@ -19,7 +19,7 @@ final class ErrorList implements \Countable
 
     public function count(): int
     {
-        return count($this->errors);
+        return \count($this->errors);
     }
 
     /**
@@ -27,12 +27,12 @@ final class ErrorList implements \Countable
      */
     public function normalize(): array
     {
-        return array_map(fn (Error $error): array => $error->normalize(), $this->errors);
+        return \array_map(fn (Error $error): array => $error->normalize(), $this->errors);
     }
 
     public function __toString(): string
     {
-        return \implode("\n", array_map(fn (Error $error): string => $error->__toString(), $this->errors));
+        return \implode("\n", \array_map(fn (Error $error): string => $error->__toString(), $this->errors));
     }
 
     /**

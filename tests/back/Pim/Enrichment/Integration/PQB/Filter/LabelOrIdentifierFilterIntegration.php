@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductAndProductModelQueryBuilderTestCase;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Julien Sanchez <julien@gmail.com>
@@ -54,5 +55,18 @@ class LabelOrIdentifierFilterIntegration extends AbstractProductAndProductModelQ
             ['completeness', Operators::AT_LEAST_COMPLETE, null, ['locale' => 'en_US', 'scope' => 'ecommerce']]
         ]);
         $this->assert($result, ['model-braided-hat', 'braided-hat-m', 'braided-hat-xxxl']);
+    }
+
+    public function testSearchByUuid(): void
+    {
+        $uuid = $this->get('database_connection')->fetchOne(
+            'SELECT uuid FROM pim_catalog_product WHERE identifier = :identifier',
+            ['identifier' => '1111111234'],
+        );
+
+        $result = $this->executeFilter([
+            ['label_or_identifier', Operators::CONTAINS, Uuid::fromBytes($uuid)->toString()]
+        ]);
+        $this->assert($result, ['1111111234']);
     }
 }

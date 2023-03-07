@@ -197,7 +197,7 @@ SQL;
         Assert::string($definition);
 
         $jsonResult = \json_decode($definition, true);
-        Assert::isArray($jsonResult, sprintf('Invalid JSON: "%s"', $definition));
+        Assert::isArray($jsonResult, \sprintf('Invalid JSON: "%s"', $definition));
 
         return $this->fromNormalized($jsonResult);
     }

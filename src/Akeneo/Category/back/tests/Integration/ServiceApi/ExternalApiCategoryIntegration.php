@@ -55,14 +55,15 @@ class ExternalApiCategoryIntegration extends CategoryTestCase
             'code' => 'my_category',
             'parent' => 'my_parent_category',
             'updated' => '2022-12-13T14:08:10+01:00',
-            'labels' => [],
+            'labels' => (object) [],
         ];
 
         $normalizedExternalApiCategory = ExternalApiCategory::fromDatabase($this->categoryDatabaseData)
             ->normalize(withPosition: false, withEnrichedAttributes: false);
 
         $this->assertIsArray($normalizedExternalApiCategory);
-        $this->assertSame($expectedNormalizedArray, $normalizedExternalApiCategory);
+        $this->assertEquals($expectedNormalizedArray, $normalizedExternalApiCategory);
+        $this->assertIsObject($normalizedExternalApiCategory['labels']);
     }
 
     public function testNormalizeExternalCategoryApiWithEmptyValues(): void
@@ -79,7 +80,7 @@ class ExternalApiCategoryIntegration extends CategoryTestCase
             'code' => 'my_category',
             'parent' => 'my_parent_category',
             'updated' => '2022-12-13T14:08:10+01:00',
-            'labels' => [],
+            'labels' => (object) [],
             'position' => 5,
         ];
 
@@ -87,7 +88,8 @@ class ExternalApiCategoryIntegration extends CategoryTestCase
             ->normalize(withPosition: true, withEnrichedAttributes: false);
 
         $this->assertIsArray($normalizedExternalApiCategory);
-        $this->assertSame($expectedNormalizedArray, $normalizedExternalApiCategory);
+        $this->assertEquals($expectedNormalizedArray, $normalizedExternalApiCategory);
+        $this->assertIsObject($normalizedExternalApiCategory['labels']);
 
     }
 
@@ -97,7 +99,7 @@ class ExternalApiCategoryIntegration extends CategoryTestCase
             'code' => 'my_category',
             'parent' => 'my_parent_category',
             'updated' => '2022-12-13T14:08:10+01:00',
-            'labels' => [],
+            'labels' => (object) [],
             'values' => (object) [],
         ];
 
@@ -106,5 +108,6 @@ class ExternalApiCategoryIntegration extends CategoryTestCase
 
         $this->assertIsArray($normalizedExternalApiCategory);
         $this->assertEquals($expectedNormalizedArray, $normalizedExternalApiCategory);
+        $this->assertIsObject($normalizedExternalApiCategory['labels']);
     }
 }

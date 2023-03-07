@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggre
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 
 /**
  * Provides a way to search product and product models.
@@ -150,7 +149,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * Checks whether the raw filters contains a filter on a particular field.
+     * Checks whether the raw filters contain a filter on a particular field.
      *
      * @param string $filterProperty
      * @param string $value
