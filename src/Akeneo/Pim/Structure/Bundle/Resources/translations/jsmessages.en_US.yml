@@ -268,6 +268,9 @@ pim_enrich.entity.attribute_group:
         delete:
             success: Attribute group successfully removed
             fail: Cannot delete this attribute group
+        mass_delete:
+            success: The deletion has started. You will get a notification once the job is completed. In the meantime, you can keep an eye on its progress on the process tracker.
+            fail: An error occurred during the launching of the deletion
     module:
         add_attribute_group:
             label: Add by groups
@@ -324,3 +327,15 @@ pim_enrich.mass_edit.family:
             label: Set attributes requirements
             description: The following attributes requirements will be applied to the selected families
             label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|]1, Inf[Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
+
+batch_jobs:
+    default_steps:
+        delete_attribute_groups: Delete attribute groups
+
+akeneo_job_process_tracker:
+    type_filter:
+        attribute_group_mass_delete: Delete attribute groups
+
+pim_notification:
+    types:
+        attribute_group_mass_delete: Deletion

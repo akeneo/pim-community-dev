@@ -25,7 +25,7 @@ const toSortedAttributeGroupsArray = (collection: AttributeGroupCollection): Att
 const getImpactedAndTargetAttributeGroups = (
   attributeGroups: AttributeGroup[],
   selection: Selection<AttributeGroup>
-): [number, AttributeGroup[]] => {
+): [AttributeGroup[], AttributeGroup[]] => {
   const excludedAttributeGroups = attributeGroups.filter(
     attributeGroup => !selection.collection.includes(attributeGroup)
   );
@@ -35,10 +35,7 @@ const getImpactedAndTargetAttributeGroups = (
       ? [selection.collection, excludedAttributeGroups]
       : [excludedAttributeGroups, selection.collection];
 
-  return [
-    impactedAttributeGroups.reduce((totalCount, {attribute_count}) => totalCount + attribute_count, 0),
-    targetAttributeGroups,
-  ];
+  return [impactedAttributeGroups, targetAttributeGroups];
 };
 
 export {
