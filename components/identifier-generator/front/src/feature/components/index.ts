@@ -1,3 +1,4 @@
+export * from './CategoriesSelector';
 export * from './FamiliesSelector';
 export * from './Header';
 export * from './IdentifierAttributeSelector';

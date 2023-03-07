@@ -15,9 +15,9 @@ import {
 import {useGetIdentifierGenerators, useIdentifierAttributes, useStructureTabs} from '../hooks';
 import {GeneratorTab, LabelCollection, Target} from '../models';
 import {Styled} from './styles';
-import {Header, ListSkeleton} from '../components';
 import {useHistory} from 'react-router-dom';
 import {DeleteGeneratorModal} from './';
+import {Header, ListSkeleton} from '../components';
 
 type ListPageProps = {
   onCreate: () => void;

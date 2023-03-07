@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {
   AkeneoThemedProps,
+  Dropdown,
   getColor,
   Helper,
   MultiSelectInput,
@@ -184,6 +185,24 @@ const NomenclatureTable = styled.div`
   }
 `;
 
+const CategoryTreeContainer = styled.div`
+  max-height: 400px;
+  overflow: auto;
+  margin: 0 20px 0 0;
+  padding: 0 0 0 20px;
+  ul {
+    padding-left: 0;
+  }
+  & > *:first-child {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+`;
+
+const CategoriesDropdownContainer = styled(Dropdown)`
+  width: 100%;
+`;
+
 const Styled = {
   BoldContainer,
   CellInputContainer,
@@ -211,6 +230,8 @@ const Styled = {
   NomenclatureDefinition,
   NomenclatureInput,
   NomenclatureTable,
+  CategoryTreeContainer,
+  CategoriesDropdownContainer,
 };
 
 export {Styled};

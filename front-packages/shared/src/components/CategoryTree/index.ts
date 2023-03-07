@@ -1,3 +1,4 @@
+export * from './categoryParseResponse';
 export * from './CategoryTree';
 export * from './CategoryTrees';
 export * from './CategoryTreeSwitcher';
