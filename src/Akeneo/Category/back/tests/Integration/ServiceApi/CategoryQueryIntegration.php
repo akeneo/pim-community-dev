@@ -158,7 +158,7 @@ SQL;
 
     public function testItDoNotGetCategoriesByIds(): void
     {
-        $searchCategoriesByIds = [999,1000];
+        $searchCategoriesByIds = [9999999,10000000];
         $categories = $this->getHandler()->byIds($searchCategoriesByIds);
 
         Assert::assertCount(0, $categories);
