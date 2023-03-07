@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {CategoryTreeCode, CategoryTreeRoot} from '@akeneo-pim-community/shared';
+import {CategoryTreeCode, CategoryTreeRoot, useTranslate} from '@akeneo-pim-community/shared';
 import {Dropdown, SwitcherButton, useBooleanState} from 'akeneo-design-system';
 import {useCategoryTrees} from '../hooks';
 
@@ -9,6 +9,7 @@ type CategoryTreeSwitcherProps = {
 };
 
 const CategoryTreeSwitcher: FC<CategoryTreeSwitcherProps> = ({value, onChange}) => {
+  const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState();
   const trees = useCategoryTrees(onChange);
 
@@ -19,13 +20,13 @@ const CategoryTreeSwitcher: FC<CategoryTreeSwitcherProps> = ({value, onChange}) 
 
   return (
     <Dropdown>
-      <SwitcherButton label={'Tree'} onClick={open}>
-        {trees.find(tree => tree.code === value)?.label}
+      <SwitcherButton label={translate('pim_identifier_generator.selection.settings.categories.tree')} onClick={open}>
+        {trees.find(({code}) => code === value)?.label}
       </SwitcherButton>
       {isOpen && (
         <Dropdown.Overlay onClose={close}>
           <Dropdown.Header>
-            <Dropdown.Title>Categories</Dropdown.Title>
+            <Dropdown.Title>{translate('pim_common.categories')}</Dropdown.Title>
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             {trees.map(tree => (

@@ -2,6 +2,7 @@ import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {mockResponse} from '../../tests/test-utils';
 import {useCategoryTrees} from '../useCategoryTrees';
 import {act, renderHook} from '@testing-library/react-hooks';
+import {CategoryTreeRoot} from '@akeneo-pim-community/shared';
 
 describe('useCategoryTrees', () => {
   test('it get root trees', async () => {
@@ -30,7 +31,7 @@ describe('useCategoryTrees', () => {
     });
 
     expectCall();
-    expect((hookResult as unknown as {current: any}).current).toEqual([
+    expect((hookResult as unknown as {current: CategoryTreeRoot[]}).current).toEqual([
       {
         id: 42,
         code: 'masterCatalog',
