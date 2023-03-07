@@ -13,7 +13,8 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
  * @phpstan-import-type EnabledNormalized from Enabled
  * @phpstan-import-type FamilyNormalized from Family
  * @phpstan-import-type SimpleSelectNormalized from SimpleSelect
- * @phpstan-type ConditionNormalized EnabledNormalized|FamilyNormalized|SimpleSelectNormalized
+ * @phpstan-import-type MultiSelectNormalized from MultiSelect
+ * @phpstan-type ConditionNormalized EnabledNormalized|FamilyNormalized|SimpleSelectNormalized|MultiSelectNormalized
  */
 interface ConditionInterface
 {

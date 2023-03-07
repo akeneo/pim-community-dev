@@ -8,7 +8,6 @@ import {Header} from '../components';
 import {DeleteGeneratorModal} from './DeleteGeneratorModal';
 import {useHistory} from 'react-router-dom';
 import {useIdentifierGeneratorAclContext, useIdentifierGeneratorContext} from '../context';
-import styled from 'styled-components';
 import {useStructureTabs} from '../hooks';
 
 type CreateOrEditGeneratorProps = {

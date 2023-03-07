@@ -68,7 +68,6 @@ pim_identifier_generator:
     helper_link: 'consulteu el nostre centre d''ajuda per obtenir més informació'
     title: 'Estructura d''identificació'
     add_element: 'Afegeix una nova propietat'
-    limit_reached: 'Has arribat al límit de 20 propietats'
     property_type:
       sections:
         system: 'Sistema'
@@ -93,7 +92,6 @@ pim_identifier_generator:
         type:
           truncate: 'Utilitza els primers caràcters'
           code: 'Utilitzeu tot el codi'
-          nomenclature: 'Utilitza la nomenclatura'
       operator:
         placeholder: 'Selecciona l''operador'
     empty:

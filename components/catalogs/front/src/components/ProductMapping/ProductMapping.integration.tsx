@@ -20,6 +20,7 @@ const PRODUCT_MAPPING_SCHEMA = {
             description: 'This is the name of the product shown on the ecommerce',
         },
     },
+    required: ['name'],
 };
 
 beforeEach(() => {
@@ -194,39 +195,6 @@ test('it displays error pills when the mapping is incorrect', async () => {
     expect(await screen.findByTestId('error-pill')).toBeInTheDocument();
 });
 
-test('it opens the source panel when a target is clicked', async () => {
-    const productMapping = {
-        uuid: {
-            source: 'uuid',
-            locale: null,
-            scope: null,
-        },
-        name: {
-            source: 'title',
-            locale: 'en_US',
-            scope: 'ecommerce',
-        },
-    };
-
-    render(
-        <ThemeProvider theme={pimTheme}>
-            <QueryClientProvider client={new QueryClient()}>
-                <ProductMapping
-                    productMappingSchema={PRODUCT_MAPPING_SCHEMA}
-                    productMapping={productMapping}
-                    errors={{}}
-                    onChange={jest.fn()}
-                />
-            </QueryClientProvider>
-        </ThemeProvider>
-    );
-
-    fireEvent.click(await screen.findByText('Product name'));
-    expect(await within(await SourcePanel()).findByText('Product name')).toBeInTheDocument();
-    expect(await within(await SourcePanel()).findByText('English (United States)')).toBeInTheDocument();
-    expect(await within(await SourcePanel()).findByText('Ecommerce')).toBeInTheDocument();
-});
-
 test('it displays the target description and requirements in the source panel', async () => {
     const productMapping = {
         uuid: {
@@ -261,6 +229,39 @@ test('it displays the target description and requirements in the source panel', 
     expect(
         await within(await SourcePanel()).findByText('akeneo_catalogs.product_mapping.source.requirements.title')
     ).toBeInTheDocument();
+});
+
+test('it opens the source panel when a target is clicked', async () => {
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMappingSchema={PRODUCT_MAPPING_SCHEMA}
+                    productMapping={productMapping}
+                    errors={{}}
+                    onChange={jest.fn()}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    fireEvent.click(await screen.findByText('Product name'));
+    expect(await within(await SourcePanel()).findByText('Product name')).toBeInTheDocument();
+    expect(await within(await SourcePanel()).findByText('English (United States)')).toBeInTheDocument();
+    expect(await within(await SourcePanel()).findByText('Ecommerce')).toBeInTheDocument();
 });
 
 test('it updates the state when a source changes', async () => {
@@ -308,4 +309,34 @@ test('it updates the state when a source changes', async () => {
             scope: null,
         },
     });
+});
+
+test('it displays a pill for a required target', async () => {
+    const productMapping = {
+        uuid: {
+            source: 'uuid',
+            locale: null,
+            scope: null,
+        },
+        name: {
+            source: 'title',
+            locale: 'en_US',
+            scope: 'ecommerce',
+        },
+    };
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <ProductMapping
+                    productMappingSchema={PRODUCT_MAPPING_SCHEMA}
+                    productMapping={productMapping}
+                    errors={{}}
+                    onChange={jest.fn()}
+                />
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(await within(await screen.findByText('Product name')).findByTestId('required-pill')).toBeInTheDocument();
 });

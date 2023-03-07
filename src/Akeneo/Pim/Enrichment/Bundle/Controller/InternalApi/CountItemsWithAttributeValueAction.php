@@ -12,15 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CountItemsWithAttributeValueAction
 {
-    private CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute;
-    private CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute;
-
     public function __construct(
-        CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute,
-        CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute
+        private readonly CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute,
+        private readonly CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute
     ) {
-        $this->countProductsWithRemovedAttribute = $countProductsWithRemovedAttribute;
-        $this->countProductModelsWithRemovedAttribute = $countProductModelsWithRemovedAttribute;
     }
 
     public function __invoke(Request $request): Response
@@ -30,8 +25,8 @@ class CountItemsWithAttributeValueAction
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
-        $productCount = $this->countProductsWithRemovedAttribute->count([$code]);
-        $productModelCount = $this->countProductModelsWithRemovedAttribute->count([$code]);
+        $productCount = $this->countProductsWithRemovedAttribute->count([$code], false);
+        $productModelCount = $this->countProductModelsWithRemovedAttribute->count([$code], false);
 
         return new JsonResponse([
             'products' => $productCount,

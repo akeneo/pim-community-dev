@@ -113,6 +113,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
       {translate('pim_enrich.entity.attribute.module.delete.confirm')}
       {(0 < productCount || 0 < productModelCount) && (
         <p>
+          {translate('pim_enrich.entity.attribute.module.delete.attribute_removal')}{' '}
           <Highlight>{impactedItemsText}</Highlight>{' '}
           {translate('pim_enrich.entity.attribute.module.delete.used', {}, productCount + productModelCount)}
         </p>
