@@ -6,6 +6,15 @@ import {aMainNavigation} from './navigationTestHelper';
 
 jest.mock('../PimView');
 
+beforeAll(() => {
+  // @ts-ignore
+  global.fetch = () =>
+    Promise.resolve({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({pim_version: 'serenity'}),
+    });
+});
 test('It displays the main navigation with an active entry and a sub menu', async () => {
   renderWithProviders(
     <PimNavigation entries={aMainNavigation()} activeEntryCode="entry1" activeSubEntryCode="subentry2" />

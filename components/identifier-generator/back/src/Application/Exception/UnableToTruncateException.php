@@ -15,7 +15,7 @@ class UnableToTruncateException extends UnableToSetIdentifierException
         string $code,
     ) {
         parent::__construct($identifier, $target, new ErrorList([
-            new Error(sprintf('The code does not have enough characters and can not be truncated: "%s".', $code)),
+            new Error(\sprintf('The code does not have enough characters and can not be truncated: "%s".', $code)),
         ]));
     }
 }

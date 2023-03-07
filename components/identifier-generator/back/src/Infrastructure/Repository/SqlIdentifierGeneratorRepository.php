@@ -45,9 +45,9 @@ class SqlIdentifierGeneratorRepository implements IdentifierGeneratorRepository
             'code' => $identifierGenerator->code()->asString(),
             'target' => $identifierGenerator->target()->asString(),
             'delimiter' => $identifierGenerator->delimiter()->asString(),
-            'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
-            'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
-            'structure' => json_encode($identifierGenerator->structure()->normalize()),
+            'labels' => \json_encode($identifierGenerator->labelCollection()->normalize()),
+            'conditions' => \json_encode($identifierGenerator->conditions()->normalize()),
+            'structure' => \json_encode($identifierGenerator->structure()->normalize()),
             'text_transformation' => $identifierGenerator->textTransformation()->normalize(),
         ];
 
@@ -75,7 +75,7 @@ SQL;
         try {
             $this->connection->executeStatement($query, $parameters);
         } catch (Exception $e) {
-            throw new UnableToSaveIdentifierGeneratorException(sprintf('Cannot save the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
+            throw new UnableToSaveIdentifierGeneratorException(\sprintf('Cannot save the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
         }
     }
 
@@ -85,9 +85,9 @@ SQL;
             'code' => $identifierGenerator->code()->asString(),
             'target' => $identifierGenerator->target()->asString(),
             'delimiter' => $identifierGenerator->delimiter()->asString(),
-            'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
-            'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
-            'structure' => json_encode($identifierGenerator->structure()->normalize()),
+            'labels' => \json_encode($identifierGenerator->labelCollection()->normalize()),
+            'conditions' => \json_encode($identifierGenerator->conditions()->normalize()),
+            'structure' => \json_encode($identifierGenerator->structure()->normalize()),
             'text_transformation' => $identifierGenerator->textTransformation()->normalize(),
         ];
 
@@ -117,7 +117,7 @@ SQL;
         try {
             $this->connection->executeStatement($query, $parameters);
         } catch (Exception $e) {
-            throw new UnableToUpdateIdentifierGeneratorException(sprintf('Cannot update the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
+            throw new UnableToUpdateIdentifierGeneratorException(\sprintf('Cannot update the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
         }
     }
 
@@ -126,7 +126,7 @@ SQL;
      */
     public function get(string $identifierGeneratorCode): ?IdentifierGenerator
     {
-        if ('' === trim($identifierGeneratorCode)) {
+        if ('' === \trim($identifierGeneratorCode)) {
             return null;
         }
 
@@ -166,7 +166,7 @@ SQL;
         try {
             $result = $stmt->executeQuery()->fetchAssociative();
         } catch (DriverException) {
-            throw new UnableToFetchIdentifierGeneratorException(sprintf('Cannot fetch the identifier generator "%s"', $identifierGeneratorCode));
+            throw new UnableToFetchIdentifierGeneratorException(\sprintf('Cannot fetch the identifier generator "%s"', $identifierGeneratorCode));
         }
 
         if (!$result) {
@@ -217,7 +217,7 @@ SQL;
             throw new UnableToFetchIdentifierGeneratorException('Cannot fetch identifiers generators');
         }
 
-        return array_map(fn ($data) => $this->fromDatabaseToModel($data), $result);
+        return \array_map(fn ($data) => $this->fromDatabaseToModel($data), $result);
     }
 
     /**
@@ -228,11 +228,11 @@ SQL;
         Assert::string($result['uuid']);
         Assert::string($result['code']);
         Assert::string($result['conditions']);
-        Assert::isList(json_decode($result['conditions'], true));
+        Assert::isList(\json_decode($result['conditions'], true));
         Assert::string($result['structure']);
-        Assert::isList(json_decode($result['structure'], true));
+        Assert::isList(\json_decode($result['structure'], true));
         Assert::string($result['labels']);
-        Assert::isArray(json_decode($result['labels'], true));
+        Assert::isArray(\json_decode($result['labels'], true));
         Assert::string($result['target']);
         Assert::string($result['options']);
         $options = \json_decode($result['options'], true);
@@ -245,9 +245,9 @@ SQL;
         return new IdentifierGenerator(
             IdentifierGeneratorId::fromString($result['uuid']),
             IdentifierGeneratorCode::fromString($result['code']),
-            Conditions::fromNormalized(json_decode($result['conditions'], true)),
-            Structure::fromNormalized(json_decode($result['structure'], true)),
-            LabelCollection::fromNormalized(json_decode($result['labels'], true)),
+            Conditions::fromNormalized(\json_decode($result['conditions'], true)),
+            Structure::fromNormalized(\json_decode($result['structure'], true)),
+            LabelCollection::fromNormalized(\json_decode($result['labels'], true)),
             Target::fromString($result['target']),
             Delimiter::fromString($options['delimiter']),
             TextTransformation::fromString($options['text_transformation'])
@@ -283,7 +283,7 @@ SQL;
         try {
             $stmt->executeQuery();
         } catch (DriverException) {
-            throw new UnableToDeleteIdentifierGeneratorException(sprintf('Cannot delete the identifier generator "%s"', $identifierGeneratorCode));
+            throw new UnableToDeleteIdentifierGeneratorException(\sprintf('Cannot delete the identifier generator "%s"', $identifierGeneratorCode));
         }
     }
 
@@ -298,6 +298,6 @@ SQL;
 SHOW COLUMNS FROM pim_catalog_identifier_generator LIKE '{{ columnName }}'
 SQL, ['{{ columnName }}' => $columnName]));
 
-        return count($rows) >= 1;
+        return \count($rows) >= 1;
     }
 }

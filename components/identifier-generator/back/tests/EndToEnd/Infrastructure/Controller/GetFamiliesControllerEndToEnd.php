@@ -66,7 +66,7 @@ final class GetFamiliesControllerEndToEnd extends ControllerEndToEndTestCase
             ],
         ];
 
-        Assert::assertEquals($expected, json_decode($response->getContent(), true));
+        Assert::assertEquals($expected, \json_decode($response->getContent(), true));
     }
 
     /** @test */
@@ -93,7 +93,7 @@ final class GetFamiliesControllerEndToEnd extends ControllerEndToEndTestCase
             ],
         ];
 
-        Assert::assertEquals($expectedFirstPage, json_decode($firstResponse->getContent(), true));
+        Assert::assertEquals($expectedFirstPage, \json_decode($firstResponse->getContent(), true));
 
         $this->callGetRouteWithQueryParam('akeneo_identifier_generator_get_families', ['limit' => 2, 'page' => 2]);
         $response = $this->client->getResponse();
@@ -109,7 +109,7 @@ final class GetFamiliesControllerEndToEnd extends ControllerEndToEndTestCase
             ],
         ];
 
-        Assert::assertEquals($expectedSecondPage, json_decode($response->getContent(), true));
+        Assert::assertEquals($expectedSecondPage, \json_decode($response->getContent(), true));
     }
 
     /** @test */
@@ -127,6 +127,6 @@ final class GetFamiliesControllerEndToEnd extends ControllerEndToEndTestCase
             ],
         ];
 
-        Assert::assertSame($expected, json_decode($response->getContent(), true));
+        Assert::assertSame($expected, \json_decode($response->getContent(), true));
     }
 }

@@ -31,10 +31,10 @@ final class GetAttributeOptionsController
         }
 
         if (!(
-            $this->securityFacade->isGranted('pim_enrich_attribute_index') &&
-            (
-                $this->securityFacade->isGranted('pim_identifier_generator_manage') ||
-                $this->securityFacade->isGranted('pim_identifier_generator_view')
+            $this->securityFacade->isGranted('pim_enrich_attribute_index')
+            && (
+                $this->securityFacade->isGranted('pim_identifier_generator_manage')
+                || $this->securityFacade->isGranted('pim_identifier_generator_view')
             )
         )) {
             throw new AccessDeniedException();
