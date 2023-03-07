@@ -4,6 +4,7 @@ import {AbbreviationType, FamilyProperty, Operator, PROPERTY_NAMES, SimpleSelect
 import {NomenclatureEdit, OperatorSelector} from '../../components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Styled} from '../../components/Styled';
+import {useIdentifierGeneratorAclContext} from '../../context';
 
 type Props = {
   selectedProperty: FamilyProperty | SimpleSelectProperty;
@@ -16,6 +17,7 @@ const Operators: Operator[] = [Operator.EQUALS, Operator.LOWER_OR_EQUAL_THAN];
 
 const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, children, options}) => {
   const translate = useTranslate();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
   const onChangeProcessType = useCallback(
     (type: string) => {
@@ -86,6 +88,7 @@ const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, c
           openLabel={translate('pim_common.open')}
           onChange={onChangeProcessType}
           clearable={false}
+          readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
         >
           {options.map(({value, label}) => (
             <SelectInput.Option value={value} title={translate(label)} key={value}>
@@ -110,7 +113,13 @@ const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, c
             label={translate('pim_identifier_generator.structure.settings.chars_number')}
             requiredLabel={translate('pim_common.required_label')}
           >
-            <NumberInput value={`${selectedProperty.process.value}`} onChange={onChangeCharsNumber} max={5} min={1} />
+            <NumberInput
+              value={`${selectedProperty.process.value}`}
+              onChange={onChangeCharsNumber}
+              max={5}
+              min={1}
+              readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+            />
           </Field>
         </>
       )}

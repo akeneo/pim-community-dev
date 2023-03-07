@@ -13,3 +13,4 @@ export * from './useGetScopes';
 export * from './useGetFamilyNomenclatureValues';
 export * from './useSaveNomenclature';
 export * from './useGetPropertyItems';
+export * from './useGetAttributeLabel';

@@ -16,7 +16,7 @@ describe('SimpleSelectPreview', () => {
     const screen = render(<SimpleSelectPreview property={simpleSelectProperty} />);
 
     await waitFor(() => {
-      expect(screen.getByText('Attribute')).toBeInTheDocument();
+      expect(screen.getByText('simple_select')).toBeInTheDocument();
     });
   });
 
@@ -26,14 +26,14 @@ describe('SimpleSelectPreview', () => {
       attributeCode: 'simple_select',
       process: {
         type: AbbreviationType.TRUNCATE,
-        operator: Operator.EQUAL,
+        operator: Operator.EQUALS,
         value: 3,
       },
     };
     const screen = render(<SimpleSelectPreview property={simpleSelectProperty} />);
 
     await waitFor(() => {
-      expect(screen.getByText('Att')).toBeInTheDocument();
+      expect(screen.getByText('sim')).toBeInTheDocument();
     });
   });
 });

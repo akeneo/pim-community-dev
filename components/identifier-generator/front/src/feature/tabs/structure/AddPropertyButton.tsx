@@ -1,9 +1,8 @@
 import React, {useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search, useBooleanState, useDebounce} from 'akeneo-design-system';
 import {Property, PROPERTY_NAMES, Structure} from '../../models';
-import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {useGetPropertyItems} from '../../hooks/useGetPropertyItems';
-import {getAttributeByCode} from '../../hooks/useGetAttributeByCode';
 
 type AddPropertyButtonProps = {
   onAddProperty: (property: Property) => void;
@@ -15,6 +14,7 @@ type FlatItemsGroup = {
   text: string;
   isSection: boolean;
   isVisible?: boolean;
+  type?: string;
 };
 
 const defaultValueByAttributeType = {
@@ -40,7 +40,6 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebounce(searchValue);
   const {data, fetchNextPage} = useGetPropertyItems(debouncedSearchValue, isOpen);
-  const router = useRouter();
 
   const showAutoNumber = useMemo(() => !structure.find(({type}) => type === PROPERTY_NAMES.AUTO_NUMBER), [structure]);
 
@@ -59,13 +58,10 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
     setSearchValue('');
   };
 
-  const addProperty = (id: string) => {
-    const defaultValue = defaultValueByAttributeType[id];
-    if (!defaultValue) {
-      getAttributeByCode(id, router).then(response => {
-        const defaultValue = defaultValueByAttributeType[response.type];
-        handleAddProperty({...defaultValue, attributeCode: response.code});
-      });
+  const addProperty = (id: string, type?: string) => {
+    const defaultValue = defaultValueByAttributeType[type || id];
+    if (type) {
+      handleAddProperty({...defaultValue, attributeCode: id});
     } else {
       handleAddProperty(defaultValue);
     }
@@ -90,12 +86,11 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
     const tab: FlatItemsGroup[] = [];
     data?.forEach(item => {
       if (tab.findIndex((section: FlatItemsGroup) => section.isSection && section.id === item.id) === -1) {
-        tab.push({id: item.id, text: item.text, isSection: true});
+        tab.push({...item, isSection: true});
       }
       item.children.forEach(child =>
         tab.push({
-          id: child.id,
-          text: child.text,
+          ...child,
           isSection: false,
           isVisible: visibilityConditions[child.id] !== undefined ? visibilityConditions[child.id] : true,
         })
@@ -125,12 +120,12 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
             noResultTitle={translate('pim_common.no_search_result')}
             onNextPage={fetchNextPage}
           >
-            {flatItems?.map(({id, text, isSection, isVisible}) =>
+            {flatItems?.map(({id, text, isSection, isVisible, type}) =>
               isSection ? (
                 <Dropdown.Section key={`section-${id}`}>{text}</Dropdown.Section>
               ) : (
                 isVisible && (
-                  <Dropdown.Item key={id} onClick={() => addProperty(id)}>
+                  <Dropdown.Item key={id} onClick={() => addProperty(id, type)}>
                     {text}
                   </Dropdown.Item>
                 )

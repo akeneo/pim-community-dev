@@ -8,12 +8,11 @@ type Props = {
 
 const SimpleSelectPreview: React.FC<Props> = ({property}) => {
   const previewLabel = useMemo(() => {
-    const optionCode = 'Attribute';
     if (property.process.type === AbbreviationType.TRUNCATE) {
-      return optionCode.substring(0, property.process.value || 3);
+      return property.attributeCode?.substring(0, property.process.value || 3);
     }
-    return optionCode;
-  }, [property.process]);
+    return property?.attributeCode;
+  }, [property]);
 
   return <Preview.Highlight>{previewLabel}</Preview.Highlight>;
 };
