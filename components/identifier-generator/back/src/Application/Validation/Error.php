@@ -54,7 +54,7 @@ final class Error
     public function __toString(): string
     {
         if (null !== $this->path && '' !== $this->path) {
-            return sprintf("%s: %s", $this->path, $this->message);
+            return \sprintf("%s: %s", $this->path, $this->message);
         }
 
         return $this->message;

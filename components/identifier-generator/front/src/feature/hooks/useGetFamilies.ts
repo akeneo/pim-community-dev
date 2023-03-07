@@ -12,7 +12,13 @@ const useGetFamilies = (params: {page?: number; search?: string; codes?: FamilyC
   const router = useRouter();
 
   return useQuery<Family[], Error, Family[], QueryKey>({
-    queryKey: ['getFamilies', params.page ?? 1, params.search ?? '', params.codes],
+    queryKey: [
+      'getFamilies',
+      params.page ?? 1,
+      params.search ?? '',
+      params.codes,
+      params.limit || DEFAULT_LIMIT_PAGINATION,
+    ],
     queryFn: async (parameters: {queryKey: QueryKey}) => {
       const queryParameters: {[key: string]: string | number | FamilyCode[] | undefined} = {
         limit: params.limit || DEFAULT_LIMIT_PAGINATION,

@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 /**
  * Label or identifier filter for an Elasticsearch query
+ * It can also perform a search on the id if optional $idPrefixes is provided
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -15,13 +16,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
  */
 class LabelOrIdentifierFilter extends AbstractFieldFilter
 {
-    /**
-     * @param array $supportedFields
-     * @param array $supportedOperators
-     */
     public function __construct(
         array $supportedFields = [],
-        array $supportedOperators = []
+        array $supportedOperators = [],
+        private readonly array $idPrefixes = [],
     ) {
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
@@ -79,6 +77,14 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
                 'label.<all_channels>.<all_locales>' => sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
+
+        foreach ($this->idPrefixes as $idPrefix) {
+            $clauses[] = [
+                'term' => [
+                    'id' => \sprintf('%s%s', $idPrefix, \mb_strtolower($value)),
+                ],
+            ];
+        }
 
         $this->searchQueryBuilder->addFilter(
             [

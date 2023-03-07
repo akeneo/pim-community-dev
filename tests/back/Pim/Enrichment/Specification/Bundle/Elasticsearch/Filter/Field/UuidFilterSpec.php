@@ -104,4 +104,21 @@ class UuidFilterSpec extends ObjectBehavior
             ['ca4787d5-36fd-4893-ba46-f4edd71b7186', 'dc832a6d-b2fb-4918-b169-eadb92242b85']
         )->shouldReturn($this);
     }
+
+    function it_is_case_insensitive(SearchQueryBuilder $queryBuilder)
+    {
+        $queryBuilder->addFilter([
+            'terms' => [
+                'id' => [
+                    'product_ca4787d5-36fd-4893-ba46-f4edd71b7186',
+                    'product_dc832a6d-b2fb-4918-b169-eadb92242b85',
+                ],
+            ],
+        ])->shouldBeCalled();
+        $this->addFieldFilter(
+            'uuid',
+            'IN',
+            ['CA4787D5-36FD-4893-BA46-F4EDD71B7186', 'DC832A6D-B2FB-4918-B169-EADB92242B85']
+        )->shouldReturn($this);
+    }
 }

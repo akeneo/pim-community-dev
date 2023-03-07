@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
@@ -18,34 +20,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VersioningController
 {
-    /** @var VersionRepositoryInterface */
-    protected $versionRepository;
-
-    /** @var FQCNResolver */
-    protected $FQCNResolver;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /**
-     * @param VersionRepositoryInterface $versionRepository
-     * @param FQCNResolver               $FQCNResolver
-     * @param NormalizerInterface        $normalizer
-     * @param UserContext                $userContext
-     */
     public function __construct(
-        VersionRepositoryInterface $versionRepository,
-        FQCNResolver $FQCNResolver,
-        NormalizerInterface $normalizer,
-        UserContext $userContext
+        private readonly VersionRepositoryInterface $versionRepository,
+        private readonly FQCNResolver $FQCNResolver,
+        private readonly NormalizerInterface $normalizer,
+        private readonly UserContext $userContext
     ) {
-        $this->versionRepository = $versionRepository;
-        $this->FQCNResolver = $FQCNResolver;
-        $this->normalizer = $normalizer;
-        $this->userContext = $userContext;
     }
 
     /**

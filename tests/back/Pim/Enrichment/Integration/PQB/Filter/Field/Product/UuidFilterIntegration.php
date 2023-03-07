@@ -61,4 +61,18 @@ class UuidFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->expectException(InvalidPropertyTypeException::class);
         $this->executeFilter([['uuid', 'IN', [123]]]);
     }
+
+    public function testCaseInsensitiveUuid(): void
+    {
+        $upperCaseUuids = [\mb_strtoupper($this->uuids['foo']), \mb_strtoupper($this->uuids['baz'])];
+
+        $this->assert(
+            $this->executeFilter([['uuid', Operators::IN_LIST, $upperCaseUuids]]),
+            ['foo', 'baz'],
+        );
+        $this->assert(
+            $this->executeFilter([['uuid', Operators::NOT_IN_LIST, $upperCaseUuids]]),
+            ['bar'],
+        );
+    }
 }

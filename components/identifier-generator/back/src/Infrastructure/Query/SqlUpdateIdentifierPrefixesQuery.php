@@ -38,10 +38,10 @@ final class SqlUpdateIdentifierPrefixesQuery implements UpdateIdentifierPrefixes
             return false;
         }
 
-        $onlyProducts = array_filter(
+        $onlyProducts = \array_filter(
             $products,
             // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-            fn (ProductInterface $product): bool => get_class($product) !==
+            fn (ProductInterface $product): bool => \get_class($product) !==
                 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
         );
         if (\count($onlyProducts) > 0) {
@@ -82,7 +82,7 @@ final class SqlUpdateIdentifierPrefixesQuery implements UpdateIdentifierPrefixes
             return;
         }
 
-        $placeholders = implode(',', array_fill(0, \count($newPrefixes), '(?,?,?,?)'));
+        $placeholders = \implode(',', \array_fill(0, \count($newPrefixes), '(?,?,?,?)'));
 
         $insertSql = <<<SQL
 INSERT INTO pim_catalog_identifier_generator_prefixes (`product_uuid`, `attribute_id`, `prefix`, `number`) VALUES ${placeholders}
