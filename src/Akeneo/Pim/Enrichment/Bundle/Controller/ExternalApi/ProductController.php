@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Event\GetProductListEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber;
@@ -147,6 +148,8 @@ class ProductController
 
         $user = $this->tokenStorage->getToken()->getUser();
         Assert::isInstanceOf($user, UserInterface::class);
+
+        $this->eventDispatcher->dispatch(new GetProductListEvent());
 
         $query->channelCode = $request->query->get('scope', null);
         $query->limit = $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default']);
