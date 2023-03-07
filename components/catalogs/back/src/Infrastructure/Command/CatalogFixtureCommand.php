@@ -264,7 +264,7 @@ class CatalogFixtureCommand extends Command
             "weight": {
               "type": "number",
               "title": "Weight"
-            },
+            }
           },
           "required": ["name", "size"]
         }
