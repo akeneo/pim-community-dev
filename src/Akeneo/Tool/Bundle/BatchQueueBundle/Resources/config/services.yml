@@ -66,6 +66,7 @@ services:
             - '%akeneo_batch.entity.job_instance.class%'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobExecutionWatchdogCommand:
         arguments:

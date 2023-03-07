@@ -16,12 +16,14 @@ services:
             - '@Akeneo\Platform\Job\Application\CreateJobInstanceHandler'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Tool\Bundle\BatchBundle\Command\ListJobsCommand:
         arguments:
             - '@akeneo_batch.job_repository'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Tool\Bundle\BatchBundle\Command\MarkJobExecutionAsFailedWhenInterruptedCommand:
         arguments:
