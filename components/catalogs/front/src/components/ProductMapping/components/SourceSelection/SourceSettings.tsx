@@ -5,6 +5,19 @@ import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 import {Source} from '../../models/Source';
 import {Attribute} from '../../../../models/Attribute';
 import {SourceErrors} from '../../models/SourceErrors';
+import {ArrowIcon} from 'akeneo-design-system';
+import styled from 'styled-components';
+
+const BulletLine = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+    gap: 8px;
+    margin-top: 5px;
+    padding-left: 10px;
+    max-width: 460px;
+    align-items: center;
+`;
 
 type Props = {
     source: Source;
@@ -34,18 +47,27 @@ export const SourceSettings: FC<Props> = ({source, attribute, errors, onChange})
     return (
         <>
             {attribute.scopable && (
-                <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
+                <BulletLine>
+                    <ArrowIcon color='#a1a9b7' size={24} />
+                    <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
+                </BulletLine>
             )}
             {attribute.localizable && !attribute.scopable && (
-                <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
+                <BulletLine>
+                    <ArrowIcon color='#a1a9b7' size={24} />
+                    <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
+                </BulletLine>
             )}
             {attribute.localizable && attribute.scopable && (
-                <SelectChannelLocaleDropdown
-                    source={source}
-                    onChange={onChangeMiddleware}
-                    error={errors?.locale}
-                    disabled={source.scope === null}
-                />
+                <BulletLine>
+                    <ArrowIcon color='#a1a9b7' size={24} />
+                    <SelectChannelLocaleDropdown
+                        source={source}
+                        onChange={onChangeMiddleware}
+                        error={errors?.locale}
+                        disabled={source.scope === null}
+                    />
+                </BulletLine>
             )}
         </>
     );
