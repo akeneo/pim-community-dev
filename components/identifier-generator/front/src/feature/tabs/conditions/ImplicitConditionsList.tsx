@@ -5,6 +5,7 @@ import {IdentifierGenerator, PROPERTY_NAMES, SimpleSelectProperty} from '../../m
 import {useIdentifierAttributes} from '../../hooks';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ListSkeleton} from '../../components';
+import {ImplicitSimpleSelectCondition} from './ImplicitSimpleSelectCondition';
 
 type Props = {
   generator: IdentifierGenerator;
@@ -49,15 +50,10 @@ const ImplicitConditionsList: React.FC<Props> = ({generator}) => {
         </Table.Row>
       )}
       {simpleSelectProperties?.map(simpleSelectProperty => (
-        <Table.Row aria-colspan={3} key={simpleSelectProperty.attributeCode}>
-          <Styled.TitleCell>{simpleSelectProperty.attributeCode}</Styled.TitleCell>
-          <Table.Cell>
-            <Styled.OperatorContainer>
-              <TextInput value={translate('pim_common.operators.NOT EMPTY')} readOnly={true} />
-            </Styled.OperatorContainer>
-          </Table.Cell>
-          <Table.Cell />
-        </Table.Row>
+        <ImplicitSimpleSelectCondition
+          simpleSelectProperty={simpleSelectProperty}
+          key={simpleSelectProperty.attributeCode}
+        />
       ))}
     </>
   );

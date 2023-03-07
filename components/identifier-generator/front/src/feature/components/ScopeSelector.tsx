@@ -9,9 +9,10 @@ type ScopeSelectorProps = {
   value: ChannelCode | null;
   onChange: (code: ChannelCode) => void;
   isHorizontal?: boolean;
+  readOnly: boolean;
 };
 
-const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange, isHorizontal = true}) => {
+const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange, isHorizontal = true, readOnly}) => {
   const translate = useTranslate();
   const currentCatalogLocale = useUserContext().get('catalogLocale');
   const {data: options, isLoading, error} = useGetScopes();
@@ -33,7 +34,7 @@ const ScopeSelector: React.FC<ScopeSelectorProps> = ({value, onChange, isHorizon
       onChange={onChange}
       placeholder={translate('pim_common.channel')}
       clearable={false}
-      readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+      readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted || readOnly}
       isHorizontal={isHorizontal}
     >
       {options?.map(({code, labels}) => (

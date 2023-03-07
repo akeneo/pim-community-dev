@@ -11,9 +11,10 @@ type Props = {
   scopable: boolean;
   scope?: Channel;
   isHorizontal?: boolean;
+  readOnly: boolean;
 };
 
-const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope, isHorizontal = true}) => {
+const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope, isHorizontal = true, readOnly}) => {
   const translate = useTranslate();
   const {data, isLoading, error} = useGetScopes();
   const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
@@ -51,7 +52,7 @@ const LocaleSelector: React.FC<Props> = ({value, onChange, scopable, scope, isHo
       onChange={onChange}
       placeholder={translate('pim_common.locale')}
       clearable={false}
-      readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+      readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted || readOnly}
       isHorizontal={isHorizontal}
     >
       {locales?.map(locale => (
