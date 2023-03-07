@@ -20,7 +20,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type ConditionItem array{'id': string, 'text': string}
+ * @phpstan-type ConditionItem array{'id': string, 'text': string, 'type': string}
  * @phpstan-type ConditionItemGroup array{'id': string, 'text': string, 'children': non-empty-list<ConditionItem>}
  * @phpstan-import-type AttributeDetails from GetGroupedAttributes
  */

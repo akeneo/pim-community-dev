@@ -2,6 +2,7 @@ import React from 'react';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
 import {AbbreviationType, FamilyProperty, SimpleSelectProperty} from '../../../models';
 import {ProcessablePropertyEdit} from '../ProcessablePropertyEdit';
+import {PropertyEditTitle} from '../PropertyEditTitle';
 
 const options = [
   {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.truncate'},
@@ -17,7 +18,12 @@ const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedPr
     onChange(property as FamilyProperty);
   };
 
-  return <ProcessablePropertyEdit selectedProperty={selectedProperty} onChange={handleChange} options={options} />;
+  return (
+    <>
+      <PropertyEditTitle type={selectedProperty.type} />
+      <ProcessablePropertyEdit selectedProperty={selectedProperty} onChange={handleChange} options={options} />
+    </>
+  );
 };
 
 export {FamilyPropertyEdit};
