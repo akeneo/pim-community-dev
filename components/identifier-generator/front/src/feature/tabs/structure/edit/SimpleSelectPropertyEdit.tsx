@@ -2,7 +2,7 @@ import React from 'react';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 import {AbbreviationType, FamilyProperty, SimpleSelectProperty} from '../../../models';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
-import {ScopeAndLocaleSelector} from '../../../components/ScopeAndLocaleSelector';
+import {ScopeAndLocaleSelector} from '../../../components';
 import {ProcessablePropertyEdit} from '../ProcessablePropertyEdit';
 import {SectionTitle} from 'akeneo-design-system';
 import {useGetAttributeLabel} from '../../../hooks';

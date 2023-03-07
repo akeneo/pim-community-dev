@@ -6,13 +6,15 @@ import {Helper} from 'akeneo-design-system';
 import {LocaleSelector} from './LocaleSelector';
 import {useGetScopes} from '../hooks';
 import {Styled} from './Styled';
+import {AttributeCode} from '../models';
 
 type Props = {
-  attributeCode: string;
+  attributeCode: AttributeCode;
   locale?: LocaleCode | null;
   scope?: ChannelCode | null;
-  onChange: ({scope, locale}: {scope?: ChannelCode; locale?: LocaleCode}) => void;
+  onChange?: ({scope, locale}: {scope?: ChannelCode; locale?: LocaleCode}) => void;
   isHorizontal?: boolean;
+  readOnly?: boolean;
 };
 
 const ScopeAndLocaleSelector: React.FC<Props> = ({
@@ -21,6 +23,7 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({
   scope = null,
   onChange,
   isHorizontal = true,
+  readOnly = false,
 }) => {
   const translate = useTranslate();
   const {data, isLoading, error} = useGetAttributeByCode(attributeCode);
@@ -33,14 +36,14 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({
 
   const handleScopeChange = useCallback(
     (scope: ChannelCode) => {
-      onChange({scope});
+      onChange?.({scope});
     },
     [onChange]
   );
 
   const handleLocaleChange = useCallback(
     (locale: LocaleCode) => {
-      onChange({locale});
+      onChange?.({locale});
     },
     [onChange]
   );
@@ -53,7 +56,9 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({
     <Styled.ConditionLineSkeleton>This is Loading</Styled.ConditionLineSkeleton>
   ) : (
     <>
-      {data?.scopable && <ScopeSelector value={scope} onChange={handleScopeChange} isHorizontal={isHorizontal} />}
+      {data?.scopable && (
+        <ScopeSelector value={scope} onChange={handleScopeChange} isHorizontal={isHorizontal} readOnly={readOnly} />
+      )}
       {data?.localizable && (
         <LocaleSelector
           value={locale}
@@ -61,6 +66,7 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({
           scopable={data?.scopable}
           scope={selectedScope}
           isHorizontal={isHorizontal}
+          readOnly={readOnly}
         />
       )}
     </>
