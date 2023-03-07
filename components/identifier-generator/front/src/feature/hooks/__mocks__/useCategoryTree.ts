@@ -5,7 +5,7 @@ const useCategoryTree: (currentTree: CategoryTreeRoot | undefined) => {
   childrenCallback: (id: number) => Promise<CategoryTreeModel[]>;
 } = () => {
   const init = () => {
-    return {
+    const result: CategoryTreeModel = {
       code: 'masterCatalog',
       id: 42,
       label: 'Master Catalog',
@@ -22,6 +22,8 @@ const useCategoryTree: (currentTree: CategoryTreeRoot | undefined) => {
         },
       ],
     };
+
+    return new Promise<CategoryTreeModel>(resolve => resolve(result));
   };
 
   const childrenCallback = () => {
@@ -34,7 +36,8 @@ const useCategoryTree: (currentTree: CategoryTreeRoot | undefined) => {
       selectable: true,
       selected: false,
     };
-    return [child];
+
+    return new Promise<CategoryTreeModel[]>(resolve => resolve([child]));
   };
 
   return {init, childrenCallback};
