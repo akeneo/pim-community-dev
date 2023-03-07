@@ -108,7 +108,7 @@ class ExternalApiCategory
             'code' => $this->code,
             'parent' => $this->parentCode,
             'updated' => $this->updated,
-            'labels' => $this->labels,
+            'labels' => empty($this->labels) ? (object) [] : $this->labels,
         ];
 
         if ($withPosition) {

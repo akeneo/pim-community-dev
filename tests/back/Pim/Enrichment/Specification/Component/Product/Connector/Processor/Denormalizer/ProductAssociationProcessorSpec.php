@@ -2,20 +2,20 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -63,7 +63,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
 
         $convertedData = [
@@ -134,7 +133,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $jobParameters->get('enabledComparison')->willReturn(true);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
 
         $convertedData = [
@@ -202,7 +200,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
         $jobParameters->get('enabledComparison')->willReturn(true);
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
 
         $convertedData = [
@@ -282,7 +279,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
         $jobParameters->get('enabledComparison')->willReturn(true);
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
 
         $convertedData = [
@@ -359,7 +355,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(true);
 
-        $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
 
         $convertedData = [
@@ -418,7 +413,6 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(false);
 
-        $productRepository->getIdentifierProperties()->shouldNotBeCalled();
         $productRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
 
         $convertedData = [
