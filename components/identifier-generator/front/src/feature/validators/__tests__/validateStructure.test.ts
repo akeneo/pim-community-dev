@@ -66,7 +66,7 @@ describe('validateStructure', () => {
         ],
         'structure'
       )
-    ).toHaveLength(3);
+    ).toHaveLength(2);
   });
 
   it('should add a violation when there are no properties', () => {
@@ -89,7 +89,7 @@ describe('validateStructure', () => {
       {
         path: 'structure[0]',
         message:
-          'The property type "unknown" is unknown. Please choose one of the following: free_text, auto_number, family',
+          'The property type "unknown" is unknown. Please choose one of the following: free_text, auto_number, family, simple_select',
       },
     ]);
   });

@@ -3,7 +3,6 @@ import {Field, NumberInput, SelectInput} from 'akeneo-design-system';
 import {AbbreviationType, FamilyProperty, Operator, PROPERTY_NAMES, SimpleSelectProperty} from '../../models';
 import {NomenclatureEdit, OperatorSelector} from '../../components';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Styled} from '../../components/Styled';
 import {useIdentifierGeneratorAclContext} from '../../context';
 
 type Props = {
@@ -77,7 +76,7 @@ const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, c
   );
 
   return (
-    <Styled.EditionContainer>
+    <>
       <Field
         label={translate('pim_identifier_generator.structure.settings.abbrev_type')}
         requiredLabel={translate('pim_common.required_label')}
@@ -125,7 +124,7 @@ const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, c
       )}
       {children}
       {selectedProperty.process.type === AbbreviationType.NOMENCLATURE && <NomenclatureEdit />}
-    </Styled.EditionContainer>
+    </>
   );
 };
 
