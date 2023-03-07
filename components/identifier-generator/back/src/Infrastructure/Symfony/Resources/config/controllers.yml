@@ -80,5 +80,5 @@ services:
   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetCategoryLabelsController:
     public: true
     arguments:
-      - '@akeneo.pim.structure.query.get_category_translations'
+      - '@Akeneo\Category\ServiceApi\CategoryQueryInterface'
       - '@pim_user.context.user'

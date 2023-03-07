@@ -127,7 +127,7 @@ type TagInputProps = Override<
 
     /**
      * The selected tags which are invalid
-     * */
+     **/
     invalidValue?: string[];
   }
 >;
