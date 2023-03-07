@@ -11,6 +11,7 @@ import {
   ImplicitConditionsList,
   SimpleOrMultiSelectLine,
   MAX_CONDITIONS_COUNT,
+  CategoriesLine,
 } from './conditions';
 import {SimpleDeleteModal} from '../pages';
 import {Violation} from '../validators';
@@ -38,6 +39,8 @@ const ConditionLine: React.FC<ConditionLineProps> = ({condition, onChange, onDel
       return <EnabledLine condition={condition} onChange={onChange} onDelete={onDelete} />;
     case CONDITION_NAMES.FAMILY:
       return <FamilyLine condition={condition} onChange={onChange} onDelete={onDelete} />;
+    case CONDITION_NAMES.CATEGORIES:
+      return <CategoriesLine condition={condition} onChange={onChange} onDelete={onDelete} />;
     case CONDITION_NAMES.SIMPLE_SELECT:
     case CONDITION_NAMES.MULTI_SELECT:
       return <SimpleOrMultiSelectLine condition={condition} onChange={onChange} onDelete={onDelete} />;
