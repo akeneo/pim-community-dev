@@ -301,7 +301,7 @@ datagrid:
                     label:     'pim_datagrid.filters.updated.label'
                 label_or_identifier:
                     type: label_or_identifier
-                    label: 'pim_datagrid.filters.label_or_identifier.label'
+                    label: 'pim_datagrid.filters.label_or_identifier.label_with_uuid'
                     data_name: label_or_identifier
                 parent:
                     label:         'pim_datagrid.filters.parent.label'

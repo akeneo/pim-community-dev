@@ -62,11 +62,11 @@ final class ListIdentifierGeneratorControllerEndToEnd extends ControllerEndToEnd
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
-        $result = array_map(function ($ig) {
+        $result = \array_map(function ($ig) {
             unset($ig['uuid']);
 
             return $ig;
-        }, json_decode($response->getContent(), true));
+        }, \json_decode($response->getContent(), true));
 
         Assert::assertEquals([$expectedGenerator], $result);
     }

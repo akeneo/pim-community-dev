@@ -31,8 +31,8 @@ final class GetIdentifierAttributesController
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->security->isGranted('pim_identifier_generator_view') &&
-            !$this->security->isGranted('pim_identifier_generator_manage')
+        if (!$this->security->isGranted('pim_identifier_generator_view')
+            && !$this->security->isGranted('pim_identifier_generator_manage')
         ) {
             throw new AccessDeniedException();
         }
@@ -48,7 +48,7 @@ final class GetIdentifierAttributesController
             'label' => $attribute->getLabel(),
         ];
 
-        return new JsonResponse(array_map(
+        return new JsonResponse(\array_map(
             $normalizeAttribute,
             $attributes
         ), Response::HTTP_OK);

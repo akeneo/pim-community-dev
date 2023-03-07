@@ -63,7 +63,7 @@ final class Structure
                 FreeText::type() => FreeText::fromNormalized($normalizedValue),
                 AutoNumber::type() => AutoNumber::fromNormalized($normalizedValue),
                 FamilyProperty::type() => FamilyProperty::fromNormalized($normalizedValue),
-                default => throw new \InvalidArgumentException(sprintf('The Structure type "%s" does not exist', $normalizedValue['type'])),
+                default => throw new \InvalidArgumentException(\sprintf('The Structure type "%s" does not exist', $normalizedValue['type'])),
             };
         }
 

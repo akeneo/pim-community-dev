@@ -2,12 +2,12 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use PhpSpec\ObjectBehavior;
 
 /**
  * Label or identifier filter spec for an Elasticsearch query
@@ -22,7 +22,8 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             ['label_or_identifier'],
-            ['CONTAINS']
+            ['CONTAINS'],
+            ['product_'],
         );
     }
 
@@ -61,6 +62,7 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
                     'should' => [
                         ['wildcard' => ['identifier' => '*book*']],
                         ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']],
+                        ['term' => ['id' => 'product_book']],
                     ],
                     'minimum_should_match' => 1,
                 ],
@@ -80,7 +82,8 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
                     'should' => [
                         ['wildcard' => ['identifier' => '*book*']],
                         ['wildcard' => ['label.ecommerce.<all_locales>' => '*book*']],
-                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']]
+                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']],
+                        ['term' => ['id' => 'product_book']],
                     ],
                     'minimum_should_match' => 1,
                 ],
@@ -100,7 +103,8 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
                     'should' => [
                         ['wildcard' => ['identifier' => '*book*']],
                         ['wildcard' => ['label.<all_channels>.en_US' => '*book*']],
-                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']]
+                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']],
+                        ['term' => ['id' => 'product_book']],
                     ],
                     'minimum_should_match' => 1,
                 ],
@@ -122,7 +126,8 @@ class LabelOrIdentifierFilterSpec extends ObjectBehavior
                         ['wildcard' => ['label.ecommerce.en_US' => '*book*']],
                         ['wildcard' => ['label.ecommerce.<all_locales>' => '*book*']],
                         ['wildcard' => ['label.<all_channels>.en_US' => '*book*']],
-                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']]
+                        ['wildcard' => ['label.<all_channels>.<all_locales>' => '*book*']],
+                        ['term' => ['id' => 'product_book']],
                     ],
                     'minimum_should_match' => 1,
                 ],
