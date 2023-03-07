@@ -37,6 +37,10 @@ akeneo_catalogs:
       locale:
         unknown: 'Das Gebietsschema "{{ locale_name }}" wurde deaktiviert. Bitte überprüfen Sie Ihre Gebietsschema oder entfernen Sie diesen Filter.'
     product_mapping:
+      schema:
+        missing_targets: 'Die Zuordnung ist unvollständig, folgende Ziele fehlen: {{ targets }}.'
+        additional_targets: "Die Zuordnung ist falsch, folgende Ziele existieren nicht: {{ targets }}."
+        incorrect_type: 'Der ausgewählte Quelltyp entspricht nicht den Anforderungen: {{ expected_type }} erwartet.'
       source:
         invalid: 'Dieses Attribut wurde gelöscht.'
         unknown: 'Unbekannter Quellwert'
@@ -49,3 +53,6 @@ akeneo_catalogs:
           empty: 'Dieses Gebietsschema darf nicht leer sein.'
           unknown: 'Dieses Gebietsschema ist deaktiviert oder existiert nicht mehr. Bitte überprüfen Sie Ihre Kanäle und Gebietsschema.'
           disabled: 'Dieses Gebietsschema ist deaktiviert. Bitte überprüfen Sie Ihre Kanäle und Gebietsschemas oder aktualisieren Sie diesen Wert.'
+        required: 'Die Quelle ist erforderlich.'
+        currency:
+          disabled: 'Diese Währung ist nicht aktiviert. Bitte überprüfen Sie Ihre Kanäle und Währungseinstellungen oder aktualisieren Sie diesen Wert.'

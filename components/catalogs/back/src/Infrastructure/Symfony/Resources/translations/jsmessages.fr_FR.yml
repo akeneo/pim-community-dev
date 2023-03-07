@@ -84,6 +84,7 @@ akeneo_catalogs:
         remove: Supprimer la catégorie
         category_tree: Arbres
       measurement:
+        search: Unité de mesure
         no_results: Aucun résultat trouvé
       boolean:
         yes: Yes
