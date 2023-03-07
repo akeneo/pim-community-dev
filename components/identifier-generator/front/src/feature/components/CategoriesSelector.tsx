@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useMemo, useState} from 'react';
-import {CategoryCode, CategoryTree, CategoryTreeRoot, CategoryValue} from '@akeneo-pim-community/shared';
+import {CategoryCode, CategoryTree, CategoryTreeRoot, CategoryValue, useTranslate} from '@akeneo-pim-community/shared';
 import {Dropdown, TagInput, useBooleanState} from 'akeneo-design-system';
 import {CategoryTreeSwitcher} from './CategoryTreeSwitcher';
 import {Styled} from './Styled';
@@ -11,6 +11,7 @@ type CategoriesSelectorProps = {
 };
 
 const CategoriesSelector: FC<CategoriesSelectorProps> = ({categoryCodes, onChange}) => {
+  const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState();
   const [currentTree, setCurrentTree] = useState<CategoryTreeRoot | undefined>(undefined);
   const categoryLabels = useCategoryLabels(categoryCodes);
@@ -46,7 +47,7 @@ const CategoriesSelector: FC<CategoriesSelectorProps> = ({categoryCodes, onChang
   );
 
   return (
-    <Dropdown>
+    <Styled.CategoriesDropdownContainer>
       <TagInput
         value={categoryCodes}
         onChange={onChange}
@@ -57,7 +58,7 @@ const CategoriesSelector: FC<CategoriesSelectorProps> = ({categoryCodes, onChang
       {isOpen && (
         <Dropdown.Overlay onClose={close} horizontalPosition={'left'}>
           <Dropdown.Header>
-            <Dropdown.Title>Categories</Dropdown.Title>
+            <Dropdown.Title>{translate('pim_common.categories')}</Dropdown.Title>
             <CategoryTreeSwitcher onChange={setCurrentTree} value={currentTree?.code} />
           </Dropdown.Header>
           {currentTree && (
@@ -73,7 +74,7 @@ const CategoriesSelector: FC<CategoriesSelectorProps> = ({categoryCodes, onChang
           )}
         </Dropdown.Overlay>
       )}
-    </Dropdown>
+    </Styled.CategoriesDropdownContainer>
   );
 };
 
