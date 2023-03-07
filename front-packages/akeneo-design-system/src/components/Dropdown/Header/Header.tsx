@@ -12,6 +12,9 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  & > * {
+    flex-grow: 1;
+  }
 `;
 
 type HeaderProps = Override<
