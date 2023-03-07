@@ -145,10 +145,16 @@ akeneo_catalogs:
                 no_parameters_message: No parameters for this source.
             select_source:
                 label: Pim source
-                search: Search criterion
+                search: Search source
                 no_results: No matches found
                 section_system: System
                 section_attributes: Attributes
+                attribute_label_asset_collection: Asset Collection
+            select_source_asset_attribute:
+                label: Asset attribute
+                placeholder: Select an asset attribute
+                search: Search asset attribute
+                no_results: No matches found
             placeholder:
                 title: Select source
                 illustration_title: Click on a target in the right panel to configure your catalog mapping.

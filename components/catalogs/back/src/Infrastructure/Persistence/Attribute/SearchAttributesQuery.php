@@ -50,6 +50,10 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
                     $normalizedAttribute['default_measurement_unit'] = $attribute->getDefaultMetricUnit();
                 }
 
+                if ('pim_catalog_asset_collection' === $attribute->getType()) {
+                    $normalizedAttribute['asset_family'] = $attribute->getProperty('reference_data_name');
+                }
+
                 return $normalizedAttribute;
             },
             $attributes,

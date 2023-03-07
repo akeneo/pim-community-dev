@@ -5,15 +5,18 @@ import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 import {Source} from '../../models/Source';
 import {Attribute} from '../../../../models/Attribute';
 import {SourceErrors} from '../../models/SourceErrors';
+import {SourceAssetAttributeSelection} from './SourceAssetAttributeSelection/SourceAssetAttributeSelection';
+import {Target} from '../../models/Target';
 
 type Props = {
     source: Source;
+    target: Target;
     attribute: Attribute;
     errors: SourceErrors | null;
     onChange: (value: Source) => void;
 };
 
-export const SourceSettings: FC<Props> = ({source, attribute, errors, onChange}) => {
+export const SourceSettings: FC<Props> = ({source, target,attribute, errors, onChange}) => {
     const onChangeMiddleware = useCallback(
         source => {
             if (
@@ -47,6 +50,13 @@ export const SourceSettings: FC<Props> = ({source, attribute, errors, onChange})
                     disabled={source.scope === null}
                 />
             )}
+            {attribute.asset_family && <SourceAssetAttributeSelection
+                source={source}
+                target={target}
+                onChange={onChangeMiddleware}
+                errors={errors}
+                assetFamilyCode={attribute.asset_family}
+            />}
         </>
     );
 };

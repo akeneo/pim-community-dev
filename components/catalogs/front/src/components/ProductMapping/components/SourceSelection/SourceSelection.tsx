@@ -36,7 +36,7 @@ export const SourceSelection: FC<Props> = ({source, target, errors, onChange}) =
                 error={errors?.source}
             />
             {undefined !== attribute && null !== source && (
-                <SourceSettings source={source} attribute={attribute} errors={errors} onChange={onChange} />
+                <SourceSettings source={source} target={target} attribute={attribute} errors={errors} onChange={onChange} />
             )}
         </>
     );

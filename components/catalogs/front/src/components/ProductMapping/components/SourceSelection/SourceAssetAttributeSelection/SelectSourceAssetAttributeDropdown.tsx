@@ -1,33 +1,34 @@
 import React, {FC, useCallback, useState} from 'react';
 import {Dropdown, Field, GroupsIllustration, Helper, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useInfiniteSourceAttributes} from '../../hooks/useInfiniteSourceAttributes';
-import {Attribute} from '../../../../models/Attribute';
-import {useAttribute} from '../../../../hooks/useAttribute';
+import {useInfiniteAssetAttributes} from '../../../hooks/useInfiniteAssetAttributes';
+import {AssetAttribute} from '../../../models/AssetAttribute';
 import styled from 'styled-components';
-import {Target} from '../../models/Target';
+import {Target} from '../../../models/Target';
+import {useAssetAttribute} from '../../../hooks/useAssetAttribute';
 
-const SelectAttributeDropdownField = styled(Field)`
+const SelectAssetAttributeDropdownField = styled(Field)`
     margin-top: 10px;
 `;
 
 type Props = {
-    selectedCode: string;
+    selectedIdentifier: string;
     target: Target;
-    onChange: (value: Attribute) => void;
+    assetFamilyCode: string;
+    onChange: (value: AssetAttribute) => void;
     error: string | undefined;
 };
 
-export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, onChange, error}) => {
+export const SelectSourceAssetAttributeDropdown: FC<Props> = ({selectedIdentifier, target, assetFamilyCode, onChange, error}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
-    const {data: attributes, fetchNextPage} = useInfiniteSourceAttributes({target: target, search});
-    const {data: attribute} = useAttribute(selectedCode);
+    const {data: assetAttributes, fetchNextPage} = useInfiniteAssetAttributes({target: target, assetFamilyCode, search});
+    const {data: assetAttribute} = useAssetAttribute(selectedIdentifier);
 
-    const handleAttributeSelection = useCallback(
-        (attribute: Attribute) => {
-            onChange(attribute);
+    const handleAssetAttributeSelection = useCallback(
+        (assetAttribute: AssetAttribute) => {
+            onChange(assetAttribute);
             setIsOpen(false);
         },
         [onChange]
@@ -40,19 +41,18 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
 
     return (
         <>
-            <SelectAttributeDropdownField
-                label={translate('akeneo_catalogs.product_mapping.source.select_source.label')}
+            <SelectAssetAttributeDropdownField
+                label={translate('akeneo_catalogs.product_mapping.source.select_asset_attribute.label')}
             >
                 <Dropdown>
                     <SelectInput
                         onMouseDown={openDropdown}
                         emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                         openLabel={translate('akeneo_catalogs.common.select.open')}
-                        value={attribute?.label ?? (selectedCode.length > 0 ? `[${selectedCode}]` : '')}
-                        placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.placeholder')}
+                        value={assetAttribute?.label ?? ''}
+                        placeholder={translate('akeneo_catalogs.product_mapping.source.select_source_asset_attribute.placeholder')}
                         onChange={() => null}
                         clearable={false}
-                        data-testid='product-mapping-select-attribute'
                         invalid={error !== undefined}
                     ></SelectInput>
                     {isOpen && (
@@ -66,37 +66,26 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
                                 <Search
                                     onSearchChange={setSearch}
                                     placeholder={translate(
-                                        'akeneo_catalogs.product_mapping.source.select_source.search'
+                                        'akeneo_catalogs.product_mapping.source.select_source_asset_attribute.search'
                                     )}
                                     searchValue={search}
-                                    title={translate('akeneo_catalogs.product_mapping.source.select_source.search')}
+                                    title={translate('akeneo_catalogs.product_mapping.source.select_source_asset_attribute.search')}
                                 />
                             </Dropdown.Header>
                             <Dropdown.ItemCollection
                                 noResultIllustration={<GroupsIllustration />}
                                 noResultTitle={translate(
-                                    'akeneo_catalogs.product_mapping.source.select_source.no_results'
+                                    'akeneo_catalogs.product_mapping.source.select_source_asset_attribute.no_results'
                                 )}
                                 onNextPage={fetchNextPage}
                             >
-                                {/* attributes */}
-                                {(attributes?.length ?? 0) > 0 && (
-                                    <Dropdown.Section>
-                                        {translate(
-                                            'akeneo_catalogs.product_mapping.source.select_source.section_attributes'
-                                        )}
-                                    </Dropdown.Section>
-                                )}
-                                {attributes?.map(attribute => (
+                                {assetAttributes?.map(assetAttribute => (
                                     <Dropdown.Item
-                                        key={attribute.code}
-                                        onClick={() => handleAttributeSelection(attribute)}
-                                        isActive={attribute.code === selectedCode}
+                                        key={assetAttribute.identifier}
+                                        onClick={() => handleAssetAttributeSelection(assetAttribute)}
+                                        isActive={assetAttribute.identifier === selectedIdentifier}
                                     >
-                                        {attribute.label}
-                                        {attribute.asset_family &&
-                                            <i> - {translate('akeneo_catalogs.product_mapping.source.select_source.attribute_label_asset_collection')}</i>
-                                        }
+                                        {assetAttribute.label}
                                     </Dropdown.Item>
                                 ))}
                             </Dropdown.ItemCollection>
@@ -108,7 +97,7 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
                         {error}
                     </Helper>
                 )}
-            </SelectAttributeDropdownField>
+            </SelectAssetAttributeDropdownField>
         </>
     );
 };
