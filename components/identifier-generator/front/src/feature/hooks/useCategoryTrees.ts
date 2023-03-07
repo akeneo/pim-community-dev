@@ -25,9 +25,7 @@ const useCategoryTrees: (callback: (categoryTreeRoot: CategoryTreeRoot) => void)
             label: string;
             selected: 'true' | 'false';
             tree?: CategoryTreeModel;
-          }) => {
-            return {...tree, selected: tree.selected === 'true'};
-          }
+          }) => ({...tree, selected: tree.selected === 'true'})
         );
         setTrees(trees);
         const currentTree = trees.find(tree => tree.selected);

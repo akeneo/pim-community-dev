@@ -9,7 +9,7 @@ describe('CategoryTreeSwitcher', () => {
     const onChange = jest.fn();
     render(<CategoryTreeSwitcher onChange={onChange} value={'masterCatalog'} />);
 
-    expect(await screen.findByText('Tree:')).toBeInTheDocument();
+    expect(await screen.findByText('pim_identifier_generator.selection.settings.categories.tree:')).toBeInTheDocument();
     expect(await screen.findByText('Master Catalog')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button'));

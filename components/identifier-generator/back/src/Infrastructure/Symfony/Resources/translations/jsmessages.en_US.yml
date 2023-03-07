@@ -67,6 +67,8 @@ pim_identifier_generator:
                 placeholder: 'Please select at least one family'
             select_option:
                 placeholder: 'Please select at least one option'
+            categories:
+                tree: Tree
     structure:
         helper: 'Define the structure of the product identifiers you want to generate. If you need any help setting up the property settings, {{link}}.'
         helper_link: 'check our help center for more information'

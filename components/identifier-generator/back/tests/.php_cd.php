@@ -38,6 +38,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
             'Akeneo\Pim\Structure\Bundle\Query\InternalApi',
+            'Akeneo\Category\ServiceApi',
 
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',

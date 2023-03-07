@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {
   AkeneoThemedProps,
+  Dropdown,
   getColor,
   Helper,
   MultiSelectInput,
@@ -198,6 +199,10 @@ const CategoryTreeContainer = styled.div`
   }
 `;
 
+const CategoriesDropdownContainer = styled(Dropdown)`
+  width: 100%;
+`;
+
 const Styled = {
   BoldContainer,
   CellInputContainer,
@@ -226,6 +231,7 @@ const Styled = {
   NomenclatureInput,
   NomenclatureTable,
   CategoryTreeContainer,
+  CategoriesDropdownContainer,
 };
 
 export {Styled};
