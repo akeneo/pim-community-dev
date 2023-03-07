@@ -77,6 +77,26 @@ describe('AddConditionButton', () => {
     });
   });
 
+  it('adds a categories condition', async () => {
+    const onAddCondition = jest.fn();
+    render(<AddConditionButton onAddCondition={onAddCondition} conditions={[]} />);
+    const button = screen.getByRole('button');
+    expect(screen.getByText('pim_identifier_generator.structure.add_element')).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
+
+    fireEvent.click(button);
+    await waitFor(() => {
+      expect(screen.getByText('Categories')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('Categories'));
+    expect(onAddCondition).toBeCalledWith({
+      type: CONDITION_NAMES.CATEGORIES,
+      operator: Operator.IN,
+      value: [],
+    });
+  });
+
   it('adds a simple select condition', async () => {
     const onAddCondition = jest.fn();
     render(<AddConditionButton onAddCondition={onAddCondition} conditions={[]} />);
