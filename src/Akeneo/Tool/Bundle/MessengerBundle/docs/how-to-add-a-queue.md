@@ -49,13 +49,14 @@ It's as simple as create a service with an `__invoke()` method.
 
 ```php
 use Akeneo\Tool\Component\Messenger\TraceableMessageHandlerInterface;
+use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Webmozart\Assert\Assert;
 
 final class YourMessageHandler implements TraceableMessageHandlerInterface
 {
-    public function __invoke(YourMessage $message): void
+    public function __invoke(TraceableMessageInterface $message): void
     {
-        Assert::isInstanceOf($message, LaunchProductAndProductModelEvaluationsMessage::class);
+        Assert::isInstanceOf($message, YourMessage::class);
 
         // Your logic
     }
@@ -74,6 +75,9 @@ queues:
     your_queue:
         message_class: Akeneo\..\YourMessage
         consumers:
+            # Consumer's names are used to create the PubSub topic ID.
+            # Please consult https://cloud.google.com/pubsub/docs/create-topic#resource_names
+            # to check authorized characters
             - name: 'my_super_consumer_for_my_context'
               service_handler: 'your_service_handler'
             - name: 'another_consumer_for_another_context'
