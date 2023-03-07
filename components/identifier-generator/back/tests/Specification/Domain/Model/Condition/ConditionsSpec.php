@@ -51,13 +51,13 @@ class ConditionsSpec extends ObjectBehavior
     public function it_matches_if_condition_matches(): void
     {
         $this->beConstructedThrough('fromArray', [[new Enabled(true)]]);
-        $this->match(new ProductProjection(true, '', []))->shouldReturn(true);
+        $this->match(new ProductProjection(true, '', [], []))->shouldReturn(true);
     }
 
     public function it_does_not_match_if_condition_doest_not_match(): void
     {
         $this->beConstructedThrough('fromArray', [[new Enabled(true)]]);
-        $this->match(new ProductProjection(false, '', []))->shouldReturn(false);
+        $this->match(new ProductProjection(false, '', [], []))->shouldReturn(false);
     }
 
     public function it_should_return_conjunction(): void

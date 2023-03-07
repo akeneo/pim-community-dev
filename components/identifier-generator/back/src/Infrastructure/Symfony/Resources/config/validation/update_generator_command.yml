@@ -21,7 +21,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
                     fields:
                         type:
                             - Choice:
-                                choices: ['enabled', 'family', 'simple_select', 'multi_select']
+                                choices: ['enabled', 'family', 'simple_select', 'multi_select', 'category']
                                 message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
                         value:
                             - Optional: ~

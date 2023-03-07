@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -19,11 +20,13 @@ final class ProductProjection
      *   'description-ecommerce-en_US' => 'My description',
      *   'colors-ecommerce-<all_locales>' => ['blue', 'green'],
      * ]
+     * @param CategoryInterface[] categories
      */
     public function __construct(
         private readonly bool $enabled,
         private readonly ?string $familyCode,
         private readonly array $productValues,
+        private readonly array $categories,
     ) {
         Assert::isMap($productValues);
     }
@@ -36,6 +39,14 @@ final class ProductProjection
     public function familyCode(): ?string
     {
         return $this->familyCode;
+    }
+
+    /**
+     * @return CategoryInterface[]
+     */
+    public function categories(): array
+    {
+        return $this->categories;
     }
 
     public function value(string $attributeCode, ?string $localeCode = null, ?string $channelCode = null): mixed

@@ -86,6 +86,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
         $product->getFamily()->shouldBeCalled()->willReturn(null);
+        $product->getCategories()->shouldBeCalled()->willReturn([]);
         $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
         $unique = new UniqueProductEntity();
@@ -124,6 +125,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
         $product->getFamily()->shouldBeCalled()->willReturn(null);
+        $product->getCategories()->shouldBeCalled()->willReturn([]);
         $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
         $unique = new UniqueProductEntity();
@@ -166,6 +168,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
         $product->getFamily()->shouldBeCalled()->willReturn(null);
+        $product->getCategories()->shouldBeCalled()->willReturn([]);
         $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
         $unique = new UniqueProductEntity();

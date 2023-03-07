@@ -74,6 +74,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
                 $product->isEnabled(),
                 $product->getFamily()?->getCode(),
                 $this->flatValues($product),
+                $product->getCategories(),
             );
             if ($identifierGenerator->match($productProjection)) {
                 try {

@@ -28,20 +28,20 @@ class EmptyIdentifierSpec extends ObjectBehavior
 
     public function it_should_match_product_without_identifier()
     {
-        $this->match(new ProductProjection(true, null, []))->shouldReturn(true);
+        $this->match(new ProductProjection(true, null, [], []))->shouldReturn(true);
     }
 
     public function it_should_match_product_with_empty_identifier()
     {
         $this->match(new ProductProjection(true, null, [
             'sku-<all_channels>-<all_locales>' => ''
-        ]))->shouldReturn(true);
+        ], []))->shouldReturn(true);
     }
 
     public function it_should_not_match_product_with_filled_identifier()
     {
         $this->match(new ProductProjection(true, null, [
             'sku-<all_channels>-<all_locales>' => 'productidentifier'
-        ]))->shouldReturn(false);
+        ], []))->shouldReturn(false);
     }
 }

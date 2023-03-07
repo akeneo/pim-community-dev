@@ -211,11 +211,13 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             true,
             'a_family',
             [],
+            [],
         ))->shouldReturn(true);
 
         $this->match(new ProductProjection(
             true,
             null,
+            [],
             [],
         ))->shouldReturn(false);
     }
