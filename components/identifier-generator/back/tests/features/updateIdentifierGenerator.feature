@@ -46,10 +46,6 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with too many properties in structure
     Then I should get an error on update with message 'structure: This collection should contain 20 elements or less.'
 
-  Scenario: Cannot update an identifier generator if structure contains multiple auto number
-    When I try to update an identifier generator with multiple auto number in structure
-    Then I should get an error on update with message 'structure: should contain only 1 auto number'
-
   # Structure : Free text
   Scenario: Cannot update an identifier generator if structure contains empty free text
     When I try to update an identifier generator with free text ''
@@ -83,6 +79,10 @@ Feature: Update Identifier Generator
   Scenario: Cannot update an identifier generator with autoNumber digits min too big
     When I try to update an identifier generator with an auto number with '4' as number min and '22' as min digits
     Then I should get an error on update with message 'structure[0][digitsMin]: This value should be less than or equal to 15.'
+
+  Scenario: Cannot update an identifier generator if structure contains multiple auto number
+    When I try to update an identifier generator with multiple auto number in structure
+    Then I should get an error on update with message 'structure: should contain only 1 auto number'
 
   # Structure : Family
   Scenario: Cannot update an identifier generator with family property without required field
@@ -136,7 +136,7 @@ Feature: Update Identifier Generator
     Then The identifier generator is updated in the repository
     And I should not get any update error
 
-  Scenario: Can create an identifier generator with a family property and a nomenclature process
+  Scenario: Can update an identifier generator with a family property and a nomenclature process
     When I try to update an identifier generator with a family process with type nomenclature and operator undefined and "undefined" as value
     Then The identifier generator is updated in the repository
     And I should not get any update error
@@ -296,6 +296,48 @@ Feature: Update Identifier Generator
   Scenario: Cannot update an identifier generator using multi_select with IN operator and array of simple_select options
     When I try to update an identifier generator with a multi_select condition with IN operator and ["red", "green"] as value
     Then I should get an error on update with message 'conditions[0][value]: The following attribute options do not exist for the attribute "a_multi_select": "red", "green".'
+
+  # Conditions: Category
+  Scenario: Cannot update an identifier generator with category condition and unknown operator
+    When I try to update an identifier generator with a category condition and unknown operator
+    Then I should get an error on update with message 'conditions[0][operator]: Operator "unknown" can only be one of the following: "IN", "NOT IN", "IN CHILDREN", "NOT IN CHILDREN", "CLASSIFIED", "UNCLASSIFIED".'
+
+  Scenario: Cannot update an identifier generator with category condition and CLASSIFIED operator and a value
+    When I try to update an identifier generator with a category condition, CLASSIFIED operator and ["tshirts"] as value
+    Then I should get an error on update with message 'conditions[0][value]: This field was not expected.'
+
+  Scenario: Cannot update an identifier generator with category condition and IN operator and a non array value
+    When I try to update an identifier generator with a family condition, IN operator and "shirts" as value
+    Then I should get an error on update with message 'conditions[0][value]: This value should be of type iterable.'
+
+  Scenario: Cannot update an identifier generator with category condition and IN operator and a non array of string value
+    When I try to update an identifier generator with a category condition, IN operator and [true] as value
+    Then I should get an error on update with message 'conditions[0][value][0]: This value should be of type string.'
+
+  Scenario: Cannot update an identifier generator with category condition and IN operator and no values
+    When I try to update an identifier generator with a category condition, IN operator and [] as value
+    Then I should get an error on update with message 'conditions[0][value]: This collection should contain 1 element or more.'
+
+  Scenario: Cannot update an identifier generator with category condition and IN operator and no value
+    When I try to update an identifier generator with a category condition, IN operator and undefined as value
+    Then I should get an error on update with message 'conditions[0][value]: This field is missing.'
+
+  Scenario: Cannot update an identifier generator with category condition and non existing families
+    When I try to update an identifier generator with a category condition, IN operator and ["non_existing1", "non_existing_2"] as value
+    Then I should get an error on update with message 'conditions[0][value]: The following categories have been deleted from your catalog: "non_existing1", "non_existing_2". You can remove them from your product selection.'
+
+  Scenario: Cannot update an identifier generator with category condition and non existing field
+    When I try to update an identifier generator with a category condition and an unknown property
+    Then I should get an error on update with message 'conditions[0][unknown]: This field was not expected.'
+
+  Scenario: Can update several category conditions
+    When I try to update an identifier generator with 2 category conditions
+    Then The identifier generator is updated in the repository
+    And I should not get any update error
+
+  Scenario: Cannot update an identifier generator with category condition without operator
+    When I try to update an identifier generator with a category condition and undefined operator
+    Then I should get an error on update with message 'conditions[0][operator]: This field is missing.'
 
   # Label
   Scenario: Can update an identifier generator without label

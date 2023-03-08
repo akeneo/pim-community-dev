@@ -62,7 +62,7 @@ final class CategoryShouldBeValidValidator extends ConstraintValidator
         $this->validator->inContext($this->context)->validate($condition, new Collection([
             'type' => null,
             'operator' => new Choice(
-                choices: CategoryOperator::cases(),
+                choices: \array_column(CategoryOperator::cases(), 'value'),
                 message: $constraint->unknownOperator
             ),
             'value' => [new Optional()],

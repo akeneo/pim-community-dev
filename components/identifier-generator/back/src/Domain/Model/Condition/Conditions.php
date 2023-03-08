@@ -49,6 +49,7 @@ final class Conditions
                 Family::type() => Family::fromNormalized($normalizedCondition),
                 SimpleSelect::type() => SimpleSelect::fromNormalized($normalizedCondition),
                 MultiSelect::type() => MultiSelect::fromNormalized($normalizedCondition),
+                Category::type() => Category::fromNormalized($normalizedCondition),
                 default => throw new \InvalidArgumentException(\sprintf('The Condition type "%s" does not exist', $normalizedCondition['type'])),
             };
         }

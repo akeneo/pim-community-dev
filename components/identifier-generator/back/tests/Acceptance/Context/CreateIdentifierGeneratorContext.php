@@ -378,8 +378,19 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When I try to create an identifier generator with 2 category conditions
+     */
+    public function iTryToCreateAnIdentifierGeneratorWith2CategoryConditions(): void
+    {
+        $this->tryToCreateGenerator(conditions: [
+            ['type' => 'category', 'operator' => 'IN', 'value' => ['tshirts']],
+            ['type' => 'category', 'operator' => 'NOT IN', 'value' => ['shoes']],
+        ]);
+    }
+
+    /**
      * @When /^I try to create an identifier generator \
-     *     with an? (?P<type>simple_select|multi_select|family|enabled) condition\
+     *     with an? (?P<type>simple_select|multi_select|family|enabled|category) condition\
      *     (?:(?: with| and|,) (?P<attributeCode>[^ ]*) attribute)?\
      *     (?:(?: with| and|,) (?P<operator>[^ ]*) operator)?\
      *     (?:(?: with| and|,) (?P<scope>[^ ]*) scope)?\
@@ -443,6 +454,7 @@ final class CreateIdentifierGeneratorContext implements Context
                     $this->getValidCondition('family'),
                     $this->getValidCondition('simple_select'),
                     $this->getValidCondition('multi_select'),
+                    $this->getValidCondition('category'),
                 ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
@@ -478,6 +490,11 @@ final class CreateIdentifierGeneratorContext implements Context
                 'operator' => $operator ?? 'IN',
                 'attributeCode' => 'a_multi_select',
                 'value' => ['option_a', 'option_b'],
+            ];
+            case 'category': return [
+                'type' => 'category',
+                'operator' => $operator ?? 'IN',
+                'value' => ['tshirts'],
             ];
         }
 
