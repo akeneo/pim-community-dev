@@ -20,7 +20,7 @@ class MatchEnabledHandlerSpec extends ObjectBehavior
             ->shouldThrow(\InvalidArgumentException::class)
             ->during('__invoke', [
                 new EmptyIdentifier('sku'),
-                new ProductProjection(true, null, []),
+                new ProductProjection(true, null, [], []),
             ]);
     }
 
@@ -28,12 +28,12 @@ class MatchEnabledHandlerSpec extends ObjectBehavior
     {
         $this->__invoke(
             Enabled::fromBoolean(true),
-            new ProductProjection(true, '', [])
+            new ProductProjection(true, '', [], [])
         )->shouldReturn(true);
 
         $this->__invoke(
             Enabled::fromBoolean(true),
-            new ProductProjection(false, '', [])
+            new ProductProjection(false, '', [], [])
         )->shouldReturn(false);
     }
 }

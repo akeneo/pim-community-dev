@@ -20,7 +20,7 @@ class MatchFamilyHandlerSpec extends ObjectBehavior
             ->shouldThrow(\InvalidArgumentException::class)
             ->during('__invoke', [
                 new EmptyIdentifier('sku'),
-                new ProductProjection(true, null, []),
+                new ProductProjection(true, null, [], []),
             ]);
     }
 
@@ -31,7 +31,7 @@ class MatchFamilyHandlerSpec extends ObjectBehavior
                 'type' => 'family',
                 'operator' => 'EMPTY',
             ]),
-            new ProductProjection(true, null, [])
+            new ProductProjection(true, null, [], [])
         )->shouldReturn(true);
     }
 
@@ -42,7 +42,7 @@ class MatchFamilyHandlerSpec extends ObjectBehavior
                 'type' => 'family',
                 'operator' => 'EMPTY',
             ]),
-            new ProductProjection(true, 'familyCode', [])
+            new ProductProjection(true, 'familyCode', [], [])
         )->shouldReturn(false);
     }
 
@@ -53,7 +53,7 @@ class MatchFamilyHandlerSpec extends ObjectBehavior
                 'type' => 'family',
                 'operator' => 'NOT EMPTY',
             ]),
-            new ProductProjection(true, 'familyCode', [])
+            new ProductProjection(true, 'familyCode', [], [])
         )->shouldReturn(true);
     }
 
@@ -64,7 +64,7 @@ class MatchFamilyHandlerSpec extends ObjectBehavior
                 'type' => 'family',
                 'operator' => 'NOT EMPTY',
             ]),
-            new ProductProjection(true, null, [])
+            new ProductProjection(true, null, [], [])
         )->shouldReturn(false);
     }
 
@@ -76,7 +76,7 @@ class MatchFamilyHandlerSpec extends ObjectBehavior
                 'operator' => 'IN',
                 'value' => ['shirts', 'jeans'],
             ]),
-            new ProductProjection(true, 'shirts', [])
+            new ProductProjection(true, 'shirts', [], [])
         )->shouldReturn(true);
     }
 
@@ -88,7 +88,7 @@ class MatchFamilyHandlerSpec extends ObjectBehavior
                 'operator' => 'IN',
                 'value' => ['shirts', 'jeans'],
             ]),
-            new ProductProjection(true, 'jackets', [])
+            new ProductProjection(true, 'jackets', [], [])
         )->shouldReturn(false);
     }
 
@@ -100,7 +100,7 @@ class MatchFamilyHandlerSpec extends ObjectBehavior
                 'operator' => 'NOT IN',
                 'value' => ['shirts', 'jeans'],
             ]),
-            new ProductProjection(true, 'jackets', [])
+            new ProductProjection(true, 'jackets', [], [])
         )->shouldReturn(true);
     }
 
@@ -112,7 +112,7 @@ class MatchFamilyHandlerSpec extends ObjectBehavior
                 'operator' => 'NOT IN',
                 'value' => ['shirts', 'jeans'],
             ]),
-            new ProductProjection(true, 'shirts', [])
+            new ProductProjection(true, 'shirts', [], [])
         )->shouldReturn(false);
     }
 
@@ -124,7 +124,7 @@ class MatchFamilyHandlerSpec extends ObjectBehavior
                 'operator' => 'NOT IN',
                 'value' => ['shirts', 'jeans'],
             ]),
-            new ProductProjection(true, null, [])
+            new ProductProjection(true, null, [], [])
         )->shouldReturn(false);
     }
 }

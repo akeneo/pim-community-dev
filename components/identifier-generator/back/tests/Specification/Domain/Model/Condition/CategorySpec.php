@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Category;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\CategoryOperator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -116,5 +118,51 @@ class CategorySpec extends ObjectBehavior
             'type' => 'category',
             'operator' => 'CLASSIFIED',
         ]);
+    }
+
+    public function it_should_match_classified(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'category',
+            'operator' => 'CLASSIFIED',
+        ]]);
+        $this->match(new ProductProjection(true, null, [], []))->shouldReturn(false);
+        $this->match(new ProductProjection(true, null, [], ['pants']))->shouldReturn(true);
+        $this->match(new ProductProjection(true, null, [], ['pants', 'shoes']))->shouldReturn(true);
+    }
+
+    public function it_should_match_unclassified(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'category',
+            'operator' => 'UNCLASSIFIED',
+        ]]);
+        $this->match(new ProductProjection(true, null, [], []))->shouldReturn(true);
+        $this->match(new ProductProjection(true, null, [], ['pants']))->shouldReturn(false);
+        $this->match(new ProductProjection(true, null, [], ['pants', 'shoes']))->shouldReturn(false);
+    }
+
+    public function it_should_match_in_list(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'category',
+            'operator' => 'IN',
+            'value' => ['shoes']
+        ]]);
+        $this->match(new ProductProjection(true, null, [], []))->shouldReturn(false);
+        $this->match(new ProductProjection(true, null, [], ['pants']))->shouldReturn(false);
+        $this->match(new ProductProjection(true, null, [], ['pants', 'shoes']))->shouldReturn(true);
+    }
+
+    public function it_should_match_not_in_list(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'type' => 'category',
+            'operator' => 'NOT IN',
+            'value' => ['shoes']
+        ]]);
+        $this->match(new ProductProjection(true, null, [], []))->shouldReturn(true);
+        $this->match(new ProductProjection(true, null, [], ['pants']))->shouldReturn(true);
+        $this->match(new ProductProjection(true, null, [], ['pants', 'shoes']))->shouldReturn(false);
     }
 }

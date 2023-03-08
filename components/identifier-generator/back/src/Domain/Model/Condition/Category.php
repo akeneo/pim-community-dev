@@ -68,8 +68,17 @@ final class Category implements ConditionInterface
         ], fn (mixed $var): bool => null !== $var);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function match(ProductProjection $productProjection): bool
     {
-        return false;
+        return match ($this->operator) {
+            CategoryOperator::IN => null !== $productProjection->categoryCodes() && [] !== \array_intersect($productProjection->categoryCodes(), (array) $this->value),
+            CategoryOperator::NOT_IN => null !== $productProjection->categoryCodes() && [] === \array_intersect($productProjection->categoryCodes(), (array) $this->value),
+            CategoryOperator::CLASSIFIED => !empty($productProjection->categoryCodes()),
+            CategoryOperator::UNCLASSIFIED => empty($productProjection->categoryCodes()),
+            CategoryOperator::IN_CHILDREN_LIST, CategoryOperator::NOT_IN_CHILDREN_LIST => throw new \Exception('To be implemented'),
+        };
     }
 }

@@ -36,16 +36,16 @@ class MatchIdentifierGeneratorHandlerSpec extends ObjectBehavior
     {
         $trueQuery = new MatchIdentifierGeneratorQuery(
             $this->getIdentifierGenerator(),
-            new ProductProjection(true, 'myfamily', [])
+            new ProductProjection(true, 'myfamily', [], [])
         );
         $notEnabledQuery = new MatchIdentifierGeneratorQuery(
             $this->getIdentifierGenerator(),
-            new ProductProjection(false, 'myfamily', [])
+            new ProductProjection(false, 'myfamily', [], [])
         );
         // This command should return false because of the implicit condition from family structure
         $noFamilyQuery = new MatchIdentifierGeneratorQuery(
             $this->getIdentifierGenerator(),
-            new ProductProjection(true, null, [])
+            new ProductProjection(true, null, [], [])
         );
 
         $this->__invoke($trueQuery)->shouldReturn(true);
