@@ -11,8 +11,10 @@ namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Doctrine\DBAL\Connection;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 
 final class Version_8_0_20230308113214_disable_attribute_groups_mass_delete_acl_Integration extends TestCase
 {
@@ -22,18 +24,27 @@ final class Version_8_0_20230308113214_disable_attribute_groups_mass_delete_acl_
     private const ACL = 'pim_enrich_attributegroup_mass_delete';
 
     private Connection $connection;
+    private AclManager $aclManager;
+    private EntityManagerClearerInterface $cacheClearer;
     private RoleWithPermissionsRepository $roleWithPermissionsRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->connection = $this->get('database_connection');
+        $this->aclManager = $this->get('oro_security.acl.manager');
+        $this->cacheClearer = $this->get('pim_connector.doctrine.cache_clearer');
         $this->roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
     }
 
     public function testItDisablesAcl()
     {
+        $this->assertAclIsEnabled();
+
         $this->reExecuteMigration(self::MIGRATION_LABEL);
+        $this->aclManager->clearCache();
+        $this->cacheClearer->clear();
+
         $this->assertAclIsDisabled();
     }
 
@@ -42,13 +53,23 @@ final class Version_8_0_20230308113214_disable_attribute_groups_mass_delete_acl_
         return $this->catalog->useMinimalCatalog();
     }
 
+    private function assertAclIsEnabled(): void
+    {
+        $this->assertAclIs(true);
+    }
+
     private function assertAclIsDisabled(): void
+    {
+        $this->assertAclIs(false);
+    }
+
+    private function assertAclIs(bool $isEnabled): void
     {
         $roles = $this->getRoles();
         foreach ($roles as $role) {
             $permissions = $this->roleWithPermissionsRepository->findOneByIdentifier($role)->permissions();
             $permissionKey = sprintf('action:%s', self::ACL);
-            $this->assertFalse($permissions[$permissionKey], sprintf('ACL is still enabled for role "%s"', $role));
+            $this->assertEquals($isEnabled, $permissions[$permissionKey]);
         }
     }
 
