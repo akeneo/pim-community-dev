@@ -157,6 +157,8 @@ const PreviewWithTextTransformation = styled(PreviewComponent)<
 const NomenclatureModalContent = styled.div`
   width: calc(100vw - 240px);
   height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
 `;
 
 const NomenclatureDefinition = styled(Table)`
@@ -176,12 +178,15 @@ const NomenclatureInput = styled(TextInput)`
 `;
 
 const NomenclatureTable = styled.div`
-  overflow: auto;
-  height: calc(100vh - 340px);
   td:nth-child(2) {
     width: 1px;
     padding-right: 20px;
   }
+`;
+
+const NomenclatureContent = styled.div`
+  height: 100%;
+  overflow: auto;
 `;
 
 const Styled = {
@@ -208,6 +213,7 @@ const Styled = {
   TwoColumns,
   PreviewWithTextTransformation,
   NomenclatureModalContent,
+  NomenclatureContent,
   NomenclatureDefinition,
   NomenclatureInput,
   NomenclatureTable,

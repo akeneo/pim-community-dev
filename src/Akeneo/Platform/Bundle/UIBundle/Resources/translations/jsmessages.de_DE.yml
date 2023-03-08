@@ -261,6 +261,7 @@ pim_common:
   product_models: Produktmodelle
   more: Mehr
   public_view: Öffentliche Ansicht
+  view: Ansehen
 error:
   exception: Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
@@ -275,6 +276,7 @@ pim_enrich.entity.fallback:
     generic_error: Es ist ein Fehler aufgetreten
     update:
       fail: Update fehlgeschlagen
+      fail_session_expired: Ihre Benutzersitzung ist abgelaufen. Bitte melden Sie sich erneut an.
       success: Update erfolgreich
     delete:
       fail: Dieses Element kann nicht gelöscht werden
@@ -341,6 +343,7 @@ pim_title:
   pim_settings_index: Einstellungen
   pim_system_index: System
 pim_menu:
+  tag.new: Neu
   tab:
     activity: Übersicht
     imports: Importe
@@ -380,6 +383,7 @@ pim_menu:
       product: Artikel Einstellungen
       catalog: Katalogeinstellungen
       collapsed_label: Navigation Einstellung
+      automation: Automatisierung
     product: Navigation Produkte
     product_infos: Produktinformationen
   user:
@@ -395,6 +399,7 @@ pim_settings:
   settings_menu: Konfigurationsmenü
   catalog_settings: Katalogeinstellungen
   product_settings: Artikel Einstellungen
+  automation_settings: Automatisierung
   count:
     category_trees: '{0}Du hast 0 Bäume |{1}Du hast 1 Baum |]1, Inf[Du hast {{ count }} Bäume '
     categories: '{0}und 0 Kategorien|{1}und 1 Kategorie|]1, Inf[und {{ count }} Kategorien'
