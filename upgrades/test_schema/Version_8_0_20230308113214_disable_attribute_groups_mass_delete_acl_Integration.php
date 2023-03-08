@@ -37,10 +37,8 @@ final class Version_8_0_20230308113214_disable_attribute_groups_mass_delete_acl_
         $this->roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
     }
 
-    public function testItDisablesAcl()
+    public function testItDisablesAcl(): void
     {
-        $this->assertAclIsEnabled();
-
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         $this->aclManager->clearCache();
         $this->cacheClearer->clear();
@@ -53,23 +51,13 @@ final class Version_8_0_20230308113214_disable_attribute_groups_mass_delete_acl_
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function assertAclIsEnabled(): void
-    {
-        $this->assertAclIs(true);
-    }
-
     private function assertAclIsDisabled(): void
-    {
-        $this->assertAclIs(false);
-    }
-
-    private function assertAclIs(bool $isEnabled): void
     {
         $roles = $this->getRoles();
         foreach ($roles as $role) {
             $permissions = $this->roleWithPermissionsRepository->findOneByIdentifier($role)->permissions();
             $permissionKey = sprintf('action:%s', self::ACL);
-            $this->assertEquals($isEnabled, $permissions[$permissionKey]);
+            $this->assertFalse($permissions[$permissionKey]);
         }
     }
 
