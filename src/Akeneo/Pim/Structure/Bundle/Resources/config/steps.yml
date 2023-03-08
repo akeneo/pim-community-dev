@@ -442,6 +442,15 @@ services:
             - '@akeneo_batch.job.job_stopper'
             - 100
 
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\MoveChildAttributesTasklet:
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_stopper'
+            - 100
+
     pim_connector.step.delete_attribute_groups:
         class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
         arguments:
@@ -463,3 +472,11 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet'
+
+    pim_connector.step.move_child_attributes:
+        class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
+        arguments:
+            - 'move_child_attributes'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\MoveChildAttributesTasklet'
