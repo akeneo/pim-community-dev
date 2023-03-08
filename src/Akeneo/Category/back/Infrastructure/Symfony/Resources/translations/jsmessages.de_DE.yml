@@ -1,3 +1,5 @@
+pim_title:
+  pim_category_template_edit: Kategorievorlage bearbeiten
 akeneo.category:
   tree_list:
     column:
@@ -5,7 +7,7 @@ akeneo.category:
   attributes: Attribute
   edition_form:
     error:
-      unhandled_attribute_type: Attributfeld-Builder für Attributtyp "{{type}} " konnte nicht gefunden werden
+      unhandled_attribute_type: Attributfeld-Builder für Attributtyp "{{ type }}" konnte nicht gefunden werden.
     template:
       title: Vorlage
       fetching_failed: Fehler beim Abrufen der Vorlage
@@ -16,9 +18,9 @@ akeneo.category:
   template:
     create: Vorlage aktivieren
     edit: Vorlage anzeigen
-    delete: Vorlage löschen
     notification_success: Vorlage erfolgreich aktiviert
     notification_error: Vorlage konnte nicht aktiviert werden
+    not_found: Es gibt keine aktives Template für diese Kategorie
     attribute:
       description_title: Beschreibungseinstellungen
       type:
@@ -26,8 +28,28 @@ akeneo.category:
         textarea: Textbereich
         richtext: Rich Text
         image: Bild
+    deactivate:
+      deactivate_template: Template deaktivieren
+      confirmation_modal:
+        title: Kategorievorlage deaktivieren
+        helper: Das Deaktivieren dieser Vorlage löscht dauerhaft die Attribute und Werte der zugehörigen Kategorien.
+        deactivate: Deaktivieren
+      notification_success:
+        title: '{{ template }} Template deaktiviert'
+        message: '{{ template }} wurde deaktiviert. Der Inhalt der zugehörigen Kategorien wurde gelöscht.'
   template_list:
     columns:
       header: Bezeichnung
       code: Code
       type: Typ
+  tag:
+    new: Neu
+  discover_enriched_categories_information:
+    title: Entdecke angereicherte Kategorien im Early Access
+    content:
+      activate_template: Kategorieanreicherung durch vorkonfigurierte Vorlagen aktivieren
+      enrich_attribute_values: Angereicherten Text, Textbereich und Bildattribute in Kategorien
+      deactivate_template: Deaktivierung der Anreicherung und benutzerdefinierte Vorlage wird in Kürze kommen
+    survey_link_label: Sagen Sie uns, was Sie denken
+    learn_more_link_label: Erfahren Sie mehr über angereicherte Kategorien
+  other_actions: Weitere Aktionen

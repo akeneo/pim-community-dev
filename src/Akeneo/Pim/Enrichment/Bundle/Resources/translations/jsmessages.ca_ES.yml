@@ -113,8 +113,6 @@ pim_enrich.entity.product:
       quantified:
         quantity: 'Quantitat:'
         unlinked: Desvinculat
-      search:
-        placeholder: Cercar etiqueta o identificador
       no_data: No hi ha productes associats.
       remove: Treure associació
       edit: Editar producte
