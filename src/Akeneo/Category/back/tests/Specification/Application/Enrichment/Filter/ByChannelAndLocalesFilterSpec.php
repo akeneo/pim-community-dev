@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Application\Enrichment\Filter;
 
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -14,40 +15,56 @@ class ByChannelAndLocalesFilterSpec extends ObjectBehavior
 {
     public function it_returns_the_list_of_enriched_values_to_clean_while_cleaning_channel(): void
     {
-        $valuesToFilter = $this->getEnrichedValues();
+        $valuesToFilter = ValueCollection::fromDatabase($this->getEnrichedValues());
 
-        $this->getEnrichedValueCompositeKeysToClean($valuesToFilter, 'mobile', [])->shouldReturn(
+        $this->getEnrichedValuesToClean($valuesToFilter, 'mobile', [])->shouldReturn(
             [
-                'long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|fr_FR',
-                'long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|en_US',
+                $valuesToFilter->getValue(
+                    'long_description',
+                    'c91e6a4e-733b-4d77-aefc-129edbf03233',
+                    'mobile',
+                    'fr_FR'
+                ),
+                $valuesToFilter->getValue(
+                    'long_description',
+                    'c91e6a4e-733b-4d77-aefc-129edbf03233',
+                    'mobile',
+                    'en_US'
+
+                )
             ]
         );
     }
 
     public function it_does_nothing_when_deleted_channel_code_is_null(): void
     {
-        $valuesToFilter = $this->getEnrichedValues();
+        $valuesToFilter = ValueCollection::fromDatabase($this->getEnrichedValues());
 
-        $this->getEnrichedValueCompositeKeysToClean($valuesToFilter, '', [])->shouldReturn([]);
+        $this->getEnrichedValuesToClean($valuesToFilter, '', [])->shouldReturn([]);
     }
 
     public function it_returns_the_list_of_enriched_values_to_clean_while_cleaning_locales(): void
     {
-        $valuesToFilter = $this->getEnrichedValues();
+        $valuesToFilter = ValueCollection::fromDatabase($this->getEnrichedValues());
 
-        $this->getEnrichedValueCompositeKeysToClean($valuesToFilter, 'mobile', ['en_US'])->shouldReturn(
+        $this->getEnrichedValuesToClean($valuesToFilter, 'mobile', ['en_US'])->shouldReturn(
             [
-                'long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|mobile|fr_FR',
+                $valuesToFilter->getValue(
+                    'long_description',
+                    'c91e6a4e-733b-4d77-aefc-129edbf03233',
+                    'mobile',
+                    'fr_FR'
+                ),
             ]
         );
     }
 
     public function it_returns_an_empty_list_of_enriched_values_to_clean_when_no_values_has_to_be_cleaned(): void
     {
-        $valuesToFilter = $this->getEnrichedValues();
+        $valuesToFilter = ValueCollection::fromDatabase($this->getEnrichedValues());
 
-        $this->getEnrichedValueCompositeKeysToClean($valuesToFilter, 'unknown_channel', [])->shouldReturn([]);
-        $this->getEnrichedValueCompositeKeysToClean($valuesToFilter, 'mobile', ['en_US', 'fr_FR'])->shouldReturn([]);
+        $this->getEnrichedValuesToClean($valuesToFilter, 'unknown_channel', [])->shouldReturn([]);
+        $this->getEnrichedValuesToClean($valuesToFilter, 'mobile', ['en_US', 'fr_FR'])->shouldReturn([]);
     }
 
     private function getEnrichedValues(): array

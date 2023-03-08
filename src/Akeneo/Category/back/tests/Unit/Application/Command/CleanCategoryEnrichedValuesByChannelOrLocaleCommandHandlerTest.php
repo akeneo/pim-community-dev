@@ -7,7 +7,7 @@ namespace Akeneo\Category\back\tests\Unit\Application\Command;
 use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommand;
 use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler;
 use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
-use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
+use Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 
 /**
@@ -18,15 +18,17 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandlerTest extends Cat
 {
     public function testItCallsCategoryDataCleaner(): void
     {
-        $getEnrichedCategoryValuesOrderedByCategoryCode = $this->createMock(
-            GetEnrichedCategoryValuesOrderedByCategoryCode::class,
+        $GetEnrichedValuesPerCategoryCode = $this->createMock(
+            GetEnrichedValuesPerCategoryCode::class,
         );
 
-        $getEnrichedCategoryValuesOrderedByCategoryCode
-            ->method('byLimitAndOffset')
+        $GetEnrichedValuesPerCategoryCode
+            ->method('byBatchesOf')
             ->withAnyParameters()
-            ->willReturnOnConsecutiveCalls(['my_category' => $this->getEnrichedValues()], [])
-        ;
+            ->willReturnOnConsecutiveCalls(
+                new \ArrayIterator(['my_category' => $this->getEnrichedValues()]),
+                new \ArrayIterator([]),
+            );
 
         $CategoryDataCleaner = $this->createMock(CategoryDataCleaner::class);
         $CategoryDataCleaner
@@ -35,7 +37,7 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandlerTest extends Cat
             ->with(['my_category' => $this->getEnrichedValues()], 'mobile', []);
 
         $handler = new CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler(
-            $getEnrichedCategoryValuesOrderedByCategoryCode,
+            $GetEnrichedValuesPerCategoryCode,
             $CategoryDataCleaner,
         )
         ;
@@ -46,15 +48,17 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandlerTest extends Cat
 
     public function testItCleansCategoryEnrichedValuesByChannelAndLocales(): void
     {
-        $getEnrichedCategoryValuesOrderedByCategoryCode = $this->createMock(
-            GetEnrichedCategoryValuesOrderedByCategoryCode::class,
+        $GetEnrichedValuesPerCategoryCode = $this->createMock(
+            GetEnrichedValuesPerCategoryCode::class,
         );
 
-        $getEnrichedCategoryValuesOrderedByCategoryCode
-            ->method('byLimitAndOffset')
+        $GetEnrichedValuesPerCategoryCode
+            ->method('byBatchesOf')
             ->withAnyParameters()
-            ->willReturnOnConsecutiveCalls(['my_category' => $this->getEnrichedValues()], [])
-        ;
+            ->willReturnOnConsecutiveCalls(
+                new \ArrayIterator(['my_category' => $this->getEnrichedValues()]),
+                new \ArrayIterator([]),
+            );
 
         $CategoryDataCleaner = $this->createMock(CategoryDataCleaner::class);
         $CategoryDataCleaner
@@ -63,7 +67,7 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandlerTest extends Cat
             ->with(['my_category' => $this->getEnrichedValues()], 'mobile', ['en_US']);
 
         $handler = new CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler(
-            $getEnrichedCategoryValuesOrderedByCategoryCode,
+            $GetEnrichedValuesPerCategoryCode,
             $CategoryDataCleaner,
         );
         $command = new CleanCategoryEnrichedValuesByChannelOrLocaleCommand('mobile', ['en_US']);

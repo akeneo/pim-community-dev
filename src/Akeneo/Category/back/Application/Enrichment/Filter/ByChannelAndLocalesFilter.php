@@ -2,47 +2,47 @@
 
 namespace Akeneo\Category\Application\Enrichment\Filter;
 
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\Value;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
+
 class ByChannelAndLocalesFilter
 {
     /**
-     * @param array<string, mixed> $enrichedValues
      * @param array<string> $localeCodes
      *
-     * @return array<string>
+     * @return array<Value>
      */
-    public static function getEnrichedValueCompositeKeysToClean(
-        array $enrichedValues,
+    public static function getEnrichedValuesToClean(
+        ValueCollection $enrichedValues,
         string $channelCode,
         array $localeCodes,
     ): array {
-        $keysToRemove = [];
+        $valuesToRemove = [];
         if ($channelCode === '') {
             return [];
         }
 
-        foreach ($enrichedValues as $key => $value) {
-            if ($key === 'attribute_codes') {
-                continue;
-            }
-            $valueChannel = $value['channel'] ?? null;
+        foreach ($enrichedValues as $enrichedValue) {
+            /** @var Value $enrichedValue */
+            $valueChannel = $enrichedValue->getChannel();
             if (empty($localeCodes)) {
                 // we do not clean non-scopable values
-                if ($valueChannel !== null && $valueChannel === $channelCode) {
-                    $keysToRemove[] = $key;
+                if ($valueChannel !== null && (string) $valueChannel === $channelCode) {
+                    $valuesToRemove[] = $enrichedValue;
                 }
             } else {
-                $valueLocale = $value['locale'];
+                $valueLocale = $enrichedValue->getLocale();
                 // we do not clean non-localizable values
                 if (
                     $valueLocale !== null
-                    && $valueChannel === $channelCode
-                    && !in_array($valueLocale, $localeCodes, true)
+                    && (string) $valueChannel === $channelCode
+                    && !in_array((string) $valueLocale, $localeCodes, true)
                 ) {
-                    $keysToRemove[] = $key;
+                    $valuesToRemove[] = $enrichedValue;
                 }
             }
         }
 
-        return $keysToRemove;
+        return $valuesToRemove;
     }
 }

@@ -2,10 +2,12 @@
 
 namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Sql\Update;
 
-use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
+use Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 class UpdateCategoryEnrichedValuesSqlIntegration extends CategoryTestCase
 {
@@ -43,88 +45,93 @@ class UpdateCategoryEnrichedValuesSqlIntegration extends CategoryTestCase
 
     public function testItUpdateCategoriesWithNewValueCollection(): void
     {
-        $valuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
+        $valuesByCategoryCode = iterator_to_array($this->get(GetEnrichedValuesPerCategoryCode::class)->byBatchesOf(100));
 
-        $socksValueCollection = json_decode($valuesByCategoryCode['socks'], true);
-        $shoesValueCollection = json_decode($valuesByCategoryCode['shoes'], true);
+        $socksValueCollection = $valuesByCategoryCode[0]['socks'];
+        $shoesValueCollection = $valuesByCategoryCode[0]['shoes'];
 
         // add 'print' channel value to 'title' attribute
-        $socksValueCollection[$this->getPrintTitleKey()] = [
+        $socksValueCollection->setValue(
+            TextValue::fromArray(
+                [
             'data' => 'Socks you need',
             'type' => 'text',
             'channel' => 'print',
             'locale' => 'en_US',
             'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
-        ];
+                ]
+            )
+        );
 
         // add 'mobile' channel value to 'title' attribute
-        $shoesValueCollection[$this->getMobileTitleKey()] = [
-            'data' => 'Shoes you need',
-            'type' => 'text',
-            'channel' => 'mobile',
-            'locale' => 'en_US',
-            'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
-        ];
+        $shoesValueCollection->setValue(
+            TextValue::fromArray(
+                [
+                    'data' => 'Shoes you need',
+                    'type' => 'text',
+                    'channel' => 'mobile',
+                    'locale' => 'en_US',
+                    'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+                ]
+            )
+        );
 
         $updatedBatch =  [
-            'socks' => json_encode($socksValueCollection),
-            'shoes' => json_encode($shoesValueCollection),
+            'socks' => $socksValueCollection,
+            'shoes' => $shoesValueCollection,
         ];
 
         $this->get(UpdateCategoryEnrichedValues::class)->execute($updatedBatch);
 
-        $updatedValuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100, 0);
+        $updatedValuesByCategoryCode = iterator_to_array($this->get(GetEnrichedValuesPerCategoryCode::class)->byBatchesOf(100));
 
-        $updatedSocksValueCollection = json_decode($updatedValuesByCategoryCode['socks'], true);
-        $this->assertEquals(
-            'Socks you need',
-            $updatedSocksValueCollection[$this->getPrintTitleKey()]['data']
-        );
-        $this->assertEquals(
+        /** @var ValueCollection $updatedSocksValueCollection */
+        $updatedSocksValueCollection = $updatedValuesByCategoryCode[0]['socks'];
+        $updatedSocksPrintTitleValue = $updatedSocksValueCollection->getValue(
+            'title',
+            '87939c45-1d85-4134-9579-d594fff65030',
             'print',
-            $updatedSocksValueCollection[$this->getPrintTitleKey()]['channel']
+            'en_US'
         );
+        $this->assertInstanceOf(TextValue::class, $updatedSocksPrintTitleValue);
+            $this->assertEquals(
+                'Socks you need',
+                $updatedSocksPrintTitleValue->getValue()
+            );
+        $updatedSocksEcommerceTitleValue = $updatedSocksValueCollection->getValue(
+            'title',
+            '87939c45-1d85-4134-9579-d594fff65030',
+            'ecommerce',
+            'en_US'
+        );
+        $this->assertInstanceOf(TextValue::class, $updatedSocksEcommerceTitleValue);
         $this->assertEquals(
             'All the shoes you need!',
-            $updatedSocksValueCollection[$this->getEcommerceTitleKey()]['data']
+                $updatedSocksEcommerceTitleValue->getValue()
         );
 
-        $updatedShoesValueCollection = json_decode($updatedValuesByCategoryCode['shoes'], true);
+        // TODO check les valeurs telles que channel, locale ? et/ou code ?
+
+        $updatedShoesValueCollection = $updatedValuesByCategoryCode[0]['shoes'];
         $this->assertEquals(
             'Shoes you need',
-            $updatedShoesValueCollection[$this->getMobileTitleKey()]['data']
+            $updatedShoesValueCollection->getValue(
+                'title',
+                '87939c45-1d85-4134-9579-d594fff65030',
+                'mobile',
+                'en_US'
+            )->getValue()
         );
-        $this->assertEquals(
-            'mobile',
-            $updatedShoesValueCollection[$this->getMobileTitleKey()]['channel']
+        $updatedSocksValue = $updatedSocksValueCollection->getValue(
+            'title',
+            '87939c45-1d85-4134-9579-d594fff65030',
+            'ecommerce',
+            'en_US'
         );
+        $this->assertInstanceOf(TextValue::class, $updatedSocksValue);
         $this->assertEquals(
             'All the shoes you need!',
-            $updatedShoesValueCollection[$this->getEcommerceTitleKey()]['data']
+            $updatedSocksValue->getValue()
         );
-    }
-
-    private function getPrintTitleKey(): string
-    {
-        return 'title'
-            .AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'
-            .AbstractValue::SEPARATOR.'print'
-            .AbstractValue::SEPARATOR.'en_US';
-    }
-
-    private function getMobileTitleKey(): string
-    {
-        return 'title'
-            .AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'
-            .AbstractValue::SEPARATOR.'mobile'
-            .AbstractValue::SEPARATOR.'en_US';
-    }
-
-    private function getEcommerceTitleKey(): string
-    {
-        return 'title'
-            .AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'
-            .AbstractValue::SEPARATOR.'ecommerce'
-            .AbstractValue::SEPARATOR.'en_US';
     }
 }
