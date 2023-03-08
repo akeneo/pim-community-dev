@@ -69,3 +69,13 @@ services:
             - '@validator'
         tags:
             - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CategoryShouldBeValidValidator:
+        arguments:
+            - '@validator'
+        tags:
+            - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\CategoryCodesShouldExistValidator:
+        arguments:
+            - '@Akeneo\Category\ServiceApi\CategoryQueryInterface'
+        tags:
+            - { name: validator.constraint_validator }

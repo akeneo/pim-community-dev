@@ -23,3 +23,4 @@ validation:
         process_unknown_operator: 'Operator {{ value }} can only be one of the following: {{ choices }}.'
         locale_required: 'A locale is required for the "{{ attributeCode }}" attribute.'
         scope_required: 'A channel is required for the "{{ attributeCode }}" attribute.'
+        categories_do_not_exist: 'The following categories have been deleted from your catalog: {{ categoryCodes }}. You can remove them from your product selection.'
