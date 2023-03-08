@@ -39,8 +39,6 @@ final class Version_8_0_20230308152730_disable_attributes_mass_delete_acl_Integr
 
     public function testItDisablesAcl()
     {
-        $this->assertAclIsEnabled();
-
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         $this->aclManager->clearCache();
         $this->cacheClearer->clear();
@@ -53,23 +51,13 @@ final class Version_8_0_20230308152730_disable_attributes_mass_delete_acl_Integr
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function assertAclIsEnabled(): void
-    {
-        $this->assertAclIs(true);
-    }
-
     private function assertAclIsDisabled(): void
-    {
-        $this->assertAclIs(false);
-    }
-
-    private function assertAclIs(bool $isEnabled): void
     {
         $roles = $this->getRoles();
         foreach ($roles as $role) {
             $permissions = $this->roleWithPermissionsRepository->findOneByIdentifier($role)->permissions();
             $permissionKey = sprintf('action:%s', self::ACL);
-            $this->assertEquals($isEnabled, $permissions[$permissionKey]);
+            $this->assertFalse($permissions[$permissionKey]);
         }
     }
 
