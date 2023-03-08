@@ -1,4 +1,5 @@
 export * from './validateConditions';
+export * from './validateCategories';
 export * from './validateDelimiter';
 export * from './validateEnabled';
 export * from './validateFamily';
