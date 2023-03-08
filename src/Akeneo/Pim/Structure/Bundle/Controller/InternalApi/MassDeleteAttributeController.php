@@ -32,7 +32,7 @@ class MassDeleteAttributeController
     public function launchAction(Request $request): Response
     {
         if (!$this->securityFacade->isGranted('pim_enrich_attribute_mass_delete')) {
-            throw new AccessDeniedHttpException();
+            return new JsonResponse(status: Response::HTTP_FORBIDDEN);
         }
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('delete_attributes');
