@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Job;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
-use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocaleCommand;
+use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommand;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 

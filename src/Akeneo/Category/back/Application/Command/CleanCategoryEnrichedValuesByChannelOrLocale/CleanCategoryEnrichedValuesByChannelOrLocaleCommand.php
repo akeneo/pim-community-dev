@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Command;
+namespace Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)

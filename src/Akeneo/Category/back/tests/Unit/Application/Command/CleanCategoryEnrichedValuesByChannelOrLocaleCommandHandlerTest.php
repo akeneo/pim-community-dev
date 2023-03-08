@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Unit\Application\Command;
 
-use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocaleCommand;
-use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler;
+use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommand;
+use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler;
 use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
 use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;

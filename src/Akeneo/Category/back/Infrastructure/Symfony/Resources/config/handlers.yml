@@ -17,12 +17,12 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeactivateTemplateCommand'}
 
-  Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler:
+  Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler:
     arguments:
       - '@Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode'
       - '@Akeneo\Category\Application\Enrichment\CategoryDataCleaner'
     tags:
-      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocaleCommand' }
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommand' }
 
   Akeneo\Category\Application\Handler\StoreUploadedFile:
     arguments:

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Command;
+namespace Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale;
 
 use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
 use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
