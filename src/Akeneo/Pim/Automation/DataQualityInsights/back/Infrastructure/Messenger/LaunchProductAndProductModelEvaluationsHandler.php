@@ -24,7 +24,7 @@ final class LaunchProductAndProductModelEvaluationsHandler implements TraceableM
         Assert::isInstanceOf($message, LaunchProductAndProductModelEvaluationsMessage::class);
 
         // @TODO: JEL-228
-        $this->logger->debug('Handler ' . get_class($this) . ' received a message: ' . $message->text, [
+        $this->logger->debug('Handler ' . get_class($this) . ' received a message: LaunchProductAndProductModelEvaluationsMessage', [
             'correlation_id' => $message->getCorrelationId(),
             'tenant_id' => $message->getTenantId(),
         ]);
