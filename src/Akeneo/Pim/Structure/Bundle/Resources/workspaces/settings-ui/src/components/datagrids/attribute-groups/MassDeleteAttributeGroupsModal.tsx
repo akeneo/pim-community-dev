@@ -52,7 +52,7 @@ const MassDeleteAttributeGroupsModal = ({
     if (isLoading) return;
 
     try {
-      await launchMassDeleteAttributeGroups(impactedAttributeGroups);
+      await launchMassDeleteAttributeGroups(impactedAttributeGroups, replacementAttributeGroup);
       notify(NotificationLevel.INFO, translate('pim_enrich.entity.attribute_group.flash.mass_delete.success'));
       closeMassDeleteModal();
     } catch (error) {

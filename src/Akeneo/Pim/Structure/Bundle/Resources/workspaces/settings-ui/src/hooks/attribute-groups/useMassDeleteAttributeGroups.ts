@@ -8,7 +8,10 @@ const useMassDeleteAttributeGroups = () => {
   const router = useRouter();
   const [isLoading, startLoading, stopLoading] = useBooleanState(false);
 
-  const massDeleteAttributeGroups = async (attributeGroups: AttributeGroup[]) => {
+  const massDeleteAttributeGroups = async (
+    attributeGroups: AttributeGroup[],
+    replacementAttributeGroup: string | null
+  ) => {
     startLoading();
     const response = await fetch(router.generate(ATTRIBUTE_GROUP_MASS_DELETE_ROUTE), {
       method: 'POST',
@@ -18,6 +21,7 @@ const useMassDeleteAttributeGroups = () => {
       },
       body: JSON.stringify({
         codes: attributeGroups.map((attributeGroup: AttributeGroup) => attributeGroup.code),
+        replacement_attribute_group: replacementAttributeGroup,
       }),
     });
     stopLoading();
