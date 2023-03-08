@@ -50,6 +50,10 @@ final class AttributeMultiSelectSource extends Compound
                                         new Assert\NotBlank(),
                                         new IsActivatedLocale(),
                                     ],
+                                    'default' => [
+                                        new Assert\Type('string'),
+                                        new Assert\NotBlank(allowNull: true),
+                                    ],
                                 ],
                                 'allowMissingFields' => false,
                                 'allowExtraFields' => false,

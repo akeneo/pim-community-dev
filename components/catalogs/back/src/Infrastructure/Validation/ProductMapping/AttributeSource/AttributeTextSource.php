@@ -41,6 +41,18 @@ final class AttributeTextSource extends Compound
                             new Assert\Type('string'),
                             new Assert\NotBlank(allowNull: true),
                         ],
+                        'parameters' => [
+                            new Assert\Collection([
+                                'fields' => [
+                                    'default' => [
+                                        new Assert\Type('string'),
+                                        new Assert\NotBlank(allowNull: true),
+                                    ],
+                                ],
+                                'allowMissingFields' => false,
+                                'allowExtraFields' => false,
+                            ]),
+                        ],
                     ],
                     'allowMissingFields' => false,
                     'allowExtraFields' => false,

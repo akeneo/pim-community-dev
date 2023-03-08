@@ -58,6 +58,9 @@ class ProductMapper implements ProductMapperInterface
 
             if ($sourceValue !== null) {
                 $mappedProduct[$targetCode] = $sourceValue;
+            } else if (isset($productMapping[$targetCode]['parameters']) &&
+                isset($productMapping[$targetCode]['parameters']['default'])) {
+                $mappedProduct[$targetCode] = $productMapping[$targetCode]['parameters']['default'];
             }
         }
 

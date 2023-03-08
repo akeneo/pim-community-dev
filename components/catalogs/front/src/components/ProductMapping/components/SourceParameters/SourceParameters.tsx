@@ -8,6 +8,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useAttribute} from '../../../../hooks/useAttribute';
 import {SourceSectionTitle} from '../SourceSectionTitle';
+import {DefaultValue} from './DefaultValue';
 
 const Information = styled.p`
     font-style: italic;
@@ -18,9 +19,10 @@ type Props = {
     source: Source | null;
     errors: SourceErrors | null;
     onChange: (value: Source) => void;
+    targetType: string;
 };
 
-export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
+export const SourceParameters: FC<Props> = ({source, errors, onChange, targetType}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute(source?.source ?? '');
 
@@ -60,6 +62,14 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
                     error={errors?.parameters?.currency}
                     disabled={attribute.scopable && source.scope === null}
                 />
+            )}
+            {undefined !== source.parameters.default && (
+                <DefaultValue
+                    source={source}
+                    onChange={onChange}
+                    error={errors?.parameters?.default}
+                    targetType={targetType}
+                ></DefaultValue>
             )}
         </>
     );

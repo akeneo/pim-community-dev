@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource;
 
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidLocale;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidScope;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
@@ -38,6 +36,18 @@ final class AttributeIdentifierSource extends Compound
                         ],
                         'locale' => [
                             new Assert\IsNull(),
+                        ],
+                        'parameters' => [
+                            new Assert\Collection([
+                                'fields' => [
+                                    'default' => [
+                                        new Assert\Type('string'),
+                                        new Assert\NotBlank(allowNull: true),
+                                    ],
+                                ],
+                                'allowMissingFields' => false,
+                                'allowExtraFields' => false,
+                            ]),
                         ],
                     ],
                     'allowMissingFields' => false,

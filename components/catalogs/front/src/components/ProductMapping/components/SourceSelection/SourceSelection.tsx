@@ -21,8 +21,15 @@ export const SourceSelection: FC<Props> = ({source, target, errors, onChange}) =
     const translate = useTranslate();
     const {data: attribute} = useAttribute(source?.source ?? '');
 
-    const handleSourceAttributeSelection = (selectedAttribute: Attribute) =>
-        onChange(createSourceFromAttribute(selectedAttribute));
+    const handleSourceAttributeSelection = (selectedAttribute: Attribute) => {
+        let source = createSourceFromAttribute(selectedAttribute);
+
+        if ('string' === target.type && (null === target.format || !['uri', 'date-time'].includes(target.format))) {
+            source = {...source, parameters: {...source.parameters, default: null}};
+        }
+
+        onChange(source);
+    };
 
     return (
         <>

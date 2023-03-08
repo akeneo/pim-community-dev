@@ -125,6 +125,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => 'L'
                     ],
                 ],
             ],
@@ -155,6 +156,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                 'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
                 'title' => 'Blue name',
                 'short_description' => 'Blue description',
+                'size_label' => 'L',
             ],
         ];
 
