@@ -62,5 +62,5 @@ test('It renders empty permissions values', () => {
 
   expect(screen.getByText(/category.permissions.view.label/)).toBeInTheDocument();
   expect(screen.getByText(/category.permissions.edit.label/)).toBeInTheDocument();
-  expect(screen.getByText(/category.permissions.own.label/)).toBeInTheDocument()
+  expect(screen.getByText(/category.permissions.own.label/)).toBeInTheDocument();
 });

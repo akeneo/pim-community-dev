@@ -111,7 +111,7 @@ const useEditCategoryForm = (categoryId: number) => {
       if (categoryEdited === null) {
         return;
       }
-      setCategoryEdited(set(['properties', 'labels', localeCode], (label) ? label : null, categoryEdited));
+      setCategoryEdited(set(['properties', 'labels', localeCode], label === '' ? null : label, categoryEdited));
     },
     [categoryEdited]
   );

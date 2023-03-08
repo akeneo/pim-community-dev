@@ -36,7 +36,8 @@ final class GetCategoriesSql implements GetCategoriesInterface
                 FROM pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
                 WHERE $sqlWhere
-                AND translation.label IS NOT NULL
+                AND translation.label IS NOT NULL 
+                AND translation.label != ''
                 GROUP BY category.code
             ),
             enriched_values as (

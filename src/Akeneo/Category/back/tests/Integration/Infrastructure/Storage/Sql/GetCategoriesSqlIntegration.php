@@ -491,18 +491,26 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $this->assertSame('shoes', (string) $retrievedCategory[0]->getCode());
     }
 
-    public function testGetCategoryWithLabelsNotNull(): void{
-        $childCategory = $this->createOrUpdateCategory(
-            code: "without_labels",
+    public function testDoesNotGetCategoryWithLabelsNullOrEmpty(): void{
+        $this->createOrUpdateCategory(
+            code: "with_labels_null",
             labels: [
                 'fr_FR' => null,
                 'en_US' => null,
             ],
         );
+
+        $this->createOrUpdateCategory(
+            code: "with_labels_empty",
+            labels: [
+                'fr_FR' => '',
+                'en_US' => '',
+            ],
+        );
         $parameters = new ExternalApiSqlParameters(
             sqlWhere: 'category.code IN (:category_codes)',
             params: [
-                'category_codes' => ['without_labels'],
+                'category_codes' => ['with_labels_null', 'with_labels_empty'],
                 'with_enriched_attributes' => false,
                 'with_position' => false,
                 ],
@@ -518,7 +526,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $this->assertIsArray($retrievedCategory);
 
         // we retrieve only 1 out of the 3 existing categories
-        $this->assertCount(1, $retrievedCategory);
+        $this->assertCount(2, $retrievedCategory);
 
         // we check that we retrieved the correct category according to the OFFSET
         $this->assertEmpty($retrievedCategory[0]->getLabels());
