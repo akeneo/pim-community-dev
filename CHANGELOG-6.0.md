@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- [Backport PIM-10877] PIM-10954: Fix sequential edit when grid is sorted by quality score
+
 # 6.0.81 (2023-04-18)
 
 ## Bug fixes
