@@ -2,35 +2,26 @@ import {renderHook} from '@testing-library/react-hooks';
 import {useGetIdentifierGenerators} from '../useGetIdentifierGenerators';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {ServerError} from '../../errors';
-import {mockResponse} from '../../tests/test-utils';
-
-const list = [
-  {
-    uuid: '2e87349c-e801-4b06-9fb9-755043f87c9a',
-    code: 'test',
-    conditions: [],
-    structure: [{type: 'free_text', string: 'AKN'}],
-    labels: {ca_ES: 'azeaze', en_US: 'test'},
-    target: 'sku',
-    delimiter: null,
-  },
-];
+import {rest} from 'msw';
+import {server} from '../../mocks/server';
+import mockedIdentifierGenerators from '../../tests/fixtures/identifierGenerators';
 
 describe('useGetIdentifierGenerators', () => {
   test('it retrieves generators list', async () => {
-    mockResponse('akeneo_identifier_generator_rest_list', 'GET', {ok: true, json: list});
-
     const {result, waitFor} = renderHook(() => useGetIdentifierGenerators(), {wrapper: createWrapper()});
 
     await waitFor(() => !!result.current.data);
 
     expect(result.current.data).toBeDefined();
-    expect(result.current.data).toEqual(list);
+    expect(result.current.data).toEqual(mockedIdentifierGenerators);
   });
 
   test('it fails and retrieves no data', async () => {
-    mockResponse('akeneo_identifier_generator_rest_list', 'GET', {ok: false, json: {}});
-
+    server.use(
+      rest.get('/akeneo_identifier_generator_rest_list', (req, res, ctx) => {
+        return res(ctx.status(500), ctx.json({}));
+      })
+    );
     const {result, waitFor} = renderHook(() => useGetIdentifierGenerators(), {wrapper: createWrapper()});
 
     await waitFor(() => !!result.current.error);

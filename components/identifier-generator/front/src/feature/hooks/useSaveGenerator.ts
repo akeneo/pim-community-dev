@@ -8,6 +8,7 @@ type HookResponse = {
   isLoading: boolean;
   save: UseMutateFunction<IdentifierGenerator, Violation[], IdentifierGenerator>;
   error: Violation[];
+  isSuccess: boolean;
 };
 
 const useSaveGenerator = (): HookResponse => {
@@ -27,9 +28,9 @@ const useSaveGenerator = (): HookResponse => {
     return res.ok ? data : Promise.reject(data);
   };
 
-  const {mutate, isLoading, error} = useMutation<IdentifierGenerator, Violation[], IdentifierGenerator>(callSave);
+  const {mutate, isLoading, error, isSuccess} = useMutation<IdentifierGenerator, Violation[], IdentifierGenerator>(callSave);
 
-  return {isLoading, save: mutate, error: error ?? []};
+  return {isLoading, save: mutate, error: error ?? [], isSuccess};
 };
 
 export {useSaveGenerator};

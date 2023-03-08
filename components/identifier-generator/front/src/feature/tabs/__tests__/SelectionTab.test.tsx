@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, mockResponse, render, screen} from '../../tests/test-utils';
+import {fireEvent, render, screen} from '../../tests/test-utils';
 import {SelectionTab} from '../SelectionTab';
 import {
   CONDITION_NAMES,
@@ -9,6 +9,8 @@ import {
   TEXT_TRANSFORMATION,
 } from '../../models';
 import {CategoriesCondition} from '../../models/conditions/categoriesCondition';
+import {server} from '../../mocks/server';
+import {rest} from 'msw';
 
 jest.mock('../conditions/AddConditionButton');
 jest.mock('../conditions/CategoriesLine');
@@ -34,34 +36,23 @@ describe('SelectionTab', () => {
   });
 
   it('should render the default identifier attribute', async () => {
-    const expectCall = mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
-
     render(<SelectionTab generator={mockedGenerator} onChange={jest.fn()} validationErrors={[]} />);
 
     expect(await screen.findByText('Sku')).toBeInTheDocument();
-
-    expectCall();
   });
 
   it('should render the default identifier attribute with target as attribute', async () => {
-    const expectCall = mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [],
-    });
-
+    server.use(
+      rest.get('/akeneo_identifier_generator_get_identifier_attributes', (req, res, ctx) =>
+        res(ctx.status(200), ctx.json([]))
+      )
+    );
     render(<SelectionTab generator={mockedGenerator} onChange={jest.fn()} validationErrors={[]} />);
 
     expect(await screen.findByText('[sku]')).toBeInTheDocument();
-
-    expectCall();
   });
 
   it('should callback on change', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
-
     const onChange = jest.fn();
     const generator: IdentifierGenerator = {
       ...mockedGenerator,
@@ -83,10 +74,6 @@ describe('SelectionTab', () => {
   });
 
   it('should add a condition', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
-
     const onChange = jest.fn();
     render(<SelectionTab generator={mockedGenerator} onChange={onChange} validationErrors={[]} />);
 
@@ -98,9 +85,6 @@ describe('SelectionTab', () => {
   });
 
   it('should display a placeholder if conditions are empty', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
     const onChange = jest.fn();
 
     render(<SelectionTab generator={mockedGenerator} onChange={onChange} validationErrors={[]} />);
@@ -109,9 +93,6 @@ describe('SelectionTab', () => {
   });
 
   it('should not display placeholder there is at least 1 condition', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
     const onChange = jest.fn();
     const generator: IdentifierGenerator = {
       ...mockedGenerator,
@@ -123,10 +104,6 @@ describe('SelectionTab', () => {
   });
 
   it('should delete a condition', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
-
     const onChange = jest.fn();
     const generator: IdentifierGenerator = {
       ...mockedGenerator,
@@ -146,9 +123,6 @@ describe('SelectionTab', () => {
   });
 
   it('should cancel deletion of a condition', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
     const generator: IdentifierGenerator = {
       ...mockedGenerator,
       conditions: [{type: CONDITION_NAMES.ENABLED, value: true}],
@@ -167,9 +141,6 @@ describe('SelectionTab', () => {
   });
 
   it('should display simple select line', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
     const conditions = [
       {
         type: CONDITION_NAMES.SIMPLE_SELECT,
@@ -188,9 +159,6 @@ describe('SelectionTab', () => {
   });
 
   it('should display multi select line', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
     const conditions = [
       {
         type: CONDITION_NAMES.MULTI_SELECT,
@@ -227,10 +195,6 @@ describe('SelectionTab', () => {
   });
 
   it('should display errors', () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
-
     const onChange = jest.fn();
     const validationErrors = [{path: 'conditions', message: 'should contain only 1 enabled'}];
     render(<SelectionTab generator={mockedGenerator} onChange={onChange} validationErrors={validationErrors} />);
