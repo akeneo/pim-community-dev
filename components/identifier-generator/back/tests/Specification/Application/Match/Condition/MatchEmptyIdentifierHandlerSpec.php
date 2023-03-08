@@ -20,7 +20,7 @@ class MatchEmptyIdentifierHandlerSpec extends ObjectBehavior
             ->shouldThrow(\InvalidArgumentException::class)
             ->during('__invoke', [
                 Enabled::fromBoolean(true),
-                new ProductProjection(true, null, []),
+                new ProductProjection(true, null, [], []),
             ]);
     }
 
@@ -28,7 +28,7 @@ class MatchEmptyIdentifierHandlerSpec extends ObjectBehavior
     {
         $this->__invoke(
             new EmptyIdentifier('sku'),
-            new ProductProjection(true, null, [])
+            new ProductProjection(true, null, [], [])
         )->shouldReturn(true);
     }
 
@@ -38,7 +38,7 @@ class MatchEmptyIdentifierHandlerSpec extends ObjectBehavior
             new EmptyIdentifier('sku'),
             new ProductProjection(true, null, [
                 'sku-<all_channels>-<all_locales>' => ''
-            ])
+            ], [])
         )->shouldReturn(true);
     }
 
@@ -48,7 +48,7 @@ class MatchEmptyIdentifierHandlerSpec extends ObjectBehavior
             new EmptyIdentifier('sku'),
             new ProductProjection(true, null, [
                 'sku-<all_channels>-<all_locales>' => 'productidentifier'
-            ])
+            ], [])
         )->shouldReturn(false);
     }
 }

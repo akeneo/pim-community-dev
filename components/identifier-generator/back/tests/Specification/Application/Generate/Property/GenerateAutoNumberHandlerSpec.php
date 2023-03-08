@@ -47,7 +47,7 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
             ->during('__invoke', [
                 $freeText,
                 $identifierGenerator,
-                new ProductProjection(true, null, []),
+                new ProductProjection(true, null, [], []),
                 'AKN-'
             ]);
     }
@@ -71,7 +71,7 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
         $this->__invoke(
             $autoNumber,
             $identifierGenerator,
-            new ProductProjection(true, null, []),
+            new ProductProjection(true, null, [], []),
             'AKN-'
         )->shouldReturn('42');
     }
@@ -95,7 +95,7 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
         $this->__invoke(
             $autoNumber,
             $identifierGenerator,
-            new ProductProjection(true, null, []),
+            new ProductProjection(true, null, [], []),
             'AKN-'
         )->shouldReturn('50');
     }
@@ -118,7 +118,7 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
         $this->__invoke(
             $autoNumber,
             $identifierGenerator,
-            new ProductProjection(true, null, []),
+            new ProductProjection(true, null, [], []),
             'AKN-'
         )->shouldReturn('00042');
     }
@@ -141,7 +141,7 @@ class GenerateAutoNumberHandlerSpec extends ObjectBehavior
         $this->__invoke(
             $autoNumber,
             $identifierGenerator,
-            new ProductProjection(true, null, []),
+            new ProductProjection(true, null, [], []),
             'AKN-'
         )->shouldReturn('426942');
     }

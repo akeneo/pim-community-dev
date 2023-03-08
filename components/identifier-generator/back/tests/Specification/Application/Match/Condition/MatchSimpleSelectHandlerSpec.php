@@ -20,7 +20,7 @@ class MatchSimpleSelectHandlerSpec extends ObjectBehavior
             ->shouldThrow(\InvalidArgumentException::class)
             ->during('__invoke', [
                 new EmptyIdentifier('sku'),
-                new ProductProjection(true, null, []),
+                new ProductProjection(true, null, [], []),
             ]);
     }
 
@@ -31,10 +31,10 @@ class MatchSimpleSelectHandlerSpec extends ObjectBehavior
             'attributeCode' => 'color',
             'operator' => 'EMPTY',
         ]);
-        $this->__invoke($condition, new ProductProjection(true, null, []))->shouldReturn(true);
+        $this->__invoke($condition, new ProductProjection(true, null, [], []))->shouldReturn(true);
         $this->__invoke($condition, new ProductProjection(true, null, [
             'color-<all_channels>-<all_locales>' => 'red',
-        ]))->shouldReturn(false);
+        ], []))->shouldReturn(false);
     }
 
     public function it_should_match_not_empty()
@@ -45,10 +45,10 @@ class MatchSimpleSelectHandlerSpec extends ObjectBehavior
             'attributeCode' => 'color',
             'operator' => 'NOT EMPTY',
         ]);
-        $this->__invoke($condition, new ProductProjection(true, null, []))->shouldReturn(false);
+        $this->__invoke($condition, new ProductProjection(true, null, [], []))->shouldReturn(false);
         $this->__invoke($condition, new ProductProjection(true, null, [
             'color-<all_channels>-<all_locales>' => 'red',
-        ]))->shouldReturn(true);
+        ], []))->shouldReturn(true);
     }
 
     public function it_should_match_in_list()
@@ -61,10 +61,10 @@ class MatchSimpleSelectHandlerSpec extends ObjectBehavior
         ]);
         $this->__invoke($condition, new ProductProjection(true, null, [
             'color-<all_channels>-<all_locales>' => 'red',
-        ]))->shouldReturn(true);
+        ], []))->shouldReturn(true);
         $this->__invoke($condition, new ProductProjection(true, null, [
             'color-<all_channels>-<all_locales>' => 'blue',
-        ]))->shouldReturn(false);
+        ], []))->shouldReturn(false);
     }
 
     public function it_should_match_not_in_list()
@@ -77,10 +77,10 @@ class MatchSimpleSelectHandlerSpec extends ObjectBehavior
         ]);
         $this->__invoke($condition, new ProductProjection(true, null, [
             'color-<all_channels>-<all_locales>' => 'red',
-        ]))->shouldReturn(false);
+        ], []))->shouldReturn(false);
         $this->__invoke($condition, new ProductProjection(true, null, [
             'color-<all_channels>-<all_locales>' => 'blue',
-        ]))->shouldReturn(true);
-        $this->__invoke($condition, new ProductProjection(true, null, []))->shouldReturn(false);
+        ], []))->shouldReturn(true);
+        $this->__invoke($condition, new ProductProjection(true, null, [], []))->shouldReturn(false);
     }
 }
