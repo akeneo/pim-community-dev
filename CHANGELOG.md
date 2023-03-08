@@ -33,6 +33,7 @@
 - PIM-10860: [SLA] Announcements aren't shown
 - PIM-10745: Fix history display for product's quantified association
 - PIM-10874: fix labels api type consistency
+- PIM-10877: Fix sequential edit not working if grid is sorted by quality score
 
 ## Improvements
 
