@@ -67,8 +67,7 @@ final class Category implements ConditionInterface
         ], fn (mixed $var): bool => null !== $var);
     }
 
-    public function operator(): CategoryOperator
-    {
+    public function operator(): CategoryOperator {
         return $this->operator;
     }
 
