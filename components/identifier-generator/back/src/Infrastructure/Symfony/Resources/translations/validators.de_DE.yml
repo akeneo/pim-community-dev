@@ -1,0 +1,8 @@
+validation:
+  identifier_generator:
+    attribute_does_not_exist: 'Das Attribut "{{code}}" existiert nicht.'
+    attribute_should_have_type: 'Der "{{ code }}" Attributcode ist "{{ type }}" Typ und sollte vom Typ "{{ expected }} " sein.'
+    free_text_string_field_required: 'Freitext sollte "String" Schlüssel enthalten'
+    enabled_value_field_required: 'Aktiviert sollte "Wert"-Schlüssel enthalten'
+    enabled_boolean_value: 'Dieser Wert sollte ein boolscher Wert sein.'
+    unknown_operator: 'Operator {{ value }} kann nur einer der folgenden sein: {{ choices }}.'
