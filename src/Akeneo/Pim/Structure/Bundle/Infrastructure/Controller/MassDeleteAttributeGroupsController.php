@@ -21,10 +21,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 final class MassDeleteAttributeGroupsController
 {
     public function __construct(
-        private TokenStorageInterface $tokenStorage,
-        private JobLauncherInterface $jobLauncher,
-        private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        private SecurityFacadeInterface $securityFacade,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly JobLauncherInterface $jobLauncher,
+        private readonly IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        private readonly SecurityFacadeInterface $securityFacade,
     ) {
     }
 
@@ -46,12 +46,15 @@ final class MassDeleteAttributeGroupsController
 
         $attributeGroupCodes = $request->get('codes');
 
+        $replacementAttributeCode = $request->get('replacement_attribute_group');
+
         $configuration = [
             'filters' => [
                 'codes' => $attributeGroupCodes,
+                'replacement_attribute_group_code' => $replacementAttributeCode,
             ],
             'users_to_notify' => [$user->getUserIdentifier()],
-            'send_email' => true
+            'send_email' => true,
         ];
 
         $this->jobLauncher->launch($jobInstance, $user, $configuration);

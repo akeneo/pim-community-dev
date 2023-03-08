@@ -431,6 +431,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
+              - '@pim_connector.step.move_child_attributes'
               - '@pim_connector.step.delete_attribute_groups'
             - true
         tags:
