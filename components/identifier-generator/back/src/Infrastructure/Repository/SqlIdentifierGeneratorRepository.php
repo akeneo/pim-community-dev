@@ -52,7 +52,7 @@ class SqlIdentifierGeneratorRepository implements IdentifierGeneratorRepository
         ];
 
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure, sort_order)
 VALUES (
     UUID_TO_BIN(:uuid),
     :code,
@@ -60,7 +60,8 @@ VALUES (
     JSON_OBJECT('delimiter', :delimiter, 'text_transformation', :text_transformation),
     :labels,
     :conditions,
-    :structure
+    :structure,
+    (SELECT max(sort_order) FROM pim_catalog_identifier_generator) + 1
 );
 SQL;
 
@@ -157,6 +158,10 @@ FROM pim_catalog_identifier_generator
 INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
 SQL;
 
+        if (!$this->isPreviousDatabaseVersion()) {
+            $sql = sprintf('%s ORDER BY sort_order ASC', $sql);
+        }
+
         $stmt = $this->connection->prepare($sql);
 
         try {
@@ -223,8 +228,21 @@ SQL;
         $sql = <<<SQL
 DELETE FROM pim_catalog_identifier_generator
 WHERE code=:code
-LIMIT 1
+LIMIT 1;
 SQL;
+
+        if (!$this->isPreviousDatabaseVersion()) {
+            $sql = <<<SQL
+UPDATE pim_catalog_identifier_generator
+SET sort_order = sort_order - 1
+WHERE sort_order > (
+    SELECT sort_order
+    FROM pim_catalog_identifier
+    WHERE code=:code
+);
+SQL . $sql;
+        }
+
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam('code', $identifierGeneratorCode, \PDO::PARAM_STR);
 
@@ -233,5 +251,19 @@ SQL;
         } catch (DriverException) {
             throw new UnableToDeleteIdentifierGeneratorException(\sprintf('Cannot delete the identifier generator "%s"', $identifierGeneratorCode));
         }
+    }
+
+    private function isPreviousDatabaseVersion(): bool
+    {
+        return !$this->columnExists('sort_order');
+    }
+
+    private function columnExists(string $columnName): bool
+    {
+        $rows = $this->connection->fetchAllAssociative(\strtr(<<<SQL
+SHOW COLUMNS FROM pim_catalog_identifier_generator LIKE '{{ columnName }}'
+SQL, ['{{ columnName }}' => $columnName]));
+
+        return \count($rows) >= 1;
     }
 }
