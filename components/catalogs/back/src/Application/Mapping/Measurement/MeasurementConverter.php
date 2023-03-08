@@ -107,7 +107,7 @@ final class MeasurementConverter
         if ($operator === 'div' && $operand == 0) {
             return $processedAmount;
         }
-        // Gérer le cas du 0 => renvoi processedAmount
+
         return match ($operator) {
             'div' => \bcdiv($processedAmount, $operand, self::DECIMAL_NUMBER),
             'mul' => \bcmul($processedAmount, $operand, self::DECIMAL_NUMBER),
