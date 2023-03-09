@@ -45,7 +45,7 @@ services:
   node:
     image: 'akeneo/node:14'
     environment:
-      HOME: './'
+      HOME: '/srv/pim'
     volumes:
       - './:/srv/pim'
     working_dir: '/srv/pim'
