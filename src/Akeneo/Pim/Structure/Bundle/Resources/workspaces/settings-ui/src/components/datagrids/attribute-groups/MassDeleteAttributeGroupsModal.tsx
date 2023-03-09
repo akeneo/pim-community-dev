@@ -59,11 +59,11 @@ const MassDeleteAttributeGroupsModal = ({
   return (
     <>
       <Button level="danger" onClick={openMassDeleteModal}>
-        {translate('pim_enrich.entity.attribute_group.mass_delete.button')}
+        {translate('pim_common.delete')}
       </Button>
       {isMassDeleteModalOpen && (
         <DoubleCheckDeleteModal
-          title={translate('pim_enrich.entity.attribute_group.mass_delete.title')}
+          title={translate('pim_enrich.entity.attribute_group.plural_label')}
           doubleCheckInputLabel={translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_phrase', {
             confirmation_word: translate('pim_enrich.entity.attribute_group.mass_delete.confirmation_word'),
           })}

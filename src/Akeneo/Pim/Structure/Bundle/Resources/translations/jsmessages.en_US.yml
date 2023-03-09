@@ -283,8 +283,6 @@ pim_enrich.entity.attribute_group:
             attribute_count: Related attributes count
     selected: '{0}0 attribute group selected|{1}1 attribute group selected|]1, Inf[{{ count }} attribute groups selected'
     mass_delete:
-        button: Delete
-        title: Attribute Groups
         confirm: '{1}Are you sure you want to delete this attribute group?|]1, Inf[Are you sure you want to delete these {{ count }} attribute groups?'
         confirmation_phrase: 'Please type "{{ confirmation_word }}" to confirm:'
         confirmation_word: delete

@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 `;
 
 const TableWrapper = styled.div`
-  // TODO uncomment when bringing back selectable margin-left: -40px;
+  // TODO RAB-1289 uncomment when bringing back selectable margin-left: -40px;
 `;
 
 type Props = {
