@@ -1,8 +1,8 @@
 import React, {useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search, useBooleanState, useDebounce} from 'akeneo-design-system';
-import {Property, PROPERTY_NAMES, Structure} from '../../models';
+import {Property, PROPERTY_NAMES, SimpleSelectProperty, Structure} from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useGetPropertyItems} from '../../hooks/useGetPropertyItems';
+import {useGetPropertyItems} from '../../hooks';
 
 type AddPropertyButtonProps = {
   onAddProperty: (property: Property) => void;
@@ -15,23 +15,6 @@ type FlatItemsGroup = {
   isSection: boolean;
   isVisible?: boolean;
   type?: string;
-};
-
-const defaultValueByAttributeType = {
-  [PROPERTY_NAMES.FREE_TEXT]: {type: PROPERTY_NAMES.FREE_TEXT, string: ''},
-  [PROPERTY_NAMES.AUTO_NUMBER]: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
-  [PROPERTY_NAMES.FAMILY]: {
-    type: PROPERTY_NAMES.FAMILY,
-    process: {
-      type: null,
-    },
-  },
-  pim_catalog_simpleselect: {
-    type: PROPERTY_NAMES.SIMPLE_SELECT,
-    process: {
-      type: null,
-    },
-  },
 };
 
 const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, structure}) => {
@@ -59,11 +42,25 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
   };
 
   const addProperty = (id: string, type?: string) => {
-    const defaultValue = defaultValueByAttributeType[type || id];
-    if (type) {
-      handleAddProperty({...defaultValue, attributeCode: id});
-    } else {
-      handleAddProperty(defaultValue);
+    if (id === PROPERTY_NAMES.FREE_TEXT) {
+      handleAddProperty({type: PROPERTY_NAMES.FREE_TEXT, string: ''});
+    } else if (id === PROPERTY_NAMES.AUTO_NUMBER) {
+      handleAddProperty({type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1});
+    } else if (id === PROPERTY_NAMES.FAMILY) {
+      handleAddProperty({
+        type: PROPERTY_NAMES.FAMILY,
+        process: {
+          type: null,
+        },
+      });
+    } else if (type === 'pim_catalog_simpleselect') {
+      handleAddProperty({
+        type: PROPERTY_NAMES.SIMPLE_SELECT,
+        attributeCode: id,
+        process: {
+          type: null,
+        },
+      } as SimpleSelectProperty);
     }
   };
 

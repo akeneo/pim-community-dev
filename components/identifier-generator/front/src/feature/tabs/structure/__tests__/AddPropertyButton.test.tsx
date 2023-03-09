@@ -136,7 +136,7 @@ describe('AddPropertyButton', () => {
     });
   });
 
-  it('adds a property', async () => {
+  it('adds a property free text', async () => {
     const onAddProperty = jest.fn();
     render(<AddPropertyButton onAddProperty={onAddProperty} structure={[]} />);
     const button = screen.getByRole('button');
@@ -154,6 +154,47 @@ describe('AddPropertyButton', () => {
     expect(onAddProperty).toBeCalledWith({
       type: PROPERTY_NAMES.FREE_TEXT,
       string: '',
+    });
+  });
+
+  it('adds a property auto number', async () => {
+    const onAddProperty = jest.fn();
+    render(<AddPropertyButton onAddProperty={onAddProperty} structure={[]} />);
+    const button = screen.getByRole('button');
+    expect(screen.getByText('pim_identifier_generator.structure.add_element')).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
+
+    fireEvent.click(button);
+    await waitFor(() => {
+      expect(screen.getByText('Auto Number')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('Auto Number'));
+    expect(onAddProperty).toBeCalledWith({
+      type: PROPERTY_NAMES.AUTO_NUMBER,
+      digitsMin: 1,
+      numberMin: 1,
+    });
+  });
+
+  it('adds a property auto number', async () => {
+    const onAddProperty = jest.fn();
+    render(<AddPropertyButton onAddProperty={onAddProperty} structure={[]} />);
+    const button = screen.getByRole('button');
+    expect(screen.getByText('pim_identifier_generator.structure.add_element')).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
+
+    fireEvent.click(button);
+    await waitFor(() => {
+      expect(screen.getByText('Family')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('Family'));
+    expect(onAddProperty).toBeCalledWith({
+      type: PROPERTY_NAMES.FAMILY,
+      process: {
+        type: null,
+      },
     });
   });
 
