@@ -16,11 +16,11 @@ const useGetAttributeByCode = (attributeCode?: AttributeCode): Response => {
         headers: [['X-Requested-With', 'XMLHttpRequest']],
       });
 
-  if (!response.ok) {
-    if (response.status === 401) throw new Unauthorized();
-    if (response.status === 404) throw new AttributeNotFound();
-    throw new ServerError();
-  }
+      if (!response.ok) {
+        if (response.status === 401) throw new Unauthorized();
+        if (response.status === 404) throw new AttributeNotFound();
+        throw new ServerError();
+      }
 
       return await response.json();
     },
