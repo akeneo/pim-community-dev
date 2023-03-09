@@ -30,3 +30,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Group:
                 - persist
                 - detach
                 - refresh
+    manyToMany:
+        products:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
+            mappedBy: groups
