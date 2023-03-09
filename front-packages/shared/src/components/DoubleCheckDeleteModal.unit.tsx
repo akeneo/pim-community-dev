@@ -1,5 +1,5 @@
 import React from 'react';
-import {screen, fireEvent} from '@testing-library/react';
+import {screen} from '@testing-library/react';
 import {renderWithProviders} from '../tests';
 import {DoubleCheckDeleteModal} from './DoubleCheckDeleteModal';
 import userEvent from '@testing-library/user-event';
@@ -59,8 +59,8 @@ test('It does not call onConfirm when user press enter and the text is not confi
     </DoubleCheckDeleteModal>
   );
 
-  userEvent.type(screen.getByLabelText('a_double_check_input_label'), 'eteled');
-  fireEvent.keyDown(document, '{enter}');
+  const input = screen.getByLabelText('a_double_check_input_label');
+  userEvent.type(input, 'eteled{enter}');
 
   expect(handleConfirm).not.toBeCalled();
 });
