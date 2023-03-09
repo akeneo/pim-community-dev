@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -32,7 +33,7 @@ final class MoveChildAttributesTaskletSpec extends ObjectBehavior
     public function let(
         AttributeGroupRepositoryInterface $attributeGroupRepository,
         ObjectUpdaterInterface $attributeUpdater,
-        SaverInterface $attributeSaver,
+        BulkSaverInterface $attributeSaver,
         EntityManagerClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper,
@@ -41,6 +42,7 @@ final class MoveChildAttributesTaskletSpec extends ObjectBehavior
     ): void {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobStopper->isStopping($stepExecution)->willReturn(false);
+
         $this->beConstructedWith(
             $attributeGroupRepository,
             $attributeUpdater,
