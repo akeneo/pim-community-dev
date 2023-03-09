@@ -61,7 +61,9 @@ VALUES (
     :labels,
     :conditions,
     :structure,
-    (SELECT max(sort_order) FROM pim_catalog_identifier_generator) + 1
+    (SELECT COUNT(1) FROM (
+        SELECT * FROM pim_catalog_identifier_generator
+    ) AS pcig)
 );
 SQL;
 
@@ -159,7 +161,7 @@ INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=p
 SQL;
 
         if (!$this->isPreviousDatabaseVersion()) {
-            $sql = sprintf('%s ORDER BY sort_order ASC', $sql);
+            $sql = \sprintf('%s ORDER BY pim_catalog_identifier_generator.sort_order ASC', $sql);
         }
 
         $stmt = $this->connection->prepare($sql);
@@ -236,9 +238,11 @@ SQL;
 UPDATE pim_catalog_identifier_generator
 SET sort_order = sort_order - 1
 WHERE sort_order > (
-    SELECT sort_order
-    FROM pim_catalog_identifier
-    WHERE code=:code
+    SELECT pcig.sort_order
+    FROM (
+        SELECT * FROM pim_catalog_identifier_generator
+    ) AS pcig
+    WHERE pcig.code=:code
 );
 SQL . $sql;
         }
