@@ -16,3 +16,9 @@ services:
             - '@fos_oauth_server.client_manager.default'
         tags:
             - { name: console.command }
+
+    Akeneo\Tool\Bundle\ApiBundle\Command\DeleteExpiredApiTokens:
+        arguments:
+            - '@Akeneo\Tool\Bundle\ApiBundle\Handler\DeleteExpiredTokensHandler'
+        tags:
+            - { name: console.command }
