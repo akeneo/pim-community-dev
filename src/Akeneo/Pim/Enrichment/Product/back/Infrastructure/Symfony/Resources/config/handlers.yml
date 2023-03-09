@@ -26,3 +26,9 @@ services:
             - '@validator'
         tags:
             - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Category\GetProductCategoryCodesHandler:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+        tags:
+            - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetProductCategoryCodesQuery' }
