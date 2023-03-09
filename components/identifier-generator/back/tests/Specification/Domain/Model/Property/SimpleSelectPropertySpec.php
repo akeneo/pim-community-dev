@@ -55,8 +55,31 @@ class SimpleSelectPropertySpec extends ObjectBehavior
                 'operator' => '=',
                 'value' => 3
             ],
-            'scope' => null,
-            'locale' => null,
+        ]);
+    }
+
+    public function it_normalizes_itself_with_scope_and_locale(): void
+    {
+        $this->beConstructedThrough('fromNormalized', [
+            [
+                'type' => 'simple_select',
+                'attributeCode' => 'color',
+                'process' => ['type' => 'truncate', 'operator' => '=', 'value' => 3],
+                'scope' => 'ecommerce',
+                'locale' => 'en_US'
+            ]
+        ]);
+
+        $this->normalize()->shouldReturn([
+            'type' => 'simple_select',
+            'attributeCode' => 'color',
+            'process' => [
+                'type' => 'truncate',
+                'operator' => '=',
+                'value' => 3
+            ],
+            'scope' => 'ecommerce',
+            'locale' => 'en_US'
         ]);
     }
 

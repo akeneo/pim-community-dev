@@ -18,8 +18,8 @@ use Webmozart\Assert\Assert;
  *  type: 'simple_select',
  *  attributeCode: string,
  *  process: ProcessNormalized,
- *  scope: string|null,
- *  locale: string|null
+ *  scope?: string|null,
+ *  locale?: string|null
  * }
  */
 final class SimpleSelectProperty implements PropertyInterface
@@ -49,13 +49,20 @@ final class SimpleSelectProperty implements PropertyInterface
      */
     public function normalize(): array
     {
-        return [
+        $simpleSelectProperty = [
             'type' => self::TYPE,
             'attributeCode' => $this->attributeCode,
             'process' => $this->process->normalize(),
-            'scope' => $this->scope,
-            'locale' => $this->locale,
         ];
+
+        if (null !== $this->scope) {
+            $simpleSelectProperty['scope'] = $this->scope;
+        }
+        if (null !== $this->locale) {
+            $simpleSelectProperty['locale'] = $this->locale;
+        }
+
+        return $simpleSelectProperty;
     }
 
     public static function fromNormalized(array $normalizedProperty): PropertyInterface
