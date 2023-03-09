@@ -21,27 +21,6 @@ final class InMemoryGetCategoryCodes implements GetCategoryCodes
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function fromProductIdentifiers(array $productIdentifiers): array
-    {
-        $productIdentifiers = \array_map(
-            static fn (ProductIdentifier $identifier): string => \strtolower($identifier->asString()),
-            $productIdentifiers
-        );
-
-        $results = [];
-        /** @var ProductInterface $product */
-        foreach ($this->productRepository->findAll() as $product) {
-            if (\in_array(\strtolower($product->getIdentifier()), $productIdentifiers)) {
-                $results[$product->getIdentifier()] = $product->getCategoryCodes();
-            }
-        }
-
-        return $results;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function fromProductUuids(array $productUuids): array
