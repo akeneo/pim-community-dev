@@ -52,7 +52,7 @@ final class MassDeleteAttributeGroupsController
             'filters' => [
                 'codes' => $attributeGroupCodes,
             ],
-            'replacement_attribute_group_code' => $replacementAttributeCode,
+            'replacement_attribute_group_code' => $replacementAttributeCode ?? '',
             'users_to_notify' => [$user->getUserIdentifier()],
             'send_email' => true,
         ];

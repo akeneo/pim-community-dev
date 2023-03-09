@@ -298,6 +298,7 @@ pim_enrich.entity.attribute_group:
     job_execution:
         summary:
             attribute_group_mass_delete: Deleted attribute groups
+            attributes_to_move: Moved attributes
 pim_import_export:
     notification:
         mass_delete_attribute_groups:
@@ -329,6 +330,7 @@ pim_enrich.mass_edit.family:
 batch_jobs:
     default_steps:
         delete_attribute_groups: Delete attribute groups
+        move_child_attributes: Move child attributes
 
 akeneo_job_process_tracker:
     type_filter:
