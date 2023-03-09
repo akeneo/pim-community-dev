@@ -30,10 +30,11 @@ final class GenerateSimpleSelectHandler implements GeneratePropertyHandlerInterf
         string $prefix
     ): string {
         Assert::isInstanceOf($simpleSelectProperty, SimpleSelectProperty::class);
+        $normalizedData = $simpleSelectProperty->normalize();
         $value = $productProjection->value(
             $simpleSelectProperty->normalize()['attributeCode'],
-            $simpleSelectProperty->normalize()['locale'],
-            $simpleSelectProperty->normalize()['scope'],
+            $normalizedData['locale'] ?? null,
+            $normalizedData['scope'] ?? null,
         );
         Assert::string($value);
 
