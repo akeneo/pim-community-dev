@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Registry;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromNumberAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromPriceCollectionAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromIdentifierAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromMultiSelectAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromNumberAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromSimpleSelectAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextareaAttributeValueExtractor;
@@ -53,6 +55,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
     public function extractorDataProvider(): array
     {
         return [
+            ArrayOfStringsFromMultiSelectAttributeValueExtractor::class => [
+                'sourceType' => 'pim_catalog_multiselect',
+                'targetType' => 'array<string>',
+                'targetFormat' => null,
+                'extractorClassName' => ArrayOfStringsFromMultiSelectAttributeValueExtractor::class,
+            ],
             BooleanFromBooleanAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_boolean',
                 'targetType' => 'boolean',
@@ -82,6 +90,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromIdentifierAttributeValueExtractor::class,
+            ],
+            StringFromMultiSelectAttributeValueExtractor::class => [
+                'sourceType' => 'pim_catalog_multiselect',
+                'targetType' => 'string',
+                'targetFormat' => null,
+                'extractorClassName' => StringFromMultiSelectAttributeValueExtractor::class,
             ],
             StringFromNumberAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_number',
