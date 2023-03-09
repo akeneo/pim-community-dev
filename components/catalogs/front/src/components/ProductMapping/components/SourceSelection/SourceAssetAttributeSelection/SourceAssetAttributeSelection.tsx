@@ -13,10 +13,10 @@ type Props = {
     target: Target;
     errors: SourceErrors | null;
     onChange: (value: Source) => void;
-    assetFamilyCode: string;
+    assetFamilyIdentifier: string;
 };
 
-export const SourceAssetAttributeSelection: FC<Props> = ({source, target, errors, onChange, assetFamilyCode}) => {
+export const SourceAssetAttributeSelection: FC<Props> = ({source, target, errors, onChange, assetFamilyIdentifier}) => {
     const translate = useTranslate();
     const {data: assetAttribute} = useAssetAttribute(source?.parameters?.asset_attribute ?? '');
 
@@ -28,7 +28,7 @@ export const SourceAssetAttributeSelection: FC<Props> = ({source, target, errors
             <SelectSourceAssetAttributeDropdown
                 selectedIdentifier={source?.parameters?.asset_attribute ?? ''}
                 target={target}
-                assetFamilyCode={assetFamilyCode}
+                assetFamilyIdentifier={assetFamilyIdentifier}
                 onChange={handleSourceAssetAttributeSelection}
                 error={errors?.parameters?.asset_attribute}
             />

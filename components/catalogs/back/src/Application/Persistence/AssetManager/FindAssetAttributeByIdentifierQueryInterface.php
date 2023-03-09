@@ -15,7 +15,7 @@ namespace Akeneo\Catalogs\Application\Persistence\AssetManager;
  *      localizable: bool
  * }
  */
-interface FindOneAssetAttributeByIdentifierQueryInterface
+interface FindAssetAttributeByIdentifierQueryInterface
 {
     /**
      * @return AssetAttribute|null

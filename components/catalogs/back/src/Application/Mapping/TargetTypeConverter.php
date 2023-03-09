@@ -43,6 +43,12 @@ final class TargetTypeConverter
         ],
     ];
 
+    private const PIM_ASSET_ATTRIBUTE_TYPES = [
+        'array<string>' => [
+            'text',
+        ],
+    ];
+
     /**
      * @return string[]
      */
@@ -59,6 +65,24 @@ final class TargetTypeConverter
         }
 
         return self::PIM_ATTRIBUTE_TYPES[$key];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function toAssetAttributeTypes(string $targetType, string $targetFormat = ''): array
+    {
+        $key = $targetType;
+
+        if ('' !== $targetFormat) {
+            $key = \sprintf('%s+%s', $targetType, $targetFormat);
+        }
+
+        if (!isset(self::PIM_ASSET_ATTRIBUTE_TYPES[$key])) {
+            throw new NoCompatibleAttributeTypeFoundException();
+        }
+
+        return self::PIM_ASSET_ATTRIBUTE_TYPES[$key];
     }
 
     /**

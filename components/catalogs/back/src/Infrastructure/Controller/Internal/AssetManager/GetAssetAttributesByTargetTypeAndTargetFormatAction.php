@@ -6,7 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Internal\AssetManager;
 
 use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
 use Akeneo\Catalogs\Application\Mapping\TargetTypeConverter;
-use Akeneo\Catalogs\Application\Persistence\AssetManager\SearchAssetAttributesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\AssetManager\GetAssetAttributesQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class GetAssetAttributesByTargetTypeAndTargetFormatAction
 {
     public function __construct(
-        private SearchAssetAttributesQueryInterface $searchAssetAttributesQuery,
+        private GetAssetAttributesQueryInterface $getAssetAttributesQuery,
         private TargetTypeConverter $targetTypeConverter,
     ) {
     }
@@ -32,15 +32,12 @@ class GetAssetAttributesByTargetTypeAndTargetFormatAction
         }
 
         $search = $request->query->get('search', null);
-        $assetFamily = $request->query->get('assetFamily', null);
+        $assetFamilyIdentifier = $request->query->get('assetFamilyIdentifier', null);
         $targetType = $request->query->get('targetType', null);
         $targetFormat = $request->query->get('targetFormat', '');
 
-        if (!\is_string($assetFamily)) {
-            throw new BadRequestHttpException('AssetFamily must be a string.');
-        }
-        if (!\is_string($search) && null !== $search) {
-            throw new BadRequestHttpException('Search must be a string or null.');
+        if (!\is_string($assetFamilyIdentifier)) {
+            throw new BadRequestHttpException('AssetFamilyIdentifier must be a string.');
         }
         if (!\is_string($targetType) && null !== $targetType) {
             throw new BadRequestHttpException('TargetType must be a string or null.');
@@ -53,7 +50,7 @@ class GetAssetAttributesByTargetTypeAndTargetFormatAction
         }
 
         try {
-            $attributeTypes = $this->targetTypeConverter->toAttributeTypes($targetType, $targetFormat ?? '');
+            $attributeTypes = $this->targetTypeConverter->toAssetAttributeTypes($targetType, $targetFormat ?? '');
         } catch (NoCompatibleAttributeTypeFoundException $exception) {
             throw new BadRequestHttpException(
                 \sprintf(
@@ -65,7 +62,7 @@ class GetAssetAttributesByTargetTypeAndTargetFormatAction
             );
         }
 
-        $assetAttributes = $this->searchAssetAttributesQuery->execute($assetFamily, $search, $attributeTypes);
+        $assetAttributes = $this->getAssetAttributesQuery->execute($assetFamilyIdentifier, $attributeTypes);
 
         return new JsonResponse($assetAttributes);
     }

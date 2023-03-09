@@ -11,6 +11,10 @@ const SelectAttributeDropdownField = styled(Field)`
     margin-top: 10px;
 `;
 
+const DropdownItem = styled(Dropdown.Item)`
+    gap: normal;
+`;
+
 type Props = {
     selectedCode: string;
     target: Target;
@@ -88,16 +92,18 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
                                     </Dropdown.Section>
                                 )}
                                 {attributes?.map(attribute => (
-                                    <Dropdown.Item
+                                    <DropdownItem
                                         key={attribute.code}
                                         onClick={() => handleAttributeSelection(attribute)}
                                         isActive={attribute.code === selectedCode}
                                     >
+                                        <>
                                         {attribute.label}
                                         {attribute.asset_family &&
-                                            <i> - {translate('akeneo_catalogs.product_mapping.source.select_source.attribute_label_asset_collection')}</i>
+                                            <> - <i>{translate('akeneo_catalogs.product_mapping.source.select_source.attribute_label_asset_collection')}</i></>
                                         }
-                                    </Dropdown.Item>
+                                        </>
+                                    </DropdownItem>
                                 ))}
                             </Dropdown.ItemCollection>
                         </Dropdown.Overlay>

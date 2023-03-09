@@ -29,9 +29,9 @@ export const SourceSettings: FC<Props> = ({source, target,attribute, errors, onC
             if (attribute?.type === 'pim_catalog_price_collection' && !(source.parameters.currency ?? false)) {
                 source = {...source, parameters: {...source.parameters, currency: source.currency ?? null}};
             }
+
             onChange(source);
         },
-
         [onChange, attribute]
     );
     return (
@@ -55,7 +55,7 @@ export const SourceSettings: FC<Props> = ({source, target,attribute, errors, onC
                 target={target}
                 onChange={onChangeMiddleware}
                 errors={errors}
-                assetFamilyCode={attribute.asset_family}
+                assetFamilyIdentifier={attribute.asset_family}
             />}
         </>
     );
