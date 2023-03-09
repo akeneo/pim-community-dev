@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 
@@ -30,7 +31,7 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
     public function __construct(
         private readonly AttributeGroupRepositoryInterface $attributeGroupRepository,
         private readonly ObjectUpdaterInterface $updater,
-        private readonly AttributeSaver $saver,
+        private readonly BulkSaverInterface $saver,
         private readonly EntityManagerClearerInterface $cacheClearer,
         private readonly JobRepositoryInterface $jobRepository,
         private readonly JobStopper $jobStopper,
