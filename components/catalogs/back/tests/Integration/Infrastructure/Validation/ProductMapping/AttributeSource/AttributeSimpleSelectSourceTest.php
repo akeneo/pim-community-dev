@@ -54,6 +54,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
             ],
@@ -71,6 +72,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
             ],
@@ -89,6 +91,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
             ],
@@ -106,6 +109,26 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
+                    ],
+                ],
+            ],
+            'default value defined' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                    'options' => ['XS', 'S', 'M', 'L', 'XL'],
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                        'default' => 'M',
                     ],
                 ],
             ],
@@ -144,6 +167,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This field is missing.',
@@ -163,6 +187,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
@@ -182,6 +207,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
@@ -201,6 +227,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expected_message' => 'This value should not be blank.',
@@ -220,6 +247,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
@@ -238,6 +266,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This field is missing.',
@@ -257,6 +286,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 42,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
@@ -276,6 +306,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => '',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expected_message' => 'This value should not be blank.',
@@ -294,6 +325,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'scope' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This field is missing.',
@@ -313,6 +345,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'kz_KZ',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
@@ -332,6 +365,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'kz_KZ',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
@@ -366,6 +400,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'scope' => null,
                     'locale' => 'kz_KZ',
                     'parameters' => [
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This field is missing.',
@@ -385,6 +420,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'kz_KZ',
                     'parameters' => [
                         'label_locale' => 42,
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
@@ -404,9 +440,49 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'kz_KZ',
                     'parameters' => [
                         'label_locale' => 'kz_KZ',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'missing default field' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                    'options' => ['XS', 'S', 'M', 'L', 'XL'],
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => 'ecommerce',
+                    'locale' => 'kz_KZ',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'invalid default field' => [
+                'attribute' => [
+                    'code' => 'video_output',
+                    'type' => 'pim_catalog_multiselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                    'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => 'ecommerce',
+                    'locale' => 'kz_KZ',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                        'default' => 10,
+                    ],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
             'extra field' => [
                 'attribute' => [
@@ -422,6 +498,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                     'EXTRA_FIELD' => null,
                 ],

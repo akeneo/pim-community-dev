@@ -29,6 +29,9 @@ class AttributeIdentifierSourceTest extends AbstractAttributeSourceTest
             'source' => 'sku',
             'scope' => null,
             'locale' => null,
+            'parameters' => [
+                'default' => null,
+            ]
         ];
         $violations = $this->validator->validate($source, new AttributeIdentifierSource());
         $this->assertEmpty($violations);
@@ -53,6 +56,9 @@ class AttributeIdentifierSourceTest extends AbstractAttributeSourceTest
                     'source' => 'sku',
                     'scope' => 'ecommerce',
                     'locale' => null,
+                    'parameters' => [
+                        'default' => null,
+                    ]
                 ],
                 'expected_message' => 'This value should be null.',
             ],
@@ -61,6 +67,9 @@ class AttributeIdentifierSourceTest extends AbstractAttributeSourceTest
                     'source' => 'sku',
                     'scope' => null,
                     'locale' => 'en_US',
+                    'parameters' => [
+                        'default' => null,
+                    ]
                 ],
                 'expected_message' => 'This value should be null.',
             ],
@@ -69,8 +78,40 @@ class AttributeIdentifierSourceTest extends AbstractAttributeSourceTest
                     'source' => 'sku',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
+                    'parameters' => [
+                        'default' => null,
+                    ]
                 ],
                 'expected_message' => 'This value should be null.',
+            ],
+            'missing parameters field' => [
+                'source' => [
+                    'source' => 'sku',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'missing default field' => [
+                'source' => [
+                    'source' => 'sku',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                    ]
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'invalid default field' => [
+                'source' => [
+                    'source' => 'sku',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'default' => 10,
+                    ]
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
         ];
     }

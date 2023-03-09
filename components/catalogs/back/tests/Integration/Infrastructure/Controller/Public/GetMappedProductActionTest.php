@@ -57,6 +57,13 @@ class GetMappedProductActionTest extends IntegrationTestCase
             'scopable' => true,
             'localizable' => true,
         ]);
+        $this->createAttribute([
+            'code' => 'color',
+            'type' => 'pim_catalog_simpleselect',
+            'options' => ['red', 'blue', 'green'],
+            'scopable' => false,
+            'localizable' => false,
+        ]);
 
         $this->createChannel('print', ['en_US', 'fr_FR']);
 
@@ -101,6 +108,14 @@ class GetMappedProductActionTest extends IntegrationTestCase
                         'label_locale' => 'en_US',
                     ],
                 ],
+                'color' => [
+                    'source' => 'color',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'default' => 'blue',
+                    ],
+                ],
             ],
         );
 
@@ -122,6 +137,7 @@ class GetMappedProductActionTest extends IntegrationTestCase
             'title' => 'Blue name',
             'short_description' => 'Blue description',
             'size_label' => 'M',
+            'color' => 'blue',
         ];
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -509,6 +525,9 @@ class GetMappedProductActionTest extends IntegrationTestCase
               "type": "string"
             },
             "size_label": {
+              "type": "string"
+            },
+            "color": {
               "type": "string"
             }
           }

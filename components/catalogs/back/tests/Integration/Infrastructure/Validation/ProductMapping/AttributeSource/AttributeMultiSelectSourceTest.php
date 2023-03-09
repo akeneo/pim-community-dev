@@ -54,6 +54,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
             ],
@@ -72,6 +73,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
             ],
@@ -90,6 +92,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
             ],
@@ -108,6 +111,26 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
+                    ],
+                ],
+            ],
+            'default value defined' => [
+                'attribute' => [
+                    'code' => 'video_output',
+                    'type' => 'pim_catalog_multiselect',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                    'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
+                ],
+                'source' => [
+                    'source' => 'video_output',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                        'default' => 'HDMI',
                     ],
                 ],
             ],
@@ -147,6 +170,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
@@ -166,6 +190,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
@@ -185,6 +210,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 42,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
@@ -204,6 +230,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'kz_KZ',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
@@ -223,6 +250,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
@@ -242,6 +270,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'kz_KZ',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
@@ -277,6 +306,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
@@ -296,6 +326,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This locale must not be empty.',
@@ -314,6 +345,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'scope' => null,
                     'locale' => null,
                     'parameters' => [
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This field is missing.',
@@ -333,6 +365,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 42,
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
@@ -352,9 +385,49 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'kz_KZ',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'source with missing default field' => [
+                'attribute' => [
+                    'code' => 'video_output',
+                    'type' => 'pim_catalog_multiselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                    'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
+                ],
+                'source' => [
+                    'source' => 'video_output',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'source with invalid default field' => [
+                'attribute' => [
+                    'code' => 'video_output',
+                    'type' => 'pim_catalog_multiselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                    'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
+                ],
+                'source' => [
+                    'source' => 'video_output',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                        'default' => 10,
+                    ],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
             'source with extra field' => [
                 'attribute' => [
@@ -371,6 +444,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'category' => 'dimension',
                     'parameters' => [
                         'label_locale' => 'en_US',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This field was not expected.',
@@ -390,6 +464,7 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     'parameters' => [
                         'label_locale' => 'en_US',
                         'category' => 'dimension',
+                        'default' => null,
                     ],
                 ],
                 'expectedMessage' => 'This field was not expected.',

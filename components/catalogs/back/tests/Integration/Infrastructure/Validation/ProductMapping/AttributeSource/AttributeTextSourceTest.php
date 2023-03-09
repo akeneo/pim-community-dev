@@ -51,6 +51,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
             ],
             'scopable attribute' => [
@@ -65,6 +68,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => 'ecommerce',
                     'locale' => null,
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
             ],
             'localizable attribute' => [
@@ -79,6 +85,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => null,
                     'locale' => 'en_US',
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
             ],
             'non localizable and non scopable attribute' => [
@@ -93,6 +102,26 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => null,
                     'locale' => null,
+                    'parameters' => [
+                        'default' => null,
+                    ],
+                ],
+            ],
+            'default value defined' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'default' => 'Default name',
+                    ],
                 ],
             ],
         ];
@@ -127,6 +156,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'scope' => null,
                     'locale' => null,
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -142,6 +174,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 42,
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
@@ -157,6 +192,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => 42,
                     'locale' => 'en_US',
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
@@ -172,6 +210,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => '',
                     'locale' => null,
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expected_message' => 'This value should not be blank.',
             ],
@@ -187,6 +228,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => 'unknown_scope',
                     'locale' => null,
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
             ],
@@ -201,6 +245,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'name',
                     'locale' => null,
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -216,6 +263,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => 'ecommerce',
                     'locale' => 42,
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
@@ -231,6 +281,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => null,
                     'locale' => '',
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expected_message' => 'This value should not be blank.',
             ],
@@ -245,6 +298,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'name',
                     'scope' => null,
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -260,6 +316,9 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => null,
                     'locale' => 'kz_KZ',
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
             ],
@@ -275,8 +334,46 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => 'ecommerce',
                     'locale' => 'kz_KZ',
+                    'parameters' => [
+                        'default' => null,
+                    ],
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
+            ],
+            'missing default field' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                    ],
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'invalid default field' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'default' => 10,
+                    ],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
             'extra field' => [
                 'attribute' => [
@@ -290,7 +387,10 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'source' => 'name',
                     'scope' => null,
                     'locale' => null,
-                    'parameters' => [],
+                    'parameters' => [
+                        'default' => null,
+                    ],
+                    'EXTRA_FIELD' => null,
                 ],
                 'expectedMessage' => 'This field was not expected.',
             ],

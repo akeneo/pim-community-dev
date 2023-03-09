@@ -307,6 +307,9 @@ test('it updates the state when a source changes', async () => {
             source: 'ean',
             locale: null,
             scope: null,
+            parameters: {
+                default: null,
+            },
         },
     });
 });

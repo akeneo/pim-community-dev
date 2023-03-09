@@ -104,6 +104,9 @@ class CatalogFixtureCommand extends Command
                     'source' => 'name',
                     'scope' => null,
                     'locale' => null,
+                    'parameters' => [
+                        'default' => null
+                    ]
                 ],
                 'description' => [
                     'source' => null,
@@ -114,11 +117,17 @@ class CatalogFixtureCommand extends Command
                     'source' => 'erp_name',
                     'scope' => null,
                     'locale' => 'en_US',
+                    'parameters' => [
+                        'default' => null
+                    ]
                 ],
                 'meta_title' => [
                     'source' => 'meta_title',
                     'scope' => null,
                     'locale' => 'en_US',
+                    'parameters' => [
+                        'default' => null
+                    ]
                 ],
                 'release_date' => [
                     'source' => null,
