@@ -72,6 +72,7 @@ pim_identifier_generator:
     helper_link: 'Consultez notre Help Center pour plus d''informations.'
     title: 'Structure de l''identifiant'
     add_element: 'Ajouter une nouvelle propriété '
+    limit_reached: 'Vous avez atteint la limite de {{ %limit%}} propriétés.'
     property_type:
       sections:
         system: 'Système'
