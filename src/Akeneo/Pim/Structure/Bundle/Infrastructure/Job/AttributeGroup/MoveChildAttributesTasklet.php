@@ -49,8 +49,8 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
         }
 
         $attributeGroupCodesToDelete = $this->stepExecution->getJobParameters()->get('filters')['codes'];
-        $replacementAttributeGroupCode = ('' !== $this->stepExecution->getJobParameters()->get('filters')['replacement_attribute_group_code']) ?
-            $this->stepExecution->getJobParameters()->get('filters')['replacement_attribute_group_code'] : 'other'
+        $replacementAttributeGroupCode = ('' !== $this->stepExecution->getJobParameters()->get('replacement_attribute_group_code')) ?
+            $this->stepExecution->getJobParameters()->get('replacement_attribute_group_code') : 'other'
         ;
 
         foreach (array_chunk($attributeGroupCodesToDelete, $this->batchSize) as $attributeGroupCodes) {
