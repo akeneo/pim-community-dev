@@ -46,7 +46,7 @@ const MassDeleteAttributeGroupsModal = ({
 
   useEffect(() => {
     setReplacementAttributeGroup(null);
-  }, [isMassDeleteModalOpen]);
+  }, [setReplacementAttributeGroup, isMassDeleteModalOpen]);
 
   const handleLaunchMassDelete = async () => {
     if (isLoading) return;
