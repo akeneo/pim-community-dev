@@ -53,8 +53,8 @@ final class CreateIdentifierGeneratorWithSimpleSelectEndToEnd extends Controller
         Assert::assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $uuid = $this->getUuidFromCode('my_new_generator');
         Assert::assertSame(
-            sprintf(
-                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"},{"type":"simple_select","attributeCode":"a_simple_select_color","process":{"type":"no"},"scope":null,"locale":null}],"labels":{"en_US":"My new generator","fr_FR":"Mon nouveau g\u00e9n\u00e9rateur"},"target":"sku","delimiter":"-","text_transformation":"no"}',
+            \sprintf(
+                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"},{"type":"simple_select","attributeCode":"a_simple_select_color","process":{"type":"no"}}],"labels":{"en_US":"My new generator","fr_FR":"Mon nouveau g\u00e9n\u00e9rateur"},"target":"sku","delimiter":"-","text_transformation":"no"}',
                 $uuid
             ),
             $response->getContent()
@@ -88,7 +88,7 @@ final class CreateIdentifierGeneratorWithSimpleSelectEndToEnd extends Controller
         Assert::assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $uuid = $this->getUuidFromCode('my_new_generator');
         Assert::assertSame(
-            sprintf(
+            \sprintf(
                 '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"},{"type":"simple_select","attributeCode":"a_simple_select_color_scopable_and_localizable","process":{"type":"no"},"scope":"ecommerce","locale":"en_US"}],"labels":{"en_US":"My new generator","fr_FR":"Mon nouveau g\u00e9n\u00e9rateur"},"target":"sku","delimiter":"-","text_transformation":"no"}',
                 $uuid
             ),
