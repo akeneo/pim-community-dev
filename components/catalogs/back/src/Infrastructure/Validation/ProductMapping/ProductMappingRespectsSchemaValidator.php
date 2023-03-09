@@ -54,6 +54,8 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
         }
 
         $this->validateTargetsTypes($value->getProductMapping(), $schema);
+
+        $this->validateRequiredTargets($value->getProductMapping(), $schema);
     }
 
     /**
@@ -134,5 +136,29 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                     ->addViolation();
             }
         }
+    }
+
+    /**
+     * @param ProductMapping $productMapping
+     * @param ProductMappingSchema $schema
+     */
+    private function validateRequiredTargets(array $productMapping, array $schema): bool
+    {
+        if (!isset($schema['required'])) {
+            return true;
+        }
+
+        foreach ($schema['required'] as $targetCode) {
+            if (null === $productMapping[$targetCode]['source']) {
+                $this->context
+                    ->buildViolation(
+                        'akeneo_catalogs.validation.product_mapping.source.required',
+                    )
+                    ->atPath("productMapping[$targetCode][source]")
+                    ->addViolation();
+            }
+        }
+
+        return false;
     }
 }

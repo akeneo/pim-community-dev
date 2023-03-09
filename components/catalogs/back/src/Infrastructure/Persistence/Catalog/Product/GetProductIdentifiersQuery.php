@@ -6,7 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductIdentifiersQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
-use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
+use Akeneo\Catalogs\Infrastructure\PqbFilters\ProductSelectionCriteria;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -34,7 +34,7 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
     public function execute(Catalog $catalog, ?string $searchAfter = null, int $limit = 100): array
     {
         $pqbOptions = [
-            'filters' => FormatProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria()),
+            'filters' => ProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria()),
             'limit' => $limit,
         ];
 

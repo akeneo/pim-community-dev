@@ -13,12 +13,14 @@ use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
  * @phpstan-type ProductMappingSchemaTarget array{
  *      type: string,
  *      format?: string,
+ *      pattern?: string,
  *      items?: array{
  *          type: string
  *      }
  * }
  * @phpstan-type ProductMappingSchema array{
- *      properties: array<string, ProductMappingSchemaTarget>
+ *      properties: array<string, ProductMappingSchemaTarget>,
+ *      required?: string[]
  * }
  */
 interface GetProductMappingSchemaQueryInterface

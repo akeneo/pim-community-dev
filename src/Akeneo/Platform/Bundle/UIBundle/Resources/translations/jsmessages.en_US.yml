@@ -371,6 +371,11 @@ pim_menu:
         help:
             title: Help
             helper: Akeneo Help center
+            new: NEW
+            news: What's new
+            help_center: Help center
+            akademy_training: Akademy training
+
     item:
         association_type: Association types
         attribute_group: Attribute groups

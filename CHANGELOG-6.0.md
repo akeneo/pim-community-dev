@@ -1,5 +1,19 @@
 # 6.0.x
 
+# 6.0.73 (2023-02-28)
+
+## Bug fixes
+
+- [Backport PIM-10606] PIM-10865: Fix computeFamilyVariantStructureChange on attribute removal
+
+# 6.0.72 (2023-02-27)
+
+# 6.0.71 (2023-02-21)
+
+## Improvements
+
+- PIM-1353: Add script to check that PIM is ready to be upgraded to v7
+
 # 6.0.70 (2023-02-16)
 
 ## Bug fixes

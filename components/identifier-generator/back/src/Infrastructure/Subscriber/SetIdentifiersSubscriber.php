@@ -108,7 +108,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
             $identifierGenerator->target()->asString()
         ));
 
-        if (count($violations) > 0) {
+        if (\count($violations) > 0) {
             $product->removeValue($value);
             $product->setIdentifier(null);
 

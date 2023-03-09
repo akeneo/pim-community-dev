@@ -806,7 +806,8 @@ class ApiContext implements Context
                         "type": "string"
                       }
                     }
-                  }
+                  },
+                  "required": ["title"]
                 }
                 JSON_WRAP,
                 false,
@@ -983,6 +984,28 @@ class ApiContext implements Context
                 ],
                 'colors' => [
                     'purple',
+                ],
+            ],
+            [
+                'uuid' => '7343e656-a114-4956-bb5e-2f5f1317b6d2',
+                'sku' => 't-shirt yellow',
+                'name' => '',
+                'description' => 'Description yellow',
+                'size' => 'xl',
+                'drawings_customization_count' => '4',
+                'artists_customization_count' => '2',
+                'price' => ['USD' => 78.3],
+                'released_at' => new \DateTimeImmutable('2042-01-01T00:00:00+00:00'),
+                'is_released' => false,
+                'picture' => $this->files['ziggyImage'],
+                'enabled' => true,
+                'sale_countries' => [
+                    'france',
+                    'brazil',
+                ],
+                'colors' => [
+                    'purple',
+                    'red',
                 ],
             ],
         ];

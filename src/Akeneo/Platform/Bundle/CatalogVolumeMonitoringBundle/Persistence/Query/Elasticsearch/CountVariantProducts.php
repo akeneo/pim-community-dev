@@ -45,8 +45,10 @@ class CountVariantProducts implements CountQuery
                 ],
             ],
         ];
-        $result = $this->client->count($query);
+        // PIM-10860
+        // Count replace by search after an issue on the version 8.4.2 (ticket : https://github.com/apache/lucene/pull/11792)
+        $result = $this->client->search($query);
 
-        return new CountVolume((int)$result['count'], self::VOLUME_NAME);
+        return new CountVolume((int)$result['hits']['total']['value'], self::VOLUME_NAME);
     }
 }

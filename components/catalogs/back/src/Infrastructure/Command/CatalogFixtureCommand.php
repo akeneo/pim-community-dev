@@ -262,7 +262,8 @@ class CatalogFixtureCommand extends Command
               },
               "title": "Colors"
             }
-          }
+          },
+          "required": ["name", "size"]
         }
         JSON_WRAP;
     }
