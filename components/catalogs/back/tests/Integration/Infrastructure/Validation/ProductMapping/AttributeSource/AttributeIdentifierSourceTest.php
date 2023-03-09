@@ -92,6 +92,15 @@ class AttributeIdentifierSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expected_message' => 'This value should be null.',
             ],
+            'with a invalid default value type' => [
+                'source' => [
+                    'source' => 'sku',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'default' => true,
+                ],
+                'expected_message' => 'This value should be of type string.',
+            ],
         ];
     }
 }
