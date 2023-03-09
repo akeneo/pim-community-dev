@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -16,6 +18,8 @@ use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Triggers the computation of the completeness for all products belonging to a family that has been updated by calling
@@ -32,11 +36,10 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     private StepExecution $stepExecution;
 
     public function __construct(
-        private IdentifiableObjectRepositoryInterface $familyRepository,
-        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        private ProductRepositoryInterface $productRepository,
-        private BulkSaverInterface $bulkProductSaver,
-        private EntityManagerClearerInterface $cacheClearer
+        private readonly IdentifiableObjectRepositoryInterface $familyRepository,
+        private readonly ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private readonly ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
+        private readonly ProductAndAncestorsIndexer $productAndAncestorsIndexer,
     ) {
     }
 
@@ -78,7 +81,7 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     }
 
     /**
-     * Recompute the completenesses of all products belonging to the family by calling 'save' on them.
+     * Recompute the completenesses of all products belonging to the family.
      */
     private function computeCompletenesses(FamilyInterface $family): void
     {
@@ -87,19 +90,17 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
         $productUuidBatch = [];
         /** @var IdentifierResult $productIdentifier */
         foreach ($productIdentifiers as $productIdentifier) {
-            $productUuidBatch[] = \preg_replace('/^product_/', '', $productIdentifier->getId());
+            $productUuidBatch[] = Uuid::fromString(\preg_replace('/^product_/', '', $productIdentifier->getId()));
             if (self::BATCH_SIZE === \count($productUuidBatch)) {
-                $products = $this->productRepository->getItemsFromUuids($productUuidBatch);
-                $this->bulkProductSaver->saveAll($products, ['force_save' => true]);
-                $this->cacheClearer->clear();
+                $this->computeAndPersistProductCompletenesses->fromProductUuids($productUuidBatch);
+                $this->productAndAncestorsIndexer->indexFromProductUuids($productUuidBatch);
                 $productUuidBatch = [];
             }
         }
 
         if (0 < \count($productUuidBatch)) {
-            $products = $this->productRepository->getItemsFromUuids($productUuidBatch);
-            $this->bulkProductSaver->saveAll($products, ['force_save' => true]);
-            $this->cacheClearer->clear();
+            $this->computeAndPersistProductCompletenesses->fromProductUuids($productUuidBatch);
+            $this->productAndAncestorsIndexer->indexFromProductUuids($productUuidBatch);
         }
     }
 

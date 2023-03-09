@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Conditions} from '../../models';
+import {ATTRIBUTE_TYPE, AttributeType, Conditions} from '../../models';
 
 type ItemsGroup = {
   id: string;
@@ -7,6 +7,7 @@ type ItemsGroup = {
   children: {
     id: string;
     text: string;
+    type?: AttributeType;
   }[];
 };
 
@@ -62,7 +63,10 @@ const useGetConditionItems: (
       {
         id: 'marketing',
         text: 'Marketing',
-        children: [{id: 'color', text: 'Color'}],
+        children: [
+          {id: 'color', text: 'Color', type: ATTRIBUTE_TYPE.SIMPLE_SELECT},
+          {id: 'main_color', text: 'Main color', type: ATTRIBUTE_TYPE.MULTI_SELECT},
+        ],
       },
     ],
     // eslint-disable-next-line @typescript-eslint/no-empty-function

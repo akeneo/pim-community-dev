@@ -26,9 +26,9 @@ final class UpdateNomenclatureCommandValidator implements CommandValidatorInterf
         $violations = $this->validator->validate($command);
         if (0 < $violations->count()) {
             throw new ViolationsException(new ErrorList(
-                array_map(
+                \array_map(
                     static fn ($violation) => new Error((string) $violation->getMessage(), $violation->getParameters(), $violation->getPropertyPath()),
-                    iterator_to_array($violations)
+                    \iterator_to_array($violations)
                 )
             ));
         }

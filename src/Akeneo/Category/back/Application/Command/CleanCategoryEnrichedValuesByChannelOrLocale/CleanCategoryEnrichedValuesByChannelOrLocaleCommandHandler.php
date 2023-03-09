@@ -24,13 +24,12 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler
     public function __invoke(CleanCategoryEnrichedValuesByChannelOrLocaleCommand $command): void
     {
         foreach ($this->getEnrichedValuesPerCategoryCode->byBatchesOf(self::CATEGORY_BATCH_SIZE) as $valuesByCode) {
-            if (count($valuesByCode) !== 0) {
-                $this->categoryDataCleaner->cleanByChannelOrLocales(
-                    $valuesByCode,
-                    $command->channelCode,
-                    $command->localeCodes,
-                );
-            }
+            $this->categoryDataCleaner->cleanByChannelOrLocales(
+                $valuesByCode,
+                $command->channelCode,
+                $command->localeCodes,
+            );
+
         }
     }
 }

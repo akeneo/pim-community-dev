@@ -7,7 +7,7 @@ use Akeneo\Category\Domain\ValueObject\ValueCollection;
 interface GetEnrichedValuesPerCategoryCode
 {
     /**
-     * @return \Traversable<string, ValueCollection>
+     * @return \Generator
      */
-    public function byBatchesOf(int $batchSize): \Traversable;
+    public function byBatchesOf(int $batchSize): \Generator;
 }

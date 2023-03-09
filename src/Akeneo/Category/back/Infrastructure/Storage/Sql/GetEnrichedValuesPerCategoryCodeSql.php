@@ -14,12 +14,12 @@ final class GetEnrichedValuesPerCategoryCodeSql implements GetEnrichedValuesPerC
     }
 
     /**
-     * @return \Traversable<string, ValueCollection>
+     * @return \Generator
      *
      * @throws Exception
      * @throws \JsonException
      */
-    public function byBatchesOf(int $batchSize): \Traversable
+    public function byBatchesOf(int $batchSize): \Generator
     {
         $offset = 0;
         while (true) {

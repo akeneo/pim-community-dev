@@ -9,6 +9,8 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQuery
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Ramsey\Uuid\Uuid;
 
@@ -268,5 +270,121 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
             '8985de43-08bc-484d-aee0-4489a56ba02d',
             'c07ad6f1-78a1-4add-84af-3c1d7d8484a3',
         ], $result);
+    }
+
+    public function testItGetsMatchingProductsUuidsUsingRequiredPropertyInTheSchema(): void
+    {
+        $this->createUser('owner');
+        $this->logAs('owner');
+
+        $this->createChannel('mobile', ['en_US', 'fr_FR']);
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+        $this->createAttribute([
+            'code' => 'size',
+            'type' => 'pim_catalog_simpleselect',
+            'scopable' => true,
+            'localizable' => true,
+            'options' => ['XS', 'S', 'M', 'L', 'XL'],
+        ]);
+        $this->createAttribute([
+            'code' => 'sale_countries',
+            'type' => 'pim_catalog_multiselect',
+            'scopable' => false,
+            'localizable' => false,
+            'options' => ['France', 'Canada', 'Italy', 'Brazil'],
+        ]);
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'owner',
+            productMappingSchema: $this->getValidSchemaData(),
+            catalogProductMapping: [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'title' => [
+                    'source' => 'name',
+                    'scope' => 'mobile',
+                    'locale' => 'en_US',
+                ],
+                'size' => [
+                    'source' => 'size',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                ],
+                'sale_countries' => [
+                    'source' => 'size',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                ],
+            ],
+        );
+
+        $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
+            new SetTextValue('name', 'mobile', 'en_US', 'Blue'),
+            new SetSimpleSelectValue('size', 'ecommerce', 'en_US', 'L'),
+            new SetMultiSelectValue('sale_countries', null, null, ['France', 'Italy']),
+        ]);
+
+        $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
+            new SetTextValue('name', 'mobile', 'en_US', ''),
+            new SetSimpleSelectValue('size', 'ecommerce', 'en_US', 'L'),
+        ]);
+
+        $this->createProduct(Uuid::fromString('5595c455-d114-4ff8-bd0e-37fad972dec5'), [
+            new SetSimpleSelectValue('size', 'ecommerce', 'en_US', 'L'),
+            new SetMultiSelectValue('sale_countries', null, null, ['France', 'Italy']),
+        ]);
+
+        $this->createProduct(Uuid::fromString('a94553ff-90fd-413a-9819-0c3be9802f9b'), [
+            new SetMultiSelectValue('sale_countries', null, null, ['France', 'Italy']),
+        ]);
+
+        $this->createProduct(Uuid::fromString('c07ad6f1-78a1-4add-84af-3c1d7d8484a3'));
+
+        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $result = $this->query->execute($catalog);
+
+        $this->assertEquals([
+            '00380587-3893-46e6-a8c2-8fee6404cc9e',
+        ], $result);
+    }
+
+    private function getValidSchemaData(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            },
+            "sale_countries": {
+              "type": "string"
+            }
+          },
+          "required": ["title","size","sale_countries"]
+        }
+        JSON_WRAP;
     }
 }
