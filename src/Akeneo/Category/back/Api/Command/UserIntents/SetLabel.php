@@ -14,6 +14,9 @@ final class SetLabel implements UserIntent, LocalizeUserIntent
         private string $localeCode,
         private ?string $label,
     ) {
+        if (empty($this->label)) {
+            $this->label = null;
+        }
     }
 
     public function localeCode(): string
