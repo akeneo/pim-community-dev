@@ -23,7 +23,9 @@ class SimpleSelectPropertySpec extends ObjectBehavior
             [
                 'type' => 'simple_select',
                 'attributeCode' => 'color',
-                'process' => ['type' => 'truncate', 'operator' => '=', 'value' => 3]
+                'process' => ['type' => 'truncate', 'operator' => '=', 'value' => 3],
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
             ]
         ]);
     }
@@ -90,6 +92,8 @@ class SimpleSelectPropertySpec extends ObjectBehavior
                 'type' => 'simple_select',
                 'attributeCode' => 'color',
                 'operator' => 'NOT EMPTY',
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
             ]),
         );
     }
