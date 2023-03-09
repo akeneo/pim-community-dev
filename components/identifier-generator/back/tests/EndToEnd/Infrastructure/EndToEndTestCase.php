@@ -69,7 +69,7 @@ abstract class EndToEndTestCase extends TestCase
         $this->getAuthenticator()->logIn('admin');
 
         if (null !== $identifier) {
-            $userIntents[] = [new SetIdentifierValue('sku', $identifier)];
+            $userIntents[] = new SetIdentifierValue('sku', $identifier);
         }
 
         if ($withFamily) {
