@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {MassDeleteAttributeGroupsModal, useMassDeleteAttributeGroups} from '@akeneo-pim-community/settings-ui';
+import {MassDeleteAttributeGroupsModal} from '@akeneo-pim-community/settings-ui';
 import {fireEvent, screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -18,7 +18,7 @@ test('it renders a confirm modal delete button', () => {
     <MassDeleteAttributeGroupsModal impactedAttributeGroups={[]} availableTargetAttributeGroups={[]} />
   );
 
-  expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button')).toBeInTheDocument();
+  expect(screen.getByText('pim_common.delete')).toBeInTheDocument();
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
 
@@ -34,7 +34,7 @@ test('it opens a modal with a confirmation input & helper if there are child att
     />
   );
 
-  userEvent.click(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button'));
+  userEvent.click(screen.getByText('pim_common.delete'));
 
   expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.confirm')).toBeInTheDocument();
   expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.attribute_warning')).toBeInTheDocument();
@@ -56,7 +56,7 @@ test('it can select an attribute group to assign affected attributes', () => {
     />
   );
 
-  userEvent.click(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button'));
+  userEvent.click(screen.getByText('pim_common.delete'));
 
   expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group')).toBeInTheDocument();
   expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.confirm')).toBeInTheDocument();
@@ -82,7 +82,7 @@ test('it can close the modal when confirming with the correct word', async () =>
     />
   );
 
-  userEvent.click(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button'));
+  userEvent.click(screen.getAllByText('pim_common.delete')[0]);
   expect(screen.getByRole('dialog')).toBeInTheDocument();
 
   userEvent.type(
@@ -91,7 +91,7 @@ test('it can close the modal when confirming with the correct word', async () =>
   );
 
   await act(async () => {
-    await userEvent.click(screen.getByText('pim_common.delete'));
+    await userEvent.click(screen.getAllByText('pim_common.delete')[1]);
   });
 
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -110,10 +110,10 @@ test('it cannot mass delete if no target attribute group is selected', async () 
     />
   );
 
-  fireEvent.click(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button'));
+  fireEvent.click(screen.getAllByText('pim_common.delete')[0]);
 
   await act(async () => {
-    await userEvent.click(screen.getByText('pim_common.delete'));
+    await userEvent.click(screen.getAllByText('pim_common.delete')[1]);
   });
 
   expect(launchMassDelete).not.toBeCalled();
@@ -138,7 +138,7 @@ test('it launch mass delete', async () => {
     />
   );
 
-  fireEvent.click(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button'));
+  fireEvent.click(screen.getAllByText('pim_common.delete')[0]);
   fireEvent.click(screen.getByLabelText('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group'));
   fireEvent.click(screen.getByText('attribute group 3'));
   userEvent.type(
@@ -147,7 +147,7 @@ test('it launch mass delete', async () => {
   );
 
   await act(async () => {
-    await userEvent.click(screen.getByText('pim_common.delete'));
+    await userEvent.click(screen.getAllByText('pim_common.delete')[1]);
   });
   expect(launchMassDelete).toBeCalled();
 });
