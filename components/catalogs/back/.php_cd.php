@@ -30,9 +30,13 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI\Command',
             'Akeneo\Catalogs\ServiceAPI\Query',
             'Akeneo\Catalogs\ServiceAPI\Exception',
-            'Symfony\Component\Routing\RouterInterface',
+            'Akeneo\Pim\Enrichment\Product\API\Query\GetProductCategoryCodesQuery',
             'Ramsey\Uuid\Uuid',
             'Ramsey\Uuid\UuidInterface',
+            'Symfony\Component\Messenger\MessageBusInterface',
+            'Symfony\Component\Messenger\Stamp\HandledStamp',
+            'Symfony\Component\Routing\RouterInterface',
+
         ]
     )->in('Akeneo\Catalogs\Application'),
 

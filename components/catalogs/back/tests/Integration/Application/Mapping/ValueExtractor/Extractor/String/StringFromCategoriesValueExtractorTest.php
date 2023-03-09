@@ -57,9 +57,11 @@ class StringFromCategoriesValueExtractorTest extends ValueExtractorTestCase
         $result = $this->extractor->extract(
             product: $rawProduct,
             code: 'categories',
-            locale: 'en_US',
+            locale: null,
             scope: null,
-            parameters: null,
+            parameters: [
+                'locale_label' => 'en_US'
+            ],
         );
         $this->assertEquals('Cameras, Digital cameras', $result);
     }
@@ -78,9 +80,11 @@ class StringFromCategoriesValueExtractorTest extends ValueExtractorTestCase
         $result = $this->extractor->extract(
             product: $rawProduct,
             code: 'categories',
-            locale: 'en_US',
+            locale: null,
             scope: null,
-            parameters: null,
+            parameters: [
+                'locale_label' => 'en_US'
+            ],
         );
 
         $this->assertNull($result);

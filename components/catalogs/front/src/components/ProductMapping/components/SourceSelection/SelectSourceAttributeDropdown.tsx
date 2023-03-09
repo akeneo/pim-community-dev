@@ -5,7 +5,7 @@ import {useInfiniteSourceAttributes} from '../../hooks/useInfiniteSourceAttribut
 import {Attribute} from '../../../../models/Attribute';
 import {useAttribute} from '../../../../hooks/useAttribute';
 import styled from 'styled-components';
-import {useSystemAttributesFactories} from '../../hooks/useSystemAttributesFactories';
+import {useSystemAttributes} from '../../hooks/useSystemAttributes';
 import {Target} from '../../models/Target';
 
 const SelectAttributeDropdownField = styled(Field)`
@@ -25,14 +25,14 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
     const [search, setSearch] = useState<string>('');
     const {data: attributes, fetchNextPage} = useInfiniteSourceAttributes({target: target, search});
     const {data: attribute} = useAttribute(selectedCode);
-    const systemCriterionFactories = useSystemAttributesFactories();
-    const filteredSystemCriterionFactories: Attribute[] = useMemo(() => {
+    const systemAttribute = useSystemAttributes();
+    const filteredSystemAttribute: Attribute[] = useMemo(() => {
         if (target.type !== 'string' || target.format !== null) {
             return [];
         }
         const regex = new RegExp(search, 'i');
-        return systemCriterionFactories.filter(attribute => attribute.label.match(regex));
-    }, [systemCriterionFactories, search, target.type, target.format]);
+        return systemAttribute.filter(attribute => attribute.label.match(regex));
+    }, [systemAttribute, search, target.type, target.format]);
 
     const handleAttributeSelection = useCallback(
         (attribute: Attribute) => {
@@ -89,12 +89,12 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
                                 onNextPage={fetchNextPage}
                             >
                                 {/* system attributes */}
-                                {filteredSystemCriterionFactories.length > 0 && (
+                                {filteredSystemAttribute.length > 0 && (
                                     <Dropdown.Section>
                                         {translate('akeneo_catalogs.product_selection.add_criteria.section_system')}
                                     </Dropdown.Section>
                                 )}
-                                {filteredSystemCriterionFactories?.map(attribute => (
+                                {filteredSystemAttribute?.map(attribute => (
                                     <Dropdown.Item
                                         key={attribute.code}
                                         onClick={() => handleAttributeSelection(attribute)}

@@ -25,16 +25,19 @@ final class StringFromCategoriesValueExtractor implements StringValueExtractorIn
         ?string $scope,
         ?array $parameters,
     ): null | string {
-        if (\is_null($locale)) {
+        if (\is_null($parameters['locale_label'] ?? null)) {
             return null;
         }
         /** @var string */
         $uuid = $product['uuid']->serialize();
-        $categoriesLabels = $this->getCachedCategoryLabelsByLocaleAndProduct->fetch([$uuid], [$locale]);
-        if (\count($categoriesLabels[$uuid][$locale]) === 0) {
+        $categoriesLabels = $this->getCachedCategoryLabelsByLocaleAndProduct->fetch(
+            [$uuid],
+            [$parameters['locale_label']]
+        );
+        if (\count($categoriesLabels[$uuid][$parameters['locale_label']]) === 0) {
             return null;
         }
-        return \implode(', ', $categoriesLabels[$uuid][$locale]);
+        return \implode(', ', $categoriesLabels[$uuid][$parameters['locale_label']]);
     }
 
     public function getSupportedSourceType(): string

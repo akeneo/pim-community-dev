@@ -42,7 +42,7 @@ final class AttributeCriterionContainsValidAttributeOptionsValidator extends Con
 
         $attribute = $this->findOneAttributeByCodeQuery->execute($value['field']);
 
-        if (null === $attribute) {
+        if (null === $attribute && 'categories' !== $value['field']) {
             throw new \LogicException('Attribute not found');
         }
 

@@ -1,11 +1,11 @@
-import {useSystemAttributesFactories} from './useSystemAttributesFactories';
+import {useSystemAttributes} from './useSystemAttributes';
 import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 import {renderHook} from '@testing-library/react-hooks';
 
-jest.unmock('./useSystemAttributesFactories');
+jest.unmock('./useSystemAttributes');
 
 test('it fetches categories system attribute', () => {
-    const {result} = renderHook(() => useSystemAttributesFactories(), {
+    const {result} = renderHook(() => useSystemAttributes(), {
         wrapper: ReactQueryWrapper,
     });
 

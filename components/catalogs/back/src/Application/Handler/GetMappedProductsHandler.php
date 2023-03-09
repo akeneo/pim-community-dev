@@ -99,16 +99,15 @@ final class GetMappedProductsHandler
      */
     private function hydrateCachedCategoryCodesAndLocales(array $productMapping, array $productUuids): void
     {
-        /** @var string[] */
-        $categoryLocales = \array_reduce(
-            $productMapping,
-            fn (array $carry, array $item): array => $item['source'] === 'categories' ?
-                \array_unique(
-                    \array_merge($carry, [$item['locale']]),
-                )
-                : $carry,
-            [],
-        );
+        $categoryLocales = [];
+        foreach ($productMapping as $association) {
+            if (
+                $association['source'] === 'categories' &&
+                !in_array($association['locale'], $categoryLocales)
+            ) {
+                $categoryLocales[] = $association['locale'];
+            }
+        }
 
         /** @var string[] $uuids */
         $uuids = \array_map(function (UuidInterface $uuid): string {

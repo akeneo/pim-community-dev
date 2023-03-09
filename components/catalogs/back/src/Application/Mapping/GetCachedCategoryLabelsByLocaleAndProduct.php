@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Mapping;
 
-use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetCategoryCodesByProductQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Category\GetCategoriesByCodeQueryInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductCategoryCodesQuery;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
@@ -20,8 +24,8 @@ final class GetCachedCategoryLabelsByLocaleAndProduct
     private array $categoryLabelsByLocale = [];
 
     public function __construct(
-        private readonly GetCategoryCodesByProductQueryInterface $getCategoryCodesByProductQuery,
         private readonly GetCategoriesByCodeQueryInterface $getCategoriesByCodeQuery,
+        private readonly MessageBusInterface $queryBus,
     ) {
     }
 
@@ -34,27 +38,17 @@ final class GetCachedCategoryLabelsByLocaleAndProduct
     {
         $this->hydrateCache($productUuids, $locales);
 
-        /** @var array<string, array<string, string[]>> */
-        $results = \array_reduce(
-            $productUuids,
-            fn (array $byProductUuid, string $productUuid) => \array_merge(
-                $byProductUuid,
-                [$productUuid => \array_reduce(
-                    $locales,
-                    fn (array $byLocale, string $locale) => \array_merge(
-                        $byLocale,
-                        [$locale => \array_filter(
-                            $this->categoryLabelsByLocale[$locale] ?? [],
-                            fn (string $code): bool => \in_array($code, $this->categoryCodesByProduct[$productUuid]),
-                            ARRAY_FILTER_USE_KEY,
-                        )],
-                    ),
-                    [],
-                )],
-            ),
-            [],
-        );
-        return $results;
+        $formattedResponse = [];
+        foreach ($productUuids as $productUuid) {
+            $formattedResponse[$productUuid] = [];
+            foreach ($locales as $locale) {
+                $formattedResponse[$productUuid][$locale] = [];
+                foreach ($this->categoryCodesByProduct[$productUuid] as $categoryCode) {
+                    $formattedResponse[$productUuid][$locale][] = $this->categoryLabelsByLocale[$locale][$categoryCode];
+                }
+            }
+        }
+        return $formattedResponse;
     }
 
     /**
@@ -64,48 +58,38 @@ final class GetCachedCategoryLabelsByLocaleAndProduct
     public function hydrateCache(array $productUuids, array $locales): void
     {
         $productUuidsNotInCache = \array_diff($productUuids, \array_keys($this->categoryCodesByProduct));
-
-        /** @var array<string, string[]> */
-        $newCategoryCodesByProduct = \array_reduce(
-            $this->getCategoryCodesByProductQuery->execute($productUuidsNotInCache),
-            function (array $carry, array $result): array {
-                /** @var string */
-                $uuid = $result['product_uuid'];
-                /** @var string */
-                $codes = $result['category_codes'];
-                return \array_merge($carry, [$uuid => \json_decode($codes, null, 512, JSON_THROW_ON_ERROR)]);
-            },
-            [],
+        if (\count($productUuidsNotInCache) === 0) {
+            return;
+        }
+        $envelope = $this->queryBus->dispatch(
+            new GetProductCategoryCodesQuery(
+                \array_map(fn ($strUuid): UuidInterface => Uuid::fromString($strUuid), $productUuidsNotInCache)
+            )
         );
+        $categoriesByProductNotInCache = $envelope->last(HandledStamp::class)?->getResult();
+
         $this->categoryCodesByProduct = \array_merge(
             $this->categoryCodesByProduct,
-            $newCategoryCodesByProduct,
+            $categoriesByProductNotInCache,
         );
 
-        $categoryCodes = \array_reduce(
-            \array_filter($this->categoryCodesByProduct, fn ($productUuid): bool => \in_array($productUuid, $productUuids), ARRAY_FILTER_USE_KEY),
-            fn (array $carry, array $categories): array => \array_unique(\array_merge($carry, $categories)),
-            [],
-        );
+        $categoryCodesForGivenProducts = [];
+        foreach ($this->categoryCodesByProduct as $productUuid => $categories) {
+            if (\in_array($productUuid, $productUuids)) {
+                $categoryCodesForGivenProducts = \array_unique(\array_merge($categoryCodesForGivenProducts, $categories));
+            }
+        }
 
         foreach ($locales as $locale) {
-            /** @var string[] */
-            $categoryCodesToLocalize = \array_diff($categoryCodes, \array_keys($this->categoryLabelsByLocale[$locale] ?? []));
+            $categoryCodesToLocalize = \array_diff(
+                $categoryCodesForGivenProducts,
+                \array_keys($this->categoryLabelsByLocale[$locale] ?? []),
+            );
             if (\count($categoryCodesToLocalize) > 0) {
-                /** @var array<string, string> */
-                $newCategoryLabelsByLocale = \array_reduce(
-                    $this->getCategoriesByCodeQuery->execute($categoryCodesToLocalize, $locale),
-                    /** @param array{code: string, label: string, isLeaf: bool} $category */
-                    fn (array $carry, array $category) => \array_merge(
-                        $carry,
-                        [$category['code'] => $category['label']],
-                    ),
-                    [],
-                );
-                $this->categoryLabelsByLocale[$locale] = \array_merge(
-                    $this->categoryLabelsByLocale[$locale] ?? [],
-                    $newCategoryLabelsByLocale,
-                );
+                $categories = $this->getCategoriesByCodeQuery->execute($categoryCodesToLocalize, $locale);
+                foreach ($categories as $category) {
+                    $this->categoryLabelsByLocale[$locale][$category['code']] = $category['label'];
+                }
             }
         }
     }

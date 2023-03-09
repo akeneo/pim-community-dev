@@ -24,7 +24,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
             'code' => 'categories',
             'type' => 'categories',
             'scopable' => false,
-            'localizable' => true,
+            'localizable' => false,
             'attribute_group_code' => 'system',
             'attribute_group_label' => 'System',
         ]);
@@ -36,7 +36,10 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
         $source = [
             'source' => 'categories',
             'scope' => null,
-            'locale' => 'en_US',
+            'locale' => null,
+            'parameters' => [
+                'label_locale' => 'en_US',
+            ]
         ];
         $violations = $this->validator->validate($source, new SystemAttributeCategoriesSource());
 
@@ -62,7 +65,10 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
             'missing source value' => [
                 'source' => [
                     'scope' => null,
-                    'locale' => 'en_US',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ]
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -70,7 +76,10 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => '',
                     'scope' => null,
-                    'locale' => 'en_US',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ]
                 ],
                 'expectedMessage' => 'This value should not be blank.',
             ],
@@ -78,7 +87,10 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 42,
                     'scope' => null,
-                    'locale' => 'en_US',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ]
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
@@ -86,14 +98,20 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'categories',
                     'scope' => 'e-commerce',
-                    'locale' => 'en_US',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ]
                 ],
                 'expectedMessage' => 'This value should be null.',
             ],
             'missing scope field' => [
                 'source' => [
                     'source' => 'categories',
-                    'locale' => 'en_US',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ]
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -101,6 +119,9 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'categories',
                     'scope' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ]
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -109,6 +130,48 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'source' => 'categories',
                     'scope' => null,
                     'locale' => '',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ]
+                ],
+                'expectedMessage' => 'This value should be null.',
+            ],
+            'with locale' => [
+                'source' => [
+                    'source' => 'categories',
+                    'scope' => null,
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ]
+                ],
+                'expectedMessage' => 'This value should be null.',
+            ],
+            'missing parameters' => [
+                'source' => [
+                    'source' => 'categories',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'missing label locale' => [
+                'source' => [
+                    'source' => 'categories',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => []
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'blank label locale' => [
+                'source' => [
+                    'source' => 'categories',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => '',
+                    ]
                 ],
                 'expectedMessage' => 'This value should not be blank.',
             ],
@@ -116,7 +179,10 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'categories',
                     'scope' => null,
-                    'locale' => 'zz_ZZ',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'zz_ZZ',
+                    ]
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
             ],
@@ -124,7 +190,10 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                 'source' => [
                     'source' => 'categories',
                     'scope' => null,
-                    'locale' => 'kz_KZ',
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'kz_KZ',
+                    ]
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
             ],
