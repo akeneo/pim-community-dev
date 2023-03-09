@@ -29,7 +29,8 @@ class GetAssetAttributeAction
             return new RedirectResponse('/');
         }
 
-        $assetAttribute = $this->findOneAssetAttributeByIdentifierQuery->execute($identifier);
+        // todo : get PIM current locale
+        $assetAttribute = $this->findOneAssetAttributeByIdentifierQuery->execute($identifier, 'en_US');
 
         if (null === $assetAttribute) {
             throw new NotFoundHttpException(\sprintf('Asset attribute "%s" does not exist.', $identifier));

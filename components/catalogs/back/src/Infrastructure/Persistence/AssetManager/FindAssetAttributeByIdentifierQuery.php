@@ -12,7 +12,7 @@ use Akeneo\Catalogs\Application\Persistence\AssetManager\FindAssetAttributeByIde
  */
 final class FindAssetAttributeByIdentifierQuery implements FindAssetAttributeByIdentifierQueryInterface
 {
-    public function execute(string $identifier): ?array
+    public function execute(string $identifier, string $locale = 'en_US'): ?array
     {
         return null;
     }

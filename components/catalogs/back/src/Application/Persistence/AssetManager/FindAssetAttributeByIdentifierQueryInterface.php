@@ -20,5 +20,5 @@ interface FindAssetAttributeByIdentifierQueryInterface
     /**
      * @return AssetAttribute|null
      */
-    public function execute(string $identifier): ?array;
+    public function execute(string $identifier, string $locale = 'en_US'): ?array;
 }

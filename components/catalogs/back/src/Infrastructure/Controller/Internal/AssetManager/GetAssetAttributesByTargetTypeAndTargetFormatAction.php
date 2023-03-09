@@ -62,7 +62,8 @@ class GetAssetAttributesByTargetTypeAndTargetFormatAction
             );
         }
 
-        $assetAttributes = $this->getAssetAttributesQuery->execute($assetFamilyIdentifier, $attributeTypes);
+        // todo : get PIM current locale
+        $assetAttributes = $this->getAssetAttributesQuery->execute($assetFamilyIdentifier, $attributeTypes, 'en_US');
 
         return new JsonResponse($assetAttributes);
     }
