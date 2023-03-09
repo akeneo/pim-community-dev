@@ -3,7 +3,6 @@ import {PageContent, useSecurity, useTranslate, useUserContext} from '@akeneo-pi
 import {
   AttributesIllustration,
   Button,
-  CodingIllustration,
   Helper,
   Information,
   Link,
@@ -88,6 +87,15 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
             {translate('pim_identifier_generator.list.check_help_center')}
           </Link>
         </Information>
+
+        {isManageIdentifierGeneratorAclGranted && generators.length >= LIMIT_IDENTIFIER_GENERATOR && (
+          <Helper level="info">
+            {translate('pim_identifier_generator.list.max_generator.title', {
+              count: LIMIT_IDENTIFIER_GENERATOR,
+            })}
+          </Helper>
+        )}
+
         <Table>
           <Table.Header>
             <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
@@ -147,22 +155,6 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                     </Table.ActionCell>
                   </Table.Row>
                 ))}
-                {isManageIdentifierGeneratorAclGranted && generators.length >= LIMIT_IDENTIFIER_GENERATOR && (
-                  <tr>
-                    <td colSpan={3}>
-                      <Placeholder
-                        illustration={<CodingIllustration />}
-                        size="large"
-                        title={translate('pim_identifier_generator.list.max_generator.title')}
-                      >
-                        {translate('pim_identifier_generator.list.max_generator.info')}
-                        <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
-                          {translate('pim_identifier_generator.list.check_help_center')}
-                        </Styled.HelpCenterLink>
-                      </Placeholder>
-                    </td>
-                  </tr>
-                )}
               </>
             )}
             {!isManageIdentifierGeneratorAclGranted && (
