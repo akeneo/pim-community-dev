@@ -63,4 +63,4 @@ test('It does not call onConfirm when user press enter and the text is not confi
   fireEvent.keyDown(document, '{enter}');
 
   expect(handleConfirm).not.toBeCalled();
-})
+});

@@ -24,7 +24,7 @@ const DoubleCheckDeleteModal = ({
     }
 
     onConfirm();
-  }
+  };
 
   return (
     <DeleteModal {...deleteModalProps} canConfirmDelete={canConfirmDelete && textIsConfirmed} onConfirm={handleConfirm}>
