@@ -7,6 +7,7 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\DeactivateTemplateCommand;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -31,6 +32,6 @@ class DeactivateTemplateController
         $command = DeactivateTemplateCommand::create($templateUuid);
         $this->categoryCommandBus->dispatch($command);
 
-        return new Response(null, Response::HTTP_ACCEPTED);
+        return new JsonResponse(null, Response::HTTP_ACCEPTED);
     }
 }
