@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\Exception\UserFacingError;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
@@ -29,7 +30,7 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
     public function __construct(
         private readonly AttributeGroupRepositoryInterface $attributeGroupRepository,
         private readonly ObjectUpdaterInterface $updater,
-        private readonly SaverInterface $saver,
+        private readonly AttributeSaver $saver,
         private readonly EntityManagerClearerInterface $cacheClearer,
         private readonly JobRepositoryInterface $jobRepository,
         private readonly JobStopper $jobStopper,
