@@ -6,3 +6,7 @@ services:
         class: Akeneo\Pim\Enrichment\Category\Infrastructure\Query\SqlGetExistingCategories
         arguments:
             - '@database_connection'
+            -
+    Akeneo\Pim\Enrichment\Category\Infrastructure\Query\SqlGetHierarchicalInfoCategories:
+        arguments:
+            - '@database_connection'
