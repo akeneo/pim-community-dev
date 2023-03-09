@@ -93,6 +93,8 @@ final class SimpleSelectProperty implements PropertyInterface
             'type' => SimpleSelect::type(),
             'attributeCode' => $this->attributeCode,
             'operator' => 'NOT EMPTY',
+            'scope' => $this->scope,
+            'locale' => $this->locale,
         ]);
     }
 }
