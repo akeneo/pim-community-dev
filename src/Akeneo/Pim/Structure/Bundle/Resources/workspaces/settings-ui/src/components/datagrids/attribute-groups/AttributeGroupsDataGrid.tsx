@@ -97,7 +97,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({
         <TableWrapper>
           <Table
             isDragAndDroppable={canDragAndDrop}
-            isSelectable={true}
+            isSelectable={false}
             onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
           >
             <Table.Header>
