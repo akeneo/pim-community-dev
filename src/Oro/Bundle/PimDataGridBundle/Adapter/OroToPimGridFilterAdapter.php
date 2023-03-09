@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oro\Bundle\PimDataGridBundle\Adapter;
 
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
@@ -13,21 +15,12 @@ use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
  */
 class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 {
-    const FAMILY_GRID_NAME = 'family-grid';
+    public const PRODUCT_GRID_NAME = 'product-grid';
+    public const ATTRIBUTE_GRID_NAME = 'attribute-grid';
 
-    const PRODUCT_GRID_NAME = 'product-grid';
-
-    const ATTRIBUTE_GRID_NAME = 'attribute-grid';
-
-    /** @var MassActionDispatcher */
-    protected $massActionDispatcher;
-
-    /**
-     * @param MassActionDispatcher $massActionDispatcher
-     */
-    public function __construct(MassActionDispatcher $massActionDispatcher)
-    {
-        $this->massActionDispatcher = $massActionDispatcher;
+    public function __construct(
+        private MassActionDispatcher $massActionDispatcher,
+    ) {
     }
 
     /**
@@ -42,13 +35,6 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
         };
     }
 
-    /**
-     * Adapt filters for the default grids
-     *
-     * @param array $parameters
-     *
-     * @return array
-     */
     protected function adaptDefaultGrid(array $parameters): array
     {
         if (isset($parameters['inset']) && true === $parameters['inset']) {
@@ -76,10 +62,29 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 
     protected function adaptAttributeGrid(array $parameters): array
     {
+        $filters = $parameters['filters'];
+
         return [
-            'field' => 'code',
-            'operator' => $parameters['inset'] ? 'IN' : 'NOT IN',
-            'values' => $parameters['values']
+            'search' => $filters['label']['value'] ?? null,
+            'options' => [
+                // TODO code filter type: 1 -> contains, type 2 -> does not contain, etc...
+                'types' => $filters['type']['value'] ?? null,
+                'attribute_groups' => $filters['group']['value'] ?? [],
+                'scopable' => $this->adaptTrileanFilter($filters['scopable']['value'] ?? null),
+                'localizable' => $this->adaptTrileanFilter($filters['localizable']['value'] ?? null),
+                'families' => $filters['family']['value'] ?? null,
+                // 'smart' => $this->adaptTrileanFilter($filters['smart']['value'] ?? null), // Not available in CE repo and not implemented in EE...
+                // 'quality' => ?
+            ],
         ];
+    }
+
+    private function adaptTrileanFilter(?string $value): ?bool
+    {
+        return match ($value) {
+            '1' => true,
+            '2' => false,
+            default => null,
+        };
     }
 }

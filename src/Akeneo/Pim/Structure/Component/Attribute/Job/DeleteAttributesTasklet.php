@@ -6,12 +6,12 @@ namespace Akeneo\Pim\Structure\Component\Attribute\Job;
 
 use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -23,7 +23,7 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
-        private readonly AttributeRepositoryInterface $attributeRepository,
+        private readonly SearchableRepositoryInterface $attributeRepository,
         private readonly RemoverInterface $remover,
         private readonly TranslatorInterface $translator,
     ) {
@@ -60,11 +60,9 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
 
-        return match ($filters['operator']) {
-            'IN' => $this->attributeRepository->findByCodes($filters['values']),
-            'NOT IN' => $this->attributeRepository->findByNotInCodes($filters['values']),
-            default => new \LogicException('Operator should be "IN" or "NOT IN"'),
-        };
+        $attributes = $this->attributeRepository->findBySearch($filters['search'], $filters['options']);
+
+        return $attributes;
     }
 
     private function delete(Attribute $attribute): void
