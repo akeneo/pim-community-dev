@@ -125,6 +125,7 @@ class CatalogFixtureCommand extends Command
                     'source' => 'meta_title',
                     'scope' => null,
                     'locale' => 'en_US',
+                    'default' => 'Meta default title'
                 ],
                 'release_date' => [
                     'source' => null,
