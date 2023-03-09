@@ -27,7 +27,7 @@ final class Version_8_0_20230308145000_set_empty_categories_labels_to_null_Integ
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_set_empty_labels_to_null(): void
+    public function test_it_sets_empty_labels_to_null(): void
     {
         $this->connection->executeStatement(
             <<<SQL
@@ -41,9 +41,9 @@ final class Version_8_0_20230308145000_set_empty_categories_labels_to_null_Integ
                 ), '', 'fr_FR');
             SQL
         );
-        $this->assertEquals(1, $this->test_it_hasnt_category_label_empty());
+        $this->assertEquals(1, $this->test_is_category_label_an_empty_string());
         $this->reExecuteMigration(self::MIGRATION_NAME);
-        $this->assertEquals(0, $this->test_it_hasnt_category_label_empty());
+        $this->assertEquals(0, $this->test_is_category_label_an_empty_string());
     }
 
     protected function getConfiguration(): Configuration
@@ -51,7 +51,7 @@ final class Version_8_0_20230308145000_set_empty_categories_labels_to_null_Integ
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function test_it_hasnt_category_label_empty(): int
+    private function test_is_category_label_an_empty_string(): int
     {
         return (int) $this->connection->fetchOne(
             <<<SQL

@@ -525,11 +525,9 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $retrievedCategory = $this->get(GetCategoriesInterface::class)->execute($parameters);
         $this->assertIsArray($retrievedCategory);
 
-        // we retrieve only 1 out of the 3 existing categories
         $this->assertCount(2, $retrievedCategory);
-
-        // we check that we retrieved the correct category according to the OFFSET
         $this->assertEmpty($retrievedCategory[0]->getLabels());
+        $this->assertEmpty($retrievedCategory[1]->getLabels());
     }
 
     public function testCountCategories(): void
