@@ -4,18 +4,21 @@ services:
             - '@fos_oauth_server.client_manager.default'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Tool\Bundle\ApiBundle\Command\ListClientsCommand:
         arguments:
             - '@pim_api.repository.client'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Tool\Bundle\ApiBundle\Command\RevokeClientCommand:
         arguments:
             - '@fos_oauth_server.client_manager.default'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Tool\Bundle\ApiBundle\Command\DeleteExpiredApiTokens:
         arguments:

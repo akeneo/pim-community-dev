@@ -6,6 +6,7 @@ services:
             $hosts: '%index_hosts%'
         tags:
             - {name: console.command}
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Tool\Bundle\ElasticsearchBundle\Command\UpdateIndexVersionCommand:
         arguments:
@@ -21,3 +22,4 @@ services:
             - '%index_list_changed_total_field_limit%'
         tags:
             - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
