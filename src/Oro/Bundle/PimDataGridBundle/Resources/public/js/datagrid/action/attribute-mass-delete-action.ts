@@ -38,6 +38,18 @@ class AttributeMassDeleteAction extends MassAction {
   }
 
   private openModal(data: MassActionData): void {
+    this.renderModal(data, true);
+  }
+
+  private disableConfirm(data: MassActionData): void {
+    this.renderModal(data, false);
+  }
+
+  private closeModal(): void {
+    ReactDOM.unmountComponentAtNode(this.el);
+  }
+
+  private renderModal(data: MassActionData, canConfirmDelete: boolean): void {
     const textToCheck = translate('pim_common.delete').toLowerCase();
 
     const modalProps: DoubleCheckDeleteModalProps = {
@@ -56,6 +68,7 @@ class AttributeMassDeleteAction extends MassAction {
       cancelButtonLabel: translate('pim_common.cancel'),
       doubleCheckInputLabel: translate('pim_enrich.entity.attribute.module.mass_delete.modal.label', {textToCheck}),
       textToCheck,
+      canConfirmDelete,
     };
 
     ReactDOM.render(
@@ -68,11 +81,9 @@ class AttributeMassDeleteAction extends MassAction {
     );
   }
 
-  private closeModal(): void {
-    ReactDOM.unmountComponentAtNode(this.el);
-  }
-
   private async launchJob(data: MassActionData): Promise<void> {
+    this.disableConfirm(data);
+
     const loadingMask = new LoadingMask();
     loadingMask.render().$el.appendTo($('.hash-loading-mask')).show();
 

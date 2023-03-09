@@ -73,19 +73,19 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
             $this->remover->remove($attribute);
             $this->stepExecution->incrementSummaryInfo('deleted_attributes');
         } catch (CannotRemoveAttributeException $e) {
-            $this->addWarning($this->translator->trans($e->messageTemplate, $e->messageParameters), $attribute);
+            $this->addWarning($this->translator->trans($e->messageTemplate, $e->messageParameters), $attribute->getCode());
             $this->stepExecution->incrementSummaryInfo('skipped_attributes');
         } catch (\Exception $e) {
-            $this->addWarning($e->getMessage(), $attribute);
+            $this->addWarning($e->getMessage(), $attribute->getCode());
             $this->stepExecution->incrementSummaryInfo('skipped_attributes');
         }
 
         $this->stepExecution->incrementProcessedItems();
     }
 
-    private function addWarning(string $reason, Attribute $attribute): void
+    private function addWarning(string $reason, string $attributeCode): void
     {
-        $this->stepExecution->addWarning($reason, [], new DataInvalidItem($attribute));
+        $this->stepExecution->addWarning($reason, [], new DataInvalidItem(['code' => $attributeCode]));
     }
 
     public function isTrackable(): bool

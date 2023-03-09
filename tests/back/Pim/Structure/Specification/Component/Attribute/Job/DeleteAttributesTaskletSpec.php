@@ -106,6 +106,7 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         TranslatorInterface $translator,
+        Attribute $attribute1,
     ): void {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -114,7 +115,7 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
             'values' => ['attribute_1'],
         ];
 
-        $attribute1 = new Attribute();
+        $attribute1->getCode()->willReturn('attribute_1');
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($filters);
