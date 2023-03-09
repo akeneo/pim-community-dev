@@ -151,3 +151,36 @@ test('it launch mass delete', async () => {
   });
   expect(launchMassDelete).toBeCalled();
 });
+
+test('it resets assigned attribute group when modal is closed', () => {
+  renderWithProviders(
+    <MassDeleteAttributeGroupsModal
+      impactedAttributeGroups={[
+        {code: 'attribute_group_3', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 3},
+      ]}
+      availableTargetAttributeGroups={[
+        {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
+        {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
+      ]}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button'));
+
+  expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group')).toBeInTheDocument();
+  expect(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.confirm')).toBeInTheDocument();
+
+  userEvent.click(screen.getByLabelText('pim_enrich.entity.attribute_group.mass_delete.select_attribute_group'));
+
+  expect(screen.getByText('[attribute_group_1]')).toBeInTheDocument();
+  expect(screen.getByText('[attribute_group_2]')).toBeInTheDocument();
+
+  userEvent.click(screen.getByText('[attribute_group_1]'));
+
+  expect(screen.getByText('[attribute_group_1]')).toBeInTheDocument();
+
+  userEvent.click(screen.getByText('pim_common.cancel'));
+  userEvent.click(screen.getByText('pim_enrich.entity.attribute_group.mass_delete.button'));
+
+  expect(screen.queryByText('[attribute_group_1]')).not.toBeInTheDocument();
+});
