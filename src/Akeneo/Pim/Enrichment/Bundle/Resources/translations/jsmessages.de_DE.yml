@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: Produkt erfolgreich aktualisiert.
       fail: Das Produkt konnte nicht aktualisiert werden.
+      fail_session_expired: Das Produkt kann nicht aktualisiert werden. Ihre Benutzersitzung ist abgelaufen. Bitte melden Sie sich erneut an.
       fields_not_ready: "Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       file_upload: Beim Datei-Upload ist ein Fehler aufgetreten
@@ -112,8 +113,6 @@ pim_enrich.entity.product:
       quantified:
         quantity: Quantität
         unlinked: Nicht verknüpft
-      search:
-        placeholder: In Label oder Bezeichner suchen
       no_data: Es gibt keine verbundenen Produkte
       remove: Verbindung entfernen
       edit: Produkt bearbeiten
@@ -243,6 +242,9 @@ pim_enrich.entity.category:
     success: Der Baum "{{ tree }}" wurde erfolgreich gelöscht
     error: Der Baum "{{ tree }}" konnte nicht gelöscht werden
     confirmation: Sind Sie sicher, dass Sie den {{ name }} Baum löschen möchten? Alle Kategorien in diesem Baum werden gelöscht und die Produkte werden aus all diesen Kategorien entfernt.
+    confirmation_question: Möchten Sie {{name}} wirklich löschen?
+    warning_categories_number: Die zugehörigen {{ categoriesNumber }} Kategorien werden gelöscht und die Produkte werden aus all diesen Kategorien entfernt.
+    warning_products: Alle zugehörigen Produkte werden aus {{ name }} entfernt
     products_limit_exceeded:
       title: Dieser Baum kann nicht gelöscht werden
       message: Der Baum "{{ tree }}" enthält mehr als {{ limit }} Produkte und kann daher nicht gelöscht werden.
@@ -250,6 +252,7 @@ pim_enrich.entity.category:
     success: Die Kategorie "{{ name }}" wurde erfolgreich gelöscht
     error: Die Kategorie "{{ name }}" konnte nicht gelöscht werden
     confirmation: Sind Sie sicher, dass Sie die Kategorie {{ name }} löschen möchten? Produkte in dieser Kategorie werden nicht gelöscht.
+    confirmation_question: Möchten Sie {{name}} wirklich löschen?
     products_limit_exceeded:
       title: Diese Kategorie kann nicht gelöscht werden
       message: Die "{{ name }}" Kategorie enthält mehr als {{ limit }} Produkte und kann daher nicht gelöscht werden.

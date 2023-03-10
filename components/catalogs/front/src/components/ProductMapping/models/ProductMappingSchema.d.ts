@@ -3,6 +3,9 @@ export type ProductMappingSchema = {
         [target: string]: {
             title?: string;
             type: string;
+            items?: {
+                type: string;
+            };
             format?: string;
             description?: string;
             minLength?: number;

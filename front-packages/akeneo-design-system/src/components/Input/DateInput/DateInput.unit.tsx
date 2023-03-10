@@ -72,3 +72,17 @@ test('it supports formatted value yyyy-mm-dd', () => {
   render(<DateInput value={'2023-03-01'} onChange={jest.fn()} ref={ref} />);
   expect(ref.current?.value).toBe('2023-03-01');
 });
+
+test('it updates the onChange handler on rerender', () => {
+  const handleChange = jest.fn();
+  const refreshedHandleChange = jest.fn();
+  const props = {id: 'myInput', value: '2023-03-01', 'data-testid': 'myInput'};
+
+  const {rerender} = render(<DateInput {...props} onChange={handleChange} />);
+  rerender(<DateInput {...props} onChange={refreshedHandleChange} />);
+
+  fireEvent.change(screen.getByTestId('myInput'), {target: {value: '2023-03-02'}});
+
+  expect(handleChange).not.toHaveBeenCalled();
+  expect(refreshedHandleChange).toHaveBeenCalledWith('2023-03-02');
+});

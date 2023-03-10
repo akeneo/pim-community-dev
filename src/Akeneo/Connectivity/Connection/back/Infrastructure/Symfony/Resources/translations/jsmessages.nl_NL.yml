@@ -38,8 +38,9 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: Verbonden apps
   akeneo_connectivity_connection_connect_connected_apps_edit: App-instellingen
   akeneo_connectivity_connection_connect_connected_apps_delete: App verwijderen
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Een testapp maken
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Testapp verwijderen
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: Regenereer inloggegevens
+  akeneo_connectivity_connection_connect_custom_apps_create: Maak een aangepaste app
+  akeneo_connectivity_connection_connect_custom_apps_delete: Aangepaste app verwijderen
   akeneo_connectivity_connection_connect_connected_apps_open: App openen
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Catalogus bewerken
 akeneo_connectivity.connection:
@@ -73,51 +74,9 @@ akeneo_connectivity.connection:
         empty: Er zijn geen apps die compatibel zijn met uw versie
       unreachable: We kunnen de App Store niet bereiken. Kom later terug.
       scroll_to_top: Naar boven scrollen
-      test_apps:
-        title: Mijn testapps
+      custom_apps:
+        title: Mijn aangepaste apps
         removed_user: Verwijderde gebruiker
-        create_a_test_app: Een testapp maken
-        modal:
-          subtitle: Een testapp maken
-          app_information:
-            title: Appgegevens
-            description: Lees ons artikel als u hulp nodig heeft
-            link: Mijn app testen voordat hij wordt gepubliceerd
-            fields:
-              name: Naam
-              activate_url: Activerings-URL
-              callback_url: Callback-URL
-          credentials:
-            title: Toegangsgegevens
-            warning: Zorg ervoor dat u deze inloggegevens ergens opslaat. We laten ze hier maar één keer zien.
-            client_id: Cliënt-id
-            client_secret: Geheim van cliënt
-        errors:
-          page_not_found: Pagina niet gevonden
-          creation:
-            name:
-              min_length: De naam van de testapp is te kort. Hij moet minimaal 3 tekens bevatten.
-              max_length: De naam van de testapp is te lang. Hij moet 255 tekens of minder bevatten.
-              not_blank: De naam van de testapp is vereist.
-            client_id:
-              max_length: De cliënt-id van de testapp is te lang. Hij moet 36 tekens of minder bevatten.
-              not_blank: De cliënt-id is vereist.
-            activate_url:
-              max_length: De activerings-URL van de testapp is te lang. Hij moet 255 tekens of minder bevatten.
-              must_be_url: De activerings-URL moet een geldige URL zijn.
-              not_blank: De activerings-URL is vereist.
-            callback_url:
-              max_length: De callback-URL van de testapp is te lang. Hij moet 255 tekens of minder bevatten.
-              must_be_url: De callback-URL moet een geldige URL zijn.
-              not_blank: De callback-URL is vereist.
-        delete:
-          subtitle: Apps
-          title: Bevestig verwijderen
-          description: U staat op het punt uw testapp uit deze PIM te verwijderen.
-          warning: Als u de verwijdering bevestigt, worden de testapp op de App Store-pagina en de bijbehorende verbonden app verwijderd.
-          flash:
-            success: De testapp is verwijderd.
-            error: Er is een fout opgetreden tijdens het verwijderen van de testapp.
     connected_apps:
       list:
         apps:
@@ -128,8 +87,8 @@ akeneo_connectivity.connection:
           marketplace_link_anchor: App Store
           at_least_one_is_not_listed_on_the_appstore: Sommige verbonden apps zijn niet compatibel met uw PIM-versie of bestaan niet meer in de Akeneo App Store. Neem contact met ons op voor meer informatie.
           pending_apps: Sommige apps zijn niet verbonden met uw PIM.
-        test_apps:
-          title: Mijn testapps
+        custom_apps:
+          title: Mijn verbonden aangepaste apps
           removed_user: Verwijderde gebruiker
         helper:
           title: '[0,1] Uw PIM is verbonden met {{ count }} app.|[2,Inf] Uw PIM is verbonden met {{ count }} apps.'
@@ -171,6 +130,22 @@ akeneo_connectivity.connection:
             information_link_anchor: Artikel in Hulp
             openid_only: Deze app maakt gebruik van Akeneo app-authenticatie zonder uw persoonlijke gegevens te gebruiken
           pending: Deze app is niet verbonden met uw PIM. Door de app te openen, zou het probleem opgelost moeten zijn. Als dit niet zo is, neem dan contact op met het ondersteuningsteam voor apps.
+          credentials:
+            title: Toegangsgegevens
+            client_id: Cliënt-id
+            client_secret: Geheim van cliënt
+            regenerate_button: Regenereren
+            regenerate_secret:
+              flash_error: Sorry, er is een fout opgetreden bij het opnieuw genereren van het verbindingsgeheim.
+              confirm:
+                title: Opnieuw genereren bevestigen
+                description: Het opnieuw genereren van het geheim heeft invloed op uw aangepaste app verbinding met het PIM. Weet u zeker dat u door wilt gaan?
+                regenerate_button: Regenereren
+                cancel_button: Annuleren
+              new_credentials:
+                title: Nieuwe inloggegevens
+                subtitle: Regenereer inloggegevens
+                done_button: Voltooid
         error_monitoring:
           error: Er is iets fout gegaan.
           helper:
@@ -295,6 +270,52 @@ akeneo_connectivity.connection:
           must_be_url: De redirect_uri is geen geldige url.
         scope:
           too_long: De lijst voor bereik mag niet meer dan 1000 tekens bevatten.
+    custom_apps:
+      creation_limit_reached: U heeft de limiet bereikt van 20 aangepaste apps.
+      create_button: Maak een app
+      create_modal:
+        subtitle: Maak een aangepaste app
+        app_information:
+          title: Appgegevens
+          description: Lees ons artikel als u hulp nodig heeft
+          link: Mijn app testen voordat hij wordt gepubliceerd
+          fields:
+            name: Naam
+            activate_url: Activerings-URL
+            callback_url: Callback-URL
+          field_placeholder:
+            name: App-naam definiëren
+            activate_url: Voer activatie-URL in
+            callback_url: Vul callback-URL in
+        credentials:
+          title: Toegangsgegevens
+          client_id: Cliënt-id
+          client_secret: Geheim van cliënt
+        errors:
+          limit_reached: U kunt maximaal 20 aangepaste apps maken.
+          name:
+            min_length: De naam van de app is te kort. Hij moet 3 tekens of meer hebben.
+            max_length: De naam van de app is te lang. Deze moet 255 tekens of minder bevatten.
+            not_blank: De naam van de app is vereist.
+          client_id:
+            max_length: Het client-id van de app is te lang. Het moet 36 tekens of minder hebben.
+            not_blank: De cliënt-id is vereist.
+          activate_url:
+            max_length: De activering url van de app is te lang. Deze moet 255 tekens of minder bevatten.
+            must_be_url: De activerings-URL moet een geldige URL zijn.
+            not_blank: De activerings-URL is vereist.
+          callback_url:
+            max_length: De callback url van de app is te lang. Deze moet 255 tekens of minder bevatten.
+            must_be_url: De callback-URL moet een geldige URL zijn.
+            not_blank: De callback-URL is vereist.
+      delete_modal:
+        subtitle: Verwijder een aangepaste app
+        title: Bevestig verwijderen
+        description: U staat op het punt uw app te verwijderen van deze PIM.
+        warning: Door het verwijderen te bevestigen, verwijdert u de app van de App Storepagina en de gerelateerde verbonden app.
+        flash:
+          success: Aangepaste app succesvol verwijderd. 
+          error: Sorry, er is een fout opgetreden tijdens het verwijderen van de aangepaste app.
   connections: Verbindingen
   secondary_actions:
     title: Overige acties
