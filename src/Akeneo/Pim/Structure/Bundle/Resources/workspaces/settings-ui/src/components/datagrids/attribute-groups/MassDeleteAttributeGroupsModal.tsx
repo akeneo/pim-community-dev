@@ -44,6 +44,11 @@ const MassDeleteAttributeGroupsModal = ({
 
   useAutoFocus(inputRef);
 
+  const handleOpenMassDeleteModal = () => {
+    setReplacementAttributeGroup(null);
+    openMassDeleteModal();
+  };
+
   const handleLaunchMassDelete = async () => {
     if (isLoading) return;
 
@@ -58,7 +63,7 @@ const MassDeleteAttributeGroupsModal = ({
 
   return (
     <>
-      <Button level="danger" onClick={openMassDeleteModal}>
+      <Button level="danger" onClick={handleOpenMassDeleteModal}>
         {translate('pim_common.delete')}
       </Button>
       {isMassDeleteModalOpen && (
