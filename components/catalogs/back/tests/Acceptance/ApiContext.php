@@ -1171,7 +1171,7 @@ class ApiContext implements Context
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
                 'countries' => 'Brazil, Canada',
                 'type' => 't-shirt',
-                'weight' => 12000000,
+                'weight' => 12,
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -1187,7 +1187,7 @@ class ApiContext implements Context
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
                 'countries' => 'Brazil, France',
                 'type' => 't-shirt',
-                'weight' => 125000,
+                'weight' => 0.125,
             ],
         ];
 
@@ -1232,7 +1232,7 @@ class ApiContext implements Context
             'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
             'countries' => 'Brazil, Canada',
             'type' => 't-shirt',
-            'weight' => 12000000,
+            'weight' => 12,
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload);

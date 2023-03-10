@@ -30,11 +30,11 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
         if (empty($product['raw_values'])) {
             return null;
         }
-        $metricUnit = $parameters['unit'] ?? null;
+        $targetedUnit = $parameters['unit'] ?? null;
 
-        $metricValue = $product['raw_values'][$code][$scope][$locale] ?? null;
+        $productValue = $product['raw_values'][$code][$scope][$locale] ?? null;
 
-        if (!\is_string($metricUnit) || !\is_array($metricValue)) {
+        if (!\is_string($targetedUnit) || !\is_array($productValue)) {
             return null;
         }
 
@@ -43,7 +43,7 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
             return null;
         }
 
-        return $this->findMetricUnitValue($attribute, $metricUnit, $metricValue);
+        return $this->findMetricUnitValue($attribute, $targetedUnit, $productValue);
     }
 
     public function getSupportedSourceType(): string
@@ -73,22 +73,22 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
      * @param Attribute $attribute
      * @param array<array-key, mixed> $metricValue
      */
-    private function findMetricUnitValue(array $attribute, string $unit, array $metricValue): float|int|null
+    private function findMetricUnitValue(array $attribute, string $targetedunit, array $productMeasurementValue): float|int|null
     {
         if (empty($attribute['measurement_family'])) {
             return null;
         }
 
-        if (!isset($metricValue['unit']) || !\is_string($metricValue['unit'])) {
+        if (!isset($productMeasurementValue['unit']) || !\is_string($productMeasurementValue['unit'])) {
             return null;
         }
 
-        if (!isset($metricValue['amount']) || !\is_numeric($metricValue['amount'])) {
+        if (!isset($productMeasurementValue['amount']) || !\is_numeric($productMeasurementValue['amount'])) {
             return null;
         }
 
         try {
-            $amount = $this->measurementConverter->convert($attribute['measurement_family'], $metricValue['unit'], $unit, $metricValue['amount']);
+            $amount = $this->measurementConverter->convert($attribute['measurement_family'], $targetedunit, $productMeasurementValue['unit'], $productMeasurementValue['amount']);
         } catch (\LogicException) {
             return null;
         }
