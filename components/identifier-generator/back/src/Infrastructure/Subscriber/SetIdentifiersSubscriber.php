@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToSetIdentifierException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\Error;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -41,11 +43,12 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     private ?array $identifierGenerators = null;
 
     public function __construct(
-        private IdentifierGeneratorRepository $identifierGeneratorRepository,
-        private GenerateIdentifierHandler $generateIdentifierCommandHandler,
-        private ValidatorInterface $validator,
-        private MetadataFactoryInterface $metadataFactory,
-        private EventDispatcherInterface $eventDispatcher,
+        private readonly IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly GenerateIdentifierHandler $generateIdentifierCommandHandler,
+        private readonly ValidatorInterface $validator,
+        private readonly MetadataFactoryInterface $metadataFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly MatchIdentifierGeneratorHandler $matchIdentifierGeneratorHandler,
     ) {
     }
 
@@ -75,7 +78,8 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
                 $product->getFamily()?->getCode(),
                 $this->flatValues($product),
             );
-            if ($identifierGenerator->match($productProjection)) {
+            $command = new MatchIdentifierGeneratorCommand($identifierGenerator, $productProjection);
+            if (($this->matchIdentifierGeneratorHandler)($command)) {
                 try {
                     $this->setGeneratedIdentifier($identifierGenerator, $productProjection, $product);
                 } catch (UnableToSetIdentifierException $e) {

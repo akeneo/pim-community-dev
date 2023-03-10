@@ -6,7 +6,6 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\C
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\SimpleSelect;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -204,64 +203,5 @@ class SimpleSelectSpec extends ObjectBehavior
             'scope' => 'ecommerce',
             'locale' => 'en_US',
         ]);
-    }
-
-    public function it_should_match_empty()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
-            'attributeCode' => 'color',
-            'operator' => 'EMPTY',
-        ]]);
-        $this->match(new ProductProjection(true, null, []))->shouldReturn(true);
-        $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'red',
-        ]))->shouldReturn(false);
-    }
-
-    public function it_should_match_not_empty()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
-            'attributeCode' => 'color',
-            'operator' => 'NOT EMPTY',
-        ]]);
-        $this->match(new ProductProjection(true, null, []))->shouldReturn(false);
-        $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'red',
-        ]))->shouldReturn(true);
-    }
-
-    public function it_should_match_in_list()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
-            'attributeCode' => 'color',
-            'operator' => 'IN',
-            'value' => ['red', 'pink']
-        ]]);
-        $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'red',
-        ]))->shouldReturn(true);
-        $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'blue',
-        ]))->shouldReturn(false);
-    }
-
-    public function it_should_match_not_in_list()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'simple_select',
-            'attributeCode' => 'color',
-            'operator' => 'NOT IN',
-            'value' => ['red', 'pink']
-        ]]);
-        $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'red',
-        ]))->shouldReturn(false);
-        $this->match(new ProductProjection(true, null, [
-            'color-<all_channels>-<all_locales>' => 'blue',
-        ]))->shouldReturn(true);
-        $this->match(new ProductProjection(true, null, []))->shouldReturn(false);
     }
 }
