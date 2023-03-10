@@ -74,4 +74,9 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
         return $this->createQueryBuilder('attribute_group')
             ->orderBy('attribute_group.sortOrder');
     }
+
+    public function countAll(): int
+    {
+        return $this->count([]);
+    }
 }

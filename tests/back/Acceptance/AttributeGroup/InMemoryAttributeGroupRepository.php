@@ -136,4 +136,9 @@ class InMemoryAttributeGroupRepository implements AttributeGroupRepositoryInterf
     {
         throw new NotImplementedException(__METHOD__);
     }
+
+    public function countAll(): int
+    {
+        return $this->attributeGroups->count();
+    }
 }
