@@ -16,12 +16,20 @@ const DoubleCheckDeleteModal = ({
   ...deleteModalProps
 }: DoubleCheckDeleteModalProps) => {
   const [value, setValue] = useState('');
-  const textIsConfirmed = value === textToCheck;
+  const canConfirm = canConfirmDelete && value === textToCheck;
+
+  const handleConfirm = () => {
+    if (!canConfirm) {
+      return;
+    }
+
+    onConfirm();
+  };
 
   return (
-    <DeleteModal {...deleteModalProps} canConfirmDelete={canConfirmDelete && textIsConfirmed} onConfirm={onConfirm}>
+    <DeleteModal {...deleteModalProps} canConfirmDelete={canConfirm} onConfirm={handleConfirm}>
       {children}
-      <TextField value={value} label={doubleCheckInputLabel} onChange={setValue} onSubmit={onConfirm} />
+      <TextField value={value} label={doubleCheckInputLabel} onChange={setValue} onSubmit={handleConfirm} />
     </DeleteModal>
   );
 };
