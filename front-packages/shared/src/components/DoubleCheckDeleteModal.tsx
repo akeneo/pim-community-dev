@@ -19,7 +19,7 @@ const DoubleCheckDeleteModal = ({
   const textIsConfirmed = value === textToCheck;
 
   const handleConfirm = () => {
-    if (!textIsConfirmed) {
+    if (!canConfirmDelete || !textIsConfirmed) {
       return;
     }
 

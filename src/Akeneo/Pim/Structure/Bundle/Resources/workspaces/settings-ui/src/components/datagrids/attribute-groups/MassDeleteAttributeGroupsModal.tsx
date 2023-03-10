@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components';
 import {Button, useBooleanState, useAutoFocus, Helper, SelectInput, Field} from 'akeneo-design-system';
 import {
@@ -44,9 +44,10 @@ const MassDeleteAttributeGroupsModal = ({
 
   useAutoFocus(inputRef);
 
-  useEffect(() => {
+  const handleOpenMassDeleteModal = () => {
     setReplacementAttributeGroup(null);
-  }, [setReplacementAttributeGroup, isMassDeleteModalOpen]);
+    openMassDeleteModal();
+  };
 
   const handleLaunchMassDelete = async () => {
     if (isLoading) return;
@@ -62,7 +63,7 @@ const MassDeleteAttributeGroupsModal = ({
 
   return (
     <>
-      <Button level="danger" onClick={openMassDeleteModal}>
+      <Button level="danger" onClick={handleOpenMassDeleteModal}>
         {translate('pim_common.delete')}
       </Button>
       {isMassDeleteModalOpen && (
