@@ -325,9 +325,3 @@ extensions:
         parent: pim-menu
         position: 160
         targetZone: helpMenu
-
-    pim-menu-help2:
-        module: pim/menu/help
-        parent: pim-menu
-        position: 160
-        targetZone: helpMenu
