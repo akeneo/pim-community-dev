@@ -146,6 +146,10 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetProductCategoriesLabelsQuery:
+        arguments:
+            $enrichmentQueryBus: '@pim_enrich.product.query_message_bus'
+
     Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsWithFilteredValuesQuery:
         arguments:
             $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
@@ -190,10 +194,6 @@ services:
         arguments:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
             $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
-
-    Akeneo\Catalogs\Application\Mapping\GetCachedCategoryLabelsByLocaleAndProduct:
-        arguments:
-            $queryBus: '@pim_enrich.product.query_message_bus'
 
     Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry:
         arguments:

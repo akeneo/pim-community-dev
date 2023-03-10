@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String;
 
-use Akeneo\Catalogs\Application\Mapping\GetCachedCategoryLabelsByLocaleAndProduct;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
+use Akeneo\Catalogs\Application\Persistence\Category\GetProductCategoriesLabelsQueryInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +14,7 @@ use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtr
 final class StringFromCategoriesValueExtractor implements StringValueExtractorInterface
 {
     public function __construct(
-        private GetCachedCategoryLabelsByLocaleAndProduct $getCachedCategoryLabelsByLocaleAndProduct,
+        private readonly GetProductCategoriesLabelsQueryInterface $getProductCategoriesLabelsQuery
     ) {
     }
 
@@ -28,16 +28,14 @@ final class StringFromCategoriesValueExtractor implements StringValueExtractorIn
         if (\is_null($parameters['locale_label'] ?? null)) {
             return null;
         }
-        /** @var string */
-        $uuid = $product['uuid']->serialize();
-        $categoriesLabels = $this->getCachedCategoryLabelsByLocaleAndProduct->fetch(
-            [$uuid],
-            [$parameters['locale_label']]
-        );
-        if (\count($categoriesLabels[$uuid][$parameters['locale_label']]) === 0) {
+
+        $uuid = $product['uuid']->toString();
+        $categoriesLabels = $this->getProductCategoriesLabelsQuery->execute($uuid, $parameters['locale_label']);
+        if ([] === $categoriesLabels) {
             return null;
         }
-        return \implode(', ', $categoriesLabels[$uuid][$parameters['locale_label']]);
+
+        return \implode(', ', $categoriesLabels);
     }
 
     public function getSupportedSourceType(): string

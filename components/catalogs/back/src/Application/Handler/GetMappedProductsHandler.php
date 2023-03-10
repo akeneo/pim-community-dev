@@ -6,12 +6,12 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
-use Akeneo\Catalogs\Application\Mapping\GetCachedCategoryLabelsByLocaleAndProduct;
 use Akeneo\Catalogs\Application\Mapping\ProductMapperInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\DisableCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Category\GetProductCategoriesLabelsQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Application\Service\DispatchInvalidCatalogDisabledEventInterface;
 use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
@@ -40,7 +40,7 @@ final class GetMappedProductsHandler
         private readonly DispatchInvalidCatalogDisabledEventInterface $dispatchInvalidCatalogDisabledEvent,
         private ProductMapperInterface $productMapper,
         private GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
-        private readonly GetCachedCategoryLabelsByLocaleAndProduct $getCachedCategoryLabelsByLocaleAndProduct,
+        private readonly GetProductCategoriesLabelsQueryInterface $getProductCategoriesLabelsQuery,
     ) {
     }
 
@@ -84,7 +84,7 @@ final class GetMappedProductsHandler
 
         $productMapping = $catalog->getProductMapping();
 
-        $this->hydrateCachedCategoryCodesAndLocales($productMapping, \array_column($products, 'uuid'));
+        $this->warmupProductCategoryCache($productMapping, \array_column($products, 'uuid'));
 
         return \array_map(
             /** @param RawProduct $product */
@@ -95,26 +95,22 @@ final class GetMappedProductsHandler
 
     /**
      * @param ProductMapping $productMapping
-     * @param UuidInterface[] $productUuids
+     * @param array<UuidInterface> $productUuids
      */
-    private function hydrateCachedCategoryCodesAndLocales(array $productMapping, array $productUuids): void
+    private function warmupProductCategoryCache(array $productMapping, array $productUuids): void
     {
         $categoryLocales = [];
-        foreach ($productMapping as $association) {
-            if (
-                $association['source'] === 'categories' &&
-                !in_array($association['locale'], $categoryLocales)
+        foreach ($productMapping as $targetSourceAssociation) {
+            if ('categories' === $targetSourceAssociation['source']
+                && !in_array($targetSourceAssociation['locale'], $categoryLocales)
             ) {
-                $categoryLocales[] = $association['locale'];
+                $categoryLocales[] = $targetSourceAssociation['locale'];
             }
         }
 
-        /** @var string[] $uuids */
-        $uuids = \array_map(function (UuidInterface $uuid): string {
-            /** @var string */
-            $serialized = $uuid->serialize();
-            return $serialized;
-        }, $productUuids);
-        $this->getCachedCategoryLabelsByLocaleAndProduct->hydrateCache($uuids, $categoryLocales);
+        $this->getProductCategoriesLabelsQuery->warmup(
+            \array_map(static fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
+            $categoryLocales,
+        );
     }
 }
