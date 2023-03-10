@@ -67,6 +67,20 @@ VALUES (
 );
 SQL;
 
+        if ($this->isPreviousDatabaseVersion()) {
+            $query = <<<SQL
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
+VALUES (
+    UUID_TO_BIN(:uuid),
+    :code,
+    (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target),
+    JSON_OBJECT('delimiter', :delimiter, 'text_transformation', :text_transformation),
+    :labels,
+    :conditions
+);
+SQL;
+        }
+
         try {
             $this->connection->executeStatement($query, $parameters);
         } catch (Exception $e) {
