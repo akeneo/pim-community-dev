@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Webmozart\Assert\Assert;
 
 /**
@@ -65,20 +64,19 @@ final class Conditions
         return \array_map(static fn (ConditionInterface $condition) => $condition->normalize(), $this->conditions);
     }
 
-    public function match(ProductProjection $productProjection): bool
-    {
-        return \array_reduce(
-            $this->conditions,
-            fn (bool $prev, $condition): bool => $prev && $condition->match($productProjection),
-            true
-        );
-    }
-
     /**
      * @param ConditionInterface[] $otherConditions
      */
     public function and(array $otherConditions): Conditions
     {
         return new self(\array_merge($this->conditions, $otherConditions));
+    }
+
+    /**
+     * @return ConditionInterface[]
+     */
+    public function conditions(): array
+    {
+        return $this->conditions;
     }
 }

@@ -47,3 +47,27 @@ services:
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchEmptyIdentifierHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchEnabledHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchFamilyHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchMultiSelectHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchSimpleSelectHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler:
+    arguments:
+      - !tagged_iterator { tag: 'akeneo.pim.automation.identifier_generator.match_condition' }

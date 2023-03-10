@@ -12,6 +12,7 @@ services:
       - '@validator'
       - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
       - '@event_dispatcher'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler'
       - '@monolog.logger'
     tags:
       - { name: kernel.event_subscriber }
