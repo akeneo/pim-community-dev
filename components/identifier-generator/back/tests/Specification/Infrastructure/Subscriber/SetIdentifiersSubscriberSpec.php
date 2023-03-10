@@ -6,6 +6,8 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFreeTextHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchEmptyIdentifierHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -52,7 +54,10 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
             ])),
             $validator,
             $metadataFactory,
-            $eventDispatcher
+            $eventDispatcher,
+            new MatchIdentifierGeneratorHandler(new \ArrayIterator([
+                new MatchEmptyIdentifierHandler(),
+            ])),
         );
     }
 
