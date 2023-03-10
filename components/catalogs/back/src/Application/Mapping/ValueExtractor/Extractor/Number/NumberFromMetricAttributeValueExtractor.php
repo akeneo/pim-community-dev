@@ -71,7 +71,7 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
 
     /**
      * @param Attribute $attribute
-     * @param array<array-key, mixed> $metricValue
+     * @param array<array-key, mixed> $productMeasurementValue
      */
     private function findMetricUnitValue(array $attribute, string $targetedunit, array $productMeasurementValue): float|int|null
     {
