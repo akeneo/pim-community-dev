@@ -34,10 +34,6 @@ final class SqlUpdateIdentifierPrefixesQuery implements UpdateIdentifierPrefixes
      */
     public function updateFromProducts(array $products): bool
     {
-        if ($this->isPreviousDatabaseVersion()) {
-            return false;
-        }
-
         $onlyProducts = \array_filter(
             $products,
             // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
@@ -131,20 +127,5 @@ SQL;
         }
 
         return $this->identifierAttributesCache;
-    }
-
-    private function isPreviousDatabaseVersion(): bool
-    {
-        $sql = <<<SQL
-SELECT COLUMN_TYPE from information_schema.COLUMNS
-WHERE TABLE_SCHEMA='%s'
-  AND TABLE_NAME='pim_catalog_identifier_generator_prefixes'
-  AND COLUMN_NAME='number';
-SQL;
-
-        $type = $this->connection->fetchOne(\sprintf($sql, $this->connection->getDatabase()));
-        Assert::string($type);
-
-        return \strtolower($type) === 'int';
     }
 }
