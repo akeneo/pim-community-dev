@@ -29,26 +29,14 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         return $this->catalog->useMinimalCatalog(['identifier_generator']);
     }
 
-    private function createIdentifierGenerator(?array $conditions = []): void
-    {
-        ($this->getCreateGeneratorHandler())(new CreateGeneratorCommand(
-            'my_generator',
-            $conditions,
-            [
-                ['type' => 'free_text', 'string' => 'AKN'],
-                ['type' => 'auto_number', 'numberMin' => 50, 'digitsMin' => 3],
-                ['type' => 'family', 'process' => ['type' => 'no']],
-            ],
-            ['en_US' => 'My Generator'],
-            'sku',
-            '-',
-            'lowercase',
-        ));
-    }
-
     /** @test */
     public function it_should_generate_an_identifier_on_create(): void
     {
+        $this->createIdentifierGenerator(
+            code: 'not_executed_one',
+            conditions: [['type' => 'family', 'operator' => 'EMPTY']],
+            structure: [['type' => 'free_text', 'string' => 'not_executed_one']]
+        );
         $this->createIdentifierGenerator();
         $productFromDatabase = $this->createProduct();
 
@@ -95,6 +83,7 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
     {
         $this->addRestrictionsOnIdentifierAttribute();
         $this->createIdentifierGenerator();
+        $this->createIdentifierGenerator(code: 'another_generator');
 
         $productFromDatabase = $this->createProduct();
         Assert::assertSame(null, $productFromDatabase->getIdentifier());
@@ -131,9 +120,9 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
     /** @test */
     public function it_should_generate_identifier_on_family_update(): void
     {
-        $this->createIdentifierGenerator([
-            ['type' => 'family', 'operator' => 'NOT EMPTY'],
-        ]);
+        $this->createIdentifierGenerator(
+            conditions: [['type' => 'family', 'operator' => 'NOT EMPTY']]
+        );
 
         $productFromDatabase = $this->createProduct(withFamily: false);
         Assert::assertSame(null, $productFromDatabase->getIdentifier());
@@ -147,9 +136,9 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
     public function it_should_generate_identifier_on_product_values_update(): void
     {
         $this->createSimpleSelectAttributeWithOption('color');
-        $this->createIdentifierGenerator([
-            ['type' => 'simple_select', 'operator' => 'IN', 'attributeCode' => 'color', 'value' => ['red']],
-        ]);
+        $this->createIdentifierGenerator(
+            conditions: [['type' => 'simple_select', 'operator' => 'IN', 'attributeCode' => 'color', 'value' => ['red']]]
+        );
 
         $this->createProduct();
         $productFromDatabase = $this->createProduct();
@@ -157,6 +146,26 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
 
         $this->setSimpleSelectProductValue($productFromDatabase->getUuid());
         Assert::assertSame('akn-050-my_family', $productFromDatabase->getIdentifier());
+    }
+
+    private function createIdentifierGenerator(
+        ?string $code = null,
+        ?array $conditions = [],
+        ?array $structure = null,
+    ): void {
+        ($this->getCreateGeneratorHandler())(new CreateGeneratorCommand(
+            $code ?? 'my_generator',
+            $conditions,
+            $structure ?? [
+                ['type' => 'free_text', 'string' => 'AKN'],
+                ['type' => 'auto_number', 'numberMin' => 50, 'digitsMin' => 3],
+                ['type' => 'family', 'process' => ['type' => 'no']],
+            ],
+            ['en_US' => 'My Generator'],
+            'sku',
+            '-',
+            'lowercase',
+        ));
     }
 
     private function addRestrictionsOnIdentifierAttribute(): void
