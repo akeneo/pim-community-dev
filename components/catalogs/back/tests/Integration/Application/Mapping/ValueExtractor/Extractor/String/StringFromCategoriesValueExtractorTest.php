@@ -60,7 +60,7 @@ class StringFromCategoriesValueExtractorTest extends ValueExtractorTestCase
             locale: null,
             scope: null,
             parameters: [
-                'locale_label' => 'en_US'
+                'label_locale' => 'en_US',
             ],
         );
         $this->assertEquals('Cameras, Digital cameras', $result);
@@ -83,7 +83,7 @@ class StringFromCategoriesValueExtractorTest extends ValueExtractorTestCase
             locale: null,
             scope: null,
             parameters: [
-                'locale_label' => 'en_US'
+                'label_locale' => 'en_US',
             ],
         );
 

@@ -14,7 +14,7 @@ use Akeneo\Catalogs\Application\Persistence\Category\GetProductCategoriesLabelsQ
 final class StringFromCategoriesValueExtractor implements StringValueExtractorInterface
 {
     public function __construct(
-        private readonly GetProductCategoriesLabelsQueryInterface $getProductCategoriesLabelsQuery
+        private readonly GetProductCategoriesLabelsQueryInterface $getProductCategoriesLabelsQuery,
     ) {
     }
 
@@ -25,12 +25,15 @@ final class StringFromCategoriesValueExtractor implements StringValueExtractorIn
         ?string $scope,
         ?array $parameters,
     ): null | string {
-        if (\is_null($parameters['locale_label'] ?? null)) {
+        if (!\is_array($parameters) ||
+            !isset($parameters['label_locale']) ||
+            !\is_string($parameters['label_locale'])
+        ) {
             return null;
         }
 
         $uuid = $product['uuid']->toString();
-        $categoriesLabels = $this->getProductCategoriesLabelsQuery->execute($uuid, $parameters['locale_label']);
+        $categoriesLabels = $this->getProductCategoriesLabelsQuery->execute($uuid, $parameters['label_locale']);
         if ([] === $categoriesLabels) {
             return null;
         }

@@ -56,7 +56,6 @@ final class SystemAttributeCategoriesSource extends Compound
                     'allowMissingFields' => false,
                     'allowExtraFields' => false,
                 ]),
-                new AttributeSourceContainsValidLocale(),
             ]),
         ];
     }

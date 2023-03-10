@@ -70,21 +70,6 @@ class FindOneAttributeByCodeQueryTest extends IntegrationTestCase
         ], $result);
     }
 
-    public function testItReturnsCategoriesSystemAttribute(): void
-    {
-        $result = $this->query->execute('categories');
-
-        $this->assertEquals([
-            'code' => 'categories',
-            'type' => 'categories',
-            'scopable' => false,
-            'localizable' => true,
-            'attribute_group_code' => 'system',
-            'attribute_group_label' => 'System',
-            'label' => 'Categories',
-        ], $result);
-    }
-
     public function testItReturnsNullIfNotFound(): void
     {
         $result = $this->query->execute('unknown');

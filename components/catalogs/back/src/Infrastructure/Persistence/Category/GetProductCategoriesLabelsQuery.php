@@ -30,13 +30,17 @@ class GetProductCategoriesLabelsQuery implements GetProductCategoriesLabelsQuery
     ) {
     }
 
+
+    /**
+     * @inheritDoc
+     */
     public function execute(string $productUuid, string $locale): array
     {
         $this->warmup([$productUuid], [$locale]);
 
         return \array_map(
             fn (string $categoryCode) => $this->categoryLabelsByLocale[$locale][$categoryCode] ?? \sprintf('[%s]', $categoryCode),
-            $this->categoryCodesByProduct[$productUuid] ?? []
+            $this->categoryCodesByProduct[$productUuid] ?? [],
         );
     }
 
@@ -63,10 +67,19 @@ class GetProductCategoriesLabelsQuery implements GetProductCategoriesLabelsQuery
 
         $envelope = $this->enrichmentQueryBus->dispatch(
             new GetProductCategoryCodesQuery(
-                \array_map(static fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $productUuidsNotInCache)
-            )
+                \array_map(static fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $productUuidsNotInCache),
+            ),
         );
-        $categoriesByProductNotInCache = $envelope->last(HandledStamp::class)?->getResult() ?? [];
+
+        /** @var HandledStamp|null $queryResponse */
+        $queryResponse = $envelope->last(HandledStamp::class);
+
+        if (null === $queryResponse) {
+            throw new \LogicException('The query must return a result.');
+        }
+
+        /** @var array<string, array<string>> $categoriesByProductNotInCache */
+        $categoriesByProductNotInCache = $queryResponse->getResult();
 
         $this->categoryCodesByProduct = \array_merge(
             $this->categoryCodesByProduct,

@@ -5,6 +5,7 @@ import {useInfiniteSourceAttributes} from '../../hooks/useInfiniteSourceAttribut
 import {Attribute} from '../../../../models/Attribute';
 import {useAttribute} from '../../../../hooks/useAttribute';
 import styled from 'styled-components';
+import {useSystemAttribute} from '../../hooks/useSystemAttribute';
 import {useSystemAttributes} from '../../hooks/useSystemAttributes';
 import {Target} from '../../models/Target';
 
@@ -25,14 +26,17 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
     const [search, setSearch] = useState<string>('');
     const {data: attributes, fetchNextPage} = useInfiniteSourceAttributes({target: target, search});
     const {data: attribute} = useAttribute(selectedCode);
-    const systemAttribute = useSystemAttributes();
-    const filteredSystemAttribute: Attribute[] = useMemo(() => {
+    const systemAttributes = useSystemAttributes();
+    const systemAttribute = useSystemAttribute(selectedCode);
+    const attributeLabel =
+        systemAttribute?.label ?? attribute?.label ?? (selectedCode.length > 0 ? `[${selectedCode}]` : '');
+    const filteredSystemAttributes: Attribute[] = useMemo(() => {
         if (target.type !== 'string' || target.format !== null) {
             return [];
         }
         const regex = new RegExp(search, 'i');
-        return systemAttribute.filter(attribute => attribute.label.match(regex));
-    }, [systemAttribute, search, target.type, target.format]);
+        return systemAttributes.filter(attribute => attribute.label.match(regex));
+    }, [systemAttributes, search, target.type, target.format]);
 
     const handleAttributeSelection = useCallback(
         (attribute: Attribute) => {
@@ -57,7 +61,7 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
                         onMouseDown={openDropdown}
                         emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                         openLabel={translate('akeneo_catalogs.common.select.open')}
-                        value={attribute?.label ?? (selectedCode.length > 0 ? `[${selectedCode}]` : '')}
+                        value={attributeLabel}
                         placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.placeholder')}
                         onChange={() => null}
                         clearable={false}
@@ -89,12 +93,12 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
                                 onNextPage={fetchNextPage}
                             >
                                 {/* system attributes */}
-                                {filteredSystemAttribute.length > 0 && (
+                                {filteredSystemAttributes.length > 0 && (
                                     <Dropdown.Section>
                                         {translate('akeneo_catalogs.product_selection.add_criteria.section_system')}
                                     </Dropdown.Section>
                                 )}
-                                {filteredSystemAttribute?.map(attribute => (
+                                {filteredSystemAttributes?.map(attribute => (
                                     <Dropdown.Item
                                         key={attribute.code}
                                         onClick={() => handleAttributeSelection(attribute)}

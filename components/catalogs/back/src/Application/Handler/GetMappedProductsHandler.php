@@ -102,15 +102,20 @@ final class GetMappedProductsHandler
         $categoryLocales = [];
         foreach ($productMapping as $targetSourceAssociation) {
             if ('categories' === $targetSourceAssociation['source']
-                && !in_array($targetSourceAssociation['locale'], $categoryLocales)
+                && isset($targetSourceAssociation['parameters']['label_locale'])
+                && \is_string($targetSourceAssociation['parameters']['label_locale'])
+                && $targetSourceAssociation['parameters']['label_locale'] !== ''
+                && !\in_array($targetSourceAssociation['parameters']['label_locale'], $categoryLocales)
             ) {
-                $categoryLocales[] = $targetSourceAssociation['locale'];
+                $categoryLocales[] = $targetSourceAssociation['parameters']['label_locale'];
             }
         }
 
-        $this->getProductCategoriesLabelsQuery->warmup(
-            \array_map(static fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
-            $categoryLocales,
-        );
+        if (\method_exists($this->getProductCategoriesLabelsQuery, 'warmup')) {
+            $this->getProductCategoriesLabelsQuery->warmup(
+                \array_map(static fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
+                $categoryLocales,
+            );
+        }
     }
 }

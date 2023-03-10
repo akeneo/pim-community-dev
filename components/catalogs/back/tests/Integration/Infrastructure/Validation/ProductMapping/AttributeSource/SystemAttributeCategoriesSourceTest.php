@@ -39,7 +39,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
             'locale' => null,
             'parameters' => [
                 'label_locale' => 'en_US',
-            ]
+            ],
         ];
         $violations = $this->validator->validate($source, new SystemAttributeCategoriesSource());
 
@@ -68,7 +68,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -79,7 +79,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This value should not be blank.',
             ],
@@ -90,7 +90,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
@@ -101,7 +101,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This value should be null.',
             ],
@@ -111,7 +111,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -121,7 +121,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'scope' => null,
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -132,7 +132,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'locale' => '',
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This value should be null.',
             ],
@@ -143,7 +143,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                     'parameters' => [
                         'label_locale' => 'en_US',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This value should be null.',
             ],
@@ -160,7 +160,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'source' => 'categories',
                     'scope' => null,
                     'locale' => null,
-                    'parameters' => []
+                    'parameters' => [],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
@@ -171,7 +171,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => '',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This value should not be blank.',
             ],
@@ -182,7 +182,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'zz_ZZ',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
             ],
@@ -193,7 +193,7 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'parameters' => [
                         'label_locale' => 'kz_KZ',
-                    ]
+                    ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
             ],

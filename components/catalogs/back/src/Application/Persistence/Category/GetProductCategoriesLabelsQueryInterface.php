@@ -10,5 +10,8 @@ namespace Akeneo\Catalogs\Application\Persistence\Category;
  */
 interface GetProductCategoriesLabelsQueryInterface
 {
+    /**
+     * @return array<string>
+     */
     public function execute(string $productUuid, string $locale): array;
 }

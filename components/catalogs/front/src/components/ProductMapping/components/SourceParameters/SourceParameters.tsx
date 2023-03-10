@@ -7,6 +7,7 @@ import {SelectChannelCurrencyDropdown} from './SelectChannelCurrenciesDropdown';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useAttribute} from '../../../../hooks/useAttribute';
+import {useSystemAttribute} from '../../hooks/useSystemAttribute';
 import {SourceSectionTitle} from '../SourceSectionTitle';
 
 const Information = styled.p`
@@ -22,8 +23,9 @@ type Props = {
 
 export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
     const translate = useTranslate();
-    const {data: attribute} = useAttribute(source?.source ?? '');
-
+    const {data: standardAttribute} = useAttribute(source?.source ?? '');
+    const systemAttribute = useSystemAttribute(source?.source ?? '');
+    const attribute = systemAttribute ?? standardAttribute;
     if (undefined === attribute || null === source || undefined === source.parameters) {
         return (
             <>

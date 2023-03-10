@@ -91,7 +91,10 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                     'types' => [
                         'source' => 'categories',
                         'scope' => null,
-                        'locale' => 'en_US',
+                        'locale' => null,
+                        'parameters' => [
+                            'label_locale' => 'en_US',
+                        ],
                     ],
                     'name' => [
                         'source' => 'name',

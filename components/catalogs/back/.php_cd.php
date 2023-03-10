@@ -30,11 +30,8 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI\Command',
             'Akeneo\Catalogs\ServiceAPI\Query',
             'Akeneo\Catalogs\ServiceAPI\Exception',
-            'Akeneo\Pim\Enrichment\Product\API\Query\GetProductCategoryCodesQuery',
             'Ramsey\Uuid\Uuid',
             'Ramsey\Uuid\UuidInterface',
-            'Symfony\Component\Messenger\MessageBusInterface',
-            'Symfony\Component\Messenger\Stamp\HandledStamp',
             'Symfony\Component\Routing\RouterInterface',
 
         ]
@@ -139,6 +136,9 @@ $rules = [
             //used in Job\DisableCatalogsOnCurrencyDeactivationTasklet
             'Akeneo\Tool\Component\Batch\Model\StepExecution',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
+
+            // used in Persistence\Category\GetProductCategoriesLabelsQuery
+            'Akeneo\Pim\Enrichment\Product\API\Query\GetProductCategoryCodesQuery',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 
