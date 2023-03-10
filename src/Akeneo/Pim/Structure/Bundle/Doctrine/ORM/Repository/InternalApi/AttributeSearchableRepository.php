@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -16,18 +18,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AttributeSearchableRepository implements SearchableRepositoryInterface
 {
-    /** @var EntityManagerInterface */
-    protected $entityManager;
-
-    /** @var string */
-    protected $entityName;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param string                 $entityName
-     */
-    public function __construct(EntityManagerInterface $entityManager, $entityName)
-    {
+    public function __construct(
+        protected EntityManagerInterface $entityManager,
+        protected string $entityName,
+    ) {
         $this->entityManager = $entityManager;
         $this->entityName = $entityName;
     }
@@ -45,11 +39,26 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
     }
 
     /**
-     * @param array $options
-     *
      * @return array
      */
     protected function resolveOptions(array $options)
+    {
+        $options = $this->getResolver()->resolve($options);
+
+        if (null !== $options['page']) {
+            $options['page'] = (int) $options['page'];
+        }
+        if (null !== $options['limit']) {
+            $options['limit'] = (int) $options['limit'];
+        }
+        if (null === $options['user_groups_ids']) {
+            $options['user_groups_ids'] = [];
+        }
+
+        return $options;
+    }
+
+    protected function getResolver(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(
@@ -85,19 +94,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('useable_as_grid_filter', ['bool', 'null']);
         $resolver->setAllowedTypes('families', ['array', 'null']);
 
-        $options = $resolver->resolve($options);
-
-        if (null !== $options['page']) {
-            $options['page'] = (int) $options['page'];
-        }
-        if (null !== $options['limit']) {
-            $options['limit'] = (int) $options['limit'];
-        }
-        if (null === $options['user_groups_ids']) {
-            $options['user_groups_ids'] = [];
-        }
-
-        return $options;
+        return $resolver;
     }
 
     /**
@@ -186,5 +183,13 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $qb->groupBy('a.id');
 
         return $qb;
+    }
+
+    public function count(?string $search, array $options): int
+    {
+        $qb = $this->findBySearchQb($search, $options);
+
+        // return (int) $qb->resetDQLPart('groupBy')->select('COUNT(a.id)')->getQuery()->getSingleScalarResult();
+        return count($qb->getQuery()->getResult());
     }
 }

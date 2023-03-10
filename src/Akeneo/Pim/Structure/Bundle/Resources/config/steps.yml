@@ -435,7 +435,6 @@ services:
 
     Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet:
         arguments:
-            # TODO ee repo? `pimee_enrich.repository.attribute.search`
             - '@pim_enrich.repository.attribute.search'
             - '@pim_catalog.remover.attribute'
             - '@translator'

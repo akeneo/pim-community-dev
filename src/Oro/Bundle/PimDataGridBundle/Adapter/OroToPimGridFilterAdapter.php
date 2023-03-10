@@ -67,14 +67,13 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
         return [
             'search' => $filters['label']['value'] ?? null,
             'options' => [
-                // TODO code filter type: 1 -> contains, type 2 -> does not contain, etc...
                 'types' => $filters['type']['value'] ?? null,
                 'attribute_groups' => $filters['group']['value'] ?? [],
                 'scopable' => $this->adaptTrileanFilter($filters['scopable']['value'] ?? null),
                 'localizable' => $this->adaptTrileanFilter($filters['localizable']['value'] ?? null),
                 'families' => $filters['family']['value'] ?? null,
-                // 'smart' => $this->adaptTrileanFilter($filters['smart']['value'] ?? null), // Not available in CE repo and not implemented in EE...
-                // 'quality' => ?
+                'smart' => $this->adaptTrileanFilter($filters['smart']['value'] ?? null),
+                'quality' => $filters['quality']['value'] ?? null,
             ],
         ];
     }
