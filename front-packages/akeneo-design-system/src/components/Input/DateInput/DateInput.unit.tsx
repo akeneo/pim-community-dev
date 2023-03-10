@@ -9,7 +9,7 @@ test('it renders and handle changes', () => {
   render(
     <>
       <label htmlFor="myInput">My label</label>
-      <DateInput id="myInput" value="2023-03-01" onChange={handleChange} />
+      <DateInput id="myInput" value="2023-03-01" onChange={handleChange}/>
     </>
   );
 
@@ -25,7 +25,7 @@ test('it handles on submit callback', () => {
   render(
     <>
       <label htmlFor="myInput">My label</label>
-      <DateInput id="myInput" value="2023-03-01" onChange={handleChange} onSubmit={handleSubmit} />
+      <DateInput id="myInput" value="2023-03-01" onChange={handleChange} onSubmit={handleSubmit}/>
     </>
   );
 
@@ -41,7 +41,7 @@ test('it renders and does not call onChange if readOnly', () => {
   render(
     <>
       <label htmlFor="myInput">My label</label>
-      <DateInput id="myInput" readOnly={true} value="2023-01-01" onChange={handleChange} />
+      <DateInput id="myInput" readOnly={true} value="2023-01-01" onChange={handleChange}/>
     </>
   );
 
@@ -54,21 +54,35 @@ test('it renders and does not call onChange if readOnly', () => {
 test('it supports forwardRef', () => {
   const ref = {current: null};
 
-  render(<DateInput value={'2023-03-01'} onChange={jest.fn()} ref={ref} />);
+  render(<DateInput value={'2023-03-01'} onChange={jest.fn()} ref={ref}/>);
   expect(ref.current).not.toBe(null);
 });
 
 test('it supports ...rest props', () => {
-  render(<DateInput value={'nice'} onChange={jest.fn()} data-testid="my_value" />);
+  render(<DateInput value={'nice'} onChange={jest.fn()} data-testid="my_value"/>);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
 test('it supports formatted value yyyy-mm-dd', () => {
   const ref = {current: null} as RefObject<HTMLInputElement>;
 
-  render(<DateInput value={'not a date'} onChange={jest.fn()} ref={ref} />);
+  render(<DateInput value={'not a date'} onChange={jest.fn()} ref={ref}/>);
   expect(ref.current?.value).toBe('');
 
-  render(<DateInput value={'2023-03-01'} onChange={jest.fn()} ref={ref} />);
+  render(<DateInput value={'2023-03-01'} onChange={jest.fn()} ref={ref}/>);
   expect(ref.current?.value).toBe('2023-03-01');
+});
+
+test('it updates the onChange handler on rerender', () => {
+  const handleChange = jest.fn();
+  const refreshedHandleChange = jest.fn();
+  const props = {id: 'myInput', value: '2023-03-01', 'data-testid': 'myInput'};
+
+  const {rerender} = render(<DateInput {...props} onChange={handleChange}/>);
+  rerender(<DateInput {...props} onChange={refreshedHandleChange}/>);
+
+  fireEvent.change(screen.getByTestId('myInput'), {target: {value: '2023-03-02'}});
+
+  expect(handleChange).not.toHaveBeenCalled();
+  expect(refreshedHandleChange).toHaveBeenCalledWith('2023-03-02');
 });
