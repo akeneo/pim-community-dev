@@ -17,7 +17,7 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler
 
     public function __construct(
         private readonly GetEnrichedValuesPerCategoryCode $getEnrichedValuesPerCategoryCode,
-        private readonly CategoryDataCleaner              $categoryDataCleaner,
+        private readonly CategoryDataCleaner $categoryDataCleaner,
     ) {
     }
 
@@ -29,7 +29,6 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler
                 $command->channelCode,
                 $command->localeCodes,
             );
-
         }
     }
 }

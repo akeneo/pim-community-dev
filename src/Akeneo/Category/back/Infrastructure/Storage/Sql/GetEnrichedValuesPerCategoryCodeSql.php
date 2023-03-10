@@ -14,8 +14,6 @@ final class GetEnrichedValuesPerCategoryCodeSql implements GetEnrichedValuesPerC
     }
 
     /**
-     * @return \Generator
-     *
      * @throws Exception
      * @throws \JsonException
      */
