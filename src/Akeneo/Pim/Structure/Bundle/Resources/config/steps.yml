@@ -444,7 +444,7 @@ services:
 
     Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\MoveChildAttributesTasklet:
         arguments:
-            - '@pim_catalog.repository.attribute_group'
+            - '@pim_catalog.repository.attribute'
             - '@pim_catalog.updater.attribute'
             - '@pim_catalog.saver.attribute'
             - '@pim_connector.doctrine.cache_clearer'

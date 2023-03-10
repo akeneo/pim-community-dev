@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup;
 
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\Exception\UserFacingError;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -21,7 +19,6 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 
 final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTaskletInterface
@@ -29,7 +26,7 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
-        private readonly AttributeGroupRepositoryInterface $attributeGroupRepository,
+        private readonly AttributeRepository $attributeRepository,
         private readonly ObjectUpdaterInterface $updater,
         private readonly BulkSaverInterface $saver,
         private readonly EntityManagerClearerInterface $cacheClearer,
@@ -51,14 +48,17 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
         }
 
         $attributeGroupCodesToDelete = $this->stepExecution->getJobParameters()->get('filters')['codes'];
-        $replacementAttributeGroupCode = ('' !== $this->stepExecution->getJobParameters()->get('replacement_attribute_group_code')) ?
-            $this->stepExecution->getJobParameters()->get('replacement_attribute_group_code') : 'other'
-        ;
+        $replacementAttributeGroupCode = $this->stepExecution->getJobParameters()->get('replacement_attribute_group_code');
 
-        foreach (array_chunk($attributeGroupCodesToDelete, $this->batchSize) as $attributeGroupCodes) {
-            $this->updateAttributes($attributeGroupCodes, $replacementAttributeGroupCode);
+        $attributes = $this->attributeRepository->getAttributesByGroups($attributeGroupCodesToDelete);
+        $this->stepExecution->setTotalItems(count($attributes));
+        $this->stepExecution->addSummaryInfo('attributes_to_move', 0);
+
+        foreach (array_chunk($attributes, $this->batchSize) as $attributeChunk) {
+            $this->updateAttributes($attributeChunk, $replacementAttributeGroupCode);
             if ($this->jobStopper->isStopping($this->stepExecution)) {
                 $this->jobStopper->stop($this->stepExecution);
+
                 return;
             }
 
@@ -67,9 +67,8 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
         }
     }
 
-    public function updateAttributes($attributeGroupCodes, $replacementAttributeGroupCode)
+    public function updateAttributes(array $attributes, string $replacementAttributeGroupCode)
     {
-        $attributes = $this->getAttributesToMove($attributeGroupCodes);
         $this->stepExecution->incrementSummaryInfo('attributes_to_move', count($attributes));
         foreach ($attributes as $attribute) {
             try {
@@ -81,21 +80,6 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
             }
         }
         $this->saver->saveAll($attributes);
-    }
-
-    /**
-     * @return Attribute[]>
-     */
-    public function getAttributesToMove($attributeGroupCodesToDelete): array
-    {
-        $attributes = [];
-        $attributeGroups = $this->attributeGroupRepository->findBy(['code' => $attributeGroupCodesToDelete]);
-
-        foreach ($attributeGroups as $attributeGroup) {
-            $attributes[] = $attributeGroup->getAttributes()->toArray();
-        }
-
-        return array_merge(...array_values($attributes));
     }
 
     public function isTrackable(): bool
