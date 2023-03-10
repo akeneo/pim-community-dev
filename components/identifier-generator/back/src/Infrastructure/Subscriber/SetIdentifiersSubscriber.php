@@ -71,21 +71,31 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
             return;
         }
 
-        foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
-            $productProjection = new ProductProjection(
-                $product->isEnabled(),
-                $product->getFamily()?->getCode(),
-                $this->flatValues($product),
-            );
-            if ($identifierGenerator->match($productProjection)) {
-                try {
-                    $this->setGeneratedIdentifier($identifierGenerator, $productProjection, $product);
-                    $this->logger->notice(\sprintf(
-                        '[akeneo.pim.identifier_generator] Successfully generated an identifier for the %s attribute',
-                        $identifierGenerator->target()->asString()
-                    ), ['identifier_attribute_code' => $identifierGenerator->target()->asString()]);
-                } catch (UnableToSetIdentifierException $e) {
-                    $this->eventDispatcher->dispatch(new UnableToSetIdentifierEvent($e));
+        $productProjection = null;
+        foreach ($this->getIdentifierGeneratorsByTarget() as $identifierGeneratorsByTarget) {
+            $targetMatched = false;
+            foreach ($identifierGeneratorsByTarget as $identifierGenerator) {
+                if ($targetMatched) {
+                    continue;
+                }
+
+                $productProjection = $productProjection ?? new ProductProjection(
+                    $product->isEnabled(),
+                    $product->getFamily()?->getCode(),
+                    $this->flatValues($product),
+                );
+                if ($identifierGenerator->match($productProjection)) {
+                    $targetMatched = true;
+
+                    try {
+                        $this->setGeneratedIdentifier($identifierGenerator, $productProjection, $product);
+                        $this->logger->notice(\sprintf(
+                            '[akeneo.pim.identifier_generator] Successfully generated an identifier for the %s attribute',
+                            $identifierGenerator->target()->asString()
+                        ), ['identifier_attribute_code' => $identifierGenerator->target()->asString()]);
+                    } catch (UnableToSetIdentifierException $e) {
+                        $this->eventDispatcher->dispatch(new UnableToSetIdentifierEvent($e));
+                    }
                 }
             }
         }
@@ -212,5 +222,22 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
             static fn (ValueInterface $value) => $value->getData(),
             $product->getValues()->toArray()
         );
+    }
+
+    /**
+     * @return IdentifierGenerator[][]
+     */
+    private function getIdentifierGeneratorsByTarget(): array
+    {
+        $result = [];
+        foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
+            $target = $identifierGenerator->target()->asString();
+            if (!\array_key_exists($target, $result)) {
+                $result[$target] = [];
+            }
+            $result[$target][] = $identifierGenerator;
+        }
+
+        return \array_values($result);
     }
 }
