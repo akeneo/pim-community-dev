@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: Product succesvol bijgewerkt.
       fail: Het product kon niet worden geüpdatet.
+      fail_session_expired: Het product kan niet worden bijgewerkt. Uw gebruikerssessie is verlopen. Log opnieuw in.
       fields_not_ready: "Het product kan nu niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
       already_in_upload: Voor dit attribuut is al een bestand geüpload in de locale "{{ locale }}" en scope "{{ scope }}"
       file_upload: Er deed zich een fout voor tijdens het uploaden van dit bestand

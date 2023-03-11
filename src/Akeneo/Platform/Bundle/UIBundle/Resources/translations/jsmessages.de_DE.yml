@@ -275,6 +275,7 @@ pim_enrich.entity.fallback:
     generic_error: Es ist ein Fehler aufgetreten
     update:
       fail: Update fehlgeschlagen
+      fail_session_expired: Ihre Benutzersitzung ist abgelaufen. Bitte melden Sie sich erneut an.
       success: Update erfolgreich
     delete:
       fail: Dieses Element kann nicht gelöscht werden

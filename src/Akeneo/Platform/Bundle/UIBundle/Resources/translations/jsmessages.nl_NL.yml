@@ -275,6 +275,7 @@ pim_enrich.entity.fallback:
     generic_error: Er is een fout opgetreden
     update:
       fail: Update niet geslaagd
+      fail_session_expired: Uw sessie is verlopen. U dient opnieuw in te loggen.
       success: Update met succes voltooid
     delete:
       fail: Kan dit item niet verwijderen
