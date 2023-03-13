@@ -1,7 +1,14 @@
 import React, {FC, useCallback, useEffect, useRef, useState, MouseEvent} from 'react';
 import styled from 'styled-components';
 import {Search, useAutoFocus, Table, Badge, CheckboxChecked} from 'akeneo-design-system';
-import {useTranslate, useFeatureFlags, useUserContext, getLabel, useRouter} from '@akeneo-pim-community/shared';
+import {
+  useTranslate,
+  useFeatureFlags,
+  useUserContext,
+  getLabel,
+  useRouter,
+  useSecurity,
+} from '@akeneo-pim-community/shared';
 import {AttributeGroup} from '../../../models';
 import {NoResults} from '../../shared';
 import {useAttributeGroupPermissions, useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../../../hooks';
@@ -41,6 +48,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({
   const [searchString, setSearchString] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const {isEnabled} = useFeatureFlags();
+  const {isGranted} = useSecurity();
 
   useAutoFocus(inputRef);
 
@@ -74,7 +82,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({
   const shouldDisplayPlaceholder = '' !== searchString && 0 === filteredGroups.length;
   const shouldDisplayDQICell = isEnabled('data_quality_insights');
   const canDragAndDrop = sortGranted && false === selectionState && '' === searchString;
-  const canSelect = isEnabled('attribute_groups_mass_delete');
+  const canSelect = isEnabled('attribute_groups_mass_delete') && isGranted('pim_enrich_attributegroup_mass_delete');
 
   return (
     <Wrapper>

@@ -135,6 +135,7 @@ pim_enrich:
             create: Create an attribute group
             edit: Edit an attribute group
             remove: Remove an attribute group
+            mass_delete: Bulk remove attribute groups
             sort: Sort attribute groups
             add_attribute: Add attribute to a group
             remove_attribute: Remove attribute from a group

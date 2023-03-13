@@ -40,7 +40,7 @@ final class MassDeleteAttributeGroupsController
             return new JsonResponse(status: Response::HTTP_UNAUTHORIZED);
         }
 
-        if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_remove')) {
+        if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_mass_delete')) {
             return new JsonResponse(status: Response::HTTP_FORBIDDEN);
         }
 
