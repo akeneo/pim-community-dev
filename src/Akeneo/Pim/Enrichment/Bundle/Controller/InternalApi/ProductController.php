@@ -155,8 +155,12 @@ class ProductController
 
             $events = $this->unableToSetIdentifiersSubscriber->getEvents();
             if (\count($events) > 0) {
-                $normalizedProduct['meta']['identifier_generator_warnings'] =
-                    $this->unableToSetIdentifierExceptionPresenter->present($events[0]->getException());
+                $normalizedProduct['meta']['identifier_generator_warnings'] = \array_merge(
+                    ...\array_map(
+                        fn ($event): array => $this->unableToSetIdentifierExceptionPresenter->present($event->getException()),
+                        $events
+                    )
+                );
             }
 
             return new JsonResponse($normalizedProduct);
