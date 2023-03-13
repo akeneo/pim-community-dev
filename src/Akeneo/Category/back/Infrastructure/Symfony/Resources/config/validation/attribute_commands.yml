@@ -1,0 +1,13 @@
+Akeneo\Category\Api\Command\AddAttributeCommand:
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                  pattern: /^[a-z0-9_]+$/
+                  message: akeneo.category.validation.attribute.code.wrong_format
+            - Length:
+                  max: 100
+            - Akeneo\Category\Infrastructure\Validation\AttributeCodeShouldBeUniqueInTheTemplate: ~
+        label:
+            - Length:
+                  max: 255

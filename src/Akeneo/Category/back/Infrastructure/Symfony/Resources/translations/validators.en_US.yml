@@ -10,3 +10,7 @@ akeneo.category:
                 text_too_long: The value cannot be longer than {{ limit }} characters
                 textarea_too_long: The value cannot be longer than {{ limit }} characters
                 richtext_too_long: The value cannot be longer than {{ limit }} characters
+        attribute:
+            code:
+                wrong_format: Attribute code may contain only lowercase letters, numbers and underscores
+                unique_in_the_template: Attribute code must be unique in the template
