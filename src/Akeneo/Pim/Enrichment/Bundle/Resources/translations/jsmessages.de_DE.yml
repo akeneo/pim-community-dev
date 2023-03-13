@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: Produkt erfolgreich aktualisiert.
       fail: Das Produkt konnte nicht aktualisiert werden.
+      fail_session_expired: Das Produkt kann nicht aktualisiert werden. Ihre Benutzersitzung ist abgelaufen. Bitte melden Sie sich erneut an.
       fields_not_ready: "Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       file_upload: Beim Datei-Upload ist ein Fehler aufgetreten

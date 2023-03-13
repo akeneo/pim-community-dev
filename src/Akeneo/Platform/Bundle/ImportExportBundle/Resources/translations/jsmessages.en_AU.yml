@@ -145,11 +145,9 @@ pim_import_export:
             title: File locale
             help: Define the locale in which labels are displayed
       file_path: File path
-  widget:
-    last_operations:
-      empty: There is no operation to display for now.
-      details: Details
-      header.view_all: View all
+      storage_form:
+        file_path:
+          label: File path
   batch_status:
     1: Completed
     2: Starting

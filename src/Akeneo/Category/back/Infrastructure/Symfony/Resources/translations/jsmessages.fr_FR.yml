@@ -12,6 +12,7 @@ akeneo.category:
     create: Activer le template
     edit: Afficher le template
     notification_success: "Le template a été activé avec succès.\n"
+    notification_error: Le template n’a pas pu être activé
     attribute:
       description_title: Paramètres de la description
       type:
