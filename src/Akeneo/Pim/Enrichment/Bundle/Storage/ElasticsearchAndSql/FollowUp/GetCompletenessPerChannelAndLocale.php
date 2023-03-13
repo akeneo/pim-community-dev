@@ -142,8 +142,9 @@ SQL;
 
         $body = [];
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
+            // As we use locale codes as aggregation name later, adding "--" in aggregation name for "all locales" ensure that there will be no conflict
             $aggregations = [
-                'all_locales' => [
+                '--all_locales--' => [
                     'filter' => [
                         'bool' => [
                             'filter' => [],
@@ -153,7 +154,7 @@ SQL;
             ];
             foreach ($categoriesCodeAndLocalesByChannel['locales'] as $localeCode) {
                 $completenessField = sprintf('completeness.%s.%s', $categoriesCodeAndLocalesByChannel['channel_code'], $localeCode);
-                $aggregations['all_locales']['filter']['bool']['filter'][] = ['term' => [$completenessField => 100]];
+                $aggregations['--all_locales--']['filter']['bool']['filter'][] = ['term' => [$completenessField => 100]];
                 $aggregations[$localeCode] = [
                     'filter' => [
                         'bool' => [
@@ -202,7 +203,7 @@ SQL;
             $channelCode = $categoriesCodeAndLocalesByChannel['channel_code'];
             $result[$channelCode] = [];
             $result[$channelCode]['total'] = $rows['responses'][$index]['hits']['total']['value'] ?? 0;
-            $result[$channelCode]['all_locales'] = $rows['responses'][$index]['aggregations']['all_locales']['doc_count'] ?? 0;
+            $result[$channelCode]['all_locales'] = $rows['responses'][$index]['aggregations']['--all_locales--']['doc_count'] ?? 0;
             foreach ($categoriesCodeAndLocalesByChannel['locales'] as $locale) {
                 $result[$channelCode]['locales'][$locale] = $rows['responses'][$index]['aggregations'][$locale]['doc_count'] ?? 0;
             }
