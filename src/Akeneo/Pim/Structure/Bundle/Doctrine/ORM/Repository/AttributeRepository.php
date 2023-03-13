@@ -337,7 +337,8 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
         $qb = $this->createQueryBuilder('a');
 
         $qb
-            ->where('a.group IN (:groupsCode)')
+            ->join('a.group', 'g')
+            ->where('g.code IN (:groupsCode)')
             ->setParameter(':groupsCode', $groupsCode);
 
         return $qb->getQuery()->getResult();
