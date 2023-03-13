@@ -71,25 +71,20 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
         $productProjection = null;
         foreach ($this->getIdentifierGeneratorsByTarget() as $identifierGeneratorsByTarget) {
-            $targetMatched = false;
             foreach ($identifierGeneratorsByTarget as $identifierGenerator) {
-                if ($targetMatched) {
-                    continue;
-                }
-
                 $productProjection = $productProjection ?? new ProductProjection(
                     $product->isEnabled(),
                     $product->getFamily()?->getCode(),
                     $this->flatValues($product),
                 );
                 if ($identifierGenerator->match($productProjection)) {
-                    $targetMatched = true;
-
                     try {
                         $this->setGeneratedIdentifier($identifierGenerator, $productProjection, $product);
                     } catch (UnableToSetIdentifierException $e) {
                         $this->eventDispatcher->dispatch(new UnableToSetIdentifierEvent($e));
                     }
+
+                    break;
                 }
             }
         }
@@ -226,9 +221,6 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         $result = [];
         foreach ($this->getIdentifierGenerators() as $identifierGenerator) {
             $target = $identifierGenerator->target()->asString();
-            if (!\array_key_exists($target, $result)) {
-                $result[$target] = [];
-            }
             $result[$target][] = $identifierGenerator;
         }
 
