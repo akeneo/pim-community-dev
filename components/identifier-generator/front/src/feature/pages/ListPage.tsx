@@ -3,7 +3,6 @@ import {PageContent, useSecurity, useTranslate, useUserContext} from '@akeneo-pi
 import {
   AttributesIllustration,
   Button,
-  CodingIllustration,
   Helper,
   Information,
   Link,
@@ -30,6 +29,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   const translate = useTranslate();
   const security = useSecurity();
   const {setCurrentTab} = useStructureTabs();
+  const LIMIT_IDENTIFIER_GENERATOR = 20;
 
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
   const [generatorToDelete, setGeneratorToDelete] = useState<string>('');
@@ -38,7 +38,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
   const isManageIdentifierGeneratorAclGranted = security.isGranted('pim_identifier_generator_manage');
   const {data: generators = [], isLoading, error: errorOnGenerators} = useGetIdentifierGenerators();
   const isCreateDisabled = useMemo(
-    () => !isManageIdentifierGeneratorAclGranted || generators.length >= 1,
+    () => !isManageIdentifierGeneratorAclGranted || generators.length >= LIMIT_IDENTIFIER_GENERATOR,
     [generators, isManageIdentifierGeneratorAclGranted]
   );
   const isGeneratorListEmpty = useMemo(() => generators.length === 0, [generators]);
@@ -87,6 +87,15 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
             {translate('pim_identifier_generator.list.check_help_center')}
           </Link>
         </Information>
+
+        {isManageIdentifierGeneratorAclGranted && generators.length >= LIMIT_IDENTIFIER_GENERATOR && (
+          <Helper level="info">
+            {translate('pim_identifier_generator.list.max_generator.title', {
+              count: LIMIT_IDENTIFIER_GENERATOR,
+            })}
+          </Helper>
+        )}
+
         <Table>
           <Table.Header>
             <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
@@ -146,22 +155,6 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
                     </Table.ActionCell>
                   </Table.Row>
                 ))}
-                {isManageIdentifierGeneratorAclGranted && (
-                  <tr>
-                    <td colSpan={3}>
-                      <Placeholder
-                        illustration={<CodingIllustration />}
-                        size="large"
-                        title={translate('pim_identifier_generator.list.max_generator.title')}
-                      >
-                        {translate('pim_identifier_generator.list.max_generator.info')}
-                        <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
-                          {translate('pim_identifier_generator.list.check_help_center')}
-                        </Styled.HelpCenterLink>
-                      </Placeholder>
-                    </td>
-                  </tr>
-                )}
               </>
             )}
             {!isManageIdentifierGeneratorAclGranted && (
