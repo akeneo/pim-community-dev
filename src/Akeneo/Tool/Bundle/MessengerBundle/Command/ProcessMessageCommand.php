@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * This command should be executed by the TraceableMessageBridgeHandler. On contrary of the handler, this
  * command is tenant aware.
- * The command receives a massage and a consumer name, and based on the consumer name it executes the
+ * The command receives a message and a consumer name, and based on the consumer name it executes the
  * right handler.
  *
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -34,7 +34,7 @@ final class ProcessMessageCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('consumer_name', InputArgument::REQUIRED, 'consumer name')
