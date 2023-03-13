@@ -125,11 +125,12 @@ final class CatalogProductMappingValidator extends ConstraintValidator
                 'pim_catalog_text' => new AttributeTextSource(),
                 'pim_catalog_textarea' => new AttributeTextareaSource(),
                 default => null,
-            }
+            },
         };
     }
 
-    private function getSourceAttributeType(string $source): ?string {
+    private function getSourceAttributeType(string $source): ?string
+    {
         $attribute = $this->findOneAttributeByCodeQuery->execute($source);
         return $attribute['type'] ?? null;
     }
