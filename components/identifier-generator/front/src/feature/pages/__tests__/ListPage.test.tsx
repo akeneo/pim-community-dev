@@ -175,4 +175,28 @@ describe('ListPage', () => {
     expect(screen.getByText('Sku generator 0')).toBeVisible();
     expect(screen.getByText('Sku generator 19')).toBeVisible();
   });
+
+  it('should search', async () => {
+    mocked(useGetIdentifierGenerators).mockReturnValue({
+      data: mockedList,
+      isLoading: false,
+      refetch: jest.fn(),
+      error: null,
+    });
+    render(<ListPage onCreate={jest.fn()} />);
+
+    expect(screen.getByText('Sku generator')).toBeVisible();
+
+    const rows = screen.getAllByRole('row');
+    expect(rows.length).toBe(2);
+
+    fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: 'FOO'}});
+    expect(screen.queryByText('Sku generator')).not.toBeInTheDocument();
+
+    fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: 'TEST'}});
+    expect(screen.getByText('Sku generator')).toBeVisible();
+
+    fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: 'gener'}});
+    expect(screen.getByText('Sku generator')).toBeVisible();
+  });
 });
