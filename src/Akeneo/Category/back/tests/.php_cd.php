@@ -155,9 +155,7 @@ $rules = [
     ])->in('Akeneo\Category\Api'),
 
     $builder->only([
-        // ???
-        'Akeneo\Category\Domain\Model\Enrichment\Category',
-        'Akeneo\Category\Domain\ValueObject\ValueCollection',
+        'Akeneo\Category\Domain',
 
         // Vendors
         'Webmozart\Assert',
