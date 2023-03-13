@@ -5,7 +5,7 @@ import {useDeactivateTemplate} from '../../hooks/useDeactivateTemplate';
 
 const Content = styled.div`
   padding-bottom: 20px;
-`
+`;
 
 type Props = {
   template: {id: string; label: string};
@@ -25,7 +25,9 @@ export const DeactivateTemplateModal = ({template, onClose}: Props) => {
       </Modal.SectionTitle>
       <Modal.Title>{translate('akeneo.category.template.deactivate.confirmation_modal.title')}</Modal.Title>
 
-      <Content>{translate('akeneo.category.template.deactivate.confirmation_modal.message', {template: template.label})}</Content>
+      <Content>
+        {translate('akeneo.category.template.deactivate.confirmation_modal.message', {template: template.label})}
+      </Content>
 
       <Helper level="error">{translate('akeneo.category.template.deactivate.confirmation_modal.helper')}</Helper>
 

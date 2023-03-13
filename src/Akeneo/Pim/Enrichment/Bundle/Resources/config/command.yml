@@ -23,6 +23,7 @@ services:
             - '@pim_catalog.manager.attribute_code_blacklister'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductCommand:
         arguments:
@@ -30,6 +31,7 @@ services:
             - '@pim_catalog.query.filter.product.attribute_dumper'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductModelCommand:
         arguments:
@@ -37,6 +39,7 @@ services:
             - '@pim_catalog.query.filter.product_model.attribute_dumper'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Pim\Enrichment\Bundle\Command\RefreshProductCommand:
         arguments:
@@ -45,3 +48,4 @@ services:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

@@ -157,7 +157,7 @@ class Category
         return $this->permissions;
     }
 
-    public function setLabel(string $localeCode, string $label): void
+    public function setLabel(string $localeCode, ?string $label): void
     {
         $this->labels->setTranslation($localeCode, $label);
     }
@@ -205,7 +205,7 @@ class Category
             'template_uuid' => $this->getTemplateUuid()?->getValue(),
             'properties' => [
                 'code' => (string) $this->getCode(),
-                'labels' => $this->getLabels()?->normalize(),
+                'labels' => empty($this->labels->getTranslations()) ? (object) [] : $this->labels->normalize(),
             ],
             'attributes' => $this->getAttributes()?->normalize(),
             'permissions' => $this->getPermissions()?->normalize(),

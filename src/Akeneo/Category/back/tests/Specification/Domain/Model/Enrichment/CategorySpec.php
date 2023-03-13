@@ -131,4 +131,9 @@ class CategorySpec extends ObjectBehavior
             "own" => [1 => "IT Support", 3 => "Redactor", 7 => "Manager"],
         ]);
     }
+
+    function it_is_set_with_null_label() {
+        $this::setLabel('en_US', null);
+        $this::getLabels()->getTranslation('en_US')->shouldReturn(null);
+    }
 }

@@ -1,11 +1,11 @@
 import {useCallback, useContext, useEffect, useState} from 'react';
-import {set, cloneDeep} from 'lodash/fp';
+import {cloneDeep, set} from 'lodash/fp';
 import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 
 import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
-import {buildCompositeKey, Attribute, CategoryAttributeValueData, EnrichCategory, Template} from '../models';
+import {Attribute, buildCompositeKey, CategoryAttributeValueData, EnrichCategory, Template} from '../models';
 import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from '../helpers';
 import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
 import {CategoryPermissions} from '../models/CategoryPermission';
@@ -111,14 +111,7 @@ const useEditCategoryForm = (categoryId: number) => {
       if (categoryEdited === null) {
         return;
       }
-
-      if (Array.isArray(categoryEdited.properties.labels) && !categoryEdited.properties.labels.length) {
-        categoryEdited['properties']['labels'] = {
-          [localeCode]: label,
-        };
-      }
-
-      setCategoryEdited(set(['properties', 'labels', localeCode], label, categoryEdited));
+      setCategoryEdited(set(['properties', 'labels', localeCode], label === '' ? null : label, categoryEdited));
     },
     [categoryEdited]
   );
