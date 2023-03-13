@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: Product succesvol bijgewerkt.
       fail: Het product kon niet worden geüpdatet.
+      fail_session_expired: Het product kan niet worden bijgewerkt. Uw gebruikerssessie is verlopen. Log opnieuw in.
       fields_not_ready: "Het product kan nu niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
       already_in_upload: Voor dit attribuut is al een bestand geüpload in de locale "{{ locale }}" en scope "{{ scope }}"
       file_upload: Er deed zich een fout voor tijdens het uploaden van dit bestand
@@ -112,8 +113,6 @@ pim_enrich.entity.product:
       quantified:
         quantity: Aantal
         unlinked: Ontkoppeld
-      search:
-        placeholder: Zoeken op label of ID
       no_data: Er zijn geen gekoppelde producten
       remove: Koppeling verwijderen
       edit: Bewerk product
@@ -243,6 +242,9 @@ pim_enrich.entity.category:
     success: De boom "{{ tree }}" is verwijderd
     error: De boom "{{ tree }}" kon niet worden verwijderd
     confirmation: Weet u zeker dat u de boom {{ name }} wilt verwijderen? Alle categorieën in die boom worden verwijderd en de producten worden uit alle categorieën verwijderd.
+    confirmation_question: Weet u zeker dat u {{ name }} wilt verwijderen?
+    warning_categories_number: De {{ categoriesNumber }} geassocieerde categorieën worden verwijderd en de producten worden verwijderd uit alle deze categorieën.
+    warning_products: Alle bijbehorende producten worden verwijderd van {{ name }}
     products_limit_exceeded:
       title: Deze boom kan niet worden verwijderd.
       message: De boom "{{ tree }}" bevat meer dan {{ limit }} producten en kan daarom niet verwijderd worden.
@@ -250,6 +252,7 @@ pim_enrich.entity.category:
     success: De categorie "{{ name }}" is verwijderd
     error: De categorie "{{ name }}" kon niet worden verwijderd
     confirmation: Weet u zeker dat u de categorie {{ name }} wilt verwijderen? De producten in deze categorie worden niet verwijderd.
+    confirmation_question: Weet u zeker dat u {{ name }} wilt verwijderen?
     products_limit_exceeded:
       title: Deze categorie kan niet worden verwijderd
       message: De categorie "{{ name }}" bevat meer dan {{ limit }} producten en kan daarom niet worden verwijderd.

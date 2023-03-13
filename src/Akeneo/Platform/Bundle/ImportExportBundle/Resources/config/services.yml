@@ -27,6 +27,7 @@ services:
             - '@akeneo.platform.import_export.purge_job_execution'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Platform\Bundle\ImportExportBundle\Domain\ResolveScheduledJobRunningUsername: ~
 

@@ -7,6 +7,7 @@ services:
             - '@database_connection'
         tags:
             - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     akeneo.pim.enrichment.command.index_product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand'
@@ -18,6 +19,7 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetAllProductUuids'
         tags:
             - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     akeneo.pim.enrichment.command.index_product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand'
@@ -29,6 +31,7 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductModelCodesNotSynchronisedBetweenEsAndMysql'
         tags:
             - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     base_uuid_migration_step:
         arguments:
@@ -87,6 +90,7 @@ services:
             - '@database_connection'
         tags:
             - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20220516171405SetProductIdentifierNullableZddMigration:
         arguments:
@@ -110,4 +114,4 @@ services:
             - '@database_connection'
         tags:
             - { name: 'console.command' }
-
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

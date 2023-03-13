@@ -40,11 +40,13 @@ class LabelUserIntentFactorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_does_not_create_label_user_intent_with_wrong_format()
+    function it_does_create_label_user_intent_with_null()
     {
         $this->create(
             'labels', 1, ['en_US' => null]
-        )->shouldBeLike([]);
+        )->shouldBeLike([
+            new SetLabel('en_US', null),
+        ]);
     }
 
     function it_throws_an_exception_when_data_has_wrong_format()
