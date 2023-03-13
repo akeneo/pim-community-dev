@@ -1,6 +1,7 @@
 import React from 'react';
 import {Property, PROPERTY_NAMES} from '../../models';
 import {AutoNumberEdit, FamilyPropertyEdit, FreeTextEdit, SimpleSelectPropertyEdit} from './edit/';
+import {Styled} from '../../components/Styled';
 
 type PropertyEditProps = {
   selectedProperty: Property;
@@ -23,9 +24,9 @@ const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange})
   const Component = components[selectedProperty.type] as PropertyEditFieldsProps<Property>;
 
   return (
-    <div>
+    <Styled.PropertyFormContainer>
       <Component selectedProperty={selectedProperty} onChange={onChange} />
-    </div>
+    </Styled.PropertyFormContainer>
   );
 };
 

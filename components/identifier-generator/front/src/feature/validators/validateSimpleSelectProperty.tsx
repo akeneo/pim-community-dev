@@ -14,7 +14,9 @@ const validateSimpleSelectProperty: Validator<SimpleSelectProperty> = (simpleSel
 
   if (
     simpleSelectProperty.process.type === AbbreviationType.TRUNCATE &&
-    simpleSelectProperty.process.operator === null
+    (simpleSelectProperty.process.operator === null ||
+      simpleSelectProperty.process.value === null ||
+      simpleSelectProperty.process.value === undefined)
   ) {
     violations.push({
       path,
