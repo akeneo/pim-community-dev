@@ -38,6 +38,7 @@ class InstallerSubscriber implements EventSubscriberInterface
                 `labels` JSON NOT NULL DEFAULT ('{}') ,
                 `target_id` INT NOT NULL,
                 `options` JSON NOT NULL DEFAULT('{}'),
+                `sort_order` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
                 UNIQUE INDEX unique_identifier_generator_code (code),
                 KEY `target_id` (`target_id`),
                 CONSTRAINT `pim_catalog_identifier_generator_ibfk_1` FOREIGN KEY (`target_id`) REFERENCES `pim_catalog_attribute` (`id`) ON DELETE CASCADE

@@ -11,7 +11,6 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
@@ -21,6 +20,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -39,128 +39,66 @@ class SqlIdentifierGeneratorRepositoryIntegration extends TestCase
     }
 
     /** @test */
-    public function it_saves_an_identifier_generator(): void
+    public function it_saves_identifier_generators(): void
     {
-        $identifierGenerator = new IdentifierGenerator(
-            IdentifierGeneratorId::fromString('d556e59e-d46c-465e-863d-f4a39d0b7485'),
-            IdentifierGeneratorCode::fromString('abcdef'),
-            Conditions::fromArray([]),
-            Structure::fromArray([FreeText::fromString('abc')]),
-            LabelCollection::fromNormalized(['fr' => 'Générateur']),
-            Target::fromString('sku'),
-            Delimiter::fromString('-'),
-            TextTransformation::fromString('no'),
+        $this->identifierGeneratorRepository->save(
+            $this->getIdentifierGenerator(code: 'identifier_generator0')
         );
+        $this->assertEquals(0, $this->getSortOrder('identifier_generator0'));
 
-        $this->identifierGeneratorRepository->save($identifierGenerator);
+        $this->identifierGeneratorRepository->save(
+            $this->getIdentifierGenerator(code: 'identifier_generator1')
+        );
+        $this->assertEquals(1, $this->getSortOrder('identifier_generator1'));
     }
 
     /** @test */
     public function it_updates_an_identifier_generator(): void
     {
-        $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
-VALUES (UUID_TO_BIN('d556e59e-d46c-465e-863d-f4a39d0b7485'), 'default', (SELECT id FROM pim_catalog_attribute), JSON_OBJECT('delimiter', '-'), '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
-SQL;
+        $identifierGenerator =$this->getIdentifierGenerator(code: 'identifier_generator0');
+        $this->identifierGeneratorRepository->save($identifierGenerator);
 
-        $this->connection->executeStatement($query);
-
-        $identifierGenerator = new IdentifierGenerator(
-            IdentifierGeneratorId::fromString('d556e59e-d46c-465e-863d-f4a39d0b7485'),
-            IdentifierGeneratorCode::fromString('default'),
-            Conditions::fromArray([]),
-            Structure::fromArray([FreeText::fromString('update'), AutoNumber::fromValues(3, 2) ]),
-            LabelCollection::fromNormalized(['fr' => 'Générateur mis à jour']),
-            Target::fromString('sku'),
-            Delimiter::fromString('='),
-            TextTransformation::fromString('no'),
+        $this->identifierGeneratorRepository->update(
+            $identifierGenerator->withLabelCollection(LabelCollection::fromNormalized(['fr' => 'Générateur mis à jour']))
         );
 
-        $this->identifierGeneratorRepository->update($identifierGenerator);
+        Assert::assertEquals(1, $this->identifierGeneratorRepository->count());
 
-        $identifierGeneratorUpdated = $this->identifierGeneratorRepository->get('default');
+        $identifierGeneratorUpdated = $this->identifierGeneratorRepository->get('identifier_generator0');
         Assert::assertInstanceOf(IdentifierGenerator::class, $identifierGeneratorUpdated);
-        Assert::assertEquals($identifierGeneratorUpdated->id()->asString(), 'd556e59e-d46c-465e-863d-f4a39d0b7485');
-        Assert::assertEquals($identifierGeneratorUpdated->code()->asString(), 'default');
-        Assert::assertEquals($identifierGeneratorUpdated->target()->asString(), 'sku');
-        Assert::assertEquals($identifierGeneratorUpdated->delimiter()->asString(), '=');
-        Assert::assertEquals($identifierGeneratorUpdated->labelCollection()->normalize(), ['fr' => 'Générateur mis à jour']);
-        Assert::assertEquals($identifierGeneratorUpdated->conditions()->normalize(), []);
-        Assert::assertEquals($identifierGeneratorUpdated->structure()->normalize(), [
-            [
-                'type' => 'free_text',
-                'string' => 'update',
-            ],
-            [
-                'type' => 'auto_number',
-                'numberMin' => 3,
-                'digitsMin' => 2,
-            ],
-        ]);
+        Assert::assertEquals($identifierGenerator->id()->asString(), $identifierGeneratorUpdated->id()->asString());
+        Assert::assertEquals($identifierGenerator->code()->asString(), $identifierGeneratorUpdated->code()->asString());
+        Assert::assertEquals($identifierGenerator->target()->asString(), $identifierGeneratorUpdated->target()->asString());
+        Assert::assertEquals($identifierGenerator->delimiter()->asString(), $identifierGeneratorUpdated->delimiter()->asString());
+        Assert::assertEquals(['fr' => 'Générateur mis à jour'], $identifierGeneratorUpdated->labelCollection()->normalize());
+        Assert::assertEquals($identifierGenerator->conditions()->normalize(), $identifierGeneratorUpdated->conditions()->normalize());
+        Assert::assertEquals($identifierGenerator->structure()->normalize(), $identifierGeneratorUpdated->structure()->normalize());
     }
 
     /** @test */
     public function it_gets_an_identifier_generator(): void
     {
-        $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
-VALUES (
-    UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 
-    'default', 
-    (SELECT id FROM pim_catalog_attribute),
-    JSON_OBJECT('delimiter', '-', 'text_transformation', 'no'), 
-    '{"fr": "Structure par defaut"}', 
-    '{}', 
-    '[{"type": "free_text", "string": "default_structure"}]'
-);
-SQL;
+        $identifierGenerator = $this->getIdentifierGenerator('default');
+        $this->identifierGeneratorRepository->save($identifierGenerator);
 
-        $this->connection->executeStatement($query);
-
-        $identifierGenerator = $this->identifierGeneratorRepository->get('default');
+        $identifierGeneratorFromDB = $this->identifierGeneratorRepository->get('default');
 
         Assert::assertInstanceOf(IdentifierGenerator::class, $identifierGenerator);
-        Assert::assertEquals($identifierGenerator->id()->asString(), '2038e1c9-68ff-4833-b06f-01e42d206002');
-        Assert::assertEquals($identifierGenerator->code()->asString(), 'default');
-        Assert::assertEquals($identifierGenerator->target()->asString(), 'sku');
-        Assert::assertEquals($identifierGenerator->delimiter()->asString(), '-');
-        Assert::assertEquals($identifierGenerator->labelCollection()->normalize(), ['fr' => 'Structure par defaut']);
-        Assert::assertEquals($identifierGenerator->conditions()->normalize(), []);
-        Assert::assertEquals($identifierGenerator->structure()->normalize(), [[
-            'type' => 'free_text',
-            'string' => 'default_structure',
-        ], ]);
+        Assert::assertEquals($identifierGenerator->id()->asString(), $identifierGeneratorFromDB->id()->asString());
+        Assert::assertEquals($identifierGenerator->code()->asString(), $identifierGeneratorFromDB->code()->asString());
+        Assert::assertEquals($identifierGenerator->target()->asString(), $identifierGeneratorFromDB->target()->asString());
+        Assert::assertEquals($identifierGenerator->delimiter()->asString(), $identifierGeneratorFromDB->delimiter()->asString());
+        Assert::assertEquals($identifierGenerator->labelCollection()->normalize(), $identifierGeneratorFromDB->labelCollection()->normalize());
+        Assert::assertEquals($identifierGenerator->conditions()->normalize(), $identifierGeneratorFromDB->conditions()->normalize());
+        Assert::assertEquals($identifierGenerator->structure()->normalize(), $identifierGeneratorFromDB->structure()->normalize());
     }
 
     /** @test */
     public function it_throws_an_exception_if_identifier_code_already_exists(): void
     {
-        $identifierGenerator = new IdentifierGenerator(
-            IdentifierGeneratorId::fromString('d556e59e-d46c-465e-863d-f4a39d0b7485'),
-            IdentifierGeneratorCode::fromString('abcdef'),
-            Conditions::fromArray([]),
-            Structure::fromArray([FreeText::fromString('abc')]),
-            LabelCollection::fromNormalized(['fr' => 'Générateur']),
-            Target::fromString('sku'),
-            Delimiter::fromString('-'),
-            TextTransformation::fromString('no'),
-        );
-        $this->identifierGeneratorRepository->save($identifierGenerator);
-
-        $identifierGenerator2 = new IdentifierGenerator(
-            IdentifierGeneratorId::fromString('d556e59e-d46c-465e-863d-f4a39d0b7485'),
-            IdentifierGeneratorCode::fromString('abcdef'),
-            Conditions::fromArray([]),
-            Structure::fromArray([FreeText::fromString('abc')]),
-            LabelCollection::fromNormalized(['fr' => 'Générateur']),
-            Target::fromString('sku'),
-            Delimiter::fromString('-'),
-            TextTransformation::fromString('no'),
-        );
-
+        $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'same_code'));
         $this->expectException(UnableToSaveIdentifierGeneratorException::class);
-
-        $this->identifierGeneratorRepository->save($identifierGenerator2);
+        $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'same_code'));
     }
 
     /** @test */
@@ -174,55 +112,73 @@ SQL;
     /** @test */
     public function its_gets_all_identifier_generator(): void
     {
-        $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
-VALUES (
-    UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 
-    'default',
-    (SELECT id FROM pim_catalog_attribute),
-    JSON_OBJECT('delimiter', '-', 'text_transformation', 'no'), 
-    '{"fr": "Structure par defaut"}', 
-    '{}', 
-    '[{"type": "free_text", "string": "default_structure"}]'
-);
-SQL;
+        $firstIdentifierGenerator = $this->getIdentifierGenerator(code: 'identifier_generator0');
+        $this->identifierGeneratorRepository->save($firstIdentifierGenerator);
+        $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'identifier_generator1'));
 
-        $this->connection->executeStatement($query);
+        $identifiersGeneratorsFromDB = $this->identifierGeneratorRepository->getAll();
+        Assert::assertContainsOnlyInstancesOf(IdentifierGenerator::class, $identifiersGeneratorsFromDB);
+        Assert::assertCount(2, $identifiersGeneratorsFromDB);
 
-        $identifiersGenerators = $this->identifierGeneratorRepository->getAll();
-        Assert::assertContainsOnlyInstancesOf(IdentifierGenerator::class, $identifiersGenerators);
+        $firstIdentifierFromDB = $identifiersGeneratorsFromDB[0];
+        Assert::assertInstanceOf(IdentifierGenerator::class, $firstIdentifierFromDB);
+        Assert::assertEquals($firstIdentifierGenerator->id()->asString(), $firstIdentifierFromDB->id()->asString());
+        Assert::assertEquals('identifier_generator0', $firstIdentifierFromDB->code()->asString());
+        Assert::assertEquals($firstIdentifierGenerator->target()->asString(), $firstIdentifierFromDB->target()->asString());
+        Assert::assertEquals($firstIdentifierGenerator->delimiter()->asString(), $firstIdentifierFromDB->delimiter()->asString());
+        Assert::assertEquals($firstIdentifierGenerator->labelCollection()->normalize(), $firstIdentifierFromDB->labelCollection()->normalize());
+        Assert::assertEquals($firstIdentifierGenerator->conditions()->normalize(), $firstIdentifierFromDB->conditions()->normalize());
+        Assert::assertEquals($firstIdentifierGenerator->structure()->normalize(), $firstIdentifierFromDB->structure()->normalize());
 
-        $firstIdentifier = $identifiersGenerators[0];
-        Assert::assertInstanceOf(IdentifierGenerator::class, $firstIdentifier);
-        Assert::assertEquals($firstIdentifier->id()->asString(), '2038e1c9-68ff-4833-b06f-01e42d206002');
-        Assert::assertEquals($firstIdentifier->code()->asString(), 'default');
-        Assert::assertEquals($firstIdentifier->target()->asString(), 'sku');
-        Assert::assertEquals($firstIdentifier->delimiter()->asString(), '-');
-        Assert::assertEquals($firstIdentifier->labelCollection()->normalize(), ['fr' => 'Structure par defaut']);
-        Assert::assertEquals($firstIdentifier->conditions()->normalize(), []);
-        Assert::assertEquals($firstIdentifier->structure()->normalize(), [[
-            'type' => 'free_text',
-            'string' => 'default_structure',
-        ], ]);
+        $secondIdentifierFromDB = $identifiersGeneratorsFromDB[1];
+        Assert::assertEquals($secondIdentifierFromDB->code()->asString(), 'identifier_generator1');
     }
 
     /** @test */
-    public function it_can_delete_an_identifier_generator(): void
+    public function it_can_delete_an_identifier_generator_and_do_reorder(): void
     {
-        $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
-VALUES (UUID_TO_BIN('2038e1c9-68ff-4833-b06f-01e42d206002'), 'default', (SELECT id FROM pim_catalog_attribute), JSON_OBJECT('delimiter', '-'), '{"fr": "Structure par defaut"}', '{}', '[{"type": "free_text", "string": "default_structure"}]');
-SQL;
+        $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'identifier_generator0'));
+        $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'identifier_generator1'));
+        $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'identifier_generator2'));
+        $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'identifier_generator3'));
 
-        $this->connection->executeStatement($query);
-        Assert::assertEquals($this->identifierGeneratorRepository->count(), 1);
+        Assert::assertEquals(4, $this->identifierGeneratorRepository->count());
 
-        $this->identifierGeneratorRepository->delete('default');
-        Assert::assertEquals($this->identifierGeneratorRepository->count(), 0);
+        $this->identifierGeneratorRepository->delete('identifier_generator1');
+        Assert::assertEquals(3, $this->identifierGeneratorRepository->count());
+
+        Assert::assertEquals(0, $this->getSortOrder('identifier_generator0'));
+        Assert::assertEquals(1, $this->getSortOrder('identifier_generator2'));
+        Assert::assertEquals(2, $this->getSortOrder('identifier_generator3'));
     }
 
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog(['identifier_generator']);
+    }
+
+    private function getSortOrder(string $code): int
+    {
+        $sql = <<<SQL
+SELECT sort_order 
+FROM pim_catalog_identifier_generator
+WHERE code=:code
+SQL;
+
+        return \intval($this->connection->fetchOne($sql, ['code' => $code]));
+    }
+
+    private function getIdentifierGenerator(?string $code = null): IdentifierGenerator
+    {
+        return new IdentifierGenerator(
+            IdentifierGeneratorId::fromString(Uuid::uuid4()->toString()),
+            IdentifierGeneratorCode::fromString($code ?? 'default'),
+            Conditions::fromArray([]),
+            Structure::fromArray([FreeText::fromString('abc')]),
+            LabelCollection::fromNormalized(['fr' => 'Générateur']),
+            Target::fromString('sku'),
+            Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
+        );
     }
 }
