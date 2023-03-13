@@ -25,7 +25,7 @@ class TargetTypeConverterTest extends TestCase
 
     /**
      * @dataProvider validConversionProvider
-     * @param string[] $expectedAttributeTypes
+     * @param array<string> $expectedAttributeTypes
      */
     public function testItConvertsTargetTypeToAttributeTypes(
         string $targetType,
