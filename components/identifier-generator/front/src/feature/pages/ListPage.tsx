@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {PageContent, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {LocaleCode, PageContent, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {
   AttributesIllustration,
   Button,
@@ -7,6 +7,7 @@ import {
   Information,
   Link,
   Placeholder,
+  Search,
   SkeletonPlaceholder,
   Table,
   useBooleanState,
@@ -33,6 +34,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
 
   const [isDeleteGeneratorModalOpen, openDeleteGeneratorModal, closeDeleteGeneratorModal] = useBooleanState();
   const [generatorToDelete, setGeneratorToDelete] = useState<string>('');
+  const [search, setSearch] = useState<string>('');
 
   const locale = useUserContext().get('catalogLocale');
   const isManageIdentifierGeneratorAclGranted = security.isGranted('pim_identifier_generator_manage');
@@ -69,6 +71,14 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     return identifierAttributes.find(attribute => attribute.code === target)?.label;
   };
 
+  const filterOnLabelOrCode =
+    (searchValue: string, locale: LocaleCode) =>
+    (entity: {code: string; labels: LabelCollection}): boolean =>
+      -1 !== entity.code.toLowerCase().indexOf(searchValue.toLowerCase()) ||
+      (undefined !== entity.labels[locale] &&
+        -1 !== entity.labels[locale].toLowerCase().indexOf(searchValue.toLowerCase()));
+  const filteredGenerators = generators.filter(filterOnLabelOrCode(search, locale));
+
   return (
     <>
       <Header>
@@ -87,6 +97,12 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
             {translate('pim_identifier_generator.list.check_help_center')}
           </Link>
         </Information>
+
+        <Search onSearchChange={setSearch} searchValue={search} placeholder={translate('pim_common.search')}>
+          <Search.ResultCount>
+            {translate('pim_common.result_count', {itemsCount: filteredGenerators.length}, filteredGenerators.length)}
+          </Search.ResultCount>
+        </Search>
 
         {isManageIdentifierGeneratorAclGranted && generators.length >= LIMIT_IDENTIFIER_GENERATOR && (
           <Helper level="info">
@@ -132,7 +148,7 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
             {isLoading && <ListSkeleton />}
             {!isGeneratorListEmpty && (
               <>
-                {generators?.map(({labels, code, target}) => (
+                {filteredGenerators?.map(({labels, code, target}) => (
                   <Table.Row key={code} onClick={goToEditPage(code)}>
                     <Table.Cell>
                       <Styled.Label>{getCurrentLabel(labels, code)}</Styled.Label>
