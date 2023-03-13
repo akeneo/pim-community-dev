@@ -10,7 +10,6 @@ import {useAttribute} from '../../../../hooks/useAttribute';
 import {SourceSectionTitle} from '../SourceSectionTitle';
 import {SelectMeasurementUnitDropdown} from './SelectMeasurementUnitDropdown';
 import {DefaultValue} from './DefaultValue';
-import {Target} from '../../models/Target';
 
 const Information = styled.p`
     font-style: italic;
@@ -21,10 +20,10 @@ type Props = {
     source: Source;
     errors: SourceErrors | null;
     onChange: (value: Source) => void;
-    target: Target;
+    targetType: string;
 };
 
-export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) => {
+export const SourceParameters: FC<Props> = ({source, errors, onChange, targetType}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute(source?.source ?? '');
 
@@ -96,6 +95,16 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
             ></DefaultValue>
         );
     }
+    if ('string' === targetType) {
+        components.push(
+            <DefaultValue
+                source={source}
+                onChange={onChange}
+                error={errors?.default}
+                targetType={targetType}
+            ></DefaultValue>
+        );
+    }
 
     if (components.length === 0) {
         components.push(
@@ -110,6 +119,7 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
             <SourceSectionTitle order={2}>
                 {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
             </SourceSectionTitle>
+
             {components.map(component => component)}
         </>
     );
