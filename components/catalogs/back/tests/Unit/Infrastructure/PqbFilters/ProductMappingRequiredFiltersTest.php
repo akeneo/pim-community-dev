@@ -243,22 +243,22 @@ class ProductMappingRequiredFiltersTest extends TestCase
                         'source' => 'name',
                         'scope' => null,
                         'locale' => 'fr_FR',
+                        'default' => 'Default title',
                     ],
                     'short_description' => [
                         'source' => 'description',
                         'scope' => 'ecommerce',
                         'locale' => null,
-                        'default' => 'Default description',
                     ],
                 ],
                 $this->getProductMappingSchemaWithTitleAndDescriptionRequired(),
                 [
                     [
-                        'field' => 'name',
+                        'field' => 'description',
                         'operator' => Operator::IS_NOT_EMPTY,
                         'value' => '',
                         'context' => [
-                            'locale' => 'fr_FR',
+                            'scope' => 'ecommerce',
                         ],
                     ],
                 ],
