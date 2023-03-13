@@ -232,6 +232,37 @@ class ProductMappingRequiredFiltersTest extends TestCase
                     ],
                 ],
             ],
+            'two required field but one with default value' => [
+                [
+                    'uuid' => [
+                        'source' => 'uuid',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'title' => [
+                        'source' => 'name',
+                        'scope' => null,
+                        'locale' => 'fr_FR',
+                    ],
+                    'short_description' => [
+                        'source' => 'description',
+                        'scope' => 'ecommerce',
+                        'locale' => null,
+                        'default' => 'Default description',
+                    ],
+                ],
+                $this->getProductMappingSchemaWithTitleAndDescriptionRequired(),
+                [
+                    [
+                        'field' => 'name',
+                        'operator' => Operator::IS_NOT_EMPTY,
+                        'value' => '',
+                        'context' => [
+                            'locale' => 'fr_FR',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 

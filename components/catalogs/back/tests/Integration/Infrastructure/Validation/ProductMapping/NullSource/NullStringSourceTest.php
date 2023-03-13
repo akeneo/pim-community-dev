@@ -121,7 +121,7 @@ class NullStringSourceTest extends AbstractAttributeSourceTest
                     'source' => null,
                     'scope' => null,
                     'locale' => null,
-                    'default' => 10
+                    'default' => 10,
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],

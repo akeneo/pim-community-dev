@@ -79,15 +79,15 @@ final class CatalogProductMappingValidator extends ConstraintValidator
                                 ->atPath('[source]')
                                 ->addViolation();
 
-                                return;
-                            }
+                            return;
+                        }
 
-                            $constraint = $this->getMappingSourceConstraint($sourceAssociation['source']);
+                        $constraint = $this->getMappingSourceConstraint($sourceAssociation['source']);
 
-                            if (null === $constraint) {
-                                $context->buildViolation('akeneo_catalogs.validation.product_mapping.source.invalid')
-                                    ->atPath('[source]')
-                                    ->addViolation();
+                        if (null === $constraint) {
+                            $context->buildViolation('akeneo_catalogs.validation.product_mapping.source.invalid')
+                                ->atPath('[source]')
+                                ->addViolation();
 
                             return;
                         }

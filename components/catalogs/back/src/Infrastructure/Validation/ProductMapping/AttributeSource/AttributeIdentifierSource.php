@@ -42,7 +42,7 @@ final class AttributeIdentifierSource extends Compound
                                 new Assert\Type('string'),
                                 new Assert\NotBlank(allowNull: false),
                             ]),
-                        ]
+                        ],
                     ],
                     'allowMissingFields' => false,
                     'allowExtraFields' => false,

@@ -179,12 +179,11 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
     {
         foreach ($productMapping as $targetCode => $source) {
             if ($source['source'] === null) {
-
                 $target = $schema['properties'][$targetCode];
 
                 $targetTypeKey = $this->targetTypeConverter->getTargetTypeKey($target);
 
-                $constraint =  match ($targetTypeKey) {
+                $constraint = match ($targetTypeKey) {
                     'string' => new NullStringSource(),
                     default => null,
                 };
