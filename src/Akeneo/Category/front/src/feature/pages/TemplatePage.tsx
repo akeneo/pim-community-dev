@@ -19,6 +19,9 @@ import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePr
 import {TemplateOtherActions} from '../components/templates/TemplateOtherActions';
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
 import {Template} from '../models';
+import {AddTemplateAttributeModal} from "../components/templates/AddTemplateAttributeModal";
+import {Button} from "akeneo-design-system/lib/components/Button/Button";
+import styled from "styled-components";
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -29,6 +32,10 @@ type Params = {
   treeId: string;
   templateId: string;
 };
+
+const AddAttributeButton = styled(Button)`
+  margin-left: auto;
+`;
 
 const TemplatePage: FC = () => {
   const {treeId, templateId} = useParams<Params>();
@@ -99,6 +106,7 @@ const TemplatePage: FC = () => {
   );
 
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
+  const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] = useBooleanState(false);
 
   return (
     <>
@@ -148,6 +156,14 @@ const TemplatePage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
+          <AddAttributeButton
+              active
+              ghost
+              level="tertiary"
+              onClick={openAddTemplateAttributeModal}
+          >
+            {translate('akeneo.category.template.add_attribute.add_button')}
+          </AddAttributeButton>
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
@@ -162,6 +178,12 @@ const TemplatePage: FC = () => {
           <DeactivateTemplateModal
             template={{id: templateId, label: templateLabel}}
             onClose={closeDeactivateTemplateModal}
+          />
+        )}
+        {isAddTemplateAttributeModalOpen && (
+          <AddTemplateAttributeModal
+              template_id={templateId}
+              onClose={closeAddTemplateAttributeModal}
           />
         )}
       </PageContent>
