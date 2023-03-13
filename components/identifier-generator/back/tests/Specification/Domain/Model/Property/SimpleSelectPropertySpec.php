@@ -57,6 +57,8 @@ class SimpleSelectPropertySpec extends ObjectBehavior
                 'operator' => '=',
                 'value' => 3
             ],
+            'scope' => 'ecommerce',
+            'locale' => 'en_US',
         ]);
     }
 

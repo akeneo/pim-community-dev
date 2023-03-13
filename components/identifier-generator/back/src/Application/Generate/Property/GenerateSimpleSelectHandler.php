@@ -32,7 +32,7 @@ final class GenerateSimpleSelectHandler implements GeneratePropertyHandlerInterf
         Assert::isInstanceOf($simpleSelectProperty, SimpleSelectProperty::class);
         $normalizedData = $simpleSelectProperty->normalize();
         $value = $productProjection->value(
-            $simpleSelectProperty->normalize()['attributeCode'],
+            $normalizedData['attributeCode'],
             $normalizedData['locale'] ?? null,
             $normalizedData['scope'] ?? null,
         );
@@ -56,6 +56,8 @@ final class GenerateSimpleSelectHandler implements GeneratePropertyHandlerInterf
                 return \substr($value, 0, $simpleSelectProperty->process()->value());
             case Process::PROCESS_TYPE_NO:
                 return $value;
+            default:
+                throw new \InvalidArgumentException('Not implemented yet');
         }
     }
 }
