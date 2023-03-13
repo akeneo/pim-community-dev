@@ -58,7 +58,6 @@ const EditCategoryProvider: FC<Props> = ({children, setCanLeavePage}) => {
   }
 
   useEffect(() => {
-    if (!featureFlags.isEnabled('enriched_category')) return; // unused in legacy part
     fetchLocales();
     fetchChannels();
   }, [featureFlags, fetchLocales, fetchChannels]);

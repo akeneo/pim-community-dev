@@ -138,9 +138,7 @@ const SettingsIndex = () => {
                     label={
                       <>
                         {translate('pim_enrich.entity.category.plural_label')}
-                        {featureFlags.isEnabled('enriched_category') && (
-                          <StyledBadge level="secondary">{translate('pim_menu.tag.new')}</StyledBadge>
-                        )}
+                        <StyledBadge level="secondary">{translate('pim_menu.tag.new')}</StyledBadge>
                       </>
                     }
                     onClick={() => redirectToRoute('pim_enrich_categorytree_index')}

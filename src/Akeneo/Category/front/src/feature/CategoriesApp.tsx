@@ -25,16 +25,14 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
         </Route>
         <Route path="/:categoryId/edit">
           <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
-            {featureFlags.isEnabled('enriched_category') ? <CategoryEditPage /> : <LegacyCategoryEditPage />}
+            <CategoryEditPage />
           </EditCategoryProvider>
         </Route>
-        {featureFlags.isEnabled('enriched_category') && (
-          <Route path="/:treeId/template/:templateId">
-            <QueryClientProvider client={queryClient}>
-              <TemplatePage />
-            </QueryClientProvider>
-          </Route>
-        )}
+        <Route path="/:treeId/template/:templateId">
+          <QueryClientProvider client={queryClient}>
+            <TemplatePage />
+          </QueryClientProvider>
+        </Route>
         <Route path="/">
           <QueryClientProvider client={queryClient}>
             <CategoriesIndex />

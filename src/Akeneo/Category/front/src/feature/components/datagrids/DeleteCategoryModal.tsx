@@ -26,7 +26,7 @@ const DeleteCategoryModal: FC<DeleteCategoryModalProps> = ({
 
   const {data: categoryChildrenCount, isLoading} = useCountCategoryChildren(categoryId);
   let warning = null;
-  if (featureFlags.isEnabled('enriched_category') && !isLoading) {
+  if (!isLoading) {
     if (categoryChildrenCount && categoryChildrenCount > 0) {
       warning = translate('pim_enrich.entity.category.category_tree_deletion.warning_categories_number', {
         // Add the current category (parent) we want to delete

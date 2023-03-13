@@ -33,10 +33,6 @@ const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
   const featureFlags = useFeatureFlags();
   const translate = useTranslate();
 
-  if (!featureFlags.isEnabled('enriched_category')) {
-    return <></>;
-  }
-
   return (
     <Container data-testid="discover-enriched-categories-information-helper">
       <Information

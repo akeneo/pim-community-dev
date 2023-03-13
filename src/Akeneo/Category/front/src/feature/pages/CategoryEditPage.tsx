@@ -325,11 +325,7 @@ const CategoryEditPage: FC = () => {
             await handleDeleteCategory(categoryToDelete);
             handleCloseDeleteCategoryModal();
           }}
-          message={
-            featureFlags.isEnabled('enriched_category')
-              ? 'pim_enrich.entity.category.category_deletion.confirmation_question'
-              : 'pim_enrich.entity.category.category_deletion.confirmation'
-          }
+          message={'pim_enrich.entity.category.category_deletion.confirmation_question'}
           categoryId={categoryToDelete.identifier}
           numberOfProducts={categoryToDelete.numberOfProducts}
         />
