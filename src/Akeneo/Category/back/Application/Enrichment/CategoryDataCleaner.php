@@ -50,6 +50,5 @@ class CategoryDataCleaner
 
     public function cleanByTemplateUuid(array $valuesByCode, string $templateUuid): void
     {
-
     }
 }

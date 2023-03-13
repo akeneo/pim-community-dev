@@ -35,7 +35,7 @@ class CleanCategoriesTemplateEnrichedValuesTasklet implements TaskletInterface
         $templateUuid = $jobParameters->get('template_uuid');
 
         $this->commandBus->dispatch(
-            new CleanCategoryEnrichedValuesByTemplateUuidCommand($templateUuid)
+            new CleanCategoryEnrichedValuesByTemplateUuidCommand($templateUuid),
         );
     }
 }

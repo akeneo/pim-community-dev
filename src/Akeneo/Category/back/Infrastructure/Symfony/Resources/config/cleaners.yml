@@ -8,6 +8,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Category\Application\Query\GetEnrichedValuesByTemplateUuid:
+        class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesByTemplateUuidSql
+        arguments:
+            - '@database_connection'
+
     Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues:
         class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryEnrichedValuesSql
         arguments:
