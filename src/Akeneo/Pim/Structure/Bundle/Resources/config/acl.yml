@@ -53,7 +53,7 @@ pim_enrich_attributegroup_mass_delete:
     type: action
     label: pim_enrich.acl.attribute_group.mass_delete
     group_name: pim_enrich.acl_group.attribute_group
-
+    feature: attribute_groups_mass_delete
 pim_enrich_attributegroup_sort:
     type: action
     label: pim_enrich.acl.attribute_group.sort
