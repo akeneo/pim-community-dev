@@ -1,9 +1,10 @@
-import React, {FC, useEffect, useMemo, useState} from 'react';
+import React, {FC, useMemo} from 'react';
 import styled, {css} from 'styled-components';
 import {PimView} from '../PimView';
-import {useAnalytics, useRouter, useTranslate} from '../../hooks';
-import {HelpIcon, IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
+import {useRouter, useTranslate} from '../../hooks';
+import {IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
+import {useAnalytics} from '../../hooks';
 
 const StyledMainNavigationItem = styled(MainNavigationItem)<{align?: 'bottom'; freeTrialEnabled: boolean}>`
   ${({align}) =>
@@ -39,25 +40,11 @@ type Props = {
   freeTrialEnabled?: boolean;
 };
 
-type PimVersion = {
-  pim_version: string;
-  pim_edition: string;
-};
-
 const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode, freeTrialEnabled = false}) => {
   const translate = useTranslate();
   const router = useRouter();
   const theme = useTheme();
   const analytics = useAnalytics();
-  const [pimVersion, setPimVersion] = useState<PimVersion | undefined>();
-
-  useEffect(() => {
-    fetch(router.generate('pim_analytics_data_collect')).then(response => {
-      response.json().then(data => {
-        setPimVersion(data);
-      });
-    });
-  }, []);
 
   const handleFollowEntry = (event: any, entry: NavigationEntry) => {
     event.stopPropagation();
@@ -83,14 +70,6 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
       return undefined !== column.entries.find((entry: SubNavigationEntry) => entry.code === activeSubEntryCode);
     });
   }, [activeNavigationEntry, activeSubEntryCode]);
-
-  const helpCenterUrl = useMemo(() => {
-    const isSerenity = pimVersion?.pim_version.split('.').length === 1;
-    const version = isSerenity ? 'serenity' : `v${pimVersion?.pim_version.split('.')[0]}`;
-    const campaign = isSerenity ? 'serenity' : `${pimVersion?.pim_edition}${pimVersion?.pim_version}`;
-
-    return `https://help.akeneo.com/pim/${version}/index.html?utm_source=akeneo-app&utm_medium=interrogation-icon&utm_campaign=${campaign}`;
-  }, [pimVersion]);
 
   return (
     <NavContainer aria-label="Main navigation">
@@ -126,22 +105,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
           ))}
         </MenuContainer>
         <HelpContainer>
-          <MainNavigationItem icon={<HelpIcon />}>
-            {translate('pim_menu.tab.help.title')}
-            <Tag tint="blue">{translate('pim_menu.tab.help.new')}</Tag>
-          </MainNavigationItem>
-          <div className="dropdown-content">
-            <a href={helpCenterUrl} target="_blank" title={translate('pim_menu.tab.help.helper')}>
-              {translate('pim_menu.tab.help.help_center')}
-            </a>
-            <LinkContainer href="https://akademy.akeneo.com/" target="_blank">
-              {translate('pim_menu.tab.help.akademy_training')}
-              <StyledNewTag tint={'blue'}>{translate('pim_menu.tab.help.new')}</StyledNewTag>
-            </LinkContainer>
-            <a href="https://help.akeneo.com/pim/serenity/updates/index.html" target="_blank">
-              {translate('pim_menu.tab.help.news')}
-            </a>
-          </div>
+          <PimView viewName="pim-menu-help" />
         </HelpContainer>
       </MainNavContainer>
       {activeNavigationEntry &&
@@ -215,53 +179,6 @@ const HelpContainer = styled.div`
   min-height: 80px;
   position: relative;
   margin-top: auto;
-  display: inline-block;
-
-  .dropdown-content {
-    background-color: white;
-    display: none;
-    box-shadow: 0px 8px 16px 0px ${({theme}) => theme.color.grey120};
-    z-index: 1;
-    position: fixed;
-    left: 80px;
-    bottom: 10px;
-    flex-direction: column;
-
-    a {
-      color: ${({theme}) => theme.color.grey120};
-      padding: 12px 16px;
-      :hover {
-        color: ${({theme}) => theme.color.purple100};
-      }
-
-      .AknBadge {
-        margin-left: 10px;
-      }
-    }
-  }
-
-  .tag-container {
-    overflow: hidden;
-    position: absolute;
-    right: 0;
-    top: 7px;
-    width: 50%;
-  }
-
-  :hover {
-    .dropdown-content {
-      display: flex;
-    }
-  }
-`;
-
-const LinkContainer = styled.a`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledNewTag = styled(Tag)`
-  margin-left: 10px;
 `;
 
 export type {NavigationEntry, SubNavigation};
