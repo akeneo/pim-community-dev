@@ -192,7 +192,7 @@ class CatalogFixtureCommand extends Command
     }
 
     /**
-     * @param array<array-key, array{source: string|null, scope:string|null, locale: string|null}> $productMapping
+     * @param array<array-key, array{source: string|null, scope:string|null, locale: string|null, default?: string}> $productMapping
      * @throws \Doctrine\DBAL\Exception
      */
     private function setCatalogProductMapping(string $id, array $productMapping): void
