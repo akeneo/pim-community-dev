@@ -76,3 +76,9 @@ services:
     public: true
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\ReorderIdentifierGeneratorsController:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler'
+      - '@oro_security.security_facade'
