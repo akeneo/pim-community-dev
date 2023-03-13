@@ -26,10 +26,6 @@ final class SqlGetSequencedNextIdentifierQuery implements GetNextIdentifierQuery
         string $prefix,
         int $numberMin,
     ): int {
-        if ($this->isPreviousDatabaseVersion()) {
-            return $this->getNextIdentifierQuery->fromPrefix($identifierGenerator, $prefix, $numberMin);
-        };
-
         $lastAllocatedNumber = $this->getLastAllocatedNumber($identifierGenerator, $prefix);
         if (null === $lastAllocatedNumber) {
             $nextIdentifier = $this->getNextIdentifierQuery->fromPrefix($identifierGenerator, $prefix, $numberMin);
@@ -117,20 +113,5 @@ SQL;
             'number' => $newAllocatedNumber,
             'last_allocated_number' => $newAllocatedNumber - 1,
         ]));
-    }
-
-    private function isPreviousDatabaseVersion(): bool
-    {
-        return !$this->tableExists();
-    }
-
-    private function tableExists(): bool
-    {
-        return $this->connection->executeQuery(
-            'SHOW TABLES LIKE :tableName',
-            [
-                'tableName' => 'pim_catalog_identifier_generator_sequence',
-            ]
-        )->rowCount() >= 1;
     }
 }
