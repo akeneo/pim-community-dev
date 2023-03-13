@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToSetIdentifierException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\Error;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
@@ -78,8 +78,8 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
                 $product->getFamily()?->getCode(),
                 $this->flatValues($product),
             );
-            $command = new MatchIdentifierGeneratorCommand($identifierGenerator, $productProjection);
-            if (($this->matchIdentifierGeneratorHandler)($command)) {
+            $query = new MatchIdentifierGeneratorQuery($identifierGenerator, $productProjection);
+            if (($this->matchIdentifierGeneratorHandler)($query)) {
                 try {
                     $this->setGeneratedIdentifier($identifierGenerator, $productProjection, $product);
                 } catch (UnableToSetIdentifierException $e) {

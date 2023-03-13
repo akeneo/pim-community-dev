@@ -30,10 +30,10 @@ final class MatchIdentifierGeneratorHandler
         }
     }
 
-    public function __invoke(MatchIdentifierGeneratorCommand $command): bool
+    public function __invoke(MatchIdentifierGeneratorQuery $query): bool
     {
-        $identifierGenerator = $command->identifierGenerator();
-        $productProjection = $command->productProjection();
+        $identifierGenerator = $query->identifierGenerator();
+        $productProjection = $query->productProjection();
         $conditionsWithImplicitOnes = $identifierGenerator->conditions()->and($identifierGenerator->getImplicitConditions());
 
         return \array_reduce(
