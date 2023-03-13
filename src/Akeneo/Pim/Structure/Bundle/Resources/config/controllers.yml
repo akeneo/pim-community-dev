@@ -33,7 +33,6 @@ services:
             - '@pim_catalog.saver.attribute_group'
             - '@pim_api.stream.attribute_group_partial_update_stream'
             - '%pim_api.configuration%'
-            - '@pim_catalog.repository.attribute_group'
 
     pim_api.controller.attribute_option:
         public: true

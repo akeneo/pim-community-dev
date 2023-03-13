@@ -13,7 +13,6 @@ use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -36,8 +35,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeGroupController
 {
-    private const MAX_ATTRIBUTE_GROUP_LIMIT = 1000;
-
     public function __construct(
         private readonly ApiResourceRepositoryInterface $repository,
         private readonly NormalizerInterface $normalizer,
@@ -50,7 +47,6 @@ class AttributeGroupController
         private readonly SaverInterface $saver,
         private readonly StreamResourceResponse $partialUpdateStreamResource,
         private readonly array $apiConfiguration,
-        private readonly CountableRepositoryInterface $countableRepository,
     ) {
     }
 
@@ -145,14 +141,6 @@ class AttributeGroupController
      */
     public function createAction(Request $request)
     {
-        $attributeGroupCount = $this->countableRepository->countAll();
-        if (self::MAX_ATTRIBUTE_GROUP_LIMIT <= $attributeGroupCount) {
-            return new JsonResponse([
-                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                'message' => sprintf('Attribute groups are limited to %d.', self::MAX_ATTRIBUTE_GROUP_LIMIT),
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
         $data = $this->getDecodedContent($request->getContent());
 
         $attributeGroup = $this->factory->create();
