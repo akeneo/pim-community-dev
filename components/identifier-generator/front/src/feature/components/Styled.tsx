@@ -20,6 +20,12 @@ const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
+const PropertyFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
 const FullPageCenteredContent = styled.div`
   display: flex;
   align-items: center;
@@ -196,6 +202,7 @@ const Styled = {
   MultiSelectCondition,
   OperatorContainer,
   OperatorSelectCondition,
+  PropertyFormContainer,
   SelectCondition,
   SelectionInputsContainer,
   SingleSelectCondition,

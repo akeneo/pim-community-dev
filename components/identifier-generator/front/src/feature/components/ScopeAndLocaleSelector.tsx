@@ -2,7 +2,7 @@ import React, {useCallback, useMemo} from 'react';
 import {Channel, ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {ScopeSelector} from './ScopeSelector';
 import {useGetAttributeByCode} from '../hooks/useGetAttributeByCode';
-import {Helper} from 'akeneo-design-system';
+import {Field, Helper} from 'akeneo-design-system';
 import {LocaleSelector} from './LocaleSelector';
 import {useGetScopes} from '../hooks';
 import {Styled} from './Styled';
@@ -56,10 +56,15 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({
     <Styled.ConditionLineSkeleton>This is Loading</Styled.ConditionLineSkeleton>
   ) : (
     <>
-      {data?.scopable && (
+      {data?.scopable && isHorizontal && (
         <ScopeSelector value={scope} onChange={handleScopeChange} isHorizontal={isHorizontal} readOnly={readOnly} />
       )}
-      {data?.localizable && (
+      {data?.scopable && !isHorizontal && (
+        <Field label={translate('pim_common.channel')} requiredLabel={translate('pim_common.required_label')}>
+          <ScopeSelector value={scope} onChange={handleScopeChange} isHorizontal={isHorizontal} readOnly={readOnly} />
+        </Field>
+      )}
+      {data?.localizable && isHorizontal && (
         <LocaleSelector
           value={locale}
           onChange={handleLocaleChange}
@@ -68,6 +73,18 @@ const ScopeAndLocaleSelector: React.FC<Props> = ({
           isHorizontal={isHorizontal}
           readOnly={readOnly}
         />
+      )}
+      {data?.localizable && !isHorizontal && (
+        <Field label={translate('pim_common.locale')} requiredLabel={translate('pim_common.required_label')}>
+          <LocaleSelector
+            value={locale}
+            onChange={handleLocaleChange}
+            scopable={data?.scopable}
+            scope={selectedScope}
+            isHorizontal={isHorizontal}
+            readOnly={readOnly}
+          />
+        </Field>
       )}
     </>
   );
