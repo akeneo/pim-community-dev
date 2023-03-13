@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AddCategoriesApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -36,9 +35,8 @@ class AddCategoriesApplierSpec extends ObjectBehavior
         GetCategoryCodes $getCategoryCodes
     ) {
         $product = new Product();
-        $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
-            ->willReturn(['id' => []]);
+        $getCategoryCodes->fromProductUuids([$product->getUuid()])
+            ->willReturn([$product->getUuid()->toString() => []]);
 
         $productUpdater->update($product, ['categories' => ['supplier', 'print']])->shouldBeCalledOnce();
 
@@ -50,9 +48,8 @@ class AddCategoriesApplierSpec extends ObjectBehavior
         GetCategoryCodes $getCategoryCodes
     ) {
         $product = new Product();
-        $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
-            ->willReturn(['id' => ['print', 'master']]);
+        $getCategoryCodes->fromProductUuids([$product->getUuid()])
+            ->willReturn([$product->getUuid()->toString() => ['print', 'master']]);
 
         $productUpdater->update($product, ['categories' => ['print', 'master', 'supplier']])->shouldBeCalledOnce();
 
@@ -64,8 +61,7 @@ class AddCategoriesApplierSpec extends ObjectBehavior
         GetCategoryCodes $getCategoryCodes
     ) {
         $product = new Product();
-        $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
+        $getCategoryCodes->fromProductUuids([$product->getUuid()])
             ->willReturn([]);
 
         $productUpdater->update($product, ['categories' => ['supplier', 'print']])->shouldBeCalledOnce();

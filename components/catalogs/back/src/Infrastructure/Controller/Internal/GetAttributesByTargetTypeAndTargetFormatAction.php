@@ -53,8 +53,6 @@ class GetAttributesByTargetTypeAndTargetFormatAction
             throw new BadRequestHttpException('TargetType must be filled.');
         }
 
-        $attributeTypes = [];
-
         try {
             $attributeTypes = $this->targetTypeConverter->toAttributeTypes($targetType, $targetFormat ?? '');
         } catch (NoCompatibleAttributeTypeFoundException $exception) {

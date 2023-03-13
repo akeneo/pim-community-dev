@@ -63,6 +63,7 @@ class ApiContext implements Context
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
     ) {
         $this->container = $kernel->getContainer()->get('test.service_container');
+
         $this->container->get('feature_flags')->enable('catalogs');
     }
 
@@ -753,7 +754,7 @@ class ApiContext implements Context
                 <<<'JSON_WRAP'
                 {
                   "$id": "https://example.com/product",
-                  "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
                   "$comment": "My first schema !",
                   "title": "Product Mapping",
                   "description": "JSON Schema describing the structure of products expected by our application",
@@ -802,6 +803,12 @@ class ApiContext implements Context
                     },
                     "weight": {
                       "type": "number"
+                    },
+                    "available_colors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
                     }
                   },
                   "required": ["title"]
@@ -905,6 +912,14 @@ class ApiContext implements Context
                             'unit' => 'GRAM',
                         ],
                     ],
+                    'available_colors' => [
+                        'source' => 'colors',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'label_locale' => 'en_US',
+                        ],
+                    ],
                 ],
             ),
         );
@@ -940,6 +955,10 @@ class ApiContext implements Context
                     'unit' => 'MILLIGRAM',
                     'amount' => 12000,
                 ],
+                'colors' => [
+                    'blue',
+                    'green',
+                ],
             ],
             [
                 'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
@@ -961,6 +980,9 @@ class ApiContext implements Context
                 'weight' => [
                     'unit' => 'MILLIGRAM',
                     'amount' => 125.50,
+                ],
+                'colors' => [
+                    'red',
                 ],
             ],
             [
@@ -984,6 +1006,9 @@ class ApiContext implements Context
                     'unit' => 'MILLIGRAM',
                     'amount' => 125,
                 ],
+                'colors' => [
+                    'purple',
+                ],
             ],
             [
                 'uuid' => '7343e656-a114-4956-bb5e-2f5f1317b6d2',
@@ -1005,6 +1030,10 @@ class ApiContext implements Context
                 'weight' => [
                     'unit' => 'MILLIGRAM',
                     'amount' => 125,
+                ],
+                'colors' => [
+                    'purple',
+                    'red',
                 ],
             ],
         ];
@@ -1081,6 +1110,13 @@ class ApiContext implements Context
             'default_metric_unit' => 'KILOGRAM',
             'decimals_allowed' => true,
         ]);
+        $this->createAttribute([
+            'code' => 'colors',
+            'type' => 'pim_catalog_multiselect',
+            'scopable' => false,
+            'localizable' => false,
+            'options' => ['Red', 'Green', 'Blue', 'Purple'],
+        ]);
 
         $this->createFamily('t-shirt', [
             'sku',
@@ -1094,6 +1130,7 @@ class ApiContext implements Context
             'is_released',
             'sale_countries',
             'weight',
+            'colors',
         ]);
 
         $bus = $this->container->get('pim_enrich.product.message_bus');
@@ -1121,6 +1158,7 @@ class ApiContext implements Context
                         \array_keys($product['price']),
                     )),
                     new SetMeasurementValue('weight', null, null, $product['weight']['amount'], $product['weight']['unit']),
+                    new SetMultiSelectValue('colors', null, null, $product['colors']),
                 ],
             );
 
@@ -1172,6 +1210,7 @@ class ApiContext implements Context
                 'countries' => 'Brazil, Canada',
                 'type' => 't-shirt',
                 'weight' => 12,
+                'available_colors' => ['Blue', 'Green'],
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -1188,6 +1227,7 @@ class ApiContext implements Context
                 'countries' => 'Brazil, France',
                 'type' => 't-shirt',
                 'weight' => 0.125,
+                'available_colors' => ['Purple'],
             ],
         ];
 
@@ -1233,6 +1273,7 @@ class ApiContext implements Context
             'countries' => 'Brazil, Canada',
             'type' => 't-shirt',
             'weight' => 12,
+            'available_colors' => ['Blue', 'Green'],
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Domain\Query;
 
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -13,19 +12,6 @@ use Ramsey\Uuid\UuidInterface;
  */
 interface GetCategoryCodes
 {
-    /**
-     * @deprecated
-     *
-     * @param ProductIdentifier[] $productIdentifiers
-     * @return array<string, string[]> example:
-     *  {
-     *      "product1": ["categoryA", "categoryB"],
-     *      "product2": ["categoryA"],
-     *      ...
-     *  }
-     */
-    public function fromProductIdentifiers(array $productIdentifiers): array;
-
     /**
      * @param UuidInterface[] $uuids
      * @return array<string, string[]> example:

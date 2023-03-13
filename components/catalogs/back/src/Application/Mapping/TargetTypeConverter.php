@@ -5,14 +5,20 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
+use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type ProductMappingSchemaTarget from GetProductMappingSchemaQueryInterface
  */
 final class TargetTypeConverter
 {
     private const PIM_ATTRIBUTE_TYPES = [
+        'array<string>' => [
+            'pim_catalog_multiselect',
+        ],
         'boolean' => [
             'pim_catalog_boolean',
         ],
@@ -53,5 +59,17 @@ final class TargetTypeConverter
         }
 
         return self::PIM_ATTRIBUTE_TYPES[$key];
+    }
+
+    /**
+     * @param ProductMappingSchemaTarget $target
+     */
+    public function flattenTargetType(array $target): string
+    {
+        if ('array' !== $target['type']) {
+            return $target['type'];
+        }
+
+        return \sprintf('%s<%s>', $target['type'], $target['items']['type'] ?? '');
     }
 }
