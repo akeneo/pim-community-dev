@@ -15,6 +15,7 @@ services:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler'
 
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateFamilyNomenclatureContext:
     public: true
@@ -28,3 +29,8 @@ services:
 
   Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository:
     class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryNomenclatureRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\ReorderIdentifierGenerators:
+    class: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\InMemoryReorderIdentifierGenerators
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'

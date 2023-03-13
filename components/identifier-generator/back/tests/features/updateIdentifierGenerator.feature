@@ -330,3 +330,9 @@ Feature: Update Identifier Generator
     When I update an identifier generator with text transformation lowercase
     Then The identifier generator is updated in the repository and text transformation is lowercase
     And I should not get any error
+
+  Scenario: Being able to reorder identifier generators
+    Given the 'ig_1' identifier generator
+    And the 'ig_2' identifier generator
+    When I reorder the identifier generators as 'ig_1', 'ig_2' and 'default'
+    Then the identifier generators should be ordered as 'ig_1', 'ig_2' and 'default'
