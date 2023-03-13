@@ -111,20 +111,26 @@ const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
     const internalRef = useRef<HTMLInputElement | null>(null);
     forwardedRef = forwardedRef ?? internalRef;
 
-    const handleClick = useCallback((event: MouseEvent) => {
-      const input = event?.target as (HTMLInputElement & {showPicker?: () => void}) | null;
-      !readOnly && input?.showPicker?.();
-    }, []);
+    const handleClick = useCallback(
+      (event: MouseEvent) => {
+        const input = event?.target as (HTMLInputElement & {showPicker?: () => void}) | null;
+        !readOnly && input?.showPicker?.();
+      },
+      [readOnly]
+    );
 
-    const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-      if (!readOnly && onChange) {
-        onChange(event.currentTarget.value);
-      }
-    }, []);
+    const handleChange = useCallback(
+      (event: ChangeEvent<HTMLInputElement>) => {
+        if (!readOnly && onChange) {
+          onChange(event.currentTarget.value);
+        }
+      },
+      [readOnly, onChange]
+    );
 
-    const handleEnter = useCallback(() => {
+    const handleEnter = () => {
       !readOnly && onSubmit?.();
-    }, []);
+    };
     useShortcut(Key.Enter, handleEnter, forwardedRef);
 
     return (
