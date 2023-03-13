@@ -47,4 +47,9 @@ class CategoryDataCleaner
             $this->updateCategoryEnrichedValues->execute($cleanedEnrichedValues);
         }
     }
+
+    public function cleanByTemplateUuid(array $valuesByCode, string $templateUuid): void
+    {
+
+    }
 }
