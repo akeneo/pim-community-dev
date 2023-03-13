@@ -8,7 +8,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useAttribute} from '../../../../hooks/useAttribute';
 import {SourceSectionTitle} from '../SourceSectionTitle';
-import {SelectMeasurementUnitDropdown} from './SelectMeasurementUnitDropdown';
+import {DefaultValue} from './DefaultValue';
 
 const Information = styled.p`
     font-style: italic;
@@ -16,24 +16,61 @@ const Information = styled.p`
 `;
 
 type Props = {
-    source: Source | null;
+    source: Source;
     errors: SourceErrors | null;
     onChange: (value: Source) => void;
+    targetType: string;
 };
 
-export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
+export const SourceParameters: FC<Props> = ({source, errors, onChange, targetType}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute(source?.source ?? '');
-    if (undefined === attribute || null === source || undefined === source.parameters) {
-        return (
-            <>
-                <SourceSectionTitle order={2}>
-                    {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
-                </SourceSectionTitle>
-                <Information key={'no_parameters'}>
-                    {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
-                </Information>
-            </>
+
+    const components = [];
+
+    if (undefined !== attribute && null !== source && undefined !== source.parameters) {
+        if (undefined !== source.parameters.label_locale) {
+            components.push(<SelectLabelLocaleDropdown
+                source={source}
+                onChange={onChange}
+                error={errors?.parameters?.label_locale}
+                disabled={attribute.scopable && source.scope === null}
+            />);
+        }
+
+        if (undefined !== source.parameters.currency && !attribute.scopable) {
+            components.push(
+                <SelectCurrencyDropdown source={source} onChange={onChange} error={errors?.parameters?.currency} />
+            );
+        }
+
+        if (undefined !== source.parameters.currency && attribute.scopable) {
+            components.push(
+                <SelectChannelCurrencyDropdown
+                    source={source}
+                    onChange={onChange}
+                    error={errors?.parameters?.currency}
+                    disabled={attribute.scopable && source.scope === null}
+                />
+            );
+        }
+    }
+    if ('string' === targetType) {
+        components.push(
+            <DefaultValue
+                source={source}
+                onChange={onChange}
+                error={errors?.default}
+                targetType={targetType}
+            ></DefaultValue>
+        );
+    }
+
+    if (components.length === 0) {
+        components.push(
+            <Information key={'no_parameters'}>
+                {translate('akeneo_catalogs.product_mapping.source.parameters.no_parameters_message')}
+            </Information>
         );
     }
 
@@ -42,33 +79,8 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
             <SourceSectionTitle order={2}>
                 {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
             </SourceSectionTitle>
-            {undefined !== source.parameters.label_locale && (
-                <SelectLabelLocaleDropdown
-                    source={source}
-                    onChange={onChange}
-                    error={errors?.parameters?.label_locale}
-                    disabled={attribute.scopable && source.scope === null}
-                />
-            )}
-            {undefined !== source.parameters.currency && !attribute.scopable && (
-                <SelectCurrencyDropdown source={source} onChange={onChange} error={errors?.parameters?.currency} />
-            )}
-            {undefined !== source.parameters.currency && attribute.scopable && (
-                <SelectChannelCurrencyDropdown
-                    source={source}
-                    onChange={onChange}
-                    error={errors?.parameters?.currency}
-                    disabled={attribute.scopable && source.scope === null}
-                />
-            )}
-            {undefined !== source.parameters.unit && (
-                <SelectMeasurementUnitDropdown
-                    source={source}
-                    onChange={onChange}
-                    error={errors?.source}
-                    measurementFamily={attribute?.measurement_family ?? null}
-                />
-            )}
+
+            {components.map(component => component)}
         </>
     );
 };
