@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\Compound;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class NullStringSource extends Compound
+final class NullBooleanSource extends Compound
 {
     /**
      * @param array<array-key, mixed> $options
@@ -38,9 +38,11 @@ final class NullStringSource extends Compound
                         ],
                         'default' => [
                             new Assert\Optional([
-                                new Assert\Type('string'),
-                                new Assert\NotBlank(allowNull: false),
-                            ]),
+                                new Assert\AtLeastOneOf([
+                                    new Assert\Type('boolean'),
+                                    new Assert\IsNull(),
+                                ]),
+                            ])
                         ],
                     ],
                     'allowMissingFields' => false,

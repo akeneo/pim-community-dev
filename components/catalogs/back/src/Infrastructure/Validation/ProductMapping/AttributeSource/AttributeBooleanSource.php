@@ -41,6 +41,14 @@ final class AttributeBooleanSource extends Compound
                             new Assert\Type('string'),
                             new Assert\NotBlank(allowNull: true),
                         ],
+                        'default' => [
+                            new Assert\Optional([
+                                new Assert\AtLeastOneOf([
+                                    new Assert\Type('boolean'),
+                                    new Assert\IsNull(),
+                                ]),
+                            ])
+                        ],
                     ],
                     'allowMissingFields' => false,
                     'allowExtraFields' => false,

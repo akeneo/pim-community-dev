@@ -10,6 +10,7 @@ import {useAttribute} from '../../../../hooks/useAttribute';
 import {SourceSectionTitle} from '../SourceSectionTitle';
 import {SelectMeasurementUnitDropdown} from './SelectMeasurementUnitDropdown';
 import {DefaultValue} from './DefaultValue';
+import {Target} from '../../models/Target';
 
 const Information = styled.p`
     font-style: italic;
@@ -20,10 +21,10 @@ type Props = {
     source: Source;
     errors: SourceErrors | null;
     onChange: (value: Source) => void;
-    targetType: string;
+    target: Target;
 };
 
-export const SourceParameters: FC<Props> = ({source, errors, onChange, targetType}) => {
+export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute(source?.source ?? '');
 
@@ -95,16 +96,16 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, targetTyp
             ></DefaultValue>
         );
     }
-    if ('string' === targetType) {
-        components.push(
-            <DefaultValue
-                source={source}
-                onChange={onChange}
-                error={errors?.default}
-                targetType={targetType}
-            ></DefaultValue>
-        );
-    }
+
+    const defaultValue = (
+        <DefaultValue
+            source={source}
+            onChange={onChange}
+            error={errors?.default}
+            target={target}
+            key={'no_parameters'}
+        ></DefaultValue>
+    );
 
     if (components.length === 0) {
         components.push(
@@ -119,8 +120,8 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, targetTyp
             <SourceSectionTitle order={2}>
                 {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
             </SourceSectionTitle>
-
             {components.map(component => component)}
+            {defaultValue}
         </>
     );
 };
