@@ -48,7 +48,6 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
 
     /**
      * @dataProvider invalidDataProvider
-     * @param array<string|class-string<\locale>, mixed> $source
      */
     public function testItReturnsViolationsWhenInvalid(
         array $source,

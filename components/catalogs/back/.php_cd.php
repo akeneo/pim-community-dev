@@ -33,7 +33,6 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Ramsey\Uuid\UuidInterface',
             'Symfony\Component\Routing\RouterInterface',
-
         ]
     )->in('Akeneo\Catalogs\Application'),
 
