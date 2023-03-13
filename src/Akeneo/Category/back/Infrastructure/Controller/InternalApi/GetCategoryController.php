@@ -44,7 +44,8 @@ class GetCategoryController
             $root = $this->findCategoryAdditionalPropertiesRegistry->forCategory($root);
         }
 
-        $response = InternalApiCategory::normalize($category, $root);
+        $internalApiCategory = InternalApiCategory::fromCategory($category, $root);
+        $response = $internalApiCategory->normalize();
 
         return new JsonResponse($response, Response::HTTP_OK);
     }

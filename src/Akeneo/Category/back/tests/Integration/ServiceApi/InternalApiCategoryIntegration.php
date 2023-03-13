@@ -71,11 +71,13 @@ class InternalApiCategoryIntegration extends CategoryTestCase
                 ],
                 'attributes' => null,
                 'permissions' => null,
+                'isRoot' => true,
+                'root' => null,
             ],
         ];
 
-        $normalizedInternalApiCategory = InternalApiCategory::normalize($category, $categoryParent);
-
+        $internalApiCategory = InternalApiCategory::fromCategory($category, $categoryParent);
+        $normalizedInternalApiCategory = $internalApiCategory->normalize();
         $this->assertIsArray($normalizedInternalApiCategory);
         $this->assertEquals($expectedNormalizedArray, $normalizedInternalApiCategory);
     }
@@ -109,7 +111,8 @@ class InternalApiCategoryIntegration extends CategoryTestCase
             'root' => null
         ];
 
-        $normalizedInternalApiCategory = InternalApiCategory::normalize($category, null);
+        $internalApiCategory = InternalApiCategory::fromCategory($category, null);
+        $normalizedInternalApiCategory = $internalApiCategory->normalize();
 
         $this->assertIsArray($normalizedInternalApiCategory);
         $this->assertEquals($expectedNormalizedArray, $normalizedInternalApiCategory);
@@ -148,10 +151,13 @@ class InternalApiCategoryIntegration extends CategoryTestCase
                 ],
                 'attributes' => null,
                 'permissions' => null,
+                'isRoot' => true,
+                'root' => null,
             ],
         ];
 
-        $normalizedInternalApiCategory = InternalApiCategory::normalize($category, $categoryParent);
+        $internalApiCategory = InternalApiCategory::fromCategory($category, $categoryParent);
+        $normalizedInternalApiCategory = $internalApiCategory->normalize();
         $this->assertIsArray($normalizedInternalApiCategory);
         $this->assertEquals($expectedNormalizedArray, $normalizedInternalApiCategory);
         $this->assertIsObject($normalizedInternalApiCategory['properties']['labels']);
