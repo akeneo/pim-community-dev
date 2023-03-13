@@ -491,6 +491,45 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $this->assertSame('shoes', (string) $retrievedCategory[0]->getCode());
     }
 
+    public function testDoesNotGetCategoryWithLabelsNullOrEmpty(): void{
+        $this->createOrUpdateCategory(
+            code: "with_labels_null",
+            labels: [
+                'fr_FR' => null,
+                'en_US' => null,
+            ],
+        );
+
+        $this->createOrUpdateCategory(
+            code: "with_labels_empty",
+            labels: [
+                'fr_FR' => '',
+                'en_US' => '',
+            ],
+        );
+        $parameters = new ExternalApiSqlParameters(
+            sqlWhere: 'category.code IN (:category_codes)',
+            params: [
+                'category_codes' => ['with_labels_null', 'with_labels_empty'],
+                'with_enriched_attributes' => false,
+                'with_position' => false,
+                ],
+            types : [
+                'category_codes' => Connection::PARAM_STR_ARRAY,
+                'with_enriched_attributes' => \PDO::PARAM_BOOL,
+                'with_position' => \PDO::PARAM_BOOL,
+            ],
+        );
+
+        /** @var array<ExternalApiCategory> $retrievedCategory */
+        $retrievedCategory = $this->get(GetCategoriesInterface::class)->execute($parameters);
+        $this->assertIsArray($retrievedCategory);
+
+        $this->assertCount(2, $retrievedCategory);
+        $this->assertEmpty($retrievedCategory[0]->getLabels());
+        $this->assertEmpty($retrievedCategory[1]->getLabels());
+    }
+
     public function testCountCategories(): void
     {
         $parameters = new ExternalApiSqlParameters('1=1', [], []);

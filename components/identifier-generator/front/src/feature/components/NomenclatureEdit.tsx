@@ -202,54 +202,56 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
                   {translate('pim_common.result_count', {itemsCount: filteredValuesCount}, filteredValuesCount)}
                 </Search.ResultCount>
               </Search>
-              <Pagination
-                currentPage={page}
-                itemsPerPage={itemsPerPage}
-                totalItems={filteredValuesCount}
-                followPage={setPage}
-              />
-              <Styled.NomenclatureTable>
-                <Table>
-                  <Table.Header>
-                    <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
-                    <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
-                    <Table.HeaderCell>
-                      {translate('pim_identifier_generator.nomenclature.nomenclature')}
-                    </Table.HeaderCell>
-                  </Table.Header>
-                  <Table.Body>
-                    {nomenclatureLines?.map(nomenclatureLine => (
-                      <NomenclatureLineEdit
-                        nomenclature={nomenclature}
-                        nomenclatureLine={nomenclatureLine}
-                        onChange={handleValueToSaveChange}
-                        key={nomenclatureLine.code}
-                      />
-                    ))}
-                    {nomenclatureLines && nomenclatureLines.length === 0 && (
-                      <tr>
-                        <td colSpan={3}>
-                          <Placeholder
-                            size={'large'}
-                            illustration={<AttributesIllustration />}
-                            title={translate('pim_datagrid.no_entities', {
-                              entityHint: translate('pim_enrich.entity.family.plural_label'),
-                            })}
-                          >
-                            {translate('pim_datagrid.no_results_subtitle')}
-                          </Placeholder>
-                        </td>
-                      </tr>
-                    )}
-                  </Table.Body>
-                </Table>
-              </Styled.NomenclatureTable>
-              <Pagination
-                currentPage={page}
-                itemsPerPage={itemsPerPage}
-                totalItems={filteredValuesCount}
-                followPage={setPage}
-              />
+              <Styled.NomenclatureContent>
+                <Pagination
+                  currentPage={page}
+                  itemsPerPage={itemsPerPage}
+                  totalItems={filteredValuesCount}
+                  followPage={setPage}
+                />
+                <Styled.NomenclatureTable>
+                  <Table>
+                    <Table.Header>
+                      <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+                      <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
+                      <Table.HeaderCell>
+                        {translate('pim_identifier_generator.nomenclature.nomenclature')}
+                      </Table.HeaderCell>
+                    </Table.Header>
+                    <Table.Body>
+                      {nomenclatureLines?.map(nomenclatureLine => (
+                        <NomenclatureLineEdit
+                          nomenclature={nomenclature}
+                          nomenclatureLine={nomenclatureLine}
+                          onChange={handleValueToSaveChange}
+                          key={nomenclatureLine.code}
+                        />
+                      ))}
+                      {nomenclatureLines && nomenclatureLines.length === 0 && (
+                        <tr>
+                          <td colSpan={3}>
+                            <Placeholder
+                              size={'large'}
+                              illustration={<AttributesIllustration />}
+                              title={translate('pim_datagrid.no_entities', {
+                                entityHint: translate('pim_enrich.entity.family.plural_label'),
+                              })}
+                            >
+                              {translate('pim_datagrid.no_results_subtitle')}
+                            </Placeholder>
+                          </td>
+                        </tr>
+                      )}
+                    </Table.Body>
+                  </Table>
+                </Styled.NomenclatureTable>
+                <Pagination
+                  currentPage={page}
+                  itemsPerPage={itemsPerPage}
+                  totalItems={filteredValuesCount}
+                  followPage={setPage}
+                />
+              </Styled.NomenclatureContent>
             </Styled.NomenclatureModalContent>
           )}
         </Modal>
