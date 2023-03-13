@@ -20,7 +20,7 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetType}) =
     const onChangeMiddleware = useCallback(
         source => {
             if ('string' === targetType && source.default === '') {
-                source.default = null;
+                delete source.default;
             }
             onChange(source);
         },
@@ -37,9 +37,8 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetType}) =
             <DefaultField label={translate('akeneo_catalogs.product_mapping.source.parameters.default_value.label')}>
                 {'string' === targetType && (
                     <TextInput
-                        onChange={value =>
-                            onChangeMiddleware({...source, parameters: {...source.parameters, default: value}})
-                        }
+                        data-testid={'string-default-value'}
+                        onChange={value => onChangeMiddleware({...source, default: value})}
                         placeholder={translate(
                             'akeneo_catalogs.product_mapping.source.parameters.default_value.placeholder'
                         )}

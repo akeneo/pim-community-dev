@@ -30,17 +30,25 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, targetTyp
 
     if (undefined !== attribute && null !== source && undefined !== source.parameters) {
         if (undefined !== source.parameters.label_locale) {
-            components.push(<SelectLabelLocaleDropdown
-                source={source}
-                onChange={onChange}
-                error={errors?.parameters?.label_locale}
-                disabled={attribute.scopable && source.scope === null}
-            />);
+            components.push(
+                <SelectLabelLocaleDropdown
+                    source={source}
+                    onChange={onChange}
+                    error={errors?.parameters?.label_locale}
+                    disabled={attribute.scopable && source.scope === null}
+                    key={'select_label_dropdown'}
+                />
+            );
         }
 
         if (undefined !== source.parameters.currency && !attribute.scopable) {
             components.push(
-                <SelectCurrencyDropdown source={source} onChange={onChange} error={errors?.parameters?.currency} />
+                <SelectCurrencyDropdown
+                    source={source}
+                    onChange={onChange}
+                    error={errors?.parameters?.currency}
+                    key={'select_currency_dropdown'}
+                />
             );
         }
 
@@ -51,6 +59,7 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, targetTyp
                     onChange={onChange}
                     error={errors?.parameters?.currency}
                     disabled={attribute.scopable && source.scope === null}
+                    key={'select_channel_currency_dropdown'}
                 />
             );
         }
@@ -62,6 +71,7 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, targetTyp
                 onChange={onChange}
                 error={errors?.default}
                 targetType={targetType}
+                key={'no_parameters'}
             ></DefaultValue>
         );
     }
@@ -79,7 +89,6 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, targetTyp
             <SourceSectionTitle order={2}>
                 {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
             </SourceSectionTitle>
-
             {components.map(component => component)}
         </>
     );
