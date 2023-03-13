@@ -190,12 +190,13 @@ describe('ListPage', () => {
     const rows = screen.getAllByRole('row');
     expect(rows.length).toBe(2);
 
+    // test with 'foo' : no result
     fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: 'FOO'}});
     expect(screen.queryByText('Sku generator')).not.toBeInTheDocument();
-
+    // test on code
     fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: 'TEST'}});
     expect(screen.getByText('Sku generator')).toBeVisible();
-
+    // test on label
     fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: 'gener'}});
     expect(screen.getByText('Sku generator')).toBeVisible();
   });
