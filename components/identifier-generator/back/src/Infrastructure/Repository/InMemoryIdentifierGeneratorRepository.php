@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
  */
 class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorRepository
 {
-    /** @var array<string, IdentifierGenerator> */
+    /** @var IdentifierGenerator[] */
     public array $generators = [];
 
     /**
@@ -23,12 +23,12 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
      */
     public function save(IdentifierGenerator $identifierGenerator): void
     {
-        $this->generators[$identifierGenerator->code()->asString()] = $identifierGenerator;
+        $this->generators[] = $identifierGenerator;
     }
 
     public function update(IdentifierGenerator $identifierGenerator): void
     {
-        $this->generators[$identifierGenerator->code()->asString()] = $identifierGenerator;
+        $this->generators[$this->getGeneratorIndex($identifierGenerator->code()->asString())] = $identifierGenerator;
     }
 
     /**
@@ -36,7 +36,12 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
      */
     public function get(string $identifierGeneratorCode): ?IdentifierGenerator
     {
-        return $this->generators[$identifierGeneratorCode] ?? null;
+        $index = $this->getGeneratorIndex($identifierGeneratorCode);
+        if (null === $index) {
+            return null;
+        }
+
+        return $this->generators[$index];
     }
 
     /**
@@ -65,6 +70,33 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
      */
     public function delete(string $identifierGeneratorCode): void
     {
-        unset($this->generators[$identifierGeneratorCode]);
+        unset($this->generators[$this->getGeneratorIndex($identifierGeneratorCode)]);
+    }
+
+    /**
+     * @param string[] $identifierGeneratorCodes
+     */
+    public function reorder(array $identifierGeneratorCodes): void
+    {
+        $generators = $this->generators;
+
+        \usort(
+            $generators,
+            fn (IdentifierGenerator $generatorA, IdentifierGenerator $generatorB): int =>
+            (int)\array_search($generatorA->code()->asString(), $identifierGeneratorCodes) - (int)\array_search($generatorB->code()->asString(), $identifierGeneratorCodes)
+        );
+
+        $this->generators = $generators;
+    }
+
+    private function getGeneratorIndex(string $identifierGeneratorCode): ?int
+    {
+        foreach ($this->generators as $i => $generator) {
+            if ($generator->code()->asString() === $identifierGeneratorCode) {
+                return $i;
+            }
+        }
+
+        return null;
     }
 }
