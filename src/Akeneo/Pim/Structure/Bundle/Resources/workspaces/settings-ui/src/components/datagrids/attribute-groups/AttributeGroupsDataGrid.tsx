@@ -11,8 +11,8 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const TableWrapper = styled.div`
-  // TODO RAB-1289 uncomment when bringing back selectable margin-left: -40px;
+const TableWrapper = styled.div<{isSelectable: boolean}>`
+  ${({isSelectable}) => (isSelectable ? 'margin-left: -40px;' : '')}
 `;
 
 type Props = {
@@ -74,6 +74,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({
   const shouldDisplayPlaceholder = '' !== searchString && 0 === filteredGroups.length;
   const shouldDisplayDQICell = isEnabled('data_quality_insights');
   const canDragAndDrop = sortGranted && false === selectionState && '' === searchString;
+  const canSelect = isEnabled('attribute_groups_mass_delete');
 
   return (
     <Wrapper>
@@ -94,10 +95,10 @@ const AttributeGroupsDataGrid: FC<Props> = ({
           subtitle={translate('pim_datagrid.no_results_subtitle')}
         />
       ) : (
-        <TableWrapper>
+        <TableWrapper isSelectable={canSelect}>
           <Table
             isDragAndDroppable={canDragAndDrop}
-            isSelectable={false}
+            isSelectable={canSelect}
             onReorder={order => refreshOrder(order.map(index => attributeGroups[index]))}
           >
             <Table.Header>
