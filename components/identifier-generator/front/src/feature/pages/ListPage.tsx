@@ -71,13 +71,12 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     return identifierAttributes.find(attribute => attribute.code === target)?.label;
   };
 
-  const filterOnLabelOrCode =
-    (searchValue: string, locale: LocaleCode) =>
-    (entity: {code: string; labels: LabelCollection}): boolean =>
-      -1 !== entity.code.toLowerCase().indexOf(searchValue.toLowerCase()) ||
-      (undefined !== entity.labels[locale] &&
-        -1 !== entity.labels[locale].toLowerCase().indexOf(searchValue.toLowerCase()));
-  const filteredGenerators = generators.filter(filterOnLabelOrCode(search, locale));
+  const filteredGenerators = useMemo(
+    () => generators.filter(({code, labels}) =>
+      code.toLowerCase().includes(search.toLowerCase()) || labels[locale]?.toLowerCase()?.includes(search.toLowerCase())
+    ),
+    [generators, locale, search]
+  );
 
   return (
     <>
