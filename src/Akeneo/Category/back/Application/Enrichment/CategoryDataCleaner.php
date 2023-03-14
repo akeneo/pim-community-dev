@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Enrichment;
 
 use Akeneo\Category\Application\Enrichment\Filter\ByChannelAndLocalesFilter;
+use Akeneo\Category\Application\Query\GetTemplateAttributesByTemplateUuid;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
@@ -16,6 +17,7 @@ class CategoryDataCleaner
 {
     public function __construct(
         private readonly UpdateCategoryEnrichedValues $updateCategoryEnrichedValues,
+        private readonly GetTemplateAttributesByTemplateUuid $getTemplateAttributesByTemplateUuid,
     ) {
     }
 
@@ -50,5 +52,9 @@ class CategoryDataCleaner
 
     public function cleanByTemplateUuid(array $valuesByCode, string $templateUuid): void
     {
+        $attributeCodes = $this->getTemplateAttributesByTemplateUuid->execute($templateUuid);
+        $cleanedEnrichedValues = [];
+        foreach ($valuesByCode as $categoryCode => $enrichedValues) {
+        }
     }
 }

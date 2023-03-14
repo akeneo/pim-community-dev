@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Unit\Application\Enrichment;
 
 use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
+use Akeneo\Category\Application\Query\GetTemplateAttributesByTemplateUuid;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageDataValue;
@@ -25,7 +26,11 @@ class CategoryDataCleanerTest extends CategoryTestCase
             ->expects(self::once())
             ->method('execute')
             ->with($this->getExpectedArgument());
-        $categoryDataCleaner = new CategoryDataCleaner($updateCategoryEnrichedValuesMock);
+        $getTemplateAttributesByTemplateUuidMock = $this->createMock(GetTemplateAttributesByTemplateUuid::class);
+        $categoryDataCleaner = new CategoryDataCleaner(
+            $updateCategoryEnrichedValuesMock,
+            $getTemplateAttributesByTemplateUuidMock
+        );
         $categoryDataCleaner->cleanByChannelOrLocales(
             [
                 'category_1' => ValueCollection::fromDatabase($this->getValuesByCodeForCategory1()),

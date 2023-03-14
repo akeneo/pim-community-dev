@@ -2,6 +2,7 @@ services:
     Akeneo\Category\Application\Enrichment\CategoryDataCleaner:
         arguments:
             - '@Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues'
+            - '@Akeneo\Category\Application\Query\GetTemplateAttributesByTemplateUuid'
 
     Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode:
         class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesPerCategoryCodeSql
@@ -13,6 +14,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Category\Application\Query\GetTemplateAttributesByTemplateUuid:
+        class: Akeneo\Category\Infrastructure\Storage\Sql\GetTemplateAttributesByTemplateUuidSql
+        arguments:
+            - '@database_connection'
     Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues:
         class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryEnrichedValuesSql
         arguments:
