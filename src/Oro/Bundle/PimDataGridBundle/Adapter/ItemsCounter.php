@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Oro\Bundle\PimDataGridBundle\Adapter;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeSearchableRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeSearchableRepository;
 
 /**
  * Counts the number of items selected in the grid.

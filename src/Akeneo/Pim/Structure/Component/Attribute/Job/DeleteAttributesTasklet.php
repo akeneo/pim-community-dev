@@ -60,9 +60,7 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
 
-        $attributes = $this->attributeRepository->findBySearch($filters['search'], $filters['options']);
-
-        return $attributes;
+        return $this->attributeRepository->findBySearch($filters['search'], $filters['options']);
     }
 
     private function delete(Attribute $attribute): void

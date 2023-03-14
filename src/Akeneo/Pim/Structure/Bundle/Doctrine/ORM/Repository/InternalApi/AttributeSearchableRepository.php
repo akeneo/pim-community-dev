@@ -22,8 +22,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         protected EntityManagerInterface $entityManager,
         protected string $entityName,
     ) {
-        $this->entityManager = $entityManager;
-        $this->entityName = $entityName;
     }
 
     /**
@@ -34,6 +32,9 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
     public function findBySearch($search = null, array $options = [])
     {
         $qb = $this->findBySearchQb($search, $options);
+
+        $qb->orderBy('ag.sortOrder, a.sortOrder');
+        $qb->groupBy('a.id');
 
         return $qb->getQuery()->getResult();
     }
@@ -178,10 +179,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             $qb->setParameter('groups', $options['attribute_groups']);
         }
 
-        $qb->orderBy('ag.sortOrder, a.sortOrder');
-
-        $qb->groupBy('a.id');
-
         return $qb;
     }
 
@@ -189,7 +186,6 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
     {
         $qb = $this->findBySearchQb($search, $options);
 
-        // return (int) $qb->resetDQLPart('groupBy')->select('COUNT(a.id)')->getQuery()->getSingleScalarResult();
-        return count($qb->getQuery()->getResult());
+        return (int) $qb->select('COUNT(DISTINCT a.id)')->getQuery()->getSingleScalarResult();
     }
 }

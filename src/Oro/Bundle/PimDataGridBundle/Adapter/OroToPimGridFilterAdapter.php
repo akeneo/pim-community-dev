@@ -19,7 +19,7 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
     public const ATTRIBUTE_GRID_NAME = 'attribute-grid';
 
     public function __construct(
-        private MassActionDispatcher $massActionDispatcher,
+        protected MassActionDispatcher $massActionDispatcher,
     ) {
     }
 
@@ -62,11 +62,21 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 
     protected function adaptAttributeGrid(array $parameters): array
     {
+        if (true === $parameters['inset']) {
+            return [
+                'search' => null,
+                'options' => [
+                    'identifiers' => $parameters['values'],
+                ],
+            ];
+        }
+
         $filters = $parameters['filters'];
 
         return [
             'search' => $filters['label']['value'] ?? null,
             'options' => [
+                'excluded_identifiers' => $parameters['values'],
                 'types' => $filters['type']['value'] ?? null,
                 'attribute_groups' => $filters['group']['value'] ?? [],
                 'scopable' => $this->adaptTrileanFilter($filters['scopable']['value'] ?? null),
