@@ -19,7 +19,8 @@ export const SourceSettings: FC<Props> = ({source, attribute, errors, onChange})
             if (
                 (attribute.type === 'pim_catalog_simpleselect' ||
                     attribute.type === 'pim_catalog_multiselect' ||
-                    source.source === 'categories') &&
+                    source.source === 'categories' ||
+                    source.source === 'families') &&
                 (undefined === source.parameters?.label_locale || null === source.parameters?.label_locale)
             ) {
                 source = {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
