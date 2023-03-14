@@ -62,7 +62,7 @@ const AttributeGroupsIndex: FC = () => {
           />
         </PageHeader.UserActions>
         <PageHeader.Actions>
-          <AttributeGroupsCreateButton />
+          <AttributeGroupsCreateButton attributeGroupCount={attributeGroups.length} />
         </PageHeader.Actions>
         <PageHeader.Title>
           {translate('pim_enrich.entity.attribute_group.result_count', {count: groupCount}, groupCount)}
