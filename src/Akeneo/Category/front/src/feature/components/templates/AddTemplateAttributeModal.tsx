@@ -49,7 +49,7 @@ export const AddTemplateAttributeModal = ({template_id, onClose}: Props) => {
             is_scopable: true
         });
 
-        history.push('/'); // TODO redirect to Category edit page
+        onClose();
     };
 
     return (
