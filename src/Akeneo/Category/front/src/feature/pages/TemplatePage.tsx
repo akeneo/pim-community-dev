@@ -159,6 +159,7 @@ const TemplatePage: FC = () => {
           <AddAttributeButton
               active
               ghost
+              disabled={!!templateEdited && templateEdited.attributes.length >= 50}
               level="tertiary"
               onClick={openAddTemplateAttributeModal}
           >
@@ -180,7 +181,8 @@ const TemplatePage: FC = () => {
             onClose={closeDeactivateTemplateModal}
           />
         )}
-        {isAddTemplateAttributeModalOpen && (
+        {// TODO update templateEdited when a new attribute is added
+          isAddTemplateAttributeModalOpen && (
           <AddTemplateAttributeModal
               template_id={templateId}
               onClose={closeAddTemplateAttributeModal}

@@ -30,7 +30,6 @@ type Props = {
 
 export const AddTemplateAttributeModal = ({template_id, onClose}: Props) => {
     const catalogLocale = userContext.get('catalogLocale');
-    const history = useHistory();
     const mutation = useCreateAttribute();
     const [form, setForm] = useState<Form>({ label: "", code: "" });
 
