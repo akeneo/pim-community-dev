@@ -13,4 +13,4 @@ akeneo.category:
         attribute:
             code:
                 wrong_format: Attribute code may contain only lowercase letters, numbers and underscores
-                unique_in_the_template: Attribute code must be unique in the template
+                unique_in_the_template: Attribute code {{ attributeCode }} must be unique in the template

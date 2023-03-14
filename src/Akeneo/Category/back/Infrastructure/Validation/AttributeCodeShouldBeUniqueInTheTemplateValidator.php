@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Validation;
 
 use Akeneo\Category\Application\Query\GetAttribute;
-use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -28,13 +27,18 @@ final class AttributeCodeShouldBeUniqueInTheTemplateValidator extends Constraint
         Assert::stringNotEmpty($value);
         Assert::isInstanceOf($constraint->templateUuid, TemplateUuid::class);
 
-        $attributes = $this->getAttribute->byTemplateUuid($constraint->templateUuid);
+        $attributeCollection = $this->getAttribute->byTemplateUuid($constraint->templateUuid);
 
-        /** @var Attribute $attribute */
+        $attributes = $attributeCollection->getAttributes();
+
+        if (empty($attributes)) {
+            return;
+        }
+
         foreach ($attributes as $attribute) {
             if ((string) $attribute->getCode() === $value) {
                 $this->context
-                    ->buildViolation($constraint->message)
+                    ->buildViolation($constraint->message, ['{{ attributeCode }}' => $value])
                     ->addViolation();
             }
         }

@@ -16,7 +16,7 @@ class AttributeCode
     {
         Assert::stringNotEmpty($code);
         Assert::regex($code, '/^[a-z0-9_]+$/', 'akeneo.category.validation.attribute.code.wrong_format');
-        Assert::length($code, 100);
+        Assert::maxLength($code, 100);
     }
 
     public function __toString(): string
