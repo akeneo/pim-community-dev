@@ -10,7 +10,7 @@ test('it displays a Text input when the target type is string', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <DefaultValue
-                    target={{code: 'erp_name', label: 'ERP name', type: 'string', format: null}}
+                    targetTypeKey={'string'}
                     source={{source: null, scope: null, locale: null}}
                     onChange={jest.fn()}
                     error={undefined}
@@ -29,7 +29,7 @@ test('it updates the source for type string when a default value changes', () =>
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <DefaultValue
-                    target={{code: 'erp_name', label: 'ERP name', type: 'string', format: null}}
+                    targetTypeKey={'string'}
                     source={{source: null, scope: null, locale: null, default: 'Default string value'}}
                     onChange={onChange}
                     error={undefined}
@@ -59,7 +59,7 @@ test('it removes the source default value for type string when the text input is
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <DefaultValue
-                    target={{code: 'erp_name', label: 'ERP name', type: 'string', format: null}}
+                    targetTypeKey={'string'}
                     source={{source: null, scope: null, locale: null, default: 'Default string value'}}
                     onChange={onChange}
                     error={undefined}

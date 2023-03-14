@@ -3,7 +3,6 @@ import {BooleanInput, Field, Helper, TextInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Source} from '../../models/Source';
 import styled from 'styled-components';
-import {Target} from '../../models/Target';
 
 const DefaultField = styled(Field)`
     margin-top: 10px;
@@ -13,16 +12,10 @@ type Props = {
     source: Source;
     onChange: (source: Source) => void;
     error: string | undefined;
-    target: Target;
+    targetTypeKey: string;
 };
-export const DefaultValue: FC<Props> = ({source, onChange, error, target}) => {
+export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}) => {
     const translate = useTranslate();
-
-    let targetTypeKey = target.type;
-
-    if (null !== target.format && '' !== target.format) {
-        targetTypeKey += `+${target.format}`;
-    }
 
     let element: JSX.Element | null = null;
 
@@ -63,10 +56,9 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, target}) => {
             onChange(source);
         },
 
-        [onChange, target]
+        [onChange, targetTypeKey]
     );
 
-    console.log(element);
     if (null === element) {
         return null;
     }
