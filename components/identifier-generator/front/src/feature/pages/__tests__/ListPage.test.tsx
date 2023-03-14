@@ -176,7 +176,7 @@ describe('ListPage', () => {
     expect(screen.getByText('Sku generator 19')).toBeVisible();
   });
 
-  it('should search', async () => {
+  it('should search on code or label', async () => {
     mocked(useGetIdentifierGenerators).mockReturnValue({
       data: mockedList,
       isLoading: false,
