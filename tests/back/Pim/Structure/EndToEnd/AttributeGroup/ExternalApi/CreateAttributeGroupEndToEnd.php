@@ -547,8 +547,14 @@ JSON;
         $expectedContent =
             <<<JSON
 {
-	"code": 422,
-	"message": "Attribute groups are limited to 1000."
+    "code": 422,
+    "errors": [
+        {
+            "message": "You’ve reached the limit of 1000 attribute groups.",
+            "property": ""
+        }
+    ],
+    "message": "Validation failed."
 }
 JSON;
 
@@ -561,7 +567,7 @@ JSON;
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
@@ -572,6 +578,10 @@ JSON;
         $connection = $this->get('database_connection');
         $attributeGroupCount = (int) $connection->executeQuery('SELECT COUNT(*) FROM pim_catalog_attribute_group')->fetchOne();
         $maxSortOrder = (int) $connection->executeQuery('SELECT MAX(sort_order) FROM pim_catalog_attribute_group')->fetchOne();
+
+        if ($attributeGroupCount >= $limit) {
+            return;
+        }
 
         $sqlValues = [];
         for ($i = $attributeGroupCount; $i < $limit; $i++) {
