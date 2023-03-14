@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, mockACLs, render, screen, waitFor} from '../../tests/test-utils';
+import {fireEvent, mockACLs, mockResponse, render, screen, waitFor} from '../../tests/test-utils';
 import {ListPage} from '../ListPage';
 import {IdentifierGenerator, PROPERTY_NAMES, TEXT_TRANSFORMATION} from '../../models';
 import {useGetIdentifierGenerators} from '../../hooks';
@@ -25,12 +25,15 @@ const mockedList: IdentifierGenerator[] = [
   },
 ];
 
-const mockedFullList: IdentifierGenerator[] = [];
-for (let i = 0; i < 20; i++) {
-  mockedFullList[i] = {...mockedList[0]};
-  mockedFullList[i].code = `test-${i}`;
-  mockedFullList[i].labels = {ca_ES: 'azeaze', en_US: `Sku generator ${i}`};
-}
+const mockedFullList = (generatorsCount?: number): IdentifierGenerator[] => {
+  const list = [];
+  for (let i = 0; i < (generatorsCount ?? 20); i++) {
+    list[i] = {...mockedList[0]};
+    list[i].code = `test-${i}`;
+    list[i].labels = {ca_ES: 'azeaze', en_US: `Sku generator ${i}`};
+  }
+  return list;
+};
 
 describe('ListPage', () => {
   it('should display an informative message when there are no generators yet', () => {
@@ -156,7 +159,7 @@ describe('ListPage', () => {
 
   it('should display placeholder if the limit is reached', async () => {
     mocked(useGetIdentifierGenerators).mockReturnValue({
-      data: mockedFullList,
+      data: mockedFullList(),
       isLoading: false,
       refetch: jest.fn(),
       error: null,
@@ -199,5 +202,68 @@ describe('ListPage', () => {
     // test on label
     fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: 'gener'}});
     expect(screen.getByText('Sku generator')).toBeVisible();
+  });
+
+  it('cannot reorder if the generators list is filtered', async () => {
+    mockACLs(true, true);
+    mocked(useGetIdentifierGenerators).mockReturnValue({
+      data: mockedFullList(),
+      isLoading: false,
+      refetch: jest.fn(),
+      error: null,
+    });
+    render(<ListPage onCreate={jest.fn()} />);
+    fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: '1'}});
+    expect(screen.getAllByRole('row')).toHaveLength(12);
+    expect(screen.queryAllByTestId('dragAndDrop')).toHaveLength(0);
+  });
+
+  it('cannot reorder if manage right is not granted', () => {
+    mockACLs(true, false);
+    mocked(useGetIdentifierGenerators).mockReturnValue({
+      data: mockedFullList(),
+      isLoading: false,
+      refetch: jest.fn(),
+      error: null,
+    });
+    render(<ListPage onCreate={jest.fn()} />);
+    expect(screen.queryAllByTestId('dragAndDrop')).toHaveLength(0);
+  });
+
+  it('should reorder identifier generators', () => {
+    mockACLs(true, true);
+    mocked(useGetIdentifierGenerators).mockReturnValue({
+      data: mockedFullList(5),
+      isLoading: false,
+      refetch: jest.fn(),
+      error: null,
+    });
+    const expectedReorderCall = mockResponse('akeneo_identifier_generator_reorder', 'PATCH', {
+      ok: true,
+      body: {codes: ['test-0', 'test-2', 'test-3', 'test-1', 'test-4']},
+    });
+    render(<ListPage onCreate={jest.fn()} />);
+
+    let dataTransferred = '';
+    const dataTransfer = {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      getData: (_format: string) => {
+        return dataTransferred;
+      },
+      setData: (_format: string, data: string) => {
+        dataTransferred = data;
+      },
+    };
+
+    // Move 2nd item after 4th one
+    fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
+    fireEvent.dragStart(screen.getAllByRole('row')[2], {dataTransfer});
+    fireEvent.dragEnter(screen.getAllByRole('row')[3], {dataTransfer});
+    fireEvent.dragLeave(screen.getAllByRole('row')[3], {dataTransfer});
+    fireEvent.dragEnter(screen.getAllByRole('row')[4], {dataTransfer});
+    fireEvent.drop(screen.getAllByRole('row')[4], {dataTransfer});
+    fireEvent.dragEnd(screen.getAllByRole('row')[2], {dataTransfer});
+
+    expectedReorderCall();
   });
 });
