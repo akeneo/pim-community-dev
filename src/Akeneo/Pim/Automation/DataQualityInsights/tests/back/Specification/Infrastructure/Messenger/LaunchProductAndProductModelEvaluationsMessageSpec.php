@@ -38,6 +38,28 @@ final class LaunchProductAndProductModelEvaluationsMessageSpec extends ObjectBeh
         $this->shouldImplement(NormalizableMessageInterface::class);
     }
 
+    public function it_can_be_created_for_products_only(): void
+    {
+        $datetime = new \DateTimeImmutable('2023-02-12 11:34:32', new \DateTimeZone('UTC'));
+        $productUuids = ProductUuidCollection::fromStrings(['df470d52-7723-4890-85a0-e79be625e2ed', 'fd470d52-7723-4890-85a0-e79be625e2de']);
+
+        $this->beConstructedThrough('forProductsOnly', [$datetime, $productUuids, []]);
+
+        $this->productUuids->shouldBe($productUuids);
+        $this->productModelIds->isEmpty()->shouldReturn(true);
+    }
+
+    public function it_can_be_created_for_product_models_only(): void
+    {
+        $datetime = new \DateTimeImmutable('2023-02-12 11:34:32', new \DateTimeZone('UTC'));
+        $productModelIds = ProductModelIdCollection::fromStrings(['42', '123']);
+
+        $this->beConstructedThrough('forProductModelsOnly', [$datetime, $productModelIds, []]);
+
+        $this->productModelIds->shouldBe($productModelIds);
+        $this->productUuids->isEmpty()->shouldReturn(true);
+    }
+
     public function it_normalizes_itself(): void
     {
         $datetime = new \DateTimeImmutable('2023-02-12 11:34:32', new \DateTimeZone('UTC'));
