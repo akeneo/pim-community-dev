@@ -25,7 +25,7 @@ class AddAttributeController
     ) {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, string $templateUuid): Response
     {
         if (!$this->securityFacade->isGranted('pim_enrich_product_category_template')) {
             throw new AccessDeniedException();
@@ -39,7 +39,7 @@ class AddAttributeController
                 type: $data['type'],
                 isScopable: $data['is_scopable'],
                 isLocalizable: $data['is_localizable'],
-                templateUuid: $data['template_uuid'],
+                templateUuid: $templateUuid,
                 locale: $data['locale'],
                 label: $data['label'],
             );
