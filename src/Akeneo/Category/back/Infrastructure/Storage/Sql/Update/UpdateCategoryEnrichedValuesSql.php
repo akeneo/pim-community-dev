@@ -3,6 +3,7 @@
 namespace Akeneo\Category\Infrastructure\Storage\Sql\Update;
 
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
+use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Doctrine\DBAL\Connection;
 
 final class UpdateCategoryEnrichedValuesSql implements UpdateCategoryEnrichedValues
@@ -32,7 +33,7 @@ final class UpdateCategoryEnrichedValuesSql implements UpdateCategoryEnrichedVal
      *    'shoes' => '{...}',
      * ].
      *
-     * @param array<string, string> $enrichedValuesByCode
+     * @param array<string, ValueCollection> $enrichedValuesByCode
      *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
@@ -56,7 +57,7 @@ final class UpdateCategoryEnrichedValuesSql implements UpdateCategoryEnrichedVal
 
         $queryIndex = 0;
         foreach ($enrichedValuesByCode as $code => $value) {
-            $statement->bindValue(++$queryIndex, (string) $value, \PDO::PARAM_STR);
+            $statement->bindValue(++$queryIndex, json_encode($value->normalize(), JSON_THROW_ON_ERROR), \PDO::PARAM_STR);
             $statement->bindValue(++$queryIndex, $code, \PDO::PARAM_STR);
         }
 

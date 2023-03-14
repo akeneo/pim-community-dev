@@ -106,6 +106,17 @@ final class ValueCollection implements \IteratorAggregate, \Countable
         return new self($this->values);
     }
 
+    public function removeValue(Value $value): void
+    {
+        $this->values = array_filter($this->values, static function ($existingValue) use ($value) {
+            return !(
+                (string) $existingValue->getUuid() === (string) $value->getUuid() &&
+                (string) $existingValue->getChannel() === (string) $value->getChannel() &&
+                (string) $existingValue->getLocale() === (string) $value->getLocale()
+            );
+        });
+    }
+
     /**
      * @return array<string, NormalizedValue>
      */
@@ -113,7 +124,7 @@ final class ValueCollection implements \IteratorAggregate, \Countable
     {
         $normalizedValues = [];
         foreach ($this->values as $value) {
-            $normalizedValues = array_merge($normalizedValues, $value->normalize());
+            $normalizedValues = [...$normalizedValues, ...$value->normalize()];
         }
 
         return $normalizedValues;
