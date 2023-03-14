@@ -5,16 +5,15 @@ declare(strict_types=1);
 namespace spec\Oro\Bundle\PimDataGridBundle\Adapter;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts;
-use Akeneo\Pim\Structure\Component\Query\InternalApi\CountAttributes;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeSearchableRepository;
 use PhpSpec\ObjectBehavior;
 
 class ItemsCounterSpec extends ObjectBehavior
 {
     public function let(
         CountImpactedProducts $countImpactedProducts,
-        CountAttributes $countAttributes,
-    ): void
-    {
+        AttributeSearchableRepository $countAttributes,
+    ): void {
         $this->beConstructedWith($countImpactedProducts, $countAttributes);
     }
 
@@ -25,11 +24,14 @@ class ItemsCounterSpec extends ObjectBehavior
         $this->count('product-grid', ['filters'])->shouldReturn(42);
     }
 
-    public function it_counts_items_in_the_attribute_grid(CountAttributes $countAttributes): void
+    public function it_counts_items_in_the_attribute_grid(AttributeSearchableRepository $countAttributes): void
     {
-        $countAttributes->byCodes(null, ['an_attribute'])->willReturn(6);
+        $countAttributes->count(null, [])->willReturn(6);
 
-        $this->count('attribute-grid', ['field' => 'code', 'operator' => 'NOT IN', 'values' => ['an_attribute']])->shouldReturn(6);
+        $this->count('attribute-grid', [
+            'search' => null,
+            'options' => [],
+        ])->shouldReturn(6);
     }
 
     public function it_counts_items_in_the_other_grids(): void
