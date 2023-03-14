@@ -11,3 +11,5 @@ Akeneo\Category\Api\Command\AddAttributeCommand:
         label:
             - Length:
                   max: 255
+        locale:
+            - NotBlank: ~
