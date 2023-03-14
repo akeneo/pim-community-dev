@@ -47,7 +47,7 @@ final class AttributeBooleanSource extends Compound
                                     new Assert\Type('boolean'),
                                     new Assert\IsNull(),
                                 ]),
-                            ])
+                            ]),
                         ],
                     ],
                     'allowMissingFields' => false,

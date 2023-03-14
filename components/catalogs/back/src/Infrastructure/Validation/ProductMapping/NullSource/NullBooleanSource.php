@@ -42,7 +42,7 @@ final class NullBooleanSource extends Compound
                                     new Assert\Type('boolean'),
                                     new Assert\IsNull(),
                                 ]),
-                            ])
+                            ]),
                         ],
                     ],
                     'allowMissingFields' => false,
