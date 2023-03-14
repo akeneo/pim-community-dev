@@ -918,14 +918,18 @@ class ApiContext implements Context
             'ziggyImage' => $this->getFileInfoKey(__DIR__ . '/fixtures/ziggy.png'),
         ];
 
-        $categories = [
-            'clothing' => ['code' => 'clothing', 'labels' => ['en_US' => 'Clothing']],
-            'cotton_clothing' => ['code' => 'cotton_clothing', 'labels' => ['en_US' => 'Cotton clothing']],
-        ];
-
-        foreach ($categories as $category) {
-            $this->createCategory($category);
-        }
+        $this->createCategory([
+            'code' => 'clothing',
+            'labels' => [
+                'en_US' => 'Clothing',
+            ],
+        ]);
+        $this->createCategory([
+            'code' => 'cotton_clothing',
+            'labels' => [
+                'en_US' => 'Cotton clothing',
+            ],
+        ]);
 
         $products = [
             [

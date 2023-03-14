@@ -124,17 +124,6 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
-            'blank locale' => [
-                'source' => [
-                    'source' => 'categories',
-                    'scope' => null,
-                    'locale' => '',
-                    'parameters' => [
-                        'label_locale' => 'en_US',
-                    ],
-                ],
-                'expectedMessage' => 'This value should be null.',
-            ],
             'with locale' => [
                 'source' => [
                     'source' => 'categories',
@@ -173,6 +162,17 @@ class SystemAttributeCategoriesSourceTest extends AbstractAttributeSourceTest
                     ],
                 ],
                 'expectedMessage' => 'This value should not be blank.',
+            ],
+            'null label locale' => [
+                'source' => [
+                    'source' => 'categories',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => null,
+                    ],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
             'invalid locale' => [
                 'source' => [

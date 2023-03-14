@@ -99,6 +99,10 @@ final class GetMappedProductsHandler
      */
     private function warmupProductCategoryCache(array $productMapping, array $productUuids): void
     {
+        if (!\method_exists($this->getProductCategoriesLabelsQuery, 'warmup')) {
+            return;
+        }
+
         $categoryLocales = [];
         foreach ($productMapping as $targetSourceAssociation) {
             if ('categories' === $targetSourceAssociation['source']
@@ -111,11 +115,9 @@ final class GetMappedProductsHandler
             }
         }
 
-        if (\method_exists($this->getProductCategoriesLabelsQuery, 'warmup')) {
-            $this->getProductCategoriesLabelsQuery->warmup(
-                \array_map(static fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
-                $categoryLocales,
-            );
-        }
+        $this->getProductCategoriesLabelsQuery->warmup(
+            \array_map(static fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
+            $categoryLocales,
+        );
     }
 }
