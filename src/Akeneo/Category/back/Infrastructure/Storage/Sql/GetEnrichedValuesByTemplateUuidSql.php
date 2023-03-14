@@ -41,7 +41,7 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
             LEFT JOIN pim_catalog_category_template AS template
             ON template.uuid = tree_template.category_template_uuid
             LEFT JOIN pim_catalog_category AS child
-            ON child.parent_id = category.id
+            ON child.root = category.id
         WHERE 
             category_template_uuid = :template_uuid
         SQL;

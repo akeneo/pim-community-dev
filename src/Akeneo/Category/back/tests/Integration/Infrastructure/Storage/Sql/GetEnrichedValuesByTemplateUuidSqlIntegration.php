@@ -21,19 +21,27 @@ class GetEnrichedValuesByTemplateUuidSqlIntegration extends CategoryTestCase
         $socksCategory = $this->useTemplateFunctionalCatalog('6344aa2a-2be9-4093-b644-259ca7aee50c', 'socks');
         $winterSocksCategory = $this->createOrUpdateCategory(
             code: 'winter_socks',
-            parentId: $socksCategory->getId()?->getValue()
+            parentId: $socksCategory->getId()?->getValue(),
+            rootId: $socksCategory->getId()?->getValue(),
         );
         $summerSocksCategory = $this->createOrUpdateCategory(
             code: 'summer_socks',
-            parentId: $socksCategory->getId()?->getValue()
+            parentId: $socksCategory->getId()?->getValue(),
+            rootId: $socksCategory->getId()?->getValue(),
+        );
+        $japaneseSummerSocksCategory = $this->createOrUpdateCategory(
+            code: 'japanese_summer_socks',
+            parentId: $summerSocksCategory->getId()?->getValue(),
+            rootId: $socksCategory->getId()?->getValue(),
         );
         $this->updateCategoryWithValues((string) $socksCategory->getCode());
         $this->updateCategoryWithValues((string) $winterSocksCategory->getCode());
         $this->updateCategoryWithValues((string) $summerSocksCategory->getCode());
+        $this->updateCategoryWithValues((string) $japaneseSummerSocksCategory->getCode());
 
-//        $pantsCategory = $this->useTemplateFunctionalCatalog('1294e06d-48a4-4055-abda-986d92bef8a2', 'pants');
-//        $this->updateCategoryWithValues((string) $pantsCategory->getCode());
-        //TODO: Add another template
+        $attributesUuids = $this->generateRandomUuidList(13);
+        $pantsCategory = $this->useTemplateFunctionalCatalog('1294e06d-48a4-4055-abda-986d92bef8a2', 'pants', $attributesUuids);
+        $this->updateCategoryWithValues((string) $pantsCategory->getCode());
     }
 
     public function testItRetrievesRelatedCategoriesByTemplateUuid(): void{
@@ -43,8 +51,9 @@ class GetEnrichedValuesByTemplateUuidSqlIntegration extends CategoryTestCase
         Assert::assertArrayHasKey('socks', $result);
         Assert::assertArrayHasKey('winter_socks', $result);
         Assert::assertArrayHasKey('summer_socks', $result);
-        Assert::assertNotEmpty($result['socks']['values']);
-        Assert::assertNotEmpty($result['winter_socks']['values']);
-        Assert::assertNotEmpty($result['winter_socks']['values']);
+        Assert::assertNotEmpty($result['socks']->getValues());
+        Assert::assertNotEmpty($result['winter_socks']->getValues());
+        Assert::assertNotEmpty($result['winter_socks']->getValues());
+        Assert::assertArrayNotHasKey('pants', $result);
     }
 }
