@@ -37,6 +37,7 @@
 - PIM-10874: fix labels api type consistency
 - PIM-10877: Fix sequential edit not working if grid is sorted by quality score
 - PIM-10876: Does not save empty ('') labels and don't show null labels on API REST
+- PIM-10889: Update Category updated date after setting a labels and show category filtered by updated date on API REST 
 
 ## Improvements
 
