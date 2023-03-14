@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {LocaleCode, PageContent, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {PageContent, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {
   AttributesIllustration,
   Button,
@@ -13,20 +13,173 @@ import {
   useBooleanState,
 } from 'akeneo-design-system';
 import {useGetIdentifierGenerators, useIdentifierAttributes, useStructureTabs} from '../hooks';
-import {GeneratorTab, LabelCollection, Target} from '../models';
+import {FlattenAttribute, GeneratorTab, IdentifierGenerator, LabelCollection, Target} from '../models';
 import {Styled} from './styles';
 import {Header, ListSkeleton} from '../components';
 import {useHistory} from 'react-router-dom';
 import {DeleteGeneratorModal} from './';
+import {useQueryClient} from 'react-query';
+
+type ListTableProps = {
+  isErrored: boolean;
+  isLoading: boolean;
+  isManageIdentifierGeneratorAclGranted: boolean;
+  generators: IdentifierGenerator[];
+  onDelete: (code: string) => () => void;
+  identifierAttributes: FlattenAttribute[];
+  filtered: boolean;
+};
+const ListTable: React.FC<ListTableProps> = ({
+  isErrored,
+  isLoading,
+  isManageIdentifierGeneratorAclGranted,
+  generators,
+  onDelete,
+  identifierAttributes,
+  filtered,
+}) => {
+  const translate = useTranslate();
+  const router = useRouter();
+  const history = useHistory();
+  const queryClient = useQueryClient();
+  const locale = useUserContext().get('catalogLocale');
+  const isGeneratorListEmpty = useMemo(() => generators.length === 0, [generators]);
+  const helpCenterUrl = 'https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html';
+  const emptyListMessage = isManageIdentifierGeneratorAclGranted
+    ? 'pim_identifier_generator.list.first_generator'
+    : 'pim_identifier_generator.list.read_only_list';
+
+  const handleReorder = (indices: number[]) => {
+    const codes = indices.map(i => generators[i]?.code).filter(code => code);
+    fetch(router.generate('akeneo_identifier_generator_reorder'), {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest'},
+      body: JSON.stringify({codes}),
+    }).then(() => queryClient.invalidateQueries('getGeneratorList'));
+  };
+
+  const goToEditPage = (code: string) => () => history.push(`/${code}`);
+  const getCurrentLabel = useCallback(
+    (labels: LabelCollection, code: string) => labels[locale] || `[${code}]`,
+    [locale]
+  );
+  const getTargetLabel: (target: Target) => string | undefined = target => {
+    return identifierAttributes.find(attribute => attribute.code === target)?.label;
+  };
+
+  if (isErrored) {
+    return (
+      <Table>
+        <Table.Header>
+          <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+          <Table.HeaderCell>{translate('pim_identifier_generator.list.identifier')}</Table.HeaderCell>
+          <Table.HeaderCell />
+        </Table.Header>
+        <Table.Body>
+          <tr>
+            <td colSpan={3}>
+              <Helper level="error">{translate('pim_error.general')}</Helper>
+            </td>
+          </tr>
+        </Table.Body>
+      </Table>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <Table>
+        <Table.Header>
+          <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+          <Table.HeaderCell>{translate('pim_identifier_generator.list.identifier')}</Table.HeaderCell>
+          <Table.HeaderCell />
+        </Table.Header>
+        <Table.Body>
+          <ListSkeleton />
+        </Table.Body>
+      </Table>
+    );
+  }
+
+  if (isGeneratorListEmpty) {
+    return (
+      <Table>
+        <Table.Header>
+          <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+          <Table.HeaderCell>{translate('pim_identifier_generator.list.identifier')}</Table.HeaderCell>
+          <Table.HeaderCell />
+        </Table.Header>
+        <Table.Body>
+          <tr>
+            <td colSpan={3}>
+              <Placeholder illustration={<AttributesIllustration />} size="large" title={translate(emptyListMessage)}>
+                <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
+                  {translate('pim_identifier_generator.list.check_help_center')}
+                </Styled.HelpCenterLink>
+              </Placeholder>
+            </td>
+          </tr>
+        </Table.Body>
+      </Table>
+    );
+  }
+
+  return (
+    <Table isDragAndDroppable={isManageIdentifierGeneratorAclGranted && !filtered} onReorder={handleReorder}>
+      <Table.Header>
+        <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+        <Table.HeaderCell>{translate('pim_identifier_generator.list.identifier')}</Table.HeaderCell>
+        <Table.HeaderCell />
+      </Table.Header>
+      <Table.Body>
+        {generators?.map(({labels, code, target}) => (
+          <Table.Row key={code} onClick={goToEditPage(code)}>
+            <Table.Cell>
+              <Styled.Label>{getCurrentLabel(labels, code)}</Styled.Label>
+            </Table.Cell>
+            <Table.Cell>
+              {typeof getTargetLabel(target) === 'undefined' && (
+                <SkeletonPlaceholder>Loading identifier</SkeletonPlaceholder>
+              )}
+              {getTargetLabel(target)}
+            </Table.Cell>
+            <Table.ActionCell>
+              <Button onClick={goToEditPage(code)} ghost>
+                {translate(isManageIdentifierGeneratorAclGranted ? 'pim_common.edit' : 'pim_common.view')}
+              </Button>
+              {isManageIdentifierGeneratorAclGranted && (
+                <Button onClick={onDelete(code)} ghost level="danger">
+                  {translate('pim_common.delete')}
+                </Button>
+              )}
+            </Table.ActionCell>
+          </Table.Row>
+        ))}
+        {!isManageIdentifierGeneratorAclGranted && (
+          <tr>
+            <td colSpan={3}>
+              <Placeholder
+                illustration={<AttributesIllustration />}
+                size="large"
+                title={translate('pim_identifier_generator.list.read_only_list')}
+              >
+                <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
+                  {translate('pim_identifier_generator.list.check_help_center')}
+                </Styled.HelpCenterLink>
+              </Placeholder>
+            </td>
+          </tr>
+        )}
+      </Table.Body>
+    </Table>
+  );
+};
 
 type ListPageProps = {
   onCreate: () => void;
 };
 
 const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
-  const helpCenterUrl = 'https://help.akeneo.com/pim/serenity/articles/generate-product-identifiers.html';
-
-  const history = useHistory();
   const translate = useTranslate();
   const security = useSecurity();
   const {setCurrentTab} = useStructureTabs();
@@ -43,17 +196,11 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     () => !isManageIdentifierGeneratorAclGranted || generators.length >= LIMIT_IDENTIFIER_GENERATOR,
     [generators, isManageIdentifierGeneratorAclGranted]
   );
-  const isGeneratorListEmpty = useMemo(() => generators.length === 0, [generators]);
 
   useEffect(() => {
     setCurrentTab(GeneratorTab.GENERAL);
   }, [setCurrentTab]);
 
-  const getCurrentLabel = useCallback(
-    (labels: LabelCollection, code: string) => labels[locale] || `[${code}]`,
-    [locale]
-  );
-  const goToEditPage = (code: string) => () => history.push(`/${code}`);
   const closeModal = (): void => closeDeleteGeneratorModal();
 
   const {data: identifierAttributes = [], error: errorOnIdentifierAttributes} = useIdentifierAttributes();
@@ -67,16 +214,17 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
     openDeleteGeneratorModal();
   };
 
-  const getTargetLabel: (target: Target) => string | undefined = target => {
-    return identifierAttributes.find(attribute => attribute.code === target)?.label;
-  };
-
   const filteredGenerators = useMemo(
-    () => generators.filter(({code, labels}) =>
-      code.toLowerCase().includes(search.toLowerCase()) || labels[locale]?.toLowerCase()?.includes(search.toLowerCase())
-    ),
+    () =>
+      generators.filter(
+        ({code, labels}) =>
+          code.toLowerCase().includes(search.toLowerCase()) ||
+          labels[locale]?.toLowerCase()?.includes(search.toLowerCase())
+      ),
     [generators, locale, search]
   );
+
+  const isFiltered = useMemo(() => generators.length !== filteredGenerators.length, [generators, filteredGenerators]);
 
   return (
     <>
@@ -111,84 +259,15 @@ const ListPage: React.FC<ListPageProps> = ({onCreate}) => {
           </Helper>
         )}
 
-        <Table>
-          <Table.Header>
-            <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
-            <Table.HeaderCell>{translate('pim_identifier_generator.list.identifier')}</Table.HeaderCell>
-            <Table.HeaderCell />
-          </Table.Header>
-          <Table.Body>
-            {isGeneratorListEmpty &&
-              !isLoading &&
-              !errorOnGenerators &&
-              !errorOnIdentifierAttributes &&
-              isManageIdentifierGeneratorAclGranted && (
-                <tr>
-                  <td colSpan={3}>
-                    <Placeholder
-                      illustration={<AttributesIllustration />}
-                      size="large"
-                      title={translate('pim_identifier_generator.list.first_generator')}
-                    >
-                      <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
-                        {translate('pim_identifier_generator.list.check_help_center')}
-                      </Styled.HelpCenterLink>
-                    </Placeholder>
-                  </td>
-                </tr>
-              )}
-            {(null !== errorOnGenerators || null !== errorOnIdentifierAttributes) && (
-              <tr>
-                <td colSpan={3}>
-                  <Helper level="error">{translate('pim_error.general')}</Helper>
-                </td>
-              </tr>
-            )}
-            {isLoading && <ListSkeleton />}
-            {!isGeneratorListEmpty && (
-              <>
-                {filteredGenerators?.map(({labels, code, target}) => (
-                  <Table.Row key={code} onClick={goToEditPage(code)}>
-                    <Table.Cell>
-                      <Styled.Label>{getCurrentLabel(labels, code)}</Styled.Label>
-                    </Table.Cell>
-                    <Table.Cell>
-                      {typeof getTargetLabel(target) === 'undefined' && (
-                        <SkeletonPlaceholder>Loading identifier</SkeletonPlaceholder>
-                      )}
-                      {getTargetLabel(target)}
-                    </Table.Cell>
-                    <Table.ActionCell>
-                      <Button onClick={goToEditPage(code)} ghost>
-                        {translate(isManageIdentifierGeneratorAclGranted ? 'pim_common.edit' : 'pim_common.view')}
-                      </Button>
-                      {isManageIdentifierGeneratorAclGranted && (
-                        <Button onClick={onDelete(code)} ghost level="danger">
-                          {translate('pim_common.delete')}
-                        </Button>
-                      )}
-                    </Table.ActionCell>
-                  </Table.Row>
-                ))}
-              </>
-            )}
-            {!isManageIdentifierGeneratorAclGranted && (
-              <tr>
-                <td colSpan={3}>
-                  <Placeholder
-                    illustration={<AttributesIllustration />}
-                    size="large"
-                    title={translate('pim_identifier_generator.list.read_only_list')}
-                  >
-                    <Styled.HelpCenterLink href={helpCenterUrl} target="_blank">
-                      {translate('pim_identifier_generator.list.check_help_center')}
-                    </Styled.HelpCenterLink>
-                  </Placeholder>
-                </td>
-              </tr>
-            )}
-          </Table.Body>
-        </Table>
+        <ListTable
+          isErrored={null !== errorOnGenerators || null !== errorOnIdentifierAttributes}
+          isLoading={isLoading}
+          isManageIdentifierGeneratorAclGranted={isManageIdentifierGeneratorAclGranted}
+          generators={filteredGenerators}
+          identifierAttributes={identifierAttributes}
+          onDelete={onDelete}
+          filtered={isFiltered}
+        />
       </PageContent>
       {isDeleteGeneratorModalOpen && generatorToDelete !== null && (
         <DeleteGeneratorModal generatorCode={generatorToDelete} onClose={closeModal} onDelete={handleDelete} />
