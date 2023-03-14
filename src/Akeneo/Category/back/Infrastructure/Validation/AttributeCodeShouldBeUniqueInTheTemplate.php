@@ -14,16 +14,5 @@ use Symfony\Component\Validator\Constraint;
 final class AttributeCodeShouldBeUniqueInTheTemplate extends Constraint
 {
     public string $message = 'akeneo.category.validation.attribute.code.unique_in_the_template';
-
     public TemplateUuid $templateUuid;
-
-    public function getDefaultOption(): string
-    {
-        return 'templateUuid';
-    }
-
-    public function getRequiredOptions(): array
-    {
-        return ['templateUuid'];
-    }
 }

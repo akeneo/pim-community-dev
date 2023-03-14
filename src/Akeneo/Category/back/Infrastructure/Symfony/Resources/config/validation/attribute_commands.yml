@@ -1,4 +1,4 @@
-Akeneo\Category\Api\Command\AddAttributeCommand:
+Akeneo\Category\Application\Command\AddAttributeCommand:
     properties:
         code:
             - NotBlank: ~
