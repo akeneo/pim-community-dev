@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Button, DeleteIllustration, getFontSize, Helper, Modal} from 'akeneo-design-system';
-import {useFeatureFlags, useIsMounted, useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useCountCategoryChildren} from '../../hooks/useCountCategoryChildren';
 
@@ -22,7 +22,6 @@ const DeleteCategoryModal: FC<DeleteCategoryModalProps> = ({
   categoryId,
 }) => {
   const translate = useTranslate();
-  const featureFlags = useFeatureFlags();
 
   const {data: categoryChildrenCount, isLoading} = useCountCategoryChildren(categoryId);
   let warning = null;

@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {getColor, Information, Link, ProductCategoryIllustration} from 'akeneo-design-system';
 import styled from 'styled-components';
 
@@ -30,7 +30,6 @@ const surveyLink =
   'https://docs.google.com/forms/d/e/1FAIpQLSdrPJk35QxrtEc0gGwE39KJ42cMlEdH3TCygRfYTiG-zYx72A/viewform?usp=sf_link';
 
 const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
-  const featureFlags = useFeatureFlags();
   const translate = useTranslate();
 
   return (

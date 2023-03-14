@@ -1,10 +1,7 @@
 import React, {FC} from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import {CategoriesIndex, CategoriesTreePage, CategoryEditPage} from './pages';
+import {CategoriesIndex, CategoriesTreePage, CategoryEditPage, TemplatePage} from './pages';
 import {EditCategoryProvider} from './components';
-import {useFeatureFlags} from '@akeneo-pim-community/shared';
-import {LegacyCategoryEditPage} from './legacy/pages/LegacyCategoryEditPage';
-import {TemplatePage} from './pages';
 import {QueryClient, QueryClientProvider} from 'react-query';
 
 type Props = {
@@ -13,7 +10,6 @@ type Props = {
 
 const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
   const queryClient = new QueryClient();
-  const featureFlags = useFeatureFlags();
 
   return (
     <Router basename="/enrich/product-category-tree">

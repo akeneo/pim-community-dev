@@ -1,4 +1,4 @@
-import {renderWithProviders, useFeatureFlags} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {DiscoverEnrichedCategoriesInformationHelper} from './DiscoverEnrichedCategoriesInformationHelper';
 
 jest.mock('@akeneo-pim-community/shared', () => {

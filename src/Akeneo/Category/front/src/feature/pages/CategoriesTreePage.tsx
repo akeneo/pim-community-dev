@@ -6,7 +6,6 @@ import {
   PageContent,
   PageHeader,
   PimView,
-  useFeatureFlags,
   useRouter,
   useSecurity,
   useSessionStorageState,
@@ -37,7 +36,6 @@ const CategoriesTreePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const {isGranted} = useSecurity();
-  const featureFlags = useFeatureFlags();
   const [lastSelectedCategory] = useSessionStorageState<lastSelectedCategory>(
     {
       treeId: treeId,

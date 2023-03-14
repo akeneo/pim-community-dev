@@ -3,7 +3,6 @@ import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
   useDebounceCallback,
-  useFeatureFlags,
   useNotify,
   useRouter,
   useSecurity,
@@ -26,7 +25,6 @@ type Props = {
 const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const translate = useTranslate();
   const router = useRouter();
-  const featureFlags = useFeatureFlags();
   const {isGranted} = useSecurity();
   const [searchString, setSearchString] = useState('');
   const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
@@ -158,7 +156,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     });
 
     setDisplayCategoryTemplatesColumn(hasRights && hasTemplates);
-  }, [featureFlags, filteredTrees, isGranted]);
+  }, [filteredTrees, isGranted]);
 
   return (
     <>
