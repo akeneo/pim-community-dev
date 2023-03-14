@@ -9,27 +9,27 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Infrastructure\Controller;
 
-use Akeneo\Pim\Structure\Bundle\Application\GetAttributeGroup\GetAttributeGroupHandler;
+use Akeneo\Pim\Structure\Bundle\Application\GetAttributesGroup\GetAttributeGroupsHandler;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-final class GetAttributeGroupController
+final class GetAttributeGroupsController
 {
     public function __construct(
         private readonly SecurityFacadeInterface $securityFacade,
-        private readonly GetAttributeGroupHandler $getAttributeGroupHandler
+        private readonly GetAttributeGroupsHandler $getAttributeGroupsHandler
     ) {
     }
 
     public function __invoke(): Response
     {
-        if (!$this->securityFacade->isGranted('pim_api_attribute_group_list')) {
+        if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_index')) {
             throw new AccessDeniedHttpException();
         }
 
-        $attributeGroups = $this->getAttributeGroupHandler->handle();
+        $attributeGroups = $this->getAttributeGroupsHandler->handle();
 
         return new JsonResponse($attributeGroups);
     }

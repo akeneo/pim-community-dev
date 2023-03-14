@@ -7,19 +7,18 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Pim\Structure\Bundle\Application\GetAttributeGroup;
+namespace Akeneo\Pim\Structure\Bundle\Application\GetAttributesGroup;
 
 use Akeneo\Pim\Structure\Bundle\Domain\Query\Sql\GetAttributeGroupsInterface;
-use Akeneo\Pim\Structure\Bundle\Infrastructure\Query\Sql\GetAttributeGroups;
 
-final class GetAttributeGroupHandler
+final class GetAttributeGroupsHandler
 {
     public function __construct(
         private readonly GetAttributeGroupsInterface $getAttributeGroups
     ) {
     }
 
-    public function handle(): array
+    public function handle(): iterable
     {
         return $this->getAttributeGroups->all();
     }

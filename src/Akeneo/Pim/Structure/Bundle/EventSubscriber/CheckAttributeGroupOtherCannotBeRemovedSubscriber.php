@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CheckAttributeGroupOtherCannotBeRemovedSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_REMOVE => 'preRemove',
@@ -31,7 +31,7 @@ class CheckAttributeGroupOtherCannotBeRemovedSubscriber implements EventSubscrib
             return;
         }
 
-        if ('other' === $attributeGroup->getCode()) {
+        if (AttributeGroupInterface::DEFAULT_CODE === $attributeGroup->getCode()) {
             throw AttributeGroupOtherCannotBeRemoved::create();
         }
     }

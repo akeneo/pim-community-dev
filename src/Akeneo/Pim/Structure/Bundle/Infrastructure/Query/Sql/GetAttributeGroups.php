@@ -22,7 +22,7 @@ class GetAttributeGroups implements GetAttributeGroupsInterface
     ) {
     }
 
-    public function all(): array
+    public function all(): iterable
     {
         $sql = <<<SQL
             WITH attribute_group_labels AS (

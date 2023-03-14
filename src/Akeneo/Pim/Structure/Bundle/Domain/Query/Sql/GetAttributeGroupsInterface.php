@@ -11,5 +11,5 @@ namespace Akeneo\Pim\Structure\Bundle\Domain\Query\Sql;
 
 interface GetAttributeGroupsInterface
 {
-    public function all(): array;
+    public function all(): iterable;
 }
