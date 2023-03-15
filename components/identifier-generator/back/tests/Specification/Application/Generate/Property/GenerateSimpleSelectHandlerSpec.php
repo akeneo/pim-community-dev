@@ -52,7 +52,7 @@ class GenerateSimpleSelectHandlerSpec extends ObjectBehavior
             ->during('__invoke', [
                 $autoNumber,
                 $identifierGenerator,
-                new ProductProjection(true, null, []),
+                new ProductProjection(true, null, [], []),
                 'AKN-',
             ]);
     }
@@ -207,7 +207,7 @@ class GenerateSimpleSelectHandlerSpec extends ObjectBehavior
 
     private function getProductProjection(array $productValues): ProductProjection
     {
-        return new ProductProjection(true, 'accessories', $productValues);
+        return new ProductProjection(true, 'accessories', $productValues, []);
     }
 
     private function getIdentifierGenerator(PropertyInterface $property): IdentifierGenerator

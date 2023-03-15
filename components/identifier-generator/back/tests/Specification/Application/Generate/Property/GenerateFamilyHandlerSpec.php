@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToGenerateIdentifierFromFamilyNomenclature;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedFamilyNomenclatureException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedNomenclatureException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
@@ -26,9 +29,11 @@ use PhpSpec\ObjectBehavior;
 
 class GenerateFamilyHandlerSpec extends ObjectBehavior
 {
-    public function let(NomenclatureRepository $nomenclatureRepository)
+    public function let(NomenclatureRepository $nomenclatureRepository): void
     {
-        $this->beConstructedWith($nomenclatureRepository);
+        $this->beConstructedWith(
+            new PropertyProcessApplier($nomenclatureRepository->getWrappedObject())
+        );
     }
 
     public function it_should_support_only_family_property(): void
@@ -178,7 +183,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(null);
 
-        $this->shouldThrow(UndefinedFamilyNomenclatureException::class)->during(
+        $this->shouldThrow(UndefinedNomenclatureException::class)->during(
             '__invoke',
             [
                 $family,
@@ -205,7 +210,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(null);
 
-        $this->shouldThrow(UndefinedFamilyNomenclatureException::class)->during(
+        $this->shouldThrow(UndefinedNomenclatureException::class)->during(
             '__invoke',
             [
                 $family,
