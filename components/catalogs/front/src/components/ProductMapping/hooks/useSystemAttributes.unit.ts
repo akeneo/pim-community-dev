@@ -4,7 +4,7 @@ import {renderHook} from '@testing-library/react-hooks';
 
 jest.unmock('./useSystemAttributes');
 
-test('it fetches categories system attribute', () => {
+test('it fetches system attributes', () => {
     const {result} = renderHook(() => useSystemAttributes(), {
         wrapper: ReactQueryWrapper,
     });
