@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents;
 use Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup;
+use Akeneo\Pim\Structure\Component\Exception\UserFacingError;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -25,6 +26,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Attribute group controller
@@ -36,88 +38,25 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeGroupController
 {
-    /** @var AttributeGroupRepositoryInterface */
-    protected $attributeGroupRepo;
-
-    /** @var SearchableRepositoryInterface */
-    protected $attributeGroupSearchableRepository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var CollectionFilterInterface */
-    protected $collectionFilter;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var EntityRepository */
-    protected $attributeRepository;
-
-    /** @var ObjectUpdaterInterface */
-    protected $attributeUpdater;
-
-    /** @var SaverInterface */
-    protected $attributeSaver;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /** @var SimpleFactoryInterface */
-    protected $attributeGroupFactory;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var CollectionFilterInterface */
-    protected $inputFilter;
-
-    /** @var FindAttributeCodesForAttributeGroup */
-    private $findAttributeCodesForAttributeGroup;
-
     public function __construct(
-        AttributeGroupRepositoryInterface $attributeGroupRepo,
-        SearchableRepositoryInterface $attributeGroupSearchableRepository,
-        NormalizerInterface $normalizer,
-        CollectionFilterInterface $collectionFilter,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        SaverInterface $saver,
-        RemoverInterface $remover,
-        EntityRepository $attributeRepository,
-        ObjectUpdaterInterface $attributeUpdater,
-        SaverInterface $attributeSaver,
-        SecurityFacade $securityFacade,
-        SimpleFactoryInterface $attributeGroupFactory,
-        EventDispatcherInterface $eventDispatcher,
-        CollectionFilterInterface $inputFilter,
-        FindAttributeCodesForAttributeGroup $findAttributeCodesForAttributeGroup
+        private AttributeGroupRepositoryInterface $attributeGroupRepo,
+        private SearchableRepositoryInterface $attributeGroupSearchableRepository,
+        private NormalizerInterface $normalizer,
+        private CollectionFilterInterface $collectionFilter,
+        private ObjectUpdaterInterface $updater,
+        private ValidatorInterface $validator,
+        private SaverInterface $saver,
+        private RemoverInterface $remover,
+        private EntityRepository $attributeRepository,
+        private ObjectUpdaterInterface $attributeUpdater,
+        private SaverInterface $attributeSaver,
+        private SecurityFacade $securityFacade,
+        private SimpleFactoryInterface $attributeGroupFactory,
+        private EventDispatcherInterface $eventDispatcher,
+        private CollectionFilterInterface $inputFilter,
+        private FindAttributeCodesForAttributeGroup $findAttributeCodesForAttributeGroup,
+        private TranslatorInterface $translator
     ) {
-        $this->attributeGroupRepo                 = $attributeGroupRepo;
-        $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
-        $this->normalizer                         = $normalizer;
-        $this->collectionFilter                   = $collectionFilter;
-        $this->updater                            = $updater;
-        $this->validator                          = $validator;
-        $this->saver                              = $saver;
-        $this->remover                            = $remover;
-        $this->attributeRepository                = $attributeRepository;
-        $this->attributeUpdater                   = $attributeUpdater;
-        $this->attributeSaver                     = $attributeSaver;
-        $this->securityFacade                     = $securityFacade;
-        $this->attributeGroupFactory              = $attributeGroupFactory;
-        $this->eventDispatcher                    = $eventDispatcher;
-        $this->inputFilter                        = $inputFilter;
-        $this->findAttributeCodesForAttributeGroup = $findAttributeCodesForAttributeGroup;
     }
 
     /**
@@ -351,23 +290,14 @@ class AttributeGroupController
 
         $attributeGroup = $this->getAttributeGroupOr404($identifier);
 
-        if ('other' === $attributeGroup->getCode()) {
+        try {
+            $this->remover->remove($attributeGroup);
+        } catch (UserFacingError $exception) {
             return new JsonResponse(
-                [
-                    'message' => 'Attribute group "other" cannot be removed.',
-                ],
+                ['message' => $this->translator->trans($exception->translationKey(), $exception->translationParameters())],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
-
-        if (0 < $attributeGroup->getAttributes()->count()) {
-            return new JsonResponse(
-                ['message' => 'Attribute group containing attributes cannot be removed. Please remove its attributes prior to delete it.'],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
-
-        $this->remover->remove($attributeGroup);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
