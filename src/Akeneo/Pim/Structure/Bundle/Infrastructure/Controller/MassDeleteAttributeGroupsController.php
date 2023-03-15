@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Infrastructure\Controller;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -46,7 +47,7 @@ final class MassDeleteAttributeGroupsController
 
         $attributeGroupCodes = $request->get('codes');
 
-        $replacementAttributeCode = $request->get('replacement_attribute_group', 'other');
+        $replacementAttributeCode = $request->get('replacement_attribute_group', AttributeGroupInterface::DEFAULT_CODE);
 
         $configuration = [
             'filters' => [

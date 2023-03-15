@@ -22,7 +22,7 @@ test('it renders a confirm modal delete button', () => {
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 });
 
-test('it opens a modal with a confirmation input & helper if there are child attributes', async () => {
+test('it opens a modal with a confirmation input & helper if there are child attributes', () => {
   renderWithProviders(
     <MassDeleteAttributeGroupsModal
       impactedAttributeGroups={[
