@@ -2,7 +2,7 @@ import {fetchAllAttributeGroupsDqiStatus, fetchAttributeGroupsByCode} from '../.
 import {useEffect, useState} from 'react';
 import {useCatalogContext, useProductFamily, useProductEvaluation} from '../index';
 import {Attribute, Family as FamilyInformation} from '../../../domain';
-import {AttributeGroupCollection} from '@akeneo-pim-community/settings-ui/src/models';
+import {AttributeGroupCollection} from '../../../domain';
 import {useMountedRef} from '@akeneo-pim-community/settings-ui/src/hooks';
 
 const useProductEvaluatedAttributeGroups = () => {
