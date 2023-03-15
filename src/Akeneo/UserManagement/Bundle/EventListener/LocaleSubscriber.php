@@ -5,8 +5,6 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityManager;
-use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
-use Symfony\Bundle\SecurityBundle\Security\FirewallMap;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -102,29 +100,12 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocale(Request $request)
     {
-        if ('api' === $this->firewall->getFirewallConfig($request)->getName()) {
+        if (in_array($this->firewall->getFirewallConfig($request)->getName(), ['api', 'oauth_token'], true)) {
             return 'en_US';
         }
 
-        return $this->hasActiveSession($request) && null !== $request->getSession()->get('_locale') ?
+        return $request->hasSession() && null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
-    }
-
-    private function hasActiveSession(Request $request): bool
-    {
-        // The method getFirewallConfig is only part of Symfony\Bundle\SecurityBundle\Security\FirewallMap,
-        // not in the FirewallMapInterface.
-        // In EE, we override the "@security.firewall.map" service with another class that is not extending
-        // Symfony\Bundle\SecurityBundle\Security\FirewallMap but still provide getFirewallConfig.
-        if ($this->firewall instanceof FirewallMap || method_exists($this->firewall, 'getFirewallConfig')) {
-            $firewallConfig = $this->firewall->getFirewallConfig($request);
-
-            if ($firewallConfig instanceof FirewallConfig && $firewallConfig->isStateless()) {
-                return false;
-            }
-        }
-
-        return $request->hasSession();
     }
 
     /**

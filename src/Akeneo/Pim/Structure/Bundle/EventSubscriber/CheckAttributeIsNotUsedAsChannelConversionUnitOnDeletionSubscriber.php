@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
-use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\FindChannels;
 use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
@@ -18,7 +19,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class CheckAttributeIsNotUsedAsChannelConversionUnitOnDeletionSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly ChannelRepositoryInterface $channelRepository,
+        private readonly FindChannels $findChannels,
     ) {
     }
 
@@ -45,14 +46,16 @@ class CheckAttributeIsNotUsedAsChannelConversionUnitOnDeletionSubscriber impleme
 
     private function channelCodesUsedAsConversionUnit(string $attributeCode): array
     {
-        $channelCodes = [];
-        /** @TODO RAB-1357: use cached repository */
-        foreach ($this->channelRepository->findAll() as $channel) {
-            if (array_key_exists($attributeCode, $channel->getConversionUnits())) {
-                $channelCodes[] = $channel->getCode();
-            }
-        }
+        $channels = $this->findChannels->findAll();
 
-        return $channelCodes;
+        $channelsUsedAsConversionUnit = array_filter(
+            $channels,
+            static fn (Channel $channel): bool => $channel->getConversionUnits()->hasConversionUnit($attributeCode)
+        );
+
+        return array_map(
+            static fn (Channel $channel): string => $channel->getCode(),
+            $channelsUsedAsConversionUnit,
+        );
     }
 }

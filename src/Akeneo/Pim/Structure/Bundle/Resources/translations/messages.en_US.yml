@@ -9,6 +9,11 @@ pim_enrich:
     family:
         info:
             cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
+    attribute_group:
+        remove:
+            attribute_group_with_attribute_cannot_be_removed: Attribute group containing attributes cannot be removed. Please remove its attributes prior to delete it.
+            attribute_group_other_cannot_be_removed: Attribute group "other" cannot be removed.
+
     # Group type
     group_type:
         tab:
@@ -47,13 +52,18 @@ pim_enrich_attribute_form:
     group: Attribute group
     useableAsGridFilter: Usable in grid
 
+job_execution.summary:
+    deleted_attribute_groups: Deleted attribute groups
+    skipped_attribute_groups: Skipped attribute groups
+    deleted_attributes: Deleted attributes
+
 pim_import_export:
     notification:
+        attribute_group_mass_delete:
+            error: Mass delete of attribute groups failed
+            warning: Mass delete of attribute groups finished with some warnings
+            success: Mass delete of attribute groups finished
         attribute_mass_delete:
             error: Mass delete of attributes failed
             warning: Mass delete of attributes finished with some warnings
             success: Mass delete of attributes finished
-
-job_execution:
-    summary:
-        deleted_attributes: Deleted attributes

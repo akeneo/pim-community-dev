@@ -96,12 +96,20 @@ services:
 
     Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotUsedAsChannelConversionUnitOnDeletionSubscriber:
         arguments:
-            - '@pim_catalog.repository.channel'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
         tags:
             - { name: kernel.event_subscriber }
 
     Akeneo\Pim\Structure\Bundle\EventSubscriber\TimestampableAttributeSubscriber:
         arguments:
             - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeGroupOtherCannotBeRemovedSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeGroupWithAttributeCannotBeRemovedSubscriber:
         tags:
             - { name: kernel.event_subscriber }

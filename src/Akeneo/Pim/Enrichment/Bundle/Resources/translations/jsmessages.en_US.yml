@@ -116,7 +116,7 @@ pim_enrich.entity.product:
                 quantity: Quantity
                 unlinked: Unlinked
             search:
-                placeholder: Search on label, identifier or UUID
+                placeholder: Search by label, identifier or uuid
             no_data: There are no associated products.
             remove: Remove association
             edit: Edit product

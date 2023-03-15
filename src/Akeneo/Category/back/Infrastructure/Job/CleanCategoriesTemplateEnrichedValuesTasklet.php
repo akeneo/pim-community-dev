@@ -29,6 +29,21 @@ class CleanCategoriesTemplateEnrichedValuesTasklet implements TaskletInterface
     public function execute(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $template_uuid = $jobParameters->get('template_uuid');
+        $templateUuid = $jobParameters->get('template_uuid');
+
+//        $attributeCollection = $this->getAttribute->byTemplateUuid(TemplateUuid::fromString($templateUuid));
+//
+//        $attributeUuidList = [];
+//        foreach ($attributeCollection as $attribute) {
+//            /* @var Attribute $attribute */
+//            $attributeUuidList[] = (string)$attribute->getUuid();
+//        }
+//
+//        ($this->categoryDataCleaner)(
+//            [
+//                'attribute_list' => $attributeUuidList,
+//            ],
+//            new AttributesFilter(),
+//        );
     }
 }

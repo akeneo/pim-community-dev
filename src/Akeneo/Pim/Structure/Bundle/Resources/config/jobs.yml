@@ -424,6 +424,18 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
+    pim_connector.job.delete_attribute_groups:
+        class: 'Akeneo\Tool\Component\Batch\Job\Job'
+        arguments:
+            - 'delete_attribute_groups'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+              - '@pim_connector.step.delete_attribute_groups'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: 'attribute_group_mass_delete' }
+
     pim_connector.job.delete_attributes:
         class: 'Akeneo\Tool\Component\Batch\Job\Job'
         arguments:

@@ -8,7 +8,6 @@ use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Test\Integration\Configuration;
 
 class ActivateTemplateIntegration extends CategoryTestCase

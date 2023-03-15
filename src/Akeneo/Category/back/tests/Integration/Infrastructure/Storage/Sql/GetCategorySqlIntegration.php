@@ -50,8 +50,9 @@ class GetCategorySqlIntegration extends CategoryTestCase
 
         $this->assertInstanceOf(Category::class, $category);
         $this->assertEquals([
-            "photo" . AbstractValue::SEPARATOR . "8587cda6-58c8-47fa-9278-033e1d8c735c",
-            "title" . AbstractValue::SEPARATOR . "87939c45-1d85-4134-9579-d594fff65030"
+            'photo' . AbstractValue::SEPARATOR . '8587cda6-58c8-47fa-9278-033e1d8c735c',
+            'title' . AbstractValue::SEPARATOR . '87939c45-1d85-4134-9579-d594fff65030',
+            'description' . AbstractValue::SEPARATOR . '57665726-8a6e-4550-9bcf-06f81c0d1e24'
         ], $category->getAttributeCodes());
         $this->assertSame('Chaussettes', $category->getLabels()->getTranslation('fr_FR'));
         $this->assertSame('Socks', $category->getLabels()->getTranslation('en_US'));
@@ -63,7 +64,7 @@ class GetCategorySqlIntegration extends CategoryTestCase
             channel: 'ecommerce',
             localeCode: 'fr_FR'
         );
-        $this->assertSame("Les chaussures dont vous avez besoin !", $expectedTextValue->getValue());
+        $this->assertSame('Les chaussures dont vous avez besoin !', $expectedTextValue->getValue());
         $this->assertSame('ecommerce', $expectedTextValue->getChannel()?->getValue());
         $this->assertSame('fr_FR', $expectedTextValue->getLocale()?->getValue());
 
@@ -75,10 +76,10 @@ class GetCategorySqlIntegration extends CategoryTestCase
             localeCode: null
         );
         $this->assertSame(168107, $expectedImageValue->getValue()->getSize());
-        $this->assertSame("jpg", $expectedImageValue->getValue()->getExtension());
-        $this->assertSame("8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg", $expectedImageValue->getValue()->getFilePath());
-        $this->assertSame("image/jpeg", $expectedImageValue->getValue()->getMimeType());
-        $this->assertSame("shoes.jpg", $expectedImageValue->getValue()->getOriginalFilename());
+        $this->assertSame('jpg', $expectedImageValue->getValue()->getExtension());
+        $this->assertSame('8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg', $expectedImageValue->getValue()->getFilePath());
+        $this->assertSame('image/jpeg', $expectedImageValue->getValue()->getMimeType());
+        $this->assertSame('shoes.jpg', $expectedImageValue->getValue()->getOriginalFilename());
         $this->assertNull($expectedImageValue->getChannel());
         $this->assertNull($expectedImageValue->getLocale());
     }
@@ -105,7 +106,7 @@ class GetCategorySqlIntegration extends CategoryTestCase
             channel: 'ecommerce',
             localeCode: 'fr_FR'
         );
-        $this->assertSame("Les chaussures dont vous avez besoin !", $expectedTextValue->getValue());
+        $this->assertSame('Les chaussures dont vous avez besoin !', $expectedTextValue->getValue());
         $this->assertSame('ecommerce', $expectedTextValue->getChannel()?->getValue());
         $this->assertSame('fr_FR', $expectedTextValue->getLocale()?->getValue());
 
@@ -117,10 +118,10 @@ class GetCategorySqlIntegration extends CategoryTestCase
             localeCode: null
         );
         $this->assertSame(168107, $expectedImageValue->getValue()->getSize());
-        $this->assertSame("jpg", $expectedImageValue->getValue()->getExtension());
-        $this->assertSame("8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg", $expectedImageValue->getValue()->getFilePath());
-        $this->assertSame("image/jpeg", $expectedImageValue->getValue()->getMimeType());
-        $this->assertSame("shoes.jpg", $expectedImageValue->getValue()->getOriginalFilename());
+        $this->assertSame('jpg', $expectedImageValue->getValue()->getExtension());
+        $this->assertSame('8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg', $expectedImageValue->getValue()->getFilePath());
+        $this->assertSame('image/jpeg', $expectedImageValue->getValue()->getMimeType());
+        $this->assertSame('shoes.jpg', $expectedImageValue->getValue()->getOriginalFilename());
         $this->assertNull($expectedImageValue->getChannel());
         $this->assertNull($expectedImageValue->getLocale());
     }
