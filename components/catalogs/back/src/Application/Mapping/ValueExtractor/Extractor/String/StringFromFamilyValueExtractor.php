@@ -20,6 +20,7 @@ final class StringFromFamilyValueExtractor implements StringValueExtractorInterf
         ?array $parameters,
     ): null | string {
         // @todo fetch family label
+        dd($product);
         return $product['family_code'] ?? null;
     }
 

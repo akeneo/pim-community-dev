@@ -16,9 +16,9 @@ export const useSystemAttributes = (): Attribute[] => {
                 attribute_group_label: 'System',
             },
             {
-                code: 'families',
-                label: translate('akeneo_catalogs.product_mapping.source.system_attributes.families.label'),
-                type: 'families',
+                code: 'family',
+                label: translate('akeneo_catalogs.product_mapping.source.system_attributes.family.label'),
+                type: 'family',
                 scopable: false,
                 localizable: false,
                 attribute_group_code: 'system',

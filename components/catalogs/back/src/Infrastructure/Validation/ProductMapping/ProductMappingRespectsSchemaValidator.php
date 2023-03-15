@@ -125,7 +125,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
 
             $attributeType = match ($sourceAssociation['source']) {
                 'categories' => 'categories',
-                'families' => 'families',
+                'family' => 'family',
                 default => null,
             };
 
