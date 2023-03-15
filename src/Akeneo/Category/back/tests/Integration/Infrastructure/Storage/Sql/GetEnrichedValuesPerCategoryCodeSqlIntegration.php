@@ -2,10 +2,10 @@
 
 namespace Akeneo\Test\Category\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\GetEnrichedCategoryValuesOrderedByCategoryCode;
+use Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 
-class GetEnrichedCategoryValuesOrderedByCategoryCodeSqlIntegration extends CategoryTestCase
+class GetEnrichedValuesPerCategoryCodeSqlIntegration extends CategoryTestCase
 {
     protected function setUp(): void
     {
@@ -41,10 +41,14 @@ class GetEnrichedCategoryValuesOrderedByCategoryCodeSqlIntegration extends Categ
 
     public function testItGetAllCategoryWithEnrichedValuesSortedByCategoryCode(): void
     {
-        $valuesByCategoryCode = $this->get(GetEnrichedCategoryValuesOrderedByCategoryCode::class)->byLimitAndOffset(100,0);
+        $fetchedCategories = [];
 
-        $this->assertTrue(in_array('socks', array_keys($valuesByCategoryCode)));
-        $this->assertTrue(in_array('shoes', array_keys($valuesByCategoryCode)));
-        $this->assertFalse(in_array('pants', array_keys($valuesByCategoryCode)));
+        foreach ($this->get(GetEnrichedValuesPerCategoryCode::class)->byBatchesOf(1) as $valuesByCategoryCode){
+            $fetchedCategories[] = $valuesByCategoryCode;
+        }
+
+        $this->assertCount(2, $fetchedCategories);
+        $this->assertArrayHasKey('socks', $fetchedCategories[0]);
+        $this->assertArrayHasKey('shoes', $fetchedCategories[1]);
     }
 }
