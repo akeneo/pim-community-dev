@@ -38,7 +38,7 @@
 - PIM-10874: fix labels api type consistency
 - PIM-10877: Fix sequential edit not working if grid is sorted by quality score
 - PIM-10876: Does not save empty ('') labels and don't show null labels on API REST
-
+# deploy tests
 ## Improvements
 
 - PIM-10782: Optimize get completeness SQL query
