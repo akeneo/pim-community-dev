@@ -126,6 +126,7 @@ akeneo_catalogs:
     source:
       title: Quelle auswählen
       parameters:
+        placeholder: Attribut auswählen
         title: Quellparameter
         channel:
           label: Ausgabekanal
@@ -133,10 +134,19 @@ akeneo_catalogs:
         locale:
           label: Gebietsschema
           placeholder: Gebietsschema auswählen
+        label_locale:
+          label: Wertübersetzung
+          placeholder: Übersetzung auswählen
+          helper: Wählen Sie die Sprache, in der der Wert gesendet werden soll.
+        currency:
+          label: Währung
+          placeholder: Währung auswählen
+          helper: Wählen Sie die Währung aus, in der der Wert gesendet werden soll.
+        no_parameters_message: Keine Parameter für diese Quelle.
       select_source:
         label: PIM Quelle
         search: Suchkriterium
-        no_results: keine Treffer gefunden
+        no_results: Keine Treffer gefunden
         section_system: System
         section_attributes: Attribute
       placeholder:
@@ -148,3 +158,13 @@ akeneo_catalogs:
         illustration_title: Die UUID ist ein technischer Produkt-Identifikator.
         subtitle: Alle Apps müssen es als Ziel erfordern. Sie haben für dieses Ziel nichts zu konfigurieren, da wir es automatisch mit der Akeneo Produkt UUID abbilden.
         link: Mehr Informationen über die UUID.
+      requirements:
+        title: App Voraussetzungen
+        help: Hilfe
+        constraints:
+          minLength: '{0,1} Dieses Ziel muss mindestens {{ value }} Zeichen haben.|[2,Inf[ Dieses Ziel muss mindestens {{ value }} Zeichen lang sein.'
+          maxLength: '{0,1} Dieses Ziel darf {{ value }} Zeichen nicht überschreiten.|[2,Inf[ Dieses Ziel darf {{ value }} Zeichen nicht überschreiten.'
+          pattern: '[0,Inf[ Muster: Dieses Ziel muss mit dem regulären Ausdruck übereinstimmen: "{{ value }}".'
+          minimum: '[0,Inf[ Dieses Ziel muss größer oder gleich {{ value }} sein.'
+          maximum: '[0,Inf[ Dieses Ziel muss kleiner oder gleich {{ value }} sein.'
+          enum: '[0,Inf[ Enum: Dieses Ziel akzeptiert nur folgende Werte: {{ value }}.'

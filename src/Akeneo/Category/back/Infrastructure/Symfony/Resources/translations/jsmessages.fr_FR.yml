@@ -1,3 +1,5 @@
+pim_title:
+  pim_category_template_edit: Modifier un template de catégorie
 akeneo.category:
   tree_list:
     column:
@@ -12,6 +14,8 @@ akeneo.category:
     create: Activer le template
     edit: Afficher le template
     notification_success: "Le template a été activé avec succès.\n"
+    notification_error: Le template n’a pas pu être activé
+    not_found: Il n'y a pas de template actif pour cette catégorie.
     attribute:
       description_title: Paramètres de la description
       type:
@@ -19,6 +23,16 @@ akeneo.category:
         textarea: Zone de texte
         richtext: Éditeur de texte enrichi
         image: Image
+    deactivate:
+      deactivate_template: Désactiver le template
+      confirmation_modal:
+        title: Désactiver le template de catégorie
+        message: Êtes-vous sûr de vouloir désactiver le template de catégorie nommé {{ template }}?
+        helper: La désactivation de ce template supprimera définitivement les attributs et valeurs des catégories associées.
+        deactivate: Désactiver
+      notification_success:
+        title: 'Template {{ template }} désactivé'
+        message: '{{ template }} a été désactivé. Le contenu des catégories associées a été supprimé.'
   template_list:
     columns:
       header: Libellé
@@ -34,3 +48,4 @@ akeneo.category:
       deactivate_template: La désactivation de l'enrichissement et le modèle personnalisé seront bientôt disponibles
     survey_link_label: Dites-nous ce que vous pensez
     learn_more_link_label: En savoir plus sur les Catégories Enrichies
+  other_actions: Autres actions

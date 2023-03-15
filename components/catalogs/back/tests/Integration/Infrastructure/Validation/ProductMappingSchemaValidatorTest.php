@@ -79,11 +79,22 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
         $files = \scandir($directory);
         $files = \array_filter($files, fn ($file): bool => !\str_starts_with($file, '.'));
 
-        return \array_combine(
-            $files,
-            \array_map(fn ($file): array => [
-                'raw' => \file_get_contents($directory . '/' . $file),
-            ], $files),
-        );
+        $allFiles = \array_reduce($files, function (array $carry, string $file) use ($directory): array {
+            $path = $directory . '/' . $file;
+
+            if (\is_dir($directory . '/' . $file)) {
+                $carry[] = $this->readFilesFromDirectory($path);
+            } else {
+                $carry[] = [
+                    $file => [
+                        'raw' => \file_get_contents($directory . '/' . $file),
+                    ],
+                ];
+            }
+
+            return $carry;
+        }, []);
+
+        return \array_merge(...$allFiles);
     }
 }

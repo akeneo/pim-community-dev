@@ -95,7 +95,7 @@ jobs:
                   command: |
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       git ls-remote --exit-code --heads git@github.com:akeneo/pim-onboarder.git ${CIRCLE_BRANCH} && \
-                      sed -i "s#akeneo/pim-onboarder\": \"^8.0.0#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json || \
+                      sed -i "s#akeneo/pim-onboarder\": \"dev-master#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json || \
                       echo "No pim-onboarder branch $CIRCLE_BRANCH found. I don't touch the dependencies."
             - run:
                   name: Require proper dev CE branch

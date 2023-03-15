@@ -38,9 +38,11 @@ use Akeneo\Category\Domain\ValueObject\PermissionCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Exception;
 use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 class CategoryTestCase extends TestCase
 {
@@ -401,7 +403,7 @@ class CategoryTestCase extends TestCase
         ]);
     }
 
-    protected function updateCategoryWithValues(string $code): void
+    protected function updateCategoryWithValues(string $code, string $channel = 'ecommerce'): void
     {
         $query = <<<SQL
 UPDATE pim_catalog_category SET value_collection = :value_collection WHERE code = :code;
@@ -413,19 +415,33 @@ SQL;
                     'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
                     'photo'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c',
                 ],
-                'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.AbstractValue::SEPARATOR.'ecommerce'.AbstractValue::SEPARATOR.'en_US' => [
+                'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.AbstractValue::SEPARATOR.$channel.AbstractValue::SEPARATOR.'en_US' => [
                     'data' => 'All the shoes you need!',
                     'type' => 'text',
-                    'channel' => 'ecommerce',
+                    'channel' => $channel,
                     'locale' => 'en_US',
                     'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
                 ],
-                'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.AbstractValue::SEPARATOR.'ecommerce'.AbstractValue::SEPARATOR.'fr_FR' => [
+                'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.AbstractValue::SEPARATOR.$channel.AbstractValue::SEPARATOR.'fr_FR' => [
                     'data' => 'Les chaussures dont vous avez besoin !',
+                    'type' => 'text',
+                    'channel' => $channel,
+                    'locale' => 'fr_FR',
+                    'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+                ],
+                'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.AbstractValue::SEPARATOR.'ecommerce'.AbstractValue::SEPARATOR.'de_DE' => [
+                    'data' => 'Alle Schuhe, die Sie brauchen!',
+                    'type' => 'text',
+                    'channel' => 'ecommerce',
+                    'locale' => 'de_DE',
+                    'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+                ],
+                'description'.AbstractValue::SEPARATOR.'57665726-8a6e-4550-9bcf-06f81c0d1e24'.AbstractValue::SEPARATOR.'ecommerce'.AbstractValue::SEPARATOR.'fr_FR' => [
+                    'data' => 'La description des chaussures dont vous avez besoin !',
                     'type' => 'text',
                     'channel' => 'ecommerce',
                     'locale' => 'fr_FR',
-                    'attribute_code' => 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
+                    'attribute_code' => 'description'.AbstractValue::SEPARATOR.'57665726-8a6e-4550-9bcf-06f81c0d1e24',
                 ],
                 'photo'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c' => [
                     'data' => [
@@ -472,6 +488,45 @@ SQL;
         $this->get('database_connection')->executeQuery($query, [
             'uuid' => Uuid::fromString($uuid)->getBytes(),
         ]);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    protected function createChannel(string $code, array $data = []): ChannelInterface
+    {
+        $defaultData = [
+            'code' => $code,
+            'locales' => ['en_US'],
+            'currencies' => ['USD'],
+            'category_tree' => 'master',
+        ];
+        $data = array_merge($defaultData, $data);
+
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($code);
+        if (null === $channel) {
+            $channel = $this->get('pim_catalog.factory.channel')->create();
+        }
+
+        $this->get('pim_catalog.updater.channel')->update($channel, $data);
+        $errors = $this->get('validator')->validate($channel);
+        Assert::count($errors, 0, $errors);
+
+        $this->saveChannels([$channel]);
+
+        return $channel;
+    }
+
+    /**
+     * @param array<string> $channels
+     */
+    protected function saveChannels(array $channels): void
+    {
+        $this->get('pim_catalog.saver.channel')->saveAll($channels);
+
+        // Kill background process to avoid a race condition during loading fixtures for the next integration test.
+        // @see DAPI-1477
+        exec('pkill -f "remove_completeness_for_channel_and_locale"');
     }
 
     protected function getConfiguration()

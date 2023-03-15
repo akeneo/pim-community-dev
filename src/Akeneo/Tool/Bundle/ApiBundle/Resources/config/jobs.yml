@@ -1,0 +1,39 @@
+services:
+    Akeneo\Tool\Bundle\ApiBundle\Job\DeleteExpiredTokens:
+        arguments:
+            - '@Akeneo\Tool\Bundle\ApiBundle\Handler\DeleteExpiredTokensHandler'
+
+    pim_api.step.delete_expired_tokens:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'delete_expired_tokens'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Tool\Bundle\ApiBundle\Job\DeleteExpiredTokens'
+        public: false
+
+    pim_api.job.delete_expired_tokens:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'delete_expired_tokens'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@Akeneo\Tool\Component\Connector\Step\CheckJobUniqueStep'
+                - '@pim_api.step.delete_expired_tokens'
+            - false
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'internal'
+                type: 'scheduled_job'
+
+    pim_api.job.job_parameters.default_values_provider.delete_expired_tokens:
+        class: 'Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintAndDefaultValuesProvider'
+        arguments:
+            - 'delete_expired_tokens'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

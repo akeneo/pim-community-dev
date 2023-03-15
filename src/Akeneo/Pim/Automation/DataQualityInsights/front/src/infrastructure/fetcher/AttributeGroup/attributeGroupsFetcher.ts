@@ -1,4 +1,4 @@
-import {AttributeGroupCollection} from '@akeneo-pim-community/settings-ui/src/models';
+import {AttributeGroupCollection} from '../../../domain';
 
 const FetcherRegistry = require('pim/fetcher-registry');
 
