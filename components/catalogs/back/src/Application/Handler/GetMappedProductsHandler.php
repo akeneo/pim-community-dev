@@ -99,7 +99,10 @@ final class GetMappedProductsHandler
      */
     private function warmupProductCategoryCache(array $productMapping, array $productUuids): void
     {
-        if (!\method_exists($this->getProductCategoriesLabelsQuery, 'warmup')) {
+        if (
+            !\method_exists($this->getProductCategoriesLabelsQuery, 'warmup') ||
+            0 === \count($productUuids)
+        ) {
             return;
         }
 
@@ -113,6 +116,10 @@ final class GetMappedProductsHandler
             ) {
                 $categoryLocales[] = $targetSourceAssociation['parameters']['label_locale'];
             }
+        }
+
+        if (0 === \count($categoryLocales)) {
+            return;
         }
 
         $this->getProductCategoriesLabelsQuery->warmup(
