@@ -9,11 +9,9 @@ const AttributeGroupsApp: FC = () => {
   return (
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
-        <div>
-          <AttributeGroupsIndexProvider>
-            <AttributeGroupsIndex />
-          </AttributeGroupsIndexProvider>
-        </div>
+        <AttributeGroupsIndexProvider>
+          <AttributeGroupsIndex />
+        </AttributeGroupsIndexProvider>
       </ThemeProvider>
     </DependenciesProvider>
   );

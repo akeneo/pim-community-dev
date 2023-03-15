@@ -205,7 +205,7 @@ class Category
             'template_uuid' => $this->getTemplateUuid()?->getValue(),
             'properties' => [
                 'code' => (string) $this->getCode(),
-                'labels' => empty($this->labels->getTranslations()) ? (object) [] : $this->labels->normalize(),
+                'labels' => $this->labels->normalize(),
             ],
             'attributes' => $this->getAttributes()?->normalize(),
             'permissions' => $this->getPermissions()?->normalize(),

@@ -145,6 +145,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '@akeneo.pim.structure.query.find_attribute_codes_for_attribute_groups'
+            - '@translator'
 
     pim_enrich.controller.rest.family:
         public: true
@@ -231,6 +232,20 @@ services:
         arguments:
             - '@pim_reference_data.registry'
             - '@pim_internal_api_serializer'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\GetAttributeGroupsController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Pim\Structure\Bundle\Application\GetAttributesGroup\GetAttributeGroupsHandler'
+
+    Akeneo\Pim\Structure\Bundle\Infrastructure\Controller\MassDeleteAttributeGroupsController:
+        public: true
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@oro_security.security_facade'
 
     Akeneo\Pim\Structure\Bundle\Controller\InternalApi\MassDeleteAttributeController:
         arguments:

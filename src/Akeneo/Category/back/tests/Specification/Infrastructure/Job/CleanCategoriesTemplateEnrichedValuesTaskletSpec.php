@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Category\Infrastructure\Job;
 
 use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
-use Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet;
 use Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateEnrichedValuesTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -18,14 +17,7 @@ use PhpSpec\ObjectBehavior;
  */
 class CleanCategoriesTemplateEnrichedValuesTaskletSpec extends ObjectBehavior
 {
-    function let(
-    )
-    {
-        $this->beConstructedWith(
-        );
-    }
-
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldImplement(TaskletInterface::class);
         $this->shouldHaveType(CleanCategoriesTemplateEnrichedValuesTasklet::class);
@@ -34,7 +26,7 @@ class CleanCategoriesTemplateEnrichedValuesTaskletSpec extends ObjectBehavior
     function it_calls_cleaning_service_with_deleted_channel_code(
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-    ) {
+    ): void {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
 
         $jobParameters->get('template_uuid')->willReturn('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
