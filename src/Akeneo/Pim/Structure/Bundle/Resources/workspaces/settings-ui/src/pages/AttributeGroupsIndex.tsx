@@ -87,7 +87,11 @@ const AttributeGroupsIndex: FC = () => {
           inputRef={inputRef}
         >
           <Search.ResultCount>
-            {translate('pim_common.result_count', {itemsCount: filteredAttributeGroups.length}, filteredAttributeGroups.length)}
+            {translate(
+              'pim_common.result_count',
+              {itemsCount: filteredAttributeGroups.length},
+              filteredAttributeGroups.length
+            )}
           </Search.ResultCount>
         </Search>
         <AttributeGroupList
@@ -103,7 +107,10 @@ const AttributeGroupsIndex: FC = () => {
           <Toolbar.SelectionContainer>
             <Checkbox checked={selectionState} onChange={value => onSelectAllChange(value)} />
             <Dropdown>
-              <ArrowDownIcon title={translate('pim_enrich.entity.attribute_group.dropdown.label')} onClick={openDropdown} />
+              <ArrowDownIcon
+                title={translate('pim_enrich.entity.attribute_group.dropdown.label')}
+                onClick={openDropdown}
+              />
               {isDropdownOpen && (
                 <Dropdown.Overlay onClose={closeDropdown}>
                   <Dropdown.Header>

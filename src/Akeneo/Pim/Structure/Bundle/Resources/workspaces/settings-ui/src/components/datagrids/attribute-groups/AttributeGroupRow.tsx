@@ -7,7 +7,7 @@ import {
   getLabel,
   useRoute,
   useRouter,
-  useSecurity
+  useSecurity,
 } from '@akeneo-pim-community/shared';
 import {AttributeGroup} from '../../../models';
 

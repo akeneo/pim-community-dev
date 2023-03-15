@@ -3,7 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {AttributeGroup} from '@akeneo-pim-community/settings-ui/src/models';
 import {AttributeGroupsIndex} from '@akeneo-pim-community/settings-ui';
 import {fireEvent, screen} from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
   PimView: () => <></>,
@@ -27,7 +27,7 @@ const mockedAttributeGroups: AttributeGroup[] = [
       en_US: 'Marketing',
     },
     is_dqi_activated: true,
-  }
+  },
 ];
 
 const reorderAttributeGroups = jest.fn();
@@ -49,7 +49,7 @@ test('it can reorder attribute groups with drag and drop', () => {
   let dataTransferred = '';
   const dataTransfer = {
     getData: (_format: string) => dataTransferred,
-    setData: (_format: string, data: string) => dataTransferred = data,
+    setData: (_format: string, data: string) => (dataTransferred = data),
   };
 
   fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[0]);

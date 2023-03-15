@@ -20,7 +20,7 @@ test('it initializes the state for AttributeGroups datagrid', async () => {
   expect(reorderAttributeGroups).toBeDefined();
   expect(isPending).toBeDefined();
   expect(saveAttributeGroupsOrder).not.toBeCalled();
-  });
+});
 
 test('it loads the attribute groups list without the DQI feature', async () => {
   const groupA = anAttributeGroup('groupA', 1234, {}, 3);
