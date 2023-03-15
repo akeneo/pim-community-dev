@@ -41,6 +41,13 @@ class TargetTypeConverterTest extends TestCase
     public function validConversionProvider(): array
     {
         return [
+            'array<string>' => [
+                'array<string>',
+                '',
+                [
+                    'pim_catalog_multiselect',
+                ],
+            ],
             'boolean' => [
                 'boolean',
                 '',
@@ -62,11 +69,11 @@ class TargetTypeConverterTest extends TestCase
                 [
                     'categories',
                     'pim_catalog_identifier',
+                    'pim_catalog_multiselect',
                     'pim_catalog_number',
                     'pim_catalog_simpleselect',
                     'pim_catalog_text',
                     'pim_catalog_textarea',
-                    'pim_catalog_multiselect',
                 ],
             ],
             'string+uri' => [
@@ -90,5 +97,24 @@ class TargetTypeConverterTest extends TestCase
     {
         $this->expectException(NoCompatibleAttributeTypeFoundException::class);
         $this->targetTypeConverter->toAttributeTypes('unexpected_type');
+    }
+
+    public function testItDoesNotFlattensNonArrayTargetType(): void
+    {
+        $targetType = $this->targetTypeConverter->flattenTargetType(['type' => 'string']);
+
+        $this->assertEquals('string', $targetType);
+    }
+
+    public function testItFlattensArrayTargetType(): void
+    {
+        $targetType = $this->targetTypeConverter->flattenTargetType([
+            'type' => 'array',
+            'items' => [
+                'type' => 'string',
+            ],
+        ]);
+
+        $this->assertEquals('array<string>', $targetType);
     }
 }

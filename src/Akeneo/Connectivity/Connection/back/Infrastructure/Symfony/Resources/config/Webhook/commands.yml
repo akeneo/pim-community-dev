@@ -6,6 +6,7 @@ services:
             - '@logger'
         tags:
             - {name: 'console.command'}
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\Command\SendBusinessEventToWebhooks:
         arguments:
@@ -15,4 +16,4 @@ services:
             - '@logger'
         tags:
             - { name: console.command }
-
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

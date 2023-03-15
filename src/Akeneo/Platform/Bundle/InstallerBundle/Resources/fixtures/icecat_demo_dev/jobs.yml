@@ -987,3 +987,8 @@ jobs:
         alias: clean_category_template_and_enriched_values
         label: Clean Category Template and Enriched Values
         type: clean_category_template_and_enriched_values
+    delete_expired_tokens:
+        connector: internal
+        alias:     delete_expired_tokens
+        label:     Delete expired tokens
+        type:      scheduled_job

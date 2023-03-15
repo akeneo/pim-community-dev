@@ -64,6 +64,8 @@ class ApiContext implements Context
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
     ) {
         $this->container = $kernel->getContainer()->get('test.service_container');
+
+        $this->container->get('feature_flags')->enable('catalogs');
     }
 
     protected function getFileInfoKey(string $path): string
@@ -753,7 +755,7 @@ class ApiContext implements Context
                 <<<'JSON_WRAP'
                 {
                   "$id": "https://example.com/product",
-                  "$schema": "https://api.akeneo.com/mapping/product/0.0.10/schema",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
                   "$comment": "My first schema !",
                   "title": "Product Mapping",
                   "description": "JSON Schema describing the structure of products expected by our application",
@@ -799,6 +801,12 @@ class ApiContext implements Context
                     },
                     "type": {
                       "type": "string"
+                    },
+                    "available_colors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
                     },
                     "groups": {
                       "type": "string"
@@ -897,6 +905,14 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'available_colors' => [
+                        'source' => 'colors',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'label_locale' => 'en_US',
+                        ],
+                    ],
                     'groups' => [
                         'source' => 'categories',
                         'scope' => null,
@@ -949,6 +965,10 @@ class ApiContext implements Context
                     'canada',
                     'brazil',
                 ],
+                'colors' => [
+                    'blue',
+                    'green',
+                ],
                 'groups' => ['clothing', 'cotton_clothing'],
             ],
             [
@@ -967,6 +987,9 @@ class ApiContext implements Context
                 'sale_countries' => [
                     'canada',
                     'italy',
+                ],
+                'colors' => [
+                    'red',
                 ],
                 'groups' => ['clothing', 'cotton_clothing'],
             ],
@@ -987,6 +1010,9 @@ class ApiContext implements Context
                     'france',
                     'brazil',
                 ],
+                'colors' => [
+                    'purple',
+                ],
                 'groups' => ['clothing'],
             ],
             [
@@ -1005,6 +1031,10 @@ class ApiContext implements Context
                 'sale_countries' => [
                     'france',
                     'brazil',
+                ],
+                'colors' => [
+                    'purple',
+                    'red',
                 ],
                 'groups' => [],
             ],
@@ -1073,6 +1103,13 @@ class ApiContext implements Context
             'localizable' => false,
             'options' => ['France', 'Canada', 'Italy', 'Brazil'],
         ]);
+        $this->createAttribute([
+            'code' => 'colors',
+            'type' => 'pim_catalog_multiselect',
+            'scopable' => false,
+            'localizable' => false,
+            'options' => ['Red', 'Green', 'Blue', 'Purple'],
+        ]);
 
         $this->createFamily('t-shirt', [
             'sku',
@@ -1085,6 +1122,7 @@ class ApiContext implements Context
             'released_at',
             'is_released',
             'sale_countries',
+            'colors',
         ]);
 
         $bus = $this->container->get('pim_enrich.product.message_bus');
@@ -1111,6 +1149,7 @@ class ApiContext implements Context
                         $product['price'],
                         \array_keys($product['price']),
                     )),
+                    new SetMultiSelectValue('colors', null, null, $product['colors']),
                     new SetCategories($product['groups']),
                 ],
             );
@@ -1162,6 +1201,7 @@ class ApiContext implements Context
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
                 'countries' => 'Brazil, Canada',
                 'type' => 't-shirt',
+                'available_colors' => ['Blue', 'Green'],
                 'groups' => 'Clothing, Cotton clothing',
             ],
             [
@@ -1178,6 +1218,7 @@ class ApiContext implements Context
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
                 'countries' => 'Brazil, France',
                 'type' => 't-shirt',
+                'available_colors' => ['Purple'],
                 'groups' => 'Clothing',
             ],
         ];
@@ -1223,6 +1264,7 @@ class ApiContext implements Context
             'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
             'countries' => 'Brazil, Canada',
             'type' => 't-shirt',
+            'available_colors' => ['Blue', 'Green'],
             'groups' => 'Clothing, Cotton clothing',
         ];
 

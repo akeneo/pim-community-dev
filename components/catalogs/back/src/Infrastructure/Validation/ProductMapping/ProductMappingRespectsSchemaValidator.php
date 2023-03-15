@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  *
  * @phpstan-import-type ProductMapping from Catalog
  * @phpstan-import-type ProductMappingSchema from GetProductMappingSchemaQueryInterface
+ * @phpstan-import-type ProductMappingSchemaTarget from GetProductMappingSchemaQueryInterface
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
@@ -103,7 +104,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
 
             try {
                 $attributeTypes = $this->targetTypeConverter->toAttributeTypes(
-                    $schema['properties'][$targetCode]['type'],
+                    $this->targetTypeConverter->flattenTargetType($schema['properties'][$targetCode]),
                     $schema['properties'][$targetCode]['format'] ?? '',
                 );
             } catch (NoCompatibleAttributeTypeFoundException $exception) {

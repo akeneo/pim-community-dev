@@ -8,6 +8,7 @@ services:
             - '@pim_installer.install_status_manager'
         tags:
             - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\AssetsCommand:
         arguments:
@@ -17,10 +18,12 @@ services:
             - '%kernel.project_dir%/src'
         tags:
             - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\CheckRequirementsCommand:
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\DatabaseCommand:
         class: '%installer_bundle.command.database_command.class%'
@@ -34,6 +37,7 @@ services:
             - '@logger'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\DumpRequirePathsCommand:
         arguments:
@@ -41,6 +45,7 @@ services:
             - '%kernel.bundles%'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\MigrateZddCommand:
         arguments:
@@ -49,3 +54,4 @@ services:
             - !tagged_iterator { tag: 'akeneo.pim.zdd_migration' }
         tags:
             - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

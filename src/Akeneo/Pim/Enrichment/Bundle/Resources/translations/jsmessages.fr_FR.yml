@@ -496,6 +496,7 @@ pim_datagrid:
       label: Mis à jour le
     label_or_identifier:
       label: Libellé ou identifiant
+      label_with_uuid: Libellé, identifiant ou UUID
     parent:
       label: Parent
     identifier:
