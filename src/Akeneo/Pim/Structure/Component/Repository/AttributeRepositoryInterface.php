@@ -118,6 +118,15 @@ interface AttributeRepositoryInterface extends
     public function getAttributeCodesByGroup(AttributeGroupInterface $group);
 
     /**
+     * Get attributes by groups code
+     *
+     * @param string[] $groupsCode
+     *
+     * @return AttributeInterface[]
+     */
+    public function getAttributesByGroups(array $groupsCode);
+
+    /**
      * Get attributes by family
      *
      * @param FamilyInterface $family

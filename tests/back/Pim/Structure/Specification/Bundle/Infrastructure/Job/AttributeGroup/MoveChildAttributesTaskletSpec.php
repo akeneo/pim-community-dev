@@ -13,7 +13,7 @@ use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\MoveChildAttributesTasklet;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
-use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -22,16 +22,14 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 final class MoveChildAttributesTaskletSpec extends ObjectBehavior
 {
     public function let(
-        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ObjectUpdaterInterface $attributeUpdater,
         BulkSaverInterface $attributeSaver,
         EntityManagerClearerInterface $cacheClearer,
@@ -44,7 +42,7 @@ final class MoveChildAttributesTaskletSpec extends ObjectBehavior
         $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->beConstructedWith(
-            $attributeGroupRepository,
+            $attributeRepository,
             $attributeUpdater,
             $attributeSaver,
             $cacheClearer,
@@ -69,7 +67,7 @@ final class MoveChildAttributesTaskletSpec extends ObjectBehavior
     }
 
     public function it_move_attributes(
-        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ObjectUpdaterInterface $attributeUpdater,
         AttributeSaver $attributeSaver,
         StepExecution $stepExecution,
@@ -81,21 +79,18 @@ final class MoveChildAttributesTaskletSpec extends ObjectBehavior
 
         $replacementAttributeGroupCode = 'attribute_group_3';
 
-        $attributeGroup1 = new AttributeGroup();
-        $attributeGroup1->addAttribute(new Attribute());
-        $attributeGroup2 = new AttributeGroup();
-        $attributeGroup2->addAttribute(new Attribute());
-        $attributeGroup2->addAttribute(new Attribute());
-        $attributeGroup3 = new AttributeGroup();
-
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($filters);
         $jobParameters->get('replacement_attribute_group_code')->willReturn($replacementAttributeGroupCode);
 
-        $attributeGroupRepository->findBy(['code' => ['attribute_group_1', 'attribute_group_2']])
-            ->willReturn([$attributeGroup1, $attributeGroup2]);
+        $attributeRepository->getAttributesByGroups(['attribute_group_1', 'attribute_group_2'])
+            ->willReturn([new Attribute(), new Attribute(), new Attribute()]);
 
-        $stepExecution->incrementSummaryInfo('attributes_to_move', 3)->shouldBeCalled();
+        $stepExecution->setTotalItems(3)->shouldBeCalled();
+        $stepExecution->addSummaryInfo('moved_attributes', 0)->shouldBeCalled();
+
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('moved_attributes')->shouldBeCalledTimes(3);
 
         $attributeUpdater->update(Argument::type(Attribute::class), ['group' => 'attribute_group_3'])->shouldBeCalledTimes(3);
         $attributeSaver->saveAll(Argument::type('array'))->shouldBeCalled();

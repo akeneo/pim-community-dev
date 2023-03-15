@@ -55,8 +55,8 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
-    akeneo_pim_structure.job.job_parameters.constraint_collection_provider.move_attribute_mass_edit:
-        class: 'Akeneo\Pim\Structure\Bundle\Infrastructure\Job\JobParameters\ConstraintCollectionProvider\MoveAttributeMassEdit'
+    akeneo_pim_structure.job.job_parameters.constraint_collection_provider.delete_attribute_group_mass_edit:
+        class: 'Akeneo\Pim\Structure\Bundle\Infrastructure\Job\JobParameters\ConstraintCollectionProvider\DeleteAttributeGroupsMassEdit'
         arguments:
             - ['delete_attribute_groups', 'delete_attributes']
         tags:

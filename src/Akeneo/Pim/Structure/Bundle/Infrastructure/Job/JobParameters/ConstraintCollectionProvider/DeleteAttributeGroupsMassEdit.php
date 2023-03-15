@@ -13,10 +13,11 @@ use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 
-final class MoveAttributeMassEdit implements ConstraintCollectionProviderInterface
+final class DeleteAttributeGroupsMassEdit implements ConstraintCollectionProviderInterface
 {
     /**
      * @param array<string> $supportedJobNames
@@ -31,7 +32,7 @@ final class MoveAttributeMassEdit implements ConstraintCollectionProviderInterfa
         return new Collection(
             [
                 'fields' => [
-                    'replacement_attribute_group_code' => new NotNull(),
+                    'replacement_attribute_group_code' => new NotBlank(['allowNull' => true]),
                     'filters' => new NotNull(),
                     'actions' => new NotNull(),
                     'users_to_notify' => [
@@ -39,7 +40,7 @@ final class MoveAttributeMassEdit implements ConstraintCollectionProviderInterfa
                         new All(new Type('string')),
                     ],
                     'is_user_authenticated' => new Type('bool'),
-                ]
+                ],
             ]
         );
     }
