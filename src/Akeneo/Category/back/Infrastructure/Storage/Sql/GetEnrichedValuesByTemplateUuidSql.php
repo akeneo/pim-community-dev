@@ -46,15 +46,15 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
             category_template_uuid = :template_uuid
         SQL;
 
-        $result = $this->connection->executeQuery(
+        $rows = $this->connection->executeQuery(
             $query,
             ['template_uuid' => $templateUuid->toBytes()],
             ['template_uuid' => \PDO::PARAM_STR],
-        );
+        )->fetchAllAssociative();
 
         $valuesByCode = [];
 
-        while ($row = $result->fetchAssociative()) {
+        foreach ($rows as $row) {
             $code = $row['code'];
             $valueCollection = ValueCollection::fromDatabase(
                 json_decode(
@@ -80,6 +80,6 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
             }
         }
 
-        return empty($valuesByCode) ? null : $valuesByCode;
+        return $valuesByCode;
     }
 }

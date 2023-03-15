@@ -24,7 +24,7 @@ class CleanCategoryEnrichedValuesByTemplateUuidCommandHandler
     {
         $enrichedValuesToClean = ($this->getEnrichedValuesByTemplateUuid)(TemplateUuid::fromString($command->templateUuid));
 
-        if (!$enrichedValuesToClean === null) {
+        if (!empty($enrichedValuesToClean)) {
             $this->categoryDataCleaner->cleanByTemplateUuid($enrichedValuesToClean, $command->templateUuid);
         }
     }
