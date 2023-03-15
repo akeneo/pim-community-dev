@@ -156,7 +156,8 @@ const TemplatePage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
-          <AddAttributeButton
+          {featureFlags.isEnabled('category_template_customization') && (
+            <AddAttributeButton
               active
               ghost
               disabled={!!templateEdited && templateEdited.attributes.length >= 50}
@@ -164,7 +165,7 @@ const TemplatePage: FC = () => {
               onClick={openAddTemplateAttributeModal}
           >
             {translate('akeneo.category.template.add_attribute.add_button')}
-          </AddAttributeButton>
+          </AddAttributeButton>)}
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
@@ -182,8 +183,7 @@ const TemplatePage: FC = () => {
           />
         )}
         {
-          featureFlags.isEnabled('category_template_customization')
-          && isAddTemplateAttributeModalOpen && (
+          isAddTemplateAttributeModalOpen && (
           <AddTemplateAttributeModal
               template_id={templateId}
               onClose={closeAddTemplateAttributeModal}
