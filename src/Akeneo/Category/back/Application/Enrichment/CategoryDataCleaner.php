@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Enrichment;
 
 use Akeneo\Category\Application\Enrichment\Filter\ByChannelAndLocalesFilter;
-use Akeneo\Category\Application\Enrichment\Filter\ByTemplateAttributeUuidFilter;
+use Akeneo\Category\Application\Enrichment\Filter\ByTemplateAttributesUuidsFilter;
 use Akeneo\Category\Application\Query\GetTemplateAttributesByTemplateUuid;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
@@ -51,11 +51,29 @@ class CategoryDataCleaner
         }
     }
 
+    /**
+     * @param array<string, ValueCollection> $valuesByCode
+     */
     public function cleanByTemplateUuid(array $valuesByCode, string $templateUuid): void
     {
         $templateAttributes = $this->getTemplateAttributesByTemplateUuid->execute($templateUuid);
         $cleanedEnrichedValues = [];
         foreach ($valuesByCode as $categoryCode => $enrichedValues) {
+            $valuesToRemove = ByTemplateAttributesUuidsFilter::getEnrichedValuesToClean(
+                $enrichedValues,
+                $templateAttributes,
+            );
+            if (!empty($valuesToRemove)) {
+                foreach ($valuesToRemove as $value) {
+                    $enrichedValues->removeValue($value);
+                }
+
+                $cleanedEnrichedValues[$categoryCode] = $enrichedValues;
+            }
+
+            if (!empty($cleanedEnrichedValues)) {
+                $this->updateCategoryEnrichedValues->execute($cleanedEnrichedValues);
+            }
         }
     }
 }

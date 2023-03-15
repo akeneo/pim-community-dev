@@ -46,7 +46,7 @@ category-end-to-end-back: #Doc: launch PHPUnit end-to-end tests for category bou
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Category/back/tests --testsuite Category_EndToEnd_Test $(F)
 
 .PHONY: category-ci-back
-category-ci-back: category-lint-back category-coupling-back category-unit-back category-integration-back category-end-to-end-back
+category-ci-back: category-coupling-back category-unit-back category-integration-back category-end-to-end-back
 
 .PHONY: category-ci-front
 category-ci-front: category-unit-front

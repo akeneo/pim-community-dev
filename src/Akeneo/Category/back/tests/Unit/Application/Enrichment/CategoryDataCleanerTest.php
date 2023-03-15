@@ -19,17 +19,17 @@ use Akeneo\Category\Domain\ValueObject\ValueCollection;
  */
 class CategoryDataCleanerTest extends CategoryTestCase
 {
-    public function testItCallsExecuteWithRightArgument(): void
+    public function testItCallsExecuteWithRightArgumentForChannelOrLocalesCleaning(): void
     {
         $updateCategoryEnrichedValuesMock = $this->createMock(UpdateCategoryEnrichedValues::class);
         $updateCategoryEnrichedValuesMock
             ->expects(self::once())
             ->method('execute')
-            ->with($this->getExpectedArgument());
+            ->with($this->getExpectedArgumentForChannelOrLocalesCleaning());
         $getTemplateAttributesByTemplateUuidMock = $this->createMock(GetTemplateAttributesByTemplateUuid::class);
         $categoryDataCleaner = new CategoryDataCleaner(
             $updateCategoryEnrichedValuesMock,
-            $getTemplateAttributesByTemplateUuidMock
+            $getTemplateAttributesByTemplateUuidMock,
         );
         $categoryDataCleaner->cleanByChannelOrLocales(
             [
@@ -38,6 +38,33 @@ class CategoryDataCleanerTest extends CategoryTestCase
             ],
             'mobile',
             [],
+        );
+    }
+
+    public function testItCallsExecuteWithRightArgumentForTemplateUuidCleaning(): void
+    {
+        $templateUuid = '33abe873-dc17-4da5-aecd-f7a2ae5ef116';
+        $updateCategoryEnrichedValuesMock = $this->createMock(UpdateCategoryEnrichedValues::class);
+        $updateCategoryEnrichedValuesMock
+            ->expects(self::once())
+            ->method('execute')
+            ->with($this->getExpectedArgumentForTemplateUuidCleaning());
+        $getTemplateAttributesByTemplateUuidMock = $this->createMock(
+            GetTemplateAttributesByTemplateUuid::class
+        );
+        $getTemplateAttributesByTemplateUuidMock->method('execute')->with($templateUuid)->willReturn(
+            [
+                'be2a1d6e-0563-409a-8407-0be494c34b84' => 'seo_keywords',
+            ]
+        );
+        $categoryDataCleaner = new CategoryDataCleaner(
+            $updateCategoryEnrichedValuesMock,
+            $getTemplateAttributesByTemplateUuidMock,
+        );
+
+        $categoryDataCleaner->cleanByTemplateUuid(
+            ['category_3' => ValueCollection::fromDatabase($this->getValuesByCodeForCategory3()),],
+            $templateUuid
         );
     }
 
@@ -110,11 +137,47 @@ class CategoryDataCleanerTest extends CategoryTestCase
     }
 
     /**
+     * @return array<string, array{
+     *     data: string|ImageData|null,
+     *     type: string,
+     *     channel: string|null,
+     *     locale: string|null,
+     *     attribute_code: string,
+     * }>
+     *
+     * @throws \JsonException
+     */
+    private function getValuesByCodeForCategory3(): array
+    {
+        return json_decode('{
+            "attribute_codes": [
+                "url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911",
+                "seo_keywords|be2a1d6e-0563-409a-8407-0be494c34b84"
+            ],
+            "url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911": {
+                "data": "all_scope_all_locale_url_slug",
+                "type": "text",
+                "locale": null,
+                "channel": null,
+                "attribute_code": "url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911"
+            },
+            "seo_keywords|be2a1d6e-0563-409a-8407-0be494c34b84": {
+                "data": "all_scope_all_locale_seo_keywords",
+                "type": "text",
+                "locale": null,
+                "channel": null,
+                "attribute_code": "seo_keywords|be2a1d6e-0563-409a-8407-0be494c34b84"
+            }
+        }', true, 512, JSON_THROW_ON_ERROR);
+    }
+    
+
+    /**
      * @return array<string, ValueCollection>
      *
      * @throws \JsonException
      */
-    private function getExpectedArgument(): array
+    private function getExpectedArgumentForChannelOrLocalesCleaning(): array
     {
         return [
             'category_1' => ValueCollection::fromDatabase([
@@ -127,6 +190,29 @@ class CategoryDataCleanerTest extends CategoryTestCase
                     'locale' => 'fr_FR',
                     'channel' => 'ecommerce',
                     'attribute_code' => 'long_description|c91e6a4e-733b-4d77-aefc-129edbf03233',
+                ],
+            ]),
+        ];
+    }
+
+    /**
+     * @return array<string, ValueCollection>
+     *
+     * @throws \JsonException
+     */
+    private function getExpectedArgumentForTemplateUuidCleaning(): array
+    {
+        return [
+            'category_3' => ValueCollection::fromDatabase([
+                'attribute_codes' => [
+                    'url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911',
+                ],
+                'url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911' => [
+                    'data' => 'all_scope_all_locale_url_slug',
+                    'type' => 'text',
+                    'locale' => null,
+                    'channel' => null,
+                    'attribute_code' => 'url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911'
                 ],
             ]),
         ];
