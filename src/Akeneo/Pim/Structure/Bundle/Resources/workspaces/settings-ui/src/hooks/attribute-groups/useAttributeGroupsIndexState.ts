@@ -1,11 +1,9 @@
 import {useCallback, useContext, useState} from 'react';
-import {AttributeGroup, AttributeGroupCollection, toSortedAttributeGroupsArray} from '../../models';
+import {useRouter} from '@akeneo-pim-community/shared';
 import {useRedirectToAttributeGroup} from './useRedirectToAttributeGroup';
-import {fetchAllAttributeGroups, fetchAllAttributeGroupsDqiStatus} from '../../infrastructure/fetchers';
 import {saveAttributeGroupsOrder} from '../../infrastructure/savers';
-import {AttributeGroupsIndexContext, AttributeGroupsIndexState} from '../../components/providers';
-
-const FeatureFlags = require('pim/feature-flags');
+import {AttributeGroupsIndexContext, AttributeGroupsIndexState} from '../../components';
+import {AttributeGroup} from '../../models';
 
 const useAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   const context = useContext(AttributeGroupsIndexContext);
@@ -17,73 +15,64 @@ const useAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   return context;
 };
 
+const ATTRIBUTE_GROUP_INDEX_ROUTE = 'pim_structure_attributegroup_rest_index';
+
 const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
-  const [groups, setGroups] = useState<AttributeGroup[]>([]);
-  const [isPending, setIsPending] = useState(true);
+  const [attributeGroups, setAttributeGroups] = useState<AttributeGroup[]>([]);
+  const [isPending, setIsPending] = useState<boolean>(true);
+  const router = useRouter();
 
   const redirect = useRedirectToAttributeGroup();
 
   const refresh = useCallback(
     (list: AttributeGroup[]) => {
-      setGroups(list);
+      setAttributeGroups(list);
     },
-    [setGroups]
+    [setAttributeGroups]
   );
 
   const load = useCallback(async () => {
     setIsPending(true);
-    return fetchAllAttributeGroups().then(async (collection: AttributeGroupCollection) => {
-      if (FeatureFlags.isEnabled('data_quality_insights')) {
-        const groupDqiStatuses = await fetchAllAttributeGroupsDqiStatus();
-        Object.entries(groupDqiStatuses).forEach(([groupCode, status]) => {
-          for (const attributeGroupCode in collection) {
-            if (attributeGroupCode.toLowerCase() === groupCode.toLowerCase()) {
-              collection[attributeGroupCode].isDqiActivated = status as boolean;
-            }
-          }
-        });
-      }
-      setGroups(toSortedAttributeGroupsArray(collection));
-      setIsPending(false);
-    });
-  }, [refresh]);
 
-  const saveOrder = useCallback(async () => {
-    let order: {[code: string]: number} = {};
+    const route = router.generate(ATTRIBUTE_GROUP_INDEX_ROUTE);
+    const response = await fetch(route);
+    const attributeGroups = await response.json();
 
-    groups.forEach(attributeGroup => {
+    setAttributeGroups(attributeGroups);
+    setIsPending(false);
+  }, [router]);
+
+  const saveOrder = useCallback(async (reorderedGroups: AttributeGroup[]) => {
+    const order: {[code: string]: number} = {};
+
+    reorderedGroups.forEach(attributeGroup => {
       order[attributeGroup.code] = attributeGroup.sort_order;
     });
 
     await saveAttributeGroupsOrder(order);
-  }, [groups]);
+  }, []);
 
   const refreshOrder = useCallback(
-    (list: AttributeGroup[]) => {
+    async (list: AttributeGroup[]) => {
       const reorderedGroups = list.map((item, index) => {
         return {
           ...item,
           sort_order: index,
         };
       });
-
-      refresh(reorderedGroups);
+      setAttributeGroups(reorderedGroups);
+      await saveOrder(reorderedGroups);
     },
-    [refresh]
+    [saveOrder]
   );
 
-  const compare = (source: AttributeGroup, target: AttributeGroup) => {
-    return source.code.localeCompare(target.code);
-  };
-
   return {
-    groups,
+    attributeGroups,
     load,
     saveOrder,
     redirect,
     refresh,
     refreshOrder,
-    compare,
     isPending,
   };
 };
