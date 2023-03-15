@@ -10,5 +10,5 @@ namespace Akeneo\Pim\Enrichment\Category\API\Query;
  */
 interface GetHierarchicalInfoCategories
 {
-    public function isAChildOf(string $parentCategoryCodes, string $childrenCategoryCodes): bool;
+    public function isAChildOf(array $parentCategoryCodes, array $childrenCategoryCodes): bool;
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Category\Integration\Query;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren;
-use Akeneo\Pim\Enrichment\Category\Infrastructure\Query\SqlGetExistingCategories;
 use Akeneo\Pim\Enrichment\Category\Infrastructure\Query\SqlGetHierarchicalInfoCategories;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -16,42 +14,86 @@ use Akeneo\Test\Integration\TestCase;
  */
 final class GetHierarchicalInfoCategoriesIntegration extends TestCase
 {
+    /**
+     * @see https://en.wikipedia.org/wiki/Nested_set_model
+     *
+     * +-----------------------+------+-----+-----+-----+
+     * | code                  | root | lvl | lft | rgt |
+     * +-----------------------+------+-----+-----+-----+
+     * | master                |    0 |   0 |   1 |   2 |
+     * | root1                 |   50 |   0 |   1 |  12 |
+     * | ├─ root1-A            |   50 |   1 |   2 |   7 |
+     * | │  ├─ root1-A-a       |   50 |   1 |   8 |   9 |
+     * | │  ├─ root1-A-b       |   50 |   1 |  10 |  11 |
+     * | ├─ root1-B            |   50 |   2 |   3 |   4 |
+     * | ├─ root1-C            |   50 |   2 |   5 |   6 |
+     * | root2                 |  100 |   0 |   1 |   6 |
+     * | ├─ root2-A            |  100 |   1 |   2 |   3 |
+     * | ├─ root2-B            |  100 |   1 |   4 |   5 |
+     * +-----------------------+------+-----+-----+-----+
+     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->createCategory(['code' => 'first']);
-        $this->createCategory(['code' => 'first_child_A', 'parent' => 'first']);
+        $this->createCategory(['code' => 'root1']);
+        $this->createCategory(['code' => 'root1-A', 'parent' => 'root1']);
+        $this->createCategory(['code' => 'root1-B', 'parent' => 'root1']);
+        $this->createCategory(['code' => 'root1-C', 'parent' => 'root1']);
+        $this->createCategory(['code' => 'root1-A-a', 'parent' => 'root1-A']);
+        $this->createCategory(['code' => 'root1-A-b', 'parent' => 'root1-A']);
 
-        $this->createCategory(['code' => 'second']);
-        $this->createCategory(['code' => 'second_child_A', 'parent' => 'second']);
-        $this->createCategory(['code' => 'second_sub_child_A', 'parent' => 'second_child_A']);
+        $this->createCategory(['code' => 'root2']);
+        $this->createCategory(['code' => 'root2-A', 'parent' => 'root2']);
+        $this->createCategory(['code' => 'root2-B', 'parent' => 'root2']);
     }
 
     /** @test */
-    public function it_should_return_true_if_is_a_child()
+    public function it_should_return_true_with_single_items()
     {
-        $this->assertEquals(true, $this->getSqlGetHierarchicalInfoCategories()->isAChildOf('first', 'first_child_A'));
-        $this->assertEquals(true, $this->getSqlGetHierarchicalInfoCategories()->isAChildOf('second', 'second_child_A'));
-        $this->assertEquals(true, $this->getSqlGetHierarchicalInfoCategories()->isAChildOf('second', 'second_sub_child_A'));
-        $this->assertEquals(true, $this->getSqlGetHierarchicalInfoCategories()->isAChildOf('second_child_A', 'second_sub_child_A'));
+        $categoryHierarchy = $this->getSqlGetHierarchicalInfoCategories();
+        $this->assertTrue($categoryHierarchy->isAChildOf(['root1'], ['root1-A']));
+        $this->assertTrue($categoryHierarchy->isAChildOf(['root1'], ['root1-A-a']));
+        $this->assertTrue($categoryHierarchy->isAChildOf(['root1-A'], ['root1-A-a']));
+        $this->assertTrue($categoryHierarchy->isAChildOf(['root2'], ['root2-A']));
     }
 
     /** @test */
-    public function it_should_return_false_if_is_not_a_child()
+    public function it_should_return_false_with_single_items()
     {
-        $this->assertEquals(false, $this->getSqlGetHierarchicalInfoCategories()->isAChildOf('first', 'second_child_A'));
-        $this->assertEquals(false, $this->getSqlGetHierarchicalInfoCategories()->isAChildOf('first', 'second_sub_child_A'));
-        $this->assertEquals(false, $this->getSqlGetHierarchicalInfoCategories()->isAChildOf('second_child_A', 'first_child_A'));
+        $categoryHierarchy = $this->getSqlGetHierarchicalInfoCategories();
+        $this->assertFalse($categoryHierarchy->isAChildOf(['root1'], ['root2-A']));
+        $this->assertFalse($categoryHierarchy->isAChildOf(['root1'], ['root1']));
+        $this->assertFalse($categoryHierarchy->isAChildOf(['root1-B'], ['root2-A']));
+        $this->assertFalse($categoryHierarchy->isAChildOf(['root1'], []));
+        $this->assertFalse($categoryHierarchy->isAChildOf([], ['root2-A']));
+        $this->assertFalse($categoryHierarchy->isAChildOf(['unknown_parent'], ['root1-A-a']));
+        $this->assertFalse($categoryHierarchy->isAChildOf(['root1'], ['unknown_child']));
     }
 
+    /** @test */
+    public function it_should_return_true_if_any_item_is_true()
+    {
+        $categoryHierarchy = $this->getSqlGetHierarchicalInfoCategories();
+        $this->assertTrue($categoryHierarchy->isAChildOf(['root1', 'root1-A'], ['root1-A', 'root1-A-a']));
+        $this->assertTrue($categoryHierarchy->isAChildOf(['root2', 'root1'], ['root1-A-a']));
+        $this->assertTrue($categoryHierarchy->isAChildOf(['root1'], ['root2-A', 'root1-A-a']));
+    }
+
+    /** @test */
+    public function it_should_return_false_if_all_items_are_false()
+    {
+        $categoryHierarchy = $this->getSqlGetHierarchicalInfoCategories();
+        $this->assertFalse($categoryHierarchy->isAChildOf(['root1-B'], ['root1-A', 'root1-A-a', 'root2-A']));
+        $this->assertFalse($categoryHierarchy->isAChildOf(['root1-A', 'root2'], ['root1-B-a']));
+    }
 
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function getSqlGetHierarchicalInfoCategories(): SqlGetHierarchicalInfoCategories
+    private function getSqlGetHierarchicalInfoCategories(): SqlGetHierarchicalInfoCategories
     {
         return $this->get(SqlGetHierarchicalInfoCategories::class);
     }

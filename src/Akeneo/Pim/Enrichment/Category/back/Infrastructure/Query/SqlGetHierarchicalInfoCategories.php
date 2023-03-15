@@ -8,36 +8,78 @@ use Akeneo\Pim\Enrichment\Category\API\Query\GetHierarchicalInfoCategories;
 use Doctrine\DBAL\Connection;
 
 /**
+ * @see https://en.wikipedia.org/wiki/Nested_set_model
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class SqlGetHierarchicalInfoCategories implements GetHierarchicalInfoCategories
 {
-
     public function __construct(private readonly Connection $connection)
     {
     }
 
-    public function isAChildOf(string $parentCategoryCodes, string $childrenCategoryCodes): bool
+    /**
+     * @param string[] $parentCategoryCodes
+     * @param string[] $childrenCategoryCodes
+     */
+    public function isAChildOf(array $parentCategoryCodes, array $childrenCategoryCodes): bool
+    {
+        if (\count($parentCategoryCodes) === 0 || \count($childrenCategoryCodes) === 0) {
+            return false;
+        }
+
+        $categoryInfos = $this->getCategoryInfos(\array_merge($parentCategoryCodes, $childrenCategoryCodes));
+
+        $parentsCategoryInfos = \array_filter(
+            \array_map(static fn (string $code): ?array => $categoryInfos[$code] ?? null, $parentCategoryCodes)
+        );
+        $childrenCategoryInfos = \array_filter(
+            \array_map(static fn (string $code): ?array => $categoryInfos[$code] ?? null, $childrenCategoryCodes)
+        );
+
+        foreach ($parentsCategoryInfos as $parentCategoryInfo) {
+            foreach ($childrenCategoryInfos as $childrenCategoryInfo) {
+                if ($childrenCategoryInfo['root'] === $parentCategoryInfo['root'] &&
+                    $childrenCategoryInfo['lft'] > $parentCategoryInfo['lft'] &&
+                    $childrenCategoryInfo['rgt'] < $parentCategoryInfo['rgt']) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string[] $categoryCodes
+     * @return array{
+     *     code: string,
+     *     lft: int,
+     *     rgt: int,
+     *     root: int,
+     * }[]
+     */
+    private function getCategoryInfos(array $categoryCodes): array
     {
         $sql = <<<SQL
-SELECT child.code
-FROM pim_catalog_category AS child
- JOIN pim_catalog_category AS parent
-  ON child.lft > parent.lft 
-    AND child.rgt < parent.rgt 
-    AND child.root = parent.root
-WHERE child.code = :children_category_code AND parent.code = :parent_category_code;
+SELECT code, lft, rgt, root
+FROM pim_catalog_category
+WHERE code IN (:categoryCodes)
 SQL;
 
-        $rows = $this->connection->executeQuery(
+        $result = [];
+        foreach ($this->connection->fetchAllAssociative(
             $sql,
-            [
-                'parent_category_code' => $parentCategoryCodes,
-                'children_category_code' => $childrenCategoryCodes
-            ]
-        )->fetchAllAssociative();
+            ['categoryCodes' => $categoryCodes],
+            ['categoryCodes' => Connection::PARAM_STR_ARRAY]
+        ) as $row) {
+            $result[$row['code']] = [
+                'lft' => \intval($row['lft']),
+                'rgt' => \intval($row['rgt']),
+                'root' => \intval($row['root']),
+            ];
+        };
 
-        return count($rows) > 0;
+        return $result;
     }
 }
