@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Validation;
 
+use Akeneo\Category\Application\Command\AddAttributeCommand;
 use Akeneo\Category\Application\Query\GetAttribute;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -23,11 +25,20 @@ final class AttributeCodeShouldBeUniqueInTheTemplateValidator extends Constraint
 
     public function validate($value, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, AttributeCodeShouldBeUniqueInTheTemplate::class);
-        Assert::stringNotEmpty($value);
-        Assert::isInstanceOf($constraint->templateUuid, TemplateUuid::class);
+        if (empty($value)) {
+            return;
+        }
 
-        $attributeCollection = $this->getAttribute->byTemplateUuid($constraint->templateUuid);
+        Assert::isInstanceOf($constraint, AttributeCodeShouldBeUniqueInTheTemplate::class);
+
+        /** @var AddAttributeCommand $command */
+        $command = $this->context->getObject();
+        Assert::isInstanceOf($command, AddAttributeCommand::class);
+
+        $templateUuid = $command->templateUuid();
+        Assert::uuid($templateUuid);
+
+        $attributeCollection = $this->getAttribute->byTemplateUuid(TemplateUuid::fromString($templateUuid));
 
         $attributes = $attributeCollection->getAttributes();
 

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Integration\Controller\InternalApi;
+namespace Akeneo\Category\back\tests\EndToEnd\InternalApi;
 
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
-use Akeneo\Category\back\tests\Integration\Helper\ControllerIntegrationTestCase;
+use Akeneo\Category\back\tests\EndToEnd\Helper\ControllerIntegrationTestCase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
@@ -19,7 +19,7 @@ use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AddAttributeControllerIntegration extends ControllerIntegrationTestCase
+class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 {
     protected function setUp(): void
     {

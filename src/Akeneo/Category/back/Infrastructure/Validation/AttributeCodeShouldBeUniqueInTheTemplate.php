@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Validation;
 
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -14,5 +13,4 @@ use Symfony\Component\Validator\Constraint;
 final class AttributeCodeShouldBeUniqueInTheTemplate extends Constraint
 {
     public string $message = 'akeneo.category.validation.attribute.code.unique_in_the_template';
-    public TemplateUuid $templateUuid;
 }
