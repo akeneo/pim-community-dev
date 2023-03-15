@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\IsProductBelongingToCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Ramsey\Uuid\Uuid;
@@ -94,6 +95,15 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
             'localizable' => true,
         ]);
 
+        $this->createCategory([
+            'parent' => 'master',
+            'code' => 'smartphone',
+            'labels' => [
+                'fr_FR' => 'Telephone intelligent',
+                'en_US' => 'Smartphone'
+            ]
+        ]);
+
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
@@ -117,12 +127,19 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
                     'scope' => 'mobile',
                     'locale' => 'en_US',
                 ],
+                'category' => [
+                    'source' => 'categories',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => ['label_locale' => 'en_US'],
+                ],
             ],
         );
 
         $this->createProduct(Uuid::fromString('00380587-3893-46e6-a8c2-8fee6404cc9e'), [
             new SetEnabled(true),
             new SetTextValue('name', 'mobile', 'en_US', 'Blue'),
+            new SetCategories(['smartphone']),
         ]);
 
         $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
@@ -132,6 +149,8 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
 
         $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
+        $isProductBelongingToCatalog = $this->isProductBelongingToCatalogQuery->execute($catalog, '00380587-3893-46e6-a8c2-8fee6404cc9e');
+        $this->assertTrue($isProductBelongingToCatalog);
         $isProductBelongingToCatalog = $this->isProductBelongingToCatalogQuery->execute($catalog, '8985de43-08bc-484d-aee0-4489a56ba02d');
 
         $this->assertFalse($isProductBelongingToCatalog);
@@ -153,9 +172,12 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
             },
             "title": {
               "type": "string"
+            },
+            "category": {
+              "type": "string"
             }
           },
-          "required": ["title"]
+          "required": ["category"]
         }
         JSON_WRAP;
     }
