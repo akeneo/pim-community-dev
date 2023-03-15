@@ -4,18 +4,12 @@ import {
   useAttributeGroupsIndexState,
   useInitialAttributeGroupsIndexState,
 } from '@akeneo-pim-community/settings-ui/src/hooks/attribute-groups';
-import {fetchAllAttributeGroups} from '@akeneo-pim-community/settings-ui/src/infrastructure/fetchers';
-import {fetchAllAttributeGroupsDqiStatus} from '@akeneo-pim-community/settings-ui/src/infrastructure/fetchers';
 import {saveAttributeGroupsOrder} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
 import {anAttributeGroup} from '../../../utils/provideAttributeGroupHelper';
 import {act} from 'react-test-renderer';
 import {dependencies} from '@akeneo-pim-community/legacy-bridge';
+import fetchMock from 'jest-fetch-mock';
 
-const FeatureFlags = require('pim/feature-flags');
-FeatureFlags.isEnabled.mockImplementation((feature: string) => false);
-
-jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/fetchers/attributeGroupsFetcher');
-jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/fetchers/attributeGroupDqiStatusFetcher');
 jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/savers/attributeGroupsSaver');
 
 describe('useInitialAttributeGroupsIndexState', () => {
@@ -24,7 +18,6 @@ describe('useInitialAttributeGroupsIndexState', () => {
   };
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.resetAllMocks();
   });
 
   afterAll(() => {
@@ -34,27 +27,12 @@ describe('useInitialAttributeGroupsIndexState', () => {
   test('it initializes the state for AttributeGroups datagrid', () => {
     const {result} = renderUseInitialAttributeGroupsIndexState();
 
-    expect(result.current.groups).toEqual([]);
+    expect(result.current.attributeGroups).toEqual([]);
     expect(result.current.load).toBeDefined();
     expect(result.current.saveOrder).toBeDefined();
     expect(result.current.redirect).toBeDefined();
     expect(result.current.refresh).toBeDefined();
     expect(result.current.refreshOrder).toBeDefined();
-    expect(result.current.compare).toBeDefined();
-  });
-
-  test('it compares two attribute groups', () => {
-    const {result} = renderUseInitialAttributeGroupsIndexState();
-
-    const groupA = anAttributeGroup('groupA', 1234);
-    const groupB = anAttributeGroup('groupB', 4321);
-
-    expect(result.current.compare(groupA, groupB)).not.toEqual(0);
-
-    const groupC = anAttributeGroup('groupC');
-    const groupCBis = anAttributeGroup('groupC');
-
-    expect(result.current.compare(groupC, groupCBis)).toEqual(0);
   });
 
   test('it loads the attribute groups list without the DQI feature', async () => {
@@ -62,11 +40,8 @@ describe('useInitialAttributeGroupsIndexState', () => {
     const groupB = anAttributeGroup('groupB', 4321, undefined, 1);
     const groupC = anAttributeGroup('groupC', 4321, undefined, 2);
 
-    // @ts-ignore
-    fetchAllAttributeGroups.mockResolvedValue({
-      groupA,
-      groupB,
-      groupC,
+    fetchMock.mockResponseOnce(JSON.stringify([groupB, groupC, groupA]), {
+      status: 200,
     });
 
     const {result} = renderUseInitialAttributeGroupsIndexState();
@@ -75,31 +50,16 @@ describe('useInitialAttributeGroupsIndexState', () => {
       result.current.load();
     });
 
-    expect(result.current.groups).toEqual([groupB, groupC, groupA]);
+    expect(result.current.attributeGroups).toEqual([groupB, groupC, groupA]);
   });
 
   test('it loads the attribute groups list with the DQI feature', async () => {
-    FeatureFlags.isEnabled.mockImplementation((feature: string) => true);
+    const groupA = anAttributeGroup('groupA', 1234, undefined, 3, true);
+    const groupB = anAttributeGroup('groupB', 4321, undefined, 1, false);
+    const groupC = anAttributeGroup('groupC', 4321, undefined, 2, true);
 
-    const groupA = anAttributeGroup('groupA', 1234, undefined, 3);
-    const groupB = anAttributeGroup('groupB', 4321, undefined, 1);
-    const groupC = anAttributeGroup('groupC', 4321, undefined, 2);
-
-    const groupAWithDqi = anAttributeGroup('groupA', 1234, undefined, 3, true);
-    const groupBWithDqi = anAttributeGroup('groupB', 4321, undefined, 1, false);
-    const groupCWithDqi = anAttributeGroup('groupC', 4321, undefined, 2, true);
-
-    // @ts-ignore
-    fetchAllAttributeGroups.mockResolvedValue({
-      groupA,
-      groupB,
-      groupC,
-    });
-    // @ts-ignore
-    fetchAllAttributeGroupsDqiStatus.mockResolvedValue({
-      groupA: true,
-      groupB: false,
-      groupC: true,
+    fetchMock.mockResponseOnce(JSON.stringify([groupB, groupC, groupA]), {
+      status: 200,
     });
 
     const {result} = renderUseInitialAttributeGroupsIndexState();
@@ -108,7 +68,7 @@ describe('useInitialAttributeGroupsIndexState', () => {
       result.current.load();
     });
 
-    expect(result.current.groups).toEqual([groupBWithDqi, groupCWithDqi, groupAWithDqi]);
+    expect(result.current.attributeGroups).toEqual([groupB, groupC, groupA]);
   });
 
   test('it refreshes the data of the attribute groups list', async () => {
@@ -116,11 +76,8 @@ describe('useInitialAttributeGroupsIndexState', () => {
     const groupB = anAttributeGroup('groupB', 4321, undefined, 1);
     const groupC = anAttributeGroup('groupC', 4321, undefined, 2);
 
-    // @ts-ignore
-    fetchAllAttributeGroups.mockResolvedValue({
-      groupA,
-      groupB,
-      groupC,
+    fetchMock.mockResponseOnce(JSON.stringify([groupA, groupB, groupC]), {
+      status: 200,
     });
 
     const {result} = renderUseInitialAttributeGroupsIndexState();
@@ -137,7 +94,7 @@ describe('useInitialAttributeGroupsIndexState', () => {
       result.current.refresh([groupABis, groupBBis, groupCBis]);
     });
 
-    expect(result.current.groups).toEqual([groupABis, groupBBis, groupCBis]);
+    expect(result.current.attributeGroups).toEqual([groupABis, groupBBis, groupCBis]);
   });
 
   test('it refreshes the order of the attribute groups list', async () => {
@@ -145,11 +102,8 @@ describe('useInitialAttributeGroupsIndexState', () => {
     const groupB = anAttributeGroup('groupB', 4321, undefined, 1);
     const groupC = anAttributeGroup('groupC', 4321, undefined, 2);
 
-    // @ts-ignore
-    fetchAllAttributeGroups.mockResolvedValue({
-      groupA,
-      groupB,
-      groupC,
+    fetchMock.mockResponseOnce(JSON.stringify([groupA, groupB, groupC]), {
+      status: 200,
     });
 
     const {result} = renderUseInitialAttributeGroupsIndexState();
@@ -162,14 +116,14 @@ describe('useInitialAttributeGroupsIndexState', () => {
       result.current.refreshOrder([groupC, groupA, groupB]);
     });
 
-    expect(result.current.groups[0].code).toBe('groupC');
-    expect(result.current.groups[0].sort_order).toBe(0);
+    expect(result.current.attributeGroups[0].code).toBe('groupC');
+    expect(result.current.attributeGroups[0].sort_order).toBe(0);
 
-    expect(result.current.groups[1].code).toBe('groupA');
-    expect(result.current.groups[1].sort_order).toBe(1);
+    expect(result.current.attributeGroups[1].code).toBe('groupA');
+    expect(result.current.attributeGroups[1].sort_order).toBe(1);
 
-    expect(result.current.groups[2].code).toBe('groupB');
-    expect(result.current.groups[2].sort_order).toBe(2);
+    expect(result.current.attributeGroups[2].code).toBe('groupB');
+    expect(result.current.attributeGroups[2].sort_order).toBe(2);
   });
 
   test('it saves the order of the attribute groups list', async () => {
@@ -181,11 +135,8 @@ describe('useInitialAttributeGroupsIndexState', () => {
     const groupBBis = anAttributeGroup('groupB', 4321, undefined, 2);
     const groupCBis = anAttributeGroup('groupC', 4321, undefined, 0);
 
-    // @ts-ignore
-    fetchAllAttributeGroups.mockResolvedValue({
-      groupA,
-      groupB,
-      groupC,
+    fetchMock.mockResponseOnce(JSON.stringify([groupA, groupB, groupC]), {
+      status: 200,
     });
 
     // @ts-ignore
@@ -201,12 +152,8 @@ describe('useInitialAttributeGroupsIndexState', () => {
       result.current.load();
     });
 
-    act(() => {
+    await act(() => {
       result.current.refreshOrder([groupC, groupA, groupB]);
-    });
-
-    await act(async () => {
-      result.current.saveOrder();
     });
 
     expect(saveAttributeGroupsOrder).toBeCalledWith({
@@ -215,7 +162,7 @@ describe('useInitialAttributeGroupsIndexState', () => {
       groupB: 2,
     });
 
-    expect(result.current.groups).toEqual([groupCBis, groupABis, groupBBis]);
+    expect(result.current.attributeGroups).toEqual([groupCBis, groupABis, groupBBis]);
   });
 
   test('it leads to the attribute groups edition', () => {
@@ -256,12 +203,11 @@ describe('useAttributeGroupsIndexState', () => {
   test('it returns context', () => {
     const {result} = renderUseAttributeGroupsIndexState();
 
-    expect(result.current.groups).toEqual([]);
+    expect(result.current.attributeGroups).toEqual([]);
     expect(result.current.load).toBeDefined();
     expect(result.current.saveOrder).toBeDefined();
     expect(result.current.redirect).toBeDefined();
     expect(result.current.refresh).toBeDefined();
     expect(result.current.refreshOrder).toBeDefined();
-    expect(result.current.compare).toBeDefined();
   });
 });
