@@ -50,7 +50,7 @@ class CheckAttributeIsNotUsedAsChannelConversionUnitOnDeletionSubscriber impleme
 
         $channelsUsedAsConversionUnit = array_filter(
             $channels,
-            static fn (Channel $channel) => $channel->getConversionUnits()->hasConversionUnit($attributeCode)
+            static fn (Channel $channel): bool => $channel->getConversionUnits()->hasConversionUnit($attributeCode)
         );
 
         return array_map(
