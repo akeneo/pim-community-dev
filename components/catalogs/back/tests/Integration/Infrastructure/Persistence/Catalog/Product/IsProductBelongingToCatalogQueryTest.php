@@ -100,8 +100,8 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
             'code' => 'smartphone',
             'labels' => [
                 'fr_FR' => 'Telephone intelligent',
-                'en_US' => 'Smartphone'
-            ]
+                'en_US' => 'Smartphone',
+            ],
         ]);
 
         $this->createCatalog(
