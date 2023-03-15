@@ -96,7 +96,7 @@ services:
 
     Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotUsedAsChannelConversionUnitOnDeletionSubscriber:
         arguments:
-            - '@pim_catalog.repository.channel'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
         tags:
             - { name: kernel.event_subscriber }
 
