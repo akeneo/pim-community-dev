@@ -28,6 +28,7 @@ class GetTemplateAttributesByTemplateUuidSqlIntegration extends CategoryTestCase
         $getTemplateAttributesByTemplateUuid = $this->get(GetTemplateAttributesByTemplateUuid::class);
         $attributeCodes = $getTemplateAttributesByTemplateUuid->execute('6344aa2a-2be9-4093-b644-259ca7aee50c');
         Assert::assertCount(13, $attributeCodes);
-        Assert::assertContains('long_description|840fcd1a-f66b-4f0c-9bbd-596629732950', $attributeCodes);
+        Assert::assertArrayHasKey('840fcd1a-f66b-4f0c-9bbd-596629732950', $attributeCodes);
+        Assert::assertEquals('long_description', $attributeCodes['840fcd1a-f66b-4f0c-9bbd-596629732950']);
     }
 }

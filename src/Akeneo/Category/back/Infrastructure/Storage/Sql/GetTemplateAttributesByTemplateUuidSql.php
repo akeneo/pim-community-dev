@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetTemplateAttributesByTemplateUuid;
-use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
 
@@ -22,22 +21,15 @@ class GetTemplateAttributesByTemplateUuidSql implements GetTemplateAttributesByT
     public function execute(string $templateUuid): array
     {
         $query = <<<SQL
-            SELECT attribute.code, BIN_TO_UUID(attribute.uuid)
+            SELECT BIN_TO_UUID(attribute.uuid), attribute.code
             FROM pim_catalog_category_attribute AS attribute
             WHERE attribute.category_template_uuid = :template_uuid
         SQL;
 
-        $results = $this->connection->executeQuery(
+        return $this->connection->executeQuery(
             $query,
             ['template_uuid' => TemplateUuid::fromString($templateUuid)->toBytes()],
             ['template_uuid' => \PDO::PARAM_STR],
         )->fetchAllKeyValue();
-
-        $attributeCodes = [];
-        foreach ($results as $code => $uuid) {
-            $attributeCodes[] = $code.AbstractValue::SEPARATOR.$uuid;
-        }
-
-        return $attributeCodes;
     }
 }
