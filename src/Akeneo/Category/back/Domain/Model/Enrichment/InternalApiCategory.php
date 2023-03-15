@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\ServiceApi;
+namespace Akeneo\Category\Domain\Model\Enrichment;
 
-use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageDataValue;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
