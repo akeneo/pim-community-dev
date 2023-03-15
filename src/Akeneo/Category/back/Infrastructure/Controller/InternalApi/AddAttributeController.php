@@ -45,7 +45,6 @@ class AddAttributeController
             );
             $this->categoryCommandBus->dispatch($command);
         } catch (ViolationsException $exception) {
-            $test = $exception->normalize();
             return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         }
 

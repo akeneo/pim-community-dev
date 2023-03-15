@@ -155,7 +155,7 @@ class AddAttributeCommandHandlerSpec extends ObjectBehavior
         $validator->validate($command)->shouldBeCalled()->willReturn(
             new ConstraintViolationList([
                 new ConstraintViolation('This value is too long. It should have 100 characters or less.', null, [], $command, 'code', null),
-                new ConstraintViolation('This value is too long. It should have 100 characters or less.', null, [], $command, 'label', null),
+                new ConstraintViolation('This value is too long. It should have 255 characters or less.', null, [], $command, 'label', null),
             ])
         );
 
