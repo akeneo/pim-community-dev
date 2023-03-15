@@ -70,12 +70,4 @@ final class Category implements ConditionInterface
     public function operator(): CategoryOperator {
         return $this->operator;
     }
-
-    /**
-     * @return string[]|null
-     */
-    public function value(): ?array
-    {
-        return $this->value;
-    }
 }
