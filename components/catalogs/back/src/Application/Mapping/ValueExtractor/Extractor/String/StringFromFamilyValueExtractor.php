@@ -28,6 +28,11 @@ final class StringFromFamilyValueExtractor implements StringValueExtractorInterf
         return self::SOURCE_TYPE_FAMILY;
     }
 
+    public function getSupportedSubSourceType(): ?string
+    {
+        return null;
+    }
+
     public function getSupportedTargetType(): string
     {
         return self::TARGET_TYPE_STRING;

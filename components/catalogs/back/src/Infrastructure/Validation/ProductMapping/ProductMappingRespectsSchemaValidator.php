@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping;
 
 use Akeneo\Catalogs\Application\Exception\NoCompatibleAttributeTypeFoundException;
 use Akeneo\Catalogs\Application\Mapping\TargetTypeConverter;
+use Akeneo\Catalogs\Application\Persistence\AssetManager\FindOneAssetAttributeByIdentifierQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
@@ -17,6 +18,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
+ * @phpstan-import-type SourceAssociation from Catalog
  * @phpstan-import-type ProductMapping from Catalog
  * @phpstan-import-type ProductMappingSchema from GetProductMappingSchemaQueryInterface
  * @phpstan-import-type ProductMappingSchemaTarget from GetProductMappingSchemaQueryInterface
@@ -26,9 +28,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
 {
     public function __construct(
-        private GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
-        private FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
-        private TargetTypeConverter $targetTypeConverter,
+        private readonly GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
+        private readonly FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
+        private readonly TargetTypeConverter $targetTypeConverter,
+        private readonly FindOneAssetAttributeByIdentifierQueryInterface $findOneAssetAttributeByIdentifierQuery,
     ) {
     }
 
@@ -135,6 +138,53 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                     ->atPath("[$targetCode][source]")
                     ->addViolation();
             }
+
+            if ('pim_catalog_asset_collection' === $attributeType) {
+                $this->validateAssetTargetsType($targetCode, $sourceAssociation, $schema);
+            }
+        }
+    }
+
+    /**
+     * @param string $targetCode
+     * @param SourceAssociation $sourceAssociation
+     * @param ProductMappingSchema $schema
+     */
+    private function validateAssetTargetsType(string $targetCode, array $sourceAssociation, array $schema): void
+    {
+        try {
+            $assetAttributeTypes = $this->targetTypeConverter->toAssetAttributeTypes(
+                $this->targetTypeConverter->flattenTargetType($schema['properties'][$targetCode]),
+                $schema['properties'][$targetCode]['format'] ?? '',
+            );
+        } catch (NoCompatibleAttributeTypeFoundException $exception) {
+            throw new \LogicException(
+                \sprintf(
+                    'The combination type "%s" and format "%s" are not supported.',
+                    $schema['properties'][$targetCode]['type'],
+                    $schema['properties'][$targetCode]['format'] ?? '',
+                ),
+                0,
+                $exception,
+            );
+        }
+
+        $subSource = $sourceAssociation['parameters']['sub_source'] ?? null;
+
+        if (null === $subSource) {
+            return;
+        }
+
+        $assetAttribute = $this->findOneAssetAttributeByIdentifierQuery->execute((string) $subSource);
+
+        if (!\in_array($assetAttribute['type'], $assetAttributeTypes)) {
+            $this->context
+                ->buildViolation(
+                    'akeneo_catalogs.validation.product_mapping.schema.incorrect_type',
+                    ['{{ expected_type }}' => $schema['properties'][$targetCode]['type']],
+                )
+                ->atPath("[$targetCode][source][parameters][sub_source]")
+                ->addViolation();
         }
     }
 

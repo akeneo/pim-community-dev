@@ -92,6 +92,7 @@ class ProductMapper implements ProductMapperInterface
         try {
             $productValueExtractor = $this->valueExtractorRegistry->find(
                 $attributeTypeBySource[$productMapping[$targetCode]['source']] ?? $productMapping[$targetCode]['source'],
+                $productMapping[$targetCode]['parameters']['sub_source'] ?? null,
                 $this->targetTypeConverter->flattenTargetType($target),
                 $target['format'] ?? null,
             );

@@ -30,6 +30,11 @@ final class StringFromIdentifierAttributeValueExtractor implements StringValueEx
         return self::SOURCE_TYPE_ATTRIBUTE_IDENTIFIER;
     }
 
+    public function getSupportedSubSourceType(): ?string
+    {
+        return null;
+    }
+
     public function getSupportedTargetType(): string
     {
         return self::TARGET_TYPE_STRING;

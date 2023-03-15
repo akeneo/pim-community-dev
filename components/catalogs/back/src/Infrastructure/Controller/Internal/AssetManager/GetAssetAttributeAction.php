@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Internal\AssetManager;
 
-use Akeneo\Catalogs\Application\Persistence\AssetManager\FindAssetAttributeByIdentifierQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\AssetManager\FindOneAssetAttributeByIdentifierQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\AssetManager\FindOneAssetAttributeByIdentifierQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class GetAssetAttributeAction
 {
     public function __construct(
-        private readonly FindAssetAttributeByIdentifierQueryInterface $findOneAssetAttributeByIdentifierQuery,
+        private readonly FindOneAssetAttributeByIdentifierQueryInterface $findOneAssetAttributeByIdentifierQuery,
     ) {
     }
 

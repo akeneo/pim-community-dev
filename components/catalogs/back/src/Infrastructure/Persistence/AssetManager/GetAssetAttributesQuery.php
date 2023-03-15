@@ -17,6 +17,7 @@ final class GetAssetAttributesQuery implements GetAssetAttributesQueryInterface
         array $types = [],
         string $locale = 'en_US',
     ): array {
+        // not supported in CE
         return [];
     }
 }

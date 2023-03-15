@@ -27,12 +27,14 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespe
  *      currencies?: array<string>,
  * }
  *
- * @phpstan-type ProductMapping array<string, array{
+ * @phpstan-type SourceAssociation array{
  *      source: string|null,
  *      locale: string|null,
  *      scope: string|null,
  *      parameters?: array<string, mixed>
- * }>
+ * }
+ *
+ * @phpstan-type ProductMapping array<string, SourceAssociation>
  */
 #[ProductMappingRespectsSchema]
 final class Catalog

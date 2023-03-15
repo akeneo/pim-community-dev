@@ -11,11 +11,12 @@ namespace Akeneo\Catalogs\Application\Persistence\AssetManager;
  * @phpstan-type AssetAttribute array{
  *      identifier: string,
  *      labels: array<string, string>,
+ *      type: string,
  *      scopable: bool,
  *      localizable: bool
  * }
  */
-interface FindAssetAttributeByIdentifierQueryInterface
+interface FindOneAssetAttributeByIdentifierQueryInterface
 {
     /**
      * @return AssetAttribute|null

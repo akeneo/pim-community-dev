@@ -38,6 +38,11 @@ final class StringUriFromImageAttributeValueExtractor implements StringValueExtr
         return self::SOURCE_TYPE_ATTRIBUTE_IMAGE;
     }
 
+    public function getSupportedSubSourceType(): ?string
+    {
+        return null;
+    }
+
     public function getSupportedTargetType(): string
     {
         return self::TARGET_TYPE_STRING;

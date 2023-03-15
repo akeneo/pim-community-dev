@@ -14,6 +14,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
  */
 interface ValueExtractorInterface
 {
+    public const SOURCE_TYPE_ATTRIBUTE_ASSET_COLLECTION = 'pim_catalog_asset_collection';
     public const SOURCE_TYPE_ATTRIBUTE_BOOLEAN = 'pim_catalog_boolean';
     public const SOURCE_TYPE_ATTRIBUTE_DATE = 'pim_catalog_date';
     public const SOURCE_TYPE_ATTRIBUTE_IDENTIFIER = 'pim_catalog_identifier';
@@ -24,6 +25,8 @@ interface ValueExtractorInterface
     public const SOURCE_TYPE_ATTRIBUTE_SIMPLE_SELECT = 'pim_catalog_simpleselect';
     public const SOURCE_TYPE_ATTRIBUTE_TEXT = 'pim_catalog_text';
     public const SOURCE_TYPE_ATTRIBUTE_TEXTAREA = 'pim_catalog_textarea';
+
+    public const SUB_SOURCE_TYPE_ATTRIBUTE_TEXT = 'text';
 
     public const SOURCE_TYPE_FAMILY = 'family';
 
@@ -48,6 +51,8 @@ interface ValueExtractorInterface
     ): mixed;
 
     public function getSupportedSourceType(): string;
+
+    public function getSupportedSubSourceType(): ?string;
 
     public function getSupportedTargetType(): string;
 
