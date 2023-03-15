@@ -7,13 +7,12 @@ const convertBackendDashboardCompletenessData = (
 ): ChannelsLocalesCompletenessRatios => {
   let result: ChannelsLocalesCompletenessRatios = {};
   Object.entries(data).map(([channelCode, channelData]: [string, BackendChannelData]) => {
-    const divider: number = channelData.total * Object.keys(channelData.locales).length;
+    const divider: number = channelData.total;
     const channelRatio: number = divider === 0 ? 0 : Math.floor((channelData.complete / divider) * 100);
     const channelLabel = channelData.labels[catalogLocale] || `[${channelCode}]`;
 
     let localesRatios: {[localeTranslation: string]: number} = {};
     Object.entries(channelData.locales).map(([localeLabel, localeCompleteCount]: [string, number]) => {
-      const divider: number = channelData.total;
       localesRatios[localeLabel] = divider === 0 ? 0 : Math.floor((localeCompleteCount / divider) * 100);
     });
 
