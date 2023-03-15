@@ -217,8 +217,3 @@ services:
             - '@database_connection'
             - '@feature_flags'
             - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\AttributeGroup\GetAttributeGroupsActivationQuery'
-
-    Akeneo\Pim\Structure\Component\Query\InternalApi\CountAttributes:
-        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\SqlCountAttributes
-        arguments:
-            - '@database_connection'
