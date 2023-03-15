@@ -1,5 +1,5 @@
 export * from './useAttributeGroupsIndexState';
-export * from './useGetAttributeGroupLabel';
 export * from './useAttributeGroupPermissions';
-export * from './useRedirectToAttributeGroup';
+export * from './useMassDeleteAttributeGroups';
 export * from './useFilteredAttributeGroups';
+export * from './useRedirectToAttributeGroup';

@@ -10,7 +10,7 @@ const data: BackendCompletenessData = {
       fr_FR: 'Impression',
     },
     total: 1239,
-    complete: 569,
+    complete: 102,
     locales: {
       'German (Germany)': 110,
       'English (United States)': 343,
@@ -24,7 +24,7 @@ const data: BackendCompletenessData = {
       fr_FR: 'Mobile FR',
     },
     total: 1239,
-    complete: 415,
+    complete: 65,
     locales: {
       'German (Germany)': 71,
       'English (United States)': 256,
@@ -49,7 +49,7 @@ test('It calculate the completeness by channels and by locales', () => {
   const result: ChannelsLocalesCompletenessRatios = convertBackendDashboardCompletenessData(data, 'en_US');
   expect(result).toEqual({
     Print: {
-      channelRatio: 15,
+      channelRatio: 8,
       localesRatios: {
         'English (United States)': 27,
         'German (Germany)': 8,
@@ -57,7 +57,7 @@ test('It calculate the completeness by channels and by locales', () => {
       },
     },
     Mobile: {
-      channelRatio: 11,
+      channelRatio: 5,
       localesRatios: {
         'English (United States)': 20,
         'German (Germany)': 5,

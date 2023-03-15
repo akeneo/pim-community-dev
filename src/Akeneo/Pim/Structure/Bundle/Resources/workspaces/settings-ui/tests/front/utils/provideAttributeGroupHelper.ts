@@ -2,28 +2,17 @@ import {AttributeGroup, AttributeGroupCollection, AttributeGroupLabels} from '@a
 
 const anAttributeGroup = (
   code: string,
-  id?: number,
-  labels?: AttributeGroupLabels,
-  order?: number,
-  isDqiActivated?: boolean
+  id: number,
+  labels: AttributeGroupLabels,
+  order: number,
+  is_dqi_activated: boolean
 ): AttributeGroup => {
-  let group: AttributeGroup = {
+  const group: AttributeGroup = {
     code: code || 'a_code',
     labels: labels || {},
     sort_order: order !== undefined ? order : 1,
-    attributes: [],
-    attributes_sort_order: {},
-    permissions: {
-      view: [],
-      edit: [],
-    },
-    meta: {
-      id: id || 1234,
-    },
+    is_dqi_activated: is_dqi_activated === true,
   };
-  if (isDqiActivated !== undefined) {
-    group.isDqiActivated = isDqiActivated;
-  }
 
   return group;
 };
