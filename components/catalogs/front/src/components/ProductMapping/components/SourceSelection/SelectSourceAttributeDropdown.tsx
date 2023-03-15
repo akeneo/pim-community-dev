@@ -5,7 +5,6 @@ import {useInfiniteSourceAttributes} from '../../hooks/useInfiniteSourceAttribut
 import {Attribute} from '../../../../models/Attribute';
 import {useAttribute} from '../../../../hooks/useAttribute';
 import styled from 'styled-components';
-import {useSystemAttribute} from '../../hooks/useSystemAttribute';
 import {useSystemAttributes} from '../../hooks/useSystemAttributes';
 import {Target} from '../../models/Target';
 
@@ -27,9 +26,7 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
     const {data: attributes, fetchNextPage} = useInfiniteSourceAttributes({target: target, search});
     const {data: attribute} = useAttribute(selectedCode);
     const systemAttributes = useSystemAttributes();
-    const systemAttribute = useSystemAttribute(selectedCode);
-    const attributeLabel =
-        systemAttribute?.label ?? attribute?.label ?? (selectedCode.length > 0 ? `[${selectedCode}]` : '');
+    const attributeLabel = attribute?.label ?? (selectedCode.length > 0 ? `[${selectedCode}]` : '');
     const filteredSystemAttributes: Attribute[] = useMemo(() => {
         if (target.type !== 'string' || target.format !== null) {
             return [];
