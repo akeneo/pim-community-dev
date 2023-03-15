@@ -181,8 +181,9 @@ const TemplatePage: FC = () => {
             onClose={closeDeactivateTemplateModal}
           />
         )}
-        {// TODO update templateEdited when a new attribute is added
-          isAddTemplateAttributeModalOpen && (
+        {
+          featureFlags.isEnabled('category_template_customization')
+          && isAddTemplateAttributeModalOpen && (
           <AddTemplateAttributeModal
               template_id={templateId}
               onClose={closeAddTemplateAttributeModal}
