@@ -14,10 +14,6 @@ use PhpSpec\ObjectBehavior;
  */
 class CategorySpec extends ObjectBehavior
 {
-    public function let(): void
-    {
-    }
-
     public function it_is_a_category(): void
     {
         $this->shouldImplement(ConditionInterface::class);
