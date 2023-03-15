@@ -115,7 +115,7 @@ class AttributeCodeShouldBeUniqueInTheTemplateValidatorSpec extends ObjectBehavi
                 type: new AttributeType(AttributeType::TEXT),
                 uuid: AttributeUuid::fromString('b777dfe6-2518-4d0e-958d-ddb07c81b7b6'),
                 code: new AttributeCode('same_attribute_code'),
-                order: AttributeOrder::fromInteger(11),
+                order: AttributeOrder::fromInteger(1),
                 isRequired: AttributeIsRequired::fromBoolean(false),
                 isScopable: AttributeIsScopable::fromBoolean(true),
                 isLocalizable: AttributeIsLocalizable::fromBoolean(true),

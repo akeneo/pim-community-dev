@@ -20,6 +20,12 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
+  Akeneo\Category\Infrastructure\Validation\LimitNumberOfAttributesInTheTemplateValidator:
+    arguments:
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+    tags:
+      - { name: validator.constraint_validator }
+
   Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator:
     arguments:
       - '@validator'

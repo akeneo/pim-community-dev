@@ -5,16 +5,28 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\EndToEnd\InternalApi;
 
 use Akeneo\Category\Application\Query\GetAttribute;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\EndToEnd\Helper\ControllerIntegrationTestCase;
+use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeType;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Test\Integration\Configuration;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -30,13 +42,13 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->createTemplate();
     }
 
-    public function test_it_adds_an_attribute_to_the_template(): void
+    public function testItAddsAnAttributeToTheTemplate(): void
     {
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_add_attribute',
             routeArguments: [
-                'templateUuid' => $this->templateUuid->getValue()
+                'templateUuid' => $this->templateUuid->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -45,8 +57,8 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 'is_scopable' => true,
                 'is_localizable' => true,
                 'locale' => 'en_US',
-                'label' => 'The attribute'
-            ])
+                'label' => 'The attribute',
+            ]),
         );
 
         $response = $this->client->getResponse();
@@ -56,13 +68,13 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertNotNull($insertedAttributes->getAttributeByCode('attribute_code'));
     }
 
-    public function test_it_throws_exceptions_on_not_blank_values(): void
+    public function testItThrowsExceptionsOnNotBlankValues(): void
     {
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_add_attribute',
             routeArguments: [
-                'templateUuid' => $this->templateUuid->getValue()
+                'templateUuid' => $this->templateUuid->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -71,8 +83,8 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 'is_scopable' => true,
                 'is_localizable' => true,
                 'locale' => '',
-                'label' => 'The attribute'
-            ])
+                'label' => 'The attribute',
+            ]),
         );
 
         $response = $this->client->getResponse();
@@ -89,13 +101,13 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertEmpty($insertedAttributes->getAttributes());
     }
 
-    public function test_it_throws_exceptions_on_too_long_values(): void
+    public function testItThrowsExceptionsOnTooLongValues(): void
     {
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_add_attribute',
             routeArguments: [
-                'templateUuid' => $this->templateUuid->getValue()
+                'templateUuid' => $this->templateUuid->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -106,8 +118,8 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 'locale' => 'en_US',
                 'label' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                 In consectetur magna at magna consequat lacinia. Ut dapibus nulla sit amet nibh mattis aliquet. 
-                In nec arcu eros. Suspendisse potenti. Etiam sagittis, diam sed commodo vehicula, libero mi mollis est.'
-            ])
+                In nec arcu eros. Suspendisse potenti. Etiam sagittis, diam sed commodo vehicula, libero mi mollis est.',
+            ]),
         );
 
         $response = $this->client->getResponse();
@@ -124,13 +136,13 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertEmpty($insertedAttributes->getAttributes());
     }
 
-    public function test_it_throws_exceptions_on_wrong_format_values(): void
+    public function testItThrowsExceptionsOnWrongFormatValues(): void
     {
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_add_attribute',
             routeArguments: [
-                'templateUuid' => $this->templateUuid->getValue()
+                'templateUuid' => $this->templateUuid->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -139,8 +151,8 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 'is_scopable' => true,
                 'is_localizable' => true,
                 'locale' => 'en_US',
-                'label' => 'The attribute'
-            ])
+                'label' => 'The attribute',
+            ]),
         );
 
         $response = $this->client->getResponse();
@@ -154,13 +166,13 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertEmpty($insertedAttributes->getAttributes());
     }
 
-    public function test_it_throws_exceptions_on_identical_codes_in_the_template(): void
+    public function testItThrowsExceptionsOnIdenticalCodesInTheTemplate(): void
     {
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_add_attribute',
             routeArguments: [
-                'templateUuid' => $this->templateUuid->getValue()
+                'templateUuid' => $this->templateUuid->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -169,8 +181,8 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 'is_scopable' => true,
                 'is_localizable' => true,
                 'locale' => 'en_US',
-                'label' => 'The attribute 1'
-            ])
+                'label' => 'The attribute 1',
+            ]),
         );
 
         $response = $this->client->getResponse();
@@ -183,7 +195,7 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             client: $this->client,
             route: 'pim_category_template_rest_add_attribute',
             routeArguments: [
-                'templateUuid' => $this->templateUuid->getValue()
+                'templateUuid' => $this->templateUuid->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -192,8 +204,8 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 'is_scopable' => true,
                 'is_localizable' => true,
                 'locale' => 'en_US',
-                'label' => 'The attribute 2'
-            ])
+                'label' => 'The attribute 2',
+            ]),
         );
 
         $response = $this->client->getResponse();
@@ -205,6 +217,52 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
         $insertedAttributes = $this->get(GetAttribute::class)->byTemplateUuid($this->templateUuid);
         $this->assertCount(1, $insertedAttributes->getAttributes());
+    }
+
+    public function testItThrowsExceptionsWhenTheLimitOfAttributesInTheTemplateIsReached(): void
+    {
+        $attributeCollection = AttributeCollection::fromArray([]);
+        for ($i = 0; $i < 50; ++$i) {
+            $attributeCollection->addAttribute(
+                Attribute::fromType(
+                    type: new AttributeType(AttributeType::TEXT),
+                    uuid: AttributeUuid::fromUuid(Uuid::uuid4()),
+                    code: new AttributeCode('attribute_code'.$i),
+                    order: AttributeOrder::fromInteger($i),
+                    isRequired: AttributeIsRequired::fromBoolean(false),
+                    isScopable: AttributeIsScopable::fromBoolean(true),
+                    isLocalizable: AttributeIsLocalizable::fromBoolean(true),
+                    labelCollection: LabelCollection::fromArray(['en_US' => 'SEO meta description']),
+                    templateUuid: $this->templateUuid,
+                    additionalProperties: AttributeAdditionalProperties::fromArray([]),
+                ),
+            );
+        }
+
+        $this->get(CategoryTemplateAttributeSaver::class)->insert($this->templateUuid, $attributeCollection);
+
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_category_template_rest_add_attribute',
+            routeArguments: [
+                'templateUuid' => $this->templateUuid->getValue(),
+            ],
+            method: Request::METHOD_POST,
+            content: json_encode([
+                'code' => 'attribute_code',
+                'type' => 'text',
+                'is_scopable' => true,
+                'is_localizable' => true,
+                'locale' => 'en_US',
+                'label' => 'The attribute',
+            ]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+
+        $normalizedErrors = json_decode($response->getContent(), true);
+        $this->assertEquals('The limit of 50 attributes in a template is reached', $normalizedErrors[0]['error']['message']);
     }
 
     private function createTemplate(): void
@@ -219,7 +277,7 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             code: new TemplateCode('default_template'),
             labelCollection: LabelCollection::fromArray(['en_US' => 'Default template']),
             categoryTreeId: $category->getId(),
-            attributeCollection: null
+            attributeCollection: null,
         );
 
         $this->get(CategoryTemplateSaver::class)->insert($templateModel);

@@ -1,4 +1,6 @@
 Akeneo\Category\Application\Command\AddAttributeCommand:
+    constraints:
+        - Akeneo\Category\Infrastructure\Validation\LimitNumberOfAttributesInTheTemplate: ~
     properties:
         code:
             - NotBlank: ~
