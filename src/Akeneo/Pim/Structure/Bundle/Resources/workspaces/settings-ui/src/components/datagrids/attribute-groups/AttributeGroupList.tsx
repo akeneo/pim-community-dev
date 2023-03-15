@@ -15,8 +15,6 @@ type AttributeGroupListProps = {
   attributeGroups: AttributeGroup[];
   isItemSelected: (attributeGroup: AttributeGroup) => boolean;
   onSelectionChange: (attributeGroup: AttributeGroup, selected: boolean) => void;
-  selectedCount: number;
-  onSelectAllChange: (mode: boolean) => void;
   onReorder: (newIndices: number[]) => void;
 };
 
@@ -33,7 +31,7 @@ const AttributeGroupList = ({
 
   const shouldDisplayPlaceholder = 0 === filteredAttributeGroups.length;
   const shouldDisplayDQICell = isEnabled('data_quality_insights');
-  const allAttributeGroupsAreDisplayed = filteredAttributeGroups.length === attributeGroups.length;
+  const allAttributeGroupsAreDisplayed = filteredAttributeGroups.length === attributeGroups.length && attributeGroups.length > 0;
   const canDragAndDrop = isGranted('pim_enrich_attributegroup_sort') && allAttributeGroupsAreDisplayed;
   const canSelect = isEnabled('attribute_groups_mass_delete') && isGranted('pim_enrich_attributegroup_mass_delete');
 

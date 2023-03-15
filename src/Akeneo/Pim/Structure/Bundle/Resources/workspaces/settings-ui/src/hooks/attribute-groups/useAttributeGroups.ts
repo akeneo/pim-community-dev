@@ -16,8 +16,8 @@ const useAttributeGroups = () => {
 
     const response = await fetch(route);
     const attributeGroups = await response.json();
-    setIsPending(false);
 
+    setIsPending(false);
     setAttributeGroups(attributeGroups);
   }, [route]);
 
@@ -53,11 +53,7 @@ const useAttributeGroups = () => {
     })();
   }, [fetchAttributeGroups]);
 
-  return {
-    attributeGroups,
-    reorderAttributeGroups,
-    isPending,
-  };
+  return [attributeGroups, reorderAttributeGroups, isPending] as const;
 };
 
 export {useAttributeGroups};

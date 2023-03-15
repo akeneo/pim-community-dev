@@ -31,7 +31,7 @@ const Page = styled.div`
 const AttributeGroupsIndex: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
-  const {attributeGroups, reorderAttributeGroups, isPending} = useAttributeGroups();
+  const [attributeGroups, reorderAttributeGroups, isPending] = useAttributeGroups();
   const [searchValue, setSearchValue] = useState('');
   const catalogLocale = useUserContext().get('catalogLocale');
   const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
@@ -95,8 +95,6 @@ const AttributeGroupsIndex: FC = () => {
           attributeGroups={attributeGroups}
           isItemSelected={isItemSelected}
           onSelectionChange={onSelectionChange}
-          selectedCount={selectedCount}
-          onSelectAllChange={onSelectAllChange}
           onReorder={reorderAttributeGroups}
         />
       </Content>
@@ -105,7 +103,7 @@ const AttributeGroupsIndex: FC = () => {
           <Toolbar.SelectionContainer>
             <Checkbox checked={selectionState} onChange={value => onSelectAllChange(value)} />
             <Dropdown>
-              <ArrowDownIcon onClick={openDropdown} />
+              <ArrowDownIcon title={translate('pim_enrich.entity.attribute_group.dropdown.label')} onClick={openDropdown} />
               {isDropdownOpen && (
                 <Dropdown.Overlay onClose={closeDropdown}>
                   <Dropdown.Header>
