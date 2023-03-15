@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {
   Breadcrumb,
@@ -6,12 +6,14 @@ import {
   Toolbar,
   useSelection,
   useBooleanState,
+  Search,
   Dropdown,
   ArrowDownIcon,
+  useAutoFocus,
 } from 'akeneo-design-system';
 import {PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
-import {AttributeGroupsCreateButton, AttributeGroupsDataGrid, MassDeleteAttributeGroupsModal} from '../components';
-import {useAttributeGroupsIndexState} from '../hooks';
+import {AttributeGroupList, AttributeGroupsCreateButton, MassDeleteAttributeGroupsModal} from '../components';
+import {useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../hooks';
 import {AttributeGroup, getImpactedAndTargetAttributeGroups} from '../models';
 
 const Content = styled.div`
@@ -28,23 +30,32 @@ const Page = styled.div`
 
 const AttributeGroupsIndex: FC = () => {
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
-  const {attributeGroups, load, isPending} = useAttributeGroupsIndexState();
+  const {attributeGroups, load, refreshOrder, isPending} = useAttributeGroupsIndexState();
   const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
     useSelection<AttributeGroup>(attributeGroups.length);
   const translate = useTranslate();
   const settingsHomePageRoute = `#${useRoute('pim_settings_index')}`;
-  const [groupCount, setGroupCount] = useState<number>(attributeGroups.length);
-
+  const {filteredGroups, search} = useFilteredAttributeGroups(attributeGroups);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement>(null);
   const [impactedAttributeGroups, availableTargetAttributeGroups] = getImpactedAndTargetAttributeGroups(
     attributeGroups,
     selection
   );
 
+  const onSearch = (searchValue: string) => {
+    setSearchValue(searchValue);
+    search(searchValue);
+  };
+
+  const handleReorder = (order: number[]) => refreshOrder(order.map(index => attributeGroups[index]));
   useEffect(() => {
     (async () => {
       await load();
     })();
   }, [load]);
+
+  useAutoFocus(inputRef);
 
   return (
     <Page>
@@ -65,18 +76,33 @@ const AttributeGroupsIndex: FC = () => {
           <AttributeGroupsCreateButton attributeGroupCount={attributeGroups.length} />
         </PageHeader.Actions>
         <PageHeader.Title>
-          {translate('pim_enrich.entity.attribute_group.result_count', {count: groupCount}, groupCount)}
+          {translate(
+            'pim_enrich.entity.attribute_group.result_count',
+            {count: filteredGroups.length},
+            filteredGroups.length
+          )}
         </PageHeader.Title>
       </PageHeader>
       <Content>
-        <AttributeGroupsDataGrid
+        <Search
+          sticky={0}
+          placeholder={translate('pim_common.search')}
+          searchValue={searchValue}
+          onSearchChange={onSearch}
+          inputRef={inputRef}
+        >
+          <Search.ResultCount>
+            {translate('pim_common.result_count', {itemsCount: filteredGroups.length}, filteredGroups.length)}
+          </Search.ResultCount>
+        </Search>
+        <AttributeGroupList
+          filteredAttributeGroups={filteredGroups}
           attributeGroups={attributeGroups}
-          onGroupCountChange={setGroupCount}
           isItemSelected={isItemSelected}
-          selectionState={selectionState}
           onSelectionChange={onSelectionChange}
           selectedCount={selectedCount}
           onSelectAllChange={onSelectAllChange}
+          onReorder={handleReorder}
         />
       </Content>
       {!isPending && (
