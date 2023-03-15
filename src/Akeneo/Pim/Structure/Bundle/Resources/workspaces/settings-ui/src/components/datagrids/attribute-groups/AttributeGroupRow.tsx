@@ -7,6 +7,7 @@ import {
   getLabel,
   useRoute,
   useRouter,
+  useSecurity
 } from '@akeneo-pim-community/shared';
 import {AttributeGroup} from '../../../models';
 
@@ -21,6 +22,7 @@ const AttributeGroupRow = memo(({attributeGroup, isSelected, onSelectionChange, 
   const translate = useTranslate();
   const router = useRouter();
   const {isEnabled} = useFeatureFlags();
+  const {isGranted} = useSecurity();
   const editRoute = useRoute('pim_enrich_attributegroup_edit', {identifier: attributeGroup.code});
 
   const handleRowClick = useCallback(
@@ -38,7 +40,7 @@ const AttributeGroupRow = memo(({attributeGroup, isSelected, onSelectionChange, 
   );
 
   const shouldDisplayDQICell = isEnabled('data_quality_insights');
-  const canEdit = isEnabled('pim_enrich_attributegroup_edit');
+  const canEdit = isGranted('pim_enrich_attributegroup_edit');
 
   return (
     <Table.Row

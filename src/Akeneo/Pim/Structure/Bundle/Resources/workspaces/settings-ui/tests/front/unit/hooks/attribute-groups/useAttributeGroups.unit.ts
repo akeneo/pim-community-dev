@@ -15,7 +15,7 @@ test('it initializes the state for AttributeGroups datagrid', async () => {
   const {result, waitForNextUpdate} = renderHookWithProviders(useAttributeGroups);
   await waitForNextUpdate();
 
-  const {attributeGroups, reorderAttributeGroups, isPending} = result.current;
+  const [attributeGroups, reorderAttributeGroups, isPending] = result.current;
   expect(attributeGroups).toEqual([]);
   expect(reorderAttributeGroups).toBeDefined();
   expect(isPending).toBeDefined();
