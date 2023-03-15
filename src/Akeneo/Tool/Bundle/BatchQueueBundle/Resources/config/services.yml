@@ -66,6 +66,7 @@ services:
             - '%akeneo_batch.entity.job_instance.class%'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobExecutionWatchdogCommand:
         arguments:
@@ -76,6 +77,7 @@ services:
             - '@pim_framework.lock.factory'
         tags:
             - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
 
     akeneo_batch_queue.factory.job_execution_message:
         class: Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory

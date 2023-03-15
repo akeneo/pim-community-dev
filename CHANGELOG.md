@@ -25,12 +25,18 @@
 - PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
 - PIM-10853: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
 - PIM-10829: Fix case-sensitive locale on translatable business objects
+- PIM-10840: Fix attribute update date on attribute options change above 10000 options
+- PIM-10793: Add a command to delete expired tokens
 - PIM-10840: Fix attribute update date on attribute options change above 10000 options 
 - PIM-10868: Fix checkboxes on category trees
 - PIM-10832: Fix compute completeness job after removing an attribute from a family
 - PIM-10820: Partially revert [PIM-10350] to fix case sensitivity on options import
 - PIM-10870: Fix display of permissions when empty
-- PIM-10860: [SLA] Announcements aren't shown 
+- PIM-10860: [SLA] Announcements aren't shown
+- PIM-10745: Fix history display for product's quantified association
+- PIM-10874: fix labels api type consistency
+- PIM-10877: Fix sequential edit not working if grid is sorted by quality score
+- PIM-10876: Does not save empty ('') labels and don't show null labels on API REST
 
 ## Improvements
 

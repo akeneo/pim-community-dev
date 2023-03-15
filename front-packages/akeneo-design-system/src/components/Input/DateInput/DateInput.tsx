@@ -62,7 +62,7 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   }
 `;
 
-const commonIconStyles = css<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
+const IconContainer = styled.div<{readOnly: boolean} & AkeneoThemedProps>`
   position: absolute;
   right: 0;
   top: 0;
@@ -70,17 +70,12 @@ const commonIconStyles = css<{readOnly: boolean; invalid: boolean} & AkeneoTheme
   padding-left: 12px;
   pointer-events: none;
   z-index: 1;
-`;
 
-const DatePickerIcon = styled(DateIcon)`
-  background: ${getColor('white')};
-  ${commonIconStyles}
+  background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`
   color: ${getColor('grey', 100)};
-  background: ${getColor('grey', 20)};
-  ${commonIconStyles}
 `;
 
 type DateInputProps = Override<
@@ -116,20 +111,26 @@ const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
     const internalRef = useRef<HTMLInputElement | null>(null);
     forwardedRef = forwardedRef ?? internalRef;
 
-    const handleClick = useCallback((event: MouseEvent) => {
-      const input = event?.target as (HTMLInputElement & {showPicker?: () => void}) | null;
-      !readOnly && input?.showPicker?.();
-    }, []);
+    const handleClick = useCallback(
+      (event: MouseEvent) => {
+        const input = event?.target as (HTMLInputElement & {showPicker?: () => void}) | null;
+        !readOnly && input?.showPicker?.();
+      },
+      [readOnly]
+    );
 
-    const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-      if (!readOnly && onChange) {
-        onChange(event.currentTarget.value);
-      }
-    }, []);
+    const handleChange = useCallback(
+      (event: ChangeEvent<HTMLInputElement>) => {
+        if (!readOnly && onChange) {
+          onChange(event.currentTarget.value);
+        }
+      },
+      [readOnly, onChange]
+    );
 
-    const handleEnter = useCallback(() => {
+    const handleEnter = () => {
       !readOnly && onSubmit?.();
-    }, []);
+    };
     useShortcut(Key.Enter, handleEnter, forwardedRef);
 
     return (
@@ -148,8 +149,10 @@ const DateInput = forwardRef<HTMLInputElement, DateInputProps>(
           onClick={handleClick}
           {...rest}
         />
-        {readOnly && <ReadOnlyIcon size={16} />}
-        {!readOnly && <DatePickerIcon size={16} />}
+        <IconContainer readOnly={readOnly}>
+          {readOnly && <ReadOnlyIcon size={16} />}
+          {!readOnly && <DateIcon size={16} />}
+        </IconContainer>
       </InputContainer>
     );
   }

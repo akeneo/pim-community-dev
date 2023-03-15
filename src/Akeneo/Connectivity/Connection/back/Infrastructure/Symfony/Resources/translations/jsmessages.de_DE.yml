@@ -38,8 +38,9 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: Verbundene Apps
   akeneo_connectivity_connection_connect_connected_apps_edit: Appeinstellungen
   akeneo_connectivity_connection_connect_connected_apps_delete: App löschen
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Eine Test-App erstellen
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Test-App löschen
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: Anmeldedaten neu erstellen
+  akeneo_connectivity_connection_connect_custom_apps_create: Eigene App erstellen
+  akeneo_connectivity_connection_connect_custom_apps_delete: Eigene App löschen
   akeneo_connectivity_connection_connect_connected_apps_open: App öffnen
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Katalog bearbeiten
 akeneo_connectivity.connection:
@@ -73,51 +74,9 @@ akeneo_connectivity.connection:
         empty: Keine Apps, die mit Ihrer Version kompatibel sind
       unreachable: Wir können den App Store nicht erreichen, bitte komme später wieder.
       scroll_to_top: Zum Anfang scrollen
-      test_apps:
-        title: Meine Test-Apps
+      custom_apps:
+        title: Eigene Apps
         removed_user: Benutzer gelöscht
-        create_a_test_app: Eine Test-App erstellen
-        modal:
-          subtitle: Eine Test-App erstellen
-          app_information:
-            title: App Informationen
-            description: Wenn Sie Hilfe benötigen, überprüfe bitte unseren Artikel
-            link: Wie kann ich meine App vor der Veröffentlichung testen?
-            fields:
-              name: Name
-              activate_url: URL aktivieren
-              callback_url: Callback-URL
-          credentials:
-            title: Anmeldeinformationen
-            warning: Achten Sie darauf, diese Zugangsdaten irgendwo zu speichern, da wir sie hier nur einmal anzeigen.
-            client_id: Client-ID
-            client_secret: Client-Secret
-        errors:
-          page_not_found: Seite nicht gefunden
-          creation:
-            name:
-              min_length: Der Name der Test-App ist zu kurz. Der Name muss mindestens 3 Zeichen lang sein.
-              max_length: Der Name der Test-App ist zu lang. Der Name darf maximal 255 Zeichen lang sein.
-              not_blank: Der Name der Test-App ist erforderlich.
-            client_id:
-              max_length: Die Client-ID der Test-App ist zu lang. Sie muss 36 Zeichen oder weniger haben.
-              not_blank: Die Client-ID ist erforderlich.
-            activate_url:
-              max_length: Die Aktivierungs-URL der Test-App ist zu lang. Sie darf maximal 255 Zeichen lang sein.
-              must_be_url: Die Aktivierungs-URL muss eine gültige URL sein.
-              not_blank: Die Aktivierungs-URL ist erforderlich.
-            callback_url:
-              max_length: Die Callback-URL der Test-App ist zu lang. Sie darf  maximal 255 Zeichen lang sein.
-              must_be_url: Die Callback-URL muss eine gültige URL sein.
-              not_blank: Die Callback-URL ist erforderlich.
-        delete:
-          subtitle: Apps
-          title: Löschen bestätigen
-          description: Sie sind dabei, Ihre Test-App von diesem PIM zu löschen.
-          warning: Durch die Bestätigung der Löschung löschen Sie die Test-App auf der App Store Seite und die damit verbundene App.
-          flash:
-            success: Test-App erfolgreich gelöscht.
-            error: Beim Löschen der Test-App ist ein Fehler aufgetreten.
     connected_apps:
       list:
         apps:
@@ -128,8 +87,8 @@ akeneo_connectivity.connection:
           marketplace_link_anchor: App Store
           at_least_one_is_not_listed_on_the_appstore: Einige Ihrer verbundenen Apps sind nicht mit Ihrer PIM-Version kompatibel oder existieren nicht mehr im Akeneo App Store. Kontaktieren Sie uns für weitere Informationen.
           pending_apps: Einige Ihrer Apps sind nicht mit Ihrem PIM verbunden.
-        test_apps:
-          title: Meine Test-Apps
+        custom_apps:
+          title: Meine verbundenen benutzerdefinierten Apps
           removed_user: Benutzer gelöscht
         helper:
           title: '[0,1] Ihr PIM ist mit {{ count }} App verbunden.|[2,Inf] Ihr PIM ist mit {{ count }} Apps verbunden.'
@@ -171,6 +130,21 @@ akeneo_connectivity.connection:
             information_link_anchor: Hilfe-Center-Artikel
             openid_only: Diese App verwendet die Akeneo App Authentifizierung ohne Verwendung Ihrer persönlichen Daten.
           pending: Diese App ist nicht mit Ihrer PIM verbunden. Das Öffnen der App sollte das Verbindungsproblem beheben. Wenn diese weiterhin besteht, kontaktieren Sie bitte den App-Support.
+          credentials:
+            title: Anmeldeinformationen
+            client_id: Client-ID
+            client_secret: Client-Secret
+            regenerate_button: Erneuern
+            regenerate_secret:
+              flash_error: Beim erneuten Erzeugen des Verbindungsgeheimnisses ist ein Fehler aufgetreten.
+              confirm:
+                title: Regenerieren bestätigen
+                regenerate_button: Erneuern
+                cancel_button: Abbrechen
+              new_credentials:
+                title: Neue Anmeldedaten
+                subtitle: Anmeldedaten neu erstellen
+                done_button: Fertig
         error_monitoring:
           error: Ups, etwas ist schief gelaufen!
           helper:
@@ -295,6 +269,49 @@ akeneo_connectivity.connection:
           must_be_url: Die redirect_uri ist keine gültige URL.
         scope:
           too_long: Die Gültigkeitsbereich darf nicht mehr als 1000 Zeichen betragen.
+    custom_apps:
+      creation_limit_reached: Sie haben das Limit von 20 eigenen Apps erreicht.
+      create_button: App erstellen
+      create_modal:
+        subtitle: Eigene App erstellen
+        app_information:
+          title: App Informationen
+          description: Wenn Sie Hilfe benötigen, überprüfe bitte unseren Artikel
+          link: Wie kann ich meine App vor der Veröffentlichung testen?
+          fields:
+            name: Name
+            activate_url: URL aktivieren
+            callback_url: Callback-URL
+          field_placeholder:
+            name: App-Name definieren
+        credentials:
+          title: Anmeldeinformationen
+          client_id: Client-ID
+          client_secret: Client-Secret
+        errors:
+          limit_reached: Sie können bis zu 20 eigene Apps erstellen.
+          name:
+            min_length: Der Name der App ist zu kurz. Sie muss mindestens 3 Zeichen lang sein.
+            max_length: Der Name der App ist zu lang. Der Name darf maximal 255 Zeichen lang sein.
+            not_blank: Der Name der App ist erforderlich.
+          client_id:
+            max_length: Die Client-ID der App ist zu lang. Sie muss 36 Zeichen oder weniger haben.
+            not_blank: Die Client-ID ist erforderlich.
+          activate_url:
+            max_length: Die Aktivierungs-URL der App ist zu lang. Sie darf maximal 255 Zeichen lang sein.
+            must_be_url: Die Aktivierungs-URL muss eine gültige URL sein.
+            not_blank: Die Aktivierungs-URL ist erforderlich.
+          callback_url:
+            max_length: Die Callback-URL der App ist zu lang. Sie darf  maximal 255 Zeichen lang sein.
+            must_be_url: Die Callback-URL muss eine gültige URL sein.
+            not_blank: Die Callback-URL ist erforderlich.
+      delete_modal:
+        subtitle: Eigene App löschen
+        title: Löschen bestätigen
+        description: Sie sind dabei, Ihre App von diesem PIM zu löschen.
+        flash:
+          success: Eigene App erfolgreich gelöscht.
+          error: Beim Löschen der eigenen App ist ein Fehler aufgetreten.
   connections: Verbindungen
   secondary_actions:
     title: Weitere Aktionen

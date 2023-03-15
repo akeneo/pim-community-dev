@@ -12,7 +12,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -81,28 +80,6 @@ final class SqlGetCategoryCodesIntegration extends TestCase
                 new SetSimpleSelectValue('a_simple_select', null, null, 'optionB'),
                 new SetCategories(['categoryA', 'categoryA1']),
             ]
-        );
-    }
-
-    /** @test */
-    public function it_gets_product_categories_by_identifier(): void
-    {
-        Assert::assertSame([], $this->getCategoryCodes->fromProductIdentifiers([]));
-        $this->assertEqualArrays(
-            [
-                'foo' => ['categoryA', 'categoryB'],
-                'bar' => ['categoryA', 'categoryA1'],
-                'baz' => ['categoryA', 'categoryA1', 'categoryC'],
-            ],
-            $this->getCategoryCodes->fromProductIdentifiers(
-                [
-                    ProductIdentifier::fromString('foo'),
-                    ProductIdentifier::fromString('unknown_sku'),
-                    ProductIdentifier::fromString('baz'),
-                    ProductIdentifier::fromString('bar'),
-                    ProductIdentifier::fromString('foo'),
-                ]
-            )
         );
     }
 

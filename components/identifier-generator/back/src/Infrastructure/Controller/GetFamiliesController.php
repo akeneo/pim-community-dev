@@ -39,10 +39,10 @@ final class GetFamiliesController
         }
 
         if (!(
-            $this->securityFacade->isGranted('pim_enrich_family_index') &&
-            (
-                $this->securityFacade->isGranted('pim_identifier_generator_manage') ||
-                $this->securityFacade->isGranted('pim_identifier_generator_view')
+            $this->securityFacade->isGranted('pim_enrich_family_index')
+            && (
+                $this->securityFacade->isGranted('pim_identifier_generator_manage')
+                || $this->securityFacade->isGranted('pim_identifier_generator_view')
             )
         )) {
             throw new AccessDeniedException();
@@ -60,7 +60,7 @@ final class GetFamiliesController
             includeCodes: ($request->query->get('codes') ? (array)$request->query->get('codes') : null)
         ));
 
-        $normalizedFamilies = array_map(fn ($family) => $family->normalize(), $families);
+        $normalizedFamilies = \array_map(fn ($family) => $family->normalize(), $families);
 
         return new JsonResponse($normalizedFamilies);
     }

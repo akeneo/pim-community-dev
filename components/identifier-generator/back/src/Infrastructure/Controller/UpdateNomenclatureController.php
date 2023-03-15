@@ -60,7 +60,7 @@ final class UpdateNomenclatureController
      */
     private function getContent(Request $request): array
     {
-        $content = json_decode($request->getContent(), true);
+        $content = \json_decode($request->getContent(), true);
         if (null === $content) {
             throw new BadRequestHttpException('Invalid json message received');
         }
