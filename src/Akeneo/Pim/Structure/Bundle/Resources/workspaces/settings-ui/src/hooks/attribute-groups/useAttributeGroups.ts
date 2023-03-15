@@ -23,15 +23,15 @@ const useAttributeGroups = () => {
 
   const reorderAttributeGroups = useCallback((newIndices: number[]) => {
     setAttributeGroups(previousAttributeGroup =>
-      newIndices.map((newIndex, index) => ({...previousAttributeGroup[newIndex], sort_order: index}))
+      newIndices.map((newIndex) => previousAttributeGroup[newIndex])
     );
 
     setAttributeGroupsIsReordered(true);
   }, []);
 
   const saveOrder = useCallback(async (attributeGroups: AttributeGroup[]) => {
-    const order = attributeGroups.reduce<{[code: string]: number}>((accumulator, attributeGroup) => {
-      accumulator[attributeGroup.code] = attributeGroup.sort_order;
+    const order = attributeGroups.reduce<{[code: string]: number}>((accumulator, attributeGroup, index) => {
+      accumulator[attributeGroup.code] = index;
 
       return accumulator;
     }, {});
@@ -42,13 +42,13 @@ const useAttributeGroups = () => {
   useEffect(() => {
     if (!attributeGroupsIsReordered) return;
 
-    void(async () => {
+    void (async () => {
       await saveOrder(attributeGroups);
     })();
   }, [saveOrder, attributeGroups, attributeGroupsIsReordered]);
 
   useEffect(() => {
-    void(async () => {
+    void (async () => {
       await fetchAttributeGroups();
     })();
   }, [fetchAttributeGroups]);

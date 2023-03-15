@@ -25,7 +25,7 @@ beforeEach(() => {
   mockedGrantedAcl = ['pim_enrich_attributegroup_edit'];
 });
 
-const attributeGroup =   {
+const attributeGroup = {
   code: 'technical',
   attribute_count: 10,
   sort_order: 0,
@@ -35,13 +35,12 @@ const attributeGroup =   {
   is_dqi_activated: false,
 };
 
-const renderAttributeGroupRow = (row: ReactElement) => renderWithProviders(
-  <Table isSelectable={true}>
-    <Table.Body>
-      {row}
-    </Table.Body>
-  </Table>
-);
+const renderAttributeGroupRow = (row: ReactElement) =>
+  renderWithProviders(
+    <Table isSelectable={true}>
+      <Table.Body>{row}</Table.Body>
+    </Table>
+  );
 
 test('it renders a attribute group row', () => {
   renderAttributeGroupRow(
@@ -54,7 +53,7 @@ test('it renders a attribute group row', () => {
 });
 
 test('it display the code if the attribute group have no label', () => {
-  const attributeGroup =   {
+  const attributeGroup = {
     code: 'technical',
     attribute_count: 10,
     sort_order: 0,
@@ -91,11 +90,7 @@ test('it did not redirect user when user click on row without edit acl', () => {
 test('it allow user to select attribute group', () => {
   const handleSelectionChange = jest.fn();
   renderAttributeGroupRow(
-    <AttributeGroupRow
-      attributeGroup={attributeGroup}
-      isSelected={false}
-      onSelectionChange={handleSelectionChange}
-    />
+    <AttributeGroupRow attributeGroup={attributeGroup} isSelected={false} onSelectionChange={handleSelectionChange} />
   );
 
   userEvent.click(screen.getByRole('checkbox', {hidden: true}));

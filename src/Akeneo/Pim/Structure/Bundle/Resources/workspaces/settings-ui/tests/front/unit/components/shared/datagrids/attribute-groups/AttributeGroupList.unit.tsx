@@ -32,7 +32,7 @@ const attributeGroups = [
       en_US: 'Marketing',
     },
     is_dqi_activated: true,
-  }
+  },
 ];
 
 test('it renders attribute groups', () => {
