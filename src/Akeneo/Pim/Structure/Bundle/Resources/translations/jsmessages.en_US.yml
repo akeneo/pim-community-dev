@@ -298,7 +298,7 @@ pim_enrich.entity.attribute_group:
     job_execution:
         summary:
             attribute_group_mass_delete: Deleted attribute groups
-            attributes_to_move: Moved attributes
+            moved_attributes: Moved attributes
 pim_import_export:
     notification:
         mass_delete_attribute_groups:

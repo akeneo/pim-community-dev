@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup;
 
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\Exception\UserFacingError;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -26,7 +26,7 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
     private ?StepExecution $stepExecution = null;
 
     public function __construct(
-        private readonly AttributeRepository $attributeRepository,
+        private readonly AttributeRepositoryInterface $attributeRepository,
         private readonly ObjectUpdaterInterface $updater,
         private readonly BulkSaverInterface $saver,
         private readonly EntityManagerClearerInterface $cacheClearer,
@@ -52,7 +52,7 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
 
         $attributes = $this->attributeRepository->getAttributesByGroups($attributeGroupCodesToDelete);
         $this->stepExecution->setTotalItems(count($attributes));
-        $this->stepExecution->addSummaryInfo('attributes_to_move', 0);
+        $this->stepExecution->addSummaryInfo('moved_attributes', 0);
 
         foreach (array_chunk($attributes, $this->batchSize) as $attributeChunk) {
             $this->updateAttributes($attributeChunk, $replacementAttributeGroupCode);
@@ -69,15 +69,16 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
 
     public function updateAttributes(array $attributes, string $replacementAttributeGroupCode)
     {
-        $this->stepExecution->incrementSummaryInfo('attributes_to_move', count($attributes));
         foreach ($attributes as $attribute) {
             try {
                 $this->updater->update($attribute, ['group' => $replacementAttributeGroupCode]);
+                $this->stepExecution->incrementSummaryInfo('moved_attributes');
             } catch (UserFacingError $e) {
                 $this->stepExecution->addWarning($e->translationKey(), $e->translationParameters(), new DataInvalidItem([
                     'code' => $attribute->getCode(),
                 ]));
             }
+            $this->stepExecution->incrementProcessedItems();
         }
         $this->saver->saveAll($attributes);
     }

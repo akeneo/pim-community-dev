@@ -119,7 +119,7 @@ const AttributeGroupsIndex: FC = () => {
             {0 < selectedCount && (
               <MassDeleteAttributeGroupsModal
                 impactedAttributeGroups={impactedAttributeGroups}
-                availableTargetAttributeGroups={availableTargetAttributeGroups}
+                availableReplacementAttributeGroups={availableTargetAttributeGroups}
               />
             )}
           </Toolbar.ActionsContainer>
