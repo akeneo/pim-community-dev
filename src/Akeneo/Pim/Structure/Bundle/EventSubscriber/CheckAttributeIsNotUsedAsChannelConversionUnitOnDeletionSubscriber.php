@@ -54,7 +54,7 @@ class CheckAttributeIsNotUsedAsChannelConversionUnitOnDeletionSubscriber impleme
         );
 
         return array_map(
-            static fn (Channel $channel) => $channel->getCode(),
+            static fn (Channel $channel): string => $channel->getCode(),
             $channelsUsedAsConversionUnit,
         );
     }
