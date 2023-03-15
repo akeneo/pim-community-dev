@@ -8,3 +8,10 @@ services:
       - '@monolog.logger'
     tags:
       - { name: 'akeneo.pim.zdd_migration' }
+
+  Akeneo\Category\Infrastructure\Migration\V20230313SetEmptyCategoryLabelsToNullZddMigration:
+    arguments:
+      - '@database_connection'
+      - '@monolog.logger'
+    tags:
+      - { name: 'akeneo.pim.zdd_migration' }

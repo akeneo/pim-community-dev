@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\ServiceApi;
 
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\ServiceApi\InternalApiCategory;
-use Webmozart\Assert\InvalidArgumentException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
