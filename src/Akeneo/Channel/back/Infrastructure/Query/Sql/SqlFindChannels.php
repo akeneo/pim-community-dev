@@ -4,6 +4,7 @@
 namespace Akeneo\Channel\Infrastructure\Query\Sql;
 
 use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\ConversionUnitCollection;
 use Akeneo\Channel\API\Query\FindChannels;
 use Akeneo\Channel\API\Query\LabelCollection;
 use Doctrine\DBAL\Connection;
@@ -29,7 +30,8 @@ final class SqlFindChannels implements FindChannels
                 c.code AS channelCode, 
                 JSON_REMOVE(JSON_OBJECTAGG(IFNULL(l.id, 'NO_LOCALE'), l.code), '$.NO_LOCALE') AS localeCodes,
                 JSON_REMOVE(JSON_OBJECTAGG(IFNULL(ct.locale, 'NO_LABEL'), ct.label), '$.NO_LABEL') AS labels,
-                JSON_REMOVE(JSON_OBJECTAGG(IFNULL(cur.id, 'NO_CURRENCY'), cur.code), '$.NO_CURRENCY') AS activatedCurrencies
+                JSON_REMOVE(JSON_OBJECTAGG(IFNULL(cur.id, 'NO_CURRENCY'), cur.code), '$.NO_CURRENCY') AS activatedCurrencies,
+                c.conversionUnits
             FROM pim_catalog_channel c
             LEFT JOIN pim_catalog_channel_locale cl 
                 ON c.id = cl.channel_id
@@ -52,7 +54,8 @@ final class SqlFindChannels implements FindChannels
                 $result['channelCode'],
                 array_values(json_decode($result['localeCodes'], true)),
                 LabelCollection::fromArray(json_decode($result['labels'], true)),
-                array_values(json_decode($result['activatedCurrencies'], true))
+                array_values(json_decode($result['activatedCurrencies'], true)),
+                ConversionUnitCollection::fromArray(unserialize($result['conversionUnits'])),
             );
         }
 

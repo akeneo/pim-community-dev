@@ -25,6 +25,7 @@ $rules = [
         'Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface',
         'Psr\Log\LoggerInterface',
         'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
+        'Akeneo\Channel\API',
 
         // TIP-906: Functional problem to query products before removing AttributeOption
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory',
@@ -40,9 +41,6 @@ $rules = [
 
         // TIP-910: PIM/Structure should not be linked to Channel
         'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
-
-        // RAB-1357
-        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
 
         // TIP-939: Remove filter system for permissions
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
