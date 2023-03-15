@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {
   Breadcrumb,
@@ -11,10 +11,10 @@ import {
   ArrowDownIcon,
   useAutoFocus,
 } from 'akeneo-design-system';
-import {PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
-import {AttributeGroupList, AttributeGroupsCreateButton, MassDeleteAttributeGroupsModal} from '../components';
-import {useAttributeGroupsIndexState, useFilteredAttributeGroups} from '../hooks';
+import {PageHeader, useRoute, useTranslate, useUserContext, PimView} from '@akeneo-pim-community/shared';
+import {AttributeGroupsCreateButton, AttributeGroupList, MassDeleteAttributeGroupsModal} from '../components';
 import {AttributeGroup, getImpactedAndTargetAttributeGroups} from '../models';
+import {useAttributeGroups} from '../hooks/attribute-groups/useAttributeGroups';
 
 const Content = styled.div`
   flex: 1;
@@ -29,31 +29,26 @@ const Page = styled.div`
 `;
 
 const AttributeGroupsIndex: FC = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
-  const {attributeGroups, load, refreshOrder, isPending} = useAttributeGroupsIndexState();
+  const {attributeGroups, reorderAttributeGroups, isPending} = useAttributeGroups();
+  const [searchValue, setSearchValue] = useState('');
+  const catalogLocale = useUserContext().get('catalogLocale');
   const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
     useSelection<AttributeGroup>(attributeGroups.length);
   const translate = useTranslate();
   const settingsHomePageRoute = `#${useRoute('pim_settings_index')}`;
-  const {filteredGroups, search} = useFilteredAttributeGroups(attributeGroups);
-  const [searchValue, setSearchValue] = useState<string>('');
-  const inputRef = useRef<HTMLInputElement>(null);
+
+  const filteredAttributeGroups = attributeGroups.filter((attributeGroup: AttributeGroup) => {
+    return (attributeGroup.labels[catalogLocale] ?? attributeGroup.code)
+      .toLowerCase()
+      .includes(searchValue.toLowerCase().trim());
+  });
+
   const [impactedAttributeGroups, availableTargetAttributeGroups] = getImpactedAndTargetAttributeGroups(
     attributeGroups,
     selection
   );
-
-  const onSearch = (searchValue: string) => {
-    setSearchValue(searchValue);
-    search(searchValue);
-  };
-
-  const handleReorder = (order: number[]) => refreshOrder(order.map(index => attributeGroups[index]));
-  useEffect(() => {
-    (async () => {
-      await load();
-    })();
-  }, [load]);
 
   useAutoFocus(inputRef);
 
@@ -78,8 +73,8 @@ const AttributeGroupsIndex: FC = () => {
         <PageHeader.Title>
           {translate(
             'pim_enrich.entity.attribute_group.result_count',
-            {count: filteredGroups.length},
-            filteredGroups.length
+            {count: filteredAttributeGroups.length},
+            filteredAttributeGroups.length
           )}
         </PageHeader.Title>
       </PageHeader>
@@ -88,21 +83,21 @@ const AttributeGroupsIndex: FC = () => {
           sticky={0}
           placeholder={translate('pim_common.search')}
           searchValue={searchValue}
-          onSearchChange={onSearch}
+          onSearchChange={setSearchValue}
           inputRef={inputRef}
         >
           <Search.ResultCount>
-            {translate('pim_common.result_count', {itemsCount: filteredGroups.length}, filteredGroups.length)}
+            {translate('pim_common.result_count', {itemsCount: filteredAttributeGroups.length}, filteredAttributeGroups.length)}
           </Search.ResultCount>
         </Search>
         <AttributeGroupList
-          filteredAttributeGroups={filteredGroups}
+          filteredAttributeGroups={filteredAttributeGroups}
           attributeGroups={attributeGroups}
           isItemSelected={isItemSelected}
           onSelectionChange={onSelectionChange}
           selectedCount={selectedCount}
           onSelectAllChange={onSelectAllChange}
-          onReorder={handleReorder}
+          onReorder={reorderAttributeGroups}
         />
       </Content>
       {!isPending && (
