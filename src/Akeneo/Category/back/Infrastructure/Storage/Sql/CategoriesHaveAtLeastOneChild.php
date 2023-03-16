@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Category\Infrastructure\Query;
+namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\CategoriesHaveAtLeastOneChild;
+use Akeneo\Category\ServiceApi\Query\CategoriesHaveAtLeastOneChild as BaseCategoriesHaveAtLeastOneChild;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -12,16 +12,13 @@ use Doctrine\DBAL\Connection;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlCategoriesHaveAtLeastOneChild implements CategoriesHaveAtLeastOneChild
+final class CategoriesHaveAtLeastOneChild implements BaseCategoriesHaveAtLeastOneChild
 {
-    public function __construct(private readonly Connection $connection)
-    {
+    public function __construct(
+        private readonly Connection $connection
+    ) {
     }
 
-    /**
-     * @param string[] $parentCategoryCodes
-     * @param string[] $childrenCategoryCodes
-     */
     public function among(array $parentCategoryCodes, array $childrenCategoryCodes): bool
     {
         if (\count($parentCategoryCodes) === 0 || \count($childrenCategoryCodes) === 0) {

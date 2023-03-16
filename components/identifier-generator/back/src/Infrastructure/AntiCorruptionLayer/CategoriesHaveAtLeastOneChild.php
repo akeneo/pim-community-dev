@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\AntiCorruptionLayer;
 
+use Akeneo\Category\ServiceApi\Query\CategoriesHaveAtLeastOneChild as OriginalCategoriesHaveAtLeastOneChild;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\CategoriesHaveAtLeastOneChild as BaseCategoriesHaveAtLeastOneChild;
-use Akeneo\Pim\Enrichment\Category\API\Query\CategoriesHaveAtLeastOneChild as OriginalCategoriesHaveAtLeastOneChild;
 
 class CategoriesHaveAtLeastOneChild implements BaseCategoriesHaveAtLeastOneChild
 {

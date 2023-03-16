@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Category\API\Query;
+namespace Akeneo\Category\ServiceApi\Query;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -10,5 +10,9 @@ namespace Akeneo\Pim\Enrichment\Category\API\Query;
  */
 interface CategoriesHaveAtLeastOneChild
 {
+    /**
+     * @param string[] $parentCategoryCodes
+     * @param string[] $childrenCategoryCodes
+     */
     public function among(array $parentCategoryCodes, array $childrenCategoryCodes): bool;
 }

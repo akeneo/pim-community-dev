@@ -7,7 +7,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Enrichment\Category\API\Query\CategoriesHaveAtLeastOneChild:
-        class: Akeneo\Pim\Enrichment\Category\Infrastructure\Query\SqlCategoriesHaveAtLeastOneChild
+    Akeneo\Category\ServiceApi\Query\CategoriesHaveAtLeastOneChild:
+        class: Akeneo\Category\Infrastructure\Storage\Sql\CategoriesHaveAtLeastOneChild
         arguments:
             - '@database_connection'
