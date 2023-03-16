@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MatchCategoryHandler implements MatchConditionHandler
+final class MatchCategoryHandler implements MatchConditionHandler
 {
     public function __construct(
         private readonly CategoriesHaveAtLeastOneChild $categoriesHaveAtLeastOneChild,
