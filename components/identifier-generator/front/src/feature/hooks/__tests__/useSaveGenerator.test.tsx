@@ -3,14 +3,24 @@ import {useSaveGenerator} from '../useSaveGenerator';
 import {createWrapper} from '../../tests/hooks/config/createWrapper';
 import {act} from '@testing-library/react';
 import {mockResponse} from '../../tests/test-utils';
+import {AbbreviationType, IdentifierGenerator, PROPERTY_NAMES, TEXT_TRANSFORMATION} from '../../models';
 
-const generator = {
+const generator: IdentifierGenerator = {
   code: 'code',
   target: 'sku',
-  structure: [],
+  structure: [
+    {
+      type: PROPERTY_NAMES.SIMPLE_SELECT,
+      attributeCode: 'brand',
+      process: {type: AbbreviationType.NO},
+      locale: null,
+      scope: null,
+    },
+  ],
   delimiter: '-',
   labels: {en_US: 'My Generator'},
   conditions: [],
+  text_transformation: TEXT_TRANSFORMATION.NO,
 };
 
 describe('useSaveGenerator', () => {
