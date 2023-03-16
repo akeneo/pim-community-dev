@@ -43,7 +43,7 @@ const DeleteGeneratorModal: FC<DeleteGeneratorModalProps> = ({generatorCode, onC
       <Modal.SectionTitle color="brand">{translate('pim_identifier_generator.deletion.operations')}</Modal.SectionTitle>
       <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
       <div>{translate('pim_identifier_generator.deletion.confirmation')}</div>
-      <Field label={translate('pim_identifier_generator.deletion.type', {code: generatorCode})}>
+      <Field label={translate('pim_identifier_generator.deletion.type', {text: generatorCode})}>
         <TextInput readOnly={isLoading} value={attributeCodeConfirm} onChange={setAttributeCodeConfirm} />
       </Field>
       <Modal.BottomButtons>
