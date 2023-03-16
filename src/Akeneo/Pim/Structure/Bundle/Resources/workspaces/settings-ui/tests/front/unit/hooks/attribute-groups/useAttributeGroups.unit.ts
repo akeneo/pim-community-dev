@@ -34,7 +34,8 @@ test('it loads the attribute groups list without the DQI feature', async () => {
   const {result, waitForNextUpdate} = renderHookWithProviders(useAttributeGroups);
   await waitForNextUpdate();
 
-  expect(result.current.attributeGroups).toEqual([groupB, groupC, groupA]);
+  const [attributeGroups] = result.current;
+  expect(attributeGroups).toEqual([groupB, groupC, groupA]);
   expect(saveAttributeGroupsOrder).not.toBeCalled();
 });
 
@@ -50,7 +51,9 @@ test('it loads the attribute groups list with the DQI feature', async () => {
   const {result, waitForNextUpdate} = renderHookWithProviders(useAttributeGroups);
   await waitForNextUpdate();
 
-  expect(result.current.attributeGroups).toEqual([groupB, groupC, groupA]);
+  const [attributeGroups] = result.current;
+
+  expect(attributeGroups).toEqual([groupB, groupC, groupA]);
   expect(saveAttributeGroupsOrder).not.toBeCalled();
 });
 
@@ -66,16 +69,13 @@ test('it refreshes the order of the attribute groups list', async () => {
   const {result, waitForNextUpdate} = renderHookWithProviders(useAttributeGroups);
   await waitForNextUpdate();
 
-  const {reorderAttributeGroups} = result.current;
+  const [, reorderAttributeGroups] = result.current;
   await act(async () => {
     await reorderAttributeGroups([2, 0, 1]);
   });
 
-  expect(result.current.attributeGroups).toEqual([
-    {...groupC, sort_order: 0},
-    {...groupA, sort_order: 1},
-    {...groupB, sort_order: 2},
-  ]);
+  const [attributeGroups] = result.current;
+  expect(attributeGroups).toEqual([groupC, groupA, groupB]);
 
   expect(saveAttributeGroupsOrder).toBeCalledWith({
     groupC: 0,
