@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Category\Integration\Query;
 
-use Akeneo\Pim\Enrichment\Category\Infrastructure\Query\SqlCategoriesHaveAtLeastOneChild;
+use Akeneo\Pim\Enrichment\Category\API\Query\CategoriesHaveAtLeastOneChild;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -52,6 +52,7 @@ final class CategoriesHaveAtLeastOneChildIntegration extends TestCase
     public function it_should_return_true_with_single_items()
     {
         $categoryHierarchy = $this->getCategoriesHaveAtLeastOneChild();
+        $this->assertTrue($categoryHierarchy->among(['root1'], ['root1']));
         $this->assertTrue($categoryHierarchy->among(['root1'], ['root1-A']));
         $this->assertTrue($categoryHierarchy->among(['root1'], ['root1-A-a']));
         $this->assertTrue($categoryHierarchy->among(['root1-A'], ['root1-A-a']));
@@ -63,7 +64,6 @@ final class CategoriesHaveAtLeastOneChildIntegration extends TestCase
     {
         $categoryHierarchy = $this->getCategoriesHaveAtLeastOneChild();
         $this->assertFalse($categoryHierarchy->among(['root1'], ['root2-A']));
-        $this->assertFalse($categoryHierarchy->among(['root1'], ['root1']));
         $this->assertFalse($categoryHierarchy->among(['root1-B'], ['root2-A']));
         $this->assertFalse($categoryHierarchy->among(['root1'], []));
         $this->assertFalse($categoryHierarchy->among([], ['root2-A']));
@@ -93,8 +93,8 @@ final class CategoriesHaveAtLeastOneChildIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function getCategoriesHaveAtLeastOneChild(): SqlCategoriesHaveAtLeastOneChild
+    private function getCategoriesHaveAtLeastOneChild(): CategoriesHaveAtLeastOneChild
     {
-        return $this->get(SqlCategoriesHaveAtLeastOneChild::class);
+        return $this->get(CategoriesHaveAtLeastOneChild::class);
     }
 }
