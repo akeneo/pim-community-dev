@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
+use Akeneo\Catalogs\Application\Persistence\Family\GetFamilyLabelByCodeAndLocaleQueryInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
@@ -12,6 +13,11 @@ use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtr
  */
 final class StringFromFamilyValueExtractor implements StringValueExtractorInterface
 {
+    public function __construct(
+        readonly private GetFamilyLabelByCodeAndLocaleQueryInterface $getFamilyLabelByCodeAndLocaleQuery,
+    ) {
+    }
+
     public function extract(
         array $product,
         string $code,
@@ -19,9 +25,10 @@ final class StringFromFamilyValueExtractor implements StringValueExtractorInterf
         ?string $scope,
         ?array $parameters,
     ): null | string {
-        // @todo fetch family label
-        dd($product);
-        return $product['family_code'] ?? null;
+        return $this->getFamilyLabelByCodeAndLocaleQuery->execute(
+            $product['family_code'],
+            $parameters['label_locale']
+        );
     }
 
     public function getSupportedSourceType(): string
