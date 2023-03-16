@@ -22,7 +22,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
     public const TYPES = [
         self::THUMBNAIL_TYPE,
         self::THUMBNAIL_SMALL_TYPE,
-        self::PREVIEW_TYPE
+        self::PREVIEW_TYPE,
     ];
 
     public function register(PreviewGeneratorInterface $previewGenerator): void
