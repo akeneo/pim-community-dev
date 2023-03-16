@@ -10,3 +10,9 @@ services:
             - '@liip_imagine.filter.manager'
             - '@liip_imagine.cache.manager'
             - '%pim_category.provider.default_image.images%'
+
+    Akeneo\Category\Infrastructure\FileSystem\Remover\DeleteFilesFromPaths:
+        class: Akeneo\Category\Infrastructure\FileSystem\Remover\DeleteCategoryFilesFromPaths
+        arguments:
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@logger'

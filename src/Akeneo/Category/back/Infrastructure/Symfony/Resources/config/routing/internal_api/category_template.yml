@@ -32,8 +32,3 @@ pim_category_template_rest_add_attribute:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\AddAttributeController
         _feature: category_template_customization
     methods: [POST]
-
-yolo:
-    path: /yolo
-    defaults:
-        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\YoloController

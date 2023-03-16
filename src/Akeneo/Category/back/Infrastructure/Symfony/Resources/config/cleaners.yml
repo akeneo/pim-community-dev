@@ -2,6 +2,8 @@ services:
     Akeneo\Category\Application\Enrichment\CategoryDataCleaner:
         arguments:
             - '@Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues'
+            - '@Akeneo\Category\Infrastructure\FileSystem\Remover\DeleteFilesFromPaths'
+            - '@pim_category.infrastructure.registry.preview_generator'
 
     Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode:
         class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesPerCategoryCodeSql

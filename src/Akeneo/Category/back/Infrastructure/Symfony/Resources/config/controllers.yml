@@ -115,8 +115,3 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@category.command.message_bus'
-
-    Akeneo\Category\Infrastructure\Controller\InternalApi\YoloController:
-        public: true
-        arguments:
-            - '@Akeneo\Category\Infrastructure\FileSystem\DeleteFilesFromStorage'
