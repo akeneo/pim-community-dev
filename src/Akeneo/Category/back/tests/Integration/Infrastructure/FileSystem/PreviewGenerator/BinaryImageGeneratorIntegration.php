@@ -122,7 +122,7 @@ class BinaryImageGeneratorIntegration extends TestCase
             $previewImage
         );
 
-        $this->binaryImageGenerator->remove($data, $this->attributeImage, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
+        $this->binaryImageGenerator->remove($data, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $newPreviewImage = $this->binaryImageGenerator->generate($data, $this->attributeImage, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
         $this->assertEquals($previewImage, $newPreviewImage);
