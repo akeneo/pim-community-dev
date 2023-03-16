@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Unit\Application\Enrichment;
 
 use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
+use Akeneo\Category\Application\Enrichment\CategoryImageDataCleaner;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageDataValue;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
-use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorInterface;
-use Akeneo\Category\Infrastructure\FileSystem\Remover\DeleteFilesFromPaths;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -27,13 +26,11 @@ class CategoryDataCleanerTest extends CategoryTestCase
             ->expects(self::once())
             ->method('execute')
             ->with($this->getExpectedArgument());
-        $deleteFilesFromPathsMock = $this->createMock(DeleteFilesFromPaths::class);
-        $previewGeneratorInterfaceMock = $this->createMock(PreviewGeneratorInterface::class);
+        $categoryImageDataCleanerMock = $this->createMock(CategoryImageDataCleaner::class);
 
         $categoryDataCleaner = new CategoryDataCleaner(
             $updateCategoryEnrichedValuesMock,
-            $deleteFilesFromPathsMock,
-            $previewGeneratorInterfaceMock,
+            $categoryImageDataCleanerMock,
         );
 
         $categoryDataCleaner->cleanByChannelOrLocales(
