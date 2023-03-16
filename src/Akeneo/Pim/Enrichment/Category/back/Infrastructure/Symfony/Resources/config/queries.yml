@@ -7,7 +7,7 @@ services:
         arguments:
             - '@database_connection'
             -
-    Akeneo\Pim\Enrichment\Category\API\Query\GetHierarchicalInfoCategories:
-        class: Akeneo\Pim\Enrichment\Category\Infrastructure\Query\SqlGetHierarchicalInfoCategories
+    Akeneo\Pim\Enrichment\Category\API\Query\CategoriesHaveAtLeastOneChild:
+        class: Akeneo\Pim\Enrichment\Category\Infrastructure\Query\SqlCategoriesHaveAtLeastOneChild
         arguments:
             - '@database_connection'

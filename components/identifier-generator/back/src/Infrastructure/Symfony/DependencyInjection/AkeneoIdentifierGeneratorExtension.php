@@ -21,6 +21,7 @@ class AkeneoIdentifierGeneratorExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('anti_corruption_layers.yml');
         $loader->load('cli_command.yml');
         $loader->load('command_handlers.yml');
         $loader->load('persistence.yml');
