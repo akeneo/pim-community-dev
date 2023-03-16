@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Enrichment\Filter;
 
+use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\Value;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
@@ -14,7 +15,7 @@ use Akeneo\Category\Domain\ValueObject\ValueCollection;
 class ByTemplateAttributesUuidsFilter
 {
     /**
-     * @param array<string, string> $templateAttributes
+     * @param array<Attribute> $templateAttributes
      *
      * @return array<Value>
      */
@@ -24,13 +25,19 @@ class ByTemplateAttributesUuidsFilter
         if (empty($templateAttributes)) {
             return [];
         }
+        $templateAttributesUuidAndCodes = [];
+        foreach ($templateAttributes as $templateAttribute){
+            $attributeUuid = (string) $templateAttribute->getUuid();
+            $attributeCode = (string) $templateAttribute->getCode();
+            $templateAttributesUuidAndCodes[$attributeUuid] = $attributeCode;
+        }
 
         foreach ($enrichedValues as $enrichedValue) {
             $valueAttributeUuid = (string) $enrichedValue->getUuid();
             $valueAttributeCode = (string) $enrichedValue->getCode();
             if (
-                array_key_exists($valueAttributeUuid, $templateAttributes)
-                && in_array($valueAttributeCode, $templateAttributes, true)
+                array_key_exists($valueAttributeUuid, $templateAttributesUuidAndCodes)
+                && in_array($valueAttributeCode, $templateAttributesUuidAndCodes, true)
             ) {
                 $valuesToRemove[] = $enrichedValue;
             }

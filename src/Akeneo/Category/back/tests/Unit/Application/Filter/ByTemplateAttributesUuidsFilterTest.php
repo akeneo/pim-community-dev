@@ -6,6 +6,18 @@ namespace Akeneo\Category\back\tests\Unit\Application\Filter;
 
 use Akeneo\Category\Application\Enrichment\Filter\ByTemplateAttributesUuidsFilter;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use Akeneo\Category\Domain\Model\Attribute\Attribute;
+use Akeneo\Category\Domain\Model\Attribute\AttributeText;
+use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
+use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use PHPUnit\Framework\Assert;
 
@@ -18,13 +30,9 @@ class ByTemplateAttributesUuidsFilterTest extends CategoryTestCase
     public function test(): void
     {
         $valuesToFilter = ValueCollection::fromDatabase($this->getEnrichedValues());
-        $attributesCodes =
-            [
-                'c91e6a4e-733b-4d77-aefc-129edbf03233' => 'long_description',
-                'd8617b1f-1db8-4e49-a6b0-404935fe2911' => 'url_slug',
-            ];
+        $attributes = $this->getAttributes();
 
-        $valuesToRemove = ByTemplateAttributesUuidsFilter::getEnrichedValuesToClean($valuesToFilter, $attributesCodes);
+        $valuesToRemove = ByTemplateAttributesUuidsFilter::getEnrichedValuesToClean($valuesToFilter, $attributes);
         Assert::assertCount(4, $valuesToRemove);
         Assert::assertEquals('c91e6a4e-733b-4d77-aefc-129edbf03233', (string) $valuesToRemove[0]->getUuid());
         Assert::assertEquals('c91e6a4e-733b-4d77-aefc-129edbf03233', (string) $valuesToRemove[1]->getUuid());
@@ -81,5 +89,36 @@ class ByTemplateAttributesUuidsFilterTest extends CategoryTestCase
             512,
             JSON_THROW_ON_ERROR,
         );
+    }
+
+    /**
+     * @return array<Attribute>
+     */
+    private function getAttributes(): array
+    {
+        return [
+            AttributeTextArea::create(
+                AttributeUuid::fromString('c91e6a4e-733b-4d77-aefc-129edbf03233'),
+                new AttributeCode('long_description'),
+                AttributeOrder::fromInteger(3),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsScopable::fromBoolean(true),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'URL slug']),
+                TemplateUuid::fromString('637d8002-44c9-490e-9bb6-258c139da176'),
+                AttributeAdditionalProperties::fromArray([]),
+            ),
+            AttributeText::create(
+                AttributeUuid::fromString('d8617b1f-1db8-4e49-a6b0-404935fe2911'),
+                new AttributeCode('url_slug'),
+                AttributeOrder::fromInteger(3),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsScopable::fromBoolean(true),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'URL slug']),
+                TemplateUuid::fromString('637d8002-44c9-490e-9bb6-258c139da176'),
+                AttributeAdditionalProperties::fromArray([]),
+            ),
+        ];
     }
 }

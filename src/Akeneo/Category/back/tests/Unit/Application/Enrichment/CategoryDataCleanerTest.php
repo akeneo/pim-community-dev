@@ -5,10 +5,21 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Unit\Application\Enrichment;
 
 use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
-use Akeneo\Category\Application\Query\GetTemplateAttributesByTemplateUuid;
+use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use Akeneo\Category\Domain\Model\Attribute\AttributeText;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageDataValue;
+use Akeneo\Category\Domain\ValueObject\LabelCollection;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 
 /**
@@ -26,7 +37,7 @@ class CategoryDataCleanerTest extends CategoryTestCase
             ->expects(self::once())
             ->method('execute')
             ->with($this->getExpectedArgumentForChannelOrLocalesCleaning());
-        $getTemplateAttributesByTemplateUuidMock = $this->createMock(GetTemplateAttributesByTemplateUuid::class);
+        $getTemplateAttributesByTemplateUuidMock = $this->createMock(GetAttribute::class);
         $categoryDataCleaner = new CategoryDataCleaner(
             $updateCategoryEnrichedValuesMock,
             $getTemplateAttributesByTemplateUuidMock,
@@ -50,12 +61,26 @@ class CategoryDataCleanerTest extends CategoryTestCase
             ->method('execute')
             ->with($this->getExpectedArgumentForTemplateUuidCleaning());
         $getTemplateAttributesByTemplateUuidMock = $this->createMock(
-            GetTemplateAttributesByTemplateUuid::class
+            GetAttribute::class
         );
-        $getTemplateAttributesByTemplateUuidMock->method('execute')->with($templateUuid)->willReturn(
-            [
-                'be2a1d6e-0563-409a-8407-0be494c34b84' => 'seo_keywords',
-            ]
+        $getTemplateAttributesByTemplateUuidMock->method('byTemplateUuid')
+            ->with(TemplateUuid::fromString($templateUuid))
+            ->willReturn(
+                AttributeCollection::fromArray(
+                    [
+                        AttributeText::create(
+                            AttributeUuid::fromString('be2a1d6e-0563-409a-8407-0be494c34b84'),
+                            new AttributeCode('seo_keywords'),
+                            AttributeOrder::fromInteger(3),
+                            AttributeIsRequired::fromBoolean(false),
+                            AttributeIsScopable::fromBoolean(true),
+                            AttributeIsLocalizable::fromBoolean(true),
+                            LabelCollection::fromArray(['en_US' => 'URL slug']),
+                            TemplateUuid::fromString('637d8002-44c9-490e-9bb6-258c139da176'),
+                            AttributeAdditionalProperties::fromArray([]),
+                        ),
+                    ]
+                )
         );
         $categoryDataCleaner = new CategoryDataCleaner(
             $updateCategoryEnrichedValuesMock,
