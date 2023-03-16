@@ -5,6 +5,8 @@ type Configuration = {
   features: {
     permission: boolean;
     category_template_deactivation: boolean;
+    enriched_category: boolean;
+    category_template_customization: boolean;
   };
   acls: {
     pim_enrich_product_categories_view: boolean;
@@ -24,6 +26,8 @@ type WriteConfiguration = {
   features?: {
     permission?: boolean;
     category_template_deactivation?: boolean;
+    enriched_category?: boolean;
+    category_template_customization?: boolean;
   };
   acls?: {
     pim_enrich_product_categories_view?: boolean;
@@ -52,6 +56,8 @@ const DEFAULT_CONFIGURATION: Configuration = {
   features: {
     permission: true,
     category_template_deactivation: true,
+    enriched_category: true,
+    category_template_customization: true,
   },
   acls: {
     pim_enrich_product_categories_view: true,
@@ -77,6 +83,8 @@ const ConfigurationProvider: FC = ({children}) => {
       features: {
         permission: false,
         category_template_deactivation: true,
+        enriched_category: true,
+        category_template_customization: true,
       },
       acls: {
         pim_enrich_product_categories_view: true,
@@ -98,6 +106,8 @@ const ConfigurationProvider: FC = ({children}) => {
       features: {
         permission: true,
         category_template_deactivation: true,
+        enriched_category: true,
+        category_template_customization: true,
       },
       acls: {
         pim_enrich_product_categories_view: true,
