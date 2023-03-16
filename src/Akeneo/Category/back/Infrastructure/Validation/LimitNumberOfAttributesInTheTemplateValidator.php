@@ -17,6 +17,8 @@ use Webmozart\Assert\Assert;
  */
 final class LimitNumberOfAttributesInTheTemplateValidator extends ConstraintValidator
 {
+    private const ERROR_CODE = 'attributes_limit_reached';
+
     public function __construct(
         private readonly GetAttribute $getAttribute,
     ) {
@@ -35,6 +37,7 @@ final class LimitNumberOfAttributesInTheTemplateValidator extends ConstraintVali
         if ($attributeCollection->count() >= 50) {
             $this->context
                 ->buildViolation($constraint->message)
+                ->setCode(self::ERROR_CODE)
                 ->addViolation();
         }
     }

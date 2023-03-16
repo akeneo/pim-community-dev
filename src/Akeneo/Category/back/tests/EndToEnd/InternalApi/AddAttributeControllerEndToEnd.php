@@ -263,7 +263,7 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
 
         $normalizedErrors = json_decode($response->getContent(), true);
-        $this->assertEquals('The limit of 50 attributes in a template is reached', $normalizedErrors[0]['error']['message']);
+        $this->assertEquals('Category templates are limited to 50 attributes per template.', $normalizedErrors[0]['error']['message']);
     }
 
     private function createTemplate(): void

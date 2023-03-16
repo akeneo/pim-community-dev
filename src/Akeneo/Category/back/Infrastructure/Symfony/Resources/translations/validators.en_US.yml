@@ -11,7 +11,9 @@ akeneo.category:
                 textarea_too_long: The value cannot be longer than {{ limit }} characters
                 richtext_too_long: The value cannot be longer than {{ limit }} characters
         attribute:
-            limit: The limit of 50 attributes in a template is reached
+            limit:
+                title: You cannot add more than 50 attributes
+                message: Category templates are limited to 50 attributes per template.
             code:
                 wrong_format: Attribute code may contain only lowercase letters, numbers and underscores
                 unique_in_the_template: Attribute code {{ attributeCode }} must be unique in the template

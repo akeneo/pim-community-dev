@@ -66,6 +66,7 @@ class LimitNumberOfAttributesInTheTemplateValidatorSpec extends ObjectBehavior
             ->buildViolation($constraint->message)
             ->shouldBeCalledOnce()
             ->willReturn($violationBuilder);
+        $violationBuilder->setCode('attributes_limit_reached')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalledOnce();
 
         $attributeCollection = AttributeCollection::fromArray([]);
