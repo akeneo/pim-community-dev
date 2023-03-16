@@ -85,6 +85,7 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
             - All:
                 - Length:
                     max: 255
+                - NotBlank: ~
         delimiter:
             - NotBlank:
                 allowNull: true
