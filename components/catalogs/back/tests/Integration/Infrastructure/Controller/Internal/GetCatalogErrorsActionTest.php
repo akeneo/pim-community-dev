@@ -23,7 +23,7 @@ class GetCatalogErrorsActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItReturnsCatalogErrors(): void
+    public function testItReturnsCatalogProductSelectionCriteriaErrors(): void
     {
         $client = $this->getAuthenticatedInternalApiClient('shopifi');
 
@@ -62,10 +62,11 @@ class GetCatalogErrorsActionTest extends IntegrationTestCase
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertNotEquals([], $payload);
+        Assert::assertCount(1, $payload);
+        Assert::assertEquals('productSelectionCriteria[0][value]', $payload[0]['propertyPath']);
     }
 
-    public function testItReturnsNoCatalogErrors(): void
+    public function testItReturnsCatalogProductFilterValuesErrors(): void
     {
         $client = $this->getAuthenticatedInternalApiClient('shopifi');
 
@@ -73,6 +74,11 @@ class GetCatalogErrorsActionTest extends IntegrationTestCase
             id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             name: 'Store US',
             ownerUsername: 'shopifi',
+            catalogProductValueFilters: [
+                'channels' => [
+                    'br_BR',
+                ],
+            ],
         );
 
         $client->request(
@@ -89,6 +95,117 @@ class GetCatalogErrorsActionTest extends IntegrationTestCase
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
+        Assert::assertCount(1, $payload);
+        Assert::assertEquals('productValueFilters[channels][0]', $payload[0]['propertyPath']);
+    }
+
+    public function testItReturnsCatalogProductMappingErrors(): void
+    {
+        $client = $this->getAuthenticatedInternalApiClient('shopifi');
+
+        $this->createCatalog(
+            id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            productMappingSchema: $this->getValidSchemaData(),
+            catalogProductMapping: [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => 'ecommerce',
+                    'locale' => null,
+                ],
+            ],
+        );
+
+        $client->request(
+            'GET',
+            '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07/errors',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+        );
+
+        $response = $client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertEquals(200, $response->getStatusCode());
+        Assert::assertCount(1, $payload);
+        Assert::assertEquals('productMapping[uuid][scope]', $payload[0]['propertyPath']);
+    }
+
+    public function testItReturnsNoCatalogErrors(): void
+    {
+        $client = $this->getAuthenticatedInternalApiClient('shopifi');
+
+        $this->createCatalog(
+            id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'color',
+                    'operator' => Operator::IN_LIST,
+                    'value' => ['blue'],
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+            catalogProductValueFilters: [
+                'locales' => [
+                    'en_US',
+                ],
+            ],
+            productMappingSchema: $this->getValidSchemaData(),
+            catalogProductMapping: [
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        );
+
+        $this->createAttribute([
+            'code' => 'color',
+            'type' => 'pim_catalog_simpleselect',
+            'options' => ['blue', 'green'],
+        ]);
+
+        $client->request(
+            'GET',
+            '/rest/catalogs/ed30425c-d9cf-468b-8bc7-fa346f41dd07/errors',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+        );
+
+        $response = $client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertEquals([], $payload);
+    }
+
+    private function getValidSchemaData(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            }
+          }
+        }
+        JSON_WRAP;
     }
 }

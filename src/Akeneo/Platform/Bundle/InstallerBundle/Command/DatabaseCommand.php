@@ -9,7 +9,6 @@ use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Component\Console\CommandExecutor;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -86,12 +85,6 @@ class DatabaseCommand extends Command
                 'Directory of the fixtures to install',
                 'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal'
             )
-            ->addOption(
-                'doNotDropDatabase',
-                null,
-                InputOption::VALUE_NONE,
-                'Try to use an existing database if it already exists. Beware, the database data will still be deleted'
-            )
         ;
     }
 
@@ -114,36 +107,19 @@ class DatabaseCommand extends Command
     {
         $this->logger->info('Prepare database schema');
 
-        // Needs to try if database already exists or not
         try {
-            if (!$this->connection->isConnected()) {
-                $this->connection->connect();
-            }
-            if ($input->getOption('doNotDropDatabase')) {
-                $this->commandExecutor->runCommand(
-                    'doctrine:schema:drop',
-                    ['--force' => true, '--full-database' => true]
+            $this->commandExecutor
+                ->runCommand('doctrine:schema:create')
+                ->runCommand(
+                    'doctrine:schema:update',
+                    ['--force' => true, '--no-interaction' => true]
                 );
-            } else {
-                $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
-            }
-        } catch (ConnectionException $e) {
-            $this->logger->error('Database does not exist yet');
+        } catch (\Exception $e) {
+            $this->logger->critical('Trying to install PIM on an existing database is impossible.');
+            $this->logger->critical($e->getMessage());
+
+            return Command::FAILURE;
         }
-
-        $this->commandExecutor->runCommand('doctrine:database:create', ['--if-not-exists' => true]);
-
-        // Needs to close connection if always open
-        if ($this->connection->isConnected()) {
-            $this->connection->close();
-        }
-
-        $this->commandExecutor
-            ->runCommand('doctrine:schema:create')
-            ->runCommand(
-                'doctrine:schema:update',
-                ['--force' => true, '--no-interaction' => true]
-            );
 
         if (false === $input->getOption('withoutIndexes')) {
             $this->resetElasticsearchIndex($output);
@@ -154,7 +130,7 @@ class DatabaseCommand extends Command
 
         $this->eventDispatcher->dispatch(
             new InstallerEvent($this->commandExecutor, null, [
-                'catalog' => $input->getOption('catalog')
+                'catalog' => $input->getOption('catalog'),
             ]),
             InstallerEvents::POST_DB_CREATE
         );
@@ -164,7 +140,7 @@ class DatabaseCommand extends Command
         if (false === $input->getOption('withoutFixtures')) {
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($this->commandExecutor, null, [
-                    'catalog' => $input->getOption('catalog')
+                    'catalog' => $input->getOption('catalog'),
                 ]),
                 InstallerEvents::PRE_LOAD_FIXTURES
             );
@@ -173,7 +149,7 @@ class DatabaseCommand extends Command
 
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($this->commandExecutor, null, [
-                    'catalog' => $input->getOption('catalog')
+                    'catalog' => $input->getOption('catalog'),
                 ]),
                 InstallerEvents::POST_LOAD_FIXTURES
             );
@@ -212,23 +188,21 @@ class DatabaseCommand extends Command
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
             $params = [
-                'code'       => $jobInstance->getCode(),
+                'code' => $jobInstance->getCode(),
                 '--no-debug' => true,
-                '--no-log'   => true,
-                '-v'         => true,
+                '--no-log' => true,
+                '-v' => true,
             ];
 
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
-                    'catalog' => $catalog
+                    'catalog' => $catalog,
                 ]),
                 InstallerEvents::PRE_LOAD_FIXTURE
             );
+
             $this->logger->info(
-                sprintf(
-                    'Please wait, the <comment>%s</comment> are processing...',
-                    $jobInstance->getCode()
-                )
+                sprintf('Please wait, the "%s" are processing...', $jobInstance->getCode())
             );
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
             $this->eventDispatcher->dispatch(

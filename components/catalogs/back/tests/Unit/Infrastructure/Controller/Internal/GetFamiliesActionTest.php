@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Controller\Internal;
 use Akeneo\Catalogs\Application\Persistence\Family\GetFamiliesByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Family\SearchFamilyQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Controller\Internal\GetFamiliesAction;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +16,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class GetFamiliesActionTest extends TestCase
 {
     private ?GetFamiliesAction $getFamiliesAction;
-    private ?SearchFamilyQueryInterface $searchFamilyQuery;
-    private ?GetFamiliesByCodeQueryInterface $getFamiliesByCodeQuery;
+    private SearchFamilyQueryInterface&MockObject $searchFamilyQuery;
+    private GetFamiliesByCodeQueryInterface&MockObject $getFamiliesByCodeQuery;
 
     protected function setUp(): void
     {
@@ -55,7 +56,7 @@ class GetFamiliesActionTest extends TestCase
         ($this->getFamiliesAction)(
             new Request(
                 query: [
-                    'codes' => 'foo,bar'
+                    'codes' => 'foo,bar',
                 ],
                 server: [
                     'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -68,7 +69,7 @@ class GetFamiliesActionTest extends TestCase
     {
         $this->assertInstanceOf(
             RedirectResponse::class,
-            ($this->getFamiliesAction)(new Request())
+            ($this->getFamiliesAction)(new Request()),
         );
     }
 

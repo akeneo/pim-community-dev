@@ -103,10 +103,10 @@ class CategorySpec extends ObjectBehavior
             'parent_id' => 1,
             'updated' => '2021-03-24 16:00:00',
             'value_collection' => '{}',
-            "permissions" => '{}',
+            "permissions" => null,
         ]);
 
-        $category->getPermissions()->normalize()->shouldReturn([]);
+        $category->getPermissions()->normalize()->shouldReturn(null);
 
         $category = $this::fromCategoryWithPermissions(
             $category,
@@ -130,5 +130,10 @@ class CategorySpec extends ObjectBehavior
             "edit" => [1 => "IT Support", 3 => "Redactor", 7 => "Manager"],
             "own" => [1 => "IT Support", 3 => "Redactor", 7 => "Manager"],
         ]);
+    }
+
+    function it_is_set_with_null_label() {
+        $this::setLabel('en_US', null);
+        $this::getLabels()->getTranslation('en_US')->shouldReturn(null);
     }
 }

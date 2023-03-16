@@ -31,7 +31,7 @@ final class GenerateAutoNumberHandler implements GeneratePropertyHandlerInterfac
         Assert::isInstanceOf($autoNumber, AutoNumber::class);
         $nextIdentifier = $this->getNextIdentifierQuery->fromPrefix($identifierGenerator, $prefix, $autoNumber->numberMin());
 
-        return str_pad('' . $nextIdentifier, $autoNumber->digitsMin(), '0', STR_PAD_LEFT);
+        return \str_pad('' . $nextIdentifier, $autoNumber->digitsMin(), '0', STR_PAD_LEFT);
     }
 
     public function getPropertyClass(): string

@@ -27,7 +27,7 @@ class LabelUserIntentFactorySpec extends ObjectBehavior
 
     function it_creates_a_list_of_label_user_intents_based_on_labels_list()
     {
-        $result = $this->create(
+        $this->create(
             'labels',
             1,
             [
@@ -37,6 +37,15 @@ class LabelUserIntentFactorySpec extends ObjectBehavior
         )->shouldBeLike([
             new SetLabel('en_US', 'sausages'),
             new SetLabel('fr_FR', 'saucisses'),
+        ]);
+    }
+
+    function it_does_create_label_user_intent_with_null()
+    {
+        $this->create(
+            'labels', 1, ['en_US' => null]
+        )->shouldBeLike([
+            new SetLabel('en_US', null),
         ]);
     }
 

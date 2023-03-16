@@ -48,6 +48,7 @@ $rules = [
         'Symfony\Component\HttpKernel',
         'Symfony\Component\EventDispatcher',
         'Webmozart\Assert',
+        'Ramsey\Uuid\Uuid',
     ])->in('Akeneo\Category\Application'),
 
     $builder->only([
@@ -129,7 +130,6 @@ $rules = [
         'Symfony\Component\Security',
         'Symfony\Component\Serializer',
         'Symfony\Component\Validator',
-        'Symfony\Bundle\FrameworkBundle',
         'Doctrine\Common',
         'Doctrine\DBAL',
         'Doctrine\ORM',
@@ -156,9 +156,7 @@ $rules = [
     ])->in('Akeneo\Category\Api'),
 
     $builder->only([
-        // ???
-        'Akeneo\Category\Domain\Model\Enrichment\Category',
-        'Akeneo\Category\Domain\ValueObject\ValueCollection',
+        'Akeneo\Category\Domain',
 
         // Vendors
         'Webmozart\Assert',

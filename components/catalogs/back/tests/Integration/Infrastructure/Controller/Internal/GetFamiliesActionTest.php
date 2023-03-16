@@ -99,7 +99,7 @@ class GetFamiliesActionTest extends IntegrationTestCase
         foreach ($codes as $code) {
             $this->connection->insert(
                 'pim_catalog_family',
-                ['code' => $code, 'created' => '2022-06-27 16:38:45', 'updated' => '2022-06-27 16:38:45']
+                ['code' => $code, 'created' => '2022-06-27 16:38:45', 'updated' => '2022-06-27 16:38:45'],
             );
         }
     }

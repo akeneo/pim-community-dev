@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
+use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
-use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
+use Akeneo\Catalogs\Infrastructure\Persistence\ProductMappingSchema\GetProductMappingSchemaQuery;
+use Akeneo\Catalogs\Infrastructure\PqbFilters\ProductMappingRequiredFilters;
+use Akeneo\Catalogs\Infrastructure\PqbFilters\ProductSelectionCriteria;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -19,7 +22,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
 {
     public function __construct(
-        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private readonly ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private readonly GetProductMappingSchemaQuery $productMappingSchemaQuery,
     ) {
     }
 
@@ -36,11 +40,22 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         ?string $updatedAfter = null,
         ?string $updatedBefore = null,
     ): array {
+        $filters = \array_merge(
+            $this->getUpdatedFilters($updatedAfter, $updatedBefore),
+            ProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria()),
+        );
+
+        try {
+            $productMappingSchema = $this->productMappingSchemaQuery->execute($catalog->getId());
+            $filters = \array_merge(
+                $filters,
+                ProductMappingRequiredFilters::toPQBFilters($catalog->getProductMapping(), $productMappingSchema),
+            );
+        } catch (ProductMappingSchemaNotFoundException) {
+        }
+
         $pqbOptions = [
-            'filters' => \array_merge(
-                $this->getUpdatedFilters($updatedAfter, $updatedBefore),
-                FormatProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria()),
-            ),
+            'filters' => $filters,
             'limit' => $limit,
         ];
 
@@ -57,7 +72,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
 
         return \array_map(
             fn (IdentifierResult $result): string => $this->getUuidFromIdentifierResult($result->getId()),
-            \iterator_to_array($results)
+            \iterator_to_array($results),
         );
     }
 
@@ -103,21 +118,21 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
                     [
                         $updatedAfterDateTime->format('Y-m-d H:i:s'),
                         $updatedBeforeDateTime->format('Y-m-d H:i:s'),
-                    ]
+                    ],
                 ];
             }
         } elseif (null !== $updatedAfter) {
             if (false !== $updatedAfterDateTime) {
                 return [
                     Operators::GREATER_THAN,
-                    $updatedAfterDateTime->format('Y-m-d H:i:s')
+                    $updatedAfterDateTime->format('Y-m-d H:i:s'),
                 ];
             }
         } elseif (null !== $updatedBefore) {
             if (false !== $updatedBeforeDateTime) {
                 return [
                     Operators::LOWER_THAN,
-                    $updatedBeforeDateTime->format('Y-m-d H:i:s')
+                    $updatedBeforeDateTime->format('Y-m-d H:i:s'),
                 ];
             }
         }
@@ -131,7 +146,7 @@ final class GetProductUuidsQuery implements GetProductUuidsQueryInterface
         if (!\preg_match(
             '/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/',
             $esId,
-            $matches
+            $matches,
         )) {
             throw new \InvalidArgumentException(\sprintf('Invalid Elasticsearch identifier %s', $esId));
         }

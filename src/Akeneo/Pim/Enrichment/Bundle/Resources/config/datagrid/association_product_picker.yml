@@ -78,5 +78,5 @@ datagrid:
                     data_name: ratio
                 label_or_identifier:
                     type: label_or_identifier
-                    label: Label or identifier
+                    label: 'pim_datagrid.filters.label_or_identifier.label_with_uuid'
                     data_name: label_or_identifier

@@ -87,6 +87,7 @@ pim_enrich.entity.attribute_option:
       add_option: Feu clic aquí per afegir-ne un
       delete_confirmation_title_msg: Eliminar "{{ optionCode }}" de les seves opcions?
       delete_confirmation_subtitle_msg: Esteu segur que voleu eliminar la opció? Aquesta acció no és pot desfer.
+      display_options_limit: Aquí només es mostren les primeres 500 opcions. Si voleu veure més opcions, feu una cerca o una exportació.
       search:
         placeholder: Cerca a l'etiqueta o codi
         no_result:
@@ -231,7 +232,6 @@ pim_enrich.entity.attribute:
       confirm: Esteu segur que voleu suprimir aquest atribut?
       product_count: '{0}0 productes|{1}1 producte|]1, Inf[{{ count }} productes'
       product_model_count: '{0}0 models de producte|{1}1 model de producte|]1, Inf[{{ count }} models de producte'
-      used: ']-Inf,1]actualment té valors establerts per a aquest atribut, s''eliminaran.|]1, Inf[actualment tenen valors establerts per a aquest atribut, s''eliminaran.'
       helper:
         content: Si necessita canviar el seu tipus d'atribut per fer-lo localitzable o definible, mantenint l'accés als seus valors d'atributs existents,
         link: consulteu el nostre Centre d'ajuda (per a més informació).

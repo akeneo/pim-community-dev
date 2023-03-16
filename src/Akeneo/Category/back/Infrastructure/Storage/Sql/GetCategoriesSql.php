@@ -36,14 +36,18 @@ final class GetCategoriesSql implements GetCategoriesInterface
                 FROM pim_catalog_category category
                 JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
                 WHERE $sqlWhere
+                AND translation.label IS NOT NULL 
+                AND translation.label != ''
                 GROUP BY category.code
             ),
             enriched_values as (
                 SELECT category.id, category.value_collection
                 FROM pim_catalog_category category
-                JOIN pim_catalog_category_tree_template ctt ON ctt.category_tree_id = category.id
-                JOIN pim_catalog_category_template template ON template.uuid = ctt.category_template_uuid AND (template.is_deactivated IS NULL OR template.is_deactivated = 0)
-                WHERE $sqlWhere
+                LEFT JOIN pim_catalog_category_tree_template ctt ON ctt.category_tree_id = category.id
+                LEFT JOIN pim_catalog_category_template template ON template.uuid = ctt.category_template_uuid
+                WHERE $sqlWhere 
+                AND template.is_deactivated IS NULL 
+                    OR template.is_deactivated = 0
             ),
             position as (
                 SELECT code, position 

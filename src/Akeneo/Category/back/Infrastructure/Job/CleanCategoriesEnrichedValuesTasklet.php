@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Job;
 
-use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
+use Akeneo\Category\Api\Command\CommandMessageBus;
+use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommand;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -17,7 +18,7 @@ class CleanCategoriesEnrichedValuesTasklet implements TaskletInterface
     private StepExecution $stepExecution;
 
     public function __construct(
-        private readonly CleanCategoryDataLinkedToChannel $cleanCategoryDataLinkedToChannel,
+        private readonly CommandMessageBus $commandBus,
     ) {
     }
 
@@ -32,8 +33,10 @@ class CleanCategoriesEnrichedValuesTasklet implements TaskletInterface
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $channelCode = $jobParameters->get('channel_code');
-        $locales = $jobParameters->get('locales_codes');
-        $action = $jobParameters->get('action');
-        ($this->cleanCategoryDataLinkedToChannel)($channelCode, $locales, $action);
+        $locales = $jobParameters->get('locales_codes') ?? [];
+
+        $this->commandBus->dispatch(
+            new CleanCategoryEnrichedValuesByChannelOrLocaleCommand($channelCode, $locales),
+        );
     }
 }

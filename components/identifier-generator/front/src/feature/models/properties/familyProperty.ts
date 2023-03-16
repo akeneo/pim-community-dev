@@ -13,10 +13,13 @@ type FamilyProperty = {
         operator: Operator | null;
         value: number | null;
       }
+    | {
+        type: AbbreviationType.NOMENCLATURE;
+      }
     | {type: null};
 };
 
-const FamilyPropertyOperators: Operator[] = [Operator.EQUAL, Operator.EQUAL_OR_LESS];
+const FamilyPropertyOperators: Operator[] = [Operator.EQUALS, Operator.LOWER_OR_EQUAL_THAN];
 
 export {FamilyPropertyOperators};
 export type {FamilyProperty};

@@ -73,6 +73,31 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
     });
   }, [categoryTreeCode]);
 
+  const recursiveCallback = (
+    tree: CategoryTreeModel,
+    value: string,
+    callback: (node: CategoryTreeModel) => CategoryTreeModel
+  ) => {
+    let newTree = {...tree};
+    if (newTree.code === value) {
+      newTree = callback(newTree);
+    }
+    if (newTree.children) {
+      newTree.children = newTree.children.map(child => recursiveCallback(child, value, callback));
+    }
+
+    return newTree;
+  };
+
+  const internalSetChecked = (value: string, selected: boolean) => {
+    onChange?.(value, selected);
+    setTree(tree => (tree ? recursiveCallback(tree, value, node => ({...node, selected})) : undefined));
+  };
+
+  const internalSetChildren = (value: string, children: CategoryTreeModel[]) => {
+    setTree(tree => (tree ? recursiveCallback(tree, value, node => ({...node, children})) : undefined));
+  };
+
   if (!tree) {
     return <Tree value="" label="" isLoading={true} {...rest} />;
   }
@@ -82,10 +107,11 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
       tree={tree}
       parentTree={null}
       childrenCallback={childrenCallback}
-      onChange={onChange}
       onClick={onClick}
       isCategorySelected={isCategorySelected}
       isCategoryReadOnly={isCategoryReadOnly}
+      internalSetChecked={internalSetChecked}
+      internalSetChildren={internalSetChildren}
       {...rest}
     />
   );

@@ -42,6 +42,16 @@ akeneo_catalogs_internal_get_attribute:
 akeneo_catalogs_internal_get_attributes:
     path: '/rest/catalogs/attributes'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributesAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_attributes_by_target_type_and_target_format:
+    path: '/rest/catalogs/attributes-by-target-type-and-target-format'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributesByTargetTypeAndTargetFormatAction
+
+akeneo_catalogs_internal_get_channel_currencies:
+    path: '/rest/catalogs/channels/{code}/currencies'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelCurrenciesAction
+    methods: [ GET ]
 
 akeneo_catalogs_internal_get_channel_locales:
     path: '/rest/catalogs/channels/{code}/locales'

@@ -44,7 +44,7 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
      */
     public function getAll(): array
     {
-        return array_values($this->generators);
+        return \array_values($this->generators);
     }
 
     /**
@@ -57,7 +57,7 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
 
     public function count(): int
     {
-        return count($this->generators);
+        return \count($this->generators);
     }
 
     /**

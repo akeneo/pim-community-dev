@@ -84,6 +84,7 @@ akeneo_catalogs:
         remove: Supprimer la catégorie
         category_tree: Arbres
       measurement:
+        search: Unité de mesure
         no_results: Aucun résultat trouvé
       boolean:
         yes: Yes
@@ -125,6 +126,7 @@ akeneo_catalogs:
     source:
       title: Sélectionner une source 
       parameters:
+        placeholder: Sélectionner un attribut
         title: Paramétrage de la source
         channel:
           label: Canal
@@ -132,10 +134,19 @@ akeneo_catalogs:
         locale:
           label: Locale
           placeholder: Sélectionner une locale
+        label_locale:
+          label: Langue de traduction
+          placeholder: Sélectionnez une traduction
+          helper: Sélectionnez la langue dans laquelle la valeur doit être envoyée.
+        currency:
+          label: Devise
+          placeholder: Sélectionnez une devise
+          helper: Sélectionnez la devise dans laquelle la valeur doit être envoyée.
+        no_parameters_message: Aucun paramètre disponible pour cette source.
       select_source:
         label: Source
         search: Rechercher un critère
-        no_results: Aucune correspondance trouvée
+        no_results: Aucun résultat trouvé
         section_system: Système
         section_attributes: Attributs
       placeholder:
@@ -147,3 +158,13 @@ akeneo_catalogs:
         illustration_title: L'UUID est un identifiant technique pour les produits.
         subtitle: Toutes les apps doivent le définir en tant que cible. Vous n'avez rien à configurer pour cette cible car nous la "mappons" automatiquement avec l'UUID du produit Akeneo.
         link: Plus d'informations sur l'UUID.
+      requirements:
+        title: Exigences de l'application
+        help: Aide
+        constraints:
+          minLength: '{0,1} Cette cible doit avoir au moins {{ value }} caractère.|[2,Inf[ Cette cible doit avoir au moins {{ value }} caractères.'
+          maxLength: '{0,1} Cette cible ne doit pas dépasser {{ value }} caractère.|[2,Inf[ Cette cible ne doit pas dépasser {{ value }} caractères.'
+          pattern: '[0,Inf[ Structure : Cette cible doit correspondre à l''expression régulière suivante : "{{ value }}".'
+          minimum: '[0,Inf[ Cette cible doit être supérieure ou égale à {{ value }}.'
+          maximum: '[0,Inf[ Cette cible doit être inférieure ou égale à {{ value }}.'
+          enum: '[0,Inf[ Liste : Cette cible n''accepte que les valeurs suivantes : {{ value }}.'

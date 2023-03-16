@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure;
 
+use Akeneo\Category\Api\Command\UserIntents\UserIntent;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -59,14 +60,16 @@ abstract class EndToEndTestCase extends TestCase
         );
     }
 
-    protected function createProduct(?string $identifier = null, ?bool $withFamily = true): ProductInterface
+    /**
+     * @param UserIntent[]|null $userIntents
+     */
+    protected function createProduct(?string $identifier = null, ?bool $withFamily = true, ?array $userIntents = []): ProductInterface
     {
         $uuid = Uuid::uuid4();
         $this->getAuthenticator()->logIn('admin');
 
-        $userIntents = [];
         if (null !== $identifier) {
-            $userIntents = [new SetIdentifierValue('sku', $identifier)];
+            $userIntents[] = new SetIdentifierValue('sku', $identifier);
         }
 
         if ($withFamily) {

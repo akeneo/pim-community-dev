@@ -20,12 +20,12 @@ use Symfony\Requirements\Requirement;
  */
 class PimRequirements
 {
-    const REQUIRED_PHP_VERSION = '7.4.0';
+    const REQUIRED_PHP_VERSION = '8.1.0';
     const REQUIRED_GD_VERSION = '2.0';
-    const REQUIRED_GHOSTSCRIPT_VERSION = '9.27';
-    const REQUIRED_CURL_VERSION = '7.0';
-    const REQUIRED_ICU_VERSION = '4.2';
-    const LOWEST_REQUIRED_MYSQL_VERSION = '8.0.18';
+    const REQUIRED_GHOSTSCRIPT_VERSION = '9.53';
+    const REQUIRED_CURL_VERSION = '7.74';
+    const REQUIRED_ICU_VERSION = '67.1';
+    const LOWEST_REQUIRED_MYSQL_VERSION = '8.0.30';
     const GREATEST_REQUIRED_MYSQL_VERSION = '8.1.0';
 
     const REQUIRED_EXTENSIONS = [
@@ -205,7 +205,7 @@ class PimRequirements
      * If it exits, an attempt to connect is done, and can result in an exception
      * if no connection is reached.
      */
-    protected function getConnection() : PDO
+    protected function getConnection(): PDO
     {
         return new PDO(
             sprintf(

@@ -93,10 +93,41 @@ const Page: FC = () => {
             </Field>
             <Field>
               <Checkbox
-                checked={configuration.features.enriched_category}
-                onClick={() => changeFeature('enriched_category', !configuration.features.enriched_category)}
+                checked={configuration.features.category_template_deactivation}
+                onClick={() =>
+                  changeFeature(
+                    'category_template_deactivation',
+                    !configuration.features.category_template_deactivation
+                  )
+                }
               >
-                Enrich Category
+                Enriched Categories: Deactivate Template
+              </Checkbox>
+            </Field>
+            <Field>
+              <Checkbox
+                  checked={configuration.features.enriched_category}
+                  onClick={() =>
+                      changeFeature(
+                          'enriched_category',
+                          !configuration.features.enriched_category
+                      )
+                  }
+              >
+                Enriched Categories
+              </Checkbox>
+            </Field>
+            <Field>
+              <Checkbox
+                  checked={configuration.features.category_template_customization}
+                  onClick={() =>
+                      changeFeature(
+                          'category_template_customization',
+                          !configuration.features.category_template_customization
+                      )
+                  }
+              >
+                Enriched Categories
               </Checkbox>
             </Field>
           </Content>

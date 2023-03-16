@@ -61,7 +61,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function identifierGeneratorIsUpdatedInTheRepository(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq('updatedGenerator', $identifierGenerator->delimiter()->asString());
+        Assert::eq($identifierGenerator->delimiter()->asString(), 'updatedGenerator');
     }
 
     /**
@@ -70,7 +70,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function identifierGeneratorIsUpdatedWithoutLabelInTheRepository(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq((object) [], $identifierGenerator->labelCollection()->normalize());
+        Assert::eq($identifierGenerator->labelCollection()->normalize(), (object)[]);
     }
 
     /**
@@ -96,7 +96,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndDelimiterIsNull(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq(null, $identifierGenerator->delimiter()->asString());
+        Assert::null($identifierGenerator->delimiter()->asString());
     }
 
     /**
@@ -105,7 +105,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndTextTransformationIsLowercase(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq(TextTransformation::LOWERCASE, $identifierGenerator->textTransformation()->normalize());
+        Assert::eq($identifierGenerator->textTransformation()->normalize(), TextTransformation::LOWERCASE);
     }
 
     /**
@@ -178,28 +178,28 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function iTryToUpdateAnIdentifierGeneratorWithTooManyPropertiesInStructure(): void
     {
         $this->tryToUpdateGenerator(structure: [
-                    ['type' => 'free_text', 'string' => 'abcdef1'],
-                    ['type' => 'free_text', 'string' => 'abcdef2'],
-                    ['type' => 'free_text', 'string' => 'abcdef3'],
-                    ['type' => 'free_text', 'string' => 'abcdef4'],
-                    ['type' => 'free_text', 'string' => 'abcdef5'],
-                    ['type' => 'free_text', 'string' => 'abcdef6'],
-                    ['type' => 'free_text', 'string' => 'abcdef7'],
-                    ['type' => 'free_text', 'string' => 'abcdef8'],
-                    ['type' => 'free_text', 'string' => 'abcdef9'],
-                    ['type' => 'free_text', 'string' => 'abcdef10'],
-                    ['type' => 'free_text', 'string' => 'abcdef11'],
-                    ['type' => 'free_text', 'string' => 'abcdef12'],
-                    ['type' => 'free_text', 'string' => 'abcdef13'],
-                    ['type' => 'free_text', 'string' => 'abcdef14'],
-                    ['type' => 'free_text', 'string' => 'abcdef15'],
-                    ['type' => 'free_text', 'string' => 'abcdef16'],
-                    ['type' => 'free_text', 'string' => 'abcdef17'],
-                    ['type' => 'free_text', 'string' => 'abcdef18'],
-                    ['type' => 'free_text', 'string' => 'abcdef19'],
-                    ['type' => 'free_text', 'string' => 'abcdef20'],
-                    ['type' => 'free_text', 'string' => 'abcdef21'],
-                ]);
+            ['type' => 'free_text', 'string' => 'abcdef1'],
+            ['type' => 'free_text', 'string' => 'abcdef2'],
+            ['type' => 'free_text', 'string' => 'abcdef3'],
+            ['type' => 'free_text', 'string' => 'abcdef4'],
+            ['type' => 'free_text', 'string' => 'abcdef5'],
+            ['type' => 'free_text', 'string' => 'abcdef6'],
+            ['type' => 'free_text', 'string' => 'abcdef7'],
+            ['type' => 'free_text', 'string' => 'abcdef8'],
+            ['type' => 'free_text', 'string' => 'abcdef9'],
+            ['type' => 'free_text', 'string' => 'abcdef10'],
+            ['type' => 'free_text', 'string' => 'abcdef11'],
+            ['type' => 'free_text', 'string' => 'abcdef12'],
+            ['type' => 'free_text', 'string' => 'abcdef13'],
+            ['type' => 'free_text', 'string' => 'abcdef14'],
+            ['type' => 'free_text', 'string' => 'abcdef15'],
+            ['type' => 'free_text', 'string' => 'abcdef16'],
+            ['type' => 'free_text', 'string' => 'abcdef17'],
+            ['type' => 'free_text', 'string' => 'abcdef18'],
+            ['type' => 'free_text', 'string' => 'abcdef19'],
+            ['type' => 'free_text', 'string' => 'abcdef20'],
+            ['type' => 'free_text', 'string' => 'abcdef21'],
+        ]);
     }
 
     /**
@@ -208,9 +208,9 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function iTryToUpdateAnIdentifierGeneratorWithMultipleAutoNumberInStructure(): void
     {
         $this->tryToUpdateGenerator(structure: [
-                    ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
-                    ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
-                ]);
+            ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
+            ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
+        ]);
     }
 
     /**
@@ -318,6 +318,69 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When I try to update an identifier generator with a simple select property without attribute code
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithASimpleSelectPropertyWithoutAttributeCode(): void
+    {
+        $this->tryToUpdateGenerator(structure: [
+            ['type' => 'simple_select', 'process' => ['type' => 'no']],
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with simple select property without process field
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithSimpleSelectPropertyWithoutProcessField(): void
+    {
+        $this->tryToUpdateGenerator(structure: [
+            ['type' => 'simple_select', 'attributeCode' => 'color'],
+        ]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a simple_select property with (?P<attributeCode>[^']*) attribute(?: and (?P<scope>.*) scope)?(?: and (?P<locale>.*) locale)?$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithASimpleSelectPropertyWithNameAttribute(
+        string $attributeCode,
+        string $scope = '',
+        string $locale = ''
+    ): void {
+        $simpleSelectProperty = ['type' => 'simple_select', 'attributeCode' => $attributeCode, 'process' => ['type' => 'no']];
+
+        if ($scope) {
+            $simpleSelectProperty['scope'] = $scope;
+        }
+
+        if ($locale) {
+            $simpleSelectProperty['locale'] = $locale;
+        }
+
+        $this->tryToUpdateGenerator(structure: [
+            $simpleSelectProperty,
+        ]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a simple select process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and (?P<value>[^']*) as value$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithSimpleSelectProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
+    {
+        $value = \json_decode($value);
+        $defaultStructure = [
+            'attributeCode' => 'color',
+            'type' => 'simple_select',
+            'process' => ['type' => $type, 'operator' => $operator, 'value' => $value],
+        ];
+        if ($operator === 'undefined') {
+            unset($defaultStructure['process']['operator']);
+        }
+        if ($value === 'undefined') {
+            unset($defaultStructure['process']['value']);
+        }
+        $this->tryToUpdateGenerator(structure: [$defaultStructure]);
+    }
+
+    /**
      * @When /^I try to update an identifier generator with delimiter '(?P<delimiter>[^']*)'$/
      */
     public function iTryToUpdateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
@@ -364,34 +427,11 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an identifier generator with enabled condition without value
+     * @When /^I try to update an identifier generator with (\d+) conditions$/
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithoutValue(): void
+    public function iTryToUpdateAnIdentifierGeneratorWithConditions(string $count): void
     {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'enabled'],
-        ]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with enabled condition with string value
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithStringValue(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => 'true'],
-        ]);
-    }
-
-    /**
-     * @When /^I try to update an identifier generator with (?P<type>enabled|simple_select) condition with an unknown property$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditionWithAnUnknownProperty($type): void
-    {
-        $defaultValue = $this->getValidCondition($type);
-        $defaultValue['unknown'] = 'unknown property';
-
-        $this->tryToUpdateGenerator(conditions: [$defaultValue]);
+        $this->tryToUpdateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
     }
 
     /**
@@ -402,26 +442,6 @@ final class UpdateIdentifierGeneratorContext implements Context
         $this->tryToUpdateGenerator(conditions: [
             ['type' => 'enabled', 'value' => true],
             ['type' => 'enabled', 'value' => true],
-        ]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with a family condition with an unknown operator
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithAnUnknownOperator(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'family', 'operator' => 'unknown'],
-        ]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with a family condition with unknown property
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithUnknownProperty(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'family', 'operator' => 'EMPTY', 'unknown' => 'unknown_field'],
         ]);
     }
 
@@ -437,41 +457,29 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to update an identifier generator with a family without operator
+     * @When /^I try to update an identifier generator \
+     *     with an? (?P<type>simple_select|multi_select|family|enabled) condition\
+     *     (?:(?: with| and|,) (?P<attributeCode>[^ ]*) attribute)?\
+     *     (?:(?: with| and|,) (?P<operator>[^ ]*) operator)?\
+     *     (?:(?: with| and|,) (?P<scope>[^ ]*) scope)?\
+     *     (?:(?: with| and|,) (?P<locale>[^ ]*) locale)?\
+     *     (?:(?: with| and|,) (?P<value>.*) as value)?\
+     *     (?P<unknown>(?: with| and|,) an unknown property)?$/
      */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyWithoutOperator(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'family', 'value' => ['shirts']],
-        ]);
-    }
-
-    /**
-     * @When /^I try to update an identifier generator with a (?P<type>family|simple_select) condition with operator (?P<operator>[^']*) and ((?P<value>[^']*) as value)$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyConditionWithOperatorEmptyAndAsValue(string $type, string $operator, string $value): void
-    {
-        $defaultCondition = $this->getValidCondition($type, operator: $operator);
-
-        if ($value === 'undefined') {
-            unset($defaultCondition['value']);
-            $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
-        } else {
-            $defaultCondition['value'] = \json_decode($value);
-            $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
-        }
-    }
-
-    /**
-     * @When /^I try to update an identifier generator with a simple_select condition with (?P<attributeCode>[^']*) attribute(?: and (?P<scope>.*) scope)?(?: and (?P<locale>.*) locale)?$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithASimpleSelectConditionWithNameAttribute(
-        string $attributeCode,
+    public function iTryToUpdateAnIdentifierGeneratorWithCondition(
+        string $type,
+        string $attributeCode = '',
+        string $operator = '',
         string $scope = '',
-        string $locale = ''
+        string $locale = '',
+        string $value = '',
+        string $unknown = '',
     ): void {
-        $defaultCondition = $this->getValidCondition('simple_select');
-        $defaultCondition['attributeCode'] = $attributeCode;
+        \var_dump($value);
+        $defaultCondition = $this->getValidCondition($type);
+        if ($attributeCode !== '') {
+            $defaultCondition['attributeCode'] = $attributeCode;
+        }
         if ('undefined' === $scope) {
             unset($defaultCondition['scope']);
         } elseif ('' !== $scope) {
@@ -481,6 +489,19 @@ final class UpdateIdentifierGeneratorContext implements Context
             unset($defaultCondition['locale']);
         } elseif ('' !== $locale) {
             $defaultCondition['locale'] = $locale;
+        }
+        if ('undefined' === $value) {
+            unset($defaultCondition['value']);
+        } elseif ($value !== '') {
+            $defaultCondition['value'] = \json_decode($value);
+        }
+        if ('undefined' === $operator) {
+            unset($defaultCondition['operator']);
+        } elseif ($operator !== '') {
+            $defaultCondition['operator'] = $operator;
+        }
+        if ($unknown !== '') {
+            $defaultCondition['unknown'] = 'unknown property';
         }
         $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
     }
@@ -498,8 +519,10 @@ final class UpdateIdentifierGeneratorContext implements Context
             ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
                 $code ?? self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 $conditions ?? [
-                    ['type' => 'enabled', 'value' => true],
-                    ['type' => 'family', 'operator' => 'EMPTY'],
+                    $this->getValidCondition('enabled'),
+                    $this->getValidCondition('family', 'EMPTY'),
+                    $this->getValidCondition('simple_select'),
+                    $this->getValidCondition('multi_select'),
                 ],
                 $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_IDENTIFIER_GENERATOR_CODE]],
                 $labels ?? ['fr_FR' => 'Générateur'],
@@ -514,22 +537,36 @@ final class UpdateIdentifierGeneratorContext implements Context
 
     private function getValidCondition(string $type, ?string $operator = null): array
     {
-        switch($type) {
-            case 'enabled': return [
-                'type' => 'enabled',
-                'value' => true,
-            ];
-            case 'family': return [
-                'type' => 'family',
-                'operator' => $operator ?? 'IN',
-                'value' => ['tshirt'],
-            ];
-            case 'simple_select': return [
-                'type' => 'simple_select',
-                'operator' => $operator ?? 'IN',
-                'attributeCode' => 'color',
-                'value' => ['green'],
-            ];
+        switch ($type) {
+            case 'enabled':
+                return [
+                    'type' => 'enabled',
+                    'value' => true,
+                ];
+            case 'family':
+                $familyCondition = [
+                    'type' => 'family',
+                    'operator' => $operator ?? 'IN',
+                ];
+                if ('EMPTY' !== $operator) {
+                    $familyCondition['value'] = ['tshirt'];
+                }
+
+                return $familyCondition;
+            case 'simple_select':
+                return [
+                    'type' => 'simple_select',
+                    'operator' => $operator ?? 'IN',
+                    'attributeCode' => 'color',
+                    'value' => ['green'],
+                ];
+            case 'multi_select':
+                return [
+                    'type' => 'multi_select',
+                    'operator' => $operator ?? 'IN',
+                    'attributeCode' => 'a_multi_select',
+                    'value' => ['option_a', 'option_b'],
+                ];
         }
 
         throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
