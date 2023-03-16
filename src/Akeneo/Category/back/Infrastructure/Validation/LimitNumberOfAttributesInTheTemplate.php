@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 final class LimitNumberOfAttributesInTheTemplate extends Constraint
 {
-    public string $message = 'akeneo.category.validation.attribute.limit.message';
+    public string $message = 'akeneo.category.validation.attribute.limit.title';
 
     public function getTargets(): string
     {
