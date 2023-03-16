@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Unit;
+namespace Akeneo\Category\back\tests\Unit\Application\Command;
 
 use Akeneo\Category\Application\Command\DeactivateTemplateCommand;
 use Akeneo\Category\Application\Command\DeactivateTemplateCommandHandler;

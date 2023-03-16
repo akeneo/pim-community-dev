@@ -3,6 +3,7 @@ import {
   AttributesIllustration,
   Button,
   Checkbox,
+  Helper,
   Modal,
   NumberInput,
   Pagination,
@@ -154,8 +155,8 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
                   {translate('pim_enrich.entity.family.page_title.index', {count: totalValuesCount}, totalValuesCount)}
                 </SectionTitle.Title>
                 <SectionTitle.Spacer />
-                <NomenclatureValuesDisplayFilter filter={filter} onChange={onFilterChange} />
               </SectionTitle>
+              <Helper level="info">{translate('pim_identifier_generator.nomenclature.helper')}</Helper>
               <Styled.NomenclatureDefinition>
                 <Table.Body>
                   <Table.Row>
@@ -201,6 +202,8 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
                 <Search.ResultCount>
                   {translate('pim_common.result_count', {itemsCount: filteredValuesCount}, filteredValuesCount)}
                 </Search.ResultCount>
+                <Search.Separator />
+                <NomenclatureValuesDisplayFilter filter={filter} onChange={onFilterChange} />
               </Search>
               <Styled.NomenclatureContent>
                 <Pagination
