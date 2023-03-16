@@ -32,7 +32,7 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
-    protected function get(string $service)
+    protected function get(string $service): ?object
     {
         return self::getContainer()->get($service);
     }
@@ -48,6 +48,11 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
         $this->ensureKernelShutdown();
     }
 
+    /**
+     * @param array<string, string>|array<empty> $routeArguments
+     * @param array<string, string>|array<empty> $headers
+     * @param array<string, string>|array<empty> $parameters
+     */
     public function callRoute(
         KernelBrowser $client,
         string $route,
@@ -61,6 +66,10 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
         $client->request($method, $url, $parameters, [], $headers, $content);
     }
 
+    /**
+     * @param array<string, string>|array<empty> $routeArguments
+     * @param array<string, string>|array<empty> $parameters
+     */
     protected function callApiRoute(
         KernelBrowser $client,
         string $route,

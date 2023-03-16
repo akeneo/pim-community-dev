@@ -69,7 +69,7 @@ class AddAttributeCommandHandler
     {
         $attributes = $this->getAttribute->byTemplateUuid($templateUuid);
 
-        if (empty($attributes)) {
+        if ($attributes->count() === 0) {
             AttributeOrder::fromInteger(1);
         }
 
