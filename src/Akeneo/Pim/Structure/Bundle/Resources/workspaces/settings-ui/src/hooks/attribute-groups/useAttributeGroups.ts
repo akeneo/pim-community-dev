@@ -22,9 +22,7 @@ const useAttributeGroups = () => {
   }, [route]);
 
   const reorderAttributeGroups = useCallback((newIndices: number[]) => {
-    setAttributeGroups(previousAttributeGroup =>
-      newIndices.map((newIndex) => previousAttributeGroup[newIndex])
-    );
+    setAttributeGroups(previousAttributeGroup => newIndices.map(newIndex => previousAttributeGroup[newIndex]));
 
     setAttributeGroupsIsReordered(true);
   }, []);
