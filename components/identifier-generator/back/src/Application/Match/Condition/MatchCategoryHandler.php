@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Category;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\CategoryOperator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
+use Akeneo\Pim\Enrichment\Category\API\Query\GetHierarchicalInfoCategories;
 use Webmozart\Assert\Assert;
 
 /**
@@ -14,6 +17,11 @@ use Webmozart\Assert\Assert;
  */
 class MatchCategoryHandler implements MatchConditionHandler
 {
+    public function __construct(
+        private readonly GetHierarchicalInfoCategories $getHierarchicalInfoCategories,
+    ) {
+    }
+
     public function getConditionClass(): string
     {
         return Category::class;
@@ -28,7 +36,8 @@ class MatchCategoryHandler implements MatchConditionHandler
             CategoryOperator::NOT_IN => null !== $productProjection->categoryCodes() && [] === \array_intersect($productProjection->categoryCodes(), (array) $condition->value()),
             CategoryOperator::CLASSIFIED => !empty($productProjection->categoryCodes()),
             CategoryOperator::UNCLASSIFIED => empty($productProjection->categoryCodes()),
-            CategoryOperator::IN_CHILDREN_LIST, CategoryOperator::NOT_IN_CHILDREN_LIST => throw new \Exception('To be implemented'),
+            CategoryOperator::IN_CHILDREN_LIST => $this->getHierarchicalInfoCategories->isAChildOf((array) $condition->value(), $productProjection->categoryCodes()),
+            CategoryOperator::NOT_IN_CHILDREN_LIST => !$this->getHierarchicalInfoCategories->isAChildOf((array) $condition->value(), $productProjection->categoryCodes()),
         };
     }
 }
