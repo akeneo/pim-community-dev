@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Validation;
 
+use Akeneo\Category\Application\Command\AddAttributeCommand;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
@@ -59,22 +60,47 @@ class AttributeCodeShouldBeUniqueInTheTemplateValidatorSpec extends ObjectBehavi
         /** @var TemplateUuid $templateUuid */
         $templateUuid = $this->getData()['templateUuid'];
 
+        $context->getObject()->willReturn(
+            AddAttributeCommand::create(
+                code: 'other_attribute_code',
+                type: 'text',
+                isScopable: true,
+                isLocalizable: true,
+                templateUuid: $templateUuid->getValue(),
+                locale: 'en_US',
+                label: 'The attribute',
+            )
+        );
+
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $getAttribute->byTemplateUuid($templateUuid)->shouldBeCalled()->willReturn(
             AttributeCollection::fromArray([])
         );
 
-        $this->validate('other_attribute_code', new AttributeCodeShouldBeUniqueInTheTemplate(['templateUuid' => $templateUuid]));
+        $this->validate('other_attribute_code', new AttributeCodeShouldBeUniqueInTheTemplate());
     }
 
     public function it_does_nothing_when_the_attribute_code_is_unique_in_the_template(
         ExecutionContext $context,
         ConstraintViolationBuilderInterface $violationBuilder,
         GetAttribute $getAttribute,
-    ): void {
+    ): void
+    {
         /** @var TemplateUuid $templateUuid */
         $templateUuid = $this->getData()['templateUuid'];
+
+        $context->getObject()->willReturn(
+            AddAttributeCommand::create(
+                code: 'other_attribute_code',
+                type: 'text',
+                isScopable: true,
+                isLocalizable: true,
+                templateUuid: $templateUuid->getValue(),
+                locale: 'en_US',
+                label: 'The attribute',
+            )
+        );
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
@@ -82,7 +108,7 @@ class AttributeCodeShouldBeUniqueInTheTemplateValidatorSpec extends ObjectBehavi
             AttributeCollection::fromArray([$this->getData()['attribute']])
         );
 
-        $this->validate('other_attribute_code', new AttributeCodeShouldBeUniqueInTheTemplate(['templateUuid' => $templateUuid]));
+        $this->validate('other_attribute_code', new AttributeCodeShouldBeUniqueInTheTemplate());
     }
 
     public function it_throws_an_exception_when_the_attribute_code_is_not_unique_in_the_template(
@@ -93,7 +119,19 @@ class AttributeCodeShouldBeUniqueInTheTemplateValidatorSpec extends ObjectBehavi
         /** @var TemplateUuid $templateUuid */
         $templateUuid = $this->getData()['templateUuid'];
 
-        $constraint = new AttributeCodeShouldBeUniqueInTheTemplate(['templateUuid' => $templateUuid]);
+        $context->getObject()->willReturn(
+            AddAttributeCommand::create(
+                code: 'same_attribute_code',
+                type: 'text',
+                isScopable: true,
+                isLocalizable: true,
+                templateUuid: $templateUuid->getValue(),
+                locale: 'en_US',
+                label: 'The attribute',
+            )
+        );
+
+        $constraint = new AttributeCodeShouldBeUniqueInTheTemplate();
         $context
             ->buildViolation($constraint->message, ['{{ attributeCode }}' => 'same_attribute_code'])
             ->shouldBeCalledOnce()
