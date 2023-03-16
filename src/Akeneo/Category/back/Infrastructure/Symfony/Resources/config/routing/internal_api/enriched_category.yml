@@ -22,7 +22,7 @@ pim_enriched_category_rest_file_upload:
   methods: [POST]
 
 pim_enriched_category_rest_image_preview:
-  path: '/rest/file/image_preview/{attributeCode}/{type}'
+  path: '/rest/file/image_preview/{attributeIdentifier}/{type}'
   defaults:
     _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController
     _feature: enriched_category

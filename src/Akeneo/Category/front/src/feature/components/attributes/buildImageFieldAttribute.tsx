@@ -36,7 +36,7 @@ const unMemoizedBuildImageFieldAttribute: AttributeFieldBuilder<AttributeInputVa
     const downloadUrl = imageInfo ? getImageDownloadUrl(router, imageInfo) : '';
     const thumbnailUrl = getMediaPreviewUrl(router, {
       type: MediaPreviewType.Thumbnail,
-      attributeCode: attribute.code,
+      attributeIdentifier: attribute.code + '|' + attribute.uuid,
       data: imageInfo ? imageInfo.filePath : '',
     });
 

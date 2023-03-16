@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Application\Query\GetAttribute;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\CouldNotGeneratePreviewException;
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorInterface;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
@@ -37,15 +37,15 @@ class ImagePreviewController
     private const ROOT_FLAG = '__root__';
 
     public function __construct(
-        private GetAttribute $getAttribute,
-        private PreviewGeneratorInterface $previewGenerator,
-        private LoaderInterface $imageLoader,
+        private readonly GetAttribute $getAttribute,
+        private readonly PreviewGeneratorInterface $previewGenerator,
+        private readonly LoaderInterface $imageLoader,
     ) {
     }
 
     public function __invoke(
         Request $request,
-        string $attributeCode,
+        string $attributeIdentifier,
         string $type,
     ): Response {
         $data = $request->get('data');
@@ -57,9 +57,11 @@ class ImagePreviewController
         $regenerate = $request->isMethod('POST');
 
         try {
-            $attribute = $this->getAttribute->byCode(new AttributeCode($attributeCode));
+            $attributeUuid = AttributeUuid::fromString(explode('|', $attributeIdentifier)[1]);
+            $attributeCollection = $this->getAttribute->byUuids([$attributeUuid]);
+            $attribute = $attributeCollection->getAttributeByIdentifier($attributeIdentifier);
             if ($regenerate) {
-                $this->previewGenerator->remove($data, $attribute, $type);
+                $this->previewGenerator->remove($data, $type);
             }
             $imagePreview = $this->previewGenerator->generate($data, $attribute, $type);
         } catch (CouldNotGeneratePreviewException) {

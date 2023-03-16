@@ -1,5 +1,5 @@
 import {Router} from '@akeneo-pim-community/shared';
-import {File, isFileEmpty} from '../models/File';
+import {File, isFileEmpty} from '../models';
 import {MediaPreview} from '../models/MediaPreview';
 
 const canCopyToClipboard = (): boolean => 'clipboard' in navigator;

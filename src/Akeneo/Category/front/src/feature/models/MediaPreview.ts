@@ -1,3 +1,5 @@
+import {Attribute} from './Attribute';
+
 export enum MediaPreviewType {
   Preview = 'preview',
   Thumbnail = 'thumbnail',
@@ -6,6 +8,6 @@ export enum MediaPreviewType {
 
 export type MediaPreview = {
   type: MediaPreviewType;
-  attributeCode: string;
+  attributeIdentifier: string;
   data: string;
 };

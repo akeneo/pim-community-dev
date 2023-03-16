@@ -28,11 +28,6 @@ class BinaryImageGenerator extends AbstractPreviewGenerator
             && array_key_exists($type, self::SUPPORTED_TYPES);
     }
 
-    protected function generateUrl(string $data, Attribute $attribute): string
-    {
-        return $data;
-    }
-
     protected function getPreviewType(string $type): string
     {
         return self::SUPPORTED_TYPES[$type];

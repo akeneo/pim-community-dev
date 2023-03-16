@@ -47,7 +47,7 @@ const FullscreenPreview = ({label, data, attribute, onClose}: FullscreenPreviewP
   const downloadUrl = data ? getImageDownloadUrl(router, data) : '';
   const previewUrl = getMediaPreviewUrl(router, {
     type: MediaPreviewType.Preview,
-    attributeCode: attribute.code,
+    attributeIdentifier: attribute.code + '|' + attribute.uuid,
     data: data && data.filePath ? data.filePath : '',
   });
 
