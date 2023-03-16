@@ -14,6 +14,8 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  */
 class CleanCategoryEnrichedValuesByTemplateUuidCommandHandler
 {
+    private const CATEGORY_BATCH_SIZE = 100;
+
     public function __construct(
         private readonly GetEnrichedValuesByTemplateUuid $getEnrichedValuesByTemplateUuid,
         private readonly CategoryDataCleaner $categoryDataCleaner,
@@ -22,10 +24,11 @@ class CleanCategoryEnrichedValuesByTemplateUuidCommandHandler
 
     public function __invoke(CleanCategoryEnrichedValuesByTemplateUuidCommand $command): void
     {
-        $enrichedValuesToClean = ($this->getEnrichedValuesByTemplateUuid)(TemplateUuid::fromString($command->templateUuid));
-
-        if (!empty($enrichedValuesToClean)) {
-            $this->categoryDataCleaner->cleanByTemplateUuid($enrichedValuesToClean, $command->templateUuid);
+        foreach($this->getEnrichedValuesByTemplateUuid->byBatchesOf(
+            TemplateUuid::fromString($command->templateUuid),
+            self::CATEGORY_BATCH_SIZE
+        ) as $valuesByCode) {
+            $this->categoryDataCleaner->cleanByTemplateUuid($valuesByCode, $command->templateUuid);
         }
     }
 }

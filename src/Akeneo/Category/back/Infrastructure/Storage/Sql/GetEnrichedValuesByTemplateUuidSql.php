@@ -8,6 +8,7 @@ use Akeneo\Category\Application\Query\GetEnrichedValuesByTemplateUuid;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Exception;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -20,14 +21,13 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
     }
 
     /**
-     * @return array<string, ValueCollection>|null
-     *
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws Exception
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException
      */
-    public function __invoke(TemplateUuid $templateUuid): ?array
+    public function byBatchesOf(TemplateUuid $templateUuid, int $batchSize): \Generator
     {
+        $offset = 0;
         $query = <<<SQL
         SELECT category.id,
                category.code,
@@ -44,42 +44,56 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
             ON child.root = category.id
         WHERE 
             category_template_uuid = :template_uuid
+        LIMIT :limit OFFSET :offset
         SQL;
 
-        $rows = $this->connection->executeQuery(
-            $query,
-            ['template_uuid' => $templateUuid->toBytes()],
-            ['template_uuid' => \PDO::PARAM_STR],
-        )->fetchAllAssociative();
+        while (true) {
+            $rows = $this->connection->executeQuery(
+                $query,
+                [
+                    'template_uuid' => $templateUuid->toBytes(),
+                    'limit' => $batchSize,
+                    'offset' => $offset,
+                ],
+                [
+                    'template_uuid' => \PDO::PARAM_STR,
+                    'limit' => \PDO::PARAM_INT,
+                    'offset' => \PDO::PARAM_INT,
+                ],
+            )->fetchAllAssociative();
 
-        $valuesByCode = [];
-
-        foreach ($rows as $row) {
-            $code = $row['code'];
-            $valueCollection = ValueCollection::fromDatabase(
-                json_decode(
-                    $row['value_collection'],
-                    true,
-                    512,
-                    JSON_THROW_ON_ERROR,
-                ),
-            );
-            $valuesByCode[$code] = $valueCollection;
-
-            if ($row['child_code']) {
-                $childCode = $row['child_code'];
-                $childValueCollection = ValueCollection::fromDatabase(
+            if (empty($rows)) {
+                return;
+            }
+            $valuesByCode = [];
+            foreach($rows as $row) {
+                $code = $row['code'];
+                $valueCollection = ValueCollection::fromDatabase(
                     json_decode(
-                        $row['child_value_collection'],
+                        $row['value_collection'],
                         true,
                         512,
                         JSON_THROW_ON_ERROR,
                     ),
                 );
-                $valuesByCode[$childCode] = $childValueCollection;
-            }
-        }
+                $valuesByCode[$code] = $valueCollection;
 
-        return $valuesByCode;
+                if ($row['child_code']) {
+                    $childCode = $row['child_code'];
+                    $childValueCollection = ValueCollection::fromDatabase(
+                        json_decode(
+                            $row['child_value_collection'],
+                            true,
+                            512,
+                            JSON_THROW_ON_ERROR,
+                        ),
+                    );
+                    $valuesByCode[$childCode] = $childValueCollection;
+                }
+            }
+
+            yield $valuesByCode;
+            $offset += $batchSize;
+        }
     }
 }

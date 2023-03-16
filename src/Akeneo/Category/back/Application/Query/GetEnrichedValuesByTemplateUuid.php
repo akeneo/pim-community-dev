@@ -12,5 +12,5 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  */
 interface GetEnrichedValuesByTemplateUuid
 {
-    public function __invoke(TemplateUuid $templateUuid): ?array;
+    public function byBatchesOf(TemplateUuid $templateUuid, int $batchSize): \Generator;
 }

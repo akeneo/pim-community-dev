@@ -45,15 +45,22 @@ class GetEnrichedValuesByTemplateUuidSqlIntegration extends CategoryTestCase
     }
 
     public function testItRetrievesRelatedCategoriesByTemplateUuid(): void{
-        $getEnrichedValuesByTemplateUuid = $this->get(GetEnrichedValuesByTemplateUuid::class);
-        $result = ($getEnrichedValuesByTemplateUuid)(TemplateUuid::fromString('6344aa2a-2be9-4093-b644-259ca7aee50c'));
+        $fetchedCategories = [];
+        foreach ($this->get(GetEnrichedValuesByTemplateUuid::class)->byBatchesOf(
+            TemplateUuid::fromString('6344aa2a-2be9-4093-b644-259ca7aee50c'),
+            5
+        ) as $valuesByCategoryCode){
+            $fetchedCategories[] = $valuesByCategoryCode;
+        }
 
-        Assert::assertArrayHasKey('socks', $result);
-        Assert::assertArrayHasKey('winter_socks', $result);
-        Assert::assertArrayHasKey('summer_socks', $result);
-        Assert::assertNotEmpty($result['socks']->getValues());
-        Assert::assertNotEmpty($result['winter_socks']->getValues());
-        Assert::assertNotEmpty($result['winter_socks']->getValues());
-        Assert::assertArrayNotHasKey('pants', $result);
+        Assert::assertArrayHasKey('socks', $fetchedCategories[0]);
+        Assert::assertArrayHasKey('winter_socks', $fetchedCategories[0]);
+        Assert::assertArrayHasKey('summer_socks', $fetchedCategories[0]);
+        Assert::assertArrayHasKey('japanese_summer_socks', $fetchedCategories[0]);
+        Assert::assertNotEmpty($fetchedCategories[0]['socks']->getValues());
+        Assert::assertNotEmpty($fetchedCategories[0]['winter_socks']->getValues());
+        Assert::assertNotEmpty($fetchedCategories[0]['summer_socks']->getValues());
+        Assert::assertNotEmpty($fetchedCategories[0]['japanese_summer_socks']->getValues());
+        Assert::assertCount(4, $fetchedCategories[0]);
     }
 }
