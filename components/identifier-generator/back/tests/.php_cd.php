@@ -24,7 +24,6 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
-            'Akeneo\Pim\Enrichment\Category\API',
             'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\IdentifierGenerator\Application'),
@@ -34,7 +33,6 @@ $rules = [
             'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Akeneo\Pim\Automation\IdentifierGenerator\Application',
-            'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Structure\Family\ServiceAPI',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',

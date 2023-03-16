@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Category\Infrastructure\Query;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\GetHierarchicalInfoCategories;
+use Akeneo\Pim\Enrichment\Category\API\Query\CategoriesHaveAtLeastOneChild;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlGetHierarchicalInfoCategories implements GetHierarchicalInfoCategories
+final class SqlCategoriesHaveAtLeastOneChild implements CategoriesHaveAtLeastOneChild
 {
     public function __construct(private readonly Connection $connection)
     {
@@ -22,7 +22,7 @@ final class SqlGetHierarchicalInfoCategories implements GetHierarchicalInfoCateg
      * @param string[] $parentCategoryCodes
      * @param string[] $childrenCategoryCodes
      */
-    public function isAChildOf(array $parentCategoryCodes, array $childrenCategoryCodes): bool
+    public function among(array $parentCategoryCodes, array $childrenCategoryCodes): bool
     {
         if (\count($parentCategoryCodes) === 0 || \count($childrenCategoryCodes) === 0) {
             return false;
