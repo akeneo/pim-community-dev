@@ -59,6 +59,17 @@ describe('CreateGeneratorModal', () => {
     expect(codeInput).toHaveValue('new_code');
 
     expect(confirmButton).toBeEnabled();
+
+    fireEvent.click(confirmButton);
+    expect(onSave).toBeCalledWith({
+      code: 'new_code',
+      conditions: [],
+      delimiter: null,
+      labels: {},
+      structure: [],
+      target: 'sku',
+      text_transformation: TEXT_TRANSFORMATION.NO,
+    });
   });
 
   it('should limit label string length', () => {
