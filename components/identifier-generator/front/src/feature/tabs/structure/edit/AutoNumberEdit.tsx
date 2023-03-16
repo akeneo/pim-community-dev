@@ -4,6 +4,7 @@ import {Field, NumberInput, useAutoFocus} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
 import {useIdentifierGeneratorAclContext} from '../../../context';
+import {PropertyEditTitle} from '../PropertyEditTitle';
 
 const AutoNumberEdit: PropertyEditFieldsProps<AutoNumber> = ({selectedProperty, onChange}) => {
   const translate = useTranslate();
@@ -27,6 +28,7 @@ const AutoNumberEdit: PropertyEditFieldsProps<AutoNumber> = ({selectedProperty, 
 
   return (
     <>
+      <PropertyEditTitle type={selectedProperty.type} />
       <Field label={translate('pim_identifier_generator.structure.settings.auto_number.digitsMin_label')}>
         <NumberInput
           value={`${selectedProperty.digitsMin}`}

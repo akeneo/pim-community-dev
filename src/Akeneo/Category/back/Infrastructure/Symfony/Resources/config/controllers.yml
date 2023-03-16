@@ -109,3 +109,9 @@ services:
             - '@pim_api.repository.media_file'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\AddAttributeController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
