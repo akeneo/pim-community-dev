@@ -9,13 +9,14 @@ use Doctrine\DBAL\Connection;
 
 /**
  * @see https://en.wikipedia.org/wiki/Nested_set_model
+ *
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class CategoriesHaveAtLeastOneChild implements BaseCategoriesHaveAtLeastOneChild
 {
     public function __construct(
-        private readonly Connection $connection
+        private readonly Connection $connection,
     ) {
     }
 
@@ -28,10 +29,10 @@ final class CategoriesHaveAtLeastOneChild implements BaseCategoriesHaveAtLeastOn
         $categoryInfos = $this->getCategoryInfos(\array_merge($parentCategoryCodes, $childrenCategoryCodes));
 
         $parentsCategoryInfos = \array_filter(
-            \array_map(static fn (string $code): ?array => $categoryInfos[$code] ?? null, $parentCategoryCodes)
+            \array_map(static fn (string $code): ?array => $categoryInfos[$code] ?? null, $parentCategoryCodes),
         );
         $childrenCategoryInfos = \array_filter(
-            \array_map(static fn (string $code): ?array => $categoryInfos[$code] ?? null, $childrenCategoryCodes)
+            \array_map(static fn (string $code): ?array => $categoryInfos[$code] ?? null, $childrenCategoryCodes),
         );
 
         foreach ($parentsCategoryInfos as $parentCategoryInfo) {
@@ -49,6 +50,7 @@ final class CategoriesHaveAtLeastOneChild implements BaseCategoriesHaveAtLeastOn
 
     /**
      * @param string[] $categoryCodes
+     *
      * @return array{
      *     code: string,
      *     lft: int,
@@ -68,14 +70,14 @@ SQL;
         foreach ($this->connection->fetchAllAssociative(
             $sql,
             ['categoryCodes' => $categoryCodes],
-            ['categoryCodes' => Connection::PARAM_STR_ARRAY]
+            ['categoryCodes' => Connection::PARAM_STR_ARRAY],
         ) as $row) {
             $result[$row['code']] = [
                 'lft' => \intval($row['lft']),
                 'rgt' => \intval($row['rgt']),
                 'root' => \intval($row['root']),
             ];
-        };
+        }
 
         return $result;
     }

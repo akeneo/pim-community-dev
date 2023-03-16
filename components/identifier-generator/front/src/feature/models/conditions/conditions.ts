@@ -8,7 +8,7 @@ enum CONDITION_NAMES {
   FAMILY = 'family',
   SIMPLE_SELECT = 'simple_select',
   MULTI_SELECT = 'multi_select',
-  CATEGORIES = 'categories',
+  CATEGORIES = 'category',
 }
 
 type Condition = {
