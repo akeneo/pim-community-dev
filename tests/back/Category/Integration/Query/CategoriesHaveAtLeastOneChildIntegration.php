@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Category\Integration\Query;
 
-use Akeneo\Pim\Enrichment\Category\API\Query\CategoriesHaveAtLeastOneChild;
+use Akeneo\Category\ServiceApi\Query\CategoriesHaveAtLeastOneChild;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
