@@ -40,8 +40,8 @@ final class SqlCategoriesHaveAtLeastOneChild implements CategoriesHaveAtLeastOne
         foreach ($parentsCategoryInfos as $parentCategoryInfo) {
             foreach ($childrenCategoryInfos as $childrenCategoryInfo) {
                 if ($childrenCategoryInfo['root'] === $parentCategoryInfo['root'] &&
-                    $childrenCategoryInfo['lft'] > $parentCategoryInfo['lft'] &&
-                    $childrenCategoryInfo['rgt'] < $parentCategoryInfo['rgt']) {
+                    $childrenCategoryInfo['lft'] >= $parentCategoryInfo['lft'] &&
+                    $childrenCategoryInfo['rgt'] <= $parentCategoryInfo['rgt']) {
                     return true;
                 }
             }
