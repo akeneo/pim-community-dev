@@ -5,6 +5,8 @@ import {AbbreviationType, IdentifierGenerator, PROPERTY_NAMES} from '../../../mo
 import initialGenerator from '../../../tests/fixtures/initialGenerator';
 import {waitFor} from '@testing-library/react';
 
+jest.mock('../ImplicitSimpleSelectCondition');
+
 const mockedGenerator: IdentifierGenerator = {
   ...initialGenerator,
 };
@@ -32,7 +34,40 @@ describe('ImplicitConditionsList', () => {
     const screen = render(<ImplicitConditionsList generator={generator} />);
 
     await waitFor(() => {
-      expect(screen.getByText('Family')).toBeInTheDocument();
+      expect(screen.getByText('pim_identifier_generator.structure.property_type.family')).toBeInTheDocument();
     });
+  });
+
+  it('should add simple selects not empty when there are simple select structure properties', async () => {
+    const generator: IdentifierGenerator = {
+      ...initialGenerator,
+      structure: [
+        {
+          type: PROPERTY_NAMES.SIMPLE_SELECT,
+          attributeCode: 'color',
+          process: {type: AbbreviationType.NO},
+        },
+        {
+          type: PROPERTY_NAMES.SIMPLE_SELECT,
+          attributeCode: 'brand',
+          scope: 'ecommerce',
+          locale: 'en_US',
+          process: {type: AbbreviationType.NO},
+        },
+      ],
+    };
+    const screen = render(<ImplicitConditionsList generator={generator} />);
+
+    await waitFor(() => {
+      expect(screen.getAllByText('ImplicitSimpleSelectConditionMocked').length).toEqual(2);
+    });
+
+    expect(screen.getAllByText('Implicit attribute scope:').length).toEqual(1);
+    expect(screen.getAllByText('Implicit attribute locale:').length).toEqual(1);
+
+    expect(screen.getByText('Implicit attribute code: color')).toBeInTheDocument();
+    expect(screen.getByText('Implicit attribute code: brand')).toBeInTheDocument();
+    expect(screen.getByText('ecommerce')).toBeInTheDocument();
+    expect(screen.getByText('en_US')).toBeInTheDocument();
   });
 });
