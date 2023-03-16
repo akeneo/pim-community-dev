@@ -41,6 +41,7 @@ final class ViolationsException extends \LogicException
             $constraints[] = [
                 'error' => [
                     'code' => $constraintViolation->getCode(),
+                    'property' => $constraintViolation->getPropertyPath(),
                     'message' => $constraintViolation->getMessage(),
                 ],
             ];
