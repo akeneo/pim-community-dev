@@ -66,7 +66,7 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
                 return;
             }
             $valuesByCode = [];
-            foreach($rows as $row) {
+            foreach ($rows as $row) {
                 $code = $row['code'];
                 $valueCollection = ValueCollection::fromDatabase(
                     json_decode(

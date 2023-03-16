@@ -16,6 +16,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
+use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageDataValue;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
@@ -24,6 +25,8 @@ use PHPUnit\Framework\Assert;
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type ImageData from ImageDataValue
  */
 class ByTemplateAttributesUuidsFilterTest extends CategoryTestCase
 {
@@ -40,6 +43,17 @@ class ByTemplateAttributesUuidsFilterTest extends CategoryTestCase
         Assert::assertEquals('d8617b1f-1db8-4e49-a6b0-404935fe2911', (string) $valuesToRemove[3]->getUuid());
     }
 
+    /**
+     * @return array<string, array{
+     *     data: string|ImageData|null,
+     *     type: string,
+     *     channel: string|null,
+     *     locale: string|null,
+     *     attribute_code: string,
+     * }>
+     *
+     * @throws \JsonException
+     */
     private function getEnrichedValues(): array
     {
         return json_decode(

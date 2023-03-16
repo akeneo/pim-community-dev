@@ -24,9 +24,9 @@ class CleanCategoryEnrichedValuesByTemplateUuidCommandHandler
 
     public function __invoke(CleanCategoryEnrichedValuesByTemplateUuidCommand $command): void
     {
-        foreach($this->getEnrichedValuesByTemplateUuid->byBatchesOf(
+        foreach ($this->getEnrichedValuesByTemplateUuid->byBatchesOf(
             TemplateUuid::fromString($command->templateUuid),
-            self::CATEGORY_BATCH_SIZE
+            self::CATEGORY_BATCH_SIZE,
         ) as $valuesByCode) {
             $this->categoryDataCleaner->cleanByTemplateUuid($valuesByCode, $command->templateUuid);
         }

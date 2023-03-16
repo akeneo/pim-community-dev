@@ -244,6 +244,9 @@ class CategoryTestCase extends TestCase
         );
     }
 
+    /**
+     * @param array<string>|null $attributesUuids
+     */
     protected function givenTemplateWithAttributes(string $templateUuidRaw, ?CategoryId $categoryId, ?array $attributesUuids = null): Template
     {
         $templateUuid = TemplateUuid::fromString($templateUuidRaw);
@@ -257,6 +260,9 @@ class CategoryTestCase extends TestCase
         );
     }
 
+    /**
+     * @param array<string>|null $attributesUuids
+     */
     protected function givenAttributes(TemplateUuid $templateUuid, ?array $attributesUuids = null): AttributeCollection
     {
         $uuids = [
@@ -484,6 +490,9 @@ SQL;
         ]);
     }
 
+    /**
+     * @param array<string>|null $attributesUuids
+     */
     protected function useTemplateFunctionalCatalog(string $templateUuid, string $categoryCode, ?array $attributesUuids = null): Category
     {
         $category = $this->createOrUpdateCategory(

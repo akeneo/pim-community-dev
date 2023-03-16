@@ -26,7 +26,7 @@ class ByTemplateAttributesUuidsFilter
             return [];
         }
         $templateAttributesUuidAndCodes = [];
-        foreach ($templateAttributes as $templateAttribute){
+        foreach ($templateAttributes as $templateAttribute) {
             $attributeUuid = (string) $templateAttribute->getUuid();
             $attributeCode = (string) $templateAttribute->getCode();
             $templateAttributesUuidAndCodes[$attributeUuid] = $attributeCode;

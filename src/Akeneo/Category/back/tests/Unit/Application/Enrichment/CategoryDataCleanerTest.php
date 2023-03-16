@@ -61,7 +61,7 @@ class CategoryDataCleanerTest extends CategoryTestCase
             ->method('execute')
             ->with($this->getExpectedArgumentForTemplateUuidCleaning());
         $getTemplateAttributesByTemplateUuidMock = $this->createMock(
-            GetAttribute::class
+            GetAttribute::class,
         );
         $getTemplateAttributesByTemplateUuidMock->method('byTemplateUuid')
             ->with(TemplateUuid::fromString($templateUuid))
@@ -79,17 +79,17 @@ class CategoryDataCleanerTest extends CategoryTestCase
                             TemplateUuid::fromString('637d8002-44c9-490e-9bb6-258c139da176'),
                             AttributeAdditionalProperties::fromArray([]),
                         ),
-                    ]
-                )
-        );
+                    ],
+                ),
+            );
         $categoryDataCleaner = new CategoryDataCleaner(
             $updateCategoryEnrichedValuesMock,
             $getTemplateAttributesByTemplateUuidMock,
         );
 
         $categoryDataCleaner->cleanByTemplateUuid(
-            ['category_3' => ValueCollection::fromDatabase($this->getValuesByCodeForCategory3()),],
-            $templateUuid
+            ['category_3' => ValueCollection::fromDatabase($this->getValuesByCodeForCategory3())],
+            $templateUuid,
         );
     }
 
@@ -195,7 +195,6 @@ class CategoryDataCleanerTest extends CategoryTestCase
             }
         }', true, 512, JSON_THROW_ON_ERROR);
     }
-    
 
     /**
      * @return array<string, ValueCollection>
@@ -237,7 +236,7 @@ class CategoryDataCleanerTest extends CategoryTestCase
                     'type' => 'text',
                     'locale' => null,
                     'channel' => null,
-                    'attribute_code' => 'url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911'
+                    'attribute_code' => 'url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911',
                 ],
             ]),
         ];
