@@ -25,3 +25,10 @@ pim_enriched_category_rest_deactivate_template:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateTemplateController
         _feature: category_template_deactivation
     methods: [DELETE]
+
+pim_category_template_rest_add_attribute:
+    path: /rest/{templateUuid}/attribute/add
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\AddAttributeController
+        _feature: category_template_customization
+    methods: [POST]

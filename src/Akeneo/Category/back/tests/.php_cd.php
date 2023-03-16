@@ -48,6 +48,7 @@ $rules = [
         'Symfony\Component\HttpKernel',
         'Symfony\Component\EventDispatcher',
         'Webmozart\Assert',
+        'Ramsey\Uuid\Uuid',
     ])->in('Akeneo\Category\Application'),
 
     $builder->only([
