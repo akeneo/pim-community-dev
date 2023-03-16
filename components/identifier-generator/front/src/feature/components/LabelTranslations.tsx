@@ -24,13 +24,13 @@ const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, o
         setValue({...value, [locale]: label.trim()});
         onLabelsChange({...value, [locale]: label});
       } else {
-        const updatedLabels = {...labelCollection};
+        const updatedLabels = {...value};
         delete updatedLabels[locale];
         setValue(updatedLabels);
         onLabelsChange(updatedLabels);
       }
     },
-    [value, onLabelsChange, labelCollection]
+    [value, onLabelsChange]
   );
 
   return (
