@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Integration\Domain\Model\Enrichment;
+namespace Akeneo\Test\Category\Integration\Domain\Model\Enrichment;
 
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Enrichment\InternalApiCategory;
