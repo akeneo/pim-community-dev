@@ -49,6 +49,7 @@ class Notifier implements NotifierInterface
         $this->userNotifsSaver = $userNotifsSaver;
     }
 
+    // Used for user notification
     /**
      * {@inheritdoc}
      */
