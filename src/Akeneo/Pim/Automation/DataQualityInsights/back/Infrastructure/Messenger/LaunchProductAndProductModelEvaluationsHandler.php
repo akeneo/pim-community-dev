@@ -8,6 +8,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaByFeatureRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetOutdatedProductModelIdsByDateAndCriteriaQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetOutdatedProductUuidsByDateAndCriteriaQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Tool\Component\Messenger\TraceableMessageHandlerInterface;
 use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
@@ -27,6 +29,8 @@ final class LaunchProductAndProductModelEvaluationsHandler implements TraceableM
         private readonly CreateCriteriaEvaluations $createProductModelCriteriaEvaluations,
         private readonly EvaluateProducts $evaluateProducts,
         private readonly EvaluateProductModels $evaluateProductModels,
+        private readonly GetOutdatedProductUuidsByDateAndCriteriaQueryInterface $getOutdatedProductUuids,
+        private readonly GetOutdatedProductModelIdsByDateAndCriteriaQueryInterface $getOutdatedProductModelIds,
         private readonly LoggerInterface $logger
     ) {
     }
@@ -54,14 +58,24 @@ final class LaunchProductAndProductModelEvaluationsHandler implements TraceableM
 
     private function evaluateProducts(LaunchProductAndProductModelEvaluationsMessage $message): void
     {
+        $productUuidsToEvaluate = ($this->getOutdatedProductUuids)($message->productUuids, $message->datetime, $message->criteriaToEvaluate);
+
+        if ($productUuidsToEvaluate->isEmpty()) {
+            $this->logger->debug('DQI - All products have already been evaluated', [
+                'correlation_id' => $message->getCorrelationId(),
+                'tenant_id' => $message->getTenantId(),
+            ]);
+            return;
+        }
+
         $criteriaToEvaluate = empty($message->criteriaToEvaluate)
             ? $this->productCriteriaRegistry->getAllCriterionCodes()
             : \array_map(fn (string $criterionCode) => new CriterionCode($criterionCode), $message->criteriaToEvaluate);
 
-        $this->createProductCriteriaEvaluations->create($criteriaToEvaluate, $message->productUuids);
-        ($this->evaluateProducts)($message->productUuids);
+        $this->createProductCriteriaEvaluations->create($criteriaToEvaluate, $productUuidsToEvaluate);
+        ($this->evaluateProducts)($productUuidsToEvaluate);
 
-        $this->logger->debug(sprintf('DQI - Evaluation of %d products done', $message->productUuids->count()), [
+        $this->logger->debug(sprintf('DQI - Evaluation of %d products done', $productUuidsToEvaluate->count()), [
             'correlation_id' => $message->getCorrelationId(),
             'tenant_id' => $message->getTenantId(),
         ]);
@@ -69,14 +83,24 @@ final class LaunchProductAndProductModelEvaluationsHandler implements TraceableM
 
     private function evaluateProductModels(LaunchProductAndProductModelEvaluationsMessage $message): void
     {
+        $productModelIdsToEvaluate = ($this->getOutdatedProductModelIds)($message->productModelIds, $message->datetime, $message->criteriaToEvaluate);
+
+        if ($productModelIdsToEvaluate->isEmpty()) {
+            $this->logger->debug('DQI - All product-models have already been evaluated', [
+                'correlation_id' => $message->getCorrelationId(),
+                'tenant_id' => $message->getTenantId(),
+            ]);
+            return;
+        }
+
         $criteriaToEvaluate = empty($message->criteriaToEvaluate)
             ? $this->productModelCriteriaRegistry->getAllCriterionCodes()
             : \array_map(fn (string $criterionCode) => new CriterionCode($criterionCode), $message->criteriaToEvaluate);
 
-        $this->createProductModelCriteriaEvaluations->create($criteriaToEvaluate, $message->productModelIds);
-        ($this->evaluateProductModels)($message->productModelIds);
+        $this->createProductModelCriteriaEvaluations->create($criteriaToEvaluate, $productModelIdsToEvaluate);
+        ($this->evaluateProductModels)($productModelIdsToEvaluate);
 
-        $this->logger->debug(sprintf('DQI - Evaluation of %d product models done', $message->productModelIds->count()), [
+        $this->logger->debug(sprintf('DQI - Evaluation of %d product-models done', $productModelIdsToEvaluate->count()), [
             'correlation_id' => $message->getCorrelationId(),
             'tenant_id' => $message->getTenantId(),
         ]);
