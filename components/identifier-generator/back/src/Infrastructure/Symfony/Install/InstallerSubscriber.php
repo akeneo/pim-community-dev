@@ -90,5 +90,15 @@ class InstallerSubscriber implements EventSubscriberInterface
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             SQL
         );
+        $this->connection->executeStatement(
+            <<<SQL
+            CREATE TABLE IF NOT EXISTS pim_catalog_identifier_generator_simple_select_nomenclature (
+                `option_id` INT NOT NULL,
+                `value` VARCHAR(255) NOT NULL,
+                UNIQUE INDEX simple_select_nomenclature_option_id (`option_id`),
+                CONSTRAINT `FK_SIMPLE_SELECT_NOMENCLATURE` FOREIGN KEY (`option_id`) REFERENCES `pim_catalog_attribute_option` (`id`) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            SQL
+        );
     }
 }
