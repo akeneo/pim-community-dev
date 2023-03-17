@@ -17,7 +17,7 @@ interface GeneratePropertyHandlerInterface
     public function getPropertyClass(): string;
 
     public function __invoke(
-        PropertyInterface $freeText,
+        PropertyInterface $property,
         IdentifierGenerator $identifierGenerator,
         ProductProjection $productProjection,
         string $prefix
