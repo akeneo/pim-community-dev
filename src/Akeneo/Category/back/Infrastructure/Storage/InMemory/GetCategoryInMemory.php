@@ -10,7 +10,6 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -25,12 +24,12 @@ final class GetCategoryInMemory implements GetCategoryInterface
 
     public function byId(int $categoryId): ?Category
     {
-        throw new NotImplementedException(__METHOD__);
+        throw new \Exception(sprintf('The method %s is not implemented yet', __METHOD__));
     }
 
     public function byCode(string $categoryCode): ?Category
     {
-        throw new NotImplementedException(__METHOD__);
+        throw new \Exception(sprintf('The method %s is not implemented yet', __METHOD__));
     }
 
     public function byCodes(array $categoryCodes): \Generator
@@ -48,6 +47,6 @@ final class GetCategoryInMemory implements GetCategoryInterface
 
     public function byIds(array $categoryIds): \Generator
     {
-        throw new NotImplementedException(__METHOD__);
+        throw new \Exception(sprintf('The method %s is not implemented yet', __METHOD__));
     }
 }
