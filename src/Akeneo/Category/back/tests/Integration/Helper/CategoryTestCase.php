@@ -542,7 +542,7 @@ SQL;
             'original_filename' => $originalFileName,
             'mime_type' => 'image/jpeg',
             'extension' => 'jpg',
-            'storage' => Storage::CATEGORY_STORAGE_ALIAS
+            'storage' => Storage::CATEGORY_STORAGE_ALIAS,
         ]);
     }
 
