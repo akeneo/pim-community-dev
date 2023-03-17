@@ -28,7 +28,7 @@ use Akeneo\Category\Domain\ValueObject\ValueCollection;
  *
  * @phpstan-import-type ImageData from ImageDataValue
  */
-class CategoryDataCleanerTest extends CategoryTestCase
+class CategoryAttributeValuesCleanerTest extends CategoryTestCase
 {
     public function testItCallsExecuteWithRightArgumentForChannelOrLocalesCleaning(): void
     {
