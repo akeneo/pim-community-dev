@@ -31,7 +31,7 @@ class CategoryImageDataCleaner
 
         foreach (PreviewGeneratorRegistry::TYPES as $type) {
             $this->previewGenerator->remove(
-                data: base64_encode(urlencode($imageDataValue->getOriginalFilename())),
+                data: base64_encode($imageDataValue->getFilePath()),
                 type: $type,
             );
         }
