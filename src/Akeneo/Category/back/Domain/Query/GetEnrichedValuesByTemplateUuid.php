@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Query;
+namespace Akeneo\Category\Domain\Query;
 
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
