@@ -338,7 +338,7 @@ Feature: Update Identifier Generator
   Scenario: Can update an identifier generator with empty label
     When I try to update an identifier generator with 'de_DE' label ''
     Then I should not get any update error
-    And there should be no label for 'de_DE'
+    And there should be no 'de_DE' label for the 'default' generator
 
   # Delimiter
   Scenario: Cannot update an identifier generator with an empty delimiter

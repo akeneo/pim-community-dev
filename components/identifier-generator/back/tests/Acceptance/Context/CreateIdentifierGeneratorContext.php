@@ -493,11 +493,11 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Then there should be no label for :localeCode
+     * @Then there should be no :localeCode label for the :generatorCode generator
      */
-    public function thereShouldBeNoLabelForLocale(string $localeCode): void
+    public function thereShouldBeNoLabelForLocale(string $localeCode, string $generatorCode): void
     {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_CODE);
+        $identifierGenerator = $this->generatorRepository->get($generatorCode);
         Assert::isInstanceOf($identifierGenerator, IdentifierGenerator::class);
         Assert::keyNotExists($identifierGenerator->labelCollection()->normalize(), $localeCode);
     }
