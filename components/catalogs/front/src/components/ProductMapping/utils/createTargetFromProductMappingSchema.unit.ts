@@ -12,6 +12,7 @@ test('it creates target from the product mapping schema', () => {
                 type: 'array',
                 items: {
                     type: 'string',
+                    enum: ['Red', 'Green', 'Blue'],
                 },
                 title: 'All colors',
                 description: 'This is the list of the colors',
@@ -24,6 +25,7 @@ test('it creates target from the product mapping schema', () => {
         label: 'All colors',
         type: 'array<string>',
         format: null,
+        enum: ['Red', 'Green', 'Blue'],
         description: 'This is the list of the colors',
     });
 });
