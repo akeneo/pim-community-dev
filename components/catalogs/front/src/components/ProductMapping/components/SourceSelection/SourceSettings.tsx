@@ -5,7 +5,7 @@ import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 import {Source} from '../../models/Source';
 import {Attribute} from '../../../../models/Attribute';
 import {SourceErrors} from '../../models/SourceErrors';
-import {SourceAssetAttributeSelection} from './SourceAssetAttributeSelection/SourceAssetAttributeSelection';
+import {AssetAttributeSourceSelection} from './AssetAttributeSourceSelection/AssetAttributeSourceSelection';
 import {Target} from '../../models/Target';
 
 type Props = {
@@ -50,7 +50,7 @@ export const SourceSettings: FC<Props> = ({source, target,attribute, errors, onC
                     disabled={source.scope === null}
                 />
             )}
-            {attribute.asset_family && <SourceAssetAttributeSelection
+            {attribute.asset_family && <AssetAttributeSourceSelection
                 source={source}
                 target={target}
                 onChange={onChangeMiddleware}

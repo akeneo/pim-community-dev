@@ -25,7 +25,7 @@ final class ArrayOfStringsFromAssetCollectionTextAttributeValueExtractor impleme
 
     public function getSupportedSourceType(): string
     {
-        return self::SOURCE_TYPE_ATTRIBUTE_MULTI_SELECT;
+        return self::SOURCE_TYPE_ATTRIBUTE_ASSET_COLLECTION;
     }
 
     public function getSupportedSubSourceType(): ?string

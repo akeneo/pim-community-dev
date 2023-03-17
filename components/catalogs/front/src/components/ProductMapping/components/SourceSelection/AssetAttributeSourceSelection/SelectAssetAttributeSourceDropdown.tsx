@@ -19,7 +19,7 @@ type Props = {
     error: string | undefined;
 };
 
-export const SelectSourceAssetAttributeDropdown: FC<Props> = ({selectedIdentifier, target, assetFamilyIdentifier, onChange, error}) => {
+export const SelectAssetAttributeSourceDropdown: FC<Props> = ({selectedIdentifier, target, assetFamilyIdentifier, onChange, error}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');

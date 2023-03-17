@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Application\Mapping;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry;
+use Akeneo\Catalogs\Application\Persistence\AssetManager\FindOneAssetAttributeByIdentifierQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetAttributeTypeByCodesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
@@ -24,10 +25,14 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  */
 class ProductMapper implements ProductMapperInterface
 {
+    /** @var array<string, string> $assetAttributesTypes */
+    private static array $assetAttributesTypes = [];
+
     public function __construct(
         private readonly GetAttributeTypeByCodesQueryInterface $getAttributeTypeByCodesQuery,
         private readonly ValueExtractorRegistry $valueExtractorRegistry,
         private readonly TargetTypeConverter $targetTypeConverter,
+        private readonly FindOneAssetAttributeByIdentifierQueryInterface $findOneAssetAttributeByIdentifierQuery,
     ) {
     }
 
@@ -89,10 +94,14 @@ class ProductMapper implements ProductMapperInterface
             return null;
         }
 
+        $sourceType = $attributeTypeBySource[$productMapping[$targetCode]['source']] ?? $productMapping[$targetCode]['source'];
+        $subSourceIdentifier = $productMapping[$targetCode]['parameters']['sub_source'] ?? null;
+        $subSourceType = $subSourceIdentifier ? $this->getSubSourceType($sourceType, (string) $subSourceIdentifier) : null;
+
         try {
             $productValueExtractor = $this->valueExtractorRegistry->find(
-                $attributeTypeBySource[$productMapping[$targetCode]['source']] ?? $productMapping[$targetCode]['source'],
-                $productMapping[$targetCode]['parameters']['sub_source'] ?? null,
+                $sourceType,
+                $subSourceType,
                 $this->targetTypeConverter->flattenTargetType($target),
                 $target['format'] ?? null,
             );
@@ -107,5 +116,19 @@ class ProductMapper implements ProductMapperInterface
         } catch (ValueExtractorNotFoundException) {
             return null;
         }
+    }
+
+    private function getSubSourceType(string $sourceType, string $subSource): ?string
+    {
+        if ('pim_catalog_asset_collection' === $sourceType) {
+            if (!isset(self::$assetAttributesTypes[$subSource])) {
+                $assetAttribute = $this->findOneAssetAttributeByIdentifierQuery->execute($subSource);
+                self::$assetAttributesTypes[$subSource] = $assetAttribute['type'] ?? null;
+            }
+
+            return self::$assetAttributesTypes[$subSource];
+        }
+
+        return null;
     }
 }
