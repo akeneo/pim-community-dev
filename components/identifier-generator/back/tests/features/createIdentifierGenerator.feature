@@ -408,7 +408,7 @@ Feature: Create Identifier Generator
     When I try to create an identifier generator with 'de_DE' label ''
     Then The identifier generator is saved in the repository
     And I should not get any error
-    And there should be no label for 'de_DE'
+    And there should be no 'de_DE' label for the 'generator_0' generator
 
   # Delimiter
   Scenario: Cannot create an identifier generator with an empty delimiter

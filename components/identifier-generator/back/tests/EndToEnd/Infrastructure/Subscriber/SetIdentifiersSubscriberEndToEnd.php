@@ -177,17 +177,17 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
 
     private function createIdentifierGenerator(
         ?string $code = null,
-        ?array $conditions = [],
-        ?array $structure = null,
+        array $conditions = [],
+        array $structure = [],
     ): void {
         ($this->getCreateGeneratorHandler())(new CreateGeneratorCommand(
             $code ?? 'my_generator',
             $conditions,
-            $structure ?? [
+            \array_merge($structure, [
                 ['type' => 'free_text', 'string' => 'AKN'],
                 ['type' => 'auto_number', 'numberMin' => 50, 'digitsMin' => 3],
                 ['type' => 'family', 'process' => ['type' => 'no']],
-            ],
+            ]),
             ['en_US' => 'My Generator'],
             'sku',
             '-',
