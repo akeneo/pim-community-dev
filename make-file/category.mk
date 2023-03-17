@@ -45,6 +45,16 @@ category-integration-back: #Doc: launch PHPUnit integration tests for category b
 category-end-to-end-back: #Doc: launch PHPUnit end-to-end tests for category bounded context
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Category/back/tests --testsuite Category_EndToEnd_Test $(F)
 
+.PHONY: category-acceptance-back
+category-acceptance-back: var/tests/behat/enrichment-category
+	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy tests/legacy/features/pim/enrichment/category/create_a_category.feature
+	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy tests/legacy/features/pim/enrichment/category/edit_a_category.feature
+	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy tests/legacy/features/pim/enrichment/category/export_categories_csv.feature
+	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy tests/legacy/features/pim/enrichment/category/export_categories_xlsx.feature
+	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy tests/legacy/features/pim/enrichment/category/import_categories.feature
+	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy tests/legacy/features/pim/enrichment/category/list_categories.feature
+	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy tests/legacy/features/pim/enrichment/category/remove_a_category.feature
+
 .PHONY: category-ci-back
 category-ci-back: category-lint-back category-coupling-back category-unit-back category-integration-back category-end-to-end-back
 
