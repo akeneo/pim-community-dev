@@ -2,4 +2,3 @@ services:
     Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner:
         arguments:
             - '@Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues'
-            - '@Akeneo\Category\Application\Query\GetAttribute'

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Unit\Application\Enrichment;
 
 use Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner;
-use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
@@ -37,11 +36,7 @@ class CategoryAttributeValuesCleanerTest extends CategoryTestCase
             ->expects(self::once())
             ->method('execute')
             ->with($this->getExpectedArgumentForChannelOrLocalesCleaning());
-        $getTemplateAttributesByTemplateUuidMock = $this->createMock(GetAttribute::class);
-        $categoryDataCleaner = new CategoryAttributeValuesCleaner(
-            $updateCategoryEnrichedValuesMock,
-            $getTemplateAttributesByTemplateUuidMock,
-        );
+        $categoryDataCleaner = new CategoryAttributeValuesCleaner($updateCategoryEnrichedValuesMock);
         $categoryDataCleaner->cleanByChannelOrLocales(
             [
                 'category_1' => ValueCollection::fromDatabase($this->getValuesByCodeForCategory1()),
@@ -52,44 +47,31 @@ class CategoryAttributeValuesCleanerTest extends CategoryTestCase
         );
     }
 
-    public function testItCallsExecuteWithRightArgumentForTemplateUuidCleaning(): void
+    public function testItCallsExecuteWithRightArgumentForTemplateAttributesUuidCleaning(): void
     {
-        $templateUuid = '33abe873-dc17-4da5-aecd-f7a2ae5ef116';
         $updateCategoryEnrichedValuesMock = $this->createMock(UpdateCategoryEnrichedValues::class);
         $updateCategoryEnrichedValuesMock
             ->expects(self::once())
             ->method('execute')
-            ->with($this->getExpectedArgumentForTemplateUuidCleaning());
-        $getTemplateAttributesByTemplateUuidMock = $this->createMock(
-            GetAttribute::class,
-        );
-        $getTemplateAttributesByTemplateUuidMock->method('byTemplateUuid')
-            ->with(TemplateUuid::fromString($templateUuid))
-            ->willReturn(
-                AttributeCollection::fromArray(
-                    [
-                        AttributeText::create(
-                            AttributeUuid::fromString('be2a1d6e-0563-409a-8407-0be494c34b84'),
-                            new AttributeCode('seo_keywords'),
-                            AttributeOrder::fromInteger(3),
-                            AttributeIsRequired::fromBoolean(false),
-                            AttributeIsScopable::fromBoolean(true),
-                            AttributeIsLocalizable::fromBoolean(true),
-                            LabelCollection::fromArray(['en_US' => 'URL slug']),
-                            TemplateUuid::fromString('637d8002-44c9-490e-9bb6-258c139da176'),
-                            AttributeAdditionalProperties::fromArray([]),
-                        ),
-                    ],
-                ),
-            );
-        $categoryDataCleaner = new CategoryAttributeValuesCleaner(
-            $updateCategoryEnrichedValuesMock,
-            $getTemplateAttributesByTemplateUuidMock,
-        );
-
-        $categoryDataCleaner->cleanByTemplateUuid(
+            ->with($this->getExpectedArgumentForTemplateAttributesUuidCleaning());
+        $categoryDataCleaner = new CategoryAttributeValuesCleaner($updateCategoryEnrichedValuesMock);
+        $categoryDataCleaner->cleanByTemplateAttributesUuid(
             ['category_3' => ValueCollection::fromDatabase($this->getValuesByCodeForCategory3())],
-            $templateUuid,
+            AttributeCollection::fromArray(
+                [
+                    AttributeText::create(
+                        AttributeUuid::fromString('be2a1d6e-0563-409a-8407-0be494c34b84'),
+                        new AttributeCode('seo_keywords'),
+                        AttributeOrder::fromInteger(3),
+                        AttributeIsRequired::fromBoolean(false),
+                        AttributeIsScopable::fromBoolean(true),
+                        AttributeIsLocalizable::fromBoolean(true),
+                        LabelCollection::fromArray(['en_US' => 'URL slug']),
+                        TemplateUuid::fromString('637d8002-44c9-490e-9bb6-258c139da176'),
+                        AttributeAdditionalProperties::fromArray([]),
+                    ),
+                ],
+            )->getAttributes(),
         );
     }
 
@@ -224,7 +206,7 @@ class CategoryAttributeValuesCleanerTest extends CategoryTestCase
      *
      * @throws \JsonException
      */
-    private function getExpectedArgumentForTemplateUuidCleaning(): array
+    private function getExpectedArgumentForTemplateAttributesUuidCleaning(): array
     {
         return [
             'category_3' => ValueCollection::fromDatabase([
