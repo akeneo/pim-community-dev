@@ -68,6 +68,11 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Application\Query\DeleteFileStorage:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteFileStorageSql
+    arguments:
+      - '@database_connection'
+
   Akeneo\Category\Application\Query\IsTemplateDeactivated:
     class: Akeneo\Category\Infrastructure\Storage\Sql\IsTemplateDeactivatedSql
     arguments:

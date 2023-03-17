@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\FileSystem\Remover;
 
+use Akeneo\Category\Application\Query\DeleteFileStorage;
 use Akeneo\Category\Domain\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemException;
@@ -19,6 +20,7 @@ class DeleteCategoryFilesFromPaths implements DeleteFilesFromPaths
     public function __construct(
         private readonly FileSystemProvider $fileSystemProvider,
         private readonly LoggerInterface $logger,
+        private readonly DeleteFileStorage $deleteFileStorage,
     ) {
     }
 
@@ -32,6 +34,7 @@ class DeleteCategoryFilesFromPaths implements DeleteFilesFromPaths
         foreach ($filePaths as $filePath) {
             try {
                 $fileSystem->delete($filePath);
+                ($this->deleteFileStorage)($filePath);
             } catch (UnableToDeleteFile|FilesystemException $e) {
                 $this->logger->error('Category file could not be deleted.', [
                     'data' => [

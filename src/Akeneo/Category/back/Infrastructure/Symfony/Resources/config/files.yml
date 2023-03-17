@@ -16,3 +16,4 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@logger'
+            - '@Akeneo\Category\Application\Query\DeleteFileStorage'
