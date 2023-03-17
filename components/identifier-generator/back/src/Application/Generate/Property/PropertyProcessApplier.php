@@ -9,6 +9,10 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
 use Webmozart\Assert\Assert;
 
+/**
+ * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class PropertyProcessApplier
 {
     public function __construct(
