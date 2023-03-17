@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -37,7 +36,7 @@ class AttributeRepository extends EntityRepository implements
             ->innerJoin('a.group', 'g')
             ->where('g.code != :default_code')
             ->orderBy('a.code')
-            ->setParameter(':default_code', AttributeGroup::DEFAULT_GROUP_CODE);
+            ->setParameter(':default_code', AttributeGroupInterface::DEFAULT_CODE);
 
         return $qb->getQuery()->getResult();
     }

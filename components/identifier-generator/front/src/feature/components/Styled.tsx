@@ -20,11 +20,10 @@ const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const EditionContainer = styled.div`
+const PropertyFormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  align-items: baseline;
+  gap: 10px;
 `;
 
 const FullPageCenteredContent = styled.div`
@@ -131,8 +130,8 @@ const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
   ${props => props.isInSelection && 'flex-basis: 160px;'}
 `;
 
-const SelectCondition = styled(SelectInput)`
-  flex-basis: 120px;
+const SelectCondition = styled(SelectInput)<{isHorizontal: boolean}>`
+  ${({isHorizontal}) => isHorizontal && 'flex-basis: 120px;'}
 `;
 
 const SingleSelectCondition = styled(SelectInput)`
@@ -194,7 +193,6 @@ const Styled = {
   CellInputContainer,
   CheckboxContainer,
   ConditionLineSkeleton,
-  EditionContainer,
   ErrorContainer,
   FormContainer,
   FullPageCenteredContent,
@@ -204,6 +202,7 @@ const Styled = {
   MultiSelectCondition,
   OperatorContainer,
   OperatorSelectCondition,
+  PropertyFormContainer,
   SelectCondition,
   SelectionInputsContainer,
   SingleSelectCondition,

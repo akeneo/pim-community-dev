@@ -22,6 +22,8 @@ imports:
     - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_services.yml }
     # Catalogs
     - { resource: ../../../components/catalogs/back/tests/Acceptance/services.yml }
+    # MessengerBundle
+    - { resource: ../../../src/Akeneo/Tool/Bundle/MessengerBundle/Resources/config/test_services.yml }
 
 services:
 

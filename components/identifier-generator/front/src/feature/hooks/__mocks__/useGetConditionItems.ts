@@ -1,15 +1,5 @@
 import {useState} from 'react';
-import {ATTRIBUTE_TYPE, AttributeType, Conditions} from '../../models';
-
-type ItemsGroup = {
-  id: string;
-  text: string;
-  children: {
-    id: string;
-    text: string;
-    type?: AttributeType;
-  }[];
-};
+import {ATTRIBUTE_TYPE, Conditions, ItemsGroup} from '../../models';
 
 const useGetConditionItems: (
   isOpen: boolean,
