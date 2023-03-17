@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Unit\Application\Enrichment;
 
-use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
+use Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
@@ -38,7 +38,7 @@ class CategoryDataCleanerTest extends CategoryTestCase
             ->method('execute')
             ->with($this->getExpectedArgumentForChannelOrLocalesCleaning());
         $getTemplateAttributesByTemplateUuidMock = $this->createMock(GetAttribute::class);
-        $categoryDataCleaner = new CategoryDataCleaner(
+        $categoryDataCleaner = new CategoryAttributeValuesCleaner(
             $updateCategoryEnrichedValuesMock,
             $getTemplateAttributesByTemplateUuidMock,
         );
@@ -82,7 +82,7 @@ class CategoryDataCleanerTest extends CategoryTestCase
                     ],
                 ),
             );
-        $categoryDataCleaner = new CategoryDataCleaner(
+        $categoryDataCleaner = new CategoryAttributeValuesCleaner(
             $updateCategoryEnrichedValuesMock,
             $getTemplateAttributesByTemplateUuidMock,
         );
