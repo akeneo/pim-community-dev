@@ -1,0 +1,6 @@
+services:
+  akeneo.structure.attribute_groups_mass_delete.feature:
+    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+    arguments:
+      - '%env(bool:FLAG_ATTRIBUTE_GROUPS_MASS_DELETE)%'
+    public: true

@@ -1,5 +1,6 @@
 export * from './CategoryTree';
 export * from './DeleteModal';
+export * from './DoubleCheckDeleteModal';
 export * from './FullScreenError';
 export * from './LocaleSelector';
 export * from './Navigation';
