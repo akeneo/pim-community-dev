@@ -33,13 +33,13 @@ class GetFamilyLabelByCodeAndLocaleQueryTest extends IntegrationTestCase
             'en_US' => 'Shoes',
         ]]);
 
-        $result = $this->query->execute('shoes','en_US');
+        $result = $this->query->execute('shoes', 'en_US');
         $this->assertEquals('Shoes', $result);
     }
 
     public function testItReturnsFamilyCodeWhenFamilyIsNotFound(): void
     {
-        $result = $this->query->execute('shoes','en_US');
+        $result = $this->query->execute('shoes', 'en_US');
         $this->assertEquals('[shoes]', $result);
     }
 
@@ -49,7 +49,7 @@ class GetFamilyLabelByCodeAndLocaleQueryTest extends IntegrationTestCase
             'fr_FR' => 'Chaussures',
         ]]);
 
-        $result = $this->query->execute('shoes','en_US');
+        $result = $this->query->execute('shoes', 'en_US');
         $this->assertEquals('[shoes]', $result);
     }
 }

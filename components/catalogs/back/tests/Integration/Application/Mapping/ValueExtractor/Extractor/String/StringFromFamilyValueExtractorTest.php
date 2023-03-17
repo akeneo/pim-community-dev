@@ -62,7 +62,7 @@ class StringFromFamilyValueExtractorTest extends ValueExtractorTestCase
             locale: null,
             scope: null,
             parameters: [
-                'label_locale' => 'fr_FR'
+                'label_locale' => 'fr_FR',
             ],
         );
 
@@ -91,7 +91,7 @@ class StringFromFamilyValueExtractorTest extends ValueExtractorTestCase
             locale: null,
             scope: null,
             parameters: [
-                'label_locale' => 'en_US'
+                'label_locale' => 'en_US',
             ],
         );
 

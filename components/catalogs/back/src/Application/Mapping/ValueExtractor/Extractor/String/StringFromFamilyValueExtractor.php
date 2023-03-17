@@ -27,7 +27,7 @@ final class StringFromFamilyValueExtractor implements StringValueExtractorInterf
     ): null | string {
         return $this->getFamilyLabelByCodeAndLocaleQuery->execute(
             $product['family_code'],
-            $parameters['label_locale']
+            $parameters['label_locale'],
         );
     }
 
