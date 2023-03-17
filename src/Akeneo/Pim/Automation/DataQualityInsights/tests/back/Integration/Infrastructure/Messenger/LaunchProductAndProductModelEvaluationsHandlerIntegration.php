@@ -121,36 +121,58 @@ SQL;
     private function assertProductsAreEvaluated(ProductUuidCollection $productUuids): void
     {
         $query = <<<SQL
-SELECT 1
+SELECT BIN_TO_UUID(product_uuid) AS product_uuid, COUNT(*) AS nb_evaluated_criteria
 FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_uuid IN (:product_uuids) AND evaluated_at IS NULL
-LIMIT 1;
+WHERE product_uuid IN (:product_uuids) AND evaluated_at IS NOT NULL
+GROUP BY product_uuid;
 SQL;
 
-        $result = $this->dbConnection->executeQuery(
+        $stmt = $this->dbConnection->executeQuery(
             $query,
             ['product_uuids' => $productUuids->toArrayBytes()],
             ['product_uuids' => Connection::PARAM_STR_ARRAY]
-        )->fetchOne();
+        );
 
-        Assert::assertFalse($result, 'Some products are not fully evaluated');
+        $nbEvaluationsByProduct = [];
+        while ($row = $stmt->fetchAssociative()) {
+            $nbEvaluationsByProduct[$row['product_uuid']] = (int) $row['nb_evaluated_criteria'];
+        }
+
+        $nbCriteria = \count($this->get('akeneo.pim.automation.data_quality_insights.product_criteria_by_feature_registry')->getAllCriterionCodes());
+
+        /** @var ProductUuid $productUuid */
+        foreach ($productUuids as $productUuid) {
+            Assert::assertArrayHasKey((string) $productUuid, $nbEvaluationsByProduct, sprintf('The product %s should have evaluations', $productUuid));
+            Assert::assertSame($nbCriteria, $nbEvaluationsByProduct[(string) $productUuid], sprintf('All the %d criteria should be evaluated for the product %s', $nbCriteria, $productUuid));
+        }
     }
 
     private function assertProductModelsAreEvaluated(ProductModelIdCollection $productModelIds): void
     {
         $query = <<<SQL
-SELECT 1
+SELECT product_id, COUNT(*) AS nb_evaluated_criteria
 FROM pim_data_quality_insights_product_model_criteria_evaluation
-WHERE product_id IN (:product_model_ids) AND evaluated_at IS NULL
-LIMIT 1;
+WHERE product_id IN (:product_model_ids) AND evaluated_at IS NOT NULL
+GROUP BY product_id;
 SQL;
 
-        $result = $this->dbConnection->executeQuery(
+        $stmt = $this->dbConnection->executeQuery(
             $query,
             ['product_model_ids' => $productModelIds->toArrayString()],
             ['product_model_ids' => Connection::PARAM_STR_ARRAY]
-        )->fetchOne();
+        );
 
-        Assert::assertFalse($result, 'Some product models are not fully evaluated');
+        $nbEvaluationsByProductModel = [];
+        while ($row = $stmt->fetchAssociative()) {
+            $nbEvaluationsByProductModel[$row['product_id']] = (int) $row['nb_evaluated_criteria'];
+        }
+
+        $nbCriteria = \count($this->get('akeneo.pim.automation.data_quality_insights.product_criteria_by_feature_registry')->getAllCriterionCodes());
+
+        /** @var ProductModelId $productUuid */
+        foreach ($productModelIds as $productModelId) {
+            Assert::assertArrayHasKey((string) $productModelId, $nbEvaluationsByProductModel, sprintf('The product model %s should have evaluations', $productModelId));
+            Assert::assertSame($nbCriteria, $nbEvaluationsByProductModel[(string) $productModelId], sprintf('All the %d criteria should be evaluated for the product model %s', $nbCriteria, $productModelId));
+        }
     }
 }
