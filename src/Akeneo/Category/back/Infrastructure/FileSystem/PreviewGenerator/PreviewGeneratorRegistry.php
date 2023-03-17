@@ -63,6 +63,6 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
             return $previewGenerator->remove($data, $type);
         }
 
-        throw new \RuntimeException(sprintf('There was no generator found to remove the preview of attribute "%s" with type "%s"', $attribute->getCode(), $type));
+        throw new \RuntimeException(sprintf('There was no generator found to remove the preview "%s" with type "%s"', $data, $type));
     }
 }
