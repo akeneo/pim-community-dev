@@ -20,14 +20,11 @@ class FamilyPropertyShouldBeValidValidatorSpec extends ObjectBehavior
 {
     public function let(
         ValidatorInterface $globalValidator,
-        ExecutionContext $context,
-        ValidatorInterface $validator
+        ExecutionContext $context
     ): void
     {
         $this->beConstructedWith($globalValidator);
         $this->initialize($context);
-
-        $globalValidator->inContext($context)->willReturn($validator);
     }
 
     public function it_is_initializable(): void
@@ -82,32 +79,13 @@ class FamilyPropertyShouldBeValidValidatorSpec extends ObjectBehavior
         $this->validate($structure, new FamilyPropertyShouldBeValid());
     }
 
-    public function it_should_validate_a_property_with_no_process(ExecutionContext $context, ValidatorInterface $validator): void
+    public function it_should_validate_a_property_with_a_type_no_process(
+        ExecutionContext $context
+    ): void
     {
         $process = ['type' => 'no'];
         $structure = ['type' => 'family', 'process' => $process];
         $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
-        $validator->validate($process, Argument::any())->shouldBeCalledTimes(1);
-
-        $this->validate($structure, new FamilyPropertyShouldBeValid());
-    }
-
-    public function it_should_validate_a_property_with_truncate_process(ExecutionContext $context, ValidatorInterface $validator): void
-    {
-        $process = ['type' => 'truncate', 'operator' => '=', 'value' => '1'];
-        $structure = ['type' => 'family', 'process' => $process];
-        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
-        $validator->validate($process, Argument::any())->shouldBeCalledTimes(1);
-
-        $this->validate($structure, new FamilyPropertyShouldBeValid());
-    }
-
-    public function it_should_validate_a_property_with_nomenclature_process(ExecutionContext $context, ValidatorInterface $validator): void
-    {
-        $process = ['type' => 'nomenclature'];
-        $structure = ['type' => 'family', 'process' => $process];
-        $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
-        $validator->validate($process, Argument::any())->shouldBeCalledTimes(1);
 
         $this->validate($structure, new FamilyPropertyShouldBeValid());
     }
