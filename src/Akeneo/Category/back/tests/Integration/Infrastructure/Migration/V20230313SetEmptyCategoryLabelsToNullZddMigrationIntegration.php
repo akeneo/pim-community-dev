@@ -24,7 +24,8 @@ class V20230313SetEmptyCategoryLabelsToNullZddMigrationIntegration extends Categ
     public function test_it_sets_empty_labels_to_null(): void
     {
         $connection = $this->get('database_connection');
-        $connection->executeStatement(
+        foreach(range(1,2000) as $index) {
+            $connection->executeStatement(
             <<<SQL
             INSERT INTO akeneo_pim_test.pim_catalog_category_translation
             (foreign_key, label, locale)
@@ -33,10 +34,13 @@ class V20230313SetEmptyCategoryLabelsToNullZddMigrationIntegration extends Categ
                     SELECT id 
                     FROM pim_catalog_category 
                     WHERE code = 'master'
-                ), '', 'fr_FR');
-            SQL
-        );
-        $this->assertEquals(1, $this->test_is_category_label_an_empty_string());
+                ), '', :key);
+            SQL,
+            ['key' => "fr_FR_$index"]
+            );
+        }
+
+        $this->assertEquals(100, $this->test_is_category_label_an_empty_string());
         $this->migration->migrate();
         $this->assertEquals(0, $this->test_is_category_label_an_empty_string());
     }
