@@ -1,5 +1,6 @@
 contexts: &context
     -   Context\FeatureContext
+    -   Context\FeatureFlagContext
     -   Context\FixturesContext
     -   Context\CatalogConfigurationContext
     -   Context\WebUser
@@ -196,4 +197,3 @@ acceptance:
                 debug: false
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
-

@@ -6,7 +6,6 @@ import {
   PageContent,
   PageHeader,
   PimView,
-  useFeatureFlags,
   useRouter,
   useSecurity,
   useSessionStorageState,
@@ -37,7 +36,6 @@ const CategoriesTreePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const {isGranted} = useSecurity();
-  const featureFlags = useFeatureFlags();
   const [lastSelectedCategory] = useSessionStorageState<lastSelectedCategory>(
     {
       treeId: treeId,
@@ -143,11 +141,7 @@ const CategoriesTreePage: FC = () => {
           </SectionTitle>
           <CategoryTree
             root={tree}
-            orderable={
-              featureFlags.isEnabled('enriched_category')
-                ? isGranted('pim_enrich_product_category_order_trees')
-                : isGranted('pim_enrich_product_category_edit')
-            }
+            orderable={isGranted('pim_enrich_product_category_order_trees')}
             followCategory={
               isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined
             }
@@ -170,11 +164,7 @@ const CategoriesTreePage: FC = () => {
               await handleDeleteCategory(categoryToDelete);
               handleCloseDeleteCategoryModal();
             }}
-            message={
-              featureFlags.isEnabled('enriched_category')
-                ? 'pim_enrich.entity.category.category_deletion.confirmation_question'
-                : 'pim_enrich.entity.category.category_deletion.confirmation'
-            }
+            message={'pim_enrich.entity.category.category_deletion.confirmation_question'}
             categoryId={categoryToDelete.identifier}
             numberOfProducts={categoryToDelete.numberOfProducts}
           />

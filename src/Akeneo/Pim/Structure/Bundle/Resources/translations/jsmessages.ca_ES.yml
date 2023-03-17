@@ -263,10 +263,6 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} grup(s) seleccionat(s)'
     delete:
       confirm: Esteu segur que voleu suprimir aquest grup d'atributs?
-  grid:
-    columns:
-      name: Nom dels grups d'atribut
-    no_search_result: Ho sentim, no hi ha cap resultat de la cerca.
 pim_enrich.mass_edit.family:
   title: Acció en massa de família
   confirm: "{1}Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau.|] 1, Inf [Esteu a punt d'actualitzar {{ itemsCount }} famílies amb la informació següent, confirmeu-ho si us plau."
