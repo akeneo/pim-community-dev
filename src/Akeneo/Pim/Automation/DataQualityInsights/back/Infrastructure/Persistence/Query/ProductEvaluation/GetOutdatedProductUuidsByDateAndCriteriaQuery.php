@@ -48,37 +48,26 @@ final class GetOutdatedProductUuidsByDateAndCriteriaQuery implements GetOutdated
             $queryTypes['criterion_codes'] = Connection::PARAM_STR_ARRAY;
         }
 
-        /**
-         * Because a product may not have criteria evaluation yet in database (just after its creation)
-         * We determine in the query if the product is outdated or up-to-date
-         * So the products that are not in the results can be considered as outdated
-         */
+        // It's simpler to fetch only products that are up-to-date, because a product may not have criteria evaluation yet in database (just after its creation)
         $query = <<<SQL
-WITH product_evaluations AS (
-    SELECT product_uuid, MAX(COALESCE(evaluated_at < :evaluation_date, 1)) AS is_outdated
-    FROM pim_data_quality_insights_product_criteria_evaluation
-    WHERE product_uuid IN (:product_uuids) 
-    $criteriaSubQuery
-    GROUP BY product_uuid
-) 
-SELECT BIN_TO_UUID(product_uuid) AS product_uuid, is_outdated 
-FROM product_evaluations;
+SELECT BIN_TO_UUID(product_uuid) AS product_uuid, MIN(COALESCE(evaluated_at >= :evaluation_date, 0)) AS is_up_to_date
+FROM pim_data_quality_insights_product_criteria_evaluation
+WHERE product_uuid IN (:product_uuids) 
+$criteriaSubQuery
+GROUP BY product_uuid
+HAVING is_up_to_date = 1
 SQL;
 
         $stmt = $this->dbConnection->executeQuery($query, $queryParameters, $queryTypes);
 
-        $areProductUuidsOutdated = [];
+        $upToDateProductUuids = [];
         while ($row = $stmt->fetchAssociative()) {
-            $areProductUuidsOutdated[$row['product_uuid']] = \boolval($row['is_outdated']);
+            $upToDateProductUuids[$row['product_uuid']] = true;
         }
-        
+
         $outdatedProductUuids = \array_values(\array_filter(
             $productUuids->toArray(),
-            function (ProductUuid $productUuid) use ($areProductUuidsOutdated) {
-                $productUuidString = (string) $productUuid;
-                return !\array_key_exists($productUuidString, $areProductUuidsOutdated)
-                    || true === $areProductUuidsOutdated[$productUuidString];
-            }
+            fn (ProductUuid $productUuid) => !\array_key_exists((string) $productUuid, $upToDateProductUuids)
         ));
 
         return ProductUuidCollection::fromProductUuids($outdatedProductUuids);

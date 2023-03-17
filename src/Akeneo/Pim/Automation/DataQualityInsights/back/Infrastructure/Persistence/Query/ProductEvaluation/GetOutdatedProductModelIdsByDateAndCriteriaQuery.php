@@ -48,32 +48,25 @@ final class GetOutdatedProductModelIdsByDateAndCriteriaQuery implements GetOutda
             $queryTypes['criterion_codes'] = Connection::PARAM_STR_ARRAY;
         }
 
-        /**
-         * Because a product-model may not have criteria evaluation yet in database (just after its creation)
-         * We determine in the query if the product-model is outdated or up-to-date
-         * So the products that are not in the results can be considered as outdated
-         */
+        // It's simpler to fetch only product-models that are up-to-date, because they may not have criteria evaluation yet in database (just after their creation)
         $query = <<<SQL
-SELECT product_id, MAX(COALESCE(evaluated_at < :evaluation_date, 1)) AS is_outdated
+SELECT product_id, MIN(COALESCE(evaluated_at >= :evaluation_date, 0)) AS is_up_to_date
 FROM pim_data_quality_insights_product_model_criteria_evaluation
 WHERE product_id IN (:product_model_ids) $criteriaSubQuery
 GROUP BY product_id
+HAVING is_up_to_date = 1
 SQL;
 
         $stmt = $this->dbConnection->executeQuery($query, $queryParameters, $queryTypes);
 
-        $areProductModelIdsOutdated = [];
+        $upToDateProductModelIds = [];
         while ($row = $stmt->fetchAssociative()) {
-            $areProductModelIdsOutdated[$row['product_id']] = \boolval($row['is_outdated']);
+            $upToDateProductModelIds[$row['product_id']] = true;
         }
 
         $outdatedProductModelIds = \array_values(\array_filter(
             $productModelIds->toArray(),
-            function (ProductModelId $productModelId) use ($areProductModelIdsOutdated) {
-                $productModelIdString = (string) $productModelId;
-                return !\array_key_exists($productModelIdString, $areProductModelIdsOutdated)
-                    || true === $areProductModelIdsOutdated[$productModelIdString];
-            }
+            fn (ProductModelId $productModelId) => !\array_key_exists((string) $productModelId, $upToDateProductModelIds)
         ));
 
         return ProductModelIdCollection::fromProductModelIds($outdatedProductModelIds);
