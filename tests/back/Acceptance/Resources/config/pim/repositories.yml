@@ -74,3 +74,8 @@ services:
                 'Akeneo\Channel\Infrastructure\Component\Model\Currency': '@pim_catalog.repository.currency'
         tags:
             - { name: validator.constraint_validator, alias: doctrine.orm.validator.unique }
+
+    Akeneo\Category\Domain\Query\GetCategoryInterface:
+        class: Akeneo\Category\Infrastructure\Storage\InMemory\GetCategoryInMemory
+        arguments:
+            - '@pim_catalog.repository.category'
