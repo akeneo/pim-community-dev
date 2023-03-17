@@ -13,6 +13,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
  */
 final class GetFamilyLabelByCodeAndLocaleQuery implements GetFamilyLabelByCodeAndLocaleQueryInterface
 {
+    private array $familyLabelByCode = [];
+
     public function __construct(
         private readonly SearchableRepositoryInterface $searchableFamilyRepository,
     ) {
@@ -20,14 +22,23 @@ final class GetFamilyLabelByCodeAndLocaleQuery implements GetFamilyLabelByCodeAn
 
     public function execute(string $code, string $locale): string
     {
-        $families = $this->searchableFamilyRepository->findBySearch(null, ['identifiers' => [$code]]);
-
-        $defaultValue = \sprintf('[%s]', $code);
-
-        if ([] === $families) {
-            return $defaultValue;
+        if (isset($this->familyLabelByCode[$code]) && isset($this->familyLabelByCode[$code][$locale])) {
+            return $this->familyLabelByCode[$code][$locale];
         }
 
-        return $families[0]->setLocale($locale)->getLabel() ?: $defaultValue;
+        $families = $this->searchableFamilyRepository->findBySearch(null, ['identifiers' => [$code]]);
+
+        $label = \sprintf('[%s]', $code);
+
+        if ([] !== $families) {
+            $label = $families[0]->setLocale($locale)->getLabel() ?: $label;
+        }
+
+        if (!isset($this->familyLabelByCode[$code])) {
+            $this->familyLabelByCode[$code] = [];
+        }
+        $this->familyLabelByCode[$code][$locale] = $label;
+
+        return $label;
     }
 }
