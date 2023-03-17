@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InMemoryNomenclatureRepository implements NomenclatureRepository
+class InMemoryFamilyNomenclatureRepository implements FamilyNomenclatureRepository
 {
     /** @var array<string, NomenclatureDefinition> */
     private array $nomenclatureDefinitions = [];
@@ -27,8 +27,6 @@ class InMemoryNomenclatureRepository implements NomenclatureRepository
 
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
     {
-        $this->nomenclatureDefinitions[$propertyCode] = $nomenclatureDefinition;
-
         foreach ($nomenclatureDefinition->values() as $familyCode => $value) {
             if (null === $value) {
                 unset($this->values[$familyCode]);
@@ -36,5 +34,12 @@ class InMemoryNomenclatureRepository implements NomenclatureRepository
                 $this->values[$familyCode] = $value;
             }
         }
+
+        $this->nomenclatureDefinitions[$propertyCode] = new NomenclatureDefinition(
+            $nomenclatureDefinition->operator(),
+            $nomenclatureDefinition->value(),
+            $nomenclatureDefinition->generateIfEmpty(),
+            $this->values
+        );
     }
 }

@@ -6,7 +6,9 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Update;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
 use Webmozart\Assert\Assert;
 
 /**
@@ -16,7 +18,8 @@ use Webmozart\Assert\Assert;
 final class UpdateNomenclatureHandler
 {
     public function __construct(
-        private readonly NomenclatureRepository $nomenclatureRepository,
+        private readonly FamilyNomenclatureRepository $familyNomenclatureRepository,
+        private readonly SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository,
         private readonly CommandValidatorInterface $validator,
     ) {
     }
@@ -25,7 +28,14 @@ final class UpdateNomenclatureHandler
     {
         $this->validator->validate($command);
 
-        $nomenclatureDefinition = $this->nomenclatureRepository->get('family');
+        if ($command->getPropertyCode() === FamilyProperty::TYPE) {
+            $nomenclatureRepository = $this->familyNomenclatureRepository;
+        } else {
+            $nomenclatureRepository = $this->simpleSelectNomenclatureRepository;
+        }
+
+        $nomenclatureDefinition = $nomenclatureRepository->get($command->getPropertyCode());
+
         if (null === $nomenclatureDefinition) {
             $nomenclatureDefinition = new NomenclatureDefinition();
         }
@@ -40,6 +50,6 @@ final class UpdateNomenclatureHandler
             ->withGenerateIfEmpty($command->getGenerateIfEmpty())
             ->withValues($command->getValues());
 
-        $this->nomenclatureRepository->update('family', $nomenclatureDefinition);
+        $nomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
     }
 }
