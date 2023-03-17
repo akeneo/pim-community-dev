@@ -145,6 +145,7 @@ describe('NomenclatureEdit', () => {
     expect(await screen.findByText('[family3]')).toBeInTheDocument();
     expect(screen.getByTitle('FA1')).toBeInTheDocument();
     expect(screen.getByTitle('FA2')).toBeInTheDocument();
+    expect(screen.getByText('pim_identifier_generator.nomenclature.helper')).toBeVisible();
   });
 
   it('should navigate with invalid values', async () => {

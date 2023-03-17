@@ -56,10 +56,17 @@ describe('validateStructure', () => {
             digitsMin: 2,
             numberMin: null,
           },
+          {
+            type: PROPERTY_NAMES.SIMPLE_SELECT,
+            attributeCode: 'color',
+            locale: null,
+            scope: null,
+            process: {type: null},
+          },
         ],
         'structure'
       )
-    ).toHaveLength(1);
+    ).toHaveLength(2);
   });
 
   it('should add a violation when there are no properties', () => {
@@ -82,7 +89,7 @@ describe('validateStructure', () => {
       {
         path: 'structure[0]',
         message:
-          'The property type "unknown" is unknown. Please choose one of the following: free_text, auto_number, family',
+          'The property type "unknown" is unknown. Please choose one of the following: free_text, auto_number, family, simple_select',
       },
     ]);
   });
