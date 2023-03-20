@@ -139,6 +139,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
             'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
+            'Akeneo\Tool\Component\Messenger',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

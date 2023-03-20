@@ -24,7 +24,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CatalogFixtureCommand extends Command
 {
+    /**
+     * @var string|null
+     */
     protected static $defaultName = 'akeneo:catalogs:fixtures';
+    /**
+     * @var string|null
+     */
     protected static $defaultDescription = 'Do not run this command in production env. Installs fixtures for dev only.';
 
     public function __construct(
@@ -140,6 +146,11 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => null,
                 ],
+                'weight' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
                 'phone_number' => [
                     'source' => null,
                     'scope' => null,
@@ -202,7 +213,7 @@ class CatalogFixtureCommand extends Command
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.12/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
@@ -255,10 +266,15 @@ class CatalogFixtureCommand extends Command
               "type": "string",
               "enum": ["S", "M", "L"]
             },
+            "weight": {
+              "type": "number",
+              "title": "Weight"
+            },
             "colors": {
               "type": "array",
               "items": {
-                "type": "string"
+                "type": "string",
+                "enum": ["Red", "Green", "Blue", "Yellow", "Black", "White"]
               },
               "title": "Colors"
             }

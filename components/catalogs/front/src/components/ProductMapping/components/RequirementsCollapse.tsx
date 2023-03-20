@@ -32,7 +32,7 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
     ).map(constraint => {
         let value = (target as TargetWith<typeof constraint>)[constraint];
         if (Array.isArray(value)) {
-            value = value.join(',');
+            value = value.join(', ');
         }
         return {
             key: constraint,

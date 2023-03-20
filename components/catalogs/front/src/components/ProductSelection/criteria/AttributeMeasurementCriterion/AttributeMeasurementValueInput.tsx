@@ -11,8 +11,8 @@ import {
 import {AttributeMeasurementCriterionState} from './types';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {MeasurementUnit} from '../../models/Measurement';
-import {useMeasurements} from '../../hooks/useMeasurements';
+import {MeasurementUnit} from '../../../../models/MeasurementUnit';
+import {useMeasurements} from '../../../../hooks/useMeasurements';
 import {useNumberValue} from '../../hooks/useNumberValue';
 
 const InputsContainer = styled.div`

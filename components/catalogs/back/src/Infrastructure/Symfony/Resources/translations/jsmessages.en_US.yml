@@ -143,6 +143,10 @@ akeneo_catalogs:
                     placeholder: Select a currency
                     helper: Select the currency in which the value should be sent.
                 no_parameters_message: No parameters for this source.
+                unit:
+                    label: Unit
+                    placeholder: Select a unit
+                    helper: Select the unit in which the value should be sent.
             select_source:
                 label: Pim source
                 search: Search criterion
