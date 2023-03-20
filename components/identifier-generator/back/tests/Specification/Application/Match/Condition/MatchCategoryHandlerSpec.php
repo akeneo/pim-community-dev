@@ -5,10 +5,17 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Ma
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Category;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Enabled;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\CategoriesHaveAtLeastOneChild;
 use PhpSpec\ObjectBehavior;
 
 class MatchCategoryHandlerSpec extends ObjectBehavior
 {
+    public function let(
+        CategoriesHaveAtLeastOneChild $categoriesHaveAtLeastOneChild
+    ) {
+        $this->beConstructedWith($categoriesHaveAtLeastOneChild);
+    }
+
     public function it_should_support_only_category_conditions(): void
     {
         $this->getConditionClass()->shouldReturn(Category::class);
@@ -68,5 +75,37 @@ class MatchCategoryHandlerSpec extends ObjectBehavior
         $this->__invoke($condition, new ProductProjection(true, null, [], []))->shouldReturn(true);
         $this->__invoke($condition, new ProductProjection(true, null, [], ['pants']))->shouldReturn(true);
         $this->__invoke($condition, new ProductProjection(true, null, [], ['pants', 'shoes']))->shouldReturn(false);
+    }
+
+    public function it_should_match_in_children(
+        CategoriesHaveAtLeastOneChild $categoriesHaveAtLeastOneChild
+    ): void {
+        $condition = Category::fromNormalized([
+            'type' => 'category',
+            'operator' => 'IN CHILDREN',
+            'value' => ['shoes']
+        ]);
+        $categoriesHaveAtLeastOneChild->among(['shoes'], [])->shouldBeCalled()->willReturn(false);
+        $this->__invoke($condition, new ProductProjection(true, null, [], []))->shouldReturn(false);
+        $categoriesHaveAtLeastOneChild->among(['shoes'], ['blue_shoes'])->shouldBeCalled()->willReturn(true);
+        $this->__invoke($condition, new ProductProjection(true, null, [], ['blue_shoes']))->shouldReturn(true);
+        $categoriesHaveAtLeastOneChild->among(['shoes'], ['pants'])->shouldBeCalled()->willReturn(false);
+        $this->__invoke($condition, new ProductProjection(true, null, [], ['pants']))->shouldReturn(false);
+    }
+
+    public function it_should_match_not_in_children(
+        CategoriesHaveAtLeastOneChild $categoriesHaveAtLeastOneChild
+    ): void {
+        $condition = Category::fromNormalized([
+            'type' => 'category',
+            'operator' => 'NOT IN CHILDREN',
+            'value' => ['shoes']
+        ]);
+        $categoriesHaveAtLeastOneChild->among(['shoes'], [])->shouldBeCalled()->willReturn(false);
+        $this->__invoke($condition, new ProductProjection(true, null, [], []))->shouldReturn(true);
+        $categoriesHaveAtLeastOneChild->among(['shoes'], ['blue_shoes'])->shouldBeCalled()->willReturn(true);
+        $this->__invoke($condition, new ProductProjection(true, null, [], ['blue_shoes']))->shouldReturn(false);
+        $categoriesHaveAtLeastOneChild->among(['shoes'], ['pants'])->shouldBeCalled()->willReturn(false);
+        $this->__invoke($condition, new ProductProjection(true, null, [], ['pants']))->shouldReturn(true);
     }
 }
