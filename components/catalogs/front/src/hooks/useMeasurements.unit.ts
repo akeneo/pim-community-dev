@@ -3,7 +3,7 @@ jest.unmock('./useMeasurements');
 import {renderHook} from '@testing-library/react-hooks';
 import {useMeasurements} from './useMeasurements';
 import fetchMock from 'jest-fetch-mock';
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 
 test('it fetches the API response', async () => {
     fetchMock.mockResponseOnce(
