@@ -17,7 +17,9 @@ export const SourceSettings: FC<Props> = ({source, attribute, errors, onChange})
     const onChangeMiddleware = useCallback(
         source => {
             if (
-                (attribute.type === 'pim_catalog_simpleselect' || attribute.type === 'pim_catalog_multiselect') &&
+                (attribute.type === 'pim_catalog_simpleselect' ||
+                    attribute.type === 'pim_catalog_multiselect' ||
+                    source.source === 'categories') &&
                 (undefined === source.parameters?.label_locale || null === source.parameters?.label_locale)
             ) {
                 source = {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
