@@ -86,10 +86,6 @@ pim_identifier_generator:
         numberMin_label: 'Min nummer'
       family:
         title: 'Familie'
-        abbrev_type: 'Definieer de opbouw van deze eigenschap'
-        abbrev_type_empty_label: 'Selecteer het formaat'
-        operator: 'Operator'
-        chars_number: 'Aantal tekens'
       code_format:
         type:
           truncate: 'Gebruik eerste tekens'
