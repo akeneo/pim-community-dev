@@ -27,7 +27,6 @@ services:
   Akeneo\Category\Application\Command\AddAttributeCommandHandler:
     arguments:
       - '@validator'
-      - '@event_dispatcher'
       - '@Akeneo\Category\Application\Query\GetAttribute'
       - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
     tags:
