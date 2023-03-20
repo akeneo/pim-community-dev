@@ -87,6 +87,7 @@ pim_enrich.entity.attribute_option:
       add_option: Klik hier om er één toe te voegen
       delete_confirmation_title_msg: Verwijder "{{ optionCode }}" uit uw opties?
       delete_confirmation_subtitle_msg: Weet u zeker dat u deze optie wilt verwijderen? U kunt deze actie niet ongedaan maken.
+      display_options_limit: Alleen de eerste 500 opties worden hier weergegeven. Als u meer opties wilt zien, voer dan een zoekopdracht uit of exporteer de set. 
       search:
         placeholder: Zoek op naam of code
         no_result:
@@ -229,9 +230,10 @@ pim_enrich.entity.attribute:
       select_locale: Selecteer uw taal
     delete:
       confirm: Weet u zeker dat u attribuut wilt verwijderen?
+      attribute_removal: Het attribuut zal worden verwijderd uit alle producten.
       product_count: ']-Inf, 1]{{ count }} product|]1, Inf[{{ count }} producten'
       product_model_count: ']-Inf, 1]{{ count }} productmodel|]1, Inf[{{ count }} productmodellen'
-      used: ']-Inf,1]heeft momenteel waarden ingesteld voor dit attribuut, ze zullen worden verwijderd.Ø ]1, Inf[hebben momenteel waarden ingesteld voor dit attribuut, ze zullen worden verwijderd.'
+      used: ']-Inf,1]heeft momenteel waarden ingesteld voor dit attribuut. ]1, Inf[heeft momenteel waarden ingesteld voor dit attribuut.'
       helper:
         content: Als u uw attribuuttype wilt wijzigen, om het lokaliseerbaar of per kanaal instelbaar te maken, terwijl de toegang tot uw bestaande attribuutwaarden behouden blijft
         link: Kijk in ons helpcenter voor meer informatie.
@@ -263,10 +265,6 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} groep(en) geselecteerd'
     delete:
       confirm: Weet u zeker dat u deze attribuut groep wilt verwijderen?
-  grid:
-    columns:
-      name: Attribuutgroep naam
-    no_search_result: Sorry, er is geen resultaat voor uw zoekopdracht.
 pim_enrich.mass_edit.family:
   title: Gezamenlijke actie voor families
   confirm: "{1}U staat op het punt een familie te updaten met de volgende informatie, bevestig alstublieft.|]1, Inf[U staat op het punt om {{ itemsCount }} families te updaten met de volgende informatie, bevestig alstublieft."

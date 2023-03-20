@@ -87,6 +87,7 @@ pim_enrich.entity.attribute_option:
       add_option: Hier klicken, um eins hinzuzufügen.
       delete_confirmation_title_msg: '"{{ optionCode }}" aus Ihren Optionen löschen?'
       delete_confirmation_subtitle_msg: Sind Sie sicher, dass Sie diese Option löschen möchten? Sie können diese Aktion nicht rückgängig machen.
+      display_options_limit: Hier sind nur die ersten 500 Optionen aufgelistet. Wenn Sie weitere Optionen sehen möchten, führen Sie eine Suche oder einen Export durch.
       search:
         placeholder: Auf Label oder Code suchen
         no_result:
@@ -229,9 +230,10 @@ pim_enrich.entity.attribute:
       select_locale: Gebietsschema auswählen
     delete:
       confirm: Möchten Sie dieses Attribut wirklich löschen?
+      attribute_removal: Das Attribut wird von allen Produkten entfernt.
       product_count: '{0}0 Produkte|{1}1 Produkt|]1, Inf[{{ count }} Produkte'
       product_model_count: '{0}0 Produktmodelle|{1}1 Produktmodell|]1, Inf[{{ count }} Produktmodelle'
-      used: ']-Inf, 1]hat derzeit Werte für dieses Attribut gesetzt, sie werden entfernt.|]1, Inf[Derzeit haben Werte für dieses Attribut gesetzt, sie werden entfernt.'
+      used: ']-Inf,1]hat derzeit Werte für dieses Attribut gesetzt.|]1, Inf[Derzeit haben Werte für dieses Attribut gesetzt.'
       helper:
         content: Wenn Sie Ihren Attributtyp ändern müssen, um ihn lokalisierbar oder skalierbar zu machen, während Sie den Zugriff auf Ihre vorhandenen Attributwerte behalten
         link: prüfe unser Hilfe-Center für weitere Informationen.
@@ -263,10 +265,6 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
     delete:
       confirm: Möchten Sie diese Attributgruppe wirklich löschen?
-  grid:
-    columns:
-      name: Attributgruppen
-    no_search_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
 pim_enrich.mass_edit.family:
   title: Massenbearbeitung Produktfamilien
   confirm: "{1}Sie sind im Begriff, eine Familie mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie.|]1, Inf[Sie sind im Begriff, {{ itemsCount }} Familien mit den folgenden Informationen zu aktualisieren, bitte bestätigen."

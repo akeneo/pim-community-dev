@@ -20,7 +20,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type PropertyItem array{'id': string, 'text': string}
+ * @phpstan-type PropertyItem array{'id': string, 'text': string, 'type'?: string}
  * @phpstan-type PropertyItemGroup array{'id': string, 'text': string, 'children': non-empty-list<PropertyItem>}
  * @phpstan-import-type AttributeDetails from GetGroupedAttributes
  */
@@ -98,8 +98,8 @@ final class GetAvailablePropertiesController
         return \array_filter(
             $fields,
             fn (string $field): bool =>
-                \str_contains(\strtolower($field), \strtolower($search)) ||
-                \str_contains(
+                \str_contains(\strtolower($field), \strtolower($search))
+                || \str_contains(
                     \strtolower(
                         $this->translator->trans(
                             \sprintf('%s%s', static::FIELD_TRANSLATION_BASE, $field),
@@ -172,6 +172,7 @@ final class GetAvailablePropertiesController
             $results[$groupCode]['children'][] = [
                 'id' => $attribute['code'],
                 'text' => $attribute['label'],
+                'type' => $attribute['type'],
             ];
         }
 

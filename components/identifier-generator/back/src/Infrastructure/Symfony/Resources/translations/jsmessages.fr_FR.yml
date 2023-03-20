@@ -9,6 +9,7 @@ pim_error:
   unexpected: "Une erreur s'est produite lors de l'affichage de cette page. Veuillez contacter votre administrateur."
   404: 'Une erreur 404 s''est produite...'
   identifier_generator_not_found: 'Générateur d''identifiants introuvable'
+  selection_attribute_not_found: 'Un attribut de votre sélection de produits a été supprimé de votre catalogue. Veuillez supprimer cette propriété de votre sélection de produits.'
 pim_identifier_generator:
   create:
     form:
@@ -49,6 +50,7 @@ pim_identifier_generator:
       info: 'Vous pourrez bientôt configurer plusieurs générateurs afin de répondre à toutes vos utilisations. '
     confirmation: 'Confirmez-vous la suppression de cette propriété ?'
   selection:
+    limit_reached: 'Vous avez atteint la limite de {{ %limit%}} conditions.'
     helper:
       title: 'Ajoutez des conditions à votre sélection de produits, si vous voulez :'
       automate: 'automatiser la création d''identifiants pour une sélection de produits'
@@ -70,7 +72,7 @@ pim_identifier_generator:
     helper_link: 'Consultez notre Help Center pour plus d''informations.'
     title: 'Structure de l''identifiant'
     add_element: 'Ajouter une nouvelle propriété '
-    limit_reached: 'Vous avez atteint la limite des 20 propriétés. '
+    limit_reached: 'Vous avez atteint la limite de {{ %limit%}} propriétés.'
     property_type:
       sections:
         system: 'Système'
@@ -87,10 +89,6 @@ pim_identifier_generator:
         numberMin_label: 'Nombre min.'
       family:
         title: 'Famille'
-        abbrev_type: 'Définir le format de la propriété'
-        abbrev_type_empty_label: 'Sélectionner le format'
-        operator: 'Opérateur'
-        chars_number: 'Nombre de caractères'
       code_format:
         type:
           truncate: 'Utiliser les premiers caractères'

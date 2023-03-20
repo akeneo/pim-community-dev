@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\SimpleSelectProperty;
 use Webmozart\Assert\Assert;
 
 /**
@@ -63,7 +64,8 @@ final class Structure
                 FreeText::type() => FreeText::fromNormalized($normalizedValue),
                 AutoNumber::type() => AutoNumber::fromNormalized($normalizedValue),
                 FamilyProperty::type() => FamilyProperty::fromNormalized($normalizedValue),
-                default => throw new \InvalidArgumentException(sprintf('The Structure type "%s" does not exist', $normalizedValue['type'])),
+                SimpleSelectProperty::type() => SimpleSelectProperty::fromNormalized($normalizedValue),
+                default => throw new \InvalidArgumentException(\sprintf('The Structure type "%s" does not exist', $normalizedValue['type'])),
             };
         }
 

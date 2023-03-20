@@ -15,6 +15,7 @@ type Attribute = {
   labels: LabelCollection;
   localizable: boolean;
   scopable: boolean;
+  type: string;
 };
 
 export type {Attribute, AttributeType, AttributeCode};

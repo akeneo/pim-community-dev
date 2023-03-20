@@ -1,0 +1,10 @@
+pim_catalog_identifier_generator:
+  condition:
+    fields:
+      family: Produktfamilie
+      enabled: Status
+    field_groups:
+      system: System
+  structure:
+    fields:
+      free_text: Freitext

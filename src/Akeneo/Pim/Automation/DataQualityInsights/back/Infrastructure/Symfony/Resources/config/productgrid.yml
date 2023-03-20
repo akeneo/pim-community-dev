@@ -44,7 +44,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Sorter\QualityScoreSorter:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy'
-            - ['quality_score']
+            - ['quality_score', 'data_quality_insights_score']
         tags:
             - { name: pim_catalog.elasticsearch.query.sorter, priority: 30 }
 

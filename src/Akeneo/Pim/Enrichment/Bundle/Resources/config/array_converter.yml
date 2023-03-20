@@ -37,7 +37,6 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.product.field_converter'
             - '@pim_connector.array_converter.flat_to_standard.product.columns_merger'
             - '@pim_connector.array_converter.flat_to_standard.product.columns_mapper'
-            - '@pim_connector.array_convertor.checker.fields_requirement'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.array_converter.flat_to_standard.product_value'
 

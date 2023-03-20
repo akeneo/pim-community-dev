@@ -242,11 +242,17 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\ConnectorBundle
         spec_path: src/Akeneo/Tool/Bundle/ConnectorBundle
         src_path: src/Akeneo/Tool/Bundle/ConnectorBundle
-    User:
+    LegacyUser:
         namespace: Akeneo\UserManagement
         psr4_prefix: Akeneo\UserManagement
         spec_path: tests/back/UserManagement
         src_path: src/Akeneo/UserManagement
+        spec_prefix: Specification
+    User:
+        namespace: Akeneo\UserManagement
+        psr4_prefix: Akeneo\UserManagement
+        spec_path: src/Akeneo/UserManagement/back/tests
+        src_path: src/Akeneo/UserManagement/back
         spec_prefix: Specification
     ## Oro bundles
     OroFilterBundle:

@@ -1,7 +1,7 @@
 import React, {createContext, FC, useEffect} from 'react';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {fromPairs} from 'lodash/fp';
-import {Channel, Locale, useFeatureFlags, useFetch, useRoute} from '@akeneo-pim-community/shared';
+import {Channel, Locale, useFetch, useRoute} from '@akeneo-pim-community/shared';
 
 type SetCanLeavePage = (canLeavePage: boolean) => void;
 
@@ -35,7 +35,6 @@ type Props = {
 
 const EditCategoryProvider: FC<Props> = ({children, setCanLeavePage}) => {
   const queryClient = new QueryClient();
-  const featureFlags = useFeatureFlags();
 
   const channelsUrl = useRoute('pim_enrich_channel_rest_index');
   let [channelsArray, fetchChannels, statusFetchChannels] = useFetch<Channel[]>(channelsUrl);
@@ -58,10 +57,9 @@ const EditCategoryProvider: FC<Props> = ({children, setCanLeavePage}) => {
   }
 
   useEffect(() => {
-    if (!featureFlags.isEnabled('enriched_category')) return; // unused in legacy part
     fetchLocales();
     fetchChannels();
-  }, [featureFlags, fetchLocales, fetchChannels]);
+  }, [fetchLocales, fetchChannels]);
 
   return (
     <QueryClientProvider client={queryClient}>

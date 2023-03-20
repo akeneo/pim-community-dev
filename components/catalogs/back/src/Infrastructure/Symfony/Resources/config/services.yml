@@ -18,6 +18,7 @@ services:
             - '../../../../Domain/'
             - '../../../../ServiceAPI/'
             - '../../../../Application/Exception'
+            - '../../../../Application/Mapping/Measurement/Exception'
             - '../../../../Infrastructure/Validation'
 
     Akeneo\Catalogs\Application\Handler\:
@@ -199,6 +200,7 @@ services:
     Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry:
         arguments:
             -
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromMultiSelectAttributeValueExtractor'
@@ -209,5 +211,6 @@ services:
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringUri\StringUriFromImageAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromMetricAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromNumberAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromPriceCollectionAttributeValueExtractor'

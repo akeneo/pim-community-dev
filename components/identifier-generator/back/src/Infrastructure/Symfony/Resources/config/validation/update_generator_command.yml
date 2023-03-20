@@ -11,6 +11,8 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
         conditions:
             - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ConditionsShouldNotContainMultipleCondition:
                 types: ['enabled', 'family']
+            - Count:
+                  max: 10
             - All:
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\EnabledShouldBeValid: ~
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValid: ~
@@ -40,11 +42,12 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextShouldBeValid: ~
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberShouldBeValid: ~
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyPropertyShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectPropertyShouldBeValid: ~
                 - Collection:
                     fields:
                         type:
                             - Choice:
-                                choices: ['free_text', 'auto_number', 'family']
+                                choices: ['free_text', 'auto_number', 'family', 'simple_select']
                                 message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
                         string:
                             - Optional:
@@ -71,6 +74,13 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
                                             - Optional: ~
                                         operator:
                                             - Optional: ~
+                                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\PropertyProcessShouldBeValid: ~
+                        attributeCode:
+                            - Optional: ~
+                        locale:
+                            - Optional: ~
+                        scope:
+                            - Optional: ~
         labels:
             - All:
                 - Length:

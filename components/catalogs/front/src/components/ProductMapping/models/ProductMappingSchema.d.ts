@@ -3,6 +3,10 @@ export type ProductMappingSchema = {
         [target: string]: {
             title?: string;
             type: string;
+            items?: {
+                type: string;
+                enum?: string[];
+            };
             format?: string;
             description?: string;
             minLength?: number;
@@ -13,4 +17,6 @@ export type ProductMappingSchema = {
             enum?: string[] | number[];
         };
     };
+
+    required?: string[];
 };

@@ -261,6 +261,7 @@ pim_common:
   product_models: Productmodellen
   more: Meer
   public_view: Openbare weergave
+  view: Weergave
 error:
   exception: Er is een {{ status_code }}-fout opgetreden
   forbidden: U heeft geen toegang tot deze pagina
@@ -275,6 +276,7 @@ pim_enrich.entity.fallback:
     generic_error: Er is een fout opgetreden
     update:
       fail: Update niet geslaagd
+      fail_session_expired: Uw sessie is verlopen. U dient opnieuw in te loggen.
       success: Update met succes voltooid
     delete:
       fail: Kan dit item niet verwijderen
@@ -341,6 +343,7 @@ pim_title:
   pim_settings_index: Instellingen
   pim_system_index: Systeem
 pim_menu:
+  tag.new: Nieuw
   tab:
     activity: Activiteit
     imports: Importeren
@@ -380,6 +383,7 @@ pim_menu:
       product: Productinstellingen
       catalog: Catalogusinstellingen
       collapsed_label: Instellingen navigatie
+      automation: Automatisering
     product: Product navigatie
     product_infos: Product informatie
   user:
@@ -395,6 +399,7 @@ pim_settings:
   settings_menu: Menu Instellingen
   catalog_settings: Catalogusinstellingen
   product_settings: Productinstellingen
+  automation_settings: Automatisering
   count:
     category_trees: '{0}U heeft 0 bomen |{1}U heeft 1 boom |]1, Inf[U heeft {{ count }} bomen '
     categories: '{0}en 0 categorieën|{1}en 1 categorie|]1, Inf[en {{ count }} categorieën'
@@ -409,6 +414,7 @@ pim_settings:
     group_types: '{0}U heeft 0 groepstypes|{1}U heeft 1 groepstype|]1, Inf[U heeft {{ count }} groepstypes'
     groups: '{0}U heeft 0 groepen|{1}U heeft 1 groep|]1, Inf[U heeft {{ count }} groepen'
     rules: '{0}U heeft 0 ingeschakelde regels|{1}U heeft 1 ingeschakelde regel|]1, Inf[U heeft {{ count }} ingeschakelde regels'
+    identifier_generators: '{0}Je hebt 0 identifier generator+{0}{1}Je hebt 1 identifier generator! ]1, Inf[Je hebt {{ count }} identifier generators'
 pim_system:
   system_menu: Systeemmenu
   system_navigation: Systeem navigatie

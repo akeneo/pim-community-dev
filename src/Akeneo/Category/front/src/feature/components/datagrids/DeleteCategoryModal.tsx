@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Button, DeleteIllustration, getFontSize, Helper, Modal} from 'akeneo-design-system';
-import {useFeatureFlags, useIsMounted, useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useCountCategoryChildren} from '../../hooks/useCountCategoryChildren';
 
@@ -22,11 +22,10 @@ const DeleteCategoryModal: FC<DeleteCategoryModalProps> = ({
   categoryId,
 }) => {
   const translate = useTranslate();
-  const featureFlags = useFeatureFlags();
 
   const {data: categoryChildrenCount, isLoading} = useCountCategoryChildren(categoryId);
   let warning = null;
-  if (featureFlags.isEnabled('enriched_category') && !isLoading) {
+  if (!isLoading) {
     if (categoryChildrenCount && categoryChildrenCount > 0) {
       warning = translate('pim_enrich.entity.category.category_tree_deletion.warning_categories_number', {
         // Add the current category (parent) we want to delete

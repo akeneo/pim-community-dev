@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {AttributesIllustration, Helper, Link, Placeholder, SectionTitle, uuid} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {AddPropertyButton, DelimiterEdit, Preview, PropertiesList, PropertyEdit} from './structure';
@@ -8,6 +8,7 @@ import {TabValidationErrors, TranslationWithLink} from '../components';
 import styled from 'styled-components';
 import {Violation} from '../validators';
 import {useIdentifierGeneratorAclContext} from '../context';
+import {useQueryClient} from 'react-query';
 
 type StructureTabProps = {
   initialStructure: Structure;
@@ -44,11 +45,18 @@ const StructureTab: React.FC<StructureTabProps> = ({
       ...property,
     }))
   );
+  const queryClient = useQueryClient();
   const selectedProperty = useMemo(
     () => structure.find(propertyWithId => propertyWithId.id === selectedPropertyId),
     [selectedPropertyId, structure]
   );
   const isLimitReached = useMemo(() => structure.length === LIMIT_NUMBER, [structure.length]);
+
+  useEffect(() => {
+    return () => {
+      queryClient.invalidateQueries(['getPropertyItems']);
+    };
+  }, [queryClient]);
 
   const removeIdentifiers: (structureWithIdentifiers: StructureWithIdentifiers) => Structure =
     structureWithIdentifiers => {
@@ -115,7 +123,9 @@ const StructureTab: React.FC<StructureTabProps> = ({
           </SectionTitle>
           {structure.length > 0 && (
             <>
-              {isLimitReached && <Helper>{translate('pim_identifier_generator.structure.limit_reached')}</Helper>}
+              {isLimitReached && (
+                <Helper>{translate('pim_identifier_generator.structure.limit_reached', {count: LIMIT_NUMBER})}</Helper>
+              )}
               <Preview structure={structure} delimiter={delimiter} textTransformation={textTransformation} />
               <StructureDataContainer>
                 <PropertiesList

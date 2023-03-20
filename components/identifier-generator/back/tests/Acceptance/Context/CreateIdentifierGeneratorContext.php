@@ -348,6 +348,14 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When /^I try to create an identifier generator with (\d+) conditions$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithConditions(string $count): void
+    {
+        $this->tryToCreateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
+    }
+
+    /**
      * @When I try to create an identifier generator with 2 enabled conditions
      */
     public function iTryToCreateAnIdentifierGeneratorWith2EnabledConditions(): void
@@ -416,6 +424,69 @@ final class CreateIdentifierGeneratorContext implements Context
             $defaultCondition['unknown'] = 'unknown property';
         }
         $this->tryToCreateGenerator(conditions: [$defaultCondition]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with a simple select property without attribute code$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectPropertyWithoutAttributeCode(): void
+    {
+        $this->tryToCreateGenerator(structure: [
+            ['type' => 'simple_select', 'process' => ['type' => 'no']],
+        ]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with simple select property without process field$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithSimpleSelectPropertyWithoutProcessField(): void
+    {
+        $this->tryToCreateGenerator(structure: [
+            ['type' => 'simple_select', 'attributeCode' => 'color'],
+        ]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with a simple_select property with (?P<attributeCode>[^']*) attribute(?: and (?P<scope>.*) scope)?(?: and (?P<locale>.*) locale)?$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithASimpleSelectPropertyWithNameAttribute(
+        string $attributeCode,
+        string $scope = '',
+        string $locale = ''
+    ): void {
+        $simpleSelectProperty = ['type' => 'simple_select', 'attributeCode' => $attributeCode, 'process' => ['type' => 'no']];
+
+        if ($scope) {
+            $simpleSelectProperty['scope'] = $scope;
+        }
+
+        if ($locale) {
+            $simpleSelectProperty['locale'] = $locale;
+        }
+
+        $this->tryToCreateGenerator(structure: [
+            $simpleSelectProperty,
+        ]);
+    }
+
+    /**
+     * @When /^I try to create an identifier generator with a simple select process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and (?P<value>[^']*) as value$/
+     */
+    public function iTryToCreateAnIdentifierGeneratorWithSimpleSelectProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
+    {
+        $value = \json_decode($value);
+        $defaultStructure = [
+            'attributeCode' => 'color',
+            'type' => 'simple_select',
+            'process' => ['type' => $type, 'operator' => $operator, 'value' => $value],
+        ];
+        if ($operator === 'undefined') {
+            unset($defaultStructure['process']['operator']);
+        }
+        if ($value === 'undefined') {
+            unset($defaultStructure['process']['value']);
+        }
+        $this->tryToCreateGenerator(structure: [$defaultStructure]);
     }
 
     private function tryToCreateGenerator(

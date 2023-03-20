@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -48,6 +54,7 @@ final class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndT
     /** @test */
     public function it_returns_an_identifier_generator(): void
     {
+        $this->createSimpleSelectAttributeWithOptions('simple_select_localizable_scopable', ['optionA', 'optionB'], true, true);
         $identifierGeneratorData = [
             'code' => 'my_new_generator',
             'labels' => [
@@ -56,10 +63,24 @@ final class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndT
             ],
             'target' => 'sku',
             'conditions' => [],
-            'structure' => [[
-                'type' => 'free_text',
-                'string' => 'AKN',
-            ]],
+            'structure' => [
+                [
+                    'type' => 'free_text',
+                    'string' => 'AKN',
+                ],
+                [
+                    'type' => 'simple_select',
+                    'attributeCode' => 'a_simple_select',
+                    'process' => ['type' => 'no'],
+                ],
+                [
+                    'type' => 'simple_select',
+                    'attributeCode' => 'simple_select_localizable_scopable',
+                    'process' => ['type' => 'no'],
+                    'locale' => 'en_US',
+                    'scope' => 'ecommerce',
+                ],
+            ],
             'delimiter' => null,
             'text_transformation' => 'no',
         ];
@@ -78,8 +99,8 @@ final class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndT
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
         $uuid = $this->getUuidFromCode('my_new_generator');
         Assert::assertSame(
-            sprintf(
-                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"}],"labels":{"en_US":"My new generator","fr_FR":"Mon nouveau g\u00e9n\u00e9rateur"},"target":"sku","delimiter":null,"text_transformation":"no"}',
+            \sprintf(
+                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"},{"type":"simple_select","attributeCode":"a_simple_select","process":{"type":"no"}},{"type":"simple_select","attributeCode":"simple_select_localizable_scopable","process":{"type":"no"},"scope":"ecommerce","locale":"en_US"}],"labels":{"en_US":"My new generator","fr_FR":"Mon nouveau g\u00e9n\u00e9rateur"},"target":"sku","delimiter":null,"text_transformation":"no"}',
                 $uuid
             ),
             $response->getContent()
@@ -91,5 +112,57 @@ final class GetIdentifierGeneratorControllerEndToEnd extends ControllerEndToEndT
         return $this->get('database_connection')->executeQuery(<<<SQL
 SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_identifier_generator WHERE code=:code
 SQL, ['code' => $code])->fetchOne();
+    }
+
+    private function createSimpleSelectAttributeWithOptions(string $code, array $optionCodes, bool $localizable, bool $scopable): AttributeInterface
+    {
+        $attribute = $this->createAttribute($code, ['type' => AttributeTypes::OPTION_SIMPLE_SELECT], $localizable, $scopable);
+
+        foreach ($optionCodes as $sortOrder => $optionCode) {
+            $option = $this->getAttributeOptionFactory()->create();
+            $option->setCode($optionCode);
+            $option->setAttribute($attribute);
+            $option->setSortOrder($sortOrder);
+            $this->getAttributeOptionSaver()->save($option);
+        }
+
+        return $attribute;
+    }
+
+    private function createAttribute(string $code, array $data, bool $localizable, bool $scopable): AttributeInterface
+    {
+        $defaultData = [
+            'code' => $code,
+            'type' => AttributeTypes::TEXT,
+            'group' => 'other',
+            'localizable' => $localizable,
+            'scopable' => $scopable,
+        ];
+        $data = \array_merge($defaultData, $data);
+
+        $attribute = $this->getAttributeBuilder()->build($data, true);
+        $this->getAttributeSaver()->save($attribute);
+
+        return $attribute;
+    }
+
+    private function getAttributeBuilder(): EntityBuilder
+    {
+        return $this->get('akeneo_integration_tests.base.attribute.builder');
+    }
+
+    private function getAttributeSaver(): AttributeSaver
+    {
+        return $this->get('pim_catalog.saver.attribute');
+    }
+
+    private function getAttributeOptionFactory(): SimpleFactoryInterface
+    {
+        return $this->get('pim_catalog.factory.attribute_option');
+    }
+
+    private function getAttributeOptionSaver(): BaseSaver
+    {
+        return $this->get('pim_catalog.saver.attribute_option');
     }
 }

@@ -318,6 +318,69 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When I try to update an identifier generator with a simple select property without attribute code
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithASimpleSelectPropertyWithoutAttributeCode(): void
+    {
+        $this->tryToUpdateGenerator(structure: [
+            ['type' => 'simple_select', 'process' => ['type' => 'no']],
+        ]);
+    }
+
+    /**
+     * @When I try to update an identifier generator with simple select property without process field
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithSimpleSelectPropertyWithoutProcessField(): void
+    {
+        $this->tryToUpdateGenerator(structure: [
+            ['type' => 'simple_select', 'attributeCode' => 'color'],
+        ]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a simple_select property with (?P<attributeCode>[^']*) attribute(?: and (?P<scope>.*) scope)?(?: and (?P<locale>.*) locale)?$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithASimpleSelectPropertyWithNameAttribute(
+        string $attributeCode,
+        string $scope = '',
+        string $locale = ''
+    ): void {
+        $simpleSelectProperty = ['type' => 'simple_select', 'attributeCode' => $attributeCode, 'process' => ['type' => 'no']];
+
+        if ($scope) {
+            $simpleSelectProperty['scope'] = $scope;
+        }
+
+        if ($locale) {
+            $simpleSelectProperty['locale'] = $locale;
+        }
+
+        $this->tryToUpdateGenerator(structure: [
+            $simpleSelectProperty,
+        ]);
+    }
+
+    /**
+     * @When /^I try to update an identifier generator with a simple select process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and (?P<value>[^']*) as value$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithSimpleSelectProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
+    {
+        $value = \json_decode($value);
+        $defaultStructure = [
+            'attributeCode' => 'color',
+            'type' => 'simple_select',
+            'process' => ['type' => $type, 'operator' => $operator, 'value' => $value],
+        ];
+        if ($operator === 'undefined') {
+            unset($defaultStructure['process']['operator']);
+        }
+        if ($value === 'undefined') {
+            unset($defaultStructure['process']['value']);
+        }
+        $this->tryToUpdateGenerator(structure: [$defaultStructure]);
+    }
+
+    /**
      * @When /^I try to update an identifier generator with delimiter '(?P<delimiter>[^']*)'$/
      */
     public function iTryToUpdateAnIdentifierGeneratorWithDelimiter(string $delimiter): void
@@ -364,6 +427,14 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
+     * @When /^I try to update an identifier generator with (\d+) conditions$/
+     */
+    public function iTryToUpdateAnIdentifierGeneratorWithConditions(string $count): void
+    {
+        $this->tryToUpdateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
+    }
+
+    /**
      * @When I try to update an identifier generator with :arg1 enabled conditions
      */
     public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditions($arg1): void
@@ -404,7 +475,7 @@ final class UpdateIdentifierGeneratorContext implements Context
         string $value = '',
         string $unknown = '',
     ): void {
-        var_dump($value);
+        \var_dump($value);
         $defaultCondition = $this->getValidCondition($type);
         if ($attributeCode !== '') {
             $defaultCondition['attributeCode'] = $attributeCode;

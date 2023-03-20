@@ -24,6 +24,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
@@ -62,6 +63,8 @@ class ApiContext implements Context
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
     ) {
         $this->container = $kernel->getContainer()->get('test.service_container');
+
+        $this->container->get('feature_flags')->enable('catalogs');
     }
 
     protected function getFileInfoKey(string $path): string
@@ -751,7 +754,7 @@ class ApiContext implements Context
                 <<<'JSON_WRAP'
                 {
                   "$id": "https://example.com/product",
-                  "$schema": "https://api.akeneo.com/mapping/product/0.0.6/schema",
+                  "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
                   "$comment": "My first schema !",
                   "title": "Product Mapping",
                   "description": "JSON Schema describing the structure of products expected by our application",
@@ -797,8 +800,18 @@ class ApiContext implements Context
                     },
                     "type": {
                       "type": "string"
+                    },
+                    "weight": {
+                      "type": "number"
+                    },
+                    "available_colors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
                     }
-                  }
+                  },
+                  "required": ["title"]
                 }
                 JSON_WRAP,
                 false,
@@ -891,6 +904,22 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'weight' => [
+                        'source' => 'weight',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'unit' => 'GRAM',
+                        ],
+                    ],
+                    'available_colors' => [
+                        'source' => 'colors',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'label_locale' => 'en_US',
+                        ],
+                    ],
                 ],
             ),
         );
@@ -922,6 +951,14 @@ class ApiContext implements Context
                     'canada',
                     'brazil',
                 ],
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 12000,
+                ],
+                'colors' => [
+                    'blue',
+                    'green',
+                ],
             ],
             [
                 'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
@@ -940,6 +977,13 @@ class ApiContext implements Context
                     'canada',
                     'italy',
                 ],
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 125.50,
+                ],
+                'colors' => [
+                    'red',
+                ],
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -957,6 +1001,39 @@ class ApiContext implements Context
                 'sale_countries' => [
                     'france',
                     'brazil',
+                ],
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 125,
+                ],
+                'colors' => [
+                    'purple',
+                ],
+            ],
+            [
+                'uuid' => '7343e656-a114-4956-bb5e-2f5f1317b6d2',
+                'sku' => 't-shirt yellow',
+                'name' => '',
+                'description' => 'Description yellow',
+                'size' => 'xl',
+                'drawings_customization_count' => '4',
+                'artists_customization_count' => '2',
+                'price' => ['USD' => 78.3],
+                'released_at' => new \DateTimeImmutable('2042-01-01T00:00:00+00:00'),
+                'is_released' => false,
+                'picture' => $this->files['ziggyImage'],
+                'enabled' => true,
+                'sale_countries' => [
+                    'france',
+                    'brazil',
+                ],
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 125,
+                ],
+                'colors' => [
+                    'purple',
+                    'red',
                 ],
             ],
         ];
@@ -1024,6 +1101,22 @@ class ApiContext implements Context
             'localizable' => false,
             'options' => ['France', 'Canada', 'Italy', 'Brazil'],
         ]);
+        $this->createAttribute([
+            'code' => 'weight',
+            'type' => 'pim_catalog_metric',
+            'scopable' => false,
+            'localizable' => false,
+            'metric_family' => 'Weight',
+            'default_metric_unit' => 'KILOGRAM',
+            'decimals_allowed' => true,
+        ]);
+        $this->createAttribute([
+            'code' => 'colors',
+            'type' => 'pim_catalog_multiselect',
+            'scopable' => false,
+            'localizable' => false,
+            'options' => ['Red', 'Green', 'Blue', 'Purple'],
+        ]);
 
         $this->createFamily('t-shirt', [
             'sku',
@@ -1036,6 +1129,8 @@ class ApiContext implements Context
             'released_at',
             'is_released',
             'sale_countries',
+            'weight',
+            'colors',
         ]);
 
         $bus = $this->container->get('pim_enrich.product.message_bus');
@@ -1062,6 +1157,8 @@ class ApiContext implements Context
                         $product['price'],
                         \array_keys($product['price']),
                     )),
+                    new SetMeasurementValue('weight', null, null, $product['weight']['amount'], $product['weight']['unit']),
+                    new SetMultiSelectValue('colors', null, null, $product['colors']),
                 ],
             );
 
@@ -1112,6 +1209,8 @@ class ApiContext implements Context
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
                 'countries' => 'Brazil, Canada',
                 'type' => 't-shirt',
+                'weight' => 12,
+                'available_colors' => ['Blue', 'Green'],
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -1127,6 +1226,8 @@ class ApiContext implements Context
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
                 'countries' => 'Brazil, France',
                 'type' => 't-shirt',
+                'weight' => 0.125,
+                'available_colors' => ['Purple'],
             ],
         ];
 
@@ -1171,6 +1272,8 @@ class ApiContext implements Context
             'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
             'countries' => 'Brazil, Canada',
             'type' => 't-shirt',
+            'weight' => 12,
+            'available_colors' => ['Blue', 'Green'],
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload);

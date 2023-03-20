@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveCategoriesApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
-use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -36,9 +35,8 @@ class RemoveCategoriesApplierSpec extends ObjectBehavior
         GetCategoryCodes $getCategoryCodes
     ) {
         $product = new Product();
-        $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
-            ->willReturn(['id' => []]);
+        $getCategoryCodes->fromProductUuids([$product->getUuid()])
+            ->willReturn([$product->getUuid()->toString() => []]);
 
         $productUpdater->update($product, ['categories' => []])->shouldBeCalledOnce();
 
@@ -50,9 +48,8 @@ class RemoveCategoriesApplierSpec extends ObjectBehavior
         GetCategoryCodes $getCategoryCodes
     ) {
         $product = new Product();
-        $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
-            ->willReturn(['id' => ['print', 'master', 'sales']]);
+        $getCategoryCodes->fromProductUuids([$product->getUuid()])
+            ->willReturn([$product->getUuid()->toString() => ['print', 'master', 'sales']]);
 
         $productUpdater->update($product, ['categories' => ['master', 'sales']])->shouldBeCalledOnce();
 
@@ -64,8 +61,7 @@ class RemoveCategoriesApplierSpec extends ObjectBehavior
         GetCategoryCodes $getCategoryCodes
     ) {
         $product = new Product();
-        $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
+        $getCategoryCodes->fromProductUuids([$product->getUuid()])
             ->willReturn([]);
 
         $productUpdater->update($product, ['categories' => []])->shouldBeCalledOnce();

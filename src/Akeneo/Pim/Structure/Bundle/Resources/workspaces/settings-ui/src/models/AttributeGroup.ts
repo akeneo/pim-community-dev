@@ -1,3 +1,5 @@
+import {Selection} from 'akeneo-design-system';
+
 type AttributeGroupLabels = {
   [locale: string]: string;
 };
@@ -5,19 +7,9 @@ type AttributeGroupLabels = {
 type AttributeGroup = {
   code: string;
   sort_order: number;
-  attributes: string[];
   labels: AttributeGroupLabels;
-  permissions: {
-    view: string[];
-    edit: string[];
-  };
-  attributes_sort_order: {
-    [attribute: string]: number;
-  };
-  meta: {
-    id: number;
-  };
-  isDqiActivated?: boolean;
+  is_dqi_activated: boolean;
+  attribute_count: number;
 };
 
 type AttributeGroupCollection = {
@@ -30,4 +22,26 @@ const toSortedAttributeGroupsArray = (collection: AttributeGroupCollection): Att
   });
 };
 
-export {AttributeGroup, AttributeGroupCollection, AttributeGroupLabels, toSortedAttributeGroupsArray};
+const getImpactedAndTargetAttributeGroups = (
+  attributeGroups: AttributeGroup[],
+  selection: Selection<AttributeGroup>
+): [AttributeGroup[], AttributeGroup[]] => {
+  const excludedAttributeGroups = attributeGroups.filter(
+    attributeGroup => !selection.collection.includes(attributeGroup)
+  );
+
+  const [impactedAttributeGroups, targetAttributeGroups] =
+    'in' === selection.mode
+      ? [selection.collection, excludedAttributeGroups]
+      : [excludedAttributeGroups, selection.collection];
+
+  return [impactedAttributeGroups, targetAttributeGroups];
+};
+
+export {
+  AttributeGroup,
+  AttributeGroupCollection,
+  AttributeGroupLabels,
+  getImpactedAndTargetAttributeGroups,
+  toSortedAttributeGroupsArray,
+};

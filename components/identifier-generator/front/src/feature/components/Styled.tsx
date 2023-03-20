@@ -20,11 +20,10 @@ const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const EditionContainer = styled.div`
+const PropertyFormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  align-items: baseline;
+  gap: 10px;
 `;
 
 const FullPageCenteredContent = styled.div`
@@ -131,8 +130,8 @@ const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
   ${props => props.isInSelection && 'flex-basis: 160px;'}
 `;
 
-const SelectCondition = styled(SelectInput)`
-  flex-basis: 120px;
+const SelectCondition = styled(SelectInput)<{isHorizontal: boolean}>`
+  ${({isHorizontal}) => isHorizontal && 'flex-basis: 120px;'}
 `;
 
 const SingleSelectCondition = styled(SelectInput)`
@@ -157,6 +156,8 @@ const PreviewWithTextTransformation = styled(PreviewComponent)<
 const NomenclatureModalContent = styled.div`
   width: calc(100vw - 240px);
   height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
 `;
 
 const NomenclatureDefinition = styled(Table)`
@@ -176,12 +177,15 @@ const NomenclatureInput = styled(TextInput)`
 `;
 
 const NomenclatureTable = styled.div`
-  overflow: auto;
-  height: calc(100vh - 340px);
   td:nth-child(2) {
     width: 1px;
     padding-right: 20px;
   }
+`;
+
+const NomenclatureContent = styled.div`
+  height: 100%;
+  overflow: auto;
 `;
 
 const Styled = {
@@ -189,7 +193,6 @@ const Styled = {
   CellInputContainer,
   CheckboxContainer,
   ConditionLineSkeleton,
-  EditionContainer,
   ErrorContainer,
   FormContainer,
   FullPageCenteredContent,
@@ -199,6 +202,7 @@ const Styled = {
   MultiSelectCondition,
   OperatorContainer,
   OperatorSelectCondition,
+  PropertyFormContainer,
   SelectCondition,
   SelectionInputsContainer,
   SingleSelectCondition,
@@ -208,6 +212,7 @@ const Styled = {
   TwoColumns,
   PreviewWithTextTransformation,
   NomenclatureModalContent,
+  NomenclatureContent,
   NomenclatureDefinition,
   NomenclatureInput,
   NomenclatureTable,
