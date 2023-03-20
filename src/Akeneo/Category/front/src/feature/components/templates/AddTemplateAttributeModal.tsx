@@ -2,10 +2,8 @@ import {translate, useTranslate} from '@akeneo-pim-community/shared';
 import {useState} from "react";
 import {useCreateAttribute} from "../../hooks/useCreateAttribute";
 import {userContext} from "@akeneo-pim-community/shared/lib/dependencies/user-context";
-import {TextInput} from "akeneo-design-system/lib/components/Input/TextInput/TextInput";
-import {AttributesIllustration, Button, Field, Helper, Link, Modal} from "akeneo-design-system";
+import {AttributesIllustration, Button, Field, Helper, Link, Modal, TextInput} from "akeneo-design-system";
 import styled from "styled-components";
-import {useHistory} from 'react-router';
 
 const Content = styled.div`
   padding-bottom: 20px;
@@ -24,11 +22,11 @@ type Form = { label: string; code: string };
 type FormError = { label: string[]; code: string[] };
 
 type Props = {
-    template_id: string;
+    templateId: string;
     onClose: () => void;
 }
 
-export const AddTemplateAttributeModal = ({template_id, onClose}: Props) => {
+export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
     const catalogLocale = userContext.get('catalogLocale');
     const mutation = useCreateAttribute();
     const [form, setForm] = useState<Form>({ label: "", code: "" });

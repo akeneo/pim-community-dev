@@ -9,7 +9,7 @@ import {
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {Breadcrumb, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
+import {Breadcrumb, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar, Button} from 'akeneo-design-system';
 import {DeactivateTemplateModal} from '../components/templates/DeactivateTemplateModal';
 import {cloneDeep, set} from 'lodash/fp';
 import {FC, useCallback, useEffect, useState} from 'react';
@@ -20,7 +20,6 @@ import {TemplateOtherActions} from '../components/templates/TemplateOtherActions
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
 import {Template} from '../models';
 import {AddTemplateAttributeModal} from "../components/templates/AddTemplateAttributeModal";
-import {Button} from "akeneo-design-system/lib/components/Button/Button";
 import styled from "styled-components";
 
 enum Tabs {
@@ -185,7 +184,7 @@ const TemplatePage: FC = () => {
         {
           isAddTemplateAttributeModalOpen && (
           <AddTemplateAttributeModal
-              template_id={templateId}
+              templateId={templateId}
               onClose={closeAddTemplateAttributeModal}
           />
         )}
