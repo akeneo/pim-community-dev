@@ -25,9 +25,14 @@ final class StringFromFamilyValueExtractor implements StringValueExtractorInterf
         ?string $scope,
         ?array $parameters,
     ): null | string {
+        if (null === $product['family_code']) {
+            return null;
+        }
+        /** @var string $labelLocale */
+        $labelLocale = $parameters['label_locale'] ?? '';
         return $this->getFamilyLabelByCodeAndLocaleQuery->execute(
             $product['family_code'],
-            $parameters['label_locale'],
+            $labelLocale,
         );
     }
 

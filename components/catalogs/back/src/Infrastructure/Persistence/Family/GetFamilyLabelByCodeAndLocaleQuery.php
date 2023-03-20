@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Family;
 
 use Akeneo\Catalogs\Application\Persistence\Family\GetFamilyLabelByCodeAndLocaleQueryInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 
 /**
@@ -13,6 +14,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
  */
 final class GetFamilyLabelByCodeAndLocaleQuery implements GetFamilyLabelByCodeAndLocaleQueryInterface
 {
+
+    /** @var array<string,array<string,string>> $familyLabelByCode */
     private array $familyLabelByCode = [];
 
     public function __construct(
@@ -31,7 +34,10 @@ final class GetFamilyLabelByCodeAndLocaleQuery implements GetFamilyLabelByCodeAn
         $label = \sprintf('[%s]', $code);
 
         if ([] !== $families) {
-            $label = $families[0]->setLocale($locale)->getLabel() ?: $label;
+            /** @var FamilyInterface $family */
+            $family = $families[0];
+            $family->setLocale($locale);
+            $label = $family->getLabel() ?: $label;
         }
 
         if (!isset($this->familyLabelByCode[$code])) {
