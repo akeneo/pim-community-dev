@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Category\Integration\Domain\Model\Enrichment;
+namespace Akeneo\Test\Category\Integration\Application\Query\GetCategory;
 
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\Model\Enrichment\InternalApiCategory;
+use Akeneo\Category\Application\Query\GetCategory\InternalApiCategory;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
