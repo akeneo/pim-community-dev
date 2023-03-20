@@ -47,21 +47,23 @@ final class SqlFindAttributeOptions implements FindAttributeOptions
                 {includeCodesQuery}
             GROUP BY attribute_option.code, attribute_option.sort_order, translation.value
             ORDER BY attribute_option.sort_order, attribute_option.code
-            LIMIT :offset, :limit
         SQL;
 
         $parameters = [
             'attributeCode' => $attributeCode,
             'search' => '%' . $search . '%',
             'userLocaleCode' => $uiLocaleCode,
-            'limit' => $limit,
-            'offset' => ($page - 1) * $limit,
         ];
 
-        $types = [
-            'limit' => \PDO::PARAM_INT,
-            'offset' => \PDO::PARAM_INT,
-        ];
+        $types = [];
+
+        if ($limit !== -1) {
+            $sql .= ' LIMIT :offset, :limit';
+            $parameters['limit'] = $limit;
+            $parameters['offset'] = ($page - 1) * $limit;
+            $types['limit'] = \PDO::PARAM_INT;
+            $types['offset'] = \PDO::PARAM_INT;
+        }
 
         if (null !== $includeCodes) {
             $sql = \strtr($sql, ['{includeCodesQuery}' => 'AND attribute_option.code IN (:includeCodes)']);

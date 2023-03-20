@@ -120,7 +120,9 @@ const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, c
         </>
       )}
       {children}
-      {selectedProperty.process.type === AbbreviationType.NOMENCLATURE && <NomenclatureEdit />}
+      {selectedProperty.process.type === AbbreviationType.NOMENCLATURE && (
+        <NomenclatureEdit selectedProperty={selectedProperty} />
+      )}
     </>
   );
 };
