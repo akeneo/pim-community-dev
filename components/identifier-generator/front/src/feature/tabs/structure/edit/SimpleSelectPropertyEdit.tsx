@@ -10,6 +10,10 @@ import {useGetAttributeLabel} from '../../../hooks';
 const options = [
   {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.truncate'},
   {value: AbbreviationType.NO, label: 'pim_identifier_generator.structure.settings.code_format.type.code'},
+  {
+    value: AbbreviationType.NOMENCLATURE,
+    label: 'pim_identifier_generator.structure.settings.code_format.type.nomenclature',
+  },
 ];
 
 const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = ({selectedProperty, onChange}) => {
