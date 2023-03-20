@@ -86,7 +86,6 @@ final class MoveChildAttributesTaskletSpec extends ObjectBehavior
         $attributeRepository->getAttributesByGroups(['attribute_group_1', 'attribute_group_2'])
             ->willReturn([new Attribute(), new Attribute(), new Attribute()]);
 
-        $stepExecution->setTotalItems(3)->shouldBeCalled();
         $stepExecution->addSummaryInfo('moved_attributes', 0)->shouldBeCalled();
 
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);

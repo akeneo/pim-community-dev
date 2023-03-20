@@ -49,21 +49,22 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
 
         $attributeGroupCodesToDelete = $this->stepExecution->getJobParameters()->get('filters')['codes'];
         $replacementAttributeGroupCode = $this->stepExecution->getJobParameters()->get('replacement_attribute_group_code');
-
-        $attributes = $this->attributeRepository->getAttributesByGroups($attributeGroupCodesToDelete);
-        $this->stepExecution->setTotalItems(count($attributes));
         $this->stepExecution->addSummaryInfo('moved_attributes', 0);
 
-        foreach (array_chunk($attributes, $this->batchSize) as $attributeChunk) {
-            $this->updateAttributes($attributeChunk, $replacementAttributeGroupCode);
-            if ($this->jobStopper->isStopping($this->stepExecution)) {
-                $this->jobStopper->stop($this->stepExecution);
+        foreach (array_chunk($attributeGroupCodesToDelete, $this->batchSize) as $attributeGroupCodesToDeleteChunk) {
+            $attributes = $this->attributeRepository->getAttributesByGroups($attributeGroupCodesToDeleteChunk);
 
-                return;
+            foreach (array_chunk($attributes, $this->batchSize) as $attributeChunk) {
+                $this->updateAttributes($attributeChunk, $replacementAttributeGroupCode);
+                if ($this->jobStopper->isStopping($this->stepExecution)) {
+                    $this->jobStopper->stop($this->stepExecution);
+
+                    return;
+                }
+
+                $this->cacheClearer->clear();
+                $this->jobRepository->updateStepExecution($this->stepExecution);
             }
-
-            $this->cacheClearer->clear();
-            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 
