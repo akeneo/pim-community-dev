@@ -17,8 +17,8 @@ describe('FamilyPropertyEdit', () => {
     const mockedOnChange = jest.fn();
     const screen = render(<FamilyPropertyEdit selectedProperty={familyProperty} onChange={mockedOnChange} />);
 
-    expect(screen.getByText('pim_identifier_generator.structure.settings.family.abbrev_type')).toBeInTheDocument();
-    expect(screen.queryByText('pim_identifier_generator.structure.settings.family.operator')).not.toBeInTheDocument();
+    expect(screen.getByText('pim_identifier_generator.structure.settings.abbrev_type')).toBeInTheDocument();
+    expect(screen.queryByText('pim_identifier_generator.structure.settings.operator.title')).not.toBeInTheDocument();
     const input = screen.getByTitle('pim_common.open');
     expect(input).toBeInTheDocument();
 
@@ -80,9 +80,9 @@ describe('FamilyPropertyEdit', () => {
     const mockedOnChange = jest.fn();
     const screen = render(<FamilyPropertyEdit selectedProperty={familyProperty} onChange={mockedOnChange} />);
 
-    expect(screen.getByText('pim_identifier_generator.structure.settings.family.abbrev_type')).toBeInTheDocument();
-    expect(screen.getByText('pim_identifier_generator.structure.settings.family.operator')).toBeInTheDocument();
-    expect(screen.getByText('pim_identifier_generator.structure.settings.family.chars_number')).toBeInTheDocument();
+    expect(screen.getByText('pim_identifier_generator.structure.settings.abbrev_type')).toBeInTheDocument();
+    expect(screen.getByText('pim_identifier_generator.structure.settings.operator.title')).toBeInTheDocument();
+    expect(screen.getByText('pim_identifier_generator.structure.settings.chars_number')).toBeInTheDocument();
 
     fireEvent.click(screen.getByPlaceholderText('pim_identifier_generator.structure.settings.operator.placeholder'));
     expect(screen.getByText('pim_common.operators.=')).toBeInTheDocument();
@@ -105,5 +105,17 @@ describe('FamilyPropertyEdit', () => {
         value: 4,
       },
     });
+  });
+
+  it('should display nomenclature edition when abbreviation type is nomenclature', () => {
+    const validateFamilyProperty: FamilyProperty = {
+      type: PROPERTY_NAMES.FAMILY,
+      process: {
+        type: AbbreviationType.NOMENCLATURE,
+      },
+    };
+    const screen = render(<FamilyPropertyEdit selectedProperty={validateFamilyProperty} onChange={jest.fn()} />);
+
+    expect(screen.getByText('NomenclatureEditMock')).toBeInTheDocument();
   });
 });

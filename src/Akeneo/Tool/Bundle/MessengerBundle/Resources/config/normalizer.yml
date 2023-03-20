@@ -1,0 +1,12 @@
+services:
+    akeneo_messenger.envelope.serializer:
+        class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
+        arguments:
+            - !tagged akeneo_messenger.message.normalizer
+
+    akeneo_messenger.message.serializer:
+        class: Symfony\Component\Serializer\Serializer
+
+    Akeneo\Tool\Bundle\MessengerBundle\Normalizer\NormalizableMessageNormalizer:
+        tags:
+            - { name: akeneo_messenger.message.normalizer, priority: 0 }
