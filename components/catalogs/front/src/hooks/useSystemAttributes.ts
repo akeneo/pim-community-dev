@@ -1,6 +1,6 @@
 import {useMemo} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Attribute} from '../../../models/Attribute';
+import {Attribute} from '../models/Attribute';
 
 export const useSystemAttributes = (): Attribute[] => {
     const translate = useTranslate();

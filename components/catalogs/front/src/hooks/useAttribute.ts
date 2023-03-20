@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query';
 import {Attribute} from '../models/Attribute';
-import {useSystemAttributes} from '../components/ProductMapping/hooks/useSystemAttributes';
+import {useSystemAttributes} from './useSystemAttributes';
 
 type Error = string | null;
 type Result = {

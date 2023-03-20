@@ -1,5 +1,5 @@
 import {useSystemAttributes} from './useSystemAttributes';
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 import {renderHook} from '@testing-library/react-hooks';
 
 jest.unmock('./useSystemAttributes');

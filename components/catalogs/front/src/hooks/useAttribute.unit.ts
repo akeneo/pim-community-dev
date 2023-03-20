@@ -1,5 +1,5 @@
 jest.unmock('./useAttribute');
-jest.unmock('../components/ProductMapping/hooks/useSystemAttributes');
+jest.unmock('./useSystemAttributes');
 
 import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 import {renderHook} from '@testing-library/react-hooks';

@@ -5,7 +5,7 @@ import {useInfiniteSourceAttributes} from '../../hooks/useInfiniteSourceAttribut
 import {Attribute} from '../../../../models/Attribute';
 import {useAttribute} from '../../../../hooks/useAttribute';
 import styled from 'styled-components';
-import {useSystemAttributes} from '../../hooks/useSystemAttributes';
+import {useSystemAttributes} from '../../../../hooks/useSystemAttributes';
 import {Target} from '../../models/Target';
 
 const SelectAttributeDropdownField = styled(Field)`
