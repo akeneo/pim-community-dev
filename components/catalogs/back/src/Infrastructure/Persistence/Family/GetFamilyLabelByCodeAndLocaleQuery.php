@@ -14,7 +14,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
  */
 final class GetFamilyLabelByCodeAndLocaleQuery implements GetFamilyLabelByCodeAndLocaleQueryInterface
 {
-
     /** @var array<string,array<string,string>> $familyLabelByCode */
     private array $familyLabelByCode = [];
 
