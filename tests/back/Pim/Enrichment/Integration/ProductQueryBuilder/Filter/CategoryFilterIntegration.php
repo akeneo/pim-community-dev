@@ -153,6 +153,17 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
+     * @test
+     *
+     * Select all not empty
+     */
+    public function showAllNotEmpty(): void
+    {
+        $result = $this->executeFilter([['categories', Operators::IS_NOT_EMPTY, []]]);
+        $this->assert($result, ['model-shoe', 'another-shoe']);
+    }
+
+    /**
      * Creates the category tree.
      *
      * See the class PhpDoc for more info.
