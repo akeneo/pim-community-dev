@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useState} from 'react';
+import React, {FC, useCallback, useMemo, useState} from 'react';
 import {Dropdown, Field, GroupsIllustration, Helper, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {AssetAttribute} from '../../../models/AssetAttribute';
@@ -39,9 +39,12 @@ export const SelectAssetAttributeSourceDropdown: FC<Props> = ({selectedIdentifie
         setIsOpen(true);
     }, []);
 
-    const filteredAssetAttributes = assetAttributes?.filter(
-        (value: AssetAttribute) => value.label.toLowerCase().includes(search.toLowerCase())
-    ) ?? [];
+    const filteredAssetAttributes: AssetAttribute[] = useMemo(() => {
+        const regex = new RegExp(search, 'i');
+        return assetAttributes?.filter(
+            (assetAttribute: AssetAttribute) => assetAttribute.label.match(regex)
+        ) ?? [];
+    }, [assetAttributes, search]);
 
     return (
         <>
