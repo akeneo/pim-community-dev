@@ -295,10 +295,7 @@ pim_enrich.entity.attribute_group:
         delete_attribute_groups:
             delete_attribute_groups:
                 label: Delete attribute groups
-    job_execution:
-        summary:
-            attribute_group_mass_delete: Deleted attribute groups
-            moved_attributes: Moved attributes
+
 pim_import_export:
     notification:
         mass_delete_attribute_groups:
