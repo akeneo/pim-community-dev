@@ -19,56 +19,121 @@ use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextValue;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Akeneo\Category\Infrastructure\Storage\Save\Query\UpsertCategoryBaseSql;
 
 class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
 {
-    public function testInsertNewCategoryInDatabase(): void
+    public function testInsertNewRootCategoryInDatabase(): void
     {
         /** @var UpsertCategoryBaseSql $upsertCategoryBaseQuery */
         $upsertCategoryBaseQuery = $this->get(UpsertCategoryBase::class);
-        $this->assertEquals(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery::class);
+        $this->assertInstanceOf(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery);
 
-        $categoryCode = 'myCategory';
-        $baseCompositeKey = 'seo_meta_description' . AbstractValue::SEPARATOR . '69e251b3-b876-48b5-9c09-92f54bfb528d';
-        $expectedCompositeKey = $baseCompositeKey . AbstractValue::SEPARATOR . 'ecommerce' . AbstractValue::SEPARATOR . 'en_US';
-
-        $expectedData = ValueCollection::fromArray([
-            TextValue::fromApplier(
-                value: 'Meta shoes',
-                uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
-                code: 'seo_meta_description',
-                channel: 'ecommerce',
-                locale: 'en_US'
-            )
-        ]);
+        // When
 
         $category = new Category(
             id: null,
-            code: new Code($categoryCode),
+            code: new Code('myCategory'),
             templateUuid: null,
-            attributes: $expectedData,
         );
+
         $upsertCategoryBaseQuery->execute($category);
 
-        $categoryInserted = $this->getCategoryByCode('myCategory');
-        $valueCollectionInserted = \json_decode($categoryInserted['value_collection'], true);
-        $valueInserted = $valueCollectionInserted[$expectedCompositeKey];
+        // Then
 
-        $this->assertSame((string)$category->getCode(), $categoryInserted['code']);
-        $this->assertArrayHasKey('attribute_codes', $valueCollectionInserted);
-        $this->assertEquals(
-            $category->getAttributeCodes(),
-            $valueCollectionInserted['attribute_codes']
+        $actual = $this->getCategoryByCode('myCategory');
+
+        $this->assertEquals('myCategory', $actual['code']);
+        $this->assertNotNull($actual['id']);
+        $this->assertNotNull($actual['root_id']);
+        $this->assertEquals((int)$actual['id'], (int)$actual['root_id']);
+        $this->assertNull($actual['parent_id']);
+    }
+
+    public function testInsertNewChildCategoryInDatabase(): void
+    {
+        /** @var UpsertCategoryBaseSql $upsertCategoryBaseQuery */
+        $upsertCategoryBaseQuery = $this->get(UpsertCategoryBase::class);
+        $this->assertInstanceOf(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery);
+
+        // Given
+
+        $upsertCategoryBaseQuery->execute(new Category(
+            id: null,
+            code: new Code('myParentCategory'),
+            templateUuid: null,
+        ));
+        ['id' => $parentId] = $this->getCategoryByCode('myParentCategory');
+
+        // When
+
+        $category = new Category(
+            id: null,
+            code: new Code('myCategory'),
+            templateUuid: null,
+            rootId: new CategoryId(1),
+            parentId: new CategoryId((int)$parentId),
         );
 
-        $this->assertArrayHasKey($expectedCompositeKey, $valueCollectionInserted);
+        $upsertCategoryBaseQuery->execute($category);
+
+        // Then
+
+        $actual = $this->getCategoryByCode('myCategory');
+
+        $this->assertEquals('myCategory', $actual['code']);
+        $this->assertNotNull($actual['id']);
+        $this->assertEquals(1, (int)$actual['root_id']);
+        $this->assertEquals((int)$parentId, (int)$actual['parent_id']);
+    }
+
+    public function testInsertNewCategoryWithEnrichedAttributesInDatabase(): void
+    {
+        /** @var UpsertCategoryBaseSql $upsertCategoryBaseQuery */
+        $upsertCategoryBaseQuery = $this->get(UpsertCategoryBase::class);
+        $this->assertInstanceOf(UpsertCategoryBaseSql::class, $upsertCategoryBaseQuery);
+
+        // When
+
+        $category = new Category(
+            id: null,
+            code: new Code('myCategory'),
+            templateUuid: TemplateUuid::fromString('1c62bdda-59b2-4e72-aad1-d5cf939852c5'),
+            attributes: ValueCollection::fromArray([
+                TextValue::fromApplier(
+                    value: 'Meta shoes',
+                    uuid: '69e251b3-b876-48b5-9c09-92f54bfb528d',
+                    code: 'seo_meta_description',
+                    channel: 'ecommerce',
+                    locale: 'en_US'
+                )
+            ]),
+        );
+
+        $upsertCategoryBaseQuery->execute($category);
+
+        // Then
+
+        $expected = [
+            "value_collection" => [
+                "attribute_codes" => ["seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d"],
+                "seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|ecommerce|en_US" => [
+                    "data" => "Meta shoes",
+                    "type" => "text",
+                    "locale" => "en_US",
+                    "channel" => "ecommerce",
+                    "attribute_code" => "seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d"
+                ]
+            ]
+        ];
+
+        $actual = $this->getCategoryByCode('myCategory');
 
         $this->assertEquals(
-            /** @phpstan-ignore-next-line */
-            $expectedData->getValues()[0]->getValue(),
-            $valueInserted['data']
+            $expected['value_collection'],
+            json_decode($actual['value_collection'], true)
         );
     }
 

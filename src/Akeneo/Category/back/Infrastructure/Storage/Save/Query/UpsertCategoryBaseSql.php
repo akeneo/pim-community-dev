@@ -46,6 +46,8 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
      */
     private function insertCategory(Category $categoryModel): void
     {
+        $rootCategoryId = $categoryModel->getRootId()?->getValue();
+
         $query = <<< SQL
             INSERT INTO pim_catalog_category
                 (parent_id, code, created, root, lvl, lft, rgt, value_collection)
@@ -59,7 +61,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             [
                 'parent_id' => $categoryModel->getParentId()?->getValue(),
                 'code' => (string) $categoryModel->getCode(),
-                'root' => 0,
+                'root' => $rootCategoryId ?? 0,
                 'lvl' => 0,
                 'lft' => 1,
                 'rgt' => 2,
@@ -80,22 +82,24 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
         );
 
         // We cannot access newly auto incremented id during the insert query. We have to update root in a second query
-        $newCategoryId = $this->connection->lastInsertId();
-        $this->connection->executeQuery(
-            <<< SQL
-                UPDATE pim_catalog_category
-                SET root=:root
-                WHERE code=:category_code
-            SQL,
-            [
-                'category_code' => (string) $categoryModel->getCode(),
-                'root' => $newCategoryId,
-            ],
-            [
-                'category_code' => \PDO::PARAM_STR,
-                'root' => \PDO::PARAM_INT,
-            ],
-        );
+        if (null === $rootCategoryId) {
+            $newCategoryId = $this->connection->lastInsertId();
+            $this->connection->executeQuery(
+                <<< SQL
+                    UPDATE pim_catalog_category
+                    SET root=:root
+                    WHERE code=:category_code
+                SQL,
+                [
+                    'category_code' => (string) $categoryModel->getCode(),
+                    'root' => $newCategoryId,
+                ],
+                [
+                    'category_code' => \PDO::PARAM_STR,
+                    'root' => \PDO::PARAM_INT,
+                ],
+            );
+        }
     }
 
     /**
