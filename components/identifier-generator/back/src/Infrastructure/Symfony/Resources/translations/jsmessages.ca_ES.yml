@@ -84,10 +84,6 @@ pim_identifier_generator:
         numberMin_label: 'Nombre mínim'
       family:
         title: 'Família'
-        abbrev_type: 'Definiu el format d''aquesta propietat'
-        abbrev_type_empty_label: 'Seleccioneu el format'
-        operator: 'Operador'
-        chars_number: 'Nombre de caràcters'
       code_format:
         type:
           truncate: 'Utilitza els primers caràcters'
