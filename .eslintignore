@@ -8,3 +8,4 @@ src/Akeneo/Pim/TableAttribute/front
 src/Akeneo/Platform/Job/front/process-tracker
 src/Oro/Bundle/ConfigBundle/front
 components/**/front
+src/Akeneo/FreeTrial/front

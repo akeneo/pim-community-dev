@@ -18,6 +18,7 @@ services:
             - '../../../../Domain/'
             - '../../../../ServiceAPI/'
             - '../../../../Application/Exception'
+            - '../../../../Application/Mapping/Measurement/Exception'
             - '../../../../Infrastructure/Validation'
 
     Akeneo\Catalogs\Application\Handler\:
@@ -146,6 +147,10 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetProductCategoriesLabelsQuery:
+        arguments:
+            $enrichmentQueryBus: '@pim_enrich.product.query_message_bus'
+
     Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsWithFilteredValuesQuery:
         arguments:
             $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
@@ -197,6 +202,7 @@ services:
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromAssetCollectionTextAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromCategoriesValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromMultiSelectAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromNumberAttributeValueExtractor'
@@ -206,5 +212,6 @@ services:
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringUri\StringUriFromImageAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromMetricAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromNumberAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromPriceCollectionAttributeValueExtractor'

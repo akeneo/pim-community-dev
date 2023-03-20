@@ -143,6 +143,10 @@ akeneo_catalogs:
                     placeholder: Select a currency
                     helper: Select the currency in which the value should be sent.
                 no_parameters_message: No parameters for this source.
+                unit:
+                    label: Unit
+                    placeholder: Select a unit
+                    helper: Select the unit in which the value should be sent.
             select_source:
                 label: Pim source
                 search: Search source
@@ -174,3 +178,6 @@ akeneo_catalogs:
                     minimum: '[0,Inf[ This target must be greater than or equal to {{ value }}.'
                     maximum: '[0,Inf[ This target must be lower than or equal to {{ value }}.'
                     enum: '[0,Inf[ Enum: This target only accepts the following values: {{ value }}.'
+            system_attributes:
+                categories:
+                    label: Categories

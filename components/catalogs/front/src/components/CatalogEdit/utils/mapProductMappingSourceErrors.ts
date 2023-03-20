@@ -13,6 +13,7 @@ export const mapProductMappingSourceErrors = (errors: CatalogFormErrors, keys: s
             parameters: {
                 label_locale: findFirstError(errors, `productMapping[${key}][parameters][label_locale]`),
                 currency: findFirstError(errors, `productMapping[${key}][parameters][currency]`),
+                unit: findFirstError(errors, `productMapping[${key}][parameters][unit]`),
             },
         };
     });

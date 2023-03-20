@@ -5,3 +5,4 @@ services:
             - '@translator'
         tags:
             - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }

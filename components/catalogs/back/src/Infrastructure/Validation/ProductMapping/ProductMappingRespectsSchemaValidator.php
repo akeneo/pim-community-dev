@@ -126,8 +126,15 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                 continue;
             }
 
-            $attribute = $this->findOneAttributeByCodeQuery->execute($sourceAssociation['source']);
-            $attributeType = $attribute['type'] ?? null;
+            $attributeType = match ($sourceAssociation['source']) {
+                'categories' => 'categories',
+                default => null,
+            };
+
+            if (null === $attributeType) {
+                $attribute = $this->findOneAttributeByCodeQuery->execute($sourceAssociation['source']);
+                $attributeType = $attribute['type'] ?? null;
+            }
 
             if (null === $attributeType || !\in_array($attributeType, $attributeTypes)) {
                 $this->context

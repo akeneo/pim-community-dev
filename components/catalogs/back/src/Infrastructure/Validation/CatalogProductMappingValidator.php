@@ -10,12 +10,14 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\Att
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeDateSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeIdentifierSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeImageSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeMetricSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeMultiSelectSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeNumberSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributePriceCollectionSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeSimpleSelectSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextareaSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\SystemAttributeCategoriesSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\SystemSource\UuidSource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -111,21 +113,29 @@ final class CatalogProductMappingValidator extends ConstraintValidator
             return $constraint;
         }
 
-        $attribute = $this->findOneAttributeByCodeQuery->execute($source);
-
-        return match ($attribute['type'] ?? null) {
-            'pim_catalog_asset_collection' => new AttributeAssetCollectionSource(),
-            'pim_catalog_boolean' => new AttributeBooleanSource(),
-            'pim_catalog_date' => new AttributeDateSource(),
-            'pim_catalog_identifier' => new AttributeIdentifierSource(),
-            'pim_catalog_image' => new AttributeImageSource(),
-            'pim_catalog_multiselect' => new AttributeMultiSelectSource(),
-            'pim_catalog_number' => new AttributeNumberSource(),
-            'pim_catalog_price_collection' => new AttributePriceCollectionSource(),
-            'pim_catalog_simpleselect' => new AttributeSimpleSelectSource(),
-            'pim_catalog_text' => new AttributeTextSource(),
-            'pim_catalog_textarea' => new AttributeTextareaSource(),
-            default => null,
+        return match ($source) {
+            'categories' => new SystemAttributeCategoriesSource(),
+            default => match ($this->getSourceAttributeType($source)) {
+                'pim_catalog_asset_collection' => new AttributeAssetCollectionSource(),
+                'pim_catalog_boolean' => new AttributeBooleanSource(),
+                'pim_catalog_date' => new AttributeDateSource(),
+                'pim_catalog_identifier' => new AttributeIdentifierSource(),
+                'pim_catalog_image' => new AttributeImageSource(),
+                'pim_catalog_metric' => new AttributeMetricSource(),
+                'pim_catalog_multiselect' => new AttributeMultiSelectSource(),
+                'pim_catalog_number' => new AttributeNumberSource(),
+                'pim_catalog_price_collection' => new AttributePriceCollectionSource(),
+                'pim_catalog_simpleselect' => new AttributeSimpleSelectSource(),
+                'pim_catalog_text' => new AttributeTextSource(),
+                'pim_catalog_textarea' => new AttributeTextareaSource(),
+                default => null,
+            },
         };
+    }
+
+    private function getSourceAttributeType(string $source): ?string
+    {
+        $attribute = $this->findOneAttributeByCodeQuery->execute($source);
+        return $attribute['type'] ?? null;
     }
 }

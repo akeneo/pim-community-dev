@@ -55,6 +55,7 @@
 .PHONY: user-management-unit-back
 user-management-unit-back: #Doc: launch PHPSpec for user-management bounded context
 	$(PHP_RUN) vendor/bin/phpspec run tests/back/UserManagement/Specification
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/UserManagement/back/tests/Specification
 
 .PHONY: user-management-coupling-back
 user-management-coupling-back:

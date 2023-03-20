@@ -20,7 +20,9 @@ export const SourceSettings: FC<Props> = ({source, target,attribute, errors, onC
     const onChangeMiddleware = useCallback(
         source => {
             if (
-                (attribute.type === 'pim_catalog_simpleselect' || attribute.type === 'pim_catalog_multiselect') &&
+                (attribute.type === 'pim_catalog_simpleselect' ||
+                    attribute.type === 'pim_catalog_multiselect' ||
+                    source.source === 'categories') &&
                 (undefined === source.parameters?.label_locale || null === source.parameters?.label_locale)
             ) {
                 source = {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
@@ -28,6 +30,10 @@ export const SourceSettings: FC<Props> = ({source, target,attribute, errors, onC
 
             if (attribute?.type === 'pim_catalog_price_collection' && !(source.parameters.currency ?? false)) {
                 source = {...source, parameters: {...source.parameters, currency: source.currency ?? null}};
+            }
+
+            if (attribute?.type === 'pim_catalog_metric') {
+                source = {...source, parameters: {...source.parameters, unit: attribute.default_measurement_unit}};
             }
 
             onChange(source);

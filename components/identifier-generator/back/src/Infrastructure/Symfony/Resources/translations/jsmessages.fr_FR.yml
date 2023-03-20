@@ -72,6 +72,7 @@ pim_identifier_generator:
     helper_link: 'Consultez notre Help Center pour plus d''informations.'
     title: 'Structure de l''identifiant'
     add_element: 'Ajouter une nouvelle propriété '
+    limit_reached: 'Vous avez atteint la limite de {{ %limit%}} propriétés.'
     property_type:
       sections:
         system: 'Système'
@@ -88,10 +89,6 @@ pim_identifier_generator:
         numberMin_label: 'Nombre min.'
       family:
         title: 'Famille'
-        abbrev_type: 'Définir le format de la propriété'
-        abbrev_type_empty_label: 'Sélectionner le format'
-        operator: 'Opérateur'
-        chars_number: 'Nombre de caractères'
       code_format:
         type:
           truncate: 'Utiliser les premiers caractères'

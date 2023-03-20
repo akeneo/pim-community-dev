@@ -8,8 +8,10 @@ use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorN
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromAssetCollectionTextAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromMetricAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromNumberAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromPriceCollectionAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromCategoriesValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromIdentifierAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromMultiSelectAttributeValueExtractor;
@@ -78,6 +80,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
                 'targetFormat' => null,
                 'extractorClassName' => BooleanFromBooleanAttributeValueExtractor::class,
             ],
+            NumberFromMetricAttributeValueExtractor::class => [
+                'sourceType' => 'pim_catalog_metric',
+                'targetType' => 'number',
+                'targetFormat' => null,
+                'extractorClassName' => NumberFromMetricAttributeValueExtractor::class,
+            ],
             NumberFromNumberAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_number',
                 'subSourceType' => null,
@@ -91,6 +99,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
                 'targetType' => 'number',
                 'targetFormat' => null,
                 'extractorClassName' => NumberFromPriceCollectionAttributeValueExtractor::class,
+            ],
+            StringFromCategoriesValueExtractor::class => [
+                'sourceType' => 'categories',
+                'targetType' => 'string',
+                'targetFormat' => null,
+                'extractorClassName' => StringFromCategoriesValueExtractor::class,
             ],
             StringFromFamilyValueExtractor::class => [
                 'sourceType' => 'family',
