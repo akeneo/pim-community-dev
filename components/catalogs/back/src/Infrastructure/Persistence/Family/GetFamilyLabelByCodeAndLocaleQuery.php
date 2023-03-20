@@ -24,26 +24,24 @@ final class GetFamilyLabelByCodeAndLocaleQuery implements GetFamilyLabelByCodeAn
 
     public function execute(string $code, string $locale): string
     {
-        if (isset($this->familyLabelByCode[$code]) && isset($this->familyLabelByCode[$code][$locale])) {
-            return $this->familyLabelByCode[$code][$locale];
+        if (!isset($this->familyLabelByCode[$code]) || !isset($this->familyLabelByCode[$code][$locale])) {
+            $families = $this->searchableFamilyRepository->findBySearch(null, ['identifiers' => [$code]]);
+
+            $label = \sprintf('[%s]', $code);
+
+            if ([] !== $families) {
+                /** @var FamilyInterface $family */
+                $family = $families[0];
+                $family->setLocale($locale);
+                $label = $family->getLabel() ?: $label;
+            }
+
+            if (!isset($this->familyLabelByCode[$code])) {
+                $this->familyLabelByCode[$code] = [];
+            }
+            $this->familyLabelByCode[$code][$locale] = $label;
         }
 
-        $families = $this->searchableFamilyRepository->findBySearch(null, ['identifiers' => [$code]]);
-
-        $label = \sprintf('[%s]', $code);
-
-        if ([] !== $families) {
-            /** @var FamilyInterface $family */
-            $family = $families[0];
-            $family->setLocale($locale);
-            $label = $family->getLabel() ?: $label;
-        }
-
-        if (!isset($this->familyLabelByCode[$code])) {
-            $this->familyLabelByCode[$code] = [];
-        }
-        $this->familyLabelByCode[$code][$locale] = $label;
-
-        return $label;
+        return $this->familyLabelByCode[$code][$locale];
     }
 }
