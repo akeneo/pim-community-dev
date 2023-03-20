@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Command;
 
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
@@ -21,6 +22,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type ProductMapping from Catalog
  */
 class CatalogFixtureCommand extends Command
 {
@@ -192,7 +195,7 @@ class CatalogFixtureCommand extends Command
     }
 
     /**
-     * @param array<array-key, array{source: string|null, scope:string|null, locale: string|null, default?: string}> $productMapping
+     * @param ProductMapping $productMapping
      * @throws \Doctrine\DBAL\Exception
      */
     private function setCatalogProductMapping(string $id, array $productMapping): void

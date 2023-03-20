@@ -44,6 +44,7 @@ final class AttributeTextSource extends Compound
                         'default' => [
                             new Assert\Optional([
                                 new Assert\Type('string'),
+                                new Assert\NotBlank(allowNull: false),
                             ]),
                         ],
                     ],
