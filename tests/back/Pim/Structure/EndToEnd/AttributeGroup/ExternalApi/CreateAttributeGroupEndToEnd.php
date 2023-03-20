@@ -572,19 +572,20 @@ JSON;
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function createAttributeGroupsUntilLimit(int $limit = 1000): void
+    private function createAttributeGroupsUntilLimit(): void
     {
         /** @var Connection $connection */
         $connection = $this->get('database_connection');
-        $attributeGroupCount = (int) $connection->executeQuery('SELECT COUNT(*) FROM pim_catalog_attribute_group')->fetchOne();
-        $maxSortOrder = (int) $connection->executeQuery('SELECT MAX(sort_order) FROM pim_catalog_attribute_group')->fetchOne();
+        $maxAttributeGroups = $this->getParameter('max_attribute_groups');
 
-        if ($attributeGroupCount >= $limit) {
+        $attributeGroupCount = (int) $connection->executeQuery('SELECT COUNT(*) FROM pim_catalog_attribute_group')->fetchOne();
+        if ($attributeGroupCount >= $maxAttributeGroups) {
             return;
         }
 
+        $maxSortOrder = (int) $connection->executeQuery('SELECT MAX(sort_order) FROM pim_catalog_attribute_group')->fetchOne();
         $sqlValues = [];
-        for ($i = $attributeGroupCount; $i < $limit; $i++) {
+        for ($i = $attributeGroupCount; $i < $maxAttributeGroups; $i++) {
             $sqlValues[] = sprintf("('attribute_group_%d', %d, NOW(), NOW())", $i, $maxSortOrder + $i);
         }
 
@@ -592,6 +593,6 @@ JSON;
 INSERT INTO pim_catalog_attribute_group (code, sort_order, created, updated) VALUES %s
 SQL;
 
-        $connection->executeQuery(sprintf($sql, join(', ', $sqlValues)));
+        $connection->executeQuery(sprintf($sql, implode(', ', $sqlValues)));
     }
 }
