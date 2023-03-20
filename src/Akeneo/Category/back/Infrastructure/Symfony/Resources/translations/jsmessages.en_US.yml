@@ -37,6 +37,13 @@ akeneo.category:
                 helper: Category attributes are attached to one template. They cannot be accessed in other templates.
                 link: Learn more about category templates.
                 create: Create
+            success:
+                notification: Attribute successfully created
+            error:
+                failed: Add template attribute failed
+                limit_reached:
+                    title: You cannot add more than 50 attributes
+                    message: Category templates are limited to 50 attributes per template.
         deactivate:
             deactivate_template: Deactivate template
             confirmation_modal:
