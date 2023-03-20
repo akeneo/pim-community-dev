@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Channel\Component\Query\PublicApi;
+namespace Akeneo\Channel\API\Query;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
@@ -10,7 +10,7 @@ interface GetCaseSensitiveChannelCodeInterface
 {
     /**
      * Returns the case sensitive channel code from any channel code
-     * Example: forChannelCode('ECommeRce') => 'ecommerce'
+     * Example: forChannelCode('ECommeRce') => 'ecommerce'.
      */
     public function forChannelCode(string $channelCode): string;
 }

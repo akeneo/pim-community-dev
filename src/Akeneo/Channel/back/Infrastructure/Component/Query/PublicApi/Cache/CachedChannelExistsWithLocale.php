@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Infrastructure\Component\Query\PublicApi\Cache;
 
+use Akeneo\Channel\API\Query\GetCaseSensitiveChannelCodeInterface;
+use Akeneo\Channel\API\Query\GetCaseSensitiveLocaleCodeInterface;
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
-use Akeneo\Channel\Component\Query\PublicApi\GetCaseSensitiveChannelCodeInterface;
-use Akeneo\Channel\Component\Query\PublicApi\GetCaseSensitiveLocaleCodeInterface;
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Webmozart\Assert\Assert;
