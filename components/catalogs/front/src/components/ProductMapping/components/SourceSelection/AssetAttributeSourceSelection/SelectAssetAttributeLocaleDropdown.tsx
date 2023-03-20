@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
-import styled from 'styled-components';
-import {Field, Helper, Locale as LocaleLabel, SelectInput} from 'akeneo-design-system';
+import {Helper, Locale as LocaleLabel, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useUniqueEntitiesByCode} from '../../../../../hooks/useUniqueEntitiesByCode';
 import {Source} from '../../../models/Source';
@@ -8,10 +7,6 @@ import {useInfiniteLocales} from '../../../../../hooks/useInfiniteLocales';
 import {useLocalesByCodes} from '../../../../../hooks/useLocalesByCodes';
 import {Locale} from '../../../../../models/Locale';
 import {SelectAssetAttributeChannelLocaleDropdown} from './SelectAssetAttributeChannelLocaleDropdown';
-
-const DropdownField = styled(Field)`
-    margin-top: 10px;
-`;
 
 type Props = {
     source: Source;
@@ -26,7 +21,7 @@ export const SelectAssetAttributeLocaleDropdown: FC<Props> = ({source, onChange,
     const locales = useUniqueEntitiesByCode<Locale>(selected, results);
 
     return (
-        <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.locale.label')}>
+        <>
             <SelectInput
                 value={source.parameters?.sub_locale ?? null}
                 onChange={newLocale => onChange({...source, parameters: {...source.parameters, sub_locale: newLocale}})}
@@ -49,6 +44,6 @@ export const SelectAssetAttributeLocaleDropdown: FC<Props> = ({source, onChange,
                     {error}
                 </Helper>
             )}
-        </DropdownField>
+        </>
     );
 };

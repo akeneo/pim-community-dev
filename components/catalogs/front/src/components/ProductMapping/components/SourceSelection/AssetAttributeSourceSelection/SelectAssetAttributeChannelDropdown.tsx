@@ -1,16 +1,11 @@
 import React, {FC} from 'react';
-import styled from 'styled-components';
-import {Field, Helper, SelectInput} from 'akeneo-design-system';
+import {Helper, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteChannels} from '../../../../../hooks/useInfiniteChannels';
 import {useUniqueEntitiesByCode} from '../../../../../hooks/useUniqueEntitiesByCode';
 import {Channel} from '../../../../../models/Channel';
 import {useChannel} from '../../../../../hooks/useChannel';
 import {Source} from '../../../models/Source';
-
-const DropdownField = styled(Field)`
-    margin-top: 10px;
-`;
 
 type Props = {
     source: Source;
@@ -25,7 +20,7 @@ export const SelectAssetAttributeChannelDropdown: FC<Props> = ({source, onChange
     const channels = useUniqueEntitiesByCode<Channel>(selected ? [selected] : [], results);
 
     return (
-        <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.channel.label')}>
+        <>
             <SelectInput
                 value={source.parameters?.sub_scope ?? null}
                 onChange={newChannel => onChange({...source, parameters: {...source.parameters, sub_scope: newChannel}})}
@@ -48,6 +43,6 @@ export const SelectAssetAttributeChannelDropdown: FC<Props> = ({source, onChange
                     {error}
                 </Helper>
             )}
-        </DropdownField>
+        </>
     );
 };

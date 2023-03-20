@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource;
 
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AssetAttributeSourceContainsValidLocale;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AssetAttributeSourceContainsValidScope;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidLocale;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidScope;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\IsActivatedLocale;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @psalm-suppress PropertyNotSetInConstructor
@@ -61,9 +62,8 @@ final class AttributeAssetCollectionSource extends Compound
                                 'allowMissingFields' => false,
                                 'allowExtraFields' => false,
                             ]),
-// @todo
-//                            new AssetAttributeSourceContainsValidScope(),
-//                            new AssetAttributeSourceContainsValidLocale(),
+                            new AssetAttributeSourceContainsValidScope(),
+                            new AssetAttributeSourceContainsValidLocale(),
                         ],
                     ],
                     'allowMissingFields' => false,

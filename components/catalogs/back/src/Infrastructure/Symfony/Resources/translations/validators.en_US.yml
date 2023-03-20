@@ -56,3 +56,13 @@ akeneo_catalogs:
                 required: 'The source is required.'
                 currency:
                     disabled: 'This currency is not activated. Please check your channels and currency settings or update this value.'
+                sub_source:
+                    channel:
+                        not_empty: 'This channel must be empty.'
+                        empty: 'This channel must not be empty.'
+                        unknown: 'This channel has been deleted. Please check your channel settings or update this value.'
+                    locale:
+                        not_empty: 'This locale must be empty.'
+                        empty: 'This locale must not be empty.'
+                        unknown: 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.'
+                        disabled: 'This locale is disabled. Please check your channels and locales settings or update this value.'
