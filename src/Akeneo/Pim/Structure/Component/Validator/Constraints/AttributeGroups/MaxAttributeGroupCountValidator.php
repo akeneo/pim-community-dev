@@ -30,7 +30,7 @@ class MaxAttributeGroupCountValidator extends ConstraintValidator
         }
 
         if (!$value instanceof AttributeGroupInterface) {
-            throw new UnexpectedTypeException($constraint, AttributeGroupInterface::class);
+            return;
         }
 
         if (null !== $value->getId()) {
