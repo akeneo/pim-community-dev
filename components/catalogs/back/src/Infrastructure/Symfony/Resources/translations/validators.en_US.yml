@@ -56,3 +56,7 @@ akeneo_catalogs:
                 required: 'The source is required.'
                 currency:
                     disabled: 'This currency is not activated. Please check your channels and currency settings or update this value.'
+                measurement:
+                    unit:
+                        not_exist: 'The unit of the field "{{ field }}" does not exist.'
+                        not_empty: 'The unit must not be empty.'

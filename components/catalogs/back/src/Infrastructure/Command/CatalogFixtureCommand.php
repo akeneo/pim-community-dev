@@ -24,7 +24,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CatalogFixtureCommand extends Command
 {
+    /**
+     * @var string|null
+     */
     protected static $defaultName = 'akeneo:catalogs:fixtures';
+    /**
+     * @var string|null
+     */
     protected static $defaultDescription = 'Do not run this command in production env. Installs fixtures for dev only.';
 
     public function __construct(
@@ -136,6 +142,11 @@ class CatalogFixtureCommand extends Command
                     'locale' => null,
                 ],
                 'thumbnail' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'weight' => [
                     'source' => null,
                     'scope' => null,
                     'locale' => null,
@@ -254,6 +265,10 @@ class CatalogFixtureCommand extends Command
             "size": {
               "type": "string",
               "enum": ["S", "M", "L"]
+            },
+            "weight": {
+              "type": "number",
+              "title": "Weight"
             },
             "colors": {
               "type": "array",
