@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductUuidsQueryInterface;
 use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
@@ -299,6 +300,15 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
             'options' => ['France', 'Canada', 'Italy', 'Brazil'],
         ]);
 
+        $this->createCategory([
+            'parent' => 'master',
+            'code' => 'smartphone',
+            'labels' => [
+                'fr_FR' => 'Telephone intelligent',
+                'en_US' => 'Smartphone',
+            ],
+        ]);
+
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
@@ -321,9 +331,15 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
                     'locale' => 'en_US',
                 ],
                 'sale_countries' => [
-                    'source' => 'size',
+                    'source' => 'sale_countries',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
+                ],
+                'category' => [
+                    'source' => 'categories',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => ['label_locale' => 'en_US'],
                 ],
             ],
         );
@@ -332,11 +348,19 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
             new SetTextValue('name', 'mobile', 'en_US', 'Blue'),
             new SetSimpleSelectValue('size', 'ecommerce', 'en_US', 'L'),
             new SetMultiSelectValue('sale_countries', null, null, ['France', 'Italy']),
+            new SetCategories(['smartphone']),
         ]);
 
         $this->createProduct(Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'), [
             new SetTextValue('name', 'mobile', 'en_US', ''),
             new SetSimpleSelectValue('size', 'ecommerce', 'en_US', 'L'),
+            new SetCategories(['smartphone']),
+        ]);
+
+        $this->createProduct(Uuid::fromString('d5c1d01e-b18f-4a67-ac49-95ea2b1dcfd3'), [
+            new SetTextValue('name', 'mobile', 'en_US', 'Blue'),
+            new SetSimpleSelectValue('size', 'ecommerce', 'en_US', 'L'),
+            new SetMultiSelectValue('sale_countries', null, null, ['France', 'Italy']),
         ]);
 
         $this->createProduct(Uuid::fromString('5595c455-d114-4ff8-bd0e-37fad972dec5'), [
@@ -346,6 +370,10 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
 
         $this->createProduct(Uuid::fromString('a94553ff-90fd-413a-9819-0c3be9802f9b'), [
             new SetMultiSelectValue('sale_countries', null, null, ['France', 'Italy']),
+        ]);
+
+        $this->createProduct(Uuid::fromString('01bef4d4-d9ef-4648-8899-1b348caffecf'), [
+            new SetCategories(['smartphone']),
         ]);
 
         $this->createProduct(Uuid::fromString('c07ad6f1-78a1-4add-84af-3c1d7d8484a3'));
@@ -381,9 +409,12 @@ class GetProductUuidsQueryTest extends IntegrationTestCase
             },
             "sale_countries": {
               "type": "string"
+            },
+            "category": {
+              "type": "string"
             }
           },
-          "required": ["title","size","sale_countries"]
+          "required": ["title","size","sale_countries","category"]
         }
         JSON_WRAP;
     }
