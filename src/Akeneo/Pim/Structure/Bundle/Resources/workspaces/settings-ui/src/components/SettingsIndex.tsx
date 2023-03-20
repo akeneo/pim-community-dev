@@ -58,6 +58,7 @@ const SettingsIndex = () => {
   const router = useRouter();
   const theme = useTheme();
   const analytics = useAnalytics();
+  const featureFlags = useFeatureFlags();
 
   const canAccessCategories = isGranted('pim_enrich_product_category_list');
   const canAccessChannels = isGranted('pim_enrich_channel_index');
@@ -83,19 +84,20 @@ const SettingsIndex = () => {
     canAccessGroupTypes ||
     canAccessGroups;
 
-  const canAccessRules = isGranted('pimee_catalog_rule_rule_view_permissions');
+  const canAccessRules =
+    featureFlags.isEnabled('product_rules') && isGranted('pimee_catalog_rule_rule_view_permissions');
   const canAccessIdentifierGenerator =
-    isGranted('pim_identifier_generator_view') || isGranted('pim_identifier_generator_manage');
+    featureFlags.isEnabled('identifier_generator') &&
+    (isGranted('pim_identifier_generator_view') || isGranted('pim_identifier_generator_manage'));
 
-  const canAccessAutomationSettings = canAccessRules || canAccessIdentifierGenerator;
+  const canAccessAutomationSettings =
+    canAccessRules || canAccessIdentifierGenerator || featureFlags.isEnabled('free_trial');
 
   const redirectToRoute = (route: string) => {
     router.redirect(router.generate(route));
   };
 
-  const featureFlags = useFeatureFlags();
-
-  if (!canAccessCatalogSettings && !canAccessProductSettings) {
+  if (!canAccessCatalogSettings && !canAccessProductSettings && !canAccessAutomationSettings) {
     return (
       <FullScreenError
         title={translate('error.exception', {status_code: 403})}
@@ -138,9 +140,7 @@ const SettingsIndex = () => {
                     label={
                       <>
                         {translate('pim_enrich.entity.category.plural_label')}
-                        {featureFlags.isEnabled('enriched_category') && (
-                          <StyledBadge level="secondary">{translate('pim_menu.tag.new')}</StyledBadge>
-                        )}
+                        <StyledBadge level="secondary">{translate('pim_menu.tag.new')}</StyledBadge>
                       </>
                     }
                     onClick={() => redirectToRoute('pim_enrich_categorytree_index')}
@@ -331,7 +331,7 @@ const SettingsIndex = () => {
             </SectionTitle>
             <SectionContent>
               <IconCardGrid>
-                {canAccessRules && featureFlags.isEnabled('product_rules') && (
+                {canAccessRules && (
                   <IconCard
                     id="pim-enrich-rule"
                     icon={<AttributeLinkIcon />}
@@ -345,7 +345,7 @@ const SettingsIndex = () => {
                     )}
                   />
                 )}
-                {canAccessIdentifierGenerator && featureFlags.isEnabled('identifier_generator') && (
+                {canAccessIdentifierGenerator && (
                   <IconCard
                     id="pim-enrich-identifier-generator"
                     icon={<IdIcon />}

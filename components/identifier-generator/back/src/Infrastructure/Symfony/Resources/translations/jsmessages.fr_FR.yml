@@ -89,10 +89,6 @@ pim_identifier_generator:
         numberMin_label: 'Nombre min.'
       family:
         title: 'Famille'
-        abbrev_type: 'Définir le format de la propriété'
-        abbrev_type_empty_label: 'Sélectionner le format'
-        operator: 'Opérateur'
-        chars_number: 'Nombre de caractères'
       code_format:
         type:
           truncate: 'Utiliser les premiers caractères'

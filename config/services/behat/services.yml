@@ -123,6 +123,10 @@ services:
             window_height: 1024
         - '@kernel'
 
+    Context\FeatureFlagContext:
+        - 'Context\FeatureContext'
+        - '@kernel'
+
     Context\FixturesContext:
         - 'Context\FeatureContext'
         - '@kernel'
