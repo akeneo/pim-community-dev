@@ -39,8 +39,7 @@ class CreateJsonWebToken
          * @var non-empty-string $publicKey
          * @var non-empty-string $privateKey
          */
-        ['public_key' => $publicKey, 'private_key' => $privateKey] = $this->getAsymmetricKeysQuery->execute(
-        )->normalize();
+        ['public_key' => $publicKey, 'private_key' => $privateKey] = $this->getAsymmetricKeysQuery->execute()->normalize();
         $privateKey = InMemory::plainText($privateKey);
         $publicKey = InMemory::plainText($publicKey);
 
@@ -71,6 +70,7 @@ class CreateJsonWebToken
         }
         if ($consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_EMAIL)) {
             $jwtTokenBuilder
+                ->withClaim('email_verified', false)
                 ->withClaim('email', $email);
         }
 

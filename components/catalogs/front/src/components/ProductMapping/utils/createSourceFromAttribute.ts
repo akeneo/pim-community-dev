@@ -19,5 +19,9 @@ export const createSourceFromAttribute = (attribute: Attribute): Source => {
         return {...source, parameters: {currency: null}};
     }
 
+    if (attribute.type === 'pim_catalog_metric') {
+        return {...source, parameters: {unit: attribute.default_measurement_unit}};
+    }
+
     return source;
 };

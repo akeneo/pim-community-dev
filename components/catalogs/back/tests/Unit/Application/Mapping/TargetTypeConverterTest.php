@@ -59,6 +59,7 @@ class TargetTypeConverterTest extends TestCase
                 'number',
                 '',
                 [
+                    'pim_catalog_metric',
                     'pim_catalog_number',
                     'pim_catalog_price_collection',
                 ],
