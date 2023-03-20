@@ -44,19 +44,19 @@ final class GetCatalogIdsUsingAttributesInProductMappingQueryTest extends Integr
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
-            catalogProductMapping: $attributesFirstCatalog
+            catalogProductMapping: $attributesFirstCatalog,
         );
 
         $this->createCatalog(
             id: 'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             name: 'Store FR',
             ownerUsername: 'shopifi',
-            catalogProductMapping: $attributesSecondCatalog
+            catalogProductMapping: $attributesSecondCatalog,
         );
         $this->createCatalog(
             id: '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             name: 'Store UK',
-            ownerUsername: 'shopifi'
+            ownerUsername: 'shopifi',
         );
 
         $resultBothCatalogs = $this->query->execute($attributesQueried);
@@ -71,70 +71,70 @@ final class GetCatalogIdsUsingAttributesInProductMappingQueryTest extends Integr
                     'name' => [
                         'scope' => null,
                         'locale' => null,
-                        'source' => 'name'
+                        'source' => 'name',
                     ],
                 ],
                 'attributes_second_catalog' => [
                     'description' => [
                         'scope' => null,
                         'locale' => null,
-                        'source' => 'description'
+                        'source' => 'description',
                     ],
                 ],
                 'attributes_queried' => ['name', 'description'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07'],
             ],
             'gets two catalogs with one attribute' => [
                 'attributes_first_catalog' => [
                     'name' => [
                         'scope' => null,
                         'locale' => null,
-                        'source' => 'name'
+                        'source' => 'name',
                     ],
                     'description' => [
                         'scope' => null,
                         'locale' => null,
-                        'source' => 'description'
+                        'source' => 'description',
                     ],
                 ],
                 'attributes_second_catalog' => [
                     'description' => [
                         'scope' => null,
                         'locale' => null,
-                        'source' => 'description'
+                        'source' => 'description',
                     ],
                 ],
                 'attributes_queried' => ['description'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c', 'ed30425c-d9cf-468b-8bc7-fa346f41dd07'],
             ],
             'gets only one catalog with one attribute' => [
                 'attributes_first_catalog' => [
                     'name' => [
                         'scope' => null,
                         'locale' => null,
-                        'source' => 'name'
+                        'source' => 'name',
                     ],
                     'description' => [
                         'scope' => null,
                         'locale' => null,
-                        'source' => 'description'
+                        'source' => 'description',
                     ],
                 ],
                 'attributes_second_catalog' => [
                     'description' => [
                         'scope' => null,
                         'locale' => null,
-                        'source' => 'description'
+                        'source' => 'description',
                     ],
                 ],
                 'attributes_queried' => ['name'],
-                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c']
+                'expected_catalog' => ['db1079b6-f397-4a6a-bae4-8658e64ad47c'],
             ],
             'gets no catalogs with one attribute' => [
                 'attributes_first_catalog' => ['name', 'description'],
                 'attributes_second_catalog' => ['description'],
                 'attributes_queried' => ['erp_name'],
-                'expected_catalog' => []
+                'expected_catalog' => [],
             ],
         ];
     }
