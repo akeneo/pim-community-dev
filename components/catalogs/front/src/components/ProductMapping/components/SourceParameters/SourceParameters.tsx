@@ -8,6 +8,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useAttribute} from '../../../../hooks/useAttribute';
 import {SourceSectionTitle} from '../SourceSectionTitle';
+import {SelectMeasurementUnitDropdown} from './SelectMeasurementUnitDropdown';
 import {DefaultValue} from './DefaultValue';
 import {Target} from '../../models/Target';
 
@@ -61,6 +62,18 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
                     error={errors?.parameters?.currency}
                     disabled={attribute.scopable && source.scope === null}
                     key={'select_channel_currency_dropdown'}
+                />
+            );
+        }
+
+        if (undefined !== source.parameters.unit) {
+            components.push(
+                <SelectMeasurementUnitDropdown
+                    source={source}
+                    onChange={onChange}
+                    error={errors?.source}
+                    measurementFamily={attribute?.measurement_family ?? null}
+                    key={'select_channel_measurementunit_dropdown'}
                 />
             );
         }
