@@ -12,9 +12,11 @@ use Webmozart\Assert\Assert;
  */
 class AttributeCode
 {
-    public function __construct(private string $code)
+    public function __construct(private readonly string $code)
     {
         Assert::stringNotEmpty($code);
+        Assert::regex($code, '/^[a-z0-9_]+$/', 'akeneo.category.validation.attribute.code.wrong_format');
+        Assert::maxLength($code, 100);
     }
 
     public function __toString(): string

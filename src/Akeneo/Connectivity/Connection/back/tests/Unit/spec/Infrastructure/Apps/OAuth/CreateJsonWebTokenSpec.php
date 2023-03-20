@@ -149,6 +149,8 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
         if (\in_array(AuthenticationScope::SCOPE_EMAIL, $scopes)) {
             Assert::assertTrue($token->claims()->has('email'));
             Assert::assertEquals($this->email, $token->claims()->get('email'));
+            Assert::assertTrue($token->claims()->has('email_verified'));
+            Assert::assertFalse($token->claims()->get('email_verified'));
         }
     }
 

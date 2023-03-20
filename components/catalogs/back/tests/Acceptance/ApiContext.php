@@ -24,6 +24,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
@@ -800,6 +801,9 @@ class ApiContext implements Context
                     "type": {
                       "type": "string"
                     },
+                    "weight": {
+                      "type": "number"
+                    },
                     "available_colors": {
                       "type": "array",
                       "items": {
@@ -900,6 +904,14 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'weight' => [
+                        'source' => 'weight',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'unit' => 'GRAM',
+                        ],
+                    ],
                     'available_colors' => [
                         'source' => 'colors',
                         'scope' => null,
@@ -939,6 +951,10 @@ class ApiContext implements Context
                     'canada',
                     'brazil',
                 ],
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 12000,
+                ],
                 'colors' => [
                     'blue',
                     'green',
@@ -961,6 +977,10 @@ class ApiContext implements Context
                     'canada',
                     'italy',
                 ],
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 125.50,
+                ],
                 'colors' => [
                     'red',
                 ],
@@ -982,6 +1002,10 @@ class ApiContext implements Context
                     'france',
                     'brazil',
                 ],
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 125,
+                ],
                 'colors' => [
                     'purple',
                 ],
@@ -1002,6 +1026,10 @@ class ApiContext implements Context
                 'sale_countries' => [
                     'france',
                     'brazil',
+                ],
+                'weight' => [
+                    'unit' => 'MILLIGRAM',
+                    'amount' => 125,
                 ],
                 'colors' => [
                     'purple',
@@ -1074,6 +1102,15 @@ class ApiContext implements Context
             'options' => ['France', 'Canada', 'Italy', 'Brazil'],
         ]);
         $this->createAttribute([
+            'code' => 'weight',
+            'type' => 'pim_catalog_metric',
+            'scopable' => false,
+            'localizable' => false,
+            'metric_family' => 'Weight',
+            'default_metric_unit' => 'KILOGRAM',
+            'decimals_allowed' => true,
+        ]);
+        $this->createAttribute([
             'code' => 'colors',
             'type' => 'pim_catalog_multiselect',
             'scopable' => false,
@@ -1092,6 +1129,7 @@ class ApiContext implements Context
             'released_at',
             'is_released',
             'sale_countries',
+            'weight',
             'colors',
         ]);
 
@@ -1119,6 +1157,7 @@ class ApiContext implements Context
                         $product['price'],
                         \array_keys($product['price']),
                     )),
+                    new SetMeasurementValue('weight', null, null, $product['weight']['amount'], $product['weight']['unit']),
                     new SetMultiSelectValue('colors', null, null, $product['colors']),
                 ],
             );
@@ -1170,6 +1209,7 @@ class ApiContext implements Context
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
                 'countries' => 'Brazil, Canada',
                 'type' => 't-shirt',
+                'weight' => 12,
                 'available_colors' => ['Blue', 'Green'],
             ],
             [
@@ -1186,6 +1226,7 @@ class ApiContext implements Context
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
                 'countries' => 'Brazil, France',
                 'type' => 't-shirt',
+                'weight' => 0.125,
                 'available_colors' => ['Purple'],
             ],
         ];
@@ -1231,6 +1272,7 @@ class ApiContext implements Context
             'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
             'countries' => 'Brazil, Canada',
             'type' => 't-shirt',
+            'weight' => 12,
             'available_colors' => ['Blue', 'Green'],
         ];
 

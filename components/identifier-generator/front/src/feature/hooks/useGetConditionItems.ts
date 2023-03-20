@@ -1,18 +1,8 @@
 import {useEffect, useState} from 'react';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {AttributeType, Conditions} from '../models';
+import {Conditions, ItemsGroup} from '../models';
 
 const DEFAULT_LIMIT = 20;
-
-type ItemsGroup = {
-  id: string;
-  text: string;
-  children: {
-    id: string;
-    text: string;
-    type?: AttributeType;
-  }[];
-};
 
 enum STATE {
   FIRST_DISPLAY = 'first_display',

@@ -1,10 +1,11 @@
 import React from 'react';
 import {Styled} from '../../components/Styled';
 import {Table, TextInput} from 'akeneo-design-system';
-import {IdentifierGenerator, PROPERTY_NAMES} from '../../models';
+import {IdentifierGenerator, PROPERTY_NAMES, SimpleSelectProperty} from '../../models';
 import {useIdentifierAttributes} from '../../hooks';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ListSkeleton} from '../../components';
+import {ImplicitSimpleSelectCondition} from './ImplicitSimpleSelectCondition';
 
 type Props = {
   generator: IdentifierGenerator;
@@ -16,6 +17,9 @@ const ImplicitConditionsList: React.FC<Props> = ({generator}) => {
   const {data: identifiers, isLoading} = useIdentifierAttributes();
 
   const hasFamilyStructureProperty = generator.structure.filter(({type}) => type === PROPERTY_NAMES.FAMILY)?.length > 0;
+  const simpleSelectProperties = generator.structure.filter(
+    ({type}) => type === PROPERTY_NAMES.SIMPLE_SELECT
+  ) as SimpleSelectProperty[];
 
   return (
     <>
@@ -36,7 +40,7 @@ const ImplicitConditionsList: React.FC<Props> = ({generator}) => {
       )}
       {hasFamilyStructureProperty && (
         <Table.Row aria-colspan={3}>
-          <Styled.TitleCell>{translate('Family')}</Styled.TitleCell>
+          <Styled.TitleCell>{translate('pim_identifier_generator.structure.property_type.family')}</Styled.TitleCell>
           <Table.Cell>
             <Styled.OperatorContainer>
               <TextInput value={translate('pim_common.operators.NOT EMPTY')} readOnly={true} />
@@ -45,6 +49,12 @@ const ImplicitConditionsList: React.FC<Props> = ({generator}) => {
           <Table.Cell />
         </Table.Row>
       )}
+      {simpleSelectProperties?.map(simpleSelectProperty => (
+        <ImplicitSimpleSelectCondition
+          simpleSelectProperty={simpleSelectProperty}
+          key={simpleSelectProperty.attributeCode}
+        />
+      ))}
     </>
   );
 };
