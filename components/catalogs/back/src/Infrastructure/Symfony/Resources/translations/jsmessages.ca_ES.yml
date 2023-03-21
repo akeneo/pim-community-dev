@@ -136,6 +136,8 @@ akeneo_catalogs:
         currency:
           label: Moneda
           placeholder: Seleccioneu una moneda
+        unit:
+          label: Unitat
       select_source:
         label: Font del Pim
         search: Criteri de cerca
