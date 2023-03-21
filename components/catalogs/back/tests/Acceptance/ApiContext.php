@@ -813,6 +813,12 @@ class ApiContext implements Context
                       }
                     },
                     "groups": {
+                      "type": "array",
+                      "items": {
+                          "type": "string"
+                      }
+                    },
+                    "groups_serialized": {
                       "type": "string"
                     }
                   },
@@ -933,7 +939,15 @@ class ApiContext implements Context
                         'scope' => null,
                         'locale' => null,
                         'parameters' => [
-                          'label_locale' => 'en_US',
+                            'label_locale' => 'en_US',
+                        ],
+                    ],
+                    'groups_serialized' => [
+                        'source' => 'categories',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                            'label_locale' => 'en_US',
                         ],
                     ],
                 ],
@@ -1252,7 +1266,8 @@ class ApiContext implements Context
                 'type' => 'T-Shirt',
                 'weight' => 12,
                 'available_colors' => ['Blue', 'Green'],
-                'groups' => 'Clothing, Cotton clothing',
+                'groups' => ['Clothing', 'Cotton clothing'],
+                'groups_serialized' => 'Clothing, Cotton clothing',
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -1270,7 +1285,8 @@ class ApiContext implements Context
                 'type' => 'T-Shirt',
                 'weight' => 0.125,
                 'available_colors' => ['Purple'],
-                'groups' => 'Clothing',
+                'groups' => ['Clothing'],
+                'groups_serialized' => 'Clothing',
             ],
         ];
 
@@ -1317,7 +1333,8 @@ class ApiContext implements Context
             'type' => 'T-Shirt',
             'weight' => 12,
             'available_colors' => ['Blue', 'Green'],
-            'groups' => 'Clothing, Cotton clothing',
+            'groups' => ['Clothing', 'Cotton clothing'],
+            'groups_serialized' => 'Clothing, Cotton clothing',
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload);

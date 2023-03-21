@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\String;
+namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings;
 
-use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromCategoriesValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromCategoriesValueExtractor;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\ValueExtractorTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
@@ -16,18 +16,19 @@ use Ramsey\Uuid\Uuid;
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  *
- * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextareaAttributeValueExtractor
+ * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromCategoriesValueExtractor
  */
-class StringFromCategoriesValueExtractorTest extends ValueExtractorTestCase
+class ArrayOfStringsFromCategoriesValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringFromCategoriesValueExtractor $extractor;
+    private ?ArrayOfStringsFromCategoriesValueExtractor $extractor;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->purgeDataAndLoadMinimalCatalog();
         $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
-        $this->extractor = self::getContainer()->get(StringFromCategoriesValueExtractor::class);
+        $this->extractor = self::getContainer()->get(ArrayOfStringsFromCategoriesValueExtractor::class);
         $this->logAs('admin');
     }
 
@@ -63,9 +64,8 @@ class StringFromCategoriesValueExtractorTest extends ValueExtractorTestCase
                 'label_locale' => 'en_US',
             ],
         );
-        $this->assertEquals('Cameras, Digital cameras', $result);
+        $this->assertEquals(['Cameras', 'Digital cameras'], $result);
     }
-
 
     public function testItReturnsNullIfNotFound(): void
     {
@@ -114,6 +114,9 @@ class StringFromCategoriesValueExtractorTest extends ValueExtractorTestCase
                 'label_locale' => 'fr_FR',
             ],
         );
-        $this->assertEquals('[cameras], [digital_cameras]', $result);
+        $this->assertEquals([
+            '[cameras]',
+            '[digital_cameras]',
+        ], $result);
     }
 }
