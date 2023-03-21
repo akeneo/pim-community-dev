@@ -95,7 +95,13 @@ pim_identifier_generator:
           code: 'Utiliser le code entier'
           nomenclature: 'Utilisez votre nomenclature'
       operator:
+        title: 'Opérateur'
         placeholder: 'Sélectionner un opérateur'
+      simple_select:
+        title: 'Attribut'
+      abbrev_type: 'Définir le format de la propriété'
+      abbrev_type_empty_label: 'Sélectionner le format'
+      chars_number: 'Nombre de caractères'
     empty:
       title: 'Créer votre structure d''identifiant'
       text: 'Sélectionnez ''Ajouter une nouvelle propriété'' en haut à droite de l''écran'
@@ -114,6 +120,7 @@ pim_identifier_generator:
     edit: 'Editer la nomenclature'
     section_title: 'Générer mes identifiants pour {{ property }}'
     title: 'Gérer la nomenclature'
+    helper: 'La nomenclature de vos familles sera partagée par tous vos générateurs d''identifiants.'
     characters_number: 'Nombre de caractères'
     operator_placeholder: 'Choisissez un opérateur'
     value_placeholder: 'Nombre de caractères'

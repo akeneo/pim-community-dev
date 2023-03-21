@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\ServiceApi;
+namespace Akeneo\Category\Application\Query\GetCategory;
 
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageDataValue;

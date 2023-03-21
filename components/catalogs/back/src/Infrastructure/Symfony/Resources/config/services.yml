@@ -95,6 +95,10 @@ services:
         arguments:
             - '@pim_enrich.repository.family.search'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\Family\GetFamilyLabelByCodeAndLocaleQuery:
+        arguments:
+            - '@pim_enrich.repository.family.search'
+
     Akeneo\Catalogs\Infrastructure\Persistence\Attribute\SearchAttributesQuery:
         arguments:
             - '@pim_enrich.repository.attribute.search'

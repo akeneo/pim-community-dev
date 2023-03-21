@@ -70,52 +70,31 @@ class CategoryTestCase extends TestCase
         $parentId = (null === $parentId ? null : new CategoryId($parentId));
         $rootId = (null === $rootId ? null : new CategoryId($rootId));
 
-        $categoryModelToCreate = new Category(
+        // Create category
+        $category = new Category(
             id: $categoryId,
             code: new Code($code),
             templateUuid: null,
-            labels: LabelCollection::fromArray($labels),
             parentId: $parentId,
             rootId: $rootId,
             permissions: PermissionCollection::fromArray($permissions),
         );
+        $this->get(UpsertCategoryBase::class)->execute($category);
 
-        // Insert the category in pim_catalog_category
-        $this->get(UpsertCategoryBase::class)->execute($categoryModelToCreate);
-
-        // Get the data of the newly inserted category from pim_catalog_category
-        $categoryBase = $this->get(GetCategoryInterface::class)->byCode((string) $categoryModelToCreate->getCode());
-        $parentId =
-            $categoryBase->getParentId() === null
-            ? null
-            : new CategoryId($categoryBase->getParentId()->getValue());
-
-        $categoryModelWithId = new Category(
-            id: new CategoryId($categoryBase->getId()->getValue()),
-            code: new Code((string) $categoryBase->getCode()),
+        // Create category translations
+        $categoryWithId = $this->get(GetCategoryInterface::class)->byCode($code);
+        $categoryWithTranslations = new Category(
+            id: $categoryWithId->getId(),
+            code: new Code($code),
             templateUuid: null,
-            labels: $categoryModelToCreate->getLabels(),
-            parentId: $parentId,
-            permissions: $categoryModelToCreate->getPermissions(),
+            labels: LabelCollection::fromArray($labels),
         );
-        $this->get(UpsertCategoryTranslations::class)->execute($categoryModelWithId);
+        $this->get(UpsertCategoryTranslations::class)->execute($categoryWithTranslations);
 
-        $categoryTranslations = $this->get(GetCategoryInterface::class)->byCode((string) $categoryModelToCreate->getCode())->getLabels()->getTranslations();
+        // Retrieve category with translations
+        $category = $this->get(GetCategoryInterface::class)->byCode($code);
 
-        $createdParentId =
-            $categoryBase->getParentId()?->getValue() > 0
-            ? new CategoryId($categoryBase->getParentId()->getValue())
-            : null;
-
-        // Instantiates a new Category model based on data fetched in database
-        return new Category(
-            id: new CategoryId($categoryBase->getId()->getValue()),
-            code: new Code((string) $categoryBase->getCode()),
-            templateUuid: null,
-            labels: LabelCollection::fromArray($categoryTranslations),
-            parentId: $createdParentId,
-            permissions: $categoryModelToCreate->getPermissions(),
-        );
+        return $category;
     }
 
     /**

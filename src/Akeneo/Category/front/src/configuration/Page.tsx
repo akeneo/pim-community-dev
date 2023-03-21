@@ -127,7 +127,7 @@ const Page: FC = () => {
                       )
                   }
               >
-                Enriched Categories
+                Enriched Categories: Customize Template
               </Checkbox>
             </Field>
           </Content>
