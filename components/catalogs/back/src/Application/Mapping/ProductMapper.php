@@ -25,8 +25,8 @@ use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
  */
 class ProductMapper implements ProductMapperInterface
 {
-    /** @var array<string, string> $assetAttributesTypes */
-    private static array $assetAttributesTypes = [];
+    /** @var array<string, string|null> $assetAttributesTypes */
+    private array $assetAttributesTypes = [];
 
     public function __construct(
         private readonly GetAttributeTypeByCodesQueryInterface $getAttributeTypeByCodesQuery,
@@ -121,12 +121,12 @@ class ProductMapper implements ProductMapperInterface
     private function getSubSourceType(string $sourceType, string $subSource): ?string
     {
         if ('pim_catalog_asset_collection' === $sourceType) {
-            if (!isset(self::$assetAttributesTypes[$subSource])) {
+            if (!isset($this->assetAttributesTypes[$subSource])) {
                 $assetAttribute = $this->findOneAssetAttributeByIdentifierQuery->execute($subSource);
-                self::$assetAttributesTypes[$subSource] = $assetAttribute['type'] ?? null;
+                $this->assetAttributesTypes[$subSource] = $assetAttribute['type'] ?? null;
             }
 
-            return self::$assetAttributesTypes[$subSource];
+            return $this->assetAttributesTypes[$subSource];
         }
 
         return null;

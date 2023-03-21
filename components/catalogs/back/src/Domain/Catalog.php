@@ -24,14 +24,21 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespe
  * @phpstan-type ProductValueFilters array{
  *      channels?: array<string>,
  *      locales?: array<string>,
- *      currencies?: array<string>,
+ *      currencies?: array<string>
  * }
  *
  * @phpstan-type SourceAssociation array{
  *      source: string|null,
  *      locale: string|null,
  *      scope: string|null,
- *      parameters?: array<string, mixed>
+ *      parameters?: array{
+ *          label_locale?: string,
+ *          currency?: string,
+ *          unit?: string,
+ *          sub_source?: string,
+ *          sub_scope?: string,
+ *          sub_locale?: string
+ *      }
  * }
  *
  * @phpstan-type ProductMapping array<string, SourceAssociation>

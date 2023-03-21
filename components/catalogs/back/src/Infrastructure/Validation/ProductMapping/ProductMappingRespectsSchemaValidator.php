@@ -184,7 +184,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
 
         $assetAttribute = $this->findOneAssetAttributeByIdentifierQuery->execute((string) $subSource);
 
-        if (!\in_array($assetAttribute['type'], $assetAttributeTypes)) {
+        if (null !== $assetAttribute && !\in_array($assetAttribute['type'], $assetAttributeTypes)) {
             $this->context
                 ->buildViolation(
                     'akeneo_catalogs.validation.product_mapping.schema.incorrect_type',

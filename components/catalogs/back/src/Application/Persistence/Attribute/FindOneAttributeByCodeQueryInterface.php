@@ -17,7 +17,7 @@ namespace Akeneo\Catalogs\Application\Persistence\Attribute;
  *      attribute_group_code: string,
  *      attribute_group_label: string,
  *      measurement_family?: string,
- *      default_measurement_unit?: string
+ *      default_measurement_unit?: string,
  *      asset_family?: string
  * }
  */

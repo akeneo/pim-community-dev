@@ -11,6 +11,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  * @phpstan-import-type Attribute from FindOneAttributeByCodeQueryInterface
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  */
@@ -49,6 +50,11 @@ final class NumberFromMetricAttributeValueExtractor implements NumberValueExtrac
     public function getSupportedSourceType(): string
     {
         return self::SOURCE_TYPE_ATTRIBUTE_METRIC;
+    }
+
+    public function getSupportedSubSourceType(): ?string
+    {
+        return null;
     }
 
     public function getSupportedTargetType(): string
