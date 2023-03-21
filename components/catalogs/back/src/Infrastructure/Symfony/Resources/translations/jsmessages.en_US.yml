@@ -129,10 +129,8 @@ akeneo_catalogs:
                 placeholder: Select an attribute
                 title: Source parameters
                 channel:
-                    label: Channel
                     placeholder: Select a channel
                 locale:
-                    label: Locale
                     placeholder: Select a locale
                 label_locale:
                     label: Value translation
