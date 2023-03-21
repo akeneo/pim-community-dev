@@ -1,6 +1,6 @@
 jest.unmock('./useAssetAttribute');
 
-import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
 import {renderHook} from '@testing-library/react-hooks';
 import {useAssetAttribute} from './useAssetAttribute';
 import fetchMock from 'jest-fetch-mock';
