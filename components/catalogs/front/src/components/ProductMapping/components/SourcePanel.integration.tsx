@@ -25,7 +25,7 @@ test('it displays the target as a title', () => {
             <QueryClientProvider client={new QueryClient()}>
                 <SourcePanel
                     target={{code: 'erp_name', label: 'ERP name', type: 'string', format: null}}
-                    source={null}
+                    source={{source: null, scope: null, locale: null}}
                     onChange={jest.fn()}
                     errors={null}
                 ></SourcePanel>
@@ -39,22 +39,22 @@ test('it displays the target as a title', () => {
 test('it displays a message when the selected source has no parameters', () => {
     mockFetchResponses([
         {
-            url: '/rest/catalogs/attributes/name',
+            url: '/rest/catalogs/attributes/weight',
             json: {
-                code: 'name',
-                label: 'Name',
-                type: 'pim_catalog_text',
+                code: 'weight',
+                label: 'Wame',
+                type: 'pim_catalog_number',
                 scopable: false,
                 localizable: false,
             },
         },
         {
-            url: '/rest/catalogs/attributes-by-target-type-and-target-format?page=1&limit=20&search=&targetType=string&targetFormat=',
+            url: '/rest/catalogs/attributes-by-target-type-and-target-format?page=1&limit=20&search=&targetType=number&targetFormat=',
             json: [
                 {
-                    code: 'name',
-                    label: 'Name',
-                    type: 'pim_catalog_text',
+                    code: 'weight',
+                    label: 'Weight',
+                    type: 'pim_catalog_number',
                     scopable: false,
                     localizable: false,
                 },
@@ -62,7 +62,7 @@ test('it displays a message when the selected source has no parameters', () => {
         },
     ]);
     const source: Source = {
-        source: 'name',
+        source: 'weight',
         locale: null,
         scope: null,
     };
@@ -70,7 +70,7 @@ test('it displays a message when the selected source has no parameters', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <SourcePanel
-                    target={{code: 'name', label: 'Name', type: 'string', format: null}}
+                    target={{code: 'weight', label: 'Weight', type: 'number', format: null}}
                     source={source}
                     onChange={jest.fn()}
                     errors={null}

@@ -1,16 +1,11 @@
 import React, {FC} from 'react';
-import styled from 'styled-components';
-import {Field, Helper, Locale as LocaleLabel, SelectInput} from 'akeneo-design-system';
+import {Helper, Locale as LocaleLabel, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useUniqueEntitiesByCode} from '../../../../hooks/useUniqueEntitiesByCode';
 import {Source} from '../../models/Source';
 import {useInfiniteLocales} from '../../../../hooks/useInfiniteLocales';
 import {useLocalesByCodes} from '../../../../hooks/useLocalesByCodes';
 import {Locale} from '../../../../models/Locale';
-
-const DropdownField = styled(Field)`
-    margin-top: 10px;
-`;
 
 type Props = {
     source: Source;
@@ -25,7 +20,7 @@ export const SelectLocaleDropdown: FC<Props> = ({source, onChange, error}) => {
     const locales = useUniqueEntitiesByCode<Locale>(selected, results);
 
     return (
-        <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.locale.label')}>
+        <>
             <SelectInput
                 value={source.locale}
                 onChange={newLocale => onChange({...source, locale: newLocale})}
@@ -48,6 +43,6 @@ export const SelectLocaleDropdown: FC<Props> = ({source, onChange, error}) => {
                     {error}
                 </Helper>
             )}
-        </DropdownField>
+        </>
     );
 };

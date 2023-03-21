@@ -23,15 +23,35 @@ class AttributeIdentifierSourceTest extends AbstractAttributeSourceTest
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
-    public function testItReturnsNoViolation(): void
-    {
-        $source = [
-            'source' => 'sku',
-            'scope' => null,
-            'locale' => null,
-        ];
+    /**
+     * @dataProvider validDataProvider
+     */
+    public function testItReturnsNoViolation(
+        array $source,
+    ): void {
         $violations = $this->validator->validate($source, new AttributeIdentifierSource());
         $this->assertEmpty($violations);
+    }
+
+    public function validDataProvider(): array
+    {
+        return [
+            'without default value' => [
+                'source' => [
+                    'source' => 'sku',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+            'with default value' => [
+                'source' => [
+                    'source' => 'sku',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => '123456789',
+                ],
+            ],
+        ];
     }
 
     /**
@@ -71,6 +91,15 @@ class AttributeIdentifierSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                 ],
                 'expected_message' => 'This value should be null.',
+            ],
+            'with a invalid default value type' => [
+                'source' => [
+                    'source' => 'sku',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'default' => true,
+                ],
+                'expected_message' => 'This value should be of type string.',
             ],
         ];
     }

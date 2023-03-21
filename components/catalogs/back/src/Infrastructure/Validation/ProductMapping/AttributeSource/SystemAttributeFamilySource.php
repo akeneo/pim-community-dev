@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource;
 
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\IsActivatedLocale;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\Constraints\Compound;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class AttributeIdentifierSource extends Compound
+final class SystemAttributeFamilySource extends Compound
 {
     /**
      * @param array<array-key, mixed> $options
@@ -37,10 +38,17 @@ final class AttributeIdentifierSource extends Compound
                         'locale' => [
                             new Assert\IsNull(),
                         ],
-                        'default' => [
-                            new Assert\Optional([
-                                new Assert\Type('string'),
-                                new Assert\NotBlank(allowNull: false),
+                        'parameters' => [
+                            new Assert\Collection([
+                                'fields' => [
+                                    'label_locale' => [
+                                        new Assert\Type('string'),
+                                        new Assert\NotBlank(),
+                                        new IsActivatedLocale(),
+                                    ],
+                                ],
+                                'allowMissingFields' => false,
+                                'allowExtraFields' => false,
                             ]),
                         ],
                     ],
