@@ -6,11 +6,11 @@ import {
   useFeatureFlags,
   useNotify,
   useTranslate,
-  useUserContext
+  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {Attribute} from '../../models';
 import {getLabelFromAttribute} from '../attributes';
-import {AddTemplateAttributeModal} from "./AddTemplateAttributeModal";
+import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
 
 interface Props {
   attributes: Attribute[];
@@ -36,20 +36,17 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
   const translate = useTranslate();
   const notify = useNotify();
 
-  const handleClickAddAttributeButton = useCallback(
-      () => {
-        if (attributes.length >= 50) {
-          notify(
-              NotificationLevel.ERROR,
-              translate('akeneo.category.template.add_attribute.error.limit_reached.title'),
-              translate('akeneo.category.template.add_attribute.error.limit_reached.message')
-          );
-        } else {
-          openAddTemplateAttributeModal();
-        }
-      },
-      []
-  );
+  const handleClickAddAttributeButton = useCallback(() => {
+    if (attributes.length >= 50) {
+      notify(
+        NotificationLevel.ERROR,
+        translate('akeneo.category.template.add_attribute.error.limit_reached.title'),
+        translate('akeneo.category.template.add_attribute.error.limit_reached.message')
+      );
+    } else {
+      openAddTemplateAttributeModal();
+    }
+  }, []);
 
   const sortByOrder = useCallback((attribute1: Attribute, attribute2: Attribute): number => {
     if (attribute1.order >= attribute2.order) {
@@ -60,22 +57,18 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
     return 0;
   }, []);
 
-  const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] = useBooleanState(false);
+  const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
+    useBooleanState(false);
 
   return (
     <FormContainer>
       <SectionTitle sticky={44}>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         {featureFlags.isEnabled('category_template_customization') && (
-          <AddAttributeButton
-              active
-              ghost
-              level="tertiary"
-              onClick={handleClickAddAttributeButton}
-          >
+          <AddAttributeButton active ghost level="tertiary" onClick={handleClickAddAttributeButton}>
             {translate('akeneo.category.template.add_attribute.add_button')}
-          </AddAttributeButton>)
-        }
+          </AddAttributeButton>
+        )}
       </SectionTitle>
       <Table>
         <Table.Header>
@@ -93,12 +86,8 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           ))}
         </Table.Body>
       </Table>
-      {
-        isAddTemplateAttributeModalOpen && (
-          <AddTemplateAttributeModal
-              templateId={templateId}
-              onClose={closeAddTemplateAttributeModal}
-          />
+      {isAddTemplateAttributeModalOpen && (
+        <AddTemplateAttributeModal templateId={templateId} onClose={closeAddTemplateAttributeModal} />
       )}
     </FormContainer>
   );

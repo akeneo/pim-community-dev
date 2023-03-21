@@ -151,7 +151,7 @@ const TemplatePage: FC = () => {
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
-          <EditTemplateAttributesForm attributes={templateEdited.attributes} templateId={templateEdited.uuid}/>
+          <EditTemplateAttributesForm attributes={templateEdited.attributes} templateId={templateEdited.uuid} />
         )}
 
         {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (
