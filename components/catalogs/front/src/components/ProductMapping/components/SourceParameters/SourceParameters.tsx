@@ -79,6 +79,24 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
         }
     }
 
+    let targetTypeKey = target.type;
+
+    if (null !== target.format && '' !== target.format) {
+        targetTypeKey += `+${target.format}`;
+    }
+
+    if (['string'].includes(targetTypeKey)) {
+        components.push(
+            <DefaultValue
+                source={source}
+                onChange={onChange}
+                error={errors?.default}
+                target={target}
+                key={'no_parameters'}
+            ></DefaultValue>
+        );
+    }
+
     if (components.length === 0) {
         components.push(
             <Information key={'no_parameters'}>
@@ -93,13 +111,6 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
                 {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
             </SourceSectionTitle>
             {components.map(component => component)}
-            <DefaultValue
-                source={source}
-                onChange={onChange}
-                error={errors?.default}
-                target={target}
-                key={'no_parameters'}
-            ></DefaultValue>
         </>
     );
 };
