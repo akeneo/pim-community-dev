@@ -61,10 +61,10 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
 
                     return;
                 }
-
-                $this->cacheClearer->clear();
-                $this->jobRepository->updateStepExecution($this->stepExecution);
             }
+
+            $this->cacheClearer->clear();
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 
