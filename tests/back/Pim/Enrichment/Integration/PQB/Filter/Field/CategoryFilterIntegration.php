@@ -92,4 +92,10 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $this->executeFilter([['categories', Operators::GREATER_OR_EQUAL_THAN, ['categoryA1']]]);
     }
+
+    public function testOperatorNotEmpty()
+    {
+        $result = $this->executeFilter([['categories', Operators::IS_NOT_EMPTY, '']]);
+        $this->assert($result, ['foo']);
+    }
 }
