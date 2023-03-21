@@ -452,7 +452,7 @@ services:
 
     Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet:
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_enrich.repository.attribute.search'
             - '@pim_catalog.remover.attribute'
             - '@translator'
 

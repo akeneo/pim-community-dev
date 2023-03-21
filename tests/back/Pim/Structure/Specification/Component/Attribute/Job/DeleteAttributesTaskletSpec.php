@@ -7,13 +7,13 @@ namespace Specification\Akeneo\Pim\Structure\Component\Attribute\Job;
 use Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet;
 use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -21,7 +21,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class DeleteAttributesTaskletSpec extends ObjectBehavior
 {
     public function let(
-        AttributeRepositoryInterface $attributeRepository,
+        SearchableRepositoryInterface $attributeRepository,
         RemoverInterface $attributeRemover,
         TranslatorInterface $translator,
     ): void {
@@ -59,16 +59,15 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
     }
 
     public function it_deletes_attributes(
-        AttributeRepositoryInterface $attributeRepository,
+        SearchableRepositoryInterface $attributeRepository,
         RemoverInterface $attributeRemover,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
     ): void {
         $this->setStepExecution($stepExecution);
         $filters = [
-            'field' => 'id',
-            'operator' => 'IN',
-            'values' => ['attribute_1', 'attribute_2', 'attribute_3'],
+            'search' => 'attribute',
+            'options' => [],
         ];
 
         $attribute1 = new Attribute();
@@ -78,7 +77,7 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($filters);
 
-        $attributeRepository->findByCodes(['attribute_1', 'attribute_2', 'attribute_3'])
+        $attributeRepository->findBySearch('attribute', [])
             ->willReturn([$attribute1, $attribute2, $attribute3]);
 
         $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
@@ -101,7 +100,7 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
     }
 
     public function it_catches_attribute_removal_exceptions(
-        AttributeRepositoryInterface $attributeRepository,
+        SearchableRepositoryInterface $attributeRepository,
         RemoverInterface $attributeRemover,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
@@ -110,9 +109,8 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
     ): void {
         $this->setStepExecution($stepExecution);
         $filters = [
-            'field' => 'id',
-            'operator' => 'IN',
-            'values' => ['attribute_1'],
+            'search' => 'a',
+            'options' => [],
         ];
 
         $attribute1->getCode()->willReturn('attribute_1');
@@ -120,7 +118,7 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filters')->willReturn($filters);
 
-        $attributeRepository->findByCodes(['attribute_1'])
+        $attributeRepository->findBySearch('a', [])
             ->willReturn([$attribute1]);
 
         $stepExecution->setTotalItems(1)->shouldBeCalledOnce();
