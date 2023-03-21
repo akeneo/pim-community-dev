@@ -13,13 +13,13 @@ use Webmozart\Assert\Assert;
 final class AddAttributeCommand
 {
     private function __construct(
-        private readonly string $code,
-        private readonly string $locale,
-        private readonly ?string $label,
-        private readonly string $type,
-        private readonly bool $isScopable,
-        private readonly bool $isLocalizable,
-        private readonly string $templateUuid,
+        public readonly string $code,
+        public readonly string $locale,
+        public readonly ?string $label,
+        public readonly string $type,
+        public readonly bool $isScopable,
+        public readonly bool $isLocalizable,
+        public readonly string $templateUuid,
     ) {
         Assert::uuid($templateUuid);
     }
@@ -42,40 +42,5 @@ final class AddAttributeCommand
             isLocalizable: $isLocalizable,
             templateUuid: $templateUuid,
         );
-    }
-
-    public function code(): string
-    {
-        return $this->code;
-    }
-
-    public function locale(): string
-    {
-        return $this->locale;
-    }
-
-    public function label(): ?string
-    {
-        return $this->label;
-    }
-
-    public function type(): string
-    {
-        return $this->type;
-    }
-
-    public function isScopable(): bool
-    {
-        return $this->isScopable;
-    }
-
-    public function isLocalizable(): bool
-    {
-        return $this->isLocalizable;
-    }
-
-    public function templateUuid(): string
-    {
-        return $this->templateUuid;
     }
 }
