@@ -24,13 +24,13 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommand' }
 
-  Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByTemplateUuid\CleanCategoryEnrichedValuesByTemplateUuidCommandHandler:
+  Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommandHandler:
     arguments:
       - '@Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid'
       - '@Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner'
       - '@Akeneo\Category\Application\Query\GetAttribute'
     tags:
-      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByTemplateUuid\CleanCategoryEnrichedValuesByTemplateUuidCommand' }
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand' }
 
   Akeneo\Category\Application\Command\AddAttributeCommandHandler:
     arguments:

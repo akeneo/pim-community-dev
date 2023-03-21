@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Category\Infrastructure\Job;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
-use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByTemplateUuid\CleanCategoryEnrichedValuesByTemplateUuidCommand;
+use Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand;
 use Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateEnrichedValuesTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -37,9 +37,9 @@ class CleanCategoriesTemplateEnrichedValuesTaskletSpec extends ObjectBehavior
         $jobParameters = new JobParameters([
             'template_uuid' => '2115af0f-f0b0-435e-aa86-9880eaad677e',
         ]);
-        $command = new CleanCategoryEnrichedValuesByTemplateUuidCommand(
-            '2115af0f-f0b0-435e-aa86-9880eaad677e')
-        ;
+        $command = new CleanCategoryTemplateAndEnrichedValuesCommand(
+            '2115af0f-f0b0-435e-aa86-9880eaad677e'
+        );
 
         $envelope = new Envelope($command);
 

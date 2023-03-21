@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Job;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
-use Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByTemplateUuid\CleanCategoryEnrichedValuesByTemplateUuidCommand;
+use Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -35,7 +35,7 @@ class CleanCategoriesTemplateEnrichedValuesTasklet implements TaskletInterface
         $templateUuid = $jobParameters->get('template_uuid');
 
         $this->commandBus->dispatch(
-            new CleanCategoryEnrichedValuesByTemplateUuidCommand($templateUuid),
+            new CleanCategoryTemplateAndEnrichedValuesCommand($templateUuid),
         );
     }
 }
