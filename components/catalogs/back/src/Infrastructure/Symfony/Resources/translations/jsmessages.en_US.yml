@@ -181,3 +181,5 @@ akeneo_catalogs:
             system_attributes:
                 categories:
                     label: Categories
+                family:
+                    label: Family

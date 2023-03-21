@@ -30,7 +30,7 @@ final class TargetTypeConverter
         ],
         'string' => [
             'categories',
-            'pim_catalog_asset_collection',
+            'family',
             'pim_catalog_identifier',
             'pim_catalog_multiselect',
             'pim_catalog_number',
