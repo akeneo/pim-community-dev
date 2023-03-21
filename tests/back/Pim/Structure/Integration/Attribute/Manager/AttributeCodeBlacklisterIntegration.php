@@ -14,14 +14,21 @@ use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 
 final class AttributeCodeBlacklisterIntegration extends TestCase
 {
-    public function test_it_blacklists_an_attribute_code(): void
+    public function test_it_blacklists_attribute_codes(): void
     {
         $blacklister = $this->getBlacklister();
-        $this->assertFalse($this->isBlacklisted('nice_attribute_code'));
 
-        $blacklister->blacklist(['nice_attribute_code']);
+        $attributeCodes = [
+            'nice_attribute_code',
+            'another_one',
+            'a_text',
+        ];
 
-        $this->assertTrue($this->isBlacklisted('nice_attribute_code'));
+        $this->assertFalse($this->areAllBlacklisted($attributeCodes));
+
+        $blacklister->blacklist($attributeCodes);
+
+        $this->assertTrue($this->areAllBlacklisted($attributeCodes));
     }
 
     public function test_it_registers_a_job(): void
@@ -42,21 +49,27 @@ final class AttributeCodeBlacklisterIntegration extends TestCase
         $this->assertJobIsRegistered('nice_attribute_code', $jobExecution->getId());
     }
 
-    public function test_it_whitelists_an_attribute_code(): void
+    public function test_it_whitelists_attribute_codes(): void
     {
         $blacklister = $this->getBlacklister();
 
-        $blacklister->blacklist(['nice_attribute_code']);
-        $blacklister->removeFromBlacklist(['nice_attribute_code']);
+        $attributeCodes = [
+            'nice_attribute_code',
+            'another_one',
+            'a_text',
+        ];
 
-        $this->assertFalse($this->isBlacklisted('nice_attribute_code'));
+        $blacklister->blacklist($attributeCodes);
+        $blacklister->removeFromBlacklist($attributeCodes);
+
+        $this->assertFalse($this->areAllBlacklisted($attributeCodes));
     }
 
-    private function isBlacklisted(string $attributeCode): bool
+    private function areAllBlacklisted(array $attributeCodes): bool
     {
-        $query = $this->get('akeneo.pim.structure.query.is_attribute_code_blacklisted');
+        $blacklistedAttributeCodes = $this->get('akeneo.pim.structure.query.get_all_blacklisted_attribute_codes')->execute();
 
-        return $query->execute($attributeCode);
+        return [] === array_diff($attributeCodes, $blacklistedAttributeCodes);
     }
 
     private function assertJobIsRegistered(string $attributeCode)

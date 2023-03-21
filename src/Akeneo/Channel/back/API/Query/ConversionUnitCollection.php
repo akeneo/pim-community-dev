@@ -12,8 +12,8 @@ use Webmozart\Assert\Assert;
  */
 final class ConversionUnitCollection
 {
+    /** @param array<string, string> $conversionUnits */
     private function __construct(
-        /** @var array<string, string> $conversionUnits */
         private array $conversionUnits,
     ) {
         Assert::allString($conversionUnits);

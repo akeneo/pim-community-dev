@@ -135,8 +135,4 @@ interface AttributeRepositoryInterface extends
      * @return array
      */
     public function findAvailableAxes($locale);
-
-    public function findByCodes(array $codes);
-
-    public function findByNotInCodes(array $codes);
 }

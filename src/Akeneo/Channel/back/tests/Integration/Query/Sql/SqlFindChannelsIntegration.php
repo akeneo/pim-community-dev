@@ -25,7 +25,7 @@ final class SqlFindChannelsIntegration extends TestCase
 
     public function test_it_finds_all_channels(): void
     {
-        $conversionUnits = ['an_measurement_attribute' => 'KILOGRAM'];
+        $conversionUnits = ['a_measurement_attribute' => 'KILOGRAM'];
         $this->saveConversionUnitsForChannel($conversionUnits, 'print');
 
         $results = $this->sqlFindChannels->findAll();
@@ -48,7 +48,7 @@ final class SqlFindChannelsIntegration extends TestCase
         $this->assertEquals('Print', $printChannel->getLabels()->getLabel('de_DE'));
         $this->assertEquals(null, $printChannel->getLabels()->getLabel('jp_JP'));
 
-        $this->assertEquals('KILOGRAM', $printChannel->getConversionUnits()->getConversionUnit('an_measurement_attribute'));
+        $this->assertEquals('KILOGRAM', $printChannel->getConversionUnits()->getConversionUnit('a_measurement_attribute'));
     }
 
     protected function getConfiguration(): Configuration

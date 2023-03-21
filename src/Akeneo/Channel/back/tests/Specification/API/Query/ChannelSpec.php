@@ -15,7 +15,7 @@ class ChannelSpec extends ObjectBehavior
             ['fr_FR', 'uk_UA'],
             LabelCollection::fromArray(['fr_FR' => 'Mobile', 'uk_UA' => 'смартфон']),
             ['EUR', 'USD'],
-            ConversionUnitCollection::fromArray(['an_measurement_attribute' => 'GRAM', 'another_measurement_attribute' => 'POUND'])
+            ConversionUnitCollection::fromArray(['a_measurement_attribute' => 'GRAM', 'another_measurement_attribute' => 'POUND'])
         );
     }
 
@@ -25,7 +25,7 @@ class ChannelSpec extends ObjectBehavior
         $this->getLocaleCodes()->shouldReturn(['fr_FR', 'uk_UA']);
         $this->getLabels()->shouldBeLike(LabelCollection::fromArray(['fr_FR' => 'Mobile', 'uk_UA' => 'смартфон']));
         $this->getActiveCurrencies()->shouldReturn(['EUR', 'USD']);
-        $this->getConversionUnits()->shouldBeLike(ConversionUnitCollection::fromArray(['an_measurement_attribute' => 'GRAM', 'another_measurement_attribute' => 'POUND']));
+        $this->getConversionUnits()->shouldBeLike(ConversionUnitCollection::fromArray(['a_measurement_attribute' => 'GRAM', 'another_measurement_attribute' => 'POUND']));
     }
 
     public function it_tells_if_a_given_locale_is_active()

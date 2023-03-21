@@ -252,14 +252,4 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     {
         throw new NotImplementedException(__METHOD__);
     }
-
-    public function findByCodes(array $codes)
-    {
-        throw new NotImplementedException(__METHOD__);
-    }
-
-    public function findByNotInCodes(array $codes)
-    {
-        throw new NotImplementedException(__METHOD__);
-    }
 }
