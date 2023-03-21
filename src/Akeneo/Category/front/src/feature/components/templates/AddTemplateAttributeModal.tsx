@@ -25,10 +25,6 @@ const FieldSet = styled.div`
   }
 `;
 
-const HelperField = styled(Helper)`
-  width: 100%;
-`;
-
 type Form = {
   label: string;
   code: string;
@@ -36,7 +32,7 @@ type Form = {
   isScopable: boolean;
   isLocalizable: boolean;
 };
-type FormError = {label: string[]; code: string[]; type: string[]; isScopable: string[]; isLocalizable: string[]};
+type FormError = {label?: string[]; code?: string[]};
 
 type Props = {
   templateId: string;
@@ -49,13 +45,7 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
   const notify = useNotify();
   const queryClient = useQueryClient();
   const [form, setForm] = useState<Form>({label: '', code: '', type: 'text', isScopable: false, isLocalizable: false});
-  const [error, setError] = useState<FormError>({
-    label: [],
-    code: [],
-    type: [],
-    isScopable: [],
-    isLocalizable: [],
-  });
+  const [error, setError] = useState<FormError>({});
 
   const attributeTypes = [
     {
@@ -95,13 +85,7 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
       },
       {
         onError: error => {
-          setError({
-            code: error.data?.code || [],
-            label: error.data?.label || [],
-            type: error.data?.type || [],
-            isScopable: error.data?.isScopable || [],
-            isLocalizable: error.data?.isLocalizable || [],
-          });
+          setError(error.data);
         },
         onSuccess: async () => {
           await queryClient.invalidateQueries(['template', templateId]);
@@ -120,75 +104,69 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
       <Modal.Title>{translate('akeneo.category.template.add_attribute.confirmation_modal.title')}</Modal.Title>
       <Content>
         <FieldSet>
-          <HelperField level="info">
-            {translate('akeneo.category.template.add_attribute.confirmation_modal.head_helper')}
-            <Link href="#">{translate('akeneo.category.template.add_attribute.confirmation_modal.link')}</Link>
-          </HelperField>
+          <Helper level="info">
+            {translate('akeneo.category.template.add_attribute.confirmation_modal.head_helper')}{' '}
+            <Link href="https://help.akeneo.com/serenity-take-the-power-over-your-products/serenity-enrich-your-category">
+              {translate('akeneo.category.template.add_attribute.confirmation_modal.link')}
+            </Link>
+          </Helper>
           <Field label={translate('pim_common.label')} locale={catalogLocale}>
             <TextInput
               value={form.label}
-              invalid={error.label.length > 0}
+              invalid={!!error.label}
               onChange={(label: string) => {
                 setForm({...form, label: label});
               }}
             />
-            {error.label.length >= 1 && displayError(error.label)}
+            {error.label && displayError(error.label)}
           </Field>
           <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
             <TextInput
               value={form.code}
-              invalid={error.code.length > 0}
+              invalid={!!error.code}
               onChange={(code: string) => {
                 setForm({...form, code: code});
               }}
             />
-            {error.code.length >= 1 && displayError(error.code)}
+            {error.code && displayError(error.code)}
           </Field>
           <Field label={translate('akeneo.category.template.add_attribute.confirmation_modal.input.type.label')}>
             <SelectInput
               emptyResultLabel={translate('akeneo.category.template.add_attribute.confirmation_modal.input.type.empty')}
               openLabel={''}
               value={form.type}
-              invalid={error.type.length > 0}
               onChange={(type: string) => {
                 setForm({...form, type: type});
               }}
             >
               {attributeTypes.map((attribute: {type: string; label: string}) => {
                 return (
-                  <SelectInput.Option title={attribute.label} value={attribute.type}>
+                  <SelectInput.Option title={attribute.label} value={attribute.type} key={attribute.type}>
                     {attribute.label}
                   </SelectInput.Option>
                 );
               })}
             </SelectInput>
-            {error.type.length >= 1 && displayError(error.type)}
           </Field>
-          <Field label={''}>
-            <Checkbox
-              checked={form.isScopable}
-              onChange={(value: boolean) => {
-                setForm({...form, isScopable: value});
-              }}
-            >
-              {translate('pim_enrich.entity.attribute.property.scopable')}
-            </Checkbox>
-            {error.isScopable.length >= 1 && displayError(error.isScopable)}
-          </Field>
-          <Field label={''}>
-            <Checkbox
-              checked={form.isLocalizable}
-              onChange={(value: boolean) => {
-                setForm({...form, isLocalizable: value});
-              }}
-            >
-              {translate('pim_enrich.entity.attribute.property.localizable')}
-            </Checkbox>
-            {error.isLocalizable.length >= 1 && displayError(error.isLocalizable)}
-          </Field>
-          <HelperField level="info" inline>
+          <Checkbox
+            checked={form.isScopable}
+            onChange={(value: boolean) => {
+              setForm({...form, isScopable: value});
+            }}
+          >
+            {translate('pim_enrich.entity.attribute.property.scopable')}
+          </Checkbox>
+          <Checkbox
+            checked={form.isLocalizable}
+            onChange={(value: boolean) => {
+              setForm({...form, isLocalizable: value});
+            }}
+          >
+            {translate('pim_enrich.entity.attribute.property.localizable')}
+          </Checkbox>
+          <Helper level="info" inline>
             {translate('akeneo.category.template.add_attribute.confirmation_modal.tail_helper')}
-          </HelperField>
+          </Helper>
         </FieldSet>
       </Content>
       <Modal.BottomButtons>

@@ -12,17 +12,9 @@ type Form = {
   isScopable: boolean;
 };
 
-type RequestPayload = {
-  code: string;
-  locale: string;
-  label: string | null;
-  type: string;
-  is_localizable: boolean;
-  is_scopable: boolean;
-};
-
 type CreateAttributeErrors = {
-  [property: string]: string[];
+  code?: string[];
+  label?: string[];
 };
 
 type ResponseError = {
