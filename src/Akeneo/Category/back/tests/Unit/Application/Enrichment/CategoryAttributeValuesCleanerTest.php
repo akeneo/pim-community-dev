@@ -6,7 +6,6 @@ namespace Akeneo\Category\back\tests\Unit\Application\Enrichment;
 
 use Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner;
 use Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues;
-use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
@@ -20,6 +19,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\Value\ImageDataValue;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -27,7 +27,7 @@ use Akeneo\Category\Domain\ValueObject\ValueCollection;
  *
  * @phpstan-import-type ImageData from ImageDataValue
  */
-class CategoryAttributeValuesCleanerTest extends CategoryTestCase
+class CategoryAttributeValuesCleanerTest extends TestCase
 {
     public function testItCallsExecuteWithRightArgumentForChannelOrLocalesCleaning(): void
     {
