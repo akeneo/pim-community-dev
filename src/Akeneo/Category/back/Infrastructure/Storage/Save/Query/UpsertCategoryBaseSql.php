@@ -89,7 +89,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             SQL,
             [
                 'category_code' => (string) $categoryModel->getCode(),
-                'root' => $categoryModel->getRootId()?->getValue() ?? $newCategoryId,
+                'root' => $newCategoryId,
             ],
             [
                 'category_code' => \PDO::PARAM_STR,
