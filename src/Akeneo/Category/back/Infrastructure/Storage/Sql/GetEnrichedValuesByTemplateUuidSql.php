@@ -80,15 +80,18 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
 
                 if ($row['child_code']) {
                     $childCode = $row['child_code'];
-                    $childValueCollection = ValueCollection::fromDatabase(
-                        json_decode(
-                            $row['child_value_collection'],
-                            true,
-                            512,
-                            JSON_THROW_ON_ERROR,
-                        ),
-                    );
-                    $valuesByCode[$childCode] = $childValueCollection;
+                    $childValues = $row['child_value_collection'];
+                    if ($childValues) {
+                        $childValueCollection = ValueCollection::fromDatabase(
+                            json_decode(
+                                $row['child_value_collection'],
+                                true,
+                                512,
+                                JSON_THROW_ON_ERROR,
+                            ),
+                        );
+                        $valuesByCode[$childCode] = $childValueCollection;
+                    }
                 }
             }
 
