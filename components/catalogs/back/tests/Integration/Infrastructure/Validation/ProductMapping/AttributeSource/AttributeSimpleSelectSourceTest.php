@@ -109,6 +109,24 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     ],
                 ],
             ],
+            'with default value' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => 'Size default value',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -426,6 +444,25 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
                     'EXTRA_FIELD' => null,
                 ],
                 'expectedMessage' => 'This field was not expected.',
+            ],
+            'invalid default value type' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_simpleselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => true,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
         ];
     }

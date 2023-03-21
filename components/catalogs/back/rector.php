@@ -41,9 +41,6 @@ return static function (RectorConfig $rectorConfig): void {
             __DIR__ . '/tests/Integration/IntegrationTestCase.php',
         ],
 
-        /** @todo Remove next lines */
         UnionTypesRector::class,
-        AddArrayParamDocTypeRector::class,
-        AddArrayReturnDocTypeRector::class,
     ]);
 };

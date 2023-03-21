@@ -34,7 +34,7 @@ final class AttributeCodeShouldBeUniqueInTheTemplateValidator extends Constraint
         $command = $this->context->getObject();
         Assert::isInstanceOf($command, AddAttributeCommand::class);
 
-        $templateUuid = $command->templateUuid();
+        $templateUuid = $command->templateUuid;
         Assert::uuid($templateUuid);
 
         $attributeCollection = $this->getAttribute->byTemplateUuid(TemplateUuid::fromString($templateUuid));

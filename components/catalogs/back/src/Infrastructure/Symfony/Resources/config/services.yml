@@ -95,6 +95,10 @@ services:
         arguments:
             - '@pim_enrich.repository.family.search'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\Family\GetFamilyLabelByCodeAndLocaleQuery:
+        arguments:
+            - '@pim_enrich.repository.family.search'
+
     Akeneo\Catalogs\Infrastructure\Persistence\Attribute\SearchAttributesQuery:
         arguments:
             - '@pim_enrich.repository.attribute.search'
@@ -146,6 +150,10 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\Category\GetCategoryChildrenQuery:
         arguments:
             - '@pim_catalog.repository.category'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetProductCategoriesLabelsQuery:
+        arguments:
+            $enrichmentQueryBus: '@pim_enrich.product.query_message_bus'
 
     Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsWithFilteredValuesQuery:
         arguments:
@@ -202,6 +210,7 @@ services:
             -
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromCategoriesValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromMultiSelectAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromNumberAttributeValueExtractor'

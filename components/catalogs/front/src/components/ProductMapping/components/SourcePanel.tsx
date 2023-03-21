@@ -17,7 +17,7 @@ type Props = {
 };
 
 export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
-    if (null === target) {
+    if (null === target || null === source) {
         return <SourcePlaceholder />;
     }
 
@@ -32,7 +32,7 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
             </SectionTitle>
             <RequirementsCollapse target={target} />
             <SourceSelection source={source} target={target} errors={errors} onChange={onChange} />
-            <SourceParameters source={source} onChange={onChange} errors={errors} />
+            <SourceParameters source={source} target={target} onChange={onChange} errors={errors} />
         </>
     );
 };
