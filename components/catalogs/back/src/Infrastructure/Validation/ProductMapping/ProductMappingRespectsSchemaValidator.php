@@ -154,7 +154,6 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
     }
 
     /**
-     * @param string $targetCode
      * @param SourceAssociation $sourceAssociation
      * @param ProductMappingSchema $schema
      */
@@ -183,7 +182,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
             return;
         }
 
-        $assetAttribute = $this->findOneAssetAttributeByIdentifierQuery->execute((string) $subSource);
+        $assetAttribute = $this->findOneAssetAttributeByIdentifierQuery->execute($subSource);
 
         if (null !== $assetAttribute && !\in_array($assetAttribute['type'], $assetAttributeTypes)) {
             $this->context

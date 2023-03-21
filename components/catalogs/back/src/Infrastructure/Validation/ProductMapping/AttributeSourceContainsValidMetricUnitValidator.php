@@ -4,6 +4,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping;
 
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -14,18 +15,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  *
- * @phpstan-type AttributeSource array{source: string, scope: string|null, locale: string|null, parameters: array{unit: string}}
- * @phpstan-type Attribute array{
- *    attribute_group_code: string,
- *    attribute_group_label: string,
- *    code: string,
- *    default_measurement_unit?: string,
- *    label: string,
- *    localizable: bool,
- *    measurement_family?: string,
- *    scopable: bool,
- *    type: string
- * }
+ * @phpstan-import-type SourceAssociation from Catalog
+ * @phpstan-import-type Attribute from FindOneAttributeByCodeQueryInterface
  * @phpstan-import-type RawMeasurementFamily from GetMeasurementsFamilyQueryInterface
  */
 final class AttributeSourceContainsValidMetricUnitValidator extends ConstraintValidator
@@ -46,7 +37,12 @@ final class AttributeSourceContainsValidMetricUnitValidator extends ConstraintVa
             throw new UnexpectedTypeException($value, 'array');
         }
 
-        /** @var AttributeSource $value */
+        /** @var SourceAssociation $value */
+
+        if (null === $value['source'] || !isset($value['parameters']) || !isset($value['parameters']['unit'])) {
+            return;
+        }
+
         $attribute = $this->findOneAttributeByCodeQuery->execute($value['source']);
 
         if (null === $attribute) {

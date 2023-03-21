@@ -51,7 +51,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
                 }
 
                 if ('pim_catalog_asset_collection' === $attribute->getType()) {
-                    $normalizedAttribute['asset_family'] = $attribute->getProperty('reference_data_name');
+                    $normalizedAttribute['asset_family'] = (string) $attribute->getProperty('reference_data_name');
                 }
 
                 return $normalizedAttribute;

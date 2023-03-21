@@ -95,8 +95,9 @@ class ProductMapper implements ProductMapperInterface
         }
 
         $sourceType = $attributeTypeBySource[$productMapping[$targetCode]['source']] ?? $productMapping[$targetCode]['source'];
-        $subSourceIdentifier = $productMapping[$targetCode]['parameters']['sub_source'] ?? null;
-        $subSourceType = $subSourceIdentifier ? $this->getSubSourceType($sourceType, (string) $subSourceIdentifier) : null;
+        $subSourceIdentifier = isset($productMapping[$targetCode]['parameters']) && isset($productMapping[$targetCode]['parameters']['sub_source']) ?
+            $productMapping[$targetCode]['parameters']['sub_source'] : null;
+        $subSourceType = $subSourceIdentifier ? $this->getSubSourceType($sourceType, $subSourceIdentifier) : null;
 
         try {
             $productValueExtractor = $this->valueExtractorRegistry->find(

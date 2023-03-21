@@ -18,9 +18,6 @@ final class FindOneAttributeByCodeQuery implements FindOneAttributeByCodeQueryIn
     {
     }
 
-    /**
-     * @inheritDoc
-     */
     public function execute(string $code): ?array
     {
         /** @var AttributeInterface|null $attribute */
@@ -46,7 +43,7 @@ final class FindOneAttributeByCodeQuery implements FindOneAttributeByCodeQueryIn
         }
 
         if ('pim_catalog_asset_collection' === $attribute->getType()) {
-            $normalizedAttribute['asset_family'] = $attribute->getProperty('reference_data_name');
+            $normalizedAttribute['asset_family'] = (string) $attribute->getProperty('reference_data_name');
         }
 
         return $normalizedAttribute;

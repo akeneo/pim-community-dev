@@ -32,12 +32,12 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespe
  *      locale: string|null,
  *      scope: string|null,
  *      parameters?: array{
- *          label_locale?: string,
- *          currency?: string,
- *          unit?: string,
- *          sub_source?: string,
- *          sub_scope?: string,
- *          sub_locale?: string
+ *          label_locale?: string|null,
+ *          currency?: string|null,
+ *          unit?: string|null,
+ *          sub_source?: string|null,
+ *          sub_scope?: string|null,
+ *          sub_locale?: string|null
  *      }
  * }
  *
