@@ -37,10 +37,10 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}
                 <BooleanInput
                     data-testid={'boolean-default-value'}
                     onChange={value => onChangeMiddleware({...source, default: value})}
-                    clearLabel="Clear value"
+                    clearLabel='Clear value'
                     clearable
-                    noLabel="No"
-                    yesLabel="Yes"
+                    noLabel='No'
+                    yesLabel='Yes'
                     value={typeof source.default === 'boolean' ? source.default : null}
                     readOnly={false}
                 />
@@ -50,12 +50,14 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}
 
     const onChangeMiddleware = useCallback(
         source => {
-            if (null !== element && source.default === '') {
+            if (targetTypeKey === 'string' && source.default === '') {
+                delete source.default;
+            }
+            if (targetTypeKey === 'boolean' && source.default === null) {
                 delete source.default;
             }
             onChange(source);
         },
-
         [onChange, targetTypeKey]
     );
 

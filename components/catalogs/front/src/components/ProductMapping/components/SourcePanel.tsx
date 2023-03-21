@@ -32,7 +32,7 @@ export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
             </SectionTitle>
             <RequirementsCollapse target={target} />
             <SourceSelection source={source} target={target} errors={errors} onChange={onChange} />
-            <SourceParameters source={source} targetType={target.type} onChange={onChange} errors={errors} />
+            <SourceParameters source={source} target={target} onChange={onChange} errors={errors} />
         </>
     );
 };

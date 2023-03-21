@@ -139,7 +139,7 @@ class NullBooleanSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'default' => 10,
                 ],
-                'expectedMessage' => 'This value should satisfy at least one of the following constraints: [1] This value should be of type boolean. [2] This value should be null.',
+                'expectedMessage' => 'This value should be of type boolean.',
             ],
             'extra field' => [
                 'source' => [

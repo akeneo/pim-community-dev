@@ -110,21 +110,6 @@ class AttributeBooleanSourceTest extends AbstractAttributeSourceTest
                     'default' => false,
                 ],
             ],
-            'null default value' => [
-                'attribute' => [
-                    'code' => 'is_released',
-                    'type' => 'pim_catalog_boolean',
-                    'group' => 'other',
-                    'scopable' => false,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'is_released',
-                    'scope' => null,
-                    'locale' => null,
-                    'default' => null,
-                ],
-            ],
         ];
     }
 
@@ -338,7 +323,7 @@ class AttributeBooleanSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                     'default' => 0,
                 ],
-                'expectedMessage' => 'This value should satisfy at least one of the following constraints: [1] This value should be of type boolean. [2] This value should be null.',
+                'expectedMessage' => 'This value should be of type boolean.',
             ],
         ];
     }

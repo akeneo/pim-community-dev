@@ -38,10 +38,7 @@ final class NullBooleanSource extends Compound
                         ],
                         'default' => [
                             new Assert\Optional([
-                                new Assert\AtLeastOneOf([
-                                    new Assert\Type('boolean'),
-                                    new Assert\IsNull(),
-                                ]),
+                                new Assert\Type('boolean'),
                             ]),
                         ],
                     ],
