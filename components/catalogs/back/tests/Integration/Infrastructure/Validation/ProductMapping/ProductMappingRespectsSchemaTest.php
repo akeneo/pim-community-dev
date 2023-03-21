@@ -67,12 +67,6 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             'scopable' => false,
             'localizable' => false,
         ]);
-        $this->createAttribute([
-            'code' => 'price',
-            'type' => 'pim_catalog_price_collection',
-            'scopable' => false,
-            'localizable' => false,
-        ]);
 
         $violations = $this->validator->validate(
             new Catalog(
@@ -154,12 +148,6 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
         $this->createAttribute([
             'code' => 'description',
             'type' => 'pim_catalog_text',
-            'scopable' => false,
-            'localizable' => false,
-        ]);
-        $this->createAttribute([
-            'code' => 'price',
-            'type' => 'pim_catalog_price_collection',
             'scopable' => false,
             'localizable' => false,
         ]);

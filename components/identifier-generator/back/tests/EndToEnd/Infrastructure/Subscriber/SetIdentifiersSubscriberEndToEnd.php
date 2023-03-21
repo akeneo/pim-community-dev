@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGenerator
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
@@ -29,16 +30,17 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         return $this->catalog->useMinimalCatalog(['identifier_generator']);
     }
 
-    private function createIdentifierGenerator(?array $conditions = []): void
+    private function createIdentifierGenerator(?array $conditions = [], ?array $structure = []): void
     {
+        $fullStructure = \array_merge($structure, [
+            ['type' => 'free_text', 'string' => 'AKN'],
+            ['type' => 'auto_number', 'numberMin' => 50, 'digitsMin' => 3],
+            ['type' => 'family', 'process' => ['type' => 'no']],
+        ]);
         ($this->getCreateGeneratorHandler())(new CreateGeneratorCommand(
             'my_generator',
             $conditions,
-            [
-                ['type' => 'free_text', 'string' => 'AKN'],
-                ['type' => 'auto_number', 'numberMin' => 50, 'digitsMin' => 3],
-                ['type' => 'family', 'process' => ['type' => 'no']],
-            ],
+            $fullStructure,
             ['en_US' => 'My Generator'],
             'sku',
             '-',
@@ -54,6 +56,32 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
 
         Assert::assertSame('akn-050-my_family', $productFromDatabase->getIdentifier());
         Assert::assertSame('akn-050-my_family', $productFromDatabase->getValue('sku')->getData());
+    }
+
+    /** @test */
+    public function it_should_generate_an_identifier_with_simple_select_on_create(): void
+    {
+        $this->createSimpleSelectAttributeWithOption('brand', true, true, 'akeneo');
+        $this->createSimpleSelectAttributeWithOption('clothing_size', false, false, 'medium');
+        $this->createIdentifierGenerator(structure:[
+            [
+                'type' => 'simple_select',
+                'attributeCode' => 'brand',
+                'process' => ['type' => 'no'],
+                'scope' => 'ecommerce',
+                'locale' => 'en_US',
+            ],
+            [
+                'type' => 'simple_select',
+                'attributeCode' => 'clothing_size',
+                'process' => ['type' => 'no'],
+            ], ]);
+        $product = $this->createProduct(userIntents: [
+            new SetSimpleSelectValue('brand', 'ecommerce', 'en_US', 'akeneo'),
+            new SetSimpleSelectValue('clothing_size', null, null, 'medium'),
+        ]);
+
+        Assert::assertSame('akeneo-medium-akn-050-my_family', $product->getValue('sku')->getData());
     }
 
     /** @test */
@@ -183,20 +211,22 @@ SQL);
         ));
     }
 
-    private function createSimpleSelectAttributeWithOption(string $attributeCode): void
+    private function createSimpleSelectAttributeWithOption(string $attributeCode, bool $localizable = false, bool $scopable = false, string $optionCode = 'red'): void
     {
         $attribute = $this->getAttributeFactory()->create();
         $this->getAttributeUpdater()->update($attribute, [
             'code' => $attributeCode,
             'type' => 'pim_catalog_simpleselect',
             'group' => 'other',
+            'localizable' => $localizable,
+            'scopable' => $scopable,
         ]);
         $attributeViolations = $this->getValidator()->validate($attribute);
         $this->assertCount(0, $attributeViolations);
         $this->getAttributeSaver()->save($attribute);
 
         $attributeOption = new AttributeOption();
-        $attributeOption->setCode('red');
+        $attributeOption->setCode($optionCode);
         $attributeOption->setAttribute($attribute);
         $attributeOptionViolations = $this->getValidator()->validate($attributeOption);
         $this->assertCount(0, $attributeOptionViolations);

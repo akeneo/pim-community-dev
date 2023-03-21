@@ -1,5 +1,6 @@
 import {useQuery} from 'react-query';
 import {Attribute} from '../models/Attribute';
+import {useSystemAttributes} from './useSystemAttributes';
 
 type Error = string | null;
 type Result = {
@@ -10,9 +11,15 @@ type Result = {
 };
 
 export const useAttribute = (code: string): Result => {
+    const systemAttributes = useSystemAttributes();
+    const systemAttribute = systemAttributes.find(systemAttribute => systemAttribute.code === code) ?? null;
     return useQuery<Attribute, Error, Attribute>(['attribute', code], async () => {
         if ('' === code) {
             return undefined;
+        }
+
+        if (null !== systemAttribute) {
+            return systemAttribute;
         }
 
         const response = await fetch(`/rest/catalogs/attributes/${code}`, {

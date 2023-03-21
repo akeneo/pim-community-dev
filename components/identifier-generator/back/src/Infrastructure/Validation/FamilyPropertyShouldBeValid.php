@@ -13,5 +13,4 @@ use Symfony\Component\Validator\Constraint;
 final class FamilyPropertyShouldBeValid extends Constraint
 {
     public string $fieldsRequired = 'validation.identifier_generator.family_property_fields_required';
-    public string $processUnknownOperator = 'validation.identifier_generator.process_unknown_operator';
 }

@@ -72,14 +72,17 @@ final class GetAvailablePropertiesControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select',
                             'text' => 'A simple select',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_color',
                             'text' => 'The color',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_size',
                             'text' => 'The size',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                     ],
                 ],
@@ -110,10 +113,12 @@ final class GetAvailablePropertiesControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select',
                             'text' => 'A simple select',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_color',
                             'text' => 'The color',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                     ],
                 ],
@@ -129,6 +134,7 @@ final class GetAvailablePropertiesControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select_size',
                             'text' => 'The size',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                     ],
                 ],
@@ -152,6 +158,7 @@ final class GetAvailablePropertiesControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select_size',
                             'text' => 'The size',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                     ],
                 ],
@@ -205,14 +212,17 @@ final class GetAvailablePropertiesControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'a_simple_select',
                             'text' => '[a_simple_select]',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_color',
                             'text' => 'La couleur',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                         [
                             'id' => 'a_simple_select_size',
                             'text' => 'La taille',
+                            'type' => 'pim_catalog_simpleselect',
                         ],
                     ],
                 ],

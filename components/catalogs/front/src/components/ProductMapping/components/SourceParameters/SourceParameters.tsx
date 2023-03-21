@@ -8,6 +8,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useAttribute} from '../../../../hooks/useAttribute';
 import {SourceSectionTitle} from '../SourceSectionTitle';
+import {SelectMeasurementUnitDropdown} from './SelectMeasurementUnitDropdown';
 
 const Information = styled.p`
     font-style: italic;
@@ -23,7 +24,6 @@ type Props = {
 export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
     const translate = useTranslate();
     const {data: attribute} = useAttribute(source?.source ?? '');
-
     if (undefined === attribute || null === source || undefined === source.parameters) {
         return (
             <>
@@ -59,6 +59,14 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange}) => {
                     onChange={onChange}
                     error={errors?.parameters?.currency}
                     disabled={attribute.scopable && source.scope === null}
+                />
+            )}
+            {undefined !== source.parameters.unit && (
+                <SelectMeasurementUnitDropdown
+                    source={source}
+                    onChange={onChange}
+                    error={errors?.source}
+                    measurementFamily={attribute?.measurement_family ?? null}
                 />
             )}
         </>
