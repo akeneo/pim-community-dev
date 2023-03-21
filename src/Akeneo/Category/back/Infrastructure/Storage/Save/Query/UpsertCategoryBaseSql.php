@@ -10,8 +10,8 @@ use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Types\Types;
+use Webmozart\Assert\Assert;
 
 /**
  * Save values from model into pim_catalog_category table:
@@ -29,9 +29,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     ) {
     }
 
-    /**
-     * @throws Exception
-     */
     public function execute(Category $categoryModel): void
     {
         if ($this->getCategory->byCode((string) $categoryModel->getCode())) {
@@ -42,11 +39,17 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
     }
 
     /**
-     * @throws Exception
+     * Not used in production (yet). Category creation is still done by the ORM stack.
      */
     private function insertCategory(Category $categoryModel): void
     {
-        $rootCategoryId = $categoryModel->getRootId()?->getValue();
+        $parentId = $categoryModel->getParentId()?->getValue();
+        $rootId = $categoryModel->getRootId()?->getValue();
+
+        // Enforce data integrity until Category entity is fixed.
+        if (null !== $parentId) {
+            Assert::notNull($rootId);
+        }
 
         $query = <<< SQL
             INSERT INTO pim_catalog_category
@@ -59,9 +62,9 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
         $this->connection->executeQuery(
             $query,
             [
-                'parent_id' => $categoryModel->getParentId()?->getValue(),
+                'parent_id' => $parentId,
                 'code' => (string) $categoryModel->getCode(),
-                'root' => $rootCategoryId ?? 0,
+                'root' => $rootId ?? 0,
                 'lvl' => 0,
                 'lft' => 1,
                 'rgt' => 2,
@@ -82,7 +85,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
         );
 
         // We cannot access newly auto incremented id during the insert query. We have to update root in a second query
-        if (null === $rootCategoryId) {
+        if (null === $rootId) {
             $newCategoryId = $this->connection->lastInsertId();
             $this->connection->executeQuery(
                 <<< SQL
@@ -102,9 +105,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
         }
     }
 
-    /**
-     * @throws Exception
-     */
     private function updateEnrichedCategory(Category $categoryModel): void
     {
         $templateUuid = $categoryModel->getTemplateUuid();

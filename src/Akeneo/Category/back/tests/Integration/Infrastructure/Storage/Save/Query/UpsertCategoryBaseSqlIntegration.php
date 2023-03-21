@@ -161,6 +161,7 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
             id: $categoryInserted->getId(),
             code: $categoryInserted->getCode(),
             templateUuid: null,
+            rootId: new CategoryId(1),
             parentId: $expectedParentId,
             attributes: $expectedData
         );
