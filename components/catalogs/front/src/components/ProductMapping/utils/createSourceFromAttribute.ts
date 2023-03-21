@@ -26,11 +26,14 @@ export const createSourceFromAttribute = (attribute: Attribute): Source => {
     }
 
     if (attribute.type === 'pim_catalog_asset_collection') {
-        return {...source, parameters: {
-            sub_source: null,
-            sub_scope: null,
-            sub_locale: null,
-        }};
+        return {
+            ...source,
+            parameters: {
+                sub_source: null,
+                sub_scope: null,
+                sub_locale: null,
+            },
+        };
     }
 
     return source;

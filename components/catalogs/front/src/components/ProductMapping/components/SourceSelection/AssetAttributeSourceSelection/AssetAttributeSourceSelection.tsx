@@ -3,7 +3,6 @@ import {Source} from '../../../models/Source';
 import {Target} from '../../../models/Target';
 import {SourceErrors} from '../../../models/SourceErrors';
 import {useAssetAttribute} from '../../../hooks/useAssetAttribute';
-import {useTranslate} from '@akeneo-pim-community/shared';
 import {AssetAttributeSourceSettings} from './AssetAttributeSourceSettings';
 import {SelectAssetAttributeSourceDropdown} from './SelectAssetAttributeSourceDropdown';
 import {AssetAttribute} from '../../../models/AssetAttribute';
@@ -17,7 +16,6 @@ type Props = {
 };
 
 export const AssetAttributeSourceSelection: FC<Props> = ({source, target, errors, onChange, assetFamilyIdentifier}) => {
-    const translate = useTranslate();
     const {data: assetAttribute} = useAssetAttribute(source?.parameters?.sub_source ?? '');
 
     const handleAssetAttributeSourceSelection = (selectedAssetAttribute: AssetAttribute) =>
@@ -33,7 +31,12 @@ export const AssetAttributeSourceSelection: FC<Props> = ({source, target, errors
                 error={errors?.parameters?.sub_source}
             />
             {undefined !== assetAttribute && null !== source && (
-                <AssetAttributeSourceSettings source={source} assetAttribute={assetAttribute} errors={errors} onChange={onChange} />
+                <AssetAttributeSourceSettings
+                    source={source}
+                    assetAttribute={assetAttribute}
+                    errors={errors}
+                    onChange={onChange}
+                />
             )}
         </>
     );

@@ -15,7 +15,10 @@ export const useAssetAttributes = (assetFamilyIdentifier: string, target: Target
     const queryClient = useQueryClient();
 
     return useQuery<Data, Error, Data>(
-        ['assetAttributes', {assetFamilyIdentifier: assetFamilyIdentifier, targetType: target.type, targetFormat: target.format || ''}],
+        [
+            'assetAttributes',
+            {assetFamilyIdentifier: assetFamilyIdentifier, targetType: target.type, targetFormat: target.format || ''},
+        ],
         async () => {
             const queryParameters = new URLSearchParams({
                 assetFamilyIdentifier: assetFamilyIdentifier,

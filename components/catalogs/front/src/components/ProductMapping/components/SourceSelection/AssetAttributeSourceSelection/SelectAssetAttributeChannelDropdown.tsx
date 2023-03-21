@@ -23,7 +23,9 @@ export const SelectAssetAttributeChannelDropdown: FC<Props> = ({source, onChange
         <>
             <SelectInput
                 value={source.parameters?.sub_scope ?? null}
-                onChange={newChannel => onChange({...source, parameters: {...source.parameters, sub_scope: newChannel}})}
+                onChange={newChannel =>
+                    onChange({...source, parameters: {...source.parameters, sub_scope: newChannel}})
+                }
                 onNextPage={fetchNextPage}
                 clearable={false}
                 invalid={error !== undefined}

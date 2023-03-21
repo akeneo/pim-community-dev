@@ -19,7 +19,13 @@ type Props = {
     error: string | undefined;
 };
 
-export const SelectAssetAttributeSourceDropdown: FC<Props> = ({selectedIdentifier, target, assetFamilyIdentifier, onChange, error}) => {
+export const SelectAssetAttributeSourceDropdown: FC<Props> = ({
+    selectedIdentifier,
+    target,
+    assetFamilyIdentifier,
+    onChange,
+    error,
+}) => {
     const translate = useTranslate();
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
@@ -41,9 +47,7 @@ export const SelectAssetAttributeSourceDropdown: FC<Props> = ({selectedIdentifie
 
     const filteredAssetAttributes: AssetAttribute[] = useMemo(() => {
         const regex = new RegExp(search, 'i');
-        return assetAttributes?.filter(
-            (assetAttribute: AssetAttribute) => assetAttribute.label.match(regex)
-        ) ?? [];
+        return assetAttributes?.filter((assetAttribute: AssetAttribute) => assetAttribute.label.match(regex)) ?? [];
     }, [assetAttributes, search]);
 
     return (
@@ -57,7 +61,9 @@ export const SelectAssetAttributeSourceDropdown: FC<Props> = ({selectedIdentifie
                         emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                         openLabel={translate('akeneo_catalogs.common.select.open')}
                         value={assetAttribute?.label ?? ''}
-                        placeholder={translate('akeneo_catalogs.product_mapping.source.select_source_asset_attribute.placeholder')}
+                        placeholder={translate(
+                            'akeneo_catalogs.product_mapping.source.select_source_asset_attribute.placeholder'
+                        )}
                         onChange={() => null}
                         clearable={false}
                         invalid={error !== undefined}
@@ -76,7 +82,9 @@ export const SelectAssetAttributeSourceDropdown: FC<Props> = ({selectedIdentifie
                                         'akeneo_catalogs.product_mapping.source.select_source_asset_attribute.search'
                                     )}
                                     searchValue={search}
-                                    title={translate('akeneo_catalogs.product_mapping.source.select_source_asset_attribute.search')}
+                                    title={translate(
+                                        'akeneo_catalogs.product_mapping.source.select_source_asset_attribute.search'
+                                    )}
                                 />
                             </Dropdown.Header>
                             <Dropdown.ItemCollection

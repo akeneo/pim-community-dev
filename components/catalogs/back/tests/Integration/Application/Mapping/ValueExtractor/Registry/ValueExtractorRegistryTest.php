@@ -82,6 +82,7 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
             ],
             NumberFromMetricAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_metric',
+                'subSourceType' => null,
                 'targetType' => 'number',
                 'targetFormat' => null,
                 'extractorClassName' => NumberFromMetricAttributeValueExtractor::class,
@@ -102,6 +103,7 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
             ],
             StringFromCategoriesValueExtractor::class => [
                 'sourceType' => 'categories',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromCategoriesValueExtractor::class,

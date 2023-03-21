@@ -8,16 +8,19 @@ import fetchMock from 'jest-fetch-mock';
 test('it fetches the API response', async () => {
     fetchMock.mockResponseOnce(
         JSON.stringify({
-            'identifier': 'attributea_newassetfamily_f80b78d7-43f6-432c-a0a1-fc99ebb4cee7',
-            'label': 'Attribute A',
-            'scopable': false,
-            'localizable': false,
+            identifier: 'attributea_newassetfamily_f80b78d7-43f6-432c-a0a1-fc99ebb4cee7',
+            label: 'Attribute A',
+            scopable: false,
+            localizable: false,
         })
     );
 
-    const {result, waitForNextUpdate} = renderHook(() => useAssetAttribute('attributea_newassetfamily_f80b78d7-43f6-432c-a0a1-fc99ebb4cee7'), {
-        wrapper: ReactQueryWrapper,
-    });
+    const {result, waitForNextUpdate} = renderHook(
+        () => useAssetAttribute('attributea_newassetfamily_f80b78d7-43f6-432c-a0a1-fc99ebb4cee7'),
+        {
+            wrapper: ReactQueryWrapper,
+        }
+    );
 
     expect(result.current).toMatchObject({
         isLoading: true,
@@ -28,15 +31,18 @@ test('it fetches the API response', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/asset-attributes/attributea_newassetfamily_f80b78d7-43f6-432c-a0a1-fc99ebb4cee7', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith(
+        '/rest/catalogs/asset-attributes/attributea_newassetfamily_f80b78d7-43f6-432c-a0a1-fc99ebb4cee7',
+        expect.any(Object)
+    );
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,
         data: {
-            'identifier': 'attributea_newassetfamily_f80b78d7-43f6-432c-a0a1-fc99ebb4cee7',
-            'label': 'Attribute A',
-            'scopable': false,
-            'localizable': false,
+            identifier: 'attributea_newassetfamily_f80b78d7-43f6-432c-a0a1-fc99ebb4cee7',
+            label: 'Attribute A',
+            scopable: false,
+            localizable: false,
         },
         error: null,
     });

@@ -6,7 +6,6 @@ import {Source} from '../../../models/Source';
 import {useInfiniteLocales} from '../../../../../hooks/useInfiniteLocales';
 import {useLocalesByCodes} from '../../../../../hooks/useLocalesByCodes';
 import {Locale} from '../../../../../models/Locale';
-import {SelectAssetAttributeChannelLocaleDropdown} from './SelectAssetAttributeChannelLocaleDropdown';
 
 type Props = {
     source: Source;

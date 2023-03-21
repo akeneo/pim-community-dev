@@ -123,10 +123,18 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
                                         isActive={attribute.code === selectedCode}
                                     >
                                         <>
-                                        {attribute.label}
-                                        {attribute.asset_family &&
-                                            <> - <i>{translate('akeneo_catalogs.product_mapping.source.select_source.attribute_label_asset_collection')}</i></>
-                                        }
+                                            {attribute.label}
+                                            {attribute.asset_family && (
+                                                <>
+                                                    {' '}
+                                                    -{' '}
+                                                    <i>
+                                                        {translate(
+                                                            'akeneo_catalogs.product_mapping.source.select_source.attribute_label_asset_collection'
+                                                        )}
+                                                    </i>
+                                                </>
+                                            )}
                                         </>
                                     </DropdownItem>
                                 ))}

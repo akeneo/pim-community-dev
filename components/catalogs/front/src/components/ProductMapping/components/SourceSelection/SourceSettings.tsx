@@ -33,7 +33,7 @@ type Props = {
     onChange: (value: Source) => void;
 };
 
-export const SourceSettings: FC<Props> = ({source, target,attribute, errors, onChange}) => {
+export const SourceSettings: FC<Props> = ({source, target, attribute, errors, onChange}) => {
     const onChangeMiddleware = useCallback(
         source => {
             if (
@@ -87,13 +87,15 @@ export const SourceSettings: FC<Props> = ({source, target,attribute, errors, onC
                     />
                 </BulletLine>
             )}
-            {attribute.asset_family && <AssetAttributeSourceSelection
-                source={source}
-                target={target}
-                onChange={onChangeMiddleware}
-                errors={errors}
-                assetFamilyIdentifier={attribute.asset_family}
-            />}
+            {attribute.asset_family && (
+                <AssetAttributeSourceSelection
+                    source={source}
+                    target={target}
+                    onChange={onChangeMiddleware}
+                    errors={errors}
+                    assetFamilyIdentifier={attribute.asset_family}
+                />
+            )}
         </>
     );
 };
