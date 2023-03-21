@@ -20,7 +20,7 @@
     "webpack-test": "yarn generate-models && webpack --config webpack-test.config.js",
     "lint": "eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet && yarn prettier:check",
     "lint-fix": "yarn prettier:run && eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet --fix",
-    "unit": "yarn packages:unit && jest --no-cache --config tests/front/unit/jest/unit.jest.js --runInBand",
+    "unit": "yarn packages:unit && jest --config tests/front/unit/jest/unit.jest.js --runInBand",
     "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
     "acceptance-html-report": "yarn acceptance ./tests/features/ -f json:public/test_dist/acceptance-js.json && node frontend/test/acceptance/generate-html-report.js",
     "less": "node $npm_package_config_styles",
