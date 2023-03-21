@@ -129,10 +129,8 @@ akeneo_catalogs:
                 placeholder: Select an attribute
                 title: Source parameters
                 channel:
-                    label: Channel
                     placeholder: Select a channel
                 locale:
-                    label: Locale
                     placeholder: Select a locale
                 label_locale:
                     label: Value translation
@@ -142,6 +140,9 @@ akeneo_catalogs:
                     label: Currency
                     placeholder: Select a currency
                     helper: Select the currency in which the value should be sent.
+                default_value:
+                    label: Default value when is empty
+                    placeholder: Define a default value
                 no_parameters_message: No parameters for this source.
                 unit:
                     label: Unit

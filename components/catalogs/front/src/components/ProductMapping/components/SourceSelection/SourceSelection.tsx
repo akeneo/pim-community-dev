@@ -11,7 +11,7 @@ import {SelectSourceAttributeDropdown} from './SelectSourceAttributeDropdown';
 import {SourceSectionTitle} from '../SourceSectionTitle';
 
 type Props = {
-    source: Source | null;
+    source: Source;
     target: Target;
     errors: SourceErrors | null;
     onChange: (value: Source) => void;
@@ -30,12 +30,12 @@ export const SourceSelection: FC<Props> = ({source, target, errors, onChange}) =
                 {translate('akeneo_catalogs.product_mapping.source.title')}
             </SourceSectionTitle>
             <SelectSourceAttributeDropdown
-                selectedCode={source?.source ?? ''}
+                selectedCode={source.source ?? ''}
                 target={target}
                 onChange={handleSourceAttributeSelection}
                 error={errors?.source}
             />
-            {undefined !== attribute && null !== source && (
+            {undefined !== attribute && (
                 <SourceSettings source={source} target={target} attribute={attribute} errors={errors} onChange={onChange} />
             )}
         </>

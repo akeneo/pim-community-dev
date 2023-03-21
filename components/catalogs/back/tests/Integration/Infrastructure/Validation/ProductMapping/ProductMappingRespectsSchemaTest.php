@@ -203,12 +203,106 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
         $this->assertViolationsListContains($violations, 'The mapping is incorrect, following targets don\'t exist: "additional".');
     }
 
+    public function testItReturnsViolationsWhenThereIsRequiredTargetWithNoSourceDefined(): void
+    {
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+
+        $this->createCatalog(
+            id: '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
+            name: 'Store FR',
+            ownerUsername: 'admin',
+            productMappingSchema: $this->getValidSchemaDataWithRequiredField(),
+        );
+
+        $violations = $this->validator->validate(
+            new Catalog(
+                '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
+                'Store FR',
+                'admin',
+                false,
+                [],
+                [],
+                [
+                    'uuid' => [
+                        'source' => 'uuid',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'name' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'size' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                ],
+            ),
+        );
+
+        $this->assertViolationsListContains($violations, 'The source is required.');
+    }
+    public function testItValidatesWhenThereIsRequiredTargetWithNoSourceDefinedAndDefaultValue(): void
+    {
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+
+        $this->createCatalog(
+            id: '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
+            name: 'Store FR',
+            ownerUsername: 'admin',
+            productMappingSchema: $this->getValidSchemaDataWithRequiredField(),
+        );
+
+        $violations = $this->validator->validate(
+            new Catalog(
+                '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
+                'Store FR',
+                'admin',
+                false,
+                [],
+                [],
+                [
+                    'uuid' => [
+                        'source' => 'uuid',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'name' => [
+                        'source' => 'name',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'size' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                        'default' => 'Default value',
+                    ],
+                ],
+            ),
+        );
+
+        $this->assertEquals(0, $violations->count());
+    }
+
     private function getValidSchemaData(): string
     {
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.4/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
@@ -234,6 +328,32 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
               "type": "number"
             }
           }
+        }
+        JSON_WRAP;
+    }
+
+    private function getValidSchemaDataWithRequiredField(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "size": {
+              "type": "number"
+            }
+          },
+          "required": ["name","size"]
         }
         JSON_WRAP;
     }

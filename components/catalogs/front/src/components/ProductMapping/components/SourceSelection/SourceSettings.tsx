@@ -7,6 +7,23 @@ import {Attribute} from '../../../../models/Attribute';
 import {SourceErrors} from '../../models/SourceErrors';
 import {AssetAttributeSourceSelection} from './AssetAttributeSourceSelection/AssetAttributeSourceSelection';
 import {Target} from '../../models/Target';
+import {ArrowIcon, getColor} from 'akeneo-design-system';
+import styled from 'styled-components';
+
+const Bullet = styled(ArrowIcon)`
+    color: ${getColor('grey', 100)};
+`;
+
+const BulletLine = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+    gap: 8px;
+    margin-top: 5px;
+    padding-left: 10px;
+    max-width: 460px;
+    align-items: center;
+`;
 
 type Props = {
     source: Source;
@@ -48,18 +65,27 @@ export const SourceSettings: FC<Props> = ({source, target,attribute, errors, onC
     return (
         <>
             {attribute.scopable && (
-                <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
+                <BulletLine>
+                    <Bullet />
+                    <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
+                </BulletLine>
             )}
             {attribute.localizable && !attribute.scopable && (
-                <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
+                <BulletLine>
+                    <Bullet />
+                    <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
+                </BulletLine>
             )}
             {attribute.localizable && attribute.scopable && (
-                <SelectChannelLocaleDropdown
-                    source={source}
-                    onChange={onChangeMiddleware}
-                    error={errors?.locale}
-                    disabled={source.scope === null}
-                />
+                <BulletLine>
+                    <Bullet />
+                    <SelectChannelLocaleDropdown
+                        source={source}
+                        onChange={onChangeMiddleware}
+                        error={errors?.locale}
+                        disabled={source.scope === null}
+                    />
+                </BulletLine>
             )}
             {attribute.asset_family && <AssetAttributeSourceSelection
                 source={source}
