@@ -68,7 +68,7 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
         $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
         $template->getUuid()->willReturn($templateUuid);
 
-        $deleteCategoryTreeTemplate->__invoke(1, $templateUuid)->shouldBeCalled();
+        $deleteCategoryTreeTemplate->byCategoryIdAndTemplateUuid(new CategoryId(1), $templateUuid)->shouldBeCalled();
 
         $this->removeCategoryTreeTemplate($event);
     }
@@ -82,7 +82,7 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($legacyCategory);
         $enrichedCategoryFeature->isEnabled()->willReturn(false);
 
-        $deleteCategoryTreeTemplate->__invoke(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $deleteCategoryTreeTemplate->byCategoryIdAndTemplateUuid(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $this->removeCategoryTreeTemplate($event);
     }
@@ -105,7 +105,7 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
         $category->getId()->willReturn($categoryTreeId);
         $category->isRoot()->willReturn(false);
 
-        $deleteCategoryTreeTemplate->__invoke(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $deleteCategoryTreeTemplate->byCategoryIdAndTemplateUuid(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $this->removeCategoryTreeTemplate($event);
     }
@@ -131,7 +131,7 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
 
         $getCategoryTemplateByCategoryTree->__invoke($categoryTreeId)->shouldBeCalled()->willReturn(null);
 
-        $deleteCategoryTreeTemplate->__invoke(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $deleteCategoryTreeTemplate->byCategoryIdAndTemplateUuid(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $this->removeCategoryTreeTemplate($event);
     }

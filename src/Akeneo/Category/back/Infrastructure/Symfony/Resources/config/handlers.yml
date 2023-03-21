@@ -29,6 +29,8 @@ services:
       - '@Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid'
       - '@Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner'
       - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Application\Query\DeleteTemplateAndAttributes'
+      - '@Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand' }
 

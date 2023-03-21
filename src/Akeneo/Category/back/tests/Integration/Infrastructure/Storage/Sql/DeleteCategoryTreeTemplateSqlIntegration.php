@@ -30,7 +30,23 @@ class DeleteCategoryTreeTemplateSqlIntegration extends CategoryTestCase
 
         $this->assertTrue($this->isExistingLinkBetweenCategoryTreeAndTemplate($category->getId()->getValue(), $templateModel->getUuid()));
 
-        ($this->get(DeleteCategoryTreeTemplate::class))($category->getId()->getValue(), $templateModel->getUuid());
+        $this->get(DeleteCategoryTreeTemplate::class)->byCategoryIdAndTemplateUuid($category->getId(), $templateModel->getUuid());
+
+        $this->assertFalse($this->isExistingLinkBetweenCategoryTreeAndTemplate($category->getId()->getValue(), $templateModel->getUuid()));
+    }
+
+    public function testItDeletesLinkForTemplate(): void
+    {
+        /** @var Category $category */
+        $category = $this->get(GetCategoryInterface::class)->byCode('master');
+        $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $category->getId()->getValue());
+
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+
+        $this->assertTrue($this->isExistingLinkBetweenCategoryTreeAndTemplate($category->getId()->getValue(), $templateModel->getUuid()));
+
+        $this->get(DeleteCategoryTreeTemplate::class)->byTemplateUuid($templateModel->getUuid());
 
         $this->assertFalse($this->isExistingLinkBetweenCategoryTreeAndTemplate($category->getId()->getValue(), $templateModel->getUuid()));
     }
