@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource;
+namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\NullSource;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
 
 /**
- * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class AttributeIdentifierSource extends Compound
+final class NullStringSource extends Compound
 {
     /**
      * @param array<array-key, mixed> $options
@@ -28,8 +28,7 @@ final class AttributeIdentifierSource extends Compound
                 new Assert\Collection([
                     'fields' => [
                         'source' => [
-                            new Assert\Type('string'),
-                            new Assert\NotBlank(),
+                            new Assert\IsNull(),
                         ],
                         'scope' => [
                             new Assert\IsNull(),

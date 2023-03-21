@@ -9,6 +9,7 @@ use Akeneo\Catalogs\Application\Mapping\TargetTypeConverter;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\NullSource\NullStringSource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -56,6 +57,8 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
         $this->validateTargetsTypes($value->getProductMapping(), $schema);
 
         $this->validateRequiredTargets($value->getProductMapping(), $schema);
+
+        $this->validateNullSources($value->getProductMapping(), $schema);
     }
 
     /**
@@ -150,14 +153,14 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
      * @param ProductMapping $productMapping
      * @param ProductMappingSchema $schema
      */
-    private function validateRequiredTargets(array $productMapping, array $schema): bool
+    private function validateRequiredTargets(array $productMapping, array $schema): void
     {
         if (!isset($schema['required'])) {
-            return true;
+            return;
         }
 
         foreach ($schema['required'] as $targetCode) {
-            if (null === $productMapping[$targetCode]['source']) {
+            if (null === $productMapping[$targetCode]['source'] && !isset($productMapping[$targetCode]['default'])) {
                 $this->context
                     ->buildViolation(
                         'akeneo_catalogs.validation.product_mapping.source.required',
@@ -166,7 +169,32 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                     ->addViolation();
             }
         }
+    }
 
-        return false;
+    /**
+     * @param ProductMapping $productMapping
+     * @param ProductMappingSchema $schema
+     */
+    private function validateNullSources(array $productMapping, array $schema): void
+    {
+        foreach ($productMapping as $targetCode => $source) {
+            if ($source['source'] === null) {
+                $target = $schema['properties'][$targetCode];
+
+                $targetTypeKey = $this->targetTypeConverter->getTargetTypeKey($target);
+
+                $constraint = match ($targetTypeKey) {
+                    'string' => new NullStringSource(),
+                    default => null,
+                };
+
+                if (null !== $constraint) {
+                    $this->context
+                        ->getValidator()
+                        ->inContext($this->context)
+                        ->validate($source, $constraint);
+                }
+            }
+        }
     }
 }

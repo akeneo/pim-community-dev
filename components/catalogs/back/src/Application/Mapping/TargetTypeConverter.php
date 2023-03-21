@@ -66,6 +66,22 @@ final class TargetTypeConverter
     /**
      * @param ProductMappingSchemaTarget $target
      */
+    public function getTargetTypeKey(array $target): string
+    {
+        $key = $this->flattenTargetType($target);
+
+        $format = $target['format'] ?? '';
+
+        if ('' !== $format) {
+            $key = \sprintf('%s+%s', $key, $format);
+        }
+
+        return $key;
+    }
+
+    /**
+     * @param ProductMappingSchemaTarget $target
+     */
     public function flattenTargetType(array $target): string
     {
         if ('array' !== $target['type']) {
