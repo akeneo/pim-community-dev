@@ -1,5 +1,19 @@
 # 6.0.x
 
+# 6.0.76 (2023-03-08)
+
+## Bug fixes
+
+- PIM-10878: Fix filtering products with identifiers would not display some product models
+
+# 6.0.75 (2023-03-02)
+
+# 6.0.74 (2023-03-02)
+
+## Bug fixes
+
+- PIM-10780: Fix PEF display for localizable values with locale codes with wrong case
+
 # 6.0.73 (2023-02-28)
 
 ## Bug fixes
