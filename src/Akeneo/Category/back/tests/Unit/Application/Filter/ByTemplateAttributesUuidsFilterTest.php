@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ByTemplateAttributesUuidsFilterTest extends TestCase
 {
-    public function test(): void
+    public function testItReturnsTheListOfEnrichedValueToRemoveFromAnAttributeList(): void
     {
         $valuesToFilter = ValueCollection::fromDatabase($this->getEnrichedValues());
         $attributes = $this->getAttributes();

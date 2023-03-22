@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues;
 
 use Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner;
+use Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate;
+use Akeneo\Category\Application\Query\DeleteTemplateAndAttributes;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
@@ -19,21 +21,27 @@ class CleanCategoryTemplateAndEnrichedValuesCommandHandler
 
     public function __construct(
         private readonly GetEnrichedValuesByTemplateUuid $getEnrichedValuesByTemplateUuid,
-        private readonly CategoryAttributeValuesCleaner $categoryDataCleaner,
-        private readonly GetAttribute $getCategoryTemplateAttributes,
+        private readonly CategoryAttributeValuesCleaner  $categoryDataCleaner,
+        private readonly GetAttribute                    $getCategoryTemplateAttributes,
+        private readonly DeleteTemplateAndAttributes     $deleteTemplateAndAttributes,
+        private readonly DeleteCategoryTreeTemplate      $deleteCategoryTreeTemplate,
     ) {
     }
 
     public function __invoke(CleanCategoryTemplateAndEnrichedValuesCommand $command): void
     {
+        $templateUuid = TemplateUuid::fromString($command->templateUuid);
         $templateAttributes = $this->getCategoryTemplateAttributes
-            ->byTemplateUuid(TemplateUuid::fromString($command->templateUuid))
+            ->byTemplateUuid($templateUuid)
             ->getAttributes();
         foreach ($this->getEnrichedValuesByTemplateUuid->byBatchesOf(
-            TemplateUuid::fromString($command->templateUuid),
+            $templateUuid,
             self::CATEGORY_BATCH_SIZE,
         ) as $valuesByCode) {
             $this->categoryDataCleaner->cleanByTemplateAttributesUuid($valuesByCode, $templateAttributes);
         }
+
+        $this->deleteCategoryTreeTemplate->byTemplateUuid($templateUuid);
+        ($this->deleteTemplateAndAttributes)($templateUuid);
     }
 }

@@ -42,7 +42,7 @@ class DeleteTemplateAndAttributesSqlIntegration extends CategoryTestCase
 
         // Call DeleteCategoryTreeTemplate to remove association with pim_catalog_category_tree_template before removing template
         $deleteCategoryTreeTemplateService = $this->get(DeleteCategoryTreeTemplate::class);
-        ($deleteCategoryTreeTemplateService)($category->getId()->getValue(), $templateUuid);
+        $deleteCategoryTreeTemplateService->byCategoryIdAndTemplateUuid($category->getId(), $templateUuid);
         $deleteTemplateAndAttributesService = $this->get(DeleteTemplateAndAttributes::class);
         ($deleteTemplateAndAttributesService)($templateUuid);
         $template = $this->get(GetTemplate::class)->byUuid($templateUuid);

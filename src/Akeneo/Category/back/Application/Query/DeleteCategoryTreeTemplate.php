@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Query;
 
+use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
@@ -12,5 +13,7 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  */
 interface DeleteCategoryTreeTemplate
 {
-    public function __invoke(int $categoryTreeId, TemplateUuid $templateUuid): void;
+    public function byCategoryIdAndTemplateUuid(CategoryId $categoryTreeId, TemplateUuid $templateUuid): void;
+
+    public function byTemplateUuid(TemplateUuid $templateUuid): void;
 }

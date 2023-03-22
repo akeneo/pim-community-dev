@@ -55,6 +55,6 @@ class RemoveCategoryTreeTemplateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        ($this->deleteCategoryTreeTemplate)($category->getId()->getValue(), $template->getUuid());
+        $this->deleteCategoryTreeTemplate->byCategoryIdAndTemplateUuid($category->getId(), $template->getUuid());
     }
 }

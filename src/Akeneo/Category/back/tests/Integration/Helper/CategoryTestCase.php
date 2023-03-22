@@ -224,10 +224,7 @@ class CategoryTestCase extends TestCase
         );
     }
 
-    /**
-     * @param array<string>|null $attributesUuids
-     */
-    protected function givenTemplateWithAttributes(string $templateUuidRaw, ?CategoryId $categoryId, ?array $attributesUuids = null): Template
+    protected function givenTemplateWithAttributes(string $templateUuidRaw, ?CategoryId $categoryId): Template
     {
         $templateUuid = TemplateUuid::fromString($templateUuidRaw);
 
@@ -236,14 +233,11 @@ class CategoryTestCase extends TestCase
             new TemplateCode('default_template'),
             LabelCollection::fromArray(['en_US' => 'Default template']),
             $categoryId,
-            $this->givenAttributes($templateUuid, $attributesUuids),
+            $this->givenAttributes($templateUuid),
         );
     }
 
-    /**
-     * @param array<string>|null $attributesUuids
-     */
-    protected function givenAttributes(TemplateUuid $templateUuid, ?array $attributesUuids = null): AttributeCollection
+    protected function givenAttributes(TemplateUuid $templateUuid): AttributeCollection
     {
         $uuids = [
             '840fcd1a-f66b-4f0c-9bbd-596629732950',
@@ -260,10 +254,6 @@ class CategoryTestCase extends TestCase
             '7898eab7-c795-4989-8583-54974563e1b7',
             '1efc3af6-e89c-4281-9bd5-b827d9397cf7',
         ];
-        if (!empty($attributesUuids)) {
-            $this->assertCount(13, $attributesUuids);
-            $uuids = $attributesUuids;
-        }
 
         return AttributeCollection::fromArray([
             AttributeRichText::create(
@@ -470,17 +460,14 @@ SQL;
         ]);
     }
 
-    /**
-     * @param array<string>|null $attributesUuids
-     */
-    protected function useTemplateFunctionalCatalog(string $templateUuid, string $categoryCode, ?array $attributesUuids = null): Category
+    protected function useTemplateFunctionalCatalog(string $templateUuid, string $categoryCode): Category
     {
         $category = $this->createOrUpdateCategory(
             code: $categoryCode,
             labels: ['en_US' => 'socks'],
         );
 
-        $template = $this->givenTemplateWithAttributes($templateUuid, $category->getId(), $attributesUuids);
+        $template = $this->givenTemplateWithAttributes($templateUuid, $category->getId());
         $this->get(CategoryTemplateSaver::class)->insert($template);
         $this->get(CategoryTreeTemplateSaver::class)->insert($template);
         $this->get(CategoryTemplateAttributeSaver::class)->insert(
@@ -542,6 +529,8 @@ SQL;
     }
 
     /**
+     * @params int $max The number of UUID to generate
+     *
      * @return array<string>
      */
     protected function generateRandomUuidList(int $max): array
