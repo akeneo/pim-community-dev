@@ -528,6 +528,8 @@ SQL;
     }
 
     /**
+     * @params int $max The number of UUID to generate
+     *
      * @return array<string>
      */
     protected function generateRandomUuidList(int $max): array
