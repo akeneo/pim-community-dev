@@ -105,6 +105,23 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                     ],
                 ],
             ],
+            'with default value' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+            ],
         ];
     }
 
