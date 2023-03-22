@@ -56,3 +56,7 @@ akeneo_catalogs:
         required: 'Die Quelle ist erforderlich.'
         currency:
           disabled: 'Diese Währung ist nicht aktiviert. Bitte überprüfen Sie Ihre Kanäle und Währungseinstellungen oder aktualisieren Sie diesen Wert.'
+        measurement:
+          unit:
+            not_exist: 'Die Einheit des Feldes "{{ field }}" existiert nicht.'
+            not_empty: 'Die Einheit darf nicht leer sein.'

@@ -12,6 +12,7 @@ import {Source} from './models/Source';
 import {Target} from './models/Target';
 import {sourceHasError} from './utils/sourceHasError';
 import {createTargetFromProductMappingSchema} from './utils/createTargetFromProductMappingSchema';
+import {SourceParameter} from './models/SourceParameter';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -37,7 +38,11 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
     const translate = useTranslate();
 
     const [selectedTarget, setSelectedTarget] = useState<Target | null>(null);
-    const [selectedSource, setSelectedSource] = useState<Source | null>(null);
+    const [selectedSource, setSelectedSource] = useState<Source>({
+        source: null,
+        locale: null,
+        scope: null,
+    });
 
     const handleClick = useCallback(
         (targetCode, source) => {
