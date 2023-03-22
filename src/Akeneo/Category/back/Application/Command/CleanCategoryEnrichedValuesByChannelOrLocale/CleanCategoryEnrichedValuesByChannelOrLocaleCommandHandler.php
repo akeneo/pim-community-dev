@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale;
 
-use Akeneo\Category\Application\Enrichment\CategoryDataCleaner;
+use Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner;
 use Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode;
 
 /**
@@ -17,7 +17,7 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler
 
     public function __construct(
         private readonly GetEnrichedValuesPerCategoryCode $getEnrichedValuesPerCategoryCode,
-        private readonly CategoryDataCleaner $categoryDataCleaner,
+        private readonly CategoryAttributeValuesCleaner $categoryDataCleaner,
     ) {
     }
 
