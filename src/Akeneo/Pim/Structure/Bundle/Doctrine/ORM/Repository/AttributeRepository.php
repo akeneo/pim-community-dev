@@ -351,27 +351,4 @@ class AttributeRepository extends EntityRepository implements
 
         return $qb->getQuery()->getResult();
     }
-
-    public function findByCodes(array $codes)
-    {
-        $qb = $this->createQueryBuilder('attribute')
-            ->select('attribute')
-            ->where('attribute.code IN (:codes)')
-            ->setParameter('codes', $codes);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findByNotInCodes(array $codes)
-    {
-        $qb = $this->createQueryBuilder('attribute')
-            ->select('attribute');
-
-        if (!empty($codes)) {
-            $qb->where('attribute.code NOT IN (:codes)')
-                ->setParameter('codes', $codes);
-        }
-
-        return $qb->getQuery()->getResult();
-    }
 }
