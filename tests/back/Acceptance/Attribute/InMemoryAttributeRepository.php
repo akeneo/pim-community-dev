@@ -240,7 +240,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     /**
      * {@inheritdoc}
      */
-    public function getAttributesByGroups(array $groupsCode)
+    public function getAttributesByGroups(array $groupsCode, int $limit, ?string $searchAfter)
     {
         throw new NotImplementedException(__METHOD__);
     }
