@@ -21,10 +21,10 @@ class CleanCategoryTemplateAndEnrichedValuesCommandHandler
 
     public function __construct(
         private readonly GetEnrichedValuesByTemplateUuid $getEnrichedValuesByTemplateUuid,
-        private readonly CategoryAttributeValuesCleaner  $categoryDataCleaner,
-        private readonly GetAttribute                    $getCategoryTemplateAttributes,
-        private readonly DeleteTemplateAndAttributes     $deleteTemplateAndAttributes,
-        private readonly DeleteCategoryTreeTemplate      $deleteCategoryTreeTemplate,
+        private readonly CategoryAttributeValuesCleaner $categoryDataCleaner,
+        private readonly GetAttribute $getCategoryTemplateAttributes,
+        private readonly DeleteTemplateAndAttributes $deleteTemplateAndAttributes,
+        private readonly DeleteCategoryTreeTemplate $deleteCategoryTreeTemplate,
     ) {
     }
 
