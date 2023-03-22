@@ -19,7 +19,7 @@ class PreviewGeneratorRegistry implements PreviewGeneratorInterface
     public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';
     public const PREVIEW_TYPE = 'preview';
 
-    public const TYPES = [
+    public const IMAGE_TYPES = [
         self::THUMBNAIL_TYPE,
         self::THUMBNAIL_SMALL_TYPE,
         self::PREVIEW_TYPE,

@@ -57,7 +57,7 @@ class CategoryImageDataCleanerSpec extends ObjectBehavior
 
         $filePath = $imageValue->getValue()->getFilePath();
 
-        foreach (PreviewGeneratorRegistry::TYPES as $type) {
+        foreach (PreviewGeneratorRegistry::IMAGE_TYPES as $type) {
             $previewGenerator->remove(data: base64_encode($filePath), type: $type)->shouldBeCalledOnce();
         }
 
@@ -78,7 +78,7 @@ class CategoryImageDataCleanerSpec extends ObjectBehavior
             'attribute_code' => 'shoes'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c',
         ]);
 
-        foreach (PreviewGeneratorRegistry::TYPES as $type) {
+        foreach (PreviewGeneratorRegistry::IMAGE_TYPES as $type) {
             $previewGenerator->remove(Argument::type('string'), $type)->shouldNotBeCalled();
         }
 

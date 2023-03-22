@@ -29,7 +29,7 @@ class CategoryImageDataCleaner
             return;
         }
 
-        foreach (PreviewGeneratorRegistry::TYPES as $type) {
+        foreach (PreviewGeneratorRegistry::IMAGE_TYPES as $type) {
             $this->previewGenerator->remove(
                 data: base64_encode($imageDataValue->getFilePath()),
                 type: $type,
