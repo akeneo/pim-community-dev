@@ -51,24 +51,42 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
         $replacementAttributeGroupCode = $this->stepExecution->getJobParameters()->get('replacement_attribute_group_code');
         $this->stepExecution->addSummaryInfo('moved_attributes', 0);
 
-        foreach (array_chunk($attributeGroupCodesToDelete, $this->batchSize) as $attributeGroupCodesToDeleteChunk) {
-            $attributes = $this->attributeRepository->getAttributesByGroups($attributeGroupCodesToDeleteChunk);
+        foreach ($this->getAttributeToMoveByChunk($attributeGroupCodesToDelete) as $attributeChunk) {
+            $this->moveAttributes($attributeChunk, $replacementAttributeGroupCode);
+            if ($this->jobStopper->isStopping($this->stepExecution)) {
+                $this->jobStopper->stop($this->stepExecution);
 
-            foreach (array_chunk($attributes, $this->batchSize) as $attributeChunk) {
-                $this->updateAttributes($attributeChunk, $replacementAttributeGroupCode);
-                if ($this->jobStopper->isStopping($this->stepExecution)) {
-                    $this->jobStopper->stop($this->stepExecution);
+                return;
+            }
+        }
 
-                    return;
-                }
+        $this->cacheClearer->clear();
+        $this->jobRepository->updateStepExecution($this->stepExecution);
+    }
+
+    private function getAttributeToMoveByChunk(array $attributeGroupCodes): \Iterator
+    {
+        $searchAfterAttributeCode = null;
+
+        while (true) {
+            $attributes = $this->attributeRepository->getAttributesByGroups(
+                $attributeGroupCodes,
+                $this->batchSize,
+                $searchAfterAttributeCode
+            );
+
+            if (empty($attributes)) {
+                return;
             }
 
-            $this->cacheClearer->clear();
-            $this->jobRepository->updateStepExecution($this->stepExecution);
+            $searchAfterAttributeCode = end($attributes)->getCode();
+            reset($attributes);
+
+            yield $attributes;
         }
     }
 
-    public function updateAttributes(array $attributes, string $replacementAttributeGroupCode)
+    private function moveAttributes(array $attributes, string $replacementAttributeGroupCode)
     {
         foreach ($attributes as $attribute) {
             try {
