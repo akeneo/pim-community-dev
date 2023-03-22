@@ -291,6 +291,13 @@ pim_enrich.entity.attribute_group:
         empty_result_label: 'No attribute group found'
         placeholder: 'Select attribute group'
         open_label: 'attribute group list'
+    delete:
+        confirm: 'Are you sure you want to delete this attribute group'
+        attribute_warning: 'Deleting this attribute group will impact {{ number_of_attribute }} child attribute. You will need to move this child attribute to a new attribute group.'
+        select_attribute_group: '{1}Please select the attribute group to move the child attribute to:|]1, Inf[Please select the attribute group to move the {{ number_of_attribute }} child attributes to:'
+        empty_result_label: 'No attribute group found'
+        placeholder: 'Select attribute group'
+        open_label: 'attribute group list'
     batch_jobs:
         delete_attribute_groups:
             delete_attribute_groups:
