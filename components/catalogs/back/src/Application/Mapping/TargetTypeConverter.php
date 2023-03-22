@@ -43,6 +43,7 @@ final class TargetTypeConverter
             'pim_catalog_date',
         ],
         'string+uri' => [
+            'pim_catalog_asset_collection',
             'pim_catalog_image',
         ],
     ];
@@ -50,6 +51,9 @@ final class TargetTypeConverter
     private const PIM_ASSET_ATTRIBUTE_TYPES = [
         'array<string>' => [
             'text',
+        ],
+        'string+uri' => [
+            'media_file',
         ],
     ];
 
