@@ -38,18 +38,15 @@ class GetEnrichedValuesByTemplateUuidSqlIntegration extends CategoryTestCase
         $this->updateCategoryWithValues((string) $winterSocksCategory->getCode());
         $this->updateCategoryWithValues((string) $summerSocksCategory->getCode());
         $this->updateCategoryWithValues((string) $japaneseSummerSocksCategory->getCode());
-
-        $attributesUuids = $this->generateRandomUuidList(13);
-        $pantsCategory = $this->useTemplateFunctionalCatalog('1294e06d-48a4-4055-abda-986d92bef8a2', 'pants', $attributesUuids);
-        $this->updateCategoryWithValues((string) $pantsCategory->getCode());
     }
 
-    public function testItRetrievesRelatedCategoriesByTemplateUuid(): void{
+    public function testItRetrievesRelatedCategoriesByTemplateUuid(): void
+    {
         $fetchedCategories = [];
         foreach ($this->get(GetEnrichedValuesByTemplateUuid::class)->byBatchesOf(
             TemplateUuid::fromString('6344aa2a-2be9-4093-b644-259ca7aee50c'),
             5
-        ) as $valuesByCategoryCode){
+        ) as $valuesByCategoryCode) {
             $fetchedCategories[] = $valuesByCategoryCode;
         }
 
