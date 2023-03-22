@@ -29,22 +29,21 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
     {
         $offset = 0;
         $query = <<<SQL
-        SELECT category.id,
-               category.code,
-               category.value_collection,
-               child.code AS child_code,
-               child.value_collection AS child_value_collection
+        SELECT code,
+               value_collection
         FROM 
-            pim_catalog_category AS category
+            pim_catalog_category        
+        WHERE root = (
+        SELECT category.id
+        FROM pim_catalog_category AS category
             LEFT JOIN pim_catalog_category_tree_template AS tree_template
             ON tree_template.category_tree_id = category.id
             LEFT JOIN pim_catalog_category_template AS template
             ON template.uuid = tree_template.category_template_uuid
-            LEFT JOIN pim_catalog_category AS child
-            ON child.root = category.id
-        WHERE 
-            category_template_uuid = :template_uuid
-        LIMIT :limit OFFSET :offset
+        WHERE category_template_uuid = :template_uuid
+        )
+        AND value_collection IS NOT NULL
+        LIMIT :limit OFFSET :offset;
         SQL;
 
         while (true) {
@@ -77,22 +76,6 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
                     ),
                 );
                 $valuesByCode[$code] = $valueCollection;
-
-                if ($row['child_code']) {
-                    $childCode = $row['child_code'];
-                    $childValues = $row['child_value_collection'];
-                    if ($childValues) {
-                        $childValueCollection = ValueCollection::fromDatabase(
-                            json_decode(
-                                $row['child_value_collection'],
-                                true,
-                                512,
-                                JSON_THROW_ON_ERROR,
-                            ),
-                        );
-                        $valuesByCode[$childCode] = $childValueCollection;
-                    }
-                }
             }
 
             yield $valuesByCode;

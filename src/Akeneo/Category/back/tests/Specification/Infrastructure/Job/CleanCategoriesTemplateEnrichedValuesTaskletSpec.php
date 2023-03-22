@@ -43,8 +43,8 @@ class CleanCategoriesTemplateEnrichedValuesTaskletSpec extends ObjectBehavior
 
         $envelope = new Envelope($command);
 
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $commandBus->dispatch($command)->willReturn($envelope);
+        $stepExecution->getJobParameters()->shouldBeCalled()->willReturn($jobParameters);
+        $commandBus->dispatch($command)->shouldBeCalled()->willReturn($envelope);
 
         $this->setStepExecution($stepExecution);
         $this->execute();
