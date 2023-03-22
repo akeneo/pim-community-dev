@@ -139,7 +139,7 @@ final class MessengerConfigBuilder
             'dsn' => 'gps:',
             'options' => [
                 'project_id' => '%env(GOOGLE_CLOUD_PROJECT)%',
-                'topic_name' => $topicName,
+                'topic_name' => '%env(default::string:PUBSUB_RESOURCES_PREFIX_MESSAGES)%' . $topicName,
                 'auto_setup' => \in_array($this->env, ['dev', 'test', 'test_fake']),
             ],
             'serializer' => self::SERIALIZER,
@@ -152,7 +152,7 @@ final class MessengerConfigBuilder
     private function createPubSubReceiverTransport(string $topicName, string $subscriptionName): array
     {
         $transport = $this->createPubSubProducerTransport($topicName);
-        $transport['options']['subscription_name'] = $subscriptionName;
+        $transport['options']['subscription_name'] = '%env(default::string:PUBSUB_RESOURCES_PREFIX_MESSAGES)%' . $subscriptionName;
 
         return $transport;
     }
