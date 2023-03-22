@@ -21,10 +21,10 @@ class CleanCategoryTemplateAndEnrichedValuesCommandHandler
 
     public function __construct(
         private readonly GetEnrichedValuesByTemplateUuid $getEnrichedValuesByTemplateUuid,
-        private readonly CategoryAttributeValuesCleaner $categoryDataCleaner,
-        private readonly GetAttribute $getCategoryTemplateAttributes,
-        private readonly DeleteTemplateAndAttributes $deleteTemplateAndAttributes,
-        private readonly DeleteCategoryTreeTemplate $categoryTreeTemplate,
+        private readonly CategoryAttributeValuesCleaner  $categoryDataCleaner,
+        private readonly GetAttribute                    $getCategoryTemplateAttributes,
+        private readonly DeleteTemplateAndAttributes     $deleteTemplateAndAttributes,
+        private readonly DeleteCategoryTreeTemplate      $deleteCategoryTreeTemplate,
     ) {
     }
 
@@ -41,7 +41,7 @@ class CleanCategoryTemplateAndEnrichedValuesCommandHandler
             $this->categoryDataCleaner->cleanByTemplateAttributesUuid($valuesByCode, $templateAttributes);
         }
 
-        $this->categoryTreeTemplate->byTemplateUuid($templateUuid);
+        $this->deleteCategoryTreeTemplate->byTemplateUuid($templateUuid);
         ($this->deleteTemplateAndAttributes)($templateUuid);
     }
 }

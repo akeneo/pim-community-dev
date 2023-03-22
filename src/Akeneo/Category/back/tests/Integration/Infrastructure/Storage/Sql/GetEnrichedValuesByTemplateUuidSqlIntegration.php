@@ -52,18 +52,20 @@ class GetEnrichedValuesByTemplateUuidSqlIntegration extends CategoryTestCase
             $fetchedCategories[] = $valuesByCategoryCode;
         }
 
-        Assert::assertArrayHasKey('socks', $fetchedCategories[0]);
-        Assert::assertArrayHasKey('winter_socks', $fetchedCategories[0]);
-        Assert::assertArrayHasKey('summer_socks', $fetchedCategories[0]);
-        Assert::assertArrayHasKey('japanese_summer_socks', $fetchedCategories[0]);
-        Assert::assertNotEmpty($fetchedCategories[0]['socks']->getValues());
-        Assert::assertNotEmpty($fetchedCategories[0]['winter_socks']->getValues());
-        Assert::assertNotEmpty($fetchedCategories[0]['summer_socks']->getValues());
-        Assert::assertNotEmpty($fetchedCategories[0]['japanese_summer_socks']->getValues());
-        Assert::assertCount(4, $fetchedCategories[0]);
+        $sockCategoryEnrichedValues = $fetchedCategories[0];
+
+        Assert::assertArrayHasKey('socks', $sockCategoryEnrichedValues);
+        Assert::assertArrayHasKey('winter_socks', $sockCategoryEnrichedValues);
+        Assert::assertArrayHasKey('summer_socks', $sockCategoryEnrichedValues);
+        Assert::assertArrayHasKey('japanese_summer_socks', $sockCategoryEnrichedValues);
+        Assert::assertNotEmpty($sockCategoryEnrichedValues['socks']->getValues());
+        Assert::assertNotEmpty($sockCategoryEnrichedValues['winter_socks']->getValues());
+        Assert::assertNotEmpty($sockCategoryEnrichedValues['summer_socks']->getValues());
+        Assert::assertNotEmpty($sockCategoryEnrichedValues['japanese_summer_socks']->getValues());
+        Assert::assertCount(4, $sockCategoryEnrichedValues);
     }
 
-    public function testItRetrievesRelatedCategoriesByTemplateUuidWithoutNull(): void{
+    public function testItRetrievesRelatedCategoriesByTemplateUuidWithoutCategoryNotEnriched(): void{
         /** @var Category $socksCategory */
         $socksCategory = $this->get(GetCategoryInterface::class)->byCode('socks');
         $this->createOrUpdateCategory(
@@ -80,15 +82,17 @@ class GetEnrichedValuesByTemplateUuidSqlIntegration extends CategoryTestCase
             $fetchedCategories[] = $valuesByCategoryCode;
         }
 
-        Assert::assertArrayHasKey('socks', $fetchedCategories[0]);
-        Assert::assertArrayHasKey('winter_socks', $fetchedCategories[0]);
-        Assert::assertArrayHasKey('summer_socks', $fetchedCategories[0]);
-        Assert::assertArrayHasKey('japanese_summer_socks', $fetchedCategories[0]);
-        Assert::assertArrayNotHasKey('winter_socks_null', $fetchedCategories[0]);
-        Assert::assertNotEmpty($fetchedCategories[0]['socks']->getValues());
-        Assert::assertNotEmpty($fetchedCategories[0]['winter_socks']->getValues());
-        Assert::assertNotEmpty($fetchedCategories[0]['summer_socks']->getValues());
-        Assert::assertNotEmpty($fetchedCategories[0]['japanese_summer_socks']->getValues());
-        Assert::assertCount(4, $fetchedCategories[0]);
+        $sockCategoryEnrichedValues = $fetchedCategories[0];
+
+        Assert::assertArrayHasKey('socks', $sockCategoryEnrichedValues);
+        Assert::assertArrayHasKey('winter_socks', $sockCategoryEnrichedValues);
+        Assert::assertArrayHasKey('summer_socks', $sockCategoryEnrichedValues);
+        Assert::assertArrayHasKey('japanese_summer_socks', $sockCategoryEnrichedValues);
+        Assert::assertArrayNotHasKey('winter_socks_null', $sockCategoryEnrichedValues);
+        Assert::assertNotEmpty($sockCategoryEnrichedValues['socks']->getValues());
+        Assert::assertNotEmpty($sockCategoryEnrichedValues['winter_socks']->getValues());
+        Assert::assertNotEmpty($sockCategoryEnrichedValues['summer_socks']->getValues());
+        Assert::assertNotEmpty($sockCategoryEnrichedValues['japanese_summer_socks']->getValues());
+        Assert::assertCount(4, $sockCategoryEnrichedValues);
     }
 }
