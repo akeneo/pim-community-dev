@@ -143,6 +143,8 @@ akeneo_catalogs:
           placeholder: Selecteer een valuta
           helper: Selecteer de valuta waarin de waarde moet worden verzonden.
         no_parameters_message: Geen parameters voor deze bron.
+        unit:
+          label: Eenheid
       select_source:
         label: Pim-bron
         search: Zoekcriterium

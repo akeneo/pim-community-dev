@@ -11,7 +11,12 @@ test('it displays a placeholder if there is no target selected', () => {
     render(
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
-                <SourcePanel target={null} source={null} onChange={jest.fn()} errors={null}></SourcePanel>
+                <SourcePanel
+                    target={null}
+                    source={{source: null, scope: null, locale: null}}
+                    onChange={jest.fn()}
+                    errors={null}
+                ></SourcePanel>
             </QueryClientProvider>
         </ThemeProvider>
     );

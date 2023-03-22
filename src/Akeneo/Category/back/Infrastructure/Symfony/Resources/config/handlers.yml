@@ -20,9 +20,17 @@ services:
   Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandler:
     arguments:
       - '@Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode'
-      - '@Akeneo\Category\Application\Enrichment\CategoryDataCleaner'
+      - '@Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommand' }
+
+  Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid'
+      - '@Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand' }
 
   Akeneo\Category\Application\Command\AddAttributeCommandHandler:
     arguments:

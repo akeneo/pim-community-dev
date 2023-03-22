@@ -143,6 +143,8 @@ akeneo_catalogs:
           placeholder: Sélectionnez une devise
           helper: Sélectionnez la devise dans laquelle la valeur doit être envoyée.
         no_parameters_message: Aucun paramètre disponible pour cette source.
+        unit:
+          label: Unité de mesure
       select_source:
         label: Source
         search: Rechercher un critère
