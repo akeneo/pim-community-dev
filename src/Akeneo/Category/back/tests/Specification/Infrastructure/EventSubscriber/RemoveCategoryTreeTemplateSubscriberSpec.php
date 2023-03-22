@@ -24,10 +24,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
 {
     function let(
-        GetCategoryInterface                                  $getCategory,
-        GetCategoryTemplateByCategoryTree                     $getCategoryTemplateByCategoryTree,
+        GetCategoryInterface $getCategory,
+        GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
         DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
-        FeatureFlag                                           $enrichedCategoryFeature
+        FeatureFlag $enrichedCategoryFeature,
     ) {
         $this->beConstructedWith(
             $getCategory,
@@ -44,14 +44,14 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
     }
 
     function it_triggers_the_delete_of_the_link_with_template_before_category_removal(
-        GenericEvent                                          $event,
-        LegacyCategory                                        $legacyCategory,
-        Category                                              $category,
-        Template                                              $template,
-        GetCategoryInterface                                  $getCategory,
-        GetCategoryTemplateByCategoryTree                     $getCategoryTemplateByCategoryTree,
+        GenericEvent $event,
+        LegacyCategory $legacyCategory,
+        Category $category,
+        Template $template,
+        GetCategoryInterface $getCategory,
+        GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
         DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
-        FeatureFlag                                           $enrichedCategoryFeature
+        FeatureFlag $enrichedCategoryFeature,
     ) {
         $event->getSubject()->willReturn($legacyCategory);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);
@@ -74,10 +74,10 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_trigger_the_delete_of_the_link_with_template_before_category_removal_when_feature_flag_is_not_activated(
-        GenericEvent                                          $event,
-        LegacyCategory                                        $legacyCategory,
+        GenericEvent $event,
+        LegacyCategory $legacyCategory,
         DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
-        FeatureFlag                                           $enrichedCategoryFeature
+        FeatureFlag $enrichedCategoryFeature,
     ) {
         $event->getSubject()->willReturn($legacyCategory);
         $enrichedCategoryFeature->isEnabled()->willReturn(false);
@@ -88,12 +88,12 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_trigger_the_delete_of_the_link_with_template_before_category_removal_when_category_is_not_the_root(
-        GenericEvent                                          $event,
-        LegacyCategory                                        $legacyCategory,
-        Category                                              $category,
-        GetCategoryInterface                                  $getCategory,
+        GenericEvent $event,
+        LegacyCategory $legacyCategory,
+        Category $category,
+        GetCategoryInterface $getCategory,
         DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
-        FeatureFlag                                           $enrichedCategoryFeature
+        FeatureFlag $enrichedCategoryFeature,
     ) {
         $event->getSubject()->willReturn($legacyCategory);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);
@@ -111,13 +111,13 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_trigger_the_delete_of_the_link_with_template_before_category_removal_when_there_is_no_template(
-        GenericEvent                                          $event,
-        LegacyCategory                                        $legacyCategory,
-        Category                                              $category,
-        GetCategoryInterface                                  $getCategory,
-        GetCategoryTemplateByCategoryTree                     $getCategoryTemplateByCategoryTree,
+        GenericEvent $event,
+        LegacyCategory $legacyCategory,
+        Category $category,
+        GetCategoryInterface $getCategory,
+        GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
         DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
-        FeatureFlag                                           $enrichedCategoryFeature
+        FeatureFlag $enrichedCategoryFeature,
     ) {
         $event->getSubject()->willReturn($legacyCategory);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);
