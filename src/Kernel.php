@@ -8,7 +8,6 @@ use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
  * PIM Kernel
@@ -46,6 +45,8 @@ class Kernel extends BaseKernel
 
         $loader->load($confDir.'/{packages}/*.yml', 'glob');
         $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*.yml', 'glob');
+        $loader->load($confDir.'/{packages}/*.php', 'glob');
+        $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*.php', 'glob');
 
         $loader->load($confDir.'/{services}/*.yml', 'glob');
         $loader->load($confDir.'/{services}/'.$this->environment.'/**/*.yml', 'glob');

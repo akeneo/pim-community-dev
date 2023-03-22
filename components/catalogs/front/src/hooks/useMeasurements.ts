@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query';
-import {MeasurementUnit} from '../models/Measurement';
+import {MeasurementUnit} from '../models/MeasurementUnit';
 import {useUserContext} from '@akeneo-pim-community/shared';
 
 type ResultError = Error | null;

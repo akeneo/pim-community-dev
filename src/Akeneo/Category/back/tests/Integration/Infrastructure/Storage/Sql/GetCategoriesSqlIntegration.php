@@ -88,7 +88,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'with_enriched_attributes' => false,
                 'with_position' => false,
             ],
-            types : [
+            types: [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,
@@ -109,7 +109,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'with_enriched_attributes' => true,
                 'with_position' => false,
             ],
-            types : [
+            types: [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,
@@ -130,7 +130,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'with_enriched_attributes' => false,
                 'with_position' => false,
             ],
-            types : [
+            types: [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,
@@ -187,7 +187,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'with_enriched_attributes' => true,
                 'with_position' => true,
             ],
-            types : [
+            types: [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,
@@ -245,7 +245,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'with_enriched_attributes' => true,
                 'with_position' => false,
             ],
-            types : [
+            types: [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,
@@ -293,7 +293,8 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'fr_FR' => 'Ma categorie enfant',
                 'en_US' => 'My child category'
             ],
-            parentId: $parentCategory->getId()?->getValue()
+            parentId: $parentCategory->getId()?->getValue(),
+            rootId: $parentCategory->getId()?->getValue(),
         );
         $this->updateCategoryWithValues((string) $childCategory->getCode());
 
@@ -305,7 +306,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'with_enriched_attributes' => true,
                 'with_position' => false,
             ],
-            types : [
+            types: [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,
@@ -339,7 +340,8 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'fr_FR' => 'Ma categorie enfant',
                 'en_US' => 'My child category'
             ],
-            parentId: $parentCategory->getId()?->getValue()
+            parentId: $parentCategory->getId()?->getValue(),
+            rootId: $parentCategory->getId()?->getValue(),
         );
         $this->updateCategoryWithValues((string) $childCategory->getCode());
 
@@ -350,7 +352,8 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'fr_FR' => 'Ma seconde categorie enfant',
                 'en_US' => 'My second child category'
             ],
-            parentId: $parentCategory->getId()?->getValue()
+            parentId: $parentCategory->getId()?->getValue(),
+            rootId: $parentCategory->getId()?->getValue(),
         );
 
         // When
@@ -361,7 +364,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'with_enriched_attributes' => true,
                 'with_position' => false,
             ],
-            types : [
+            types: [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,
@@ -376,8 +379,14 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $this->assertIsArray($retrievedCategories);
         $this->assertCount(3, $retrievedCategories);
         $this->assertContainsOnlyInstancesOf(ExternalApiCategory::class, $retrievedCategories);
-        $this->assertNull($retrievedCategories[0]->getValues());
-        $this->assertNotEmpty($retrievedCategories[1]->getValues());
+
+        $this->assertSame('myChildCategory', $retrievedCategories[0]->getCode());
+        $this->assertNotEmpty($retrievedCategories[0]->getValues());
+
+        $this->assertSame('myParentCategory', $retrievedCategories[1]->getCode());
+        $this->assertNull($retrievedCategories[1]->getValues());
+
+        $this->assertSame('mySecondChildCategory', $retrievedCategories[2]->getCode());
         $this->assertNull($retrievedCategories[2]->getValues());
     }
 
@@ -399,7 +408,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'with_enriched_attributes' => true,
                 'with_position' => false,
             ],
-            types : [
+            types: [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,
@@ -435,7 +444,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'with_enriched_attributes' => false,
                 'with_position' => false,
             ],
-            types : [
+            types: [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,
@@ -450,8 +459,8 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $shoesCategory = null;
 
         foreach ($retrievedCategories as $category) {
-                $this->assertEmpty($shoesCategory);
-                $shoesCategory = $category;
+            $this->assertEmpty($shoesCategory);
+            $shoesCategory = $category;
         }
 
         $this->assertNotEmpty($shoesCategory);
@@ -468,14 +477,15 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $this->assertNull($shoesCategory->getValues());
     }
 
-    public function testGetCategoryWithLimitSetToOneAndOffsetToTwo(): void{
+    public function testGetCategoryWithLimitSetToOneAndOffsetToTwo(): void
+    {
         $parameters = new ExternalApiSqlParameters(
             sqlWhere: '1=1',
             params: [
                 'with_enriched_attributes' => false,
                 'with_position' => false,
             ],
-            types : [
+            types: [
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,
             ],
@@ -491,7 +501,8 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
         $this->assertSame('shoes', (string) $retrievedCategory[0]->getCode());
     }
 
-    public function testDoesNotGetCategoryWithLabelsNullOrEmpty(): void{
+    public function testDoesNotGetCategoryWithLabelsNullOrEmpty(): void
+    {
         $this->createOrUpdateCategory(
             code: "with_labels_null",
             labels: [
@@ -513,8 +524,8 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
                 'category_codes' => ['with_labels_null', 'with_labels_empty'],
                 'with_enriched_attributes' => false,
                 'with_position' => false,
-                ],
-            types : [
+            ],
+            types: [
                 'category_codes' => Connection::PARAM_STR_ARRAY,
                 'with_enriched_attributes' => \PDO::PARAM_BOOL,
                 'with_position' => \PDO::PARAM_BOOL,

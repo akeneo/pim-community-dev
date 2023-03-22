@@ -8,11 +8,20 @@ export const createSourceFromAttribute = (attribute: Attribute): Source => {
         scope: null,
     };
 
-    if (attribute.type === 'pim_catalog_simpleselect' || attribute.type === 'pim_catalog_multiselect') {
+    if (
+        attribute.type === 'categories' ||
+        attribute.type === 'family' ||
+        attribute.type === 'pim_catalog_simpleselect' ||
+        attribute.type === 'pim_catalog_multiselect'
+    ) {
         return {...source, parameters: {label_locale: null}};
     }
     if (attribute.type === 'pim_catalog_price_collection') {
         return {...source, parameters: {currency: null}};
+    }
+
+    if (attribute.type === 'pim_catalog_metric') {
+        return {...source, parameters: {unit: attribute.default_measurement_unit}};
     }
 
     return source;

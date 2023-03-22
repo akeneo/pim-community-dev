@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -19,10 +20,18 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\SimpleSelect
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
 use PhpSpec\ObjectBehavior;
 
 class GenerateSimpleSelectHandlerSpec extends ObjectBehavior
 {
+    public function let(NomenclatureRepository $nomenclatureRepository)
+    {
+        $this->beConstructedWith(
+            new PropertyProcessApplier($nomenclatureRepository->getWrappedObject())
+        );
+    }
+
     public function it_should_support_only_simple_select_property(): void
     {
         $this->getPropertyClass()->shouldReturn(SimpleSelectProperty::class);

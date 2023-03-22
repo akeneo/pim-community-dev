@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Integration\ServiceApi;
+namespace Akeneo\Test\Category\Integration\Application\Query\GetCategory;
 
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\Model\Enrichment\Category;
-use Akeneo\Category\ServiceApi\InternalApiCategory;
-use Webmozart\Assert\InvalidArgumentException;
+use Akeneo\Category\Application\Query\GetCategory\InternalApiCategory;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -39,11 +37,12 @@ class InternalApiCategoryIntegration extends CategoryTestCase
                 'fr_FR' => 'French',
             ],
             parentId: $categoryParent->getId()->getValue(),
+            rootId: $categoryParent->getId()->getValue(),
         );
         $expectedNormalizedArray = [
             'id' => $category->getId()->getValue(),
             'parent' => $categoryParent->getId()->getValue(),
-            'root_id' => null,
+            'root_id' => $categoryParent->getId()->getValue(),
             'template_uuid' => null,
             'properties' => [
                 'code' => "my_category",
@@ -59,7 +58,7 @@ class InternalApiCategoryIntegration extends CategoryTestCase
             'root' => [
                 'id' => $categoryParent->getId()->getValue(),
                 'parent' => null,
-                'root_id' => null,
+                'root_id' => $categoryParent->getId()->getValue(),
                 'template_uuid' => null,
                 'properties' => [
                     'code' => "my_category_parent",
@@ -95,7 +94,7 @@ class InternalApiCategoryIntegration extends CategoryTestCase
         $expectedNormalizedArray = [
             'id' => $category->getId()->getValue(),
             'parent' => null,
-            'root_id' => null,
+            'root_id' => $category->getId()->getValue(),
             'template_uuid' => null,
             'properties' => [
                 'code' => "my_category",
@@ -127,11 +126,12 @@ class InternalApiCategoryIntegration extends CategoryTestCase
         $category = $this->createOrUpdateCategory(
             code: 'my_category',
             parentId: $categoryParent->getId()->getValue(),
+            rootId: $categoryParent->getId()->getValue(),
         );
         $expectedNormalizedArray = [
             'id' => $category->getId()->getValue(),
             'parent' => $categoryParent->getId()->getValue(),
-            'root_id' => null,
+            'root_id' => $categoryParent->getId()->getValue(),
             'template_uuid' => null,
             'properties' => [
                 'code' => "my_category",
@@ -143,7 +143,7 @@ class InternalApiCategoryIntegration extends CategoryTestCase
             'root' => [
                 'id' => $categoryParent->getId()->getValue(),
                 'parent' => null,
-                'root_id' => null,
+                'root_id' => $categoryParent->getId()->getValue(),
                 'template_uuid' => null,
                 'properties' => [
                     'code' => "my_category_parent",
