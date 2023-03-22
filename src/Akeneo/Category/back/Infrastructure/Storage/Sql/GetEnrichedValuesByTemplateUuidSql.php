@@ -42,6 +42,7 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
             ON template.uuid = tree_template.category_template_uuid
         WHERE category_template_uuid = :template_uuid
         )
+        AND value_collection IS NOT NULL
         LIMIT :limit OFFSET :offset;
         SQL;
 
@@ -66,18 +67,15 @@ class GetEnrichedValuesByTemplateUuidSql implements GetEnrichedValuesByTemplateU
             $valuesByCode = [];
             foreach ($rows as $row) {
                 $code = $row['code'];
-                $valueCollection = $row['value_collection'];
-                if($valueCollection) {
-                    $valueCollection = ValueCollection::fromDatabase(
-                        json_decode(
-                            $row['value_collection'],
-                            true,
-                            512,
-                            JSON_THROW_ON_ERROR,
-                        ),
-                    );
-                    $valuesByCode[$code] = $valueCollection;
-                }
+                $valueCollection = ValueCollection::fromDatabase(
+                    json_decode(
+                        $row['value_collection'],
+                        true,
+                        512,
+                        JSON_THROW_ON_ERROR,
+                    ),
+                );
+                $valuesByCode[$code] = $valueCollection;
             }
 
             yield $valuesByCode;
