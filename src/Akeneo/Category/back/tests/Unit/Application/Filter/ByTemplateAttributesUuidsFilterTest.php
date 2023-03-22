@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Unit\Application\Filter;
 
 use Akeneo\Category\Application\Enrichment\Filter\ByTemplateAttributesUuidsFilter;
-use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
@@ -21,6 +20,7 @@ use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Domain\ValueObject\ValueCollection;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -28,7 +28,7 @@ use PHPUnit\Framework\Assert;
  *
  * @phpstan-import-type ImageData from ImageDataValue
  */
-class ByTemplateAttributesUuidsFilterTest extends CategoryTestCase
+class ByTemplateAttributesUuidsFilterTest extends TestCase
 {
     public function test(): void
     {

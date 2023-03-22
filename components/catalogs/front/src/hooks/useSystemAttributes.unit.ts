@@ -19,5 +19,14 @@ test('it fetches system attributes', () => {
             attribute_group_code: 'system',
             attribute_group_label: 'System',
         },
+        {
+            code: 'family',
+            label: 'akeneo_catalogs.product_mapping.source.system_attributes.family.label',
+            type: 'family',
+            scopable: false,
+            localizable: false,
+            attribute_group_code: 'system',
+            attribute_group_label: 'System',
+        },
     ]);
 });
