@@ -7,6 +7,8 @@ Feature: Update Identifier Generator
     And the 'default' identifier generator
     And the 'color' attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color' attribute
+    And the 'a_multi_select' attribute of type 'pim_catalog_multiselect'
+    And the 'option_a', 'option_b' and 'option_c' options for 'a_multi_select' attribute
 
   Scenario: Can update a valid identifier generator
     When I update the identifier generator
@@ -97,11 +99,11 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier generator with family process type unknown
     When I try to update an identifier generator with a family process with type unknown and operator undefined and undefined as value
-    Then I should get an error on update with message 'structure[0][process][type]: Type "unknown" can only be one of the following: "no", "truncate".'
+    Then I should get an error on update with message 'structure[0][process][type]: Type "unknown" can only be one of the following: "no", "truncate", "nomenclature".'
 
   Scenario: Cannot update an identifier generator with family process type no and operator = and undefined as value
     When I try to update an identifier generator with a family process with type no and operator = and undefined as value
-    Then I should get an error on update with message 'structure[0][operator]: This field was not expected.'
+    Then I should get an error on update with message 'structure[0][process][operator]: This field was not expected.'
 
   Scenario: Cannot update an identifier generator with a family containing invalid truncate process
     When I try to update an identifier generator with a family containing invalid truncate process
@@ -109,20 +111,20 @@ Feature: Update Identifier Generator
 
   Scenario: Cannot update an identifier generator with a family containing truncate process missing fields
     When I try to update an identifier generator with a family process with type truncate and operator undefined and "undefined" as value
-    Then I should get an error on update with message 'structure[0][operator]: This field is missing.'
-    Then I should get an error on update with message 'structure[0][value]: This field is missing.'
+    Then I should get an error on update with message 'structure[0][process][operator]: This field is missing.'
+    Then I should get an error on update with message 'structure[0][process][value]: This field is missing.'
 
   Scenario: Cannot update an identifier generator with a family containing truncate process and unknown operator
     When I try to update an identifier generator with a family process with type truncate and operator ope and 1 as value
-    Then I should get an error on update with message 'structure[0][operator]: Operator "ope" can only be one of the following: "=", "<=".'
+    Then I should get an error on update with message 'structure[0][process][operator]: Operator "ope" can only be one of the following: "=", "<=".'
 
   Scenario: Cannot update an identifier generator with a family containing truncate process and bad value type
     When I try to update an identifier generator with a family process with type truncate and operator = and "bad" as value
-    Then I should get an error on update with message 'structure[0][value]: This value should be of type integer.'
+    Then I should get an error on update with message 'structure[0][process][value]: This value should be of type integer.'
 
   Scenario: Cannot update an identifier generator with a family containing truncate process and value not in range
     When I try to update an identifier generator with a family process with type truncate and operator = and 0 as value
-    Then I should get an error on update with message 'structure[0][value]: This value should be between 1 and 5.'
+    Then I should get an error on update with message 'structure[0][process][value]: This value should be between 1 and 5.'
 
   Scenario: Can update an identifier generator with a family property and no process
     When I try to update an identifier generator with a family process with type no and operator undefined and "undefined" as value
@@ -134,22 +136,63 @@ Feature: Update Identifier Generator
     Then The identifier generator is updated in the repository
     And I should not get any update error
 
+  Scenario: Can update an identifier generator with a family property and a nomenclature process
+    When I try to update an identifier generator with a family process with type nomenclature and operator undefined and "undefined" as value
+    Then The identifier generator is updated in the repository
+    And I should not get any update error
+
+  Scenario: Cannot update an identifier generator with family process type nomenclature and operator = and undefined as value
+    When I try to update an identifier generator with a family process with type nomenclature and operator = and undefined as value
+    Then I should get an error on update with message 'structure[0][process][operator]: This field was not expected.'
+
+  # Structure : Simple Select
+  Scenario: Cannot update an identifier generator with simple select property without attribute code
+    When I try to update an identifier generator with a simple select property without attribute code
+    Then I should get an error on update with message 'structure[0]: "attributeCode" field is required for "simple_select" type.'
+
+  Scenario: Cannot update an identifier generator with simple select property without process field
+    When I try to update an identifier generator with simple select property without process field
+    Then I should get an error on update with message 'structure[0]: "process" field is required for "simple_select" type.'
+
+  Scenario: Cannot update an identifier generator with an unknown attribute in a simple select property
+    When I try to update an identifier generator with a simple_select property with unknown attribute
+    Then I should get an error on update with message 'structure[0][attributeCode]: The "unknown" attribute does not exist.'
+
+  Scenario: Can update an identifier generator with a simple select property and a truncate process
+    When I try to update an identifier generator with a simple select process with type truncate and operator = and 1 as value
+    Then The identifier generator is updated in the repository
+    And I should not get any update error
+
+  Scenario: Cannot update an identifier generator with wrong attribute type in a simple select property
+    When I try to update an identifier generator with a simple_select property with name attribute
+    Then I should get an error on update with message 'structure[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
+
+  Scenario: Can update an identifier generator with localizable and scopable simple select
+    Given the 'mobile' channel having 'en_US', 'fr_FR' as locales
+    And the 'brand' localizable and scopable attribute of type 'pim_catalog_simpleselect'
+    When I try to update an identifier generator with a simple_select property with brand attribute and mobile scope and en_US locale
+    Then I should not get any update error
+
   # Conditions
   Scenario: Cannot update another condition type than defined ones
     When I try to update an identifier generator with unknown condition type
     Then I should get an error on update with message 'conditions[0][type]: Type "unknown" can only be one of the following: "enabled"'
 
+  Scenario: Cannot update an identifier generator with too many conditions
+    When I try to update an identifier generator with 11 conditions
+    Then I should get an error on update with message 'conditions: This collection should contain 10 elements or less.'
+
   # Conditions: Enabled
   Scenario: Cannot update an enabled condition without value
-    When I try to update an identifier generator with enabled condition without value
+    When I try to update an identifier generator with an enabled condition and undefined as value
     Then I should get an error on update with message 'conditions[0]: Enabled should contain "value" key'
 
   Scenario: Cannot update an enabled condition with a non boolean value
-    When I try to update an identifier generator with enabled condition with string value
+    When I try to update an identifier generator with an enabled condition with "true" as value
     Then I should get an error on update with message 'conditions[0].value: This value should be a boolean.'
 
   Scenario: Cannot update an enabled condition with an unknown property
-    When I try to update an identifier generator with enabled condition with an unknown property
+    When I try to update an identifier generator with an enabled condition with an unknown property
     Then I should get an error on update with message 'conditions[0][unknown]: This field was not expected.'
 
   Scenario: Cannot update several enabled conditions
@@ -158,35 +201,35 @@ Feature: Update Identifier Generator
 
   # Conditions: Family
   Scenario: Cannot update an identifier generator with unknown operator
-    When I try to update an identifier generator with a family condition with an unknown operator
+    When I try to update an identifier generator with a family condition with unknown operator
     Then I should get an error on update with message 'conditions[0][operator]: Operator "unknown" can only be one of the following: "IN", "NOT IN", "EMPTY", "NOT EMPTY".'
 
-  Scenario: Cannot update an identifier generator with operator EMPTY and a value
-    When I try to update an identifier generator with a family condition with operator EMPTY and ["shirts"] as value
+  Scenario: Cannot update an identifier generator with EMPTY operator and a value
+    When I try to update an identifier generator with a family condition with EMPTY operator and ["shirts"] as value
     Then I should get an error on update with message 'conditions[0][value]: This field was not expected.'
 
-  Scenario: Cannot update an identifier generator with operator IN and a non array value
-    When I try to update an identifier generator with a family condition with operator IN and "shirts" as value
+  Scenario: Cannot update an identifier generator with IN operator and a non array value
+    When I try to update an identifier generator with a family condition with IN operator and "shirts" as value
     Then I should get an error on update with message 'conditions[0][value]: This value should be of type iterable.'
 
-  Scenario: Cannot update an identifier generator with operator IN and a non array of string value
-    When I try to update an identifier generator with a family condition with operator IN and [true] as value
+  Scenario: Cannot update an identifier generator with IN operator and a non array of string value
+    When I try to update an identifier generator with a family condition with IN operator and [true] as value
     Then I should get an error on update with message 'conditions[0][value][0]: This value should be of type string.'
 
-  Scenario: Cannot update an identifier generator with operator IN and no values
-    When I try to update an identifier generator with a family condition with operator IN and [] as value
+  Scenario: Cannot update an identifier generator with IN operator and no values
+    When I try to update an identifier generator with a family condition with IN operator and [] as value
     Then I should get an error on update with message 'conditions[0][value]: This collection should contain 1 element or more.'
 
-  Scenario: Cannot update an identifier generator with operator IN and no value
-    When I try to update an identifier generator with a family condition with operator IN and undefined as value
+  Scenario: Cannot update an identifier generator with IN operator and no value
+    When I try to update an identifier generator with a family condition with IN operator and undefined as value
     Then I should get an error on update with message 'conditions[0][value]: This field is missing.'
 
   Scenario: Cannot update an identifier generator with non existing family
-    When I try to update an identifier generator with a family condition with operator IN and ["non_existing1", "non_existing_2"] as value
+    When I try to update an identifier generator with a family condition with IN operator and ["non_existing1", "non_existing_2"] as value
     Then I should get an error on update with message 'conditions[0][value]: The following families have been deleted from your catalog: "non_existing1", "non_existing_2". You can remove them from your product selection.'
 
   Scenario: Cannot update an identifier generator with non existing field
-    When I try to update an identifier generator with a family condition with unknown property
+    When I try to update an identifier generator with a family condition and an unknown property
     Then I should get an error on update with message 'conditions[0][unknown]: This field was not expected.'
 
   Scenario: Cannot update several family conditions
@@ -194,39 +237,39 @@ Feature: Update Identifier Generator
     Then I should get an error on update with message 'conditions: should contain only 1 family'
 
   Scenario: Cannot update an identifier generator without operator
-    When I try to update an identifier generator with a family without operator
+    When I try to update an identifier generator with a family condition with undefined operator
     Then I should get an error on update with message 'conditions[0][operator]: This field is missing.'
 
   # Conditions: Simple Select
   Scenario: Cannot update an identifier generator with unknown values
-    When I try to update an identifier generator with simple_select condition with an unknown property
+    When I try to update an identifier generator with a simple_select condition and an unknown property
     Then I should get an error on update with message 'conditions[0][unknown]: This field was not expected.'
 
-  Scenario: Cannot update an identifier generator with operator IN and no value
-    When I try to update an identifier generator with a simple_select condition with operator IN and undefined as value
+  Scenario: Cannot update an identifier generator with IN operator and no value
+    When I try to update an identifier generator with a simple_select condition with IN operator and undefined as value
     Then I should get an error on update with message 'conditions[0][value]: This field is missing.'
 
-  Scenario: Cannot update an identifier generator with operator IN and no values
-    When I try to update an identifier generator with a simple_select condition with operator IN and [] as value
+  Scenario: Cannot update an identifier generator with IN operator and no values
+    When I try to update an identifier generator with a simple_select condition with IN operator and [] as value
     Then I should get an error on update with message 'conditions[0][value]: This collection should contain 1 element or more.'
 
-  Scenario: Cannot update an identifier generator with operator IN and a non array value
-    When I try to update an identifier generator with a simple_select condition with operator IN and "green" as value
+  Scenario: Cannot update an identifier generator with IN operator and a non array value
+    When I try to update an identifier generator with a simple_select condition with IN operator and "green" as value
     Then I should get an error on update with message 'conditions[0][value]: This value should be of type iterable.'
 
-  Scenario: Cannot update an identifier generator with operator IN and a non array of string value
-    When I try to update an identifier generator with a simple_select condition with operator IN and [true] as value
+  Scenario: Cannot update an identifier generator with IN operator and a non array of string value
+    When I try to update an identifier generator with a simple_select condition with IN operator and [true] as value
     Then I should get an error on update with message 'conditions[0][value][0]: This value should be of type string.'
 
   Scenario: Cannot update an identifier generator with unknown options
-    When I try to update an identifier generator with a simple_select condition with operator IN and ["unknown1", "green", "unknown2"] as value
+    When I try to update an identifier generator with a simple_select condition with IN operator and ["unknown1", "green", "unknown2"] as value
     Then I should get an error on update with message 'conditions[0][value]: The following attribute options do not exist for the attribute "color": "unknown1", "unknown2".'
 
-  Scenario: Cannot update an identifier generator with operator EMPTY and a value
-    When I try to update an identifier generator with a simple_select condition with operator EMPTY and ["green"] as value
+  Scenario: Cannot update an identifier generator with EMPTY operator and a value
+    When I try to update an identifier generator with a simple_select condition with EMPTY operator and ["green"] as value
     Then I should get an error on update with message 'conditions[0][value]: This field was not expected.'
 
-  Scenario: Cannot update an identifier generator with operator EMPTY and a value
+  Scenario: Cannot update an identifier generator with EMPTY operator and a value
     When I try to update an identifier generator with a simple_select condition with unknown attribute
     Then I should get an error on update with message 'conditions[0][attributeCode]: The "unknown" attribute does not exist.'
 
@@ -273,6 +316,14 @@ Feature: Update Identifier Generator
     And the 'ecommerce' channel having 'de_DE' as locale
     When I try to update an identifier generator with a simple_select condition with color_localizable_and_scopable attribute and ecommerce scope and en_US locale
     Then I should get an error on update with message 'conditions[0][locale]: The "en_US" locale is not active for the "ecommerce" channel.'
+
+  Scenario: Cannot update a multiselect condition by using the simple select attribute
+    When I try to update an identifier generator with a multi_select condition with color attribute
+    Then I should get an error on update with message 'conditions[0][attributeCode]: The "color" attribute code is "pim_catalog_simpleselect" type and should be of type "pim_catalog_multiselect".'
+
+  Scenario: Cannot update an identifier generator using multi_select with IN operator and array of simple_select options
+    When I try to update an identifier generator with a multi_select condition with IN operator and ["red", "green"] as value
+    Then I should get an error on update with message 'conditions[0][value]: The following attribute options do not exist for the attribute "a_multi_select": "red", "green".'
 
   # Label
   Scenario: Can update an identifier generator without label

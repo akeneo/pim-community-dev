@@ -8,6 +8,7 @@ import {
   SelectInput,
   SkeletonPlaceholder,
   Table,
+  TextInput,
 } from 'akeneo-design-system';
 import {TEXT_TRANSFORMATION, TextTransformation} from '../models';
 
@@ -19,10 +20,10 @@ const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const EditionContainer = styled.div`
+const PropertyFormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 `;
 
 const FullPageCenteredContent = styled.div`
@@ -129,8 +130,8 @@ const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
   ${props => props.isInSelection && 'flex-basis: 160px;'}
 `;
 
-const SelectCondition = styled(SelectInput)`
-  flex-basis: 120px;
+const SelectCondition = styled(SelectInput)<{isHorizontal: boolean}>`
+  ${({isHorizontal}) => isHorizontal && 'flex-basis: 120px;'}
 `;
 
 const SingleSelectCondition = styled(SelectInput)`
@@ -152,12 +153,46 @@ const PreviewWithTextTransformation = styled(PreviewComponent)<
   ${({textTransformation}) => (textTransformation === TEXT_TRANSFORMATION.UPPERCASE ? 'text-transform: uppercase' : '')}
 `;
 
+const NomenclatureModalContent = styled.div`
+  width: calc(100vw - 240px);
+  height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+`;
+
+const NomenclatureDefinition = styled(Table)`
+  width: 100%;
+  margin-bottom: 20px;
+  td:nth-child(3),
+  td:nth-child(2) {
+    width: 250px;
+  }
+  label {
+    font-size: inherit;
+  }
+`;
+
+const NomenclatureInput = styled(TextInput)`
+  max-width: 200px;
+`;
+
+const NomenclatureTable = styled.div`
+  td:nth-child(2) {
+    width: 1px;
+    padding-right: 20px;
+  }
+`;
+
+const NomenclatureContent = styled.div`
+  height: 100%;
+  overflow: auto;
+`;
+
 const Styled = {
   BoldContainer,
   CellInputContainer,
   CheckboxContainer,
   ConditionLineSkeleton,
-  EditionContainer,
   ErrorContainer,
   FormContainer,
   FullPageCenteredContent,
@@ -167,6 +202,7 @@ const Styled = {
   MultiSelectCondition,
   OperatorContainer,
   OperatorSelectCondition,
+  PropertyFormContainer,
   SelectCondition,
   SelectionInputsContainer,
   SingleSelectCondition,
@@ -175,6 +211,11 @@ const Styled = {
   TranslationsTextFieldSkeleton,
   TwoColumns,
   PreviewWithTextTransformation,
+  NomenclatureModalContent,
+  NomenclatureContent,
+  NomenclatureDefinition,
+  NomenclatureInput,
+  NomenclatureTable,
 };
 
 export {Styled};

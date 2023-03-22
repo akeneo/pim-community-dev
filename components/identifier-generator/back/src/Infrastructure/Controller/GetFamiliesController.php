@@ -39,25 +39,28 @@ final class GetFamiliesController
         }
 
         if (!(
-            $this->securityFacade->isGranted('pim_enrich_family_index') &&
-            (
-                $this->securityFacade->isGranted('pim_identifier_generator_manage') ||
-                $this->securityFacade->isGranted('pim_identifier_generator_view')
+            $this->securityFacade->isGranted('pim_enrich_family_index')
+            && (
+                $this->securityFacade->isGranted('pim_identifier_generator_manage')
+                || $this->securityFacade->isGranted('pim_identifier_generator_view')
             )
         )) {
             throw new AccessDeniedException();
         }
 
+        $limit = (int)$request->query->get('limit', (string)self::DEFAULT_LIMIT_PAGINATION);
+        $returnAllFamilies = $limit === -1;
+
         $families = $this->findFamiliesWithLabels->fromQuery(new FamilyQuery(
             search: new FamilyQuerySearch($request->query->get('search', ''), $this->userContext->getCurrentLocaleCode()),
-            pagination: new FamilyQueryPagination(
+            pagination: $returnAllFamilies ? null : new FamilyQueryPagination(
                 (int)$request->query->get('page', (string)self::DEFAULT_PAGE_PAGINATION),
-                (int)$request->query->get('limit', (string)self::DEFAULT_LIMIT_PAGINATION),
+                $limit,
             ),
             includeCodes: ($request->query->get('codes') ? (array)$request->query->get('codes') : null)
         ));
 
-        $normalizedFamilies = array_map(fn ($family) => $family->normalize(), $families);
+        $normalizedFamilies = \array_map(fn ($family) => $family->normalize(), $families);
 
         return new JsonResponse($normalizedFamilies);
     }

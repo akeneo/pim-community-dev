@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -41,11 +42,12 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
     private ?array $identifierGenerators = null;
 
     public function __construct(
-        private IdentifierGeneratorRepository $identifierGeneratorRepository,
-        private GenerateIdentifierHandler $generateIdentifierCommandHandler,
-        private ValidatorInterface $validator,
-        private MetadataFactoryInterface $metadataFactory,
-        private EventDispatcherInterface $eventDispatcher,
+        private readonly IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly GenerateIdentifierHandler $generateIdentifierCommandHandler,
+        private readonly ValidatorInterface $validator,
+        private readonly MetadataFactoryInterface $metadataFactory,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -78,6 +80,10 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
             if ($identifierGenerator->match($productProjection)) {
                 try {
                     $this->setGeneratedIdentifier($identifierGenerator, $productProjection, $product);
+                    $this->logger->notice(\sprintf(
+                        '[akeneo.pim.identifier_generator] Successfully generated an identifier for the %s attribute',
+                        $identifierGenerator->target()->asString()
+                    ), ['identifier_attribute_code' => $identifierGenerator->target()->asString()]);
                 } catch (UnableToSetIdentifierException $e) {
                     $this->eventDispatcher->dispatch(new UnableToSetIdentifierEvent($e));
                 }
@@ -108,7 +114,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
             $identifierGenerator->target()->asString()
         ));
 
-        if (count($violations) > 0) {
+        if (\count($violations) > 0) {
             $product->removeValue($value);
             $product->setIdentifier(null);
 

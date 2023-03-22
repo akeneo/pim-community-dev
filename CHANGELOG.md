@@ -16,6 +16,7 @@
 - PIM-10823: Fix cannot import price and measurement with comma as decimal separator with value not saved as string in import file
 - PIM-10843: Rework get association query to avoid group concat max lenght limit
 - PIM-10835: Fix command publish-job-to-queue does not work
+- PIM-10855: Fix products and models with empty attribute values are counted by CountItemsWithAttributeValueAction
 - PIM-10778: Add limit to the number of options to display on the attribute option page
 - PIM-10828: Fix search bars don't take into account special characters
 - PIM-10858: Fix password is set on sftp storage using private key
@@ -24,6 +25,21 @@
 - PIM-10849: Fix sorting datagrid on completeness when the selected locale is not supported by the channel
 - PIM-10853: Fix type checking in SaveFamilyVariantOnFamilyUpdate bulk action
 - PIM-10829: Fix case-sensitive locale on translatable business objects
+- PIM-10840: Fix attribute update date on attribute options change above 10000 options
+- PIM-10793: Add a command to delete expired tokens
+- PIM-10840: Fix attribute update date on attribute options change above 10000 options 
+- PIM-10868: Fix checkboxes on category trees
+- PIM-10832: Fix compute completeness job after removing an attribute from a family
+- PIM-10820: Partially revert [PIM-10350] to fix case sensitivity on options import
+- PIM-10856: Prevent the creation of a useless PHP session when a new token is created in the API
+- PIM-10870: Fix display of permissions when empty
+- PIM-10860: [SLA] Announcements aren't shown
+- PIM-10745: Fix history display for product's quantified association
+- PIM-10874: fix labels api type consistency
+- PIM-10877: Fix sequential edit not working if grid is sorted by quality score
+- PIM-10876: Does not save empty ('') labels and don't show null labels on API REST
+- PIM-10894: Allow research user by email as username.
+- PIM-10888: Disable adding an item to an association of its parent already contains the same item.
 
 ## Improvements
 

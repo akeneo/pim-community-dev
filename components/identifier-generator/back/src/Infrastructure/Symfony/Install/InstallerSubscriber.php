@@ -28,7 +28,8 @@ class InstallerSubscriber implements EventSubscriberInterface
 
     public function updateSchema(): void
     {
-        $this->connection->executeStatement(<<<SQL
+        $this->connection->executeStatement(
+            <<<SQL
             CREATE TABLE IF NOT EXISTS pim_catalog_identifier_generator (
                 `uuid` binary(16) PRIMARY KEY,
                 `code` VARCHAR(100) NOT NULL,
@@ -41,8 +42,10 @@ class InstallerSubscriber implements EventSubscriberInterface
                 KEY `target_id` (`target_id`),
                 CONSTRAINT `pim_catalog_identifier_generator_ibfk_1` FOREIGN KEY (`target_id`) REFERENCES `pim_catalog_attribute` (`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-            SQL);
-        $this->connection->executeStatement(<<<SQL
+            SQL
+        );
+        $this->connection->executeStatement(
+            <<<SQL
             CREATE TABLE IF NOT EXISTS pim_catalog_identifier_generator_prefixes (
                 `product_uuid` binary(16) NOT NULL,
                 `attribute_id` INT NOT NULL,
@@ -52,8 +55,10 @@ class InstallerSubscriber implements EventSubscriberInterface
                 CONSTRAINT `FK_ATTRIBUTEID` FOREIGN KEY (`attribute_id`) REFERENCES `pim_catalog_attribute` (`id`) ON DELETE CASCADE,
                 INDEX index_identifier_generator_prefixes (`attribute_id`, `prefix`, `number`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-            SQL);
-        $this->connection->executeStatement(<<<SQL
+            SQL
+        );
+        $this->connection->executeStatement(
+            <<<SQL
             CREATE TABLE IF NOT EXISTS pim_catalog_identifier_generator_sequence (
                 `attribute_id` INT NOT NULL,
                 `identifier_generator_uuid` binary(16) NOT NULL,
@@ -64,6 +69,36 @@ class InstallerSubscriber implements EventSubscriberInterface
                 UNIQUE INDEX sequence_attribute_identifier_prefix (attribute_id, identifier_generator_uuid, prefix),
                 INDEX index_identifier_generator_sequence (`attribute_id`, `identifier_generator_uuid`, `prefix`, `last_allocated_number`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
-            SQL);
+            SQL
+        );
+        $this->connection->executeStatement(
+            <<<SQL
+            CREATE TABLE IF NOT EXISTS pim_catalog_identifier_generator_nomenclature_definition (
+                `property_code` VARCHAR(255) NOT NULL,
+                `definition` JSON NOT NULL DEFAULT ('{}'),
+                UNIQUE INDEX nomenclature_definition_property_code (`property_code`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            SQL
+        );
+        $this->connection->executeStatement(
+            <<<SQL
+            CREATE TABLE IF NOT EXISTS pim_catalog_identifier_generator_family_nomenclature (
+                `family_id` INT NOT NULL,
+                `value` VARCHAR(255) NOT NULL,
+                UNIQUE INDEX family_nomenclature_family_id (`family_id`),
+                CONSTRAINT `FK_FAMILY_NOMENCLATURE` FOREIGN KEY (`family_id`) REFERENCES `pim_catalog_family` (`id`) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            SQL
+        );
+        $this->connection->executeStatement(
+            <<<SQL
+            CREATE TABLE IF NOT EXISTS pim_catalog_identifier_generator_simple_select_nomenclature (
+                `option_id` INT NOT NULL,
+                `value` VARCHAR(255) NOT NULL,
+                UNIQUE INDEX simple_select_nomenclature_option_id (`option_id`),
+                CONSTRAINT `FK_SIMPLE_SELECT_NOMENCLATURE` FOREIGN KEY (`option_id`) REFERENCES `pim_catalog_attribute_option` (`id`) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            SQL
+        );
     }
 }

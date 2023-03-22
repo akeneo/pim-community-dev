@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
+use Akeneo\Category\Application\Query\GetCategory\InternalApiCategory;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -43,10 +44,8 @@ class GetCategoryController
             $root = $this->findCategoryAdditionalPropertiesRegistry->forCategory($root);
         }
 
-        $response = $category->normalize();
-
-        $response['isRoot'] = $isRoot;
-        $response['root'] = $root?->normalize();
+        $internalApiCategory = InternalApiCategory::fromCategory($category, $root);
+        $response = $internalApiCategory->normalize();
 
         return new JsonResponse($response, Response::HTTP_OK);
     }

@@ -10,8 +10,9 @@ import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
 import {Source} from './models/Source';
 import {Target} from './models/Target';
-import {createTargetsFromProductMapping} from './utils/createTargetsFromProductMapping';
 import {sourceHasError} from './utils/sourceHasError';
+import {createTargetFromProductMappingSchema} from './utils/createTargetFromProductMappingSchema';
+import {SourceParameter} from './models/SourceParameter';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -37,28 +38,20 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
     const translate = useTranslate();
 
     const [selectedTarget, setSelectedTarget] = useState<Target | null>(null);
-    const [selectedSource, setSelectedSource] = useState<Source | null>(null);
+    const [selectedSource, setSelectedSource] = useState<Source>({
+        source: null,
+        locale: null,
+        scope: null,
+    });
 
     const handleClick = useCallback(
         (targetCode, source) => {
             if (productMappingSchema === undefined) {
                 return;
             }
-            const target: Target = {
-                code: targetCode,
-                label: productMappingSchema.properties[targetCode]?.title ?? targetCode,
-                type: productMappingSchema.properties[targetCode].type,
-                format: productMappingSchema.properties[targetCode].format ?? null,
-            };
-            if (undefined !== productMappingSchema.properties[targetCode].description) {
-                target.description = productMappingSchema.properties[targetCode].description;
-            }
-            if (undefined !== productMappingSchema.properties[targetCode].minLength) {
-                target.minLength = productMappingSchema.properties[targetCode].minLength;
-            }
-            if (undefined !== productMappingSchema.properties[targetCode].maxLength) {
-                target.maxLength = productMappingSchema.properties[targetCode].maxLength;
-            }
+
+            const target = createTargetFromProductMappingSchema(targetCode, productMappingSchema);
+
             setSelectedTarget(target);
             setSelectedSource(source);
         },
@@ -78,7 +71,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
         [selectedTarget, onChange, productMapping]
     );
 
-    const targets = createTargetsFromProductMapping(productMapping);
+    const targetSourceAssociations = Object.entries(productMapping);
 
     return (
         <MappingContainer data-testid={'product-mapping'}>
@@ -100,10 +93,12 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                         </Table.HeaderCell>
                     </Table.Header>
                     <Table.Body>
-                        {(targets.length === 0 || undefined === productMappingSchema) && <TargetPlaceholder />}
-                        {targets.length > 0 && undefined !== productMappingSchema && (
+                        {(targetSourceAssociations.length === 0 || undefined === productMappingSchema) && (
+                            <TargetPlaceholder />
+                        )}
+                        {targetSourceAssociations.length > 0 && undefined !== productMappingSchema && (
                             <>
-                                {targets.map(([targetCode, source]) => {
+                                {targetSourceAssociations.map(([targetCode, source]) => {
                                     return (
                                         <TargetSourceAssociation
                                             isSelected={selectedTarget?.code === targetCode}
@@ -113,6 +108,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                                             targetLabel={productMappingSchema.properties[targetCode]?.title}
                                             source={source}
                                             hasError={sourceHasError(errors[targetCode])}
+                                            isRequired={productMappingSchema?.required?.includes(targetCode) || false}
                                         />
                                     );
                                 })}

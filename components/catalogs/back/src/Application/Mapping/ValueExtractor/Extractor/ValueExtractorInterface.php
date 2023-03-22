@@ -24,9 +24,12 @@ interface ValueExtractorInterface
     public const SOURCE_TYPE_ATTRIBUTE_SIMPLE_SELECT = 'pim_catalog_simpleselect';
     public const SOURCE_TYPE_ATTRIBUTE_TEXT = 'pim_catalog_text';
     public const SOURCE_TYPE_ATTRIBUTE_TEXTAREA = 'pim_catalog_textarea';
+    public const SOURCE_TYPE_ATTRIBUTE_METRIC = 'pim_catalog_metric';
 
+    public const SOURCE_TYPE_CATEGORIES = 'categories';
     public const SOURCE_TYPE_FAMILY = 'family';
 
+    public const TARGET_TYPE_ARRAY_OF_STRINGS = 'array<string>';
     public const TARGET_TYPE_BOOLEAN = 'boolean';
     public const TARGET_TYPE_NUMBER = 'number';
     public const TARGET_TYPE_STRING = 'string';

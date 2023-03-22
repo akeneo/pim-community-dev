@@ -9,6 +9,10 @@ services:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateGeneratorCommandValidator'
 
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository'
+
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateAutoNumberHandler:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery'
@@ -20,9 +24,26 @@ services:
       - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
 
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateFamilyHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier'
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateSimpleSelectHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier'
     tags:
       - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
 
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler:
     arguments:
       - !tagged_iterator { tag: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateNomenclatureCommandValidator'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository'

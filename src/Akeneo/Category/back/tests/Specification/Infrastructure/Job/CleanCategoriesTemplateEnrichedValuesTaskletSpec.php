@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Category\Infrastructure\Job;
 
-use Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel;
-use Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet;
+use Akeneo\Category\Api\Command\CommandMessageBus;
+use Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand;
 use Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateEnrichedValuesTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Messenger\Envelope;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -18,26 +19,32 @@ use PhpSpec\ObjectBehavior;
  */
 class CleanCategoriesTemplateEnrichedValuesTaskletSpec extends ObjectBehavior
 {
-    function let(
-    )
+    function let(CommandMessageBus $commandBus): void
     {
-        $this->beConstructedWith(
-        );
+        $this->beConstructedWith($commandBus);
     }
 
-    function it_is_initializable()
+    function it_is_initializable(): void
     {
         $this->shouldImplement(TaskletInterface::class);
         $this->shouldHaveType(CleanCategoriesTemplateEnrichedValuesTasklet::class);
     }
 
-    function it_calls_cleaning_service_with_deleted_channel_code(
-        StepExecution $stepExecution,
-        JobParameters $jobParameters,
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
+    function it_dispatches_a_command_message_to_clean_category_enriched_values_by_template_uuid(
+        CommandMessageBus $commandBus,
+        StepExecution $stepExecution
+    ): void {
+        $jobParameters = new JobParameters([
+            'template_uuid' => '2115af0f-f0b0-435e-aa86-9880eaad677e',
+        ]);
+        $command = new CleanCategoryTemplateAndEnrichedValuesCommand(
+            '2115af0f-f0b0-435e-aa86-9880eaad677e'
+        );
 
-        $jobParameters->get('template_uuid')->willReturn('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
+        $envelope = new Envelope($command);
+
+        $stepExecution->getJobParameters()->shouldBeCalled()->willReturn($jobParameters);
+        $commandBus->dispatch($command)->shouldBeCalled()->willReturn($envelope);
 
         $this->setStepExecution($stepExecution);
         $this->execute();

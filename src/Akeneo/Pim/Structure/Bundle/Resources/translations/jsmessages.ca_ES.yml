@@ -232,7 +232,6 @@ pim_enrich.entity.attribute:
       confirm: Esteu segur que voleu suprimir aquest atribut?
       product_count: '{0}0 productes|{1}1 producte|]1, Inf[{{ count }} productes'
       product_model_count: '{0}0 models de producte|{1}1 model de producte|]1, Inf[{{ count }} models de producte'
-      used: ']-Inf,1]actualment té valors establerts per a aquest atribut, s''eliminaran.|]1, Inf[actualment tenen valors establerts per a aquest atribut, s''eliminaran.'
       helper:
         content: Si necessita canviar el seu tipus d'atribut per fer-lo localitzable o definible, mantenint l'accés als seus valors d'atributs existents,
         link: consulteu el nostre Centre d'ajuda (per a més informació).
@@ -264,10 +263,6 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} grup(s) seleccionat(s)'
     delete:
       confirm: Esteu segur que voleu suprimir aquest grup d'atributs?
-  grid:
-    columns:
-      name: Nom dels grups d'atribut
-    no_search_result: Ho sentim, no hi ha cap resultat de la cerca.
 pim_enrich.mass_edit.family:
   title: Acció en massa de família
   confirm: "{1}Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau.|] 1, Inf [Esteu a punt d'actualitzar {{ itemsCount }} famílies amb la informació següent, confirmeu-ho si us plau."

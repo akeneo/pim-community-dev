@@ -1,5 +1,4 @@
 import {
-  FullScreenError,
   getLabel,
   PageContent,
   PageHeader,
@@ -40,7 +39,7 @@ const TemplatePage: FC = () => {
 
   const catalogLocale = userContext.get('catalogLocale');
 
-  const {tree, loadingStatus, loadTree} = useCategoryTree(parseInt(treeId), '-1');
+  const {tree, loadTree} = useCategoryTree(parseInt(treeId), '-1');
   const [templateLabel, setTemplateLabel] = useState('');
 
   const [treeLabel, setTreeLabel] = useState<string>('');
@@ -79,10 +78,8 @@ const TemplatePage: FC = () => {
   }, [tree]);
 
   useEffect(() => {
-    if (templateFetchingStatus === 'fetched') {
-      if (fetchedTemplate) {
-        setTemplateEdited(cloneDeep(fetchedTemplate));
-      }
+    if (templateFetchingStatus === 'fetched' && fetchedTemplate) {
+      setTemplateEdited(cloneDeep(fetchedTemplate));
     }
   }, [catalogLocale, fetchedTemplate, templateFetchingStatus]);
 
@@ -102,16 +99,6 @@ const TemplatePage: FC = () => {
   );
 
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
-
-  if (loadingStatus === 'error' || templateFetchingStatus === 'error') {
-    return (
-      <FullScreenError
-        title={translate('error.exception', {status_code: '404'})}
-        message={translate('pim_enrich.entity.category.content.tree.not_found')}
-        code={404}
-      />
-    );
-  }
 
   return (
     <>
@@ -164,7 +151,7 @@ const TemplatePage: FC = () => {
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
-          <EditTemplateAttributesForm attributes={templateEdited.attributes} />
+          <EditTemplateAttributesForm attributes={templateEdited.attributes} templateId={templateEdited.uuid} />
         )}
 
         {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (

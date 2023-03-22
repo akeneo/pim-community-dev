@@ -17,26 +17,34 @@ const PlaceholderCell = styled(Table.Cell)`
 const ErrorPill = styled(Pill)`
     margin-left: 10px;
 `;
+const RequiredPill = styled(Pill)`
+    margin-left: 10px;
+`;
 
 type Props = {
     isSelected: boolean;
     targetCode: string;
     targetLabel: string | undefined;
-    source: Source | null;
-    onClick: (targetCode: string, source: Source | null) => void;
+    source: Source;
+    onClick: (targetCode: string, source: Source) => void;
     hasError: boolean;
+    isRequired: boolean;
 };
 
 export const TargetSourceAssociation: FC<Props> = memo(
-    ({isSelected, targetCode, targetLabel, source, onClick, hasError}) => {
+    ({isSelected, targetCode, targetLabel, source, onClick, hasError, isRequired}) => {
         const translate = useTranslate();
 
         return (
             <Table.Row key={targetCode} onClick={() => onClick(targetCode, source)} isSelected={isSelected}>
-                <TargetCell>{targetLabel ?? targetCode}</TargetCell>
+                <TargetCell>
+                    {targetLabel ?? targetCode}
+                    {isRequired && <RequiredPill level='warning' data-testid='required-pill' />}
+                </TargetCell>
                 {(null === source || null === source.source) && (
                     <PlaceholderCell>
                         {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
+                        {hasError && <ErrorPill data-testid='error-pill' level='danger' />}
                     </PlaceholderCell>
                 )}
                 {null !== source && 'uuid' === targetCode && <Table.Cell>UUID</Table.Cell>}

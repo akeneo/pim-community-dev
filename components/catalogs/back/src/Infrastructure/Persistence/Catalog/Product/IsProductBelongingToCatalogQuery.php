@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
+use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\IsProductBelongingToCatalogQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
-use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
+use Akeneo\Catalogs\Infrastructure\Persistence\ProductMappingSchema\GetProductMappingSchemaQuery;
+use Akeneo\Catalogs\Infrastructure\PqbFilters\ProductMappingRequiredFilters;
+use Akeneo\Catalogs\Infrastructure\PqbFilters\ProductSelectionCriteria;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
@@ -19,14 +22,26 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 class IsProductBelongingToCatalogQuery implements IsProductBelongingToCatalogQueryInterface
 {
     public function __construct(
-        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private readonly ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private readonly GetProductMappingSchemaQuery $productMappingSchemaQuery,
     ) {
     }
 
     public function execute(Catalog $catalog, string $productUuid): bool
     {
+        $filters = ProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria());
+
+        try {
+            $productMappingSchema = $this->productMappingSchemaQuery->execute($catalog->getId());
+            $filters = \array_merge(
+                $filters,
+                ProductMappingRequiredFilters::toPQBFilters($catalog->getProductMapping(), $productMappingSchema),
+            );
+        } catch (ProductMappingSchemaNotFoundException) {
+        }
+
         $pqb = $this->productQueryBuilderFactory->create([
-            'filters' => FormatProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria()),
+            'filters' => $filters,
             'limit' => 1,
         ]);
         $pqb->addFilter('id', Operators::EQUALS, $productUuid);

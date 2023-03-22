@@ -37,6 +37,10 @@ akeneo_catalogs:
       locale:
         unknown: 'De taal "{{ locale_name }}" is gedeactiveerd. Controleer uw taalinstellingen of verwijder dit filter.'
     product_mapping:
+      schema:
+        missing_targets: 'De mapping is onvolledig, de volgende doelen ontbreken: {{ targets }}.'
+        additional_targets: "De mapping is onjuist, de volgende doelen bestaan niet: {{ targets }}."
+        incorrect_type: 'Het geselecteerde brontype komt niet overeen met de vereisten: {{ expected_type }} verwacht.'
       source:
         invalid: 'Dit attribuut is verwijderd.'
         unknown: 'Onbekende bronwaarde'
@@ -49,3 +53,9 @@ akeneo_catalogs:
           empty: 'Deze taal mag niet leeg zijn.'
           unknown: 'Deze taal is uitgeschakeld of bestaat niet meer. Controleer uw kanaal- en taalinstellingen.'
           disabled: 'Deze taal is uitgeschakeld. Controleer uw kanaal- en taalinstellingen of werk deze waarde bij.'
+        currency:
+          disabled: 'Deze valuta is niet geactiveerd. Controleer uw kanalen en valuta instellingen of update deze waarde.'
+        measurement:
+          unit:
+            not_exist: 'De eenheid van het veld "{{ field }}" bestaat niet.'
+            not_empty: 'De eenheid mag niet leeg zijn.'

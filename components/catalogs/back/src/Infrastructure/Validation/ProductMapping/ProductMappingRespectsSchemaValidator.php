@@ -9,6 +9,8 @@ use Akeneo\Catalogs\Application\Mapping\TargetTypeConverter;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\NullSource\NullBooleanSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\NullSource\NullStringSource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -17,10 +19,9 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type ProductMappingSchema array{
- *      properties: array<string, array{type: string, format: string}>
- * }
  * @phpstan-import-type ProductMapping from Catalog
+ * @phpstan-import-type ProductMappingSchema from GetProductMappingSchemaQueryInterface
+ * @phpstan-import-type ProductMappingSchemaTarget from GetProductMappingSchemaQueryInterface
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
@@ -55,6 +56,10 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
         }
 
         $this->validateTargetsTypes($value->getProductMapping(), $schema);
+
+        $this->validateRequiredTargets($value->getProductMapping(), $schema);
+
+        $this->validateNullSources($value->getProductMapping(), $schema);
     }
 
     /**
@@ -103,7 +108,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
 
             try {
                 $attributeTypes = $this->targetTypeConverter->toAttributeTypes(
-                    $schema['properties'][$targetCode]['type'],
+                    $this->targetTypeConverter->flattenTargetType($schema['properties'][$targetCode]),
                     $schema['properties'][$targetCode]['format'] ?? '',
                 );
             } catch (NoCompatibleAttributeTypeFoundException $exception) {
@@ -111,7 +116,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                     \sprintf(
                         'The combination type "%s" and format "%s" are not supported.',
                         $schema['properties'][$targetCode]['type'],
-                        $schema['properties'][$targetCode]['format'],
+                        $schema['properties'][$targetCode]['format'] ?? '',
                     ),
                     0,
                     $exception,
@@ -122,8 +127,16 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                 continue;
             }
 
-            $attribute = $this->findOneAttributeByCodeQuery->execute($sourceAssociation['source']);
-            $attributeType = $attribute['type'] ?? null;
+            $attributeType = match ($sourceAssociation['source']) {
+                'categories' => 'categories',
+                'family' => 'family',
+                default => null,
+            };
+
+            if (null === $attributeType) {
+                $attribute = $this->findOneAttributeByCodeQuery->execute($sourceAssociation['source']);
+                $attributeType = $attribute['type'] ?? null;
+            }
 
             if (null === $attributeType || !\in_array($attributeType, $attributeTypes)) {
                 $this->context
@@ -133,6 +146,56 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                     )
                     ->atPath("[$targetCode][source]")
                     ->addViolation();
+            }
+        }
+    }
+
+    /**
+     * @param ProductMapping $productMapping
+     * @param ProductMappingSchema $schema
+     */
+    private function validateRequiredTargets(array $productMapping, array $schema): void
+    {
+        if (!isset($schema['required'])) {
+            return;
+        }
+
+        foreach ($schema['required'] as $targetCode) {
+            if (null === $productMapping[$targetCode]['source'] && !isset($productMapping[$targetCode]['default'])) {
+                $this->context
+                    ->buildViolation(
+                        'akeneo_catalogs.validation.product_mapping.source.required',
+                    )
+                    ->atPath("productMapping[$targetCode][source]")
+                    ->addViolation();
+            }
+        }
+    }
+
+    /**
+     * @param ProductMapping $productMapping
+     * @param ProductMappingSchema $schema
+     */
+    private function validateNullSources(array $productMapping, array $schema): void
+    {
+        foreach ($productMapping as $targetCode => $source) {
+            if ($source['source'] === null) {
+                $target = $schema['properties'][$targetCode];
+
+                $targetTypeKey = $this->targetTypeConverter->getTargetTypeKey($target);
+
+                $constraint = match ($targetTypeKey) {
+                    'string' => new NullStringSource(),
+                    'boolean' => new NullBooleanSource(),
+                    default => null,
+                };
+
+                if (null !== $constraint) {
+                    $this->context
+                        ->getValidator()
+                        ->inContext($this->context)
+                        ->validate($source, $constraint);
+                }
             }
         }
     }

@@ -129,10 +129,8 @@ akeneo_catalogs:
                 placeholder: Select an attribute
                 title: Source parameters
                 channel:
-                    label: Channel
                     placeholder: Select a channel
                 locale:
-                    label: Locale
                     placeholder: Select a locale
                 label_locale:
                     label: Value translation
@@ -142,7 +140,14 @@ akeneo_catalogs:
                     label: Currency
                     placeholder: Select a currency
                     helper: Select the currency in which the value should be sent.
+                default_value:
+                    label: Default value when is empty
+                    placeholder: Define a default value
                 no_parameters_message: No parameters for this source.
+                unit:
+                    label: Unit
+                    placeholder: Select a unit
+                    helper: Select the unit in which the value should be sent.
             select_source:
                 label: Pim source
                 search: Search criterion
@@ -164,3 +169,12 @@ akeneo_catalogs:
                 constraints:
                     minLength: '{0,1} This target must have at least {{ value }} character.|[2,Inf[ This target must have at least {{ value }} characters.'
                     maxLength: '{0,1} This target must not exceed {{ value }} character.|[2,Inf[ This target must not exceed {{ value }} characters.'
+                    pattern: '[0,Inf[ Pattern: This target must match the following regular expression: "{{ value }}".'
+                    minimum: '[0,Inf[ This target must be greater than or equal to {{ value }}.'
+                    maximum: '[0,Inf[ This target must be lower than or equal to {{ value }}.'
+                    enum: '[0,Inf[ Enum: This target only accepts the following values: {{ value }}.'
+            system_attributes:
+                categories:
+                    label: Categories
+                family:
+                    label: Family

@@ -37,6 +37,10 @@ akeneo_catalogs:
       locale:
         unknown: 'La locale "{{ locale_name }}" a été désactivée. Veuillez vérifier vos paramètres de locale ou supprimer ce filtre.'
     product_mapping:
+      schema:
+        missing_targets: 'Le mapping est incomplet, les cibles suivantes sont manquantes : {{ targets }}.'
+        additional_targets: "Le mapping est incorrect, les cibles suivantes n'existent pas: {{ targets }}."
+        incorrect_type: 'Le type de source sélectionné ne correspond pas aux exigences de l''app : {{ expected_type }} attendu.'
       source:
         invalid: 'Cet attribut a été supprimé.'
         unknown: 'Valeur inconnue'
@@ -49,3 +53,10 @@ akeneo_catalogs:
           empty: 'Cette locale ne peut pas être vide.'
           unknown: 'Cette locale est désactivée ou n''existe plus. Veuillez vérifier vos paramètres de canaux et de locales.'
           disabled: 'Cette locale est désactivée. Veuillez vérifier vos paramètres de canaux et de locales ou mettre à jour cette valeur.'
+        required: 'Cette source est requise'
+        currency:
+          disabled: 'Cette devise n''est pas activée. Veuillez vérifier vos paramètres de canaux et de devises ou mettre à jour cette valeur.'
+        measurement:
+          unit:
+            not_exist: 'L''unité du champ "{{ field }}" n''existe pas.'
+            not_empty: 'L''unité ne doit pas être vide.'

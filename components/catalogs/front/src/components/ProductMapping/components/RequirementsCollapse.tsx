@@ -4,7 +4,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {Target} from '../models/Target';
 import styled from 'styled-components';
 
-const ACCEPTED_CONSTRAINTS = ['minLength', 'maxLength'] as const;
+const ACCEPTED_CONSTRAINTS = ['minLength', 'maxLength', 'pattern', 'minimum', 'maximum', 'enum'] as const;
 
 type Props = {
     target: Target;
@@ -29,10 +29,16 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
 
     const constraints: Constraint[] = ACCEPTED_CONSTRAINTS.filter(
         constraint => target[constraint] !== undefined && target[constraint] !== null
-    ).map(constraint => ({
-        key: constraint,
-        value: (target as TargetWith<typeof constraint>)[constraint],
-    }));
+    ).map(constraint => {
+        let value = (target as TargetWith<typeof constraint>)[constraint];
+        if (Array.isArray(value)) {
+            value = value.join(', ');
+        }
+        return {
+            key: constraint,
+            value: value,
+        };
+    });
 
     const shouldDisplayWarning = constraints.length > 0;
 
@@ -64,7 +70,7 @@ export const RequirementsCollapse: FC<Props> = ({target}) => {
                                     {
                                         value: constraint.value,
                                     },
-                                    parseInt(constraint.value.toString())
+                                    typeof constraint.value === 'string' ? 0 : constraint.value
                                 )}
                             </p>
                         ))}

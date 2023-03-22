@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Job;
 
+use Akeneo\Category\Api\Command\CommandMessageBus;
+use Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -16,6 +18,7 @@ class CleanCategoriesTemplateEnrichedValuesTasklet implements TaskletInterface
     private StepExecution $stepExecution;
 
     public function __construct(
+        private readonly CommandMessageBus $commandBus,
     ) {
     }
 
@@ -29,6 +32,10 @@ class CleanCategoriesTemplateEnrichedValuesTasklet implements TaskletInterface
     public function execute(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
-        $template_uuid = $jobParameters->get('template_uuid');
+        $templateUuid = $jobParameters->get('template_uuid');
+
+        $this->commandBus->dispatch(
+            new CleanCategoryTemplateAndEnrichedValuesCommand($templateUuid),
+        );
     }
 }

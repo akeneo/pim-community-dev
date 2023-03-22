@@ -126,6 +126,7 @@ akeneo_catalogs:
     source:
       title: Selecteer bron
       parameters:
+        placeholder: Selecteer een attribuut
         title: Bronparameters
         channel:
           label: Kanaal
@@ -133,12 +134,23 @@ akeneo_catalogs:
         locale:
           label: Taal
           placeholder: Selecteer een taal
+        label_locale:
+          label: Waarde vertaling
+          placeholder: Selecteer een vertaling
+          helper: Selecteer de taal waarin de waarde moet worden verzonden.
+        currency:
+          label: Valuta
+          placeholder: Selecteer een valuta
+          helper: Selecteer de valuta waarin de waarde moet worden verzonden.
+        no_parameters_message: Geen parameters voor deze bron.
+        unit:
+          label: Eenheid
       select_source:
         label: Pim-bron
         search: Zoekcriterium
-        no_results: geen overeenkomsten gevonden
-        section_system: systeem
-        section_attributes: attributen
+        no_results: Geen overeenkomsten gevonden
+        section_system: Systeem
+        section_attributes: Attributen
       placeholder:
         title: Bron selecteren
         illustration_title: Klik op een doel in het rechterpaneel om de toewijzing van uw catalogus te configureren.
@@ -148,3 +160,13 @@ akeneo_catalogs:
         illustration_title: De UUID is een technische product-id
         subtitle: Dit moet in alle apps als doel zijn vereist. U heeft niets te configureren voor dit doel omdat we het automatisch toewijzen aan de Akeneo product-UUID.
         link: Meer informatie over de UUID.
+      requirements:
+        title: App vereisten
+        help: Help
+        constraints:
+          minLength: '{0,1} Dit doel moet tenminste {{ value }} teken bevatten.|[2,Inf[ Dit doel moet tenminste {{ value }} tekens bevatten.'
+          maxLength: '{0,1} Dit doel mag niet meer dan {{ value }} teken bevatten.[2,Inf[ Dit doel mag niet meer dan {{ value }} tekens bevatten.'
+          pattern: '[0,Inf[ Patron: Dit doel moet overeenkomen met de volgende reguliere expressie: "{{ value }}".'
+          minimum: '[0,Inf[ Dit doel moet groter of gelijk zijn aan {{ value }}.'
+          maximum: '[0,Inf[ Dit doel moet lager of gelijk zijn aan {{ value }}.'
+          enum: '[0,Inf[ Enum: Dit doel accepteert alleen de volgende waarden: {{ value }}.'

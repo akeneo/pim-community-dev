@@ -4,7 +4,6 @@ parameters:
 
 
 services:
-    # TODO check all use of 'clean_removed_attribute_job' to make sure this new job is added in all fixtures and stuff like taht
     # Clean categories enriched values linked to removed channel
     pim_catalog.job.clean_categories_enriched_values:
         class: '%pim_connector.job.simple_job.class%'
@@ -52,9 +51,11 @@ services:
 
     Akeneo\Category\Infrastructure\Job\CleanCategoriesEnrichedValuesTasklet:
         arguments:
-            - '@Akeneo\Category\Application\Enrichment\CleanCategoryDataLinkedToChannel'
+            - '@category.command.message_bus'
 
     Akeneo\Category\Infrastructure\Job\CleanCategoriesTemplateEnrichedValuesTasklet:
+        arguments:
+            - '@category.command.message_bus'
 
     # job parameters
     akeneo.category.clean_categories.clean_enriched_values.job_parameters:
