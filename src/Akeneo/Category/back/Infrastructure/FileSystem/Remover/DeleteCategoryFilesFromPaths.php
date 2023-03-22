@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\FileSystem\Remover;
 
-use Akeneo\Category\Application\Query\DeleteFileStorage;
 use Akeneo\Category\Domain\Filesystem\Storage;
+use Akeneo\Category\Domain\Query\DeleteFileStorage;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemException;
 use League\Flysystem\UnableToDeleteFile;

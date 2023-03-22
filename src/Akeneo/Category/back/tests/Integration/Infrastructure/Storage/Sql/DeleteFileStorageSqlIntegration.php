@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\DeleteFileStorage;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use Akeneo\Category\Domain\Query\DeleteFileStorage;
 use Akeneo\Test\Integration\Configuration;
 
 /**

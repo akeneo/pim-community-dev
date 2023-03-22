@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\DeleteFileStorage;
+use Akeneo\Category\Domain\Query\DeleteFileStorage;
 use Doctrine\DBAL\Connection;
 
 /**
