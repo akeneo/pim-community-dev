@@ -52,6 +52,15 @@ class GetEnrichedValuesByTemplateUuidSqlIntegration extends CategoryTestCase
             $fetchedCategories[] = $valuesByCategoryCode;
         }
 
+        Assert::assertArrayHasKey('socks', $fetchedCategories[0]);
+        Assert::assertArrayHasKey('winter_socks', $fetchedCategories[0]);
+        Assert::assertArrayHasKey('summer_socks', $fetchedCategories[0]);
+        Assert::assertArrayHasKey('japanese_summer_socks', $fetchedCategories[0]);
+        Assert::assertNotEmpty($fetchedCategories[0]['socks']->getValues());
+        Assert::assertNotEmpty($fetchedCategories[0]['winter_socks']->getValues());
+        Assert::assertNotEmpty($fetchedCategories[0]['summer_socks']->getValues());
+        Assert::assertNotEmpty($fetchedCategories[0]['japanese_summer_socks']->getValues());
+        Assert::assertCount(4, $fetchedCategories[0]);
         $sockCategoryEnrichedValues = $fetchedCategories[0];
 
         Assert::assertArrayHasKey('socks', $sockCategoryEnrichedValues);

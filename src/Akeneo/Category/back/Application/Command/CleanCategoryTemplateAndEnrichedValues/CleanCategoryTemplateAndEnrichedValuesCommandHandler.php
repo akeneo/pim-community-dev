@@ -35,7 +35,7 @@ class CleanCategoryTemplateAndEnrichedValuesCommandHandler
             ->byTemplateUuid($templateUuid)
             ->getAttributes();
         foreach ($this->getEnrichedValuesByTemplateUuid->byBatchesOf(
-            $templateUuid,
+            TemplateUuid::fromString($command->templateUuid),
             self::CATEGORY_BATCH_SIZE,
         ) as $valuesByCode) {
             $this->categoryDataCleaner->cleanByTemplateAttributesUuid($valuesByCode, $templateAttributes);
