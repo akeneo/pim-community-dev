@@ -14,7 +14,7 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  *
- * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringUriFromImageAttributeValueExtractor
+ * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringUri\StringUriFromImageAttributeValueExtractor
  */
 class StringUriFromImageAttributeValueExtractorTest extends ValueExtractorTestCase
 {

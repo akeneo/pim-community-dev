@@ -24,6 +24,14 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryEnrichedValuesByChannelOrLocale\CleanCategoryEnrichedValuesByChannelOrLocaleCommand' }
 
+  Akeneo\Category\Application\Command\AddAttributeCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\AddAttributeCommand' }
+
   Akeneo\Category\Application\Handler\StoreUploadedFile:
     arguments:
       - '@akeneo_file_storage.file_storage.file.file_storer'

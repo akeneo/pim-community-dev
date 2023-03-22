@@ -5,4 +5,5 @@ export type Source = {
     locale: string | null;
     scope: string | null;
     parameters?: SourceParameter;
+    default?: string | boolean | null;
 };

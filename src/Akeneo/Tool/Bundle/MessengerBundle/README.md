@@ -101,3 +101,74 @@ bin/console akeneo:messenger:doctrine:purge-messages <table-name> <queue-name>
 ```
 
 The retention time can be specified with the option `--retention-time=<seconds>`, which has a default value of 7200 seconds (or 2 hour).
+
+
+## Easy configuration of queues and consumers
+
+This bundle also provides a way to facilitate the setup of multi-tenant queues and consumers.
+This stack is built to consume messages quickly and to launch short processes, **5 minutes maximum**.
+If your process exceed 5 minutes, please consider cut your process in shorter ones, or use the job stack
+that is designed for long-running job.
+
+### How it works
+
+When sending a message in the queue, the tenant is automatically injected into the envelope/message.
+The consumer (the Symfony command `messenger:consume`) receive the messages of several tenants. A specific
+Symfony Messenger handler (`TraceableMessageBridgeHandler`) extract the tenant from the message and launch the
+good process in a tenant aware process.
+
+```mermaid
+flowchart LR
+    subgraph Tenant aware process
+        action[Something happens in the PIM]
+    end
+    action -- Publish message in topic --> queue[(Multi-tenant queue)]
+    Consumer1 -- Pull messages for subscription1 --> queue
+    subgraph Tenant agnostic daemon
+        Consumer1 --> traceableHandler1[TraceableMessageBridgeHandler]
+        traceableHandler1 -- Launch subprocess with tenant --> pmc1[ProcessMessageCommand]
+        subgraph Tenant aware process
+            pmc1 -- Launch the final handler --> Handler1
+        end
+    end
+    Consumer2 -- Pull messages for subscription2 --> queue
+    subgraph Tenant agnostic daemon
+        Consumer2 --> traceableHandler2[TraceableMessageBridgeHandler]
+        traceableHandler2 -- Launch subprocess with tenant --> pmc2[ProcessMessageCommand]
+        subgraph Tenant aware process
+            pmc2 -- Launch the final handler --> Handler2
+        end
+    end
+```
+
+### Where my messages are sent?
+
+Depending on the APP_ENV, the queues use the according transport. In general here is the configuration, 
+but we can find more details in the `config/packages/*/messenger.php` files.
+
+| Env        | Transport         |
+|------------|-------------------|
+| dev        | doctrine          |
+| test       | PubSub            |
+| test_fake  | In Memory         |
+| behat      | PubSub            |
+| prod       | doctrine / PubSub |
+
+### More details
+
+- How to send/consume message
+
+Send a message:
+
+```php
+// Bus service 'messenger.default_bus'
+$this->bus->dispatch($message);
+```
+
+Launch consumer:
+
+```bash
+bin/console messenger:consume <consumer_name>
+```
+
+- [How to add a queue?](docs/how-to-add-a-queue.md)

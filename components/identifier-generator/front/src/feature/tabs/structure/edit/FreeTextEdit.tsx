@@ -4,6 +4,7 @@ import {Field, TextInput, useAutoFocus} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
 import {useIdentifierGeneratorAclContext} from '../../../context';
+import {PropertyEditTitle} from '../PropertyEditTitle';
 
 const LIMIT = 100;
 
@@ -30,16 +31,19 @@ const FreeTextEdit: PropertyEditFieldsProps<FreeText> = ({selectedProperty, onCh
   useAutoFocus(stringInputRef);
 
   return (
-    <Field label={translate('pim_identifier_generator.structure.settings.free_text.string_label')}>
-      <TextInput
-        value={selectedProperty.string}
-        onChange={onTextChange}
-        maxLength={LIMIT}
-        ref={stringInputRef}
-        characterLeftLabel={characterLeftLabel}
-        readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
-      />
-    </Field>
+    <>
+      <PropertyEditTitle type={selectedProperty.type} />
+      <Field label={translate('pim_identifier_generator.structure.settings.free_text.string_label')}>
+        <TextInput
+          value={selectedProperty.string}
+          onChange={onTextChange}
+          maxLength={LIMIT}
+          ref={stringInputRef}
+          characterLeftLabel={characterLeftLabel}
+          readOnly={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
+        />
+      </Field>
+    </>
   );
 };
 

@@ -92,6 +92,25 @@ const attributeToSourceTests = [
             },
         },
     },
+    {
+        attribute: {
+            code: 'weight',
+            label: 'weight',
+            type: 'pim_catalog_metric',
+            scopable: true,
+            localizable: true,
+            attribute_group_code: 'marketing',
+            attribute_group_label: 'Marketing',
+        },
+        expectedSource: {
+            source: 'weight',
+            locale: null,
+            scope: null,
+            parameters: {
+                unit: undefined,
+            },
+        },
+    },
 ];
 
 test.each(attributeToSourceTests)('it creates targets from an attribute', ({attribute, expectedSource}) => {

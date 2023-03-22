@@ -5,38 +5,43 @@ export const createTargetFromProductMappingSchema = (
     targetCode: string,
     productMappingSchema: ProductMappingSchema
 ): Target => {
-    let targetType = productMappingSchema.properties[targetCode].type;
-    if ('array' === targetType) {
-        targetType += '<' + (productMappingSchema.properties[targetCode].items?.type ?? '') + '>';
-    }
+    const properties = productMappingSchema.properties[targetCode];
 
     const target: Target = {
         code: targetCode,
-        label: productMappingSchema.properties[targetCode].title ?? targetCode,
-        type: targetType,
-        format: productMappingSchema.properties[targetCode].format ?? null,
+        label: properties.title ?? targetCode,
+        type: properties.type,
+        format: properties.format ?? null,
     };
 
-    if (undefined !== productMappingSchema.properties[targetCode].description) {
-        target.description = productMappingSchema.properties[targetCode].description;
+    if (undefined !== properties.description) {
+        target.description = properties.description;
     }
-    if (undefined !== productMappingSchema.properties[targetCode].minLength) {
-        target.minLength = productMappingSchema.properties[targetCode].minLength;
+    if (undefined !== properties.minLength) {
+        target.minLength = properties.minLength;
     }
-    if (undefined !== productMappingSchema.properties[targetCode].maxLength) {
-        target.maxLength = productMappingSchema.properties[targetCode].maxLength;
+    if (undefined !== properties.maxLength) {
+        target.maxLength = properties.maxLength;
     }
-    if (undefined !== productMappingSchema.properties[targetCode].pattern) {
-        target.pattern = productMappingSchema.properties[targetCode].pattern;
+    if (undefined !== properties.pattern) {
+        target.pattern = properties.pattern;
     }
-    if (undefined !== productMappingSchema.properties[targetCode].minimum) {
-        target.minimum = productMappingSchema.properties[targetCode].minimum;
+    if (undefined !== properties.minimum) {
+        target.minimum = properties.minimum;
     }
-    if (undefined !== productMappingSchema.properties[targetCode].maximum) {
-        target.maximum = productMappingSchema.properties[targetCode].maximum;
+    if (undefined !== properties.maximum) {
+        target.maximum = properties.maximum;
     }
-    if (undefined !== productMappingSchema.properties[targetCode].enum) {
-        target.enum = productMappingSchema.properties[targetCode].enum;
+    if (undefined !== properties.enum) {
+        target.enum = properties.enum;
+    }
+
+    if ('array' === properties.type) {
+        target.type += `<${properties.items?.type ?? ''}>`;
+
+        if (undefined !== properties.items?.enum) {
+            target.enum = properties.items.enum;
+        }
     }
 
     return target;
