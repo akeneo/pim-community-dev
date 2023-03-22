@@ -128,10 +128,8 @@ akeneo_catalogs:
       parameters:
         title: Paràmetres font
         channel:
-          label: Canal
           placeholder: Seleccioneu un canal
         locale:
-          label: Configuració Regional
           placeholder: Seleccioneu un local
         currency:
           label: Moneda
@@ -151,3 +149,6 @@ akeneo_catalogs:
         illustration_title: L'UUID és un identificador tècnic del producte.
         subtitle: Totes les aplicacions l'han de requerir com a objectiu. No teniu res a configurar per a aquest objectiu, ja que el mapem automàticament amb l'UUID del producte Akeneo.
         link: Més informació sobre UUID.
+      system_attributes:
+        family:
+          label: Família
