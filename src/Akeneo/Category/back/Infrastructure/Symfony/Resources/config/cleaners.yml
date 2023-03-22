@@ -1,14 +1,4 @@
 services:
-    Akeneo\Category\Application\Enrichment\CategoryDataCleaner:
+    Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner:
         arguments:
             - '@Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues'
-
-    Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode:
-        class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesPerCategoryCodeSql
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues:
-        class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryEnrichedValuesSql
-        arguments:
-            - '@database_connection'

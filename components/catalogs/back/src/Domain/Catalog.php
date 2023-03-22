@@ -31,7 +31,7 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespe
  *      source: string|null,
  *      locale: string|null,
  *      scope: string|null,
- *      default?: string,
+ *      default?: string|boolean|null,
  *      parameters?: array{
  *          label_locale?: string|null,
  *          currency?: string|null,

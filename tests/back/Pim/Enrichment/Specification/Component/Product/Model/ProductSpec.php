@@ -8,14 +8,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -23,6 +24,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Ramsey\Uuid\UuidInterface;
 
 class ProductSpec extends ObjectBehavior
@@ -1429,5 +1431,90 @@ class ProductSpec extends ObjectBehavior
             ['model_tshirt_1', 'model_tshirt_2']
         );
         $this->isDirty()->shouldBe(false);
+    }
+
+    function it_does_not_associate_a_product_already_associated_to_an_ancestor()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedProduct = new Product();
+        $productModelAssociation = new ProductModelAssociation();
+        $productModelAssociation->setAssociationType($associationType);
+        $productModelAssociation->addProduct($associatedProduct);
+        $parent = new ProductModel();
+        $parent->addAssociation($productModelAssociation);
+        $this->setParent($parent);
+
+        $this->addAssociatedProduct($associatedProduct, 'X_SELL');
+        $this->getAssociatedProducts('X_SELL')->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_does_not_update_level_specific_associations_when_calling_get_all_associations()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedProduct = new Product();
+        $productModelAssociation = new ProductModelAssociation();
+        $productModelAssociation->setAssociationType($associationType);
+        $productModelAssociation->addProduct($associatedProduct);
+        $parent = new ProductModel();
+        $parent->addAssociation($productModelAssociation);
+        $this->setParent($parent);
+
+        $this->getAllAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => 'X_SELL' === $asso->getAssociationType()->getCode()
+        )->first()?->getProducts()->shouldBeLike(new ArrayCollection([$associatedProduct]));
+
+        $this->getAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => 'X_SELL' === $asso->getAssociationType()->getCode()
+        )->first()?->getProducts()->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_does_not_associate_a_product_model_already_associated_to_an_ancestor()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedProductModel = new ProductModel();
+        $productModelAssociation = new ProductModelAssociation();
+        $productModelAssociation->setAssociationType($associationType);
+        $productModelAssociation->addProductModel($associatedProductModel);
+        $parent = new ProductModel();
+        $parent->addAssociation($productModelAssociation);
+        $this->setParent($parent);
+
+        $this->addAssociatedProductModel($associatedProductModel, 'X_SELL');
+        $this->getAssociatedProductModels('X_SELL')->shouldBeLike(new ArrayCollection());
+    }
+
+    function it_does_not_associate_a_group_already_associated_to_an_ancestor()
+    {
+        $associationType = new AssociationType();
+        $associationType->setCode('X_SELL');
+        $productAssociation = new ProductAssociation();
+        $productAssociation->setAssociationType($associationType);
+        $this->addAssociation($productAssociation);
+
+        $associatedGroup = new Group();
+        $groupAssociation = new ProductModelAssociation();
+        $groupAssociation->setAssociationType($associationType);
+        $groupAssociation->addGroup($associatedGroup);
+        $parent = new ProductModel();
+        $parent->addAssociation($groupAssociation);
+        $this->setParent($parent);
+
+        $this->addAssociatedGroup($associatedGroup, 'X_SELL');
+        $this->getAssociatedGroups('X_SELL')->shouldBeLike(new ArrayCollection());
     }
 }
