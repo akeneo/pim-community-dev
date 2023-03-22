@@ -11,13 +11,13 @@ import {SourceParameters} from './SourceParameters/SourceParameters';
 
 type Props = {
     target: Target | null;
-    source: Source | null;
+    source: Source;
     onChange: (value: Source) => void;
     errors: SourceErrors | null;
 };
 
 export const SourcePanel: FC<Props> = ({target, source, onChange, errors}) => {
-    if (null === target || null === source) {
+    if (null === target) {
         return <SourcePlaceholder />;
     }
 
