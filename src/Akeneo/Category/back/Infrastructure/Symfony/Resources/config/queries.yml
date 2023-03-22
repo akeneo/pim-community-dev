@@ -87,3 +87,18 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\DeactivateTemplateSql
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesPerCategoryCodeSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesByTemplateUuidSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryEnrichedValuesSql
+    arguments:
+      - '@database_connection'
