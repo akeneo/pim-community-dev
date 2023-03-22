@@ -69,6 +69,7 @@ class TargetTypeConverterTest extends TestCase
                 '',
                 [
                     'categories',
+                    'family',
                     'pim_catalog_identifier',
                     'pim_catalog_multiselect',
                     'pim_catalog_number',

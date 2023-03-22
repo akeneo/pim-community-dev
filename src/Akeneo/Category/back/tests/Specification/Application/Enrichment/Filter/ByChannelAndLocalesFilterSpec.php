@@ -30,7 +30,6 @@ class ByChannelAndLocalesFilterSpec extends ObjectBehavior
                     'c91e6a4e-733b-4d77-aefc-129edbf03233',
                     'mobile',
                     'en_US'
-
                 )
             ]
         );

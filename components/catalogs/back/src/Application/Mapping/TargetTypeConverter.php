@@ -29,6 +29,7 @@ final class TargetTypeConverter
         ],
         'string' => [
             'categories',
+            'family',
             'pim_catalog_identifier',
             'pim_catalog_multiselect',
             'pim_catalog_number',
@@ -60,6 +61,22 @@ final class TargetTypeConverter
         }
 
         return self::PIM_ATTRIBUTE_TYPES[$key];
+    }
+
+    /**
+     * @param ProductMappingSchemaTarget $target
+     */
+    public function getTargetTypeKey(array $target): string
+    {
+        $key = $this->flattenTargetType($target);
+
+        $format = $target['format'] ?? '';
+
+        if ('' !== $format) {
+            $key = \sprintf('%s+%s', $key, $format);
+        }
+
+        return $key;
     }
 
     /**

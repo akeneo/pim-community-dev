@@ -41,6 +41,12 @@ final class AttributeTextareaSource extends Compound
                             new Assert\Type('string'),
                             new Assert\NotBlank(allowNull: true),
                         ],
+                        'default' => [
+                            new Assert\Optional([
+                                new Assert\Type('string'),
+                                new Assert\NotBlank(allowNull: false),
+                            ]),
+                        ],
                     ],
                     'allowMissingFields' => false,
                     'allowExtraFields' => false,

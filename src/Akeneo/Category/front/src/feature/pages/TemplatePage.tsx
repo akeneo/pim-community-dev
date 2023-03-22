@@ -39,7 +39,7 @@ const TemplatePage: FC = () => {
 
   const catalogLocale = userContext.get('catalogLocale');
 
-  const {tree, loadingStatus, loadTree} = useCategoryTree(parseInt(treeId), '-1');
+  const {tree, loadTree} = useCategoryTree(parseInt(treeId), '-1');
   const [templateLabel, setTemplateLabel] = useState('');
 
   const [treeLabel, setTreeLabel] = useState<string>('');
@@ -151,7 +151,7 @@ const TemplatePage: FC = () => {
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
-          <EditTemplateAttributesForm attributes={templateEdited.attributes} />
+          <EditTemplateAttributesForm attributes={templateEdited.attributes} templateId={templateEdited.uuid} />
         )}
 
         {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (

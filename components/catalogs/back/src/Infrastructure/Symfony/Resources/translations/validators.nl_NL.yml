@@ -55,3 +55,7 @@ akeneo_catalogs:
           disabled: 'Deze taal is uitgeschakeld. Controleer uw kanaal- en taalinstellingen of werk deze waarde bij.'
         currency:
           disabled: 'Deze valuta is niet geactiveerd. Controleer uw kanalen en valuta instellingen of update deze waarde.'
+        measurement:
+          unit:
+            not_exist: 'De eenheid van het veld "{{ field }}" bestaat niet.'
+            not_empty: 'De eenheid mag niet leeg zijn.'

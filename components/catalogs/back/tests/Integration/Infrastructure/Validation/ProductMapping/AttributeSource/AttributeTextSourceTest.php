@@ -95,6 +95,21 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                 ],
             ],
+            'with default value' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => 'Name default value',
+                ],
+            ],
         ];
     }
 
@@ -293,6 +308,22 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'parameters' => [],
                 ],
                 'expectedMessage' => 'This field was not expected.',
+            ],
+            'invalid default value type' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => true,
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
         ];
     }
