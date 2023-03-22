@@ -97,4 +97,9 @@ final class SimpleSelectProperty implements PropertyInterface
             'locale' => $this->locale,
         ]);
     }
+
+    public function attributeCode(): string
+    {
+        return $this->attributeCode;
+    }
 }

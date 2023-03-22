@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\SimpleSelectProperty;
 use Webmozart\Assert\Assert;
@@ -18,6 +16,11 @@ use Webmozart\Assert\Assert;
  */
 final class GenerateSimpleSelectHandler implements GeneratePropertyHandlerInterface
 {
+    public function __construct(
+        private PropertyProcessApplier $propertyProcessApplier
+    ) {
+    }
+
     public function getPropertyClass(): string
     {
         return SimpleSelectProperty::class;
@@ -38,26 +41,12 @@ final class GenerateSimpleSelectHandler implements GeneratePropertyHandlerInterf
         );
         Assert::string($value);
 
-        switch ($simpleSelectProperty->process()->type()) {
-            case Process::PROCESS_TYPE_TRUNCATE:
-                Assert::integer($simpleSelectProperty->process()->value());
-                if ($simpleSelectProperty->process()->operator() === Process::PROCESS_OPERATOR_EQ) {
-                    try {
-                        Assert::minLength($value, $simpleSelectProperty->process()->value());
-                    } catch (\InvalidArgumentException) {
-                        throw new UnableToTruncateException(
-                            \sprintf('%s%s', $prefix, $value),
-                            $identifierGenerator->target()->asString(),
-                            $value
-                        );
-                    }
-                }
-
-                return \substr($value, 0, $simpleSelectProperty->process()->value());
-            case Process::PROCESS_TYPE_NO:
-                return $value;
-            default:
-                throw new \InvalidArgumentException('Not implemented yet');
-        }
+        return $this->propertyProcessApplier->apply(
+            $simpleSelectProperty->process(),
+            $simpleSelectProperty->attributeCode(),
+            $value,
+            $identifierGenerator->target()->asString(),
+            $prefix
+        );
     }
 }

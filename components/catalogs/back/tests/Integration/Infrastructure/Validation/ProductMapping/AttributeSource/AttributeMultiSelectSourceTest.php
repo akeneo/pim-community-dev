@@ -111,6 +111,25 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     ],
                 ],
             ],
+            'with default value' => [
+                'attribute' => [
+                    'code' => 'video_output',
+                    'type' => 'pim_catalog_multiselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                    'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
+                ],
+                'source' => [
+                    'source' => 'video_output',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => 'Video default value',
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -393,6 +412,25 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
                     ],
                 ],
                 'expectedMessage' => 'This field was not expected.',
+            ],
+            'source with invalid default value type' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'type' => 'pim_catalog_multiselect',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => true,
+                    'parameters' => [
+                        'label_locale' => 'en_US',
+                    ],
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
         ];
     }

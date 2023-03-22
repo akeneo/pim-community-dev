@@ -9,7 +9,7 @@ import {
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {Breadcrumb, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
+import {Breadcrumb, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar, Button} from 'akeneo-design-system';
 import {DeactivateTemplateModal} from '../components/templates/DeactivateTemplateModal';
 import {cloneDeep, set} from 'lodash/fp';
 import {FC, useCallback, useEffect, useState} from 'react';
@@ -19,6 +19,8 @@ import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePr
 import {TemplateOtherActions} from '../components/templates/TemplateOtherActions';
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
 import {Template} from '../models';
+import {AddTemplateAttributeModal} from "../components/templates/AddTemplateAttributeModal";
+import styled from "styled-components";
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -29,6 +31,10 @@ type Params = {
   treeId: string;
   templateId: string;
 };
+
+const AddAttributeButton = styled(Button)`
+  margin-left: auto;
+`;
 
 const TemplatePage: FC = () => {
   const {treeId, templateId} = useParams<Params>();
@@ -99,6 +105,7 @@ const TemplatePage: FC = () => {
   );
 
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
+  const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] = useBooleanState(false);
 
   return (
     <>
@@ -148,6 +155,16 @@ const TemplatePage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
+          {featureFlags.isEnabled('category_template_customization') && (
+            <AddAttributeButton
+              active
+              ghost
+              disabled={!!templateEdited && templateEdited.attributes.length >= 50}
+              level="tertiary"
+              onClick={openAddTemplateAttributeModal}
+          >
+            {translate('akeneo.category.template.add_attribute.add_button')}
+          </AddAttributeButton>)}
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
@@ -162,6 +179,13 @@ const TemplatePage: FC = () => {
           <DeactivateTemplateModal
             template={{id: templateId, label: templateLabel}}
             onClose={closeDeactivateTemplateModal}
+          />
+        )}
+        {
+          isAddTemplateAttributeModalOpen && (
+          <AddTemplateAttributeModal
+              templateId={templateId}
+              onClose={closeAddTemplateAttributeModal}
           />
         )}
       </PageContent>

@@ -25,8 +25,8 @@ type Props = {
     isSelected: boolean;
     targetCode: string;
     targetLabel: string | undefined;
-    source: Source | null;
-    onClick: (targetCode: string, source: Source | null) => void;
+    source: Source;
+    onClick: (targetCode: string, source: Source) => void;
     hasError: boolean;
     isRequired: boolean;
 };

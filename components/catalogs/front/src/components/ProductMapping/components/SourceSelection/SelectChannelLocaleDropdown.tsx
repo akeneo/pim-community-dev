@@ -1,13 +1,8 @@
 import React, {FC} from 'react';
-import styled from 'styled-components';
-import {Field, Helper, Locale, SelectInput} from 'akeneo-design-system';
+import {Helper, Locale, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Source} from '../../models/Source';
 import {useChannelLocales} from '../../../../hooks/useChannelLocales';
-
-const DropdownField = styled(Field)`
-    margin-top: 10px;
-`;
 
 type Props = {
     source: Source;
@@ -21,7 +16,7 @@ export const SelectChannelLocaleDropdown: FC<Props> = ({source, onChange, error,
     const {data: locales} = useChannelLocales(source.scope);
 
     return (
-        <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.locale.label')}>
+        <>
             <SelectInput
                 value={source.locale}
                 onChange={newLocale => onChange({...source, locale: newLocale})}
@@ -44,6 +39,6 @@ export const SelectChannelLocaleDropdown: FC<Props> = ({source, onChange, error,
                     {error}
                 </Helper>
             )}
-        </DropdownField>
+        </>
     );
 };

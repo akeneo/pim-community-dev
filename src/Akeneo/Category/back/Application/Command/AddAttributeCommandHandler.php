@@ -7,7 +7,6 @@ namespace Akeneo\Category\Application\Command;
 use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
-use Akeneo\Category\Domain\Event\AttributeAddedEvent;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
@@ -21,7 +20,6 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -32,7 +30,6 @@ class AddAttributeCommandHandler
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
-        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly GetAttribute $getAttribute,
         private readonly CategoryTemplateAttributeSaver $categoryTemplateAttributeSaver,
     ) {
@@ -45,24 +42,22 @@ class AddAttributeCommandHandler
             throw new ViolationsException($violations);
         }
 
-        $templateUuid = TemplateUuid::fromString($command->templateUuid());
+        $templateUuid = TemplateUuid::fromString($command->templateUuid);
 
         $attribute = Attribute::fromType(
-            type: new AttributeType($command->type()),
+            type: new AttributeType($command->type),
             uuid: AttributeUuid::fromUuid(Uuid::uuid4()),
-            code: new AttributeCode($command->code()),
+            code: new AttributeCode($command->code),
             order: $this->getAttributeOrder($templateUuid),
             isRequired: AttributeIsRequired::fromBoolean(false),
-            isScopable: AttributeIsScopable::fromBoolean($command->isScopable()),
-            isLocalizable: AttributeIsLocalizable::fromBoolean($command->isLocalizable()),
-            labelCollection: $this->getAttributeLabel($command->locale(), $command->label()),
+            isScopable: AttributeIsScopable::fromBoolean($command->isScopable),
+            isLocalizable: AttributeIsLocalizable::fromBoolean($command->isLocalizable),
+            labelCollection: $this->getAttributeLabel($command->locale, $command->label),
             templateUuid: $templateUuid,
             additionalProperties: AttributeAdditionalProperties::fromArray([]),
         );
 
         $this->categoryTemplateAttributeSaver->insert($templateUuid, AttributeCollection::fromArray([$attribute]));
-
-        $this->eventDispatcher->dispatch(new AttributeAddedEvent($attribute));
     }
 
     private function getAttributeOrder(TemplateUuid $templateUuid): AttributeOrder

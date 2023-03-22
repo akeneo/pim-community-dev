@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Command;
 
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
@@ -21,10 +22,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type ProductMapping from Catalog
  */
 class CatalogFixtureCommand extends Command
 {
+    /**
+     * @var string|null
+     */
     protected static $defaultName = 'akeneo:catalogs:fixtures';
+    /**
+     * @var string|null
+     */
     protected static $defaultDescription = 'Do not run this command in production env. Installs fixtures for dev only.';
 
     public function __construct(
@@ -119,6 +128,7 @@ class CatalogFixtureCommand extends Command
                     'source' => 'meta_title',
                     'scope' => null,
                     'locale' => 'en_US',
+                    'default' => 'Meta default title',
                 ],
                 'release_date' => [
                     'source' => null,
@@ -136,6 +146,11 @@ class CatalogFixtureCommand extends Command
                     'locale' => null,
                 ],
                 'thumbnail' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'weight' => [
                     'source' => null,
                     'scope' => null,
                     'locale' => null,
@@ -180,7 +195,7 @@ class CatalogFixtureCommand extends Command
     }
 
     /**
-     * @param array<array-key, array{source: string|null, scope:string|null, locale: string|null}> $productMapping
+     * @param ProductMapping $productMapping
      * @throws \Doctrine\DBAL\Exception
      */
     private function setCatalogProductMapping(string $id, array $productMapping): void
@@ -254,6 +269,10 @@ class CatalogFixtureCommand extends Command
             "size": {
               "type": "string",
               "enum": ["S", "M", "L"]
+            },
+            "weight": {
+              "type": "number",
+              "title": "Weight"
             },
             "colors": {
               "type": "array",
