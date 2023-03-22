@@ -1,5 +1,5 @@
 import React, {FC, useCallback} from 'react';
-import {BooleanInput, Field, Helper, TextInput} from 'akeneo-design-system';
+import {BooleanInput, Field, Helper, NumberInput, TextInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Source} from '../../models/Source';
 import styled from 'styled-components';
@@ -46,6 +46,18 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}
                 />
             );
             break;
+        case 'number':
+            element = (
+                <NumberInput
+                    data-testid={'number-default-value'}
+                    onChange={value => onChangeMiddleware({...source, default: value})}
+                    placeholder={translate(
+                        'akeneo_catalogs.product_mapping.source.parameters.default_value.placeholder'
+                    )}
+                    value={source.default !== undefined && source.default !== null ? source.default.toString() : ''}
+                />
+            );
+            break;
     }
 
     const onChangeMiddleware = useCallback(
@@ -55,6 +67,13 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}
             }
             if (targetTypeKey === 'boolean' && source.default === null) {
                 delete source.default;
+            }
+            if (targetTypeKey === 'number') {
+                if (source.default === '') {
+                    delete source.default;
+                } else {
+                    source.default = parseFloat(source.default);
+                }
             }
             onChange(source);
         },
