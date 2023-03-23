@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Field, Helper, NumberInput, Button, getColor, getFontSize, SelectInput, CopyIcon} from 'akeneo-design-system';
-import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
+import {Button, CopyIcon, Field, getColor, getFontSize, Helper, NumberInput, SelectInput} from 'akeneo-design-system';
+import {filterErrors, TextField, useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps} from './model';
 import {useGetPublicKey} from '../../hooks/';
 import {
-  isSftpPasswordStorage,
-  isSftpStorage,
-  isValidSftpLoginType,
-  SFTP_STORAGE_LOGIN_TYPES,
-  SftpStorageLoginType,
+    isSftpPasswordStorage,
+    isSftpStorage,
+    isValidSftpLoginType,
+    SFTP_STORAGE_LOGIN_TYPES,
+    SftpStorageLoginType,
 } from '../../models';
 import {CheckStorageConnection} from './CheckStorageConnection';
 
@@ -33,8 +33,6 @@ const CopyableInput = styled.input`
   padding: 0 35px 0 15px;
   outline-style: none;
   cursor: not-allowed;
-  overflow: hidden;
-  text-overflow: ellipsis;
   &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
@@ -69,9 +67,13 @@ const SftpStorageConfigurator = ({
   const portValidationErrors = filterErrors(validationErrors, '[port]');
   const publicKey = useGetPublicKey();
   const passwordIsStoredOnServer = storage.login_type === 'password' && storage.password === undefined;
+  const notify = useNotify();
 
   const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
-  const copyToClipboard = (publicKey: string) => canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
+  const copyToClipboard = (publicKey: string) => {
+      canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
+      notify(NotificationLevel.SUCCESS, translate('pim_import_export.form.job_instance.storage_form.public_key.copy_notification_success'));
+  }
 
   const handleLoginTypeChange = (newLoginType: SftpStorageLoginType) => {
     if ('password' === newLoginType) {
@@ -193,6 +195,7 @@ const SftpStorageConfigurator = ({
           <CopyableInputContainer>
             <CopyableInput disabled={true} data-testid="publicKey" value={publicKey ?? ''} />
             <CopyableIcon
+              title={translate('pim_import_export.form.job_instance.storage_form.public_key.button_title')}
               size={16}
               data-testid="copyToClipboard"
               onClick={() => publicKey && copyToClipboard(publicKey)}
