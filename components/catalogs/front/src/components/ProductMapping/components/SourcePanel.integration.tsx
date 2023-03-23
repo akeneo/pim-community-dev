@@ -44,7 +44,7 @@ test('it displays the target as a title', () => {
 test('it displays a message when the selected source has no parameters', () => {
     mockFetchResponses([
         {
-            url: '/rest/catalogs/attributes/Release%20date',
+            url: '/rest/catalogs/attributes/release_date',
             json: {
                 code: 'release_date',
                 label: 'Release date',
@@ -67,7 +67,7 @@ test('it displays a message when the selected source has no parameters', () => {
         },
     ]);
     const source: Source = {
-        source: 'Release date',
+        source: 'release_date',
         locale: null,
         scope: null,
     };
