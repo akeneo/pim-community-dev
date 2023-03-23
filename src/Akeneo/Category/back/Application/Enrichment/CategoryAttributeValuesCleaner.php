@@ -71,6 +71,10 @@ class CategoryAttributeValuesCleaner
             if (!empty($valuesToRemove)) {
                 foreach ($valuesToRemove as $value) {
                     $enrichedValues->removeValue($value);
+
+                    if ($value instanceof ImageValue) {
+                        $this->categoryImageDataCleaner->cleanImageFiles($value);
+                    }
                 }
 
                 $cleanedEnrichedValues[$categoryCode] = $enrichedValues;
