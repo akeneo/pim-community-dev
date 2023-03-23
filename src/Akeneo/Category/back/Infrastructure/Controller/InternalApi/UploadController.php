@@ -2,7 +2,8 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Application\Handler\StoreUploadedFile;
+use Akeneo\Category\Domain\Filesystem\Storage;
+use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,7 +22,7 @@ class UploadController
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly NormalizerInterface $normalizer,
-        private readonly StoreUploadedFile $storeUploadedFile,
+        private readonly FileStorer $fileStorer,
         private readonly ?array $supportedMimeTypes = [],
     ) {
     }
@@ -47,7 +48,7 @@ class UploadController
             return new JsonResponse($this->normalizer->normalize($violations), 400);
         }
 
-        $file = ($this->storeUploadedFile)($uploadedFile);
+        $file = $this->fileStorer->store($uploadedFile, Storage::CATEGORY_STORAGE_ALIAS);
 
         return new JsonResponse([
             'originalFilename' => $uploadedFile->getClientOriginalName(),

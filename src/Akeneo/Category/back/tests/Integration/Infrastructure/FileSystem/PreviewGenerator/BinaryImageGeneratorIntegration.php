@@ -8,7 +8,6 @@ declare(strict_types=1);
  */
 namespace Akeneo\Test\Category\Integration\Infrastructure\FileSystem\PreviewGenerator;
 
-use Akeneo\Category\Application\Handler\StoreUploadedFile;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
@@ -25,6 +24,7 @@ use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorI
 use Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorRegistry;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -182,7 +182,7 @@ class BinaryImageGeneratorIntegration extends TestCase
         $fileInfo = new \SplFileInfo($this->getFixturePath('akeneo.jpg'));
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'image/jpg');
 
-        return $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
+        return $this->get(FileStorer::class)->store($fileToUpload);
     }
 
     private function generateJpegImage(int $size, int $quality): string
@@ -192,7 +192,7 @@ class BinaryImageGeneratorIntegration extends TestCase
         self::assertTrue(imagejpeg($image, $imageFilename, $quality));
         $fileInfo = new \SplFileInfo($imageFilename);
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'image/jpg');
-        $file = $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
+        $file = $this->get(FileStorer::class)->store($fileToUpload);
 
         return base64_encode($file->getKey());
     }
@@ -205,7 +205,7 @@ class BinaryImageGeneratorIntegration extends TestCase
         self::assertTrue(imagepng($image, $imageFilename, $quality));
         $fileInfo = new \SplFileInfo($imageFilename);
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'image/png');
-        $file = $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
+        $file = $this->get(FileStorer::class)->store($fileToUpload);
 
         return base64_encode($file->getKey());
     }
@@ -214,7 +214,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     {
         $fileInfo = new \SplFileInfo($this->getFixturePath('akeneo.pdf'));
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'application/pdf');
-        $file = $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
+        $file = $this->get(FileStorer::class)->store($fileToUpload);
 
         return base64_encode($file->getKey());
     }
