@@ -32,7 +32,7 @@ final class MoveChildAttributesTasklet implements TaskletInterface, TrackableTas
         private readonly EntityManagerClearerInterface $cacheClearer,
         private readonly JobRepositoryInterface $jobRepository,
         private readonly JobStopper $jobStopper,
-        private readonly int $batchSize = 100,
+        private readonly int $batchSize = 1000,
     ) {
     }
 

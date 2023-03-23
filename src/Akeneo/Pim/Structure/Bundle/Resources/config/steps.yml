@@ -450,7 +450,7 @@ services:
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job.job_stopper'
-            - 100
+            - 1000
 
     pim_connector.step.delete_attribute_groups:
         class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'
