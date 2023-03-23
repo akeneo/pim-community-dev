@@ -4,8 +4,6 @@ akeneo.category:
       category_templates: 类别模板
   attributes: 属性
   edition_form:
-    error:
-      unhandled_attribute_type: 找不到属性类型“{{type}}”的属性字段生成器
     template:
       title: 模板
       fetching_failed: 获取模板时出错。
@@ -16,7 +14,6 @@ akeneo.category:
   template:
     create: 激活模板
     edit: 查看模板
-    delete: 删除模板
     notification_success: 模板已成功激活
     notification_error: 无法激活模板
     attribute:
@@ -26,6 +23,15 @@ akeneo.category:
         textarea: 文本区域
         richtext: 富文本
         image: 图像
+    add_attribute:
+      confirmation_modal:
+        input:
+          label: 标签
+          code: 代码
+          type:
+            option_title:
+              text: 文本
+              image: 图像
   template_list:
     columns:
       header: 标签

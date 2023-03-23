@@ -77,7 +77,7 @@ pim_common:
   updated: Caricato
   view: Visualizzazione
   yes: "Sì"
-  uuid: uuid
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -546,4 +546,3 @@ pim_login:
   footer:
     powered: Con tecnologia
     powered_image_title: logo Akeneo
-pim_system.acl_group.developer_mode: Modalità sviluppatore
