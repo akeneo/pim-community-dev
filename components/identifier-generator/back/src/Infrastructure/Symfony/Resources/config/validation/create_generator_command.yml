@@ -86,7 +86,6 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - All:
                 - Length:
                     max: 255
-                - NotBlank: ~
         delimiter:
             - NotBlank:
                 allowNull: true

@@ -170,7 +170,7 @@ final class UpdateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         Assert::assertSame(
-            '[{"message":"Expected the key \u0022target\u0022 to exist."}]',
+            '[{"path":"target","message":"This value should not be blank."}]',
             $response->getContent()
         );
     }

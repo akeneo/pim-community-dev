@@ -34,10 +34,14 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
 
   const onLabelChange = useCallback(
     (value: string) => {
-      if (value.trim() !== '') {
-        setLabel(value);
-        if (!isCodeDirty) setCode(value.replace(/[^a-zA-Z0-9]/g, '_').substring(0, codeLengthLimit));
-      }
+      setLabel(value);
+      if (!isCodeDirty)
+        setCode(
+          value
+            .trim()
+            .replace(/[^a-zA-Z0-9]/g, '_')
+            .substring(0, codeLengthLimit)
+        );
     },
     [isCodeDirty]
   );
@@ -54,7 +58,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
       onSave({
         code,
         target,
-        labels: label ? {[uiLocale]: label} : {},
+        labels: label.trim() ? {[uiLocale]: label.trim()} : {},
         conditions: [],
         structure: [],
         delimiter: null,
