@@ -22,7 +22,7 @@ final class AttributeShouldExistValidator extends ConstraintValidator
     public function validate($target, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, AttributeShouldExist::class);
-        if (!\is_string($target)) {
+        if (!\is_string($target) || '' === $target) {
             return;
         }
 

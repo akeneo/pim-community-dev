@@ -403,10 +403,11 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'labels[fr_FR]: This value is too long. It should have 255 characters or less.'
     And the identifier should not be created
 
-  Scenario: Cannot create an identifier generator with empty label
+  Scenario: Can create an identifier generator with empty label
     When I try to create an identifier generator with 'de_DE' label ''
-    Then I should get an error with message 'labels[de_DE]: This value should not be blank.'
-    And the identifier should not be created
+    Then The identifier generator is saved in the repository
+    And I should not get any error
+    And there should be no label for 'de_DE'
 
   # Delimiter
   Scenario: Cannot create an identifier generator with an empty delimiter

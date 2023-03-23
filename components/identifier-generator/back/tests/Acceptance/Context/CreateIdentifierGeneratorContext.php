@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
  */
 final class CreateIdentifierGeneratorContext implements Context
 {
-    public const DEFAULT_CODE = 'abcdef';
+    public const DEFAULT_CODE = 'default';
     private ?ViolationsException $violations = null;
 
     public function __construct(
@@ -487,6 +487,16 @@ final class CreateIdentifierGeneratorContext implements Context
             unset($defaultStructure['process']['value']);
         }
         $this->tryToCreateGenerator(structure: [$defaultStructure]);
+    }
+
+    /**
+     * @Then there should be no label for :localeCode
+     */
+    public function thereShouldBeNoLabelForLocale(string $localeCode): void
+    {
+        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_CODE);
+        Assert::isInstanceOf($identifierGenerator, IdentifierGenerator::class);
+        Assert::keyNotExists($identifierGenerator->labelCollection()->normalize(), $localeCode);
     }
 
     private function tryToCreateGenerator(
