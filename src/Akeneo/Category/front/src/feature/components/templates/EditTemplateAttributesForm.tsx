@@ -65,7 +65,7 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
       <SectionTitle sticky={44}>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
         {featureFlags.isEnabled('category_template_customization') && (
-          <AddAttributeButton active ghost level="tertiary" onClick={handleClickAddAttributeButton}>
+          <AddAttributeButton ghost size="small" level="tertiary" onClick={handleClickAddAttributeButton}>
             {translate('akeneo.category.template.add_attribute.add_button')}
           </AddAttributeButton>
         )}
