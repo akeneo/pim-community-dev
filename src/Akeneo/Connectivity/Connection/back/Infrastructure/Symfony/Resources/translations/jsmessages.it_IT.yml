@@ -38,8 +38,6 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: App connesse
   akeneo_connectivity_connection_connect_connected_apps_edit: Impostazioni app
   akeneo_connectivity_connection_connect_connected_apps_delete: Eliminazione app
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Crea un'app di prova
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Elimina app di prova
   akeneo_connectivity_connection_connect_connected_apps_open: Apri app
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Modifica catalogo
 akeneo_connectivity.connection:
@@ -73,51 +71,8 @@ akeneo_connectivity.connection:
         empty: Non ci sono app compatibili con la tua versione
       unreachable: Non riusciamo a raggiungere l'App Store, torna più tardi.
       scroll_to_top: Scorri in alto
-      test_apps:
-        title: Mie app di prova
+      custom_apps:
         removed_user: Utente rimosso
-        create_a_test_app: Crea un'app di prova
-        modal:
-          subtitle: Crea un'app di prova
-          app_information:
-            title: Informazioni app
-            description: Se hai bisogno di aiuto, consulta il nostro articolo
-            link: Come testare la mia app prima di pubblicarla?
-            fields:
-              name: Nome
-              activate_url: URL di attivazione
-              callback_url: URL di callback
-          credentials:
-            title: Credenziali
-            warning: Assicurati di salvare le credenziali da qualche parte poiché saranno mostrate qui solo una volta.
-            client_id: ID client
-            client_secret: Chiave privata client
-        errors:
-          page_not_found: Pagina non trovata
-          creation:
-            name:
-              min_length: Il nome dell'app di prova è troppo corto. Deve contenere almeno 3 caratteri.
-              max_length: Il nome dell'app di prova è troppo lungo. Non deve contenere più di 255 caratteri.
-              not_blank: Il nome dell'app di prova è obbligatorio.
-            client_id:
-              max_length: L'ID client dell'app di prova è troppo lungo. Non deve contenere più di 36 caratteri.
-              not_blank: L'ID client è obbligatorio.
-            activate_url:
-              max_length: L'URL di attivazione dell'app di prova è troppo lungo. Non deve contenere più di 255 caratteri.
-              must_be_url: L'URL di attivazione deve essere un URL valido.
-              not_blank: L'URL di attivazione è obbligatorio.
-            callback_url:
-              max_length: L'URL di callback dell'app di prova è troppo lungo. Non deve contenere più di 255 caratteri.
-              must_be_url: L'URL di callback deve essere un URL valido
-              not_blank: L'URL di callback è obbligatorio.
-        delete:
-          subtitle: App
-          title: Conferma eliminazione
-          description: Stai per eliminare la tua app di prova da questo PIM.
-          warning: Confermando l'eliminazione, eliminerai l'app di prova sulla pagina dell'App Store e la relativa app connessa.
-          flash:
-            success: App di prova eliminata con successo.
-            error: Spiacenti, si è verificato un errore durante l'eliminazione dell'app di prova.
     connected_apps:
       list:
         apps:
@@ -128,8 +83,7 @@ akeneo_connectivity.connection:
           marketplace_link_anchor: App Store
           at_least_one_is_not_listed_on_the_appstore: Alcune delle tue app connesse non sono compatibili con la tua versione PIM o non esistono più nell'App Store di Akeneo. Contattaci per maggiori informazioni.
           pending_apps: Alcune delle tue app non sono connesse al tuo PIM.
-        test_apps:
-          title: Mie app di prova
+        custom_apps:
           removed_user: Utente rimosso
         helper:
           title: '[0,1] Il tuo PIM è connesso con {{ count }} app.<unk> [2,Inf] Il tuo PIM è connesso con {{ count }} app.'
@@ -171,6 +125,16 @@ akeneo_connectivity.connection:
             information_link_anchor: Articolo dell'Help Center
             openid_only: Questa app utilizza l'autenticazione Akeneo App senza richiedere i tuoi dati personali.
           pending: Questa app non è connessa al tuo PIM. L'apertura dell'app dovrebbe risolvere il problema di connessione. Se il problema persiste, contatta il supporto dell'app.
+          credentials:
+            title: Credenziali
+            client_id: ID client
+            client_secret: Chiave privata client
+            regenerate_button: Rigenera
+            regenerate_secret:
+              flash_error: Si è verificato un errore durante la rigenerazione della chiave segreta della connessione.
+              confirm:
+                regenerate_button: Rigenera
+                cancel_button: Annulla
         error_monitoring:
           error: Ops, si è verificato un errore!
           helper:
@@ -295,6 +259,31 @@ akeneo_connectivity.connection:
           must_be_url: Il redirect_uri non è un url valido.
         scope:
           too_long: L'elenco ambiti non deve contenere più di 1000 caratteri.
+    custom_apps:
+      create_modal:
+        app_information:
+          title: Informazioni app
+          description: Se hai bisogno di aiuto, consulta il nostro articolo
+          link: Come testare la mia app prima di pubblicarla?
+          fields:
+            name: Nome
+            activate_url: URL di attivazione
+            callback_url: URL di callback
+        credentials:
+          title: Credenziali
+          client_id: ID client
+          client_secret: Chiave privata client
+        errors:
+          client_id:
+            not_blank: L'ID client è obbligatorio.
+          activate_url:
+            must_be_url: L'URL di attivazione deve essere un URL valido.
+            not_blank: L'URL di attivazione è obbligatorio.
+          callback_url:
+            must_be_url: L'URL di callback deve essere un URL valido
+            not_blank: L'URL di callback è obbligatorio.
+      delete_modal:
+        title: Conferma eliminazione
   connections: Connessioni
   secondary_actions:
     title: Altre azioni

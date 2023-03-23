@@ -28,6 +28,15 @@ akeneo.category:
         textarea: Tekstgebied
         richtext: Tekst met opmaak
         image: Afbeelding
+    add_attribute:
+      confirmation_modal:
+        input:
+          label: Label
+          code: Code
+          type:
+            option_title:
+              text: Tekst
+              image: Afbeelding
     deactivate:
       deactivate_template: Template deactiveren
       confirmation_modal:
