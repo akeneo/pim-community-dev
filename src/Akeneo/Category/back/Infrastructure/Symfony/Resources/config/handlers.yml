@@ -40,6 +40,14 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\AddAttributeCommand' }
 
+  Akeneo\Category\Application\Command\DeleteAttributeCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Domain\Query\DeactivateAttribute'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeleteAttributeCommand' }
+
+
   Akeneo\Category\Application\Handler\StoreUploadedFile:
     arguments:
       - '@akeneo_file_storage.file_storage.file.file_storer'
