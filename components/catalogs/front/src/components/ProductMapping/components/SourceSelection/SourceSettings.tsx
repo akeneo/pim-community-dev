@@ -5,6 +5,23 @@ import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
 import {Source} from '../../models/Source';
 import {Attribute} from '../../../../models/Attribute';
 import {SourceErrors} from '../../models/SourceErrors';
+import {ArrowIcon, getColor} from 'akeneo-design-system';
+import styled from 'styled-components';
+
+const Bullet = styled(ArrowIcon)`
+    color: ${getColor('grey', 100)};
+`;
+
+const BulletLine = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+    gap: 8px;
+    margin-top: 5px;
+    padding-left: 10px;
+    max-width: 460px;
+    align-items: center;
+`;
 
 type Props = {
     source: Source;
@@ -23,8 +40,15 @@ export const SourceSettings: FC<Props> = ({source, attribute, errors, onChange})
                 source = {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
             }
 
+            if (
+                (source.source === 'categories' || source.source === 'family') &&
+                (undefined === source.parameters?.label_locale || null === source.parameters?.label_locale)
+            ) {
+                source = {...source, parameters: {...source.parameters, label_locale: null}};
+            }
+
             if (attribute?.type === 'pim_catalog_price_collection' && !(source.parameters.currency ?? false)) {
-                source = {...source, parameters: {...source.parameters, currency: source.currency ?? null}};
+                source = {...source, parameters: {...source.parameters, currency: null}};
             }
 
             if (attribute?.type === 'pim_catalog_metric') {
@@ -38,18 +62,27 @@ export const SourceSettings: FC<Props> = ({source, attribute, errors, onChange})
     return (
         <>
             {attribute.scopable && (
-                <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
+                <BulletLine>
+                    <Bullet />
+                    <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
+                </BulletLine>
             )}
             {attribute.localizable && !attribute.scopable && (
-                <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
+                <BulletLine>
+                    <Bullet />
+                    <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
+                </BulletLine>
             )}
             {attribute.localizable && attribute.scopable && (
-                <SelectChannelLocaleDropdown
-                    source={source}
-                    onChange={onChangeMiddleware}
-                    error={errors?.locale}
-                    disabled={source.scope === null}
-                />
+                <BulletLine>
+                    <Bullet />
+                    <SelectChannelLocaleDropdown
+                        source={source}
+                        onChange={onChangeMiddleware}
+                        error={errors?.locale}
+                        disabled={source.scope === null}
+                    />
+                </BulletLine>
             )}
         </>
     );

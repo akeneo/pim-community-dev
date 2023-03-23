@@ -2,23 +2,23 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\CategoryFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use PhpSpec\ObjectBehavior;
 
 class CategoryFilterSpec extends ObjectBehavior
 {
     function let(CategoryRepositoryInterface $categoryRepository)
     {
-        $operators = ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN'];
+        $operators = ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN', 'NOT EMPTY'];
         $this->beConstructedWith($categoryRepository, ['categories'], $operators);
     }
 
@@ -48,6 +48,7 @@ class CategoryFilterSpec extends ObjectBehavior
             'IN OR UNCLASSIFIED',
             'IN CHILDREN',
             'NOT IN CHILDREN',
+            'NOT EMPTY',
         ]);
         $this->supportsOperator('UNCLASSIFIED')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
@@ -138,6 +139,17 @@ class CategoryFilterSpec extends ObjectBehavior
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('categories', Operators::UNCLASSIFIED, [], 'en_US', 'ecommerce', []);
+    }
+
+    function it_adds_a_filter_with_operator_IS_NOT_EMPTY(SearchQueryBuilder $sqb) {
+        $sqb->addFilter(
+            [
+                'exists' => ['field' => 'categories'],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addFieldFilter('categories', Operators::IS_NOT_EMPTY, [], 'en_US', 'ecommerce', []);
     }
 
     function it_adds_a_filter_with_operator_IN_LIST_OR_UNCLASSIFIED(

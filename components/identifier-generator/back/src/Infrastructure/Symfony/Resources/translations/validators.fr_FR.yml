@@ -19,6 +19,7 @@ validation:
     unknown_locale: 'La locale "{{ localeCode }}" n''existe pas ou n''est pas activée.'
     inactive_locale: 'La locale "{{ localeCode }}" n''est pas activée pour le canal "{{ channelCode }}"'
     family_property_fields_required: 'Le champ "{{ field }}" est requis pour le type "famille".'
+    simple_select_property_fields_required: 'Le champ "{{ field }}" est requis pour le type "simple_select".'
     process_unknown_operator: 'L''opérateur {{ value }} ne peut être que l''un des suivants : {{ choices }}.'
     locale_required: 'Une locale est requise pour l''attribut {{ attributeLabel }}'
     scope_required: 'Un canal est requis pour l''attribut {{ attributeLabel }}.'

@@ -42,6 +42,10 @@ final class ProductMappingRequiredFilters implements PqbFiltersInterface
                 throw new ProductMappingRequiredSourceMissingException();
             }
 
+            if (isset($productMapping[$targetCode]['default'])) {
+                continue;
+            }
+
             $filter = [
                 'field' => $productMapping[$targetCode]['source'],
                 'value' => '',

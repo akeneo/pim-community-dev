@@ -24,12 +24,15 @@ final class LimitNumberOfAttributesInTheTemplateValidator extends ConstraintVali
     ) {
     }
 
+    /**
+     * @param AddAttributeCommand $value
+     */
     public function validate($value, Constraint $constraint): void
     {
         Assert::isInstanceOf($value, AddAttributeCommand::class);
         Assert::isInstanceOf($constraint, LimitNumberOfAttributesInTheTemplate::class);
 
-        $templateUuid = $value->templateUuid();
+        $templateUuid = $value->templateUuid;
         Assert::uuid($templateUuid);
 
         $attributeCollection = $this->getAttribute->byTemplateUuid(TemplateUuid::fromString($templateUuid));

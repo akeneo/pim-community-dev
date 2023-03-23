@@ -162,6 +162,102 @@ class ProductMapperTest extends IntegrationTestCase
         $this->assertEquals($expected, $mappedProduct);
     }
 
+    public function testItUseTheDefaultValueForTargetWithNullProductValue(): void
+    {
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+
+        $product = [
+            'uuid' => Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'),
+            'identifier' => 'webcam_logi_tek_x01_de',
+            'is_enabled' => true,
+            'product_model_code' => null,
+            'created' => new \DateTimeImmutable('2023-01-26 12:23:45'),
+            'updated' => new \DateTimeImmutable('2023-01-26 14:00:15'),
+            'family_code' => 'webcam',
+            'group_codes' => [],
+            'raw_values' => [
+                'name' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => null,
+                    ],
+                ],
+            ],
+        ];
+
+        $mapping = [
+            'uuid' => [
+                'source' => 'uuid',
+                'scope' => null,
+                'locale' => null,
+            ],
+            'title' => [
+                'source' => 'name',
+                'scope' => null,
+                'locale' => null,
+                'default' => 'Default title',
+            ],
+        ];
+
+        $mappedProduct = $this->productMapper->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
+
+        $expected = [
+            'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
+            'title' => 'Default title',
+        ];
+
+        $this->assertEquals($expected, $mappedProduct);
+    }
+
+    public function testItUseTheDefaultValueForTargetWithNullSource(): void
+    {
+        $this->createAttribute([
+            'code' => 'name',
+            'type' => 'pim_catalog_text',
+            'scopable' => true,
+            'localizable' => true,
+        ]);
+
+        $product = [
+            'uuid' => Uuid::fromString('8985de43-08bc-484d-aee0-4489a56ba02d'),
+            'identifier' => 'webcam_logi_tek_x01_de',
+            'is_enabled' => true,
+            'product_model_code' => null,
+            'created' => new \DateTimeImmutable('2023-01-26 12:23:45'),
+            'updated' => new \DateTimeImmutable('2023-01-26 14:00:15'),
+            'family_code' => 'webcam',
+            'group_codes' => [],
+            'raw_values' => [],
+        ];
+
+        $mapping = [
+            'uuid' => [
+                'source' => 'uuid',
+                'scope' => null,
+                'locale' => null,
+            ],
+            'title' => [
+                'source' => null,
+                'scope' => null,
+                'locale' => null,
+                'default' => 'Default title',
+            ],
+        ];
+
+        $mappedProduct = $this->productMapper->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
+
+        $expected = [
+            'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
+            'title' => 'Default title',
+        ];
+
+        $this->assertEquals($expected, $mappedProduct);
+    }
+
     private function getProductMappingSchema(): array
     {
         $rawProductMappingSchema = <<<'JSON_WRAP'

@@ -14,11 +14,13 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Query\GetProductMappingSchemaQuery;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
@@ -809,6 +811,9 @@ class ApiContext implements Context
                       "items": {
                         "type": "string"
                       }
+                    },
+                    "groups": {
+                      "type": "string"
                     }
                   },
                   "required": ["title"]
@@ -903,6 +908,9 @@ class ApiContext implements Context
                         'source' => 'family',
                         'scope' => null,
                         'locale' => null,
+                        'parameters' => [
+                            'label_locale' => 'en_US',
+                        ],
                     ],
                     'weight' => [
                         'source' => 'weight',
@@ -920,6 +928,14 @@ class ApiContext implements Context
                             'label_locale' => 'en_US',
                         ],
                     ],
+                    'groups' => [
+                        'source' => 'categories',
+                        'scope' => null,
+                        'locale' => null,
+                        'parameters' => [
+                          'label_locale' => 'en_US',
+                        ],
+                    ],
                 ],
             ),
         );
@@ -932,6 +948,19 @@ class ApiContext implements Context
             'akeneoLogoImage' => $this->getFileInfoKey(__DIR__ . '/fixtures/akeneo.jpg'),
             'ziggyImage' => $this->getFileInfoKey(__DIR__ . '/fixtures/ziggy.png'),
         ];
+
+        $this->createCategory([
+            'code' => 'clothing',
+            'labels' => [
+                'en_US' => 'Clothing',
+            ],
+        ]);
+        $this->createCategory([
+            'code' => 'cotton_clothing',
+            'labels' => [
+                'en_US' => 'Cotton clothing',
+            ],
+        ]);
 
         $products = [
             [
@@ -959,6 +988,8 @@ class ApiContext implements Context
                     'blue',
                     'green',
                 ],
+                'groups' => ['clothing', 'cotton_clothing'],
+                'family' => 't-shirt',
             ],
             [
                 'uuid' => '62071b85-67af-44dd-8db1-9bc1dab393e7',
@@ -984,6 +1015,8 @@ class ApiContext implements Context
                 'colors' => [
                     'red',
                 ],
+                'groups' => ['clothing', 'cotton_clothing'],
+                'family' => 't-shirt',
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -1009,6 +1042,8 @@ class ApiContext implements Context
                 'colors' => [
                     'purple',
                 ],
+                'groups' => ['clothing'],
+                'family' => 't-shirt',
             ],
             [
                 'uuid' => '7343e656-a114-4956-bb5e-2f5f1317b6d2',
@@ -1035,6 +1070,8 @@ class ApiContext implements Context
                     'purple',
                     'red',
                 ],
+                'groups' => [],
+                'family' => 't-shirt',
             ],
         ];
 
@@ -1131,6 +1168,9 @@ class ApiContext implements Context
             'sale_countries',
             'weight',
             'colors',
+        ], [
+            'fr_FR' => 'T-Sheurt',
+            'en_US' => 'T-Shirt',
         ]);
 
         $bus = $this->container->get('pim_enrich.product.message_bus');
@@ -1141,7 +1181,6 @@ class ApiContext implements Context
                 ProductUuid::fromUuid(Uuid::fromString($product['uuid'])),
                 [
                     new SetIdentifierValue('sku', $product['sku']),
-                    new SetFamily('t-shirt'),
                     new SetEnabled((bool) $product['enabled']),
                     new SetTextValue('name', 'ecommerce', 'en_US', $product['name']),
                     new SetTextareaValue('description', 'ecommerce', 'en_US', $product['description']),
@@ -1159,6 +1198,8 @@ class ApiContext implements Context
                     )),
                     new SetMeasurementValue('weight', null, null, $product['weight']['amount'], $product['weight']['unit']),
                     new SetMultiSelectValue('colors', null, null, $product['colors']),
+                    new SetCategories($product['groups']),
+                    new SetFamily($product['family']),
                 ],
             );
 
@@ -1208,9 +1249,10 @@ class ApiContext implements Context
                 'is_released' => true,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
                 'countries' => 'Brazil, Canada',
-                'type' => 't-shirt',
+                'type' => 'T-Shirt',
                 'weight' => 12,
                 'available_colors' => ['Blue', 'Green'],
+                'groups' => 'Clothing, Cotton clothing',
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -1225,9 +1267,10 @@ class ApiContext implements Context
                 'is_released' => false,
                 'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['ziggyImage'] . '/download',
                 'countries' => 'Brazil, France',
-                'type' => 't-shirt',
+                'type' => 'T-Shirt',
                 'weight' => 0.125,
                 'available_colors' => ['Purple'],
+                'groups' => 'Clothing',
             ],
         ];
 
@@ -1271,9 +1314,10 @@ class ApiContext implements Context
             'is_released' => true,
             'thumbnail' => 'http://localhost/api/rest/v1/media-files/' . $this->files['akeneoLogoImage'] . '/download',
             'countries' => 'Brazil, Canada',
-            'type' => 't-shirt',
+            'type' => 'T-Shirt',
             'weight' => 12,
             'available_colors' => ['Blue', 'Green'],
+            'groups' => 'Clothing, Cotton clothing',
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload);
@@ -1344,13 +1388,29 @@ class ApiContext implements Context
     /**
      * @param array<string> $attributes
      */
-    private function createFamily(string $code, array $attributes): void
+    private function createFamily(string $code, array $attributes, ?array $labels = null): void
     {
         $family = $this->container->get('pim_catalog.factory.family')->create();
-        $this->container->get('pim_catalog.updater.family')->update($family, [
+
+        $options = [
             'code' => $code,
             'attributes' => $attributes,
-        ]);
+        ];
+
+        if (null !== $labels) {
+            $options['labels'] = $labels;
+        }
+
+        $this->container->get('pim_catalog.updater.family')->update($family, $options);
+
         $this->container->get('pim_catalog.saver.family')->save($family);
+    }
+
+    protected function createCategory(array $data = []): void
+    {
+        /** @var CategoryInterface $category */
+        $category = $this->container->get('pim_catalog.factory.category')->create();
+        $this->container->get('pim_catalog.updater.category')->update($category, $data);
+        $this->container->get('pim_catalog.saver.category')->save($category);
     }
 }

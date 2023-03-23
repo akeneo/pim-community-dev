@@ -5,4 +5,5 @@ export type SourceErrors = {
     locale: string | undefined;
     scope: string | undefined;
     parameters?: SourceParameterErrors | undefined;
+    default?: string;
 };

@@ -129,10 +129,8 @@ akeneo_catalogs:
         placeholder: Attribut auswählen
         title: Quellparameter
         channel:
-          label: Ausgabekanal
           placeholder: Wähle einen Kanal aus
         locale:
-          label: Gebietsschema
           placeholder: Gebietsschema auswählen
         label_locale:
           label: Wertübersetzung
@@ -143,6 +141,8 @@ akeneo_catalogs:
           placeholder: Währung auswählen
           helper: Wählen Sie die Währung aus, in der der Wert gesendet werden soll.
         no_parameters_message: Keine Parameter für diese Quelle.
+        unit:
+          label: Einheit
       select_source:
         label: PIM Quelle
         search: Suchkriterium
@@ -168,3 +168,6 @@ akeneo_catalogs:
           minimum: '[0,Inf[ Dieses Ziel muss größer oder gleich {{ value }} sein.'
           maximum: '[0,Inf[ Dieses Ziel muss kleiner oder gleich {{ value }} sein.'
           enum: '[0,Inf[ Enum: Dieses Ziel akzeptiert nur folgende Werte: {{ value }}.'
+      system_attributes:
+        family:
+          label: Produktfamilie
