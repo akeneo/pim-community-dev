@@ -1,24 +1,58 @@
-import { useMutation } from "react-query";
+import {useMutation} from 'react-query';
+import {useRouter} from '@akeneo-pim-community/shared';
+import {apiFetch, BadRequestError} from '../tools/apiFetch';
 
 type Form = {
-    code: string;
-    locale: string;
-    label: string|null;
-    type: string;
-    is_localizable: boolean;
-    is_scopable: boolean;
+  templateId: string;
+  code: string;
+  locale: string;
+  label: string | null;
+  type: string;
+  isLocalizable: boolean;
+  isScopable: boolean;
 };
 
+type CreateAttributeErrors = {
+  code?: string[];
+  label?: string[];
+};
+
+type ResponseError = {
+  error: {
+    property: string;
+    message: string;
+  };
+};
+
+type ApiResponseError = ResponseError[];
+
 export const useCreateAttribute = () => {
-    return useMutation(
-        async (form: Form) => {
-            console.log(form);
-            return new Promise((res) => setTimeout(() => res({}), 1000));
-        },
-        {
-            onSuccess: () => {
-                console.log("success");
-            }
+  const router = useRouter();
+  return useMutation<void, BadRequestError<CreateAttributeErrors>, Form>(async (form: Form) => {
+    const requestPayload = {
+      code: form.code,
+      locale: form.locale,
+      label: form.label,
+      type: form.type,
+      is_localizable: form.isLocalizable,
+      is_scopable: form.isScopable,
+    };
+    return apiFetch<void, ApiResponseError>(
+      router.generate('pim_category_template_rest_add_attribute', {templateUuid: form.templateId}),
+      {
+        method: 'POST',
+        body: JSON.stringify(requestPayload),
+      }
+    ).catch((error: BadRequestError<ApiResponseError>) => {
+      const exception = error.data.reduce((errors, currentData) => {
+        if (!errors[currentData.error.property]) {
+          errors[currentData.error.property] = [];
         }
-    );
+        errors[currentData.error.property].push(currentData.error.message);
+        return errors;
+      }, {} as CreateAttributeErrors);
+
+      throw new BadRequestError(exception);
+    });
+  });
 };

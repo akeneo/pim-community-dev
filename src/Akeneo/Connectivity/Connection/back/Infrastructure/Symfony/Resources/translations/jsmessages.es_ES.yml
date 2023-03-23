@@ -38,8 +38,9 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: Aplicaciones conectadas
   akeneo_connectivity_connection_connect_connected_apps_edit: Ajustes de la aplicación
   akeneo_connectivity_connection_connect_connected_apps_delete: Eliminación de la aplicación
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Crear una aplicación de prueba
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Eliminar aplicación de prueba
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: Regenerar credenciales
+  akeneo_connectivity_connection_connect_custom_apps_create: Crear una aplicación personalizada
+  akeneo_connectivity_connection_connect_custom_apps_delete: Eliminar la aplicación personalizada
   akeneo_connectivity_connection_connect_connected_apps_open: Abrir aplicación
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Editar catálogo
 akeneo_connectivity.connection:
@@ -73,51 +74,9 @@ akeneo_connectivity.connection:
         empty: No hay aplicaciones compatibles con su versión
       unreachable: No podemos acceder a la App Store, vuelva más tarde.
       scroll_to_top: Desplazar hasta la parte superior
-      test_apps:
-        title: Mis aplicaciones de prueba
+      custom_apps:
+        title: Mis aplicaciones personalizadas
         removed_user: Usuario eliminado
-        create_a_test_app: Crear una aplicación de prueba
-        modal:
-          subtitle: Crear una aplicación de prueba
-          app_information:
-            title: Información de la aplicación
-            description: Si necesita ayuda, consulte nuestro artículo
-            link: '¿Cómo probar mi aplicación antes de publicarla?'
-            fields:
-              name: Nombre
-              activate_url: URL de activación
-              callback_url: URL de Callback
-          credentials:
-            title: Credenciales
-            warning: Asegúrese de guardar estas credenciales en algún lugar ya que las mostramos una sola vez aquí.
-            client_id: ID de cliente
-            client_secret: Secreto del cliente
-        errors:
-          page_not_found: Página no encontrada
-          creation:
-            name:
-              min_length: El nombre de la aplicación de prueba es demasiado corto. Debe tener 3 caracteres o más.
-              max_length: El nombre de la aplicación de prueba es demasiado largo. Debe tener 255 caracteres o menos.
-              not_blank: Se requiere el nombre de la aplicación de prueba.
-            client_id:
-              max_length: El ID de cliente de la aplicación de prueba es demasiado largo. Debe tener 36 caracteres o menos.
-              not_blank: El ID de cliente es obligatorio.
-            activate_url:
-              max_length: La URL de activación de la aplicación de prueba es demasiado larga. Debe tener 255 caracteres o menos.
-              must_be_url: La URL de activación debe ser válida.
-              not_blank: La URL de activación es obligatoria.
-            callback_url:
-              max_length: La URL de Callback de la aplicación de prueba es demasiado larga. Debe tener 255 caracteres o menos.
-              must_be_url: La URL de Callback debe ser válida.
-              not_blank: La URL de Callback es obligatoria.
-        delete:
-          subtitle: Aplicaciones
-          title: Confirmar la eliminación
-          description: Está a punto de eliminar su aplicación de prueba de este PIM.
-          warning: Al confirmar la eliminación, eliminará la aplicación de prueba en la página de la App Store y la aplicación conectada relacionada.
-          flash:
-            success: Aplicación de prueba eliminada con éxito.
-            error: Ha ocurrido un error durante la eliminación de la aplicación de prueba.
     connected_apps:
       list:
         apps:
@@ -128,8 +87,8 @@ akeneo_connectivity.connection:
           marketplace_link_anchor: App Store
           at_least_one_is_not_listed_on_the_appstore: Algunas de las aplicaciones conectadas no son compatibles con la versión de su PIM o ya no existen en la App Store de Akeneo. Póngase en contacto con nosotros para obtener más información.
           pending_apps: Algunas de sus aplicaciones no están conectadas con su PIM.
-        test_apps:
-          title: Mis aplicaciones de prueba
+        custom_apps:
+          title: Mis aplicaciones personalizadas conectadas
           removed_user: Usuario eliminado
         helper:
           title: '[0,1] Su PIM está conectado con {{ count }} aplicación.|[2,Inf] Su PIM está conectado con {{ count }} aplicaciones.'
@@ -171,6 +130,22 @@ akeneo_connectivity.connection:
             information_link_anchor: Artículo del Centro de ayuda
             openid_only: Esta aplicación utiliza la autenticación de Akeneo App sin utilizar sus datos personales.
           pending: Esta aplicación no está conectada a su PIM. Al abrir la aplicación debería solucionarse el problema de conexión. Si persiste, póngase en contacto con el servicio de asistencia de la aplicación.
+          credentials:
+            title: Credenciales
+            client_id: ID de cliente
+            client_secret: Secreto del cliente
+            regenerate_button: Regenerar
+            regenerate_secret:
+              flash_error: Lo sentimos, se ha producido un error al regenerar el secreto de conexión.
+              confirm:
+                title: Confirmar regeneración
+                description: Regenerar el secreto afectará a la conexión de su aplicación personalizada con el PIM. ¿Seguro que desea proceder?
+                regenerate_button: Regenerar
+                cancel_button: Cancelar
+              new_credentials:
+                title: Nuevas credenciales
+                subtitle: Regenerar credenciales
+                done_button: Hecho
         error_monitoring:
           error: '¡Vaya, algo salió mal!'
           helper:
@@ -295,6 +270,52 @@ akeneo_connectivity.connection:
           must_be_url: El redirect_uri no es una url válida.
         scope:
           too_long: La lista de objetivo no debe contener más de 1000 caracteres.
+    custom_apps:
+      creation_limit_reached: Ha alcanzado el límite de 20 aplicaciones personalizadas.
+      create_button: Crear una aplicación
+      create_modal:
+        subtitle: Crear una aplicación personalizada
+        app_information:
+          title: Información de la aplicación
+          description: Si necesita ayuda, consulte nuestro artículo
+          link: '¿Cómo probar mi aplicación antes de publicarla?'
+          fields:
+            name: Nombre
+            activate_url: URL de activación
+            callback_url: URL de Callback
+          field_placeholder:
+            name: Definir el nombre de la aplicación
+            activate_url: Rellenar URL de activación
+            callback_url: Rellenar URL de devolución de llamada
+        credentials:
+          title: Credenciales
+          client_id: ID de cliente
+          client_secret: Secreto del cliente
+        errors:
+          limit_reached: Puede crear hasta 20 aplicaciones personalizadas.
+          name:
+            min_length: El nombre de la aplicación es demasiado corto. Debe tener 3 caracteres o más.
+            max_length: El nombre de la aplicación es demasiado largo. Debe tener 255 caracteres o menos.
+            not_blank: El nombre de la aplicación es obligatorio.
+          client_id:
+            max_length: El identificador de cliente de la aplicación es demasiado largo. Debe tener 36 caracteres o menos.
+            not_blank: El ID de cliente es obligatorio.
+          activate_url:
+            max_length: La URL de activación de la aplicación es demasiado larga. Debe tener 255 caracteres o menos.
+            must_be_url: La URL de activación debe ser válida.
+            not_blank: La URL de activación es obligatoria.
+          callback_url:
+            max_length: La URL de Callback de la aplicación es demasiado larga. Debe tener 255 caracteres o menos.
+            must_be_url: La URL de Callback debe ser válida.
+            not_blank: La URL de Callback es obligatoria.
+      delete_modal:
+        subtitle: Eliminar una aplicación personalizada
+        title: Confirmar la eliminación
+        description: Está a punto de eliminar su aplicación de este PIM.
+        warning: Al confirmar la eliminación, eliminará la aplicación de la página de la App Store y la aplicación conectada relacionada.
+        flash:
+          success: Aplicación personalizada eliminada con éxito.
+          error: Lo sentimos, se ha producido un error al eliminar la aplicación personalizada.
   connections: Conexiones
   secondary_actions:
     title: Otras acciones
