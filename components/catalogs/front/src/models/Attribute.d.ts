@@ -9,4 +9,5 @@ export type Attribute = {
     measurement_family?: string;
     default_measurement_unit?: string;
     asset_family?: string;
+    reference_entity?: string;
 };

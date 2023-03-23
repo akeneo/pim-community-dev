@@ -9,6 +9,9 @@ import {AssetAttributeSourceSelection} from './AssetAttributeSourceSelection/Ass
 import {Target} from '../../models/Target';
 import {ArrowIcon, getColor} from 'akeneo-design-system';
 import styled from 'styled-components';
+import {
+    ReferenceEntityAttributeSourceSelection
+} from './ReferenceEntityAttributeSourceSelection/ReferenceEntityAttributeSourceSelection';
 
 const Bullet = styled(ArrowIcon)`
     color: ${getColor('grey', 100)};
@@ -94,6 +97,15 @@ export const SourceSettings: FC<Props> = ({source, target, attribute, errors, on
                     onChange={onChangeMiddleware}
                     errors={errors}
                     assetFamilyIdentifier={attribute.asset_family}
+                />
+            )}
+            {attribute.reference_entity && (
+                <ReferenceEntityAttributeSourceSelection
+                    source={source}
+                    target={target}
+                    onChange={onChangeMiddleware}
+                    errors={errors}
+                    referenceEntityIdentifier={attribute.reference_entity}
                 />
             )}
         </>
