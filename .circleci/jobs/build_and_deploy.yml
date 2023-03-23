@@ -180,9 +180,13 @@ jobs:
                   steps:
                       - run:
                             name: Save the CE image as a tar
+                            # TODO: Restore previous version after the first pass of the nightly build
                             command: |
-                                docker pull akeneo/pim-php-dev:8.1
+                                docker build -t akeneo/pim-php-dev:8.1 .
                                 docker save -o php-pim-image.tar akeneo/pim-php-dev:8.1
+                            #command: |
+                            #    docker pull akeneo/pim-php-dev:8.1
+                            #    docker save -o php-pim-image.tar akeneo/pim-php-dev:8.1
             - run:
                   name: Setup tests results folder and log folder
                   command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
