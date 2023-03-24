@@ -1,6 +1,6 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import {Button, useBooleanState, useAutoFocus, Helper, SelectInput, Field} from 'akeneo-design-system';
+import {Button, useBooleanState, Helper, SelectInput, Field} from 'akeneo-design-system';
 import {
   DoubleCheckDeleteModal,
   NotificationLevel,
@@ -9,7 +9,7 @@ import {
   useNotify,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {AttributeGroup} from '../../../models';
+import {AttributeGroup, DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP} from '../../../models';
 import {useMassDeleteAttributeGroups} from '../../../hooks';
 
 const ModalContent = styled.div`
@@ -31,8 +31,9 @@ const MassDeleteAttributeGroupsModal = ({
   const translate = useTranslate();
   const notify = useNotify();
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
-  const [replacementAttributeGroup, setReplacementAttributeGroup] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [replacementAttributeGroup, setReplacementAttributeGroup] = useState<string>(
+    DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP
+  );
 
   const catalogLocale = useUserContext().get('catalogLocale');
 
@@ -42,10 +43,8 @@ const MassDeleteAttributeGroupsModal = ({
     0
   );
 
-  useAutoFocus(inputRef);
-
   const handleOpenMassDeleteModal = () => {
-    setReplacementAttributeGroup(null);
+    setReplacementAttributeGroup(DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP);
     openMassDeleteModal();
   };
 
@@ -108,8 +107,9 @@ const MassDeleteAttributeGroupsModal = ({
                   )}
                 >
                   <SelectInput
+                    clearable={false}
                     emptyResultLabel={translate('pim_enrich.entity.attribute_group.mass_delete.empty_result_label')}
-                    onChange={(value: string | null) => setReplacementAttributeGroup(value)}
+                    onChange={value => setReplacementAttributeGroup(value)}
                     placeholder={translate('pim_enrich.entity.attribute_group.mass_delete.placeholder')}
                     value={replacementAttributeGroup}
                     openLabel={translate('pim_enrich.entity.attribute_group.mass_delete.open_label')}
