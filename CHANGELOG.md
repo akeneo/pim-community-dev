@@ -34,6 +34,7 @@
 - PIM-10856: Prevent the creation of a useless PHP session when a new token is created in the API
 - PIM-10870: Fix display of permissions when empty
 - PIM-10860: [SLA] Announcements aren't shown
+- PIM-10908: Add zdd migration to add an index on akeneo_file_storage_file_info
 - PIM-10745: Fix history display for product's quantified association
 - PIM-10874: fix labels api type consistency
 - PIM-10877: Fix sequential edit not working if grid is sorted by quality score
