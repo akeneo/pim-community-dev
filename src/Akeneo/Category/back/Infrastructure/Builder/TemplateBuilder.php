@@ -11,6 +11,7 @@ use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -65,6 +66,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'Long description']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeRichText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -76,6 +78,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'Short description']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -87,6 +90,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'URL slug']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeImage::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -98,6 +102,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'Image 1']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -109,6 +114,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'Image alt. text 1']), // todo check casse
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeImage::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -120,6 +126,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'Image 2']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -131,6 +138,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'Image alt. text 2']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeImage::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -142,6 +150,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'Image 3']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -153,6 +162,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'Image alt. text 3']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -164,6 +174,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'SEO meta title']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeTextArea::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -175,6 +186,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'SEO meta description']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeText::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -186,6 +198,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'SEO H1 main heading tag']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
                 AttributeTextArea::create(
                     AttributeUuid::fromUuid(Uuid::uuid4()),
@@ -197,6 +210,7 @@ class TemplateBuilder
                     LabelCollection::fromArray(['en_US' => 'SEO keywords']),
                     $templateUuid,
                     AttributeAdditionalProperties::fromArray([]),
+                    AttributeIsDeactivated::fromBoolean(false),
                 ),
             ]),
         );

@@ -13,6 +13,7 @@ use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -160,6 +161,7 @@ class ValueUserIntentsShouldHaveAnActivatedTemplateValidatorSpec extends ObjectB
                 LabelCollection::fromArray(['en_US' => 'SEO meta description']),
                 TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330'),
                 AttributeAdditionalProperties::fromArray([]),
+                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeTextArea::create(
                 AttributeUuid::fromString('1efc3af6-e89c-4281-9bd5-b827d9397cf7'),
@@ -171,6 +173,7 @@ class ValueUserIntentsShouldHaveAnActivatedTemplateValidatorSpec extends ObjectB
                 LabelCollection::fromArray(['en_US' => 'SEO keywords']),
                 TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330'),
                 AttributeAdditionalProperties::fromArray([]),
+                AttributeIsDeactivated::fromBoolean(false),
             )
         ];
     }

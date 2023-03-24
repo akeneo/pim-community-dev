@@ -13,6 +13,7 @@ use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -71,6 +72,7 @@ class GetAttributeInMemory implements GetAttribute
                 LabelCollection::fromArray(['en_US' => 'Description']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
+                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeImage::create(
                 AttributeUuid::fromString('8dda490c-0fd1-4485-bdc5-342929783d9a'),
@@ -82,6 +84,7 @@ class GetAttributeInMemory implements GetAttribute
                 LabelCollection::fromArray(['en_US' => 'Banner image']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
+                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString('4873080d-32a3-42a7-ae5c-1be518e40f3d'),
@@ -93,6 +96,7 @@ class GetAttributeInMemory implements GetAttribute
                 LabelCollection::fromArray(['en_US' => 'SEO Meta Title']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
+                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeTextArea::create(
                 AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
@@ -104,6 +108,7 @@ class GetAttributeInMemory implements GetAttribute
                 LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
+                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeTextArea::create(
                 AttributeUuid::fromString('4ba33f06-de92-4366-8322-991d1bad07b9'),
@@ -115,6 +120,7 @@ class GetAttributeInMemory implements GetAttribute
                 LabelCollection::fromArray(['en_US' => 'SEO Keywords']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
+                AttributeIsDeactivated::fromBoolean(false),
             ),
         ]);
     }

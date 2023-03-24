@@ -6,6 +6,7 @@ namespace Akeneo\Category\Domain\Model\Attribute;
 
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -32,6 +33,7 @@ class AttributeImage extends Attribute
         LabelCollection $labelCollection,
         TemplateUuid $templateUuid,
         AttributeAdditionalProperties $additionalProperties,
+        AttributeIsDeactivated $attributeIsDeactivated,
     ) {
         parent::__construct(
             $uuid,
@@ -44,6 +46,7 @@ class AttributeImage extends Attribute
             $labelCollection,
             $templateUuid,
             $additionalProperties,
+            $attributeIsDeactivated,
         );
     }
 
@@ -57,6 +60,7 @@ class AttributeImage extends Attribute
         LabelCollection $labelCollection,
         TemplateUuid $templateUuid,
         AttributeAdditionalProperties $additionalProperties,
+        AttributeIsDeactivated $attributeIsDeactivated,
     ): AttributeImage {
         return new self(
             $uuid,
@@ -69,6 +73,7 @@ class AttributeImage extends Attribute
             $labelCollection,
             $templateUuid,
             $additionalProperties,
+            $attributeIsDeactivated,
         );
     }
 
@@ -83,7 +88,8 @@ class AttributeImage extends Attribute
      *     is_scopable: bool,
      *     labels: array<string, string>,
      *     template_uuid: string,
-     *     additional_properties: array<string, mixed>
+     *     additional_properties: array<string, mixed>,
+     *     is_deactivated: bool
      * }
      */
     public function normalize(): array

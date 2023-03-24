@@ -12,6 +12,7 @@ use Akeneo\Category\Application\Handler\StoreUploadedFile;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -47,7 +48,8 @@ class BinaryImageGeneratorIntegration extends TestCase
             AttributeIsLocalizable::fromBoolean(true),
             LabelCollection::fromArray(['en_US' => 'Banner image']),
             TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330'),
-            AttributeAdditionalProperties::fromArray([])
+            AttributeAdditionalProperties::fromArray([]),
+            AttributeIsDeactivated::fromBoolean(false),
         );
         $this->fileInfo = $this->storeAkeneoImage();
     }

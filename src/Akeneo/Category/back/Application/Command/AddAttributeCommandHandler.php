@@ -11,6 +11,7 @@ use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -55,6 +56,7 @@ class AddAttributeCommandHandler
             labelCollection: $this->getAttributeLabel($command->locale, $command->label),
             templateUuid: $templateUuid,
             additionalProperties: AttributeAdditionalProperties::fromArray([]),
+            attributeIsDeactivated: AttributeIsDeactivated::fromBoolean(false),
         );
 
         $this->categoryTemplateAttributeSaver->insert($templateUuid, AttributeCollection::fromArray([$attribute]));
