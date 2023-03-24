@@ -5,11 +5,11 @@ import {filterErrors, TextField, useTranslate, useNotify, NotificationLevel} fro
 import {StorageConfiguratorProps} from './model';
 import {useGetPublicKey} from '../../hooks/';
 import {
-    isSftpPasswordStorage,
-    isSftpStorage,
-    isValidSftpLoginType,
-    SFTP_STORAGE_LOGIN_TYPES,
-    SftpStorageLoginType,
+  isSftpPasswordStorage,
+  isSftpStorage,
+  isValidSftpLoginType,
+  SFTP_STORAGE_LOGIN_TYPES,
+  SftpStorageLoginType,
 } from '../../models';
 import {CheckStorageConnection} from './CheckStorageConnection';
 
@@ -71,9 +71,12 @@ const SftpStorageConfigurator = ({
 
   const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
   const copyToClipboard = (publicKey: string) => {
-      canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
-      notify(NotificationLevel.SUCCESS, translate('pim_import_export.form.job_instance.storage_form.public_key.copy_notification_success'));
-  }
+    canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
+    notify(
+      NotificationLevel.SUCCESS,
+      translate('pim_import_export.form.job_instance.storage_form.public_key.copy_notification_success')
+    );
+  };
 
   const handleLoginTypeChange = (newLoginType: SftpStorageLoginType) => {
     if ('password' === newLoginType) {
