@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringUri;
 
-use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsValueExtractorInterface;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class StringUriFromAssetCollectionMediaFileAttributeValueExtractor implements ArrayOfStringsValueExtractorInterface
+final class StringUriFromAssetCollectionMediaFileAttributeValueExtractor implements StringValueExtractorInterface
 {
     public function extract(
         array $product,
@@ -18,7 +18,7 @@ final class StringUriFromAssetCollectionMediaFileAttributeValueExtractor impleme
         ?string $locale,
         ?string $scope,
         ?array $parameters,
-    ): null | array {
+    ): null | string {
         // not supported in CE
         return null;
     }
