@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class MaxAttributeGroupCount extends Constraint
 {
-    public const MAX_MESSAGE = 'pim_structure.validation.attribute_groups.max';
+    public string $message = 'pim_structure.validation.attribute_groups.max';
 
     public function getTargets(): string
     {
