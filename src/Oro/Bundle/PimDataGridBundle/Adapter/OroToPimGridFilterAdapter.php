@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oro\Bundle\PimDataGridBundle\Adapter;
 
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
@@ -13,19 +15,12 @@ use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
  */
 class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 {
-    const FAMILY_GRID_NAME = 'family-grid';
+    public const PRODUCT_GRID_NAME = 'product-grid';
+    public const ATTRIBUTE_GRID_NAME = 'attribute-grid';
 
-    const PRODUCT_GRID_NAME = 'product-grid';
-
-    /** @var MassActionDispatcher */
-    protected $massActionDispatcher;
-
-    /**
-     * @param MassActionDispatcher $massActionDispatcher
-     */
-    public function __construct(MassActionDispatcher $massActionDispatcher)
-    {
-        $this->massActionDispatcher = $massActionDispatcher;
+    public function __construct(
+        protected MassActionDispatcher $massActionDispatcher,
+    ) {
     }
 
     /**
@@ -33,22 +28,13 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
      */
     public function adapt(array $parameters)
     {
-        if (self::PRODUCT_GRID_NAME === $parameters['gridName']) {
-            $filters = $this->massActionDispatcher->getRawFilters($parameters);
-        } else {
-            $filters = $this->adaptDefaultGrid($parameters);
-        }
-
-        return $filters;
+        return match ($parameters['gridName']) {
+            self::PRODUCT_GRID_NAME => $this->massActionDispatcher->getRawFilters($parameters),
+            self::ATTRIBUTE_GRID_NAME => $this->adaptAttributeGrid($parameters),
+            default => $this->adaptDefaultGrid($parameters)
+        };
     }
 
-    /**
-     * Adapt filters for the default grids
-     *
-     * @param array $parameters
-     *
-     * @return array
-     */
     protected function adaptDefaultGrid(array $parameters): array
     {
         if (isset($parameters['inset']) && true === $parameters['inset']) {
@@ -72,5 +58,49 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
         return [
             ['field' => 'id', 'operator' => 'IN', 'value' => $itemIds]
         ];
+    }
+
+    protected function adaptAttributeGrid(array $parameters): array
+    {
+        if (true === $parameters['inset']) {
+            return [
+                'search' => null,
+                'options' => [
+                    'identifiers' => $parameters['values'],
+                ],
+            ];
+        }
+
+        $filters = $parameters['filters'];
+
+        return [
+            'search' => $filters['label']['value'] ?? null,
+            'options' => [
+                'excluded_identifiers' => $parameters['values'],
+                'types' => $this->adaptArrayFilter($filters['type']['value'] ?? [], null),
+                'attribute_groups' =>  $this->adaptArrayFilter($filters['group']['value'] ?? [], []),
+                'scopable' => $this->adaptTrileanFilter($filters['scopable']['value'] ?? null),
+                'localizable' => $this->adaptTrileanFilter($filters['localizable']['value'] ?? null),
+                'families' => $this->adaptArrayFilter($filters['family']['value'] ?? [], null),
+                'smart' => $this->adaptTrileanFilter($filters['smart']['value'] ?? null),
+                'quality' => $filters['quality']['value'] ?? null,
+            ],
+        ];
+    }
+
+    private function adaptArrayFilter(array $value, ?array $fallback): ?array
+    {
+        $filteredValue = array_filter($value);
+
+        return empty($filteredValue) ? $fallback : $filteredValue;
+    }
+
+    private function adaptTrileanFilter(?string $value): ?bool
+    {
+        return match ($value) {
+            '1' => true,
+            '2' => false,
+            default => null,
+        };
     }
 }

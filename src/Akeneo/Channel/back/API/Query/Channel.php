@@ -16,7 +16,8 @@ final class Channel
         private string $code,
         private array $localeCodes,
         private LabelCollection $labels,
-        private array $activeCurrencies
+        private array $activeCurrencies,
+        private ConversionUnitCollection $conversionUnits,
     ) {
     }
 
@@ -54,5 +55,10 @@ final class Channel
     public function isCurrencyActive(string $currencyCode): bool
     {
         return in_array($currencyCode, $this->activeCurrencies);
+    }
+
+    public function getConversionUnits(): ConversionUnitCollection
+    {
+        return $this->conversionUnits;
     }
 }

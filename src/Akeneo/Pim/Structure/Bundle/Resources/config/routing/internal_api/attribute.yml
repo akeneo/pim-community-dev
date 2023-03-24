@@ -8,6 +8,11 @@ pim_enrich_attribute_rest_create:
     defaults: { _controller: pim_enrich.controller.rest.attribute:createAction }
     methods: [PUT]
 
+pim_structure_launch_mass_delete_attribute:
+    path: /mass-delete
+    defaults: { _controller: Akeneo\Pim\Structure\Bundle\Controller\InternalApi\MassDeleteAttributeController:launchAction }
+    methods: [POST]
+
 pim_enrich_attribute_rest_get:
     path: /{identifier}
     defaults: { _controller: pim_enrich.controller.rest.attribute:getAction }
