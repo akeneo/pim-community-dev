@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Test\Integration\Configuration;
@@ -17,9 +17,10 @@ use Akeneo\Test\Integration\Configuration;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteCategoryTreeTemplateSqlIntegration extends CategoryTestCase
+class DeleteCategoryTreeTemplateByTemplateUuidSqlIntegration extends CategoryTestCase
 {
-    public function testItDeletesLinkBetweenCategoryTreeAndTemplate(): void
+
+    public function testItDeletesLinkForTemplate(): void
     {
         /** @var Category $category */
         $category = $this->get(GetCategoryInterface::class)->byCode('master');
@@ -30,7 +31,7 @@ class DeleteCategoryTreeTemplateSqlIntegration extends CategoryTestCase
 
         $this->assertTrue($this->isExistingLinkBetweenCategoryTreeAndTemplate($category->getId()->getValue(), $templateModel->getUuid()));
 
-        ($this->get(DeleteCategoryTreeTemplate::class))($category->getId()->getValue(), $templateModel->getUuid());
+        ($this->get(DeleteCategoryTreeTemplateByTemplateUuid::class))($templateModel->getUuid());
 
         $this->assertFalse($this->isExistingLinkBetweenCategoryTreeAndTemplate($category->getId()->getValue(), $templateModel->getUuid()));
     }
