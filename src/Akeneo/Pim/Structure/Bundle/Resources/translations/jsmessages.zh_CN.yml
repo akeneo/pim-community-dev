@@ -87,6 +87,7 @@ pim_enrich.entity.attribute_option:
       add_option: 点击此处进行添加
       delete_confirmation_title_msg: 从您的选项中删除"{{ optionCode }}" ？
       delete_confirmation_subtitle_msg: 确定要删除此选项？此操作无法撤消。
+      display_options_limit: 此处只列出了前 500 个选项。如果您想要看到更多选项，请进行搜索或导出。
       search:
         placeholder: 搜索标签或代码
         no_result:
@@ -229,9 +230,10 @@ pim_enrich.entity.attribute:
       select_locale: 选择区域
     delete:
       confirm: 确定要删除此属性吗？
+      attribute_removal: 将从所有产品中移除该属性。
       product_count: '{0}0 个产品|{1}1 个产品|]1, Inf[{{ count }} 个产品'
       product_model_count: '{0}0 个产品模型|{1}1 个产品模型|]1, Inf[{{ count }} 个产品模型'
-      used: ']-Inf,1]此属性当前已设置了值，这些将被删除。|]1, Inf[此属性当前已设置了值，这些将被删除。'
+      used: ']-Inf,1]此属性当前已设置了值。|]1, Inf[此属性当前已设置了值。'
       helper:
         content: 如果您需要更改属性类型，使其具有区域或范围属性，同时保持对现有属性值的访问，
         link: 查看我们的“帮助中心”（获取更多信息）。
@@ -248,6 +250,10 @@ pim_enrich.entity.attribute_group:
     title: 这里比较拥挤，我们会显示 {{ attributeCount }}/{{ totalAttributeCount }} 个属性。
     subtitle: 要探索此组的所有属性，请点击下面！
     button: 查看所有属性
+  dropdown:
+    label: 选择
+    all: 所有属性组
+    none: 无属性组
   flash:
     update:
       success: 属性组已成功更新
@@ -256,6 +262,9 @@ pim_enrich.entity.attribute_group:
     delete:
       success: 属性组已成功移除
       fail: 不能删除该属性组
+    mass_delete:
+      success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
+      fail: 启动删除时出错
   module:
     add_attribute_group:
       label: 按分组添加
@@ -265,8 +274,12 @@ pim_enrich.entity.attribute_group:
       confirm: 确定要删除此属性组吗？
   grid:
     columns:
-      name: 属性组名称
-    no_search_result: 抱歉，找不到与搜索相符的结果。
+      attribute_count: 相关属性计数
+  selected: '{0}已选择 0 个属性组|{1}已选择 1 个属性组|]1, Inf[已选择 {{ count }} 个属性组'
+  mass_delete:
+    confirm: '{1}确定要删除此属性组吗？|]1, Inf[确定要删除 {{ count }} 个属性组吗？'
+    confirmation_phrase: '请输入“{{ confirmation_word }}”以确认：'
+    confirmation_word: 删除
 pim_enrich.mass_edit.family:
   title: 品类批量操作
   confirm: "{1}您将更新品类的以下信息，请确认。|]1, Inf[您将更新 {{ itemsCount }} 个品类的以下信息，请确认。"
