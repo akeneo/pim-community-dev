@@ -1,41 +1,30 @@
 import React, {useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search, useBooleanState, useDebounce} from 'akeneo-design-system';
-import {Property, PROPERTY_NAMES} from '../../models';
+import {Property, PROPERTY_NAMES, SimpleSelectProperty, Structure} from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
-
-type PropertiesSelection = {
-  code: string;
-  items: {
-    code: string;
-    defaultValue: Property;
-  }[];
-};
+import {useGetPropertyItems} from '../../hooks';
 
 type AddPropertyButtonProps = {
   onAddProperty: (property: Property) => void;
+  structure: Structure;
 };
 
-const items: PropertiesSelection[] = [
-  {
-    code: 'system',
-    items: [
-      {
-        code: PROPERTY_NAMES.FREE_TEXT,
-        defaultValue: {type: PROPERTY_NAMES.FREE_TEXT, string: ''},
-      },
-      {
-        code: PROPERTY_NAMES.AUTO_NUMBER,
-        defaultValue: {type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1},
-      },
-    ],
-  },
-];
+type FlatItemsGroup = {
+  id: string;
+  text: string;
+  isSection: boolean;
+  isVisible?: boolean;
+  type?: string;
+};
 
-const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) => {
+const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, structure}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebounce(searchValue);
+  const {data, fetchNextPage} = useGetPropertyItems(debouncedSearchValue, isOpen);
+
+  const showAutoNumber = useMemo(() => !structure.find(({type}) => type === PROPERTY_NAMES.AUTO_NUMBER), [structure]);
 
   const addElement = () => {
     open();
@@ -46,25 +35,34 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
     setSearchValue('');
   };
 
-  const addProperty = (defaultValue: Property) => {
+  const handleAddProperty = (defaultValue: Property) => {
     onAddProperty(defaultValue);
     close();
+    setSearchValue('');
   };
 
-  const filterElements = useMemo((): PropertiesSelection[] => {
-    if ('' !== debouncedSearchValue) {
-      return items
-        .map(item => {
-          const filteredItems = item.items.filter(subItem =>
-            subItem.code.toLowerCase().includes(debouncedSearchValue.toLowerCase())
-          );
-          return {...item, items: filteredItems};
-        })
-        .filter(item => item.items.length > 0);
-    } else {
-      return items;
+  const addProperty = (id: string, type?: string) => {
+    if (id === PROPERTY_NAMES.FREE_TEXT) {
+      handleAddProperty({type: PROPERTY_NAMES.FREE_TEXT, string: ''});
+    } else if (id === PROPERTY_NAMES.AUTO_NUMBER) {
+      handleAddProperty({type: PROPERTY_NAMES.AUTO_NUMBER, digitsMin: 1, numberMin: 1});
+    } else if (id === PROPERTY_NAMES.FAMILY) {
+      handleAddProperty({
+        type: PROPERTY_NAMES.FAMILY,
+        process: {
+          type: null,
+        },
+      });
+    } else if (type === 'pim_catalog_simpleselect') {
+      handleAddProperty({
+        type: PROPERTY_NAMES.SIMPLE_SELECT,
+        attributeCode: id,
+        process: {
+          type: null,
+        },
+      } as SimpleSelectProperty);
     }
-  }, [debouncedSearchValue]);
+  };
 
   const searchInputRef = React.useRef<HTMLInputElement | null>(null);
   // We can not use the useAutoFocus here because the element is hidden when dropdown is not open
@@ -77,6 +75,26 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
   }, [searchInputRef, isOpen]);
 
   React.useEffect(focusCallback, [isOpen, focusCallback]);
+
+  const flatItems = useMemo(() => {
+    const visibilityConditions = {
+      [PROPERTY_NAMES.AUTO_NUMBER]: showAutoNumber,
+    };
+    const tab: FlatItemsGroup[] = [];
+    data?.forEach(item => {
+      if (tab.findIndex((section: FlatItemsGroup) => section.isSection && section.id === item.id) === -1) {
+        tab.push({...item, isSection: true});
+      }
+      item.children.forEach(child =>
+        tab.push({
+          ...child,
+          isSection: false,
+          isVisible: visibilityConditions[child.id] !== undefined ? visibilityConditions[child.id] : true,
+        })
+      );
+    });
+    return tab;
+  }, [data, showAutoNumber]);
 
   return (
     <Dropdown>
@@ -97,19 +115,19 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty}) =>
           <Dropdown.ItemCollection
             noResultIllustration={React.createElement(GroupsIllustration)}
             noResultTitle={translate('pim_common.no_search_result')}
+            onNextPage={fetchNextPage}
           >
-            {filterElements.map(({code, items}) => (
-              <React.Fragment key={code}>
-                <Dropdown.Section>
-                  {translate(`pim_identifier_generator.structure.property_type.sections.${code}`)}
-                </Dropdown.Section>
-                {items.map(({code, defaultValue}) => (
-                  <Dropdown.Item key={code} onClick={() => addProperty(defaultValue)}>
-                    {translate(`pim_identifier_generator.structure.property_type.${code}`)}
+            {flatItems?.map(({id, text, isSection, isVisible, type}) =>
+              isSection ? (
+                <Dropdown.Section key={`section-${id}`}>{text}</Dropdown.Section>
+              ) : (
+                isVisible && (
+                  <Dropdown.Item key={id} onClick={() => addProperty(id, type)}>
+                    {text}
                   </Dropdown.Item>
-                ))}
-              </React.Fragment>
-            ))}
+                )
+              )
+            )}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}

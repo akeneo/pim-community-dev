@@ -8,11 +8,8 @@ use Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator;
 
 final class AkeneoContentSecurityPolicyProvider implements ContentSecurityPolicyProviderInterface
 {
-    private ScriptNonceGenerator $nonceGenerator;
-
-    public function __construct(ScriptNonceGenerator $nonceGenerator)
+    public function __construct(private readonly ScriptNonceGenerator $nonceGenerator)
     {
-        $this->nonceGenerator = $nonceGenerator;
     }
 
     public function getContentSecurityPolicy(): array
@@ -20,12 +17,12 @@ final class AkeneoContentSecurityPolicyProvider implements ContentSecurityPolicy
         $generatedNonce = $this->nonceGenerator->getGeneratedNonce();
 
         return [
-            'default-src' => ["'self'", "*.akeneo.com", "'unsafe-inline'"],
+            'default-src' => ["'self'", "'unsafe-inline'"],
             'script-src' => ["'self'", "'unsafe-eval'", sprintf("'nonce-%s'", $generatedNonce)],
-            'img-src' => ["'self'", "data:", "*.akeneo.com"],
+            'img-src' => ["'self'", "data:"],
             'frame-src' => ["*"],
             'font-src' => ["'self'", "data:"],
-            'connect-src'=> ["'self'", "*.akeneo.com"],
+            'connect-src' => ["'self'", "updates.akeneo.com"],
         ];
     }
 }

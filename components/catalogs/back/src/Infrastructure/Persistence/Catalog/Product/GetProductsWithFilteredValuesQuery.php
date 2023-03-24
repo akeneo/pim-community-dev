@@ -109,7 +109,7 @@ class GetProductsWithFilteredValuesQuery implements GetProductsWithFilteredValue
             foreach ($product['values'] as &$values) {
                 $values = \array_values(\array_filter(
                     $values,
-                    static fn (array $value) => $value['scope'] === null || \in_array($value['scope'], $channels)
+                    static fn (array $value): bool => $value['scope'] === null || \in_array($value['scope'], $channels),
                 ));
             }
         }
@@ -139,8 +139,8 @@ class GetProductsWithFilteredValuesQuery implements GetProductsWithFilteredValue
                     $value['data'] = \array_values(
                         \array_filter(
                             $value['data'],
-                            static fn (array $price) => \in_array($price['currency'], $currencies)
-                        )
+                            static fn (array $price): bool => \in_array($price['currency'], $currencies),
+                        ),
                     );
                 }
             }

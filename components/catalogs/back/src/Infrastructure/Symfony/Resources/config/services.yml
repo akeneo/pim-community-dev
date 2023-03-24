@@ -18,6 +18,8 @@ services:
             - '../../../../Domain/'
             - '../../../../ServiceAPI/'
             - '../../../../Application/Exception'
+            - '../../../../Application/Mapping/Measurement/Exception'
+            - '../../../../Infrastructure/Validation'
 
     Akeneo\Catalogs\Application\Handler\:
         resource: '../../../../Application/Handler/'
@@ -49,6 +51,9 @@ services:
     Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator:
         alias: 'pim_api.pagination.offset_hal_paginator'
 
+    Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags:
+        alias: 'feature_flags'
+
     # @todo CXP-1186 REMOVE
     Akeneo\Catalogs\Infrastructure\TemporaryEnrichmentBridge\SearchAfterSizeUuidResultCursorFactory:
         arguments:
@@ -65,6 +70,19 @@ services:
             - '@Akeneo\Catalogs\Infrastructure\TemporaryEnrichmentBridge\SearchAfterSizeUuidResultCursorFactory'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
 
+    # Validation
+    Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid: ~
+
+    Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface: '@Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid'
+
+    Akeneo\Catalogs\Infrastructure\Validation\:
+        resource: '../../../Validation/**/*Validator.php'
+
+    Akeneo\Catalogs\Infrastructure\Validation\CatalogProductSelectionCriteriaValidator:
+        arguments:
+            $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'
+
+    # Persistence
     Akeneo\Catalogs\Infrastructure\Persistence\Catalog\IsCatalogsNumberLimitReachedQuery:
         arguments:
             $limit: '%akeneo_catalog.max_number_of_catalogs_per_user%'
@@ -74,6 +92,10 @@ services:
             - '@pim_enrich.repository.family.search'
 
     Akeneo\Catalogs\Infrastructure\Persistence\Family\GetFamiliesByCodeQuery:
+        arguments:
+            - '@pim_enrich.repository.family.search'
+
+    Akeneo\Catalogs\Infrastructure\Persistence\Family\GetFamilyLabelByCodeAndLocaleQuery:
         arguments:
             - '@pim_enrich.repository.family.search'
 
@@ -129,6 +151,10 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetProductCategoriesLabelsQuery:
+        arguments:
+            $enrichmentQueryBus: '@pim_enrich.product.query_message_bus'
+
     Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsWithFilteredValuesQuery:
         arguments:
             $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
@@ -149,14 +175,16 @@ services:
         arguments:
             - '@pim_catalog.repository.currency'
 
+    Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetChannelCurrenciesQuery:
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    # Storage
     Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
         arguments:
             $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'
 
-    Akeneo\Catalogs\Infrastructure\Validation\CatalogUpdatePayloadValidator:
-        arguments:
-            $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'
-
+    # EventSubscriber
     Akeneo\Catalogs\Infrastructure\EventSubscriber\CurrencyDeactivationSubscriber:
         arguments:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
@@ -171,3 +199,22 @@ services:
         arguments:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
             $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
+
+    Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry:
+        arguments:
+            -
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromCategoriesValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromFamilyValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromMultiSelectAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromNumberAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromIdentifierAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromSimpleSelectAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextareaAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\String\StringFromTextAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringDateTime\StringDateTimeFromDateAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringUri\StringUriFromImageAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromMetricAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromNumberAttributeValueExtractor'
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromPriceCollectionAttributeValueExtractor'

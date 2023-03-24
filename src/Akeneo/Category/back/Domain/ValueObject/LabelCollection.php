@@ -45,8 +45,9 @@ final class LabelCollection implements \IteratorAggregate
         return $this->translatedLabels[$localeCode] ?? null;
     }
 
-    public function setTranslation(string $localeCode, string $label): void
+    public function setTranslation(string $localeCode, ?string $label): void
     {
+        Assert::notEmpty($localeCode);
         $this->translatedLabels[$localeCode] = $label;
     }
 

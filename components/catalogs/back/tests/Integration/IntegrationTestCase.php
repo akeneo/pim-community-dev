@@ -7,15 +7,19 @@ namespace Akeneo\Catalogs\Test\Integration;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
+use Akeneo\Catalogs\ServiceAPI\Events\InvalidCatalogDisabledEvent;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
+use Akeneo\Catalogs\Test\Integration\Fakes\CleanCategoryDataAfterChannelChangeSubscriber as FakeCleanCategoryDataAfterChannelChangeSubscriber;
 use Akeneo\Catalogs\Test\Integration\Fakes\Clock;
 use Akeneo\Catalogs\Test\Integration\Fakes\TimestampableSubscriber;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
@@ -27,6 +31,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Test\IntegrationTestsBundle\Helper\ExperimentalTransactionHelper;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -41,6 +46,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException as DependencyInjectionInvalidArgumentException;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -79,17 +85,23 @@ abstract class IntegrationTestCase extends WebTestCase
 
         self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
         self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
+
+        self::getContainer()->get(FeatureFlags::class)->enable('catalogs');
     }
 
     protected function overrideServices(): void
     {
         self::getContainer()->set(
             'pim_catalog.event_subscriber.timestampable',
-            new TimestampableSubscriber($this->clock)
+            new TimestampableSubscriber($this->clock),
         );
         self::getContainer()->set(
             'pim_versioning.event_subscriber.timestampable',
-            new TimestampableSubscriber($this->clock)
+            new TimestampableSubscriber($this->clock),
+        );
+        self::getContainer()->set(
+            CleanCategoryDataAfterChannelChangeSubscriber::class,
+            new FakeCleanCategoryDataAfterChannelChangeSubscriber(),
         );
     }
 
@@ -106,9 +118,9 @@ abstract class IntegrationTestCase extends WebTestCase
         $catalogMappingFilesystem = self::getContainer()->get('oneup_flysystem.catalogs_mapping_filesystem');
 
         $paths = $catalogMappingFilesystem->listContents('/')->filter(
-            fn (StorageAttributes $attributes): bool => $attributes instanceof FileAttributes
+            fn (StorageAttributes $attributes): bool => $attributes instanceof FileAttributes,
         )->map(
-            fn (FileAttributes $attributes): string => $attributes->path()
+            fn (FileAttributes $attributes): string => $attributes->path(),
         );
 
         foreach ($paths as $path) {
@@ -198,7 +210,6 @@ abstract class IntegrationTestCase extends WebTestCase
     private function addAllPermissionsUserGroup(string $group): void
     {
         $this->callPermissionsSaver(
-            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver',
             group: $group,
             permissions: [
@@ -210,10 +221,9 @@ abstract class IntegrationTestCase extends WebTestCase
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
         $this->callPermissionsSaver(
-            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver',
             group: $group,
             permissions: [
@@ -225,10 +235,9 @@ abstract class IntegrationTestCase extends WebTestCase
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
         $this->callPermissionsSaver(
-            /** @noRector StringClassNameToClassConstantRector */
             service: 'Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver',
             group: $group,
             permissions: [
@@ -244,7 +253,7 @@ abstract class IntegrationTestCase extends WebTestCase
                     'all' => true,
                     'identifiers' => [],
                 ],
-            ]
+            ],
         );
     }
 
@@ -279,11 +288,11 @@ abstract class IntegrationTestCase extends WebTestCase
                 \implode(
                     '","',
                     \array_map(
-                        fn (ConstraintViolationInterface $violation) => $violation->getMessage(),
-                        \iterator_to_array($violations)
-                    )
-                )
-            )
+                        fn (ConstraintViolationInterface $violation): string|\Stringable => $violation->getMessage(),
+                        \iterator_to_array($violations),
+                    ),
+                ),
+            ),
         );
     }
 
@@ -342,7 +351,7 @@ abstract class IntegrationTestCase extends WebTestCase
                 ProductUuid::fromUuid($identifier),
                 \array_merge(
                     [
-                        new SetIdentifierValue('sku', $identifier->toString())
+                        new SetIdentifierValue('sku', $identifier->toString()),
                     ],
                     $intents,
                 ),
@@ -395,7 +404,7 @@ abstract class IntegrationTestCase extends WebTestCase
             'UPDATE akeneo_catalog SET is_enabled = 1 WHERE id = :id',
             [
                 'id' => Uuid::fromString($id)->getBytes(),
-            ]
+            ],
         );
     }
 
@@ -419,7 +428,7 @@ abstract class IntegrationTestCase extends WebTestCase
             ],
             [
                 'criteria' => Types::JSON,
-            ]
+            ],
         );
     }
 
@@ -434,7 +443,7 @@ abstract class IntegrationTestCase extends WebTestCase
             ],
             [
                 'filters' => Types::JSON,
-            ]
+            ],
         );
     }
 
@@ -449,7 +458,7 @@ abstract class IntegrationTestCase extends WebTestCase
             ],
             [
                 'productMapping' => Types::JSON,
-            ]
+            ],
         );
     }
 
@@ -459,8 +468,8 @@ abstract class IntegrationTestCase extends WebTestCase
      *     type: string,
      *     available_locales?: array<string>,
      *     group?: string,
-     *     scopable: bool,
-     *     localizable: bool,
+     *     scopable?: bool,
+     *     localizable?: bool,
      *     options?: array<string>,
      * } $data
      */
@@ -491,13 +500,21 @@ abstract class IntegrationTestCase extends WebTestCase
          */
         self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
+    protected function removeAttribute(string $code): void
+    {
+        $attribute = self::getContainer()->get('pim_catalog.repository.attribute')
+            ->findOneByIdentifier($code);
+
+        self::getContainer()->get('pim_catalog.remover.attribute')->remove($attribute);
+        $this->waitForQueuedJobs();
+    }
 
     private function createAttributeOptions(AttributeInterface $attribute, array $codes): void
     {
         $factory = self::getContainer()->get('pim_catalog.factory.attribute_option');
         $locales = \array_map(
             static fn ($locale) => $locale['code'],
-            self::getContainer()->get(GetLocalesQueryInterface::class)->execute()
+            self::getContainer()->get(GetLocalesQueryInterface::class)->execute(),
         );
 
         $options = [];
@@ -593,7 +610,7 @@ abstract class IntegrationTestCase extends WebTestCase
 
     protected function createGroupType(array $data = []): void
     {
-        /** @var GroupInterface $group */
+        /** @var GroupInterface $groupType */
         $groupType = self::getContainer()->get('pim_catalog.factory.group_type')->create();
         self::getContainer()->get('pim_catalog.updater.group_type')->update($groupType, $data);
         self::getContainer()->get('pim_catalog.saver.group_type')->save($groupType);
@@ -650,5 +667,47 @@ abstract class IntegrationTestCase extends WebTestCase
     protected function waitForQueuedJobs(): void
     {
         self::getContainer()->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();
+    }
+
+    protected function addSubscriberForReadProductEvent(\Closure $onEventCallback): void
+    {
+        $subscriber = new class($onEventCallback) implements EventSubscriberInterface {
+            public function __construct(private readonly \Closure $closure)
+            {
+            }
+
+            public static function getSubscribedEvents(): array
+            {
+                return [ReadProductsEvent::class => 'onReadProductsEvent'];
+            }
+
+            public function onReadProductsEvent(ReadProductsEvent $event): void
+            {
+                ($this->closure)($event->getCount());
+            }
+        };
+
+        self::getContainer()->get('event_dispatcher')->addSubscriber($subscriber);
+    }
+
+    protected function addSubscriberForInvalidCatalogDisabledEvent(\Closure $onEventCallback): void
+    {
+        $subscriber = new class($onEventCallback) implements EventSubscriberInterface {
+            public function __construct(private readonly \Closure $closure)
+            {
+            }
+
+            public static function getSubscribedEvents(): array
+            {
+                return [InvalidCatalogDisabledEvent::class => 'onEvent'];
+            }
+
+            public function onEvent(InvalidCatalogDisabledEvent $event): void
+            {
+                ($this->closure)($event->getCatalogId());
+            }
+        };
+
+        self::getContainer()->get('event_dispatcher')->addSubscriber($subscriber);
     }
 }

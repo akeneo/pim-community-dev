@@ -1,17 +1,22 @@
-import React, {useMemo, useState} from 'react';
-import {AttributesIllustration, Helper, Link, SectionTitle, uuid} from 'akeneo-design-system';
-import {NoDataSection, NoDataText, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
+import React, {useEffect, useMemo, useState} from 'react';
+import {AttributesIllustration, Helper, Link, Placeholder, SectionTitle, uuid} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {AddPropertyButton, DelimiterEdit, Preview, PropertiesList, PropertyEdit} from './structure';
-import {Delimiter, Property, Structure} from '../models';
+import {Delimiter, Property, Structure, TextTransformation} from '../models';
 import {Styled} from '../components/Styled';
-import {TranslationWithLink} from '../components';
+import {TabValidationErrors, TranslationWithLink} from '../components';
 import styled from 'styled-components';
+import {Violation} from '../validators';
+import {useIdentifierGeneratorAclContext} from '../context';
+import {useQueryClient} from 'react-query';
 
 type StructureTabProps = {
   initialStructure: Structure;
   delimiter: Delimiter | null;
+  textTransformation: TextTransformation;
   onStructureChange: (structure: Structure) => void;
   onDelimiterChange: (delimiter: Delimiter | null) => void;
+  validationErrors: Violation[];
 };
 
 type PropertyId = string;
@@ -26,10 +31,13 @@ const StructureDataContainer = styled.div`
 const StructureTab: React.FC<StructureTabProps> = ({
   initialStructure,
   delimiter,
+  textTransformation,
   onStructureChange,
   onDelimiterChange,
+  validationErrors,
 }) => {
   const translate = useTranslate();
+  const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
   const [selectedPropertyId, setSelectedPropertyId] = useState<PropertyId | undefined>();
   const [structure, setStructure] = useState<StructureWithIdentifiers>(
     initialStructure.map(property => ({
@@ -37,11 +45,18 @@ const StructureTab: React.FC<StructureTabProps> = ({
       ...property,
     }))
   );
+  const queryClient = useQueryClient();
   const selectedProperty = useMemo(
     () => structure.find(propertyWithId => propertyWithId.id === selectedPropertyId),
     [selectedPropertyId, structure]
   );
   const isLimitReached = useMemo(() => structure.length === LIMIT_NUMBER, [structure.length]);
+
+  useEffect(() => {
+    return () => {
+      queryClient.invalidateQueries(['getPropertyItems']);
+    };
+  }, [queryClient]);
 
   const removeIdentifiers: (structureWithIdentifiers: StructureWithIdentifiers) => Structure =
     structureWithIdentifiers => {
@@ -96,17 +111,22 @@ const StructureTab: React.FC<StructureTabProps> = ({
           linkKey={'pim_identifier_generator.structure.helper_link'}
         />
       </Helper>
+      <TabValidationErrors errors={validationErrors} />
       <Styled.TwoColumns withoutSecondColumn={!selectedProperty}>
         <div>
           <SectionTitle>
             <SectionTitle.Title>{translate('pim_identifier_generator.structure.title')}</SectionTitle.Title>
             <SectionTitle.Spacer />
-            {!isLimitReached && <AddPropertyButton onAddProperty={onAddProperty} />}
+            {!isLimitReached && identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted && (
+              <AddPropertyButton onAddProperty={onAddProperty} structure={structure} />
+            )}
           </SectionTitle>
           {structure.length > 0 && (
             <>
-              {isLimitReached && <Helper>{translate('pim_identifier_generator.structure.limit_reached')}</Helper>}
-              <Preview structure={structure} delimiter={delimiter} />
+              {isLimitReached && (
+                <Helper>{translate('pim_identifier_generator.structure.limit_reached', {count: LIMIT_NUMBER})}</Helper>
+              )}
+              <Preview structure={structure} delimiter={delimiter} textTransformation={textTransformation} />
               <StructureDataContainer>
                 <PropertiesList
                   structure={structure}
@@ -114,6 +134,7 @@ const StructureTab: React.FC<StructureTabProps> = ({
                   selectedId={selectedPropertyId}
                   onReorder={onReorder}
                   onDelete={onDeleteProperty}
+                  validationErrors={validationErrors}
                 />
                 <DelimiterEdit
                   delimiter={delimiter}
@@ -124,14 +145,14 @@ const StructureTab: React.FC<StructureTabProps> = ({
             </>
           )}
           {structure.length === 0 && (
-            <NoDataSection>
-              <AttributesIllustration size={256} />
-              <NoDataTitle>{translate('pim_identifier_generator.structure.empty.title')}</NoDataTitle>
-              <NoDataText>
-                <p>{translate('pim_identifier_generator.structure.empty.text')}</p>
-                <Link>{translate('pim_identifier_generator.structure.empty.link_text')}</Link>
-              </NoDataText>
-            </NoDataSection>
+            <Placeholder
+              illustration={<AttributesIllustration />}
+              size="large"
+              title={translate('pim_identifier_generator.structure.empty.title')}
+            >
+              {translate('pim_identifier_generator.structure.empty.text')}
+              <Link>{translate('pim_identifier_generator.structure.empty.link_text')}</Link>
+            </Placeholder>
           )}
         </div>
         {selectedProperty && <PropertyEdit selectedProperty={selectedProperty} onChange={onPropertyChange} />}

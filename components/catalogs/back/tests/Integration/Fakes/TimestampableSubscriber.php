@@ -16,11 +16,11 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 final class TimestampableSubscriber implements EventSubscriber
 {
     public function __construct(
-        private Clock $clock
+        private Clock $clock,
     ) {
     }
 
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::prePersist,

@@ -38,11 +38,14 @@ class GetCatalogQueryTest extends IntegrationTestCase
         $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
-        $this->createCatalog($id, 'Store US', 'test', isEnabled: false);
-
-        $this->setCatalogProductValueFilters(
-            $id,
-            ['channels' => ['ecommerce', 'print']]
+        $this->createCatalog(
+            id: $id,
+            name: 'Store US',
+            ownerUsername: 'test',
+            isEnabled: false,
+            catalogProductValueFilters: [
+                'channels' => ['ecommerce', 'print'],
+            ],
         );
 
         $result = $this->query->execute($id);
@@ -60,10 +63,50 @@ class GetCatalogQueryTest extends IntegrationTestCase
                 ],
             ],
             ['channels' => ['ecommerce', 'print']],
-            []
+            [],
         );
 
         $this->assertEquals($expected, $result);
+    }
+
+    public function testItGetsCatalogWithOrderedProductMapping(): void
+    {
+        $this->createUser('test');
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'test',
+            productMappingSchema: $this->getProductMappingSchemaRaw(),
+            catalogProductMapping: [
+                'short_description' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'size_label' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'title' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'uuid' => [
+                    'source' => 'uuid',
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        );
+
+        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        $expectedProductMappingKeys = ['uuid', 'title', 'short_description', 'size_label'];
+
+        $this->assertEquals($expectedProductMappingKeys, \array_keys($result->getProductMapping()));
     }
 
     public function testItThrowsWhenCatalogDoesNotExist(): void
@@ -83,7 +126,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
 
         $this->setCatalogProductValueFilters(
             $id,
-            ['channels' => ['ecommerce', 'print']]
+            ['channels' => ['ecommerce', 'print']],
         );
 
         $this->expectException(\LogicException::class);
@@ -116,7 +159,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
             ],
             [
                 'criteria' => Types::JSON,
-            ]
+            ],
         );
     }
 
@@ -130,7 +173,35 @@ class GetCatalogQueryTest extends IntegrationTestCase
             ],
             [
                 'filters' => Types::JSON,
-            ]
+            ],
         );
+    }
+
+    private function getProductMappingSchemaRaw(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "short_description": {
+              "type": "string"
+            },
+            "size_label": {
+              "type": "string"
+            }
+          }
+        }
+        JSON_WRAP;
     }
 }

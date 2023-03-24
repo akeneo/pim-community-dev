@@ -3,7 +3,6 @@ import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
   useDebounceCallback,
-  useFeatureFlags,
   useNotify,
   useRouter,
   useSecurity,
@@ -26,7 +25,6 @@ type Props = {
 const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const translate = useTranslate();
   const router = useRouter();
-  const featureFlags = useFeatureFlags();
   const {isGranted} = useSecurity();
   const [searchString, setSearchString] = useState('');
   const [filteredTrees, setFilteredTrees] = useState<CategoryTreeModel[]>(trees);
@@ -104,7 +102,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
       notify(
-        NotificationLevel.INFO,
+        NotificationLevel.ERROR,
         translate('pim_enrich.entity.category.category_tree_deletion.products_limit_exceeded.title'),
         translate('pim_enrich.entity.category.category_tree_deletion.products_limit_exceeded.message', {
           tree: categoryTree.label,
@@ -133,21 +131,32 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const countTreesChildren = useCountCategoryTreesChildren();
 
+  const displayTemplateLabelOrCode = (categoryTree: CategoryTreeModel): string => {
+    if (categoryTree.templateLabel) {
+      return categoryTree.templateLabel;
+    }
+
+    if (categoryTree.templateCode) {
+      return '[' + categoryTree.templateCode + ']';
+    }
+    return '';
+  };
+
   useEffect(() => {
     const hasRights =
       isGranted('pim_enrich_product_category_template') || isGranted('pim_enrich_product_category_edit_attributes');
     let hasTemplates = false;
 
     filteredTrees.map(function (tree) {
-      if (tree.templateLabel) {
+      if (tree.templateCode) {
         hasTemplates = true;
       }
 
       return hasTemplates;
     });
 
-    setDisplayCategoryTemplatesColumn(featureFlags.isEnabled('enriched_category') && hasRights && hasTemplates);
-  }, [featureFlags, filteredTrees, isGranted]);
+    setDisplayCategoryTemplatesColumn(hasRights && hasTemplates);
+  }, [filteredTrees, isGranted]);
 
   return (
     <>
@@ -182,7 +191,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               {displayCategoryTemplatesColumn && (
                 <Table.HeaderCell>{translate('akeneo.category.tree_list.column.category_templates')}</Table.HeaderCell>
               )}
-              <StyleActionHeader isEnrichedCategoryEnabled={featureFlags.isEnabled('enriched_category')}>
+              <StyleActionHeader>
                 {translate('pim_enrich.entity.category.content.tree_list.columns.actions')}
               </StyleActionHeader>
             </Table.Header>
@@ -201,9 +210,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         countTreesChildren.hasOwnProperty(tree.code) ? countTreesChildren[tree.code] : 0
                       )}
                   </Table.Cell>
-                  {displayCategoryTemplatesColumn && <Table.Cell>{tree.templateLabel}</Table.Cell>}
+                  {displayCategoryTemplatesColumn && <Table.Cell>{displayTemplateLabelOrCode(tree)}</Table.Cell>}
                   <Table.ActionCell>
-                    {featureFlags.isEnabled('enriched_category') && isGranted('pim_enrich_product_category_template') && (
+                    {isGranted('pim_enrich_product_category_template') && (
                       <Button
                         ghost
                         level="tertiary"
@@ -239,7 +248,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               categoryLabel={categoryTreeToDelete.label}
               closeModal={closeConfirmationModal}
               deleteCategory={deleteCategoryTree}
-              message={'pim_enrich.entity.category.category_tree_deletion.confirmation'}
+              message={'pim_enrich.entity.category.category_tree_deletion.confirmation_question'}
+              categoryId={categoryTreeToDelete.id}
+              numberOfProducts={categoryTreeToDelete.productsNumber}
             />
           )}
         </>
@@ -252,8 +263,8 @@ const StyledSearch = styled(Search)`
   margin-bottom: 20px;
 `;
 
-const StyleActionHeader = styled(Table.HeaderCell)<{isEnrichedCategoryEnabled: boolean}>`
-  width: ${({isEnrichedCategoryEnabled}) => (isEnrichedCategoryEnabled ? '400px' : '50px')};
+const StyleActionHeader = styled(Table.HeaderCell)`
+  width: 400px;
 `;
 
 export {CategoryTreesDataGrid};

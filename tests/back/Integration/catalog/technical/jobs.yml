@@ -129,7 +129,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: local
+                type: none
                 file_path: /tmp/products.csv
             filters:
                 data:
@@ -173,7 +173,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             storage:
-                type: local
+                type: none
                 file_path: /tmp/product_models.csv
             filters:
                 data: []

@@ -13,9 +13,9 @@
     "test:visual:update": "yarn storybook:extract && jest --config ./jest.visual.config.js -u",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./{src,generator}/**/*.{ts,tsx}\" && yarn eslint --config .eslintrc.json --quiet \"./src/**/*.{ts,tsx}\" --fix",
     "lint:check": "yarn prettier --config .prettierrc.json --parser typescript --check \"./{src,generator}/**/*.{ts,tsx}\" && yarn eslint --config .eslintrc.json --quiet \"./src/**/*.{ts,tsx}\"",
-    "storybook:start": "yarn storybook:copy-public && yarn start-storybook -p 6006 -s ./public",
-    "storybook:build": "yarn storybook:copy-public && yarn build-storybook -s ./public",
-    "storybook:ci:start": "yarn start-storybook -p 6006 --ci",
+    "storybook:start": "yarn storybook:copy-public && NODE_OPTIONS=--openssl-legacy-provider yarn start-storybook -p 6006 -s ./public",
+    "storybook:build": "yarn storybook:copy-public && NODE_OPTIONS=--openssl-legacy-provider yarn build-storybook -s ./public",
+    "storybook:ci:start": "NODE_OPTIONS=--openssl-legacy-provider yarn start-storybook -p 6006 --ci",
     "storybook:copy-public": "cp ./src/__image_snapshots__/*standard-correctly-1-snap.png ./public/",
     "storybook:extract": "sb extract storybook-static stories.json"
   },

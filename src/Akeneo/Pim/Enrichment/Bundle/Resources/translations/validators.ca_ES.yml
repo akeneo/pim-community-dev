@@ -38,6 +38,7 @@ product_model.family_variant.not_blank.message: La variant de família del model
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": L'atribut {{ attribute_code }} requereix una data que hauria de ser {{ limit }} o posterior.
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": L'atribut {{ attribute_code }} requereix una data que hauria de ser {{ limit }} o anterior.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": L'atribut {{ attribute }} requereix un número, i el valor {{ value }} enviat no ho és.
+"The {{ attribute }} attribute requires a value which does not contain space, and the submitted \"{{ value }}\" has at least one.": L'atribut {{ attribute }} requereix un valor que no conté espai, i el "{{ value }}" enviat en té almenys un.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": L'atribut %attribute% no ha de contenir més de %limit% caràcters. El valor enviat és massa llarg.
 "The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": L'extensió de fitxer %type% no està permesa per a l'atribut %attribute%. Les extensions permeses són %extensions%.
 "The %attribute% attribute requires a url link.": L'atribut %attribute% requereix un enllaç URL.

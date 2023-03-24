@@ -2,6 +2,9 @@ import {Validator} from './Validator';
 import {ALLOWED_PROPERTY_NAMES, PROPERTY_NAMES, Structure} from '../models';
 import {Violation} from './Violation';
 import {validateFreeText} from './validateFreeText';
+import {validateAutoNumber} from './validateAutoNumber';
+import {validateFamilyProperty} from './validateFamilyProperty';
+import {validateSimpleSelectProperty} from './validateSimpleSelectProperty';
 
 const validateStructure: Validator<Structure | undefined> = (structure, path) => {
   const violations: Violation[] = [];
@@ -9,7 +12,7 @@ const validateStructure: Validator<Structure | undefined> = (structure, path) =>
   if (structure?.length === 0) {
     violations.push({
       path,
-      message: 'The structure must contain at least 1 property',
+      message: 'The structure must contain at least one property',
     });
   }
 
@@ -26,6 +29,15 @@ const validateStructure: Validator<Structure | undefined> = (structure, path) =>
 
     if (property.type === PROPERTY_NAMES.FREE_TEXT) {
       violations.push(...validateFreeText(property, subPath));
+    }
+    if (property.type === PROPERTY_NAMES.AUTO_NUMBER) {
+      violations.push(...validateAutoNumber(property, subPath));
+    }
+    if (property.type === PROPERTY_NAMES.FAMILY) {
+      violations.push(...validateFamilyProperty(property, subPath));
+    }
+    if (property.type === PROPERTY_NAMES.SIMPLE_SELECT) {
+      violations.push(...validateSimpleSelectProperty(property, subPath));
     }
   });
 

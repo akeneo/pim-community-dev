@@ -33,60 +33,17 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
         $this->getCompletenessPerChannelAndLocale = $this->get('akeneo.pim.enrichment.follow_up.completeness_widget_query');
     }
 
-    /**
-     * @JIRA PIM-8995: Adds the supports of the completeness widget for channels having no translations
-     */
-    public function test_complete_completeness_widget_with_channel_having_no_translations()
-    {
-        $channelWithoutTranslationCode = 'mobile';
-        $this->givenAChannelWithoutTranslations($channelWithoutTranslationCode);
-        $this->andACategory();
-        $this->andSomeAttributes();
-        $this->andSomeFamilies();
-        $this->andSomeProducts();
-
-        $results = $this->whenTheCompletenessForAllChannelsAndTheCurrentLocaleIsFetched();
-
-        $this->thenTheCalculatedCompletenessesShouldBeCorrectlyComputedForChannel($channelWithoutTranslationCode, $results);
-    }
-
     public function test_complete_completeness_widget()
     {
         $this->givenSomeChannels();
         $this->andACategory();
         $this->andSomeAttributes();
-        $this->andSomeFamilies();
+        $this->andAFamily();
         $this->andSomeProducts();
 
         $results = $this->whenTheCompletenessForAllChannelsAndTheCurrentLocaleIsFetched();
 
         $this->thenTheCalculatedCompletenessesShouldBeCorrect($results);
-    }
-
-    private function givenAChannelWithoutTranslations(string $channelCode): void
-    {
-        $this->updateChannel(
-            'ecommerce',
-            [
-                'category_tree' => 'master',
-                'currencies'    => ['USD'],
-                'locales'       => ['fr_FR', 'en_US'],
-                'labels'        => [
-                    'de_DE' => 'Ecommerce DE',
-                    'fr_FR' => 'Ecommerce FR',
-                    'en_US' => 'Ecommerce US',
-                ]
-            ]
-        );
-
-        $this->createChannel([
-                'code'          => $channelCode,
-                'category_tree' => 'master',
-                'currencies'    => ['USD'],
-                'locales'       => ['en_US'],
-                'labels'        => []
-            ]
-        );
     }
 
     private function createChannel(array $data = []): ChannelInterface
@@ -132,7 +89,6 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
                 'currencies'    => ['USD'],
                 'locales'       => ['fr_FR', 'en_US'],
                 'labels'        => [
-                    'de_DE' => 'Ecommerce DE',
                     'fr_FR' => 'Ecommerce FR',
                     'en_US' => 'Ecommerce US',
                 ]
@@ -143,10 +99,7 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
             'category_tree' => 'master',
             'currencies'    => ['USD'],
             'locales'       => ['en_US'],
-            'labels'        => [
-                'fr_FR' => 'Mobile FR',
-                'en_US' => 'Mobile US',
-            ]
+            'labels'        => []
         ]
         );
     }
@@ -179,23 +132,14 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
         );
     }
 
-    private function andSomeFamilies(): void
+    private function andAFamily(): void
     {
         $this->createFamily([
-            'code'                   => 'family_for_complete',
+            'code'                   => 'a_family',
             'attributes'             => ['sku', 'name', 'description'],
             'attribute_requirements' => [
                 'ecommerce' => ['sku', 'name'],
                 'mobile'    => ['sku', 'name'],
-            ]
-        ]);
-
-        $this->createFamily([
-            'code'                   => 'family_for_incomplete',
-            'attributes'             => ['sku', 'name', 'description'],
-            'attribute_requirements' => [
-                'ecommerce' => ['sku', 'name', 'description'],
-                'mobile'    => ['sku', 'name', 'description']
             ]
         ]);
     }
@@ -220,23 +164,21 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
     private function thenTheCalculatedCompletenessesShouldBeCorrect(CompletenessWidget $actualCompletenessWidget): void
     {
         $localeCompletenessesEcommerce = [
-            new LocaleCompleteness('English (United States)', 5),
-            new LocaleCompleteness('French (France)', 5)
+            new LocaleCompleteness('English (United States)', 8),
+            new LocaleCompleteness('French (France)', 6)
         ];
         $localeCompletenessesMobile = [
-            new LocaleCompleteness('English (United States)', 5)
+            new LocaleCompleteness('English (United States)', 10)
         ];
         $channelCompletenesses = [
-            new ChannelCompleteness('ecommerce', 10, 10, $localeCompletenessesEcommerce, [
+            new ChannelCompleteness('ecommerce', 5, 10, $localeCompletenessesEcommerce, [
                 'en_US' => 'Ecommerce US',
                 'fr_FR' => 'Ecommerce FR'
-            ]
-            ),
-            new ChannelCompleteness('mobile', 5, 10, $localeCompletenessesMobile, [
-                'en_US' => 'Mobile US',
-                'fr_FR' => 'Mobile FR'
-            ]
-            )
+            ]),
+            new ChannelCompleteness('mobile', 10, 10, $localeCompletenessesMobile, [
+                'en_US' => null,
+                'fr_FR' => null,
+            ])
         ];
         $expectedCompletenessWidget = new CompletenessWidget($channelCompletenesses);
         $this->assertSame($expectedCompletenessWidget->toArray(), $actualCompletenessWidget->toArray());
@@ -244,52 +186,37 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
 
     private function andSomeProducts(): void
     {
-        $this->createProducts(5, 5);
-    }
+        // All the 10 products are complete on the channel "mobile"
+        $createProductIntentsBase = [
+            new SetFamily('a_family'),
+            new SetCategories(['shoes']),
+            new SetTextareaValue('description', 'mobile', 'en_US', 'descr_mobile_us'),
+            new SetTextValue('name', 'mobile', 'en_US', 'name_mobile_US'),
+        ];
 
-    private function createProducts($numberComplete, $numberIncomplete)
-    {
-        for ($i = 0; $i < $numberComplete; $i++) {
-            $this->createProduct('product_complete_'.$i, [
-                new SetFamily('family_for_complete'),
-                new SetCategories(['shoes']),
+        // 5 products complete on all locales for the channel "ecommerce"
+        for ($i = 0; $i < 5; $i++) {
+            $this->createProduct('product_complete_'.$i, \array_merge($createProductIntentsBase, [
                 new SetTextValue('name', 'ecommerce', 'fr_FR', 'name_ecom_fr_'.$i),
                 new SetTextValue('name', 'ecommerce', 'en_US', 'name_ecom_us_'.$i),
-                new SetTextValue('name', 'mobile', 'en_US', 'name_mobile_us_'.$i),
-                new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'descr_ecom_fr_'.$i),
-                new SetTextareaValue('description', 'ecommerce', 'en_US', 'descr_ecom_us_'.$i),
-                new SetTextareaValue('description', 'mobile', 'en_US', 'descr_mobile_us_'.$i),
-            ]);
+            ]));
         }
-        for ($i = 0; $i < $numberIncomplete; $i++) {
-            $this->createProduct('product_incomplete_'.$i, [
-                new SetFamily('family_for_incomplete'),
-                new SetCategories(['shoes']),
-                new SetTextValue('name', 'mobile', 'en_US', 'name_mobile_US_'.$i),
-            ]);
-        }
-    }
 
-    private function thenTheCalculatedCompletenessesShouldBeCorrectlyComputedForChannel(
-        string $channelCode,
-        CompletenessWidget $actualCompletenessWidget
-    ) {
-        $channelCompleteness = new ChannelCompleteness(
-            $channelCode,
-            5,
-            10,
-            [new LocaleCompleteness('English (United States)', 5)],
-            [
-                'en_US' => null,
-                'fr_FR' => null,
-            ]
-        );
-        $completenessWidget = new CompletenessWidget([$channelCompleteness]);
-
-        $normalizedExpectedCompletenessWidget = $completenessWidget->toArray();
-        $normalizedActualCompletenessWidget = $actualCompletenessWidget->toArray();
-        $this->assertArrayHasKey($channelCode, $normalizedExpectedCompletenessWidget);
-        $this->assertArrayHasKey($channelCode, $normalizedActualCompletenessWidget);
-        $this->assertSame($normalizedExpectedCompletenessWidget[$channelCode], $normalizedActualCompletenessWidget[$channelCode]);
+        // 5 incomplete products for the channel "ecommerce"
+        $this->createProduct('product_incomplete_1', $createProductIntentsBase);
+        // with 3 products complete only for "en_US"
+        $this->createProduct('product_incomplete_2', \array_merge($createProductIntentsBase, [
+            new SetTextValue('name', 'ecommerce', 'en_US', 'name_ecom_us'),
+        ]));
+        $this->createProduct('product_incomplete_3', \array_merge($createProductIntentsBase, [
+            new SetTextValue('name', 'ecommerce', 'en_US', 'name_ecom_us'),
+        ]));
+        $this->createProduct('product_incomplete_4', \array_merge($createProductIntentsBase, [
+            new SetTextValue('name', 'ecommerce', 'en_US', 'name_ecom_us'),
+        ]));
+        // and with 1 product complete only for "fr_FR"
+        $this->createProduct('product_incomplete_5', \array_merge($createProductIntentsBase, [
+            new SetTextValue('name', 'ecommerce', 'fr_FR', 'name_ecom_fr'),
+        ]));
     }
 }

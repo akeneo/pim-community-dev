@@ -8,7 +8,6 @@ use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Test\Integration\Configuration;
 
 class ActivateTemplateIntegration extends CategoryTestCase
@@ -36,8 +35,6 @@ class ActivateTemplateIntegration extends CategoryTestCase
         $attributesExpected = self::givenAttributes($templateUuid);
 
         $this->assertEquals('master_template', $template->getCode());
-        $labelCollectionExpected = LabelCollection::fromArray(["en_US" => "Master catalog template"]);
-        $this->assertEqualsCanonicalizing($labelCollectionExpected, $template->getLabelCollection());
         $this->assertEqualsCanonicalizing(
             array_keys($attributesExpected->getAttributes()),
             array_keys($attributes->getAttributes()),

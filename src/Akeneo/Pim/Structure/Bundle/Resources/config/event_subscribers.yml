@@ -78,8 +78,38 @@ services:
             - { name: kernel.event_subscriber }
 
     pim_catalog.event_subscriber.check_attribute_on_deletion_subscriber:
-        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeOnDeletionSubscriber'
+        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotUsedAsLabelOnDeletionSubscriber'
         arguments:
             - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotAFamilyVariantAxisOnDeletionSubscriber:
+        arguments:
+            - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotIdentifierOnDeletionSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotUsedAsChannelConversionUnitOnDeletionSubscriber:
+        arguments:
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\TimestampableAttributeSubscriber:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeGroupOtherCannotBeRemovedSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeGroupWithAttributeCannotBeRemovedSubscriber:
         tags:
             - { name: kernel.event_subscriber }

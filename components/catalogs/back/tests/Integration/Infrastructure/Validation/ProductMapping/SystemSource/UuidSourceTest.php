@@ -33,7 +33,7 @@ class UuidSourceTest extends IntegrationTestCase
                 'scope' => null,
                 'locale' => null,
             ],
-            new UuidSource()
+            new UuidSource(),
         );
 
         $this->assertEmpty($violations);
@@ -42,7 +42,7 @@ class UuidSourceTest extends IntegrationTestCase
     /**
      * @dataProvider invalidDataProvider
      */
-    public function testItReturnsViolationsWhenInvalid(array $source, $expectedMessage): void
+    public function testItReturnsViolationsWhenInvalid(array $source, string $expectedMessage): void
     {
         $violations = $this->validator->validate($source, new UuidSource());
 

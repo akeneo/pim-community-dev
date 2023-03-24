@@ -35,9 +35,17 @@ final class AttributeTextSource extends Compound
                         ],
                         'scope' => [
                             new Assert\Type('string'),
+                            new Assert\NotBlank(allowNull: true),
                         ],
                         'locale' => [
                             new Assert\Type('string'),
+                            new Assert\NotBlank(allowNull: true),
+                        ],
+                        'default' => [
+                            new Assert\Optional([
+                                new Assert\Type('string'),
+                                new Assert\NotBlank(allowNull: false),
+                            ]),
                         ],
                     ],
                     'allowMissingFields' => false,

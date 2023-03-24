@@ -21,6 +21,7 @@ define([
     events: {
       'click button': 'openSelector',
     },
+    defaultOperator: 'IN CHILDREN',
 
     /**
      * {@inherit}
@@ -31,7 +32,7 @@ define([
         this.getRoot(),
         'pim_enrich:form:entity:pre_update',
         function (data) {
-          _.defaults(data, {field: this.getCode(), operator: 'IN CHILDREN', value: []});
+          _.defaults(data, {field: this.getCode(), operator: this.defaultOperator, value: []});
         }.bind(this)
       );
 
@@ -44,7 +45,7 @@ define([
      * @return {String}
      */
     renderInput: function () {
-      var categoryCount = 'IN CHILDREN' === this.getOperator() ? 0 : this.getValue().length;
+      var categoryCount = this.defaultOperator === this.getOperator() ? 0 : this.getValue().length;
 
       return this.template({
         isEditable: this.isEditable(),
@@ -73,7 +74,7 @@ define([
     getTemplateContext: function () {
       return $.when(BaseFilter.prototype.getTemplateContext.apply(this, arguments), this.getCurrentChannel()).then(
         function (templateContext, channel) {
-          if ('IN CHILDREN' === this.getOperator()) {
+          if (this.defaultOperator === this.getOperator()) {
             this.setDefaultValues(channel);
           }
 
@@ -100,7 +101,7 @@ define([
         el: modal.$el.find('.modal-body'),
         attributes: {
           channel: this.getParentForm().getFilters().structure.scope,
-          categories: 'IN CHILDREN' === this.getOperator() ? [] : [...this.getValue()],
+          categories: this.defaultOperator === this.getOperator() ? [] : [...this.getValue()],
         },
       });
 
@@ -159,13 +160,13 @@ define([
      * @param {object} channel
      */
     setDefaultValues: function (channel) {
-      if (this.getOperator() === 'IN CHILDREN' && _.isEqual(this.getValue(), [channel.category_tree])) {
+      if (this.getOperator() === this.defaultOperator && _.isEqual(this.getValue(), [channel.category_tree])) {
         return;
       }
 
       this.setData({
         field: this.getField(),
-        operator: 'IN CHILDREN',
+        operator: this.defaultOperator,
         value: [channel.category_tree],
       });
     },

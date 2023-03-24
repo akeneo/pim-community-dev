@@ -28,15 +28,15 @@ final class GetChannelsQuery implements GetChannelsQueryInterface
             [],
             [],
             $limit,
-            ($page - 1) * $limit
+            ($page - 1) * $limit,
         );
 
         return \array_map(
-            static fn (ChannelInterface $channel) => [
+            static fn (ChannelInterface $channel): array => [
                 'code' => $channel->getCode(),
                 'label' => $channel->getLabel(),
             ],
-            $channels
+            $channels,
         );
     }
 }

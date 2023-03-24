@@ -6,7 +6,6 @@ import {Catalog} from '../../../../model/Apps/catalog';
 import {useRouter} from '../../../../shared/router/use-router';
 import {ApplyButton, PageContent, PageHeader} from '../../../../common';
 import {UserButtons} from '../../../../shared/user';
-import {DeveloperModeTag} from '../../DeveloperModeTag';
 import {CatalogEdit, useCatalogForm} from '@akeneo-pim-community/catalogs';
 import {NotificationLevel, useNotify} from '../../../../shared/notify';
 import {OpenAppButton} from '../OpenAppButton';
@@ -81,8 +80,6 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
         </Breadcrumb>
     );
 
-    const tag = connectedApp.is_test_app ? <DeveloperModeTag /> : null;
-
     return (
         <>
             <PageHeader
@@ -92,7 +89,6 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
                 state={<FormState />}
                 imageSrc={connectedApp.logo ?? undefined}
                 imageIllustration={connectedApp.logo ? undefined : <AppIllustration />}
-                tag={tag}
                 contextContainer={<div ref={ref} />}
             >
                 {catalog.name}

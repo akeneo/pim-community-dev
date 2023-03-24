@@ -3,9 +3,23 @@ import {mockResponse, render, screen, waitFor} from '../../tests/test-utils';
 import {EditGeneratorPage} from '../';
 import userEvent from '@testing-library/user-event';
 import {NotificationLevel} from '@akeneo-pim-community/shared';
-import {initialGenerator} from '../../tests/fixtures/initialGenerator';
+import initialGenerator from '../../tests/fixtures/initialGenerator';
+import {act, fireEvent} from '@testing-library/react';
 
 const mockNotify = jest.fn();
+
+const userContext = {
+  get: (k: string) => {
+    switch (k) {
+      case 'catalogLocale':
+        return 'en_US';
+      case 'uiLocale':
+        return 'en_US';
+      default:
+        throw new Error(`Unknown key ${k}`);
+    }
+  },
+};
 
 jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
@@ -17,6 +31,14 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   },
   useNotify: () => {
     return mockNotify;
+  },
+  useUserContext: () => {
+    return userContext;
+  },
+  useSecurity: () => {
+    return {
+      isGranted: () => true,
+    };
   },
 }));
 
@@ -94,5 +116,18 @@ describe('EditGeneratorPage', () => {
 
     expect(mockNotify).toHaveBeenCalled();
     expect(mockNotify).toHaveBeenCalledWith(NotificationLevel.ERROR, 'pim_identifier_generator.flash.create.error');
+  });
+
+  it('should check generator validation on save', () => {
+    render(<EditGeneratorPage initialGenerator={{...initialGenerator, structure: []}} />);
+    expect(screen.getByText('pim_common.save')).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(screen.getByText('pim_common.save'));
+    });
+
+    expect(mockNotify).not.toHaveBeenCalled();
+    // we should see a red pill to know there is an error
+    expect(screen.getByRole('alert')).toBeInTheDocument();
   });
 });

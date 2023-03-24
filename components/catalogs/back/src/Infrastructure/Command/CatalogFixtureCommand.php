@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Command;
 
+use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateProductMappingSchemaCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
@@ -21,10 +22,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type ProductMapping from Catalog
  */
 class CatalogFixtureCommand extends Command
 {
+    /**
+     * @var string|null
+     */
     protected static $defaultName = 'akeneo:catalogs:fixtures';
+    /**
+     * @var string|null
+     */
     protected static $defaultDescription = 'Do not run this command in production env. Installs fixtures for dev only.';
 
     public function __construct(
@@ -67,7 +76,7 @@ class CatalogFixtureCommand extends Command
                     'write_catalogs',
                     'delete_catalogs',
                     'read_products',
-                ]
+                ],
             );
 
             /** @var UserInterface|null $user */
@@ -119,10 +128,49 @@ class CatalogFixtureCommand extends Command
                     'source' => 'meta_title',
                     'scope' => null,
                     'locale' => 'en_US',
+                    'default' => 'Meta default title',
+                ],
+                'release_date' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'is_released' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'zoom' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'thumbnail' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'weight' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'phone_number' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'size' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'colors' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
                 ],
             ];
-
-            $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
 
             /** @var object $productMappingSchema */
             $productMappingSchema = \json_decode($this->getProductMappingSchemaRaw(), false, 512, JSON_THROW_ON_ERROR);
@@ -131,6 +179,8 @@ class CatalogFixtureCommand extends Command
                 $catalogWithMappingId,
                 $productMappingSchema,
             ));
+
+            $this->setCatalogProductMapping($catalogWithMappingId, $productMapping);
 
             $this->connection->commit();
 
@@ -145,7 +195,7 @@ class CatalogFixtureCommand extends Command
     }
 
     /**
-     * @param array<array-key, array{source: string|null, scope:string|null, locale: string|null}> $productMapping
+     * @param ProductMapping $productMapping
      * @throws \Doctrine\DBAL\Exception
      */
     private function setCatalogProductMapping(string $id, array $productMapping): void
@@ -158,7 +208,7 @@ class CatalogFixtureCommand extends Command
             ],
             [
                 'productMapping' => Types::JSON,
-            ]
+            ],
         );
     }
 
@@ -167,7 +217,7 @@ class CatalogFixtureCommand extends Command
         return <<<'JSON_WRAP'
         {
           "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.2/schema",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.12/schema",
           "$comment": "My first schema !",
           "title": "Product Mapping",
           "description": "JSON Schema describing the structure of products expected by our application",
@@ -177,7 +227,10 @@ class CatalogFixtureCommand extends Command
               "type": "string"
             },
             "name": {
-              "type": "string"
+              "type": "string",
+              "description": "A word or phrase that best describes the product. This will help Amazon.com locate the product when customers perform searches on our site. This is in addition to the valid values that you must submit for your product. It is in your best interest to fill in all search terms.",
+              "minLength": 3,
+              "maxLength": 20
             },
             "description": {
               "type": "string"
@@ -189,8 +242,48 @@ class CatalogFixtureCommand extends Command
             "meta_title": {
               "type": "string",
               "title": "Meta title"
+            },
+            "release_date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "is_released": {
+              "type": "boolean",
+              "title": "Is released"
+            },
+            "zoom": {
+              "type": "number",
+              "title": "Optical Zoom",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            "thumbnail": {
+              "type": "string",
+              "format": "uri",
+              "title": "Thumbnail"
+            },
+            "phone_number": {
+              "type": "string",
+              "pattern": "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$"
+            },
+            "size": {
+              "type": "string",
+              "enum": ["S", "M", "L"]
+            },
+            "weight": {
+              "type": "number",
+              "title": "Weight"
+            },
+            "colors": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["Red", "Green", "Blue", "Yellow", "Black", "White"]
+              },
+              "title": "Colors"
             }
-          }
+          },
+          "required": ["name", "size"]
         }
         JSON_WRAP;
     }

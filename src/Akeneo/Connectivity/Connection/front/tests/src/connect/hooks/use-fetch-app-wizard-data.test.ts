@@ -28,6 +28,7 @@ test('it fetches the wizard data', async () => {
         ],
         authenticationScopes: ['email'],
         oldAuthenticationScopes: ['profile'],
+        displayCheckboxConsent: true,
     };
 
     mockFetchResponses({

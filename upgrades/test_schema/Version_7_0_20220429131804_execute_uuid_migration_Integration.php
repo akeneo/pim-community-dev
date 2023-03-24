@@ -53,7 +53,7 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
         $this->assertJsonHaveUuid();
         $this->assertProductsAreReindexed();
         $this->assertColumnsAreNullable();
-        $this->assertNoGhostCompletenessRecords();
+        $this->assertCompletenessProductIdColumnNoLongerExists();
     }
 
     protected function setUp(): void
@@ -77,6 +77,14 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
         $kernel = new \Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
         $consoleApp = new Application($kernel);
         $consoleApp->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'doctrine:schema:drop',
+            '--force' => true,
+            '--full-database' => true,
+        ]);
+        $output = new BufferedOutput();
+        $consoleApp->run($input, $output);
 
         $input = new ArrayInput([
             'command' => 'pim:installer:db',
@@ -207,16 +215,16 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
         }
     }
 
-    private function assertNoGhostCompletenessRecords(): void
+    private function assertCompletenessProductIdColumnNoLongerExists(): void
     {
         Assert::assertSame(
             0,
             (int) $this->connection->executeQuery(<<<SQL
-            SELECT COUNT(c.id)
-            FROM pim_catalog_completeness c
-                LEFT JOIN pim_catalog_product p ON p.id = c.product_id
-            WHERE p.id IS NULL
-            SQL)->fetchOne()
+SELECT COUNT(*)
+FROM information_schema.columns
+WHERE table_name='pim_catalog_completeness' AND column_name='product_id'
+SQL
+            )->fetchOne()
         );
     }
 

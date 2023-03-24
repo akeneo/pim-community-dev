@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +20,15 @@ final class ListIdentifierGeneratorControllerEndToEnd extends ControllerEndToEnd
         $response = $this->client->getResponse();
         Assert::AssertSame(Response::HTTP_FOUND, $response->getStatusCode());
         Assert::assertTrue($response->isRedirect('/'));
+    }
+
+    /** @test */
+    public function it_should_throw_an_exception_if_user_does_not_have_the_view_generators_acl(): void
+    {
+        $this->loginAs('kevin');
+        $this->callRoute('akeneo_identifier_generator_rest_list');
+        $response = $this->client->getResponse();
+        Assert::AssertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     /** @test */
@@ -41,6 +49,7 @@ final class ListIdentifierGeneratorControllerEndToEnd extends ControllerEndToEnd
                 'string' => 'AKN',
             ]],
             'delimiter' => null,
+            'text_transformation' => 'no',
         ];
 
         $this->callCreateRoute(
@@ -53,17 +62,12 @@ final class ListIdentifierGeneratorControllerEndToEnd extends ControllerEndToEnd
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
-        $result = array_map(function ($ig) {
+        $result = \array_map(function ($ig) {
             unset($ig['uuid']);
 
             return $ig;
-        }, json_decode($response->getContent(), true));
+        }, \json_decode($response->getContent(), true));
 
         Assert::assertEquals([$expectedGenerator], $result);
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useTechnicalCatalog(['identifier_generator']);
     }
 }

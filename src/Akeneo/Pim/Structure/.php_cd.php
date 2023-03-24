@@ -15,6 +15,7 @@ $rules = [
         'Webmozart\Assert\Assert',
         'Akeneo\Tool',
         'Akeneo\Pim\Structure\Component',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'FOS\RestBundle\View',
@@ -24,6 +25,9 @@ $rules = [
         'Oro\Bundle\FilterBundle\Filter\ChoiceFilter',
         'Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface',
         'Psr\Log\LoggerInterface',
+        'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
+        'Akeneo\Channel\API',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi',
 
         // TIP-906: Functional problem to query products before removing AttributeOption
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory',

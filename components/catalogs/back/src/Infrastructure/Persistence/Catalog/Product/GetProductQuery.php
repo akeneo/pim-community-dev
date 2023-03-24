@@ -40,7 +40,7 @@ class GetProductQuery implements GetProductQueryInterface
     public function __construct(
         private GetUserIdFromUsernameQueryInterface $getUserIdFromUsernameQuery,
         private GetConnectorProducts $getConnectorProducts,
-        private ConnectorProductWithUuidNormalizer $connectorProductWithUuidNormalizer
+        private ConnectorProductWithUuidNormalizer $connectorProductWithUuidNormalizer,
     ) {
     }
 
@@ -95,7 +95,7 @@ class GetProductQuery implements GetProductQueryInterface
         foreach ($product['values'] as &$values) {
             $values = \array_values(\array_filter(
                 $values,
-                static fn (array $value) => $value['scope'] === null || \in_array($value['scope'], $channels, true)
+                static fn (array $value): bool => $value['scope'] === null || \in_array($value['scope'], $channels, true),
             ));
         }
 
@@ -116,7 +116,7 @@ class GetProductQuery implements GetProductQueryInterface
         foreach ($product['values'] as &$values) {
             $values = \array_values(\array_filter(
                 $values,
-                static fn (array $value) => $value['locale'] === null || \in_array($value['locale'], $locales, true)
+                static fn (array $value): bool => $value['locale'] === null || \in_array($value['locale'], $locales, true),
             ));
         }
 
@@ -144,8 +144,8 @@ class GetProductQuery implements GetProductQueryInterface
                 $value['data'] = \array_values(
                     \array_filter(
                         $value['data'],
-                        static fn (array $price) => \in_array($price['currency'], $currencies, true)
-                    )
+                        static fn (array $price): bool => \in_array($price['currency'], $currencies, true),
+                    ),
                 );
             }
         }

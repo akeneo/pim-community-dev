@@ -105,7 +105,18 @@ define([
      * Executes the search by setting the value.
      */
     doSearch: function () {
-      this.setValue(this._readDOMValue());
+      const readDOMValue = this._readDOMValue();
+
+      if (
+        readDOMValue.value !== undefined &&
+        typeof readDOMValue.value === 'string' &&
+        readDOMValue.value !== '' &&
+        readDOMValue.value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) === null // if not an email
+      ) {
+        readDOMValue.value = readDOMValue.value.replace(/[!@#$%^&*()+=\-[\]\\';,./{}|":<>?~_]/g, '\\$&');
+      }
+
+      this.setValue(readDOMValue);
     },
   });
 });

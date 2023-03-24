@@ -9,6 +9,10 @@ import {TargetSourceAssociation} from './components/TargetSourceAssociation';
 import {ProductMappingErrors} from './models/ProductMappingErrors';
 import {SourcePanel} from './components/SourcePanel';
 import {Source} from './models/Source';
+import {Target} from './models/Target';
+import {sourceHasError} from './utils/sourceHasError';
+import {createTargetFromProductMappingSchema} from './utils/createTargetFromProductMappingSchema';
+import {SourceParameter} from './models/SourceParameter';
 
 const MappingContainer = styled.div`
     display: flex;
@@ -33,14 +37,22 @@ type Props = {
 export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema, errors, onChange}) => {
     const translate = useTranslate();
 
-    const [selectedTarget, setSelectedTarget] = useState<string | null>(null);
-    const [selectedTargetLabel, setSelectedTargetLabel] = useState<string | null>(null);
-    const [selectedSource, setSelectedSource] = useState<Source | null>(null);
+    const [selectedTarget, setSelectedTarget] = useState<Target | null>(null);
+    const [selectedSource, setSelectedSource] = useState<Source>({
+        source: null,
+        locale: null,
+        scope: null,
+    });
 
     const handleClick = useCallback(
         (targetCode, source) => {
-            setSelectedTarget(targetCode);
-            setSelectedTargetLabel(productMappingSchema?.properties[targetCode]?.title ?? targetCode);
+            if (productMappingSchema === undefined) {
+                return;
+            }
+
+            const target = createTargetFromProductMappingSchema(targetCode, productMappingSchema);
+
+            setSelectedTarget(target);
             setSelectedSource(source);
         },
         [productMappingSchema]
@@ -51,7 +63,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             if (selectedTarget !== null) {
                 onChange({
                     ...productMapping,
-                    [selectedTarget]: source,
+                    [selectedTarget.code]: source,
                 });
                 setSelectedSource(source);
             }
@@ -59,31 +71,7 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
         [selectedTarget, onChange, productMapping]
     );
 
-    const buildTargetsWithUuidFirst = function (productMapping: {(key: string): Source} | {}): [string, Source][] {
-        const targets = Object.entries(productMapping);
-
-        targets.forEach(function (target, i) {
-            if ('uuid' === target[0]) {
-                targets.splice(i, 1);
-                targets.unshift(target);
-            }
-        });
-
-        return targets;
-    };
-
-    const targets = buildTargetsWithUuidFirst(productMapping ?? {});
-
-    const targetsWithErrors = Object.keys(
-        Object.fromEntries(
-            Object.entries(errors).filter(([, value]) => {
-                const properties = Object.entries(value ?? {});
-                const propertiesWithErrors = properties.filter(([, value]) => typeof value === 'string');
-
-                return propertiesWithErrors.length > 0;
-            })
-        )
-    );
+    const targetSourceAssociations = Object.entries(productMapping);
 
     return (
         <MappingContainer data-testid={'product-mapping'}>
@@ -105,19 +93,22 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                         </Table.HeaderCell>
                     </Table.Header>
                     <Table.Body>
-                        {(targets.length === 0 || undefined === productMappingSchema) && <TargetPlaceholder />}
-                        {targets.length > 0 && undefined !== productMappingSchema && (
+                        {(targetSourceAssociations.length === 0 || undefined === productMappingSchema) && (
+                            <TargetPlaceholder />
+                        )}
+                        {targetSourceAssociations.length > 0 && undefined !== productMappingSchema && (
                             <>
-                                {targets.map(([targetCode, source]) => {
+                                {targetSourceAssociations.map(([targetCode, source]) => {
                                     return (
                                         <TargetSourceAssociation
-                                            isSelected={selectedTarget === targetCode}
+                                            isSelected={selectedTarget?.code === targetCode}
                                             key={targetCode}
                                             onClick={handleClick}
                                             targetCode={targetCode}
                                             targetLabel={productMappingSchema.properties[targetCode]?.title}
                                             source={source}
-                                            hasError={targetsWithErrors.includes(targetCode)}
+                                            hasError={sourceHasError(errors[targetCode])}
+                                            isRequired={productMappingSchema?.required?.includes(targetCode) || false}
                                         />
                                     );
                                 })}
@@ -126,14 +117,13 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                     </Table.Body>
                 </Table>
             </TargetContainer>
-            <SourceContainer>
+            <SourceContainer data-testid='source-panel'>
                 <SourcePanel
                     target={selectedTarget}
-                    targetLabel={selectedTargetLabel}
                     source={selectedSource}
                     onChange={handleSourceUpdate}
-                    errors={selectedTarget === null ? null : errors[selectedTarget]}
-                ></SourcePanel>
+                    errors={selectedTarget === null ? null : errors[selectedTarget?.code]}
+                />
             </SourceContainer>
         </MappingContainer>
     );

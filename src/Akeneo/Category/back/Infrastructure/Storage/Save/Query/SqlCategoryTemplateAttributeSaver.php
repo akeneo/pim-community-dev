@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Save\Query;
 
+use Akeneo\Category\Application\Query\IsTemplateDeactivated;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
@@ -19,12 +20,17 @@ use Doctrine\DBAL\Types\Types;
 class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSaver
 {
     public function __construct(
-        private Connection $connection,
+        private readonly Connection $connection,
+        private readonly IsTemplateDeactivated $isTemplateDeactivated,
     ) {
     }
 
     public function insert(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void
     {
+        if (($this->isTemplateDeactivated)($templateUuid)) {
+            return;
+        }
+
         $this->insertAttributes($attributeCollection->getAttributes());
     }
 

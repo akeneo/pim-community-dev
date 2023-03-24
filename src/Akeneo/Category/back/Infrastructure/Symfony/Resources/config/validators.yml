@@ -7,6 +7,25 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
+  Akeneo\Category\Infrastructure\Validation\ValueUserIntentsShouldHaveAnActivatedTemplateValidator:
+    arguments:
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Category\Infrastructure\Validation\AttributeCodeShouldBeUniqueInTheTemplateValidator:
+    arguments:
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Category\Infrastructure\Validation\LimitNumberOfAttributesInTheTemplateValidator:
+    arguments:
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+    tags:
+      - { name: validator.constraint_validator }
+
   Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator:
     arguments:
       - '@validator'

@@ -2,6 +2,7 @@ pim_notification:
     types:
         settings: Settings
         mass_delete: Deletion
+        attribute_mass_delete: Deletion
 flash:
     comment:
         create:
@@ -22,6 +23,7 @@ pim_enrich.entity.product:
         update:
             success: Product successfully updated.
             fail: The product could not be updated.
+            fail_session_expired: The product can not be updated. Your user session has expired. Please log in again.
             fields_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
             already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
             file_upload: An error occurred during the file upload
@@ -114,7 +116,7 @@ pim_enrich.entity.product:
                 quantity: Quantity
                 unlinked: Unlinked
             search:
-                placeholder: Search on label or identifier
+                placeholder: Search by label, identifier or uuid
             no_data: There are no associated products.
             remove: Remove association
             edit: Edit product
@@ -248,6 +250,9 @@ pim_enrich.entity.category:
         success: The tree "{{ tree }}" was successfully deleted
         error: The tree "{{ tree }}" could not be deleted
         confirmation: Are you sure want to delete the {{ name }} tree? All the categories in that tree will be deleted, and the products will be removed from all those categories.
+        confirmation_question: Are you sure you want to delete {{ name }} ?
+        warning_categories_number: The {{ categoriesNumber }} categories associated will be deleted, and the products will be removed from all those categories.
+        warning_products: All associated products will be removed from {{ name }}
         products_limit_exceeded:
             title: This tree cannot be deleted
             message: The tree "{{ tree }}" contains more than {{ limit }} products and therefore cannot be deleted.
@@ -255,6 +260,7 @@ pim_enrich.entity.category:
         success: The category "{{ name }}" was successfully deleted
         error: The category "{{ name }}" could not be deleted
         confirmation: Are you sure you want to delete the category {{ name }}? Products in this category will not be deleted.
+        confirmation_question: Are you sure you want to delete {{ name }} ?
         products_limit_exceeded:
             title: This category cannot be deleted
             message: The "{{ name }}" category contains more than {{ limit }} products and therefore cannot be deleted.
@@ -464,6 +470,7 @@ pim_datagrid:
         mass_delete: Mass delete
         selected:
             family: "]-Inf, 1]{{ count }} family selected|]1, Inf[{{ count }} families selected"
+            attribute: "]-Inf, 1]{{ count }} attribute selected|]1, Inf[{{ count }} attributes selected"
             product: "]-Inf, 1]{{ count }} result selected|]1, Inf[{{ count }} results selected"
     view_selector:
         view: Views
@@ -506,6 +513,7 @@ pim_datagrid:
             label: Updated At
         label_or_identifier:
             label: Label or identifier
+            label_with_uuid: Label, identifier or UUID
         parent:
             label: Parent
         identifier:

@@ -6,7 +6,6 @@ import {
   PageContent,
   PageHeader,
   PimView,
-  useFeatureFlags,
   useRouter,
   useSecurity,
   useSessionStorageState,
@@ -14,7 +13,7 @@ import {
   useTranslate,
 } from '@akeneo-pim-community/shared';
 import {CategoryToDelete, useCategoryTree, useDeleteCategory} from '../hooks';
-import {CategoryTree} from '../components';
+import {CategoryTree, DiscoverEnrichedCategoriesInformationHelper} from '../components';
 import {NewCategoryModal} from './NewCategoryModal';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
 
@@ -37,7 +36,6 @@ const CategoriesTreePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const {isGranted} = useSecurity();
-  const featureFlags = useFeatureFlags();
   const [lastSelectedCategory] = useSessionStorageState<lastSelectedCategory>(
     {
       treeId: treeId,
@@ -80,11 +78,12 @@ const CategoriesTreePage: FC = () => {
   const confirmDeleteCategory = async (
     identifier: number,
     label: string,
+    code: string,
     numberOfProducts: number,
     onDelete: () => void
   ) => {
     if (isCategoryDeletionPossible(label, numberOfProducts)) {
-      setCategoryToDelete({identifier, label, onDelete});
+      setCategoryToDelete({identifier, label, code, numberOfProducts, onDelete});
       openDeleteCategoryModal();
     }
   };
@@ -136,16 +135,13 @@ const CategoriesTreePage: FC = () => {
       </PageHeader>
       <PageContent>
         <section>
+          <DiscoverEnrichedCategoriesInformationHelper />
           <SectionTitle>
             <SectionTitle.Title>{translate('pim_enrich.entity.category.plural_label')}</SectionTitle.Title>
           </SectionTitle>
           <CategoryTree
             root={tree}
-            orderable={
-              featureFlags.isEnabled('enriched_category')
-                ? isGranted('pim_enrich_product_category_order_trees')
-                : isGranted('pim_enrich_product_category_edit')
-            }
+            orderable={isGranted('pim_enrich_product_category_order_trees')}
             followCategory={
               isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined
             }
@@ -168,7 +164,9 @@ const CategoriesTreePage: FC = () => {
               await handleDeleteCategory(categoryToDelete);
               handleCloseDeleteCategoryModal();
             }}
-            message={'pim_enrich.entity.category.category_deletion.confirmation'}
+            message={'pim_enrich.entity.category.category_deletion.confirmation_question'}
+            categoryId={categoryToDelete.identifier}
+            numberOfProducts={categoryToDelete.numberOfProducts}
           />
         )}
       </PageContent>

@@ -137,6 +137,7 @@ $rules = [
         'Akeneo\Category\Domain\Model\Classification\CategoryTree',
         'Akeneo\Category\Domain\Query\GetCategoryInterface',
         'Akeneo\Category\Domain\Query\GetCategoryTreesInterface',
+        'Akeneo\Category\Domain\ValueObject\Template\TemplateUuid',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -205,6 +206,10 @@ $rules = [
         // TIP-931: SearchQueryBuilder design problem
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult',
+
+        // PIM-10832: Remove coupling with indexer and completeness persistence
+        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer',
+        'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses',
 
         // TIP-932: KeepOnlyValuesForVariation should use the public API related to the root aggregate Family Variant
         'Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection',

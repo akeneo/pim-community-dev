@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import isGrantedOnProduct from '../../is-granted-on-product';
 
 const ScopeListContainer = styled.div`
-    margin: 10px 20px;
+    margin: 10px 20px 20px;
 `;
 
 const NoScope = styled.div`

@@ -16,6 +16,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CategoryQueryIntegration extends TestCase
 {
     private CategoryDoctrine $category;
+    private CategoryDoctrine $category2;
+    private CategoryDoctrine $category3;
 
     protected function setUp(): void
     {
@@ -69,6 +71,22 @@ SQL;
             ], JSON_THROW_ON_ERROR),
             'code' => $this->category->getCode()
         ]);
+
+        $this->category2 = $this->createCategory([
+            'code' => 'led_tv',
+            'labels' => [
+                'fr_FR' => 'Tv Led',
+                'en_US' => 'Led Tv'
+            ]
+        ]);
+
+        $this->category3 = $this->createCategory([
+            'code' => 'tshirt',
+            'labels' => [
+                'fr_FR' => 'T-shirt',
+                'en_US' => 'T-shirt'
+            ]
+        ]);
     }
 
     public function testItGetCategoryById(): void
@@ -97,6 +115,53 @@ SQL;
         $this->expectException(NotFoundHttpException::class);
 
         $this->getHandler()->byCode('wrong_code');
+    }
+
+    public function testItGetCategoriesByCodes(): void
+    {
+        $searchCategoriesByCode = ['socks','tshirt'];
+        $categories = $this->getHandler()->byCodes($searchCategoriesByCode);
+        $categoriesCode = [];
+
+        foreach ($categories as $category) {
+            Assert::assertInstanceOf(Category::class, $category);
+            $categoriesCode[] = $category->getCode();
+        }
+        Assert::assertCount(2, $categoriesCode);
+        Assert::assertSame($searchCategoriesByCode, $categoriesCode);
+    }
+
+    public function testItGetCategoriesByIds(): void
+    {
+        $searchCategoriesByIds = [
+            $this->category2->getId(),
+            $this->category3->getId(),
+        ];
+        $categories = $this->getHandler()->byIds($searchCategoriesByIds);
+        $categoriesIds = [];
+
+        foreach ($categories as $category) {
+            Assert::assertInstanceOf(Category::class, $category);
+            $categoriesIds[] = $category->getId();
+        }
+        Assert::assertCount(2, $categoriesIds);
+        Assert::assertSame($searchCategoriesByIds, $categoriesIds);
+    }
+
+    public function testItDoNotGetCategoriesByCodes(): void
+    {
+        $searchCategoriesByCode = ['bike','paddle'];
+        $categories = $this->getHandler()->byCodes($searchCategoriesByCode);
+
+        Assert::assertCount(0, iterator_to_array($categories, false));
+    }
+
+    public function testItDoNotGetCategoriesByIds(): void
+    {
+        $searchCategoriesByIds = [9999999,10000000];
+        $categories = $this->getHandler()->byIds($searchCategoriesByIds);
+
+        Assert::assertCount(0, iterator_to_array($categories, false));
     }
 
     protected function getConfiguration(): Configuration

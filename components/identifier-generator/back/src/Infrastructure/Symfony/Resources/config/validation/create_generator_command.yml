@@ -6,20 +6,34 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
         target:
             - NotBlank: ~
             - Type: string
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldExist: ~
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\TargetAttributeShouldBeAnIdentifier: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldExist: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AttributeShouldHaveType:
+                type: 'pim_catalog_identifier'
         conditions:
-            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ConditionsShouldNotContainMultipleEnabled: ~
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ConditionsShouldNotContainMultipleCondition:
+                types: ['enabled', 'family']
+            - Count:
+                  max: 10
             - All:
-                  - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\EnabledShouldBeValid: ~
-                  - Collection:
-                      fields:
-                          type:
-                              - Choice:
-                                  choices: ['enabled']
-                                  message: 'Type {{ value }} can only be one of the following: {{ choices }}'
-                          value:
-                              - Optional: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\EnabledShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleOrMultiSelectShouldBeValid: ~
+                - Collection:
+                    fields:
+                        type:
+                            - Choice:
+                                choices: ['enabled', 'family', 'simple_select', 'multi_select']
+                                message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
+                        value:
+                            - Optional: ~
+                        operator:
+                            - Optional: ~
+                        scope:
+                            - Optional: ~
+                        locale:
+                            - Optional: ~
+                        attributeCode:
+                            - Optional: ~
         structure:
             - NotBlank: ~
             - Count:
@@ -28,12 +42,14 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - All:
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FreeTextShouldBeValid: ~
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyPropertyShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectPropertyShouldBeValid: ~
                 - Collection:
                     fields:
                         type:
                             - Choice:
-                                choices: ['free_text', 'auto_number']
-                                message: 'Type {{ value }} can only be one of the following: {{ choices }}'
+                                choices: ['free_text', 'auto_number', 'family', 'simple_select']
+                                message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
                         string:
                             - Optional:
                                 - NotBlank: ~
@@ -47,6 +63,25 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                             - Optional:
                                 - GreaterThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_DIGITS_MIN
                                 - LessThanOrEqual: !php/const Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber::LIMIT_DIGITS_MAX
+                        process:
+                            - Optional:
+                                - Collection:
+                                    fields:
+                                        type:
+                                            - Choice:
+                                                choices: ['no', 'truncate', 'nomenclature']
+                                                message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
+                                        value:
+                                            - Optional: ~
+                                        operator:
+                                            - Optional: ~
+                                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\PropertyProcessShouldBeValid: ~
+                        attributeCode:
+                            - Optional: ~
+                        locale:
+                            - Optional: ~
+                        scope:
+                            - Optional: ~
         labels:
             - All:
                 - Length:
@@ -56,6 +91,10 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                 allowNull: true
             - Length:
                 max: 100
+        textTransformation:
+            - Choice:
+                  choices: ['no', 'uppercase', 'lowercase']
+                  message: 'Text transformation {{ value }} can only be one of the following: {{ choices }}.'
         code:
             - NotBlank: ~
             - Length:

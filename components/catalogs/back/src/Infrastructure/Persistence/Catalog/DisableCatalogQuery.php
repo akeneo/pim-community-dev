@@ -16,7 +16,7 @@ use Ramsey\Uuid\Uuid;
 final class DisableCatalogQuery implements DisableCatalogQueryInterface
 {
     public function __construct(
-        private Connection $connection
+        private Connection $connection,
     ) {
     }
 

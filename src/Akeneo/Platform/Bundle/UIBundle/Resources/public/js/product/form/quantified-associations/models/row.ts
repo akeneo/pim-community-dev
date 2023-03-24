@@ -1,11 +1,11 @@
 import {
-  ProductType,
-  QuantifiedLink,
+  AssociationIdentifiers,
+  getProductsType,
+  getQuantifiedLinkIdentifier,
   Product,
   ProductsType,
-  getProductsType,
-  AssociationIdentifiers,
-  getQuantifiedLinkIdentifier,
+  ProductType,
+  QuantifiedLink,
 } from '../models';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
@@ -53,7 +53,10 @@ const filterOnLabelOrIdentifier =
     return (
       (null !== row.product.label && -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
       (null !== row.product.identifier &&
-        -1 !== row.product.identifier.toLowerCase().indexOf(searchValue.toLowerCase()))
+        -1 !== row.product.identifier.toLowerCase().indexOf(searchValue.toLowerCase())) ||
+      (null !== row.product.id &&
+        ProductType.Product === row.product.document_type &&
+        row.product.id.toString().toLowerCase() === searchValue.toLowerCase())
     );
   };
 

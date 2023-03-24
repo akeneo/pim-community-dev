@@ -1,5 +1,4 @@
 /* eslint-env es6 */
-const fs = require('fs');
 const process = require('process');
 const rootDir = process.cwd();
 const webpack = require('webpack');
@@ -9,7 +8,7 @@ const _ = require('lodash');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
-const isStrict = process.argv && process.argv.indexOf('--strict') > -1;
+const isStrict = process.env.STRICT === '1';
 const {getModulePaths, createModuleRegistry} = require('./frontend/webpack/requirejs-utils');
 const {aliases, config} = getModulePaths(rootDir, __dirname);
 
@@ -24,7 +23,6 @@ console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mo
 const webpackConfig = {
   stats: {
     hash: false,
-    maxModules: 5,
     modules: false,
     timings: true,
     version: true,
@@ -34,20 +32,18 @@ const webpackConfig = {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          filename: "vendor.min.js",
-          chunks: "all"
+          name: 'vendor',
+          filename: 'vendor.min.js',
+          chunks: 'all'
         },
         main: {
           filename: 'main.min.js'
         }
       }
     },
-    moduleIds: 'hashed',
+    moduleIds: 'deterministic',
     minimizer: [new TerserPlugin({
-      cache: true,
       parallel: true,
-      sourceMap: false,
       terserOptions: {
         ecma: 6,
         mangle: true,
@@ -70,6 +66,9 @@ const webpackConfig = {
   resolve: {
     symlinks: false,
     alias: _.mapKeys(aliases, (path, key) => `${key}$`),
+    fallback: {
+      'path': require.resolve('path-browserify'),
+    },
     modules: [path.resolve('./public/bundles'), path.resolve('./node_modules')],
     extensions: ['.js', '.json', '.ts', '.tsx']
   },
@@ -108,7 +107,9 @@ const webpackConfig = {
         use: [
           {
             loader: 'expose-loader',
-            options: 'Backbone',
+            options: {
+              exposes: ['Backbone'],
+            }
           },
         ],
       },
@@ -117,7 +118,9 @@ const webpackConfig = {
         use: [
           {
             loader: 'imports-loader',
-            options: 'this=>window',
+            options: {
+              wrapper: 'window',
+            }
           },
         ],
       },
@@ -126,11 +129,9 @@ const webpackConfig = {
         use: [
           {
             loader: 'imports-loader',
-            options: 'require=>function(){}',
-          },
-          {
-            loader: 'imports-loader',
-            options: 'require.specified=>function(){}',
+            options: {
+              additionalCode: 'var require = function(){};require.specified = function(){};',
+            },
           },
         ],
       },
@@ -140,22 +141,21 @@ const webpackConfig = {
         use: [
           {
             loader: 'expose-loader',
-            options: 'jQuery',
-          },
-          {
-            loader: 'expose-loader',
-            options: '$',
+            options: {
+              exposes: ['$', 'jQuery'],
+            },
           },
         ],
       },
-
       // Expose the require-polyfill to window
       {
         test: path.resolve(__dirname, './frontend/webpack/require-polyfill.js'),
         use: [
           {
             loader: 'expose-loader',
-            options: 'require',
+            options: {
+              exposes: ['require'],
+            },
           },
         ],
       },
@@ -222,7 +222,7 @@ const webpackConfig = {
       {
         test: /\.css$/,
         include: /node_modules/,
-        loaders: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
@@ -240,12 +240,15 @@ const webpackConfig = {
     new webpack.ProvidePlugin({_: 'underscore', Backbone: 'backbone', $: 'jquery', jQuery: 'jquery'}),
 
     // Ignore these directories when webpack watches for changes
-    new webpack.WatchIgnorePlugin([
-      /node_modules\/(?!@akeneo)/,
-      path.resolve(rootDir, './app'),
-      path.resolve(rootDir, './var'),
-      path.resolve(rootDir, './vendor'),
-    ]),
+    new webpack.WatchIgnorePlugin({
+      paths: [
+        /node_modules\/(?!@akeneo)/,
+        path.resolve(rootDir, './config'),
+        path.resolve(rootDir, './tests'),
+        path.resolve(rootDir, './var'),
+        path.resolve(rootDir, './vendor'),
+      ]
+    }),
 
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),

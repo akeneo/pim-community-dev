@@ -16,6 +16,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
@@ -39,46 +40,63 @@ class SqlIdentifierGeneratorRepository implements IdentifierGeneratorRepository
      */
     public function save(IdentifierGenerator $identifierGenerator): void
     {
+        $parameters = [
+            'uuid' => $identifierGenerator->id()->asString(),
+            'code' => $identifierGenerator->code()->asString(),
+            'target' => $identifierGenerator->target()->asString(),
+            'delimiter' => $identifierGenerator->delimiter()->asString(),
+            'labels' => \json_encode($identifierGenerator->labelCollection()->normalize()),
+            'conditions' => \json_encode($identifierGenerator->conditions()->normalize()),
+            'structure' => \json_encode($identifierGenerator->structure()->normalize()),
+            'text_transformation' => $identifierGenerator->textTransformation()->normalize(),
+        ];
+
         $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target, delimiter, labels, conditions, structure)
-VALUES (UUID_TO_BIN(:uuid), :code, :target, :delimiter, :labels, :conditions, :structure);
+INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
+VALUES (
+    UUID_TO_BIN(:uuid),
+    :code,
+    (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target),
+    JSON_OBJECT('delimiter', :delimiter, 'text_transformation', :text_transformation),
+    :labels,
+    :conditions,
+    :structure
+);
 SQL;
 
-        Assert::notNull($identifierGenerator->delimiter());
-
         try {
-            $this->connection->executeStatement($query, [
-                'uuid' => $identifierGenerator->id()->asString(),
-                'code' => $identifierGenerator->code()->asString(),
-                'target' => $identifierGenerator->target()->asString(),
-                'delimiter' => $identifierGenerator->delimiter()->asString(),
-                'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
-                'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
-                'structure' => json_encode($identifierGenerator->structure()->normalize()),
-            ]);
+            $this->connection->executeStatement($query, $parameters);
         } catch (Exception $e) {
-            throw new UnableToSaveIdentifierGeneratorException(sprintf('Cannot save the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
+            throw new UnableToSaveIdentifierGeneratorException(\sprintf('Cannot save the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
         }
     }
 
     public function update(IdentifierGenerator $identifierGenerator): void
     {
+        $parameters = [
+            'code' => $identifierGenerator->code()->asString(),
+            'target' => $identifierGenerator->target()->asString(),
+            'delimiter' => $identifierGenerator->delimiter()->asString(),
+            'labels' => \json_encode($identifierGenerator->labelCollection()->normalize()),
+            'conditions' => \json_encode($identifierGenerator->conditions()->normalize()),
+            'structure' => \json_encode($identifierGenerator->structure()->normalize()),
+            'text_transformation' => $identifierGenerator->textTransformation()->normalize(),
+        ];
+
         $query = <<<SQL
-UPDATE pim_catalog_identifier_generator SET target=:target, delimiter=:delimiter, labels=:labels, conditions=:conditions, structure=:structure
-WHERE code=:code;
+UPDATE pim_catalog_identifier_generator SET
+    target_id=(SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target),
+    options=JSON_OBJECT('delimiter', :delimiter, 'text_transformation', :text_transformation),
+    labels=:labels,
+    conditions=:conditions,
+    structure=:structure
+WHERE pim_catalog_identifier_generator.code=:code;
 SQL;
 
         try {
-            $this->connection->executeStatement($query, [
-                'code' => $identifierGenerator->code()->asString(),
-                'target' => $identifierGenerator->target()->asString(),
-                'delimiter' => $identifierGenerator->delimiter()?->asString(),
-                'labels' => json_encode($identifierGenerator->labelCollection()->normalize()),
-                'conditions' => json_encode($identifierGenerator->conditions()->normalize()),
-                'structure' => json_encode($identifierGenerator->structure()->normalize()),
-            ]);
+            $this->connection->executeStatement($query, $parameters);
         } catch (Exception $e) {
-            throw new UnableToUpdateIdentifierGeneratorException(sprintf('Cannot update the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
+            throw new UnableToUpdateIdentifierGeneratorException(\sprintf('Cannot update the identifier generator "%s"', $identifierGenerator->code()->asString()), 0, $e);
         }
     }
 
@@ -87,22 +105,31 @@ SQL;
      */
     public function get(string $identifierGeneratorCode): ?IdentifierGenerator
     {
-        if ('' === trim($identifierGeneratorCode)) {
+        if ('' === \trim($identifierGeneratorCode)) {
             return null;
         }
 
         $sql = <<<SQL
-SELECT BIN_TO_UUID(uuid) AS uuid, code, conditions, structure, labels, target, delimiter
+SELECT
+    BIN_TO_UUID(uuid) AS uuid,
+    pim_catalog_identifier_generator.code,
+    conditions,
+    structure,
+    labels,
+    options,
+    pim_catalog_attribute.code AS target
 FROM pim_catalog_identifier_generator
-WHERE code=:code
+INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
+WHERE pim_catalog_identifier_generator.code=:code
 SQL;
+
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam('code', $identifierGeneratorCode, \PDO::PARAM_STR);
 
         try {
             $result = $stmt->executeQuery()->fetchAssociative();
         } catch (DriverException) {
-            throw new UnableToFetchIdentifierGeneratorException(sprintf('Cannot fetch the identifier generator "%s"', $identifierGeneratorCode));
+            throw new UnableToFetchIdentifierGeneratorException(\sprintf('Cannot fetch the identifier generator "%s"', $identifierGeneratorCode));
         }
 
         if (!$result) {
@@ -118,9 +145,18 @@ SQL;
     public function getAll(): array
     {
         $sql = <<<SQL
-SELECT BIN_TO_UUID(uuid) AS uuid, code, conditions, structure, labels, target, delimiter
+SELECT
+    BIN_TO_UUID(uuid) AS uuid,
+    pim_catalog_identifier_generator.code,
+    conditions,
+    structure,
+    labels,
+    options,
+    pim_catalog_attribute.code AS target
 FROM pim_catalog_identifier_generator
+INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
 SQL;
+
         $stmt = $this->connection->prepare($sql);
 
         try {
@@ -129,7 +165,7 @@ SQL;
             throw new UnableToFetchIdentifierGeneratorException('Cannot fetch identifiers generators');
         }
 
-        return array_map(fn ($data) => $this->fromDatabaseToModel($data), $result);
+        return \array_map(fn ($data) => $this->fromDatabaseToModel($data), $result);
     }
 
     /**
@@ -140,22 +176,29 @@ SQL;
         Assert::string($result['uuid']);
         Assert::string($result['code']);
         Assert::string($result['conditions']);
-        Assert::isList(json_decode($result['conditions'], true));
+        Assert::isList(\json_decode($result['conditions'], true));
         Assert::string($result['structure']);
-        Assert::isList(json_decode($result['structure'], true));
+        Assert::isList(\json_decode($result['structure'], true));
         Assert::string($result['labels']);
-        Assert::isArray(json_decode($result['labels'], true));
+        Assert::isArray(\json_decode($result['labels'], true));
         Assert::string($result['target']);
-        Assert::nullOrString($result['delimiter']);
+        Assert::string($result['options']);
+        $options = \json_decode($result['options'], true);
+        Assert::isArray($options);
+        Assert::keyExists($options, 'delimiter');
+        Assert::nullOrString($options['delimiter']);
+        Assert::keyExists($options, 'text_transformation');
+        Assert::string($options['text_transformation']);
 
         return new IdentifierGenerator(
             IdentifierGeneratorId::fromString($result['uuid']),
             IdentifierGeneratorCode::fromString($result['code']),
-            Conditions::fromNormalized(json_decode($result['conditions'], true)),
-            Structure::fromNormalized(json_decode($result['structure'], true)),
-            LabelCollection::fromNormalized(json_decode($result['labels'], true)),
+            Conditions::fromNormalized(\json_decode($result['conditions'], true)),
+            Structure::fromNormalized(\json_decode($result['structure'], true)),
+            LabelCollection::fromNormalized(\json_decode($result['labels'], true)),
             Target::fromString($result['target']),
-            Delimiter::fromString($result['delimiter']),
+            Delimiter::fromString($options['delimiter']),
+            TextTransformation::fromString($options['text_transformation'])
         );
     }
 
@@ -188,7 +231,7 @@ SQL;
         try {
             $stmt->executeQuery();
         } catch (DriverException) {
-            throw new UnableToDeleteIdentifierGeneratorException(sprintf('Cannot delete the identifier generator "%s"', $identifierGeneratorCode));
+            throw new UnableToDeleteIdentifierGeneratorException(\sprintf('Cannot delete the identifier generator "%s"', $identifierGeneratorCode));
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Exception\CatalogDisabledException;
-use Akeneo\Catalogs\ServiceAPI\Exception\ProductSchemaMappingNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Exception\ProductMappingSchemaNotFoundException as ServiceApiProductMappingSchemaNotFoundException;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
@@ -60,18 +60,18 @@ final class GetMappedProductsAction
         } catch (CatalogDisabledException) {
             return new JsonResponse(
                 [
-                    'message' => \sprintf(
+                    'error' => \sprintf(
                         'No products to synchronize. The catalog %s has been disabled on the PIM side.' .
                         ' Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.',
-                        $catalog->getId()
-                    )
+                        $catalog->getId(),
+                    ),
                 ],
                 Response::HTTP_OK,
             );
-        } catch (ProductSchemaMappingNotFoundException) {
+        } catch (ServiceApiProductMappingSchemaNotFoundException) {
             return new JsonResponse(
                 [
-                    'message' => 'Impossible to map products: no product mapping schema available for this catalog.',
+                    'error' => 'Impossible to map products: no product mapping schema available for this catalog.',
                 ],
                 Response::HTTP_OK,
             );

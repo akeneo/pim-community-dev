@@ -1,9 +1,19 @@
 import {validateConditions} from '../validateConditions';
-import {CONDITION_NAMES} from '../../models';
+import {CONDITION_NAMES, Operator} from '../../models';
 
 describe('validateConditions', () => {
   it('should not add violation for valid conditions', () => {
-    expect(validateConditions([{type: CONDITION_NAMES.ENABLED, value: true}], 'conditions')).toHaveLength(0);
+    expect(
+      validateConditions(
+        [
+          {type: CONDITION_NAMES.ENABLED, value: true},
+          {type: CONDITION_NAMES.FAMILY, operator: Operator.EMPTY},
+          {type: CONDITION_NAMES.SIMPLE_SELECT, operator: Operator.EMPTY, attributeCode: 'code'},
+          {type: CONDITION_NAMES.MULTI_SELECT, operator: Operator.EMPTY, attributeCode: 'code'},
+        ],
+        'conditions'
+      )
+    ).toHaveLength(0);
   });
 
   it('should add violation for any non valid condition', () => {
@@ -18,7 +28,9 @@ describe('validateConditions', () => {
   it('should add violation for an unknown type', () => {
     expect(validateConditions([{type: 'unknown'}], 'conditions')).toEqual([
       {
-        message: 'The condition type "unknown" is unknown. Please choose one of the following: enabled',
+        message:
+          'The condition type "unknown" is unknown. ' +
+          'Please choose one of the following: enabled, family, simple_select, multi_select',
         path: 'conditions[0]',
       },
     ]);

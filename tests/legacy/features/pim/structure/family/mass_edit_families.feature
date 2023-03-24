@@ -41,3 +41,24 @@ Feature: Mass Edit Families
     And attributes "price, rate_sale and rating" should be optional in family "boots" for channel "Mobile"
     And attributes "price, rate_sale and rating" should be optional in family "sneakers" for channel "Mobile"
     And attributes "price, rate_sale and rating" should be optional in family "sandals" for channel "Mobile"
+
+# @jira https://akeneo.atlassian.net/browse/PIM-10853
+  Scenario: Successfully mass edit unique value attributes to many families
+    Given the "footwear" catalog configuration
+    And the following family variants:
+      | code           | family | variant-axes_1 | variant-attributes_1 |
+      | family_variant | boots  | color          | description          |
+    And the following attributes:
+      | code                  | type             | group | unique |
+      | my_unique_attribute   | pim_catalog_text | other | 1      |
+    And I am logged in as "Julia"
+    And I am on the families grid
+    When I select rows Boots
+    And I press the "Bulk actions" button
+    And I choose the "Set attributes requirements" operation
+    And I add available attributes my_unique_attribute
+    And I confirm mass edit
+    And I wait for the "set_attribute_requirements" job to finish
+    Then there should be the following family variants:
+      | code                | family   | variant-axes_1| variant-attributes_1                      |
+      | family_variant      | boots    | color         | color,description,sku,my_unique_attribute |

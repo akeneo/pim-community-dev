@@ -1,3 +1,5 @@
+pim_title:
+  pim_category_template_edit: Bewerk categorie sjabloon
 akeneo.category:
   tree_list:
     column:
@@ -5,7 +7,7 @@ akeneo.category:
   attributes: Attributen
   edition_form:
     error:
-      unhandled_attribute_type: Kan bouwer voor het attribuutveld voor attribuuttype "{{type}} " niet vinden
+      unhandled_attribute_type: Kon attribuut veldbouwer voor attribuut type "{{ type }} " niet vinden
     template:
       title: Sjabloon
       fetching_failed: Er is een fout opgetreden tijdens het ophalen van het sjabloon
@@ -16,9 +18,9 @@ akeneo.category:
   template:
     create: Sjabloon activeren
     edit: Sjabloon bekijken
-    delete: Sjabloon verwijderen
     notification_success: Het sjabloon is geactiveerd
     notification_error: Het sjabloon kon niet geactiveerd worden
+    not_found: Er is geen actieve sjabloon voor deze categorie
     attribute:
       description_title: Instellingen van beschrijving
       type:
@@ -26,8 +28,38 @@ akeneo.category:
         textarea: Tekstgebied
         richtext: Tekst met opmaak
         image: Afbeelding
+    add_attribute:
+      confirmation_modal:
+        input:
+          label: Label
+          code: Code
+          type:
+            option_title:
+              text: Tekst
+              image: Afbeelding
+    deactivate:
+      deactivate_template: Template deactiveren
+      confirmation_modal:
+        title: Deactiveer categorie template
+        message: Weet u zeker dat u het categorie template {{ template }} wilt deactiveren?
+        helper: Het deactiveren van deze template zal de kenmerken en waardes van de geassocieerde categorieën permanent verwijderen.
+        deactivate: Deactiveren
+      notification_success:
+        title: '{{ template }} sjabloon gedeactiveerd'
+        message: '{{ template }} is gedeactiveerd. De inhoud van de bijbehorende categorieën is verwijderd.'
   template_list:
     columns:
       header: Label
       code: Code
       type: Type
+  tag:
+    new: Nieuw
+  discover_enriched_categories_information:
+    title: Ontdek Verrijkte Categorieën Vroegtijdige Toegang
+    content:
+      activate_template: Activeer categorieverrijking via vooraf geconfigureerde sjablonen
+      enrich_attribute_values: Verrijk teksten, tekstblokken en afbeeldingen in categorieën
+      deactivate_template: Deactivering en aanpassing van rijke categorieën volgen binnenkort.
+    survey_link_label: Vertel ons wat u ervan vindt!
+    learn_more_link_label: Meer informatie over verrijkte categorieën
+  other_actions: Andere acties

@@ -7,16 +7,12 @@ services:
         class: 'Akeneo\Category\Infrastructure\Controller\ExternalApi\CategoryController'
         arguments:
             - '@pim_api.repository.category'
-            - '@pim_external_api_serializer'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.updater.category'
             - '@validator'
             - '@pim_catalog.saver.category'
             - '@router'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
             - '@pim_api.stream.category_partial_update_stream'
-            - '%pim_api.configuration%'
 
     pim_enrich.controller.rest.category:
         public: true
@@ -26,23 +22,27 @@ services:
             - '@pim_enrich.twig.category_extension'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
+            - '@Akeneo\Category\Application\Query\GetCategoryChildrenIds'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateCategoryController:
         public: true
         arguments:
             - '@category.command.message_bus'
             - '@oro_security.security_facade'
+            - '@event_dispatcher'
             - '@Akeneo\Category\Application\Converter\ConverterInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditAclFilter'
             - '@Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface'
             - '@Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
         public: true
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:
         public: true
@@ -67,6 +67,7 @@ services:
             - '@validator'
             - '@category_serializer'
             - '@Akeneo\Category\Application\Handler\StoreUploadedFile'
+            - '%supported_category_image_mime_types%'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\ImagePreviewController:
         public: true
@@ -75,15 +76,42 @@ services:
             - '@pim_category.infrastructure.registry.preview_generator'
             - '@Akeneo\Category\Infrastructure\FileSystem\Loader\ImageLoader'
 
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UserGroupController:
+        public: true
+        arguments:
+            - '@Akeneo\UserManagement\ServiceApi\UserGroup\ListUserGroupInterface'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateTemplateController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+
     Akeneo\Category\Infrastructure\Controller\ExternalApi\ListCategoriesController:
         public: true
         arguments:
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
-            - '@feature_flags'
             - '@Akeneo\Category\Application\Query\GetCategoriesParametersBuilder'
             - '@Akeneo\Category\Application\Query\GetCategoriesInterface'
-            - '@Akeneo\Category\Application\Query\GetDirectChildrenCategoryCodesInterface'
             - '%pim_api.configuration%'
-        calls:
-            - [ 'setContainer', [ '@service_container' ] ]
+
+    Akeneo\Category\Infrastructure\Controller\ExternalApi\GetCategoryController:
+        public: true
+        arguments:
+            - '@Akeneo\Category\Application\Query\GetCategoriesParametersBuilder'
+            - '@Akeneo\Category\Application\Query\GetCategoriesInterface'
+
+
+    Akeneo\Category\Infrastructure\Controller\ExternalApi\DownloadCategoryMediaFileController:
+        public: true
+        arguments:
+            - '@pim_api.repository.media_file'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\AddAttributeController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'

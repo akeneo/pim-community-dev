@@ -17,7 +17,7 @@ class TextValueSpec extends ObjectBehavior
 {
     public function it_creates_text_value_from_applier()
     {
-        $this->beConstructedThrough('fromApplier',[
+        $this->beConstructedThrough('fromApplier', [
             'Meta shoes',
             '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             'seo_meta_description',
@@ -39,7 +39,7 @@ class TextValueSpec extends ObjectBehavior
             'locale' => 'en_US',
             'attribute_code' => 'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d'
         ];
-        $this->beConstructedThrough('fromArray',[$givenArray]);
+        $this->beConstructedThrough('fromArray', [$givenArray]);
 
         $this->shouldHaveType(TextValue::class);
         $this->shouldHaveType(AbstractValue::class);
@@ -64,7 +64,7 @@ class TextValueSpec extends ObjectBehavior
 
     public function it_normalizes(): void
     {
-        $this->beConstructedThrough('fromApplier',[
+        $this->beConstructedThrough('fromApplier', [
             'Meta shoes',
             '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             'seo_meta_description',
@@ -72,12 +72,12 @@ class TextValueSpec extends ObjectBehavior
             'en_US',
         ]);
 
-        $key = 'seo_meta_description'.AbstractValue::SEPARATOR.'02274dac-e99a-4e1d-8f9b-794d4c3ba330';
+        $key = 'seo_meta_description' . AbstractValue::SEPARATOR . '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
         $localeChannelKey = sprintf(
             '%s%s%s',
             $key,
-            AbstractValue::SEPARATOR."ecommerce",
-            AbstractValue::SEPARATOR."en_US",
+            AbstractValue::SEPARATOR . "ecommerce",
+            AbstractValue::SEPARATOR . "en_US",
         );
         $expectedValue = [
             $localeChannelKey => [
@@ -96,7 +96,7 @@ class TextValueSpec extends ObjectBehavior
     {
         $textValue = 'Meta shoes';
 
-        $this->beConstructedThrough('fromApplier',[
+        $this->beConstructedThrough('fromApplier', [
             $textValue,
             '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             'seo_meta_description',
@@ -104,11 +104,11 @@ class TextValueSpec extends ObjectBehavior
             null,
         ]);
 
-        $key = 'seo_meta_description'.AbstractValue::SEPARATOR.'02274dac-e99a-4e1d-8f9b-794d4c3ba330';
+        $key = 'seo_meta_description' . AbstractValue::SEPARATOR . '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
         $localeChannelKey = sprintf(
             '%s%s',
             $key,
-            AbstractValue::SEPARATOR."ecommerce"
+            AbstractValue::SEPARATOR . "ecommerce"
         );
         $expectedValue = [
             $localeChannelKey => [
@@ -126,7 +126,7 @@ class TextValueSpec extends ObjectBehavior
     public function it_normalizes_with_no_channel(): void
     {
         $textValue = 'Meta shoes';
-        $this->beConstructedThrough('fromApplier',[
+        $this->beConstructedThrough('fromApplier', [
             $textValue,
             '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             'seo_meta_description',
@@ -134,15 +134,44 @@ class TextValueSpec extends ObjectBehavior
             'en_US',
         ]);
 
-        $key = 'seo_meta_description'.AbstractValue::SEPARATOR.'02274dac-e99a-4e1d-8f9b-794d4c3ba330';
+        $key = 'seo_meta_description' . AbstractValue::SEPARATOR . '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
         $localeChannelKey = sprintf(
             '%s%s',
             $key,
-            AbstractValue::SEPARATOR."en_US",
+            AbstractValue::SEPARATOR . "en_US",
         );
         $expectedValue = [
             $localeChannelKey => [
                 'data' => 'Meta shoes',
+                'type' => 'text',
+                'channel' => null,
+                'locale' => 'en_US',
+                'attribute_code' => $key
+            ]
+        ];
+
+        $this->normalize()->shouldBeLike($expectedValue);
+    }
+
+    public function it_normalizes_with_no_value(): void
+    {
+        $this->beConstructedThrough('fromApplier', [
+            null,
+            '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+            'seo_meta_description',
+            null,
+            'en_US',
+        ]);
+
+        $key = 'seo_meta_description' . AbstractValue::SEPARATOR . '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
+        $localeChannelKey = sprintf(
+            '%s%s',
+            $key,
+            AbstractValue::SEPARATOR . "en_US",
+        );
+        $expectedValue = [
+            $localeChannelKey => [
+                'data' => null,
                 'type' => 'text',
                 'channel' => null,
                 'locale' => 'en_US',

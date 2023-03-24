@@ -11,10 +11,13 @@ $finder->notPath('tests');
 $builder = new RuleBuilder();
 
 $rules = [
-    // Domain layer should only use classes from itself and models from the ServiceAPI
+    // Domain layer should only use classes from itself or constraints annotations
     $builder->only(
         [
             'Akeneo\Catalogs\Domain',
+
+            // Constraints as Attributes
+            'Akeneo\Catalogs\Infrastructure\Validation',
         ]
     )->in('Akeneo\Catalogs\Domain'),
 
@@ -27,6 +30,9 @@ $rules = [
             'Akeneo\Catalogs\ServiceAPI\Command',
             'Akeneo\Catalogs\ServiceAPI\Query',
             'Akeneo\Catalogs\ServiceAPI\Exception',
+            'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\UuidInterface',
+            'Symfony\Component\Routing\RouterInterface',
         ]
     )->in('Akeneo\Catalogs\Application'),
 
@@ -61,6 +67,8 @@ $rules = [
             'Akeneo\Connectivity\Connection\ServiceApi',
             'Akeneo\Tool\Bundle\MeasureBundle\ServiceApi',
             'Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException',
+            'Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent', // For data flow monitoring
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
 
             /**********************************************************************************************************/
             /* Below are dependencies that we have, but we shouldn't rely on them.
@@ -127,6 +135,9 @@ $rules = [
             //used in Job\DisableCatalogsOnCurrencyDeactivationTasklet
             'Akeneo\Tool\Component\Batch\Model\StepExecution',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
+
+            // used in Persistence\Category\GetProductCategoriesLabelsQuery
+            'Akeneo\Pim\Enrichment\Product\API\Query\GetProductCategoryCodesQuery',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 

@@ -40,8 +40,9 @@ pim_title:
     akeneo_connectivity_connection_connect_connected_apps: Connected Apps
     akeneo_connectivity_connection_connect_connected_apps_edit: App settings
     akeneo_connectivity_connection_connect_connected_apps_delete: App delete
-    akeneo_connectivity_connection_connect_marketplace_test_app_create: Create a test app
-    akeneo_connectivity_connection_connect_marketplace_test_app_delete: Delete test app
+    akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: Regenerate credentials
+    akeneo_connectivity_connection_connect_custom_apps_create: Create a custom app
+    akeneo_connectivity_connection_connect_custom_apps_delete: Delete custom app
     akeneo_connectivity_connection_connect_connected_apps_open: Open App
     akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Edit catalog
 akeneo_connectivity.connection:
@@ -75,51 +76,9 @@ akeneo_connectivity.connection:
                 empty: No apps compatible with your version
             unreachable: We can't reach the App Store, please come back later.
             scroll_to_top: Scroll to the top
-            test_apps:
-                title: My test apps
+            custom_apps:
+                title: My custom apps
                 removed_user: Removed user
-                create_a_test_app: Create a test app
-                modal:
-                    subtitle: Create a test app
-                    app_information:
-                        title: App information
-                        description: If you need help, please check our article
-                        link: How to test my App before publishing it?
-                        fields:
-                            name: Name
-                            activate_url: Activate url
-                            callback_url: Callback url
-                    credentials :
-                        title: Credentials
-                        warning: Make sure to save these credentials somewhere as we show them only once here.
-                        client_id: Client id
-                        client_secret: Client secret
-                errors:
-                    page_not_found: Page not found
-                    creation:
-                        name:
-                            min_length: The name of the test app is too short. It must have 3 characters or more.
-                            max_length: The name of the test app is too long. It must have 255 characters or less.
-                            not_blank: The name of the test app is required.
-                        client_id:
-                            max_length: The client id of the test app is too long. It must have 36 characters or less.
-                            not_blank: The client id is required.
-                        activate_url:
-                            max_length: The activate url of the test app is too long. It must have 255 characters or less.
-                            must_be_url: The activate url must be a valid URL.
-                            not_blank: The activate url is required.
-                        callback_url:
-                            max_length: The callback url of the test app is too long. It must have 255 characters or less.
-                            must_be_url: The callback url must be a valid URL.
-                            not_blank: The callback url is required.
-                delete:
-                    subtitle: Apps
-                    title: Confirm deletion
-                    description: You are about to delete your test app from this PIM.
-                    warning: By confirming the deletion, you will delete the test app on the App Store page and the related connected app.
-                    flash:
-                        success: Test app successfully deleted.
-                        error: Sorry, an error occured while deleting the test app.
         connected_apps:
             list:
                 apps:
@@ -130,8 +89,8 @@ akeneo_connectivity.connection:
                     marketplace_link_anchor: App Store
                     at_least_one_is_not_listed_on_the_appstore: Some of your connected apps are not compatible with your PIM version or doesn't exist anymore on the Akeneo App Store. Contact us to get more information.
                     pending_apps: Some of your apps are not connected with your PIM.
-                test_apps:
-                    title: My test apps
+                custom_apps:
+                    title: My connected custom apps
                     removed_user: Removed user
                 helper:
                     title: '[0,1] Your PIM is connected with {{ count }} app.|[2,Inf] Your PIM is connected with {{ count }} apps.'
@@ -173,6 +132,22 @@ akeneo_connectivity.connection:
                         information_link_anchor: Help Center article
                         openid_only: This app uses Akeneo App authentication without using your personal data.
                     pending: This app is not connected to your PIM. Opening the app should fix the connection issue. If it persists, please contact the App support.
+                    credentials:
+                        title: Credentials
+                        client_id : Client id
+                        client_secret: Client secret
+                        regenerate_button: Regenerate
+                        regenerate_secret:
+                            flash_error: Sorry, an error occurred while regenerating the connection secret.
+                            confirm:
+                                title: Confirm regenerate
+                                description: Regenerating secret will impact your custom app connection with the PIM. Are you sure you want to proceed ?
+                                regenerate_button: Regenerate
+                                cancel_button: Cancel
+                            new_credentials:
+                                title: New credentials
+                                subtitle: Regenerate credentials
+                                done_button: Done
                 error_monitoring:
                     error: Oups, something went wrong!
                     helper:
@@ -297,6 +272,53 @@ akeneo_connectivity.connection:
                     must_be_url: The redirect_uri is not a valid url.
                 scope:
                     too_long: The scope list must not contain more than 1000 characters.
+        custom_apps:
+            creation_limit_reached: You reached the limit of 20 custom apps.
+            create_button: Create an app
+            create_modal:
+                subtitle: Create a custom app
+                app_information:
+                    title: App information
+                    description: If you need help, please check our article
+                    link: How to test my App before publishing it?
+                    fields:
+                        name: Name
+                        activate_url: Activate url
+                        callback_url: Callback url
+                    field_placeholder:
+                        name: Define app name
+                        activate_url: Fill activate url
+                        callback_url: Fill callback url
+                credentials:
+                    title: Credentials
+                    client_id: Client id
+                    client_secret: Client secret
+                errors:
+                    limit_reached: You can create up to 20 custom apps.
+                    name:
+                        min_length: The name of the app is too short. It must have 3 characters or more.
+                        max_length: The name of the app is too long. It must have 255 characters or less.
+                        not_blank: The name of the app is required.
+                    client_id:
+                        max_length: The client id of the app is too long. It must have 36 characters or less.
+                        not_blank: The client id is required.
+                    activate_url:
+                        max_length: The activate url of the app is too long. It must have 255 characters or less.
+                        must_be_url: The activate url must be a valid URL.
+                        not_blank: The activate url is required.
+                    callback_url:
+                        max_length: The callback url of the app is too long. It must have 255 characters or less.
+                        must_be_url: The callback url must be a valid URL.
+                        not_blank: The callback url is required.
+            delete_modal:
+                subtitle: Delete a custom app
+                title: Confirm deletion
+                description: You are about to delete your app from this PIM.
+                warning: By confirming the deletion, you will delete the app from the App Store page and the related connected app.
+                flash:
+                    success: Custom app successfully deleted.
+                    error: Sorry, an error occured while deleting the custom app.
+
     connections: Connections
     secondary_actions:
         title: Other actions

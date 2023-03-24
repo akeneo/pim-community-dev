@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Channel\Infrastructure\Query\Cache;
 
 use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\ConversionUnitCollection;
 use Akeneo\Channel\API\Query\FindChannels;
 use Akeneo\Channel\API\Query\LabelCollection;
 use PhpSpec\ObjectBehavior;
@@ -26,7 +27,11 @@ class CachedFindChannelsSpec extends ObjectBehavior
                     LabelCollection::fromArray([
                         'en_US' => 'Ecommerce',
                     ]),
-                    ['USD']
+                    ['USD'],
+                    ConversionUnitCollection::fromArray([
+                        'an_measurement_attribute' => 'GRAM',
+                        'another_measurement_attribute' => 'POUND'
+                    ]),
                 ),
                 new Channel(
                     'mobile',
@@ -34,7 +39,11 @@ class CachedFindChannelsSpec extends ObjectBehavior
                     LabelCollection::fromArray([
                         'en_US' => 'Mobile',
                     ]),
-                    ['EUR']
+                    ['EUR'],
+                    ConversionUnitCollection::fromArray([
+                        'an_measurement_attribute' => 'GRAM',
+                        'another_measurement_attribute' => 'POUND'
+                    ]),
                 ),
             ])
             ->shouldBeCalledOnce();

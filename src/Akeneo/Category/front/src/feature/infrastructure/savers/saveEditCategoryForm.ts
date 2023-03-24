@@ -1,4 +1,4 @@
-import {Router} from '@akeneo-pim-community/shared';
+import {Router, translate} from '@akeneo-pim-community/shared';
 import {set} from 'lodash/fp';
 
 import {EnrichCategory} from '../../models';
@@ -10,31 +10,9 @@ interface EditCategoryResponseOK {
 
 interface EditCategoryResponseKO {
   success: false;
-  errors: EditCategoryValidationErrors;
-}
-
-interface EditCategoryValidationErrors {
-  general?: I18nMessageSpec;
-  validation?: {
-    properties?: ValidationErrors;
-    attributes?: ValidationErrors;
-  };
-}
-
-interface ValidationErrors {
-  [attributeCode: string]: ValidationError;
-}
-
-interface ValidationError {
-  path: string[];
-  locale?: string;
-  message: I18nMessageSpec;
-}
-
-interface I18nMessageSpec {
-  key: string;
-  args?: {
-    [name: string]: string | number;
+  error: {
+    code?: string;
+    message: string;
   };
 }
 
@@ -77,11 +55,17 @@ const saveEditCategoryForm = async (
     return {success: true, category: populateResponseCategory(category)};
   }
 
-  // TODO use(/create) real i18n keys below
-  const errors = responseContent
-    ? (responseContent as EditCategoryResponseKO).errors || {general: {key: 'unspecified error'}}
-    : {general: {key: 'Response is invalid JSON'}};
-  return {success: false, errors};
+  if (responseContent) {
+    if (Array.isArray(responseContent)) {
+      for (let i = 0; i < responseContent.length; i++) {
+        return {success: false, error: (responseContent[i] as EditCategoryResponseKO).error};
+      }
+    }
+
+    return {success: false, error: (responseContent as EditCategoryResponseKO).error};
+  }
+
+  return {success: false, error: {message: translate('pim_enrich.entity.category.content.edit.fail')}};
 };
 
 export {saveEditCategoryForm};

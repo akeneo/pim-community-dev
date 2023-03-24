@@ -24,8 +24,7 @@ final class GetAllBlacklistedAttributeCodesIntegration extends TestCase
     public function test_it_returns_an_array_of_blacklisted_attributes(): void
     {
         $blacklister = $this->getBlacklister();
-        $blacklister->blacklist('description');
-        $blacklister->blacklist('name');
+        $blacklister->blacklist(['description', 'name']);
 
         $query = $this->getQuery();
         $result = $query->execute();

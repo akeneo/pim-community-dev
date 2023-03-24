@@ -231,7 +231,6 @@ pim_enrich.entity.attribute:
       confirm: Sei sicuro di voler eliminare questo attributo?
       product_count: '{0}0 prodotti|{1}1 prodotto|]1, Inf[{{ count }} prodotti'
       product_model_count: '{0}0 modelli di prodotto|{1}1 modello di prodotto|]1, Inf[{{ count }} modelli di prodotto'
-      used: ']-Inf,1]attualmente vi sono valori impostati per questo attributo, saranno rimossi.|]1, Inf[attualmente vi sono valori impostati per questo attributo, saranno rimossi.'
       helper:
         content: Se è necessario modificare il tipo di attributo, per renderlo localizzabile o applicabile, mantenendo l'accesso ai valori degli attributi esistenti,
         link: consulta il nostro Help Center (per ulteriori informazioni).
@@ -263,10 +262,6 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
     delete:
       confirm: Sei sicuro di voler eliminare questo gruppo di attributi?
-  grid:
-    columns:
-      name: Nome Gruppo Attributi
-    no_search_result: Spiacenti, non ci sono risultati per la tua ricerca
 pim_enrich.mass_edit.family:
   title: Azione di massa sulle famiglie
   confirm: "{1}Stai per aggiornare una famiglia con le seguenti informazioni, conferma.|]1, Inf[Stai per aggiornare {{ itemsCount }} famiglie con le seguenti informazioni, conferma."

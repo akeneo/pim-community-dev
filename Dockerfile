@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as base
+FROM httpd:2.4 AS base
 
 ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_EXECUTION_TIME=60 \
@@ -12,7 +12,12 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     echo 'path-exclude=/usr/share/doc/*' >> /etc/dpkg/dpkg.cfg.d/path_exclusions && \
     apt-get update && \
-    apt-get --yes install apt-transport-https ca-certificates curl wget &&\
+    apt-get --yes install \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        supervisor \
+        wget &&\
     wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg &&\
     sh -c 'echo "deb https://packages.sury.org/php/ bullseye main" > /etc/apt/sources.list.d/php.list' &&\
     apt-get update && \
@@ -48,6 +53,8 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
 
 COPY docker/build/akeneo.ini /etc/php/8.1/cli/conf.d/99-akeneo.ini
 COPY docker/build/akeneo.ini /etc/php/8.1/fpm/conf.d/99-akeneo.ini
+
+CMD ["/usr/bin/supervisord", "-c", "docker/supervisord.conf"]
 
 FROM base as dev
 

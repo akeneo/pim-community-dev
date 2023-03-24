@@ -6,6 +6,9 @@ services:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
       - '@pim_catalog.repository.attribute'
+      - '@pim_catalog.repository.attribute_option'
+      - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes'
+      - '@pim_catalog.repository.channel'
 
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateIdentifierGeneratorContext:
     public: true
@@ -13,6 +16,15 @@ services:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
 
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateFamilyNomenclatureContext:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler'
+
   # Persistence
   Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository:
     class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryIdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\InMemoryNomenclatureRepository'

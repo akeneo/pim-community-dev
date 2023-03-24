@@ -69,9 +69,8 @@ services:
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_catalog.query.product_identifier_query_builder_factory'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.saver.product'
-            - '@pim_connector.doctrine.cache_clearer'
+            - '@pim_catalog.completeness.product.compute_and_persist'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
         public: false
 
     pim_catalog.step.compute_completeness_of_products_family:

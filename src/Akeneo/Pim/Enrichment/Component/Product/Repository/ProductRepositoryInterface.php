@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Ramsey\Uuid\UuidInterface;
 

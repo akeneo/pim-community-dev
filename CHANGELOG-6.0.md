@@ -1,12 +1,86 @@
 # 6.0.x
 
+# 6.0.73 (2023-02-28)
+
+## Bug fixes
+
+- [Backport PIM-10606] PIM-10865: Fix computeFamilyVariantStructureChange on attribute removal
+
+# 6.0.72 (2023-02-27)
+
+# 6.0.71 (2023-02-21)
+
+## Improvements
+
+- PIM-1353: Add script to check that PIM is ready to be upgraded to v7
+
+# 6.0.70 (2023-02-16)
+
+## Bug fixes
+
+- PIM-10826: Fix GET system-information endpoint with wrong answers
+
+# 6.0.69 (2023-02-13)
+
+## Bug fixes:
+
+- PIM-10834: Fix regression on parent filter in LIST products endpoint
+
+# 6.0.68 (2023-02-09)
+
+## Bug fixes
+
+- PIM-10810: Optimize completeness saving
+
+# 6.0.67 (2023-02-06)
+
+# 6.0.66 (2023-02-02)
+
+## Bug fixes
+
+- [Backport PIM-10802] PIM-10818: Fix wysiwyg-field add link event
+- PIM-10786: Fix misleading message when session expires
+
+# 6.0.65 (2023-01-26)
+
+## Bug fixes
+
+- PIM-10794: Fix error message on search attributes for product and product models GET
+
+# 6.0.64 (2023-01-23)
+
+# 6.0.63 (2023-01-12)
+
+## Bug fixes
+
+- [Backport PIM-10516] PIM-10787: Do not run the remove completeness job when there is no need
+
+# 6.0.62 (2022-12-23)
+
+## Bug fixes
+
+- PIM-10687: Fix high memory consumption when computing completeness for prices with inactive currencies
+
+# 6.0.61 (2022-12-15)
+
+# 6.0.60 (2022-12-14)
+
+# 6.0.59 (2022-12-14)
+
+# 6.0.58 (2022-12-13)
+
+## Bug fixes
+
+- [Backport PIM-10246] PIM-10765: Fix oom in Process Tracker
+- [Backport PIM-10672] PIM-10690: Command to create/add roles with all existing permission
+
 # 6.0.57 (2022-12-07)
 
 # 6.0.56 (2022-11-28)
 
 ## Bug fixes
 
-PIM-10734: Assets export fails because of a failed warning messages
+- PIM-10734: Assets export fails because of a failed warning messages
 
 # 6.0.55 (2022-11-21)
 
@@ -43,8 +117,9 @@ PIM-10734: Assets export fails because of a failed warning messages
 # 6.0.46 (2022-10-20)
 
 ## Bug fixes
-PIM-10670: Fix memory leak on creating combinations for currencies
-PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
+
+- PIM-10670: Fix memory leak on creating combinations for currencies
+- PIM-10679: Fix out of sort memory on ProductModelImagesFromCodes
 
 # 6.0.45 (2022-10-06)
 

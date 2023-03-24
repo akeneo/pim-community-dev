@@ -132,20 +132,6 @@ define([
 
     /**
      * @inheritDoc
-     */
-    _onValueUpdated: function (newValue) {
-      if ('' === newValue.value) {
-        return;
-      }
-
-      UserContext.set('catalogScope', newValue.value);
-      this.catalogScope = newValue.value;
-
-      return SelectFilter.prototype._onValueUpdated.apply(this, arguments);
-    },
-
-    /**
-     * @inheritDoc
      *
      * Override to save the scope into the product grid state.
      *
@@ -155,6 +141,9 @@ define([
     _onSelectChange: function (event) {
       const value = $(event.target).closest('.AknDropdown-menuLink').attr('data-value');
       this.highlightScope(value);
+
+      UserContext.set('catalogScope', value);
+      this.catalogScope = value;
 
       SelectFilter.prototype._onSelectChange.apply(this, arguments);
 

@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: Le produit a bien été mis à jour.
       fail: Le produit n'a pas pu être mis à jour.
+      fail_session_expired: Le produit ne peut pas être mis à jour. Votre session utilisateur a expiré. Veuillez vous reconnecter.
       fields_not_ready: "Le produit ne peut actuellement pas être sauvegardé. Les champs suivants ne sont pas prêts : {{ fields }}"
       already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
       file_upload: Une erreur s'est produite lors du transfert du fichier.
@@ -112,8 +113,6 @@ pim_enrich.entity.product:
       quantified:
         quantity: Quantité
         unlinked: Dissocié
-      search:
-        placeholder: Rechercher par libellé ou identifiant
       no_data: Il n’y a aucun produit associé.
       remove: Supprimer l'association
       edit: Modifier le produit
@@ -243,6 +242,9 @@ pim_enrich.entity.category:
     success: L'arborescence "{{ tree }}" a bien été supprimée
     error: L'arborescence "{{ tree }}" n'a pas pu être supprimée
     confirmation: Êtes-vous sûr(e) de vouloir supprimer l'arborescence {{ name }} ? Toutes les catégories de cette arborescence seront supprimées, et les produits seront supprimés de toutes ces catégories.
+    confirmation_question: Êtes-vous sûr de vouloir supprimer {{ name }} ?
+    warning_categories_number: Les {{ categoriesNumber }} catégories associées seront supprimées, et les produits seront supprimés de toutes ces catégories.
+    warning_products: Tous les produits associés seront supprimés de {{ name }}
     products_limit_exceeded:
       title: Cette arborescence ne peut pas être supprimée
       message: L'arbre "{{ tree }}" contient plus de {{ limit }} produits et ne peut donc pas être supprimé.
@@ -250,6 +252,7 @@ pim_enrich.entity.category:
     success: La catégorie "{{ name }}" a été supprimée avec succès
     error: La catégorie "{{ name }}" n'a pas pu être supprimée
     confirmation: Êtes-vous sûr(e) de vouloir supprimer la catégorie {{ name }}? Les produits de cette catégorie ne seront pas supprimés.
+    confirmation_question: Êtes-vous sûr de vouloir supprimer {{ name }} ?
     products_limit_exceeded:
       title: Cette catégorie ne peut pas être supprimée
       message: La catégorie "{{ name }}" contient plus de {{ limit }} produits et ne peut donc pas être supprimée.
@@ -493,6 +496,7 @@ pim_datagrid:
       label: Mis à jour le
     label_or_identifier:
       label: Libellé ou identifiant
+      label_with_uuid: Libellé, identifiant ou UUID
     parent:
       label: Parent
     identifier:

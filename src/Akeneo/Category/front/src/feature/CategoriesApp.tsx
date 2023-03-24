@@ -1,38 +1,38 @@
 import React, {FC} from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import {CategoriesIndex, CategoriesTreePage, CategoryEditPage} from './pages';
+import {CategoriesIndex, CategoriesTreePage, CategoryEditPage, TemplatePage} from './pages';
 import {EditCategoryProvider} from './components';
-import {useFeatureFlags} from '@akeneo-pim-community/shared';
-import {LegacyCategoryEditPage} from './legacy/pages/LegacyCategoryEditPage';
-import {TemplatePage} from './pages';
+import {QueryClient, QueryClientProvider} from 'react-query';
 
 type Props = {
   setCanLeavePage: (canLeavePage: boolean) => void;
 };
 
 const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
-  const featureFlags = useFeatureFlags();
+  const queryClient = new QueryClient();
 
   return (
     <Router basename="/enrich/product-category-tree">
       <Switch>
         <Route path="/:treeId/tree">
-          <CategoriesTreePage />
+          <QueryClientProvider client={queryClient}>
+            <CategoriesTreePage />
+          </QueryClientProvider>
         </Route>
         <Route path="/:categoryId/edit">
           <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
-            {featureFlags.isEnabled('enriched_category') ? <CategoryEditPage /> : <LegacyCategoryEditPage />}
+            <CategoryEditPage />
           </EditCategoryProvider>
         </Route>
-        {featureFlags.isEnabled('enriched_category') && (
-          <Route path="/:treeId/template/:templateId">
-            <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
-              <TemplatePage />
-            </EditCategoryProvider>
-          </Route>
-        )}
+        <Route path="/:treeId/template/:templateId">
+          <QueryClientProvider client={queryClient}>
+            <TemplatePage />
+          </QueryClientProvider>
+        </Route>
         <Route path="/">
-          <CategoriesIndex />
+          <QueryClientProvider client={queryClient}>
+            <CategoriesIndex />
+          </QueryClientProvider>
         </Route>
       </Switch>
     </Router>

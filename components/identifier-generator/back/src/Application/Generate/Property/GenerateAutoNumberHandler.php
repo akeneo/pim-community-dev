@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery;
 use Webmozart\Assert\Assert;
 
@@ -21,16 +22,16 @@ final class GenerateAutoNumberHandler implements GeneratePropertyHandlerInterfac
     ) {
     }
 
-    public function __invoke(PropertyInterface $autoNumber, Target $target, string $prefix): string
-    {
+    public function __invoke(
+        PropertyInterface $autoNumber,
+        IdentifierGenerator $identifierGenerator,
+        ProductProjection $productProjection,
+        string $prefix
+    ): string {
         Assert::isInstanceOf($autoNumber, AutoNumber::class);
-        $nextIdentifier = $this->getNextIdentifierQuery->fromPrefix($target, $prefix);
+        $nextIdentifier = $this->getNextIdentifierQuery->fromPrefix($identifierGenerator, $prefix, $autoNumber->numberMin());
 
-        if ($nextIdentifier < $autoNumber->numberMin()) {
-            $nextIdentifier = $autoNumber->numberMin();
-        }
-
-        return str_pad('' . $nextIdentifier, $autoNumber->digitsMin(), '0', STR_PAD_LEFT);
+        return \str_pad('' . $nextIdentifier, $autoNumber->digitsMin(), '0', STR_PAD_LEFT);
     }
 
     public function getPropertyClass(): string

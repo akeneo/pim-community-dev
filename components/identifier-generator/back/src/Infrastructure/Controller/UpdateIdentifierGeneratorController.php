@@ -8,11 +8,13 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsEx
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -22,8 +24,9 @@ use Webmozart\Assert\Assert;
 final class UpdateIdentifierGeneratorController
 {
     public function __construct(
-        private UpdateGeneratorHandler $updateGeneratorHandler,
-        private IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly UpdateGeneratorHandler $updateGeneratorHandler,
+        private readonly IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly SecurityFacadeInterface $security,
     ) {
     }
 
@@ -31,6 +34,9 @@ final class UpdateIdentifierGeneratorController
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+        if (!$this->security->isGranted('pim_identifier_generator_manage')) {
+            throw new AccessDeniedException();
         }
 
         try {
@@ -59,7 +65,7 @@ final class UpdateIdentifierGeneratorController
      */
     private function getContent(Request $request): array
     {
-        $content = json_decode($request->getContent(), true);
+        $content = \json_decode($request->getContent(), true);
         if (null === $content) {
             throw new BadRequestHttpException('Invalid json message received');
         }

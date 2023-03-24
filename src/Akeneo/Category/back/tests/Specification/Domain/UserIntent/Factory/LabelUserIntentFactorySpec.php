@@ -27,8 +27,9 @@ class LabelUserIntentFactorySpec extends ObjectBehavior
 
     function it_creates_a_list_of_label_user_intents_based_on_labels_list()
     {
-        $result = $this->create(
+        $this->create(
             'labels',
+            1,
             [
                 'en_US' => 'sausages',
                 'fr_FR' => 'saucisses'
@@ -39,15 +40,24 @@ class LabelUserIntentFactorySpec extends ObjectBehavior
         ]);
     }
 
+    function it_does_create_label_user_intent_with_null()
+    {
+        $this->create(
+            'labels', 1, ['en_US' => null]
+        )->shouldBeLike([
+            new SetLabel('en_US', null),
+        ]);
+    }
+
     function it_throws_an_exception_when_data_has_wrong_format()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', ['labels', null]);
+            ->during('create', ['labels', 1, null]);
 
         $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', ['labels', 'data']);
+            ->during('create', ['labels', 1, 'data']);
 
         $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', ['labels', true]);
+            ->during('create', ['labels', 1, true]);
     }
 }

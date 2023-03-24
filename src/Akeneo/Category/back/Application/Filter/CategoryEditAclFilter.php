@@ -16,6 +16,7 @@ class CategoryEditAclFilter
 {
     private const ACLS = [
         'values' => 'pim_enrich_product_category_edit_attributes',
+        'permissions' => 'pimee_enrich_category_edit_permissions',
     ];
 
     public function __construct(private SecurityFacade $securityFacade)
@@ -50,15 +51,14 @@ class CategoryEditAclFilter
 
     private function isAllowed(string $type): bool
     {
-        $isAllowed = true;
+        return $this->checkAclForType($type);
+    }
 
-        if ($type == 'values') {
-            $acl = $this->getAclForType($type);
+    private function checkAclForType(string $type): bool
+    {
+        $acl = $this->getAclForType($type);
 
-            $isAllowed = null === $acl || $this->securityFacade->isGranted($acl);
-        }
-
-        return $isAllowed;
+        return null === $acl || $this->securityFacade->isGranted($acl);
     }
 
     private function getAclForType(string $type): ?string

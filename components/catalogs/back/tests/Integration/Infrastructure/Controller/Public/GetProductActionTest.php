@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public;
 
+use Akeneo\Catalogs\Domain\Operator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 /**
@@ -23,15 +25,23 @@ class GetProductActionTest extends IntegrationTestCase
     {
         parent::setUp();
 
+        $this->disableExperimentalTestDatabase();
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
     public function testItGetsProductByCatalogIdAndUuid(): void
     {
-        $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
+        $productCountFromEvent = 0;
+        $this->addSubscriberForReadProductEvent(function ($productCount) use (&$productCountFromEvent): void {
+            $productCountFromEvent = $productCount;
+        });
+
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog($catalogId, 'Store US', 'shopifi');
-        $this->enableCatalog($catalogId);
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
 
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
         $this->createProduct('red', [new SetEnabled(true)]);
@@ -40,7 +50,7 @@ class GetProductActionTest extends IntegrationTestCase
 
         $this->client->request(
             'GET',
-            "/api/rest/v1/catalogs/$catalogId/products/$productUuid",
+            "/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/$productUuid",
             [],
             [],
             [
@@ -54,6 +64,7 @@ class GetProductActionTest extends IntegrationTestCase
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertEquals($productUuid, $result['uuid'], 'Not a valid UUID');
         Assert::assertTrue($result['enabled']);
+        Assert::assertEquals(1, $productCountFromEvent, 'Wrong dispatched product count');
     }
 
     public function testItReturnsForbiddenWhenMissingReadProductsPermissions(): void
@@ -109,20 +120,27 @@ class GetProductActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedMessage = 'Either catalog "db1079b6-f397-4a6a-bae4-8658e64ad47c" does not exist or you can\'t access'.
+            ' it, or product "c335c87e-ec23-4c5b-abfa-0638f141933a" does not exist or you do not have permission to access it.';
 
         Assert::assertEquals(404, $response->getStatusCode());
+        Assert::assertEquals($expectedMessage, $payload['message']);
     }
 
     public function testItReturnsNotFoundWhenProductDoesNotExistForTheCatalog(): void
     {
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $this->createCatalog($catalogId, 'Store US', 'shopifi');
-        $this->enableCatalog($catalogId);
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+        );
 
         $this->client->request(
             'GET',
-            "/api/rest/v1/catalogs/$catalogId/products/c335c87e-ec23-4c5b-abfa-0638f141933a",
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/c335c87e-ec23-4c5b-abfa-0638f141933a',
             [],
             [],
             [
@@ -131,22 +149,76 @@ class GetProductActionTest extends IntegrationTestCase
         );
 
         $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedMessage = 'Either catalog "db1079b6-f397-4a6a-bae4-8658e64ad47c" does not exist or you can\'t access'.
+            ' it, or product "c335c87e-ec23-4c5b-abfa-0638f141933a" does not exist or you do not have permission to access it.';
 
         Assert::assertEquals(404, $response->getStatusCode());
+        Assert::assertEquals($expectedMessage, $payload['message']);
     }
+
+    public function testItReturnsNotFoundWhenTheProductIsFilteredOut(): void
+    {
+        $this->client = $this->getAuthenticatedPublicApiClient([
+            'read_catalogs',
+            'read_products',
+        ]);
+
+        $this->createProduct(Uuid::fromString('c335c87e-ec23-4c5b-abfa-0638f141933a'), [
+            new SetEnabled(false),
+        ]);
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'enabled',
+                    'operator' => Operator::EQUALS,
+                    'value' => true,
+                ],
+            ],
+        );
+
+        $this->client->request(
+            'GET',
+            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/c335c87e-ec23-4c5b-abfa-0638f141933a',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        $expectedMessage = 'Either catalog "db1079b6-f397-4a6a-bae4-8658e64ad47c" does not exist or you can\'t access'.
+            ' it, or product "c335c87e-ec23-4c5b-abfa-0638f141933a" does not exist or you do not have permission to access it.';
+
+        Assert::assertEquals(404, $response->getStatusCode());
+        Assert::assertEquals($expectedMessage, $payload['message']);
+    }
+
 
     public function testItReturnsAnErrorWhenCatalogIsDisabled(): void
     {
-        $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
-        $this->createCatalog($catalogId, 'Store US', 'shopifi', isEnabled: false);
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            isEnabled: false,
+        );
 
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
         $productUuid = (string) $product->getUuid();
 
         $this->client->request(
             'GET',
-            "/api/rest/v1/catalogs/$catalogId/products/$productUuid",
+            "/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/$productUuid",
             [],
             [],
             [
@@ -160,5 +232,54 @@ class GetProductActionTest extends IntegrationTestCase
         Assert::assertEquals(200, $response->getStatusCode());
         Assert::assertArrayHasKey('error', $result);
         Assert::assertIsString($result['error']);
+    }
+
+    public function testItReturnsAnErrorWhenCatalogIsInvalid(): void
+    {
+        $this->createAttribute([
+            'code' => 'color',
+            'type' => 'pim_catalog_multiselect',
+            'options' => ['red', 'blue'],
+        ]);
+
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+
+        $product = $this->createProduct('blue', [new SetEnabled(true)]);
+        $productUuid = (string) $product->getUuid();
+
+        $this->createCatalog(
+            id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            name: 'Store US',
+            ownerUsername: 'shopifi',
+            catalogProductSelection: [
+                [
+                    'field' => 'color',
+                    'operator' => Operator::IN_LIST,
+                    'value' => ['red'],
+                    'scope' => null,
+                    'locale' => null,
+                ],
+            ],
+        );
+
+        $this->removeAttributeOption('color.red');
+
+        $this->client->request(
+            'GET',
+            "/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/$productUuid",
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $result = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        Assert::assertEquals(200, $response->getStatusCode());
+        Assert::assertArrayHasKey('error', $result);
+        Assert::assertIsString($result['error']);
+        Assert::assertFalse($this->getCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c')->isEnabled());
     }
 }

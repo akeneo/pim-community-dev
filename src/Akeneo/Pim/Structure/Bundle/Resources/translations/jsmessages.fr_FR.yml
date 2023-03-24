@@ -87,6 +87,7 @@ pim_enrich.entity.attribute_option:
       add_option: Cliquez ici pour en ajouter une
       delete_confirmation_title_msg: Supprimer "{{ optionCode }}" de vos options ?
       delete_confirmation_subtitle_msg: Êtes-vous sûr de vouloir supprimer cette option ? Vous ne pouvez pas annuler cette action.
+      display_options_limit: Seules les 500 premières options sont affichées ici. Si vous voulez voir plus d'options, effectuez une recherche ou un export.
       search:
         placeholder: Chercher en utilisant le nom ou le code
         no_result:
@@ -231,7 +232,6 @@ pim_enrich.entity.attribute:
       confirm: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
       product_count: '{0}0 produits|{1}1 produit|]1, Inf[{{ count }} produits'
       product_model_count: '{0}0 modèles de produit|{1}1 modèle de produit|]1, Inf[{{ count }} modèles de produit'
-      used: ']-Inf,1]a actuellement des valeurs définies pour cet attribut, elles seront supprimées.|]1, Inf[a actuellement des valeurs définies pour cet attribut, elles seront supprimées.'
       helper:
         content: Si vous souhaitez modifier votre type d'attribut, pour le rendre localisable ou scopable, tout en gardant vos valeurs existantes pour cet attribut, 
         link: Consultez notre Help Center pour plus d'informations.
@@ -263,10 +263,6 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
     delete:
       confirm: Êtes-vous sûr(e) de vouloir supprimer ce groupe d'attributs ?
-  grid:
-    columns:
-      name: Nom du groupe d’attributs
-    no_search_result: Désolé, il n’y a aucun résultat pour votre recherche.
 pim_enrich.mass_edit.family:
   title: Action de masse sur les familles
   confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|]1, Inf[Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."

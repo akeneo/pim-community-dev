@@ -273,8 +273,9 @@ services:
     pim_catalog.query.elasticsearch.filter.label_or_identifier:
         class: '%pim_catalog.query.elasticsearch.filter.label_or_identifier.class%'
         arguments:
-            - ['label_or_identifier']
-            - ['CONTAINS']
+            - [ 'label_or_identifier' ]
+            - [ 'CONTAINS' ]
+            - [ 'product_' ]
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
@@ -354,7 +355,7 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
             - ['categories']
-            - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
+            - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }

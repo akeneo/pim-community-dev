@@ -6,11 +6,7 @@ namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -28,19 +24,21 @@ class GetCategoryTemplateByCategoryTreeSql implements GetCategoryTemplateByCateg
      *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
+     * @throws \JsonException
      */
     public function __invoke(CategoryId $categoryTreeId): ?Template
     {
         $query = <<<SQL
             SELECT 
                 BIN_TO_UUID(category_template.uuid) as uuid,
-                category_template.code as code,
-                category_template.labels as labels,
-                category_tree_template.category_tree_id as category_tree_id
+                category_template.code,
+                category_template.labels,
+                category_tree_template.category_tree_id as category_id
             FROM pim_catalog_category_template category_template
             JOIN pim_catalog_category_tree_template category_tree_template 
-                ON category_tree_template.category_template_uuid=category_template.uuid
-            WHERE category_tree_id=:category_id
+                ON category_tree_template.category_template_uuid = category_template.uuid
+            WHERE category_tree_template.category_tree_id = :category_id
+            AND (category_template.is_deactivated IS NULL OR category_template.is_deactivated = 0)
         SQL;
 
         $result = $this->connection->executeQuery(
@@ -49,27 +47,10 @@ class GetCategoryTemplateByCategoryTreeSql implements GetCategoryTemplateByCateg
             ['category_id' => \PDO::PARAM_INT],
         )->fetchAssociative();
 
-        $template = null;
-        if ($result) {
-            $template = new Template(
-                TemplateUuid::fromString($result['uuid']),
-                new TemplateCode($result['code']),
-                $result['labels'] ?
-                    LabelCollection::fromArray(
-                        json_decode(
-                            $result['labels'],
-                            true,
-                            512,
-                            JSON_THROW_ON_ERROR,
-                        ),
-                    )
-                    : LabelCollection::fromArray([]),
-                new CategoryId((int) $result['category_tree_id']),
-                // TODO this must be implemented at the same time we implement all getTemplate queries
-                AttributeCollection::fromArray([]),
-            );
+        if (!$result) {
+            return null;
         }
 
-        return $template;
+        return Template::fromDatabase($result);
     }
 }

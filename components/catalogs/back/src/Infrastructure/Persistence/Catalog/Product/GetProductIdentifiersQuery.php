@@ -6,7 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product;
 
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetProductIdentifiersQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
-use Akeneo\Catalogs\Infrastructure\Service\FormatProductSelectionCriteria;
+use Akeneo\Catalogs\Infrastructure\PqbFilters\ProductSelectionCriteria;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
@@ -34,7 +34,7 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
     public function execute(Catalog $catalog, ?string $searchAfter = null, int $limit = 100): array
     {
         $pqbOptions = [
-            'filters' => FormatProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria()),
+            'filters' => ProductSelectionCriteria::toPQBFilters($catalog->getProductSelectionCriteria()),
             'limit' => $limit,
         ];
 
@@ -54,7 +54,7 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
         return \array_map(
             fn (IdentifierResult $result) => $result->getIdentifier() ?:
                 $this->getUuidFromIdentifierResult($result->getId()),
-            \iterator_to_array($results)
+            \iterator_to_array($results),
         );
     }
 
@@ -84,7 +84,7 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
         if (!\preg_match(
             '/^product_(?P<uuid>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/',
             $esId,
-            $matches
+            $matches,
         )) {
             throw new \InvalidArgumentException(\sprintf('Invalid Elasticsearch identifier %s', $esId));
         }

@@ -95,6 +95,21 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                     'locale' => null,
                 ],
             ],
+            'with default value' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => 'Name default value',
+                ],
+            ],
         ];
     }
 
@@ -104,7 +119,7 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
     public function testItReturnsViolationsWhenInvalid(
         array $attribute,
         array $source,
-        string $expectedMessage
+        string $expectedMessage,
     ): void {
         $this->createAttribute($attribute);
 
@@ -116,6 +131,20 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
     public function invalidDataProvider(): array
     {
         return [
+            'missing source value' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'scope' => null,
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
             'invalid source value' => [
                 'attribute' => [
                     'code' => 'name',
@@ -146,6 +175,50 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
+            'blank scope' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => '',
+                    'locale' => null,
+                ],
+                'expected_message' => 'This value should not be blank.',
+            ],
+            'unknown scope' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => 'unknown_scope',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
+            ],
+            'missing scope' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'locale' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
             'invalid locale' => [
                 'attribute' => [
                     'code' => 'name',
@@ -161,7 +234,51 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
-            'source with invalid locale for a channel' => [
+            'blank locale' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => '',
+                ],
+                'expected_message' => 'This value should not be blank.',
+            ],
+            'missing locale' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => null,
+                ],
+                'expectedMessage' => 'This field is missing.',
+            ],
+            'disabled locale' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => 'kz_KZ',
+                ],
+                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'disabled locale for a channel' => [
                 'attribute' => [
                     'code' => 'name',
                     'type' => 'pim_catalog_text',
@@ -176,35 +293,37 @@ class AttributeTextSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
             ],
-            'source with invalid scope' => [
-                'attribute' => [
-                    'code' => 'name',
-                    'type' => 'pim_catalog_text',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'name',
-                    'scope' => 'unknown_scope',
-                    'locale' => null,
-                ],
-                'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
-            ],
-            'source with invalid locale' => [
+            'extra field' => [
                 'attribute' => [
                     'code' => 'name',
                     'type' => 'pim_catalog_text',
                     'group' => 'other',
                     'scopable' => false,
-                    'localizable' => true,
+                    'localizable' => false,
                 ],
                 'source' => [
                     'source' => 'name',
                     'scope' => null,
-                    'locale' => 'kz_KZ',
+                    'locale' => null,
+                    'parameters' => [],
                 ],
-                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+                'expectedMessage' => 'This field was not expected.',
+            ],
+            'invalid default value type' => [
+                'attribute' => [
+                    'code' => 'name',
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'name',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => true,
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
         ];
     }

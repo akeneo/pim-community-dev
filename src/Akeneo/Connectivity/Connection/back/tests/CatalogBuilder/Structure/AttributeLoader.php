@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -43,7 +43,7 @@ class AttributeLoader
 
     public function create(array $data): void
     {
-        $data['group'] = $data['group'] ?? AttributeGroup::DEFAULT_GROUP_CODE;
+        $data['group'] = $data['group'] ?? AttributeGroupInterface::DEFAULT_CODE;
 
         $attribute = $this->factory->create();
         $this->updater->update($attribute, $data);

@@ -2,6 +2,7 @@ import React, {FC, useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {
   AkeneoThemedProps,
+  Badge,
   LockIcon,
   SubNavigationItem,
   SubNavigationPanel,
@@ -111,7 +112,7 @@ const SubNavigation: FC<Props> = ({
                         <StyledLockIcon size={16} color={theme.color.blue100} />
                       </Tag>
                     )}
-                    {subEntry.new && <Tag tint="green">New</Tag>}
+                    {subEntry.new && <StyledBadge level="secondary">{translate('pim_menu.tag.new')}</StyledBadge>}
                   </StyledSubNavigationItem>
                 ))}
             </Section>
@@ -172,6 +173,11 @@ const StyledSubNavigationItem = styled(SubNavigationItem)<{disabled: boolean; ha
 
 const StyledLockIcon = styled(LockIcon)`
   margin: 3px;
+`;
+
+const StyledBadge = styled(Badge)`
+  margin-left: 10px;
+  vertical-align: text-bottom;
 `;
 
 export {SubNavigation};

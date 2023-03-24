@@ -74,6 +74,7 @@ services:
             - '@database_connection'
             - !tagged akeneo.pim.tests.pub_sub_queue_status.job
             - '@logger'
+            - '@feature_flags'
 
     akeneo_integration_tests.pub_sub_queue_status.ui_job:
         class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
@@ -120,6 +121,10 @@ services:
             timeout: 25000
             window_width: 1280
             window_height: 1024
+        - '@kernel'
+
+    Context\FeatureFlagContext:
+        - 'Context\FeatureContext'
         - '@kernel'
 
     Context\FixturesContext:

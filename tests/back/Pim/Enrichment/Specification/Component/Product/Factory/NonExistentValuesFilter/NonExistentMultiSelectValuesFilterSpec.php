@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGo
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionCodes;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -71,25 +72,24 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
             ]
         );
 
-        $optionCodes =  [
-            'a_multi_select' =>
-                [
-                    'micHEL',
-                    'sardou',
-                    'jean',
-                    'claude',
-                    'van',
-                    'damm',
-                    'des',
-                    'Fraises',
-                    'MIChel',
-                    'FRAISES',
-                    'JEAN',
-                    'TOUrloupe',
-                ],
+        $optionCodes = [
+            'a_multi_select' => [
+                'micHEL',
+                'sardou',
+                'jean',
+                'claude',
+                'van',
+                'damm',
+                'des',
+                'Fraises',
+                'MIChel',
+                'FRAISES',
+                'JEAN',
+                'TOUrloupe',
+            ],
         ];
 
-        $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes)->willReturn(
+        $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes)->shouldBeCalled()->willReturn(
             [
                 'a_multi_select' => ['michel', 'fraises', 'tourlOUPE'],
             ]
@@ -105,11 +105,11 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => ['micHEL'],
+                                    'en_US' => ['michel'],
                                 ],
                                 'tablet' => [
                                     'en_US' => [],
-                                    'fr_FR' => ['Fraises'],
+                                    'fr_FR' => ['fraises'],
                                 ],
                             ],
                         ],
@@ -117,10 +117,10 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_C',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => ['MIChel'],
+                                    'en_US' => ['michel'],
                                 ],
                                 'tablet' => [
-                                    '<all_locales>' => ['FRAISES', 'TOUrloupe'],
+                                    '<all_locales>' => ['fraises', 'tourlOUPE'],
                                 ],
                             ]
                         ],

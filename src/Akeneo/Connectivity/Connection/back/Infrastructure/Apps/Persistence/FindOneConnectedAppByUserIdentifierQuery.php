@@ -36,7 +36,7 @@ final class FindOneConnectedAppByUserIdentifierQuery implements FindOneConnected
             connected_app.user_group_name,
             connected_app.has_outdated_scopes,
             oro_user.username AS connection_username,
-            IF(test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app
+            IF(test_app.client_id IS NULL, FALSE, TRUE) AS is_custom_app
         FROM akeneo_connectivity_connected_app connected_app
         JOIN akeneo_connectivity_connection connection ON connection.code = connected_app.connection_code
         JOIN oro_user ON oro_user.id = connection.user_id

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Form\Type;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -76,6 +77,8 @@ class AttributeOptionType extends AbstractType
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false,
+                'delete_empty' =>
+                    static fn (AttributeOptionValueInterface $optionValue = null) => null === $optionValue?->getValue()
             ]
         );
     }

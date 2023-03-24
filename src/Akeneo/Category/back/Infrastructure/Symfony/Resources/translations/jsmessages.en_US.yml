@@ -1,3 +1,6 @@
+pim_title:
+    pim_category_template_edit: Edit category template
+
 akeneo.category:
     tree_list:
         column:
@@ -5,7 +8,7 @@ akeneo.category:
     attributes: Attributes
     edition_form:
         error:
-            unhandled_attribute_type: Could not find attribute field builder for attribute type "{{type}}"
+            unhandled_attribute_type: Could not find attribute field builder for attribute type "{{ type }}"
         template:
             title: Template
             fetching_failed: An error occurred while fetching template
@@ -16,9 +19,9 @@ akeneo.category:
     template:
         create: Activate template
         edit: View template
-        delete: Delete template
         notification_success: Template activated successfully
         notification_error: Template could not be activated
+        not_found: There is no active template for this category
         attribute:
             description_title: Description Settings
             type:
@@ -26,9 +29,60 @@ akeneo.category:
                 textarea: Text Area
                 richtext: Rich Text
                 image: Image
+        add_attribute:
+            add_button: Add Attribute
+            confirmation_modal:
+                section_title: Add Attribute
+                title: Create a new category attribute
+                head_helper: Category attributes are attached to one template. They cannot be accessed in other templates.
+                tail_helper: Value per channel and Value per locale cannot be changed once the attribute is created.
+                link: Learn more about category templates.
+                create: Create
+                input:
+                    label: Label
+                    code: Code
+                    type:
+                        label: Attribute type
+                        empty: No attribute type available
+                        option_title:
+                            text: Text
+                            textarea: Text area
+                            richtext: Rich text
+                            image: Image
+            success:
+                notification: Attribute successfully created
+            error:
+                failed: Add template attribute failed
+                limit_reached:
+                    title: You cannot add more than 50 attributes
+                    message: Category templates are limited to 50 attributes per template.
+        deactivate:
+            deactivate_template: Deactivate template
+            confirmation_modal:
+                title: Deactivate category template
+                message: Are you sure you want to deactivate the category template named {{ template }}?
+                helper: Deactivating this template will permanently delete the attributes and values of the associated categories.
+                deactivate: Deactivate
+            notification_success:
+                title: '{{ template }} template deactivated'
+                message: '{{ template }} has been deactivated. The content of the associated categories has been deleted.'
 
     template_list:
         columns:
             header: Label
             code: Code
             type: Type
+
+    tag:
+        new: New
+
+    discover_enriched_categories_information:
+        title: Discover Enriched Categories Early Access
+        content:
+            activate_template: Activate category enrichment through pre-configured templates
+            enrich_attribute_values: Enrich Text, Text Area and Image attributes in categories
+            deactivate_template: Enrichment deactivation and custom template will be coming shortly
+        survey_link_label: Tell us what you think
+        learn_more_link_label: Learn more about Enriched Categories
+
+    other_actions: Other actions

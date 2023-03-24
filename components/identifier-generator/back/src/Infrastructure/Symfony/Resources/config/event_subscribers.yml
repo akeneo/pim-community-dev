@@ -12,6 +12,7 @@ services:
       - '@validator'
       - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
       - '@event_dispatcher'
+      - '@monolog.logger'
     tags:
       - { name: kernel.event_subscriber }
 

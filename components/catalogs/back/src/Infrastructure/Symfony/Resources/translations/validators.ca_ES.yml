@@ -36,3 +36,20 @@ akeneo_catalogs:
         unknown: 'La moneda "{{ currency_name }}" s''ha desactivat. Comproveu la configuració de les vostres monedes o elimineu aquest filtre.'
       locale:
         unknown: 'La configuració regional "{{ locale_name }}" s''ha desactivat. Comproveu la vostra configuració regional o elimineu aquest filtre.'
+    product_mapping:
+      source:
+        invalid: 'Aquest atribut s''ha suprimit.'
+        unknown: 'Valor font desconegut'
+        channel:
+          not_empty: 'Aquest canal ha d''estar buit.'
+          empty: 'Aquest canal no ha d''estar buit.'
+          unknown: 'Aquest canal s''ha suprimit. Comproveu la configuració del vostre canal o actualitzeu aquest valor.'
+        locale:
+          not_empty: 'Aquesta configuració regional ha d''estar buida.'
+          empty: 'Aquesta configuració regional no ha d''estar buida.'
+          unknown: 'Aquesta configuració regional està desactivada o ja no existeix. Si us plau, comproveu els vostres canals i la configuració regional.'
+          disabled: 'Aquesta configuració regional està desactivada. Si us plau, comproveu els vostres canals i la configuració regional o actualitzeu aquest valor.'
+        measurement:
+          unit:
+            not_exist: 'La unitat del camp "{{ field }}" no existeix.'
+            not_empty: 'La unitat no ha d''estar buida.'

@@ -2,19 +2,18 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AssociationColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMapper;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMerger;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldConverter;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
+use PhpSpec\ObjectBehavior;
 
 class ProductSpec extends ObjectBehavior
 {
@@ -24,7 +23,6 @@ class ProductSpec extends ObjectBehavior
         FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper,
-        FieldsRequirementChecker $fieldChecker,
         AttributeRepositoryInterface $attributeRepository,
         ArrayConverterInterface $productValueConverter
     ) {
@@ -34,7 +32,6 @@ class ProductSpec extends ObjectBehavior
             $fieldConverter,
             $columnsMerger,
             $columnsMapper,
-            $fieldChecker,
             $attributeRepository,
             $productValueConverter
         );
@@ -143,7 +140,7 @@ class ProductSpec extends ObjectBehavior
             ]
         );
 
-        $columnsMerger->merge($item)->willReturn($itemMerged);
+        $columnsMerger->merge($item, ['with_associations' => true, 'default_values' => []])->willReturn($itemMerged);
 
         $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
@@ -460,7 +457,7 @@ class ProductSpec extends ObjectBehavior
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
         $assocColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
-        $columnsMerger->merge($filteredItem)->willReturn($filteredItem);
+        $columnsMerger->merge($filteredItem, ['with_associations' => false, 'default_values' => []])->willReturn($filteredItem);
 
         $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
@@ -526,7 +523,7 @@ class ProductSpec extends ObjectBehavior
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
         $assocColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
 
-        $columnsMerger->merge($filteredProduct)->willReturn($filteredProduct);
+        $columnsMerger->merge($filteredProduct, ['with_associations' => false, 'default_values' => []])->willReturn($filteredProduct);
 
         $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 

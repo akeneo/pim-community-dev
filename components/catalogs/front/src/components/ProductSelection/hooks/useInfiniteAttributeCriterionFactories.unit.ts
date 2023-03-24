@@ -9,15 +9,15 @@ import {useInfiniteAttributeCriterionFactories} from './useInfiniteAttributeCrit
 import {useFindAttributeCriterionByType} from './useFindAttributeCriterionByType';
 
 const ALLOWED_ATTRIBUTE_TYPES = [
-    'identifier',
-    'text',
-    'textarea',
-    'simpleselect',
-    'multiselect',
-    'number',
-    'metric',
-    'boolean',
-    'date',
+    'pim_catalog_identifier',
+    'pim_catalog_text',
+    'pim_catalog_textarea',
+    'pim_catalog_simpleselect',
+    'pim_catalog_multiselect',
+    'pim_catalog_number',
+    'pim_catalog_metric',
+    'pim_catalog_boolean',
+    'pim_catalog_date',
 ];
 
 test('it fetches attributes & paginates criterion factories', async () => {

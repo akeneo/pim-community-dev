@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
@@ -36,7 +36,7 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
      */
     public function findDefaultAttributeGroup()
     {
-        return $this->findOneBy(['code' => AttributeGroup::DEFAULT_GROUP_CODE]);
+        return $this->findOneBy(['code' => AttributeGroupInterface::DEFAULT_CODE]);
     }
 
     /**

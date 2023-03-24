@@ -6,11 +6,12 @@ namespace Akeneo\Category\Application;
 
 use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Api\Command\UpsertCategoryCommand;
-use Akeneo\Category\Api\Event\CategoryCreatedEvent;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
-use Akeneo\Category\Application\Storage\Save\CategorySaverProcessor;
+use Akeneo\Category\Application\Storage\Save\SaveCategory;
+use Akeneo\Category\Domain\Event\CategoryUpdatedEvent;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -23,11 +24,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UpsertCategoryCommandHandler
 {
     public function __construct(
-        private ValidatorInterface $validator,
-        private GetCategoryInterface $getCategory,
-        private UserIntentApplierRegistry $applierRegistry,
-        private EventDispatcherInterface $eventDispatcher,
-        private CategorySaverProcessor $saver,
+        private readonly ValidatorInterface $validator,
+        private readonly GetCategoryInterface $getCategory,
+        private readonly UserIntentApplierRegistry $applierRegistry,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly SaveCategory $saver,
+        private readonly FindCategoryAdditionalPropertiesRegistry $findCategoryAdditionalPropertiesRegistry,
     ) {
     }
 
@@ -39,6 +41,9 @@ class UpsertCategoryCommandHandler
         $this->validateCommand($command);
 
         $category = $this->getCategory->byCode($command->categoryCode());
+        if ($category) {
+            $category = $this->findCategoryAdditionalPropertiesRegistry->forCategory($category);
+        }
 
         $isCreation = null === $category;
         if ($isCreation) {
@@ -49,7 +54,7 @@ class UpsertCategoryCommandHandler
 
         $this->saver->save($category, $command->userIntents());
 
-        $this->eventDispatcher->dispatch(new CategoryCreatedEvent((string) $category->getCode()));
+        $this->eventDispatcher->dispatch(new CategoryUpdatedEvent($category));
     }
 
     private function updateCategory(Category $category, UpsertCategoryCommand $command): void

@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Catalog;
 
 use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetCatalogQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -24,14 +25,16 @@ use Ramsey\Uuid\Uuid;
  *      product_mapping: string,
  * }
  *
- * @phpstan-import-type ProductSelectionCriterion from Catalog
+ * @phpstan-import-type ProductSelectionCriteria from Catalog
  * @phpstan-import-type ProductValueFilters from Catalog
  * @phpstan-import-type ProductMapping from Catalog
  */
 final class GetCatalogQuery implements GetCatalogQueryInterface
 {
-    public function __construct(private Connection $connection)
-    {
+    public function __construct(
+        private Connection $connection,
+        private GetProductMappingSchemaQueryInterface $getProductMappingSchemaQuery,
+    ) {
     }
 
     public function execute(string $catalogId): Catalog
@@ -59,7 +62,7 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
             throw new CatalogNotFoundException();
         }
 
-        /** @var array<array-key, ProductSelectionCriterion>|null $productSelectionCriteria */
+        /** @var ProductSelectionCriteria|null $productSelectionCriteria */
         $productSelectionCriteria = \json_decode($row['product_selection_criteria'], true, 512, JSON_THROW_ON_ERROR);
         if (!\is_array($productSelectionCriteria)) {
             throw new \LogicException('Invalid JSON in product_selection_criteria column');
@@ -77,6 +80,8 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
             throw new \LogicException('Invalid JSON in product_mapping column');
         }
 
+        $productMapping = $this->reorderProductMapping($productMapping, $row['id']);
+
         return new Catalog(
             $row['id'],
             $row['name'],
@@ -86,5 +91,27 @@ final class GetCatalogQuery implements GetCatalogQueryInterface
             $productValueFilters,
             $productMapping,
         );
+    }
+
+    /**
+     * @param ProductMapping $productMapping
+     *
+     * @return ProductMapping
+     */
+    private function reorderProductMapping(array $productMapping, string $catalogId): array
+    {
+        if ([] == $productMapping) {
+            return [];
+        }
+
+        $productMappingSchema = $this->getProductMappingSchemaQuery->execute($catalogId);
+
+        /** @var string[] $orderedKeys */
+        $orderedKeys = \array_keys($productMappingSchema['properties']);
+
+        /** @var ProductMapping $orderedProductmapping */
+        $orderedProductmapping = \array_merge(\array_flip($orderedKeys), $productMapping);
+
+        return $orderedProductmapping;
     }
 }

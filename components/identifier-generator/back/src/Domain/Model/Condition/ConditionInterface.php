@@ -11,11 +11,15 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-import-type EnabledNormalized from Enabled
+ * @phpstan-import-type FamilyNormalized from Family
+ * @phpstan-import-type SimpleSelectNormalized from SimpleSelect
+ * @phpstan-import-type MultiSelectNormalized from MultiSelect
+ * @phpstan-type ConditionNormalized EnabledNormalized|FamilyNormalized|SimpleSelectNormalized|MultiSelectNormalized
  */
 interface ConditionInterface
 {
     /**
-     * @return EnabledNormalized
+     * @return ConditionNormalized
      */
     public function normalize(): array;
 

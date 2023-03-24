@@ -24,14 +24,12 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
      */
     public function execute(?string $search = null, int $page = 1, int $limit = 20, array $types = []): array
     {
-        $types = \array_map(fn ($type) => \sprintf('pim_catalog_%s', $type), $types);
-
         $attributes = $this->searchableAttributeRepository->findBySearch(
             $search,
             [
                 'limit' => $limit,
                 'page' => $page,
-                'types' => empty($types) ? null : $types,
+                'types' => $types === [] ? null : $types,
             ],
         );
 
@@ -54,7 +52,7 @@ final class SearchAttributesQuery implements SearchAttributesQueryInterface
 
                 return $normalizedAttribute;
             },
-            $attributes
+            $attributes,
         );
     }
 }
