@@ -42,6 +42,8 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
     }
 
     /**
+     * @group ce
+     *
      * @dataProvider extractorDataProvider
      */
     public function testItFindsTheExtractor(
