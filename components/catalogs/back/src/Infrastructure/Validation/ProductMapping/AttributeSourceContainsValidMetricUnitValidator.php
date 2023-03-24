@@ -32,7 +32,7 @@ final class AttributeSourceContainsValidMetricUnitValidator extends ConstraintVa
 {
     public function __construct(
         private readonly FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery,
-        private readonly GetMeasurementsFamilyQueryInterface $getMeasurementsFamilyQuery,
+        private readonly GetMeasurementsFamilyQueryInterface  $getMeasurementsFamilyQuery,
     ) {
     }
 
@@ -70,7 +70,12 @@ final class AttributeSourceContainsValidMetricUnitValidator extends ConstraintVa
 
         if (!\in_array($unit, $attributeUnits)) {
             $this->context
-                ->buildViolation('akeneo_catalogs.validation.product_mapping.source.measurement.unit.not_exist')
+                ->buildViolation(
+                    'akeneo_catalogs.validation.product_mapping.source.measurement.unit.not_exist',
+                    [
+                        '{{ field }}' => $attribute['code'],
+                    ],
+                )
                 ->atPath('[parameters][unit]')
                 ->addViolation();
         }
