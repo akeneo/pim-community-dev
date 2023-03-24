@@ -27,16 +27,14 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
 
         $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
+
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'admin',
             productMappingSchema: $this->getValidSchemaData(),
         );
-    }
 
-    public function testItValidates(): void
-    {
         $this->createAttribute([
             'code' => 'name',
             'type' => 'pim_catalog_text',
@@ -67,7 +65,13 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             'scopable' => false,
             'localizable' => false,
         ]);
+    }
 
+    /**
+     * @dataProvider validCasesProvider
+     */
+    public function testItValidates(array $productMapping): void
+    {
         $violations = $this->validator->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -76,7 +80,18 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                 false,
                 [],
                 [],
-                [
+                $productMapping,
+            ),
+        );
+
+        $this->assertEquals(0, $violations->count());
+    }
+
+    private function validCasesProvider(): array
+    {
+        return [
+            'Basic use case' => [
+                'productMapping' => [
                     'uuid' => [
                         'source' => 'uuid',
                         'scope' => null,
@@ -108,14 +123,53 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'locale' => null,
                     ],
                 ],
-            ),
-        );
-
-        $this->assertEquals(0, $violations->count());
+            ],
+            'A required target has no source but a default value' => [
+                'productMapping' => [
+                    'uuid' => [
+                        'source' => 'uuid',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'name' => [
+                        'source' => 'name',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'simple_description' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                        'default' => 'Wonderful product made by Akeneo.',
+                    ],
+                    'released_at' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'released' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'size' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                ],
+            ],
+        ];
     }
 
-    public function testItReturnsViolationsWhenTargetsAreMissing(): void
-    {
+    /**
+     * @dataProvider invalidCasesProvider
+     */
+    public function testItDoesNotValidate(
+        array $productMapping,
+        string $errorMessage,
+        int $errorCount,
+    ): void {
         $violations = $this->validator->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -124,43 +178,30 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                 false,
                 [],
                 [],
-                [
+                $productMapping,
+            ),
+        );
+
+        $this->assertViolationsListContains($violations, $errorMessage);
+        $this->assertEquals($errorCount, $violations->count());
+    }
+
+    private function invalidCasesProvider(): array
+    {
+        return [
+            'Targets are missing' => [
+                'productMapping' => [
                     'uuid' => [
                         'source' => 'uuid',
                         'scope' => null,
                         'locale' => null,
                     ],
                 ],
-            ),
-        );
-
-        $this->assertViolationsListContains($violations, 'The mapping is incomplete, following targets are missing: "name", "simple_description", "released_at", "released", "size".');
-    }
-
-    public function testItReturnsViolationsWhenThereIsAdditionalTarget(): void
-    {
-        $this->createAttribute([
-            'code' => 'name',
-            'type' => 'pim_catalog_text',
-            'scopable' => false,
-            'localizable' => false,
-        ]);
-        $this->createAttribute([
-            'code' => 'description',
-            'type' => 'pim_catalog_text',
-            'scopable' => false,
-            'localizable' => false,
-        ]);
-
-        $violations = $this->validator->validate(
-            new Catalog(
-                'db1079b6-f397-4a6a-bae4-8658e64ad47c',
-                'Store US',
-                'willy',
-                false,
-                [],
-                [],
-                [
+                'errorMessage' => 'The mapping is incomplete, following targets are missing: "name", "simple_description", "released_at", "released", "size".',
+                'errorCount' => 1,
+            ],
+            'Source does not match target type' => [
+                'productMapping' => [
                     'uuid' => [
                         'source' => 'uuid',
                         'scope' => null,
@@ -177,8 +218,49 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'locale' => null,
                     ],
                     'released_at' => [
+                        'source' => 'release_date',
+                        'scope' => 'ecommerce',
+                        'locale' => null,
+                    ],
+                    'released' => [
+                        'source' => 'release_date',
+                        'scope' => 'ecommerce',
+                        'locale' => null,
+                    ],
+                    'size' => [
+                        'source' => 'height',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                ],
+                'errorMessage' => 'The selected source type does not match the requirements: boolean expected.',
+                'errorCount' => 1,
+            ],
+            'A required target has no source' => [
+                'productMapping' => [
+                    'uuid' => [
                         'source' => null,
-                        'scope' => true,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'name' => [
+                        'source' => 'name',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'simple_description' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'released_at' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'size' => [
+                        'source' => null,
+                        'scope' => null,
                         'locale' => null,
                     ],
                     'released' => [
@@ -186,7 +268,38 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'scope' => null,
                         'locale' => null,
                     ],
+                ],
+                'errorMessage' => 'The source is required.',
+                'errorCount' => 1,
+            ],
+            'Extra target' => [
+                'productMapping' => [
+                    'uuid' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'name' => [
+                        'source' => 'name',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'simple_description' => [
+                        'source' => 'description',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'released_at' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
                     'size' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'released' => [
                         'source' => null,
                         'scope' => null,
                         'locale' => null,
@@ -197,85 +310,13 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'locale' => null,
                     ],
                 ],
-            ),
-        );
-
-        $this->assertViolationsListContains($violations, 'The mapping is incorrect, following targets don\'t exist: "additional".');
-    }
-
-    public function testItReturnsViolationsWhenThereIsRequiredTargetWithNoSourceDefined(): void
-    {
-        $this->createAttribute([
-            'code' => 'name',
-            'type' => 'pim_catalog_text',
-            'scopable' => false,
-            'localizable' => false,
-        ]);
-
-        $this->createCatalog(
-            id: '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
-            name: 'Store FR',
-            ownerUsername: 'admin',
-            productMappingSchema: $this->getValidSchemaDataWithRequiredField(),
-        );
-
-        $violations = $this->validator->validate(
-            new Catalog(
-                '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
-                'Store FR',
-                'admin',
-                false,
-                [],
-                [],
-                [
+                'errorMessage' => 'The mapping is incorrect, following targets don\'t exist: "additional".',
+                'errorCount' => 1,
+            ],
+            'Default value in the wrong type' => [
+                'productMapping' => [
                     'uuid' => [
-                        'source' => 'uuid',
-                        'scope' => null,
-                        'locale' => null,
-                    ],
-                    'name' => [
                         'source' => null,
-                        'scope' => null,
-                        'locale' => null,
-                    ],
-                    'size' => [
-                        'source' => null,
-                        'scope' => null,
-                        'locale' => null,
-                    ],
-                ],
-            ),
-        );
-
-        $this->assertViolationsListContains($violations, 'The source is required.');
-    }
-    public function testItValidatesWhenThereIsRequiredTargetWithNoSourceDefinedAndDefaultValue(): void
-    {
-        $this->createAttribute([
-            'code' => 'name',
-            'type' => 'pim_catalog_text',
-            'scopable' => false,
-            'localizable' => false,
-        ]);
-
-        $this->createCatalog(
-            id: '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
-            name: 'Store FR',
-            ownerUsername: 'admin',
-            productMappingSchema: $this->getValidSchemaDataWithRequiredField(),
-        );
-
-        $violations = $this->validator->validate(
-            new Catalog(
-                '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
-                'Store FR',
-                'admin',
-                false,
-                [],
-                [],
-                [
-                    'uuid' => [
-                        'source' => 'uuid',
                         'scope' => null,
                         'locale' => null,
                     ],
@@ -284,59 +325,32 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'scope' => null,
                         'locale' => null,
                     ],
+                    'simple_description' => [
+                        'source' => 'description',
+                        'scope' => null,
+                        'locale' => null,
+                        'default' => true,
+                    ],
+                    'released_at' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                    ],
                     'size' => [
                         'source' => null,
                         'scope' => null,
                         'locale' => null,
-                        'default' => 175,
-                    ],
-                ],
-            ),
-        );
-
-        $this->assertEquals(0, $violations->count());
-    }
-
-    public function testItReturnsViolationsWhenThereIsErrorInNullSources(): void
-    {
-        $this->createCatalog(
-            id: '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
-            name: 'Store FR',
-            ownerUsername: 'admin',
-            productMappingSchema: $this->getValidSchemaDataForNullSources(),
-        );
-
-        $violations = $this->validator->validate(
-            new Catalog(
-                '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
-                'Store FR',
-                'admin',
-                false,
-                [],
-                [],
-                [
-                    'uuid' => [
-                        'source' => 'uuid',
-                        'scope' => null,
-                        'locale' => null,
-                    ],
-                    'name' => [
-                        'source' => null,
-                        'scope' => null,
-                        'locale' => null,
-                        'default' => true,
                     ],
                     'released' => [
                         'source' => null,
                         'scope' => null,
                         'locale' => null,
-                        'default' => 10,
                     ],
                 ],
-            ),
-        );
-
-        $this->assertEquals(2, $violations->count());
+                'errorMessage' => 'This value should be of type string.',
+                'errorCount' => 1,
+            ],
+        ];
     }
 
     private function getValidSchemaData(): string
@@ -369,58 +383,8 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             "size": {
               "type": "number"
             }
-          }
-        }
-        JSON_WRAP;
-    }
-
-    private function getValidSchemaDataWithRequiredField(): string
-    {
-        return <<<'JSON_WRAP'
-        {
-          "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
-          "$comment": "My first schema !",
-          "title": "Product Mapping",
-          "description": "JSON Schema describing the structure of products expected by our application",
-          "type": "object",
-          "properties": {
-            "uuid": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "size": {
-              "type": "number"
-            }
           },
-          "required": ["name","size"]
-        }
-        JSON_WRAP;
-    }
-
-    private function getValidSchemaDataForNullSources(): string
-    {
-        return <<<'JSON_WRAP'
-        {
-          "$id": "https://example.com/product",
-          "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
-          "$comment": "My first schema !",
-          "title": "Product Mapping",
-          "description": "JSON Schema describing the structure of products expected by our application",
-          "type": "object",
-          "properties": {
-            "uuid": {
-              "type": "string"
-            },
-            "name": {
-              "type": "string"
-            },
-            "released": {
-              "type": "boolean"
-            }
-          }
+          "required": ["name","simple_description"]
         }
         JSON_WRAP;
     }
