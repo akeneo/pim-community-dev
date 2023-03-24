@@ -36,6 +36,7 @@
 - PIM-10860: [SLA] Announcements aren't shown
 - PIM-10745: Fix history display for product's quantified association
 - PIM-10874: fix labels api type consistency
+- PIM-10905: Have a clear error message when SFTP reach timeout
 - PIM-10877: Fix sequential edit not working if grid is sorted by quality score
 - PIM-10876: Does not save empty ('') labels and don't show null labels on API REST
 - PIM-10894: Allow research user by email as username.

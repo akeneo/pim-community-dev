@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
+use League\Flysystem\UnableToWriteFile;
 use PhpSpec\ObjectBehavior;
 
 class TransferFileSpec extends ObjectBehavior
