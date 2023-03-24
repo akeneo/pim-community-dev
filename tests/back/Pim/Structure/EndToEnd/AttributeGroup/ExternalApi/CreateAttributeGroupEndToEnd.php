@@ -550,7 +550,7 @@ JSON;
     "code": 422,
     "errors": [
         {
-            "message": "You’ve reached the limit of 1000 attribute groups.",
+            "message": "You’ve reached the limit of 1000 attribute groups",
             "property": ""
         }
     ],

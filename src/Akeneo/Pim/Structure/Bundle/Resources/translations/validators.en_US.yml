@@ -5,4 +5,4 @@ pim_structure:
         available_locales:
             is_variant_axis_without_available_locales: An attribute cannot become locale specific if it is already used as an axis in a variant family.
         attribute_groups:
-            max: You’ve reached the limit of {{ max }} attribute groups.
+            max: You’ve reached the limit of {{ max }} attribute groups

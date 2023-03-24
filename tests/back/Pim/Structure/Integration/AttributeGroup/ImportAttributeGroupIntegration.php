@@ -49,7 +49,7 @@ final class ImportAttributeGroupIntegration extends TestCase
         $this->launchImport($content);
 
         $this->assertAttributeGroupDoesNotExist('a_new_attribute_group');
-        $this->assertJobIsSuccessWithWarning(": You’ve reached the limit of 1000 attribute groups.: A new attribute group\n");
+        $this->assertJobIsSuccessWithWarning("You’ve reached the limit of 1000 attribute groups: A new attribute group\n");
     }
 
     public function test_it_allow_to_update_an_attribute_when_limit_is_reached(): void
