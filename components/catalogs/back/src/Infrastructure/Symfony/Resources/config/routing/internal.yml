@@ -57,6 +57,15 @@ akeneo_catalogs_internal_get_asset_attributes_by_target_type_and_target_format:
     path: '/rest/catalogs/asset-attributes-by-target-type-and-target-format'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\AssetManager\GetAssetAttributesByTargetTypeAndTargetFormatAction
 
+akeneo_catalogs_internal_get_reference_entity_attribute:
+    path: '/rest/catalogs/reference-entity-attributes/{identifier}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\ReferenceEntity\GetReferenceEntityAttributeAction
+    methods: [ GET ]
+
+akeneo_catalogs_internal_get_reference_entity_attributes_by_target_type_and_target_format:
+    path: '/rest/catalogs/reference-entity-attributes-by-target-type-and-target-format'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\ReferenceEntity\GetReferenceEntityAttributesByTargetTypeAndTargetFormatAction
+
 akeneo_catalogs_internal_get_channel_currencies:
     path: '/rest/catalogs/channels/{code}/currencies'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetChannelCurrenciesAction

@@ -120,6 +120,7 @@ final class CatalogProductMappingValidator extends ConstraintValidator
             'family' => new SystemAttributeFamilySource(),
             'status' => new SystemAttributeStatusSource(),
             default => match ($this->getSourceAttributeType($source)) {
+                'akeneo_reference_entity' => new AttributeReferenceEntitySource(),
                 'pim_catalog_asset_collection' => new AttributeAssetCollectionSource(),
                 'pim_catalog_boolean' => new AttributeBooleanSource(),
                 'pim_catalog_date' => new AttributeDateSource(),

@@ -46,6 +46,10 @@ final class FindOneAttributeByCodeQuery implements FindOneAttributeByCodeQueryIn
             $normalizedAttribute['asset_family'] = (string) $attribute->getProperty('reference_data_name');
         }
 
+        if ('akeneo_reference_entity' === $attribute->getType()) {
+            $normalizedAttribute['reference_entity'] = (string) $attribute->getProperty('reference_data_name');
+        }
+
         return $normalizedAttribute;
     }
 }

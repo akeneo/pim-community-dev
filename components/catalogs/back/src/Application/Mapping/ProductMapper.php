@@ -10,6 +10,7 @@ use Akeneo\Catalogs\Application\Persistence\AssetManager\FindOneAssetAttributeBy
 use Akeneo\Catalogs\Application\Persistence\Catalog\GetAttributeTypeByCodesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\ReferenceEntity\FindOneReferenceEntityAttributeByIdentifierQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetMappedProductsQuery;
 
@@ -28,11 +29,15 @@ class ProductMapper implements ProductMapperInterface
     /** @var array<string, string|null> $assetAttributesTypes */
     private array $assetAttributesTypes = [];
 
+    /** @var array<string, string|null> $referenceEntityAttributesTypes */
+    private array $referenceEntityAttributesTypes = [];
+
     public function __construct(
         private readonly GetAttributeTypeByCodesQueryInterface $getAttributeTypeByCodesQuery,
         private readonly ValueExtractorRegistry $valueExtractorRegistry,
         private readonly TargetTypeConverter $targetTypeConverter,
         private readonly FindOneAssetAttributeByIdentifierQueryInterface $findOneAssetAttributeByIdentifierQuery,
+        private readonly FindOneReferenceEntityAttributeByIdentifierQueryInterface $findOneReferenceEntityAttributeByIdentifierQuery,
     ) {
     }
 
@@ -130,6 +135,15 @@ class ProductMapper implements ProductMapperInterface
             }
 
             return $this->assetAttributesTypes[$subSource];
+        }
+
+        if ('akeneo_reference_entity' === $sourceType) {
+            if (!isset($this->referenceEntityAttributesTypes[$subSource])) {
+                $referenceEntityAttribute = $this->findOneReferenceEntityAttributeByIdentifierQuery->execute($subSource);
+                $this->referenceEntityAttributesTypes[$subSource] = $referenceEntityAttribute['type'] ?? null;
+            }
+
+            return $this->referenceEntityAttributesTypes[$subSource];
         }
 
         return null;

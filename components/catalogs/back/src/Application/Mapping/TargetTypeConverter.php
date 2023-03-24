@@ -44,6 +44,7 @@ final class TargetTypeConverter
             'pim_catalog_date',
         ],
         'string+uri' => [
+            'akeneo_reference_entity',
             'pim_catalog_asset_collection',
             'pim_catalog_image',
         ],
