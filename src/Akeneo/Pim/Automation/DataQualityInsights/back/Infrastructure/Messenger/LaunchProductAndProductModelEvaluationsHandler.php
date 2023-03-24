@@ -42,10 +42,12 @@ final class LaunchProductAndProductModelEvaluationsHandler implements TraceableM
     {
         Assert::isInstanceOf($message, LaunchProductAndProductModelEvaluationsMessage::class);
 
-        $this->logger->debug('Handler ' . get_class($this) . ' received a message: LaunchProductAndProductModelEvaluationsMessage', [
+        $this->logger->notice('DQI - Handler LaunchProductAndProductModelEvaluationsMessage received a message', [
             'correlation_id' => $message->getCorrelationId(),
             'tenant_id' => $message->getTenantId(),
         ]);
+
+        return; // @todo To remove after benchmarks
 
         if (!$message->productUuids->isEmpty()) {
             $this->evaluateProducts($message);
