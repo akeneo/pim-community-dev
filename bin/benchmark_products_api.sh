@@ -37,11 +37,11 @@ boot_and_install_pim()
     PUBLIC_PIM_HTTP_PORT=$(docker-compose port httpd-behat 80 | cut -d ':' -f 2)
     rm -rf var/cache/*
     bin/docker/pim-setup.sh
-    docker-compose exec -T fpm bin/console cache:warmup -e behat
-    docker-compose exec -T fpm bin/console doctrine:database:drop --force
-    docker-compose exec -T fpm bin/console doctrine:database:create --if-not-exists
-    docker-compose exec -T fpm bin/console pim:installer:db -e behat
-    CREDENTIALS=$(docker-compose exec -T fpm bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
+    docker-compose exec -T httpd bin/console cache:warmup -e behat
+    docker-compose exec -T httpd bin/console doctrine:database:drop --force
+    docker-compose exec -T httpd bin/console doctrine:database:create --if-not-exists
+    docker-compose exec -T httpd bin/console pim:installer:db -e behat
+    CREDENTIALS=$(docker-compose exec -T httpd bin/console pim:oauth-server:create-client --no-ansi -e behat generator | tr -d '\r ')
     export API_CLIENT=$(echo $CREDENTIALS | cut -d " " -f 2 | cut -d ":" -f 2)
     export API_SECRET=$(echo $CREDENTIALS | cut -d " " -f 3 | cut -d ":" -f 2)
     export API_URL="http://$DOCKER_BRIDGE_IP:$PUBLIC_PIM_HTTP_PORT"
