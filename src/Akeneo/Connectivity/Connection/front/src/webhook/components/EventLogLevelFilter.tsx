@@ -2,7 +2,6 @@ import {Checkbox, Dropdown, SwitcherButton} from 'akeneo-design-system';
 import React, {FC, useCallback} from 'react';
 import {useTranslate} from '../../shared/translate';
 import {EventSubscriptionLogLevel} from '../model/EventSubscriptionLogLevel';
-import styled from 'styled-components';
 import {useToggleState} from '../../shared/hooks/useToggleState';
 
 const LEVELS = [
@@ -11,10 +10,6 @@ const LEVELS = [
     EventSubscriptionLogLevel.WARNING,
     EventSubscriptionLogLevel.ERROR,
 ];
-
-const Container = styled.div`
-    position: relative;
-`;
 
 export const EventLogLevelFilter: FC<{
     levels: EventSubscriptionLogLevel[];
@@ -36,7 +31,7 @@ export const EventLogLevelFilter: FC<{
     );
 
     return (
-        <Container>
+        <Dropdown>
             <SwitcherButton
                 label={translate('akeneo_connectivity.connection.webhook.event_logs.list.search.level')}
                 onClick={open}
@@ -67,6 +62,6 @@ export const EventLogLevelFilter: FC<{
                     </Dropdown.ItemCollection>
                 </Dropdown.Overlay>
             )}
-        </Container>
+        </Dropdown>
     );
 };

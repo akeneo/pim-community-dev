@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Channel\API\Query;
 
+use Akeneo\Channel\API\Query\ConversionUnitCollection;
 use Akeneo\Channel\API\Query\LabelCollection;
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +14,8 @@ class ChannelSpec extends ObjectBehavior
             'mobile',
             ['fr_FR', 'uk_UA'],
             LabelCollection::fromArray(['fr_FR' => 'Mobile', 'uk_UA' => 'смартфон']),
-            ['EUR', 'USD']
+            ['EUR', 'USD'],
+            ConversionUnitCollection::fromArray(['a_measurement_attribute' => 'GRAM', 'another_measurement_attribute' => 'POUND'])
         );
     }
 
@@ -23,6 +25,7 @@ class ChannelSpec extends ObjectBehavior
         $this->getLocaleCodes()->shouldReturn(['fr_FR', 'uk_UA']);
         $this->getLabels()->shouldBeLike(LabelCollection::fromArray(['fr_FR' => 'Mobile', 'uk_UA' => 'смартфон']));
         $this->getActiveCurrencies()->shouldReturn(['EUR', 'USD']);
+        $this->getConversionUnits()->shouldBeLike(ConversionUnitCollection::fromArray(['a_measurement_attribute' => 'GRAM', 'another_measurement_attribute' => 'POUND']));
     }
 
     public function it_tells_if_a_given_locale_is_active()

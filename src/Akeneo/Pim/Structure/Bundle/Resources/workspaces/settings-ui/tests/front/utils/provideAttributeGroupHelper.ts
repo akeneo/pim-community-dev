@@ -5,13 +5,15 @@ const anAttributeGroup = (
   id: number,
   labels: AttributeGroupLabels,
   order: number,
-  is_dqi_activated: boolean
+  is_dqi_activated = false,
+  attribute_count = 10
 ): AttributeGroup => {
   const group: AttributeGroup = {
     code: code || 'a_code',
     labels: labels || {},
     sort_order: order !== undefined ? order : 1,
     is_dqi_activated: is_dqi_activated === true,
+    attribute_count: attribute_count,
   };
 
   return group;

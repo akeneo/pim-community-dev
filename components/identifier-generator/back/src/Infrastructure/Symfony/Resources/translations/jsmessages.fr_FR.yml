@@ -115,7 +115,7 @@ pim_identifier_generator:
   deletion:
     operations: 'Opérations'
     confirmation: 'Êtes-vous sûr(e) de vouloir supprimer ce générateur d''identifiant ?'
-    type: 'Veuillez saisir "{{ text }}"'
+    type: 'Veuillez saisir "{{ code }}"'
   nomenclature:
     edit: 'Editer la nomenclature'
     section_title: 'Générer mes identifiants pour {{ property }}'
