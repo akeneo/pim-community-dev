@@ -6,6 +6,8 @@ akeneo.category:
       category_templates: Templates de catégorie
   attributes: Attributs
   edition_form:
+    template:
+      title: Modèle
     unsaved_changes: Vous perdrez les modifications apportées à la catégorie si vous quittez la page.
   tree:
     create: Créer un arbre
@@ -23,6 +25,15 @@ akeneo.category:
         textarea: Zone de texte
         richtext: Éditeur de texte enrichi
         image: Image
+    add_attribute:
+      confirmation_modal:
+        input:
+          label: Libellé
+          code: Code
+          type:
+            option_title:
+              text: Texte
+              image: Image
     deactivate:
       deactivate_template: Désactiver le template
       confirmation_modal:

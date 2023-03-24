@@ -35,6 +35,38 @@ final class LaunchProductAndProductModelEvaluationsMessage implements TraceableM
         );
     }
 
+    /**
+     * @param string[] $criteriaToEvaluate
+     */
+    public static function forProductsOnly(
+        \DateTimeImmutable $datetime,
+        ProductUuidCollection $productUuids,
+        array $criteriaToEvaluate,
+    ): self {
+        return new self(
+            $datetime,
+            $productUuids,
+            ProductModelIdCollection::fromStrings([]),
+            $criteriaToEvaluate
+        );
+    }
+
+    /**
+     * @param string[] $criteriaToEvaluate
+     */
+    public static function forProductModelsOnly(
+        \DateTimeImmutable $datetime,
+        ProductModelIdCollection $productModelIds,
+        array $criteriaToEvaluate,
+    ): self {
+        return new self(
+            $datetime,
+            ProductUuidCollection::fromStrings([]),
+            $productModelIds,
+            $criteriaToEvaluate
+        );
+    }
+
     public function normalize(): array
     {
         return [

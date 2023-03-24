@@ -1,10 +1,7 @@
 akeneo_connectivity.connection:
   acl.manage_settings: Gestisci impostazioni delle connessioni
   acl.manage_apps: Gestisci app
-  acl.manage_test_apps: Gestisci app di prova
   acl.open_apps: Apri app
 pim_notification:
   connected_app_authorizations:
     message: 'L''app <strong>{{ app_name }}</strong> richiede un aggiornamento dell''autorizzazione. Apri l''app per procedere.'
-  disabled_catalog:
-    message: "Una o più modifiche delle impostazioni del tuo PIM hanno effetti sul catalogo {{ catalog_name }}. Rivedi la selezione di prodotti in questione e abilita nuovamente il catalogo."

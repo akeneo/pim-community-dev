@@ -55,6 +55,7 @@ pim_enrich_attribute_form:
 job_execution.summary:
     deleted_attribute_groups: Deleted attribute groups
     skipped_attribute_groups: Skipped attribute groups
+    deleted_attributes: Deleted attributes
 
 pim_import_export:
     notification:
@@ -62,3 +63,7 @@ pim_import_export:
             error: Mass delete of attribute groups failed
             warning: Mass delete of attribute groups finished with some warnings
             success: Mass delete of attribute groups finished
+        attribute_mass_delete:
+            error: Mass delete of attributes failed
+            warning: Mass delete of attributes finished with some warnings
+            success: Mass delete of attributes finished
