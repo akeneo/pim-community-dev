@@ -39,7 +39,7 @@ class MaxAttributeGroupCountValidator extends ConstraintValidator
 
         $attributeGroupCount = $this->attributeGroupRepository->countAll();
         if ($this->maxAttributeGroupCount <= $attributeGroupCount) {
-            $this->context->buildViolation(MaxAttributeGroupCount::MAX_MESSAGE, [
+            $this->context->buildViolation($constraint->message, [
                 '{{ max }}' => $this->maxAttributeGroupCount,
             ])->addViolation();
         }
