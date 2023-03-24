@@ -28,6 +28,15 @@ akeneo.category:
         textarea: Área de texto
         richtext: Texto enriquecido
         image: Imagen
+    add_attribute:
+      confirmation_modal:
+        input:
+          label: Etiqueta
+          code: Código
+          type:
+            option_title:
+              text: Texto
+              image: Imagen
     deactivate:
       deactivate_template: Desactivar plantilla
       confirmation_modal:
