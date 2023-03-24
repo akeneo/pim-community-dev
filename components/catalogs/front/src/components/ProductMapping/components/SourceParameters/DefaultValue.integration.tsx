@@ -184,7 +184,7 @@ test('it updates the source for type number when a default value changes', () =>
             <QueryClientProvider client={new QueryClient()}>
                 <DefaultValue
                     targetTypeKey={'number'}
-                    source={{source: null, scope: null, locale: null, default: '250'}}
+                    source={{source: null, scope: null, locale: null, default: 250}}
                     onChange={onChange}
                     error={undefined}
                 ></DefaultValue>
@@ -214,7 +214,7 @@ test('it removes the source default value for type number when the number input 
             <QueryClientProvider client={new QueryClient()}>
                 <DefaultValue
                     targetTypeKey={'number'}
-                    source={{source: null, scope: null, locale: null, default: '42'}}
+                    source={{source: null, scope: null, locale: null, default: 42}}
                     onChange={onChange}
                     error={undefined}
                 ></DefaultValue>

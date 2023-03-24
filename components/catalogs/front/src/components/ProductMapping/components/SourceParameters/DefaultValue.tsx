@@ -54,7 +54,7 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}
                     placeholder={translate(
                         'akeneo_catalogs.product_mapping.source.parameters.default_value.placeholder'
                     )}
-                    value={source.default !== undefined && source.default !== null ? source.default.toString() : ''}
+                    value={typeof source.default === 'number' ? source.default.toString() : ''}
                 />
             );
             break;
