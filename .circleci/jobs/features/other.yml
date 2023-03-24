@@ -58,7 +58,7 @@ jobs:
                   name: Start containers
                   command: |
                       docker load -i php-pim-image.tar
-                      APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                      APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
                       docker/wait_docker_up.sh
             - run:
                   name: Install database
@@ -99,7 +99,7 @@ jobs:
                   name: Start containers
                   command: |
                       docker load -i php-pim-image.tar
-                      APP_ENV=prod C='fpm mysql elasticsearch httpd object-storage pubsub-emulator' make up
+                      APP_ENV=prod C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
                       docker/wait_docker_up.sh
             - run:
                   name: Install database
@@ -138,7 +138,7 @@ jobs:
                   name: Start containers
                   command: |
                       docker load -i php-pim-image.tar
-                      APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator' make up
+                      APP_ENV=behat C='httpd mysql elasticsearch object-storage selenium pubsub-emulator' make up
                       docker/wait_docker_up.sh
             - run:
                   name: Install database
@@ -207,7 +207,7 @@ jobs:
                   command: |
                       export ES_JAVA_OPTS='-Xms2g -Xmx2g'
                       docker load -i php-pim-image.tar
-                      APP_ENV=test APP_DEBUG=false C='fpm mysql httpd elasticsearch object-storage blackfire pubsub-emulator' make up
+                      APP_ENV=test APP_DEBUG=false C='httpd mysql httpd elasticsearch object-storage blackfire pubsub-emulator' make up
                       docker/wait_docker_up.sh
             - run:
                   name: Run performance tests
@@ -259,7 +259,7 @@ jobs:
                   name: Start containers
                   command: |
                       docker load -i php-pim-image.tar
-                      APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                      APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
                       docker/wait_docker_up.sh
             - run:
                   name: Install database
@@ -338,13 +338,13 @@ jobs:
                   command: PIM_CONTEXT=onboarder make test-integration
             - run:
                   name: Start Apache/FPM and Selenium for End to End tests
-                  command: PIM_CONTEXT=onboarder make up APP_ENV=behat C='fpm httpd selenium'
+                  command: PIM_CONTEXT=onboarder make up APP_ENV=behat C='httpd selenium'
             - run:
                   name: Execute end-to-end tests
                   command: PIM_CONTEXT=onboarder make test-end-to-end
             - run:
                   name: Restart FPM with Onboarder feature turned off
-                  command: PIM_CONTEXT=onboarder make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='fpm'
+                  command: PIM_CONTEXT=onboarder make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='httpd'
             - run:
                   name: Execute end-to-end "Onboarder feature disabled" tests
                   command: PIM_CONTEXT=onboarder make test-end-to-end-onboarder-disabled
@@ -369,7 +369,7 @@ jobs:
                   name: Start containers
                   command: |
                       docker load -i php-pim-image.tar
-                      APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                      APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
                       docker/wait_docker_up.sh
             - run:
                   name: Install database

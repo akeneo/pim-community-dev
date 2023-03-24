@@ -1,3 +1,5 @@
+pim_title:
+  pim_category_template_edit: Editar plantilla de categoría
 akeneo.category:
   tree_list:
     column:
@@ -5,7 +7,7 @@ akeneo.category:
   attributes: Atributos
   edition_form:
     error:
-      unhandled_attribute_type: No se pudo encontrar el constructor de campos de atributos para el tipo de atributo «{{type}}»
+      unhandled_attribute_type: No se pudo encontrar el constructor de campos de atributos para el tipo de atributo «{{ type }}»
     template:
       title: Plantilla
       fetching_failed: Se ha producido un error al recuperar la plantilla
@@ -16,9 +18,9 @@ akeneo.category:
   template:
     create: Activar plantilla
     edit: Ver plantilla
-    delete: Eliminar plantilla
     notification_success: Plantilla activada correctamente
     notification_error: No se pudo activar la plantilla
+    not_found: No hay ninguna plantilla activa para esta categoría
     attribute:
       description_title: Ajustes de descripción
       type:
@@ -26,8 +28,38 @@ akeneo.category:
         textarea: Área de texto
         richtext: Texto enriquecido
         image: Imagen
+    add_attribute:
+      confirmation_modal:
+        input:
+          label: Etiqueta
+          code: Código
+          type:
+            option_title:
+              text: Texto
+              image: Imagen
+    deactivate:
+      deactivate_template: Desactivar plantilla
+      confirmation_modal:
+        title: Desactivar plantilla de categoría
+        message: '¿Seguro que desea desactivar la plantilla de categoría denominada {{ template }}?'
+        helper: La desactivación de esta plantilla eliminará permanentemente los atributos y valores de las categorías asociadas.
+        deactivate: Desactivar
+      notification_success:
+        title: 'Plantilla {{ template }} desactivada'
+        message: '{{ template }} ha sido desactivada. Se ha eliminado el contenido de las categorías asociadas.'
   template_list:
     columns:
       header: Etiqueta
       code: Código
       type: Tipo
+  tag:
+    new: Nuevo
+  discover_enriched_categories_information:
+    title: Descubra el acceso anticipado a las categorías enriquecidas
+    content:
+      activate_template: Activar el enriquecimiento de categorías mediante plantillas preconfiguradas
+      enrich_attribute_values: Enriquecer atributos de texto, área de texto e imagen en categorías
+      deactivate_template: La desactivación del enriquecimiento y la plantilla personalizada llegarán en breve
+    survey_link_label: Díganos lo que piensa
+    learn_more_link_label: Más información sobre las categorías enriquecidas
+  other_actions: Otras acciones

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://api.akeneo.com/mapping/product/0.0.12/schema",
+  "description": "The required properties (items) are missing at #/properties/colors",
+  "properties": {
+    "uuid": {
+      "type": "string"
+    },
+    "colors": {
+      "type": "array"
+    }
+  }
+}

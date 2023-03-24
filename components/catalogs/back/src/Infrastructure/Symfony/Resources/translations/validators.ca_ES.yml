@@ -49,3 +49,7 @@ akeneo_catalogs:
           empty: 'Aquesta configuració regional no ha d''estar buida.'
           unknown: 'Aquesta configuració regional està desactivada o ja no existeix. Si us plau, comproveu els vostres canals i la configuració regional.'
           disabled: 'Aquesta configuració regional està desactivada. Si us plau, comproveu els vostres canals i la configuració regional o actualitzeu aquest valor.'
+        measurement:
+          unit:
+            not_exist: 'La unitat del camp "{{ field }}" no existeix.'
+            not_empty: 'La unitat no ha d''estar buida.'
