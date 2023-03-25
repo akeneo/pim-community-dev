@@ -47,7 +47,7 @@ class InstallStatusManager
      */
     public function getPimInstallDateTime() : ?\DateTime
     {
-        $sql = 'SELECT create_time FROM INFORMATION_SCHEMA.TABLES
+        $sql = 'SELECT ' . self::MYSQL_META_COLUMN_CREATE_TIME .  ' FROM INFORMATION_SCHEMA.TABLES
                 WHERE table_schema = :database_name
                 AND table_name = :install_table_name';
 
