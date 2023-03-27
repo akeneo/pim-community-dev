@@ -59,3 +59,11 @@ services:
     arguments:
       - '@Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator'
       - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+
+  Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid'
+      - '@Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommand' }
