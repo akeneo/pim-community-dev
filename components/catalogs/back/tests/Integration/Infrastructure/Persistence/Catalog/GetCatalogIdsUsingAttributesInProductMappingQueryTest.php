@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Catalog;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\Catalog\GetCatalogIdsUsingAttributesInProductMappingQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
@@ -17,7 +16,6 @@ use Doctrine\DBAL\Connection;
 final class GetCatalogIdsUsingAttributesInProductMappingQueryTest extends IntegrationTestCase
 {
     private ?GetCatalogIdsUsingAttributesInProductMappingQuery $query;
-    private ?Connection $connection;
 
     protected function setUp(): void
     {
@@ -25,7 +23,6 @@ final class GetCatalogIdsUsingAttributesInProductMappingQueryTest extends Integr
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->connection = self::getContainer()->get(Connection::class);
         $this->query = self::getContainer()->get(GetCatalogIdsUsingAttributesInProductMappingQuery::class);
     }
 
