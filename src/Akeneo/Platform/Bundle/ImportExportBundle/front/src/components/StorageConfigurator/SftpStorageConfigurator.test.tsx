@@ -13,15 +13,15 @@ jest.mock('../../hooks/useGetPublicKey', () => ({
   useGetPublicKey: () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----',
 }));
 
-const notifyMock = jest.fn()
+const notifyMock = jest.fn();
 jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
   useNotify: () => notifyMock,
-}))
+}));
 
 beforeEach(() => {
   notifyMock.mockClear();
-})
+});
 
 test('it renders the sftp storage configurator', () => {
   const storage: SftpStorage = {
@@ -571,7 +571,7 @@ test('it does not copy public key to clipboard if browser does not allow it', ()
   };
   const onStorageChange = jest.fn();
   // @ts-ignore
-  delete navigator.clipboard
+  delete navigator.clipboard;
 
   renderWithProviders(
     <SftpStorageConfigurator
@@ -585,4 +585,4 @@ test('it does not copy public key to clipboard if browser does not allow it', ()
 
   userEvent.click(screen.getByTestId('copyToClipboard'));
   expect(notifyMock).not.toHaveBeenCalled();
-})
+});
