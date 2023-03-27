@@ -193,6 +193,8 @@ pim_import_export:
                     placeholder: Enter your password
                 public_key:
                     label: Public key
+                    button_title: Copy to clipboard
+                    copy_notification_success: Public key copied to clipboard
                 login_type:
                     label: Authentication method
                     password: Login & password
