@@ -200,6 +200,11 @@ services:
             $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
             $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
 
+    Akeneo\Catalogs\Infrastructure\EventSubscriber\AttributeRemovalSubscriber:
+        arguments:
+            $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
+            $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
+
     Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry:
         arguments:
             -
