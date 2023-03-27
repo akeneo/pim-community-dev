@@ -24,6 +24,15 @@ export const useSystemAttributes = (): Attribute[] => {
                 attribute_group_code: 'system',
                 attribute_group_label: 'System',
             },
+            {
+                code: 'status',
+                label: translate('akeneo_catalogs.product_mapping.source.system_attributes.status.label'),
+                type: 'status',
+                scopable: false,
+                localizable: false,
+                attribute_group_code: 'system',
+                attribute_group_label: 'System',
+            },
         ],
         [translate]
     );
