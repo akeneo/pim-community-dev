@@ -304,9 +304,7 @@ pim_enrich.entity.attribute_group:
         delete_attribute_groups:
             delete_attribute_groups:
                 label: Delete attribute groups
-    job_execution:
-        summary:
-            attribute_group_mass_delete: Deleted attribute groups
+
 pim_import_export:
     notification:
         mass_delete_attribute_groups:
@@ -338,6 +336,7 @@ pim_enrich.mass_edit.family:
 batch_jobs:
     default_steps:
         delete_attribute_groups: Delete attribute groups
+        move_child_attributes: Move child attributes
     delete_attributes:
         delete_attributes:
             label: Delete attributes

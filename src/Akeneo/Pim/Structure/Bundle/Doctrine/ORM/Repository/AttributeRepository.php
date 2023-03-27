@@ -13,17 +13,15 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
- * Repository for attribute entity
+ * Repository for attribute entity.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRepository extends EntityRepository implements
-    IdentifiableObjectRepositoryInterface,
-    AttributeRepositoryInterface
+class AttributeRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface, AttributeRepositoryInterface
 {
-    /** @var string $identifierCode */
+    /** @var string */
     protected $identifierCode;
 
     /**
@@ -42,10 +40,7 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Find attributes with related attribute groups QB
-     *
-     * @param array $attributeIds
-     * @param array $criterias
+     * Find attributes with related attribute groups QB.
      *
      * @return QueryBuilder
      */
@@ -103,7 +98,7 @@ class AttributeRepository extends EntityRepository implements
             ->andWhere('a.type IN (:file_type, :image_type)')
             ->setParameters(
                 [
-                    ':file_type'  => AttributeTypes::FILE,
+                    ':file_type' => AttributeTypes::FILE,
                     ':image_type' => AttributeTypes::IMAGE,
                 ]
             )
@@ -227,14 +222,14 @@ class AttributeRepository extends EntityRepository implements
             ->from($this->_entityName, 'att', 'att.id');
 
         if (is_array($codes) && !empty($codes)) {
-            $qb->andWhere("att.code IN (:codes)");
+            $qb->andWhere('att.code IN (:codes)');
             $qb->setParameter('codes', $codes);
         } elseif (is_array($codes)) {
             return [];
         }
 
         if (is_array($groupIds) && !empty($groupIds)) {
-            $qb->andWhere("att.group IN (:groupIds)");
+            $qb->andWhere('att.group IN (:groupIds)');
             $qb->setParameter('groupIds', $groupIds);
         } elseif (is_array($groupIds)) {
             return [];
@@ -335,6 +330,25 @@ class AttributeRepository extends EntityRepository implements
         }
 
         return array_map('current', $qb->getQuery()->getScalarResult());
+    }
+
+    public function getAttributesByGroups(array $groupCodes, int $limit, ?string $searchAfter): array
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb
+            ->join('a.group', 'g')
+            ->setMaxResults($limit)
+            ->where('g.code IN (:groupsCode)')
+            ->setParameter(':groupsCode', $groupCodes)
+            ->orderBy('a.code');
+
+        if ($searchAfter) {
+            $qb->andWhere('a.code > :searchAfter')
+                ->setParameter(':searchAfter', $searchAfter);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
