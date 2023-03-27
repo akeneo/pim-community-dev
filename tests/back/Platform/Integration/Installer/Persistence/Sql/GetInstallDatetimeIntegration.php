@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\Installer\Persistence\Sql;
 
+use Akeneo\Platform\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException;
 use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetInstallDatetime;
 use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
 use Akeneo\Test\Integration\Configuration;
@@ -11,16 +12,15 @@ use Akeneo\Test\Integration\TestCase;
 
 /**
  * @author  JM Leroux <jmleroux.pro@gmail.com>
- * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class GetInstallDatetimeIntegration extends TestCase
 {
-    public function test_it_returns_null_if_not_installed(): void
+    public function test_it_throws_if_not_installed(): void
     {
-        $installDatetime = $this->getQuery()->__invoke();
-
-        $this->assertNull($installDatetime);
+        $this->expectException(UnavailableCreationTimeException::class);
+        $this->getQuery()->__invoke();
     }
 
     public function test_it_gets_install_datetime(): void
