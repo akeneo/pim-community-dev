@@ -10,8 +10,6 @@ use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterfac
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
@@ -19,7 +17,6 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
 use Behat\Behat\Context\Context;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -28,11 +25,10 @@ use Webmozart\Assert\Assert;
 final class CreateIdentifierGeneratorContext implements Context
 {
     public const DEFAULT_CODE = 'generator_0';
-    private ?ViolationsException $violations = null;
 
     public function __construct(
+        private readonly ViolationsContext $violationsContext,
         private readonly CreateGeneratorHandler $createGeneratorHandler,
-        private readonly IdentifierGeneratorRepository $generatorRepository,
         private readonly AttributeRepositoryInterface $attributeRepository,
         private readonly AttributeOptionRepositoryInterface $attributeOptionRepository,
         private readonly FindFamilyCodes $findFamilyCodes,
@@ -99,40 +95,6 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @Then The identifier generator is saved in the repository
-     */
-    public function identifierGeneratorIsSavedInTheRepository(): void
-    {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_CODE);
-        Assert::isInstanceOf($identifierGenerator, IdentifierGenerator::class);
-    }
-
-    /**
-     * @Then the identifier should not be created
-     */
-    public function theIdentifierShouldNotBeCreated(): void
-    {
-        Assert::null($this->generatorRepository->get(self::DEFAULT_CODE));
-    }
-
-    /**
-     * @Then I should not get any error
-     */
-    public function iShouldNotGetAnyError(): void
-    {
-        Assert::null($this->violations, 'Errors were raised: ' . \json_encode($this->violations?->normalize()));
-    }
-
-    /**
-     * @Then /^I should get an error with message '(?P<message>[^']*)'$/
-     */
-    public function iShouldGetAnErrorWithMessage(string $message): void
-    {
-        Assert::notNull($this->violations, 'No error were raised.');
-        Assert::contains($this->violations->getMessage(), $message);
-    }
-
-    /**
      * @When /^I create (?P<count>\d+|an) identifier generators?$/
      */
     public function iCreateAnIdentifierGenerator(string $count): void
@@ -179,108 +141,6 @@ final class CreateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When I try to create an identifier generator with multiple auto number in structure
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithMultipleAutoNumberInStructure(): void
-    {
-        $this->tryToCreateGenerator(structure: [
-            ['type' => 'auto_number', 'numberMin' => 2, 'digitsMin' => 3],
-            ['type' => 'auto_number', 'numberMin' => 1, 'digitsMin' => 4],
-        ]);
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with free text '(?P<freetextContent>[^']*)'$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithFreeText(string $freetextContent): void
-    {
-        $this->tryToCreateGenerator(structure: [['type' => 'free_text', 'string' => $freetextContent]]);
-    }
-
-    /**
-     * @When I try to create an identifier generator with free text without required field
-     */
-    public function iCreateAnIdentifierGeneratorWithFreeTextWithoutRequiredField(): void
-    {
-        $this->tryToCreateGenerator(structure: [['type' => 'free_text']]);
-    }
-
-    /**
-     * @When I try to create an identifier generator with free text with unknown field
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithFreeTextWithUnknownField(): void
-    {
-        $this->tryToCreateGenerator(structure: [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']]);
-    }
-
-    /**
-     * @When I try to create an identifier generator with autoNumber without required field
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithAutonumberWithoutRequiredField(): void
-    {
-        $this->tryToCreateGenerator(structure: [['type' => 'auto_number', 'numberMin' => 4]]);
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with an auto number with '(?P<numberMin>[^']*)' as number min and '(?P<digitsMin>[^']*)' as min digits$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithAnAutoNumberWithNumberMinAndDigitsMin(int $numberMin, int $digitsMin): void
-    {
-        $this->tryToCreateGenerator(structure: [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]]);
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with family property without required field$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithFamilyPropertyWithoutRequiredField(): void
-    {
-        $this->tryToCreateGenerator(structure: [['type' => 'family']]);
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with invalid family property$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithInvalidFamilyProperty(): void
-    {
-        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'no'], 'unknown' => '']]);
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with empty family process property$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithEmptyFamilyProcessProperty(): void
-    {
-        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => []]]);
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with a family process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and (?P<value>[^']*) as value$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithFamilyProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
-    {
-        $value = \json_decode($value);
-        $defaultStructure = [
-            'type' => 'family',
-            'process' => ['type' => $type, 'operator' => $operator, 'value' => $value],
-        ];
-        if ($operator === 'undefined') {
-            unset($defaultStructure['process']['operator']);
-        }
-        if ($value === 'undefined') {
-            unset($defaultStructure['process']['value']);
-        }
-        $this->tryToCreateGenerator(structure: [$defaultStructure]);
-    }
-
-    /**
-     * @When /^I try to create an identifier generator with a family containing invalid truncate process$/
-     */
-    public function iTryToCreateAnIdentifierGeneratorWithFamilyContainingInvalidTruncateProcess(): void
-    {
-        $this->tryToCreateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => '=', 'value' => '1', 'unknown' => '']]]);
-    }
-
-    /**
      * @When I create an identifier generator without label
      */
     public function iCreateAnIdentifierGeneratorWithoutLabel(): void
@@ -320,7 +180,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 'no',
             ));
         } catch (ViolationsException $exception) {
-            $this->violations = $exception;
+            $this->violationsContext->setViolationsException($exception);
         }
     }
 
@@ -527,7 +387,7 @@ final class CreateIdentifierGeneratorContext implements Context
                 $textTransformation ?? 'no',
             ));
         } catch (ViolationsException $exception) {
-            $this->violations = $exception;
+            $this->violationsContext->setViolationsException($exception);
         }
     }
 

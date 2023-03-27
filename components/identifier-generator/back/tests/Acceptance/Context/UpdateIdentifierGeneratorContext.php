@@ -30,85 +30,14 @@ use Webmozart\Assert\Assert;
  */
 final class UpdateIdentifierGeneratorContext implements Context
 {
-    private ?ViolationsException $violations = null;
     public const DEFAULT_IDENTIFIER_GENERATOR_CODE = 'default';
 
     public function __construct(
-        private UpdateGeneratorHandler $updateGeneratorHandler,
-        private IdentifierGeneratorRepository $generatorRepository,
-        private ReorderGeneratorsHandler $reorderGeneratorsHandler,
+        private readonly ViolationsContext $violationsContext,
+        private readonly UpdateGeneratorHandler $updateGeneratorHandler,
+        private readonly IdentifierGeneratorRepository $generatorRepository,
+        private readonly ReorderGeneratorsHandler $reorderGeneratorsHandler,
     ) {
-    }
-
-    /**
-     * @Given the ':generatorCode' identifier generator
-     */
-    public function theIdentifierGenerator(string $generatorCode): void
-    {
-        $identifierGenerator = new IdentifierGenerator(
-            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
-            IdentifierGeneratorCode::fromString($generatorCode),
-            Conditions::fromArray([Enabled::fromBoolean(true)]),
-            Structure::fromArray([FreeText::fromString('abc')]),
-            LabelCollection::fromNormalized(['fr_FR' => 'Générateur']),
-            Target::fromString('sku'),
-            Delimiter::fromString('-'),
-            TextTransformation::fromString('no'),
-        );
-        $this->generatorRepository->save($identifierGenerator);
-    }
-
-    /**
-     * @Then The identifier generator is updated in the repository
-     */
-    public function identifierGeneratorIsUpdatedInTheRepository(): void
-    {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq($identifierGenerator->delimiter()->asString(), 'updatedGenerator');
-    }
-
-    /**
-     * @Then The identifier generator is updated without label in the repository
-     */
-    public function identifierGeneratorIsUpdatedWithoutLabelInTheRepository(): void
-    {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq($identifierGenerator->labelCollection()->normalize(), []);
-    }
-
-    /**
-     * @Then /^I should get an error on update with message '(?P<message>[^']*)'$/
-     */
-    public function iShouldGetAnErrorOnUpdateWithMessage(string $message): void
-    {
-        Assert::notNull($this->violations);
-        Assert::contains($this->violations->getMessage(), $message);
-    }
-
-    /**
-     * @Then I should not get any update error
-     */
-    public function iShouldNotGetAnyUpdateError(): void
-    {
-        Assert::null($this->violations);
-    }
-
-    /**
-     * @Then The identifier generator is updated in the repository and delimiter is null
-     */
-    public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndDelimiterIsNull(): void
-    {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::null($identifierGenerator->delimiter()->asString());
-    }
-
-    /**
-     * @Then The identifier generator is updated in the repository and text transformation is lowercase
-     */
-    public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndTextTransformationIsLowercase(): void
-    {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq($identifierGenerator->textTransformation()->normalize(), TextTransformation::LOWERCASE);
     }
 
     /**
@@ -149,14 +78,6 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function iTryToUpdateAnIdentifierGeneratorWithBlankStructure(): void
     {
         $this->tryToUpdateGenerator(structure: []);
-    }
-
-    /**
-     * @When /^I try to update an identifier generator with an auto number with '(?P<numberMin>[^']*)' as number min and '(?P<digitsMin>[^']*)' as min digits$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAnAutoNumberWithNumberMinAndDigitsMin(int $numberMin, int $digitsMin): void
-    {
-        $this->tryToUpdateGenerator(structure: [['type' => 'auto_number', 'numberMin' => $numberMin, 'digitsMin' => $digitsMin]]);
     }
 
     /**
@@ -217,43 +138,11 @@ final class UpdateIdentifierGeneratorContext implements Context
     }
 
     /**
-     * @When /^I try to update an identifier generator with free text '(?P<freetextContent>[^']*)'$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithFreeText(string $freetextContent): void
-    {
-        $this->tryToUpdateGenerator(structure: [['type' => 'free_text', 'string' => $freetextContent]]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with free text without required field
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithFreeTextWithoutRequiredField(): void
-    {
-        $this->tryToUpdateGenerator(structure: [['type' => 'free_text']]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with free text with unknown field
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithFreeTextWithUnknownField(): void
-    {
-        $this->tryToUpdateGenerator(structure: [['type' => 'free_text', 'unknown' => 'hello', 'string' => 'hey']]);
-    }
-
-    /**
      * @When I try to update an identifier generator with autoNumber number min negative
      */
     public function iTryToUpdateAnIdentifierGeneratorWithAutonumberNumberMinNegative(): void
     {
         $this->tryToUpdateGenerator(structure: [['type' => 'auto_number', 'numberMin' => -2, 'digitsMin' => 3]]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with autoNumber without required field
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAutonumberWithoutRequiredField(): void
-    {
-        $this->tryToUpdateGenerator(structure: [['type' => 'auto_number', 'numberMin' => 4]]);
     }
 
     /**
@@ -270,54 +159,6 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function iTryToUpdateAnIdentifierGeneratorWithAutonumberDigitsMinTooBig(): void
     {
         $this->tryToUpdateGenerator(structure: [['type' => 'auto_number', 'digitsMin' => 22, 'numberMin' => 4]]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with family property without required field
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithFamilyPropertyWithoutRequiredField(): void
-    {
-        $this->tryToUpdateGenerator(structure: [['type' => 'family']]);
-    }
-
-    /**
-     * @When /^I try to update an identifier generator with invalid family property$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithInvalidFamilyProperty(): void
-    {
-        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'no'], 'unknown' => '']]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with empty family process property
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithEmptyFamilyProcessProperty(): void
-    {
-        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => []]]);
-    }
-
-    /**
-     * @When /^I try to update an identifier generator with a family process with type (?P<type>[^']*) and operator (?P<operator>[^']*) and (?P<value>[^']*) as value$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithFamilyProcessWithTypeAndOperatorAndValue($type, $operator, $value): void
-    {
-        $value = \json_decode($value);
-        $defaultStructure = ['type' => 'family', 'process' => ['type' => $type, 'operator' => $operator, 'value' => $value]];
-        if ($operator === 'undefined') {
-            unset($defaultStructure['process']['operator']);
-        }
-        if ($value === 'undefined') {
-            unset($defaultStructure['process']['value']);
-        }
-        $this->tryToUpdateGenerator(structure: [$defaultStructure]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with a family containing invalid truncate process
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithAFamilyContainingInvalidTruncateProcess(): void
-    {
-        $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'truncate', 'operator' => '=', 'value' => '1', 'unknown' => '']]]);
     }
 
     /**
@@ -415,7 +256,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 'no',
             ));
         } catch (ViolationsException $exception) {
-            $this->violations = $exception;
+            $this->violationsContext->setViolationsException($exception);
         }
     }
 
@@ -555,7 +396,7 @@ final class UpdateIdentifierGeneratorContext implements Context
                 $textTransformation ?? 'no',
             ));
         } catch (ViolationsException $violations) {
-            $this->violations = $violations;
+            $this->violationsContext->setViolationsException($violations);
         }
     }
 
