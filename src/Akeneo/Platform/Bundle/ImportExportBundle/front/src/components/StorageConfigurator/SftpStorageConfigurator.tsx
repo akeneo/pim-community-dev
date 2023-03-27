@@ -71,7 +71,11 @@ const SftpStorageConfigurator = ({
 
   const canCopyToClipboard = (): boolean => 'clipboard' in navigator;
   const copyToClipboard = (publicKey: string) => {
-    canCopyToClipboard() && navigator.clipboard.writeText(publicKey);
+    if (!canCopyToClipboard()) {
+      return;
+    }
+
+    navigator.clipboard.writeText(publicKey);
     notify(
       NotificationLevel.SUCCESS,
       translate('pim_import_export.form.job_instance.storage_form.public_key.copy_notification_success')
