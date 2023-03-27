@@ -33,9 +33,12 @@ class SqlSimpleSelectNomenclatureRepository implements SimpleSelectNomenclatureR
 
     public function update(string $attributeCode, NomenclatureDefinition $nomenclatureDefinition): void
     {
-        $this->updateDefinition($attributeCode, $nomenclatureDefinition);
+        $this->connection->beginTransaction();
 
+        $this->updateDefinition($attributeCode, $nomenclatureDefinition);
         $this->updateValues($attributeCode, $nomenclatureDefinition);
+
+        $this->connection->commit();
     }
 
     /**

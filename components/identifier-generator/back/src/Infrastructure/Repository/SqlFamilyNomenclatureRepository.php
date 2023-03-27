@@ -33,9 +33,12 @@ class SqlFamilyNomenclatureRepository implements FamilyNomenclatureRepository
 
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
     {
-        $this->updateDefinition($propertyCode, $nomenclatureDefinition);
+        $this->connection->beginTransaction();
 
+        $this->updateDefinition($propertyCode, $nomenclatureDefinition);
         $this->updateValues($nomenclatureDefinition);
+
+        $this->connection->commit();
     }
 
     /**
