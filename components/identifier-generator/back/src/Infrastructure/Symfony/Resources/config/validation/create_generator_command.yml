@@ -102,3 +102,4 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Code may contain only letters, numbers and underscore, {{ value }} given.
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UniqueIdentifierGeneratorCode: ~
