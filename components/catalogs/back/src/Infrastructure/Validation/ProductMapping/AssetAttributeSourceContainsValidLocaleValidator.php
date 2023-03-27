@@ -45,7 +45,7 @@ final class AssetAttributeSourceContainsValidLocaleValidator extends ConstraintV
         $assetAttribute = $this->findOneAssetAttributeByIdentifierQuery->execute($value['sub_source']);
 
         if (null === $assetAttribute) {
-            throw new \LogicException('Asset attribute not found');
+            return;
         }
 
         $this->validateNonLocalizableSourceHasNoLocale($assetAttribute, $value);

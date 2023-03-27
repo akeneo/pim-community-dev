@@ -43,7 +43,7 @@ final class AssetAttributeSourceContainsValidScopeValidator extends ConstraintVa
         $assetAttribute = $this->findOneAssetAttributeByIdentifierQuery->execute($value['sub_source']);
 
         if (null === $assetAttribute) {
-            throw new \LogicException('Asset attribute not found');
+            return;
         }
 
         $this->validateNonScopableSourceHasNoScope($assetAttribute, $value);

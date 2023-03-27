@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource;
 
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AssetAttributeExists;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AssetAttributeSourceContainsValidLocale;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AssetAttributeSourceContainsValidScope;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidLocale;
@@ -44,26 +45,29 @@ final class AttributeAssetCollectionSource extends Compound
                             new Assert\NotBlank(allowNull: true),
                         ],
                         'parameters' => [
-                            new Assert\Collection([
-                                'fields' => [
-                                    'sub_source' => [
-                                        new Assert\Type('string'),
-                                        new Assert\NotBlank(),
+                            new Assert\Sequentially([
+                                new Assert\Collection([
+                                    'fields' => [
+                                        'sub_source' => [
+                                            new Assert\Type('string'),
+                                            new Assert\NotBlank(),
+                                        ],
+                                        'sub_scope' => [
+                                            new Assert\Type('string'),
+                                            new Assert\NotBlank(allowNull: true),
+                                        ],
+                                        'sub_locale' => [
+                                            new Assert\Type('string'),
+                                            new Assert\NotBlank(allowNull: true),
+                                        ],
                                     ],
-                                    'sub_scope' => [
-                                        new Assert\Type('string'),
-                                        new Assert\NotBlank(allowNull: true),
-                                    ],
-                                    'sub_locale' => [
-                                        new Assert\Type('string'),
-                                        new Assert\NotBlank(allowNull: true),
-                                    ],
-                                ],
-                                'allowMissingFields' => false,
-                                'allowExtraFields' => false,
+                                    'allowMissingFields' => false,
+                                    'allowExtraFields' => false,
+                                ]),
+                                new AssetAttributeExists(),
+                                new AssetAttributeSourceContainsValidScope(),
+                                new AssetAttributeSourceContainsValidLocale(),
                             ]),
-                            new AssetAttributeSourceContainsValidScope(),
-                            new AssetAttributeSourceContainsValidLocale(),
                         ],
                     ],
                     'allowMissingFields' => false,

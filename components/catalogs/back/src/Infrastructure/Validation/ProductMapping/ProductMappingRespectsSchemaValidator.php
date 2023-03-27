@@ -145,7 +145,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                 $this->context
                     ->buildViolation(
                         'akeneo_catalogs.validation.product_mapping.schema.incorrect_type',
-                        ['{{ expected_type }}' => $schema['properties'][$targetCode]['type']],
+                        ['{{ expected_type }}' => $this->targetTypeConverter->flattenTargetType($schema['properties'][$targetCode])],
                     )
                     ->atPath("[$targetCode][source]")
                     ->addViolation();
@@ -192,7 +192,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
             $this->context
                 ->buildViolation(
                     'akeneo_catalogs.validation.product_mapping.schema.incorrect_type',
-                    ['{{ expected_type }}' => $schema['properties'][$targetCode]['type']],
+                    ['{{ expected_type }}' => $this->targetTypeConverter->flattenTargetType($schema['properties'][$targetCode])],
                 )
                 ->atPath("[$targetCode][source][parameters][sub_source]")
                 ->addViolation();

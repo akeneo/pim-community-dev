@@ -61,6 +61,7 @@ akeneo_catalogs:
                         not_exist: 'The unit of the field "{{ field }}" does not exist.'
                         not_empty: 'The unit must not be empty.'
                 sub_source:
+                    invalid: 'This sub attribute has been deleted.'
                     channel:
                         not_empty: 'This channel must be empty.'
                         empty: 'This channel must not be empty.'
