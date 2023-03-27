@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlNomenclatureRepository implements NomenclatureRepository
+class SqlFamilyNomenclatureRepository implements FamilyNomenclatureRepository
 {
     public function __construct(
         private readonly Connection $connection,
@@ -33,9 +33,12 @@ class SqlNomenclatureRepository implements NomenclatureRepository
 
     public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
     {
-        $this->updateDefinition($propertyCode, $nomenclatureDefinition);
+        $this->connection->beginTransaction();
 
+        $this->updateDefinition($propertyCode, $nomenclatureDefinition);
         $this->updateValues($nomenclatureDefinition);
+
+        $this->connection->commit();
     }
 
     /**

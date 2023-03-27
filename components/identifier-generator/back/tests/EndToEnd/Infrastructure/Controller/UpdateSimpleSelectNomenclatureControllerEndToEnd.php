@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
-final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEndTestCase
+final class UpdateSimpleSelectNomenclatureControllerEndToEnd extends ControllerEndToEndTestCase
 {
     /** @test */
     public function it_should_redirect_on_non_xhr_request(): void
@@ -18,7 +18,7 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         $this->loginAs('Julia');
         $this->callUpdateRoute(
             'akeneo_identifier_generator_nomenclature_rest_update',
-            ['propertyCode' => 'family'],
+            ['propertyCode' => 'a_simple_select_size'],
             ['HTTP_X-Requested-With' => 'toto']
         );
         $response = $this->client->getResponse();
@@ -27,35 +27,58 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
     }
 
     /** @test */
-    public function it_should_update_a_nomenclature(): void
+    public function it_should_create_and_update_a_nomenclature(): void
     {
         $this->loginAs('Julia');
         $this->callUpdateRoute(
             'akeneo_identifier_generator_nomenclature_rest_update',
-            ['propertyCode' => 'family'],
+            ['propertyCode' => 'a_simple_select_size'],
             ['HTTP_X-Requested-With' => 'XMLHttpRequest'],
             \json_encode([
                 'operator' => '<=',
                 'value' => 4,
                 'generate_if_empty' => true,
                 'values' => [
-                    'familyA1' => 'FAM1',
-                    'familyA2' => 'FAM2',
-                    'familyA3' => '',
-                    'deletedFamily' => 'FOOB',
+                    's' => 'SMAL',
+                    'xs' => 'XSML',
+                    'l' => '',
+                    'unknown' => 'TOTO',
                 ],
             ]),
         );
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
-        $nomenclatureDefinition = $this->getNomenclatureRepository()->get('family');
+        $nomenclatureDefinition = $this->getNomenclatureRepository()->get('a_simple_select_size');
         Assert::assertSame($nomenclatureDefinition->operator(), '<=');
         Assert::assertSame($nomenclatureDefinition->value(), 4);
         Assert::assertSame($nomenclatureDefinition->generateIfEmpty(), true);
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA1'] ?? null, 'FAM1');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA2'] ?? null, 'FAM2');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA3'] ?? null, null);
+        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['s'] ?? null, 'SMAL');
+        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['xs'] ?? null, 'XSML');
+        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['l'] ?? null, null);
+        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['unknown'] ?? null, null);
+
+        $this->callUpdateRoute(
+            'akeneo_identifier_generator_nomenclature_rest_update',
+            ['propertyCode' => 'a_simple_select_size'],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest'],
+            \json_encode([
+                'operator' => '<=',
+                'value' => 4,
+                'generate_if_empty' => true,
+                'values' => [
+                    'xs' => null,
+                    'l' => 'LARG',
+                ],
+            ]),
+        );
+        $response = $this->client->getResponse();
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $nomenclatureDefinition = $this->getNomenclatureRepository()->get('a_simple_select_size');
+        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['s'] ?? null, 'SMAL');
+        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['xs'] ?? null, null);
+        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['l'] ?? null, 'LARG');
     }
 
     /** @test */
@@ -64,7 +87,7 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         $this->loginAs('Julia');
         $this->callUpdateRoute(
             'akeneo_identifier_generator_nomenclature_rest_update',
-            ['propertyCode' => 'family'],
+            ['propertyCode' => 'a_simple_select_size'],
             ['HTTP_X-Requested-With' => 'XMLHttpRequest'],
             \json_encode([
                 'operator' => '<=',
@@ -82,7 +105,7 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         $this->loginAs('Julia');
         $this->callUpdateRoute(
             'akeneo_identifier_generator_nomenclature_rest_update',
-            ['propertyCode' => 'family'],
+            ['propertyCode' => 'a_simple_select_size'],
             ['HTTP_X-Requested-With' => 'XMLHttpRequest'],
             '[an invalid { json',
         );
@@ -95,8 +118,8 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         return $this->catalog->useTechnicalCatalog(['identifier_generator']);
     }
 
-    private function getNomenclatureRepository(): FamilyNomenclatureRepository
+    private function getNomenclatureRepository(): SimpleSelectNomenclatureRepository
     {
-        return $this->get('Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository');
+        return $this->get(SimpleSelectNomenclatureRepository::class);
     }
 }
