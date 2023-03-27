@@ -37,16 +37,12 @@ $rules = [
         'Akeneo\Category\Infrastructure\Exception\ContentArrayConversionException',
         'Akeneo\Category\Infrastructure\Exception\StructureArrayConversionException',
         'Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry',
-        'Akeneo\Tool\Component\FileStorage\File\FileStorer',
-        'Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface',
-        'Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorInterface',
         'Akeneo\Category\Infrastructure\FileSystem\PreviewGenerator\PreviewGeneratorRegistry',
         'Akeneo\Category\Infrastructure\FileSystem\Remover\DeleteFilesFromPaths',
 
         // Vendors
-        'Symfony\Component\HttpFoundation\File\UploadedFile',
         'Symfony\Component\Validator',
         'Symfony\Component\HttpKernel',
         'Symfony\Component\EventDispatcher',
