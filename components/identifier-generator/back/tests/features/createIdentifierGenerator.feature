@@ -22,6 +22,11 @@ Feature: Create Identifier Generator
     When I try to create an identifier generator with code 'another_generator'
     Then I should get an error with message 'Limit of "20" identifier generators is reached'
 
+  Scenario: Cannot create an identifier generator with an existing code
+    Given the 'test' identifier generator
+    When I try to create an identifier generator with code 'test'
+    Then I should get an error with message 'This code is already used'
+
   # Target
   Scenario: Cannot create an identifier generator with blank target
     When I try to create an identifier generator with target ''
