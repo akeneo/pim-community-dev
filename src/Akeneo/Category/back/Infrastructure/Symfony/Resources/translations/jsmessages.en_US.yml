@@ -34,9 +34,28 @@ akeneo.category:
             confirmation_modal:
                 section_title: Add Attribute
                 title: Create a new category attribute
-                helper: Category attributes are attached to one template. They cannot be accessed in other templates.
+                head_helper: Category attributes are attached to one template. They cannot be accessed in other templates.
+                tail_helper: Value per channel and Value per locale cannot be changed once the attribute is created.
                 link: Learn more about category templates.
                 create: Create
+                input:
+                    label: Label
+                    code: Code
+                    type:
+                        label: Attribute type
+                        empty: No attribute type available
+                        option_title:
+                            text: Text
+                            textarea: Text area
+                            richtext: Rich text
+                            image: Image
+            success:
+                notification: Attribute successfully created
+            error:
+                failed: Add template attribute failed
+                limit_reached:
+                    title: You cannot add more than 50 attributes
+                    message: Category templates are limited to 50 attributes per template.
         deactivate:
             deactivate_template: Deactivate template
             confirmation_modal:

@@ -53,7 +53,7 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
     staleTime: TEMPLATE_FETCH_STALE_TIME,
   };
 
-  const response = useQuery<Template, any>(['template'], fetchTemplate, options);
+  const response = useQuery<Template, any>(['template', uuid], fetchTemplate, options);
 
   return {
     ...response,

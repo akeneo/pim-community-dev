@@ -145,6 +145,7 @@ pim_enrich:
             create: Create an attribute
             edit: Edit an attribute
             remove: Remove an attribute
+            mass_delete: Bulk delete attributes
             sort: Sort attributes inside attribute groups
             history: View attribute history
         group:
@@ -221,6 +222,8 @@ flash:
     attribute:
         identifier_not_removable: Identifier attribute can not be removed
         used_as_conversion_unit:  This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
+        cant_remove_attributes_used_as_label: Attributes used as labels in a family cannot be removed.
+        cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
     category:
         removed: Category successfully removed
     tree:
@@ -555,7 +558,6 @@ pim_mass_edit:
             error:   Mass delete <strong>%label%</strong> failed
             warning: Mass delete <strong>%label%</strong> finished with some warnings
             success: Mass delete <strong>%label%</strong> finished
-
 job_execution.summary:
     mass_edited: Mass edited
     skipped_products: Skipped products

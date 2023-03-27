@@ -26,7 +26,7 @@ services:
         arguments:
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
             - '@Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree'
-            - '@Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate'
+            - '@Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid'
             - '@akeneo.category.enriched.feature'
         tags:
             - { name: kernel.event_subscriber }

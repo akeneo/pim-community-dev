@@ -1,5 +1,7 @@
 import {Selection} from 'akeneo-design-system';
 
+const DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP = 'other';
+
 type AttributeGroupLabels = {
   [locale: string]: string;
 };
@@ -26,6 +28,9 @@ const getImpactedAndTargetAttributeGroups = (
   attributeGroups: AttributeGroup[],
   selection: Selection<AttributeGroup>
 ): [AttributeGroup[], AttributeGroup[]] => {
+  const defaultTargetAttributeGroup =
+    attributeGroups.find(({code}) => DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP === code) ?? null;
+
   const excludedAttributeGroups = attributeGroups.filter(
     attributeGroup => !selection.collection.includes(attributeGroup)
   );
@@ -35,13 +40,24 @@ const getImpactedAndTargetAttributeGroups = (
       ? [selection.collection, excludedAttributeGroups]
       : [excludedAttributeGroups, selection.collection];
 
-  return [impactedAttributeGroups, targetAttributeGroups];
+  if (null === defaultTargetAttributeGroup) {
+    return [impactedAttributeGroups, targetAttributeGroups];
+  }
+
+  return [
+    impactedAttributeGroups,
+    [
+      defaultTargetAttributeGroup,
+      ...targetAttributeGroups.filter(({code}) => DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP !== code),
+    ],
+  ];
 };
 
 export {
   AttributeGroup,
   AttributeGroupCollection,
   AttributeGroupLabels,
+  DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP,
   getImpactedAndTargetAttributeGroups,
   toSortedAttributeGroupsArray,
 };

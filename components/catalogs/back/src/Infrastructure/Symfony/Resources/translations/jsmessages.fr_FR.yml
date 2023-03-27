@@ -129,10 +129,8 @@ akeneo_catalogs:
         placeholder: Sélectionner un attribut
         title: Paramétrage de la source
         channel:
-          label: Canal
           placeholder: Sélectionner un canal
         locale:
-          label: Locale
           placeholder: Sélectionner une locale
         label_locale:
           label: Langue de traduction
@@ -142,9 +140,14 @@ akeneo_catalogs:
           label: Devise
           placeholder: Sélectionnez une devise
           helper: Sélectionnez la devise dans laquelle la valeur doit être envoyée.
+        default_value:
+          label: Valeur par défaut
+          placeholder: Définir une valeur par défaut
         no_parameters_message: Aucun paramètre disponible pour cette source.
         unit:
           label: Unité de mesure
+          placeholder: Sélectionnez une unité
+          helper: Sélectionnez l'unité dans laquelle la valeur doit être envoyée.
       select_source:
         label: Source
         search: Rechercher un critère
@@ -170,3 +173,8 @@ akeneo_catalogs:
           minimum: '[0,Inf[ Cette cible doit être supérieure ou égale à {{ value }}.'
           maximum: '[0,Inf[ Cette cible doit être inférieure ou égale à {{ value }}.'
           enum: '[0,Inf[ Liste : Cette cible n''accepte que les valeurs suivantes : {{ value }}.'
+      system_attributes:
+        categories:
+          label: Catégories
+        family:
+          label: Famille

@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: Producto actualizado con éxito.
       fail: El producto no puede ser actualizado.
+      fail_session_expired: No se puede actualizar el producto. Su sesión de usuario ha caducado. Conéctese de nuevo.
       fields_not_ready: "El producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
       already_in_upload: Un fichero ya está siendo cargado por este atributo en el local «{{ locale }}» y objetivo «{{ scope }}»
       file_upload: Ha ocurrido un error durante la carga del fichero
@@ -112,7 +113,7 @@ pim_enrich.entity.product:
         quantity: Cantidad
         unlinked: Desvinculado
       search:
-        placeholder: Buscar en etiqueta o identificador
+        placeholder: Buscar por etiqueta, identificador o uuid
       no_data: No hay productos asociados.
       remove: Eliminar asociación
       edit: Editar producto
@@ -242,6 +243,9 @@ pim_enrich.entity.category:
     success: El árbol «{{ tree }}» se ha eliminado correctamente
     error: No se ha podido eliminar el árbol «{{ tree }}»
     confirmation: '¿Está seguro de que desea eliminar el árbol {{ name }}? Se eliminarán todas las categorías de ese árbol y los productos se eliminarán de todas esas categorías.'
+    confirmation_question: '¿Seguro que quiere eliminar {{ name }}?'
+    warning_categories_number: Se eliminarán {{ categoriesNumber }} categorías asociadas y los productos de todas esas categorías.
+    warning_products: Todos los productos asociados se eliminarán de {{ name }}
     products_limit_exceeded:
       title: Este árbol no se puede eliminar
       message: El árbol «{{ tree }}» contiene más de {{ limit }} productos y por lo tanto no se puede eliminar.
@@ -249,6 +253,7 @@ pim_enrich.entity.category:
     success: La categoría «{{ name }}» se ha eliminado correctamente
     error: No se ha podido eliminar la categoría «{{ name }}»
     confirmation: '¿Está seguro que desea eliminar la categoría {{ name }}? Los productos de esta categoría no se eliminarán.'
+    confirmation_question: '¿Seguro que quiere eliminar {{ name }}?'
     products_limit_exceeded:
       title: Esta categoría no se puede eliminar
       message: La categoría «{{ name }}» contiene más de {{ limit }} productos y por lo tanto no se puede eliminar.
@@ -492,6 +497,7 @@ pim_datagrid:
       label: Actualizado el
     label_or_identifier:
       label: Etiqueta o identificador
+      label_with_uuid: Etiqueta, identificador o UUID
     parent:
       label: Padre
     identifier:

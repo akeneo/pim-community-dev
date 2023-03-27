@@ -49,3 +49,7 @@ akeneo_catalogs:
           empty: '此区域不能为空。'
           unknown: '此区域已被禁用或不再存在。请检查您的渠道和区域设置。'
           disabled: '此区域已禁用。请检查您的渠道和区域设置或更新此值。'
+        measurement:
+          unit:
+            not_exist: '字段“{{ field }}”的单位不存在。'
+            not_empty: '单位不能为空。'

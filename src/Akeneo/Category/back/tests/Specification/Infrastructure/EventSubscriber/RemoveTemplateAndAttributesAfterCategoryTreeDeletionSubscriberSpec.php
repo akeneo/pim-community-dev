@@ -2,20 +2,13 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate;
 use Akeneo\Category\Application\Query\DeleteTemplateAndAttributes;
-use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
-use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
-use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Component\Model\Category as LegacyCategory;
-use Akeneo\Category\Infrastructure\EventSubscriber\RemoveCategoryTreeTemplateSubscriber;
 use Akeneo\Category\Infrastructure\EventSubscriber\RemoveTemplateAndAttributesAfterCategoryTreeDeletionSubscriber;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
