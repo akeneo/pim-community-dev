@@ -117,6 +117,7 @@ class Grid extends Index
         'akeneo-attribute-string-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\StringDecorator',
+            'Pim\Behat\Decorator\ReactContextSwitcherDecorator',
         ],
         'akeneo-attribute-date-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
