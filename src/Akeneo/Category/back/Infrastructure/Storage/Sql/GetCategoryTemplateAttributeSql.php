@@ -41,8 +41,7 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
                 is_required, 
                 is_scopable, 
                 is_localizable, 
-                additional_properties,
-                is_deactivated
+                additional_properties
             FROM pim_catalog_category_attribute
             WHERE category_template_uuid=:template_uuid
             ORDER BY attribute_order
@@ -87,8 +86,7 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
                 is_required, 
                 is_scopable, 
                 is_localizable, 
-                additional_properties,
-                is_deactivated
+                additional_properties
             FROM pim_catalog_category_attribute
             WHERE uuid IN ({$placeholders})
         SQL;
@@ -128,8 +126,7 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
                 is_required, 
                 is_scopable, 
                 is_localizable, 
-                additional_properties,
-                is_deactivated
+                additional_properties
             FROM pim_catalog_category_attribute
             WHERE code = :code;
         SQL;

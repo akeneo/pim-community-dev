@@ -24,7 +24,6 @@ use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -197,7 +196,6 @@ class CategoryTestCase extends TestCase
                     LabelCollection::fromArray($attribute['labels']),
                     TemplateUuid::fromString($attribute['template_uuid']),
                     AttributeAdditionalProperties::fromArray($attribute['additional_properties']),
-                    AttributeIsDeactivated::fromBoolean(false),
                 );
             }
             $templateAttributes = AttributeCollection::fromArray($attributes);
@@ -267,7 +265,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'Long description']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeRichText::create(
                 AttributeUuid::fromString($uuids[1]),
@@ -279,7 +276,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'Short description']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString($uuids[2]),
@@ -291,7 +287,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'URL slug']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeImage::create(
                 AttributeUuid::fromString($uuids[3]),
@@ -303,7 +298,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'Image 1']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString($uuids[4]),
@@ -315,7 +309,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'Image alt. text 1']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeImage::create(
                 AttributeUuid::fromString($uuids[5]),
@@ -327,7 +320,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'Image 2']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString($uuids[6]),
@@ -339,7 +331,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'Image alt. text 2']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeImage::create(
                 AttributeUuid::fromString($uuids[7]),
@@ -351,7 +342,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'Image 3']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString($uuids[8]),
@@ -363,7 +353,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'Image alt. text 3']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString($uuids[9]),
@@ -375,7 +364,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'SEO meta title']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeTextArea::create(
                 AttributeUuid::fromString($uuids[10]),
@@ -387,7 +375,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'SEO meta description']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString($uuids[11]),
@@ -399,7 +386,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'SEO H1 main heading tag']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeTextArea::create(
                 AttributeUuid::fromString($uuids[12]),
@@ -411,7 +397,6 @@ class CategoryTestCase extends TestCase
                 LabelCollection::fromArray(['en_US' => 'SEO keywords']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
         ]);
     }

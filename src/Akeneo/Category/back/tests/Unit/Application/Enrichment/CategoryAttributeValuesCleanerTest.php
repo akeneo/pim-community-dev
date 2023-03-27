@@ -10,7 +10,6 @@ use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -70,7 +69,6 @@ class CategoryAttributeValuesCleanerTest extends TestCase
                         LabelCollection::fromArray(['en_US' => 'URL slug']),
                         TemplateUuid::fromString('637d8002-44c9-490e-9bb6-258c139da176'),
                         AttributeAdditionalProperties::fromArray([]),
-                        AttributeIsDeactivated::fromBoolean(false),
                     ),
                 ],
             )->getAttributes(),

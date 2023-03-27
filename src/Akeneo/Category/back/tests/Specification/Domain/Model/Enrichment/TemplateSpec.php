@@ -12,7 +12,6 @@ use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -48,8 +47,7 @@ class TemplateSpec extends ObjectBehavior
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['fr_FR' => 'attribute_text_libelle']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([]),
-                    AttributeIsDeactivated::fromBoolean(false),
+                    AttributeAdditionalProperties::fromArray([])
                 ),
                 AttributeTextArea::create(
                     AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
@@ -60,8 +58,7 @@ class TemplateSpec extends ObjectBehavior
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['fr_FR' => 'attribute_textarea_libelle']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([]),
-                    AttributeIsDeactivated::fromBoolean(false),
+                    AttributeAdditionalProperties::fromArray([])
                 ),
                 AttributeRichText::create(
                     AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
@@ -72,8 +69,7 @@ class TemplateSpec extends ObjectBehavior
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['fr_FR' => 'attribute_richtext_libelle']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([]),
-                    AttributeIsDeactivated::fromBoolean(false),
+                    AttributeAdditionalProperties::fromArray([])
                 ),
                 AttributeImage::create(
                     AttributeUuid::fromString('8dda490c-0fd1-4485-bdc5-342929783d9a'),
@@ -84,8 +80,7 @@ class TemplateSpec extends ObjectBehavior
                     AttributeIsLocalizable::fromBoolean(true),
                     LabelCollection::fromArray(['fr_FR' => 'attribute_image_libelle']),
                     $templateUuid,
-                    AttributeAdditionalProperties::fromArray([]),
-                    AttributeIsDeactivated::fromBoolean(false),
+                    AttributeAdditionalProperties::fromArray([])
                 )
             ])
         );
@@ -110,8 +105,7 @@ class TemplateSpec extends ObjectBehavior
                     'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_text_libelle'],
                     'template_uuid' => $expectedTemplateUuid,
-                    'additional_properties' => [],
-                    'is_deactivated' => false,
+                    'additional_properties' => []
                 ],
                 [
                     'uuid' => '69e251b3-b876-48b5-9c09-92f54bfb528d',
@@ -123,8 +117,7 @@ class TemplateSpec extends ObjectBehavior
                     'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_textarea_libelle'],
                     'template_uuid' => $expectedTemplateUuid,
-                    'additional_properties' => [],
-                    'is_deactivated' => false,
+                    'additional_properties' => []
                 ],
                 [
                     'uuid' => '840fcd1a-f66b-4f0c-9bbd-596629732950',
@@ -136,8 +129,7 @@ class TemplateSpec extends ObjectBehavior
                     'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_richtext_libelle'],
                     'template_uuid' => $expectedTemplateUuid,
-                    'additional_properties' => [],
-                    'is_deactivated' => false,
+                    'additional_properties' => []
                 ],
                 [
                     'uuid' => '8dda490c-0fd1-4485-bdc5-342929783d9a',
@@ -149,8 +141,7 @@ class TemplateSpec extends ObjectBehavior
                     'is_localizable' => true,
                     'labels' => ['fr_FR' => 'attribute_image_libelle'],
                     'template_uuid' => $expectedTemplateUuid,
-                    'additional_properties' => [],
-                    'is_deactivated' => false,
+                    'additional_properties' => []
                 ]
             ]
         ];

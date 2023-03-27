@@ -16,7 +16,6 @@ use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -237,7 +236,6 @@ class AddAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                     labelCollection: LabelCollection::fromArray(['en_US' => 'SEO meta description']),
                     templateUuid: $this->templateUuid,
                     additionalProperties: AttributeAdditionalProperties::fromArray([]),
-                    attributeIsDeactivated: AttributeIsDeactivated::fromBoolean(false),
                 ),
             );
         }

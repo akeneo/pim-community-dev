@@ -17,7 +17,6 @@ use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -119,7 +118,6 @@ abstract class ApiCategoryTestCase extends ApiTestCase
                     LabelCollection::fromArray($attribute['labels']),
                     TemplateUuid::fromString($attribute['template_uuid']),
                     AttributeAdditionalProperties::fromArray($attribute['additional_properties']),
-                    AttributeIsDeactivated::fromBoolean(false),
                 );
             }
             $templateAttributes = AttributeCollection::fromArray($attributes);
@@ -202,7 +200,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'Long description']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeRichText::create(
                 AttributeUuid::fromString('8dda490c-0fd1-4485-bdc5-342929783d9a'),
@@ -214,7 +211,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'Short description']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString('4873080d-32a3-42a7-ae5c-1be518e40f3d'),
@@ -226,7 +222,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'URL slug']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeImage::create(
                 AttributeUuid::fromString('69e251b3-b876-48b5-9c09-92f54bfb528d'),
@@ -238,7 +233,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'Image 1']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString('4ba33f06-de92-4366-8322-991d1bad07b9'),
@@ -250,7 +244,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'Image alt. text 1']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeImage::create(
                 AttributeUuid::fromString('47c8dfb1-bf7b-4397-914e-65208dd51051'),
@@ -262,7 +255,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'Image 2']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString('804cddcf-bacd-43c4-8494-b3ccb51e04cc'),
@@ -274,7 +266,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'Image alt. text 2']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeImage::create(
                 AttributeUuid::fromString('75ec2c1f-56ea-4db1-82c4-4efe070afccf'),
@@ -286,7 +277,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'Image 3']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString('b72b7414-082b-4e1e-a98f-3a04ac8193bc'),
@@ -298,7 +288,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'Image alt. text 3']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString('783d4957-a29b-4281-a9f5-c4621014dcfa'),
@@ -310,7 +299,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'SEO meta title']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeTextArea::create(
                 AttributeUuid::fromString('b777dfe6-2518-4d0e-958d-ddb07c81b7b6'),
@@ -322,7 +310,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'SEO meta description']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeText::create(
                 AttributeUuid::fromString('7898eab7-c795-4989-8583-54974563e1b7'),
@@ -334,7 +321,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'SEO H1 main heading tag']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
             AttributeTextArea::create(
                 AttributeUuid::fromString('1efc3af6-e89c-4281-9bd5-b827d9397cf7'),
@@ -346,7 +332,6 @@ SQL;
                 LabelCollection::fromArray(['en_US' => 'SEO keywords']),
                 $templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
             ),
         ]);
     }

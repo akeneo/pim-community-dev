@@ -17,7 +17,6 @@ use Akeneo\Category\Domain\UserIntent\Factory\ValueUserIntentFactory;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -97,8 +96,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
                 $templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
+                AttributeAdditionalProperties::fromArray([])
             ),
             AttributeRichText::create(
                 AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
@@ -109,8 +107,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'Description']),
                 $templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
+                AttributeAdditionalProperties::fromArray([])
             ),
             AttributeText::create(
                 AttributeUuid::fromString('38439aaf-66a2-4b24-854e-29d7a467c7af'),
@@ -121,8 +118,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'red']),
                 $templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
+                AttributeAdditionalProperties::fromArray([])
             ),
             AttributeImage::create(
                 AttributeUuid::fromString('e0326684-0dff-44be-8283-9262deb9e4bc'),
@@ -133,8 +129,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => '3/7/7/e/377e7c2bad87efd2e71eb725006a9067918d5791_banner.jpg']),
                 $templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
+                AttributeAdditionalProperties::fromArray([])
             ),
         ]);
 
@@ -221,8 +216,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
                 $templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
+                AttributeAdditionalProperties::fromArray([])
             )
         ]);
 
@@ -279,8 +273,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'SEO Meta Description']),
                 $templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
+                AttributeAdditionalProperties::fromArray([])
             ),
             AttributeRichText::create(
                 AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950'),
@@ -291,8 +284,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'Description']),
                 $templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
+                AttributeAdditionalProperties::fromArray([])
             ),
             AttributeText::create(
                 AttributeUuid::fromString('38439aaf-66a2-4b24-854e-29d7a467c7af'),
@@ -303,8 +295,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'red']),
                 $templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
+                AttributeAdditionalProperties::fromArray([])
             ),
             AttributeImage::create(
                 AttributeUuid::fromString('e0326684-0dff-44be-8283-9262deb9e4bc'),
@@ -315,8 +306,7 @@ class ValueUserIntentFactorySpec extends ObjectBehavior
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => '3/7/7/e/377e7c2bad87efd2e71eb725006a9067918d5791_banner.jpg']),
                 $templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-                AttributeIsDeactivated::fromBoolean(false),
+                AttributeAdditionalProperties::fromArray([])
             ),
         ]);
 

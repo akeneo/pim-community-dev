@@ -6,7 +6,6 @@ namespace Akeneo\Category\Domain\Model\Attribute;
 
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsDeactivated;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -34,7 +33,6 @@ abstract class Attribute
         protected LabelCollection $labelCollection,
         protected TemplateUuid $templateUuid,
         protected AttributeAdditionalProperties $additionalProperties,
-        protected AttributeIsDeactivated $attributeIsDeactivated,
     ) {
     }
 
@@ -49,8 +47,7 @@ abstract class Attribute
      *     is_scopable: bool,
      *     labels: array<string, string>,
      *     template_uuid: string,
-     *     additional_properties: array<string, mixed>,
-     *     is_deactivated: bool
+     *     additional_properties: array<string, mixed>
      * }
      */
     public function normalize(): array
@@ -66,7 +63,6 @@ abstract class Attribute
             'labels' => $this->labelCollection->normalize(),
             'template_uuid' => (string) $this->templateUuid,
             'additional_properties' => $this->additionalProperties->normalize(),
-            'is_deactivated' => $this->attributeIsDeactivated->normalize(),
         ];
     }
 
@@ -81,13 +77,12 @@ abstract class Attribute
         LabelCollection $labelCollection,
         TemplateUuid $templateUuid,
         AttributeAdditionalProperties $additionalProperties,
-        AttributeIsDeactivated $attributeIsDeactivated,
     ): Attribute {
         return match ((string) $type) {
-            AttributeType::RICH_TEXT => new AttributeRichText($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties, $attributeIsDeactivated),
-            AttributeType::TEXT => new AttributeText($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties, $attributeIsDeactivated),
-            AttributeType::IMAGE => new AttributeImage($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties, $attributeIsDeactivated),
-            AttributeType::TEXTAREA => new AttributeTextArea($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties, $attributeIsDeactivated),
+            AttributeType::RICH_TEXT => new AttributeRichText($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::TEXT => new AttributeText($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::IMAGE => new AttributeImage($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
+            AttributeType::TEXTAREA => new AttributeTextArea($uuid, $code, $type, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties),
             default => throw new \LogicException(sprintf('Type not recognized: "%s"', $type)),
         };
     }
@@ -150,11 +145,6 @@ abstract class Attribute
         return $this->additionalProperties;
     }
 
-    public function isDeactivated(): AttributeIsDeactivated
-    {
-        return $this->isDeactivated();
-    }
-
     /**
      * @param array{
      *      uuid: string,
@@ -166,8 +156,7 @@ abstract class Attribute
      *      is_localizable: bool,
      *      labels: string|null,
      *      category_template_uuid: string,
-     *      additional_properties: string|null,
-     *      is_deactivated: bool
+     *      additional_properties: string|null
      * } $result
      */
     public static function fromDatabase(array $result): self
@@ -188,8 +177,7 @@ abstract class Attribute
             AttributeAdditionalProperties::fromArray(
                 json_decode($result['additional_properties'], true, 512, JSON_THROW_ON_ERROR),
             ) : null;
-        $isDeactivated = AttributeIsDeactivated::fromBoolean((bool) $result['is_deactivated']);
 
-        return Attribute::fromType($type, $id, $code, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties, $isDeactivated);
+        return Attribute::fromType($type, $id, $code, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties);
     }
 }
