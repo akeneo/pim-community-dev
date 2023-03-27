@@ -332,7 +332,7 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
         return array_map('current', $qb->getQuery()->getScalarResult());
     }
 
-    public function getAttributesByGroups(array $groupsCode, int $limit, ?string $searchAfter): array
+    public function getAttributesByGroups(array $groupCodes, int $limit, ?string $searchAfter): array
     {
         $qb = $this->createQueryBuilder('a');
 
@@ -340,7 +340,7 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
             ->join('a.group', 'g')
             ->setMaxResults($limit)
             ->where('g.code IN (:groupsCode)')
-            ->setParameter(':groupsCode', $groupsCode)
+            ->setParameter(':groupsCode', $groupCodes)
             ->orderBy('a.code');
 
         if ($searchAfter) {

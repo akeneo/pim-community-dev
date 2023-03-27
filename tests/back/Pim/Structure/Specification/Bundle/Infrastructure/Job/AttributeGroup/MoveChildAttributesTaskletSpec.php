@@ -11,8 +11,10 @@ namespace Specification\Akeneo\Pim\Structure\Bundle\Infrastructure\Job\Attribute
 
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\MoveChildAttributesTasklet;
+use Akeneo\Pim\Structure\Component\Exception\UserFacingError;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -95,11 +97,19 @@ final class MoveChildAttributesTaskletSpec extends ObjectBehavior
             ->willReturn(null);
 
         $stepExecution->addSummaryInfo('moved_attributes', 0)->shouldBeCalled();
-
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
-        $stepExecution->incrementSummaryInfo('moved_attributes')->shouldBeCalledTimes(3);
-
-        $attributeUpdater->update(Argument::type(Attribute::class), ['group' => 'attribute_group_3'])->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('moved_attributes')->shouldBeCalledTimes(2);
+        $stepExecution->addWarning('an_error', [], Argument::type(DataInvalidItem::class))->shouldBeCalled();
+        $isFirstCall = true;
+        $attributeUpdater
+            ->update(Argument::type(Attribute::class), ['group' => 'attribute_group_3'])
+            ->will(function () use (&$isFirstCall) {
+                if ($isFirstCall) {
+                    $isFirstCall = false;
+                    throw new UserFacingError('an_error', []);
+                }
+            })
+            ->shouldBeCalledTimes(3);
         $attributeSaver->saveAll(Argument::type('array'))->shouldBeCalled();
 
         $this->execute();
