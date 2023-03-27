@@ -13,6 +13,16 @@ jest.mock('../../hooks/useGetPublicKey', () => ({
   useGetPublicKey: () => '-----BEGIN CERTIFICATE-----publickey-----END CERTIFICATE-----',
 }));
 
+const notifyMock = jest.fn()
+jest.mock('@akeneo-pim-community/shared', () => ({
+  ...jest.requireActual('@akeneo-pim-community/shared'),
+  useNotify: () => notifyMock,
+}))
+
+beforeEach(() => {
+  notifyMock.mockClear();
+})
+
 test('it renders the sftp storage configurator', () => {
   const storage: SftpStorage = {
     type: 'sftp',
@@ -549,3 +559,30 @@ test('it displays validation errors', () => {
   expect(screen.getByText('error.key.an_username_error')).toBeInTheDocument();
   expect(screen.getByText('error.key.a_password_error')).toBeInTheDocument();
 });
+
+test('it does not copy public key to clipboard if browser does not allow it', () => {
+  const storage: SftpStorage = {
+    type: 'sftp',
+    file_path: '',
+    host: 'example.com',
+    port: 22,
+    login_type: 'private_key',
+    username: '',
+  };
+  const onStorageChange = jest.fn();
+  // @ts-ignore
+  delete navigator.clipboard
+
+  renderWithProviders(
+    <SftpStorageConfigurator
+      jobInstanceCode="csv_product_export"
+      storage={storage}
+      fileExtension="xlsx"
+      validationErrors={[]}
+      onStorageChange={onStorageChange}
+    />
+  );
+
+  userEvent.click(screen.getByTestId('copyToClipboard'));
+  expect(notifyMock).not.toHaveBeenCalled();
+})
