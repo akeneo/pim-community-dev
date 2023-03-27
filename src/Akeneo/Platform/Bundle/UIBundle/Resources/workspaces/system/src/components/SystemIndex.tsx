@@ -8,10 +8,12 @@ import {
   useSecurity,
   useTranslate,
   Translate,
+  useFeatureFlags,
 } from '@akeneo-pim-community/shared';
 import {
   ActivityIcon,
   Breadcrumb,
+  Button,
   FileIcon,
   GroupsIcon,
   IconCard,
@@ -26,8 +28,6 @@ import {
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {CountEntities, useCountEntities} from '../hooks';
-
-const featureFlags = require('pim/feature-flags');
 
 const SectionContent = styled.div`
   margin-top: 20px;
@@ -50,6 +50,7 @@ const SystemIndex = () => {
   const {isGranted} = useSecurity();
   const router = useRouter();
   const theme = useTheme();
+  const featureFlags = useFeatureFlags();
 
   const [isSSOEnabled, setIsSSOEnabled] = useState<boolean>(false);
 
@@ -116,6 +117,14 @@ const SystemIndex = () => {
           <>
             <SectionTitle>
               <SectionTitle.Title>{translate('pim_system.system_navigation')}</SectionTitle.Title>
+              {featureFlags.isEnabled('reset_pim') && (
+                <>
+                  <SectionTitle.Spacer />
+                  <Button level="danger" ghost={true}>
+                    {translate('pim_system.reset_pim.button.label')}
+                  </Button>
+                </>
+              )}
             </SectionTitle>
             <SectionContent>
               <IconCardGrid>

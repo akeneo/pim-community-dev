@@ -451,6 +451,9 @@ pim_system:
     enabled: SSO enabled
     disabled: SSO disabled
     title: SAML-based Single Sign-On
+  reset_pim:
+    button:
+      label: Reset instance
 
 pim_datagrid:
   mass_action:
