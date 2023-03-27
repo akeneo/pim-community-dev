@@ -49,3 +49,7 @@ akeneo_catalogs:
           empty: 'Questa impostazione locale non può essere vuota.'
           unknown: 'Questa impostazione locale è disattivata o non esiste più. Controlla la configurazione dei canali e delle impostazioni locali.'
           disabled: 'Questa impostazione locale è disattivata. Controlla la configurazione dei canali e delle impostazioni locali.'
+        measurement:
+          unit:
+            not_exist: 'L''unità del campo "{{ field }}" non esiste.'
+            not_empty: 'L''unità di misura non può essere vuota.'

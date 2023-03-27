@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Attribute\Query;
 
-use Akeneo\Pim\Structure\Component\Exception\AttributeRemovalException;
+use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Webmozart\Assert\Assert;
 
-class CheckAttributeOnDeletionSubscriberIntegration extends TestCase
+class CheckAttributeIsNotUsedAsLabelOnDeletionSubscriberIntegration extends TestCase
 {
-
-    public function test_it_throws_an_exception_when_the_attribute_is_used_as_label_by_a_family()
+    public function test_it_throws_an_exception_when_the_attribute_is_used_as_label_by_a_family(): void
     {
         $this->givenAttributes([
             'name', 'title'
@@ -37,13 +36,13 @@ class CheckAttributeOnDeletionSubscriberIntegration extends TestCase
         ]);
 
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('name');
-        $this->expectException(AttributeRemovalException::class);
+        $this->assertNotNull($attribute);
+
+        $this->expectException(CannotRemoveAttributeException::class);
         $this->get('pim_catalog.remover.attribute')->remove($attribute);
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-        $this->assertNotNull($this->get('pim_catalog.repository.attribute')->findOneByIdentifier('name'));
     }
 
-    public function test_it_throws_an_exception_when_the_attributes_are_used_as_label_by_any_family()
+    public function test_it_throws_an_exception_when_the_attributes_are_used_as_label_by_any_family(): void
     {
         $this->givenAttributes([
             'name', 'title'
@@ -71,15 +70,12 @@ class CheckAttributeOnDeletionSubscriberIntegration extends TestCase
             $this->markTestSkipped('There is no bulk attribute remover');
         }
         $attributes = $this->get('pim_catalog.repository.attribute')->findBy(['code' => ['name', 'title']]);
-        $this->expectException(AttributeRemovalException::class);
+        $this->expectException(CannotRemoveAttributeException::class);
         $attributeRemover->removeAll($attributes);
         $this->assertNotNull($this->get('pim_catalog.repository.attribute')->findOneByIdentifier('name'));
         $this->assertNotNull($this->get('pim_catalog.repository.attribute')->findOneByIdentifier('title'));
     }
 
-    /**
-     * @return Configuration
-     */
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

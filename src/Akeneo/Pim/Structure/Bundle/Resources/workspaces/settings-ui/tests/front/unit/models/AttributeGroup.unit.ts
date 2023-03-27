@@ -1,5 +1,6 @@
 import {
   AttributeGroup,
+  DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP,
   getImpactedAndTargetAttributeGroups,
   toSortedAttributeGroupsArray,
 } from '@akeneo-pim-community/settings-ui/src/models';
@@ -21,10 +22,11 @@ test('it builds an array of attribute groups, sorted by the sort_order property'
   expect(result[2].code).toBe('groupB');
 });
 
-test('it can get the total number of impacted attribute groups children & target attribute groups', () => {
+test('it can get the total number of impacted attribute groups children & target attribute groups and always put the default attribute group first', () => {
   const attributeGroups: AttributeGroup[] = [
     {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
     {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
+    {code: DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP, labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 7},
     {code: 'attribute_group_3', labels: {}, sort_order: 3, is_dqi_activated: false, attribute_count: 2},
   ];
 
@@ -35,11 +37,11 @@ test('it can get the total number of impacted attribute groups children & target
 
   expect(getImpactedAndTargetAttributeGroups(attributeGroups, selection)).toEqual([
     [attributeGroups[0], attributeGroups[2]],
-    [attributeGroups[1]],
+    [attributeGroups[2], attributeGroups[1], attributeGroups[3]],
   ]);
 
   expect(getImpactedAndTargetAttributeGroups(attributeGroups, {...selection, mode: 'not_in'})).toEqual([
-    [attributeGroups[1]],
-    [attributeGroups[0], attributeGroups[2]],
+    [attributeGroups[1], attributeGroups[3]],
+    [attributeGroups[2], attributeGroups[0]],
   ]);
 });
