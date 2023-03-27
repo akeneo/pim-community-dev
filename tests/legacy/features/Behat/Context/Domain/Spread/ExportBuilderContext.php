@@ -47,7 +47,8 @@ class ExportBuilderContext extends PimContext implements PageObjectAware
     public function iSwitchTheLocaleFromFilterTo($filter, $locale)
     {
         $filter = $this->getDatagrid()->getFilter($filter);
-        $filter->setLocale($locale);
+
+        $filter->switchLocale($locale);
     }
 
     /**
