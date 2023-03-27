@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException;
 use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetInstallDatetime;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception;
+use PDOException;
 
 /**
  * Checks whether the PIM has already been installed by checking that an 'pim_user' table exists.
@@ -18,19 +17,22 @@ use Doctrine\DBAL\Exception\ConnectionException;
  */
 class InstallStatusManager
 {
-    public function __construct(
-        protected GetInstallDatetime $installDatetimeQuery
-    ) {
+    public function __construct(protected GetInstallDatetime $installDatetimeQuery)
+    {
     }
 
     /**
      * Returns null if the PIM not installed or returns the timestamp of creation of the 'pim_user' table.
-     *
-     * @return \DateTime
      */
     public function getPimInstallDateTime(): ?\DateTime
     {
-        return ($this->installDatetimeQuery)();
+        try {
+            $installDatetime = ($this->installDatetimeQuery)();
+        } catch (Exception|PDOException $e) {
+            return null;
+        }
+
+        return $installDatetime;
     }
 
     /**
@@ -38,12 +40,6 @@ class InstallStatusManager
      */
     public function isPimInstalled(): bool
     {
-        try {
-            $installDatetime = $this->getPimInstallDateTime();
-        } catch (UnavailableCreationTimeException $e) {
-            return false;
-        }
-
-        return null !== $installDatetime;
+        return null !== $this->getPimInstallDateTime();
     }
 }

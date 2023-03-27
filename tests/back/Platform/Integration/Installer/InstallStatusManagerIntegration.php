@@ -13,7 +13,7 @@ use Akeneo\Test\Integration\TestCase;
  */
 class InstallStatusManagerIntegration extends TestCase
 {
-    public function testGetPimInstallTimestamp()
+    public function test_get_pim_install_datetime()
     {
         $intallDataQuery = $this->get(InstallData::class);
         $intallDataQuery->withDatetime(new \DateTimeImmutable('2022-12-13'));
