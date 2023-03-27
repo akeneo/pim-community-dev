@@ -85,6 +85,7 @@ class TargetTypeConverterTest extends TestCase
                 'string',
                 'uri',
                 [
+                    'akeneo_reference_entity',
                     'pim_catalog_asset_collection',
                     'pim_catalog_image',
                 ],

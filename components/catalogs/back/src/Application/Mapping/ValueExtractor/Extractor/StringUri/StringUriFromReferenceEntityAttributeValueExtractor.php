@@ -13,10 +13,6 @@ use Symfony\Component\Routing\RouterInterface;
  */
 final class StringUriFromReferenceEntityAttributeValueExtractor implements StringValueExtractorInterface
 {
-    public function __construct(private RouterInterface $router)
-    {
-    }
-
     public function extract(
         array $product,
         string $code,
