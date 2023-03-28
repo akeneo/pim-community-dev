@@ -30,7 +30,7 @@ export const SelectAssetAttributeLocaleDropdown: FC<Props> = ({source, onChange,
                 emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                 openLabel={translate('akeneo_catalogs.common.select.open')}
                 placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.locale.placeholder')}
-                data-testid='source-parameter-locale-dropdown'
+                data-testid='asset-attribute-locale-dropdown'
             >
                 {locales?.map(locale => (
                     <SelectInput.Option key={locale.code} title={locale.label} value={locale.code}>

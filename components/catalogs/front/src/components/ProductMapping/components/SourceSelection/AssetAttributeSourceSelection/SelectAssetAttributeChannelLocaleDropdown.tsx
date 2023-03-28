@@ -25,7 +25,7 @@ export const SelectAssetAttributeChannelLocaleDropdown: FC<Props> = ({source, on
                 emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                 openLabel={translate('akeneo_catalogs.common.select.open')}
                 placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.locale.placeholder')}
-                data-testid='source-parameter-locale-dropdown'
+                data-testid='asset-attribute-channel-locale-dropdown'
                 readOnly={disabled}
             >
                 {locales?.map(locale => (

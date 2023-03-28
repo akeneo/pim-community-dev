@@ -67,6 +67,7 @@ export const SelectAssetAttributeSourceDropdown: FC<Props> = ({
                         onChange={() => null}
                         clearable={false}
                         invalid={error !== undefined}
+                        data-testid='asset-attributes-dropdown'
                     ></SelectInput>
                     {isOpen && (
                         <Dropdown.Overlay

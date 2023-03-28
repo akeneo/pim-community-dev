@@ -32,7 +32,7 @@ export const SelectAssetAttributeChannelDropdown: FC<Props> = ({source, onChange
                 emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}
                 openLabel={translate('akeneo_catalogs.common.select.open')}
                 placeholder={translate('akeneo_catalogs.product_mapping.source.parameters.channel.placeholder')}
-                data-testid='source-parameter-channel-dropdown'
+                data-testid='asset-attribute-channel-dropdown'
             >
                 {channels?.map(channel => (
                     <SelectInput.Option key={channel.code} title={channel.label} value={channel.code}>

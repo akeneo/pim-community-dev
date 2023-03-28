@@ -19,7 +19,7 @@ export const AssetAttributeSourceSelection: FC<Props> = ({source, target, errors
     const {data: assetAttribute} = useAssetAttribute(source?.parameters?.sub_source ?? '');
 
     const handleAssetAttributeSourceSelection = (selectedAssetAttribute: AssetAttribute) =>
-        onChange({...source, parameters: {...source.parameters, sub_source: selectedAssetAttribute.identifier}});
+        onChange({...source, parameters: {sub_source: selectedAssetAttribute.identifier, sub_scope: null, sub_locale: null}});
 
     return (
         <>
