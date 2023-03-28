@@ -5,17 +5,18 @@ namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents;
 use Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup;
-use Akeneo\Pim\Structure\Component\Exception\UserFacingError;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,9 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Attribute group controller
@@ -46,16 +47,17 @@ class AttributeGroupController
         private ObjectUpdaterInterface $updater,
         private ValidatorInterface $validator,
         private SaverInterface $saver,
-        private RemoverInterface $remover,
         private EntityRepository $attributeRepository,
         private ObjectUpdaterInterface $attributeUpdater,
         private SaverInterface $attributeSaver,
-        private SecurityFacade $securityFacade,
+        private SecurityFacadeInterface $securityFacade,
         private SimpleFactoryInterface $attributeGroupFactory,
         private EventDispatcherInterface $eventDispatcher,
         private CollectionFilterInterface $inputFilter,
         private FindAttributeCodesForAttributeGroup $findAttributeCodesForAttributeGroup,
-        private TranslatorInterface $translator
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly JobLauncherInterface $jobLauncher,
+        private readonly IdentifiableObjectRepositoryInterface $jobInstanceRepository,
     ) {
     }
 
@@ -95,7 +97,7 @@ class AttributeGroupController
 
     /**
      * Get attribute group collection.
-     * We should spilt the search and index action in two controllers to handle rights properly.
+     * We should split the search and index action in two controllers to handle rights properly.
      *
      * @return JsonResponse
      */
@@ -278,26 +280,34 @@ class AttributeGroupController
      */
     public function removeAction(Request $request, $identifier)
     {
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('delete_attribute_groups');
+        $user = $this->tokenStorage->getToken()->getUser();
+
         if (!$request->isXmlHttpRequest()) {
-            return new JsonResponse(
-                [
-                    'message' => 'An error occurred.',
-                    'global' => true,
-                ],
-                Response::HTTP_BAD_REQUEST
-            );
+            return new JsonResponse(status: Response::HTTP_BAD_REQUEST);
         }
 
-        $attributeGroup = $this->getAttributeGroupOr404($identifier);
-
-        try {
-            $this->remover->remove($attributeGroup);
-        } catch (UserFacingError $exception) {
-            return new JsonResponse(
-                ['message' => $this->translator->trans($exception->translationKey(), $exception->translationParameters())],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+        if (!$user instanceof UserInterface) {
+            return new JsonResponse(status: Response::HTTP_UNAUTHORIZED);
         }
+
+        if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_mass_delete')) {
+            return new JsonResponse(status: Response::HTTP_FORBIDDEN);
+        }
+
+        $attributeGroupCodes = [$identifier];
+        $replacementAttributeCode = $request->get('replacement_attribute_group', AttributeGroupInterface::DEFAULT_CODE);
+
+        $configuration = [
+            'filters' => [
+                'codes' => $attributeGroupCodes,
+            ],
+            'replacement_attribute_group_code' => $replacementAttributeCode,
+            'users_to_notify' => [$user->getUserIdentifier()],
+            'send_email' => false,
+        ];
+
+        $this->jobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
