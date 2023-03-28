@@ -7,11 +7,9 @@ export const createSourceFromAttribute = (attribute: Attribute): Source => {
         locale: null,
         scope: null,
     };
-
     if (
         attribute.type === 'categories' ||
         attribute.type === 'family' ||
-        attribute.type === 'status' ||
         attribute.type === 'pim_catalog_simpleselect' ||
         attribute.type === 'pim_catalog_multiselect'
     ) {

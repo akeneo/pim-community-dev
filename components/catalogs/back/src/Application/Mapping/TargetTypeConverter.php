@@ -22,6 +22,7 @@ final class TargetTypeConverter
         ],
         'boolean' => [
             'pim_catalog_boolean',
+            'status',
         ],
         'number' => [
             'pim_catalog_metric',
