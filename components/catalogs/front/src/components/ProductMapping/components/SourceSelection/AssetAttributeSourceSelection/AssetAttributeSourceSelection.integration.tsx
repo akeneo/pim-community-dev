@@ -75,7 +75,7 @@ test('it calls onChange when the asset attribute changes', async () => {
                             sub_source: 'brand_label',
                             sub_scope: null,
                             sub_locale: 'en_US',
-                        }
+                        },
                     }}
                     target={{
                         code: 'brands_list',
@@ -105,7 +105,7 @@ test('it calls onChange when the asset attribute changes', async () => {
             sub_source: 'brand_company',
             sub_scope: null,
             sub_locale: null,
-        }
+        },
     });
 });
 
@@ -153,7 +153,7 @@ test('it calls onChange when the asset attribute channel changes', async () => {
                             sub_source: 'brand_label',
                             sub_scope: null,
                             sub_locale: null,
-                        }
+                        },
                     }}
                     target={{
                         code: 'brands_list',
@@ -184,7 +184,7 @@ test('it calls onChange when the asset attribute channel changes', async () => {
             sub_source: 'brand_label',
             sub_scope: 'ecommerce',
             sub_locale: null,
-        }
+        },
     });
 });
 
@@ -240,7 +240,7 @@ test('it calls onChange when the asset attribute locale changes', async () => {
                             sub_source: 'brand_label',
                             sub_scope: 'ecommerce',
                             sub_locale: null,
-                        }
+                        },
                     }}
                     target={{
                         code: 'brands_list',
@@ -272,18 +272,18 @@ test('it calls onChange when the asset attribute locale changes', async () => {
             sub_source: 'brand_label',
             sub_scope: 'ecommerce',
             sub_locale: 'fr_FR',
-        }
+        },
     });
 });
 
 test('it calls onChange when the asset attribute locale changes with a non scopable asset attribute', async () => {
     const onChange = jest.fn();
 
-        mockFetchResponses([
-            {
-                url: '/rest/catalogs/locales?page=1&limit=20',
-                json: [EN, FR, DE],
-            },
+    mockFetchResponses([
+        {
+            url: '/rest/catalogs/locales?page=1&limit=20',
+            json: [EN, FR, DE],
+        },
         {
             url: '/rest/catalogs/asset-attributes-by-target-type-and-target-format?assetFamilyIdentifier=brands&targetType=array%3Cstring%3E&targetFormat=',
             json: [
@@ -320,7 +320,7 @@ test('it calls onChange when the asset attribute locale changes with a non scopa
                             sub_source: 'brand_label',
                             sub_scope: null,
                             sub_locale: null,
-                        }
+                        },
                     }}
                     target={{
                         code: 'brands_list',
@@ -352,6 +352,6 @@ test('it calls onChange when the asset attribute locale changes with a non scopa
             sub_source: 'brand_label',
             sub_scope: null,
             sub_locale: 'fr_FR',
-        }
+        },
     });
 });
