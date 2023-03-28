@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
@@ -17,7 +19,7 @@ use Behat\Behat\Context\Context;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StructureContext implements Context
+final class StructureContext implements Context
 {
     public function __construct(
         private readonly AttributeRepositoryInterface $attributeRepository,

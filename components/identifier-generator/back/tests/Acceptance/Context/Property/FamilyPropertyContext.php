@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property;
 
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\BaseCreateOrUpdateIdentifierGenerator;
@@ -77,7 +79,6 @@ class FamilyPropertyContext extends BaseCreateOrUpdateIdentifierGenerator implem
     {
         $this->tryToUpdateGenerator(structure: [['type' => 'family', 'process' => ['type' => 'no'], 'unknown' => '']]);
     }
-
 
     /**
      * @When I try to update an identifier generator with empty family process property

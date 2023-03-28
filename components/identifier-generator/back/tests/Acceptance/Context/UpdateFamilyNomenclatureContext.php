@@ -12,7 +12,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
 
-class UpdateFamilyNomenclatureContext implements Context
+final class UpdateFamilyNomenclatureContext implements Context
 {
     private const DEFAULT_OPERATOR = '<=';
     private const DEFAULT_VALUE = 3;

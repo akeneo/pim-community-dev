@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
@@ -10,7 +12,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ViolationsContext implements Context
+final class ViolationsContext implements Context
 {
     private ?ViolationsException $violationsException = null;
 
@@ -31,7 +33,7 @@ class ViolationsContext implements Context
         Assert::contains($this->violationsException->getMessage(), $message);
     }
 
-    public function setViolationsException(ViolationsException $violationsException)
+    public function setViolationsException(ViolationsException $violationsException): void
     {
         $this->violationsException = $violationsException;
     }
