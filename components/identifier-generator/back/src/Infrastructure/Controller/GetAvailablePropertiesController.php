@@ -70,7 +70,7 @@ final class GetAvailablePropertiesController
                 $localeCode,
                 $limit,
                 $offset,
-                [AttributeTypes::OPTION_SIMPLE_SELECT],
+                [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT],
                 $search
             );
         }
