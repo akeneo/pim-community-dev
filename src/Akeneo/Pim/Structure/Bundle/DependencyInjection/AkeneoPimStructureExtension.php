@@ -35,7 +35,6 @@ class AkeneoPimStructureExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
-        $loader->load('feature_flags.yml');
         $loader->load('handlers.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
