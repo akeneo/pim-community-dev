@@ -84,6 +84,7 @@ class TargetTypeConverterTest extends TestCase
                 'string',
                 'uri',
                 [
+                    'pim_catalog_asset_collection',
                     'pim_catalog_image',
                 ],
             ],
