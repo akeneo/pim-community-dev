@@ -10,7 +10,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot update an enabled condition without value
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with an enabled condition and undefined as value
     Then I should get an error with message 'conditions[0]: Enabled should contain "value" key'
 
@@ -20,7 +20,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot update an enabled condition with a non boolean value
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with an enabled condition with "true" as value
     Then I should get an error with message 'conditions[0].value: This value should be a boolean.'
 
@@ -30,7 +30,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot update an enabled condition with an unknown property
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with an enabled condition with an unknown property
     Then I should get an error with message 'conditions[0][unknown]: This field was not expected.'
 
@@ -40,6 +40,6 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot update several enabled conditions
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with 2 enabled conditions
     Then I should get an error with message 'conditions: should contain only 1 enabled'

@@ -78,7 +78,7 @@ class DatabaseContext implements Context
     public function identifierGeneratorIsUpdatedWithoutLabelInTheRepository(): void
     {
         $identifierGenerator = $this->generatorRepository->get(BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq($identifierGenerator->labelCollection()->normalize(), (object)[]);
+        Assert::eq($identifierGenerator->labelCollection()->normalize(), []);
     }
 
     /**
@@ -97,5 +97,33 @@ class DatabaseContext implements Context
     {
         $identifierGenerator = $this->generatorRepository->get(BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE);
         Assert::eq($identifierGenerator->textTransformation()->normalize(), TextTransformation::LOWERCASE);
+    }
+
+    /**
+     * @Then there should be no :localeCode label for the :generatorCode generator
+     */
+    public function thereShouldBeNoLabelForLocale(string $localeCode, string $generatorCode): void
+    {
+        $identifierGenerator = $this->generatorRepository->get($generatorCode);
+        Assert::isInstanceOf($identifierGenerator, IdentifierGenerator::class);
+        Assert::keyNotExists($identifierGenerator->labelCollection()->normalize(), $localeCode);
+    }
+
+    /**
+     * @Then /^the identifier generators should be ordered as (?P<codes>(('.*')(, | and )?)+)$/
+     */
+    public function theIdentifierGeneratorsShouldBeOrderedAs(string $codes): void
+    {
+        $generators = $this->generatorRepository->getAll();
+        $orderedCodes = \array_map(
+            static fn (IdentifierGenerator $generator): string => $generator->code()->asString(),
+            $generators
+        );
+
+        Assert::same($orderedCodes, CodesSplitter::split($codes), \sprintf(
+            "Codes are not sorted as expected:\n- Value: %s\nExpected: %s",
+            \json_encode($orderedCodes),
+            \json_encode(CodesSplitter::split($codes))
+        ));
     }
 }

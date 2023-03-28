@@ -10,7 +10,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot update an identifier generator with autoNumber missing required field
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with autoNumber without required field
     Then I should get an error with message 'structure[0]: "numberMin, digitsMin" fields are required for "auto_number" type'
 
@@ -25,7 +25,7 @@ Feature: Create Identifier Generator
       | 4         | 22        |structure[0][digitsMin]: This value should be less than or equal to 15.    |
 
   Scenario Outline: Cannot update an identifier generator with wrong digits
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with an auto number with '<minNumber>' as number min and '<minDigits>' as min digits
     Then I should get an error with message '<message>'
     Examples:

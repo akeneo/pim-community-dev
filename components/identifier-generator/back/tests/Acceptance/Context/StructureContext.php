@@ -50,7 +50,7 @@ class StructureContext implements Context
      */
     public function theAndOptionsForAttribute(string $optionCodes, string $attributeCode): void
     {
-        foreach ($this->splitList($optionCodes) as $optionCode) {
+        foreach (CodesSplitter::split($optionCodes) as $optionCode) {
             $attributeOption = new AttributeOption();
             $attributeOption->setCode($optionCode);
             $attributeOption->setAttribute($this->attributeRepository->findOneByIdentifier($attributeCode));
@@ -74,7 +74,7 @@ class StructureContext implements Context
         $channel = new Channel();
         $channel->setCode($channelCode);
         $locales = [];
-        foreach ($this->splitList($localeCodes) as $localeCode) {
+        foreach (CodesSplitter::split($localeCodes) as $localeCode) {
             $locale = new Locale();
             $locale->setCode($localeCode);
             $locale->addChannel($channel);
@@ -83,18 +83,5 @@ class StructureContext implements Context
         $channel->setLocales($locales);
 
         $this->channelRepository->save($channel);
-    }
-
-    /**
-     * @return string[]
-     */
-    private function splitList(string $codesList): array
-    {
-        $codesWithQuotes = \preg_split('/(, )|( and )/', $codesList);
-
-        return \array_map(
-            static fn (string $codeWithQuotes): string => \substr($codeWithQuotes, 1, -1),
-            $codesWithQuotes
-        );
     }
 }

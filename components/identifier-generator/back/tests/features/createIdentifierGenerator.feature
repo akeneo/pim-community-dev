@@ -23,8 +23,8 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'Limit of "20" identifier generators is reached'
 
   Scenario: Cannot create an identifier generator with an existing code
-    Given the 'test' identifier generator
-    When I try to create an identifier generator with code 'test'
+    Given I create an identifier generator
+    When I try to create an identifier generator with code 'generator_0'
     Then I should get an error with message 'This code is already used'
 
   # Target

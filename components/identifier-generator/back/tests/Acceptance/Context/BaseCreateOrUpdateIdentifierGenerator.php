@@ -14,7 +14,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGenerator
  */
 class BaseCreateOrUpdateIdentifierGenerator
 {
-    public const DEFAULT_IDENTIFIER_GENERATOR_CODE = 'default';
+    public const DEFAULT_IDENTIFIER_GENERATOR_CODE = 'generator_0';
 
     public function __construct(
         protected readonly ViolationsContext $violationsContext,

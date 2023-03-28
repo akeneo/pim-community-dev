@@ -16,6 +16,11 @@ services:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
 
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ReorderIdentifierGeneratorsContext:
+    public: true
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler'
+
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\AutoNumberPropertyContext:
     public: true
     arguments:

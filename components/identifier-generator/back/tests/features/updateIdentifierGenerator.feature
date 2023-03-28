@@ -4,7 +4,7 @@ Feature: Update Identifier Generator
   Background:
     Given the 'sku' attribute of type 'pim_catalog_identifier'
     And the 'name' attribute of type 'pim_catalog_text'
-    And the 'default' identifier generator
+    And I create an identifier generator
     And the 'color' attribute of type 'pim_catalog_simpleselect'
     And the 'red', 'green' and 'blue' options for 'color' attribute
     And the 'a_multi_select' attribute of type 'pim_catalog_multiselect'
@@ -71,8 +71,8 @@ Feature: Update Identifier Generator
 
   Scenario: Can update an identifier generator with empty label
     When I try to update an identifier generator with 'de_DE' label ''
-    Then I should not get any update error
-    And there should be no 'de_DE' label for the 'default' generator
+    Then I should not get any error
+    And there should be no 'de_DE' label for the 'generator_0' generator
 
   # Delimiter
   Scenario: Cannot update an identifier generator with an empty delimiter
@@ -101,5 +101,5 @@ Feature: Update Identifier Generator
   Scenario: Being able to reorder identifier generators
     Given the 'ig_1' identifier generator
     And the 'ig_2' identifier generator
-    When I reorder the identifier generators as 'ig_1', 'ig_2' and 'default'
-    Then the identifier generators should be ordered as 'ig_1', 'ig_2' and 'default'
+    When I reorder the identifier generators as 'ig_1', 'ig_2' and 'generator_0'
+    Then the identifier generators should be ordered as 'ig_1', 'ig_2' and 'generator_0'

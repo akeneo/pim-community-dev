@@ -21,7 +21,7 @@ Feature: Create Identifier Generator
     | nomenclature | =         | "undefined" | structure[0][process][operator]: This field was not expected.                                                   |
 
   Scenario Outline: Cannot update an identifier generator with wrong configuration
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with a family process with type <type> and operator <operator> and <value> as value
     Then I should get an error with message '<message>'
     Examples:
@@ -46,7 +46,7 @@ Feature: Create Identifier Generator
     | nomenclature | undefined | "undefined" |
 
   Scenario Outline: Can create an identifier generator
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with a family process with type <type> and operator <operator> and <value> as value
     Then The identifier generator is saved in the repository
     And I should not get any error
@@ -62,7 +62,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot update an identifier generator with family property without required field
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with family property without required field
     Then I should get an error with message 'structure[0]: "process" field is required for "family" type'
 
@@ -72,7 +72,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot update an identifier generator with invalid family property
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with invalid family property
     Then I should get an error with message 'structure[0][unknown]: This field was not expected.'
 
@@ -82,7 +82,7 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot update an identifier generator with empty family property
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with empty family process property
     Then I should get an error with message 'structure[0][process][type]: This field is missing.'
 
@@ -92,6 +92,6 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot update an identifier generator with a family containing invalid truncate process
-    Given the 'default' identifier generator
+    Given I create an identifier generator
     When I try to update an identifier generator with a family containing invalid truncate process
     Then I should get an error with message 'structure[0][process][unknown]: This field was not expected.'
