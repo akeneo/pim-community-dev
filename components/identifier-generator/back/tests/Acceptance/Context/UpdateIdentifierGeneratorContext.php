@@ -70,7 +70,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function identifierGeneratorIsUpdatedWithoutLabelInTheRepository(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq($identifierGenerator->labelCollection()->normalize(), (object)[]);
+        Assert::eq($identifierGenerator->labelCollection()->normalize(), []);
     }
 
     /**

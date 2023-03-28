@@ -335,6 +335,11 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with 'fr_FR' label 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. Praesent luctus cursus finibus. Maecenas et euismod tellus. Nunc sed est nec mi consequat consequat sit amet ac ex. '
     Then I should get an error on update with message 'labels[fr_FR]: This value is too long. It should have 255 characters or less.'
 
+  Scenario: Can update an identifier generator with empty label
+    When I try to update an identifier generator with 'de_DE' label ''
+    Then I should not get any update error
+    And there should be no label for 'de_DE'
+
   # Delimiter
   Scenario: Cannot update an identifier generator with an empty delimiter
     When I try to update an identifier generator with delimiter ''

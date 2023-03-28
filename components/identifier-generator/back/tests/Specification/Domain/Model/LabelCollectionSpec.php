@@ -40,70 +40,12 @@ class LabelCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_can_be_instantiated_with_a_stdclass(): void
-    {
-        $this->beConstructedThrough('fromNormalized', [new \stdClass()]);
-
-        $this->normalize()->shouldBeLike((object) []);
-    }
-
-    public function it_normalizes_labels(): void
+    public function it_filters_empty_labels(): void
     {
         $this->beConstructedThrough('fromNormalized', [[
             'en_US' => 'Sugar',
-            'fr_FR' => '',
+            'fr_FR' => ' ',
         ]]);
         $this->normalize()->shouldBe(['en_US' => 'Sugar']);
-    }
-
-    public function it_normalizes_empty_label(): void
-    {
-        $this->beConstructedThrough('fromNormalized', [[]]);
-
-        $this->normalize()->shouldBeLike((object) []);
-    }
-
-    public function it_can_be_merged_with_other_labels(): void
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'en_US' => 'Sugar',
-            'fr_FR' => 'Suc',
-        ]]);
-
-        $newLabels = $this->merge(['fr_FR' => 'Sucre', 'de_DE' => 'Zucker', 'en_US' => '']);
-        $newLabels->shouldNotBe($this);
-        $newLabels->shouldBeLike(LabelCollection::fromNormalized([
-            'fr_FR' => 'Sucre',
-            'de_DE' => 'Zucker',
-        ]));
-    }
-
-    public function it_can_be_merged_with_an_empty_array(): void
-    {
-        $this->beConstructedThrough(
-            'fromNormalized',
-            [
-                [
-                    'en_US' => 'Sugar',
-                    'fr_FR' => '',
-                ],
-            ]
-        );
-
-        $newLabels = $this->merge([]);
-        $newLabels->shouldNotBe($this);
-        $newLabels->shouldBeLike(LabelCollection::fromNormalized(['en_US' => 'Sugar']));
-        $newLabels->normalize()->shouldReturn(['en_US' => 'Sugar']);
-    }
-
-    public function it_returns_a_label(): void
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'en_US' => 'Sugar',
-            'fr_FR' => 'Suc',
-        ]]);
-        $this->getLabel('en_US')->shouldReturn('Sugar');
-        $this->getLabel('fr_FR')->shouldReturn('Suc');
-        $this->getLabel('de_DE')->shouldReturn(null);
     }
 }
