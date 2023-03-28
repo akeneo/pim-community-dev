@@ -66,7 +66,7 @@ class DeleteAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             $response = $this->client->getResponse();
             $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         }
-        // TODO : reactivate after GRF-798
+        // TODO : reactivate after GRF-783
         // $insertedAttributes = $this->get(GetAttribute::class)->byTemplateUuid($this->templateUuid);
         // $this->assertCount(10, $insertedAttributes);
     }
