@@ -23,10 +23,18 @@ test('it builds an array of attribute groups, sorted by the sort_order property'
 });
 
 test('it can get the total number of impacted attribute groups children & target attribute groups and always put the default attribute group first', () => {
+  const defaultAttributeGroup: AttributeGroup = {
+    code: DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP,
+    labels: {},
+    sort_order: 2,
+    is_dqi_activated: false,
+    attribute_count: 7,
+  };
+
   const attributeGroups: AttributeGroup[] = [
     {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
     {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
-    {code: DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP, labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 7},
+    defaultAttributeGroup,
     {code: 'attribute_group_3', labels: {}, sort_order: 3, is_dqi_activated: false, attribute_count: 2},
   ];
 
@@ -35,12 +43,14 @@ test('it can get the total number of impacted attribute groups children & target
     mode: 'in',
   };
 
-  expect(getImpactedAndTargetAttributeGroups(attributeGroups, selection)).toEqual([
+  expect(getImpactedAndTargetAttributeGroups(attributeGroups, selection, defaultAttributeGroup)).toEqual([
     [attributeGroups[0], attributeGroups[2]],
     [attributeGroups[2], attributeGroups[1], attributeGroups[3]],
   ]);
 
-  expect(getImpactedAndTargetAttributeGroups(attributeGroups, {...selection, mode: 'not_in'})).toEqual([
+  expect(
+    getImpactedAndTargetAttributeGroups(attributeGroups, {...selection, mode: 'not_in'}, defaultAttributeGroup)
+  ).toEqual([
     [attributeGroups[1], attributeGroups[3]],
     [attributeGroups[2], attributeGroups[0]],
   ]);

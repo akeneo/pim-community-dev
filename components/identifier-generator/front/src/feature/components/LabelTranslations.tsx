@@ -20,8 +20,15 @@ const LabelTranslations: React.FC<LabelTranslationsProps> = ({labelCollection, o
 
   const onLabelChange = useCallback(
     (locale: string) => (label: string) => {
-      setValue({...value, [locale]: label});
-      onLabelsChange({...value, [locale]: label});
+      if (label.trim() !== '') {
+        setValue({...value, [locale]: label});
+        onLabelsChange({...value, [locale]: label});
+      } else {
+        const updatedLabels = {...value};
+        delete updatedLabels[locale];
+        setValue(updatedLabels);
+        onLabelsChange(updatedLabels);
+      }
     },
     [value, onLabelsChange]
   );

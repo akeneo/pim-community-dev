@@ -84,7 +84,7 @@ final class CreateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         Assert::assertSame(
-            '[{"message":"Expected the key \u0022code\u0022 to exist."}]',
+            '[{"path":"code","message":"This value should not be blank."}]',
             $response->getContent()
         );
     }
