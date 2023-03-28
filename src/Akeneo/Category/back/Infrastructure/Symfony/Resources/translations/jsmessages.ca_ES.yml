@@ -23,6 +23,15 @@ akeneo.category:
         textarea: Àrea de Text
         richtext: Text enriquit
         image: Imatge
+    add_attribute:
+      confirmation_modal:
+        input:
+          label: Etiqueta
+          code: Codi
+          type:
+            option_title:
+              text: Text
+              image: Imatge
   template_list:
     columns:
       header: Etiqueta

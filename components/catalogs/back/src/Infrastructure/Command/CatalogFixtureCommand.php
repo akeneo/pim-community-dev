@@ -170,6 +170,11 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => null,
                 ],
+                'categories' => [
+                    'source' => null,
+                    'scope' => null,
+                    'locale' => null,
+                ],
             ];
 
             /** @var object $productMappingSchema */
@@ -281,6 +286,13 @@ class CatalogFixtureCommand extends Command
                 "enum": ["Red", "Green", "Blue", "Yellow", "Black", "White"]
               },
               "title": "Colors"
+            },
+            "categories": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Categories"
             }
           },
           "required": ["name"]

@@ -261,6 +261,7 @@ pim_common:
   product_models: Modèles de produits
   more: Plus
   public_view: Vue publique
+  view: Afficher
 error:
   exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
@@ -342,6 +343,7 @@ pim_title:
   pim_settings_index: Paramètres
   pim_system_index: Système
 pim_menu:
+  tag.new: Nouveau
   tab:
     activity: Activité
     imports: Imports
@@ -381,6 +383,7 @@ pim_menu:
       product: Paramètres produit
       catalog: Paramètres du catalogue
       collapsed_label: Navigation paramètres
+      automation: Automatisation
     product: Navigation produit
     product_infos: Infos produit
   user:
@@ -396,6 +399,7 @@ pim_settings:
   settings_menu: Menu des paramètres
   catalog_settings: Paramètres du catalogue
   product_settings: Paramètres produit
+  automation_settings: Automatisation
   count:
     category_trees: '{0}Vous avez 0 arbres |{1}Vous avez 1 arbre |]1, Inf[Vous avez {{ count }} arbres '
     categories: '{0}et 0 catégories|{1}et 1 catégorie|]1, Inf[et {{ count }} catégories'

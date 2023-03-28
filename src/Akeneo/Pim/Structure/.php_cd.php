@@ -26,6 +26,7 @@ $rules = [
         'Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface',
         'Psr\Log\LoggerInterface',
         'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
+        'Akeneo\Channel\API',
         'Akeneo\Pim\Automation\DataQualityInsights\PublicApi',
 
         // TIP-906: Functional problem to query products before removing AttributeOption
@@ -52,7 +53,6 @@ $rules = [
 
         // I don't think we should add install subscriber in platform instead of structure (discussed with Arnaud L.)
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
-
     ])->in('Akeneo\Pim\Structure\Bundle'),
     $builder->only([
         'Symfony\Component',

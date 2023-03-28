@@ -261,6 +261,7 @@ pim_common:
   product_models: Modelos de producto
   more: Más
   public_view: Vista pública
+  view: Ver
 error:
   exception: Ha ocurrido un error de {{ status_code }}...
   forbidden: Prohibido. Usted no tiene permitido acceder a esta página
@@ -275,6 +276,7 @@ pim_enrich.entity.fallback:
     generic_error: Ha ocurrido un error
     update:
       fail: Error al actualizar
+      fail_session_expired: Su sesión de usuario ha caducado. Inicie sesión de nuevo.
       success: Actualización exitosa
     delete:
       fail: No se puede eliminar este elemento
@@ -341,6 +343,7 @@ pim_title:
   pim_settings_index: Configuración
   pim_system_index: Sistema
 pim_menu:
+  tag.new: Nuevo
   tab:
     activity: Actividad
     imports: Importaciones
@@ -380,6 +383,7 @@ pim_menu:
       product: Ajustes del producto
       catalog: Configuración del catálogo
       collapsed_label: Navegación de ajustes
+      automation: Automatización
     product: Navegación de productos
     product_infos: Información de producto
   user:
@@ -395,6 +399,7 @@ pim_settings:
   settings_menu: Menú de ajustes
   catalog_settings: Configuración del catálogo
   product_settings: Ajustes del producto
+  automation_settings: Automatización
   count:
     category_trees: '{0}Tiene 0 árboles |{1}Tiene 1 árbol |]1, Inf[Tiene {{ count }} árboles '
     categories: '{0}y 0 categorías|{1}y 1 categoría|]1, Inf[y {{ count }} categorías'
@@ -409,6 +414,7 @@ pim_settings:
     group_types: '{0}Tiene 0 tipos de grupos|{1}Tiene 1 tipo de grupos|]1, Inf[Tiene {{ count }} tipos de grupos'
     groups: '{0}Tiene 0 grupos|{1}Tiene 1 grupo|]1, Inf[Tiene {{ count }} grupos'
     rules: '{0}Tiene 0 reglas habilitadas|{1}Tiene 1 regla habilitada|]1, Inf[Tiene {{ count }} reglas habilitadas'
+    identifier_generators: '{0}Tiene 0 generadores de identificadores|{1}Tiene 1 generador de identificadores|]1, Inf[Tiene {{ count }} generadores de identificadores'
 pim_system:
   system_menu: Menú del sistema
   system_navigation: Sistema de navegación

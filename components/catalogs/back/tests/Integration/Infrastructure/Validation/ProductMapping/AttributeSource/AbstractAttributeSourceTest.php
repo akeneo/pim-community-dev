@@ -11,6 +11,7 @@ use Akeneo\Catalogs\Application\Persistence\Currency\GetChannelCurrenciesQueryIn
 use Akeneo\Catalogs\Application\Persistence\Currency\IsCurrencyActivatedQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\AssetManager\FindOneAssetAttributeByIdentifierQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Attribute\FindOneAttributeByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelQuery;
@@ -18,6 +19,7 @@ use Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetChannelCurrenciesQuer
 use Akeneo\Catalogs\Infrastructure\Persistence\Currency\IsCurrencyActivatedQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetChannelLocalesQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetLocalesQuery;
+use Akeneo\Catalogs\Infrastructure\Persistence\Measurement\GetMeasurementsFamilyQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 /**
@@ -33,6 +35,7 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
     protected ?GetChannelLocalesQueryInterface $getChannelLocalesQuery;
     protected ?IsCurrencyActivatedQueryInterface $isCurrencyActivatedQuery;
     protected ?GetChannelCurrenciesQueryInterface $getChannelCurrenciesQuery;
+    protected ?GetMeasurementsFamilyQueryInterface $getMeasurementsFamilyQuery;
 
     private array $attributes = [];
     private array $assetAttributes = [];
@@ -41,6 +44,7 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
     private array $locales = [];
     private array $currencies = [];
     private array $channelCurrencies = [];
+    private array $measurementsFamily = [];
 
     public static function setUpBeforeClass(): void
     {
@@ -137,6 +141,12 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
                 return $this->channelCurrencies[$code];
             });
         self::getContainer()->set(GetChannelCurrenciesQuery::class, $this->getChannelCurrenciesQuery);
+
+        $this->getMeasurementsFamilyQuery = $this->createMock(GetMeasurementsFamilyQueryInterface::class);
+        $this->getMeasurementsFamilyQuery
+            ->method('execute')
+            ->willReturnCallback(fn (string $code, string $locale): ?array => $this->measurementsFamily[$code] ?? null);
+        self::getContainer()->set(GetMeasurementsFamilyQuery::class, $this->getMeasurementsFamilyQuery);
     }
 
     protected function createAttribute(array $data): void
@@ -147,5 +157,13 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
     protected function createAssetAttribute(array $data): void
     {
         $this->assetAttributes[$data['identifier']] = $data;
+    }
+
+    protected function createMeasurementsFamily(array $data): void
+    {
+        $this->measurementsFamily[$data['code']] = [
+            'code' => $data['code'],
+            'units' => $data['units'],
+        ];
     }
 }

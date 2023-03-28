@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Re
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromAssetCollectionTextAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromCategoriesValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromMetricAttributeValueExtractor;
@@ -61,6 +62,13 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
     public function extractorDataProvider(): array
     {
         return [
+            ArrayOfStringsFromCategoriesValueExtractor::class => [
+                'sourceType' => 'categories',
+                'subSourceType' => null,
+                'targetType' => 'array<string>',
+                'targetFormat' => null,
+                'extractorClassName' => ArrayOfStringsFromCategoriesValueExtractor::class,
+            ],
             ArrayOfStringsFromAssetCollectionTextAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_asset_collection',
                 'subSourceType' => 'text',

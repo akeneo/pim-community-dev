@@ -1,0 +1,3 @@
+pim_catalog_identifier_generator:
+  acl:
+    manage: 'Gestisci generatori di identificatori'

@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useState, useMemo} from 'react';
+import React, {FC, useCallback, useMemo, useState} from 'react';
 import {Dropdown, Field, GroupsIllustration, Helper, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteSourceAttributes} from '../../hooks/useInfiniteSourceAttributes';
@@ -32,11 +32,12 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
     const systemAttributes = useSystemAttributes();
     const attributeLabel = attribute?.label ?? (selectedCode.length > 0 ? `[${selectedCode}]` : '');
     const filteredSystemAttributes: Attribute[] = useMemo(() => {
-        if (target.type !== 'string' || target.format !== null) {
+        if (['string', 'array<string>'].includes(target.type) && target.format === null) {
+            const regex = new RegExp(search, 'i');
+            return systemAttributes.filter(attribute => attribute.label.match(regex));
+        } else {
             return [];
         }
-        const regex = new RegExp(search, 'i');
-        return systemAttributes.filter(attribute => attribute.label.match(regex));
     }, [systemAttributes, search, target.type, target.format]);
 
     const handleAttributeSelection = useCallback(

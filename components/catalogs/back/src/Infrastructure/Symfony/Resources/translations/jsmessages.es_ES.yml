@@ -126,19 +126,29 @@ akeneo_catalogs:
     source:
       title: Seleccionar fuente
       parameters:
+        placeholder: Seleccione un atributo
         title: Parámetros de origen
         channel:
-          label: Canal
           placeholder: Seleccione un canal
         locale:
-          label: Configuración regional
           placeholder: Seleccione una configuración regional
+        label_locale:
+          label: Traducción de valores
+          placeholder: Seleccione una traducción
+          helper: Seleccione el idioma en el que debe enviarse el valor.
+        currency:
+          label: Moneda
+          placeholder: Seleccione una moneda
+          helper: Seleccione la divisa en la que debe enviarse el valor.
+        no_parameters_message: No hay parámetros para esta fuente.
+        unit:
+          label: Unidad
       select_source:
         label: Fuente PIM
         search: Criterio de búsqueda
-        no_results: no se encontraron coincidencias
-        section_system: sistema
-        section_attributes: atributos
+        no_results: No se encontraron coincidencias
+        section_system: Sistema
+        section_attributes: Atributos
       placeholder:
         title: Seleccionar origen
         illustration_title: Haga clic en un objetivo en el panel de la derecha para configurar la asignación de su catálogo.
@@ -148,3 +158,16 @@ akeneo_catalogs:
         illustration_title: El UUID es un identificador técnico de producto.
         subtitle: Todas las aplicaciones deben requerirlo como objetivo. No tiene nada que configurar para este objetivo ya que lo mapeamos automáticamente con el UUID del producto Akeneo.
         link: Más información sobre el UUID.
+      requirements:
+        title: Requisitos de la aplicación
+        help: Ayuda
+        constraints:
+          minLength: '{0,1} Este objetivo debe tener al menos {{ value }} caracteres.|[2,Inf[ Este objetivo debe tener al menos {{ value }} caracteres.'
+          maxLength: '{0,1} Este objetivo no debe superar los {{ value }} caracteres.|[2,Inf[ Este objetivo no debe superar los {{ value }} caracteres.'
+          pattern: '[0,Inf[ Patrón: Este objetivo debe coincidir con la siguiente expresión regular: «{{ value }}».'
+          minimum: '[0,Inf[ Este objetivo debe ser mayor o igual que {{ value }}.'
+          maximum: '[0,Inf[ Este objetivo debe ser inferior o igual a {{ value }}.'
+          enum: '[0,Inf[ Enum: Este objetivo solo acepta los siguientes valores: {{ value }}.'
+      system_attributes:
+        family:
+          label: Familia
