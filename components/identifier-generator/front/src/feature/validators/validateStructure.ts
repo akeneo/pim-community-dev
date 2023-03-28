@@ -4,7 +4,7 @@ import {Violation} from './Violation';
 import {validateFreeText} from './validateFreeText';
 import {validateAutoNumber} from './validateAutoNumber';
 import {validateFamilyProperty} from './validateFamilyProperty';
-import {validateSimpleSelectProperty} from './validateSimpleSelectProperty';
+import {validateAttributeProperty} from './validateAttributeProperty';
 
 const validateStructure: Validator<Structure | undefined> = (structure, path) => {
   const violations: Violation[] = [];
@@ -36,8 +36,8 @@ const validateStructure: Validator<Structure | undefined> = (structure, path) =>
     if (property.type === PROPERTY_NAMES.FAMILY) {
       violations.push(...validateFamilyProperty(property, subPath));
     }
-    if (property.type === PROPERTY_NAMES.SIMPLE_SELECT) {
-      violations.push(...validateSimpleSelectProperty(property, subPath));
+    if (property.type === PROPERTY_NAMES.SIMPLE_SELECT || property.type === PROPERTY_NAMES.REF_ENTITY) {
+      violations.push(...validateAttributeProperty(property, subPath));
     }
   });
 

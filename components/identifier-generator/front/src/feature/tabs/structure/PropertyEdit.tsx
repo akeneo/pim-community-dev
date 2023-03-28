@@ -18,6 +18,7 @@ const components = {
   [PROPERTY_NAMES.AUTO_NUMBER]: AutoNumberEdit,
   [PROPERTY_NAMES.FAMILY]: FamilyPropertyEdit,
   [PROPERTY_NAMES.SIMPLE_SELECT]: SimpleSelectPropertyEdit,
+  [PROPERTY_NAMES.REF_ENTITY]: SimpleSelectPropertyEdit,
 };
 
 const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange}) => {

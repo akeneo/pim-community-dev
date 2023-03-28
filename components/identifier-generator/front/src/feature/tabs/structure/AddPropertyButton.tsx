@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {Button, Dropdown, GroupsIllustration, Search, useBooleanState, useDebounce} from 'akeneo-design-system';
-import {Property, PROPERTY_NAMES, SimpleSelectProperty, Structure} from '../../models';
+import {Property, PROPERTY_NAMES, RefEntityProperty, SimpleSelectProperty, Structure} from '../../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useGetPropertyItems} from '../../hooks';
 
@@ -61,6 +61,14 @@ const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({onAddProperty, str
           type: null,
         },
       } as SimpleSelectProperty);
+    } else if (type === 'akeneo_reference_entity') {
+      handleAddProperty({
+        type: PROPERTY_NAMES.REF_ENTITY,
+        attributeCode: id,
+        process: {
+          type: null,
+        },
+      } as RefEntityProperty);
     }
   };
 
