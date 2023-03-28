@@ -3,6 +3,14 @@ services:
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext:
     public: true
 
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\StructureContext:
+    public: true
+    arguments:
+      - '@pim_catalog.repository.attribute'
+      - '@pim_catalog.repository.attribute_option'
+      - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes'
+      - '@pim_catalog.repository.channel'
+
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\DatabaseContext:
     public: true
     arguments:
@@ -62,22 +70,20 @@ services:
     arguments:
       - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
-      - '@pim_catalog.repository.attribute'
-      - '@pim_catalog.repository.attribute_option'
-      - '@Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes'
-      - '@pim_catalog.repository.channel'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
 
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateIdentifierGeneratorContext:
     public: true
     arguments:
       - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
-      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler'
 
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateFamilyNomenclatureContext:
     public: true
     arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler'
 

@@ -14,12 +14,12 @@ use Webmozart\Assert\Assert;
 
 class UpdateFamilyNomenclatureContext implements Context
 {
-    private ?ViolationsException $violations = null;
     private const DEFAULT_OPERATOR = '<=';
     private const DEFAULT_VALUE = 3;
     private const DEFAULT_GENERATE_IF_EMPTY = false;
 
     public function __construct(
+        private readonly ViolationsContext $violationsContext,
         private readonly FamilyNomenclatureRepository $nomenclatureRepository,
         private readonly UpdateNomenclatureHandler $updateNomenclatureValuesHandler,
     ) {
@@ -98,8 +98,8 @@ class UpdateFamilyNomenclatureContext implements Context
 
         try {
             ($this->updateNomenclatureValuesHandler)($command);
-        } catch (ViolationsException $e) {
-            $this->violations = $e;
+        } catch (ViolationsException $exception) {
+            $this->violationsContext->setViolationsException($exception);
         }
     }
 
@@ -125,22 +125,5 @@ class UpdateFamilyNomenclatureContext implements Context
     public function theFamilyNomenclatureGenerationIfEmptyShouldBe(string $generateIfEmpty): void
     {
         Assert::eq($this->nomenclatureRepository->get('family')->generateIfEmpty(), $generateIfEmpty === 'true');
-    }
-
-    /**
-     * @Then I should have an error :message
-     */
-    public function iShouldHaveAnError($message): void
-    {
-        Assert::notNull($this->violations, 'No error were raised.');
-        Assert::contains($this->violations->getMessage(), $message);
-    }
-
-    /**
-     * @Then I should not have an error
-     */
-    public function iShouldNotHaveAnError(): void
-    {
-        Assert::null($this->violations);
     }
 }

@@ -4,96 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
-use Akeneo\Channel\Infrastructure\Component\Model\Channel;
-use Akeneo\Channel\Infrastructure\Component\Model\Locale;
-use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\AttributeOption;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
 use Behat\Behat\Context\Context;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CreateIdentifierGeneratorContext implements Context
+final class CreateIdentifierGeneratorContext extends BaseCreateOrUpdateIdentifierGenerator implements Context
 {
-    public const DEFAULT_CODE = 'generator_0';
-
-    public function __construct(
-        private readonly ViolationsContext $violationsContext,
-        private readonly CreateGeneratorHandler $createGeneratorHandler,
-        private readonly AttributeRepositoryInterface $attributeRepository,
-        private readonly AttributeOptionRepositoryInterface $attributeOptionRepository,
-        private readonly FindFamilyCodes $findFamilyCodes,
-        private readonly ChannelRepositoryInterface $channelRepository,
-    ) {
-    }
-
-    /**
-     * @Given /^the '(?P<attributeCode>[^']*)'(?P<localizable> localizable)?(?: and)?(?P<scopable> scopable)? attribute of type '(?P<attributeType>[^']*)'$/
-     */
-    public function theAttribute(
-        string $attributeCode,
-        string $attributeType,
-        string $scopable = '',
-        string $localizable = ''
-    ): void {
-        $identifierAttribute = new Attribute();
-        $identifierAttribute->setType($attributeType);
-        $identifierAttribute->setCode($attributeCode);
-        $identifierAttribute->setScopable($scopable !== '');
-        $identifierAttribute->setLocalizable($localizable !== '');
-        $identifierAttribute->setBackendType(AttributeTypes::BACKEND_TYPE_TEXT);
-        $this->attributeRepository->save($identifierAttribute);
-    }
-
-    /**
-     * @Given the :familyCode family
-     */
-    public function theFamily(string $familyCode): void
-    {
-        $this->findFamilyCodes->save($familyCode);
-    }
-
-    /**
-     * @Given /^the (?P<optionCodes>(('.*')(, | and )?)+) options? for '(?P<attributeCode>[^']*)' attribute$/
-     */
-    public function theAndOptionsForAttribute(string $optionCodes, string $attributeCode): void
-    {
-        foreach ($this->splitList($optionCodes) as $optionCode) {
-            $attributeOption = new AttributeOption();
-            $attributeOption->setCode($optionCode);
-            $attributeOption->setAttribute($this->attributeRepository->findOneByIdentifier($attributeCode));
-            $this->attributeOptionRepository->save($attributeOption);
-        }
-    }
-
-    /**
-     * @Given /^the '(?P<channelCode>[^']*)' channel having (?P<localeCodes>(('.*')(, | and )?)+) as locales?$/
-     */
-    public function theChannelHavingActiveLocalesAnd(string $channelCode, string $localeCodes): void
-    {
-        $channel = new Channel();
-        $channel->setCode($channelCode);
-        $locales = [];
-        foreach ($this->splitList($localeCodes) as $localeCode) {
-            $locale = new Locale();
-            $locale->setCode($localeCode);
-            $locale->addChannel($channel);
-            $locales[] = $locale;
-        }
-        $channel->setLocales($locales);
-
-        $this->channelRepository->save($channel);
-    }
-
     /**
      * @When /^I create (?P<count>\d+|an) identifier generators?$/
      */
@@ -171,9 +91,9 @@ final class CreateIdentifierGeneratorContext implements Context
     {
         try {
             ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                self::DEFAULT_CODE,
+                self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
                 [],
-                [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
+                [['type' => 'free_text', 'string' => self::DEFAULT_IDENTIFIER_GENERATOR_CODE]],
                 [],
                 'sku',
                 null,
@@ -216,76 +136,5 @@ final class CreateIdentifierGeneratorContext implements Context
     public function iTryToCreateAnIdentifierGeneratorWithConditions(string $count): void
     {
         $this->tryToCreateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
-    }
-
-    private function tryToCreateGenerator(
-        ?string $code = null,
-        ?array $structure = null,
-        ?array $conditions = null,
-        ?array $labels = null,
-        ?string $target = null,
-        ?string $delimiter = null,
-        ?string $textTransformation = null,
-    ): void {
-        try {
-            ($this->createGeneratorHandler)(new CreateGeneratorCommand(
-                $code ?? self::DEFAULT_CODE,
-                $conditions ?? [
-                    $this->getValidCondition('enabled'),
-                    $this->getValidCondition('family'),
-                    $this->getValidCondition('simple_select'),
-                    $this->getValidCondition('multi_select'),
-                ],
-                $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_CODE]],
-                $labels ?? ['fr_FR' => 'Générateur'],
-                $target ?? 'sku',
-                $delimiter ?? '-',
-                $textTransformation ?? 'no',
-            ));
-        } catch (ViolationsException $exception) {
-            $this->violationsContext->setViolationsException($exception);
-        }
-    }
-
-    private function getValidCondition(string $type, ?string $operator = null): array
-    {
-        switch($type) {
-            case 'enabled': return [
-                'type' => 'enabled',
-                'value' => true,
-            ];
-            case 'family': return [
-                'type' => 'family',
-                'operator' => $operator ?? 'IN',
-                'value' => ['tshirt'],
-            ];
-            case 'simple_select': return [
-                'type' => 'simple_select',
-                'operator' => $operator ?? 'IN',
-                'attributeCode' => 'color',
-                'value' => ['green'],
-            ];
-            case 'multi_select': return [
-                'type' => 'multi_select',
-                'operator' => $operator ?? 'IN',
-                'attributeCode' => 'a_multi_select',
-                'value' => ['option_a', 'option_b'],
-            ];
-        }
-
-        throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
-    }
-
-    /**
-     * @return string[]
-     */
-    private function splitList(string $codesList): array
-    {
-        $codesWithQuotes = \preg_split('/(, )|( and )/', $codesList);
-
-        return \array_map(
-            static fn (string $codeWithQuotes): string => \substr($codeWithQuotes, 1, -1),
-            $codesWithQuotes
-        );
     }
 }

@@ -5,6 +5,7 @@ default:
                 - '%paths.base%/features'
             contexts:
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\StructureContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\DatabaseContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\AutoNumberPropertyContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FreeTextPropertyContext

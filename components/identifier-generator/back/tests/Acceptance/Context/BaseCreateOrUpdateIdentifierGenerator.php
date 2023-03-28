@@ -14,12 +14,12 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGenerator
  */
 class BaseCreateOrUpdateIdentifierGenerator
 {
-    private const DEFAULT_IDENTIFIER_GENERATOR_CODE = 'default';
+    public const DEFAULT_IDENTIFIER_GENERATOR_CODE = 'default';
 
     public function __construct(
-        private readonly ViolationsContext $violationsContext,
-        private readonly CreateGeneratorHandler $createGeneratorHandler,
-        private readonly UpdateGeneratorHandler $updateGeneratorHandler,
+        protected readonly ViolationsContext $violationsContext,
+        protected readonly CreateGeneratorHandler $createGeneratorHandler,
+        protected readonly UpdateGeneratorHandler $updateGeneratorHandler,
     ) {
     }
 
@@ -69,5 +69,34 @@ class BaseCreateOrUpdateIdentifierGenerator
         } catch (ViolationsException $violations) {
             $this->violationsContext->setViolationsException($violations);
         }
+    }
+
+    protected function getValidCondition(string $type, ?string $operator = null): array
+    {
+        switch($type) {
+            case 'enabled': return [
+                'type' => 'enabled',
+                'value' => true,
+            ];
+            case 'family': return [
+                'type' => 'family',
+                'operator' => $operator ?? 'IN',
+                'value' => ['tshirt'],
+            ];
+            case 'simple_select': return [
+                'type' => 'simple_select',
+                'operator' => $operator ?? 'IN',
+                'attributeCode' => 'color',
+                'value' => ['green'],
+            ];
+            case 'multi_select': return [
+                'type' => 'multi_select',
+                'operator' => $operator ?? 'IN',
+                'attributeCode' => 'a_multi_select',
+                'value' => ['option_a', 'option_b'],
+            ];
+        }
+
+        throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
     }
 }

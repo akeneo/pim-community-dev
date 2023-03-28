@@ -5,28 +5,15 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Behat\Behat\Context\Context;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class UpdateIdentifierGeneratorContext implements Context
+final class UpdateIdentifierGeneratorContext extends BaseCreateOrUpdateIdentifierGenerator implements Context
 {
-    public const DEFAULT_IDENTIFIER_GENERATOR_CODE = 'default';
-
-    public function __construct(
-        private readonly ViolationsContext $violationsContext,
-        private readonly UpdateGeneratorHandler $updateGeneratorHandler,
-        private readonly IdentifierGeneratorRepository $generatorRepository,
-        private readonly ReorderGeneratorsHandler $reorderGeneratorsHandler,
-    ) {
-    }
-
     /**
      * @When I update the identifier generator
      */
@@ -200,84 +187,5 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function iTryToUpdateAnIdentifierGeneratorWithConditions(string $count): void
     {
         $this->tryToUpdateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
-    }
-
-    private function tryToUpdateGenerator(
-        ?string $code = null,
-        ?array $structure = null,
-        ?array $conditions = null,
-        ?array $labels = null,
-        ?string $target = null,
-        ?string $delimiter = null,
-        ?string $textTransformation = null,
-    ): void {
-        try {
-            ($this->updateGeneratorHandler)(new UpdateGeneratorCommand(
-                $code ?? self::DEFAULT_IDENTIFIER_GENERATOR_CODE,
-                $conditions ?? [
-                    $this->getValidCondition('enabled'),
-                    $this->getValidCondition('family', 'EMPTY'),
-                    $this->getValidCondition('simple_select'),
-                    $this->getValidCondition('multi_select'),
-                ],
-                $structure ?? [['type' => 'free_text', 'string' => self::DEFAULT_IDENTIFIER_GENERATOR_CODE]],
-                $labels ?? ['fr_FR' => 'Générateur'],
-                $target ?? 'sku',
-                $delimiter ?? 'updatedGenerator',
-                $textTransformation ?? 'no',
-            ));
-        } catch (ViolationsException $violations) {
-            $this->violationsContext->setViolationsException($violations);
-        }
-    }
-
-    private function getValidCondition(string $type, ?string $operator = null): array
-    {
-        switch ($type) {
-            case 'enabled':
-                return [
-                    'type' => 'enabled',
-                    'value' => true,
-                ];
-            case 'family':
-                $familyCondition = [
-                    'type' => 'family',
-                    'operator' => $operator ?? 'IN',
-                ];
-                if ('EMPTY' !== $operator) {
-                    $familyCondition['value'] = ['tshirt'];
-                }
-
-                return $familyCondition;
-            case 'simple_select':
-                return [
-                    'type' => 'simple_select',
-                    'operator' => $operator ?? 'IN',
-                    'attributeCode' => 'color',
-                    'value' => ['green'],
-                ];
-            case 'multi_select':
-                return [
-                    'type' => 'multi_select',
-                    'operator' => $operator ?? 'IN',
-                    'attributeCode' => 'a_multi_select',
-                    'value' => ['option_a', 'option_b'],
-                ];
-        }
-
-        throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
-    }
-
-    /**
-     * @return string[]
-     */
-    private function splitList(string $codesList): array
-    {
-        $codesWithQuotes = \preg_split('/(, )|( and )/', $codesList);
-
-        return \array_map(
-            static fn (string $codeWithQuotes): string => \substr($codeWithQuotes, 1, -1),
-            $codesWithQuotes
-        );
     }
 }

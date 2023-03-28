@@ -23,8 +23,6 @@ use Webmozart\Assert\Assert;
  */
 class DatabaseContext implements Context
 {
-    private const DEFAULT_IDENTIFIER_GENERATOR_CODE = 'default';
-
     public function __construct(
         private readonly IdentifierGeneratorRepository $generatorRepository,
     ) {
@@ -53,7 +51,7 @@ class DatabaseContext implements Context
      */
     public function theIdentifierShouldNotBeCreated(): void
     {
-        Assert::null($this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE));
+        Assert::null($this->generatorRepository->get(BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE));
     }
 
     /**
@@ -61,7 +59,7 @@ class DatabaseContext implements Context
      */
     public function identifierGeneratorIsSavedInTheRepository(): void
     {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
+        $identifierGenerator = $this->generatorRepository->get(BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE);
         Assert::isInstanceOf($identifierGenerator, IdentifierGenerator::class);
     }
 
@@ -70,7 +68,7 @@ class DatabaseContext implements Context
      */
     public function identifierGeneratorIsUpdatedInTheRepository(): void
     {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
+        $identifierGenerator = $this->generatorRepository->get(BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE);
         Assert::eq($identifierGenerator->delimiter()->asString(), 'updatedGenerator');
     }
 
@@ -79,7 +77,7 @@ class DatabaseContext implements Context
      */
     public function identifierGeneratorIsUpdatedWithoutLabelInTheRepository(): void
     {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
+        $identifierGenerator = $this->generatorRepository->get(BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE);
         Assert::eq($identifierGenerator->labelCollection()->normalize(), (object)[]);
     }
 
@@ -88,7 +86,7 @@ class DatabaseContext implements Context
      */
     public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndDelimiterIsNull(): void
     {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
+        $identifierGenerator = $this->generatorRepository->get(BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE);
         Assert::null($identifierGenerator->delimiter()->asString());
     }
 
@@ -97,7 +95,7 @@ class DatabaseContext implements Context
      */
     public function theIdentifierGeneratorIsUpdatedInTheRepositoryAndTextTransformationIsLowercase(): void
     {
-        $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
+        $identifierGenerator = $this->generatorRepository->get(BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE);
         Assert::eq($identifierGenerator->textTransformation()->normalize(), TextTransformation::LOWERCASE);
     }
 }
