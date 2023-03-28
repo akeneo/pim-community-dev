@@ -15,5 +15,4 @@ akeneo_feature_flag:
         - { feature: 'catalogs', service: 'akeneo.feature_flag.service.only_saas_feature' }
         - { feature: 'promote_unlock', service: 'akeneo.feature_flag.service.only_growth_and_serenity_feature' }
         - { feature: 'category_template_deactivation', service: 'akeneo.category.template.deactivation'}
-        - { feature: 'attribute_groups_mass_delete', service: 'akeneo.structure.attribute_groups_mass_delete.feature'}
         - { feature: 'category_template_customization', service: 'akeneo.category.template.customization'}

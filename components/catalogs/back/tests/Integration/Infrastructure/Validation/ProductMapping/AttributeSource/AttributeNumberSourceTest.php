@@ -107,6 +107,21 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
                     'locale' => 'en_US',
                 ],
             ],
+            'with default value' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'label' => 'Optical size',
+                    'type' => 'pim_catalog_number',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => 25,
+                ],
+            ],
         ];
     }
 
@@ -290,6 +305,22 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
                     'parameters' => [],
                 ],
                 'expectedMessage' => 'This field was not expected.',
+            ],
+            'source with invalid default value type' => [
+                'attribute' => [
+                    'code' => 'size',
+                    'label' => 'Optical size',
+                    'type' => 'pim_catalog_number',
+                    'scopable' => false,
+                    'localizable' => false,
+                ],
+                'source' => [
+                    'source' => 'size',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => true,
+                ],
+                'expectedMessage' => 'This value should be of type numeric.',
             ],
         ];
     }

@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type LabelsNormalized array<string, string>|object
+ * @phpstan-type LabelsNormalized array<string, string>
  */
 final class LabelCollection
 {
@@ -19,43 +19,27 @@ final class LabelCollection
      * @param array<string, string> $labels
      */
     public function __construct(
-        private array $labels,
+        private readonly array $labels,
     ) {
     }
 
     /**
-     * @param \stdClass|array<string, mixed> $normalizedLabels
+     * @param array<string, string> $normalizedLabels
      */
-    public static function fromNormalized(array|\stdClass $normalizedLabels): self
+    public static function fromNormalized(array $normalizedLabels): self
     {
-        if ($normalizedLabels instanceof \stdClass) {
-            $normalizedLabels = [];
-        }
         Assert::isArray($normalizedLabels);
         Assert::allString($normalizedLabels);
         Assert::allStringNotEmpty(\array_keys($normalizedLabels));
 
-        return new self(\array_filter($normalizedLabels));
+        return new self(\array_filter($normalizedLabels, static fn (string $label): bool => '' !== \trim($label)));
     }
 
     /**
      * @return LabelsNormalized
      */
-    public function normalize(): array|object
+    public function normalize(): array
     {
-        return [] === $this->labels ? (object) [] : $this->labels;
-    }
-
-    /**
-     * @param array<string, mixed> $labels
-     */
-    public function merge(array $labels): self
-    {
-        return LabelCollection::fromNormalized(\array_replace($this->labels, $labels));
-    }
-
-    public function getLabel(string $localeCode): ?string
-    {
-        return $this->labels[$localeCode] ?? null;
+        return $this->labels;
     }
 }

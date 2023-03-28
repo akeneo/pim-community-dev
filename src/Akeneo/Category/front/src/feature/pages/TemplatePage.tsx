@@ -106,8 +106,6 @@ const TemplatePage: FC = () => {
     return templateEdited?.attributes.length != 0;
   }
 
-  console.log (templateHasAttribute);
-
   return (
     <>
       <PageHeader>

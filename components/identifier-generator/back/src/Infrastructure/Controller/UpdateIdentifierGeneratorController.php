@@ -39,17 +39,19 @@ final class UpdateIdentifierGeneratorController
             throw new AccessDeniedException();
         }
 
-        try {
-            $content = $this->getContent($request);
-            $command = UpdateGeneratorCommand::fromNormalized($code, $content);
-        } catch (\InvalidArgumentException $exception) {
-            return new JsonResponse([['message' => $exception->getMessage()]], Response::HTTP_BAD_REQUEST);
-        }
+        $content = $this->getContent($request);
+        $command = new UpdateGeneratorCommand(
+            $code,
+            $content['conditions'],
+            $content['structure'],
+            $content['labels'],
+            $content['target'],
+            $content['delimiter'],
+            $content['text_transformation']
+        );
 
         try {
             ($this->updateGeneratorHandler)($command);
-        } catch (\InvalidArgumentException $exception) {
-            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
         } catch (ViolationsException $exception) {
             return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         }
@@ -61,17 +63,29 @@ final class UpdateIdentifierGeneratorController
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array{
+     *     conditions: list<array<string, mixed>>,
+     *     structure: list<array<string, mixed>>,
+     *     labels: array<string, string>,
+     *     target: string,
+     *     delimiter: ?string,
+     *     text_transformation: string
+     * }
      */
     private function getContent(Request $request): array
     {
-        $content = \json_decode($request->getContent(), true);
-        if (null === $content) {
+        $data = \json_decode($request->getContent(), true);
+        if (!\is_array($data)) {
             throw new BadRequestHttpException('Invalid json message received');
         }
 
-        Assert::isArray($content);
-
-        return $content;
+        return [
+            'conditions' => \is_array($data['conditions'] ?? null) ? $data['conditions'] : [],
+            'structure' => \is_array($data['structure'] ?? null) ? $data['structure'] : [],
+            'labels' => \is_array($data['labels'] ?? null) ? $data['labels'] : [],
+            'target' => \is_string($data['target'] ?? null) ? $data['target'] : '',
+            'delimiter' => \is_string($data['delimiter'] ?? null) ? $data['delimiter'] : null,
+            'text_transformation' => \is_string($data['text_transformation'] ?? null) ? $data['text_transformation'] : '',
+        ];
     }
 }

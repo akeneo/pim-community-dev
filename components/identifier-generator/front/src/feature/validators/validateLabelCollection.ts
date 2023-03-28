@@ -12,10 +12,6 @@ const validateLabelCollection: Validator<LabelCollection> = (labelCollection, pa
   });
 
   Object.keys(labelCollection).forEach(locale => {
-    if (labelCollection[locale].trim() === '') {
-      violations.push({path, message: `The label for "${locale}" must be filled`});
-    }
-
     if (labelCollection[locale].length > 255) {
       violations.push({path, message: `The label for "${locale}" is too long: it must be 255 characters or less`});
     }

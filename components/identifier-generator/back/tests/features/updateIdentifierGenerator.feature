@@ -335,6 +335,11 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with 'fr_FR' label 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. Praesent luctus cursus finibus. Maecenas et euismod tellus. Nunc sed est nec mi consequat consequat sit amet ac ex. '
     Then I should get an error on update with message 'labels[fr_FR]: This value is too long. It should have 255 characters or less.'
 
+  Scenario: Can update an identifier generator with empty label
+    When I try to update an identifier generator with 'de_DE' label ''
+    Then I should not get any update error
+    And there should be no 'de_DE' label for the 'default' generator
+
   # Delimiter
   Scenario: Cannot update an identifier generator with an empty delimiter
     When I try to update an identifier generator with delimiter ''
@@ -358,3 +363,9 @@ Feature: Update Identifier Generator
     When I update an identifier generator with text transformation lowercase
     Then The identifier generator is updated in the repository and text transformation is lowercase
     And I should not get any error
+
+  Scenario: Being able to reorder identifier generators
+    Given the 'ig_1' identifier generator
+    And the 'ig_2' identifier generator
+    When I reorder the identifier generators as 'ig_1', 'ig_2' and 'default'
+    Then the identifier generators should be ordered as 'ig_1', 'ig_2' and 'default'

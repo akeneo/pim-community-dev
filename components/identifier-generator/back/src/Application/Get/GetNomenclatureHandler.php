@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Get;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
 use Webmozart\Assert\Assert;
 
 /**
@@ -15,7 +17,8 @@ use Webmozart\Assert\Assert;
 final class GetNomenclatureHandler
 {
     public function __construct(
-        private readonly NomenclatureRepository $nomenclatureRepository,
+        private readonly FamilyNomenclatureRepository $familyNomenclatureRepository,
+        private readonly SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository,
     ) {
     }
 
@@ -29,7 +32,13 @@ final class GetNomenclatureHandler
      */
     public function __invoke(GetNomenclatureCommand $command): array
     {
-        $nomenclature = $this->nomenclatureRepository->get($command->propertyCode()) ?? new NomenclatureDefinition();
+        if ($command->propertyCode() === FamilyProperty::TYPE) {
+            $nomenclatureRepository = $this->familyNomenclatureRepository;
+        } else {
+            $nomenclatureRepository = $this->simpleSelectNomenclatureRepository;
+        }
+
+        $nomenclature = $nomenclatureRepository->get($command->propertyCode()) ?? new NomenclatureDefinition();
 
         Assert::allNotNull($nomenclature->values());
 

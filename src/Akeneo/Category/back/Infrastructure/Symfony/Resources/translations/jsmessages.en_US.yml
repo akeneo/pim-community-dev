@@ -51,7 +51,6 @@ akeneo.category:
                         option_title:
                             text: Text
                             textarea: Text area
-                            richtext: Rich text
                             image: Image
             success:
                 notification: Attribute successfully created

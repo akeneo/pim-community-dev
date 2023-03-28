@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
@@ -34,6 +36,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function __construct(
         private UpdateGeneratorHandler $updateGeneratorHandler,
         private IdentifierGeneratorRepository $generatorRepository,
+        private ReorderGeneratorsHandler $reorderGeneratorsHandler,
     ) {
     }
 
@@ -70,7 +73,7 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function identifierGeneratorIsUpdatedWithoutLabelInTheRepository(): void
     {
         $identifierGenerator = $this->generatorRepository->get(self::DEFAULT_IDENTIFIER_GENERATOR_CODE);
-        Assert::eq($identifierGenerator->labelCollection()->normalize(), (object)[]);
+        Assert::eq($identifierGenerator->labelCollection()->normalize(), []);
     }
 
     /**
@@ -475,7 +478,6 @@ final class UpdateIdentifierGeneratorContext implements Context
         string $value = '',
         string $unknown = '',
     ): void {
-        \var_dump($value);
         $defaultCondition = $this->getValidCondition($type);
         if ($attributeCode !== '') {
             $defaultCondition['attributeCode'] = $attributeCode;
@@ -504,6 +506,28 @@ final class UpdateIdentifierGeneratorContext implements Context
             $defaultCondition['unknown'] = 'unknown property';
         }
         $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
+    }
+
+    /**
+     * @When /^I reorder the identifier generators as (?P<codes>(('.*')(, | and )?)+)$/
+     */
+    public function iReorderTheIdentifierGenerators(string $codes): void
+    {
+        ($this->reorderGeneratorsHandler)(ReorderGeneratorsCommand::fromCodes($this->splitList($codes)));
+    }
+
+    /**
+     * @Then /^the identifier generators should be ordered as (?P<codes>(('.*')(, | and )?)+)$/
+     */
+    public function theIdentifierGeneratorsShouldBeOrderedAs(string $codes): void
+    {
+        $generators = $this->generatorRepository->getAll();
+        $orderedCodes = \array_map(
+            static fn (IdentifierGenerator $generator): string => $generator->code()->asString(),
+            $generators
+        );
+
+        Assert::same($orderedCodes, $this->splitList($codes), 'real codes: ' . \implode(', ', $orderedCodes));
     }
 
     private function tryToUpdateGenerator(
@@ -570,5 +594,18 @@ final class UpdateIdentifierGeneratorContext implements Context
         }
 
         throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');
+    }
+
+    /**
+     * @return string[]
+     */
+    private function splitList(string $codesList): array
+    {
+        $codesWithQuotes = \preg_split('/(, )|( and )/', $codesList);
+
+        return \array_map(
+            static fn (string $codeWithQuotes): string => \substr($codeWithQuotes, 1, -1),
+            $codesWithQuotes
+        );
     }
 }

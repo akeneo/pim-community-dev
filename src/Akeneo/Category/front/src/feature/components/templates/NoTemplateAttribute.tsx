@@ -1,6 +1,5 @@
 import React from 'react';
-import {AttributesIllustration, Button, getColor, getFontSize, Link} from 'akeneo-design-system';
-import {LabelContainer} from "akeneo-design-system/lib/storybook";
+import {AttributesIllustration, Button, getFontSize, Link} from 'akeneo-design-system';
 import {translate} from "@akeneo-pim-community/shared";
 import styled from "styled-components";
 
