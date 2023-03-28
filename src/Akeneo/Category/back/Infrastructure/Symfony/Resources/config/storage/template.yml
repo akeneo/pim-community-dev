@@ -27,9 +27,3 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'
-
-    Akeneo\Category\Domain\Query\DeleteTemplateAttribute:
-        class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\DeleteCategoryTemplateAttributeSql'
-        arguments:
-            - '@database_connection'
-            - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'

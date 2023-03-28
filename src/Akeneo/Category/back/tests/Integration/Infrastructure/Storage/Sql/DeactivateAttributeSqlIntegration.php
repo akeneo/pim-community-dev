@@ -41,40 +41,36 @@ class DeactivateAttributeSqlIntegration extends CategoryTestCase
         $this->assertCount(13, $insertedAttributes);
         foreach(range(0,2) as $index) {
             $attributeUuid = $insertedAttributes->getAttributes()[$index]->getUuid();
-            $this::assertFalse($this->retrieveAttributeDeactivationStatus($templateUuid, $attributeUuid));
+            $this::assertFalse($this->retrieveAttributeDeactivationStatus($attributeUuid));
             $this->get(DeactivateAttribute::class)->execute($templateUuid, $attributeUuid);
-            $this::assertTrue($this->retrieveAttributeDeactivationStatus($templateUuid, $attributeUuid));
+            $this::assertTrue($this->retrieveAttributeDeactivationStatus($attributeUuid));
         }
     }
 
     public function testItDoesNotCrashIfTemplateDoesNotExists(): void
     {
-        $nonExistingTemplateUuid = TemplateUuid::fromString('a1b744e2-a84b-4f74-832f-01aeb202d0ce');
         $nonExistingAttributeUuid = AttributeUuid::fromString('583393ac-ca2a-11ed-afa1-0242ac120002');
         try {
-            $this::assertFalse($this->retrieveAttributeDeactivationStatus($nonExistingTemplateUuid, $nonExistingAttributeUuid));
+            $this::assertFalse($this->retrieveAttributeDeactivationStatus($nonExistingAttributeUuid));
         } catch (\Exception $e) {
             $this->fail('An unexpected exception was thrown: '.$e->getMessage());
         }
     }
 
-    private function retrieveAttributeDeactivationStatus(TemplateUuid $templateUuid, AttributeUuid $attributeUuid): bool
+    private function retrieveAttributeDeactivationStatus(AttributeUuid $attributeUuid): bool
     {
         $query = <<<SQL
             SELECT is_deactivated 
             FROM pim_catalog_category_attribute
-            WHERE category_template_uuid = :template_uuid
-            AND uuid = :attribute_uuid;
+            WHERE uuid = :attribute_uuid;
         SQL;
 
         return (bool) $this->get('database_connection')->executeQuery(
             $query,
             [
-                'template_uuid' => $templateUuid->toBytes(),
                 'attribute_uuid' => $attributeUuid->toBytes(),
             ],
             [
-                'template_uuid' => \PDO::PARAM_STR,
                 'attribute_uuid' => \PDO::PARAM_STR,
             ],
         )->fetchOne();
