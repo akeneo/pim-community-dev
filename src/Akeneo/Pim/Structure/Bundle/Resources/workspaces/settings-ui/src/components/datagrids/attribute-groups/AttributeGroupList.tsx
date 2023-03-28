@@ -8,6 +8,7 @@ import {AttributeGroupRow} from './AttributeGroupRow';
 
 const TableWrapper = styled.div<{isSelectable: boolean}>`
   ${({isSelectable}) => (isSelectable ? 'margin-left: -40px;' : '')}
+  padding: 0 40px;
 `;
 
 type AttributeGroupListProps = {

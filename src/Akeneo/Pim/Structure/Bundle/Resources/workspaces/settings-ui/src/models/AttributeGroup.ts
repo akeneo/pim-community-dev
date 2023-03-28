@@ -26,11 +26,9 @@ const toSortedAttributeGroupsArray = (collection: AttributeGroupCollection): Att
 
 const getImpactedAndTargetAttributeGroups = (
   attributeGroups: AttributeGroup[],
-  selection: Selection<AttributeGroup>
+  selection: Selection<AttributeGroup>,
+  defaultTargetAttributeGroup: AttributeGroup | null
 ): [AttributeGroup[], AttributeGroup[]] => {
-  const defaultTargetAttributeGroup =
-    attributeGroups.find(({code}) => DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP === code) ?? null;
-
   const excludedAttributeGroups = attributeGroups.filter(
     attributeGroup => !selection.collection.includes(attributeGroup)
   );
@@ -48,7 +46,7 @@ const getImpactedAndTargetAttributeGroups = (
     impactedAttributeGroups,
     [
       defaultTargetAttributeGroup,
-      ...targetAttributeGroups.filter(({code}) => DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP !== code),
+      ...targetAttributeGroups.filter(({code}) => defaultTargetAttributeGroup.code !== code),
     ],
   ];
 };
