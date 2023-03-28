@@ -7,7 +7,7 @@ export * from './validateFreeText';
 export * from './validateIdentifierGenerator';
 export * from './validateIdentifierGeneratorCode';
 export * from './validateLabelCollection';
-export * from './validateSimpleSelectProperty';
+export * from './validateAttributeProperty';
 export * from './validateStructure';
 export * from './validateTarget';
 export * from './Validator';
