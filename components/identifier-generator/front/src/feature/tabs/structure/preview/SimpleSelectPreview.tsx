@@ -1,9 +1,9 @@
 import React, {useMemo} from 'react';
-import {AbbreviationType, SimpleSelectProperty} from '../../../models';
+import {AbbreviationType, RefEntityProperty, SimpleSelectProperty} from '../../../models';
 import {Preview} from 'akeneo-design-system';
 
 type Props = {
-  property: SimpleSelectProperty;
+  property: SimpleSelectProperty | RefEntityProperty;
 };
 
 const SimpleSelectPreview: React.FC<Props> = ({property}) => {

@@ -1,9 +1,9 @@
 import React from 'react';
 import {mockResponse, render, waitFor} from '../../../../tests/test-utils';
-import {SimpleSelectPropertyLine} from '../SimpleSelectPropertyLine';
+import {AttributePropertyLine} from '../AttributePropertyLine';
 import {PROPERTY_NAMES, SimpleSelectProperty} from '../../../../models';
 
-describe('SimpleSelectPropertyLine', () => {
+describe('AttributePropertyLine', () => {
   it('should display simple select line', async () => {
     mockResponse('pim_enrich_attribute_rest_get', 'GET', {
       ok: true,
@@ -23,7 +23,7 @@ describe('SimpleSelectPropertyLine', () => {
       scope: null,
       locale: null,
     };
-    const screen = render(<SimpleSelectPropertyLine property={simpleSelectProperty} />);
+    const screen = render(<AttributePropertyLine attributeCode={simpleSelectProperty.attributeCode} />);
 
     await waitFor(() => {
       expect(screen.getByText('Brand')).toBeInTheDocument();

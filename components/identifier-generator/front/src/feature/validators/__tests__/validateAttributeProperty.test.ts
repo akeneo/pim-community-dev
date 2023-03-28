@@ -1,7 +1,7 @@
-import {validateSimpleSelectProperty} from '../validateSimpleSelectProperty';
+import {validateAttributeProperty} from '../validateAttributeProperty';
 import {AbbreviationType, Operator, PROPERTY_NAMES, SimpleSelectProperty} from '../../models';
 
-describe('validateSimpleSelectProperty', () => {
+describe('validateAttributeProperty', () => {
   it('returns a violation when process is empty', () => {
     const simpleSelectProperty: SimpleSelectProperty = {
       type: PROPERTY_NAMES.SIMPLE_SELECT,
@@ -10,7 +10,7 @@ describe('validateSimpleSelectProperty', () => {
         type: null,
       },
     };
-    const violations = validateSimpleSelectProperty(simpleSelectProperty, 'path');
+    const violations = validateAttributeProperty(simpleSelectProperty, 'path');
     expect(violations).toEqual([
       {
         path: 'path',
@@ -29,7 +29,7 @@ describe('validateSimpleSelectProperty', () => {
         value: 3,
       },
     };
-    const violations = validateSimpleSelectProperty(simpleSelectProperty, 'path');
+    const violations = validateAttributeProperty(simpleSelectProperty, 'path');
     expect(violations).toEqual([
       {
         path: 'path',
@@ -48,7 +48,7 @@ describe('validateSimpleSelectProperty', () => {
         value: null,
       },
     };
-    const violations = validateSimpleSelectProperty(simpleSelectProperty, 'path');
+    const violations = validateAttributeProperty(simpleSelectProperty, 'path');
     expect(violations).toEqual([
       {
         path: 'path',
