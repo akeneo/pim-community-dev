@@ -6,6 +6,7 @@ namespace Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndE
 
 use Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner;
 use Akeneo\Category\Application\Query\GetAttribute;
+use Akeneo\Category\Domain\Query\DeleteTemplateAttribute;
 use Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
@@ -22,19 +23,24 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler
         private readonly GetEnrichedValuesByTemplateUuid $getEnrichedValuesByTemplateUuid,
         private readonly CategoryAttributeValuesCleaner $categoryDataCleaner,
         private readonly GetAttribute $getCategoryTemplateAttributes,
+        private readonly DeleteTemplateAttribute $deleteTemplateAttribute,
     ) {
     }
 
     public function __invoke(CleanCategoryTemplateAttributeAndEnrichedValuesCommand $command): void
     {
+        $templateUuid = TemplateUuid::fromString($command->templateUuid);
+        $attributeUuid = AttributeUuid::fromString($command->attributeUuid);
         $templateAttributes = $this->getCategoryTemplateAttributes
-            ->byUuids([AttributeUuid::fromString($command->attributeUuid)])
+            ->byUuids([$attributeUuid])
             ->getAttributes();
         foreach ($this->getEnrichedValuesByTemplateUuid->byBatchesOf(
-            TemplateUuid::fromString($command->templateUuid),
+            $templateUuid,
             self::CATEGORY_BATCH_SIZE,
         ) as $valuesByCode) {
             $this->categoryDataCleaner->cleanByTemplateAttributesUuid($valuesByCode, $templateAttributes);
         }
+
+        $this->deleteTemplateAttribute->delete($templateUuid, $attributeUuid);
     }
 }

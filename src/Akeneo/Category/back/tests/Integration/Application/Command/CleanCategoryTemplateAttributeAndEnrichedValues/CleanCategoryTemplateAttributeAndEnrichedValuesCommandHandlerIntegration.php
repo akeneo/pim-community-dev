@@ -35,8 +35,10 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
         $this->assertCount(3, $category->getAttributes()->getValues());
 
         $attributes = $this->get(GetAttribute::class)->byTemplateUuid(TemplateUuid::fromString($templateUuid));
+        $deletedAttributesUuid = [];
         foreach (range(0, 2) as $index) {
             $attributeUuid = $attributes->getAttributes()[$index]->getUuid();
+            $deletedAttributesUuid[] = $attributeUuid;
             $command = new CleanCategoryTemplateAttributeAndEnrichedValuesCommand($templateUuid, (string) $attributeUuid);
             $commandHandler = $this->get(CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler::class);
             ($commandHandler)($command);
@@ -44,6 +46,8 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
 
         $category = $getCategory->byCode('socks');
         $this->assertCount(1, $category->getAttributes()->getValues());
+        $attributesDeletedInDatabase = $this->get(GetAttribute::class)->byUuids($deletedAttributesUuid);
+        $this->assertCount(0, $attributesDeletedInDatabase);
     }
 
     private function updateCategoryValues(string $code, string $channel = 'ecommerce'): void
