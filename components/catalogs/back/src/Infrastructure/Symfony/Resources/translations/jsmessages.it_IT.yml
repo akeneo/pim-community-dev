@@ -128,17 +128,18 @@ akeneo_catalogs:
       parameters:
         title: Parametri origine
         channel:
-          label: Canale
           placeholder: Seleziona un canale
         locale:
-          label: Impostazione locale
           placeholder: Seleziona un'impostazione locale
+        currency:
+          label: Valuta
+          placeholder: Seleziona una valuta
+        unit:
+          label: Unità di misura
       select_source:
         label: Origine Pim
         search: Criterio di ricerca
-        no_results: nessuna corrispondenza trovata
-        section_system: sistema
-        section_attributes: attributi
+        no_results: Nessuna corrispondenza trovata
       placeholder:
         title: Seleziona origine
         illustration_title: Fai clic su una destinazione nel pannello di destra per configurare la mappatura del catalogo.
@@ -148,3 +149,6 @@ akeneo_catalogs:
         illustration_title: L'UUID è un identificatore tecnico del prodotto.
         subtitle: Tutte le app lo richiedono come destinazione. Per questa destinazione non devi configurare nulla perché la associamo automaticamente con l'UUID di prodotto Akeneo.
         link: Ulteriori informazioni sull'UUID.
+      system_attributes:
+        family:
+          label: Famiglia

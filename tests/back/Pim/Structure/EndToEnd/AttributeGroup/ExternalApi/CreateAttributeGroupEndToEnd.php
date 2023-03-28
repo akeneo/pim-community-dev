@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Structure\EndToEnd\AttributeGroup\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -531,11 +532,67 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
+    public function testResponseWhenLimitIsReached(): void
+    {
+        $this->createAttributeGroupsUntilLimit();
+
+        $client = $this->createAuthenticatedClient();
+        $data =
+            <<<JSON
+    {
+        "code":"technical"
+    }
+JSON;
+
+        $expectedContent =
+            <<<JSON
+{
+    "code": 422,
+    "errors": [
+        {
+            "message": "You’ve reached the limit of 1000 attribute groups",
+            "property": ""
+        }
+    ],
+    "message": "Validation failed."
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attribute-groups', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function createAttributeGroupsUntilLimit(): void
+    {
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
+        $maxAttributeGroups = $this->getParameter('max_attribute_groups');
+
+        $attributeGroupCount = (int) $connection->executeQuery('SELECT COUNT(*) FROM pim_catalog_attribute_group')->fetchOne();
+        if ($attributeGroupCount >= $maxAttributeGroups) {
+            return;
+        }
+
+        $maxSortOrder = (int) $connection->executeQuery('SELECT MAX(sort_order) FROM pim_catalog_attribute_group')->fetchOne();
+        $sqlValues = [];
+        for ($i = $attributeGroupCount; $i < $maxAttributeGroups; $i++) {
+            $sqlValues[] = sprintf("('attribute_group_%d', %d, NOW(), NOW())", $i, $maxSortOrder + $i);
+        }
+
+        $sql = <<<SQL
+INSERT INTO pim_catalog_attribute_group (code, sort_order, created, updated) VALUES %s
+SQL;
+
+        $connection->executeQuery(sprintf($sql, implode(', ', $sqlValues)));
     }
 }

@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
+use Webmozart\Assert\Assert;
+
 final class ProductModelIdCollection implements ProductEntityIdCollection
 {
     /**
@@ -24,6 +26,16 @@ final class ProductModelIdCollection implements ProductEntityIdCollection
     public static function fromStrings(array $productEntityIds): self
     {
         return new self(array_map(fn ($productModelId) => ProductModelId::fromString((string) $productModelId), $productEntityIds));
+    }
+
+    /**
+     * @param ProductModelId[] $productModelIds
+     */
+    public static function fromProductModelIds(array $productModelIds): self
+    {
+        Assert::allIsInstanceOf($productModelIds, ProductModelId::class);
+
+        return new self($productModelIds);
     }
 
     /**

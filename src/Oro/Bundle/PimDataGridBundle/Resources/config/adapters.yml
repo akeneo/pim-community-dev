@@ -12,3 +12,4 @@ services:
         class: '%pim_datagrid.adapter.items_counter.class%'
         arguments:
             - '@pim_enrich.doctrine.query.count_impacted_products'
+            - '@pim_enrich.repository.attribute.search'

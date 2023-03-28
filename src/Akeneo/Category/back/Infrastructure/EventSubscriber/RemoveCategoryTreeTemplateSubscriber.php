@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate;
 use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
+use Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -22,7 +22,7 @@ class RemoveCategoryTreeTemplateSubscriber implements EventSubscriberInterface
     public function __construct(
         private readonly GetCategoryInterface $getCategory,
         private readonly GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
-        private readonly DeleteCategoryTreeTemplate $deleteCategoryTreeTemplate,
+        private readonly DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
         private readonly FeatureFlag $enrichedCategoryFeature,
     ) {
     }
@@ -55,6 +55,6 @@ class RemoveCategoryTreeTemplateSubscriber implements EventSubscriberInterface
             return;
         }
 
-        ($this->deleteCategoryTreeTemplate)($category->getId()->getValue(), $template->getUuid());
+        ($this->deleteCategoryTreeTemplate)($category->getId(), $template->getUuid());
     }
 }

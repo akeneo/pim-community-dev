@@ -37,11 +37,12 @@ class InternalApiCategoryIntegration extends CategoryTestCase
                 'fr_FR' => 'French',
             ],
             parentId: $categoryParent->getId()->getValue(),
+            rootId: $categoryParent->getId()->getValue(),
         );
         $expectedNormalizedArray = [
             'id' => $category->getId()->getValue(),
             'parent' => $categoryParent->getId()->getValue(),
-            'root_id' => null,
+            'root_id' => $categoryParent->getId()->getValue(),
             'template_uuid' => null,
             'properties' => [
                 'code' => "my_category",
@@ -57,7 +58,7 @@ class InternalApiCategoryIntegration extends CategoryTestCase
             'root' => [
                 'id' => $categoryParent->getId()->getValue(),
                 'parent' => null,
-                'root_id' => null,
+                'root_id' => $categoryParent->getId()->getValue(),
                 'template_uuid' => null,
                 'properties' => [
                     'code' => "my_category_parent",
@@ -93,7 +94,7 @@ class InternalApiCategoryIntegration extends CategoryTestCase
         $expectedNormalizedArray = [
             'id' => $category->getId()->getValue(),
             'parent' => null,
-            'root_id' => null,
+            'root_id' => $category->getId()->getValue(),
             'template_uuid' => null,
             'properties' => [
                 'code' => "my_category",
@@ -125,11 +126,12 @@ class InternalApiCategoryIntegration extends CategoryTestCase
         $category = $this->createOrUpdateCategory(
             code: 'my_category',
             parentId: $categoryParent->getId()->getValue(),
+            rootId: $categoryParent->getId()->getValue(),
         );
         $expectedNormalizedArray = [
             'id' => $category->getId()->getValue(),
             'parent' => $categoryParent->getId()->getValue(),
-            'root_id' => null,
+            'root_id' => $categoryParent->getId()->getValue(),
             'template_uuid' => null,
             'properties' => [
                 'code' => "my_category",
@@ -141,7 +143,7 @@ class InternalApiCategoryIntegration extends CategoryTestCase
             'root' => [
                 'id' => $categoryParent->getId()->getValue(),
                 'parent' => null,
-                'root_id' => null,
+                'root_id' => $categoryParent->getId()->getValue(),
                 'template_uuid' => null,
                 'properties' => [
                     'code' => "my_category_parent",

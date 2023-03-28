@@ -1,12 +1,20 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useRef} from 'react';
 import styled from 'styled-components';
-import {SectionTitle, Table} from 'akeneo-design-system';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {Button, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
+import {
+  NotificationLevel,
+  useFeatureFlags,
+  useNotify,
+  useTranslate,
+  useUserContext,
+} from '@akeneo-pim-community/shared';
 import {Attribute} from '../../models';
-import {getLabelFromAttribute} from '../attributes/templateAttributesFactory';
+import {getLabelFromAttribute} from '../attributes';
+import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
 
 interface Props {
   attributes: Attribute[];
+  templateId: string;
 }
 
 const FormContainer = styled.div`
@@ -17,10 +25,33 @@ const FormContainer = styled.div`
   }
 `;
 
-export const EditTemplateAttributesForm = ({attributes}: Props) => {
+const AddAttributeButton = styled(Button)`
+  margin-left: auto;
+`;
+
+export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
+  const featureFlags = useFeatureFlags();
   const translate = useTranslate();
+  const notify = useNotify();
+  const attributesCountRef = useRef<Number>();
+
+  attributesCountRef.current = attributes.length;
+
+  const handleClickAddAttributeButton = useCallback(() => {
+    if (attributesCountRef.current) {
+      if (attributesCountRef.current >= 50) {
+        notify(
+            NotificationLevel.ERROR,
+            translate('akeneo.category.template.add_attribute.error.limit_reached.title'),
+            translate('akeneo.category.template.add_attribute.error.limit_reached.message')
+        );
+      } else {
+        openAddTemplateAttributeModal();
+      }
+    }
+  }, []);
 
   const sortByOrder = useCallback((attribute1: Attribute, attribute2: Attribute): number => {
     if (attribute1.order >= attribute2.order) {
@@ -31,10 +62,18 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
     return 0;
   }, []);
 
+  const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
+    useBooleanState(false);
+
   return (
     <FormContainer>
       <SectionTitle sticky={44}>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
+        {featureFlags.isEnabled('category_template_customization') && (
+          <AddAttributeButton ghost size="small" level="tertiary" onClick={handleClickAddAttributeButton}>
+            {translate('akeneo.category.template.add_attribute.add_button')}
+          </AddAttributeButton>
+        )}
       </SectionTitle>
       <Table>
         <Table.Header>
@@ -52,6 +91,9 @@ export const EditTemplateAttributesForm = ({attributes}: Props) => {
           ))}
         </Table.Body>
       </Table>
+      {isAddTemplateAttributeModalOpen && (
+        <AddTemplateAttributeModal templateId={templateId} onClose={closeAddTemplateAttributeModal} />
+      )}
     </FormContainer>
   );
 };

@@ -63,8 +63,13 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryTreeTemplateSql
+  Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuidSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryTreeTemplateByTemplateUuidSql
     arguments:
       - '@database_connection'
 
@@ -80,5 +85,20 @@ services:
 
   Akeneo\Category\Application\Query\DeactivateTemplate:
     class: Akeneo\Category\Infrastructure\Storage\Sql\DeactivateTemplateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesPerCategoryCodeSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesByTemplateUuidSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryEnrichedValuesSql
     arguments:
       - '@database_connection'

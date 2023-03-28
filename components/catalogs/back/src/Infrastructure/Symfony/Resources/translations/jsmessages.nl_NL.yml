@@ -129,10 +129,8 @@ akeneo_catalogs:
         placeholder: Selecteer een attribuut
         title: Bronparameters
         channel:
-          label: Kanaal
           placeholder: Selecteer een kanaal
         locale:
-          label: Taal
           placeholder: Selecteer een taal
         label_locale:
           label: Waarde vertaling
@@ -143,6 +141,8 @@ akeneo_catalogs:
           placeholder: Selecteer een valuta
           helper: Selecteer de valuta waarin de waarde moet worden verzonden.
         no_parameters_message: Geen parameters voor deze bron.
+        unit:
+          label: Eenheid
       select_source:
         label: Pim-bron
         search: Zoekcriterium
@@ -168,3 +168,6 @@ akeneo_catalogs:
           minimum: '[0,Inf[ Dit doel moet groter of gelijk zijn aan {{ value }}.'
           maximum: '[0,Inf[ Dit doel moet lager of gelijk zijn aan {{ value }}.'
           enum: '[0,Inf[ Enum: Dit doel accepteert alleen de volgende waarden: {{ value }}.'
+      system_attributes:
+        family:
+          label: Familie

@@ -1,9 +1,8 @@
 import React, {FC, useCallback} from 'react';
-import {Field, Helper, TextInput} from 'akeneo-design-system';
+import {BooleanInput, Field, Helper, NumberInput, TextInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Source} from '../../models/Source';
 import styled from 'styled-components';
-import {Target} from '../../models/Target';
 
 const DefaultField = styled(Field)`
     margin-top: 10px;
@@ -13,18 +12,12 @@ type Props = {
     source: Source;
     onChange: (source: Source) => void;
     error: string | undefined;
-    target: Target;
+    targetTypeKey: string;
 };
-export const DefaultValue: FC<Props> = ({source, onChange, error, target}) => {
+export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}) => {
     const translate = useTranslate();
 
-    let targetTypeKey = target.type;
-
-    if (null !== target.format && '' !== target.format) {
-        targetTypeKey += `+${target.format}`;
-    }
-
-    let element = null;
+    let element: JSX.Element | null = null;
 
     switch (targetTypeKey) {
         case 'string':
@@ -35,7 +28,33 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, target}) => {
                     placeholder={translate(
                         'akeneo_catalogs.product_mapping.source.parameters.default_value.placeholder'
                     )}
-                    value={source.default ?? ''}
+                    value={typeof source.default === 'string' ? source.default : ''}
+                />
+            );
+            break;
+        case 'boolean':
+            element = (
+                <BooleanInput
+                    data-testid={'boolean-default-value'}
+                    onChange={value => onChangeMiddleware({...source, default: value})}
+                    clearLabel='Clear value'
+                    clearable
+                    noLabel='No'
+                    yesLabel='Yes'
+                    value={typeof source.default === 'boolean' ? source.default : null}
+                    readOnly={false}
+                />
+            );
+            break;
+        case 'number':
+            element = (
+                <NumberInput
+                    data-testid={'number-default-value'}
+                    onChange={value => onChangeMiddleware({...source, default: value})}
+                    placeholder={translate(
+                        'akeneo_catalogs.product_mapping.source.parameters.default_value.placeholder'
+                    )}
+                    value={typeof source.default === 'number' ? source.default.toString() : ''}
                 />
             );
             break;
@@ -43,13 +62,22 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, target}) => {
 
     const onChangeMiddleware = useCallback(
         source => {
-            if ('string' === target.type && source.default === '') {
+            if (targetTypeKey === 'string' && source.default === '') {
                 delete source.default;
+            }
+            if (targetTypeKey === 'boolean' && source.default === null) {
+                delete source.default;
+            }
+            if (targetTypeKey === 'number') {
+                if (source.default === '') {
+                    delete source.default;
+                } else {
+                    source.default = parseFloat(source.default);
+                }
             }
             onChange(source);
         },
-
-        [onChange, target]
+        [onChange, targetTypeKey]
     );
 
     if (null === element) {

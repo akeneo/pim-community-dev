@@ -288,13 +288,55 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'source' => null,
                         'scope' => null,
                         'locale' => null,
-                        'default' => 'Default value',
+                        'default' => 175,
                     ],
                 ],
             ),
         );
 
         $this->assertEquals(0, $violations->count());
+    }
+
+    public function testItReturnsViolationsWhenThereIsErrorInNullSources(): void
+    {
+        $this->createCatalog(
+            id: '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
+            name: 'Store FR',
+            ownerUsername: 'admin',
+            productMappingSchema: $this->getValidSchemaDataForNullSources(),
+        );
+
+        $violations = $this->validator->validate(
+            new Catalog(
+                '3e073da1-29f8-4bf3-9adf-99c51b0c5348',
+                'Store FR',
+                'admin',
+                false,
+                [],
+                [],
+                [
+                    'uuid' => [
+                        'source' => 'uuid',
+                        'scope' => null,
+                        'locale' => null,
+                    ],
+                    'name' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                        'default' => true,
+                    ],
+                    'released' => [
+                        'source' => null,
+                        'scope' => null,
+                        'locale' => null,
+                        'default' => 10,
+                    ],
+                ],
+            ),
+        );
+
+        $this->assertEquals(2, $violations->count());
     }
 
     private function getValidSchemaData(): string
@@ -354,6 +396,31 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
             }
           },
           "required": ["name","size"]
+        }
+        JSON_WRAP;
+    }
+
+    private function getValidSchemaDataForNullSources(): string
+    {
+        return <<<'JSON_WRAP'
+        {
+          "$id": "https://example.com/product",
+          "$schema": "https://api.akeneo.com/mapping/product/0.0.11/schema",
+          "$comment": "My first schema !",
+          "title": "Product Mapping",
+          "description": "JSON Schema describing the structure of products expected by our application",
+          "type": "object",
+          "properties": {
+            "uuid": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "released": {
+              "type": "boolean"
+            }
+          }
         }
         JSON_WRAP;
     }

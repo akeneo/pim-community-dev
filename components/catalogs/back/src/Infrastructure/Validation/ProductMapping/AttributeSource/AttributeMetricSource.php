@@ -40,6 +40,11 @@ class AttributeMetricSource extends Compound
                             new Assert\Type('string'),
                             new Assert\NotBlank(allowNull: true),
                         ],
+                        'default' => [
+                            new Assert\Optional([
+                                new Assert\Type('numeric'),
+                            ]),
+                        ],
                         'parameters' => [
                             new Assert\Collection([
                                 'fields' => [

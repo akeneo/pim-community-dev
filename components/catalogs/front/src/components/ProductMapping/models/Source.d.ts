@@ -5,5 +5,5 @@ export type Source = {
     locale: string | null;
     scope: string | null;
     parameters?: SourceParameter;
-    default?: string;
+    default?: string | boolean | number | null;
 };

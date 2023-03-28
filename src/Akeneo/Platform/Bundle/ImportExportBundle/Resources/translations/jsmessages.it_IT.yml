@@ -165,6 +165,7 @@ pim_import_export:
           sftp: SFTP
           amazon_s3: Amazon S3
           microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
           none: Nessuno storage configurato
         file_path:
           label: Percorso del file
@@ -209,6 +210,12 @@ pim_import_export:
         container_name:
           label: Nome contenitore
           placeholder: Inserisci il nome del contenitore
+        project_id:
+          label: ID Progetto
+          placeholder: Inserisci l'ID del progetto
+        service_account:
+          label: Profilo di servizio
+          placeholder: Inserisci il profilo di servizio
       validation:
         storage:
           unavailable_type: Questo storage non è disponibile. Sono disponibili solo {{ available_types }}.
