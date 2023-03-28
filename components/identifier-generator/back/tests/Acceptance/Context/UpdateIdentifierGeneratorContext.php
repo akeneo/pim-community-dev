@@ -5,24 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Enabled;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FreeText;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Behat\Behat\Context\Context;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -213,99 +200,6 @@ final class UpdateIdentifierGeneratorContext implements Context
     public function iTryToUpdateAnIdentifierGeneratorWithConditions(string $count): void
     {
         $this->tryToUpdateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
-    }
-
-    /**
-     * @When I try to update an identifier generator with :arg1 enabled conditions
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithEnabledConditions($arg1): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'enabled', 'value' => true],
-            ['type' => 'enabled', 'value' => true],
-        ]);
-    }
-
-    /**
-     * @When I try to update an identifier generator with 2 family conditions
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWith2FamilyConditions(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'family', 'operator' => 'EMPTY'],
-            ['type' => 'family', 'operator' => 'NOT EMPTY'],
-        ]);
-    }
-
-    /**
-     * @When /^I try to update an identifier generator \
-     *     with an? (?P<type>simple_select|multi_select|family|enabled) condition\
-     *     (?:(?: with| and|,) (?P<attributeCode>[^ ]*) attribute)?\
-     *     (?:(?: with| and|,) (?P<operator>[^ ]*) operator)?\
-     *     (?:(?: with| and|,) (?P<scope>[^ ]*) scope)?\
-     *     (?:(?: with| and|,) (?P<locale>[^ ]*) locale)?\
-     *     (?:(?: with| and|,) (?P<value>.*) as value)?\
-     *     (?P<unknown>(?: with| and|,) an unknown property)?$/
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWithCondition(
-        string $type,
-        string $attributeCode = '',
-        string $operator = '',
-        string $scope = '',
-        string $locale = '',
-        string $value = '',
-        string $unknown = '',
-    ): void {
-        $defaultCondition = $this->getValidCondition($type);
-        if ($attributeCode !== '') {
-            $defaultCondition['attributeCode'] = $attributeCode;
-        }
-        if ('undefined' === $scope) {
-            unset($defaultCondition['scope']);
-        } elseif ('' !== $scope) {
-            $defaultCondition['scope'] = $scope;
-        }
-        if ('undefined' === $locale) {
-            unset($defaultCondition['locale']);
-        } elseif ('' !== $locale) {
-            $defaultCondition['locale'] = $locale;
-        }
-        if ('undefined' === $value) {
-            unset($defaultCondition['value']);
-        } elseif ($value !== '') {
-            $defaultCondition['value'] = \json_decode($value);
-        }
-        if ('undefined' === $operator) {
-            unset($defaultCondition['operator']);
-        } elseif ($operator !== '') {
-            $defaultCondition['operator'] = $operator;
-        }
-        if ($unknown !== '') {
-            $defaultCondition['unknown'] = 'unknown property';
-        }
-        $this->tryToUpdateGenerator(conditions: [$defaultCondition]);
-    }
-
-    /**
-     * @When /^I reorder the identifier generators as (?P<codes>(('.*')(, | and )?)+)$/
-     */
-    public function iReorderTheIdentifierGenerators(string $codes): void
-    {
-        ($this->reorderGeneratorsHandler)(ReorderGeneratorsCommand::fromCodes($this->splitList($codes)));
-    }
-
-    /**
-     * @Then /^the identifier generators should be ordered as (?P<codes>(('.*')(, | and )?)+)$/
-     */
-    public function theIdentifierGeneratorsShouldBeOrderedAs(string $codes): void
-    {
-        $generators = $this->generatorRepository->getAll();
-        $orderedCodes = \array_map(
-            static fn (IdentifierGenerator $generator): string => $generator->code()->asString(),
-            $generators
-        );
-
-        Assert::same($orderedCodes, $this->splitList($codes), 'real codes: ' . \implode(', ', $orderedCodes));
     }
 
     private function tryToUpdateGenerator(

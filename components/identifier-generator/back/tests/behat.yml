@@ -10,6 +10,9 @@ default:
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FreeTextPropertyContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FamilyPropertyContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\SimpleSelectPropertyContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\BaseCreateOrUpdateConditionContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\EnabledConditionContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\FamilyConditionContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\CreateIdentifierGeneratorContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateIdentifierGeneratorContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateFamilyNomenclatureContext
