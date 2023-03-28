@@ -8,6 +8,7 @@ use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorN
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromAssetCollectionTextAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromCategoriesValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsUri\ArrayOfStringUriFromAssetCollectionMediaFileAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromMetricAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromNumberAttributeValueExtractor;
@@ -73,6 +74,13 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
                 'targetType' => 'array<string>',
                 'targetFormat' => null,
                 'extractorClassName' => ArrayOfStringsFromMultiSelectAttributeValueExtractor::class,
+            ],
+            ArrayOfStringUriFromAssetCollectionMediaFileAttributeValueExtractor::class => [
+                'sourceType' => 'pim_catalog_asset_collection',
+                'subSourceType' => 'media_file',
+                'targetType' => 'array<string>',
+                'targetFormat' => 'uri',
+                'extractorClassName' => ArrayOfStringUriFromAssetCollectionMediaFileAttributeValueExtractor::class,
             ],
             BooleanFromBooleanAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_boolean',

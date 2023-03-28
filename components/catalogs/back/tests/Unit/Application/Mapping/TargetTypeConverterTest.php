@@ -50,6 +50,13 @@ class TargetTypeConverterTest extends TestCase
                     'pim_catalog_multiselect',
                 ],
             ],
+            'array<string>+uri' => [
+                'array<string>',
+                'uri',
+                [
+                    'pim_catalog_asset_collection',
+                ],
+            ],
             'boolean' => [
                 'boolean',
                 '',

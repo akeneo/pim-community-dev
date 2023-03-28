@@ -21,6 +21,9 @@ final class TargetTypeConverter
             'pim_catalog_asset_collection',
             'pim_catalog_multiselect',
         ],
+        'array<string>+uri' => [
+            'pim_catalog_asset_collection',
+        ],
         'boolean' => [
             'pim_catalog_boolean',
         ],
@@ -51,6 +54,9 @@ final class TargetTypeConverter
     private const PIM_ASSET_ATTRIBUTE_TYPES = [
         'array<string>' => [
             'text',
+        ],
+        'array<string>+uri' => [
+            'media_file',
         ],
         'string+uri' => [
             'media_file',
