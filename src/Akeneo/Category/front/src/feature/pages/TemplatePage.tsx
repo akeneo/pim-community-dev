@@ -157,7 +157,7 @@ const TemplatePage: FC = () => {
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && !templateHasAttribute() && (
-            <NoTemplateAttribute/>
+            <NoTemplateAttribute templateId={templateEdited.uuid}/>
         )}
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && templateHasAttribute() && (

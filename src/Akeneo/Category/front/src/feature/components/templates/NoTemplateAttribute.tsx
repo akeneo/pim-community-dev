@@ -1,10 +1,22 @@
-import React from 'react';
-import {AttributesIllustration, Button, getFontSize, Link} from 'akeneo-design-system';
+import React, {useCallback} from 'react';
+import {AttributesIllustration, Button, getFontSize, Link, useBooleanState} from 'akeneo-design-system';
 import {translate} from "@akeneo-pim-community/shared";
 import styled from "styled-components";
+import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
 
-export const NoTemplateAttribute = () =>
+interface Props {
+    templateId: string;
+}
+
+export const NoTemplateAttribute = ({templateId}: Props) =>
 {
+    const handleClickAddAttributeButton = useCallback(() => {
+        openAddTemplateAttributeModal();
+    }, []);
+
+    const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
+        useBooleanState(false);
+
     return (
         <NoAttributeSection>
             <AttributesIllustration size={256} />
@@ -21,10 +33,13 @@ export const NoTemplateAttribute = () =>
             </Footer>
             <Button
                 level="secondary"
-                onClick={function noRefCheck(){}}
+                onClick={handleClickAddAttributeButton}
             >
                 {translate('akeneo.category.template.add_attribute.create_button')}
             </Button>
+            {isAddTemplateAttributeModalOpen && (
+                <AddTemplateAttributeModal templateId={templateId} onClose={closeAddTemplateAttributeModal} />
+            )}
         </NoAttributeSection>
     );
 }
@@ -47,7 +62,7 @@ const Title = styled.div`
 
 const Instructions = styled.div`
   font-size: ${getFontSize('bigger')};
-  padding: 8px 0px;
+  padding: 8px;
   margin: 0 auto;
   max-width: 550px;
 `;

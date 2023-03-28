@@ -1,6 +1,6 @@
 import React, {useCallback, useRef} from 'react';
 import styled from 'styled-components';
-import {AttributesIllustration, Button, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
+import {Button, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
   useFeatureFlags,
@@ -11,7 +11,6 @@ import {
 import {Attribute} from '../../models';
 import {getLabelFromAttribute} from '../attributes';
 import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
-import {LabelContainer, PreviewCard, PreviewContainer} from "akeneo-design-system/lib/storybook";
 
 interface Props {
   attributes: Attribute[];
