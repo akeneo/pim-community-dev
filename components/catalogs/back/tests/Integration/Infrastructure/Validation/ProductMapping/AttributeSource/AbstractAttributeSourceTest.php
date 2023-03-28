@@ -96,7 +96,6 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
         $this->findOneAssetAttributeByIdentifierQuery = $this->createMock(FindOneAssetAttributeByIdentifierQueryInterface::class);
         $this->findOneAssetAttributeByIdentifierQuery
             ->method('execute')
-            // @phpstan-ignore-next-line
             ->willReturnCallback(fn ($identifier) => $this->assetAttributes[$identifier] ?? null);
         self::getContainer()->set(FindOneAssetAttributeByIdentifierQuery::class, $this->findOneAssetAttributeByIdentifierQuery);
 

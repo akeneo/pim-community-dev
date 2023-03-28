@@ -10,7 +10,7 @@ namespace Akeneo\Catalogs\Application\Persistence\AssetManager;
  *
  * @phpstan-type AssetAttribute array{
  *      identifier: string,
- *      label: string
+ *      label: string,
  *      type: string,
  *      scopable: bool,
  *      localizable: bool
