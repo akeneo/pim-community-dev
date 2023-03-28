@@ -17,9 +17,15 @@ Feature: Create Identifier Generator
 
   # Class
   Scenario: Cannot create an identifier generator if the limit is reached
-    When I create an identifier generator
-    And I try to create an identifier generator with code 'another generator'
-    Then I should get an error with message 'Limit of "1" identifier generators is reached'
+    When I create 20 identifier generators
+    Then I should not get any error
+    When I try to create an identifier generator with code 'another_generator'
+    Then I should get an error with message 'Limit of "20" identifier generators is reached'
+
+  Scenario: Cannot create an identifier generator with an existing code
+    Given the 'test' identifier generator
+    When I try to create an identifier generator with code 'test'
+    Then I should get an error with message 'This code is already used'
 
   # Target
   Scenario: Cannot create an identifier generator with blank target
@@ -407,7 +413,7 @@ Feature: Create Identifier Generator
     When I try to create an identifier generator with 'de_DE' label ''
     Then The identifier generator is saved in the repository
     And I should not get any error
-    And there should be no label for 'de_DE'
+    And there should be no 'de_DE' label for the 'generator_0' generator
 
   # Delimiter
   Scenario: Cannot create an identifier generator with an empty delimiter
@@ -438,11 +444,11 @@ Feature: Create Identifier Generator
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with code too long
-    When I try to create an identifier generator with code 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit nisi erat, sed tincidunt urna finibus non. Nullam id lacus et augue ullamcorper euismod sed id nibh. Praesent luctus cursus finibus. Maecenas et euismod tellus. Nunc sed est nec mi consequat consequat sit amet ac ex. '
+    When I try to create an identifier generator with code 'Lorem_ipsum_dolor_sit_amet__consectetur_adipiscing_elit__Donec_suscipit_nisi_erat__sed_tincidunt_urna_finibus_non__Nullam_id_lacus_et_augue_ullamcorper_euismod_sed_id_nibh__Praesent_luctus_cursus_finibus__Maecenas_et_euismod_tellus__Nunc_sed_est_nec_mi_consequat_consequat_sit_amet_ac_ex__'
     Then I should get an error with message 'code: This value is too long. It should have 100 characters or less.'
     And the identifier should not be created
 
   Scenario: Cannot create an identifier generator with code bad format
     When I try to create an identifier generator with code 'Lorem ipsum dolor sit amet'
-    Then I should get an error with message 'code may contain only letters, numbers and underscore'
+    Then I should get an error with message 'code: Code may contain only letters, numbers and underscore, "Lorem ipsum dolor sit amet" given.'
     And the identifier should not be created

@@ -338,7 +338,7 @@ Feature: Update Identifier Generator
   Scenario: Can update an identifier generator with empty label
     When I try to update an identifier generator with 'de_DE' label ''
     Then I should not get any update error
-    And there should be no label for 'de_DE'
+    And there should be no 'de_DE' label for the 'default' generator
 
   # Delimiter
   Scenario: Cannot update an identifier generator with an empty delimiter
@@ -363,3 +363,9 @@ Feature: Update Identifier Generator
     When I update an identifier generator with text transformation lowercase
     Then The identifier generator is updated in the repository and text transformation is lowercase
     And I should not get any error
+
+  Scenario: Being able to reorder identifier generators
+    Given the 'ig_1' identifier generator
+    And the 'ig_2' identifier generator
+    When I reorder the identifier generators as 'ig_1', 'ig_2' and 'default'
+    Then the identifier generators should be ordered as 'ig_1', 'ig_2' and 'default'
