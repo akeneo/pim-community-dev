@@ -977,6 +977,11 @@ jobs:
         alias:     disable_catalogs_on_locale_deactivation
         label:     Disable catalogs on locale deactivation
         type:      disable_catalogs_on_locale_deactivation
+    notify_on_attribute_removal:
+        connector: internal
+        alias:     notify_on_attribute_removal
+        label:     Notify on attribute removal
+        type:      notify_on_attribute_removal
     clean_categories_enriched_values:
         connector: internal
         alias: clean_categories_enriched_values

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate;
+use Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid;
+use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
 
@@ -12,13 +13,13 @@ use Doctrine\DBAL\Connection;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteCategoryTreeTemplateSql implements DeleteCategoryTreeTemplate
+class DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuidSql implements DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid
 {
     public function __construct(private readonly Connection $connection)
     {
     }
 
-    public function __invoke(int $categoryTreeId, TemplateUuid $templateUuid): void
+    public function __invoke(CategoryId $categoryTreeId, TemplateUuid $templateUuid): void
     {
         $query = <<< SQL
             DELETE FROM pim_catalog_category_tree_template
@@ -29,7 +30,7 @@ class DeleteCategoryTreeTemplateSql implements DeleteCategoryTreeTemplate
         $this->connection->executeQuery(
             $query,
             [
-                'category_tree_id' => $categoryTreeId,
+                'category_tree_id' => $categoryTreeId->getValue(),
                 'template_uuid' => $templateUuid->toBytes(),
             ],
             [

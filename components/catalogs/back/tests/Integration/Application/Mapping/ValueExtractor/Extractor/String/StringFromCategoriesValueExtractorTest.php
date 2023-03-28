@@ -39,7 +39,7 @@ class StringFromCategoriesValueExtractorTest extends ValueExtractorTestCase
         );
     }
 
-    public function testItReturnsTheCategories(): void
+    public function testItReturnsTheCategoriesLabel(): void
     {
         $this->createCategory(['code' => 'cameras', 'labels' => ['en_US' => 'Cameras']]);
         $this->createCategory(['code' => 'digital_cameras', 'labels' => ['en_US' => 'Digital cameras']]);
@@ -88,5 +88,32 @@ class StringFromCategoriesValueExtractorTest extends ValueExtractorTestCase
         );
 
         $this->assertNull($result);
+    }
+
+    public function testItReturnsTheCategoriesCodeWhenLabelIsNotFound(): void
+    {
+        $this->createCategory(['code' => 'cameras', 'labels' => ['en_US' => 'Cameras']]);
+        $this->createCategory(['code' => 'digital_cameras', 'labels' => ['en_US' => 'Digital cameras']]);
+
+        $productUuid = '008cc715-77f4-4061-ab7b-8cb6d9fc4ce3';
+        $this->createProduct(Uuid::fromString($productUuid), [
+            new SetCategories(['cameras', 'digital_cameras']),
+        ]);
+
+        /** @var RawProduct $rawProduct */
+        $rawProduct = [
+            'uuid' => Uuid::fromString($productUuid),
+        ];
+
+        $result = $this->extractor->extract(
+            product: $rawProduct,
+            code: 'categories',
+            locale: null,
+            scope: null,
+            parameters: [
+                'label_locale' => 'fr_FR',
+            ],
+        );
+        $this->assertEquals('[cameras], [digital_cameras]', $result);
     }
 }

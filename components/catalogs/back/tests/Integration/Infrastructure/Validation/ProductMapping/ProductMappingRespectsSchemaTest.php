@@ -288,7 +288,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
                         'source' => null,
                         'scope' => null,
                         'locale' => null,
-                        'default' => 'Default value',
+                        'default' => 175,
                     ],
                 ],
             ),

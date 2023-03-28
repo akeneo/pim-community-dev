@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\ActivateTemplate;
-use Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate;
 use Akeneo\Category\Application\Query\DeleteTemplateAndAttributes;
 use Akeneo\Category\Application\Query\GetTemplate;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
+use Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
@@ -41,8 +41,8 @@ class DeleteTemplateAndAttributesSqlIntegration extends CategoryTestCase
         self::assertEquals($templateUuid, $template->getUuid()->getValue());
 
         // Call DeleteCategoryTreeTemplate to remove association with pim_catalog_category_tree_template before removing template
-        $deleteCategoryTreeTemplateService = $this->get(DeleteCategoryTreeTemplate::class);
-        ($deleteCategoryTreeTemplateService)($category->getId()->getValue(), $templateUuid);
+        $deleteCategoryTreeTemplateService = $this->get(DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid::class);
+        ($deleteCategoryTreeTemplateService)($category->getId(), $templateUuid);
         $deleteTemplateAndAttributesService = $this->get(DeleteTemplateAndAttributes::class);
         ($deleteTemplateAndAttributesService)($templateUuid);
         $template = $this->get(GetTemplate::class)->byUuid($templateUuid);
