@@ -26,6 +26,7 @@ const Preview: React.FC<PreviewProps> = ({structure, delimiter, textTransformati
           {property.type === PROPERTY_NAMES.AUTO_NUMBER && <AutoNumberPreview property={property} />}
           {property.type === PROPERTY_NAMES.FAMILY && <FamilyCodePreview property={property} />}
           {property.type === PROPERTY_NAMES.SIMPLE_SELECT && <SimpleSelectPreview property={property} />}
+          {property.type === PROPERTY_NAMES.REF_ENTITY && <SimpleSelectPreview property={property} />}
         </React.Fragment>
       ))}
     </Styled.PreviewWithTextTransformation>
