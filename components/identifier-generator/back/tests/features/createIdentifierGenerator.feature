@@ -59,39 +59,6 @@ Feature: Create Identifier Generator
     Then I should get an error with message 'structure: This collection should contain 20 elements or less.'
     And the identifier should not be created
 
-  # Structure : Simple Select
-  Scenario: Cannot create an identifier generator with simple select property without attribute code
-    When I try to create an identifier generator with a simple select property without attribute code
-    Then I should get an error with message 'structure[0]: "attributeCode" field is required for "simple_select" type.'
-    And the identifier should not be created
-
-  Scenario: Cannot create an identifier generator with simple select property without process field
-    When I try to create an identifier generator with simple select property without process field
-    Then I should get an error with message 'structure[0]: "process" field is required for "simple_select" type.'
-    And the identifier should not be created
-
-  Scenario: Cannot create an identifier generator with an unknown attribute in a simple select property
-    When I try to create an identifier generator with a simple_select property with unknown attribute
-    Then I should get an error with message 'structure[0][attributeCode]: The "unknown" attribute does not exist.'
-    And the identifier should not be created
-
-  Scenario: Can create an identifier generator with a simple select property and a truncate process
-    When I try to create an identifier generator with a simple select process with type truncate and operator = and 1 as value
-    Then I should not get any error
-    And The identifier generator is saved in the repository
-
-  Scenario: Cannot create an identifier generator with wrong attribute type in a simple select property
-    When I try to create an identifier generator with a simple_select property with name attribute
-    Then I should get an error with message 'structure[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
-    And the identifier should not be created
-
-  Scenario: Can create an identifier generator with localizable and scopable simple select
-    Given the 'mobile' channel having 'en_US', 'fr_FR' as locales
-    And the 'brand' localizable and scopable attribute of type 'pim_catalog_simpleselect'
-    When I try to create an identifier generator with a simple_select property with brand attribute and mobile scope and en_US locale
-    Then I should not get any error
-    And The identifier generator is saved in the repository
-
   # Conditions
   Scenario: Cannot create another condition type than defined ones
     When I try to create an identifier generator with unknown condition type

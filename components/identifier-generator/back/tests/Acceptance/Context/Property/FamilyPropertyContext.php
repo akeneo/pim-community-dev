@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Structure;
+namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property;
 
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\BaseCreateOrUpdateIdentifierGenerator;
 use Behat\Behat\Context\Context;
@@ -9,7 +9,7 @@ use Behat\Behat\Context\Context;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyContext extends BaseCreateOrUpdateIdentifierGenerator implements Context
+class FamilyPropertyContext extends BaseCreateOrUpdateIdentifierGenerator implements Context
 {
     /**
      * @When /^I try to create an identifier generator with family property without required field$/

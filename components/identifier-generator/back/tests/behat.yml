@@ -6,9 +6,10 @@ default:
             contexts:
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\DatabaseContext
-                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Structure\AutoNumberContext
-                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Structure\FreeTextContext
-                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Structure\FamilyContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\AutoNumberPropertyContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FreeTextPropertyContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FamilyPropertyContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\SimpleSelectPropertyContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\CreateIdentifierGeneratorContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateIdentifierGeneratorContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateFamilyNomenclatureContext

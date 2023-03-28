@@ -8,21 +8,28 @@ services:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
 
-  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Structure\AutoNumberContext:
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\AutoNumberPropertyContext:
     public: true
     arguments:
       - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
 
-  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Structure\FreeTextContext:
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FreeTextPropertyContext:
     public: true
     arguments:
       - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
 
-  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Structure\FamilyContext:
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FamilyPropertyContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\SimpleSelectPropertyContext:
     public: true
     arguments:
       - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
