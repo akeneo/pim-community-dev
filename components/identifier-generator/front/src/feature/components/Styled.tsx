@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {
   AkeneoThemedProps,
+  Button,
   getColor,
   Helper,
   MultiSelectInput,
@@ -188,6 +189,10 @@ const NomenclatureContent = styled.div`
   overflow: auto;
 `;
 
+const NomenclatureButton = styled(Button)`
+  width: fit-content;
+`;
+
 const Styled = {
   BoldContainer,
   CellInputContainer,
@@ -216,6 +221,7 @@ const Styled = {
   NomenclatureDefinition,
   NomenclatureInput,
   NomenclatureTable,
+  NomenclatureButton,
 };
 
 export {Styled};

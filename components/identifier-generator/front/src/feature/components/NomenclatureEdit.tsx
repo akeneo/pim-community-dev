@@ -127,14 +127,14 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
 
   return (
     <>
-      <Button
+      <Styled.NomenclatureButton
         ghost
         level="secondary"
         onClick={open}
         disabled={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
       >
         {translate('pim_identifier_generator.nomenclature.edit')}
-      </Button>
+      </Styled.NomenclatureButton>
       {isOpen && (
         <Modal closeTitle={translate('pim_common.close')} onClose={close}>
           <Modal.TopRightButtons>
