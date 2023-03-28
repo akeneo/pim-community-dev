@@ -17,6 +17,7 @@ final class TargetTypeConverter
 {
     private const PIM_ATTRIBUTE_TYPES = [
         'array<string>' => [
+            'categories',
             'pim_catalog_multiselect',
         ],
         'boolean' => [

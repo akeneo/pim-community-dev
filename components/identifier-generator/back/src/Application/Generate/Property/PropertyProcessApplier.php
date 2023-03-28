@@ -7,8 +7,10 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Propert
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToGenerateIdentifierFromNomenclature;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedNomenclatureException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
 use Webmozart\Assert\Assert;
 
 /**
@@ -18,7 +20,8 @@ use Webmozart\Assert\Assert;
 final class PropertyProcessApplier
 {
     public function __construct(
-        private readonly NomenclatureRepository $nomenclatureRepository,
+        private readonly FamilyNomenclatureRepository $familyNomenclatureRepository,
+        private readonly SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository,
     ) {
     }
 
@@ -46,7 +49,12 @@ final class PropertyProcessApplier
 
                 return \substr($code, 0, $process->value());
             case Process::PROCESS_TYPE_NOMENCLATURE:
-                $nomenclature = $this->nomenclatureRepository->get($nomenclatureProperty);
+                if ($nomenclatureProperty === FamilyProperty::TYPE) {
+                    $nomenclature = $this->familyNomenclatureRepository->get($nomenclatureProperty);
+                } else {
+                    $nomenclature = $this->simpleSelectNomenclatureRepository->get($nomenclatureProperty);
+                }
+
                 if (null === $nomenclature) {
                     throw new UndefinedNomenclatureException(
                         \sprintf('%s%s', $prefix, $code),

@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Repository;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Persistence\ObjectRepository;
 
@@ -13,7 +14,7 @@ use Doctrine\Persistence\ObjectRepository;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
+interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository, CountableRepositoryInterface
 {
     /**
      * Find all ordered by label with fallback to default mechanism

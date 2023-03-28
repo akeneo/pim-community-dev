@@ -24,6 +24,10 @@ const FieldSet = styled.div`
     margin-top: 20px;
   }
 `;
+const HelperContent = styled(Helper)`
+  min-width: 200px;
+  max-width: 460px;
+`;
 
 type Form = {
   label: string;
@@ -55,10 +59,6 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
     {
       type: 'textarea',
       label: translate('akeneo.category.template.add_attribute.confirmation_modal.input.type.option_title.textarea'),
-    },
-    {
-      type: 'richtext',
-      label: translate('akeneo.category.template.add_attribute.confirmation_modal.input.type.option_title.richtext'),
     },
     {
       type: 'image',
@@ -104,12 +104,12 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
       <Modal.Title>{translate('akeneo.category.template.add_attribute.confirmation_modal.title')}</Modal.Title>
       <Content>
         <FieldSet>
-          <Helper level="info">
+          <HelperContent level="info">
             {translate('akeneo.category.template.add_attribute.confirmation_modal.head_helper')}{' '}
             <Link href="https://help.akeneo.com/serenity-take-the-power-over-your-products/serenity-enrich-your-category">
               {translate('akeneo.category.template.add_attribute.confirmation_modal.link')}
             </Link>
-          </Helper>
+          </HelperContent>
           <Field label={translate('pim_common.label')} locale={catalogLocale}>
             <TextInput
               value={form.label}
@@ -134,6 +134,7 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
             <SelectInput
               emptyResultLabel={translate('akeneo.category.template.add_attribute.confirmation_modal.input.type.empty')}
               openLabel={''}
+              clearable={false}
               value={form.type}
               onChange={(type: string) => {
                 setForm({...form, type: type});
@@ -164,9 +165,9 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
           >
             {translate('pim_enrich.entity.attribute.property.localizable')}
           </Checkbox>
-          <Helper level="info" inline>
+          <HelperContent level="info" inline>
             {translate('akeneo.category.template.add_attribute.confirmation_modal.tail_helper')}
-          </Helper>
+          </HelperContent>
         </FieldSet>
       </Content>
       <Modal.BottomButtons>

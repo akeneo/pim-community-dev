@@ -85,7 +85,7 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
         targetTypeKey += `+${target.format}`;
     }
 
-    if (['string', 'boolean'].includes(targetTypeKey)) {
+    if (['string', 'boolean', 'number'].includes(targetTypeKey)) {
         components.push(
             <DefaultValue
                 source={source}

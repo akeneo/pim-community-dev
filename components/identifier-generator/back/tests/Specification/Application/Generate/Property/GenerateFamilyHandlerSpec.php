@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToGenerateIdentifierFromNomenclature;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedNomenclatureException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
@@ -14,24 +11,28 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorCode;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\LabelCollection;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\AutoNumber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
 use PhpSpec\ObjectBehavior;
 
 class GenerateFamilyHandlerSpec extends ObjectBehavior
 {
-    public function let(NomenclatureRepository $nomenclatureRepository)
-    {
+    public function let(
+        FamilyNomenclatureRepository $familyNomenclatureRepository,
+        SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository
+    ) {
         $this->beConstructedWith(
-            new PropertyProcessApplier($nomenclatureRepository->getWrappedObject())
+            new PropertyProcessApplier(
+                $familyNomenclatureRepository->getWrappedObject(),
+                $simpleSelectNomenclatureRepository->getWrappedObject()
+            )
         );
     }
 

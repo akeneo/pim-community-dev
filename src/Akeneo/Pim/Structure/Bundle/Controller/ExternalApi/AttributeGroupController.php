@@ -35,63 +35,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeGroupController
 {
-    /** @var ApiResourceRepositoryInterface */
-    protected $repository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
-
-    /** @var PaginatorInterface */
-    protected $paginator;
-
-    /** @var SimpleFactoryInterface */
-    protected $factory;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var  ValidatorInterface */
-    protected $validator;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
-
-    /** @var array */
-    protected $apiConfiguration;
-
     public function __construct(
-        ApiResourceRepositoryInterface $repository,
-        NormalizerInterface $normalizer,
-        ParameterValidatorInterface $parameterValidator,
-        PaginatorInterface $paginator,
-        SimpleFactoryInterface $factory,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        RouterInterface $router,
-        SaverInterface $saver,
-        StreamResourceResponse $partialUpdateStreamResource,
-        array $apiConfiguration
+        private readonly ApiResourceRepositoryInterface $repository,
+        private readonly NormalizerInterface $normalizer,
+        private readonly ParameterValidatorInterface $parameterValidator,
+        private readonly PaginatorInterface $paginator,
+        private readonly SimpleFactoryInterface $factory,
+        private readonly ObjectUpdaterInterface $updater,
+        private readonly ValidatorInterface $validator,
+        private readonly RouterInterface $router,
+        private readonly SaverInterface $saver,
+        private readonly StreamResourceResponse $partialUpdateStreamResource,
+        private readonly array $apiConfiguration,
     ) {
-        $this->repository = $repository;
-        $this->normalizer = $normalizer;
-        $this->parameterValidator = $parameterValidator;
-        $this->paginator = $paginator;
-        $this->factory = $factory;
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->router = $router;
-        $this->saver = $saver;
-        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
-        $this->apiConfiguration = $apiConfiguration;
     }
 
     /**

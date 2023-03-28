@@ -4,8 +4,6 @@ akeneo.category:
       category_templates: Modelli di categoria
   attributes: Atributi
   edition_form:
-    error:
-      unhandled_attribute_type: Impossibile trovare il generatore del campo attributo per il tipo di attributo "{{type}}"
     template:
       title: Modello
       fetching_failed: Si è verificato un errore durante il recupero del modello
@@ -16,7 +14,6 @@ akeneo.category:
   template:
     create: Attiva modello
     edit: Visualizza modello
-    delete: Elimina modello
     notification_success: Modello attivato correttamente
     notification_error: Impossibile attivare il modello
     attribute:
@@ -26,6 +23,15 @@ akeneo.category:
         textarea: Area di testo
         richtext: Testo formattato
         image: Immagine
+    add_attribute:
+      confirmation_modal:
+        input:
+          label: Etichetta
+          code: Codice
+          type:
+            option_title:
+              text: Testo
+              image: Immagine
   template_list:
     columns:
       header: Etichetta
