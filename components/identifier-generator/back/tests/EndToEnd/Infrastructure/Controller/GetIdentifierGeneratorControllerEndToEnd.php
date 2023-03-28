@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -116,7 +114,13 @@ SQL, ['code' => $code])->fetchOne();
 
     private function createSimpleSelectAttributeWithOptions(string $code, array $optionCodes, bool $localizable, bool $scopable): AttributeInterface
     {
-        $attribute = $this->createAttribute($code, ['type' => AttributeTypes::OPTION_SIMPLE_SELECT], $localizable, $scopable);
+        $attribute = $this->createAttribute([
+            'code' => $code,
+            'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
+            'group' => 'other',
+            'localizable' => $localizable,
+            'scopable' => $scopable,
+        ]);
 
         foreach ($optionCodes as $sortOrder => $optionCode) {
             $option = $this->getAttributeOptionFactory()->create();
@@ -127,33 +131,6 @@ SQL, ['code' => $code])->fetchOne();
         }
 
         return $attribute;
-    }
-
-    private function createAttribute(string $code, array $data, bool $localizable, bool $scopable): AttributeInterface
-    {
-        $defaultData = [
-            'code' => $code,
-            'type' => AttributeTypes::TEXT,
-            'group' => 'other',
-            'localizable' => $localizable,
-            'scopable' => $scopable,
-        ];
-        $data = \array_merge($defaultData, $data);
-
-        $attribute = $this->getAttributeBuilder()->build($data, true);
-        $this->getAttributeSaver()->save($attribute);
-
-        return $attribute;
-    }
-
-    private function getAttributeBuilder(): EntityBuilder
-    {
-        return $this->get('akeneo_integration_tests.base.attribute.builder');
-    }
-
-    private function getAttributeSaver(): AttributeSaver
-    {
-        return $this->get('pim_catalog.saver.attribute');
     }
 
     private function getAttributeOptionFactory(): SimpleFactoryInterface
