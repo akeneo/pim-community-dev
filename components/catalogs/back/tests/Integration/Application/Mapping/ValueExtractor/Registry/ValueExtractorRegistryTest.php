@@ -43,8 +43,6 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
     }
 
     /**
-     * @group ce
-     *
      * @dataProvider extractorDataProvider
      */
     public function testItFindsTheExtractor(
@@ -68,13 +66,6 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
                 'targetType' => 'array<string>',
                 'targetFormat' => null,
                 'extractorClassName' => ArrayOfStringsFromCategoriesValueExtractor::class,
-            ],
-            ArrayOfStringsFromAssetCollectionTextAttributeValueExtractor::class => [
-                'sourceType' => 'pim_catalog_asset_collection',
-                'subSourceType' => 'text',
-                'targetType' => 'array<string>',
-                'targetFormat' => null,
-                'extractorClassName' => ArrayOfStringsFromAssetCollectionTextAttributeValueExtractor::class,
             ],
             ArrayOfStringsFromMultiSelectAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_multiselect',
