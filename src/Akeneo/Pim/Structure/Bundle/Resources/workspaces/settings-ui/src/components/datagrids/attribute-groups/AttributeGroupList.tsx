@@ -34,7 +34,7 @@ const AttributeGroupList = ({
   const shouldDisplayDQICell = isEnabled('data_quality_insights');
   const allAttributeGroupsAreDisplayed = filteredAttributeGroups.length === attributeGroups.length;
   const canDragAndDrop = isGranted('pim_enrich_attributegroup_sort') && allAttributeGroupsAreDisplayed;
-  const canSelect = isEnabled('attribute_groups_mass_delete') && isGranted('pim_enrich_attributegroup_mass_delete');
+  const canSelect = isGranted('pim_enrich_attributegroup_mass_delete');
 
   return (
     <>
