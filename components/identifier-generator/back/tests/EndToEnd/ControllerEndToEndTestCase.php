@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
 use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
+use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -155,6 +160,52 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
             'GET',
             $header
         );
+    }
+
+    protected function createReferenceEntity(string $referenceEntityCode, array $labels): void
+    {
+        $isRefEntityFFenabled = $this->get('feature_flags')->isEnable('reference_entity');
+        if (!$isRefEntityFFenabled) {
+            throw new \Exception(\sprintf('Feature flag for Reference Entity should be enabled.'));
+        }
+
+        /** @phpstan-ignore-next-line */
+        $createReferenceEntityCommand = new CreateReferenceEntityCommand($referenceEntityCode, $labels);
+        $validator = $this->get('validator');
+        $violations = $validator->validate($createReferenceEntityCommand);
+        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))(
+            $createReferenceEntityCommand
+        );
+    }
+
+    protected function createRecords(string $referenceEntityCode, array $recordCodes): void
+    {
+        $validator = $this->get('validator');
+        foreach ($recordCodes as $recordCode) {
+            /** @phpstan-ignore-next-line */
+            $createRecord = new CreateRecordCommand($referenceEntityCode, $recordCode, []);
+            $violations = $validator->validate($createRecord);
+            Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+            ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createRecord);
+        }
+    }
+
+    protected function createAttribute(array $data): AttributeInterface
+    {
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+
+        $attributeViolations = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $attributeViolations, \sprintf('The attribute is invalid: %s', $attributeViolations));
+        $this->getAttributeSaver()->save($attribute);
+
+        return $attribute;
+    }
+
+    private function getAttributeSaver(): AttributeSaver
+    {
+        return $this->get('pim_catalog.saver.attribute');
     }
 
     private function getAuthenticated(): AuthenticatorHelper
