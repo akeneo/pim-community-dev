@@ -58,7 +58,7 @@ class CalculateCompletenessCommand extends Command
             ->setDescription('Launch the product completeness calculation')
             ->addOption(
                 'batch-size',
-                false,
+                null,
                 InputArgument::OPTIONAL,
                 'The number of product completeness calculated in one cycle.',
                 self::DEFAULT_BATCH_SIZE
