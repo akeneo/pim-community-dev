@@ -46,6 +46,16 @@ Feature: Update Identifier Generator
     When I try to update an identifier generator with multiple auto number in structure
     Then I should get an error with message 'structure: should contain only 1 auto number'
 
+  Scenario: Cannot update an identifier generator with wrong attribute type in a simple select property
+    When I try to update an identifier generator with a simple_select property with name attribute
+    Then I should get an error on update with message 'structure[0][attributeCode]: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_simpleselect".'
+
+  Scenario: Can update an identifier generator with localizable and scopable simple select
+    Given the 'mobile' channel having 'en_US', 'fr_FR' as locales
+    And the 'brand' localizable and scopable attribute of type 'pim_catalog_simpleselect'
+    When I try to update an identifier generator with a simple_select property with brand attribute and mobile scope and en_US locale
+    Then I should not get any update error
+
   # Conditions
   Scenario: Cannot update another condition type than defined ones
     When I try to update an identifier generator with unknown condition type
