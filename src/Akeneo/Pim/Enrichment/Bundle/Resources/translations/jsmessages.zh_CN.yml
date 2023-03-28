@@ -112,8 +112,6 @@ pim_enrich.entity.product:
       quantified:
         quantity: 数量
         unlinked: 未链接
-      search:
-        placeholder: 搜索标签或标识符
       no_data: 没有关联的产品。
       remove: 移除关联
       edit: 编辑产品

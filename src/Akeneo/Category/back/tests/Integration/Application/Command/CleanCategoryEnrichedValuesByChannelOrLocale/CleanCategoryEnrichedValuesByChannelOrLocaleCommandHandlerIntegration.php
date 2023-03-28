@@ -17,7 +17,10 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandlerIntegration exte
 {
     public function testItCleansValueCollectionOnChannelDeletion(): void
     {
-        $categorySocks = $this->useTemplateFunctionalCatalog('6344aa2a-2be9-4093-b644-259ca7aee50c', 'socks');
+        $categorySocks = $this->useTemplateFunctionalCatalog(
+            '6344aa2a-2be9-4093-b644-259ca7aee50c',
+            'socks'
+        );
 
         $this->createChannel(
             'testChannelDeletion',
@@ -45,7 +48,10 @@ class CleanCategoryEnrichedValuesByChannelOrLocaleCommandHandlerIntegration exte
 
     public function testItCleansValueCollectionOnLocaleDeletion(): void
     {
-        $categorySocks = $this->useTemplateFunctionalCatalog('6344aa2a-2be9-4093-b644-259ca7aee50c', 'socks');
+        $categorySocks = $this->useTemplateFunctionalCatalog(
+            '6344aa2a-2be9-4093-b644-259ca7aee50c',
+            'socks'
+        );
 
         $this->createChannel(
             'testChannelDeletion',

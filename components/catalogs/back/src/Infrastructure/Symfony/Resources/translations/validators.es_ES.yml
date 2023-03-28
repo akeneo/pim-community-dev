@@ -37,6 +37,10 @@ akeneo_catalogs:
       locale:
         unknown: 'La configuración regional «{{ locale_name }}» ha sido desactivada. Compruebe la configuración de su configuración regional o elimine este filtro.'
     product_mapping:
+      schema:
+        missing_targets: 'La asignación está incompleta, faltan los siguientes objetivos: {{ targets }}.'
+        additional_targets: "La asignación es incorrecta, los siguientes objetivos no existen: {{ targets }}."
+        incorrect_type: 'El tipo de fuente seleccionado no cumple los requisitos: se esperaba {{ expected_type }}.'
       source:
         invalid: 'Este atributo ha sido eliminado.'
         unknown: 'Valor de origen desconocido'
@@ -49,3 +53,10 @@ akeneo_catalogs:
           empty: 'Esta configuración regional no debe estar vacía.'
           unknown: 'Esta configuración regional está desactivada o ya no existe. Compruebe la configuración de sus canales y configuraciones regionales.'
           disabled: 'Esta configuración regional está desactivada. Compruebe la configuración de sus canales y configuraciones regionales o actualice este valor.'
+        required: 'Se requiere la fuente.'
+        currency:
+          disabled: 'Esta moneda no está activada. Compruebe la configuración de sus canales y divisas o actualice este valor.'
+        measurement:
+          unit:
+            not_exist: 'La unidad del campo «{{ field }}» no existe.'
+            not_empty: 'La unidad no debe estar vacía.'

@@ -11,9 +11,10 @@ namespace Specification\Akeneo\Pim\Structure\Bundle\Infrastructure\Job\Attribute
 
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Bundle\Infrastructure\Job\AttributeGroup\MoveChildAttributesTasklet;
+use Akeneo\Pim\Structure\Component\Exception\UserFacingError;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -83,15 +84,32 @@ final class MoveChildAttributesTaskletSpec extends ObjectBehavior
         $jobParameters->get('filters')->willReturn($filters);
         $jobParameters->get('replacement_attribute_group_code')->willReturn($replacementAttributeGroupCode);
 
-        $attributeRepository->getAttributesByGroups(['attribute_group_1', 'attribute_group_2'])
-            ->willReturn([new Attribute(), new Attribute(), new Attribute()]);
+        $attribute1 = new Attribute();
+        $attribute1->setCode('attribute_1');
+        $attribute2 = new Attribute();
+        $attribute2->setCode('attribute_2');
+        $attribute3 = new Attribute();
+        $attribute3->setCode('attribute_3');
+
+        $attributeRepository->getAttributesByGroups(['attribute_group_1', 'attribute_group_2'], 3, null)
+            ->willReturn([$attribute1, $attribute2, $attribute3]);
+        $attributeRepository->getAttributesByGroups(['attribute_group_1', 'attribute_group_2'], 3, 'attribute_3')
+            ->willReturn(null);
 
         $stepExecution->addSummaryInfo('moved_attributes', 0)->shouldBeCalled();
-
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
-        $stepExecution->incrementSummaryInfo('moved_attributes')->shouldBeCalledTimes(3);
-
-        $attributeUpdater->update(Argument::type(Attribute::class), ['group' => 'attribute_group_3'])->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('moved_attributes')->shouldBeCalledTimes(2);
+        $stepExecution->addWarning('an_error', [], Argument::type(DataInvalidItem::class))->shouldBeCalled();
+        $isFirstCall = true;
+        $attributeUpdater
+            ->update(Argument::type(Attribute::class), ['group' => 'attribute_group_3'])
+            ->will(function () use (&$isFirstCall) {
+                if ($isFirstCall) {
+                    $isFirstCall = false;
+                    throw new UserFacingError('an_error', []);
+                }
+            })
+            ->shouldBeCalledTimes(3);
         $attributeSaver->saveAll(Argument::type('array'))->shouldBeCalled();
 
         $this->execute();

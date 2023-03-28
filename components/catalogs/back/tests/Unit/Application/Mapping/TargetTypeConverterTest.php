@@ -45,6 +45,7 @@ class TargetTypeConverterTest extends TestCase
                 'array<string>',
                 '',
                 [
+                    'categories',
                     'pim_catalog_multiselect',
                 ],
             ],

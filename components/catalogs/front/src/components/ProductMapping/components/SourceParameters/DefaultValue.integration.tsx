@@ -10,7 +10,7 @@ test('it displays a Text input when the target type is string', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <DefaultValue
-                    target={{code: 'erp_name', label: 'ERP name', type: 'string', format: null}}
+                    targetTypeKey={'string'}
                     source={{source: null, scope: null, locale: null}}
                     onChange={jest.fn()}
                     error={undefined}
@@ -29,7 +29,7 @@ test('it updates the source for type string when a default value changes', () =>
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <DefaultValue
-                    target={{code: 'erp_name', label: 'ERP name', type: 'string', format: null}}
+                    targetTypeKey={'string'}
                     source={{source: null, scope: null, locale: null, default: 'Default string value'}}
                     onChange={onChange}
                     error={undefined}
@@ -59,7 +59,7 @@ test('it removes the source default value for type string when the text input is
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <DefaultValue
-                    target={{code: 'erp_name', label: 'ERP name', type: 'string', format: null}}
+                    targetTypeKey={'string'}
                     source={{source: null, scope: null, locale: null, default: 'Default string value'}}
                     onChange={onChange}
                     error={undefined}
@@ -73,6 +73,84 @@ test('it removes the source default value for type string when the text input is
 
     const input = screen.getByTestId('string-default-value');
     fireEvent.change(input, {target: {value: ''}});
+
+    expect(onChange).toHaveBeenCalledWith({
+        source: null,
+        scope: null,
+        locale: null,
+    });
+});
+
+test('it displays a Boolean input when the target type is boolean', () => {
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <DefaultValue
+                    targetTypeKey={'boolean'}
+                    source={{source: null, scope: null, locale: null}}
+                    onChange={jest.fn()}
+                    error={undefined}
+                ></DefaultValue>
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(screen.getByTestId('boolean-default-value')).toBeInTheDocument();
+});
+
+test('it updates the source for type boolean when a default value changes', () => {
+    const onChange = jest.fn();
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <DefaultValue
+                    targetTypeKey={'boolean'}
+                    source={{source: null, scope: null, locale: null, default: false}}
+                    onChange={onChange}
+                    error={undefined}
+                ></DefaultValue>
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    const booleanInput = screen.getByTestId('boolean-default-value');
+    expect(booleanInput).toBeInTheDocument();
+
+    expect(booleanInput.getAttribute('aria-checked')).toBe('false');
+    const booleanInputTrue = screen.getByText('Yes');
+
+    fireEvent.click(booleanInputTrue);
+
+    expect(onChange).toHaveBeenCalledWith({
+        source: null,
+        scope: null,
+        locale: null,
+        default: true,
+    });
+});
+
+test('it removes the source default value for type boolean when clear button is clicked', () => {
+    const onChange = jest.fn();
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <DefaultValue
+                    targetTypeKey={'boolean'}
+                    source={{source: null, scope: null, locale: null, default: false}}
+                    onChange={onChange}
+                    error={undefined}
+                ></DefaultValue>
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    const booleanInput = screen.getByTestId('boolean-default-value');
+    expect(booleanInput).toBeInTheDocument();
+
+    const booleanInputTrue = screen.getByText('Clear value');
+    fireEvent.click(booleanInputTrue);
 
     expect(onChange).toHaveBeenCalledWith({
         source: null,

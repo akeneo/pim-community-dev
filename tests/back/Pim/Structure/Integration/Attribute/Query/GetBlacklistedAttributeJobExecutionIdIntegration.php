@@ -34,8 +34,8 @@ final class GetBlacklistedAttributeJobExecutionIdIntegration extends TestCase
         $jobExecutionId = $this->getJobExecutionId();
 
         $blacklister = $this->getBlacklister();
-        $blacklister->blacklist('description');
-        $blacklister->registerJob('description', $jobExecutionId);
+        $blacklister->blacklist(['description']);
+        $blacklister->registerJob(['description'], $jobExecutionId);
 
         $query = $this->getQuery();
         $result = $query->forAttributeCode('description');

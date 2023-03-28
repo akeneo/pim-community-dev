@@ -8,19 +8,22 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTrun
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedNomenclatureException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
 use PhpSpec\ObjectBehavior;
 
 class PropertyProcessApplierSpec extends ObjectBehavior
 {
-    private static $TARGET = 'sku';
-    private static $PREFIX = 'AKN-';
-    private static $NOMENCLATURE_PROPERTY_CODE = 'family';
+    private static string $TARGET = 'sku';
+    private static string $PREFIX = 'AKN-';
+    private static string $NOMENCLATURE_PROPERTY_CODE = 'family';
+    private static string $SIMPLE_SELECT_ATTRIBUTE_CODE = 'size';
 
     public function let(
-        NomenclatureRepository $nomenclatureRepository
+        FamilyNomenclatureRepository $familyNomenclatureRepository,
+        SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository,
     ) {
-        $this->beConstructedWith($nomenclatureRepository);
+        $this->beConstructedWith($familyNomenclatureRepository, $simpleSelectNomenclatureRepository);
     }
 
     public function it_should_return_code_without_truncate(): void
@@ -99,9 +102,9 @@ class PropertyProcessApplierSpec extends ObjectBehavior
         )->shouldReturn('fam');
     }
 
-    public function it_should_throw_an_error_if_nomenclature_doesnt_exist(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_throw_an_error_if_nomenclature_doesnt_exist(FamilyNomenclatureRepository $familyNomenclatureRepository): void
     {
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get(self::$NOMENCLATURE_PROPERTY_CODE)
             ->shouldBeCalled()
             ->willReturn(null);
@@ -120,9 +123,9 @@ class PropertyProcessApplierSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_throw_an_error_if_nomenclature_doesnt_have_value_and_no_flag_generate_if_empty(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_throw_an_error_if_nomenclature_doesnt_have_value_and_no_flag_generate_if_empty(FamilyNomenclatureRepository $familyNomenclatureRepository): void
     {
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get(self::$NOMENCLATURE_PROPERTY_CODE)
             ->shouldBeCalled()
             ->willReturn(null);
@@ -141,10 +144,10 @@ class PropertyProcessApplierSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_throw_an_error_if_nomenclature_is_too_small(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_throw_an_error_if_nomenclature_is_too_small(FamilyNomenclatureRepository $familyNomenclatureRepository): void
     {
         $nomenclature = new NomenclatureDefinition('=', 3, false, ['familyCode' => 'ab']);
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get(self::$NOMENCLATURE_PROPERTY_CODE)
             ->shouldBeCalledOnce()
             ->willReturn($nomenclature);
@@ -163,10 +166,10 @@ class PropertyProcessApplierSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_throw_an_error_if_nomenclature_is_too_long(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_throw_an_error_if_nomenclature_is_too_long(FamilyNomenclatureRepository $familyNomenclatureRepository): void
     {
         $nomenclature = new NomenclatureDefinition('<=', 3, false, ['familyCode' => 'abcd']);
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get(self::$NOMENCLATURE_PROPERTY_CODE)
             ->shouldBeCalledOnce()
             ->willReturn($nomenclature);
@@ -185,10 +188,10 @@ class PropertyProcessApplierSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_return_code_with_valid_nomenclature_value(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_return_code_with_valid_nomenclature_value(FamilyNomenclatureRepository $familyNomenclatureRepository): void
     {
         $nomenclature = new NomenclatureDefinition('<=', 3, false, ['familyCode' => 'abc']);
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get(self::$NOMENCLATURE_PROPERTY_CODE)
             ->shouldBeCalledOnce()
             ->willReturn($nomenclature);
@@ -204,10 +207,30 @@ class PropertyProcessApplierSpec extends ObjectBehavior
         )->shouldReturn('abc');
     }
 
-    public function it_should_return_code_with_empty_nomenclature_value_and_flag_generate_if_empty(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_return_simple_select_code_with_valid_nomenclature_value(
+        SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository
+    ): void {
+        $nomenclature = new NomenclatureDefinition('<=', 3, false, ['l' => 'lar']);
+        $simpleSelectNomenclatureRepository
+            ->get(self::$SIMPLE_SELECT_ATTRIBUTE_CODE)
+            ->shouldBeCalledOnce()
+            ->willReturn($nomenclature);
+
+        $this->apply(
+            Process::fromNormalized([
+                'type' => Process::PROCESS_TYPE_NOMENCLATURE,
+            ]),
+            self::$SIMPLE_SELECT_ATTRIBUTE_CODE,
+            'l',
+            self::$TARGET,
+            self::$PREFIX,
+        )->shouldReturn('lar');
+    }
+
+    public function it_should_return_code_with_empty_nomenclature_value_and_flag_generate_if_empty(FamilyNomenclatureRepository $familyNomenclatureRepository): void
     {
         $nomenclature = new NomenclatureDefinition('<=', 3, true, []);
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get(self::$NOMENCLATURE_PROPERTY_CODE)
             ->shouldBeCalledOnce()
             ->willReturn($nomenclature);

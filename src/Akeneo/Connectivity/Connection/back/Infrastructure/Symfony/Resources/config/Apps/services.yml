@@ -73,3 +73,9 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllUsernamesWithAclQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdentifierQuery'
             - '@pim_notification.notifier'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier\AttributeRemovedNotifier:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllUsernamesWithAclQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdentifierQuery'
+            - '@pim_notification.notifier'

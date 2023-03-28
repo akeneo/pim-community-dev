@@ -567,7 +567,11 @@ abstract class AbstractProduct implements ProductInterface
             );
         }
 
-        if (!$association->hasProduct($product)) {
+        $mergedAssociation = $this->getAllAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => $associationTypeCode === $asso->getAssociationType()->getCode()
+        )->first();
+
+        if (!$mergedAssociation->hasProduct($product)) {
             $association->addProduct($product);
             $this->dirty = true;
         }
@@ -598,7 +602,11 @@ abstract class AbstractProduct implements ProductInterface
             );
         }
 
-        if (!$association->getProductModels()->contains($productModel)) {
+        $mergedAssociation = $this->getAllAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => $associationTypeCode === $asso->getAssociationType()->getCode()
+        )->first();
+
+        if (!$mergedAssociation->getProductModels()->contains($productModel)) {
             $association->addProductModel($productModel);
             $this->dirty = true;
         }
@@ -628,7 +636,12 @@ abstract class AbstractProduct implements ProductInterface
                 \sprintf('This product has no association for the "%s" association type', $associationTypeCode)
             );
         }
-        if (!$association->getGroups()->contains($group)) {
+
+        $mergedAssociation = $this->getAllAssociations()->filter(
+            static fn (AssociationInterface $asso): bool => $associationTypeCode === $asso->getAssociationType()->getCode()
+        )->first();
+
+        if (!$mergedAssociation->getGroups()->contains($group)) {
             $association->addGroup($group);
             $this->dirty = true;
         }
@@ -713,8 +726,37 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAllAssociations()
     {
-        $associations = new ArrayCollection($this->associations->toArray());
-        $allAssociations = $this->getAncestryAssociations($this, $associations);
+        $clonedAssociations = [];
+        foreach ($this->associations as $association) {
+            $clonedAssociations[] = clone $association;
+        }
+        $allAssociations = new ArrayCollection($clonedAssociations);
+
+        $parent = $this->getParent();
+        while (null !== $parent) {
+            foreach ($parent->getAssociations() as $parentAssociation) {
+                $matchingAssociation = $allAssociations->filter(
+                    static fn (AssociationInterface $clonedAsso): bool => $parentAssociation->getAssociationType()->getCode() === $clonedAsso->getAssociationType()->getCode()
+                )->first();
+
+                if (!$matchingAssociation) {
+                    $allAssociations->add(clone $parentAssociation);
+                } else {
+                    foreach ($parentAssociation->getProducts() as $product) {
+                        $matchingAssociation->addProduct($product);
+                    }
+                    foreach ($parentAssociation->getProductModels() as $productModel) {
+                        $matchingAssociation->addProductModel($productModel);
+                    }
+                    foreach ($parentAssociation->getGroups() as $group) {
+                        $matchingAssociation->addGroup($group);
+                    }
+                }
+            }
+
+            $parent = $parent->getParent();
+        }
+
 
         return $allAssociations;
     }
@@ -1021,70 +1063,6 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         return false;
-    }
-
-    /**
-     * @param EntityWithFamilyVariantInterface $entity
-     * @param Collection                       $associationsCollection
-     *
-     * @return Collection
-     */
-    private function getAncestryAssociations(
-        EntityWithFamilyVariantInterface $entity,
-        Collection $associationsCollection
-    ): Collection {
-        $parent = $entity->getParent();
-
-        if (null === $parent) {
-            return $associationsCollection;
-        }
-
-        foreach ($parent->getAllAssociations() as $association) {
-            $associationsCollection = $this->mergeAssociation($association, $associationsCollection);
-        }
-
-        return $associationsCollection;
-    }
-
-    /**
-     * Merges one association in an association collection.
-     * It first merge the product existing association
-     * And then merges the association into the collection
-     *
-     * Merging an association means merging all the products, product models and groups
-     * into the collection associations or adding it if it doesn't exist
-     *
-     * @param AssociationInterface $association
-     * @param Collection           $associationsCollection
-     *
-     * @return Collection
-     */
-    private function mergeAssociation(
-        AssociationInterface $association,
-        Collection $associationsCollection
-    ): Collection {
-        $foundInCollection = null;
-        foreach ($associationsCollection as $associationInCollection) {
-            if ($associationInCollection->getAssociationType()->getCode() ===
-                $association->getAssociationType()->getCode()) {
-                $foundInCollection = $associationInCollection;
-            }
-        }
-
-        if (null !== $foundInCollection) {
-            foreach ($association->getProducts() as $product) {
-                $foundInCollection->addProduct($product);
-            }
-            foreach ($association->getProductModels() as $productModel) {
-                $foundInCollection->addProductModel($productModel);
-            }
-            foreach ($association->getGroups() as $group) {
-                $foundInCollection->addGroup($group);
-            }
-        }
-        $associationsCollection->add($association);
-
-        return $associationsCollection;
     }
 
     /**

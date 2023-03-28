@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Registry;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromCategoriesValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Number\NumberFromMetricAttributeValueExtractor;
@@ -57,6 +58,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
     public function extractorDataProvider(): array
     {
         return [
+            ArrayOfStringsFromCategoriesValueExtractor::class => [
+                'sourceType' => 'categories',
+                'targetType' => 'array<string>',
+                'targetFormat' => null,
+                'extractorClassName' => ArrayOfStringsFromCategoriesValueExtractor::class,
+            ],
             ArrayOfStringsFromMultiSelectAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_multiselect',
                 'targetType' => 'array<string>',

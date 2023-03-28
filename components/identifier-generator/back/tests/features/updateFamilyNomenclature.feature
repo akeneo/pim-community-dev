@@ -8,13 +8,13 @@ Feature: Update Family Nomenclature
       | family2    | Bar   |
 
   Scenario: Can add a new value in family nomenclature
-    When I add Baz value for family3
+    When I add Baz value for family3 family
     Then The value for family1 should be Foo
     And The value for family2 should be Bar
     And The value for family3 should be Baz
 
   Scenario: Can update an existing value in family nomenclature
-    When I update Baz value for family2
+    When I update Baz value for family2 family
     Then The value for family1 should be Foo
     And The value for family2 should be Baz
 

@@ -7,14 +7,14 @@ namespace Akeneo\Category\back\tests\Unit\Application\Command;
 use Akeneo\Category\Application\Command\DeactivateTemplateCommand;
 use Akeneo\Category\Application\Command\DeactivateTemplateCommandHandler;
 use Akeneo\Category\Application\Query\DeactivateTemplate;
-use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeactivateTemplateCommandHandlerTest extends CategoryTestCase
+class DeactivateTemplateCommandHandlerTest extends TestCase
 {
     public function testItDeactivatesTemplate(): void
     {

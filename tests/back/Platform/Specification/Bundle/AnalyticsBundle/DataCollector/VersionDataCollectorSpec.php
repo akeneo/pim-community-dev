@@ -48,7 +48,7 @@ class VersionDataCollectorSpec extends ObjectBehavior
                 'pim_edition'        => 'CE',
                 'pim_version'        => '1.4.0',
                 'pim_environment'    => 'prod',
-                'pim_install_time'   => (new \DateTime('2015-09-16T10:10:32+02:00'))->format(\DateTime::ISO8601),
+                'pim_install_time'   => (new \DateTime('2015-09-16T10:10:32+02:00'))->format(\DateTime::ATOM),
                 'server_version'     => 'Apache/2.4.12 (Debian)',
             ]
         );
@@ -72,7 +72,7 @@ class VersionDataCollectorSpec extends ObjectBehavior
                 'pim_edition'      => 'CE',
                 'pim_version'      => '1.4.0',
                 'pim_environment'  => 'prod',
-                'pim_install_time' => (new \DateTime('2015-09-16T10:10:32+02:00'))->format(\DateTime::ISO8601),
+                'pim_install_time' => (new \DateTime('2015-09-16T10:10:32+02:00'))->format(\DateTime::ATOM),
                 'server_version'     => '',
             ]
         );

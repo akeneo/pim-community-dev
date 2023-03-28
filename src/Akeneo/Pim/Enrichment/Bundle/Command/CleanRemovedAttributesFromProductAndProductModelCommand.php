@@ -344,8 +344,6 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
     private function purgeCleanedBlackListedAttributes(array $allBlacklistedAttributeCodes)
     {
-        foreach ($allBlacklistedAttributeCodes as $blacklistedAttributeCode) {
-            $this->attributeCodeBlacklister->removeFromBlacklist($blacklistedAttributeCode);
-        }
+        $this->attributeCodeBlacklister->removeFromBlacklist($allBlacklistedAttributeCodes);
     }
 }

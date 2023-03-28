@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
 use PHPUnit\Framework\Assert;
@@ -95,8 +95,8 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         return $this->catalog->useTechnicalCatalog(['identifier_generator']);
     }
 
-    private function getNomenclatureRepository(): NomenclatureRepository
+    private function getNomenclatureRepository(): FamilyNomenclatureRepository
     {
-        return $this->get('Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository');
+        return $this->get('Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository');
     }
 }
