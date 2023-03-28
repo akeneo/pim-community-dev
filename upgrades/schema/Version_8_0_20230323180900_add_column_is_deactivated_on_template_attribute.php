@@ -20,7 +20,7 @@ final class Version_8_0_20230323180900_add_column_is_deactivated_on_template_att
             'is_deactivated column already exists in pim_catalog_category_attribute'
         );
 
-        $this->addSql('ALTER TABLE pim_catalog_category_attribute ADD COLUMN is_deactivated BOOLEAN;');
+        $this->addSql('ALTER TABLE pim_catalog_category_attribute ADD COLUMN is_deactivated BOOLEAN NOT NULL DEFAULT 0;');
     }
 
     public function down(Schema $schema): void
