@@ -10,6 +10,7 @@ use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQuer
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
 use Akeneo\Catalogs\Domain\Catalog;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\NullSource\NullBooleanSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\NullSource\NullNumberSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\NullSource\NullStringSource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -187,6 +188,7 @@ final class ProductMappingRespectsSchemaValidator extends ConstraintValidator
                 $constraint = match ($targetTypeKey) {
                     'string' => new NullStringSource(),
                     'boolean' => new NullBooleanSource(),
+                    'number' => new NullNumberSource(),
                     default => null,
                 };
 
