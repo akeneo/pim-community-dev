@@ -60,9 +60,9 @@ final class FeatureHelper
 
     public static function skipIntegrationTestWhenReferenceEntityIsNotActivated(): void
     {
-        $isAssetFeatureActivated = \class_exists('Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle');
-        if (!$isAssetFeatureActivated) {
-            Assert::markTestSkipped('Asset feature is not available in this scope');
+        $isRefEntityFeatureActivated = \class_exists('Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle');
+        if (!$isRefEntityFeatureActivated) {
+            Assert::markTestSkipped('Reference Entity feature is not available in this scope');
         }
     }
 
