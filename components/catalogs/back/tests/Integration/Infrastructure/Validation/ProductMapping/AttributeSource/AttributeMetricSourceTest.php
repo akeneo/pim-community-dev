@@ -1,133 +1,54 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductMapping\AttributeSource;
 
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributePriceCollectionSource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeMetricSource;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @covers \Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeMetricSource
  */
-class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
+class AttributeMetricSourceTest extends AbstractAttributeSourceTest
 {
     private ?ValidatorInterface $validator;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
+
+        $this->createMeasurementsFamily([
+            'code' => 'Weight',
+            'units' => [
+                [
+                    'code' => 'GRAM',
+                    'label' => 'Gram',
+                ],
+                [
+                    'code' => 'KILOGRAM',
+                    'label' => 'Kilogram',
+                ],
+            ],
+        ]);
     }
 
     /**
      * @dataProvider validDataProvider
+     * @param array<array-key, array{source: string|null, scope:string|null, locale: string|null}> $source
      */
     public function testItReturnsNoViolation(array $attribute, array $source): void
     {
         $this->createAttribute($attribute);
-
-        $violations = $this->validator->validate($source, new AttributePriceCollectionSource());
-
+        $violations = $this->validator->validate($source, new AttributeMetricSource());
         $this->assertEmpty($violations);
-    }
-
-    public function validDataProvider(): array
-    {
-        return [
-            'localizable and scopable attribute' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => true,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => 'ecommerce',
-                    'locale' => 'en_US',
-                    'parameters' => [
-                        'currency' => 'USD',
-                    ],
-                ],
-            ],
-            'scopable attribute' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => 'ecommerce',
-                    'locale' => null,
-                    'parameters' => [
-                        'currency' => 'USD',
-                    ],
-                ],
-            ],
-            'localizable attribute' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => false,
-                    'localizable' => true,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => null,
-                    'locale' => 'en_US',
-                    'parameters' => [
-                        'currency' => 'USD',
-                    ],
-                ],
-            ],
-            'non localizable and non scopable attribute' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => false,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => null,
-                    'locale' => null,
-                    'parameters' => [
-                        'currency' => 'EUR',
-                    ],
-                ],
-            ],
-            'with default value' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => true,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => 'ecommerce',
-                    'locale' => 'en_US',
-                    'default' => 10,
-                    'parameters' => [
-                        'currency' => 'USD',
-                    ],
-                ],
-            ],
-        ];
     }
 
     /**
      * @dataProvider invalidDataProvider
+     * @param array<array-key, array{source: string|null, scope:string|null, locale: string|null}> $source
      */
     public function testItReturnsViolationsWhenInvalid(
         array $attribute,
@@ -135,10 +56,105 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
         string $expectedMessage,
     ): void {
         $this->createAttribute($attribute);
-
-        $violations = $this->validator->validate($source, new AttributePriceCollectionSource());
-
+        $violations = $this->validator->validate($source, new AttributeMetricSource());
         $this->assertViolationsListContains($violations, $expectedMessage);
+    }
+
+    public function validDataProvider(): array
+    {
+        return [
+            'localizable and scopable attribute' => [
+                'attribute' => [
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                    'measurement_family' => 'Weight',
+                ],
+                'source' => [
+                    'source' => 'weight',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'unit' => 'KILOGRAM',
+                    ],
+                ],
+            ],
+            'scopable attribute' => [
+                'attribute' => [
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                    'measurement_family' => 'Weight',
+                ],
+                'source' => [
+                    'source' => 'weight',
+                    'scope' => 'ecommerce',
+                    'locale' => null,
+                    'parameters' => [
+                        'unit' => 'KILOGRAM',
+                    ],
+                ],
+            ],
+            'localizable attribute' => [
+                'attribute' => [
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => true,
+                    'measurement_family' => 'Weight',
+                ],
+                'source' => [
+                    'source' => 'weight',
+                    'scope' => null,
+                    'locale' => 'en_US',
+                    'parameters' => [
+                        'unit' => 'KILOGRAM',
+                    ],
+                ],
+            ],
+            'non localizable and non scopable attribute' => [
+                'attribute' => [
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
+                    'group' => 'other',
+                    'scopable' => false,
+                    'localizable' => false,
+                    'measurement_family' => 'Weight',
+                ],
+                'source' => [
+                    'source' => 'weight',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'unit' => 'GRAM',
+                    ],
+                ],
+            ],
+            'with default value' => [
+                'attribute' => [
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => false,
+                    'measurement_family' => 'Weight',
+                ],
+                'source' => [
+                    'source' => 'weight',
+                    'scope' => 'ecommerce',
+                    'locale' => null,
+                    'default' => 10,
+                    'parameters' => [
+                        'unit' => 'KILOGRAM',
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function invalidDataProvider(): array
@@ -146,11 +162,12 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
         return [
             'missing mandatory parameters field' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
                     'source' => 'price',
@@ -161,18 +178,19 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
             ],
             'payload with an extra field' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                     ],
                     'foo' => 'bar',
                 ],
@@ -180,87 +198,92 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
             ],
             'unknown extra parameter' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                         'foo' => 'bar',
                     ],
                 ],
                 'expectedMessage' => 'This field was not expected.',
             ],
-            'blank currency parameter' => [
+            'blank unit parameter' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => '',
+                        'unit' => '',
                     ],
                 ],
-                'expectedMessage' => 'This value should not be blank.',
+                'expectedMessage' => 'The unit must not be empty.',
             ],
-            'null currency parameter' => [
+            'null unit parameter' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => null,
+                        'unit' => null,
                     ],
                 ],
-                'expectedMessage' => 'This value should not be blank.',
+                'expectedMessage' => 'The unit must not be empty.',
             ],
-            'invalid currency parameter' => [
+            'invalid unit parameter' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => 42,
+                        'unit' => 42,
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
-            'missing currency parameter' => [
+            'missing unit parameter' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
@@ -268,283 +291,261 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
-            'unknown currency parameter' => [
+            'unknown unit parameter' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => 'UNKNOWN',
+                        'unit' => 'UNKNOWN',
                     ],
                 ],
-                'expectedMessage' => 'This currency is not activated. Please check your channels and currency settings or update this value.',
-            ],
-            'not scopable source with disabled currency' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => false,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => null,
-                    'locale' => null,
-                    'parameters' => [
-                        'currency' => 'GBP',
-                    ],
-                ],
-                'expectedMessage' => 'This currency is not activated. Please check your channels and currency settings or update this value.',
-            ],
-            'scopable source with invalid channel currency' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => true,
-                    'localizable' => false,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => 'ecommerce',
-                    'locale' => null,
-                    'parameters' => [
-                        'currency' => 'EUR',
-                    ],
-                ],
-                'expectedMessage' => 'This currency is not activated. Please check your channels and currency settings or update this value.',
+                'expectedMessage' => 'The unit of the field "weight" does not exist.',
             ],
             'blank locale' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'ecommerce',
                     'locale' => '',
                     'parameters' => [
-                        'currency' => 'USD',
+                        'currency' => 'GRAM',
                     ],
                 ],
                 'expectedMessage' => 'This value should not be blank.',
             ],
             'invalid locale' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'ecommerce',
                     'locale' => 42,
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'KILOGRAM',
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
             'invalid locale for a channel' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'ecommerce',
                     'locale' => 'kz_KZ',
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                     ],
                 ],
                 'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
             ],
             'missing locale value' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
-                    'scopable' => false,
+                    'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => null,
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                     ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
             'unknown locale' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
-                    'group' => 'other',
-                    'scopable' => false,
-                    'localizable' => true,
-                ],
-                'source' => [
-                    'source' => 'price',
-                    'scope' => null,
-                    'locale' => 'kz_KZ',
-                    'parameters' => [
-                        'currency' => 'USD',
-                    ],
-                ],
-                'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
-            ],
-            'blank scope' => [
-                'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
+                    'scope' => 'ecommerce',
+                    'locale' => 'kz_KZ',
+                    'parameters' => [
+                        'unit' => 'GRAM',
+                    ],
+                ],
+                'expectedMessage' => 'This locale is disabled. Please check your channels and locales settings or update this value.',
+            ],
+            'blank scope' => [
+                'attribute' => [
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                    'measurement_family' => 'Weight',
+                ],
+                'source' => [
+                    'source' => 'weight',
                     'scope' => '',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                     ],
                 ],
                 'expectedMessage' => 'This value should not be blank.',
             ],
             'invalid scope' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 42,
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
             'missing scope value' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'locale' => null,
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                     ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
             'unknown scope' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => false,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => 'unknown_scope',
                     'locale' => null,
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                     ],
                 ],
                 'expectedMessage' => 'This channel has been deleted. Please check your channel settings or update this value.',
             ],
             'blank source value' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
                     'source' => '',
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                     ],
                 ],
                 'expectedMessage' => 'This value should not be blank.',
             ],
             'invalid source value' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
                     'source' => 42,
                     'scope' => 'ecommerce',
                     'locale' => 'en_US',
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                     ],
                 ],
                 'expectedMessage' => 'This value should be of type string.',
             ],
             'missing source value' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
                     'scope' => null,
                     'locale' => null,
                     'parameters' => [
-                        'currency' => 'USD',
+                        'unit' => 'GRAM',
                     ],
                 ],
                 'expectedMessage' => 'This field is missing.',
             ],
             'source with invalid default value type' => [
                 'attribute' => [
-                    'code' => 'price',
-                    'type' => 'pim_catalog_price_collection',
+                    'code' => 'weight',
+                    'type' => 'pim_catalog_metric',
                     'group' => 'other',
                     'scopable' => true,
                     'localizable' => true,
+                    'measurement_family' => 'Weight',
                 ],
                 'source' => [
-                    'source' => 'price',
+                    'source' => 'weight',
                     'scope' => null,
                     'locale' => null,
                     'default' => true,

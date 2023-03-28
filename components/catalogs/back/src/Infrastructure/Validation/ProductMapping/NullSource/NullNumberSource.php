@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource;
+namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\NullSource;
 
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidLocale;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidScope;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Compound;
@@ -16,42 +14,38 @@ use Symfony\Component\Validator\Constraints\Compound;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class AttributeNumberSource extends Compound
+final class NullNumberSource extends Compound
 {
     /**
      * @param array<array-key, mixed> $options
      *
      * @return array<array-key, Constraint>
      */
-    protected function getConstraints(array $options = []): array
+    protected function getConstraints(array $options): array
     {
         return [
             new Assert\Sequentially([
                 new Assert\Collection([
                     'fields' => [
                         'source' => [
-                            new Assert\Type('string'),
-                            new Assert\NotBlank(),
+                            new Assert\IsNull(),
                         ],
                         'scope' => [
-                            new Assert\Type('string'),
-                            new Assert\NotBlank(allowNull: true),
+                            new Assert\IsNull(),
                         ],
                         'locale' => [
-                            new Assert\Type('string'),
-                            new Assert\NotBlank(allowNull: true),
+                            new Assert\IsNull(),
                         ],
                         'default' => [
                             new Assert\Optional([
                                 new Assert\Type('numeric'),
+                                new Assert\NotBlank(allowNull: false),
                             ]),
                         ],
                     ],
                     'allowMissingFields' => false,
                     'allowExtraFields' => false,
                 ]),
-                new AttributeSourceContainsValidScope(),
-                new AttributeSourceContainsValidLocale(),
             ]),
         ];
     }
