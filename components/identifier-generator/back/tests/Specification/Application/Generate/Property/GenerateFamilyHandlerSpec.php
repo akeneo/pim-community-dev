@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToGenerateIdentifierFromFamilyNomenclature;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedFamilyNomenclatureException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedNomenclatureException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
@@ -24,15 +22,21 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\PropertyInte
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
 use PhpSpec\ObjectBehavior;
 
 class GenerateFamilyHandlerSpec extends ObjectBehavior
 {
-    public function let(NomenclatureRepository $nomenclatureRepository): void
-    {
+    public function let(
+        FamilyNomenclatureRepository $familyNomenclatureRepository,
+        SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository
+    ): void {
         $this->beConstructedWith(
-            new PropertyProcessApplier($nomenclatureRepository->getWrappedObject())
+            new PropertyProcessApplier(
+                $familyNomenclatureRepository->getWrappedObject(),
+                $simpleSelectNomenclatureRepository->getWrappedObject()
+            )
         );
     }
 
@@ -167,7 +171,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         )->shouldReturn('fam');
     }
 
-    public function it_should_throw_an_error_if_family_nomenclature_doesnt_exist(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_throw_an_error_if_family_nomenclature_doesnt_exist(FamilyNomenclatureRepository $nomenclatureRepository): void
     {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
@@ -194,7 +198,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_throw_an_error_if_family_nomenclature_doesnt_have_value_and_no_flag_generate_if_empty(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_throw_an_error_if_family_nomenclature_doesnt_have_value_and_no_flag_generate_if_empty(FamilyNomenclatureRepository $nomenclatureRepository): void
     {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
@@ -221,7 +225,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_throw_an_error_if_family_nomenclature_is_too_small(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_throw_an_error_if_family_nomenclature_is_too_small(FamilyNomenclatureRepository $nomenclatureRepository): void
     {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
@@ -249,7 +253,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_throw_an_error_if_family_nomenclature_is_too_long(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_throw_an_error_if_family_nomenclature_is_too_long(FamilyNomenclatureRepository $nomenclatureRepository): void
     {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
@@ -277,7 +281,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_return_family_code_with_valid_nomenclature_value(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_return_family_code_with_valid_nomenclature_value(FamilyNomenclatureRepository $nomenclatureRepository): void
     {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
@@ -302,7 +306,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         )->shouldReturn('abc');
     }
 
-    public function it_should_return_family_code_with_empty_nomenclature_value_and_flag_generate_if_empty(NomenclatureRepository $nomenclatureRepository): void
+    public function it_should_return_family_code_with_empty_nomenclature_value_and_flag_generate_if_empty(FamilyNomenclatureRepository $nomenclatureRepository): void
     {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),

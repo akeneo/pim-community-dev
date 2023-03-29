@@ -87,6 +87,10 @@ pim_enrich_attribute_remove:
     type: action
     label: pim_enrich.acl.attribute.remove
     group_name: pim_enrich.acl_group.attribute
+pim_enrich_attribute_mass_delete:
+    type: action
+    label: pim_enrich.acl.attribute.mass_delete
+    group_name: pim_enrich.acl_group.attribute
 
 pim_enrich_attribute_sort:
     type: action

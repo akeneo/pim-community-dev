@@ -17,7 +17,7 @@ use Webmozart\Assert\Assert;
  */
 final class FamilyProperty implements PropertyInterface
 {
-    private const TYPE = 'family';
+    public const TYPE = 'family';
 
     private function __construct(
         private readonly Process $process,

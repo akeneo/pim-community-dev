@@ -17,7 +17,7 @@ use Webmozart\Assert\Assert;
 final class GenerateSimpleSelectHandler implements GeneratePropertyHandlerInterface
 {
     public function __construct(
-        private PropertyProcessApplier $propertyProcessApplier
+        private readonly PropertyProcessApplier $propertyProcessApplier
     ) {
     }
 

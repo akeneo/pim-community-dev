@@ -22,6 +22,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -99,7 +100,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     {
         $this
             ->setDescription('Removes all values of deleted attributes on all products and product models')
-            ->addOption('all-blacklisted-attributes', InputArgument::OPTIONAL)
+            ->addOption('all-blacklisted-attributes', null, InputOption::VALUE_OPTIONAL)
             ->addArgument('attributes', InputArgument::OPTIONAL | InputArgument::IS_ARRAY);
     }
 
@@ -344,8 +345,6 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
     private function purgeCleanedBlackListedAttributes(array $allBlacklistedAttributeCodes)
     {
-        foreach ($allBlacklistedAttributeCodes as $blacklistedAttributeCode) {
-            $this->attributeCodeBlacklister->removeFromBlacklist($blacklistedAttributeCode);
-        }
+        $this->attributeCodeBlacklister->removeFromBlacklist($allBlacklistedAttributeCodes);
     }
 }

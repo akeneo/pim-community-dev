@@ -44,22 +44,22 @@ test('it displays the target as a title', () => {
 test('it displays a message when the selected source has no parameters', () => {
     mockFetchResponses([
         {
-            url: '/rest/catalogs/attributes/weight',
+            url: '/rest/catalogs/attributes/release_date',
             json: {
-                code: 'weight',
-                label: 'Wame',
-                type: 'pim_catalog_number',
+                code: 'release_date',
+                label: 'Release date',
+                type: 'pim_catalog_date',
                 scopable: false,
                 localizable: false,
             },
         },
         {
-            url: '/rest/catalogs/attributes-by-target-type-and-target-format?page=1&limit=20&search=&targetType=number&targetFormat=',
+            url: '/rest/catalogs/attributes-by-target-type-and-target-format?page=1&limit=20&search=&targetType=string&targetFormat=date-time',
             json: [
                 {
-                    code: 'weight',
-                    label: 'Weight',
-                    type: 'pim_catalog_number',
+                    code: 'release_date',
+                    label: 'Release date',
+                    type: 'pim_catalog_date',
                     scopable: false,
                     localizable: false,
                 },
@@ -67,7 +67,7 @@ test('it displays a message when the selected source has no parameters', () => {
         },
     ]);
     const source: Source = {
-        source: 'weight',
+        source: 'release_date',
         locale: null,
         scope: null,
     };
@@ -75,7 +75,7 @@ test('it displays a message when the selected source has no parameters', () => {
         <ThemeProvider theme={pimTheme}>
             <QueryClientProvider client={new QueryClient()}>
                 <SourcePanel
-                    target={{code: 'weight', label: 'Weight', type: 'number', format: null}}
+                    target={{code: 'release_date', label: 'Release date', type: 'string', format: 'date-time'}}
                     source={source}
                     onChange={jest.fn()}
                     errors={null}

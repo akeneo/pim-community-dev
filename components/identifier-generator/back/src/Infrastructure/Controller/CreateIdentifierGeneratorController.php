@@ -35,12 +35,16 @@ class CreateIdentifierGeneratorController
             throw new AccessDeniedException();
         }
 
-        try {
-            $content = $this->getContent($request);
-            $command = CreateGeneratorCommand::fromNormalized($content);
-        } catch (\InvalidArgumentException $exception) {
-            return new JsonResponse([['message' => $exception->getMessage()]], Response::HTTP_BAD_REQUEST);
-        }
+        $content = $this->getContent($request);
+        $command = new CreateGeneratorCommand(
+            $content['code'],
+            $content['conditions'],
+            $content['structure'],
+            $content['labels'],
+            $content['target'],
+            $content['delimiter'],
+            $content['text_transformation']
+        );
 
         try {
             ($this->createGeneratorHandler)($command);
@@ -48,25 +52,38 @@ class CreateIdentifierGeneratorController
             return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         }
 
-        $identifierGenerator = $this->identifierGeneratorRepository->get($content['code']);
+        $identifierGenerator = $this->identifierGeneratorRepository->get($command->code);
         Assert::notNull($identifierGenerator);
 
         return new JsonResponse($identifierGenerator->normalize(), Response::HTTP_CREATED);
     }
 
     /**
-     * @return array{code: string}
+     * @return array{
+     *     code: string,
+     *     conditions: list<array<string, mixed>>,
+     *     structure: list<array<string, mixed>>,
+     *     labels: array<string, string>,
+     *     target: string,
+     *     delimiter: ?string,
+     *     text_transformation: string
+     * }
      */
     private function getContent(Request $request): array
     {
-        $content = \json_decode($request->getContent(), true);
-        if (null === $content) {
+        $data = \json_decode($request->getContent(), true);
+        if (!\is_array($data)) {
             throw new BadRequestHttpException('Invalid json message received');
         }
 
-        Assert::isArray($content);
-        Assert::keyExists($content, 'code');
-
-        return $content;
+        return [
+            'code' => \is_string($data['code'] ?? null) ? $data['code'] : '',
+            'conditions' => \is_array($data['conditions'] ?? null) ? $data['conditions'] : [],
+            'structure' => \is_array($data['structure'] ?? null) ? $data['structure'] : [],
+            'labels' => \is_array($data['labels'] ?? null) ? $data['labels'] : [],
+            'target' => \is_string($data['target'] ?? null) ? $data['target'] : '',
+            'delimiter' => \is_string($data['delimiter'] ?? null) ? $data['delimiter'] : null,
+            'text_transformation' => \is_string($data['text_transformation'] ?? null) ? $data['text_transformation'] : '',
+        ];
     }
 }

@@ -7,20 +7,20 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
 
-class UpdateFamilyNomenclatureContext implements Context
+final class UpdateFamilyNomenclatureContext implements Context
 {
-    private ?ViolationsException $violations = null;
     private const DEFAULT_OPERATOR = '<=';
     private const DEFAULT_VALUE = 3;
     private const DEFAULT_GENERATE_IF_EMPTY = false;
 
     public function __construct(
-        private readonly NomenclatureRepository $nomenclatureRepository,
+        private readonly ViolationsContext $violationsContext,
+        private readonly FamilyNomenclatureRepository $nomenclatureRepository,
         private readonly UpdateNomenclatureHandler $updateNomenclatureValuesHandler,
     ) {
     }
@@ -45,7 +45,7 @@ class UpdateFamilyNomenclatureContext implements Context
     }
 
     /**
-     * @When /^I (?:add|update) (.*) value for (.*)$/
+     * @When /^I (?:add|update) (.*) value for (.*) family$/
      */
     public function iAddTheValueForFamily(string $value, string $familyCode): void
     {
@@ -75,13 +75,13 @@ class UpdateFamilyNomenclatureContext implements Context
     }
 
     /**
-     * @Then The value for :familyCode should be :value
+     * @Then The value for :familyCode should be :expectedValue
      */
-    public function theValueForFamilyShouldBe(string $familyCode, string $value): void
+    public function theValueForFamilyShouldBe(string $familyCode, string $expectedValue): void
     {
         $nomenclature = $this->nomenclatureRepository->get('family');
         $value = ($nomenclature->values() ?? [])[$familyCode] ?? null;
-        Assert::eq($value, 'undefined' === $value ? null : $value);
+        Assert::eq($expectedValue, $value ?: 'undefined');
     }
 
     /**
@@ -98,8 +98,8 @@ class UpdateFamilyNomenclatureContext implements Context
 
         try {
             ($this->updateNomenclatureValuesHandler)($command);
-        } catch (ViolationsException $e) {
-            $this->violations = $e;
+        } catch (ViolationsException $exception) {
+            $this->violationsContext->setViolationsException($exception);
         }
     }
 
@@ -125,22 +125,5 @@ class UpdateFamilyNomenclatureContext implements Context
     public function theFamilyNomenclatureGenerationIfEmptyShouldBe(string $generateIfEmpty): void
     {
         Assert::eq($this->nomenclatureRepository->get('family')->generateIfEmpty(), $generateIfEmpty === 'true');
-    }
-
-    /**
-     * @Then I should have an error :message
-     */
-    public function iShouldHaveAnError($message): void
-    {
-        Assert::notNull($this->violations, 'No error were raised.');
-        Assert::contains($this->violations->getMessage(), $message);
-    }
-
-    /**
-     * @Then I should not have an error
-     */
-    public function iShouldNotHaveAnError(): void
-    {
-        Assert::null($this->violations);
     }
 }

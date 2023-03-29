@@ -62,11 +62,11 @@ const mockResponse: (
   jest.spyOn(global, 'fetch').mockImplementation(fetchImplementation);
 
   return () => {
-    if (method === 'POST') {
+    if (method === 'POST' || method === 'PATCH') {
       expect(fetchImplementation).toBeCalledWith(url, {
         headers: {'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/json'},
         body: JSON.stringify(response.body),
-        method: 'POST',
+        method,
       });
     } else {
       expect(fetchImplementation).toBeCalledWith(url, {

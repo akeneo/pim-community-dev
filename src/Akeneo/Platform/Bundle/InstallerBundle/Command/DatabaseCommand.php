@@ -109,7 +109,6 @@ class DatabaseCommand extends Command
 
         try {
             $this->commandExecutor
-                ->runCommand('doctrine:schema:create')
                 ->runCommand(
                     'doctrine:schema:update',
                     ['--force' => true, '--no-interaction' => true]

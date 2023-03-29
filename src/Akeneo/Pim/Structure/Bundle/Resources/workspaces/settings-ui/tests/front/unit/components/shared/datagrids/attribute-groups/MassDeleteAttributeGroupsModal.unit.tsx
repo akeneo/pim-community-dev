@@ -15,7 +15,7 @@ beforeEach(() => {
 
 test('it renders a confirm modal delete button', () => {
   renderWithProviders(
-    <MassDeleteAttributeGroupsModal impactedAttributeGroups={[]} availableTargetAttributeGroups={[]} />
+    <MassDeleteAttributeGroupsModal impactedAttributeGroups={[]} availableReplacementAttributeGroups={[]} />
   );
 
   expect(screen.getByText('pim_common.delete')).toBeInTheDocument();
@@ -28,7 +28,7 @@ test('it opens a modal with a confirmation input & helper if there are child att
       impactedAttributeGroups={[
         {code: 'attribute_group_3', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 3},
       ]}
-      availableTargetAttributeGroups={[
+      availableReplacementAttributeGroups={[
         {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 2},
       ]}
     />
@@ -49,7 +49,7 @@ test('it can select an attribute group to assign affected attributes', () => {
       impactedAttributeGroups={[
         {code: 'attribute_group_3', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 3},
       ]}
-      availableTargetAttributeGroups={[
+      availableReplacementAttributeGroups={[
         {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
         {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
       ]}
@@ -75,7 +75,7 @@ test('it can close the modal when confirming with the correct word', async () =>
       impactedAttributeGroups={[
         {code: 'attribute_group_3', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 0},
       ]}
-      availableTargetAttributeGroups={[
+      availableReplacementAttributeGroups={[
         {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
         {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
       ]}
@@ -103,7 +103,7 @@ test('it cannot mass delete if no target attribute group is selected', async () 
       impactedAttributeGroups={[
         {code: 'attribute_group_3', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 3},
       ]}
-      availableTargetAttributeGroups={[
+      availableReplacementAttributeGroups={[
         {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
         {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
       ]}
@@ -125,7 +125,7 @@ test('it launch mass delete', async () => {
       impactedAttributeGroups={[
         {code: 'attribute_group_3', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 3},
       ]}
-      availableTargetAttributeGroups={[
+      availableReplacementAttributeGroups={[
         {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
         {
           code: 'attribute_group_3',
@@ -158,7 +158,7 @@ test('it resets assigned attribute group when modal is closed', () => {
       impactedAttributeGroups={[
         {code: 'attribute_group_3', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 3},
       ]}
-      availableTargetAttributeGroups={[
+      availableReplacementAttributeGroups={[
         {code: 'attribute_group_1', labels: {}, sort_order: 1, is_dqi_activated: false, attribute_count: 4},
         {code: 'attribute_group_2', labels: {}, sort_order: 2, is_dqi_activated: false, attribute_count: 5},
       ]}

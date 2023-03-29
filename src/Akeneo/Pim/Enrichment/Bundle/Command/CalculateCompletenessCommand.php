@@ -10,8 +10,8 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -58,8 +58,8 @@ class CalculateCompletenessCommand extends Command
             ->setDescription('Launch the product completeness calculation')
             ->addOption(
                 'batch-size',
-                false,
-                InputArgument::OPTIONAL,
+                null,
+                InputOption::VALUE_OPTIONAL,
                 'The number of product completeness calculated in one cycle.',
                 self::DEFAULT_BATCH_SIZE
             )

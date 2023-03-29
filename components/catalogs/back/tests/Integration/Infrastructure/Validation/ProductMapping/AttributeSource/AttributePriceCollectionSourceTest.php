@@ -105,6 +105,24 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                     ],
                 ],
             ],
+            'with default value' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => 'ecommerce',
+                    'locale' => 'en_US',
+                    'default' => 10,
+                    'parameters' => [
+                        'currency' => 'USD',
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -516,6 +534,22 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
                     ],
                 ],
                 'expectedMessage' => 'This field is missing.',
+            ],
+            'source with invalid default value type' => [
+                'attribute' => [
+                    'code' => 'price',
+                    'type' => 'pim_catalog_price_collection',
+                    'group' => 'other',
+                    'scopable' => true,
+                    'localizable' => true,
+                ],
+                'source' => [
+                    'source' => 'price',
+                    'scope' => null,
+                    'locale' => null,
+                    'default' => true,
+                ],
+                'expectedMessage' => 'This value should be of type numeric.',
             ],
         ];
     }
