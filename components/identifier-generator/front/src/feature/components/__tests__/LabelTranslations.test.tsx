@@ -82,4 +82,17 @@ describe('LabelTranslations', () => {
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
     expect(await screen.findByText('pim_error.general')).toBeInTheDocument();
   });
+
+  it('should update not-empty labels', async () => {
+    mockResponse('pim_localization_locale_index', 'GET', {json: defaultUiLocales});
+
+    const onLabelsChange = jest.fn();
+    render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
+
+    await waitFor(() => screen.getByTitle('French Label'));
+    fireEvent.change(screen.getByTitle('French Label'), {target: {value: '   '}});
+    expect(onLabelsChange).toBeCalledWith({
+      en_US: 'English Label',
+    });
+  });
 });

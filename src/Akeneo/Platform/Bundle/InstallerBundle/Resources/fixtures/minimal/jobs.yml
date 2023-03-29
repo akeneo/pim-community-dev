@@ -224,7 +224,7 @@ jobs:
     delete_attributes:
         connector: Akeneo Mass Edit Connector
         alias: delete_attributes
-        label: Mass delete attributes
+        label: Bulk delete attributes
         type: attribute_mass_delete
     clean_category_template_and_enriched_values:
         connector: internal
@@ -239,5 +239,5 @@ jobs:
     delete_attribute_groups:
         connector: Akeneo Mass Edit Connector
         alias: delete_attribute_groups
-        label: Mass delete attribute groups
+        label: Bulk delete attribute groups
         type: attribute_group_mass_delete

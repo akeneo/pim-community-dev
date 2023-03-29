@@ -37,8 +37,8 @@ Feature: Update Family Nomenclature
 
   Scenario: Cannot update the nomenclature value
     When I update the family nomenclature operator to <=, value to 6 and no generation if empty
-    Then I should have an error 'value: This value should be less than or equal to 5.'
+    Then I should get an error with message 'value: This value should be less than or equal to 5.'
 
   Scenario: Cannot update the nomenclature operator
     When I update the family nomenclature operator to foo, value to 3 and no generation if empty
-    Then I should have an error 'operator: The value you selected is not a valid choice.'
+    Then I should get an error with message 'operator: The value you selected is not a valid choice.'

@@ -1,9 +1,9 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {AttributesIllustration, Button, Field, Modal, TextInput, useAutoFocus} from 'akeneo-design-system';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {AttributesIllustration, Button, Field, Helper, Modal, TextInput, useAutoFocus} from 'akeneo-design-system';
 import {IdentifierGenerator, TEXT_TRANSFORMATION} from '../models';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {Styled} from '../components/Styled';
-import {useIdentifierAttributes, useValidateFormWithEnter} from '../hooks';
+import {useGetIdentifierGenerators, useIdentifierAttributes, useValidateFormWithEnter} from '../hooks';
 
 type CreateGeneratorModalProps = {
   onClose: () => void;
@@ -16,6 +16,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
   const [isCodeDirty, setIsCodeDirty] = useState(false);
   const [target, setTarget] = useState<string | undefined>();
   const {data} = useIdentifierAttributes();
+  const {data: generators = []} = useGetIdentifierGenerators();
 
   useEffect(() => {
     if (data) {
@@ -29,30 +30,41 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
   const labelLengthLimit = 255;
   const codeLengthLimit = 100;
 
+  const isCodeEmpty = useMemo(() => '' === code, [code]);
+  const isCodeAlreadyUsed = useMemo(
+    () => !!generators?.find(({code: existingCode}) => code.toLowerCase() === existingCode.toLowerCase()),
+    [generators, code]
+  );
+  const isFormInvalid = useMemo(() => isCodeAlreadyUsed || isCodeEmpty, [isCodeEmpty, isCodeAlreadyUsed]);
+
   const labelInputRef = React.useRef<HTMLInputElement | null>(null);
   useAutoFocus(labelInputRef);
 
   const onLabelChange = useCallback(
     (value: string) => {
       setLabel(value);
-      if (!isCodeDirty) setCode(value.replace(/[^a-zA-Z0-9]/g, '_').substring(0, codeLengthLimit));
+      if (!isCodeDirty)
+        setCode(
+          value
+            .trim()
+            .replace(/[^a-zA-Z0-9]/g, '_')
+            .substring(0, codeLengthLimit)
+        );
     },
     [isCodeDirty]
   );
 
   const onCodeChange = useCallback(value => {
-    setIsCodeDirty(true);
+    setIsCodeDirty('' !== value.trim());
     setCode(value);
   }, []);
-
-  const isFormInvalid = React.useMemo(() => code === '', [code]);
 
   const onConfirm = useCallback(() => {
     if (target && !isFormInvalid) {
       onSave({
         code,
         target,
-        labels: {[uiLocale]: label},
+        labels: label.trim() ? {[uiLocale]: label.trim()} : {},
         conditions: [],
         structure: [],
         delimiter: null,
@@ -79,6 +91,7 @@ const CreateGeneratorModal: React.FC<CreateGeneratorModalProps> = ({onClose, onS
         </Field>
         <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
           <TextInput name="code" value={code} onChange={onCodeChange} maxLength={codeLengthLimit} />
+          {isCodeAlreadyUsed && <Helper level="error">{translate('validation.create.code_already_used')}</Helper>}
         </Field>
       </Styled.FormContainer>
       <Modal.BottomButtons>

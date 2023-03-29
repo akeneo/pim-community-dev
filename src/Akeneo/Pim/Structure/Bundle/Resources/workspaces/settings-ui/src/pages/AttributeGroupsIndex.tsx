@@ -1,4 +1,4 @@
-import React, {FC, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components';
 import {
   Breadcrumb,
@@ -10,16 +10,16 @@ import {
   Dropdown,
   ArrowDownIcon,
   useAutoFocus,
+  getColor,
 } from 'akeneo-design-system';
 import {PageHeader, useRoute, useTranslate, useUserContext, PimView} from '@akeneo-pim-community/shared';
 import {AttributeGroupsCreateButton, AttributeGroupList, MassDeleteAttributeGroupsModal} from '../components';
-import {AttributeGroup, getImpactedAndTargetAttributeGroups} from '../models';
+import {AttributeGroup, DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP, getImpactedAndTargetAttributeGroups} from '../models';
 import {useAttributeGroups} from '../hooks/attribute-groups/useAttributeGroups';
 
 const Content = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 0 40px;
 `;
 
 const Page = styled.div`
@@ -28,26 +28,37 @@ const Page = styled.div`
   flex-direction: column;
 `;
 
-const AttributeGroupsIndex: FC = () => {
+const SearchWrapper = styled.div`
+  position: sticky;
+  top: 0;
+  padding: 0 40px;
+  background-color: ${getColor('white')};
+`;
+
+const AttributeGroupsIndex = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
   const [attributeGroups, reorderAttributeGroups, isPending] = useAttributeGroups();
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState<string>('');
   const catalogLocale = useUserContext().get('catalogLocale');
-  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
-    useSelection<AttributeGroup>(attributeGroups.length);
   const translate = useTranslate();
   const settingsHomePageRoute = `#${useRoute('pim_settings_index')}`;
 
-  const filteredAttributeGroups = attributeGroups.filter((attributeGroup: AttributeGroup) => {
-    return (attributeGroup.labels[catalogLocale] ?? attributeGroup.code)
+  const filteredAttributeGroups = attributeGroups.filter(attributeGroup =>
+    (attributeGroup.labels[catalogLocale] ?? attributeGroup.code)
       .toLowerCase()
-      .includes(searchValue.toLowerCase().trim());
-  });
+      .includes(searchValue.toLowerCase().trim())
+  );
 
+  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
+    useSelection<AttributeGroup>(filteredAttributeGroups.length);
+
+  const defaultTargetAttributeGroup =
+    attributeGroups.find(({code}) => DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP === code) ?? null;
   const [impactedAttributeGroups, availableTargetAttributeGroups] = getImpactedAndTargetAttributeGroups(
-    attributeGroups,
-    selection
+    filteredAttributeGroups,
+    selection,
+    defaultTargetAttributeGroup
   );
 
   useAutoFocus(inputRef);
@@ -79,21 +90,23 @@ const AttributeGroupsIndex: FC = () => {
         </PageHeader.Title>
       </PageHeader>
       <Content>
-        <Search
-          sticky={0}
-          placeholder={translate('pim_common.search')}
-          searchValue={searchValue}
-          onSearchChange={setSearchValue}
-          inputRef={inputRef}
-        >
-          <Search.ResultCount>
-            {translate(
-              'pim_common.result_count',
-              {itemsCount: filteredAttributeGroups.length},
-              filteredAttributeGroups.length
-            )}
-          </Search.ResultCount>
-        </Search>
+        <SearchWrapper>
+          <Search
+            sticky={0}
+            placeholder={translate('pim_common.search')}
+            searchValue={searchValue}
+            onSearchChange={setSearchValue}
+            inputRef={inputRef}
+          >
+            <Search.ResultCount>
+              {translate(
+                'pim_common.result_count',
+                {itemsCount: filteredAttributeGroups.length},
+                filteredAttributeGroups.length
+              )}
+            </Search.ResultCount>
+          </Search>
+        </SearchWrapper>
         <AttributeGroupList
           filteredAttributeGroups={filteredAttributeGroups}
           attributeGroups={attributeGroups}
@@ -105,7 +118,7 @@ const AttributeGroupsIndex: FC = () => {
       {!isPending && (
         <Toolbar isVisible={!!selectionState}>
           <Toolbar.SelectionContainer>
-            <Checkbox checked={selectionState} onChange={value => onSelectAllChange(value)} />
+            <Checkbox checked={selectionState} onChange={onSelectAllChange} />
             <Dropdown>
               <ArrowDownIcon
                 title={translate('pim_enrich.entity.attribute_group.dropdown.label')}
