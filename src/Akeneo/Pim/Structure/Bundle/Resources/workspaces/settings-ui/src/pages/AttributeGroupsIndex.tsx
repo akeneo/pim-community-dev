@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import styled from 'styled-components';
 import {
   Breadcrumb,
@@ -6,18 +6,20 @@ import {
   Toolbar,
   useSelection,
   useBooleanState,
+  Search,
   Dropdown,
   ArrowDownIcon,
+  useAutoFocus,
+  getColor,
 } from 'akeneo-design-system';
-import {PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
-import {AttributeGroupsCreateButton, AttributeGroupsDataGrid, MassDeleteAttributeGroupsModal} from '../components';
-import {useAttributeGroupsIndexState} from '../hooks';
-import {AttributeGroup, getImpactedAndTargetAttributeGroups} from '../models';
+import {PageHeader, useRoute, useTranslate, useUserContext, PimView} from '@akeneo-pim-community/shared';
+import {AttributeGroupsCreateButton, AttributeGroupList, MassDeleteAttributeGroupsModal} from '../components';
+import {AttributeGroup, DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP, getImpactedAndTargetAttributeGroups} from '../models';
+import {useAttributeGroups} from '../hooks/attribute-groups/useAttributeGroups';
 
 const Content = styled.div`
   flex: 1;
   overflow-y: auto;
-  padding: 0 40px;
 `;
 
 const Page = styled.div`
@@ -26,25 +28,40 @@ const Page = styled.div`
   flex-direction: column;
 `;
 
-const AttributeGroupsIndex: FC = () => {
+const SearchWrapper = styled.div`
+  position: sticky;
+  top: 0;
+  padding: 0 40px;
+  background-color: ${getColor('white')};
+`;
+
+const AttributeGroupsIndex = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
-  const {attributeGroups, load, isPending} = useAttributeGroupsIndexState();
-  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
-    useSelection<AttributeGroup>(attributeGroups.length);
+  const [attributeGroups, reorderAttributeGroups, isPending] = useAttributeGroups();
+  const [searchValue, setSearchValue] = useState<string>('');
+  const catalogLocale = useUserContext().get('catalogLocale');
   const translate = useTranslate();
   const settingsHomePageRoute = `#${useRoute('pim_settings_index')}`;
-  const [groupCount, setGroupCount] = useState<number>(attributeGroups.length);
 
-  const [impactedAttributeGroups, availableTargetAttributeGroups] = getImpactedAndTargetAttributeGroups(
-    attributeGroups,
-    selection
+  const filteredAttributeGroups = attributeGroups.filter(attributeGroup =>
+    (attributeGroup.labels[catalogLocale] ?? attributeGroup.code)
+      .toLowerCase()
+      .includes(searchValue.toLowerCase().trim())
   );
 
-  useEffect(() => {
-    (async () => {
-      await load();
-    })();
-  }, [load]);
+  const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] =
+    useSelection<AttributeGroup>(filteredAttributeGroups.length);
+
+  const defaultTargetAttributeGroup =
+    attributeGroups.find(({code}) => DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP === code) ?? null;
+  const [impactedAttributeGroups, availableTargetAttributeGroups] = getImpactedAndTargetAttributeGroups(
+    filteredAttributeGroups,
+    selection,
+    defaultTargetAttributeGroup
+  );
+
+  useAutoFocus(inputRef);
 
   return (
     <Page>
@@ -62,29 +79,51 @@ const AttributeGroupsIndex: FC = () => {
           />
         </PageHeader.UserActions>
         <PageHeader.Actions>
-          <AttributeGroupsCreateButton />
+          <AttributeGroupsCreateButton attributeGroupCount={attributeGroups.length} />
         </PageHeader.Actions>
         <PageHeader.Title>
-          {translate('pim_enrich.entity.attribute_group.result_count', {count: groupCount}, groupCount)}
+          {translate(
+            'pim_enrich.entity.attribute_group.result_count',
+            {count: filteredAttributeGroups.length},
+            filteredAttributeGroups.length
+          )}
         </PageHeader.Title>
       </PageHeader>
       <Content>
-        <AttributeGroupsDataGrid
+        <SearchWrapper>
+          <Search
+            sticky={0}
+            placeholder={translate('pim_common.search')}
+            searchValue={searchValue}
+            onSearchChange={setSearchValue}
+            inputRef={inputRef}
+          >
+            <Search.ResultCount>
+              {translate(
+                'pim_common.result_count',
+                {itemsCount: filteredAttributeGroups.length},
+                filteredAttributeGroups.length
+              )}
+            </Search.ResultCount>
+          </Search>
+        </SearchWrapper>
+        <AttributeGroupList
+          filteredAttributeGroups={filteredAttributeGroups}
           attributeGroups={attributeGroups}
-          onGroupCountChange={setGroupCount}
           isItemSelected={isItemSelected}
-          selectionState={selectionState}
           onSelectionChange={onSelectionChange}
-          selectedCount={selectedCount}
-          onSelectAllChange={onSelectAllChange}
+          onReorder={reorderAttributeGroups}
         />
       </Content>
       {!isPending && (
         <Toolbar isVisible={!!selectionState}>
           <Toolbar.SelectionContainer>
-            <Checkbox checked={selectionState} onChange={value => onSelectAllChange(value)} />
+            <Checkbox checked={selectionState} onChange={onSelectAllChange} />
             <Dropdown>
-              <ArrowDownIcon onClick={openDropdown} />
+              <ArrowDownIcon
+                title={translate('pim_enrich.entity.attribute_group.dropdown.label')}
+                onClick={openDropdown}
+              />
               {isDropdownOpen && (
                 <Dropdown.Overlay onClose={closeDropdown}>
                   <Dropdown.Header>
@@ -119,7 +158,7 @@ const AttributeGroupsIndex: FC = () => {
             {0 < selectedCount && (
               <MassDeleteAttributeGroupsModal
                 impactedAttributeGroups={impactedAttributeGroups}
-                availableTargetAttributeGroups={availableTargetAttributeGroups}
+                availableReplacementAttributeGroups={availableTargetAttributeGroups}
               />
             )}
           </Toolbar.ActionsContainer>

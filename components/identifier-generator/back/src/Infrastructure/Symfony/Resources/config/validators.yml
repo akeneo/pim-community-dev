@@ -69,3 +69,8 @@ services:
             - '@validator'
         tags:
             - { name: validator.constraint_validator }
+    Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UniqueIdentifierGeneratorCodeValidator:
+        arguments:
+            - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+        tags:
+            - { name: validator.constraint_validator }

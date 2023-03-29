@@ -260,6 +260,7 @@ pim_enrich.entity.attribute_group:
     uppercase_label: Attribute group
     plural_label: Attribute groups
     result_count: '{0}0 attribute groups|{1}1 attribute group|]1, Inf[{{ count }} attribute groups'
+    limit_reached: You’ve reached the limit of {{ max }} attribute groups.
     show_more_attribute:
         title: It's a bit crowded around here, we show you {{ attributeCount }}/{{ totalAttributeCount }} attributes.
         subtitle: To discover all the attributes of this group, just click below!
@@ -294,8 +295,8 @@ pim_enrich.entity.attribute_group:
         confirm: '{1}Are you sure you want to delete this attribute group?|]1, Inf[Are you sure you want to delete these {{ count }} attribute groups?'
         confirmation_phrase: 'Please type "{{ confirmation_word }}" to confirm:'
         confirmation_word: delete
-        attribute_warning: '{1}Deleting these attribute groups will impact {{ number_of_attribute }} child attribute. You will need to move this child attribute to a new attribute group.|]1, Inf[Deleting these attribute groups will impact {{ number_of_attribute }} child attributes. You will need to move these child attributes to a new attribute group.'
-        select_attribute_group: '{1}Please select the attribute group to move the child attribute to:|]1, Inf[Please select the attribute group to move the {{ number_of_attribute }} child attributes to:'
+        attribute_warning: '{1}Deleting these attribute groups will impact {{ number_of_attribute }} related attribute. You will need to move this related attribute to a new attribute group.|]1, Inf[Deleting these attribute groups will impact {{ number_of_attribute }} related attributes. You will need to move these related attributes to a new attribute group.'
+        select_attribute_group: '{1}Please select the attribute group to move the related attribute to:|]1, Inf[Please select the attribute group to move the {{ number_of_attribute }} related attributes to:'
         empty_result_label: 'No attribute group found'
         placeholder: 'Select attribute group'
         open_label: 'attribute group list'
@@ -303,15 +304,13 @@ pim_enrich.entity.attribute_group:
         delete_attribute_groups:
             delete_attribute_groups:
                 label: Delete attribute groups
-    job_execution:
-        summary:
-            attribute_group_mass_delete: Deleted attribute groups
+
 pim_import_export:
     notification:
         mass_delete_attribute_groups:
-            error: Mass delete of attribute groups failed
-            warning: Mass delete of attribute groups finished with some warnings
-            success: Mass delete of attribute groups finished
+            error: Bulk delete of attribute groups failed
+            warning: Bulk delete of attribute groups finished with some warnings
+            success: Bulk delete of attribute groups finished
 
 pim_enrich.mass_edit.family:
     title: Families bulk action
@@ -337,6 +336,7 @@ pim_enrich.mass_edit.family:
 batch_jobs:
     default_steps:
         delete_attribute_groups: Delete attribute groups
+        move_child_attributes: Move child attributes
     delete_attributes:
         delete_attributes:
             label: Delete attributes

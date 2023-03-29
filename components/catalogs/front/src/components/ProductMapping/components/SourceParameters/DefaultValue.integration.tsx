@@ -158,3 +158,79 @@ test('it removes the source default value for type boolean when clear button is 
         locale: null,
     });
 });
+
+test('it displays a number input when the target type is number', () => {
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <DefaultValue
+                    targetTypeKey={'number'}
+                    source={{source: null, scope: null, locale: null}}
+                    onChange={jest.fn()}
+                    error={undefined}
+                ></DefaultValue>
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(screen.getByTestId('number-default-value')).toBeInTheDocument();
+});
+
+test('it updates the source for type number when a default value changes', () => {
+    const onChange = jest.fn();
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <DefaultValue
+                    targetTypeKey={'number'}
+                    source={{source: null, scope: null, locale: null, default: 250}}
+                    onChange={onChange}
+                    error={undefined}
+                ></DefaultValue>
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(screen.getByTestId('number-default-value')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('250')).toBeInTheDocument();
+
+    const input = screen.getByTestId('number-default-value');
+    fireEvent.change(input, {target: {value: '42'}});
+
+    expect(onChange).toHaveBeenCalledWith({
+        source: null,
+        scope: null,
+        locale: null,
+        default: 42,
+    });
+});
+
+test('it removes the source default value for type number when the number input is empty', () => {
+    const onChange = jest.fn();
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <QueryClientProvider client={new QueryClient()}>
+                <DefaultValue
+                    targetTypeKey={'number'}
+                    source={{source: null, scope: null, locale: null, default: 42}}
+                    onChange={onChange}
+                    error={undefined}
+                ></DefaultValue>
+            </QueryClientProvider>
+        </ThemeProvider>
+    );
+
+    expect(screen.getByTestId('number-default-value')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('42')).toBeInTheDocument();
+
+    const input = screen.getByTestId('number-default-value');
+    fireEvent.change(input, {target: {value: ''}});
+
+    expect(onChange).toHaveBeenCalledWith({
+        source: null,
+        scope: null,
+        locale: null,
+    });
+});

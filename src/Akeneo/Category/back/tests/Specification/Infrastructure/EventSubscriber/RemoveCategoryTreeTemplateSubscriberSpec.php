@@ -2,10 +2,10 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Application\Query\DeleteCategoryTreeTemplate;
 use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
+use Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
@@ -26,8 +26,8 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
     function let(
         GetCategoryInterface $getCategory,
         GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
-        DeleteCategoryTreeTemplate $deleteCategoryTreeTemplate,
-        FeatureFlag $enrichedCategoryFeature
+        DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
+        FeatureFlag $enrichedCategoryFeature,
     ) {
         $this->beConstructedWith(
             $getCategory,
@@ -50,8 +50,8 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
         Template $template,
         GetCategoryInterface $getCategory,
         GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
-        DeleteCategoryTreeTemplate $deleteCategoryTreeTemplate,
-        FeatureFlag $enrichedCategoryFeature
+        DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
+        FeatureFlag $enrichedCategoryFeature,
     ) {
         $event->getSubject()->willReturn($legacyCategory);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);
@@ -68,7 +68,7 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
         $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
         $template->getUuid()->willReturn($templateUuid);
 
-        $deleteCategoryTreeTemplate->__invoke(1, $templateUuid)->shouldBeCalled();
+        $deleteCategoryTreeTemplate->__invoke(new CategoryId(1), $templateUuid)->shouldBeCalled();
 
         $this->removeCategoryTreeTemplate($event);
     }
@@ -76,8 +76,8 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
     function it_does_not_trigger_the_delete_of_the_link_with_template_before_category_removal_when_feature_flag_is_not_activated(
         GenericEvent $event,
         LegacyCategory $legacyCategory,
-        DeleteCategoryTreeTemplate $deleteCategoryTreeTemplate,
-        FeatureFlag $enrichedCategoryFeature
+        DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
+        FeatureFlag $enrichedCategoryFeature,
     ) {
         $event->getSubject()->willReturn($legacyCategory);
         $enrichedCategoryFeature->isEnabled()->willReturn(false);
@@ -92,8 +92,8 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
         LegacyCategory $legacyCategory,
         Category $category,
         GetCategoryInterface $getCategory,
-        DeleteCategoryTreeTemplate $deleteCategoryTreeTemplate,
-        FeatureFlag $enrichedCategoryFeature
+        DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
+        FeatureFlag $enrichedCategoryFeature,
     ) {
         $event->getSubject()->willReturn($legacyCategory);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);
@@ -116,8 +116,8 @@ class RemoveCategoryTreeTemplateSubscriberSpec extends ObjectBehavior
         Category $category,
         GetCategoryInterface $getCategory,
         GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
-        DeleteCategoryTreeTemplate $deleteCategoryTreeTemplate,
-        FeatureFlag $enrichedCategoryFeature
+        DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid $deleteCategoryTreeTemplate,
+        FeatureFlag $enrichedCategoryFeature,
     ) {
         $event->getSubject()->willReturn($legacyCategory);
         $enrichedCategoryFeature->isEnabled()->willReturn(true);

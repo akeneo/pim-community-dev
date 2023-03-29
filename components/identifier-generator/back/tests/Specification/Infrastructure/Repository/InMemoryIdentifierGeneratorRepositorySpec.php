@@ -44,7 +44,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         $this->save($identifierGenerator);
 
         $this->generators->shouldEqual([
-            'abcdef' => $identifierGenerator,
+            $identifierGenerator,
         ]);
 
         $identifierGenerator2 = new IdentifierGenerator(
@@ -60,8 +60,8 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
 
         $this->save($identifierGenerator2);
         $this->generators->shouldEqual([
-            'abcdef' => $identifierGenerator,
-            'fedcba' => $identifierGenerator2,
+            $identifierGenerator,
+            $identifierGenerator2,
         ]);
     }
 
@@ -81,7 +81,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         $this->save($identifierGenerator);
 
         $this->generators->shouldEqual([
-            'abcdef' => $identifierGenerator,
+            $identifierGenerator,
         ]);
 
         $identifierGenerator2 = new IdentifierGenerator(
@@ -97,7 +97,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
 
         $this->update($identifierGenerator2);
         $this->generators->shouldEqual([
-            'abcdef' => $identifierGenerator2,
+            $identifierGenerator2,
         ]);
     }
 
@@ -181,5 +181,37 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         $this->save($identifierGenerator);
 
         $this->getAll()->shouldBeLike([$identifierGenerator]);
+    }
+
+    public function it_can_reorder_generators(): void
+    {
+        $identifierGenerator1 = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
+            IdentifierGeneratorCode::fromString('abcdef'),
+            Conditions::fromArray([]),
+            Structure::fromArray([FreeText::fromString('abc')]),
+            LabelCollection::fromNormalized(['fr' => 'Générateur']),
+            Target::fromString('sku'),
+            Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
+        );
+        $this->save($identifierGenerator1);
+        $identifierGenerator2 = new IdentifierGenerator(
+            IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
+            IdentifierGeneratorCode::fromString('fedcba'),
+            Conditions::fromArray([]),
+            Structure::fromArray([FreeText::fromString('abc')]),
+            LabelCollection::fromNormalized(['fr' => 'Générateur']),
+            Target::fromString('sku'),
+            Delimiter::fromString('-'),
+            TextTransformation::fromString('no'),
+        );
+        $this->save($identifierGenerator2);
+
+        $this->getAll()->shouldReturn([$identifierGenerator1, $identifierGenerator2]);
+
+        $this->reorder(['fedcba', 'abcdef']);
+
+        $this->getAll()->shouldReturn([$identifierGenerator2, $identifierGenerator1]);
     }
 }

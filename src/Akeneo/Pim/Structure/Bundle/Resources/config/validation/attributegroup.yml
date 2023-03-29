@@ -4,6 +4,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeGroup:
         - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
             properties:
                 - code
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\AttributeGroups\MaxAttributeGroupCount: ~
     properties:
         translations:
             - Valid: ~

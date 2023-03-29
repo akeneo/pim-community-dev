@@ -21,12 +21,12 @@ const ModalContent = styled.div`
 
 type MassDeleteAttributeGroupsModalProps = {
   impactedAttributeGroups: AttributeGroup[];
-  availableTargetAttributeGroups: AttributeGroup[];
+  availableReplacementAttributeGroups: AttributeGroup[];
 };
 
 const MassDeleteAttributeGroupsModal = ({
   impactedAttributeGroups,
-  availableTargetAttributeGroups,
+  availableReplacementAttributeGroups,
 }: MassDeleteAttributeGroupsModalProps) => {
   const translate = useTranslate();
   const notify = useNotify();
@@ -52,7 +52,7 @@ const MassDeleteAttributeGroupsModal = ({
     if (isLoading) return;
 
     try {
-      await launchMassDeleteAttributeGroups(impactedAttributeGroups);
+      await launchMassDeleteAttributeGroups(impactedAttributeGroups, replacementAttributeGroup);
       notify(NotificationLevel.INFO, translate('pim_enrich.entity.attribute_group.flash.mass_delete.success'));
       closeMassDeleteModal();
     } catch (error) {
@@ -114,7 +114,7 @@ const MassDeleteAttributeGroupsModal = ({
                     value={replacementAttributeGroup}
                     openLabel={translate('pim_enrich.entity.attribute_group.mass_delete.open_label')}
                   >
-                    {availableTargetAttributeGroups.map(attributeGroup => (
+                    {availableReplacementAttributeGroups.map(attributeGroup => (
                       <SelectInput.Option key={attributeGroup.code} value={attributeGroup.code}>
                         {getLabel(attributeGroup.labels, catalogLocale, attributeGroup.code)}
                       </SelectInput.Option>
