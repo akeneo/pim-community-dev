@@ -1,7 +1,7 @@
 Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand:
     constraints:
         - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\IdentifierGeneratorCreationLimit:
-            limit: 1
+            limit: 20
     properties:
         target:
             - NotBlank: ~
@@ -101,4 +101,5 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorComm
                 max: 100
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
-                message: code may contain only letters, numbers and underscore
+                message: Code may contain only letters, numbers and underscore, {{ value }} given.
+            - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UniqueIdentifierGeneratorCode: ~

@@ -50,3 +50,7 @@ services:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\ReorderIdentifierGenerators'

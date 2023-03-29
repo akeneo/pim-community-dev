@@ -25,7 +25,7 @@ describe('validateLabelCollection', () => {
     ).toEqual([{path: 'labels', message: 'The locale must be filled'}]);
   });
 
-  it('should add violation with empty label', () => {
+  it('should not add violation with empty label', () => {
     expect(
       validateLabelCollection(
         {
@@ -34,7 +34,7 @@ describe('validateLabelCollection', () => {
         },
         'labels'
       )
-    ).toEqual([{path: 'labels', message: 'The label for "fr_FR" must be filled'}]);
+    ).toHaveLength(0);
   });
 
   it('should add violation with too long label', () => {

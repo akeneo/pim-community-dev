@@ -371,6 +371,7 @@ const SelectInput = ({
           }}
           aria-labelledby={ariaLabelledby}
           onKeyDown={handleInputKeyDown}
+          data-form-type={'other'}
         />
         {!readOnly && (
           <ActionContainer>

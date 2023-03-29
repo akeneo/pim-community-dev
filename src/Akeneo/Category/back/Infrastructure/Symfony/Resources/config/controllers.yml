@@ -115,3 +115,9 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@category.command.message_bus'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\DeactivateAttributeController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'

@@ -14,12 +14,21 @@ type Props = {
 };
 
 type Params = {
-  attributeCode: AttributeCode;
+  attributeCode: AttributeCode | undefined;
   page?: number;
   search?: string;
   codes?: OptionCode[];
+  enabled?: boolean;
+  limit?: number;
 };
-const useGetSelectOptions = ({attributeCode, page = 1, search = '', codes}: Params): Props => {
+const useGetSelectOptions = ({
+  attributeCode = '',
+  page = 1,
+  search = '',
+  codes,
+  enabled = true,
+  limit = DEFAULT_LIMIT_PAGINATION,
+}: Params): Props => {
   const router = useRouter();
 
   const {data, isLoading, error} = useQuery<Option[], Error, Option[]>({
@@ -29,7 +38,7 @@ const useGetSelectOptions = ({attributeCode, page = 1, search = '', codes}: Para
         attributeCode,
         page: codes ? 1 : page,
         search,
-        limit: codes ? codes.length : DEFAULT_LIMIT_PAGINATION,
+        limit: codes ? codes.length : limit,
         codes: codes || [],
       });
       const response = await fetch(url, {
@@ -43,6 +52,7 @@ const useGetSelectOptions = ({attributeCode, page = 1, search = '', codes}: Para
 
       return await response.json();
     },
+    enabled: enabled && attributeCode !== '',
   });
 
   return {data, isLoading, error};
