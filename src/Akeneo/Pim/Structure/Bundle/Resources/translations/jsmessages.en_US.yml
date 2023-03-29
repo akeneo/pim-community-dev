@@ -275,8 +275,8 @@ pim_enrich.entity.attribute_group:
             fail: Attribute group could not be updated
             fields_not_ready: "The attribute group cannot be saved right now. The following fields are not ready: {{ fields }}"
         delete:
-            success: Attribute group successfully removed
-            fail: Cannot delete this attribute group
+            success: The deletion has started. You will get a notification once the job is completed. In the meantime, you can keep an eye on its progress on the process tracker.
+            fail: An error occurred during the launching of the deletion
         mass_delete:
             success: The deletion has started. You will get a notification once the job is completed. In the meantime, you can keep an eye on its progress on the process tracker.
             fail: An error occurred during the launching of the deletion

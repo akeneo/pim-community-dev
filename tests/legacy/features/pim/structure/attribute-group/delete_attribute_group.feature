@@ -19,4 +19,4 @@ Feature: Attribute group creation
     Given I am on the "sizes" attribute group page
     When I press the secondary action "Delete"
     And I confirm the deletion
-    Then I should see the flash message "Attribute group successfully removed"
+    Then I should see the flash message "The deletion has started. You will get a notification once the job is completed. In the meantime, you can keep an eye on its progress on the process tracker."
