@@ -296,13 +296,13 @@ class AttributeGroupController
         }
 
         $attributeGroupCodes = [$identifier];
-        $replacementAttributeCode = $request->get('replacement_attribute_group', AttributeGroupInterface::DEFAULT_CODE);
+        $replacementAttributeGroupCode = $request->get('replacement_attribute_group_code', AttributeGroupInterface::DEFAULT_CODE);
 
         $configuration = [
             'filters' => [
                 'codes' => $attributeGroupCodes,
             ],
-            'replacement_attribute_group_code' => $replacementAttributeCode,
+            'replacement_attribute_group_code' => $replacementAttributeGroupCode,
             'users_to_notify' => [$user->getUserIdentifier()],
             'send_email' => false,
         ];

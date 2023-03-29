@@ -16,7 +16,7 @@ const useDeleteAttributeGroup = () => {
         'X-Requested-With': 'XMLHttpRequest',
       },
       body: JSON.stringify({
-        replacement_attribute_group: replacementAttributeGroupCode,
+        replacement_attribute_group_code: replacementAttributeGroupCode,
       }),
     });
     stopLoading();

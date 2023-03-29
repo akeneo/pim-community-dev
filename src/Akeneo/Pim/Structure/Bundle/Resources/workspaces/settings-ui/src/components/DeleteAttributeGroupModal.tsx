@@ -10,6 +10,7 @@ import {
   useUserContext,
   useRouter,
 } from '@akeneo-pim-community/shared';
+import {DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP} from '../models';
 
 type DeleteAttributeGroupModalProps = {
   attributeGroupCode: string;
@@ -21,7 +22,9 @@ const DeleteAttributeGroupModal = ({attributeGroupCode}: DeleteAttributeGroupMod
   const notify = useNotify();
 
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState(false);
-  const [replacementAttributeGroupCode, setReplacementAttributeGroupCode] = useState<string | null>(null);
+  const [replacementAttributeGroupCode, setReplacementAttributeGroupCode] = useState<string>(
+    DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP
+  );
   const catalogLocale = useUserContext().get('catalogLocale');
 
   const [isLoading, deleteAttributeGroup] = useDeleteAttributeGroup();
@@ -34,7 +37,7 @@ const DeleteAttributeGroupModal = ({attributeGroupCode}: DeleteAttributeGroupMod
   );
 
   const handleOpenDeleteModal = () => {
-    setReplacementAttributeGroupCode(null);
+    setReplacementAttributeGroupCode(DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP);
     openDeleteModal();
   };
 
@@ -83,11 +86,12 @@ const DeleteAttributeGroupModal = ({attributeGroupCode}: DeleteAttributeGroupMod
                 )}
               >
                 <SelectInput
-                  emptyResultLabel={translate('pim_enrich.entity.attribute_group.delete.empty_result_label')}
-                  onChange={(value: string | null) => setReplacementAttributeGroupCode(value)}
-                  placeholder={translate('pim_enrich.entity.attribute_group.delete.placeholder')}
+                  clearable={false}
+                  emptyResultLabel={translate('pim_enrich.entity.attribute_group.mass_delete.empty_result_label')}
+                  onChange={setReplacementAttributeGroupCode}
+                  placeholder={translate('pim_enrich.entity.attribute_group.mass_delete.placeholder')}
                   value={replacementAttributeGroupCode}
-                  openLabel={translate('pim_enrich.entity.attribute_group.delete.open_label')}
+                  openLabel={translate('pim_enrich.entity.attribute_group.mass_delete.open_label')}
                 >
                   {availableReplacementAttributeGroups.map(attributeGroup => (
                     <SelectInput.Option key={attributeGroup.code} value={attributeGroup.code}>
