@@ -32,6 +32,8 @@ export const ReferenceEntityAttributeSourceSelection: FC<Props> = ({
             parameters: {
                 ...source.parameters,
                 sub_source: selectedReferenceEntityAttribute.identifier,
+                sub_scope: null,
+                sub_locale: null,
             },
         });
 

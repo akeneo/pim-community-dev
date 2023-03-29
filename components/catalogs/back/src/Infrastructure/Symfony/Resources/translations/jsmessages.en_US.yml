@@ -155,10 +155,16 @@ akeneo_catalogs:
                 section_system: System
                 section_attributes: Attributes
                 attribute_label_asset_collection: Asset Collection
+                attribute_label_reference_entity_single_link: Reference Entity Single Link
             select_source_asset_attribute:
                 label: Asset attribute
                 placeholder: Select an asset attribute
                 search: Search asset attribute
+                no_results: No matches found
+            select_source_reference_entity_attribute:
+                label: Reference entity attribute
+                placeholder: Select an reference entity attribute
+                search: Search reference entity attribute
                 no_results: No matches found
             placeholder:
                 title: Select source

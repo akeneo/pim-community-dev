@@ -129,6 +129,17 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
                                                     </i>
                                                 </>
                                             )}
+                                            {attribute.reference_entity && (
+                                                <>
+                                                    {' '}
+                                                    -{' '}
+                                                    <i>
+                                                        {translate(
+                                                            'akeneo_catalogs.product_mapping.source.select_source.attribute_label_reference_entity_single_link'
+                                                        )}
+                                                    </i>
+                                                </>
+                                            )}
                                         </>
                                     </DropdownItem>
                                 ))}
