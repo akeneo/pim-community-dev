@@ -480,8 +480,19 @@ SQL;
     protected function deactivateTemplate(string $uuid): void
     {
         $query = <<<SQL
-UPDATE pim_catalog_category_template SET is_deactivated = 1 WHERE uuid = :uuid;
-SQL;
+            UPDATE pim_catalog_category_template SET is_deactivated = 1 WHERE uuid = :uuid;
+        SQL;
+
+        $this->get('database_connection')->executeQuery($query, [
+            'uuid' => Uuid::fromString($uuid)->getBytes(),
+        ]);
+    }
+
+    protected function deactivateAttribute(string $uuid): void
+    {
+        $query = <<<SQL
+            UPDATE pim_catalog_category_attribute SET is_deactivated = 1 WHERE uuid = :uuid;
+        SQL;
 
         $this->get('database_connection')->executeQuery($query, [
             'uuid' => Uuid::fromString($uuid)->getBytes(),
