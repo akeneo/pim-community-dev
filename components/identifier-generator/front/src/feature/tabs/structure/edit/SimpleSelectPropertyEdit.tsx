@@ -1,6 +1,6 @@
 import React from 'react';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
-import {AbbreviationType, FamilyProperty, SimpleSelectProperty} from '../../../models';
+import {AbbreviationType, CanUseNomenclatureProperty, SimpleSelectProperty} from '../../../models';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
 import {ScopeAndLocaleSelector} from '../../../components';
 import {ProcessablePropertyEdit} from '../ProcessablePropertyEdit';
@@ -25,7 +25,7 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
     });
   };
 
-  const handleChange = (simpleSelectProperty: SimpleSelectProperty | FamilyProperty) => {
+  const handleChange = (simpleSelectProperty: CanUseNomenclatureProperty) => {
     onChange({
       ...simpleSelectProperty,
       attributeCode: selectedProperty.attributeCode,
