@@ -61,3 +61,10 @@ services:
         arguments:
             - '%env(string:PIM_EDITION)%'
         public: true
+
+    akeneo.feature_flag.service.only_growth_and_serenity_sandbox_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlyGrowthAndSerenitySandboxFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_IS_SERENITY_SANDBOX_INSTANCE)%'
+            - '%env(bool:FLAG_IS_GROWTH_EDITION_SANDBOX_INSTANCE)%'
+        public: true
