@@ -3,7 +3,7 @@ import {NomenclatureEdit} from '../';
 import {act, fireEvent, render, screen} from '../../tests/test-utils';
 import {
   AbbreviationType,
-  FamilyProperty,
+  CanUseNomenclatureProperty,
   Nomenclature,
   Operator,
   PROPERTY_NAMES,
@@ -98,7 +98,7 @@ async function updateOperator(sourceOperator: string, endOperator: string) {
   expect(await screen.findByText(`Operator = ${endOperator}`)).toBeInTheDocument();
 }
 
-const selectedProperty: FamilyProperty | SimpleSelectProperty = {
+const selectedProperty: CanUseNomenclatureProperty = {
   type: PROPERTY_NAMES.FAMILY,
   process: {
     type: AbbreviationType.NO,

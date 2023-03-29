@@ -14,7 +14,7 @@ type Props = {
 };
 
 type Params = {
-  attributeCode: AttributeCode;
+  attributeCode: AttributeCode | undefined;
   page?: number;
   search?: string;
   codes?: OptionCode[];
@@ -22,7 +22,7 @@ type Params = {
   limit?: number;
 };
 const useGetSelectOptions = ({
-  attributeCode,
+  attributeCode = '',
   page = 1,
   search = '',
   codes,
@@ -38,7 +38,7 @@ const useGetSelectOptions = ({
         attributeCode,
         page: codes ? 1 : page,
         search,
-        limit: limit,
+        limit: codes ? codes.length : limit,
         codes: codes || [],
       });
       const response = await fetch(url, {
@@ -52,7 +52,7 @@ const useGetSelectOptions = ({
 
       return await response.json();
     },
-    enabled: enabled,
+    enabled: enabled && attributeCode !== '',
   });
 
   return {data, isLoading, error};

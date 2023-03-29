@@ -17,13 +17,12 @@ import {Styled} from './Styled';
 import {useGetAttributeLabel, useGetNomenclature, useGetNomenclatureValues, useSaveNomenclature} from '../hooks';
 import {OperatorSelector} from './OperatorSelector';
 import {
-  FamilyProperty,
+  CanUseNomenclatureProperty,
   Nomenclature,
   NomenclatureFilter,
   NomenclatureValues,
   Operator,
   PROPERTY_NAMES,
-  SimpleSelectProperty,
 } from '../models';
 import {NomenclatureLineEdit} from './NomenclatureLineEdit';
 import {NomenclatureValuesDisplayFilter} from './NomenclatureValuesDisplayFilter';
@@ -33,8 +32,7 @@ import {useIdentifierGeneratorAclContext} from '../context';
 
 type NomenclatureEditProps = {
   itemsPerPage?: number;
-
-  selectedProperty: FamilyProperty | SimpleSelectProperty;
+  selectedProperty: CanUseNomenclatureProperty;
 };
 
 const NomenclatureEdit: FC<NomenclatureEditProps> = ({selectedProperty, itemsPerPage = 25}) => {

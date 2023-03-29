@@ -1,21 +1,20 @@
-import {useGetFamilies} from './useGetFamilies';
 import {useCallback, useMemo, useState} from 'react';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {
   AttributeCode,
+  CanUseNomenclatureProperty,
   Family,
   FamilyCode,
-  FamilyProperty,
   Nomenclature,
   NomenclatureFilter,
   NomenclatureLineEditProps,
   NomenclatureValues,
   PROPERTY_NAMES,
   SimpleSelect,
-  SimpleSelectProperty,
 } from '../models';
 import {useNomenclatureDisplay} from './useNomenclatureDisplay';
 import {useGetSelectOptions} from './useGetSelectOptions';
+import {useGetFamilies} from './useGetFamilies';
 
 type HookResult = {
   data: NomenclatureLineEditProps[];
@@ -33,7 +32,7 @@ const useGetNomenclatureValues = (
   filter: NomenclatureFilter | undefined,
   values: NomenclatureValues | undefined,
   itemsPerPage: number,
-  selectedProperty: FamilyProperty | SimpleSelectProperty
+  selectedProperty: CanUseNomenclatureProperty
 ): HookResult => {
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>('');
@@ -46,13 +45,13 @@ const useGetNomenclatureValues = (
   const attributeCode =
     selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT ? selectedProperty.attributeCode : undefined;
 
-  const {data: families} = useGetFamilies({
+  const {data: families = []} = useGetFamilies({
     limit: -1,
     enabled: typeSelectedProperty === PROPERTY_NAMES.FAMILY,
   });
 
-  const {data: options} = useGetSelectOptions({
-    attributeCode: attributeCode ?? '',
+  const {data: options = []} = useGetSelectOptions({
+    attributeCode,
     enabled: typeSelectedProperty === PROPERTY_NAMES.SIMPLE_SELECT,
     limit: -1,
   });
@@ -129,8 +128,12 @@ const useGetNomenclatureValues = (
     [getEntityLabel, getValueAfterUserUpdate]
   );
 
+  const items = useMemo(() => {
+    return selectedProperty.type === PROPERTY_NAMES.FAMILY ? families : options;
+  }, [selectedProperty, families, options]);
+
   const data = useMemo(() => {
-    if (!families && !options) return [];
+    if (items.length === 0) return [];
 
     let filteredButNotDisplayedDataCount = 0;
     let filteredValuesCount = 0;
@@ -138,33 +141,22 @@ const useGetNomenclatureValues = (
     const filteredData: NomenclatureLineEditProps[] = [];
     const firstIndexToDisplay = (page - 1) * itemsPerPage;
 
-    const addFilteredData = (family: Family) => {
+    const addFilteredData = (entity: Family | SimpleSelect) => {
       filteredValuesCount++;
       const currentIndex = filteredButNotDisplayedDataCount + filteredData.length;
 
       if (currentIndex >= firstIndexToDisplay && currentIndex < firstIndexToDisplay + itemsPerPage) {
-        filteredData.push(getLineValue(family));
+        filteredData.push(getLineValue(entity));
       } else {
         filteredButNotDisplayedDataCount++;
       }
     };
 
-    if (families && selectedProperty.type === PROPERTY_NAMES.FAMILY) {
-      for (const family of families) {
-        hasNomenclatureValueInvalid =
-          hasNomenclatureValueInvalid || !isValid(getValueAfterUserUpdateOrPlaceholder(family.code));
+    for (const item of items) {
+      hasNomenclatureValueInvalid =
+        hasNomenclatureValueInvalid || !isValid(getValueAfterUserUpdateOrPlaceholder(item.code));
 
-        if (entityMatchSearch(family) && matchFilter(family.code)) addFilteredData(family);
-      }
-    }
-
-    if (options && selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT) {
-      for (const option of options) {
-        hasNomenclatureValueInvalid =
-          hasNomenclatureValueInvalid || !isValid(getValueAfterUserUpdateOrPlaceholder(option.code));
-
-        if (entityMatchSearch(option) && matchFilter(option.code)) addFilteredData(option);
-      }
+      if (entityMatchSearch(item) && matchFilter(item.code)) addFilteredData(item);
     }
 
     setFilteredValuesCount(filteredValuesCount);
@@ -172,8 +164,7 @@ const useGetNomenclatureValues = (
 
     return filteredData;
   }, [
-    families,
-    options,
+    items,
     page,
     itemsPerPage,
     getLineValue,
@@ -181,7 +172,6 @@ const useGetNomenclatureValues = (
     getValueAfterUserUpdateOrPlaceholder,
     entityMatchSearch,
     matchFilter,
-    selectedProperty,
   ]);
 
   const innerSetSearch = (search: string) => {
@@ -196,8 +186,7 @@ const useGetNomenclatureValues = (
     search,
     setSearch: innerSetSearch,
     filteredValuesCount,
-    totalValuesCount:
-      (selectedProperty?.type === PROPERTY_NAMES.SIMPLE_SELECT ? options?.length : families?.length) ?? 0,
+    totalValuesCount: items.length,
     hasValueInvalid,
   };
 };

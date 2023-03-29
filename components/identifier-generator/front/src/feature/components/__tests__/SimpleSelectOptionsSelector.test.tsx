@@ -74,7 +74,7 @@ describe('SimpleSelectOptionsSelector', () => {
       expect(screen.getByText('OptionA')).toBeInTheDocument();
     });
     expect(screen.getByText('invalid_code')).toBeInTheDocument();
-    expect(screen.getByText('last_option')).toBeInTheDocument();
+    expect(screen.getByText('[last_option]')).toBeInTheDocument();
   });
 
   it('should search for options by label and select them', async () => {
