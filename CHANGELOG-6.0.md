@@ -1,5 +1,13 @@
 # 6.0.x
 
+# 6.0.78 (2023-03-29)
+
+## Bug fixes
+
+- PIM-10913: Fix attribute creation form when a label contains a question mark 
+
+# 6.0.77 (2023-03-24)
+
 # 6.0.76 (2023-03-08)
 
 ## Bug fixes
