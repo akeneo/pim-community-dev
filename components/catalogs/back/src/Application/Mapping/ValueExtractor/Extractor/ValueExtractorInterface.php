@@ -22,7 +22,7 @@ interface ValueExtractorInterface
     public const SOURCE_TYPE_ATTRIBUTE_MULTI_SELECT = 'pim_catalog_multiselect';
     public const SOURCE_TYPE_ATTRIBUTE_NUMBER = 'pim_catalog_number';
     public const SOURCE_TYPE_ATTRIBUTE_PRICE_COLLECTION = 'pim_catalog_price_collection';
-    public const SOURCE_TYPE_ATTRIBUTE_REFERENCE_ENTITY = 'akeneo_reference_entity';
+    public const SOURCE_TYPE_ATTRIBUTE_REFERENCE_ENTITY_SINGLE_LINK = 'akeneo_reference_entity';
     public const SOURCE_TYPE_ATTRIBUTE_SIMPLE_SELECT = 'pim_catalog_simpleselect';
     public const SOURCE_TYPE_ATTRIBUTE_TEXT = 'pim_catalog_text';
     public const SOURCE_TYPE_ATTRIBUTE_TEXTAREA = 'pim_catalog_textarea';

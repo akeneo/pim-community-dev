@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringUri;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\StringValueExtractorInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class StringUriFromReferenceEntityAttributeValueExtractor implements StringValueExtractorInterface
+final class StringUriFromReferenceEntitySingleLinkAttributeValueExtractor implements StringValueExtractorInterface
 {
     public function extract(
         array $product,
@@ -26,7 +25,7 @@ final class StringUriFromReferenceEntityAttributeValueExtractor implements Strin
 
     public function getSupportedSourceType(): string
     {
-        return self::SOURCE_TYPE_ATTRIBUTE_REFERENCE_ENTITY;
+        return self::SOURCE_TYPE_ATTRIBUTE_REFERENCE_ENTITY_SINGLE_LINK;
     }
 
     public function getSupportedSubSourceType(): ?string

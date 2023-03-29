@@ -61,7 +61,7 @@ final class TargetTypeConverter
 
     private const PIM_REFERENCE_ENTITY_ATTRIBUTE_TYPES = [
         'string+uri' => [
-            'text',
+            'image',
         ],
     ];
 
