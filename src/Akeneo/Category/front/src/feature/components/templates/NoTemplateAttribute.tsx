@@ -10,10 +10,6 @@ interface Props {
 
 export const NoTemplateAttribute = ({templateId}: Props) =>
 {
-    const handleClickAddAttributeButton = useCallback(() => {
-        openAddTemplateAttributeModal();
-    }, []);
-
     const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
         useBooleanState(false);
 
@@ -33,7 +29,7 @@ export const NoTemplateAttribute = ({templateId}: Props) =>
             </Footer>
             <Button
                 level="secondary"
-                onClick={handleClickAddAttributeButton}
+                onClick={openAddTemplateAttributeModal}
             >
                 {translate('akeneo.category.template.add_attribute.create_button')}
             </Button>
