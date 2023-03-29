@@ -2,6 +2,12 @@ extensions:
     pim-product-edit-form:
         module: pim/form/common/edit-form
 
+    pim-product-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-product-edit-form
+        targetZone: helper
+        feature: reset_pim
+
     pim-product-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-product-edit-form
