@@ -6,6 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\UrlReachabilityCheckerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
@@ -28,9 +29,10 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 {
     public function let(
         ClientInterface $client,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        VersionProviderInterface $versionProvider,
     ): void {
-        $this->beConstructedWith($client, $validator);
+        $this->beConstructedWith($client, $validator, $versionProvider);
     }
 
     public function it_is_initializable(): void
@@ -48,6 +50,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $object->hasHeader('Content-Type') &&
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_USERAGENT) &&
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
         }), ['allow_redirects' => false])->willReturn(new Response(200, [], null, '1.1', 'OK'));
@@ -117,6 +120,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $object->hasHeader('Content-Type') &&
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_USERAGENT) &&
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
         }), ['allow_redirects' => false])->willReturn(new Response(301, [], null, '1.1', 'Moved Permanently'));
@@ -144,6 +148,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $object->hasHeader('Content-Type') &&
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_USERAGENT) &&
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
         }), ['allow_redirects' => false])->willThrow($requestException);
@@ -169,6 +174,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $object->hasHeader('Content-Type') &&
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_USERAGENT) &&
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
         }), ['allow_redirects' => false])->willThrow($connectException);
@@ -193,6 +199,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $object->hasHeader('Content-Type') &&
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
                 $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_USERAGENT) &&
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
         }), ['allow_redirects' => false])->willThrow($transferException);
