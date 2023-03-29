@@ -129,11 +129,9 @@ const TemplatePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        {featureFlags.isEnabled('category_template_deactivation') && (
-          <PageHeader.Actions>
-            <TemplateOtherActions onDeactivateTemplate={openDeactivateTemplateModal} />
-          </PageHeader.Actions>
-        )}
+        <PageHeader.Actions>
+          <TemplateOtherActions onDeactivateTemplate={openDeactivateTemplateModal} />
+        </PageHeader.Actions>
         <PageHeader.Title>{templateLabel ?? templateId}</PageHeader.Title>
       </PageHeader>
       <PageContent>
