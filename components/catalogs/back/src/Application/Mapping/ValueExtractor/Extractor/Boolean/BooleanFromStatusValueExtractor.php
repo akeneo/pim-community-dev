@@ -19,10 +19,7 @@ final class BooleanFromStatusValueExtractor implements BooleanValueExtractorInte
         ?string $scope,
         ?array $parameters,
     ): null | bool {
-        /** @var mixed $value */
-        $value = $product['is_enabled'] ?? null;
-
-        return \is_bool($value) ? $value : null;
+        return $product['is_enabled'];
     }
 
     public function getSupportedSourceType(): string

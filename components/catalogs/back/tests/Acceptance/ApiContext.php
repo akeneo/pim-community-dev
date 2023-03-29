@@ -820,6 +820,9 @@ class ApiContext implements Context
                     },
                     "groups_serialized": {
                       "type": "string"
+                    },
+                    "is_enabled": {
+                      "type": "boolean"
                     }
                   },
                   "required": ["title"]
@@ -949,6 +952,11 @@ class ApiContext implements Context
                         'parameters' => [
                             'label_locale' => 'en_US',
                         ],
+                    ],
+                    'is_enabled' => [
+                        'source' => 'status',
+                        'scope' => null,
+                        'locale' => null,
                     ],
                 ],
             ),
@@ -1268,6 +1276,7 @@ class ApiContext implements Context
                 'available_colors' => ['Blue', 'Green'],
                 'groups' => ['Clothing', 'Cotton clothing'],
                 'groups_serialized' => 'Clothing, Cotton clothing',
+                'is_enabled' => true,
             ],
             [
                 'uuid' => 'a43209b0-cd39-4faf-ad1b-988859906030',
@@ -1287,6 +1296,7 @@ class ApiContext implements Context
                 'available_colors' => ['Purple'],
                 'groups' => ['Clothing'],
                 'groups_serialized' => 'Clothing',
+                'is_enabled' => true,
             ],
         ];
 
@@ -1335,6 +1345,7 @@ class ApiContext implements Context
             'available_colors' => ['Blue', 'Green'],
             'groups' => ['Clothing', 'Cotton clothing'],
             'groups_serialized' => 'Clothing, Cotton clothing',
+            'is_enabled' => true,
         ];
 
         Assert::assertSame($expectedMappedProducts, $payload);

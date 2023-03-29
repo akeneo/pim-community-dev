@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource;
 
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidLocale;
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidScope;
-use Symfony\Component\Validator\Constraints\Compound;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Compound;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +16,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SystemAttributeStatusSource extends Compound
 {
-
+    /**
+     * @param array<array-key, mixed> $options
+     *
+     * @return array<array-key, Constraint>
+     */
     protected function getConstraints(array $options): array
     {
         return [
@@ -34,6 +36,11 @@ class SystemAttributeStatusSource extends Compound
                         ],
                         'locale' => [
                             new Assert\IsNull(),
+                        ],
+                        'default' => [
+                            new Assert\Optional([
+                                new Assert\Type('boolean'),
+                            ]),
                         ],
                     ],
                     'allowMissingFields' => false,
