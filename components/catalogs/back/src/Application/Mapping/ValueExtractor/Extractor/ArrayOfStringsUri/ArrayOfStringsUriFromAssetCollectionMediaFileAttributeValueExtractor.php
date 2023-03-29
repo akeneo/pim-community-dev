@@ -10,7 +10,7 @@ use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsV
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ArrayOfStringUriFromAssetCollectionMediaFileAttributeValueExtractor implements ArrayOfStringsValueExtractorInterface
+final class ArrayOfStringsUriFromAssetCollectionMediaFileAttributeValueExtractor implements ArrayOfStringsValueExtractorInterface
 {
     public function extract(
         array $product,

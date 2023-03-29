@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsUri;
 
-use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsUri\ArrayOfStringUriFromAssetCollectionMediaFileAttributeValueExtractor;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsUri\ArrayOfStringsUriFromAssetCollectionMediaFileAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryInterface;
 use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extractor\ValueExtractorTestCase;
 
@@ -14,11 +14,11 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  *
  * @phpstan-import-type RawProduct from GetRawProductQueryInterface
  *
- * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsUri\ArrayOfStringUriFromAssetCollectionMediaFileAttributeValueExtractor
+ * @covers \Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsUri\ArrayOfStringsUriFromAssetCollectionMediaFileAttributeValueExtractor
  */
-class ArrayOfStringUriFromAssetCollectionMediaFileAttributeValueExtractorTest extends ValueExtractorTestCase
+class ArrayOfStringsUriFromAssetCollectionMediaFileAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?ArrayOfStringUriFromAssetCollectionMediaFileAttributeValueExtractor $extractor;
+    private ?ArrayOfStringsUriFromAssetCollectionMediaFileAttributeValueExtractor $extractor;
 
     protected function setUp(): void
     {
@@ -26,7 +26,7 @@ class ArrayOfStringUriFromAssetCollectionMediaFileAttributeValueExtractorTest ex
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->extractor = self::getContainer()->get(ArrayOfStringUriFromAssetCollectionMediaFileAttributeValueExtractor::class);
+        $this->extractor = self::getContainer()->get(ArrayOfStringsUriFromAssetCollectionMediaFileAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
