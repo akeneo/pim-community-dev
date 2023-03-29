@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteAttributeCommandHandler
+class DeactivateAttributeCommandHandler
 {
     public function __construct(
         private readonly ValidatorInterface $validator,
@@ -22,7 +22,7 @@ class DeleteAttributeCommandHandler
     ) {
     }
 
-    public function __invoke(DeleteAttributeCommand $command): void
+    public function __invoke(DeactivateAttributeCommand $command): void
     {
         $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {

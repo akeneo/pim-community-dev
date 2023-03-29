@@ -6,8 +6,8 @@ namespace Specification\Akeneo\Category\Application\Command;
 
 use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Application\Command\AddAttributeCommand;
-use Akeneo\Category\Application\Command\DeleteAttributeCommand;
-use Akeneo\Category\Application\Command\DeleteAttributeCommandHandler;
+use Akeneo\Category\Application\Command\DeactivateAttributeCommand;
+use Akeneo\Category\Application\Command\DeactivateAttributeCommandHandler;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Domain\Query\DeactivateAttribute;
@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class DeleteAttributeCommandHandlerSpec extends ObjectBehavior
+class DeactivateAttributeCommandHandlerSpec extends ObjectBehavior
 {
     public function let(
         ValidatorInterface $validator,
@@ -39,14 +39,14 @@ class DeleteAttributeCommandHandlerSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(DeleteAttributeCommandHandler::class);
+        $this->shouldHaveType(DeactivateAttributeCommandHandler::class);
     }
 
     public function it_creates_and_delete_an_attribute(
         ValidatorInterface $validator,
         DeactivateAttribute $deactivateAttribute,
     ): void {
-        $command = DeleteAttributeCommand::create(
+        $command = DeactivateAttributeCommand::create(
             templateUuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             attributeUuid: '1417f013-c060-45b3-9bd5-2adaee07170f'
         );

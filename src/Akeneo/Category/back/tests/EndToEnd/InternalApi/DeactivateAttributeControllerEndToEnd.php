@@ -31,7 +31,7 @@ use Akeneo\Test\Integration\Configuration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class DeleteAttributeControllerEndToEnd extends ControllerIntegrationTestCase
+class DeactivateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 {
     private TemplateUuid $templateUuid;
 
@@ -44,7 +44,7 @@ class DeleteAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->createTemplate();
     }
 
-    public function testItDeleteAttributesFromTheTemplate(): void
+    public function testItDeactivateAttributesFromTheTemplate(): void
     {
         /** @var AttributeCollection $insertedAttributes */
         $insertedAttributes = $this->get(GetAttribute::class)->byTemplateUuid($this->templateUuid);

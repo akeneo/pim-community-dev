@@ -6,7 +6,7 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
-use Akeneo\Category\Application\Command\DeleteAttributeCommand;
+use Akeneo\Category\Application\Command\DeactivateAttributeCommand;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteAttributeController
+class DeactivateAttributeController
 {
     public function __construct(
         private readonly SecurityFacade $securityFacade,
@@ -32,7 +32,7 @@ class DeleteAttributeController
         }
 
         try {
-            $command = DeleteAttributeCommand::create(
+            $command = DeactivateAttributeCommand::create(
                 templateUuid: $templateUuid,
                 attributeUuid: $attributeUuid,
             );
