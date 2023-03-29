@@ -17,6 +17,7 @@ akeneo.category:
         create: Create tree
         delete: Delete tree
     template:
+        learn_more: Learn more about category template
         create: Activate template
         edit: View template
         notification_success: Template activated successfully
@@ -30,7 +31,10 @@ akeneo.category:
                 richtext: Rich Text
                 image: Image
         add_attribute:
+            no_attribute_title: Create your first attribute
+            no_attribute_instructions: Define the content you want to associate to your categories by adding Text, Text Area or Image attributes to this template.
             add_button: Add Attribute
+            create_button: Create Attribute
             confirmation_modal:
                 section_title: Add Attribute
                 title: Create a new category attribute
