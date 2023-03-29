@@ -12,4 +12,5 @@ final class RequestHeaders
 {
     const HEADER_REQUEST_SIGNATURE = 'X-Akeneo-Request-Signature';
     const HEADER_REQUEST_TIMESTAMP = 'X-Akeneo-Request-Timestamp';
+    const HEADER_REQUEST_USERAGENT = 'User-Agent';
 }
