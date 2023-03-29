@@ -6,9 +6,12 @@ import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
 
 interface Props {
     templateId: string;
+    title: string;
+    instructions: string;
+    createButton: boolean;
 }
 
-export const NoTemplateAttributeOnTemplatePage = ({templateId}: Props) =>
+export const NoTemplateAttribute = ({templateId, title, instructions, createButton = false}: Props) =>
 {
     const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
         useBooleanState(false);
@@ -16,24 +19,19 @@ export const NoTemplateAttributeOnTemplatePage = ({templateId}: Props) =>
     return (
         <NoAttributeSection>
             <AttributesIllustration size={256} />
-            <Title>
-                {translate('akeneo.category.template.add_attribute.no_attribute_title')}
-            </Title>
-            <Instructions>
-                {translate('akeneo.category.template.add_attribute.no_attribute_instructions')}
-            </Instructions>
+            <Title>{title}</Title>
+            <Instructions>{instructions}</Instructions>
             <Footer>
                 <Link href="https://help.akeneo.com/serenity-take-the-power-over-your-products/serenity-enrich-your-category" target="_blank">
                     {translate('akeneo.category.template.learn_more')}
                 </Link>
             </Footer>
-            <Button
-                level="secondary"
-                onClick={openAddTemplateAttributeModal}
-            >
+            {createButton && (
+                <Button level="secondary" onClick={openAddTemplateAttributeModal}>
                 {translate('akeneo.category.template.add_attribute.create_button')}
             </Button>
-            {isAddTemplateAttributeModalOpen && (
+            )}
+            {isAddTemplateAttributeModalOpen && createButton && (
                 <AddTemplateAttributeModal templateId={templateId} onClose={closeAddTemplateAttributeModal} />
             )}
         </NoAttributeSection>
