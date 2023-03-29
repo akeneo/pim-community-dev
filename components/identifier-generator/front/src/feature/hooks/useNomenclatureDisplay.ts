@@ -1,8 +1,8 @@
 import {useCallback} from 'react';
-import {FamilyCode, Nomenclature, Operator} from '../models';
+import {FamilyCode, Nomenclature, Operator, AttributeCode} from '../models';
 
 const useNomenclatureDisplay: (nomenclature?: Nomenclature) => {
-  getPlaceholder: (familyCode: FamilyCode) => string;
+  getPlaceholder: (entityCode: FamilyCode | AttributeCode) => string;
   isValid: (nomenclatureValue: string) => boolean;
 } = nomenclature => {
   const getPlaceholder = useCallback(

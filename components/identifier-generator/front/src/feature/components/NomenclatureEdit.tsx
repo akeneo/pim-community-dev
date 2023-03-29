@@ -14,9 +14,16 @@ import {
   useBooleanState,
 } from 'akeneo-design-system';
 import {Styled} from './Styled';
-import {useGetFamilyNomenclatureValues, useGetNomenclature, useSaveNomenclature} from '../hooks';
+import {useGetAttributeLabel, useGetNomenclature, useGetNomenclatureValues, useSaveNomenclature} from '../hooks';
 import {OperatorSelector} from './OperatorSelector';
-import {Nomenclature, NomenclatureFilter, NomenclatureValues, Operator} from '../models';
+import {
+  CanUseNomenclatureProperty,
+  Nomenclature,
+  NomenclatureFilter,
+  NomenclatureValues,
+  Operator,
+  PROPERTY_NAMES,
+} from '../models';
 import {NomenclatureLineEdit} from './NomenclatureLineEdit';
 import {NomenclatureValuesDisplayFilter} from './NomenclatureValuesDisplayFilter';
 import {Violation} from '../validators';
@@ -25,14 +32,17 @@ import {useIdentifierGeneratorAclContext} from '../context';
 
 type NomenclatureEditProps = {
   itemsPerPage?: number;
+  selectedProperty: CanUseNomenclatureProperty;
 };
 
-const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
+const NomenclatureEdit: FC<NomenclatureEditProps> = ({selectedProperty, itemsPerPage = 25}) => {
   const translate = useTranslate();
   const notify = useNotify();
   const [isOpen, open, close] = useBooleanState();
   const [nomenclature, setNomenclature] = useState<Nomenclature | undefined>(undefined);
-  const {data: fetchedNomenclature} = useGetNomenclature('family');
+  const {data: fetchedNomenclature} = useGetNomenclature(
+    selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT ? selectedProperty.attributeCode ?? '' : 'family'
+  );
   const [filter, setFilter] = useState<NomenclatureFilter>('all');
   const [valuesToSave, setValuesToSave] = useState<NomenclatureValues>({});
   const [violations, setViolations] = useState<Violation[]>([]);
@@ -45,9 +55,12 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
     totalValuesCount,
     filteredValuesCount,
     hasValueInvalid,
-  } = useGetFamilyNomenclatureValues(nomenclature, filter, valuesToSave, itemsPerPage);
+  } = useGetNomenclatureValues(nomenclature, filter, valuesToSave, itemsPerPage, selectedProperty);
   const {save, isLoading: isSaving} = useSaveNomenclature();
   const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
+  const label = useGetAttributeLabel(
+    selectedProperty.type !== PROPERTY_NAMES.FAMILY ? selectedProperty.attributeCode : undefined
+  );
 
   const onFilterChange = (value: NomenclatureFilter) => {
     if (nomenclature) setNomenclature({...nomenclature, values: valuesToSave});
@@ -103,9 +116,15 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
   );
 
   const handleSaveNomenclature = () => {
-    if (nomenclature && !isSaving) {
+    if (nomenclature && selectedProperty && !isSaving) {
       save(
-        {...nomenclature, propertyCode: 'family', values: valuesToSave},
+        {
+          ...nomenclature,
+          propertyCode:
+            (selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT ? selectedProperty.attributeCode : 'family') ??
+            'family',
+          values: valuesToSave,
+        },
         {
           onError: (violations: Violation[]) => {
             setViolations(violations);
@@ -125,16 +144,24 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
     }
   };
 
+  const labelEntityType =
+    selectedProperty.type === PROPERTY_NAMES.FAMILY ? translate('pim_enrich.entity.family.plural_label') : label;
+
+  const titleIndex =
+    selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT
+      ? 'pim_enrich.entity.attribute_option.page_title.index'
+      : 'pim_enrich.entity.family.page_title.index';
+
   return (
     <>
-      <Button
+      <Styled.NomenclatureButton
         ghost
         level="secondary"
         onClick={open}
         disabled={!identifierGeneratorAclContext.isManageIdentifierGeneratorAclGranted}
       >
         {translate('pim_identifier_generator.nomenclature.edit')}
-      </Button>
+      </Styled.NomenclatureButton>
       {isOpen && (
         <Modal closeTitle={translate('pim_common.close')} onClose={close}>
           <Modal.TopRightButtons>
@@ -144,15 +171,14 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({itemsPerPage = 25}) => {
           </Modal.TopRightButtons>
           <Modal.SectionTitle color="brand">
             {translate('pim_identifier_generator.nomenclature.section_title', {
-              property: translate('pim_enrich.entity.family.plural_label'),
+              property: labelEntityType,
             })}
           </Modal.SectionTitle>
-          <Modal.Title>{translate('pim_identifier_generator.nomenclature.title')}</Modal.Title>
           {nomenclature && (
             <Styled.NomenclatureModalContent>
               <SectionTitle>
                 <SectionTitle.Title>
-                  {translate('pim_enrich.entity.family.page_title.index', {count: totalValuesCount}, totalValuesCount)}
+                  {translate(titleIndex, {count: totalValuesCount}, totalValuesCount)}
                 </SectionTitle.Title>
                 <SectionTitle.Spacer />
               </SectionTitle>
