@@ -13,7 +13,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatu
  */
 class InMemoryFamilyNomenclatureRepository implements FamilyNomenclatureRepository
 {
-    private ?NomenclatureDefinition $nomenclatureDefinition;
+    private ?NomenclatureDefinition $nomenclatureDefinition = null;
     /**
      * @var array<string, string>
      */

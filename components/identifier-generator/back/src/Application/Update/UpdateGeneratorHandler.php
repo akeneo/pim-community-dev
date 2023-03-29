@@ -12,7 +12,6 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -30,10 +29,9 @@ final class UpdateGeneratorHandler
     {
         $this->validator->validate($command);
 
-        $identifierGenerator = $this->identifierGeneratorRepository->get($command->code);
-        Assert::notNull($identifierGenerator, \sprintf("Identifier generator \"%s\" does not exist or you do not have permission to access it.", $command->code));
-
-        $updatedIdentifierGenerator = $identifierGenerator
+        $updatedIdentifierGenerator = $this
+            ->identifierGeneratorRepository
+            ->get($command->code)
             ->withStructure(Structure::fromNormalized($command->structure))
             ->withConditions(Conditions::fromNormalized($command->conditions))
             ->withLabelCollection(LabelCollection::fromNormalized($command->labels))
