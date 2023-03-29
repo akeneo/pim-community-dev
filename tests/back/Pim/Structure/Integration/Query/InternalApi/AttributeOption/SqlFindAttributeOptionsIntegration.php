@@ -30,11 +30,42 @@ class SqlFindAttributeOptionsIntegration extends TestCase
             ['code' => 'option10', 'labels' => ['en_US' => '[option10]']],
         ]);
 
-        Assert::assertSame($query->search('attribute1', '', 3, 5), [
-            ['code' => 'option11', 'labels' => ['en_US' => '[option11]']],
+        Assert::assertSame($query->search('attribute1', '', 5, 5), [
+            ['code' => 'option21', 'labels' => ['en_US' => '[option21]']],
+            ['code' => 'option22', 'labels' => ['en_US' => '[option22]']],
         ]);
 
-        Assert::assertSame($query->search('attribute1', '', 4, 5), []);
+        Assert::assertSame($query->search('attribute1', '', 6, 5), []);
+    }
+
+    public function test_it_without_paginates_options(): void
+    {
+        $query = $this->getQuery();
+
+        Assert::assertSame($query->search('attribute1', '', 1, -1), [
+            ['code' => 'option1', 'labels' => ['en_US' => 'Option one']],
+            ['code' => 'option2', 'labels' => ['en_US' => '[option2]']],
+            ['code' => 'option3', 'labels' => ['en_US' => 'Option three']],
+            ['code' => 'option4', 'labels' => ['en_US' => 'Foobar']],
+            ['code' => 'option5', 'labels' => ['en_US' => '[option5]']],
+            ['code' => 'option6', 'labels' => ['en_US' => '[option6]']],
+            ['code' => 'option7', 'labels' => ['en_US' => '[option7]']],
+            ['code' => 'option8', 'labels' => ['en_US' => '[option8]']],
+            ['code' => 'option9', 'labels' => ['en_US' => '[option9]']],
+            ['code' => 'option10', 'labels' => ['en_US' => '[option10]']],
+            ['code' => 'option11', 'labels' => ['en_US' => '[option11]']],
+            ['code' => 'option12', 'labels' => ['en_US' => '[option12]']],
+            ['code' => 'option13', 'labels' => ['en_US' => '[option13]']],
+            ['code' => 'option14', 'labels' => ['en_US' => '[option14]']],
+            ['code' => 'option15', 'labels' => ['en_US' => '[option15]']],
+            ['code' => 'option16', 'labels' => ['en_US' => '[option16]']],
+            ['code' => 'option17', 'labels' => ['en_US' => '[option17]']],
+            ['code' => 'option18', 'labels' => ['en_US' => '[option18]']],
+            ['code' => 'option19', 'labels' => ['en_US' => '[option19]']],
+            ['code' => 'option20', 'labels' => ['en_US' => '[option20]']],
+            ['code' => 'option21', 'labels' => ['en_US' => '[option21]']],
+            ['code' => 'option22', 'labels' => ['en_US' => '[option22]']],
+        ]);
     }
 
     public function test_it_returns_nothing(): void
@@ -97,7 +128,19 @@ class SqlFindAttributeOptionsIntegration extends TestCase
             ['code' => 'option7', 'labels' => [], 'sort_order' => 7],
             ['code' => 'option8', 'labels' => [], 'sort_order' => 8],
             ['code' => 'option9', 'labels' => [], 'sort_order' => 9],
+            ['code' => 'option12', 'labels' => [], 'sort_order' => 12],
+            ['code' => 'option13', 'labels' => [], 'sort_order' => 13],
+            ['code' => 'option14', 'labels' => [], 'sort_order' => 14],
+            ['code' => 'option15', 'labels' => [], 'sort_order' => 15],
+            ['code' => 'option16', 'labels' => [], 'sort_order' => 16],
+            ['code' => 'option17', 'labels' => [], 'sort_order' => 17],
+            ['code' => 'option18', 'labels' => [], 'sort_order' => 18],
+            ['code' => 'option19', 'labels' => [], 'sort_order' => 19],
+            ['code' => 'option20', 'labels' => [], 'sort_order' => 20],
+            ['code' => 'option21', 'labels' => [], 'sort_order' => 21],
+            ['code' => 'option22', 'labels' => [], 'sort_order' => 22],
         ]);
+
 
         $attribute2Id = $this->insertAttribute($attributeGroupId, 'attribute2');
         $this->insertOptions($attribute2Id, [

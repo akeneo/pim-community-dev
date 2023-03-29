@@ -1,7 +1,14 @@
 import React from 'react';
 import {NomenclatureEdit} from '../';
 import {act, fireEvent, render, screen} from '../../tests/test-utils';
-import {Nomenclature, Operator} from '../../models';
+import {
+  AbbreviationType,
+  CanUseNomenclatureProperty,
+  Nomenclature,
+  Operator,
+  PROPERTY_NAMES,
+  SimpleSelectProperty,
+} from '../../models';
 import {NotificationLevel} from '@akeneo-pim-community/shared';
 
 jest.mock('../NomenclatureValuesDisplayFilter');
@@ -91,6 +98,13 @@ async function updateOperator(sourceOperator: string, endOperator: string) {
   expect(await screen.findByText(`Operator = ${endOperator}`)).toBeInTheDocument();
 }
 
+const selectedProperty: CanUseNomenclatureProperty = {
+  type: PROPERTY_NAMES.FAMILY,
+  process: {
+    type: AbbreviationType.NO,
+  },
+};
+
 describe('NomenclatureEdit', () => {
   beforeEach(() => {
     const fetchImplementation = jest
@@ -134,7 +148,7 @@ describe('NomenclatureEdit', () => {
   });
 
   it('should render the family codes, labels and nomenclatures', async () => {
-    render(<NomenclatureEdit />);
+    render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
 
     expect(await screen.findByText('family1')).toBeInTheDocument();
@@ -149,7 +163,7 @@ describe('NomenclatureEdit', () => {
   });
 
   it('should navigate with invalid values', async () => {
-    render(<NomenclatureEdit />);
+    render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     // ['FA1', 'FA2', 'fam' (placeholder)], = 3 chars, display all
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
@@ -195,7 +209,7 @@ describe('NomenclatureEdit', () => {
   });
 
   it('should navigate with filters', async () => {
-    render(<NomenclatureEdit />);
+    render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
@@ -206,7 +220,7 @@ describe('NomenclatureEdit', () => {
   });
 
   it('should use pagination', async () => {
-    render(<NomenclatureEdit itemsPerPage={2} />);
+    render(<NomenclatureEdit selectedProperty={selectedProperty} itemsPerPage={2} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
@@ -216,7 +230,7 @@ describe('NomenclatureEdit', () => {
   });
 
   it('should search', async () => {
-    render(<NomenclatureEdit />);
+    render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     // ['FA1', 'FA2', 'fam' (placeholder)], = 3 chars, display all
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
@@ -236,7 +250,7 @@ describe('NomenclatureEdit', () => {
   });
 
   it('should save', async () => {
-    render(<NomenclatureEdit />);
+    render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
@@ -254,7 +268,7 @@ describe('NomenclatureEdit', () => {
   });
 
   it('should save with warnings', async () => {
-    render(<NomenclatureEdit />);
+    render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
@@ -276,7 +290,7 @@ describe('NomenclatureEdit', () => {
   it('should not save when violation errors', async () => {
     const mockConsole = jest.spyOn(console, 'error').mockImplementation();
 
-    render(<NomenclatureEdit />);
+    render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
     expect(await screen.findByText('family1')).toBeInTheDocument();
 
@@ -293,5 +307,64 @@ describe('NomenclatureEdit', () => {
     );
 
     mockConsole.mockRestore();
+  });
+
+  it('should render the simple select codes, labels and nomenclatures', async () => {
+    const defaultSimpleSelect = [
+      {code: 'black', labels: {en_US: 'Black label'}},
+      {code: 'white', labels: {}},
+      {code: 'red', labels: {fr_FR: 'Rouge'}},
+    ];
+
+    const nomenclatureSimpleSelect: Nomenclature = {
+      propertyCode: 'color',
+      operator: Operator.EQUALS,
+      value: 3,
+      generate_if_empty: true,
+      values: {
+        black: 'BLA',
+        white: 'WHI',
+      },
+    };
+
+    const fetchImplementation = jest.fn().mockImplementation((requestUrl: string) => {
+      if (requestUrl === 'akeneo_identifier_generator_nomenclature_rest_get') {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(nomenclatureSimpleSelect),
+          status: 200,
+        } as Response);
+      } else if (requestUrl === 'akeneo_identifier_generator_get_attribute_options') {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(defaultSimpleSelect),
+          status: 200,
+        } as Response);
+      }
+      throw new Error(`Unknown url ${JSON.stringify(requestUrl)}`);
+    });
+    jest.spyOn(global, 'fetch').mockImplementation(fetchImplementation);
+
+    const selectedPropertySimpleSelect: SimpleSelectProperty = {
+      attributeCode: 'color',
+      type: PROPERTY_NAMES.SIMPLE_SELECT,
+      process: {
+        type: AbbreviationType.NO,
+      },
+    };
+
+    render(<NomenclatureEdit selectedProperty={selectedPropertySimpleSelect} />);
+    fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
+
+    expect(await screen.findByText('pim_identifier_generator.nomenclature.edit')).toBeInTheDocument();
+    expect(await screen.findByText('black')).toBeInTheDocument();
+    expect(await screen.findByText('white')).toBeInTheDocument();
+    expect(await screen.findByText('red')).toBeInTheDocument();
+    expect(await screen.findByText('Black label')).toBeInTheDocument();
+    expect(await screen.findByText('[white]')).toBeInTheDocument();
+    expect(await screen.findByText('[red]')).toBeInTheDocument();
+    expect(screen.getByTitle('BLA')).toBeInTheDocument();
+    expect(screen.getByTitle('WHI')).toBeInTheDocument();
+    expect(screen.getByText('pim_identifier_generator.nomenclature.helper')).toBeVisible();
   });
 });
