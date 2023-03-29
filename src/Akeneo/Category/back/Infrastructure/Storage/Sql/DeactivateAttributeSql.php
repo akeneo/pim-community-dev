@@ -31,15 +31,18 @@ class DeactivateAttributeSql implements DeactivateAttribute
         $query = <<< SQL
             UPDATE pim_catalog_category_attribute 
             SET is_deactivated = true
-            WHERE uuid = :attribute_uuid
+            WHERE category_template_uuid = :template_uuid 
+            AND uuid = :attribute_uuid;
         SQL;
 
         $this->connection->executeQuery(
             $query,
             [
+                'template_uuid' => $templateUuid->toBytes(),
                 'attribute_uuid' => $attributeUuid->toBytes(),
             ],
             [
+                'template_uuid' => \PDO::PARAM_STR,
                 'attribute_uuid' => \PDO::PARAM_STR,
             ],
         );

@@ -28,11 +28,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DeactivateAttributeCommandHandlerSpec extends ObjectBehavior
 {
     public function let(
-        ValidatorInterface $validator,
         DeactivateAttribute $deactivateAttribute
     ): void {
         $this->beConstructedWith(
-            $validator,
             $deactivateAttribute,
         );
     }
@@ -42,16 +40,13 @@ class DeactivateAttributeCommandHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(DeactivateAttributeCommandHandler::class);
     }
 
-    public function it_creates_and_delete_an_attribute(
-        ValidatorInterface $validator,
+    public function it_deactivate_an_attribute(
         DeactivateAttribute $deactivateAttribute,
     ): void {
         $command = DeactivateAttributeCommand::create(
             templateUuid: '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
             attributeUuid: '1417f013-c060-45b3-9bd5-2adaee07170f'
         );
-
-        $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
 
         $templateUuid = TemplateUuid::fromString($command->templateUuid);
         $attributeUuid = AttributeUuid::fromString($command->attributeUuid);

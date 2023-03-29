@@ -44,7 +44,6 @@ services:
 
   Akeneo\Category\Application\Command\DeactivateAttributeCommandHandler:
     arguments:
-      - '@validator'
       - '@Akeneo\Category\Domain\Query\DeactivateAttribute'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeactivateAttributeCommand' }

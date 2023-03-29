@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Command;
 
-use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Domain\Query\DeactivateAttribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -17,18 +15,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class DeactivateAttributeCommandHandler
 {
     public function __construct(
-        private readonly ValidatorInterface $validator,
         private readonly DeactivateAttribute $deactivateAttribute,
     ) {
     }
 
     public function __invoke(DeactivateAttributeCommand $command): void
     {
-        $violations = $this->validator->validate($command);
-        if ($violations->count() > 0) {
-            throw new ViolationsException($violations);
-        }
-
         $templateUuid = TemplateUuid::fromString($command->templateUuid);
         $attributeUuid = AttributeUuid::fromString($command->attributeUuid);
 
