@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {AttributesIllustration, Button, getFontSize, Link, useBooleanState} from 'akeneo-design-system';
 import {translate} from "@akeneo-pim-community/shared";
 import styled from "styled-components";
@@ -8,7 +8,7 @@ interface Props {
     templateId: string;
 }
 
-export const NoTemplateAttribute = ({templateId}: Props) =>
+export const NoTemplateAttributeOnTemplatePage = ({templateId}: Props) =>
 {
     const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
         useBooleanState(false);

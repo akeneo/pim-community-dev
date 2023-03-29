@@ -15,7 +15,7 @@ import {cloneDeep, set} from 'lodash/fp';
 import {FC, useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm';
-import {NoTemplateAttribute} from '../components/templates/NoTemplateAttribute';
+import {NoTemplateAttributeOnTemplatePage} from '../components/templates/NoTemplateAttributeOnTemplatePage';
 import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm';
 import {TemplateOtherActions} from '../components/templates/TemplateOtherActions';
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
@@ -157,7 +157,7 @@ const TemplatePage: FC = () => {
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && !templateHasAttribute() && (
-            <NoTemplateAttribute templateId={templateEdited.uuid}/>
+            <NoTemplateAttributeOnTemplatePage templateId={templateEdited.uuid}/>
         )}
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && templateHasAttribute() && (
