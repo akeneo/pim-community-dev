@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
-use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Behat\Behat\Context\Context;
@@ -137,16 +136,5 @@ final class CreateIdentifierGeneratorContext extends BaseCreateOrUpdateIdentifie
     public function iTryToCreateAnIdentifierGeneratorWithConditions(string $count): void
     {
         $this->tryToCreateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
-    }
-
-    /**
-     * @When I try to create an identifier generator with 2 category conditions
-     */
-    public function iTryToCreateAnIdentifierGeneratorWith2CategoryConditions(): void
-    {
-        $this->tryToCreateGenerator(conditions: [
-            ['type' => 'category', 'operator' => 'IN', 'value' => ['tshirts']],
-            ['type' => 'category', 'operator' => 'NOT IN', 'value' => ['shoes']],
-        ]);
     }
 }

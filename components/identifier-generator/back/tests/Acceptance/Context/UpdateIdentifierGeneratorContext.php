@@ -189,14 +189,5 @@ final class UpdateIdentifierGeneratorContext extends BaseCreateOrUpdateIdentifie
         $this->tryToUpdateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
     }
 
-    /**
-     * @When I try to update an identifier generator with 2 category conditions
-     */
-    public function iTryToUpdateAnIdentifierGeneratorWith2CategoryConditions(): void
-    {
-        $this->tryToUpdateGenerator(conditions: [
-            ['type' => 'category', 'operator' => 'IN', 'value' => ['tshirts']],
-            ['type' => 'category', 'operator' => 'NOT IN', 'value' => ['shoes']],
-        ]);
-    }
+
 }

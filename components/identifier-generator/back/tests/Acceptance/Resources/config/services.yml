@@ -64,6 +64,13 @@ services:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
 
+  Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\CategoryConditionContext:
+    public: true
+    arguments:
+      - '@Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\ViolationsContext'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler'
+
   Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\BaseCreateOrUpdateConditionContext:
     public: true
     arguments:
