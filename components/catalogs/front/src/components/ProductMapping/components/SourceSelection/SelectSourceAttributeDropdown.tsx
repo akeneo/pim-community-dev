@@ -28,14 +28,20 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
     const systemAttributes = useSystemAttributes();
     const attributeLabel = attribute?.label ?? (selectedCode.length > 0 ? `[${selectedCode}]` : '');
     const filteredSystemAttributes: Attribute[] = useMemo(() => {
-        if (['string', 'array<string>'].includes(target.type) && target.format === null) {
-            const regex = new RegExp(search, 'i');
-            return systemAttributes.filter(attribute => attribute.label.match(regex));
-        } else {
-            return [];
-        }
         if (target.type === 'boolean') {
             return systemAttributes.filter(attribute => attribute.code === 'status');
+        }
+        if (['string', 'array<string>'].includes(target.type) && target.format === null) {
+            const regex = new RegExp(search, 'i');
+            const correspondingSystemAttributes = systemAttributes.filter(attribute => attribute.label.match(regex));
+            correspondingSystemAttributes.forEach((attribute, index) => {
+                if (attribute.code === 'status') {
+                    correspondingSystemAttributes.splice(index);
+                }
+            });
+            return correspondingSystemAttributes;
+        } else {
+            return [];
         }
         const regex = new RegExp(search, 'i');
         const correspondingSystemAttributes = systemAttributes.filter(attribute => attribute.label.match(regex));
