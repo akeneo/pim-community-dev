@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProductCompletenessRatio;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -17,17 +17,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
 {
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var Client */
-    private $esProductClient;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $channelRepository;
-
-    /** @var GetProductCompletenessRatio */
-    private $getCompletenessRatio;
+    private ValidatorInterface $validator;
+    private IdentifiableObjectRepositoryInterface $channelRepository;
+    private GetProductCompletenessRatio $getCompletenessRatio;
+    private LocaleRepositoryInterface $localeRepository;
 
     public function setUp(): void
     {
@@ -36,11 +29,11 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         $this->authenticate($this->createAdminUser());
         $this->validator = $this->get('validator');
         $this->channelRepository = $this->get('pim_catalog.repository.channel');
-        $this->esProductClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
         $this->getCompletenessRatio = $this->get('akeneo.pim.enrichment.product.query.product_completeness_ratio');
+        $this->localeRepository = $this->get('pim_catalog.repository.locale');
     }
 
-    public function test_that_removing_a_locale_from_a_channel_recomputes_the_products_completeness(): void
+    public function testThatRemovingALocaleFromAChannelRecomputesTheProductsCompleteness(): void
     {
         $this->createFixtures();
 
@@ -74,6 +67,88 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         $yellowJeanRatioFr = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($yellowJean, 'ecommerce', 'fr_FR');
         $this->assertEquals(50, $yellowJeanRatioEn);
         $this->assertNull($yellowJeanRatioFr);
+    }
+
+    public function testItDeactivateLocaleWhenRemovingOnlyChannelWithIt(): void
+    {
+        $this->createFixtures();
+        $this->assertEquals($this->isActivatedLocale('br_FR'), false);
+
+        $newUrl = $this->getRouter()->generate('pim_enrich_channel_rest_post', ['code' => 'my_channel']);
+        $this->client->request(
+            'POST',
+            $newUrl,
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ],
+            json_encode([
+                'code' => 'my_channel',
+                'category_tree' => 'master',
+                'currencies' => ['EUR', 'USD'],
+                'locales' => ['br_FR']
+            ])
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->waitForJobExecutionToEnd();
+
+        $this->assertEquals($this->isActivatedLocale('br_FR'), true);
+
+        $deleteUrl = $this->getRouter()->generate('pim_enrich_channel_rest_remove', ['code' => 'my_channel']);
+        $this->client->request(
+            'DELETE',
+            $deleteUrl,
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ],
+            json_encode([
+                'code' => 'my_channel',
+            ])
+        );
+        $response = $this->client->getResponse();
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->waitForJobExecutionToEnd();
+
+        $this->assertEquals($this->isActivatedLocale('br_FR'), false, 'locale must be deactivated');
+    }
+
+    public function testItDoesntCreateChannelOrLocaleIfChannelIsInvalid(): void
+    {
+        $this->createFixtures();
+        $this->assertEquals($this->isActivatedLocale('br_FR'), false);
+
+        $newUrl = $this->getRouter()->generate('pim_enrich_channel_rest_post', ['code' => 'my channel with space']);
+        $this->client->request(
+            'POST',
+            $newUrl,
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            ],
+            json_encode([
+                'code' => 'my channel with space',
+                'category_tree' => 'master',
+                'currencies' => ['EUR', 'USD'],
+                'locales' => ['br_FR']
+            ])
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $expectedContent =
+            <<<JSON
+{"code":{"message":"Channel code may contain only letters, numbers and underscores and should contain at least one letter"}}
+JSON;
+        $this->assertEquals($expectedContent, $response->getContent());
+        $this->waitForJobExecutionToEnd();
+
+        $this->assertEquals($this->isActivatedLocale('br_FR'), false);
     }
 
     protected function getConfiguration(): Configuration
@@ -128,7 +203,7 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
 
     private function getRouter(): RouterInterface
     {
-        return self::$container->get('router');
+        return self::getContainer()->get('router');
     }
 
     private function waitForJobExecutionToEnd()
@@ -218,5 +293,12 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         )->fetchOne();
 
         return (int) $productId;
+    }
+
+    private function isActivatedLocale(string $localeCode): bool
+    {
+        $activatedLocales = $this->localeRepository->getActivatedLocaleCodes();
+
+        return \in_array($localeCode, $activatedLocales);
     }
 }

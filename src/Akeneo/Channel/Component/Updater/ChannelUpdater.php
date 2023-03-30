@@ -21,40 +21,13 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class ChannelUpdater implements ObjectUpdaterInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $categoryRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $currencyRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var TranslatableUpdater */
-    protected $translatableUpdater;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $categoryRepository
-     * @param IdentifiableObjectRepositoryInterface $localeRepository
-     * @param IdentifiableObjectRepositoryInterface $currencyRepository
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     * @param TranslatableUpdater                   $translatableUpdater
-     */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $categoryRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $currencyRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        TranslatableUpdater $translatableUpdater
+        protected IdentifiableObjectRepositoryInterface $categoryRepository,
+        protected IdentifiableObjectRepositoryInterface $localeRepository,
+        protected IdentifiableObjectRepositoryInterface $currencyRepository,
+        protected IdentifiableObjectRepositoryInterface $attributeRepository,
+        protected TranslatableUpdater $translatableUpdater
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->localeRepository = $localeRepository;
-        $this->currencyRepository = $currencyRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->translatableUpdater = $translatableUpdater;
     }
 
     /**
@@ -73,7 +46,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *     'category_tree' => 'master'
      * ]
      */
-    public function update($channel, array $data, array $options = [])
+    public function update($channel, array $data, array $options = []): self
     {
         if (!$channel instanceof ChannelInterface) {
             throw InvalidObjectException::objectExpected(
@@ -99,7 +72,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
      */
-    protected function validateDataType($field, $data)
+    protected function validateDataType($field, $data): void
     {
         if (in_array($field, ['labels', 'locales', 'currencies', 'conversion_units'])) {
             if (!is_array($data)) {
@@ -132,7 +105,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setData(ChannelInterface $channel, $field, $data)
+    protected function setData(ChannelInterface $channel, $field, $data): void
     {
         switch ($field) {
             case 'code':
@@ -151,9 +124,28 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 $channel->setConversionUnits($data);
                 break;
             case 'labels':
-                $this->translatableUpdater->update($channel, $data);
+                $this->setLabels($channel, $data);
                 break;
         }
+    }
+
+    /**
+     * set labels on a channel, ensuring correct case of locale codes.
+     * @param ChannelInterface $channel
+     * @param array            $localizedLabels
+     */
+    private function setLabels($channel, $localizedLabels): void
+    {
+        // using known locale code when found (modulo case-insensitive comparison)
+        // leaving unknown locale code as is for the moment (Jira PIM-10372)
+        $normalizedLocalizedLabels = [];
+        foreach ($localizedLabels as $localeCode => $label) {
+            $knownLocale = $this->localeRepository->findOneByIdentifier($localeCode);
+            $normalizedLocalCode = null === $knownLocale ? $localeCode : $knownLocale->getCode();
+            $normalizedLocalizedLabels[$normalizedLocalCode] = $label;
+        }
+
+        $this->translatableUpdater->update($channel, $normalizedLocalizedLabels);
     }
 
     /**
@@ -162,7 +154,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setCategoryTree(ChannelInterface $channel, $treeCode)
+    protected function setCategoryTree(ChannelInterface $channel, $treeCode): void
     {
         $category = $this->categoryRepository->findOneByIdentifier($treeCode);
         if (null === $category) {
@@ -183,7 +175,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setCurrencies(ChannelInterface $channel, array $currencyCodes)
+    protected function setCurrencies(ChannelInterface $channel, array $currencyCodes): void
     {
         $currencies = [];
         foreach ($currencyCodes as $currencyCode) {
@@ -210,9 +202,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setLocales(ChannelInterface $channel, array $localeCodes)
+    protected function setLocales(ChannelInterface $channel, array $localeCodes): void
     {
-        $locales = [];
         foreach ($localeCodes as $localeCode) {
             $locale = $this->localeRepository->findOneByIdentifier($localeCode);
             if (null === $locale) {
@@ -225,8 +216,13 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 );
             }
 
-            $locales[] = $locale;
+            $channel->addLocale($locale);
         }
-        $channel->setLocales($locales);
+
+        foreach ($channel->getLocales() as $locale) {
+            if (!in_array($locale->getCode(), $localeCodes)) {
+                $channel->removeLocale($locale);
+            }
+        }
     }
 }
