@@ -24,7 +24,8 @@ final class MatchReferenceEntityHandler implements MatchConditionHandler
         Assert::isInstanceOf($condition, ReferenceEntity::class);
 
         $value = $productProjection->value($condition->attributeCode(), $condition->locale(), $condition->scope());
-        if (null !== $value && !\is_string($value)) {
+        /** @phpstan-ignore-next-line */
+        if (null !== $value && ((string) $value === '')) {
             return false;
         }
 
