@@ -456,8 +456,7 @@ pim_system:
       label: Reset instance
   sandbox:
     helper:
-      label: You are currently exploring the sandbox mode, to read more about it please have a look at the help center.
-      link: Click here.
+      text: This is a sandbox environment; your changes will not impact your production.
 
 pim_datagrid:
   mass_action:
