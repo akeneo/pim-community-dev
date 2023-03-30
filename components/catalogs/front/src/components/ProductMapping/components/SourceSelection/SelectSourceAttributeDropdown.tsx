@@ -43,14 +43,6 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
         } else {
             return [];
         }
-        const regex = new RegExp(search, 'i');
-        const correspondingSystemAttributes = systemAttributes.filter(attribute => attribute.label.match(regex));
-        correspondingSystemAttributes.forEach((attribute, index) => {
-            if (attribute.code === 'status') {
-                correspondingSystemAttributes.splice(index);
-            }
-        });
-        return correspondingSystemAttributes;
     }, [systemAttributes, search, target.type, target.format]);
 
     const handleAttributeSelection = useCallback(
