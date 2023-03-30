@@ -188,6 +188,4 @@ final class UpdateIdentifierGeneratorContext extends BaseCreateOrUpdateIdentifie
     {
         $this->tryToUpdateGenerator(conditions: \array_fill(0, \intval($count), $this->getValidCondition('simple_select')));
     }
-
-
 }
