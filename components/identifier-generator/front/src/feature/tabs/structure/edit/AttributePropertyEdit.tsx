@@ -16,7 +16,7 @@ const options = [
   },
 ];
 
-const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = ({selectedProperty, onChange}) => {
+const AttributePropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = ({selectedProperty, onChange}) => {
   const label = useGetAttributeLabel(selectedProperty.attributeCode);
   const handleScopeAndLocaleChange = (newValue: {scope?: ChannelCode | null; locale?: LocaleCode | null}) => {
     onChange({
@@ -52,4 +52,4 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
   );
 };
 
-export {SimpleSelectPropertyEdit};
+export {AttributePropertyEdit};

@@ -66,8 +66,7 @@ const PropertiesList: React.FC<PropertiesListProps> = ({
                 {property.type === PROPERTY_NAMES.FREE_TEXT && <FreeTextLine freeTextProperty={property} />}
                 {property.type === PROPERTY_NAMES.AUTO_NUMBER && <AutoNumberLine property={property} />}
                 {property.type === PROPERTY_NAMES.FAMILY && <FamilyCodeLine />}
-                {[PROPERTY_NAMES.SIMPLE_SELECT, PROPERTY_NAMES.REF_ENTITY].includes(property.type) && (
-                  //@ts-ignore
+                {(property.type === PROPERTY_NAMES.SIMPLE_SELECT || property.type === PROPERTY_NAMES.REF_ENTITY) && (
                   <AttributePropertyLine attributeCode={property.attributeCode} />
                 )}
                 {property.errorMessage && (
