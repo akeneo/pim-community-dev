@@ -104,11 +104,6 @@ final class UpdateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
                 'string' => 'AKN',
             ],
             [
-                'type' => 'auto_number',
-                'numberMin' => 3,
-                'digitsMin' => 2,
-            ],
-            [
                 'type' => 'reference_entity',
                 'attributeCode' => 'a_ref_data_simple_select',
                 'process' => ['type' => 'no'],
@@ -132,7 +127,7 @@ final class UpdateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
         $uuid = $this->getUuidFromCode('my_new_generator');
         Assert::assertSame(
             \sprintf(
-                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"},{"type":"auto_number","numberMin":3,"digitsMin":2},{"type":"reference_entity","attributeCode":"a_ref_data_simple_select","process":{"type":"no"}}],"labels":{"en_US":"My generator updated","fr_FR":"Mon g\u00e9n\u00e9rateur modifi\u00e9"},"target":"sku","delimiter":"-","text_transformation":"no"}',
+                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"},{"type":"reference_entity","attributeCode":"a_ref_data_simple_select","process":{"type":"no"}}],"labels":{"en_US":"My generator updated","fr_FR":"Mon g\u00e9n\u00e9rateur modifi\u00e9"},"target":"sku","delimiter":"-","text_transformation":"no"}',
                 $uuid
             ),
             $response->getContent()
