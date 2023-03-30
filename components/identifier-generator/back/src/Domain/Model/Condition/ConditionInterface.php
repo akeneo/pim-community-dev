@@ -13,7 +13,8 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
  * @phpstan-import-type SimpleSelectNormalized from SimpleSelect
  * @phpstan-import-type MultiSelectNormalized from MultiSelect
  * @phpstan-import-type CategoryNormalized from Category
- * @phpstan-type ConditionNormalized EnabledNormalized|FamilyNormalized|SimpleSelectNormalized|MultiSelectNormalized|CategoryNormalized
+ * @phpstan-import-type ReferenceEntityNormalized from ReferenceEntity
+ * @phpstan-type ConditionNormalized EnabledNormalized|FamilyNormalized|SimpleSelectNormalized|MultiSelectNormalized|CategoryNormalized|ReferenceEntityNormalized
  */
 interface ConditionInterface
 {

@@ -81,6 +81,10 @@ services:
     tags:
       - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
 
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchReferenceEntityHandler:
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler:
     arguments:
       - !tagged_iterator { tag: 'akeneo.pim.automation.identifier_generator.match_condition' }

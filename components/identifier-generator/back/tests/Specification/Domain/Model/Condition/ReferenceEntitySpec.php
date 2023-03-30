@@ -24,7 +24,7 @@ class ReferenceEntitySpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromNormalized', [[
             'type' => 'simple_select',
-            'operator' => 'EMPTY'
+            'operator' => 'NOT EMPTY'
         ]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
@@ -35,7 +35,7 @@ class ReferenceEntitySpec extends ObjectBehavior
             'type' => 'reference_entity',
             'operator' => 'EMPTY'
         ]]);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation()
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     public function it_should_throw_exception_if_attribute_code_is_not_a_string()
@@ -107,7 +107,7 @@ class ReferenceEntitySpec extends ObjectBehavior
             'operator' => 'NOT EMPTY',
         ]]);
         $this->normalize()->shouldReturn([
-            'type' => 'simple_select',
+            'type' => 'reference_entity',
             'attributeCode' => 'brand',
             'operator' => 'NOT EMPTY',
         ]);
@@ -123,7 +123,7 @@ class ReferenceEntitySpec extends ObjectBehavior
             'locale' => 'en_US',
         ]]);
         $this->normalize()->shouldReturn([
-            'type' => 'simple_select',
+            'type' => 'reference_entity',
             'attributeCode' => 'brand',
             'operator' => 'NOT EMPTY',
             'scope' => 'ecommerce',
