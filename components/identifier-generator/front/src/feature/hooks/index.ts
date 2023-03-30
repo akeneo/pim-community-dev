@@ -2,6 +2,7 @@ export * from './useCategoryLabels';
 export * from './useCategoryTree';
 export * from './useCategoryTrees';
 export * from './useCreateIdentifierGenerator';
+export * from './useGetAttributeByCode';
 export * from './useGetNomenclature';
 export * from './useDeleteIdentifierGenerator';
 export * from './useGetConditionItems';
