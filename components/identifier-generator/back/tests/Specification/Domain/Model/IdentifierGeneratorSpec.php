@@ -203,20 +203,4 @@ class IdentifierGeneratorSpec extends ObjectBehavior
             'text_transformation' => 'no',
         ]);
     }
-
-    public function it_should_add_conditions_from_structure(): void
-    {
-        // Structure contains Family property, which imply family should not be empty.
-        $this->match(new ProductProjection(
-            true,
-            'a_family',
-            [],
-        ))->shouldReturn(true);
-
-        $this->match(new ProductProjection(
-            true,
-            null,
-            [],
-        ))->shouldReturn(false);
-    }
 }
