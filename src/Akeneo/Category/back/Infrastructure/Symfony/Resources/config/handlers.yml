@@ -45,6 +45,7 @@ services:
   Akeneo\Category\Application\Command\DeactivateAttributeCommandHandler:
     arguments:
       - '@Akeneo\Category\Domain\Query\DeactivateAttribute'
+      - '@event_dispatcher'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeactivateAttributeCommand' }
 

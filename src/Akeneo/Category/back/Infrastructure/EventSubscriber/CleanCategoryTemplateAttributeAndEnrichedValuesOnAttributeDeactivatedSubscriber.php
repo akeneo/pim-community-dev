@@ -37,7 +37,7 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesOnAttributeDeactivatedSubsc
 
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()?->getUser(), [
             'template_uuid' => $event->getTemplateUuid()->getValue(),
-            'attribute_uuid' => (string) $event->getAttributeUuid(),
+            'attribute_uuid' => $event->getAttributeUuid()->getValue(),
         ]);
     }
 }

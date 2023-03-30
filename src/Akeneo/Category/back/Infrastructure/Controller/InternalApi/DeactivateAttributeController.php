@@ -31,15 +31,11 @@ class DeactivateAttributeController
             throw new AccessDeniedException();
         }
 
-        try {
-            $command = DeactivateAttributeCommand::create(
-                templateUuid: $templateUuid,
-                attributeUuid: $attributeUuid,
-            );
-            $this->categoryCommandBus->dispatch($command);
-        } catch (ViolationsException $exception) {
-            return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
-        }
+        $command = DeactivateAttributeCommand::create(
+            templateUuid: $templateUuid,
+            attributeUuid: $attributeUuid,
+        );
+        $this->categoryCommandBus->dispatch($command);
 
         return new JsonResponse(null, Response::HTTP_OK);
     }
