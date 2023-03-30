@@ -65,6 +65,9 @@ final class SimpleSelectProperty implements PropertyInterface
         return $simpleSelectProperty;
     }
 
+    /**
+     * @param array<string, mixed> $normalizedProperty
+     */
     public static function fromNormalized(array $normalizedProperty): PropertyInterface
     {
         Assert::keyExists($normalizedProperty, 'type');

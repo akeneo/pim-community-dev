@@ -9,7 +9,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ReferenceEn
 use Webmozart\Assert\Assert;
 
 /**
- * Simple Select Property that can be added to an Identifier Generator's structure
+ * Reference Entity Property that can be added to an Identifier Generator's structure
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
@@ -32,6 +32,7 @@ final class ReferenceEntityProperty implements PropertyInterface
         private readonly ?string $scope = null,
         private readonly ?string $locale = null
     ) {
+        Assert::stringNotEmpty($this->attributeCode);
     }
 
     public static function type(): string
@@ -65,28 +66,6 @@ final class ReferenceEntityProperty implements PropertyInterface
         return $referenceEntityProperty;
     }
 
-    public static function fromNormalized(array $normalizedProperty): PropertyInterface
-    {
-        Assert::keyExists($normalizedProperty, 'type');
-        Assert::same($normalizedProperty['type'], self::type());
-
-        Assert::keyExists($normalizedProperty, 'attributeCode');
-        Assert::string($normalizedProperty['attributeCode']);
-
-        Assert::keyExists($normalizedProperty, 'process');
-        Assert::isArray($normalizedProperty['process']);
-
-        Assert::nullOrString($normalizedProperty['scope'] ?? null);
-        Assert::nullOrString($normalizedProperty['locale'] ?? null);
-
-        return new self(
-            $normalizedProperty['attributeCode'],
-            Process::fromNormalized($normalizedProperty['process']),
-            $normalizedProperty['scope'] ?? null,
-            $normalizedProperty['locale'] ?? null
-        );
-    }
-
     public function getImplicitCondition(): ?ConditionInterface
     {
         return ReferenceEntity::fromNormalized([
@@ -101,5 +80,30 @@ final class ReferenceEntityProperty implements PropertyInterface
     public function attributeCode(): string
     {
         return $this->attributeCode;
+    }
+
+    /**
+     * @param array<string, mixed> $normalizedProperty
+     */
+    public static function fromNormalized(array $normalizedProperty): PropertyInterface
+    {
+        Assert::keyExists($normalizedProperty, 'type');
+        Assert::same($normalizedProperty['type'], self::type());
+
+        Assert::keyExists($normalizedProperty, 'attributeCode');
+        Assert::stringNotEmpty($normalizedProperty['attributeCode']);
+
+        Assert::keyExists($normalizedProperty, 'process');
+        Assert::isArray($normalizedProperty['process']);
+
+        Assert::nullOrString($normalizedProperty['scope'] ?? null);
+        Assert::nullOrString($normalizedProperty['locale'] ?? null);
+
+        return new self(
+            $normalizedProperty['attributeCode'],
+            Process::fromNormalized($normalizedProperty['process']),
+            $normalizedProperty['scope'] ?? null,
+            $normalizedProperty['locale'] ?? null
+        );
     }
 }
