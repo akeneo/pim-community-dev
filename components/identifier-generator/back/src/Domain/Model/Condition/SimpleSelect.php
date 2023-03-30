@@ -44,43 +44,43 @@ final class SimpleSelect implements ConditionInterface
     }
 
     /**
-     * @param array<string, mixed> $normalizedProperty
+     * @param array<string, mixed> $normalizedCondition
      */
-    public static function fromNormalized(array $normalizedProperty): self
+    public static function fromNormalized(array $normalizedCondition): self
     {
-        Assert::eq($normalizedProperty['type'], self::type());
-        Assert::keyExists($normalizedProperty, 'attributeCode');
-        Assert::stringNotEmpty($normalizedProperty['attributeCode']);
+        Assert::eq($normalizedCondition['type'], self::type());
+        Assert::keyExists($normalizedCondition, 'attributeCode');
+        Assert::stringNotEmpty($normalizedCondition['attributeCode']);
 
-        Assert::nullOrString($normalizedProperty['scope'] ?? null);
-        Assert::nullOrString($normalizedProperty['locale'] ?? null);
+        Assert::nullOrString($normalizedCondition['scope'] ?? null);
+        Assert::nullOrString($normalizedCondition['locale'] ?? null);
 
-        Assert::keyExists($normalizedProperty, 'operator');
-        Assert::string($normalizedProperty['operator']);
-        Assert::oneOf($normalizedProperty['operator'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
-        if (\in_array($normalizedProperty['operator'], ['IN', 'NOT IN'])) {
-            Assert::keyExists($normalizedProperty, 'value');
-            Assert::isArray($normalizedProperty['value']);
-            Assert::allStringNotEmpty($normalizedProperty['value']);
-            Assert::minCount($normalizedProperty['value'], 1);
+        Assert::keyExists($normalizedCondition, 'operator');
+        Assert::string($normalizedCondition['operator']);
+        Assert::oneOf($normalizedCondition['operator'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
+        if (\in_array($normalizedCondition['operator'], ['IN', 'NOT IN'])) {
+            Assert::keyExists($normalizedCondition, 'value');
+            Assert::isArray($normalizedCondition['value']);
+            Assert::allStringNotEmpty($normalizedCondition['value']);
+            Assert::minCount($normalizedCondition['value'], 1);
 
             return new self(
-                $normalizedProperty['operator'],
-                $normalizedProperty['attributeCode'],
-                $normalizedProperty['value'],
-                $normalizedProperty['scope'] ?? null,
-                $normalizedProperty['locale'] ?? null,
+                $normalizedCondition['operator'],
+                $normalizedCondition['attributeCode'],
+                $normalizedCondition['value'],
+                $normalizedCondition['scope'] ?? null,
+                $normalizedCondition['locale'] ?? null,
             );
         }
 
-        Assert::keyNotExists($normalizedProperty, 'value');
+        Assert::keyNotExists($normalizedCondition, 'value');
 
         return new self(
-            $normalizedProperty['operator'],
-            $normalizedProperty['attributeCode'],
+            $normalizedCondition['operator'],
+            $normalizedCondition['attributeCode'],
             null,
-            $normalizedProperty['scope'] ?? null,
-            $normalizedProperty['locale'] ?? null,
+            $normalizedCondition['scope'] ?? null,
+            $normalizedCondition['locale'] ?? null,
         );
     }
 
