@@ -12,7 +12,6 @@ import {
   Content,
 } from './header';
 import {SandboxHelper} from './SandboxHelper';
-import {useFeatureFlags} from '../../hooks';
 
 const Header = styled.header`
   position: sticky;
@@ -123,18 +122,14 @@ interface PageHeaderInterface extends FC<PageHeaderProps> {
 }
 
 const PageHeader: PageHeaderInterface = ({children, showPlaceholder}) => {
-  const featureFlags = useFeatureFlags();
-
   const {illustration, breadcrumb, title, state, actions, userActions, content} = buildHeaderElements(
     children,
     showPlaceholder
   );
 
-  const showSandboxHelper = featureFlags.isEnabled('reset_pim');
-
   return (
     <>
-      {showSandboxHelper && <SandboxHelper />}
+      <SandboxHelper />
       <Header>
         <LineContainer>
           {illustration}
