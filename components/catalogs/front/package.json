@@ -16,7 +16,7 @@
     "react": "^16.9.12",
     "react-dom": "^16.9.12"
   },
-  "proxy": "http://httpd",
+  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
     "lib:build": "tsc -p tsconfig.build.json",

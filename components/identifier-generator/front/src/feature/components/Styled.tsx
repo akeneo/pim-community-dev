@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {
   AkeneoThemedProps,
+  Button,
   Dropdown,
   getColor,
   Helper,
@@ -211,6 +212,10 @@ const CategoryTreeContainer = styled.div`
   }
 `;
 
+const NomenclatureButton = styled(Button)`
+  width: fit-content;
+`;
+
 const Styled = {
   BoldContainer,
   CellInputContainer,
@@ -239,6 +244,7 @@ const Styled = {
   NomenclatureDefinition,
   NomenclatureInput,
   NomenclatureTable,
+  NomenclatureButton,
   CategoryTreeContainer,
   CategoriesDropdownContainer,
 };

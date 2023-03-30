@@ -126,7 +126,7 @@ pim_identifier_generator:
         edit: 'Edit nomenclature'
         section_title: 'Generating my identifiers for {{ property }}'
         title: 'Manage nomenclature'
-        helper: 'Please note that the nomenclature for your families will be shared by all your identifier generators.'
+        helper: 'Please note that your nomenclatures are shared by all your identifier generators.'
         characters_number: 'Number of characters'
         operator_placeholder: 'Choose your operator'
         value_placeholder: 'Choose your characters'
