@@ -1,6 +1,6 @@
 import React from 'react';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
-import {AbbreviationType, FamilyProperty, SimpleSelectProperty} from '../../../models';
+import {AbbreviationType, CanUseNomenclatureProperty, SimpleSelectProperty} from '../../../models';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
 import {ScopeAndLocaleSelector} from '../../../components';
 import {ProcessablePropertyEdit} from '../ProcessablePropertyEdit';
@@ -10,6 +10,10 @@ import {useGetAttributeLabel} from '../../../hooks';
 const options = [
   {value: AbbreviationType.TRUNCATE, label: 'pim_identifier_generator.structure.settings.code_format.type.truncate'},
   {value: AbbreviationType.NO, label: 'pim_identifier_generator.structure.settings.code_format.type.code'},
+  {
+    value: AbbreviationType.NOMENCLATURE,
+    label: 'pim_identifier_generator.structure.settings.code_format.type.nomenclature',
+  },
 ];
 
 const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = ({selectedProperty, onChange}) => {
@@ -21,7 +25,7 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
     });
   };
 
-  const handleChange = (simpleSelectProperty: SimpleSelectProperty | FamilyProperty) => {
+  const handleChange = (simpleSelectProperty: CanUseNomenclatureProperty) => {
     onChange({
       ...simpleSelectProperty,
       attributeCode: selectedProperty.attributeCode,
