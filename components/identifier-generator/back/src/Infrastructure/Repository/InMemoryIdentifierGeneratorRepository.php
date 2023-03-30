@@ -80,6 +80,7 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
     public function reorder(array $identifierGeneratorCodes): void
     {
         $generators = $this->generators;
+        $identifierGeneratorCodes = array_map('mb_strtolower', $identifierGeneratorCodes);
 
         \usort(
             $generators,
@@ -93,7 +94,7 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
     private function getGeneratorIndex(string $identifierGeneratorCode): ?int
     {
         foreach ($this->generators as $i => $generator) {
-            if ($generator->code()->asString() === $identifierGeneratorCode) {
+            if (\mb_strtolower($generator->code()->asString()) === \mb_strtolower($identifierGeneratorCode)) {
                 return $i;
             }
         }
