@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure;
 
 use Akeneo\Category\Api\Command\UserIntents\UserIntent;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -18,6 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -119,12 +119,12 @@ abstract class EndToEndTestCase extends TestCase
         $this->getCommandMessageBus()->dispatch($command);
     }
 
-    private function getProductRepository(): ProductRepositoryInterface
+    protected function getProductRepository(): ProductRepositoryInterface
     {
         return $this->get('pim_catalog.repository.product');
     }
 
-    private function getProductSaver(): ProductSaver
+    private function getProductSaver(): SaverInterface
     {
         return $this->get('pim_catalog.saver.product');
     }
