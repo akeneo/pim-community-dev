@@ -1,15 +1,20 @@
-import {useGetFamilies} from './useGetFamilies';
 import {useCallback, useMemo, useState} from 'react';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {
+  AttributeCode,
+  CanUseNomenclatureProperty,
   Family,
   FamilyCode,
   Nomenclature,
   NomenclatureFilter,
   NomenclatureLineEditProps,
   NomenclatureValues,
+  PROPERTY_NAMES,
+  SimpleSelect,
 } from '../models';
 import {useNomenclatureDisplay} from './useNomenclatureDisplay';
+import {useGetSelectOptions} from './useGetSelectOptions';
+import {useGetFamilies} from './useGetFamilies';
 
 type HookResult = {
   data: NomenclatureLineEditProps[];
@@ -22,11 +27,12 @@ type HookResult = {
   hasValueInvalid: boolean;
 };
 
-const useGetFamilyNomenclatureValues = (
+const useGetNomenclatureValues = (
   nomenclature: Nomenclature | undefined,
   filter: NomenclatureFilter | undefined,
   values: NomenclatureValues | undefined,
-  itemsPerPage: number
+  itemsPerPage: number,
+  selectedProperty: CanUseNomenclatureProperty
 ): HookResult => {
   const [page, setPage] = useState<number>(1);
   const [search, setSearch] = useState<string>('');
@@ -35,85 +41,99 @@ const useGetFamilyNomenclatureValues = (
   const [filteredValuesCount, setFilteredValuesCount] = useState<number>(0);
   const userContext = useUserContext();
   const [hasValueInvalid, setHasValueInvalid] = useState<boolean>(false);
+  const typeSelectedProperty = selectedProperty.type;
+  const attributeCode =
+    selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT ? selectedProperty.attributeCode : undefined;
 
-  const {data: families} = useGetFamilies({
+  const {data: families = []} = useGetFamilies({
+    limit: -1,
+    enabled: typeSelectedProperty === PROPERTY_NAMES.FAMILY,
+  });
+
+  const {data: options = []} = useGetSelectOptions({
+    attributeCode,
+    enabled: typeSelectedProperty === PROPERTY_NAMES.SIMPLE_SELECT,
     limit: -1,
   });
 
   const getValueBeforeUserUpdate = useCallback(
-    (familyCode: FamilyCode) => {
-      return nomenclature?.values[familyCode];
+    (entityCode: FamilyCode | AttributeCode) => {
+      return nomenclature?.values[entityCode];
     },
     [nomenclature]
   );
 
   const getValueAfterUserUpdate = useCallback(
-    (familyCode: FamilyCode) => {
-      return values?.[familyCode];
+    (entityCode: FamilyCode | AttributeCode) => {
+      return values?.[entityCode];
     },
     [values]
   );
 
   const getValueBeforeUserUpdateOrPlaceholder = useCallback(
-    (familyCode: FamilyCode) => {
-      return getValueBeforeUserUpdate(familyCode) || getPlaceholder(familyCode);
+    (entityCode: FamilyCode | AttributeCode) => {
+      return getValueBeforeUserUpdate(entityCode) || getPlaceholder(entityCode);
     },
     [getValueBeforeUserUpdate, getPlaceholder]
   );
 
   const getValueAfterUserUpdateOrPlaceholder = useCallback(
-    (familyCode: FamilyCode) => {
-      return getValueAfterUserUpdate(familyCode) || getPlaceholder(familyCode);
+    (entityCode: FamilyCode | AttributeCode) => {
+      return getValueAfterUserUpdate(entityCode) || getPlaceholder(entityCode);
     },
     [getValueAfterUserUpdate, getPlaceholder]
   );
 
-  const getFamilyLabel = useCallback(
-    (family: Family) => {
-      return getLabel(family.labels, userContext.get('catalogLocale'), family.code);
+  const getEntityLabel = useCallback(
+    (entity: Family | SimpleSelect) => {
+      return getLabel(entity.labels, userContext.get('catalogLocale'), entity.code);
     },
     [userContext]
   );
 
-  const familyMatchSearch = useCallback(
-    (family: Family) => {
+  const entityMatchSearch = useCallback(
+    (entity: Family | SimpleSelect) => {
       return (
-        (getValueAfterUserUpdate(family.code)?.toLowerCase() || '').includes(lowerCaseSearch) ||
-        (family.code.toLowerCase() || '').includes(lowerCaseSearch) ||
-        (getFamilyLabel(family).toLowerCase() || '').includes(lowerCaseSearch)
+        (getValueAfterUserUpdate(entity.code)?.toLowerCase() || '').includes(lowerCaseSearch) ||
+        (entity.code.toLowerCase() || '').includes(lowerCaseSearch) ||
+        (getEntityLabel(entity).toLowerCase() || '').includes(lowerCaseSearch)
       );
     },
-    [getFamilyLabel, getValueAfterUserUpdate, lowerCaseSearch]
+    [getEntityLabel, getValueAfterUserUpdate, lowerCaseSearch]
   );
 
-  const familyMatchFilter = useCallback(
-    (familyCode: FamilyCode) => {
+  const matchFilter = useCallback(
+    (code: FamilyCode | AttributeCode) => {
       switch (filter) {
         case 'all':
           return true;
         case 'error':
-          return !isValid(getValueBeforeUserUpdateOrPlaceholder(familyCode));
+          return !isValid(getValueBeforeUserUpdateOrPlaceholder(code));
         case 'empty':
-          return !getValueBeforeUserUpdate(familyCode);
+          return !getValueBeforeUserUpdate(code);
         case 'filled':
         default:
-          return getValueBeforeUserUpdate(familyCode) && getValueBeforeUserUpdate(familyCode) !== '';
+          return getValueBeforeUserUpdate(code) && getValueBeforeUserUpdate(code) !== '';
       }
     },
     [filter, isValid, getValueBeforeUserUpdate, getValueBeforeUserUpdateOrPlaceholder]
   );
 
-  const getLineFromFamily = useCallback(
-    (family: Family): NomenclatureLineEditProps => ({
-      code: family.code,
-      label: getFamilyLabel(family),
-      value: getValueAfterUserUpdate(family.code) || '',
+  const getLineValue = useCallback(
+    (entity: Family | SimpleSelect): NomenclatureLineEditProps => ({
+      code: entity.code,
+      label: getEntityLabel(entity),
+      value: getValueAfterUserUpdate(entity.code) || '',
     }),
-    [getFamilyLabel, getValueAfterUserUpdate]
+    [getEntityLabel, getValueAfterUserUpdate]
   );
 
+  const items = useMemo(() => {
+    return selectedProperty.type === PROPERTY_NAMES.FAMILY ? families : options;
+  }, [selectedProperty, families, options]);
+
   const data = useMemo(() => {
-    if (!families) return [];
+    if (items.length === 0) return [];
 
     let filteredButNotDisplayedDataCount = 0;
     let filteredValuesCount = 0;
@@ -121,22 +141,22 @@ const useGetFamilyNomenclatureValues = (
     const filteredData: NomenclatureLineEditProps[] = [];
     const firstIndexToDisplay = (page - 1) * itemsPerPage;
 
-    const addFilteredData = (family: Family) => {
+    const addFilteredData = (entity: Family | SimpleSelect) => {
       filteredValuesCount++;
       const currentIndex = filteredButNotDisplayedDataCount + filteredData.length;
 
       if (currentIndex >= firstIndexToDisplay && currentIndex < firstIndexToDisplay + itemsPerPage) {
-        filteredData.push(getLineFromFamily(family));
+        filteredData.push(getLineValue(entity));
       } else {
         filteredButNotDisplayedDataCount++;
       }
     };
 
-    for (const family of families) {
+    for (const item of items) {
       hasNomenclatureValueInvalid =
-        hasNomenclatureValueInvalid || !isValid(getValueAfterUserUpdateOrPlaceholder(family.code));
+        hasNomenclatureValueInvalid || !isValid(getValueAfterUserUpdateOrPlaceholder(item.code));
 
-      if (familyMatchSearch(family) && familyMatchFilter(family.code)) addFilteredData(family);
+      if (entityMatchSearch(item) && matchFilter(item.code)) addFilteredData(item);
     }
 
     setFilteredValuesCount(filteredValuesCount);
@@ -144,14 +164,14 @@ const useGetFamilyNomenclatureValues = (
 
     return filteredData;
   }, [
-    families,
-    getLineFromFamily,
+    items,
     page,
     itemsPerPage,
+    getLineValue,
     isValid,
     getValueAfterUserUpdateOrPlaceholder,
-    familyMatchSearch,
-    familyMatchFilter,
+    entityMatchSearch,
+    matchFilter,
   ]);
 
   const innerSetSearch = (search: string) => {
@@ -166,9 +186,9 @@ const useGetFamilyNomenclatureValues = (
     search,
     setSearch: innerSetSearch,
     filteredValuesCount,
-    totalValuesCount: families?.length || 0,
+    totalValuesCount: items.length,
     hasValueInvalid,
   };
 };
 
-export {useGetFamilyNomenclatureValues};
+export {useGetNomenclatureValues};

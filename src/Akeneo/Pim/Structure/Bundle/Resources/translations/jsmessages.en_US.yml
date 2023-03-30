@@ -76,6 +76,8 @@ pim_enrich.entity.attribute_option:
             fail: Cannot save attribute option
         delete:
             fail: Error during deletion of the attribute option
+    page_title:
+        index: "]-Inf, 1]{{ count }} option|]1, Inf[{{ count }} options"
     module:
         edit:
             cancel_title: Cancel modification

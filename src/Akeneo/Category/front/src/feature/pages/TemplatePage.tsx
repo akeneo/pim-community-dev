@@ -15,6 +15,7 @@ import {cloneDeep, set} from 'lodash/fp';
 import {FC, useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm';
+import {NoTemplateAttributeOnTemplatePage} from '../components/templates/NoTemplateAttributeOnTemplatePage';
 import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm';
 import {TemplateOtherActions} from '../components/templates/TemplateOtherActions';
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
@@ -100,6 +101,11 @@ const TemplatePage: FC = () => {
 
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
 
+  const templateHasAttribute = () =>
+  {
+    return templateEdited?.attributes.length != 0;
+  }
+
   return (
     <>
       <PageHeader>
@@ -123,11 +129,9 @@ const TemplatePage: FC = () => {
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
         </PageHeader.UserActions>
-        {featureFlags.isEnabled('category_template_deactivation') && (
-          <PageHeader.Actions>
-            <TemplateOtherActions onDeactivateTemplate={openDeactivateTemplateModal} />
-          </PageHeader.Actions>
-        )}
+        <PageHeader.Actions>
+          <TemplateOtherActions onDeactivateTemplate={openDeactivateTemplateModal} />
+        </PageHeader.Actions>
         <PageHeader.Title>{templateLabel ?? templateId}</PageHeader.Title>
       </PageHeader>
       <PageContent>
@@ -150,7 +154,11 @@ const TemplatePage: FC = () => {
           </TabBar.Tab>
         </TabBar>
 
-        {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
+        {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && !templateHasAttribute() && (
+            <NoTemplateAttributeOnTemplatePage templateId={templateEdited.uuid}/>
+        )}
+
+        {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && templateHasAttribute() && (
           <EditTemplateAttributesForm attributes={templateEdited.attributes} templateId={templateEdited.uuid} />
         )}
 
