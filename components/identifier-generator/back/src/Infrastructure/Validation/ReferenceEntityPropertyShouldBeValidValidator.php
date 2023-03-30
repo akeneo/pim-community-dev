@@ -32,7 +32,7 @@ final class ReferenceEntityPropertyShouldBeValidValidator extends ConstraintVali
             return;
         }
 
-        if (\array_key_exists('type', $property) && $property['type'] !== ReferenceEntityProperty::type()) {
+        if (ReferenceEntityProperty::type() !== ($property['type'] ?? null)) {
             return;
         }
 
@@ -43,10 +43,6 @@ final class ReferenceEntityPropertyShouldBeValidValidator extends ConstraintVali
                 ])
                 ->addViolation();
 
-            return;
-        }
-
-        if (!\array_key_exists('type', $property['process'])) {
             return;
         }
 

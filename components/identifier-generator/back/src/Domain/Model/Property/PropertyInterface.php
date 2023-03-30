@@ -14,7 +14,8 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionIn
  * @phpstan-import-type FreeTextNormalized from FreeText
  * @phpstan-import-type FamilyPropertyNormalized from FamilyProperty
  * @phpstan-import-type SimpleSelectPropertyNormalized from SimpleSelectProperty
- * @phpstan-type PropertyNormalized AutoNumberNormalized | FreeTextNormalized | FamilyPropertyNormalized | SimpleSelectPropertyNormalized
+ * @phpstan-import-type ReferenceEntityPropertyNormalized from ReferenceEntityProperty
+ * @phpstan-type PropertyNormalized AutoNumberNormalized | FreeTextNormalized | FamilyPropertyNormalized | SimpleSelectPropertyNormalized | ReferenceEntityPropertyNormalized
  */
 interface PropertyInterface
 {
