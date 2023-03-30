@@ -126,7 +126,7 @@ const SelectionInputsContainer = styled(Table.Cell)`
   }
 `;
 
-const inputWidth = 'max(300px,80%);';
+const inputWidth = '400px';
 
 const MultiSelectCondition = styled(MultiSelectInput)`
   flex-basis: ${inputWidth};
@@ -136,7 +136,7 @@ const CategoriesDropdownContainer = styled(Dropdown)`
 `;
 
 const SingleSelectCondition = styled(SelectInput)`
-  flex-basis: 300px;
+  flex-basis: ${inputWidth};
 `;
 
 const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
@@ -144,7 +144,7 @@ const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
 `;
 
 const SelectCondition = styled(SelectInput)<{isHorizontal: boolean}>`
-  ${({isHorizontal}) => isHorizontal && 'flex-basis: 120px;'}
+  ${({isHorizontal}) => isHorizontal && 'flex-basis: 150px;'}
 `;
 
 const OperatorContainer = styled.div`

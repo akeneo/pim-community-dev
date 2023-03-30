@@ -49,8 +49,8 @@ pim_identifier_generator:
             title: 'You have reached the limit of {{ count }} identifier generators.'
         confirmation: 'Are you sure you want to delete this property?'
     operators:
-        NOT_IN_CHILDREN_LIST: 'Not in children'
-        IN_CHILDREN_LIST: 'In children'
+        'NOT IN CHILDREN': 'Not in children'
+        'IN CHILDREN': 'In children'
         UNCLASSIFIED: 'Unclassified'
         CLASSIFIED: 'Classified'
     selection:
