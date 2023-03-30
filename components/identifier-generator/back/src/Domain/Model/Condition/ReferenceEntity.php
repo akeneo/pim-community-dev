@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Webmozart\Assert\Assert;
 
 /**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-type ReferenceEntityOperator 'IN'|'NOT IN'|'EMPTY'|'NOT EMPTY'
@@ -45,43 +45,27 @@ final class ReferenceEntity implements ConditionInterface
     }
 
     /**
-     * @param array<string, mixed> $normalizedProperty
+     * @param array<string, mixed> $normalizedCondition
      */
-    public static function fromNormalized(array $normalizedProperty): self
+    public static function fromNormalized(array $normalizedCondition): self
     {
-        Assert::eq($normalizedProperty['type'], self::type());
-        Assert::keyExists($normalizedProperty, 'attributeCode');
-        Assert::stringNotEmpty($normalizedProperty['attributeCode']);
+        Assert::eq($normalizedCondition['type'] ?? null, self::type());
+        Assert::keyExists($normalizedCondition, 'attributeCode');
+        Assert::stringNotEmpty($normalizedCondition['attributeCode']);
 
-        Assert::nullOrString($normalizedProperty['scope'] ?? null);
-        Assert::nullOrString($normalizedProperty['locale'] ?? null);
+        Assert::nullOrNotEmptyString($normalizedCondition['scope'] ?? null);
+        Assert::nullOrNotEmptyString($normalizedCondition['locale'] ?? null);
 
-        Assert::keyExists($normalizedProperty, 'operator');
-        Assert::string($normalizedProperty['operator']);
-        Assert::oneOf($normalizedProperty['operator'], ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']);
-        if (\in_array($normalizedProperty['operator'], ['IN', 'NOT IN'])) {
-            Assert::keyExists($normalizedProperty, 'value');
-            Assert::isArray($normalizedProperty['value']);
-            Assert::allStringNotEmpty($normalizedProperty['value']);
-            Assert::minCount($normalizedProperty['value'], 1);
-
-            return new self(
-                $normalizedProperty['operator'],
-                $normalizedProperty['attributeCode'],
-                $normalizedProperty['value'],
-                $normalizedProperty['scope'] ?? null,
-                $normalizedProperty['locale'] ?? null,
-            );
-        }
-
-        Assert::keyNotExists($normalizedProperty, 'value');
+        Assert::keyExists($normalizedCondition, 'operator');
+        Assert::string($normalizedCondition['operator']);
+        Assert::same($normalizedCondition['operator'], 'NOT EMPTY');
 
         return new self(
-            $normalizedProperty['operator'],
-            $normalizedProperty['attributeCode'],
+            $normalizedCondition['operator'],
+            $normalizedCondition['attributeCode'],
             null,
-            $normalizedProperty['scope'] ?? null,
-            $normalizedProperty['locale'] ?? null,
+            $normalizedCondition['scope'] ?? null,
+            $normalizedCondition['locale'] ?? null,
         );
     }
 
@@ -94,7 +78,6 @@ final class ReferenceEntity implements ConditionInterface
             'type' => self::type(),
             'attributeCode' => $this->attributeCode,
             'operator' => $this->operator,
-            'value' => $this->value,
             'scope' => $this->scope,
             'locale' => $this->locale,
         ], fn (mixed $var): bool => null !== $var);
@@ -107,11 +90,6 @@ final class ReferenceEntity implements ConditionInterface
             return false;
         }
 
-        return match ($this->operator) {
-            'IN' => null !== $value && \in_array($value, $this->value ?? []),
-            'NOT IN' => null !== $value && !\in_array($value, $this->value ?? []),
-            'EMPTY' => null === $value,
-            default => null !== $value
-        };
+        return null !== $value;
     }
 }

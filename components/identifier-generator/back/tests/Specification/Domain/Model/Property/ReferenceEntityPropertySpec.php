@@ -6,21 +6,21 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\P
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\SimpleSelect;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\SimpleSelectProperty;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\ReferenceEntityProperty;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleSelectPropertySpec extends ObjectBehavior
+class ReferenceEntityPropertySpec extends ObjectBehavior
 {
     public function let(): void
     {
         $this->beConstructedThrough('fromNormalized', [
             [
-                'type' => 'simple_select',
-                'attributeCode' => 'color',
+                'type' => 'reference_entity',
+                'attributeCode' => 'brand',
                 'process' => ['type' => 'truncate', 'operator' => '=', 'value' => 3],
                 'scope' => 'ecommerce',
                 'locale' => 'en_US',
@@ -28,14 +28,14 @@ class SimpleSelectPropertySpec extends ObjectBehavior
         ]);
     }
 
-    public function it_is_a_simple_select_property(): void
+    public function it_is_a_reference_entity_property(): void
     {
-        $this->shouldBeAnInstanceOf(SimpleSelectProperty::class);
+        $this->shouldBeAnInstanceOf(ReferenceEntityProperty::class);
     }
 
     public function it_returns_a_type(): void
     {
-        $this->type()->shouldReturn('simple_select');
+        $this->type()->shouldReturn('reference_entity');
     }
 
     public function it_returns_a_process(): void
@@ -48,8 +48,8 @@ class SimpleSelectPropertySpec extends ObjectBehavior
     public function it_normalizes_itself(): void
     {
         $this->normalize()->shouldReturn([
-            'type' => 'simple_select',
-            'attributeCode' => 'color',
+            'type' => 'reference_entity',
+            'attributeCode' => 'brand',
             'process' => [
                 'type' => 'truncate',
                 'operator' => '=',
@@ -64,8 +64,8 @@ class SimpleSelectPropertySpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromNormalized', [
             [
-                'type' => 'simple_select',
-                'attributeCode' => 'color',
+                'type' => 'reference_entity',
+                'attributeCode' => 'brand',
                 'process' => ['type' => 'truncate', 'operator' => '=', 'value' => 3],
                 'scope' => 'ecommerce',
                 'locale' => 'en_US'
@@ -73,8 +73,8 @@ class SimpleSelectPropertySpec extends ObjectBehavior
         ]);
 
         $this->normalize()->shouldReturn([
-            'type' => 'simple_select',
-            'attributeCode' => 'color',
+            'type' => 'reference_entity',
+            'attributeCode' => 'brand',
             'process' => [
                 'type' => 'truncate',
                 'operator' => '=',
@@ -89,8 +89,8 @@ class SimpleSelectPropertySpec extends ObjectBehavior
     {
         $this->getImplicitCondition()->shouldBeLike(
             SimpleSelect::fromNormalized([
-                'type' => 'simple_select',
-                'attributeCode' => 'color',
+                'type' => 'reference_entity',
+                'attributeCode' => 'brand',
                 'operator' => 'NOT EMPTY',
                 'scope' => 'ecommerce',
                 'locale' => 'en_US',
