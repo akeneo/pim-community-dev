@@ -77,6 +77,15 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pim_enrich.event_subscriber.storage.remove_locales_from_channel:
+        class: 'Akeneo\Channel\Infrastructure\EventListener\RemoveLocalesFromChannelSubscriber'
+        arguments:
+            - '@pim_catalog.saver.locale'
+            - []
+        tags:
+            - { name: kernel.event_subscriber }
+
+
     ### Channel
     pim_catalog.factory.channel:
         class: '%akeneo_storage_utils.factory.simple.class%'
