@@ -6,7 +6,7 @@ type Props = {
   property: SimpleSelectProperty | RefEntityProperty;
 };
 
-const SimpleSelectPreview: React.FC<Props> = ({property}) => {
+const AttributePreview: React.FC<Props> = ({property}) => {
   const previewLabel = useMemo(() => {
     if (property.process.type === AbbreviationType.TRUNCATE) {
       return property.attributeCode?.substring(0, property.process.value || 3);
@@ -17,4 +17,4 @@ const SimpleSelectPreview: React.FC<Props> = ({property}) => {
   return <Preview.Highlight>{previewLabel}</Preview.Highlight>;
 };
 
-export {SimpleSelectPreview};
+export {AttributePreview};
