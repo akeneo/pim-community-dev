@@ -1,12 +1,12 @@
 import React from 'react';
 import {mockResponse, render} from '../../../../tests/test-utils';
-import {SimpleSelectPropertyEdit} from '../SimpleSelectPropertyEdit';
+import {AttributePropertyEdit} from '../AttributePropertyEdit';
 import {AbbreviationType, PROPERTY_NAMES, SimpleSelectProperty} from '../../../../models';
 import {fireEvent} from '@testing-library/react';
 
 jest.mock('../../../../components/ScopeAndLocaleSelector');
 
-describe('SimpleSelectPropertyEdit', () => {
+describe('AttributePropertyEdit', () => {
   it('should handle onChange values', () => {
     mockResponse('pim_enrich_attribute_rest_get', 'GET', {
       ok: true,
@@ -29,7 +29,7 @@ describe('SimpleSelectPropertyEdit', () => {
     const mockedOnChange = jest.fn();
 
     const screen = render(
-      <SimpleSelectPropertyEdit selectedProperty={simpleSelectProperty} onChange={mockedOnChange} />
+      <AttributePropertyEdit selectedProperty={simpleSelectProperty} onChange={mockedOnChange} />
     );
 
     expect(screen.getByText('pim_identifier_generator.structure.settings.abbrev_type')).toBeInTheDocument();

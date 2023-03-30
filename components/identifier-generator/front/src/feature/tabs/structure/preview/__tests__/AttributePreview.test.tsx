@@ -2,9 +2,9 @@ import React from 'react';
 import {render} from '../../../../tests/test-utils';
 import {AbbreviationType, Operator, PROPERTY_NAMES, SimpleSelectProperty} from '../../../../models';
 import {waitFor} from '@testing-library/react';
-import {SimpleSelectPreview} from '../SimpleSelectPreview';
+import {AttributePreview} from '../AttributePreview';
 
-describe('SimpleSelectPreview', () => {
+describe('AttributePreview', () => {
   it('should display the entire label when process is code', async () => {
     const simpleSelectProperty: SimpleSelectProperty = {
       type: PROPERTY_NAMES.SIMPLE_SELECT,
@@ -13,7 +13,7 @@ describe('SimpleSelectPreview', () => {
         type: AbbreviationType.NO,
       },
     };
-    const screen = render(<SimpleSelectPreview property={simpleSelectProperty} />);
+    const screen = render(<AttributePreview property={simpleSelectProperty} />);
 
     await waitFor(() => {
       expect(screen.getByText('simple_select')).toBeInTheDocument();
@@ -30,7 +30,7 @@ describe('SimpleSelectPreview', () => {
         value: 3,
       },
     };
-    const screen = render(<SimpleSelectPreview property={simpleSelectProperty} />);
+    const screen = render(<AttributePreview property={simpleSelectProperty} />);
 
     await waitFor(() => {
       expect(screen.getByText('sim')).toBeInTheDocument();
