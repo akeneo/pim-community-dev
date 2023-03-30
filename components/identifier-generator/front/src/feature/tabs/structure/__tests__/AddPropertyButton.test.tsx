@@ -47,7 +47,10 @@ const properties = [
   {
     id: 'marketing',
     text: 'Marketing',
-    children: [{id: 'brand', text: 'Brand', type: 'pim_catalog_simpleselect'}],
+    children: [
+      {id: 'brand', text: 'Brand', type: 'pim_catalog_simpleselect'},
+      {id: 'designer', text: 'Designer', type: 'akeneo_reference_entity'},
+    ],
   },
   {
     id: 'erp',
@@ -215,6 +218,30 @@ describe('AddPropertyButton', () => {
       expect(onAddProperty).toBeCalledWith({
         type: PROPERTY_NAMES.SIMPLE_SELECT,
         attributeCode: 'brand',
+        process: {
+          type: null,
+        },
+      });
+    });
+  });
+
+  it('adds a reference entity property', async () => {
+    const onAddProperty = jest.fn();
+    render(<AddPropertyButton onAddProperty={onAddProperty} structure={[]} />);
+    const button = screen.getByRole('button');
+    expect(screen.getByText('pim_identifier_generator.structure.add_element')).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
+
+    fireEvent.click(button);
+    await waitFor(() => {
+      expect(screen.getByText('Free text')).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByText('Designer'));
+    await waitFor(() => {
+      expect(onAddProperty).toBeCalledWith({
+        type: PROPERTY_NAMES.REF_ENTITY,
+        attributeCode: 'designer',
         process: {
           type: null,
         },
