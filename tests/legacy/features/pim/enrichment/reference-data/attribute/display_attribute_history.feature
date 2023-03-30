@@ -6,7 +6,7 @@ Feature: Display the attribute history
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "Julia"
+    And I am logged in as "Peter"
     And the following attribute group:
       | code      | label-en_US |
       | technical | Technical   |
