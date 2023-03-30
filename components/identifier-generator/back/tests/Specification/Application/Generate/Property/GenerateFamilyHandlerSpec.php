@@ -171,8 +171,9 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         )->shouldReturn('fam');
     }
 
-    public function it_should_throw_an_error_if_family_nomenclature_doesnt_exist(FamilyNomenclatureRepository $nomenclatureRepository): void
-    {
+    public function it_should_throw_an_error_if_family_nomenclature_doesnt_exist(
+        FamilyNomenclatureRepository $familyNomenclatureRepository
+    ): void {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
             'process' => [
@@ -182,7 +183,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
 
         $identifierGenerator = $this->getIdentifierGenerator($family);
 
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get('family')
             ->shouldBeCalled()
             ->willReturn(null);
@@ -198,8 +199,9 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_throw_an_error_if_family_nomenclature_doesnt_have_value_and_no_flag_generate_if_empty(FamilyNomenclatureRepository $nomenclatureRepository): void
-    {
+    public function it_should_throw_an_error_if_family_nomenclature_doesnt_have_value_and_no_flag_generate_if_empty(
+        FamilyNomenclatureRepository $familyNomenclatureRepository
+    ): void {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
             'process' => [
@@ -209,7 +211,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
 
         $identifierGenerator = $this->getIdentifierGenerator($family);
 
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get('family')
             ->shouldBeCalled()
             ->willReturn(null);
@@ -225,8 +227,9 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_throw_an_error_if_family_nomenclature_is_too_small(FamilyNomenclatureRepository $nomenclatureRepository): void
-    {
+    public function it_should_throw_an_error_if_family_nomenclature_is_too_small(
+        FamilyNomenclatureRepository $familyNomenclatureRepository
+    ): void {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
             'process' => [
@@ -237,7 +240,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         $identifierGenerator = $this->getIdentifierGenerator($family);
 
         $nomenclatureFamily = new NomenclatureDefinition('=', 3, false, ['familyCode' => 'ab']);
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get('family')
             ->shouldBeCalledOnce()
             ->willReturn($nomenclatureFamily);
@@ -253,8 +256,9 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_throw_an_error_if_family_nomenclature_is_too_long(FamilyNomenclatureRepository $nomenclatureRepository): void
-    {
+    public function it_should_throw_an_error_if_family_nomenclature_is_too_long(
+        FamilyNomenclatureRepository $familyNomenclatureRepository
+    ): void {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
             'process' => [
@@ -265,7 +269,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         $identifierGenerator = $this->getIdentifierGenerator($family);
 
         $nomenclatureFamily = new NomenclatureDefinition('<=', 3, false, ['familyCode' => 'abcd']);
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get('family')
             ->shouldBeCalledOnce()
             ->willReturn($nomenclatureFamily);
@@ -281,8 +285,9 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_should_return_family_code_with_valid_nomenclature_value(FamilyNomenclatureRepository $nomenclatureRepository): void
-    {
+    public function it_should_return_family_code_with_valid_nomenclature_value(
+        FamilyNomenclatureRepository $familyNomenclatureRepository
+    ): void {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
             'process' => [
@@ -293,7 +298,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         $identifierGenerator = $this->getIdentifierGenerator($family);
 
         $nomenclatureFamily = new NomenclatureDefinition('<=', 3, false, ['familyCode' => 'abc']);
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get('family')
             ->shouldBeCalledOnce()
             ->willReturn($nomenclatureFamily);
@@ -306,8 +311,9 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         )->shouldReturn('abc');
     }
 
-    public function it_should_return_family_code_with_empty_nomenclature_value_and_flag_generate_if_empty(FamilyNomenclatureRepository $nomenclatureRepository): void
-    {
+    public function it_should_return_family_code_with_empty_nomenclature_value_and_flag_generate_if_empty(
+        FamilyNomenclatureRepository $familyNomenclatureRepository
+    ): void {
         $family = FamilyProperty::fromNormalized([
             'type' => FamilyProperty::type(),
             'process' => [
@@ -318,7 +324,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         $identifierGenerator = $this->getIdentifierGenerator($family);
 
         $nomenclatureFamily = new NomenclatureDefinition('<=', 3, true, []);
-        $nomenclatureRepository
+        $familyNomenclatureRepository
             ->get('family')
             ->shouldBeCalledOnce()
             ->willReturn($nomenclatureFamily);
