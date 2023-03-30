@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @phpstan-type ReferenceEntityOperator 'IN'|'NOT IN'|'EMPTY'|'NOT EMPTY'
+ * @phpstan-type ReferenceEntityOperator 'NOT EMPTY'
  * @phpstan-type ReferenceEntityNormalized array{
  *   type: 'reference_entity',
  *   operator: ReferenceEntityOperator,
  *   attributeCode: string,
- *   value?: string[],
  *   scope?: string,
  *   locale?: string,
  * }
@@ -25,12 +23,10 @@ final class ReferenceEntity implements ConditionInterface
 {
     /**
      * @param ReferenceEntityOperator $operator
-     * @param string[]|null $value
      */
     private function __construct(
         private readonly string $operator,
         private readonly string $attributeCode,
-        private readonly ?array $value = null,
         private readonly ?string $scope = null,
         private readonly ?string $locale = null,
     ) {
@@ -53,8 +49,8 @@ final class ReferenceEntity implements ConditionInterface
         Assert::keyExists($normalizedCondition, 'attributeCode');
         Assert::stringNotEmpty($normalizedCondition['attributeCode']);
 
-        Assert::nullOrNotEmptyString($normalizedCondition['scope'] ?? null);
-        Assert::nullOrNotEmptyString($normalizedCondition['locale'] ?? null);
+        Assert::nullOrStringNotEmpty($normalizedCondition['scope'] ?? null);
+        Assert::nullOrStringNotEmpty($normalizedCondition['locale'] ?? null);
 
         Assert::keyExists($normalizedCondition, 'operator');
         Assert::string($normalizedCondition['operator']);
@@ -63,7 +59,6 @@ final class ReferenceEntity implements ConditionInterface
         return new self(
             $normalizedCondition['operator'],
             $normalizedCondition['attributeCode'],
-            null,
             $normalizedCondition['scope'] ?? null,
             $normalizedCondition['locale'] ?? null,
         );
@@ -83,13 +78,23 @@ final class ReferenceEntity implements ConditionInterface
         ], fn (mixed $var): bool => null !== $var);
     }
 
-    public function match(ProductProjection $productProjection): bool
+    public function attributeCode(): string
     {
-        $value = $productProjection->value($this->attributeCode, $this->locale, $this->scope);
-        if (null !== $value && !\is_string($value)) {
-            return false;
-        }
+        return $this->attributeCode;
+    }
 
-        return null !== $value;
+    public function locale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function scope(): ?string
+    {
+        return $this->scope;
+    }
+
+    public function operator(): string
+    {
+        return $this->operator;
     }
 }
