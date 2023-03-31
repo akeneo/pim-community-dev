@@ -300,10 +300,8 @@ const CategoryEditPage: FC = () => {
           template && !templateHasAttribute() &&
             (
                 <NoTemplateAttribute
-                    templateId={template.uuid}
                     title={translate('akeneo.category.edition_form.template.no_attribute_title')}
                     instructions={translate('akeneo.category.edition_form.template.no_attribute_instructions')}
-                    createButton={false}
                 />
           )}
         {isGranted('pim_enrich_product_category_edit_attributes') &&

@@ -5,10 +5,10 @@ import styled from "styled-components";
 import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
 
 interface Props {
-    templateId: string;
+    templateId?: string;
     title: string;
     instructions: string;
-    createButton: boolean;
+    createButton?: boolean;
 }
 
 export const NoTemplateAttribute = ({templateId, title, instructions, createButton = false}: Props) =>
@@ -31,7 +31,7 @@ export const NoTemplateAttribute = ({templateId, title, instructions, createButt
                 {translate('akeneo.category.template.add_attribute.create_button')}
             </Button>
             )}
-            {isAddTemplateAttributeModalOpen && createButton && (
+            {isAddTemplateAttributeModalOpen && createButton && templateId && (
                 <AddTemplateAttributeModal templateId={templateId} onClose={closeAddTemplateAttributeModal} />
             )}
         </NoAttributeSection>
