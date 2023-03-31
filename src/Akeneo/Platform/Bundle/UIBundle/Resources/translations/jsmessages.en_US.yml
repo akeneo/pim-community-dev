@@ -454,6 +454,9 @@ pim_system:
   reset_pim:
     button:
       label: Reset instance
+  sandbox:
+    helper:
+      text: This is a sandbox environment; your changes will not impact your production.
 
 pim_datagrid:
   mass_action:

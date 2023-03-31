@@ -26,6 +26,12 @@ extensions:
         config:
             title: pim_enrich.entity.channel.page_title.index
 
+    pim-channel-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-channel-index
+        targetZone: helper
+        feature: reset_pim
+
     pim-channel-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-channel-index

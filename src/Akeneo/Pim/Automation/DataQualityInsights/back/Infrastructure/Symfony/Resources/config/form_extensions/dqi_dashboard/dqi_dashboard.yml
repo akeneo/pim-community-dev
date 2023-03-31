@@ -13,6 +13,12 @@ extensions:
         config:
             template: pim/template/common/default-template
 
+    akeneo-data-quality-insights-dqi-dashboard-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: akeneo-data-quality-insights-dqi-dashboard-index
+        targetZone: helper
+        feature: reset_pim
+
     akeneo-data-quality-insights-dqi-dashboard-breadcrumb:
         module: pim/common/breadcrumbs
         parent: akeneo-data-quality-insights-dqi-dashboard-index
