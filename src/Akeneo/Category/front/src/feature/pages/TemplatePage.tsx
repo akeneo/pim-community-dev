@@ -15,7 +15,7 @@ import {cloneDeep, set} from 'lodash/fp';
 import {FC, useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
 import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm';
-import {NoTemplateAttribute} from '../components/templates/NoTemplateAttribute';
+import {NoTemplateAttribute} from '../components/templates';
 import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm';
 import {TemplateOtherActions} from '../components/templates/TemplateOtherActions';
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';

@@ -36,7 +36,7 @@ import {
   EditPropertiesForm,
   TemplateTitle,
 } from '../components';
-import {NoTemplateAttribute} from "../components/templates/NoTemplateAttribute";
+import {NoTemplateAttribute} from "../components/templates";
 
 
 type Params = {
