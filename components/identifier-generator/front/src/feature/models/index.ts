@@ -1,4 +1,5 @@
 export * from './properties';
+export * from './conditions/categoriesCondition';
 export * from './conditions/conditions';
 export * from './conditions/enabledCondition';
 export * from './conditions/familyCondition';
@@ -20,3 +21,4 @@ export * from './attribute';
 export * from './nomenclatureLineEditProps';
 export * from './nomenclatureFilter';
 export * from './itemsGroup';
+export * from './simpleSelect';

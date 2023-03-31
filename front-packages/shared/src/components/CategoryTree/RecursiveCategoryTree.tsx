@@ -28,6 +28,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
   isCategoryReadOnly,
   internalSetChecked,
   internalSetChildren,
+  ...rest
 }) => {
   const [loading, setIsLoading] = React.useState<boolean>(tree.loading ?? false);
 
@@ -61,6 +62,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
       onChange={handleChange}
       onOpen={handleOpen}
       onClick={onClick}
+      {...rest}
     >
       {tree.children &&
         tree.children.map(childNode => {

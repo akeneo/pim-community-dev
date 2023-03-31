@@ -1,4 +1,8 @@
+export * from './useCategoryLabels';
+export * from './useCategoryTree';
+export * from './useCategoryTrees';
 export * from './useCreateIdentifierGenerator';
+export * from './useGetAttributeByCode';
 export * from './useGetNomenclature';
 export * from './useDeleteIdentifierGenerator';
 export * from './useGetConditionItems';
@@ -10,7 +14,7 @@ export * from './useUiLocales';
 export * from './useValidateFormWithEnter';
 export * from './useStructureTabs';
 export * from './useGetScopes';
-export * from './useGetFamilyNomenclatureValues';
+export * from './useGetNomenclatureValues';
 export * from './useSaveNomenclature';
 export * from './useGetPropertyItems';
 export * from './useGetAttributeLabel';

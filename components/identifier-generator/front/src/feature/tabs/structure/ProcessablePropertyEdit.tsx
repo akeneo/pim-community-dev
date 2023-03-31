@@ -1,13 +1,13 @@
 import React, {useCallback} from 'react';
 import {Field, NumberInput, SelectInput} from 'akeneo-design-system';
-import {AbbreviationType, FamilyProperty, Operator, PROPERTY_NAMES, SimpleSelectProperty} from '../../models';
+import {AbbreviationType, CanUseNomenclatureProperty, Operator} from '../../models';
 import {NomenclatureEdit, OperatorSelector} from '../../components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierGeneratorAclContext} from '../../context';
 
 type Props = {
-  selectedProperty: FamilyProperty | SimpleSelectProperty;
-  onChange: (property: FamilyProperty | SimpleSelectProperty) => void;
+  selectedProperty: CanUseNomenclatureProperty;
+  onChange: (property: CanUseNomenclatureProperty) => void;
   children?: React.ReactNode;
   options: {value: AbbreviationType; label: string}[];
 };
@@ -36,16 +36,13 @@ const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, c
             type: AbbreviationType.NO,
           },
         });
-      } else {
-        // TODO CPM-964: remove this condition once simple select has nomenclature
-        if (selectedProperty.type === PROPERTY_NAMES.FAMILY) {
-          onChange({
-            type: selectedProperty.type,
-            process: {
-              type: AbbreviationType.NOMENCLATURE,
-            },
-          });
-        }
+      } else if (type === AbbreviationType.NOMENCLATURE) {
+        onChange({
+          type: selectedProperty.type,
+          process: {
+            type: AbbreviationType.NOMENCLATURE,
+          },
+        });
       }
     },
     [onChange, selectedProperty.type]
@@ -123,7 +120,9 @@ const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, c
         </>
       )}
       {children}
-      {selectedProperty.process.type === AbbreviationType.NOMENCLATURE && <NomenclatureEdit />}
+      {selectedProperty.process.type === AbbreviationType.NOMENCLATURE && (
+        <NomenclatureEdit selectedProperty={selectedProperty} />
+      )}
     </>
   );
 };

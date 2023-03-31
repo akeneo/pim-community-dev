@@ -8,11 +8,12 @@ import {
   CategoryTreeModel,
   CategoryValue,
   ParentCategoryTree,
+  CategoryResponse,
+  parseResponse,
 } from '@akeneo-pim-community/shared';
 import styled, {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {Tree} from 'akeneo-design-system/lib';
-import {CategoryResponse, parseResponse} from '../../../CategoryTreeFetcher';
 const UserContext = require('pim/user-context');
 const __ = require('oro/translator');
 const Router = require('pim/router');

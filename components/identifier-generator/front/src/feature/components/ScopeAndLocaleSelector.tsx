@@ -1,10 +1,9 @@
 import React, {useCallback, useMemo} from 'react';
 import {Channel, ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {ScopeSelector} from './ScopeSelector';
-import {useGetAttributeByCode} from '../hooks/useGetAttributeByCode';
+import {useGetAttributeByCode, useGetScopes} from '../hooks';
 import {Field, Helper} from 'akeneo-design-system';
 import {LocaleSelector} from './LocaleSelector';
-import {useGetScopes} from '../hooks';
 import {Styled} from './Styled';
 import {AttributeCode} from '../models';
 
