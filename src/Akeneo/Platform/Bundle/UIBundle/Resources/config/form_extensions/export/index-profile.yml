@@ -26,6 +26,12 @@ extensions:
         config:
             title: pim_import_export.entity.export_profile.page_title.index
 
+    pim-export-profile-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-export-profile-index
+        targetZone: helper
+        feature: reset_pim
+
     pim-export-profile-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-export-profile-index

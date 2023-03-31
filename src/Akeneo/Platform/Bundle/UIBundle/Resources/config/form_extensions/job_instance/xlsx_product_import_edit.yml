@@ -17,6 +17,12 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
+    pim-job-instance-xlsx-product-import-edit-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-job-instance-xlsx-product-import-edit
+        targetZone: helper
+        feature: reset_pim
+
     pim-job-instance-xlsx-product-import-edit-breadcrumbs:
         module: pim/job/common/breadcrumb/breadcrumb
         parent: pim-job-instance-xlsx-product-import-edit

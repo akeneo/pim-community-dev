@@ -26,6 +26,12 @@ extensions:
         config:
             title: pim_enrich.entity.group_type.page_title.index
 
+    pim-group-type-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-group-type-index
+        targetZone: helper
+        feature: reset_pim
+
     pim-group-type-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-group-type-index
