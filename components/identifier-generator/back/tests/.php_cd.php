@@ -33,11 +33,12 @@ $rules = [
             'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Akeneo\Pim\Automation\IdentifierGenerator\Application',
-            'Akeneo\Pim\Automation\IdentifierGenerator\API',
             'Akeneo\Pim\Structure\Family\ServiceAPI',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
             'Akeneo\Pim\Structure\Bundle\Query\InternalApi',
+            'Akeneo\Category\ServiceApi',
+            'Akeneo\Pim\Enrichment\Category\API',
 
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',

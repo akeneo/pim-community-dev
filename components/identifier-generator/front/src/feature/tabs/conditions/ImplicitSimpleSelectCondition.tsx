@@ -4,7 +4,7 @@ import {ScopeAndLocaleSelector} from '../../components';
 import React from 'react';
 import {SimpleSelectProperty} from '../../models';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {useGetAttributeByCode} from '../../hooks/useGetAttributeByCode';
+import {useGetAttributeByCode} from '../../hooks';
 
 type Props = {
   simpleSelectProperty: SimpleSelectProperty;

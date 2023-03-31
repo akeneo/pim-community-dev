@@ -1,4 +1,4 @@
-import {CategoryTreeModel} from '@akeneo-pim-community/shared';
+import {CategoryTreeModel} from './CategoryTree';
 
 type CategoryResponse = {
   attr: {
@@ -59,4 +59,5 @@ const parseResponse: (
   };
 };
 
-export {CategoryResponse, parseResponse};
+export {parseResponse};
+export type {CategoryResponse};
