@@ -2,6 +2,12 @@ extensions:
     pim-association-type-edit-form:
         module: pim/form/common/edit-form
 
+    pim-association-type-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-association-type-edit-form
+        targetZone: helper
+        feature: reset_pim
+
     pim-association-type-edit-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-association-type-edit-form

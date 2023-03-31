@@ -2,6 +2,12 @@ extensions:
     pim-channel-edit-form:
         module: pim/form/common/edit-form
 
+    pim-channel-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-channel-edit-form
+        targetZone: helper
+        feature: reset_pim
+
     pim-channel-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-channel-edit-form

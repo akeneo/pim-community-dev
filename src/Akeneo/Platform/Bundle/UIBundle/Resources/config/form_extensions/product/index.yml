@@ -8,6 +8,12 @@ extensions:
             grid_load:start: grid_load:start
             grid_load:complete: grid_load:complete
 
+    pim-product-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-product-index
+        targetZone: helper
+        feature: reset_pim
+
     pim-product-index-grid-container:
         module: pim/common/simple-view
         parent: pim-product-index

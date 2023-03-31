@@ -198,4 +198,54 @@ class VersionNormalizerSpec extends ObjectBehavior
             'pending'     => false,
         ]);
     }
+
+    public function it_normalize_versions_with_numeric_code_as_attribute(
+        $userManager,
+        $userContext,
+        $datetimePresenter,
+        LocaleAwareInterface $localeAware,
+        Version $version,
+        User $steve,
+    ): void
+    {
+        $versionTime = new \DateTime();
+
+        $changeset = [
+            123 => ['old' => '', 'new' => '556'],
+        ];
+
+        $version->getId()->willReturn(12);
+        $version->getResourceId()->willReturn(112);
+        $version->getSnapshot()->willReturn('a nice snapshot');
+        $version->getChangeset()->willReturn($changeset);
+        $version->getContext()->willReturn(['locale' => 'en_US', 'channel' => 'mobile']);
+        $version->getVersion()->willReturn(12);
+        $version->getLoggedAt()->willReturn($versionTime);
+        $localeAware->getLocale()->willReturn('en_US');
+        $datetimePresenter->present($versionTime, Argument::any())->willReturn('01/01/1985 09:41 AM');
+        $version->isPending()->willReturn(false);
+
+        $version->getAuthor()->willReturn('steve');
+        $userManager->findUserByUsername('steve')->willReturn($steve);
+        $steve->getFirstName()->willReturn('Steve');
+        $steve->getLastName()->willReturn('Jobs');
+
+        $normalizedChangeset = [
+            '123' => ['old' => '', 'new' => '556'],
+        ];
+
+        $userContext->getUserTimezone()->willThrow(\RuntimeException::class);
+
+        $this->normalize($version, 'internal_api')->shouldReturn([
+            'id'          => 12,
+            'author'      => 'Steve Jobs',
+            'resource_id' => '112',
+            'snapshot'    => 'a nice snapshot',
+            'changeset'   => $normalizedChangeset,
+            'context'     => ['locale' => 'en_US', 'channel' => 'mobile'],
+            'version'     => 12,
+            'logged_at'   => '01/01/1985 09:41 AM',
+            'pending'     => false,
+        ]);
+    }
 }

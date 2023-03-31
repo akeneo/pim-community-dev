@@ -19,7 +19,7 @@ datagrid:
                 frontend_type: string
             loggedAt:
                 label: Date/Time
-                type: property_date
+                type: datetime_with_user_timezone
                 frontend_type: datetime
             changes:
                 label: Changes
