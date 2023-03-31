@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\Controller;
 
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
+use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -93,6 +94,20 @@ final class UpdateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
     /** @test */
     public function it_should_update_identifier_with_ref_entities(): void
     {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand', []);
+        $this->createRecords('brand', ['Akeneo', 'Other']);
+
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+
         $this->loginAs('Julia');
         $this->insertDefaultIdentifierGenerator();
 
@@ -105,7 +120,7 @@ final class UpdateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
             ],
             [
                 'type' => 'reference_entity',
-                'attributeCode' => 'a_ref_data_simple_select',
+                'attributeCode' => 'a_reference_entity_attribute',
                 'process' => ['type' => 'no'],
             ],
         ];
@@ -121,13 +136,12 @@ final class UpdateIdentifierGeneratorControllerEndToEnd extends ControllerEndToE
             \json_encode($updateGenerator),
         );
         $response = $this->client->getResponse();
-        \var_dump($response->getContent());
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $uuid = $this->getUuidFromCode('my_new_generator');
         Assert::assertSame(
             \sprintf(
-                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"},{"type":"reference_entity","attributeCode":"a_ref_data_simple_select","process":{"type":"no"}}],"labels":{"en_US":"My generator updated","fr_FR":"Mon g\u00e9n\u00e9rateur modifi\u00e9"},"target":"sku","delimiter":"-","text_transformation":"no"}',
+                '{"uuid":"%s","code":"my_new_generator","conditions":[],"structure":[{"type":"free_text","string":"AKN"},{"type":"reference_entity","attributeCode":"a_reference_entity_attribute","process":{"type":"no"}}],"labels":{"en_US":"My generator updated","fr_FR":"Mon g\u00e9n\u00e9rateur modifi\u00e9"},"target":"sku","delimiter":"-","text_transformation":"no"}',
                 $uuid
             ),
             $response->getContent()
