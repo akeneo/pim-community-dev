@@ -24,7 +24,7 @@ const SandboxHelper = () => {
 
   return (
     <DarkBlueHelper level="info" icon={<WhiteInfoIcon />}>
-      {translate('pim_system.sandbox.helper.text')}&nbsp;
+      {translate('pim_system.sandbox.helper.text')}
     </DarkBlueHelper>
   );
 };
