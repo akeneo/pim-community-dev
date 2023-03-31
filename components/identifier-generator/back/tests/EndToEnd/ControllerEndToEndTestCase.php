@@ -6,6 +6,7 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd;
 
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
@@ -164,9 +165,9 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
 
     protected function createReferenceEntity(string $referenceEntityCode, array $labels): void
     {
-        $isRefEntityFFenabled = $this->get('feature_flags')->isEnable('reference_entity');
+        $isRefEntityFFenabled = $this->getFeatureFlag()->isEnabled('reference_entity');
         if (!$isRefEntityFFenabled) {
-            throw new \Exception(\sprintf('Feature flag for Reference Entity should be enabled.'));
+            $this->getFeatureFlag()->enable('reference_entity');
         }
 
         /** @phpstan-ignore-next-line */
@@ -201,6 +202,11 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
         $this->getAttributeSaver()->save($attribute);
 
         return $attribute;
+    }
+
+    private function getFeatureFlag(): FeatureFlags
+    {
+        return $this->get('feature_flags');
     }
 
     private function getAttributeSaver(): AttributeSaver
