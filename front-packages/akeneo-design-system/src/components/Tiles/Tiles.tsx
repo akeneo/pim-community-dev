@@ -8,8 +8,15 @@ type Size = 'small' | 'big';
 
 const TilesContainer = styled.div<{size: Size; inline: boolean} & AkeneoThemedProps>`
   display: grid;
-  ${({size, inline}) =>
-    size === 'small' && !inline
+  ${({size, inline}) => {
+    if (inline) {
+      return css`
+        gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      `;
+    }
+
+    return size === 'small'
       ? css`
           gap: 20px;
           grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -17,7 +24,8 @@ const TilesContainer = styled.div<{size: Size; inline: boolean} & AkeneoThemedPr
       : css`
           gap: 30px;
           grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        `}
+        `;
+  }}
 `;
 
 const TileContainer = styled.div<
@@ -152,7 +160,7 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', inline = f
 const Tiles = React.forwardRef<HTMLDivElement, TilesProps>(
   ({size = 'small', inline = false, children, ...rest}: TilesProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
-      <TilesContainer size={size} ref={forwardedRef} {...rest}>
+      <TilesContainer size={size} inline={inline} ref={forwardedRef} {...rest}>
         {React.Children.map(children, child => {
           if (isValidElement<TileProps>(child) && child.type === Tile) {
             return React.cloneElement(child, {size, inline});
