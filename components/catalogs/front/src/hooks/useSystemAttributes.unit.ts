@@ -224,12 +224,6 @@ test('it does not fetches system attributes if target have a format', () => {
 });
 
 test('it fetches system attributes even if target format is empty', () => {
-    const target: Target = {
-        code: 'release_date',
-        label: 'Release date',
-        type: 'string',
-        format: '',
-    };
     const {result} = renderHook(() => useSystemAttributes({target: null, search: null}), {
         wrapper: ReactQueryWrapper,
     });

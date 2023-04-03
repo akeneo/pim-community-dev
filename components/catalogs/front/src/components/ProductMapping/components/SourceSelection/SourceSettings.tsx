@@ -41,7 +41,7 @@ export const SourceSettings: FC<Props> = ({source, attribute, errors, onChange})
             }
 
             if (
-                (['categories', 'family', 'status'].includes(source.source)) &&
+                ['categories', 'family', 'status'].includes(source.source) &&
                 (undefined === source.parameters?.label_locale || null === source.parameters?.label_locale)
             ) {
                 source = {...source, parameters: {...source.parameters, label_locale: null}};
