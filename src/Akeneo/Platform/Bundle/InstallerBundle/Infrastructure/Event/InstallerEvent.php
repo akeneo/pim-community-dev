@@ -1,14 +1,14 @@
 <?php
 
-namespace Akeneo\Platform\Bundle\InstallerBundle\Event;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Infrastructure\Event;
 
 use Akeneo\Tool\Component\Console\CommandExecutor;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class InstallerEvent extends GenericEvent
 {

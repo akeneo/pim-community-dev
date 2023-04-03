@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Infrastructure\Event\Subscriber;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Command\ZddMigration;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Bundle\InstallerBundle\Infrastructure\Event\InstallerEvents;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Webmozart\Assert\Assert;

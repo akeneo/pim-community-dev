@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Platform\Bundle\InstallerBundle\Exception;
+namespace Akeneo\Platform\Bundle\InstallerBundle\Domain\Exception;
 
 use Throwable;
 

@@ -74,8 +74,8 @@ $rules = [
         'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
 
         // TIP-1539: clean installer events
-        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
-        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
+        'Akeneo\Platform\Bundle\InstallerBundle\Infrastructure\Event\InstallerEvent',
+        'Akeneo\Platform\Bundle\InstallerBundle\Infrastructure\Event\InstallerEvents',
 
         // PLG-692: use email notification from Notification bundle
         'Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifierInterface',
