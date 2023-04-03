@@ -87,7 +87,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
         $this->assertEquals(0, $violations->count());
     }
 
-    private function validCasesProvider(): array
+    public function validCasesProvider(): array
     {
         return [
             'Basic use case' => [
@@ -186,7 +186,7 @@ class ProductMappingRespectsSchemaTest extends IntegrationTestCase
         $this->assertEquals($errorCount, $violations->count());
     }
 
-    private function invalidCasesProvider(): array
+    public function invalidCasesProvider(): array
     {
         return [
             'Targets are missing' => [
