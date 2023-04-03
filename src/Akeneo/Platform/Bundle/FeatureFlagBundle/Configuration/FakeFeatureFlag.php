@@ -15,7 +15,10 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
  */
 final class FakeFeatureFlag implements FeatureFlag
 {
-    private bool $enabled = false;
+    public function __construct(
+        private bool $enabled = false,
+    ) {
+    }
 
     public function enable(): void
     {

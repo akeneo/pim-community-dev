@@ -108,15 +108,6 @@ pim_enrich:
       categories_view: Consult the categories of a product model
       history: View product model history
       remove: Remove a product model (including children)
-    category:
-      list: List categories
-      create: Create a category
-      edit: Edit a category
-      remove: Remove a category
-      move: Move category
-      children: See category children
-      products: See category's products
-      history: View category history
     channel:
       index: List channels
       create: Create a channel
