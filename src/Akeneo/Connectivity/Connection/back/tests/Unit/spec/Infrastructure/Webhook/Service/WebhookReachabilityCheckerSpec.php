@@ -32,7 +32,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         VersionProviderInterface $versionProvider,
     ): void {
-        $this->beConstructedWith($client, $validator, $versionProvider);
+        $this->beConstructedWith($client, $validator, $versionProvider, getenv('PFID'));
     }
 
     public function it_is_initializable(): void
