@@ -31,9 +31,9 @@ class AkeneoFeatureFlagExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
         $registry = $container->getDefinition('akeneo.feature_flag.service.registry');
-        foreach ($config['feature_flags'] as $item) {
-            $reference = new Reference($item['service']);
-            $registry->addMethodCall('add', [$item['feature'], $reference]);
+        foreach ($config['feature_flags'] as $key => $service) {
+            $reference = new Reference($service);
+            $registry->addMethodCall('add', [$key, $reference]);
         }
     }
 }

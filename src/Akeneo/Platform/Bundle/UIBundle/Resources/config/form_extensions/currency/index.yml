@@ -26,6 +26,12 @@ extensions:
         config:
             title: pim_enrich.entity.currency.page_title.index
 
+    pim-currency-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-currency-index
+        targetZone: helper
+        feature: reset_pim
+
     pim-currency-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-currency-index

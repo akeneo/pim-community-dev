@@ -11,6 +11,8 @@ akeneo.category:
             unhandled_attribute_type: Could not find attribute field builder for attribute type "{{ type }}"
         template:
             title: Template
+            no_attribute_title: There is no attribute in this template
+            no_attribute_instructions: The template associated to this category is empty, you can add attributes to this template from the category tree page.
             fetching_failed: An error occurred while fetching template
         unsaved_changes: You will lose changes to the category if you leave the page.
     tree:

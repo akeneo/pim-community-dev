@@ -97,6 +97,11 @@ class BaseCreateOrUpdateIdentifierGenerator
                 'attributeCode' => 'a_multi_select',
                 'value' => ['option_a', 'option_b'],
             ];
+            case 'category': return [
+                'type' => 'category',
+                'operator' => $operator ?? 'IN',
+                'value' => ['tshirts'],
+            ];
         }
 
         throw new \InvalidArgumentException('Unknown type ' . $type . ' for getValidCondition');

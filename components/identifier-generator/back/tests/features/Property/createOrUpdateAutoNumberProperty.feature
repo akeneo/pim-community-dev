@@ -7,7 +7,7 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator with autoNumber missing required field
     When I try to create an identifier generator with autoNumber without required field
     Then I should get an error with message 'structure[0]: "numberMin, digitsMin" fields are required for "auto_number" type'
-    And the identifier should not be created
+    And the identifier generator should not be created
 
   Scenario: Cannot update an identifier generator with autoNumber missing required field
     Given I create an identifier generator
@@ -17,7 +17,7 @@ Feature: Create Identifier Generator
   Scenario Outline: Cannot create an identifier generator with wrong digits
     When I try to create an identifier generator with an auto number with '<minNumber>' as number min and '<minDigits>' as min digits
     Then I should get an error with message '<message>'
-    And the identifier should not be created
+    And the identifier generator should not be created
     Examples:
       | minNumber | minDigits | message                                                                   |
       | -2        | 3         | structure[0][numberMin]: This value should be greater than or equal to 0. |
@@ -37,4 +37,4 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator if structure contains multiple auto number
     When I try to create an identifier generator with multiple auto number in structure
     Then I should get an error with message 'structure: should contain only 1 auto number'
-    And the identifier should not be created
+    And the identifier generator should not be created

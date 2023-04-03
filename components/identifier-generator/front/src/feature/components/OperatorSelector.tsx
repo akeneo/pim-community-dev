@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import {SelectInput} from 'akeneo-design-system';
 import {Operator} from '../models';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -24,6 +24,18 @@ const OperatorSelector: FC<OperatorSelectorProps> = ({
   const translate = useTranslate();
   const identifierGeneratorAclContext = useIdentifierGeneratorAclContext();
 
+  const getLabel = useCallback((operator: Operator) => {
+    switch (operator) {
+      case Operator.NOT_IN_CHILDREN_LIST:
+      case Operator.IN_CHILDREN_LIST:
+      case Operator.UNCLASSIFIED:
+      case Operator.CLASSIFIED:
+        return `pim_identifier_generator.operators.${operator}`;
+      default:
+        return `pim_common.operators.${operator}`;
+    }
+  }, []);
+
   return (
     <Styled.OperatorSelectCondition
       {...rest}
@@ -38,7 +50,7 @@ const OperatorSelector: FC<OperatorSelectorProps> = ({
     >
       {operators.map(operator => (
         <SelectInput.Option key={operator} value={operator}>
-          {translate(`pim_common.operators.${operator}`)}
+          {translate(getLabel(operator))}
         </SelectInput.Option>
       ))}
     </Styled.OperatorSelectCondition>
