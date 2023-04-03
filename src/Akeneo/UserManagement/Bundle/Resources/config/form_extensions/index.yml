@@ -26,6 +26,12 @@ extensions:
         config:
             title: pim_user_management.entity.user.page_title.index
 
+    pim-user-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-user-index
+        targetZone: helper
+        feature: reset_pim
+
     pim-user-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-user-index

@@ -42,7 +42,7 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
     public function it_gets_a_list_of_available_conditions(): void
     {
         $this->assertResponse(
-            ['systemFields' => ['family', 'enabled']],
+            ['systemFields' => ['family', 'enabled', 'categories']],
             [
                 [
                     'id' => 'system',
@@ -55,6 +55,10 @@ final class GetAvailableConditionsControllerEndToEnd extends ControllerEndToEndT
                         [
                             'id' => 'enabled',
                             'text' => 'Status',
+                        ],
+                        [
+                            'id' => 'categories',
+                            'text' => 'Categories',
                         ],
                     ],
                 ],

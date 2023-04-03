@@ -2,6 +2,12 @@ extensions:
     pim-attribute-edit-form:
         module: pim/attribute-edit-form
 
+    pim-attribute-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-attribute-edit-form
+        targetZone: helper
+        feature: reset_pim
+
     pim-attribute-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-attribute-edit-form

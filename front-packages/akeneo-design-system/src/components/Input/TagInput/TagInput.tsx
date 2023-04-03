@@ -1,17 +1,17 @@
-import React, {useState, useRef, ChangeEvent, FC, KeyboardEvent} from 'react';
+import React, {ChangeEvent, FC, KeyboardEvent, useCallback, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontFamily} from '../../../theme';
 import {CloseIcon, LockIcon} from '../../../icons';
 import {arrayUnique, Key, Override} from '../../../shared';
 import {InputProps} from '../common';
 
-const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
+const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps & {$isErrored: boolean}>`
   min-width: 12px;
   width: 12px;
   height: 12px;
-  color: ${getColor('grey', 120)};
   margin-right: 2px;
   cursor: pointer;
+  color: ${({$isErrored}) => ($isErrored ? getColor('red', 100) : getColor('grey', 120))};
 `;
 
 const TagContainer = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
@@ -33,16 +33,19 @@ const TagContainer = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
   }
 `;
 
-const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolean}>`
+const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolean; isErrored: boolean}>`
   list-style-type: none;
   padding: ${({readOnly}) => (readOnly ? '3px 17px 3px 17px' : '3px 17px 3px 4px')};
-  border: 1px ${getColor('grey', 80)} solid;
-  background-color: ${({isSelected}) => (isSelected ? getColor('grey', 40) : getColor('grey', 20))};
+  border: 1px ${({isErrored}) => (isErrored ? getColor('red', 80) : getColor('grey', 80))} solid;
+  background-color: ${({isSelected, isErrored}) =>
+    isErrored ? getColor('red', 20) : isSelected ? getColor('grey', 40) : getColor('grey', 20)};
   display: flex;
   align-items: center;
   height: 30px;
   box-sizing: border-box;
   max-width: 100%;
+  color: ${({readOnly, isErrored}) =>
+    isErrored ? getColor('red', 100) : readOnly ? getColor('grey', 100) : getColor('grey', 140)};
 `;
 
 const TagText = styled.span`
@@ -116,6 +119,16 @@ type TagInputProps = Override<
      * Callback called when the user hits enter on the field.
      */
     onSubmit?: () => void;
+
+    /**
+     * Displays tag labels instead of tags
+     */
+    labels?: {[key: string]: string};
+
+    /**
+     * The selected tags which are invalid
+     **/
+    invalidValue?: string[];
   }
 >;
 
@@ -127,6 +140,8 @@ const TagInput: FC<TagInputProps> = ({
   readOnly,
   onSubmit,
   separators = ['\\s', ',', ';'], // matching spaces, tabs, line breaks, coma and semi-colon
+  labels,
+  invalidValue = [],
   ...inputProps
 }) => {
   const [isLastTagSelected, setLastTagAsSelected] = useState<boolean>(false);
@@ -205,6 +220,13 @@ const TagInput: FC<TagInputProps> = ({
     setLastTagAsSelected(!isLastTagSelected);
   };
 
+  const getLabel: (tag: string) => string = useCallback(
+    tag => {
+      return 'undefined' === typeof labels ? tag : labels[tag] ?? `[${tag}]`;
+    },
+    [labels]
+  );
+
   return (
     <TagContainer
       data-testid="tagInputContainer"
@@ -216,13 +238,20 @@ const TagInput: FC<TagInputProps> = ({
       {value.map((tag, index) => {
         return (
           <Tag
-            key={`${tag.toLowerCase()}-${index}`}
+            key={`${tag}-${index}`}
             data-testid="tag"
             isSelected={index === value.length - 1 && isLastTagSelected}
             readOnly={readOnly}
+            isErrored={invalidValue.includes(tag)}
           >
-            {!readOnly && <RemoveTagIcon onClick={() => removeTag(index)} data-testid={`remove-${index}`} />}
-            <TagText>{tag}</TagText>
+            {!readOnly && (
+              <RemoveTagIcon
+                onClick={() => removeTag(index)}
+                data-testid={`remove-${index}`}
+                $isErrored={invalidValue.includes(tag)}
+              />
+            )}
+            <TagText>{getLabel(tag)}</TagText>
           </Tag>
         );
       })}

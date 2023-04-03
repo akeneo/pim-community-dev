@@ -4,6 +4,7 @@ import {Violation} from './Violation';
 import {validateEnabled} from './validateEnabled';
 import {validateFamily} from './validateFamily';
 import {validateSimpleOrMultiSelect} from './validateSimpleOrMultiSelect';
+import {validateCategories} from './validateCategories';
 
 const validateConditions: Validator<Conditions | undefined> = (conditions, path) => {
   const violations: Violation[] = [];
@@ -25,6 +26,9 @@ const validateConditions: Validator<Conditions | undefined> = (conditions, path)
         break;
       case CONDITION_NAMES.FAMILY:
         violations.push(...validateFamily(condition, subPath));
+        break;
+      case CONDITION_NAMES.CATEGORIES:
+        violations.push(...validateCategories(condition, subPath));
         break;
       case CONDITION_NAMES.SIMPLE_SELECT:
       case CONDITION_NAMES.MULTI_SELECT:

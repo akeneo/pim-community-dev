@@ -56,6 +56,9 @@ const TreeLine = styled.div<{$selected: boolean} & AkeneoThemedProps>`
   line-height: 40px;
   overflow: hidden;
   width: 100%;
+  display: inline-flex;
+  align-items: center;
+  padding-right: 20px;
   ${({$selected}) =>
     $selected &&
     css`
