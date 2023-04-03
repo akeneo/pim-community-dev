@@ -60,7 +60,7 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
             'Content-Type' => 'application/json',
             RequestHeaders::HEADER_REQUEST_SIGNATURE => $signature,
             RequestHeaders::HEADER_REQUEST_TIMESTAMP => $timestamp,
-            RequestHeaders::HEADER_REQUEST_USERAGENT => 'AkeneoPIM/' . $this->versionProvider->getPatch(),
+            RequestHeaders::HEADER_REQUEST_USERAGENT => 'AkeneoPIM/' . $this->versionProvider->getVersion(),
         ];
 
         try {

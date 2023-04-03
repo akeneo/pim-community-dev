@@ -40,8 +40,10 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         $this->shouldHaveType(UrlReachabilityCheckerInterface::class);
     }
 
-    public function it_checks_url_is_good_and_reachable($client, $validator): void
+    public function it_checks_url_is_good_and_reachable($client, $validator, $versionProvider,): void
     {
+        $versionProvider->getVersion()->willReturn('v20210526040645');
+
         $validUrl = 'http://172.17.0.1:8000/webhook';
         $secret = '1234';
 
@@ -110,8 +112,10 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         );
     }
 
-    public function it_checks_url_is_good_and_reachable_but_have_301_redirect_response($client, $validator): void
+    public function it_checks_url_is_good_and_reachable_but_have_301_redirect_response($client, $validator, $versionProvider): void
     {
+        $versionProvider->getVersion()->willReturn('v20210526040645');
+
         $validUrl = 'http://172.17.0.1:8000/webhook';
         $secret = '1234';
 
@@ -134,8 +138,10 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         );
     }
 
-    public function it_checks_url_is_not_reachable_and_has_response($client, $validator): void
+    public function it_checks_url_is_not_reachable_and_has_response($client, $validator, $versionProvider): void
     {
+        $versionProvider->getVersion()->willReturn('v20210526040645');
+
         $validUrl = 'http://172.17.0.1:8000/webhook';
         $secret = '1234';
 
@@ -162,8 +168,10 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         );
     }
 
-    public function it_checks_url_is_not_reachable_and_has_no_response($client, $validator): void
+    public function it_checks_url_is_not_reachable_and_has_no_response($client, $validator, $versionProvider): void
     {
+        $versionProvider->getVersion()->willReturn('v20210526040645');
+
         $validUrl = 'http://172.17.0.1:8000/webhook';
         $secret = '1234';
         $request = new Request($this->getWrappedObject()::POST, $validUrl, []);
@@ -188,8 +196,10 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         );
     }
 
-    public function it_checks_url_is_not_reachable_and_no_request_exception_has_been_raised($client, $validator): void
+    public function it_checks_url_is_not_reachable_and_no_request_exception_has_been_raised($client, $validator, $versionProvider): void
     {
+        $versionProvider->getVersion()->willReturn('v20210526040645');
+
         $validUrl = 'http://172.17.0.1:8000/webhook';
         $secret = '1234';
         $transferException = new TransferException('TransferException message');
