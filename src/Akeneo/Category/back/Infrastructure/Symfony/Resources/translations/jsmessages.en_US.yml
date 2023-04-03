@@ -64,7 +64,7 @@ akeneo.category:
             confirmation_modal:
                 title: Delete this category attribute
                 message: Are you sure you want to delete the category attribute named {{ attribute }}?
-                helper: Deleting this category attribute will delete the value of the {{ number }} categories associated.
+                helper: Deleting this attribute will permanently delete the attribute and values of the associated categories.
             notification_success:
                 title: {{ attribute }} attribute deleted
 

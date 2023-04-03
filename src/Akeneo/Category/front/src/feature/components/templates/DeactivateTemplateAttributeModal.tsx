@@ -1,6 +1,7 @@
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {DeleteIllustration, Helper, Modal} from "akeneo-design-system";
+import {Button, DeleteIllustration, Helper, Modal} from "akeneo-design-system";
 import styled from "styled-components";
+import {useDeactivateTemplateAttribute} from "../../hooks/useDeactivateTemplateAttribute";
 
 type Props = {
     templateUuid: string;
@@ -8,9 +9,10 @@ type Props = {
     onClose: () => void;
 };
 
-export const DeleteTemplateAttributeModal = ({templateUuid, attribute, onClose}: Props) =>
+export const DeactivateTemplateAttributeModal = ({templateUuid, attribute, onClose}: Props) =>
 {
     const translate = useTranslate();
+    const handleDeactivateTemplateAttribute = () => useDeactivateTemplateAttribute(templateUuid, attribute);
 
     return (
         <Modal illustration={<DeleteIllustration />} closeTitle={translate('pim_common.close')} onClose={onClose}>
@@ -26,6 +28,14 @@ export const DeleteTemplateAttributeModal = ({templateUuid, attribute, onClose}:
             <Helper level="error">
                 {translate('akeneo.category.template.delete_attribute.confirmation_modal.helper')}
             </Helper>
+            <Modal.BottomButtons>
+                <Button level="tertiary" onClick={onClose}>
+                    {translate('pim_common.cancel')}
+                </Button>
+                <Button level="danger" onClick={handleDeactivateTemplateAttribute}>
+                    {translate('pim_common.delete')}
+                </Button>
+            </Modal.BottomButtons>
         </Modal>
     );
 }
