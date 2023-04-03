@@ -98,3 +98,27 @@ The component is displayed in a configurable responsive grid (width and gap). Ti
     }}
   </Story>
 </Canvas>
+
+## Inline variation
+
+<Canvas>
+    <Story name="inline">
+        {args => {
+              return (
+                <>
+                  <Tiles inline={true}>
+                    <Tile>
+                      Inline tile
+                    </Tile>
+                    <Tile>
+                      Inline tile
+                    </Tile>
+                    <Tile>
+                      Inline tile
+                    </Tile>
+                  </Tiles>
+                </>
+              );
+            }}
+    </Story>
+</Canvas>
