@@ -26,6 +26,12 @@ extensions:
         config:
             title: pim_user_management.entity.role.page_title.index
 
+    pim-user-role-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-user-role-index
+        targetZone: helper
+        feature: reset_pim
+
     pim-user-role-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-user-role-index

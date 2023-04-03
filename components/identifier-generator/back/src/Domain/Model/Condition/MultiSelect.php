@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Webmozart\Assert\Assert;
 
 /**
@@ -100,18 +99,34 @@ final class MultiSelect implements ConditionInterface
         ], fn (mixed $var): bool => null !== $var);
     }
 
-    public function match(ProductProjection $productProjection): bool
+    public function attributeCode(): string
     {
-        $value = $productProjection->value($this->attributeCode, $this->locale, $this->scope);
-        if (null !== $value && !\is_array($value)) {
-            return false;
-        }
+        return $this->attributeCode;
+    }
 
-        return match ($this->operator) {
-            'IN' => null !== $value && [] !== \array_intersect((array) $value, (array) $this->value),
-            'NOT IN' => null !== $value && [] === \array_intersect((array) $value, (array) $this->value),
-            'EMPTY' => null === $value,
-            'NOT EMPTY' => null !== $value
-        };
+    public function locale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function scope(): ?string
+    {
+        return $this->scope;
+    }
+
+    /**
+     * @return MultiSelectOperator
+     */
+    public function operator(): string
+    {
+        return $this->operator;
+    }
+
+    /**
+     * @return string[]|null
+     */
+    public function value(): ?array
+    {
+        return $this->value;
     }
 }

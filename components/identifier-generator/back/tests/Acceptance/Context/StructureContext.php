@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
@@ -13,7 +15,9 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Family\ServiceAPI\Query\FindFamilyCodes;
+use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
 use Behat\Behat\Context\Context;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -26,6 +30,7 @@ final class StructureContext implements Context
         private readonly AttributeOptionRepositoryInterface $attributeOptionRepository,
         private readonly FindFamilyCodes $findFamilyCodes,
         private readonly ChannelRepositoryInterface $channelRepository,
+        private readonly CategoryRepositoryInterface $categoryRepository,
     ) {
     }
 
@@ -85,5 +90,18 @@ final class StructureContext implements Context
         $channel->setLocales($locales);
 
         $this->channelRepository->save($channel);
+    }
+
+    /**
+     * @Given /^the (?P<categoryCodes>(('.*')(, | and )?)+) categories$/
+     */
+    public function theCategories(string $categoryCodes): void
+    {
+        Assert::isInstanceOf($this->categoryRepository, InMemoryCategoryRepository::class);
+        foreach (CodesSplitter::split($categoryCodes) as $categoryCode) {
+            $category = new Category();
+            $category->setCode($categoryCode);
+            $this->categoryRepository->save($category);
+        }
     }
 }

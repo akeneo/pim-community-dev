@@ -22,12 +22,7 @@ class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 ->arrayNode('feature_flags')
-                    ->arrayPrototype()
-                        ->children()
-                            ->scalarNode('feature')->isRequired()->cannotBeEmpty()->end()
-                            ->scalarNode('service')->isRequired()->cannotBeEmpty()->end()
-                        ->end()
-                    ->end()
+                    ->scalarPrototype()->end()
                 ->end()
             ->end()
         ;

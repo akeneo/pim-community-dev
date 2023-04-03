@@ -1,9 +1,17 @@
 import React from 'react';
 import {fireEvent, mockResponse, render, screen} from '../../tests/test-utils';
 import {SelectionTab} from '../SelectionTab';
-import {CONDITION_NAMES, IdentifierGenerator, Operator, SimpleOrMultiSelectCondition} from '../../models';
+import {
+  CONDITION_NAMES,
+  IdentifierGenerator,
+  Operator,
+  SimpleOrMultiSelectCondition,
+  TEXT_TRANSFORMATION,
+} from '../../models';
+import {CategoriesCondition} from '../../models/conditions/categoriesCondition';
 
 jest.mock('../conditions/AddConditionButton');
+jest.mock('../conditions/CategoriesLine');
 jest.mock('../conditions/EnabledLine');
 jest.mock('../conditions/SimpleOrMultiSelectLine');
 jest.mock('../../pages/SimpleDeleteModal');
@@ -15,6 +23,7 @@ const mockedGenerator: IdentifierGenerator = {
   code: 'identifier-generator',
   delimiter: null,
   labels: {},
+  text_transformation: TEXT_TRANSFORMATION.NO,
 };
 
 describe('SelectionTab', () => {
@@ -197,6 +206,24 @@ describe('SelectionTab', () => {
     const screen = render(<SelectionTab generator={generator} onChange={jest.fn()} validationErrors={[]} />);
 
     expect(await screen.findByText('SimpleOrMultiSelectLineMock')).toBeInTheDocument();
+  });
+
+  it('should display categories line', async () => {
+    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
+      json: [{code: 'sku', label: 'Sku'}],
+    });
+    const conditions = [
+      {
+        type: CONDITION_NAMES.CATEGORIES,
+        value: [],
+        operator: Operator.IN,
+      } as CategoriesCondition,
+    ];
+    const generator: IdentifierGenerator = {...mockedGenerator, conditions};
+
+    const screen = render(<SelectionTab generator={generator} onChange={jest.fn()} validationErrors={[]} />);
+
+    expect(await screen.findByText('CategoriesLineMock')).toBeInTheDocument();
   });
 
   it('should display errors', () => {

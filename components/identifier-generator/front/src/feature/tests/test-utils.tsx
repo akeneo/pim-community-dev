@@ -20,7 +20,9 @@ const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
 
   return (
     <ThemeProvider theme={pimTheme}>
-      <DependenciesContext.Provider value={{translate: k => k, security: {isGranted: () => true}}}>
+      <DependenciesContext.Provider
+        value={{translate: k => k, security: {isGranted: () => true}, featureFlags: {isEnabled: () => true}}}
+      >
         <QueryClientProvider client={queryClient}>
           <IdentifierGeneratorContextProvider>
             <IdentifierGeneratorAclContextProvider>{children}</IdentifierGeneratorAclContextProvider>
@@ -48,7 +50,7 @@ const mockResponse: (
     (console.error as jest.Mock).mockImplementation(() => null);
   }
   const fetchImplementation = jest.fn().mockImplementation((requestUrl: string, args: {method: string}) => {
-    if (requestUrl === url && args.method === method) {
+    if (requestUrl === url && (args?.method || 'GET') === method) {
       return Promise.resolve({
         ok: response.ok ?? true,
         json: () => Promise.resolve(response.json || {}),
@@ -57,7 +59,7 @@ const mockResponse: (
       } as Response);
     }
 
-    throw new Error(`Unmocked url "${requestUrl}" [${args.method}]`);
+    throw new Error(`Unmocked url "${requestUrl}" [${args?.method || 'GET'}]`);
   });
   jest.spyOn(global, 'fetch').mockImplementation(fetchImplementation);
 

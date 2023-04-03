@@ -8,7 +8,7 @@ Feature: Create Identifier Generator
   Scenario Outline: Cannot create an identifier generator with a wrong configuration
     When I try to create an identifier generator with a family process with type <type> and operator <operator> and <value> as value
     Then I should get an error with message '<message>'
-    And the identifier should not be created
+    And the identifier generator should not be created
     Examples:
     | type         | operator  | value       | message                                                                                                         |
     | unknown      | undefined | "undefined" | structure[0][process][type]: Type "unknown" can only be one of the following: "no", "truncate", "nomenclature". |
@@ -59,7 +59,7 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator with family property without required field
     When I try to create an identifier generator with family property without required field
     Then I should get an error with message 'structure[0]: "process" field is required for "family" type'
-    And the identifier should not be created
+    And the identifier generator should not be created
 
   Scenario: Cannot update an identifier generator with family property without required field
     Given I create an identifier generator
@@ -69,7 +69,7 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator with invalid family property
     When I try to create an identifier generator with invalid family property
     Then I should get an error with message 'structure[0][unknown]: This field was not expected.'
-    And the identifier should not be created
+    And the identifier generator should not be created
 
   Scenario: Cannot update an identifier generator with invalid family property
     Given I create an identifier generator
@@ -79,7 +79,7 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator with empty family property
     When I try to create an identifier generator with empty family process property
     Then I should get an error with message 'structure[0][process][type]: This field is missing.'
-    And the identifier should not be created
+    And the identifier generator should not be created
 
   Scenario: Cannot update an identifier generator with empty family property
     Given I create an identifier generator
@@ -89,7 +89,7 @@ Feature: Create Identifier Generator
   Scenario: Cannot create an identifier generator with a family containing invalid truncate process
     When I try to create an identifier generator with a family containing invalid truncate process
     Then I should get an error with message 'structure[0][process][unknown]: This field was not expected.'
-    And the identifier should not be created
+    And the identifier generator should not be created
 
   Scenario: Cannot update an identifier generator with a family containing invalid truncate process
     Given I create an identifier generator

@@ -41,6 +41,7 @@ const useGetConditionItems: (
   const filteredItems = [
     {id: 'family', text: 'Family'},
     {id: 'enabled', text: 'Enabled'},
+    {id: 'categories', text: 'Categories'},
   ].filter(item => !conditionIds.includes(item.id));
 
   return {

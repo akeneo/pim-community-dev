@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use Webmozart\Assert\Assert;
 
 /**
@@ -69,14 +68,16 @@ final class Family implements ConditionInterface
         ]);
     }
 
-    public function match(ProductProjection $productProjection): bool
+    public function operator(): string
     {
-        return match ($this->operator) {
-            'IN' => \in_array($productProjection->familyCode(), (array) $this->value),
-            'NOT IN' => null !== $productProjection->familyCode()
-                && !\in_array($productProjection->familyCode(), (array) $this->value),
-            'EMPTY' => null === $productProjection->familyCode(),
-            default => null !== $productProjection->familyCode(),
-        };
+        return $this->operator;
+    }
+
+    /**
+     * @return string[]|null
+     */
+    public function value(): ?array
+    {
+        return $this->value;
     }
 }

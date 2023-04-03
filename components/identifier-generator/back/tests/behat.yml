@@ -15,6 +15,7 @@ default:
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\BaseCreateOrUpdateConditionContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\EnabledConditionContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\FamilyConditionContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\CategoryConditionContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\CreateIdentifierGeneratorContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateIdentifierGeneratorContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\UpdateFamilyNomenclatureContext

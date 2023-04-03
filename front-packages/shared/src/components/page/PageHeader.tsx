@@ -11,6 +11,7 @@ import {
   UserActions,
   Content,
 } from './header';
+import {SandboxHelper} from './SandboxHelper';
 
 const Header = styled.header`
   position: sticky;
@@ -127,27 +128,30 @@ const PageHeader: PageHeaderInterface = ({children, showPlaceholder}) => {
   );
 
   return (
-    <Header>
-      <LineContainer>
-        {illustration}
-        <MainContainer>
-          <div>
-            <LineContainer>
-              {breadcrumb}
-              <ActionsContainer>
-                {userActions}
-                {actions}
-              </ActionsContainer>
-            </LineContainer>
-            <LineContainer>
-              {title}
-              {state}
-            </LineContainer>
-            {content}
-          </div>
-        </MainContainer>
-      </LineContainer>
-    </Header>
+    <>
+      <SandboxHelper />
+      <Header>
+        <LineContainer>
+          {illustration}
+          <MainContainer>
+            <div>
+              <LineContainer>
+                {breadcrumb}
+                <ActionsContainer>
+                  {userActions}
+                  {actions}
+                </ActionsContainer>
+              </LineContainer>
+              <LineContainer>
+                {title}
+                {state}
+              </LineContainer>
+              {content}
+            </div>
+          </MainContainer>
+        </LineContainer>
+      </Header>
+    </>
   );
 };
 
