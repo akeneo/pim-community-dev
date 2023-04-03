@@ -40,7 +40,7 @@ class UpdateConnectedAppMonitoringSettingsActionSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_not_found_exception_with_feature_flag_disabled(
+    public function it_throws_not_found_exception_with_feature_flag_disabled_test(
         FeatureFlag $featureFlag,
         Request $request,
     ): void {
