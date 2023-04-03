@@ -18,21 +18,13 @@ class SystemAttributeStatusSourceTest extends AbstractAttributeSourceTest
     protected function setUp(): void
     {
         parent::setUp();
-        $this->createAttribute([
-            'code' => 'status',
-            'type' => 'status',
-            'scopable' => false,
-            'localizable' => false,
-            'attribute_group_code' => 'system',
-            'attribute_group_label' => 'System',
-        ]);
         $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     public function testItReturnsNoViolation(): void
     {
         $source = [
-            'source' => 'status',
+            'source' => 'is_enabled',
             'scope' => null,
             'locale' => null,
         ];

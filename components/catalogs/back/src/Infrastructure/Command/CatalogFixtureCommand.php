@@ -175,11 +175,6 @@ class CatalogFixtureCommand extends Command
                     'scope' => null,
                     'locale' => null,
                 ],
-                'enabled' => [
-                    'source' => null,
-                    'scope' => null,
-                    'locale' => null,
-                ],
             ];
 
             /** @var object $productMappingSchema */
@@ -298,10 +293,6 @@ class CatalogFixtureCommand extends Command
                 "type": "string"
               },
               "title": "Categories"
-            },
-            "enabled": {
-              "type": "boolean",
-              "title": "Is enabled"
             }
           },
           "required": ["name", "size"]
