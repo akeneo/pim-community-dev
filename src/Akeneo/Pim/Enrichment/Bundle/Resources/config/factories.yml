@@ -116,6 +116,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentChannelLocaleValuesFilter'
         arguments:
             - '@pim_channel.query.cache.channel_exists_with_locale'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+            - '@pim_channel.query.cache.channel_exists_with_locale'
             - '@akeneo.pim.structure.query.get_attributes'
 
     akeneo.pim.enrichment.factory.empty_values_cleaner:

@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.11 (2023-03-21)
+
 # 7.0.10 (2023-02-28)
 
 - RAB-1356: [Backport PIM-10840]: Fix attribute update date on attribute options change above 10000 options
