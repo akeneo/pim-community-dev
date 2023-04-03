@@ -1,6 +1,6 @@
 import React, {FC, useCallback, useState} from 'react';
 import styled from 'styled-components';
-import {LightIcon, SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
+import {SectionTitle, SwitcherButton, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {TargetPlaceholder} from './components/TargetPlaceholder';
 import {ProductMapping as ProductMappingType} from './models/ProductMapping';
@@ -12,7 +12,6 @@ import {Source} from './models/Source';
 import {Target} from './models/Target';
 import {sourceHasError} from './utils/sourceHasError';
 import {createTargetFromProductMappingSchema} from './utils/createTargetFromProductMappingSchema';
-import {SourceParameter} from './models/SourceParameter';
 import {Button} from 'akeneo-design-system/lib/components/Button/Button';
 import {AutoFill} from './components/AutoFill';
 
@@ -89,13 +88,8 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
             <TargetContainer>
                 <SectionTitle>
                     <SectionTitle.Title>{translate('akeneo_catalogs.product_mapping.target.title')}</SectionTitle.Title>
-                    <Button
-                        active
-                        ghost
-                        level="secondary"
-                        onClick={openAutoFillModal}
-                    >
-                        Auto-fill <LightIcon />
+                    <Button active ghost level='secondary' onClick={openAutoFillModal}>
+                        Auto-fill
                     </Button>
                     <SectionTitle.Spacer />
                     <SwitcherButton label={translate('akeneo_catalogs.product_mapping.target.filter.label')}>
@@ -144,10 +138,9 @@ export const ProductMapping: FC<Props> = ({productMapping, productMappingSchema,
                     errors={selectedTarget === null ? null : errors[selectedTarget?.code]}
                 />
             </SourceContainer>
-            {showAutoFillModal &&
-                <AutoFill
-                    closeModal={hideAutoFillModal}
-                />}
+            {showAutoFillModal && (
+                <AutoFill closeModal={hideAutoFillModal} productMapping={productMapping} onChange={onChange} />
+            )}
         </MappingContainer>
     );
 };
