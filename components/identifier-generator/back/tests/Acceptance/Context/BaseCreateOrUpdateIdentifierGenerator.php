@@ -91,6 +91,12 @@ class BaseCreateOrUpdateIdentifierGenerator
                 'attributeCode' => 'color',
                 'value' => ['green'],
             ];
+            case 'reference_entity': return [
+                'type' => 'reference_entity',
+                'operator' => 'NOT IN',
+                'attributeCode' => 'brand',
+                'value' => ['akeneo'],
+            ];
             case 'multi_select': return [
                 'type' => 'multi_select',
                 'operator' => $operator ?? 'IN',
