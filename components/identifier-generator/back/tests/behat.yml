@@ -12,6 +12,7 @@ default:
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FreeTextPropertyContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\FamilyPropertyContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\SimpleSelectPropertyContext
+                - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Property\ReferenceEntityPropertyContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\BaseCreateOrUpdateConditionContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\EnabledConditionContext
                 - Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context\Condition\FamilyConditionContext
