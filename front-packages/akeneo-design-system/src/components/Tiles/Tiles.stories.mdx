@@ -17,8 +17,9 @@ import {useTabBar} from "../../hooks/useTabBar";
   component={Tiles}
   argTypes={{
     size: {control: {type: 'select'}, options: ['small', 'big']},
+    inline: {control: {type: 'select'}, options: [true, false]},
   }}
-  args={{size: 'small'}}
+  args={{size: 'small', inline: false}}
 />
 
 # Tiles
@@ -108,13 +109,13 @@ The component is displayed in a configurable responsive grid (width and gap). Ti
                 <>
                   <Tiles inline={true}>
                     <Tile>
-                      Inline tile
+                      Users
                     </Tile>
                     <Tile>
-                      Inline tile
+                      User Groups
                     </Tile>
                     <Tile>
-                      Inline tile
+                      Roles
                     </Tile>
                   </Tiles>
                 </>
