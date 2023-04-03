@@ -56,6 +56,7 @@ const DefaultProviders: FC = ({children}) => {
             <DependenciesContext.Provider
                 value={{
                     translate: (id: string) => id,
+                    featureFlags: {isEnabled: (_feature: string) => true},
                 }}
             >
                 <ThemeProvider theme={theme}>

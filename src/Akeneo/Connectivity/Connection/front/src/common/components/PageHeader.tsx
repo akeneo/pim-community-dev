@@ -1,5 +1,6 @@
 import React, {PropsWithChildren, ReactElement, ReactNode, Fragment, cloneElement} from 'react';
 import styled from 'styled-components';
+import {SandboxHelper} from '@akeneo-pim-community/shared';
 
 type Props = PropsWithChildren<{
     breadcrumb?: ReactElement;
@@ -62,42 +63,45 @@ export const PageHeader = ({
     tag,
     contextContainer,
 }: Props) => (
-    <Header>
-        <div className='AknTitleContainer-line'>
-            {imageSrc && (
-                <div className='AknTitleContainer-imageContainer AknImage--readOnly'>
-                    <img className='AknImage-display' src={imageSrc} />
-                </div>
-            )}
+    <>
+        <SandboxHelper />
+        <Header>
+            <div className='AknTitleContainer-line'>
+                {imageSrc && (
+                    <div className='AknTitleContainer-imageContainer AknImage--readOnly'>
+                        <img className='AknImage-display' src={imageSrc} />
+                    </div>
+                )}
 
-            {imageSrc === undefined && imageIllustration && (
-                <IllustrationContainer>
-                    {cloneElement(imageIllustration, {width: 142, height: 142})}
-                </IllustrationContainer>
-            )}
-            <div className='AknTitleContainer-mainContainer'>
-                <div>
-                    <div className='AknTitleContainer-line'>
-                        <AknTitleContainerBreadcrumbs>{breadcrumb}</AknTitleContainerBreadcrumbs>
-                        <div className='AknTitleContainer-buttonsContainer'>
-                            {tag}
-                            {userButtons}
-                            {buttons && (
-                                <ButtonCollection>
-                                    {buttons.map((button, index) => (
-                                        <Fragment key={index}>{button}</Fragment>
-                                    ))}
-                                </ButtonCollection>
-                            )}
+                {imageSrc === undefined && imageIllustration && (
+                    <IllustrationContainer>
+                        {cloneElement(imageIllustration, {width: 142, height: 142})}
+                    </IllustrationContainer>
+                )}
+                <div className='AknTitleContainer-mainContainer'>
+                    <div>
+                        <div className='AknTitleContainer-line'>
+                            <AknTitleContainerBreadcrumbs>{breadcrumb}</AknTitleContainerBreadcrumbs>
+                            <div className='AknTitleContainer-buttonsContainer'>
+                                {tag}
+                                {userButtons}
+                                {buttons && (
+                                    <ButtonCollection>
+                                        {buttons.map((button, index) => (
+                                            <Fragment key={index}>{button}</Fragment>
+                                        ))}
+                                    </ButtonCollection>
+                                )}
+                            </div>
                         </div>
+                        <div className='AknTitleContainer-line'>
+                            <div className='AknTitleContainer-title'>{title}</div>
+                            <div className='AknTitleContainer-state'>{state}</div>
+                        </div>
+                        {contextContainer}
                     </div>
-                    <div className='AknTitleContainer-line'>
-                        <div className='AknTitleContainer-title'>{title}</div>
-                        <div className='AknTitleContainer-state'>{state}</div>
-                    </div>
-                    {contextContainer}
                 </div>
             </div>
-        </div>
-    </Header>
+        </Header>
+    </>
 );

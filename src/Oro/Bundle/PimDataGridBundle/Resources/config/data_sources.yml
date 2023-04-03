@@ -67,14 +67,6 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_group }
 
-    pim_datagrid.datasource.locale:
-        class: '%pim_datagrid.datasource.repository.class%'
-        arguments:
-            - '@pim_enrich.repository.locale'
-            - '@pim_datagrid.datasource.result_record.hydrator.default'
-        tags:
-            - { name: oro_datagrid.datasource, type: pim_datasource_locale }
-
     pim_datagrid.datasource.channel:
         class: '%pim_datagrid.datasource.repository.class%'
         arguments:

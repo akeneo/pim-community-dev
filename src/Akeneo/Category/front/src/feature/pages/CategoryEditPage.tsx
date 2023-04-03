@@ -36,6 +36,8 @@ import {
   EditPropertiesForm,
   TemplateTitle,
 } from '../components';
+import {NoTemplateAttribute} from "../components/templates";
+
 
 type Params = {
   categoryId: string;
@@ -183,6 +185,10 @@ const CategoryEditPage: FC = () => {
       />
     );
   }
+  const templateHasAttribute = () =>
+  {
+    return template?.attributes.length != 0;
+  }
 
   return (
     <>
@@ -290,14 +296,25 @@ const CategoryEditPage: FC = () => {
         {isGranted('pim_enrich_product_category_edit_attributes') &&
           isCurrent(Tabs.ATTRIBUTE) &&
           category &&
-          template && (
-            <EditAttributesForm
-              attributeValues={category.attributes}
-              template={template}
-              onAttributeValueChange={onChangeAttribute}
-              onLocaleChange={handleLocaleChanges}
-            />
+          template && !templateHasAttribute() &&
+            (
+                <NoTemplateAttribute
+                    title={translate('akeneo.category.edition_form.template.no_attribute_title')}
+                    instructions={translate('akeneo.category.edition_form.template.no_attribute_instructions')}
+                />
           )}
+        {isGranted('pim_enrich_product_category_edit_attributes') &&
+            isCurrent(Tabs.ATTRIBUTE) &&
+            category &&
+            template && templateHasAttribute() &&
+            (
+                <EditAttributesForm
+                    attributeValues={category.attributes}
+                    template={template}
+                    onAttributeValueChange={onChangeAttribute}
+                    onLocaleChange={handleLocaleChanges}
+                />
+            )}
         {isCurrent(Tabs.PROPERTY) && category && (
           <EditPropertiesForm category={category} onChangeLabel={onChangeCategoryLabel} />
         )}
