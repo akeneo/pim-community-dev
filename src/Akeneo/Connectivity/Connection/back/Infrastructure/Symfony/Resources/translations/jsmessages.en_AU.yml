@@ -15,9 +15,7 @@ pim_menu:
     connection_webhook_event_logs: Event logs
     data_flows: Data flows
     connect_connection_settings: Connection settings
-    marketplace: Marketplace
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: Marketplace
   akeneo_connectivity_connection_settings_index: Connections settings
   akeneo_connectivity_connection_settings_edit: Connection settings
   akeneo_connectivity_connection_settings_any: Connection settings
@@ -33,8 +31,8 @@ akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Want to connect your PIM with another application? 🤟
-      sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
-      link: Access the marketplace
+      search:
+        total: '{0} No results|{1} 1 result|[2,Inf] {{ total }} results'
       test_apps:
         modal:
           credentials:
