@@ -58,6 +58,7 @@ services:
             - '@akeneo_connectivity.connection.webhook.guzzle_client'
             - '@validator'
             - '@pim_catalog.version_provider'
+            - '%env(PFID)%'
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\GenerateSecret: ~
 
