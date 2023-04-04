@@ -13,6 +13,7 @@ use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductQueryIn
 use Akeneo\Catalogs\Application\Persistence\Catalog\Product\GetRawProductsQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Category\GetProductCategoriesLabelsQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\ProductMappingSchema\GetProductMappingSchemaQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\WarmupableQueryInterface;
 use Akeneo\Catalogs\Application\Service\DispatchInvalidCatalogDisabledEventInterface;
 use Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface;
 use Akeneo\Catalogs\Domain\Catalog;
@@ -99,9 +100,8 @@ final class GetMappedProductsHandler
      */
     private function warmupProductCategoryCache(array $productMapping, array $productUuids): void
     {
-        if (
-            !\method_exists($this->getProductCategoriesLabelsQuery, 'warmup') ||
-            0 === \count($productUuids)
+        if (!$this->getProductCategoriesLabelsQuery instanceof WarmupableQueryInterface
+            || [] === $productUuids
         ) {
             return;
         }
@@ -117,13 +117,13 @@ final class GetMappedProductsHandler
             }
         }
 
-        if (0 === \count($categoryLocales)) {
+        if ([] === $categoryLocales) {
             return;
         }
 
-        $this->getProductCategoriesLabelsQuery->warmup(
-            \array_map(static fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
-            $categoryLocales,
-        );
+        $this->getProductCategoriesLabelsQuery->warmup([
+            'productUuids' => \array_map(static fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids),
+            'locales' => $categoryLocales,
+        ]);
     }
 }
