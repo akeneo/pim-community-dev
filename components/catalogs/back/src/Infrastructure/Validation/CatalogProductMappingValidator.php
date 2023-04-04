@@ -18,6 +18,7 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\Att
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\AttributeTextSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\SystemAttributeCategoriesSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\SystemAttributeFamilySource;
+use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource\SystemAttributeStatusSource;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\SystemSource\UuidSource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -116,6 +117,7 @@ final class CatalogProductMappingValidator extends ConstraintValidator
         return match ($source) {
             'categories' => new SystemAttributeCategoriesSource(),
             'family' => new SystemAttributeFamilySource(),
+            'status' => new SystemAttributeStatusSource(),
             default => match ($this->getSourceAttributeType($source)) {
                 'pim_catalog_boolean' => new AttributeBooleanSource(),
                 'pim_catalog_date' => new AttributeDateSource(),

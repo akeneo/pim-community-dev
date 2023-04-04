@@ -178,3 +178,5 @@ akeneo_catalogs:
                     label: Categories
                 family:
                     label: Family
+                status:
+                    label: Status
