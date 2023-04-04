@@ -40,6 +40,15 @@ test('Tiles supports ...rest props', () => {
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
+test('It can be inline', () => {
+  render(
+    <Tiles inline={true}>
+      <Tile>inline</Tile>
+    </Tiles>
+  );
+  expect(screen.getByText('inline')).toBeInTheDocument();
+});
+
 test('it triggers onclick when pressing enter with focus', () => {
   const handleClick = jest.fn();
 
