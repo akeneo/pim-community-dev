@@ -35,7 +35,7 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
         private readonly ClientInterface $client,
         private readonly ValidatorInterface $validator,
         private readonly VersionProviderInterface $versionProvider,
-        private readonly string $pfid,
+        private readonly string | null $pfid,
     ) {
     }
 
@@ -56,12 +56,16 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 
         $timestamp = \time();
         $signature = Signature::createSignature($secret, $timestamp);
+        $userAgent = 'AkeneoPIM/' . $this->versionProvider->getVersion();
+        if ($this->pfid) {
+            $userAgent .= ' '.$this->pfid;
+        }
 
         $headers = [
             'Content-Type' => 'application/json',
             RequestHeaders::HEADER_REQUEST_SIGNATURE => $signature,
             RequestHeaders::HEADER_REQUEST_TIMESTAMP => $timestamp,
-            RequestHeaders::HEADER_REQUEST_USERAGENT => 'AkeneoPIM/' . $this->versionProvider->getVersion() . ' ' . $this->pfid,
+            RequestHeaders::HEADER_REQUEST_USERAGENT => $userAgent,
         ];
 
         try {
