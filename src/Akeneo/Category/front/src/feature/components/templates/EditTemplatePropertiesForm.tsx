@@ -11,8 +11,6 @@ type Props = {
 };
 
 const FormContainer = styled.div`
-  margin-top: 20px;
-
   & > * {
     margin: 0 10px 20px 0;
   }
@@ -71,7 +69,7 @@ const EditTemplatePropertiesForm = ({template, onChangeLabel}: Props) => {
 
   return (
     <FormContainer>
-      <SectionTitle sticky={44}>
+      <SectionTitle sticky={0}>
         <SectionTitle.Title>{translate('pim_common.code')}</SectionTitle.Title>
       </SectionTitle>
       <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>

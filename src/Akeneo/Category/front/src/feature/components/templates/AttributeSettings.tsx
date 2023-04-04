@@ -1,4 +1,4 @@
-import {Button, SectionTitle } from "akeneo-design-system";
+import {Button, SectionTitle} from "akeneo-design-system";
 import {Attribute} from "../../models";
 import React from "react";
 import {userContext, useTranslate} from "@akeneo-pim-community/shared";
@@ -13,14 +13,11 @@ export const AttributeSettings = ({attribute}: Props) => {
     const catalogLocale = userContext.get('catalogLocale');
     return (
         <SettingsContainer>
-            <Body>
-                <SectionTitle sticky={0}>
-                    <SectionTitle.Title>
-                        {attribute.labels[catalogLocale]}{' '}{translate('akeneo.category.template.attribute.settings.title')}
-                    </SectionTitle.Title>
-                </SectionTitle>
-            </Body>
-            <Footer>
+            <SectionTitle sticky={0}>
+                <SectionTitle.Title>
+                    {attribute.labels[catalogLocale]}{' '}{translate('akeneo.category.template.attribute.settings.title')}
+                </SectionTitle.Title>
+            </SectionTitle><Footer sticky={0}>
                 <DeleteButton level="danger" ghost>{translate('akeneo.category.template.attribute.delete_button')}</DeleteButton>
             </Footer>
         </SettingsContainer>
@@ -30,16 +27,9 @@ export const AttributeSettings = ({attribute}: Props) => {
 const SettingsContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 550px;
   padding-left: 40px;
-  margin-top: 2px;
+  width: 510px;
   overflow-y: auto;
-  max-height: 55vh;
 `;
 
 const DeleteButton = styled(Button)`
@@ -48,9 +38,11 @@ const DeleteButton = styled(Button)`
 
 const Footer = styled(SectionTitle)`
   border-bottom: 0;
+  padding: 10px 0 20px;
+  margin-top: 2px;
   justify-content: flex-end;
   position: sticky;
-  top: 100px;
+  bottom: 0;
   background-color: #ffffff;
-  z-index: 9;
+  z-index: 10;
 `;
