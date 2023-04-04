@@ -91,7 +91,13 @@ class Edit extends ProductEditForm
     public function countLocaleLinks($copy = false)
     {
         $localeButton = $this->getLocaleButton($copy);
-        $localeButton->click();
+
+        // If the dropdown is already opened, we don't try and click again
+        $dropdown = $this->findAll('css', '#dropdown-root *[role=listbox]');
+        if(count($dropdown) === 0) {
+            $localeButton->click();
+        }
+
         $localesDropDown = $this->findAll('css', '#dropdown-root *[role=listbox] > *');
 
         return count($localesDropDown);
