@@ -12,10 +12,10 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEv
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -29,33 +29,19 @@ use Symfony\Component\Serializer\Encoder\EncoderInterface;
  */
 class GuzzleWebhookClient implements WebhookClientInterface
 {
-    private ClientInterface $client;
-    private EncoderInterface $encoder;
-    private SendApiEventRequestLogger $sendApiEventRequestLogger;
-    private EventsApiRequestLoggerInterface $debugLogger;
-    private EventDispatcherInterface $eventDispatcher;
-
-    /** @var array{concurrency: ?int, timeout: ?float} */
-    private $config;
-
     /**
      * @param array{concurrency: ?int, timeout: ?float} $config
      */
     public function __construct(
-        ClientInterface $client,
-        EncoderInterface $encoder,
-        SendApiEventRequestLogger $sendApiEventRequestLogger,
-        EventsApiRequestLoggerInterface $debugLogger,
-        EventDispatcherInterface $eventDispatcher,
-        array $config
+        private readonly ClientInterface $client,
+        private readonly EncoderInterface $encoder,
+        private readonly SendApiEventRequestLogger $sendApiEventRequestLogger,
+        private readonly EventsApiRequestLoggerInterface $debugLogger,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly array $config,
+        private readonly VersionProviderInterface $versionProvider,
+        private readonly string | null $pfid,
     ) {
-        $this->client = $client;
-        $this->encoder = $encoder;
-        $this->sendApiEventRequestLogger = $sendApiEventRequestLogger;
-        $this->debugLogger = $debugLogger;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->config = $config;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function bulkSend(iterable $webhookRequests): void
@@ -69,10 +55,16 @@ class GuzzleWebhookClient implements WebhookClientInterface
                 $timestamp = \time();
                 $signature = Signature::createSignature($webhookRequest->secret(), $timestamp, $body);
 
+                $userAgent = 'AkeneoPIM/' . $this->versionProvider->getVersion();
+                if ($this->pfid) {
+                    $userAgent .= ' '.$this->pfid;
+                }
+
                 $headers = [
                     'Content-Type' => 'application/json',
                     RequestHeaders::HEADER_REQUEST_SIGNATURE => $signature,
                     RequestHeaders::HEADER_REQUEST_TIMESTAMP => $timestamp,
+                    RequestHeaders::HEADER_REQUEST_USERAGENT => $userAgent,
                 ];
 
                 $logs[] = new EventSubscriptionSendApiEventRequestLog($webhookRequest, $headers, \microtime(true));
