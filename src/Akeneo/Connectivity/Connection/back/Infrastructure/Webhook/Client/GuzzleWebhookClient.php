@@ -56,7 +56,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                 $signature = Signature::createSignature($webhookRequest->secret(), $timestamp, $body);
 
                 $userAgent = 'AkeneoPIM/' . $this->versionProvider->getVersion();
-                if ($this->pfid) {
+                if (null !== $this->pfid) {
                     $userAgent .= ' '.$this->pfid;
                 }
 

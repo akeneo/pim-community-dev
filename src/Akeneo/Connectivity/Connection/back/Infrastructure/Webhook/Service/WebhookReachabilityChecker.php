@@ -57,7 +57,7 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
         $timestamp = \time();
         $signature = Signature::createSignature($secret, $timestamp);
         $userAgent = 'AkeneoPIM/' . $this->versionProvider->getVersion();
-        if ($this->pfid) {
+        if (null !== $this->pfid) {
             $userAgent .= ' '.$this->pfid;
         }
 
