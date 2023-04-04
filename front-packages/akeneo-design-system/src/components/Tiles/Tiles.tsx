@@ -1,4 +1,4 @@
-import React, {Ref, ReactNode, isValidElement, FC, useCallback, KeyboardEvent, ReactElement} from 'react';
+import React, {Ref, ReactNode, isValidElement, FC, useCallback, KeyboardEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {IconProps} from '../../icons';
 import {AkeneoThemedProps, getColor} from '../../theme';
@@ -152,7 +152,7 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', onClick, c
 /**
  * The Tiles component provides the user a list of choices, for example, an attribute type, a template, or an export
  * format.
- * It is a visual component made up of an icon and a label..
+ * It is a visual component made up of an icon and a label.
  */
 const Tiles = React.forwardRef<HTMLDivElement, TilesProps>(
   ({size = 'small', children, ...rest}: TilesProps, forwardedRef: Ref<HTMLDivElement>) => {
