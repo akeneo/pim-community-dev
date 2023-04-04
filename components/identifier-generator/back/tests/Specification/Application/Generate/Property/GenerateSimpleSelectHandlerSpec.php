@@ -21,7 +21,6 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\NomenclatureRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
 use PhpSpec\ObjectBehavior;
 
@@ -59,7 +58,7 @@ class GenerateSimpleSelectHandlerSpec extends ObjectBehavior
             ->during('__invoke', [
                 $autoNumber,
                 $identifierGenerator,
-                new ProductProjection(true, null, []),
+                new ProductProjection(true, null, [], []),
                 'AKN-',
             ]);
     }
@@ -214,7 +213,7 @@ class GenerateSimpleSelectHandlerSpec extends ObjectBehavior
 
     private function getProductProjection(array $productValues): ProductProjection
     {
-        return new ProductProjection(true, 'accessories', $productValues);
+        return new ProductProjection(true, 'accessories', $productValues, []);
     }
 
     private function getIdentifierGenerator(PropertyInterface $property): IdentifierGenerator

@@ -1,8 +1,8 @@
-import React, {FC, useMemo} from 'react';
+import React, {FC, useEffect, useMemo, useState} from 'react';
 import styled, {css} from 'styled-components';
 import {PimView} from '../PimView';
 import {useRouter, useTranslate} from '../../hooks';
-import {IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
+import {HelpIcon, IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
 import {useAnalytics} from '../../hooks';
 
@@ -40,11 +40,25 @@ type Props = {
   freeTrialEnabled?: boolean;
 };
 
+type PimVersion = {
+  pim_version: string;
+  pim_edition: string;
+};
 const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode, freeTrialEnabled = false}) => {
   const translate = useTranslate();
   const router = useRouter();
   const theme = useTheme();
   const analytics = useAnalytics();
+  const [pimVersion, setPimVersion] = useState<PimVersion | undefined>();
+  const [showHelpDropdown, setShowHelpDropdown] = useState(false);
+
+  useEffect(() => {
+    fetch(router.generate('pim_analytics_data_collect')).then(response => {
+      response.json().then(data => {
+        setPimVersion(data);
+      });
+    });
+  }, []);
 
   const handleFollowEntry = (event: any, entry: NavigationEntry) => {
     event.stopPropagation();
@@ -71,58 +85,83 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
     });
   }, [activeNavigationEntry, activeSubEntryCode]);
 
+  const helpCenterUrl = useMemo(() => {
+    const isSerenity = pimVersion?.pim_version.split('.').length === 1;
+    const version = isSerenity ? 'serenity' : `v${pimVersion?.pim_version.split('.')[0]}`;
+    const campaign = isSerenity ? 'serenity' : `${pimVersion?.pim_edition}${pimVersion?.pim_version}`;
+
+    return `https://help.akeneo.com/pim/${version}/index.html?utm_source=akeneo-app&utm_medium=interrogation-icon&utm_campaign=${campaign}`;
+  }, [pimVersion]);
+
   return (
-    <NavContainer aria-label="Main navigation">
-      <MainNavContainer>
-        <LogoContainer>
-          <PimView viewName="pim-menu-logo" />
-        </LogoContainer>
-        <MenuContainer>
-          {entries.map(entry => (
-            <StyledMainNavigationItem
-              id={entry.code}
-              key={entry.code}
-              active={entry.code === activeEntryCode}
-              disabled={entry.disabled}
-              icon={entry.icon}
-              onClick={event => handleFollowEntry(event, entry)}
-              href={`#${router.generate(entry.route)}`}
-              role="menuitem"
-              data-testid="pim-main-menu-item"
-              className={entry.code === activeEntryCode ? 'active' : undefined}
-              align={entry.align}
+    <>
+      <NavContainer aria-label="Main navigation">
+        <MainNavContainer>
+          <LogoContainer>
+            <PimView viewName="pim-menu-logo" />
+          </LogoContainer>
+          <MenuContainer>
+            {entries.map(entry => (
+              <StyledMainNavigationItem
+                id={entry.code}
+                key={entry.code}
+                active={entry.code === activeEntryCode}
+                disabled={entry.disabled}
+                icon={entry.icon}
+                onClick={event => handleFollowEntry(event, entry)}
+                href={`#${router.generate(entry.route)}`}
+                role="menuitem"
+                data-testid="pim-main-menu-item"
+                className={entry.code === activeEntryCode ? 'active' : undefined}
+                align={entry.align}
+                freeTrialEnabled={freeTrialEnabled}
+              >
+                {translate(entry.title)}
+                {entry.disabled && freeTrialEnabled && (
+                  <LockIconContainer data-testid="locked-entry">
+                    <StyledTag tint="blue">
+                      <StyledLockIcon size={16} color={theme.color.blue100} />
+                    </StyledTag>
+                  </LockIconContainer>
+                )}
+              </StyledMainNavigationItem>
+            ))}
+          </MenuContainer>
+          <HelpContainer onMouseOver={() => setShowHelpDropdown(true)} onMouseLeave={() => setShowHelpDropdown(false)}>
+            <MainNavigationItem icon={<HelpIcon />}>
+              {translate('pim_menu.tab.help.title')}
+              <Tag tint="blue">{translate('pim_menu.tab.help.new')}</Tag>
+            </MainNavigationItem>
+          </HelpContainer>
+        </MainNavContainer>
+        {activeNavigationEntry &&
+          (!activeNavigationEntry.isLandingSectionPage || activeSubEntryCode) &&
+          activeSubNavigation &&
+          activeSubNavigation.sections.length > 0 && (
+            <SubNavigation
+              entries={activeSubNavigation.entries}
+              sections={activeSubNavigation.sections}
+              backLink={activeSubNavigation.backLink}
+              stateCode={activeSubNavigation.stateCode}
+              title={activeSubNavigation.title}
+              activeSubEntryCode={activeSubEntryCode}
               freeTrialEnabled={freeTrialEnabled}
-            >
-              {translate(entry.title)}
-              {entry.disabled && freeTrialEnabled && (
-                <LockIconContainer data-testid="locked-entry">
-                  <StyledTag tint="blue">
-                    <StyledLockIcon size={16} color={theme.color.blue100} />
-                  </StyledTag>
-                </LockIconContainer>
-              )}
-            </StyledMainNavigationItem>
-          ))}
-        </MenuContainer>
-        <HelpContainer>
-          <PimView viewName="pim-menu-help" />
-        </HelpContainer>
-      </MainNavContainer>
-      {activeNavigationEntry &&
-        (!activeNavigationEntry.isLandingSectionPage || activeSubEntryCode) &&
-        activeSubNavigation &&
-        activeSubNavigation.sections.length > 0 && (
-          <SubNavigation
-            entries={activeSubNavigation.entries}
-            sections={activeSubNavigation.sections}
-            backLink={activeSubNavigation.backLink}
-            stateCode={activeSubNavigation.stateCode}
-            title={activeSubNavigation.title}
-            activeSubEntryCode={activeSubEntryCode}
-            freeTrialEnabled={freeTrialEnabled}
-          />
-        )}
-    </NavContainer>
+            />
+          )}
+      </NavContainer>
+      <HelpMenuContainer show={showHelpDropdown}>
+        <a href={helpCenterUrl} target="_blank" title={translate('pim_menu.tab.help.helper')}>
+          {translate('pim_menu.tab.help.help_center')}
+        </a>
+        <LinkContainer href="https://akademy.akeneo.com/" target="_blank">
+          {translate('pim_menu.tab.help.akademy_training')}
+          <Tag tint={'blue'}>{translate('pim_menu.tab.help.new')}</Tag>
+        </LinkContainer>
+        <a href="https://help.akeneo.com/pim/serenity/updates/index.html" target="_blank">
+          {translate('pim_menu.tab.help.news')}
+        </a>
+      </HelpMenuContainer>
+    </>
   );
 };
 
@@ -174,11 +213,50 @@ const MenuContainer = styled.div`
   position: relative;
   height: 100%;
 `;
+
+const HelpMenuContainer = styled.div<{show: boolean}>`
+  background-color: white;
+  display: ${({show}) => (show ? 'flex' : 'none')};
+  box-shadow: 0px 8px 16px 0px ${({theme}) => theme.color.grey120};
+  z-index: 10000000; // huge z-index due to crips-client used in tria that has z-index 1000000
+  position: fixed;
+  left: 80px;
+  bottom: 10px;
+  flex-direction: column;
+
+  :hover {
+    display: flex;
+  }
+
+  a {
+    color: ${({theme}) => theme.color.grey120};
+    padding: 12px 16px;
+
+    :hover {
+      color: ${({theme}) => theme.color.purple100};
+    }
+
+    .AknBadge {
+      margin-left: 10px;
+    }
+  }
+
+  ${Tag} {
+    margin-left: 10px;
+  }
+`;
+
 const HelpContainer = styled.div`
   height: 80px;
   min-height: 80px;
   position: relative;
   margin-top: auto;
+  display: inline-block;
+`;
+
+const LinkContainer = styled.a`
+  display: flex;
+  align-items: center;
 `;
 
 export type {NavigationEntry, SubNavigation};

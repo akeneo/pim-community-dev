@@ -6,7 +6,6 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\C
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Family;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\ProductProjection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -115,91 +114,5 @@ class FamilySpec extends ObjectBehavior
             'operator' => 'IN',
             'value' => ['shirts'],
         ]);
-    }
-
-    public function it_should_match_empty()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'family',
-            'operator' => 'EMPTY',
-        ]]);
-        $this->match(new ProductProjection(true, null, []))->shouldReturn(true);
-    }
-
-    public function it_should_not_match_empty()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'family',
-            'operator' => 'EMPTY',
-        ]]);
-        $this->match(new ProductProjection(true, 'familyCode', []))->shouldReturn(false);
-    }
-
-    public function it_should_match_not_empty()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'family',
-            'operator' => 'NOT EMPTY',
-        ]]);
-        $this->match(new ProductProjection(true, 'familyCode', []))->shouldReturn(true);
-    }
-
-    public function it_should_not_match_not_empty()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'family',
-            'operator' => 'NOT EMPTY',
-        ]]);
-        $this->match(new ProductProjection(true, null, []))->shouldReturn(false);
-    }
-
-    public function it_should_match_in()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'family',
-            'operator' => 'IN',
-            'value' => ['shirts', 'jeans'],
-        ]]);
-        $this->match(new ProductProjection(true, 'shirts', []))->shouldReturn(true);
-    }
-
-    public function it_should_not_match_in()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'family',
-            'operator' => 'IN',
-            'value' => ['shirts', 'jeans'],
-        ]]);
-        $this->match(new ProductProjection(true, 'jackets', []))->shouldReturn(false);
-    }
-
-    public function it_should_match_not_in()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'family',
-            'operator' => 'NOT IN',
-            'value' => ['shirts', 'jeans'],
-        ]]);
-        $this->match(new ProductProjection(true, 'jackets', []))->shouldReturn(true);
-    }
-
-    public function it_should_not_match_not_in()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'family',
-            'operator' => 'NOT IN',
-            'value' => ['shirts', 'jeans'],
-        ]]);
-        $this->match(new ProductProjection(true, 'shirts', []))->shouldReturn(false);
-    }
-
-    public function it_should_not_match_not_in_when_product_has_no_family()
-    {
-        $this->beConstructedThrough('fromNormalized', [[
-            'type' => 'family',
-            'operator' => 'NOT IN',
-            'value' => ['shirts', 'jeans'],
-        ]]);
-        $this->match(new ProductProjection(true, null, []))->shouldReturn(false);
     }
 }

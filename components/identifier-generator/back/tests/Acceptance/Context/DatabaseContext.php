@@ -50,7 +50,7 @@ final class DatabaseContext implements Context
     }
 
     /**
-     * @Then the identifier should not be created
+     * @Then the identifier generator should not be created
      */
     public function theIdentifierShouldNotBeCreated(): void
     {

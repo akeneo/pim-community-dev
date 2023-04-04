@@ -88,6 +88,12 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Category\Domain\Query\DeactivateAttribute:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\DeactivateAttributeSql
+    arguments:
+      - '@database_connection'
+      - '@Akeneo\Category\Application\Query\IsTemplateDeactivated'
+
   Akeneo\Category\Application\Query\GetEnrichedValuesPerCategoryCode:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetEnrichedValuesPerCategoryCodeSql
     arguments:
@@ -100,5 +106,10 @@ services:
 
   Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues:
     class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryEnrichedValuesSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\UpdateCategoryUpdatedDate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryUpdatedDateSql
     arguments:
       - '@database_connection'

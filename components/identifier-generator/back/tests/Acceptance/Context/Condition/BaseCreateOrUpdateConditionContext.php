@@ -15,7 +15,7 @@ final class BaseCreateOrUpdateConditionContext extends BaseCreateOrUpdateIdentif
 {
     /**
      * @When /^I try to create an identifier generator \
-     *     with an? (?P<type>simple_select|multi_select|family|enabled) condition\
+     *     with an? (?P<type>simple_select|multi_select|family|enabled|category) condition\
      *     (?:(?: with| and|,) (?P<attributeCode>[^ ]*) attribute)?\
      *     (?:(?: with| and|,) (?P<operator>[^ ]*) operator)?\
      *     (?:(?: with| and|,) (?P<scope>[^ ]*) scope)?\
@@ -38,7 +38,7 @@ final class BaseCreateOrUpdateConditionContext extends BaseCreateOrUpdateIdentif
 
     /**
      * @When /^I try to update an identifier generator \
-     *     with an? (?P<type>simple_select|multi_select|family|enabled) condition\
+     *     with an? (?P<type>simple_select|multi_select|family|enabled|category) condition\
      *     (?:(?: with| and|,) (?P<attributeCode>[^ ]*) attribute)?\
      *     (?:(?: with| and|,) (?P<operator>[^ ]*) operator)?\
      *     (?:(?: with| and|,) (?P<scope>[^ ]*) scope)?\

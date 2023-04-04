@@ -82,3 +82,9 @@ services:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\ReorderGeneratorsHandler'
       - '@oro_security.security_facade'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetCategoryLabelsController:
+    public: true
+    arguments:
+      - '@Akeneo\Category\ServiceApi\CategoryQueryInterface'
+      - '@pim_user.context.user'

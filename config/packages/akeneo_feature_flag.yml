@@ -1,18 +1,17 @@
 akeneo_feature_flag:
     feature_flags:
-        - { feature: 'data_quality_insights', service: 'akeneo.pim.automation.data_quality_insights.feature' }
-        - { feature: 'data_quality_insights_all_criteria', service: 'akeneo.pim.automation.data_quality_insights.all_criteria.feature' }
-        - { feature: 'free_trial', service: 'akeneo.feature_flag.service.only_free_trial_feature' }
-        - { feature: 'marketplace_activate', service: 'akeneo_connectivity.connection.marketplace_activate.feature' }
-        - { feature: 'connect_app_with_permissions', service: 'akeneo_connectivity.connection.connect_app_with_permissions.feature' }
-        - { feature: 'communication_channel', service: 'akeneo_communication_channel.feature' }
-        - { feature: 'app_developer_mode', service: 'akeneo_connectivity.connection.app_developer_mode.feature' }
-        - { feature: 'reference_data', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
-        - { feature: 'job_automation_local_storage', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
-        - { feature: 'enriched_category', service: 'akeneo.category.enriched.feature'}
-        - { feature: 'identifier_generator', service: 'akeneo.feature_flag.service.only_saas_feature' }
-        - { feature: 'import_export_local_storage', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
-        - { feature: 'catalogs', service: 'akeneo.feature_flag.service.only_saas_feature' }
-        - { feature: 'promote_unlock', service: 'akeneo.feature_flag.service.only_growth_and_serenity_feature' }
-        - { feature: 'category_template_deactivation', service: 'akeneo.category.template.deactivation'}
-        - { feature: 'category_template_customization', service: 'akeneo.category.template.customization'}
+        data_quality_insights: 'akeneo.pim.automation.data_quality_insights.feature'
+        data_quality_insights_all_criteria: 'akeneo.pim.automation.data_quality_insights.all_criteria.feature'
+        free_trial: 'akeneo.feature_flag.service.only_free_trial_feature'
+        marketplace_activate: 'akeneo_connectivity.connection.marketplace_activate.feature'
+        connect_app_with_permissions: 'akeneo_connectivity.connection.connect_app_with_permissions.feature'
+        communication_channel: 'akeneo_communication_channel.feature'
+        app_developer_mode: 'akeneo_connectivity.connection.app_developer_mode.feature'
+        reference_data: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature'
+        job_automation_local_storage: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature'
+        enriched_category: 'akeneo.category.enriched.feature'
+        identifier_generator: 'akeneo.feature_flag.service.only_saas_feature'
+        import_export_local_storage: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature'
+        catalogs: 'akeneo.feature_flag.service.only_saas_feature'
+        promote_unlock: 'akeneo.feature_flag.service.only_growth_and_serenity_feature'
+        category_template_customization: 'akeneo.category.template.customization'

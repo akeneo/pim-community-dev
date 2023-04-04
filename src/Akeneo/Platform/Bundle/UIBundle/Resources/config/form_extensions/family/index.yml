@@ -29,6 +29,12 @@ extensions:
         config:
             title: pim_enrich.entity.family.page_title.index
 
+    pim-family-index-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-family-index
+        targetZone: helper
+        feature: reset_pim
+
     pim-family-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-family-index

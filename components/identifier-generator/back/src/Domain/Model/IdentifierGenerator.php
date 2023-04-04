@@ -182,17 +182,10 @@ final class IdentifierGenerator
         ];
     }
 
-    public function match(ProductProjection $productProjection): bool
-    {
-        $conditionsWithImplicitOnes = $this->conditions->and($this->getImplicitConditions());
-
-        return $conditionsWithImplicitOnes->match($productProjection);
-    }
-
     /**
      * @return ConditionInterface[]
      */
-    private function getImplicitConditions(): array
+    public function getImplicitConditions(): array
     {
         $conditions = [new EmptyIdentifier($this->target()->asString())];
 

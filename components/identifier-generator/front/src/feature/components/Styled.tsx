@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import {
   AkeneoThemedProps,
+  Button,
+  Dropdown,
   getColor,
   Helper,
   MultiSelectInput,
@@ -41,6 +43,8 @@ const TitleCell = styled(Table.Cell)<{withWidth: boolean} & AkeneoThemedProps>`
   font-style: italic;
   color: ${getColor('brand', 100)};
   ${({withWidth = true}) => withWidth && 'width: 120px;'}
+  vertical-align: top;
+  line-height: 40px;
 `;
 
 const InputContainer = styled.div`
@@ -119,11 +123,21 @@ const SelectionInputsContainer = styled(Table.Cell)`
   > div:first-child {
     display: flex;
     gap: 20px;
+    align-items: flex-start;
   }
 `;
 
+const inputWidth = '400px';
+
 const MultiSelectCondition = styled(MultiSelectInput)`
-  flex-basis: 300px;
+  flex-basis: ${inputWidth};
+`;
+const CategoriesDropdownContainer = styled(Dropdown)`
+  width: ${inputWidth};
+`;
+
+const SingleSelectCondition = styled(SelectInput)`
+  flex-basis: ${inputWidth};
 `;
 
 const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
@@ -131,11 +145,7 @@ const OperatorSelectCondition = styled(SelectInput)<{isInSelection: boolean}>`
 `;
 
 const SelectCondition = styled(SelectInput)<{isHorizontal: boolean}>`
-  ${({isHorizontal}) => isHorizontal && 'flex-basis: 120px;'}
-`;
-
-const SingleSelectCondition = styled(SelectInput)`
-  flex-basis: 300px;
+  ${({isHorizontal}) => isHorizontal && 'flex-basis: 150px;'}
 `;
 
 const OperatorContainer = styled.div`
@@ -188,6 +198,24 @@ const NomenclatureContent = styled.div`
   overflow: auto;
 `;
 
+const CategoryTreeContainer = styled.div`
+  max-height: 400px;
+  overflow: auto;
+  margin: 0 20px 0 0;
+  padding: 0 0 0 20px;
+  ul {
+    padding-left: 0;
+  }
+  & > *:first-child {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+`;
+
+const NomenclatureButton = styled(Button)`
+  width: fit-content;
+`;
+
 const Styled = {
   BoldContainer,
   CellInputContainer,
@@ -216,6 +244,9 @@ const Styled = {
   NomenclatureDefinition,
   NomenclatureInput,
   NomenclatureTable,
+  NomenclatureButton,
+  CategoryTreeContainer,
+  CategoriesDropdownContainer,
 };
 
 export {Styled};

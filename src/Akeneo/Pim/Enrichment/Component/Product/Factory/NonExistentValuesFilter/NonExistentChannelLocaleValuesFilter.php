@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
+use Akeneo\Channel\API\Query\GetCaseSensitiveChannelCodeInterface;
+use Akeneo\Channel\API\Query\GetCaseSensitiveLocaleCodeInterface;
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 
@@ -15,6 +17,8 @@ class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
 {
     public function __construct(
         private ChannelExistsWithLocaleInterface $channelsLocales,
+        private GetCaseSensitiveLocaleCodeInterface $getCaseSensitiveLocaleCode,
+        private GetCaseSensitiveChannelCodeInterface $getCaseSensitiveChannelCode,
         private GetAttributes $getAttributes
     ) {
     }
@@ -39,11 +43,13 @@ class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
     private function filterProductValues(array $productValues): array
     {
         $filteredProductValues = [];
-        foreach ($productValues as $channel => $localeValues) {
-            if ($this->doesChannelExist($channel)) {
-                foreach ($localeValues as $locale => $value) {
-                    if ($this->isLocaleActivatedForChannel($locale, $channel)) {
-                        $filteredProductValues[$channel][$locale] = $value;
+        foreach ($productValues as $channelCode => $localeValues) {
+            if ($this->doesChannelExist($channelCode)) {
+                foreach ($localeValues as $localeCode => $value) {
+                    if ($this->isLocaleActivatedForChannel($localeCode, $channelCode)) {
+                        $originalLocaleCode = $localeCode === '<all_locales>' ? '<all_locales>' : $this->getCaseSensitiveLocaleCode->forLocaleCode($localeCode);
+                        $originalChannelCode = $channelCode === '<all_channels>' ? '<all_channels>' : $this->getCaseSensitiveChannelCode->forChannelCode($channelCode);
+                        $filteredProductValues[$originalChannelCode][$originalLocaleCode] = $value;
                     }
                 }
             }
@@ -57,10 +63,10 @@ class NonExistentChannelLocaleValuesFilter implements NonExistentValuesFilter
         $filteredProductValues = [];
         $attribute = $this->getAttributes->forCode($attributeCode);
 
-        foreach ($productValues as $channel => $localeValues) {
+        foreach ($productValues as $channelCode => $localeValues) {
             foreach ($localeValues as $localeCode => $value) {
                 if (!$attribute->isLocaleSpecific() || $localeCode === '<all_locales>' || in_array($localeCode, $attribute->availableLocaleCodes())) {
-                    $filteredProductValues[$channel][$localeCode] = $value;
+                    $filteredProductValues[$channelCode][$localeCode] = $value;
                 }
             }
         }

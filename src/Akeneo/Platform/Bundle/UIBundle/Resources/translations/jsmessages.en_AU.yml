@@ -104,16 +104,17 @@ oro_config:
           title: System
       group:
         localization:
-          title: Localization
-          system_locale: Language
+          fields:
+            system_locale:
+              label: Language
         notification:
-          title: Notifications
-          system_notification: New versions notifications
+          fields:
+            enabler:
+              label: Enabled
         loading_message:
-          title: Loading messages
-          label: Enable loading messages
-        loading_messages:
-          label: Available loading messages
+          fields:
+            enabler:
+              label: Enable loading messages
 pim_ui:
   flash:
     unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
@@ -238,6 +239,7 @@ pim_common:
   parent: Parent
   groups: Groups
   products: Products
+  product_uuids: Products
   more: More
 error:
   forbidden: Forbidden. You are not allowed to access this page

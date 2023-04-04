@@ -53,6 +53,20 @@ Tags can be separated thanks to the following characters:
   </Story>
 </Canvas>
 
+## With a list of existing tag with labels
+
+<Canvas>
+  <Story name="Existing value and labels">
+    {args => {
+      return <TagInput value={['batman', 'superman', 'catwoman', 'joker']} onChange={() => {}} labels={{
+        batman: 'The Batman',
+        superman: 'Superman',
+        joker: 'The Joker',
+      }} />;
+    }}
+  </Story>
+</Canvas>
+
 ## With a high number of tags
 
 <Canvas>
@@ -74,6 +88,16 @@ Tags can be separated thanks to the following characters:
           <TagInput value={[]} onChange={() => {}} invalid={true} />
         </Section>
       );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid values
+
+<Canvas>
+  <Story name="Variation on invalid values">
+    {args => {
+      return <TagInput value={['batman', 'superman', 'catwoman', 'joker']} onChange={() => {}} invalidValue={['superman', 'catwoman']} />;
     }}
   </Story>
 </Canvas>

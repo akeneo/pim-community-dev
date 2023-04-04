@@ -51,8 +51,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'Attribute "%attribute%" does not belong to the family "%family%"'
     variant_product_invalid_family: 'The variant product family must be the same than its parent'
     php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
-    variant_product_has_parent: 'The variant product "%variant_product%" must have a parent'
-    invalid_variant_product_parent: 'The variant product "%variant_product%" cannot have product model "%product_model%" as parent, (this product model can only have other product models as children)'
     modified_variant_axis_value: 'Variant axis "%variant_axis%" cannot be modified, "%provided_value%" given'
     family_variant_attributes_unique: Attributes must be unique, "%attributes%" are used several times in variant attributes sets
     family_variant_axes_unique: Variant axes must be unique, "%attributes%" are used several times in variant attributes sets

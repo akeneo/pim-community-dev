@@ -66,6 +66,7 @@
 {% set entityId = form.vars.value.id %}
 
 {% block content %}
+<div class="AknDefault-helper" data-drop-zone="helper"></div>
 <div class="AknDefault-mainContent">
     {{ form_start(form, {
         'action': entityId ? path('pim_user_role_update', { 'id': entityId }) : path('pim_user_role_create'),
@@ -265,6 +266,20 @@
                             $('.user-menu').append(form.el);
                             form.render();
                         }.bind(this));
+                    });
+                });
+            }
+        );
+    </script>
+    <script nonce="{{ js_nonce() }}">
+        require(
+            ['pim/sandbox-helper'],
+            function(SandboxHelper) {
+                $(function() {
+                    var sandboxHelper = new SandboxHelper({});
+                    sandboxHelper.configure().then(function () {
+                        sandboxHelper.render();
+                        $('*[data-drop-zone="helper"]').append(sandboxHelper.$el);
                     });
                 });
             }
