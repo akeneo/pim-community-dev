@@ -40,6 +40,24 @@ test('Tiles supports ...rest props', () => {
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
+test('It can be small', () => {
+  render(
+    <Tiles size={'small'}>
+      <Tile>small</Tile>
+    </Tiles>
+  );
+  expect(screen.getByText('small')).toBeInTheDocument();
+});
+
+test('It can be big', () => {
+  render(
+    <Tiles size={'big'}>
+      <Tile>big</Tile>
+    </Tiles>
+  );
+  expect(screen.getByText('big')).toBeInTheDocument();
+});
+
 test('It can be inline', () => {
   render(
     <Tiles size={'inline'}>
