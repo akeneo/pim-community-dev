@@ -1,6 +1,5 @@
 import {
   getLabel,
-  PageContent,
   PageHeader,
   PimView,
   useFeatureFlags,
@@ -20,6 +19,7 @@ import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePr
 import {TemplateOtherActions} from '../components/templates/TemplateOtherActions';
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
 import {Template} from '../models';
+import styled from "styled-components";
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -183,5 +183,10 @@ const TemplatePage: FC = () => {
     </>
   );
 };
+
+const PageContent = styled.div`
+  padding: 0 40px;
+  height: calc(100vh - 130px);
+`;
 
 export {TemplatePage};
