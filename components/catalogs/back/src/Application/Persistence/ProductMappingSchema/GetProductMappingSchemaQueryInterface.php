@@ -15,7 +15,8 @@ use Akeneo\Catalogs\Application\Exception\ProductMappingSchemaNotFoundException;
  *      format?: string,
  *      pattern?: string,
  *      items?: array{
- *          type: string
+ *          type: string,
+ *          format?: string,
  *      }
  * }
  * @phpstan-type ProductMappingSchema array{

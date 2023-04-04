@@ -126,7 +126,7 @@ final class TargetTypeConverter
 
         $itemType = $target['items']['type'] ?? '';
         $itemFormat = $target['items']['format'] ?? null;
-        if (!is_null($itemFormat)) {
+        if (null !== $itemFormat) {
             $itemType = \sprintf('%s+%s', $itemType, $itemFormat);
         }
 
