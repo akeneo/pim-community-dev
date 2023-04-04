@@ -49,7 +49,7 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         $response = $this->client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
-        $nomenclatureDefinition = $this->getNomenclatureRepository()->get('family');
+        $nomenclatureDefinition = $this->getNomenclatureRepository()->get();
         Assert::assertSame($nomenclatureDefinition->operator(), '<=');
         Assert::assertSame($nomenclatureDefinition->value(), 4);
         Assert::assertSame($nomenclatureDefinition->generateIfEmpty(), true);

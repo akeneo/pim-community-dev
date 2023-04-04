@@ -7,7 +7,8 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,13 +16,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Webmozart\Assert\Assert;
 
 class CreateIdentifierGeneratorController
 {
     public function __construct(
         private readonly CreateGeneratorHandler $createGeneratorHandler,
-        private readonly IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly GetGeneratorHandler $getGeneratorHandler,
         private readonly SecurityFacadeInterface $security,
     ) {
     }
@@ -52,10 +52,10 @@ class CreateIdentifierGeneratorController
             return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         }
 
-        $identifierGenerator = $this->identifierGeneratorRepository->get($command->code);
-        Assert::notNull($identifierGenerator);
-
-        return new JsonResponse($identifierGenerator->normalize(), Response::HTTP_CREATED);
+        return new JsonResponse(
+            ($this->getGeneratorHandler)(GetGeneratorCommand::fromCode($content['code'])),
+            Response::HTTP_CREATED
+        );
     }
 
     /**

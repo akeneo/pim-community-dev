@@ -33,12 +33,10 @@ final class GetNomenclatureHandler
     public function __invoke(GetNomenclatureCommand $command): array
     {
         if ($command->propertyCode() === FamilyProperty::TYPE) {
-            $nomenclatureRepository = $this->familyNomenclatureRepository;
+            $nomenclature = $this->familyNomenclatureRepository->get() ?? new NomenclatureDefinition();
         } else {
-            $nomenclatureRepository = $this->simpleSelectNomenclatureRepository;
+            $nomenclature = $this->simpleSelectNomenclatureRepository->get($command->propertyCode()) ?? new NomenclatureDefinition();
         }
-
-        $nomenclature = $nomenclatureRepository->get($command->propertyCode()) ?? new NomenclatureDefinition();
 
         Assert::allNotNull($nomenclature->values());
 
