@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -27,8 +28,9 @@ final class IdentifierGeneratorShouldExistValidator extends ConstraintValidator
             return;
         }
 
-        $identifierGenerator = $this->identifierGeneratorRepository->get($updateGeneratorCommand->code);
-        if (null === $identifierGenerator) {
+        try {
+            $this->identifierGeneratorRepository->get($updateGeneratorCommand->code);
+        } catch (CouldNotFindIdentifierGeneratorException) {
             $this->context
                 ->buildViolation($constraint->message, ['{{code}}' => $updateGeneratorCommand->code])
                 ->addViolation();
