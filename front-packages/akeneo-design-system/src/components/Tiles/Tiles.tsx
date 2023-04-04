@@ -109,11 +109,9 @@ type TilesProps = {
   children?: ReactNode;
 
   /**
-   * The size can be 'small' (by default) or 'big'
+   * The size can be 'small' (by default), 'big' or 'inline'
    */
   size?: Size;
-
-  inline?: boolean;
 };
 
 type TileProps = Override<
