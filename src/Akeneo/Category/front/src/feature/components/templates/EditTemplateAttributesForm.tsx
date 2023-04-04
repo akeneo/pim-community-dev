@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Attribute} from '../../models';
-import {AttributeList} from "./AttributeList";
-import {AttributeSettings} from "./AttributeSettings";
+import {AttributeList} from './AttributeList';
+import {AttributeSettings} from './AttributeSettings';
 
 interface Props {
   attributes: Attribute[];
@@ -12,13 +12,17 @@ interface Props {
 export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
   const [selectedAttribute, setSelectedAttribute] = useState<Attribute>(attributes[0]);
   const handleAttributeSelection = (attribute: Attribute) => {
-      setSelectedAttribute(attribute);
+    setSelectedAttribute(attribute);
   };
 
   return (
     <FormContainer>
       <Attributes>
-        <AttributeList attributes={attributes} templateId={templateId} onAttributeSelection={handleAttributeSelection}></AttributeList>
+        <AttributeList
+          attributes={attributes}
+          templateId={templateId}
+          onAttributeSelection={handleAttributeSelection}
+        ></AttributeList>
         <AttributeSettings attribute={selectedAttribute}></AttributeSettings>
       </Attributes>
     </FormContainer>

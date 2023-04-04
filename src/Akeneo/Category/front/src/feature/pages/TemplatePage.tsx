@@ -19,7 +19,7 @@ import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePr
 import {TemplateOtherActions} from '../components/templates/TemplateOtherActions';
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
 import {Template} from '../models';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -103,10 +103,9 @@ const TemplatePage: FC = () => {
 
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
 
-  const templateHasAttribute = () =>
-  {
+  const templateHasAttribute = () => {
     return templateEdited?.attributes.length != 0;
-  }
+  };
 
   return (
     <>
@@ -157,12 +156,12 @@ const TemplatePage: FC = () => {
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && !templateHasAttribute() && (
-            <NoTemplateAttribute
-                templateId={templateEdited.uuid}
-                title={translate('akeneo.category.template.add_attribute.no_attribute_title')}
-                instructions={translate('akeneo.category.template.add_attribute.no_attribute_instructions')}
-                createButton={true}
-            />
+          <NoTemplateAttribute
+            templateId={templateEdited.uuid}
+            title={translate('akeneo.category.template.add_attribute.no_attribute_title')}
+            instructions={translate('akeneo.category.template.add_attribute.no_attribute_instructions')}
+            createButton={true}
+          />
         )}
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && templateHasAttribute() && (
