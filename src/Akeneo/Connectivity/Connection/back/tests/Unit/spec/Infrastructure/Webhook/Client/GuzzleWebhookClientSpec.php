@@ -146,7 +146,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
 
         $userAgent = 'AkeneoPIM/v20210526040645';
-        if(getenv('PFID')) {
+        if(null !== getenv('PFID')) {
             $userAgent .= ' '.getenv('PFID');
         }
 
