@@ -68,8 +68,7 @@ akeneo.category:
                 message: Are you sure you want to delete the category attribute named {{ attribute }}?
                 helper: Deleting this attribute will permanently delete the attribute and values of the associated categories.
             notification_success:
-                title: {{ attribute }} attribute deleted
-
+                title: '{{ attribute }} attribute successfully deleted'
         deactivate:
             deactivate_template: Deactivate template
             confirmation_modal:

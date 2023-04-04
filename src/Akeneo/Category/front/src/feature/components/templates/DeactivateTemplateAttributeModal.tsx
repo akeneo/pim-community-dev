@@ -12,12 +12,17 @@ type Props = {
 export const DeactivateTemplateAttributeModal = ({templateUuid, attribute, onClose}: Props) =>
 {
     const translate = useTranslate();
-    const handleDeactivateTemplateAttribute = () => useDeactivateTemplateAttribute(templateUuid, attribute);
+
+    const deactivateTemplateAttribute = useDeactivateTemplateAttribute(templateUuid, attribute);
+    const handleDeactivateTemplateAttribute = () => {
+        deactivateTemplateAttribute();
+        onClose();
+    }
 
     return (
         <Modal illustration={<DeleteIllustration />} closeTitle={translate('pim_common.close')} onClose={onClose}>
             <Modal.SectionTitle color="brand">
-                {translate('akeneo.category.template.deactivate.deactivate_template')}
+                {translate('akeneo.category.template.delete_attribute.delete')}
             </Modal.SectionTitle>
             <Modal.Title>
                 {translate('akeneo.category.template.delete_attribute.confirmation_modal.title')}
