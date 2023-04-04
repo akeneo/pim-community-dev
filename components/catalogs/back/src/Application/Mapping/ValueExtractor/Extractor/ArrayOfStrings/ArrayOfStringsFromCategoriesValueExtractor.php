@@ -60,9 +60,4 @@ final class ArrayOfStringsFromCategoriesValueExtractor implements ArrayOfStrings
     {
         return null;
     }
-
-    public function getSupportedSubSourceType(): ?string
-    {
-        return null;
-    }
 }

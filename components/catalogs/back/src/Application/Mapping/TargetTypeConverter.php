@@ -21,7 +21,7 @@ final class TargetTypeConverter
             'pim_catalog_asset_collection',
             'pim_catalog_multiselect',
         ],
-        'array<string>+uri' => [
+        'array<string+uri>' => [
             'pim_catalog_asset_collection',
         ],
         'boolean' => [
@@ -55,7 +55,7 @@ final class TargetTypeConverter
         'array<string>' => [
             'text',
         ],
-        'array<string>+uri' => [
+        'array<string+uri>' => [
             'media_file',
         ],
         'string+uri' => [
@@ -124,6 +124,12 @@ final class TargetTypeConverter
             return $target['type'];
         }
 
-        return \sprintf('%s<%s>', $target['type'], $target['items']['type'] ?? '');
+        $itemType = $target['items']['type'] ?? '';
+        $itemFormat = $target['items']['format'] ?? null;
+        if (!is_null($itemFormat)) {
+            $itemType = \sprintf('%s+%s', $itemType, $itemFormat);
+        }
+
+        return \sprintf('%s<%s>', $target['type'], $itemType);
     }
 }

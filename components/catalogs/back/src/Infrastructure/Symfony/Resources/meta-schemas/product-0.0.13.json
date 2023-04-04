@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://api.akeneo.com/mapping/product/0.0.12/schema",
+  "$id": "https://api.akeneo.com/mapping/product/0.0.13/schema",
   "type": "object",
   "properties": {
     "$id": { "$ref": "#/$defs/$id" },
@@ -75,6 +75,11 @@
                 "string"
               ]
             },
+            "format": {
+              "enum": [
+                "uri"
+              ]
+            },
             "enum": {
               "type": "array"
             }
@@ -82,6 +87,16 @@
           "additionalProperties": false,
           "required": ["type"],
           "dependentSchemas": {
+            "format": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "string"
+                  ]
+                }
+              },
+              "required": ["type"]
+            },
             "enum": {
               "if": {
                 "properties": {
@@ -139,34 +154,14 @@
       "required": ["type"],
       "dependentSchemas": {
         "format": {
-          "oneOf": [
-            {
-              "properties": {
-                "type": {
-                  "enum": [
-                    "string"
-                  ]
-                }
-              },
-              "required": ["type"]
-            },
-            {
-              "properties": {
-                "type": {
-                  "const": "array"
-                },
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "type" : {
-                      "const" : "string"
-                    }
-                  }
-                }
-              },
-              "required": ["type"]
+          "properties": {
+            "type": {
+              "enum": [
+                "string"
+              ]
             }
-          ]
+          },
+          "required": ["type"]
         },
         "items": {
           "properties": {

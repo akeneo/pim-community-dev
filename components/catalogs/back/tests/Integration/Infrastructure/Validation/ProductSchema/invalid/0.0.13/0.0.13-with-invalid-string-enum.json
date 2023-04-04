@@ -1,15 +1,15 @@
 {
   "$id": "https://example.com/product",
   "$schema": "https://api.akeneo.com/mapping/product/0.0.13/schema",
-  "description": "You must provide a schema with valid property keys.",
+  "description": "The data (boolean) must match the type: string at #/properties/size/enum/3",
   "properties": {
     "uuid": {
       "title": "Product uuid",
       "type": "string"
     },
-    "short_description": {
-      "type": "string"
+    "size": {
+      "type": "string",
+      "enum": ["S", "M", "L", true]
     }
-  },
-  "required": ["name"]
+  }
 }

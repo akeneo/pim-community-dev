@@ -1,7 +1,7 @@
 {
     "$id": "https://example.com/product",
     "$schema": "https://api.akeneo.com/mapping/product/0.0.12/schema",
-    "description": "The data should match one item from enum at #/properties/colors/items/type",
+    "description": "The data (boolean) must match the type: string at #/properties/colors/items/enum/2",
     "properties": {
         "uuid": {
             "title": "Product uuid",
@@ -10,8 +10,8 @@
         "colors": {
             "type": "array",
             "items": {
-                "type": "number",
-                "enum": ["Red", "Green", "Blue"]
+                "type": "string",
+                "enum": ["Red", "Green", true]
             }
         }
     }

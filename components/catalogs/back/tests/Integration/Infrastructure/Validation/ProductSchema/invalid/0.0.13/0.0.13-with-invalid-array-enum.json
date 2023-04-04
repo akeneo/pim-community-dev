@@ -1,15 +1,18 @@
 {
   "$id": "https://example.com/product",
   "$schema": "https://api.akeneo.com/mapping/product/0.0.13/schema",
-  "description": "The data must match the 'regex' format at #/properties/ean/pattern",
+  "description": "The data (string) must match the type: array at #/properties/colors/items/enum",
   "properties": {
     "uuid": {
       "title": "Product uuid",
       "type": "string"
     },
-    "ean": {
-      "type": "string",
-      "pattern": "***"
+    "colors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": "Red"
+      }
     }
   }
 }

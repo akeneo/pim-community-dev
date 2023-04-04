@@ -50,7 +50,7 @@ class TargetTypeConverterTest extends TestCase
                     'pim_catalog_multiselect',
                 ],
             ],
-            'array<string>+uri' => [
+            'array<string+uri>' => [
                 'array<string>',
                 'uri',
                 [
@@ -135,9 +135,9 @@ class TargetTypeConverterTest extends TestCase
                     'text',
                 ],
             ],
-            'array<string>' => [
-                'array<string>',
-                'uri',
+            'array<string+uri>' => [
+                'array<string+uri>',
+                '',
                 [
                     'media_file',
                 ],

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsUri;
+namespace Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringUris;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsValueExtractorInterface;
 
@@ -10,7 +10,7 @@ use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStringsV
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ArrayOfStringsUriFromAssetCollectionMediaFileAttributeValueExtractor implements ArrayOfStringsValueExtractorInterface
+final class ArrayOfStringUrisFromAssetCollectionMediaFileAttributeValueExtractor implements ArrayOfStringsValueExtractorInterface
 {
     public function extract(
         array $product,

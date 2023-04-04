@@ -1,15 +1,13 @@
 {
   "$schema": "https://api.akeneo.com/mapping/product/0.0.13/schema",
-  "description": "The data should match one item from enum at #/properties/colors/items/type",
+  "description": "The data (integer) must match the type: object at #/properties/colors/items",
   "properties": {
     "uuid": {
       "type": "string"
     },
     "colors": {
       "type": "array",
-      "items": {
-        "type": 42
-      }
+      "items": 42
     }
   }
 }

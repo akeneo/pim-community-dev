@@ -1,14 +1,15 @@
 {
   "$schema": "https://api.akeneo.com/mapping/product/0.0.13/schema",
-  "description": "The data should match one item from enum at #/properties/colors/items/type",
+  "description": "The data should match one item from enum at #/properties/medias/items/format",
   "properties": {
     "uuid": {
       "type": "string"
     },
-    "colors": {
+    "medias": {
       "type": "array",
       "items": {
-        "type": 42
+        "type": "string",
+        "format": "unknown-enum"
       }
     }
   }
