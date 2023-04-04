@@ -51,6 +51,9 @@ final class TargetTypeConverter
         'array<string>' => [
             'text',
         ],
+        'string+uri' => [
+            'media_link',
+        ],
     ];
 
     /**
