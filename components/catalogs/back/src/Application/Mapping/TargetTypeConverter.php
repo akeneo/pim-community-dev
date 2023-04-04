@@ -31,6 +31,7 @@ final class TargetTypeConverter
             'pim_catalog_price_collection',
         ],
         'string' => [
+            'akeneo_reference_entity',
             'categories',
             'family',
             'pim_catalog_identifier',
@@ -60,6 +61,9 @@ final class TargetTypeConverter
     ];
 
     private const PIM_REFERENCE_ENTITY_ATTRIBUTE_TYPES = [
+        'string' => [
+            'text',
+        ],
         'string+uri' => [
             'image',
         ],

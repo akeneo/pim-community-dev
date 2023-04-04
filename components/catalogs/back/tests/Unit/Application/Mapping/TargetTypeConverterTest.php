@@ -71,6 +71,7 @@ class TargetTypeConverterTest extends TestCase
                 'string',
                 '',
                 [
+                    'akeneo_reference_entity',
                     'categories',
                     'family',
                     'pim_catalog_identifier',
@@ -128,6 +129,13 @@ class TargetTypeConverterTest extends TestCase
                 '',
                 [
                     'text',
+                ],
+                'string' => [
+                    'string',
+                    '',
+                    [
+                        'text',
+                    ],
                 ],
             ],
             'string' => [
