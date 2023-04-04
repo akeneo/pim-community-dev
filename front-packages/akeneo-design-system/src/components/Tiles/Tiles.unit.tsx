@@ -42,7 +42,7 @@ test('Tiles supports ...rest props', () => {
 
 test('It can be inline', () => {
   render(
-    <Tiles inline={true}>
+    <Tiles size={'inline'}>
       <Tile>inline</Tile>
     </Tiles>
   );
