@@ -1,28 +1,31 @@
-import {Button, SectionTitle} from "akeneo-design-system";
-import {Attribute} from "../../models";
-import React from "react";
-import {userContext, useTranslate} from "@akeneo-pim-community/shared";
-import styled from "styled-components";
+import {Button, SectionTitle} from 'akeneo-design-system';
+import {Attribute} from '../../models';
+import React from 'react';
+import {userContext, useTranslate} from '@akeneo-pim-community/shared';
+import styled from 'styled-components';
 
 type Props = {
-    attribute: Attribute;
+  attribute: Attribute;
 };
 
 export const AttributeSettings = ({attribute}: Props) => {
-    const translate = useTranslate();
-    const catalogLocale = userContext.get('catalogLocale');
-    return (
-        <SettingsContainer>
-            <SectionTitle sticky={0}>
-                <SectionTitle.Title>
-                    {attribute.labels[catalogLocale]}{' '}{translate('akeneo.category.template.attribute.settings.title')}
-                </SectionTitle.Title>
-            </SectionTitle><Footer sticky={0}>
-                <DeleteButton level="danger" ghost>{translate('akeneo.category.template.attribute.delete_button')}</DeleteButton>
-            </Footer>
-        </SettingsContainer>
-    );
-}
+  const translate = useTranslate();
+  const catalogLocale = userContext.get('catalogLocale');
+  return (
+    <SettingsContainer>
+      <SectionTitle sticky={0}>
+        <SectionTitle.Title>
+          {attribute.labels[catalogLocale]} {translate('akeneo.category.template.attribute.settings.title')}
+        </SectionTitle.Title>
+      </SectionTitle>
+      <Footer sticky={0}>
+        <DeleteButton level="danger" ghost>
+          {translate('akeneo.category.template.attribute.delete_button')}
+        </DeleteButton>
+      </Footer>
+    </SettingsContainer>
+  );
+};
 
 const SettingsContainer = styled.div`
   display: flex;

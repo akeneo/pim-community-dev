@@ -1,42 +1,44 @@
 import React from 'react';
 import {AttributesIllustration, Button, getFontSize, Link, useBooleanState} from 'akeneo-design-system';
-import {translate} from "@akeneo-pim-community/shared";
-import styled from "styled-components";
+import {translate} from '@akeneo-pim-community/shared';
+import styled from 'styled-components';
 import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
 
 interface Props {
-    templateId?: string;
-    title: string;
-    instructions: string;
-    createButton?: boolean;
+  templateId?: string;
+  title: string;
+  instructions: string;
+  createButton?: boolean;
 }
 
-export const NoTemplateAttribute = ({templateId, title, instructions, createButton = false}: Props) =>
-{
-    const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
-        useBooleanState(false);
+export const NoTemplateAttribute = ({templateId, title, instructions, createButton = false}: Props) => {
+  const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
+    useBooleanState(false);
 
-    return (
-        <NoAttributeSection>
-            <AttributesIllustration size={256} />
-            <Title>{title}</Title>
-            <Instructions>{instructions}</Instructions>
-            <Footer>
-                <Link href="https://help.akeneo.com/serenity-take-the-power-over-your-products/serenity-enrich-your-category" target="_blank">
-                    {translate('akeneo.category.template.learn_more')}
-                </Link>
-            </Footer>
-            {createButton && (
-                <Button level="secondary" onClick={openAddTemplateAttributeModal}>
-                {translate('akeneo.category.template.add_attribute.create_button')}
-            </Button>
-            )}
-            {isAddTemplateAttributeModalOpen && createButton && templateId && (
-                <AddTemplateAttributeModal templateId={templateId} onClose={closeAddTemplateAttributeModal} />
-            )}
-        </NoAttributeSection>
-    );
-}
+  return (
+    <NoAttributeSection>
+      <AttributesIllustration size={256} />
+      <Title>{title}</Title>
+      <Instructions>{instructions}</Instructions>
+      <Footer>
+        <Link
+          href="https://help.akeneo.com/serenity-take-the-power-over-your-products/serenity-enrich-your-category"
+          target="_blank"
+        >
+          {translate('akeneo.category.template.learn_more')}
+        </Link>
+      </Footer>
+      {createButton && (
+        <Button level="secondary" onClick={openAddTemplateAttributeModal}>
+          {translate('akeneo.category.template.add_attribute.create_button')}
+        </Button>
+      )}
+      {isAddTemplateAttributeModalOpen && createButton && templateId && (
+        <AddTemplateAttributeModal templateId={templateId} onClose={closeAddTemplateAttributeModal} />
+      )}
+    </NoAttributeSection>
+  );
+};
 
 const NoAttributeSection = styled.div`
   display: flex;
