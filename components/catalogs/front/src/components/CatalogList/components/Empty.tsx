@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {getColor, getFontSize, Link, ProductsIllustration} from 'akeneo-design-system';
+import {getColor, getFontSize, ProductsIllustration} from 'akeneo-design-system';
 import styled from 'styled-components';
 
 const EmptyContainer = styled.div`
@@ -27,7 +27,6 @@ const Empty: FC = () => {
                 <ProductsIllustration />
             </Illustration>
             <Message>{translate('akeneo_catalogs.catalog_list.empty')}</Message>
-            <Link href='#'>{translate('akeneo_catalogs.catalog_list.more_information')}</Link>
         </EmptyContainer>
     );
 };
