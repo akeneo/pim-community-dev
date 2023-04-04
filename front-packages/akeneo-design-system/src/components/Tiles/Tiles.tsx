@@ -1,51 +1,57 @@
-import React, {Ref, ReactNode, isValidElement, FC, useCallback, KeyboardEvent} from 'react';
+import React, {Ref, ReactNode, isValidElement, FC, useCallback, KeyboardEvent, ReactElement} from 'react';
 import styled, {css} from 'styled-components';
 import {IconProps} from '../../icons';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {Key, Override} from '../../';
 
-type Size = 'small' | 'big';
+type Size = 'small' | 'big' | 'inline';
 
-const TilesContainer = styled.div<{size: Size; inline: boolean} & AkeneoThemedProps>`
+const TilesContainer = styled.div<{size: Size} & AkeneoThemedProps>`
   display: grid;
-  ${({size, inline}) => {
-    if (inline) {
-      return css`
-        gap: 10px;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      `;
-    }
-
-    return size === 'small'
-      ? css`
+  ${({size}) => {
+    switch (size) {
+      case 'small': {
+        return css`
           gap: 20px;
           grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        `
-      : css`
+        `;
+      }
+      case 'big': {
+        return css`
           gap: 30px;
           grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         `;
-  }}
+      }
+      case 'inline': {
+        return css`
+          gap: 10px;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        `;
+      }
+    }
+  }};
 `;
 
-const TileContainer = styled.div<
-  {selected: boolean; size: Size; inline: boolean; onClick?: () => void} & AkeneoThemedProps
->`
+const TileContainer = styled.div<{selected: boolean; size: Size; onClick?: () => void} & AkeneoThemedProps>`
   margin: 1px;
-  ${({size, inline}) => {
-    if (inline) {
-      return css`
-        height: auto;
-      `;
-    }
-
-    return size === 'small'
-      ? css`
+  ${({size}) => {
+    switch (size) {
+      case 'small': {
+        return css`
           height: 130px;
-        `
-      : css`
+        `;
+      }
+      case 'big': {
+        return css`
           height: 200px;
         `;
+      }
+      case 'inline': {
+        return css`
+          height: auto;
+        `;
+      }
+    }
   }}
   transition: border-color 0.2s, color 0.2s, background 0.2s;
   ${({onClick}) =>
@@ -115,13 +121,12 @@ type TileProps = Override<
   {
     icon?: React.ReactElement<IconProps>;
     size?: Size;
-    inline?: boolean;
     selected?: boolean;
     onClick?: () => void;
   }
 >;
 
-const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', inline = false, onClick, children, ...rest}) => {
+const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', onClick, children, ...rest}) => {
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
       if (null !== event.currentTarget && event.key === Key.Enter) {
@@ -132,20 +137,20 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', inline = f
     [onClick]
   );
 
+  const displayIcon = (size: Size, icon: ReactElement<IconProps> | undefined): boolean => {
+    if (size === 'inline') {
+      return false;
+    }
+
+    return undefined !== icon;
+  };
+
   return (
-    <TileContainer
-      selected={selected}
-      size={size}
-      inline={inline}
-      onClick={onClick}
-      onKeyDown={handleKeyDown}
-      tabIndex={'0'}
-      {...rest}
-    >
-      {undefined === icon ? (
-        ''
-      ) : (
+    <TileContainer selected={selected} size={size} onClick={onClick} onKeyDown={handleKeyDown} tabIndex={'0'} {...rest}>
+      {displayIcon(size, icon) ? (
         <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
+      ) : (
+        ''
       )}
       <LabelContainer>{children}</LabelContainer>
     </TileContainer>
@@ -158,12 +163,12 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', inline = f
  * It is a visual component made up of an icon and a label..
  */
 const Tiles = React.forwardRef<HTMLDivElement, TilesProps>(
-  ({size = 'small', inline = false, children, ...rest}: TilesProps, forwardedRef: Ref<HTMLDivElement>) => {
+  ({size = 'small', children, ...rest}: TilesProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
-      <TilesContainer size={size} inline={inline} ref={forwardedRef} {...rest}>
+      <TilesContainer size={size} ref={forwardedRef} {...rest}>
         {React.Children.map(children, child => {
           if (isValidElement<TileProps>(child) && child.type === Tile) {
-            return React.cloneElement(child, {size, inline});
+            return React.cloneElement(child, {size});
           }
           throw new Error('A Tiles element can only have Tile children');
         })}
