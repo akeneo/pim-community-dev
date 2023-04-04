@@ -85,7 +85,7 @@
         "lcobucci/jwt": "~4.1.5",
         "league/flysystem": "^2.0",
         "league/flysystem-memory": "^2.0",
-        "liip/imagine-bundle": "2.6.1",
+        "liip/imagine-bundle": "2.9.0",
         "maennchen/zipstream-php": "^2.1",
         "monolog/monolog": "1.25.5",
         "ocramius/proxy-manager": "2.11.1",
