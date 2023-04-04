@@ -137,20 +137,12 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', onClick, c
     [onClick]
   );
 
-  const displayIcon = (size: Size, icon: ReactElement<IconProps> | undefined): boolean => {
-    if (size === 'inline') {
-      return false;
-    }
-
-    return undefined !== icon;
-  };
-
   return (
     <TileContainer selected={selected} size={size} onClick={onClick} onKeyDown={handleKeyDown} tabIndex={'0'} {...rest}>
-      {displayIcon(size, icon) ? (
-        <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
-      ) : (
+      {size === 'inline' || undefined === icon ? (
         ''
+      ) : (
+        <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
       )}
       <LabelContainer>{children}</LabelContainer>
     </TileContainer>
