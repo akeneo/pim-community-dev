@@ -127,6 +127,13 @@ class TargetTypeConverterTest extends TestCase
                     'text',
                 ],
             ],
+            'string' => [
+              'string',
+              'uri',
+              [
+                'media_link',
+              ],
+            ],
         ];
     }
 
