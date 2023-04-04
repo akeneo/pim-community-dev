@@ -51,8 +51,8 @@ class TargetTypeConverterTest extends TestCase
                 ],
             ],
             'array<string+uri>' => [
-                'array<string>',
-                'uri',
+                'array<string+uri>',
+                '',
                 [
                     'pim_catalog_asset_collection',
                 ],

@@ -35,11 +35,11 @@ final class ArrayOfStringUrisFromAssetCollectionMediaFileAttributeValueExtractor
 
     public function getSupportedTargetType(): string
     {
-        return self::TARGET_TYPE_ARRAY_OF_STRINGS;
+        return self::TARGET_TYPE_ARRAY_OF_STRING_URIS;
     }
 
     public function getSupportedTargetFormat(): ?string
     {
-        return self::TARGET_FORMAT_URI;
+        return null;
     }
 }
