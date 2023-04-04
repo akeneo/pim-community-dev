@@ -34,24 +34,24 @@ class SqlSimpleSelectNomenclatureRepositoryIntegration extends TestCase
             'group' => 'other',
             'localizable' => false,
             'scopable' => false,
-            'labels' => []
+            'labels' => [],
         ]);
 
         $this->createAttributeOption([
             'code' => 's',
             'attribute' => 'size',
-            'labels' => []
+            'labels' => [],
         ]);
         $this->createAttributeOption([
             'code' => 'm',
             'attribute' => 'size',
-            'labels' => []
+            'labels' => [],
         ]);
 
         $this->createAttributeOption([
             'code' => 'l',
             'attribute' => 'size',
-            'labels' => []
+            'labels' => [],
         ]);
     }
 
@@ -65,7 +65,8 @@ class SqlSimpleSelectNomenclatureRepositoryIntegration extends TestCase
             ['s' => 'small', 'm' => 'mediu']
         );
         $this->simpleSelectNomenclatureRepository->update(
-            'size', $simpleSelectNomenclatureDefinition
+            'size',
+            $simpleSelectNomenclatureDefinition
         );
 
         $this->assertSameNomenclatureDefinition($simpleSelectNomenclatureDefinition, $this->simpleSelectNomenclatureRepository->get('size'));
@@ -81,7 +82,8 @@ class SqlSimpleSelectNomenclatureRepositoryIntegration extends TestCase
             ['s' => 'small', 'm' => 'mediu']
         );
         $this->simpleSelectNomenclatureRepository->update(
-            'size', $simpleSelectNomenclatureDefinition
+            'size',
+            $simpleSelectNomenclatureDefinition
         );
 
         $updateSelectNomenclatureDefinition = new NomenclatureDefinition(
@@ -91,7 +93,8 @@ class SqlSimpleSelectNomenclatureRepositoryIntegration extends TestCase
             ['s' => null, 'l' => 'largo']
         );
         $this->simpleSelectNomenclatureRepository->update(
-            'size', $updateSelectNomenclatureDefinition
+            'size',
+            $updateSelectNomenclatureDefinition
         );
 
         $expected = new NomenclatureDefinition(
@@ -108,7 +111,8 @@ class SqlSimpleSelectNomenclatureRepositoryIntegration extends TestCase
     public function it_saves_and_updates_a_simple_select_nomenclature_with_different_case(): void
     {
         $this->simpleSelectNomenclatureRepository->update(
-            'sIzE', new NomenclatureDefinition(
+            'sIzE',
+            new NomenclatureDefinition(
                 '=',
                 5,
                 false,
@@ -145,7 +149,7 @@ class SqlSimpleSelectNomenclatureRepositoryIntegration extends TestCase
      *
      * @return AttributeInterface
      */
-    protected function createAttribute(array $data = []) : AttributeInterface
+    protected function createAttribute(array $data = []): AttributeInterface
     {
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
@@ -161,7 +165,7 @@ class SqlSimpleSelectNomenclatureRepositoryIntegration extends TestCase
      *
      * @return AttributeOptionInterface
      */
-    protected function createAttributeOption(array $data = []) : AttributeOptionInterface
+    protected function createAttributeOption(array $data = []): AttributeOptionInterface
     {
         $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
         $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, $data);

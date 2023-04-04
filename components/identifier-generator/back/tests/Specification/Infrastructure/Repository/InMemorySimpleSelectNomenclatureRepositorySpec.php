@@ -49,7 +49,7 @@ class InMemorySimpleSelectNomenclatureRepositorySpec extends ObjectBehavior
         ]);
     }
 
-    public function it_can_update_simple_select_nomenclatures(): void
+    public function it_can_update_simple_select_nomenclatures_while_ignoring_case(): void
     {
         $simpleSelectNomenclature = new NomenclatureDefinition(
             '=',
@@ -80,5 +80,23 @@ class InMemorySimpleSelectNomenclatureRepositorySpec extends ObjectBehavior
                 ['s' => 'sma', 'l' => 'lrg']
             ),
         ]);
+    }
+
+    public function it_can_retrieve_a_nomenclature_with_its_code_while_ignoring_case(): void
+    {
+        $simpleSelectNomenclature = new NomenclatureDefinition(
+            '=',
+            3,
+            false,
+            ['s' => 'sma', 'm' => 'med']
+        );
+
+        $this->update('size', $simpleSelectNomenclature);
+
+        $result = $this->get('size');
+        $result->shouldBeLike($simpleSelectNomenclature);
+
+        $resultWithCase = $this->get('siZE');
+        $resultWithCase->shouldBeLike($simpleSelectNomenclature);
     }
 }

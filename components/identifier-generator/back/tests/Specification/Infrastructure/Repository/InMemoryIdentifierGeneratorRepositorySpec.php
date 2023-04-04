@@ -201,7 +201,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
         $this->getAll()->shouldBeLike([$identifierGenerator]);
     }
 
-    public function it_can_reorder_generators(): void
+    public function it_can_reorder_generators_while_ignoring_case(): void
     {
         $identifierGenerator1 = new IdentifierGenerator(
             IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),

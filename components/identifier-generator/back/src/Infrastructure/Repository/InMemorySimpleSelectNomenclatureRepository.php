@@ -23,7 +23,7 @@ class InMemorySimpleSelectNomenclatureRepository implements SimpleSelectNomencla
 
     public function update(string $attributeCode, NomenclatureDefinition $nomenclatureDefinition): void
     {
-        if (array_key_exists(\mb_strtolower($attributeCode), $this->nomenclatureDefinitions)) {
+        if (\array_key_exists(\mb_strtolower($attributeCode), $this->nomenclatureDefinitions)) {
             $values = $this->nomenclatureDefinitions[\mb_strtolower($attributeCode)]->values();
         } else {
             $values = [];
