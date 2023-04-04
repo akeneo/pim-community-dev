@@ -38,7 +38,7 @@ const Body = styled.div`
   width: 550px;
   padding-left: 40px;
   margin-top: 2px;
-  overflow-y: auto; //TODO jouer avec ce CSS
+  overflow-y: auto;
   max-height: 55vh;
 `;
 
