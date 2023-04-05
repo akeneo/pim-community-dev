@@ -1,0 +1,6 @@
+services:
+  akeneo.installer.handler.install_pim:
+    class: Akeneo\Platform\Installer\Application\InstallPim\InstallPimHandler
+    public: true
+    arguments:
+      - '@akeneo.installer.fixtures.installer'

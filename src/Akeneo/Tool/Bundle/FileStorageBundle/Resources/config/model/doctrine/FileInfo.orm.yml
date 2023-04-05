@@ -2,6 +2,12 @@ Akeneo\Tool\Component\FileStorage\Model\FileInfo:
     type: entity
     repositoryClass: Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository
     table: akeneo_file_storage_file_info
+    indexes:
+        original_filename_hash_storage_idx:
+            columns:
+                - original_filename
+                - hash
+                - storage
     fields:
         id:
             type: integer

@@ -290,3 +290,10 @@ suites:
         psr4_prefix: Oro\Bundle\PimFilterBundle
         spec_path: src/Oro/Bundle/PimFilterBundle
         src_path: src/Oro/Bundle/PimFilterBundle
+
+    Installer:
+        namespace: Akeneo\Platform\Installer
+        psr4_prefix: Akeneo\Platform\Installer
+        spec_path: src/Akeneo/Platform/Installer/back/tests
+        src_path: src/Akeneo/Platform/Installer/back/src
+        spec_prefix: Specification

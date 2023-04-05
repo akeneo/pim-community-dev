@@ -19,4 +19,5 @@ return (new PhpCsFixer\Config())
             ->in(__DIR__ . '/tests/features')
             ->in(__DIR__ . '/tests/back/Acceptance')
             ->in(__DIR__ . '/src')
+            ->exclude('Akeneo/Platform/Installer')
     );
