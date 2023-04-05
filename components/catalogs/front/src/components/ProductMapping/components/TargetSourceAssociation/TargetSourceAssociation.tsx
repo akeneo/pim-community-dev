@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import {getColor, Pill, Table} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {SourceLabel} from './SourceLabel';
-import {Source} from '../models/Source';
+import {Source} from '../../models/Source';
+import {SourceDefaultValue} from './SourceDefaultValue';
 
 const TargetCell = styled(Table.Cell)`
     width: 215px;
@@ -41,16 +42,22 @@ export const TargetSourceAssociation: FC<Props> = memo(
                     {targetLabel ?? targetCode}
                     {isRequired && <RequiredPill level='warning' data-testid='required-pill' />}
                 </TargetCell>
-                {(null === source || null === source.source) && (
+                {null === source.source && (undefined === source.default || null === source.default) && (
                     <PlaceholderCell>
                         {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
                         {hasError && <ErrorPill data-testid='error-pill' level='danger' />}
                     </PlaceholderCell>
                 )}
-                {null !== source && 'uuid' === targetCode && <Table.Cell>UUID</Table.Cell>}
-                {null !== source && source.source && 'uuid' !== targetCode && (
+                {'uuid' === targetCode && <Table.Cell>UUID</Table.Cell>}
+                {null !== source.source && 'uuid' !== targetCode && (
                     <Table.Cell>
                         <SourceLabel sourceCode={source.source} />
+                        {hasError && <ErrorPill data-testid='error-pill' level='danger' />}
+                    </Table.Cell>
+                )}
+                {null === source.source && undefined !== source.default && null !== source.default && (
+                    <Table.Cell>
+                        <SourceDefaultValue sourceDefaultValue={source.default} />
                         {hasError && <ErrorPill data-testid='error-pill' level='danger' />}
                     </Table.Cell>
                 )}
