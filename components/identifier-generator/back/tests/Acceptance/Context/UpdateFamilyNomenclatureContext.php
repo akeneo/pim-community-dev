@@ -79,7 +79,7 @@ final class UpdateFamilyNomenclatureContext implements Context
      */
     public function theValueForFamilyShouldBe(string $familyCode, string $expectedValue): void
     {
-        $nomenclature = $this->nomenclatureRepository->get('family');
+        $nomenclature = $this->nomenclatureRepository->get();
         $value = ($nomenclature->values() ?? [])[$familyCode] ?? null;
         Assert::eq($expectedValue, $value ?: 'undefined');
     }
@@ -108,7 +108,7 @@ final class UpdateFamilyNomenclatureContext implements Context
      */
     public function theFamilyNomenclatureOperatorShouldBe(string $operator): void
     {
-        Assert::eq($this->nomenclatureRepository->get('family')->operator(), $operator);
+        Assert::eq($this->nomenclatureRepository->get()->operator(), $operator);
     }
 
     /**
@@ -116,7 +116,7 @@ final class UpdateFamilyNomenclatureContext implements Context
      */
     public function theFamilyNomenclatureValueShouldBe(string $value): void
     {
-        Assert::eq($this->nomenclatureRepository->get('family')->value(), \intval($value));
+        Assert::eq($this->nomenclatureRepository->get()->value(), \intval($value));
     }
 
     /**
@@ -124,6 +124,6 @@ final class UpdateFamilyNomenclatureContext implements Context
      */
     public function theFamilyNomenclatureGenerationIfEmptyShouldBe(string $generateIfEmpty): void
     {
-        Assert::eq($this->nomenclatureRepository->get('family')->generateIfEmpty(), $generateIfEmpty === 'true');
+        Assert::eq($this->nomenclatureRepository->get()->generateIfEmpty(), $generateIfEmpty === 'true');
     }
 }

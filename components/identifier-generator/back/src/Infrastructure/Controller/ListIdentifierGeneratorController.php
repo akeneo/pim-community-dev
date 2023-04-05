@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorsCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorsHandler;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,7 +20,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 final class ListIdentifierGeneratorController
 {
     public function __construct(
-        private readonly IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly GetGeneratorsHandler $getGeneratorsHandler,
         private readonly SecurityFacadeInterface $security,
     ) {
     }
@@ -35,9 +36,9 @@ final class ListIdentifierGeneratorController
             throw new AccessDeniedException();
         }
 
-        $identifiersGenerators = $this->identifierGeneratorRepository->getAll();
-        $result = \array_map(fn ($identifierGenerator) => $identifierGenerator->normalize(), $identifiersGenerators);
-
-        return new JsonResponse($result, Response::HTTP_OK);
+        return new JsonResponse(
+            ($this->getGeneratorsHandler)(new GetGeneratorsCommand()),
+            Response::HTTP_OK
+        );
     }
 }

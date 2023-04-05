@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -120,7 +121,7 @@ class InMemoryIdentifierGeneratorRepositorySpec extends ObjectBehavior
 
     public function it_returns_null_if_identifier_generator_is_not_found(): void
     {
-        $this->get('unknown')->shouldReturn(null);
+        $this->shouldThrow(CouldNotFindIdentifierGeneratorException::class)->during('get', ['unknown']);
     }
 
     public function it_counts_identifier_generators(): void
