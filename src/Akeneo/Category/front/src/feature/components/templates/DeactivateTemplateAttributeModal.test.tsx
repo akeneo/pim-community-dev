@@ -1,30 +1,31 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
-import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
+import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import userEvent from '@testing-library/user-event';
 
 const queryClient = new QueryClient();
 
-test('It sends the form with new attribute code', async () => {
+test('It sends the templateUuid and AttributeUuid for attribute deletion', async () => {
   const jestSpy = jest.spyOn(window, 'fetch').mockResolvedValueOnce(new Response('{}'));
 
   renderWithProviders(
     <QueryClientProvider client={queryClient}>
-      <AddTemplateAttributeModal templateId={'73962f60-e216-4046-82d8-cd06110207cc'} onClose={jest.fn()} />
+      <DeactivateTemplateAttributeModal
+          templateUuid={'3f501763-8c7b-4dad-bd01-b0b827233d7e'}
+          attribute={{uuid: '4f447ed9-b0af-49ff-b4ce-6b1e06c1aa83', label: 'attributeLabel'}}
+          onClose={jest.fn()}
+      />
     </QueryClientProvider>
   );
 
-  userEvent.type(screen.getByLabelText(/pim_common.code/), 'new_attribute');
-
   await act(async () => {
-    await userEvent.click(screen.getByText('akeneo.category.template.add_attribute.confirmation_modal.create'));
+    await userEvent.click(screen.getByText('pim_common.delete'));
   });
 
-  expect(jestSpy).toHaveBeenCalledWith('pim_category_template_rest_add_attribute', {
-    method: 'POST',
-    body: '{"code":"new_attribute","label":"","type":"text","is_localizable":false,"is_scopable":false}',
+  expect(jestSpy).toHaveBeenCalledWith('pim_category_template_rest_delete_attribute', {
+    method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       'X-Requested-With': 'XMLHttpRequest',
