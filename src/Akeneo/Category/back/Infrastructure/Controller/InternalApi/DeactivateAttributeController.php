@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
-use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Application\Command\DeactivateAttributeCommand;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;

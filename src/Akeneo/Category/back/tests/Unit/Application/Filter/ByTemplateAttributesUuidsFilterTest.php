@@ -58,11 +58,6 @@ class ByTemplateAttributesUuidsFilterTest extends TestCase
     {
         return json_decode(
             '{
-                "attribute_codes": [
-                    "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233",
-                    "url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911",
-                    "seo_keywords|0175e701-fde6-4215-91ea-8e2992a7866f"
-                ],
                 "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|ecommerce|fr_FR": {
                     "data": "<p>Ma description enrichie pour le ecommerce</p>\n",
                     "type": "textarea",

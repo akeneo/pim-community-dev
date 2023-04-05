@@ -56,11 +56,6 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration e
 
         $this->get('database_connection')->executeQuery($query, [
             'value_collection' => json_encode([
-                'attribute_codes' => [
-                    'long_description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950',
-                    'short_description' . AbstractValue::SEPARATOR . '8dda490c-0fd1-4485-bdc5-342929783d9a',
-                    'photo' . AbstractValue::SEPARATOR . '8587cda6-58c8-47fa-9278-033e1d8c735c',
-                ],
                 'long_description' . AbstractValue::SEPARATOR . '840fcd1a-f66b-4f0c-9bbd-596629732950' . AbstractValue::SEPARATOR . $channel . AbstractValue::SEPARATOR . 'en_US' => [
                     'data' => 'All the shoes you need!',
                     'type' => 'text',

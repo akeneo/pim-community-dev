@@ -22,7 +22,7 @@ class DeleteCategoryTemplateAttributeSql implements DeleteTemplateAttribute
     ) {
     }
 
-    public function delete(TemplateUuid $templateUuid, AttributeUuid $attributeUuid): void
+    public function __invoke(TemplateUuid $templateUuid, AttributeUuid $attributeUuid): void
     {
         if (($this->isTemplateDeactivated)($templateUuid)) {
             return;

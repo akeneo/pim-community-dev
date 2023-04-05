@@ -7,5 +7,5 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 interface DeleteTemplateAttribute
 {
-    public function delete(TemplateUuid $templateUuid, AttributeUuid $attributeUuid): void;
+    public function __invoke(TemplateUuid $templateUuid, AttributeUuid $attributeUuid): void;
 }

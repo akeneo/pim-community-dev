@@ -41,6 +41,6 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler
             $this->categoryDataCleaner->cleanByTemplateAttributesUuid($valuesByCode, $templateAttributes);
         }
 
-        $this->deleteTemplateAttribute->delete($templateUuid, $attributeUuid);
+        ($this->deleteTemplateAttribute)($templateUuid, $attributeUuid);
     }
 }
