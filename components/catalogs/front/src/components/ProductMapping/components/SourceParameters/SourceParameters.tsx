@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import {Source} from '../../models/Source';
 import {SourceErrors} from '../../models/SourceErrors';
 import {SelectLabelLocaleDropdown} from './SelectLabelLocaleDropdown';
@@ -28,14 +28,30 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
     const translate = useTranslate();
     const {data: attribute} = useAttribute(source?.source ?? '');
 
+    const handleParametersChange = useCallback(
+        newParameters => onChange({...source, parameters: {...source.parameters, ...newParameters}}),
+        [source, onChange]
+    );
+    const handleDefaultValueChange = useCallback(
+        newValue => {
+            const newSource = {...source, default: newValue};
+            if (undefined === newValue) {
+                delete newSource.default;
+            }
+
+            onChange(newSource);
+        },
+        [source, onChange]
+    );
+
     const components = [];
 
     if (undefined !== attribute && null !== source && undefined !== source.parameters) {
         if (undefined !== source.parameters.label_locale) {
             components.push(
                 <SelectLabelLocaleDropdown
-                    source={source}
-                    onChange={onChange}
+                    locale={source.parameters.label_locale}
+                    onChange={newLocale => handleParametersChange({label_locale: newLocale})}
                     error={errors?.parameters?.label_locale}
                     disabled={attribute.scopable && source.scope === null}
                     key={'select_label_dropdown'}
@@ -46,8 +62,8 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
         if (undefined !== source.parameters.currency && !attribute.scopable) {
             components.push(
                 <SelectCurrencyDropdown
-                    source={source}
-                    onChange={onChange}
+                    currency={source.parameters.currency}
+                    onChange={newCurrency => handleParametersChange({currency: newCurrency})}
                     error={errors?.parameters?.currency}
                     key={'select_currency_dropdown'}
                 />
@@ -57,8 +73,9 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
         if (undefined !== source.parameters.currency && attribute.scopable) {
             components.push(
                 <SelectChannelCurrencyDropdown
-                    source={source}
-                    onChange={onChange}
+                    currency={source.parameters.currency}
+                    channel={source.scope}
+                    onChange={newCurrency => handleParametersChange({currency: newCurrency})}
                     error={errors?.parameters?.currency}
                     disabled={attribute.scopable && source.scope === null}
                     key={'select_channel_currency_dropdown'}
@@ -69,10 +86,10 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
         if (undefined !== source.parameters.unit) {
             components.push(
                 <SelectMeasurementUnitDropdown
-                    source={source}
-                    onChange={onChange}
+                    unit={source.parameters.unit}
+                    onChange={newUnit => handleParametersChange({unit: newUnit})}
                     error={errors?.source}
-                    measurementFamily={attribute?.measurement_family ?? null}
+                    measurementFamily={attribute.measurement_family ?? ''}
                     key={'select_channel_measurementunit_dropdown'}
                 />
             );
@@ -88,12 +105,12 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
     if (['string', 'boolean', 'number'].includes(targetTypeKey)) {
         components.push(
             <DefaultValue
-                source={source}
-                onChange={onChange}
+                value={source.default}
+                onChange={handleDefaultValueChange}
                 error={errors?.default}
                 targetTypeKey={targetTypeKey}
                 key={'no_parameters'}
-            ></DefaultValue>
+            />
         );
     }
 
@@ -110,7 +127,7 @@ export const SourceParameters: FC<Props> = ({source, errors, onChange, target}) 
             <SourceSectionTitle order={2}>
                 {translate('akeneo_catalogs.product_mapping.source.parameters.title')}
             </SourceSectionTitle>
-            {components.map(component => component)}
+            {components}
         </>
     );
 };

@@ -1,25 +1,25 @@
 import React, {FC} from 'react';
 import {Helper, Locale, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Source} from '../../models/Source';
 import {useChannelLocales} from '../../../../hooks/useChannelLocales';
 
 type Props = {
-    source: Source;
-    onChange: (source: Source) => void;
+    channel: string | null;
+    locale: string | null;
+    onChange: (locale: string) => void;
     error: string | undefined;
     disabled: boolean;
 };
 
-export const SelectChannelLocaleDropdown: FC<Props> = ({source, onChange, error, disabled}) => {
+export const SelectChannelLocaleDropdown: FC<Props> = ({channel, locale, onChange, error, disabled}) => {
     const translate = useTranslate();
-    const {data: locales} = useChannelLocales(source.scope);
+    const {data: locales} = useChannelLocales(channel);
 
     return (
         <>
             <SelectInput
-                value={source.locale}
-                onChange={newLocale => onChange({...source, locale: newLocale})}
+                value={locale}
+                onChange={onChange}
                 clearable={false}
                 invalid={error !== undefined}
                 emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}

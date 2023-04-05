@@ -2,28 +2,27 @@ import React, {FC} from 'react';
 import {Helper, Locale as LocaleLabel, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useUniqueEntitiesByCode} from '../../../../hooks/useUniqueEntitiesByCode';
-import {Source} from '../../models/Source';
 import {useInfiniteLocales} from '../../../../hooks/useInfiniteLocales';
 import {useLocalesByCodes} from '../../../../hooks/useLocalesByCodes';
 import {Locale} from '../../../../models/Locale';
 
 type Props = {
-    source: Source;
-    onChange: (source: Source) => void;
+    locale: string | null;
+    onChange: (locale: string) => void;
     error: string | undefined;
 };
 
-export const SelectLocaleDropdown: FC<Props> = ({source, onChange, error}) => {
+export const SelectLocaleDropdown: FC<Props> = ({locale, onChange, error}) => {
     const translate = useTranslate();
-    const {data: selected} = useLocalesByCodes([source.locale ?? '']);
+    const {data: selected} = useLocalesByCodes([locale ?? '']);
     const {data: results, fetchNextPage} = useInfiniteLocales();
     const locales = useUniqueEntitiesByCode<Locale>(selected, results);
 
     return (
         <>
             <SelectInput
-                value={source.locale}
-                onChange={newLocale => onChange({...source, locale: newLocale})}
+                value={locale}
+                onChange={onChange}
                 onNextPage={fetchNextPage}
                 clearable={false}
                 invalid={error !== undefined}

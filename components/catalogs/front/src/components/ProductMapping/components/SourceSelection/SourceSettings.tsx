@@ -1,4 +1,4 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC} from 'react';
 import {SelectChannelDropdown} from './SelectChannelDropdown';
 import {SelectLocaleDropdown} from './SelectLocaleDropdown';
 import {SelectChannelLocaleDropdown} from './SelectChannelLocaleDropdown';
@@ -23,6 +23,28 @@ const BulletLine = styled.div`
     align-items: center;
 `;
 
+const prefillEmptySourceValue = (source: Source, attributeType: string) => {
+    if (
+        (attributeType === 'pim_catalog_simpleselect' || attributeType === 'pim_catalog_multiselect') &&
+        (undefined === source.parameters?.label_locale || null === source.parameters?.label_locale)
+    ) {
+        return {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
+    }
+
+    if (
+        ['categories', 'family', 'status'].includes(source.source ?? '') &&
+        (undefined === source.parameters?.label_locale || null === source.parameters?.label_locale)
+    ) {
+        return {...source, parameters: {...source.parameters, label_locale: null}};
+    }
+
+    if (attributeType === 'pim_catalog_price_collection' && !(source.parameters?.currency ?? false)) {
+        return {...source, parameters: {...source.parameters, currency: null}};
+    }
+
+    return source;
+};
+
 type Props = {
     source: Source;
     attribute: Attribute;
@@ -31,54 +53,44 @@ type Props = {
 };
 
 export const SourceSettings: FC<Props> = ({source, attribute, errors, onChange}) => {
-    const onChangeMiddleware = useCallback(
-        source => {
-            if (
-                (attribute.type === 'pim_catalog_simpleselect' || attribute.type === 'pim_catalog_multiselect') &&
-                (undefined === source.parameters?.label_locale || null === source.parameters?.label_locale)
-            ) {
-                source = {...source, parameters: {...source.parameters, label_locale: source.locale ?? null}};
-            }
+    const onChangeMiddleware = (newSource: Source) => {
+        onChange(prefillEmptySourceValue(newSource, attribute.type));
+    };
 
-            if (
-                ['categories', 'family', 'status'].includes(source.source) &&
-                (undefined === source.parameters?.label_locale || null === source.parameters?.label_locale)
-            ) {
-                source = {...source, parameters: {...source.parameters, label_locale: null}};
-            }
+    const handleChannelChange = (newChannel: string) =>
+        onChangeMiddleware({
+            ...source,
+            scope: newChannel,
+            locale: null,
+        });
 
-            if (attribute?.type === 'pim_catalog_price_collection' && !(source.parameters.currency ?? false)) {
-                source = {...source, parameters: {...source.parameters, currency: null}};
-            }
+    const handleLocaleChange = (newLocale: string) => onChangeMiddleware({...source, locale: newLocale});
 
-            if (attribute?.type === 'pim_catalog_metric') {
-                source = {...source, parameters: {...source.parameters, unit: attribute.default_measurement_unit}};
-            }
-            onChange(source);
-        },
-
-        [onChange, attribute]
-    );
     return (
         <>
             {attribute.scopable && (
                 <BulletLine>
                     <Bullet />
-                    <SelectChannelDropdown source={source} onChange={onChangeMiddleware} error={errors?.scope} />
+                    <SelectChannelDropdown
+                        channel={source.scope}
+                        onChange={handleChannelChange}
+                        error={errors?.scope}
+                    />
                 </BulletLine>
             )}
             {attribute.localizable && !attribute.scopable && (
                 <BulletLine>
                     <Bullet />
-                    <SelectLocaleDropdown source={source} onChange={onChangeMiddleware} error={errors?.locale} />
+                    <SelectLocaleDropdown locale={source.locale} onChange={handleLocaleChange} error={errors?.locale} />
                 </BulletLine>
             )}
             {attribute.localizable && attribute.scopable && (
                 <BulletLine>
                     <Bullet />
                     <SelectChannelLocaleDropdown
-                        source={source}
-                        onChange={onChangeMiddleware}
+                        channel={source.scope}
+                        locale={source.locale}
+                        onChange={handleLocaleChange}
                         error={errors?.locale}
                         disabled={source.scope === null}
                     />

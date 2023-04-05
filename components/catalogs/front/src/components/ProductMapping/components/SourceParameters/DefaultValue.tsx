@@ -1,21 +1,44 @@
 import React, {FC, useCallback} from 'react';
 import {BooleanInput, Field, Helper, NumberInput, TextInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Source} from '../../models/Source';
 import styled from 'styled-components';
 
 const DefaultField = styled(Field)`
     margin-top: 10px;
 `;
 
+const sanitizeDefaultValue = (value: string | boolean | null, targetTypeKey: string): DefaultValue => {
+    if (targetTypeKey === 'string' && value === '') {
+        return undefined;
+    }
+    if (targetTypeKey === 'boolean' && value === null) {
+        return undefined;
+    }
+    if (targetTypeKey === 'number' && value === '') {
+        return undefined;
+    }
+
+    if (targetTypeKey === 'number' && typeof value === 'string' && value !== '') {
+        return parseFloat(value);
+    }
+
+    return value;
+};
+
+type DefaultValue = string | boolean | number | null | undefined;
 type Props = {
-    source: Source;
-    onChange: (source: Source) => void;
+    value: DefaultValue;
+    onChange: (newValue: DefaultValue) => void;
     error: string | undefined;
     targetTypeKey: string;
 };
-export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}) => {
+export const DefaultValue: FC<Props> = ({value, onChange, error, targetTypeKey}) => {
     const translate = useTranslate();
+
+    const onChangeMiddleware = useCallback(
+        newValue => onChange(sanitizeDefaultValue(newValue, targetTypeKey)),
+        [onChange, targetTypeKey]
+    );
 
     let element: JSX.Element | null = null;
 
@@ -24,11 +47,11 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}
             element = (
                 <TextInput
                     data-testid={'string-default-value'}
-                    onChange={value => onChangeMiddleware({...source, default: value})}
+                    onChange={onChangeMiddleware}
                     placeholder={translate(
                         'akeneo_catalogs.product_mapping.source.parameters.default_value.placeholder'
                     )}
-                    value={typeof source.default === 'string' ? source.default : ''}
+                    value={typeof value === 'string' ? value : ''}
                 />
             );
             break;
@@ -36,12 +59,12 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}
             element = (
                 <BooleanInput
                     data-testid={'boolean-default-value'}
-                    onChange={value => onChangeMiddleware({...source, default: value})}
+                    onChange={onChangeMiddleware}
                     clearLabel='Clear value'
                     clearable
                     noLabel='No'
                     yesLabel='Yes'
-                    value={typeof source.default === 'boolean' ? source.default : null}
+                    value={typeof value === 'boolean' ? value : null}
                     readOnly={false}
                 />
             );
@@ -50,35 +73,15 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}
             element = (
                 <NumberInput
                     data-testid={'number-default-value'}
-                    onChange={value => onChangeMiddleware({...source, default: value})}
+                    onChange={onChangeMiddleware}
                     placeholder={translate(
                         'akeneo_catalogs.product_mapping.source.parameters.default_value.placeholder'
                     )}
-                    value={typeof source.default === 'number' ? source.default.toString() : ''}
+                    value={typeof value === 'number' ? value.toString() : ''}
                 />
             );
             break;
     }
-
-    const onChangeMiddleware = useCallback(
-        source => {
-            if (targetTypeKey === 'string' && source.default === '') {
-                delete source.default;
-            }
-            if (targetTypeKey === 'boolean' && source.default === null) {
-                delete source.default;
-            }
-            if (targetTypeKey === 'number') {
-                if (source.default === '') {
-                    delete source.default;
-                } else {
-                    source.default = parseFloat(source.default);
-                }
-            }
-            onChange(source);
-        },
-        [onChange, targetTypeKey]
-    );
 
     if (null === element) {
         return null;

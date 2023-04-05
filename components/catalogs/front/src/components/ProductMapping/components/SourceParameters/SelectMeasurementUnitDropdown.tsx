@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Source} from '../../models/Source';
 import {useMeasurements} from '../../../../hooks/useMeasurements';
 
 const DropdownField = styled(Field)`
@@ -10,21 +9,21 @@ const DropdownField = styled(Field)`
 `;
 
 type Props = {
-    source: Source;
-    onChange: (source: Source) => void;
+    unit: string | null;
+    onChange: (newUnit: string) => void;
     error: string | undefined;
-    measurementFamily: string | null;
+    measurementFamily: string;
 };
 
-export const SelectMeasurementUnitDropdown: FC<Props> = ({source, onChange, error, measurementFamily}) => {
+export const SelectMeasurementUnitDropdown: FC<Props> = ({unit, onChange, error, measurementFamily}) => {
     const translate = useTranslate();
-    const {data: measurementUnits} = useMeasurements(measurementFamily ?? '');
+    const {data: measurementUnits} = useMeasurements(measurementFamily);
     return (
         <>
             <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.unit.label')}>
                 <SelectInput
-                    value={source.parameters?.unit ?? null}
-                    onChange={newUnit => onChange({...source, parameters: {...source.parameters, unit: newUnit}})}
+                    value={unit}
+                    onChange={onChange}
                     clearable={false}
                     invalid={error !== undefined}
                     emptyResultLabel={translate('akeneo_catalogs.common.select.no_matches')}

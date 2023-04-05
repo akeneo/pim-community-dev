@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {Field, Helper, Locale as LocaleLabel, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useUniqueEntitiesByCode} from '../../../../hooks/useUniqueEntitiesByCode';
-import {Source} from '../../models/Source';
 import {useInfiniteLocales} from '../../../../hooks/useInfiniteLocales';
 import {useLocalesByCodes} from '../../../../hooks/useLocalesByCodes';
 import {Locale} from '../../../../models/Locale';
@@ -13,25 +12,23 @@ const DropdownField = styled(Field)`
 `;
 
 type Props = {
-    source: Source;
-    onChange: (source: Source) => void;
+    locale: string | null;
+    onChange: (newLocale: string) => void;
     error: string | undefined;
     disabled: boolean;
 };
 
-export const SelectLabelLocaleDropdown: FC<Props> = ({source, onChange, error, disabled}) => {
+export const SelectLabelLocaleDropdown: FC<Props> = ({locale, onChange, error, disabled}) => {
     const translate = useTranslate();
-    const {data: selected} = useLocalesByCodes([source.parameters?.label_locale ?? '']);
+    const {data: selected} = useLocalesByCodes([locale ?? '']);
     const {data: results, fetchNextPage} = useInfiniteLocales();
     const locales = useUniqueEntitiesByCode<Locale>(selected, results);
 
     return (
         <DropdownField label={translate('akeneo_catalogs.product_mapping.source.parameters.label_locale.label')}>
             <SelectInput
-                value={source.parameters?.label_locale ?? null}
-                onChange={newLocale =>
-                    onChange({...source, parameters: {...source.parameters, label_locale: newLocale}})
-                }
+                value={locale}
+                onChange={onChange}
                 onNextPage={fetchNextPage}
                 clearable={false}
                 invalid={error !== undefined}

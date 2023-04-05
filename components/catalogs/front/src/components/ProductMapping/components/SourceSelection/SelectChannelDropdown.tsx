@@ -5,25 +5,24 @@ import {useInfiniteChannels} from '../../../../hooks/useInfiniteChannels';
 import {useUniqueEntitiesByCode} from '../../../../hooks/useUniqueEntitiesByCode';
 import {Channel} from '../../../../models/Channel';
 import {useChannel} from '../../../../hooks/useChannel';
-import {Source} from '../../models/Source';
 
 type Props = {
-    source: Source;
-    onChange: (source: Source) => void;
+    channel: string | null;
+    onChange: (channel: string) => void;
     error: string | undefined;
 };
 
-export const SelectChannelDropdown: FC<Props> = ({source, onChange, error}) => {
+export const SelectChannelDropdown: FC<Props> = ({channel, onChange, error}) => {
     const translate = useTranslate();
-    const {data: selected} = useChannel(source.scope);
+    const {data: selected} = useChannel(channel);
     const {data: results, fetchNextPage} = useInfiniteChannels();
     const channels = useUniqueEntitiesByCode<Channel>(selected ? [selected] : [], results);
 
     return (
         <>
             <SelectInput
-                value={source.scope}
-                onChange={newChannel => onChange({...source, scope: newChannel, locale: null})}
+                value={channel}
+                onChange={onChange}
                 onNextPage={fetchNextPage}
                 clearable={false}
                 invalid={error !== undefined}
