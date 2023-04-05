@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -15,8 +16,9 @@ use Webmozart\Assert\Assert;
  */
 final class UniqueIdentifierGeneratorCodeValidator extends ConstraintValidator
 {
-    public function __construct(private readonly IdentifierGeneratorRepository $repository)
-    {
+    public function __construct(
+        private readonly IdentifierGeneratorRepository $repository
+    ) {
     }
 
     /**
@@ -28,8 +30,13 @@ final class UniqueIdentifierGeneratorCodeValidator extends ConstraintValidator
         if (!\is_string($value)) {
             return;
         }
-        if (null !== $this->repository->get($value)) {
-            $this->context->buildViolation($constraint->message)->addViolation();
+
+        try {
+            $this->repository->get($value);
+        } catch (CouldNotFindIdentifierGeneratorException) {
+            return;
         }
+
+        $this->context->buildViolation($constraint->message)->addViolation();
     }
 }

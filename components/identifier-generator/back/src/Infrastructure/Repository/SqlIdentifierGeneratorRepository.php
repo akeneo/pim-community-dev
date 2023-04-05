@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToDeleteIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToFetchIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSaveIdentifierGeneratorException;
@@ -120,12 +121,8 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function get(string $identifierGeneratorCode): ?IdentifierGenerator
+    public function get(string $identifierGeneratorCode): IdentifierGenerator
     {
-        if ('' === \trim($identifierGeneratorCode)) {
-            return null;
-        }
-
         $sql = <<<SQL
 SELECT
     BIN_TO_UUID(uuid) AS uuid,
@@ -145,15 +142,14 @@ SQL;
 
         try {
             $result = $stmt->executeQuery()->fetchAssociative();
-        } catch (DriverException) {
+            if (!$result) {
+                throw new CouldNotFindIdentifierGeneratorException($identifierGeneratorCode);
+            }
+
+            return $this->fromDatabaseToModel($result);
+        } catch (DriverException | \InvalidArgumentException) {
             throw new UnableToFetchIdentifierGeneratorException(\sprintf('Cannot fetch the identifier generator "%s"', $identifierGeneratorCode));
         }
-
-        if (!$result) {
-            return null;
-        }
-
-        return $this->fromDatabaseToModel($result);
     }
 
     /**
@@ -241,6 +237,8 @@ SQL;
      */
     public function delete(string $identifierGeneratorCode): void
     {
+        $this->get($identifierGeneratorCode);
+
         $sql = <<<SQL
 DELETE FROM pim_catalog_identifier_generator
 WHERE code=:code

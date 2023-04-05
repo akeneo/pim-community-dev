@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Integration\Repository;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSaveIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
@@ -104,9 +105,8 @@ class SqlIdentifierGeneratorRepositoryIntegration extends TestCase
     /** @test */
     public function its_gets_an_unknown_identifier_generator(): void
     {
-        $identifierGenerator = $this->identifierGeneratorRepository->get('unknown');
-
-        Assert::assertEquals($identifierGenerator, null);
+        $this->expectException(CouldNotFindIdentifierGeneratorException::class);
+        $this->identifierGeneratorRepository->get('unknown');
     }
 
     /** @test */

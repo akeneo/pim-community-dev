@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -25,7 +25,7 @@ final class UpdateIdentifierGeneratorController
 {
     public function __construct(
         private readonly UpdateGeneratorHandler $updateGeneratorHandler,
-        private readonly IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly GetGeneratorHandler $getGeneratorHandler,
         private readonly SecurityFacadeInterface $security,
     ) {
     }
@@ -56,10 +56,10 @@ final class UpdateIdentifierGeneratorController
             return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         }
 
-        $identifierGeneratorUpdated = $this->identifierGeneratorRepository->get($code);
-        Assert::notNull($identifierGeneratorUpdated);
-
-        return new JsonResponse($identifierGeneratorUpdated->normalize(), Response::HTTP_OK);
+        return new JsonResponse(
+            ($this->getGeneratorHandler)(GetGeneratorCommand::fromCode($code)),
+            Response::HTTP_OK
+        );
     }
 
     /**

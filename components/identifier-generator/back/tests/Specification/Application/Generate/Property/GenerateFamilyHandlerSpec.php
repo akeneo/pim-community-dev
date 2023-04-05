@@ -184,7 +184,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         $identifierGenerator = $this->getIdentifierGenerator($family);
 
         $familyNomenclatureRepository
-            ->get('family')
+            ->get()
             ->shouldBeCalled()
             ->willReturn(null);
 
@@ -212,7 +212,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
         $identifierGenerator = $this->getIdentifierGenerator($family);
 
         $familyNomenclatureRepository
-            ->get('family')
+            ->get()
             ->shouldBeCalled()
             ->willReturn(null);
 
@@ -241,7 +241,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
 
         $nomenclatureFamily = new NomenclatureDefinition('=', 3, false, ['familyCode' => 'ab']);
         $familyNomenclatureRepository
-            ->get('family')
+            ->get()
             ->shouldBeCalledOnce()
             ->willReturn($nomenclatureFamily);
 
@@ -270,7 +270,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
 
         $nomenclatureFamily = new NomenclatureDefinition('<=', 3, false, ['familyCode' => 'abcd']);
         $familyNomenclatureRepository
-            ->get('family')
+            ->get()
             ->shouldBeCalledOnce()
             ->willReturn($nomenclatureFamily);
 
@@ -299,7 +299,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
 
         $nomenclatureFamily = new NomenclatureDefinition('<=', 3, false, ['familyCode' => 'abc']);
         $familyNomenclatureRepository
-            ->get('family')
+            ->get()
             ->shouldBeCalledOnce()
             ->willReturn($nomenclatureFamily);
 
@@ -325,7 +325,7 @@ class GenerateFamilyHandlerSpec extends ObjectBehavior
 
         $nomenclatureFamily = new NomenclatureDefinition('<=', 3, true, []);
         $familyNomenclatureRepository
-            ->get('family')
+            ->get()
             ->shouldBeCalledOnce()
             ->willReturn($nomenclatureFamily);
 

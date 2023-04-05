@@ -11,7 +11,7 @@ type Result = {
 };
 
 export const useAttribute = (code: string): Result => {
-    const systemAttributes = useSystemAttributes();
+    const systemAttributes = useSystemAttributes({target: null, search: null});
     const systemAttribute = systemAttributes.find(systemAttribute => systemAttribute.code === code) ?? null;
     return useQuery<Attribute, Error, Attribute>(['attribute', code], async () => {
         if ('' === code) {

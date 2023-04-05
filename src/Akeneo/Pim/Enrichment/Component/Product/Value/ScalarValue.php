@@ -55,6 +55,12 @@ class ScalarValue extends AbstractValue implements ValueInterface
             return false;
         }
 
+        if (\is_numeric($value->getData()) && \is_numeric($this->getData())) {
+            return $this->getScopeCode() === $value->getScopeCode() &&
+                $this->getLocaleCode() === $value->getLocaleCode() &&
+                bccomp($value->getData(), $this->getData()) === 0;
+        }
+
         return $this->getScopeCode() === $value->getScopeCode() &&
             $this->getLocaleCode() === $value->getLocaleCode() &&
             $value->getData() === $this->getData();

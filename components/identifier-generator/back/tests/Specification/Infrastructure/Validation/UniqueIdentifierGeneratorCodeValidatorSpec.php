@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\EmptyIdentifier;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
@@ -58,7 +59,10 @@ class UniqueIdentifierGeneratorCodeValidatorSpec extends ObjectBehavior
         IdentifierGeneratorRepository $repository,
         ExecutionContext $context
     ): void {
-        $repository->get('new_identifier_code')->shouldBeCalled()->willReturn(null);
+        $repository
+            ->get('new_identifier_code')
+            ->shouldBeCalled()
+            ->willThrow(new CouldNotFindIdentifierGeneratorException('new_identifier_code'));
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate('new_identifier_code', new UniqueIdentifierGeneratorCode());

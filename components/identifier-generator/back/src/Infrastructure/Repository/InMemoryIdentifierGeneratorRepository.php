@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
@@ -34,11 +35,11 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
     /**
      * {@inheritdoc}
      */
-    public function get(string $identifierGeneratorCode): ?IdentifierGenerator
+    public function get(string $identifierGeneratorCode): IdentifierGenerator
     {
         $index = $this->getGeneratorIndex($identifierGeneratorCode);
         if (null === $index) {
-            return null;
+            throw new CouldNotFindIdentifierGeneratorException($identifierGeneratorCode);
         }
 
         return $this->generators[$index];

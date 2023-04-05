@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -55,15 +56,22 @@ class IdentifierGeneratorShouldExistValidatorSpec extends ObjectBehavior
         $this->validate(new \stdClass(), new IdentifierGeneratorShouldExist());
     }
 
-    public function it_should_build_violation_when_code_attribute_does_not_exist(ExecutionContext $context): void
-    {
+    public function it_should_build_violation_when_code_attribute_does_not_exist(
+        IdentifierGeneratorRepository $identifierGeneratorRepository,
+        ExecutionContext $context,
+    ): void {
         $context->buildViolation(
             'validation.update.identifier_generator_code_not_found',
-            ['{{code}}' => 'sku']
+            ['{{code}}' => 'non_existing_generator']
         )->shouldBeCalled();
 
+        $identifierGeneratorRepository
+            ->get('non_existing_generator')
+            ->shouldBeCalledOnce()
+            ->willThrow(new CouldNotFindIdentifierGeneratorException('non_existing_generator'));
+
         $updateGeneratorCommand = new UpdateGeneratorCommand(
-            'sku',
+            'non_existing_generator',
             [],
             [['type' => 'unknown', 'string' => 'abcdef']],
             ['fr' => 'Générateur'],
@@ -80,7 +88,7 @@ class IdentifierGeneratorShouldExistValidatorSpec extends ObjectBehavior
     ): void {
         $identifierGenerator = new IdentifierGenerator(
             IdentifierGeneratorId::fromString('2038e1c9-68ff-4833-b06f-01e42d206002'),
-            IdentifierGeneratorCode::fromString('sku'),
+            IdentifierGeneratorCode::fromString('mygenerator'),
             Conditions::fromArray([]),
             Structure::fromArray([FreeText::fromString('abc')]),
             LabelCollection::fromNormalized(['fr' => 'Générateur']),
@@ -89,14 +97,14 @@ class IdentifierGeneratorShouldExistValidatorSpec extends ObjectBehavior
             TextTransformation::fromString('no'),
         );
         $identifierGeneratorRepository
-            ->get('sku')
+            ->get('mygenerator')
             ->shouldBeCalledOnce()
             ->willReturn($identifierGenerator);
 
         $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
         $updateGeneratorCommand = new UpdateGeneratorCommand(
-            'sku',
+            'mygenerator',
             [],
             [['type' => 'unknown', 'string' => 'abcdef']],
             ['fr' => 'Générateur'],
