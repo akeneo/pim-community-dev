@@ -12,7 +12,10 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobProgress\ItemStepState;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -131,6 +134,10 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
                     break;
                 }
+                $paused = $this->pauseIfNeeded($stepExecution);
+                if ($paused) {
+                    break;
+                }
             }
         }
 
@@ -147,7 +154,30 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             $this->jobStopper->stop($stepExecution);
         }
 
+        $this->pauseIfNeeded($stepExecution);
+
         $this->flushStepElements();
+    }
+
+    private function pauseIfNeeded(StepExecution $stepExecution): bool
+    {
+        if (!$this->reader instanceof PausableItemReaderInterface || !$this->writer instanceof PausableItemWriterInterface) {
+            return false;
+        }
+
+        if (null === $this->jobStopper) {
+            return false;
+        }
+
+        if (!$this->jobStopper->isPausing($stepExecution)) {
+            return false;
+        }
+
+        $readerState = $this->reader->getState();
+        $writerState = $this->writer->getState();
+        $itemStepState = new ItemStepState($readerState, $writerState);
+        $this->jobStopper->pause($stepExecution, $itemStepState);
+        return true;
     }
 
     protected function initializeStepElements(StepExecution $stepExecution)

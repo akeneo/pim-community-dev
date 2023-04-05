@@ -275,6 +275,14 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
             throw new JobInterruptedException("Job interrupted by step execution");
         }
 
+        // What about a pause requested when this code is executed
+        if (
+            $stepExecution->getStatus()->isPaused()
+        ) {
+            $jobExecution->setStatus(new BatchStatus(BatchStatus::PAUSED));
+            $this->jobRepository->updateJobExecution($jobExecution);
+        }
+
         return $stepExecution;
     }
 

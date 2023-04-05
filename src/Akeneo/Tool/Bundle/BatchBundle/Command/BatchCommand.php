@@ -10,7 +10,9 @@ use Akeneo\Tool\Bundle\BatchBundle\Notification\Notifier;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
@@ -47,8 +49,15 @@ class BatchCommand extends Command
         private Notifier $notifier,
         private ExecuteJobExecutionHandlerInterface $jobExecutionRunner,
         private CreateJobExecutionHandlerInterface $jobExecutionFactory,
+        private SqlUpdateJobExecutionStatus $updateJobExecutionStatus,
     ) {
         parent::__construct();
+    }
+
+    private function handleSigTerm(int $executionId): void
+    {
+        // here we can fetch the job execution (or get it by params) and check if it is pausable
+        $this->updateJobExecutionStatus->updateByJobExecutionId($executionId, new BatchStatus(BatchStatus::PAUSING));
     }
 
     /**
@@ -136,9 +145,10 @@ class BatchCommand extends Command
 
         if (null === $executionId) {
             $jobExecution = $this->jobExecutionFactory->createFromBatchCode($code, $config, $username);
-            $executionId = $jobExecution->getId();
+            $executionId = (int)$jobExecution->getId();
         }
-        $jobExecution = $this->jobExecutionRunner->executeFromJobExecutionId((int)$executionId);
+        pcntl_signal(\SIGTERM, fn () => $this->handleSigTerm($executionId));
+        $jobExecution = $this->jobExecutionRunner->executeFromJobExecutionId($executionId);
 
         $verbose = $input->getOption('verbose');
         $jobInstance = $jobExecution->getJobInstance();
