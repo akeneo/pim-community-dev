@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Exception\DeadlockException;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -25,43 +26,55 @@ class RemoveValuesFromProducts
     ) {
     }
 
-    public function forAttributeCodes(array $attributeCodes, array $productIdentifiers): void
+    /**
+     * @param string[] $attributeCodes
+     * @param string[] $productUuids
+     */
+    public function forAttributeCodes(array $attributeCodes, array $productUuids): void
     {
-        $this->removeValuesForAttributeCodes($attributeCodes, $productIdentifiers);
-        $this->dispatchProductSaveEvents($productIdentifiers);
+        $this->removeValuesForAttributeCodes($attributeCodes, $productUuids);
+        $this->dispatchProductSaveEvents($productUuids);
 
         $this->clearer->clear();
     }
 
     /**
+     * @param string[] $attributeCodes
+     * @param string[] $productUuids
+     *
      * @throws DeadlockException|Exception
      */
-    private function removeValuesForAttributeCodes(array $attributeCodes, array $productIdentifiers): void
+    private function removeValuesForAttributeCodes(array $attributeCodes, array $productUuids): void
     {
         $paths = implode(
             ',',
             array_map(fn ($attributeCode) => $this->connection->quote(sprintf('$."%s"', $attributeCode)), $attributeCodes)
         );
 
+        $uuidsAsBytes = \array_map(fn ($productUuid) => Uuid::fromString($productUuid)->getBytes(), $productUuids);
+
         $this->resilientDeadlockConnection->executeQuery(
             <<<SQL
     UPDATE pim_catalog_product
     SET raw_values = JSON_REMOVE(raw_values, $paths)
-    WHERE identifier IN (:identifiers)
+    WHERE uuid IN (:uuids)
     SQL,
             [
-                'identifiers' => $productIdentifiers,
+                'uuids' => $uuidsAsBytes,
             ],
             [
-                'identifiers' => Connection::PARAM_STR_ARRAY,
+                'uuids' => Connection::PARAM_STR_ARRAY,
             ],
             sprintf('%s:%s', self::class, 'removeValuesForAttributeCodes'),
         );
     }
 
-    private function dispatchProductSaveEvents(array $productIdentifiers): void
+    /**
+     * @param string[] $productUuids
+     */
+    private function dispatchProductSaveEvents(array $productUuids): void
     {
-        $products = $this->productRepository->findBy(['identifier' => $productIdentifiers]);
+        $products = $this->productRepository->getItemsFromUuids($productUuids);
 
         foreach ($products as $product) {
             $this->eventDispatcher->dispatch(
