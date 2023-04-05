@@ -48,15 +48,13 @@ class CleanCategoryTemplateAttributeAndEnrichedValuesOnAttributeDeactivatedSubsc
         UserInterface $user,
     )
     {
-        $templateUuidValue = '63b7b051-48bb-4084-a427-20ee32933a8c';
-        $attributeUuidValue = 'c87c8b3c-5642-425c-a3b7-8dd5bc503e67';
         $event->getTemplateUuid()->willReturn($templateUuid);
-        $event->getAttributeUuid()->willReturn(AttributeUuid::fromString($attributeUuidValue));
-        // Uncomment after GRF-789
-        // $event->getAttributeUuid()->willReturn($attributeUuid);
+        $event->getAttributeUuid()->willReturn($attributeUuid);
 
+        $templateUuidValue = '63b7b051-48bb-4084-a427-20ee32933a8c';
         $templateUuid->getValue()->willReturn($templateUuidValue);
-        // $templateUuid->getValue()->willReturn($attributeUuidValue);
+        $attributeUuidValue = 'c87c8b3c-5642-425c-a3b7-8dd5bc503e67';
+        $attributeUuid->getValue()->willReturn($attributeUuidValue);
         $jobInstanceRepository->findOneByIdentifier('clean_category_attribute_and_enriched_values')->willReturn($cleanCategoriesJobInstance);
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);

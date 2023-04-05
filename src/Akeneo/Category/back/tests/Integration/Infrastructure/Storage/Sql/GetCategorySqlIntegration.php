@@ -49,11 +49,6 @@ class GetCategorySqlIntegration extends CategoryTestCase
         $category = $this->get(GetCategoryInterface::class)->byCode($this->category->getCode());
 
         $this->assertInstanceOf(Category::class, $category);
-//        $this->assertEquals([
-//            'photo' . AbstractValue::SEPARATOR . '8587cda6-58c8-47fa-9278-033e1d8c735c',
-//            'title' . AbstractValue::SEPARATOR . '87939c45-1d85-4134-9579-d594fff65030',
-//            'description' . AbstractValue::SEPARATOR . '57665726-8a6e-4550-9bcf-06f81c0d1e24'
-//        ], $category->getAttributeCodes());
         $this->assertSame('Chaussettes', $category->getLabels()->getTranslation('fr_FR'));
         $this->assertSame('Socks', $category->getLabels()->getTranslation('en_US'));
 
