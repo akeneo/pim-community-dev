@@ -18,10 +18,10 @@ export const AttributeSettings = ({attribute}: Props) => {
           {attribute.labels[catalogLocale]} {translate('akeneo.category.template.attribute.settings.title')}
         </SectionTitle.Title>
       </SectionTitle>
-      <Footer sticky={0}>
-        <DeleteButton level="danger" ghost>
+      <Footer>
+        <Button level="danger" ghost>
           {translate('akeneo.category.template.attribute.delete_button')}
-        </DeleteButton>
+        </Button>
       </Footer>
     </SettingsContainer>
   );
@@ -35,17 +35,12 @@ const SettingsContainer = styled.div`
   overflow-y: auto;
 `;
 
-const DeleteButton = styled(Button)`
-  float: right;
-`;
-
-const Footer = styled(SectionTitle)`
-  border-bottom: 0;
-  padding: 10px 0 20px;
+const Footer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 5px 0 5px;
   margin-top: 2px;
-  justify-content: flex-end;
   position: sticky;
   bottom: 0;
   background-color: #ffffff;
-  z-index: 10;
 `;
