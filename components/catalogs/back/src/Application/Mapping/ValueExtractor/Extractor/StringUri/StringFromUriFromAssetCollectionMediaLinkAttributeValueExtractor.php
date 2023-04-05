@@ -25,11 +25,11 @@ class StringFromUriFromAssetCollectionMediaLinkAttributeValueExtractor implement
 
     public function getSupportedTargetType(): string
     {
-        return self::TARGET_TYPE_ARRAY_OF_STRING_URIS;
+        return self::TARGET_TYPE_STRING;
     }
 
     public function getSupportedTargetFormat(): ?string
     {
-        return null;
+        return self::TARGET_FORMAT_URI;
     }
 }

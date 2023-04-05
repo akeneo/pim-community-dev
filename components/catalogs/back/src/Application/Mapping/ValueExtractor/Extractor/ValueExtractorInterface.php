@@ -33,7 +33,6 @@ interface ValueExtractorInterface
     public const SOURCE_TYPE_CATEGORIES = 'categories';
     public const SOURCE_TYPE_FAMILY = 'family';
 
-    public const TARGET_TYPE_ARRAY_OF_STRING_URIS = 'array<string+uri>';
     public const TARGET_TYPE_ARRAY_OF_STRINGS = 'array<string>';
     public const TARGET_TYPE_BOOLEAN = 'boolean';
     public const TARGET_TYPE_NUMBER = 'number';
