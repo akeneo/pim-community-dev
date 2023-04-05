@@ -11,8 +11,16 @@ namespace Akeneo\Tool\Component\Batch\Job\JobProgress;
 class ItemStepState
 {
     public function __construct(
-        private readonly ItemReaderState $itemReaderState,
-        private readonly ItemWriterState $itemWriterState,
+        private readonly array $itemReaderState,
+        private readonly array $itemWriterState,
     ) {
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'reader' => $this->itemReaderState,
+            'writer' => $this->itemWriterState,
+        ];
     }
 }

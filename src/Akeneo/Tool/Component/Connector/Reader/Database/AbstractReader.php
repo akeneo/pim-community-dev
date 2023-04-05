@@ -4,7 +4,9 @@ namespace Akeneo\Tool\Component\Connector\Reader\Database;
 
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobProgress\ItemReaderState;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
@@ -15,7 +17,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, TrackableItemReaderInterface
+abstract class AbstractReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, TrackableItemReaderInterface, PausableItemReaderInterface
 {
     /** @var bool Checks if all objects are sent to the processor */
     protected $isExecuted = false;
@@ -74,6 +76,20 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
             $this->isExecuted = true;
 
             $this->results = $this->getResults();
+        }
+    }
+
+    public function getState(): array
+    {
+        return [
+            'position' => $this->results->key()
+        ];
+    }
+
+    public function rewindToState(array $state): void
+    {
+        while ($state['position'] < $this->results->key()) {
+            $this->results->next();
         }
     }
 }

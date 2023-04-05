@@ -5,12 +5,15 @@ namespace Akeneo\Tool\Component\Connector\Writer\File\Csv;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobProgress\ItemWriterState;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use League\Flysystem\FilesystemOperator;
 
 /**
  * Write data into a csv file on the filesystem
@@ -19,7 +22,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface, PausableItemWriterInterface
 {
     /** @var ArrayConverterInterface */
     protected $arrayConverter;
@@ -44,7 +47,8 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     public function __construct(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        private ?FilesystemOperator $filesystemOperator = null
     ) {
         parent::__construct();
 
@@ -109,5 +113,26 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         foreach ($writtenFiles as $writtenFile) {
             $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($writtenFile, \basename($writtenFile));
         }
+    }
+
+    public function getState(): array
+    {
+        if ($this->filesystemOperator) {
+            $flatBufferFilePath = "stopped_job/" . $this->stepExecution->getId();
+            $this->filesystemOperator->write($flatBufferFilePath, file_get_contents($this->flatRowBuffer->getFilename()));
+
+            return [
+                'flat_buffer_file_path' => $flatBufferFilePath,
+            ];
+        }
+
+        return [];
+    }
+
+
+    public function rewindToState(array $state): void
+    {
+        $content = $this->filesystemOperator->read($state['flat_buffer_file_path']);
+        file_put_contents()
     }
 }

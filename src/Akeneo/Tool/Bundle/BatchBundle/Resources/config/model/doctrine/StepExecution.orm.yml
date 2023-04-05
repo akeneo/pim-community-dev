@@ -61,6 +61,10 @@ Akeneo\Tool\Component\Batch\Model\StepExecution:
             type: json
             column: tracking_data
             nullable: true
+        rawState:
+            type: json
+            column: state
+            nullable: true
         warningCount:
             type: integer
             column: warning_count

@@ -91,6 +91,8 @@ class StepExecution
 
     private bool $isTrackable;
 
+    private array $rawState = [];
+
     /**
      * Constructor with mandatory properties.
      *
@@ -626,6 +628,16 @@ class StepExecution
     public function setIsTrackable(bool $trackable): void
     {
         $this->isTrackable = $trackable;
+    }
+
+    public function getRawState(): array
+    {
+        return $this->rawState;
+    }
+
+    public function setRawState(array $rawState)
+    {
+        return $this->rawState = $rawState;
     }
 
     /**

@@ -92,6 +92,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
      */
     public function doExecute(StepExecution $stepExecution)
     {
+        $this->batchSize = 1;
         $itemsToWrite = [];
         $batchCount = 0;
 
@@ -99,6 +100,11 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
         if ($this->isTrackable()) {
             $stepExecution->setTotalItems($this->getCountFromTrackableItemReader());
+        }
+
+        if ($stepExecution->getStatus()->isPaused() && $this->reader instanceof PausableItemReaderInterface && $this->writer instanceof PausableItemWriterInterface) {
+            $this->reader->rewindToState($stepExecution->getRawState()['reader']);
+            $this->writer->rewindToState($stepExecution->getRawState()['writer']);
         }
 
         while (true) {
@@ -114,6 +120,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 continue;
             }
 
+            sleep(2);
             $batchCount++;
             $processedItem = $this->process($readItem);
             if (null !== $processedItem) {
@@ -173,9 +180,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             return false;
         }
 
-        $readerState = $this->reader->getState();
-        $writerState = $this->writer->getState();
-        $itemStepState = new ItemStepState($readerState, $writerState);
+        $itemStepState = new ItemStepState($this->reader->getState(), $this->writer->getState());
         $this->jobStopper->pause($stepExecution, $itemStepState);
         return true;
     }

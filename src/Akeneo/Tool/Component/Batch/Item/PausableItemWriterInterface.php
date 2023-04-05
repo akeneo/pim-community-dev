@@ -8,5 +8,7 @@ use Akeneo\Tool\Component\Batch\Job\JobProgress\ItemWriterState;
 
 interface PausableItemWriterInterface
 {
-    public function getState(): ItemWriterState;
+    public function getState(): array;
+
+    public function rewindToState(array $state): void;
 }

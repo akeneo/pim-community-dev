@@ -7,5 +7,7 @@ use Akeneo\Tool\Component\Batch\Job\JobProgress\ItemReaderState;
 
 interface PausableItemReaderInterface
 {
-    public function getState(): ItemReaderState;
+    public function rewindToState(array $state): void;
+
+    public function getState(): array;
 }

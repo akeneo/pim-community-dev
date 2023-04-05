@@ -127,7 +127,7 @@ class BatchCommand extends Command
             $this->notifier->setRecipients($emails);
         }
 
-        $executionId = $input->hasArgument('execution') ? $input->getArgument('execution') : null;
+        $executionId = $input->hasArgument('execution') ? (int) $input->getArgument('execution') : null;
 
         if (null !== $executionId && null !== $input->getOption('config')) {
             throw new \InvalidArgumentException(
