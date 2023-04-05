@@ -32,6 +32,9 @@ akeneo.category:
                 textarea: Text Area
                 richtext: Rich Text
                 image: Image
+            delete_button: Delete Attribute
+            settings:
+                title: Settings
         add_attribute:
             no_attribute_title: Create your first attribute
             no_attribute_instructions: Define the content you want to associate to your categories by adding Text, Text Area or Image attributes to this template.
