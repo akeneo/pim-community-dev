@@ -1,41 +1,38 @@
 import {Button, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
 import {getLabelFromAttribute} from '../attributes';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
 
 type Props = {
   attributes: Attribute[];
+  selectedAttribute: Attribute;
   templateId: string;
   onAttributeSelection: (attribute: Attribute) => void;
 };
 
-export const AttributeList = ({attributes, templateId, onAttributeSelection}: Props) => {
+export const AttributeList = ({attributes, selectedAttribute, templateId, onAttributeSelection}: Props) => {
   const translate = useTranslate();
   const catalogLocale = userContext.get('catalogLocale');
   const featureFlags = useFeatureFlags();
 
-  const [selectedAttribute, setSelectedAttribute] = useState<Attribute>(attributes[0]);
   const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
     useBooleanState(false);
 
   const handleRowOnclick = (attribute: Attribute) => {
-    console.log('row clicked. attribute label=' + attribute.labels[catalogLocale]);
-    console.log('we should highlight and rerender the attribute line');
-    setSelectedAttribute(attribute);
     onAttributeSelection(attribute);
   };
 
-  const sortByOrder = useCallback((attribute1: Attribute, attribute2: Attribute): number => {
+  const sortedAttributes = useMemo(() => attributes.sort((attribute1: Attribute, attribute2: Attribute): number => {
     if (attribute1.order >= attribute2.order) {
       return 1;
     } else if (attribute1.order < attribute2.order) {
       return -1;
     }
     return 0;
-  }, []);
+  }), [attributes]);
 
   return (
     <AttributeListContainer>
@@ -55,7 +52,7 @@ export const AttributeList = ({attributes, templateId, onAttributeSelection}: Pr
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.type')}</Table.HeaderCell>
           </Table.Header>
           <Table.Body>
-            {attributes?.sort(sortByOrder).map((attribute: Attribute) => (
+            {sortedAttributes.map((attribute: Attribute) => (
               <Table.Row
                 key={attribute.uuid}
                 onClick={() => {

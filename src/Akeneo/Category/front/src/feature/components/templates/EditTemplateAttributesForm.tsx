@@ -20,6 +20,7 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
       <Attributes>
         <AttributeList
           attributes={attributes}
+          selectedAttribute={selectedAttribute}
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
         ></AttributeList>
