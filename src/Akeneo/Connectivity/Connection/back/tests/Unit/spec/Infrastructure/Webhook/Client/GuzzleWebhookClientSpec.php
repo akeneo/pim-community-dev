@@ -53,7 +53,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1],
             $versionProvider,
-            getenv('PFID'),
+            \getenv('PFID'),
         );
     }
 
@@ -92,7 +92,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1],
             $versionProvider,
-            getenv('PFID'),
+            \getenv('PFID'),
         );
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
@@ -146,8 +146,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
 
         $userAgent = 'AkeneoPIM/v20210526040645';
-        if(null !== getenv('PFID')) {
-            $userAgent .= ' '.getenv('PFID');
+        if (false !== \getenv('PFID')) {
+            $userAgent .= ' '.\getenv('PFID');
         }
 
         Assert::assertSame($userAgent, $request->getHeader(RequestHeaders::HEADER_REQUEST_USERAGENT)[0]);
@@ -238,7 +238,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1],
             $versionProvider,
-            getenv('PFID'),
+            \getenv('PFID'),
         );
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
@@ -295,7 +295,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             $eventDispatcher,
             ['timeout' => 0.5, 'concurrency' => 1],
             $versionProvider,
-            getenv('PFID'),
+            \getenv('PFID'),
         );
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);

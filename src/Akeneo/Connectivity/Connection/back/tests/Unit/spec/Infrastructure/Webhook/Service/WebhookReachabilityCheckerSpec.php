@@ -32,7 +32,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         VersionProviderInterface $versionProvider,
     ): void {
-        $this->beConstructedWith($client, $validator, $versionProvider, getenv('PFID'));
+        $this->beConstructedWith($client, $validator, $versionProvider, \getenv('PFID'));
     }
 
     public function it_is_initializable(): void
@@ -40,7 +40,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         $this->shouldHaveType(UrlReachabilityCheckerInterface::class);
     }
 
-    public function it_checks_url_is_good_and_reachable($client, $validator, $versionProvider,): void
+    public function it_checks_url_is_good_and_reachable($client, $validator, $versionProvider): void
     {
         $versionProvider->getVersion()->willReturn('v20210526040645');
 
