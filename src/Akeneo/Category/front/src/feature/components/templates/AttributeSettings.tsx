@@ -3,37 +3,41 @@ import {Attribute} from '../../models';
 import React from 'react';
 import {userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {DeactivateTemplateAttributeModal} from "./DeactivateTemplateAttributeModal";
+import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
+import {getLabelFromAttribute} from '../attributes';
 
 type Props = {
   attribute: Attribute;
 };
 
-const [isDeactivateTemplateAttributeModalOpen, openDeactivateTemplateAttributeModal, closeDeactivateTemplateAttributeModal] =
-    useBooleanState(false);
-
 export const AttributeSettings = ({attribute}: Props) => {
   const translate = useTranslate();
-  const catalogLocale = userContext.get('catalogLocale');
+  const label = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
+  const [
+    isDeactivateTemplateAttributeModalOpen,
+    openDeactivateTemplateAttributeModal,
+    closeDeactivateTemplateAttributeModal,
+  ] = useBooleanState(false);
+
   return (
     <SettingsContainer>
       <SectionTitle sticky={0}>
         <SectionTitle.Title>
-          {attribute.labels[catalogLocale]} {translate('akeneo.category.template.attribute.settings.title')}
+          {label} {translate('akeneo.category.template.attribute.settings.title')}
         </SectionTitle.Title>
       </SectionTitle>
       <Footer sticky={0}>
-        <DeleteButton level="danger" ghost>
+        <DeleteButton level="danger" ghost onClick={openDeactivateTemplateAttributeModal}>
           {translate('akeneo.category.template.attribute.delete_button')}
         </DeleteButton>
-      </Footer>
         {isDeactivateTemplateAttributeModalOpen && (
-            <DeactivateTemplateAttributeModal
-                templateUuid={attribute.template_uuid}
-                attribute={{uuid: attribute.uuid, label: attribute.labels[catalogLocale] }}
-                onClose={closeDeactivateTemplateAttributeModal}
-            />
+          <DeactivateTemplateAttributeModal
+            templateUuid={attribute.template_uuid}
+            attribute={{uuid: attribute.uuid, label: label}}
+            onClose={closeDeactivateTemplateAttributeModal}
+          />
         )}
+      </Footer>
     </SettingsContainer>
   );
 };

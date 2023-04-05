@@ -13,9 +13,9 @@ test('It sends the templateUuid and AttributeUuid for attribute deletion', async
   renderWithProviders(
     <QueryClientProvider client={queryClient}>
       <DeactivateTemplateAttributeModal
-          templateUuid={'3f501763-8c7b-4dad-bd01-b0b827233d7e'}
-          attribute={{uuid: '4f447ed9-b0af-49ff-b4ce-6b1e06c1aa83', label: 'attributeLabel'}}
-          onClose={jest.fn()}
+        templateUuid={'3f501763-8c7b-4dad-bd01-b0b827233d7e'}
+        attribute={{uuid: '4f447ed9-b0af-49ff-b4ce-6b1e06c1aa83', label: 'attributeLabel'}}
+        onClose={jest.fn()}
       />
     </QueryClientProvider>
   );
