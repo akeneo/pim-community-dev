@@ -62,9 +62,16 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
      */
     public function initialize(): void
     {
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
+        $path = null;
+        if ($this->stepExecution->getStatus()->isPaused()) {
+            $writerState = $this->stepExecution->getRawState()['writer'];
+            $content = $this->filesystemOperator->read($writerState['flat_buffer_file_path']);
+
+            $path = tempnam(sys_get_temp_dir(), 'akeneo_buffer_');
+            file_put_contents($content, $path);
         }
+
+        $this->flatRowBuffer = $this->bufferFactory->create($path);
     }
 
     /**
@@ -127,12 +134,5 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         }
 
         return [];
-    }
-
-
-    public function rewindToState(array $state): void
-    {
-        $content = $this->filesystemOperator->read($state['flat_buffer_file_path']);
-        file_put_contents()
     }
 }

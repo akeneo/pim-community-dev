@@ -104,7 +104,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
         if ($stepExecution->getStatus()->isPaused() && $this->reader instanceof PausableItemReaderInterface && $this->writer instanceof PausableItemWriterInterface) {
             $this->reader->rewindToState($stepExecution->getRawState()['reader']);
-            $this->writer->rewindToState($stepExecution->getRawState()['writer']);
         }
 
         while (true) {
