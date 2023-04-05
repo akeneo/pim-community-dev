@@ -1,12 +1,16 @@
-import {Button, SectionTitle} from 'akeneo-design-system';
+import {Button, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
 import React from 'react';
 import {userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
+import {DeactivateTemplateAttributeModal} from "./DeactivateTemplateAttributeModal";
 
 type Props = {
   attribute: Attribute;
 };
+
+const [isDeactivateTemplateAttributeModalOpen, openDeactivateTemplateAttributeModal, closeDeactivateTemplateAttributeModal] =
+    useBooleanState(false);
 
 export const AttributeSettings = ({attribute}: Props) => {
   const translate = useTranslate();
@@ -23,6 +27,13 @@ export const AttributeSettings = ({attribute}: Props) => {
           {translate('akeneo.category.template.attribute.delete_button')}
         </DeleteButton>
       </Footer>
+        {isDeactivateTemplateAttributeModalOpen && (
+            <DeactivateTemplateAttributeModal
+                templateUuid={attribute.template_uuid}
+                attribute={{uuid: attribute.uuid, label: attribute.labels[catalogLocale] }}
+                onClose={closeDeactivateTemplateAttributeModal}
+            />
+        )}
     </SettingsContainer>
   );
 };
