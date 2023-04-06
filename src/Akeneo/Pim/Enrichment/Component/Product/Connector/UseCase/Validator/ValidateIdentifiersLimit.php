@@ -35,9 +35,11 @@ final class ValidateIdentifiersLimit
         }
 
         if ($inQuery['value'] === null) {
-            throw new UnprocessableEntityHttpException(
-                "The identifier filter can't contain null value"
-            );
+            throw new UnprocessableEntityHttpException("The identifier filter can't contain null value");
+        }
+
+        if (!\is_array($inQuery['value'])) {
+            throw new UnprocessableEntityHttpException('The identifier filter should be an array');
         }
 
         if (count(array_unique($inQuery['value'])) > self::LIMIT) {
