@@ -116,9 +116,16 @@ type TilesProps = {
 
 type TileProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
-  {
-    icon?: React.ReactElement<IconProps>;
-    size?: Size;
+  (
+    | {
+        icon: React.ReactElement<IconProps>;
+        size?: 'big' | 'small';
+      }
+    | {
+        size?: 'inline';
+        icon: undefined;
+      }
+  ) & {
     selected?: boolean;
     onClick?: () => void;
   }
@@ -137,9 +144,7 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', onClick, c
 
   return (
     <TileContainer selected={selected} size={size} onClick={onClick} onKeyDown={handleKeyDown} tabIndex={'0'} {...rest}>
-      {size === 'inline' || undefined === icon ? (
-        ''
-      ) : (
+      {size !== 'inline' && icon && (
         <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
       )}
       <LabelContainer>{children}</LabelContainer>
