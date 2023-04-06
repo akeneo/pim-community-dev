@@ -19,6 +19,8 @@ class Status
     public const FAILED = 6;
     public const ABANDONED = 7;
     public const UNKNOWN = 8;
+    public const PAUSING = 9;
+    public const PAUSED = 10;
 
     public static array $labels = [
         self::COMPLETED => 'COMPLETED',
@@ -27,6 +29,8 @@ class Status
         self::STOPPING => 'STOPPING',
         self::STOPPED => 'STOPPED',
         self::FAILED => 'FAILED',
+        self::PAUSING => 'PAUSING',
+        self::PAUSED => 'PAUSED',
         self::ABANDONED => 'ABANDONED',
         self::UNKNOWN => 'UNKNOWN',
     ];

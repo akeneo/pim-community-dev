@@ -26,6 +26,6 @@ class ResetProcessedItemsBatchSubscriber implements EventSubscriberInterface
 
     public function resetProcessedItemsBatch(StepExecutionEvent $event): void
     {
-        $event->getStepExecution()->getExecutionContext()->remove('processed_items_batch');
+        $event->getStepExecution()->getExecutionContext()?->remove('processed_items_batch');
     }
 }

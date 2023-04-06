@@ -88,7 +88,13 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
 
     public function rewindToState(array $state): void
     {
-        while ($state['position'] < $this->results->key()) {
+        if (!isset($state['position'])) {
+            return;
+        }
+
+        $this->initializeReader();
+        $this->results->current();
+        while ($this->results->key() < $state['position']) {
             $this->results->next();
         }
     }

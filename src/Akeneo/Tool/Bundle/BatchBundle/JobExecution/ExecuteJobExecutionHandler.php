@@ -43,7 +43,7 @@ class ExecuteJobExecutionHandler implements ExecuteJobExecutionHandlerInterface
 
     private function doExecute(JobExecution $jobExecution): void
     {
-        if (!$jobExecution->getStatus()->isStarting() && !$jobExecution->getStatus()->isStopping()) {
+        if (!$jobExecution->getStatus()->isStarting() && !$jobExecution->getStatus()->isStopping() && !$jobExecution->getStatus()->isPaused()) {
             throw new \RuntimeException(
                 sprintf('Job execution "%s" has invalid status: %s', $jobExecution->getId(), $jobExecution->getStatus())
             );

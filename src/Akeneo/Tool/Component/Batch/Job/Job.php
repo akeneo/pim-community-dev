@@ -198,8 +198,9 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         /* @var StepExecution $stepExecution */
         $stepExecution = null;
 
-        foreach ($this->steps as $step) {
-            $stepExecution = $this->handleStep($step, $jobExecution);
+        foreach ($this->steps as $index => $step) {
+            $stepExecution1 = $jobExecution->getStepExecutions()[$index] ?? null;
+            $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution1);
             $this->jobRepository->updateStepExecution($stepExecution);
 
             if ($stepExecution->getStatus()->getValue() !== BatchStatus::COMPLETED) {
@@ -231,13 +232,17 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
      *
      * @throws JobInterruptedException
      */
-    protected function handleStep(StepInterface $step, JobExecution $jobExecution): StepExecution
+    protected function handleStep(StepInterface $step, JobExecution $jobExecution, ?StepExecution $stepExecution = null): StepExecution
     {
         if ($jobExecution->isStopping()) {
             throw new JobInterruptedException("JobExecution interrupted.");
         }
 
-        $stepExecution = $jobExecution->createStepExecution($step->getName());
+        if ($stepExecution === null) {
+            $stepExecution = $jobExecution->createStepExecution($step->getName());
+        } else {
+            $stepExecution->setExitStatus(new ExitStatus(ExitStatus::EXECUTING));
+        }
 
         try {
             if ($step instanceof StoppableStepInterface) {
@@ -278,6 +283,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         // What about a pause requested when this code is executed
         if ($stepExecution->getStatus()->isPaused()) {
             $jobExecution->setStatus(new BatchStatus(BatchStatus::PAUSED));
+            $jobExecution->setExitStatus($stepExecution->getExitStatus());
             $this->jobRepository->updateJobExecution($jobExecution);
         }
 
