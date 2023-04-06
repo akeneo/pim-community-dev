@@ -39,7 +39,7 @@ final class ValidateIdentifiersLimit
         }
 
         if (!\is_array($inQuery['value'])) {
-            throw new UnprocessableEntityHttpException('The identifier filter should be an array');
+            throw new UnprocessableEntityHttpException('The identifier filter value should be an array');
         }
 
         if (count(array_unique($inQuery['value'])) > self::LIMIT) {
