@@ -43,7 +43,7 @@ test('Tiles supports ...rest props', () => {
 test('It can be small', () => {
   render(
     <Tiles size={'small'}>
-      <Tile>small</Tile>
+      <Tile icon={<AssetCollectionIcon />}>small</Tile>
     </Tiles>
   );
   expect(screen.getByText('small')).toBeInTheDocument();
@@ -52,7 +52,7 @@ test('It can be small', () => {
 test('It can be big', () => {
   render(
     <Tiles size={'big'}>
-      <Tile>big</Tile>
+      <Tile icon={<AssetCollectionIcon />}>big</Tile>
     </Tiles>
   );
   expect(screen.getByText('big')).toBeInTheDocument();
