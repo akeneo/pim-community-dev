@@ -39,16 +39,19 @@ const TileContainer = styled.div<{selected: boolean; size: Size; onClick?: () =>
       case 'small': {
         return css`
           height: 130px;
+          text-align: center;
         `;
       }
       case 'big': {
         return css`
           height: 200px;
+          text-align: center;
         `;
       }
       case 'inline': {
         return css`
           height: auto;
+          width: 100%;
         `;
       }
     }
@@ -59,7 +62,6 @@ const TileContainer = styled.div<{selected: boolean; size: Size; onClick?: () =>
     css`
       cursor: pointer;
     `}
-  text-align: center;
   ${({selected}) =>
     selected
       ? css`
@@ -100,6 +102,13 @@ const LabelContainer = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.3;
+`;
+
+const InlineContainer = styled.div`
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 type TilesProps = {
@@ -147,7 +156,7 @@ const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', onClick, c
       {size !== 'inline' && icon && (
         <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
       )}
-      <LabelContainer>{children}</LabelContainer>
+      {size === 'inline' ? <InlineContainer>{children}</InlineContainer> : <LabelContainer>{children}</LabelContainer>}
     </TileContainer>
   );
 };
