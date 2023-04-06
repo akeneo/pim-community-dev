@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Family;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\Family;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetFamilies;
 use Akeneo\Test\Integration\Configuration;
@@ -15,27 +16,43 @@ final class SqlGetFamilyIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->givenAttributes(['description', 'price', 'color', 'name']);
         $this->givenFamilies([
             [
                 'code' => 'shoes',
                 'labels' => [
                     'en_US' => 'Shoes',
-                    'fr_FR' => 'Chaussures'
-                ]
+                    'fr_FR' => 'Chaussures',
+                ],
+                'attributes' => [
+                    'sku',
+                    'description',
+                    'price',
+                ],
             ],
             [
                 'code' => 'accessories',
                 'labels' => [
                     'en_US' => 'Accessories',
-                    'fr_FR' => 'Accessoires'
-                ]
+                    'fr_FR' => 'Accessoires',
+                ],
+                'attributes' => [
+                    'sku',
+                    'color',
+                    'name',
+                ],
             ],
             [
                 'code' => 'hats',
                 'labels' => [
                     'en_US' => 'Hats',
-                    'fr_FR' => 'Chapeaux'
-                ]
+                    'fr_FR' => 'Chapeaux',
+                ],
+                'attributes' => [
+                    'sku',
+                    'description',
+                    'name',
+                ],
             ],
         ]);
     }
@@ -49,15 +66,17 @@ final class SqlGetFamilyIntegration extends TestCase
                 'accessories',
                 [
                     'en_US' => 'Accessories',
-                    'fr_FR' => 'Accessoires'
-                ]
+                    'fr_FR' => 'Accessoires',
+                ],
+                ['sku', 'color', 'name'],
             ),
-            'shoes' =>new Family(
+            'shoes' => new Family(
                 'shoes',
                 [
                     'en_US' => 'Shoes',
-                    'fr_FR' => 'Chaussures'
+                    'fr_FR' => 'Chaussures',
                 ],
+                ['sku', 'description', 'price'],
             ),
         ];
         $actual = $query->byCodes(['shoes', 'accessories']);
@@ -82,8 +101,9 @@ final class SqlGetFamilyIntegration extends TestCase
             'accessories',
             [
                 'en_US' => 'Accessories',
-                'fr_FR' => 'Accessoires'
-            ]
+                'fr_FR' => 'Accessoires',
+            ],
+            ['sku', 'color', 'name'],
         );
         $actual = $query->byCode('accessories');
 
@@ -117,5 +137,27 @@ final class SqlGetFamilyIntegration extends TestCase
         }, $families);
 
         $this->get('pim_catalog.saver.family')->saveAll($families);
+    }
+
+    private function givenAttributes(array $attributeCodes): void
+    {
+        $attributes = array_map(function ($attributeCode) {
+            $attribute = $this->get('pim_catalog.factory.attribute')->create();
+            $this->get('pim_catalog.updater.attribute')->update(
+                $attribute,
+                [
+                    'code' => $attributeCode,
+                    'type' => 'pim_catalog_text',
+                    'group' => 'other'
+                ]
+            );
+
+            $errors = $this->get('validator')->validate($attribute);
+            Assert::count($errors, 0);
+
+            return $attribute;
+        }, $attributeCodes);
+
+        $this->get('pim_catalog.saver.attribute')->saveAll($attributes);
     }
 }

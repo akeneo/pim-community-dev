@@ -9,6 +9,7 @@ final class Family
     public function __construct(
         public readonly string $code,
         public readonly array $labels,
+        public readonly array $attributeCodes,
     ) {
     }
 }

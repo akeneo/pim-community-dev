@@ -23,11 +23,14 @@ class SqlGetFamilies implements GetFamilies
         $sql = <<<SQL
 SELECT
    family.code AS code,
-   COALESCE(JSON_OBJECTAGG(trans.locale, trans.label), JSON_ARRAY()) AS labels
+   COALESCE(JSON_OBJECTAGG(trans.locale, trans.label), JSON_ARRAY()) AS labels,
+   JSON_ARRAYAGG(attribute.code) AS attributeCodes
 FROM pim_catalog_family family
 INNER JOIN pim_catalog_family_translation trans ON family.id = trans.foreign_key
+INNER JOIN pim_catalog_family_attribute family_attribute ON family_attribute.family_id = family.id
+INNER JOIN pim_catalog_attribute attribute ON attribute.id = family_attribute.attribute_id
 WHERE family.code IN (:familyCodes)
-GROUP BY family.code
+GROUP BY family.code, attribute.code
 SQL;
         $rows = $this->connection->executeQuery(
             $sql,
@@ -39,7 +42,11 @@ SQL;
 
         $families = [];
         foreach ($rows as $row) {
-            $families[$row['code']] = new Family($row['code'], json_decode($row['labels'], true));
+            $families[$row['code']] = new Family(
+                $row['code'],
+                json_decode($row['labels'], true),
+                json_decode($row['attributeCodes'], true)
+            );
         }
 
         return $families;
