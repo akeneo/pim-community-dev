@@ -5,6 +5,7 @@ export type ProductMappingSchema = {
             type: string;
             items?: {
                 type: string;
+                format?: string;
                 enum?: string[];
             };
             format?: string;

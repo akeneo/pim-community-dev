@@ -37,7 +37,10 @@ export const createTargetFromProductMappingSchema = (
     }
 
     if ('array' === properties.type) {
-        target.type += `<${properties.items?.type ?? ''}>`;
+        let itemType = properties.items?.type ?? '';
+        itemType = properties.items?.format ? itemType + '+' + properties.items.format : itemType;
+
+        target.type += `<${itemType}>`;
 
         if (undefined !== properties.items?.enum) {
             target.enum = properties.items.enum;
