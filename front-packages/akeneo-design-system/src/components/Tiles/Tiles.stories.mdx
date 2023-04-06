@@ -10,7 +10,9 @@ import {
   MetricIcon,
   AssetsIcon,
 } from '../../icons';
-import {useTabBar} from "../../hooks/useTabBar";
+import {useTabBar} from "../../hooks/useTabBar"; import {
+  Tooltip
+} from 'akeneo-design-system/lib/components/Tooltip/Tooltip';
 
 <Meta
   title="Components/Tiles"
@@ -101,6 +103,16 @@ The component is displayed in a configurable responsive grid (width and gap). Ti
                 Big Date
               </Tile>
             </Tiles>
+          <Tiles size={'inline'}>
+            <Tile>
+              Big Assets collection
+              <Tooltip direction={'bottom'}>Big Assets collection</Tooltip>
+            </Tile>
+            <Tile>
+              Big Date
+              <Tooltip direction={'bottom'}>Big Date</Tooltip>
+            </Tile>
+          </Tiles>
         </>
       );
     }}

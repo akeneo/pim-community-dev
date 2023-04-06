@@ -132,7 +132,7 @@ type TileProps = Override<
       }
     | {
         size?: 'inline';
-        icon: undefined;
+        icon?: undefined;
       }
   ) & {
     selected?: boolean;
