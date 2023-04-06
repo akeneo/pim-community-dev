@@ -13,8 +13,8 @@ export const DeactivateTemplateAttributeModal = ({templateUuid, attribute, onClo
   const translate = useTranslate();
 
   const deactivateTemplateAttribute = useDeactivateTemplateAttribute(templateUuid, attribute);
-  const handleDeactivateTemplateAttribute = () => {
-    deactivateTemplateAttribute();
+  const handleDeactivateTemplateAttribute = async() => {
+    await deactivateTemplateAttribute();
     onClose();
   };
 
