@@ -25,7 +25,6 @@ const TileContainer = styled.div<
 >`
   margin: 1px;
   ${({size, inline}) => {
-    console.log(inline);
     if (!inline) {
       return size === 'small'
         ? css`
