@@ -58,9 +58,18 @@ test('It can be big', () => {
   expect(screen.getByText('big')).toBeInTheDocument();
 });
 
-test('It can be inline', () => {
+test('It can be inline and small', () => {
   render(
-    <Tiles size={'inline'}>
+    <Tiles size={'small'} inline={true}>
+      <Tile>inline</Tile>
+    </Tiles>
+  );
+  expect(screen.getByText('inline')).toBeInTheDocument();
+});
+
+test('It can be inline and big', () => {
+  render(
+    <Tiles size={'small'} inline={true}>
       <Tile>inline</Tile>
     </Tiles>
   );
