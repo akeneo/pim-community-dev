@@ -10,6 +10,7 @@ interface Props {
 }
 
 export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
+  const featureFlag = useFeatureFlags();
   const [selectedAttribute, setSelectedAttribute] = useState<Attribute>(attributes[0]);
   const handleAttributeSelection = (attribute: Attribute) => {
     setSelectedAttribute(attribute);
