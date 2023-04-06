@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {Attribute} from '../../models';
 import {AttributeList} from './AttributeList';
 import {AttributeSettings} from './AttributeSettings';
+import {useFeatureFlags} from "@akeneo-pim-community/shared";
 
 interface Props {
   attributes: Attribute[];
