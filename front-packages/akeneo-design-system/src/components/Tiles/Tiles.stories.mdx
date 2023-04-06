@@ -17,7 +17,7 @@ import { Tooltip } from '../Tooltip/Tooltip';
   title="Components/Tiles"
   component={Tiles}
   argTypes={{
-    size: {control: {type: 'select'}, options: ['small', 'big', 'inline']},
+    size: {control: {type: 'select'}, options: ['small', 'big']},
   }}
   args={{size: 'small'}}
 />
@@ -94,7 +94,7 @@ The component is displayed in a configurable responsive grid (width and gap). Ti
               Big Date
             </Tile>
           </Tiles>
-          <Tiles size={'inline'}>
+          <Tiles size={'small'} inline={true}>
               <Tile>
                 Big Assets collection
               </Tile>
@@ -102,7 +102,7 @@ The component is displayed in a configurable responsive grid (width and gap). Ti
                 Big Date
               </Tile>
             </Tiles>
-          <Tiles size={'inline'}>
+          <Tiles size={'big'} inline={true}>
             <Tile>
               Big Assets collection
               <Tooltip direction={'bottom'}>Big Assets collection</Tooltip>
