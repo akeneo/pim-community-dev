@@ -9,7 +9,6 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\ProductEditForm;
 use Context\Spin\TimeoutException;
-use Pim\Behat\Decorator\ContextSwitcherDecorator;
 use Pim\Behat\Decorator\ReactContextSwitcherDecorator;
 use Pim\Behat\Decorator\Tab\ComparableTabDecorator;
 use Pim\Behat\Decorator\TabElement\ComparisonPanelDecorator;
@@ -35,7 +34,6 @@ class Edit extends ProductEditForm
     public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
-
         $this->elements = array_merge(
             $this->elements,
             [
@@ -69,8 +67,8 @@ class Edit extends ProductEditForm
                 'Comparison panel' => [
                     'css'        => '.tab-container .attribute-actions .attribute-copy-actions',
                     'decorators' => [
-                        ContextSwitcherDecorator::class,
-                        ComparisonPanelDecorator::class
+                        ComparisonPanelDecorator::class,
+                        ReactContextSwitcherDecorator::class
                     ]
                 ],
                 'Main context selector' => [
@@ -94,7 +92,7 @@ class Edit extends ProductEditForm
 
         // If the dropdown is already opened, we don't try and click again
         $dropdown = $this->findAll('css', '#dropdown-root *[role=listbox]');
-        if(count($dropdown) === 0) {
+        if (count($dropdown) === 0) {
             $localeButton->click();
         }
 
@@ -118,7 +116,6 @@ class Edit extends ProductEditForm
     {
         $localesDropDown = $this->findAll('css', '#dropdown-root *[role=listbox] > *');
         foreach ($localesDropDown as $locale) {
-            var_dump($locale->getHtml());
             if (str_contains($locale->getHtml(), $label)) {
                 return $locale;
             }
