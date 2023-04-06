@@ -24,7 +24,9 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
         ></AttributeList>
-        <AttributeSettings attribute={selectedAttribute}></AttributeSettings>
+        {featureFlag.isEnabled('category_template_customization') &&
+          <AttributeSettings attribute={selectedAttribute}></AttributeSettings>
+        }
       </Attributes>
     </FormContainer>
   );
