@@ -36,7 +36,9 @@ class Index extends Grid
                 'Categories tree'         => ['css' => '#tree'],
                 'Main context selector'   => [
                     'css'        => '.AknColumn-innerTop',
-                    'decorators' => [ContextSwitcherDecorator::class],
+                    'decorators' => [
+                        ContextSwitcherDecorator::class
+                    ],
                 ],
                 'Tree select'             => ['css' => '#tree [aria-haspopup="listbox"] button'],
                 'Locales dropdown'        => ['css' => '#locale-switcher'],
