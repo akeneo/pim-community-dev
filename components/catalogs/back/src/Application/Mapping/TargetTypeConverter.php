@@ -44,6 +44,7 @@ final class TargetTypeConverter
         ],
         'string+uri' => [
             'pim_catalog_image',
+            'pim_catalog_asset_collection',
         ],
     ];
 
