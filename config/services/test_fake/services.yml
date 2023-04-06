@@ -28,6 +28,8 @@ imports:
     - { resource: ../../../tests/back/Platform/Acceptance/NotificationBundle/Resources/config/services.yml }
     # Identifier Generator
     - { resource: ../../../components/identifier-generator/back/tests/Acceptance/Resources/config/services.yml }
+    # Installer
+    - { resource: ../../../src/Akeneo/Platform/Installer/back/tests/Acceptance/Resources/config/fake_services.yml }
 
 services:
     akeneo_integration_tests.doctrine.connection.connection_closer:
