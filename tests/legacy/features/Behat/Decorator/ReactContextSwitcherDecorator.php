@@ -12,17 +12,25 @@ use Behat\Mink\Element\Element;
  */
 class ReactContextSwitcherDecorator extends ContextSwitcherDecorator
 {
-    private $localesMapping = [
+    private array $localesMappingEn_US = [
         'en_US' => 'English (United States)',
         'fr_FR' => 'French (France)',
+        'de_DE' => 'German (Germany)',
+        'en_GB' => 'English (United Kingdom)',
+    ];
+
+    private array $localesMappingFr_FR = [
+        'en_US' => 'anglais (États-Unis)',
+        'fr_FR' => 'français (France)',
     ];
 
     public function switchLocale(string $localeCode): void
     {
         $localeButton = $this->getLocaleButton();
+        $localesMapping = \str_contains($localeButton->getText(), 'français') ? $this->localesMappingFr_FR : $this->localesMappingEn_US;
 
         $localeButton->click();
-        $expectedText = $this->localesMapping[$localeCode];
+        $expectedText = $localesMapping[$localeCode];
 
         $localeOption = $this->spin(function () use ($expectedText) {
             $itemsFromRoot = $this->getBody()->findAll('css', '#dropdown-root *[role=listbox] > *');
@@ -54,5 +62,22 @@ class ReactContextSwitcherDecorator extends ContextSwitcherDecorator
 
             return null;
         }, 'Cannot find any Locale Button');
+    }
+
+    /**
+     * @return string
+     */
+    public function getSelectedLocale()
+    {
+        $localeButton = $this->getLocaleButton();
+        $localeButtonText = $localeButton->getText();
+
+        foreach ($this->localesMappingEn_US as $key => $value) {
+            if (\str_contains($localeButtonText, $value)) {
+                return $key;
+            }
+        }
+
+        return '';
     }
 }
