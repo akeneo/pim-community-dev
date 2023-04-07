@@ -241,3 +241,8 @@ jobs:
         alias: delete_attribute_groups
         label: Bulk delete attribute groups
         type: attribute_group_mass_delete
+    clean_category_attribute_and_enriched_values:
+        connector: internal
+        alias: clean_category_attribute_and_enriched_values
+        label: Clean Category Template's attribute and Enriched Values
+        type: clean_category_attribute_and_enriched_values

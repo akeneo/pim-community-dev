@@ -1,6 +1,7 @@
 import {Selection} from 'akeneo-design-system';
 
 const DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP = 'other';
+const LOCKED_ATTRIBUTE_GROUP_CODE = 'other';
 
 type AttributeGroupLabels = {
   [locale: string]: string;
@@ -56,6 +57,7 @@ export {
   AttributeGroupCollection,
   AttributeGroupLabels,
   DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP,
+  LOCKED_ATTRIBUTE_GROUP_CODE,
   getImpactedAndTargetAttributeGroups,
   toSortedAttributeGroupsArray,
 };

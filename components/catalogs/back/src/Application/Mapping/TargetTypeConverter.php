@@ -23,6 +23,7 @@ final class TargetTypeConverter
         ],
         'boolean' => [
             'pim_catalog_boolean',
+            'status',
         ],
         'number' => [
             'pim_catalog_metric',
@@ -43,8 +44,8 @@ final class TargetTypeConverter
             'pim_catalog_date',
         ],
         'string+uri' => [
-            'pim_catalog_image',
             'pim_catalog_asset_collection',
+            'pim_catalog_image',
         ],
     ];
 
@@ -53,6 +54,7 @@ final class TargetTypeConverter
             'text',
         ],
         'string+uri' => [
+            'media_file',
             'media_link',
         ],
     ];

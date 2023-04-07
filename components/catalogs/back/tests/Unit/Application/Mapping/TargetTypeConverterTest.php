@@ -55,6 +55,7 @@ class TargetTypeConverterTest extends TestCase
                 '',
                 [
                     'pim_catalog_boolean',
+                    'status',
                 ],
             ],
             'number' => [
@@ -84,6 +85,7 @@ class TargetTypeConverterTest extends TestCase
                 'string',
                 'uri',
                 [
+                    'pim_catalog_asset_collection',
                     'pim_catalog_image',
                 ],
             ],
@@ -128,11 +130,12 @@ class TargetTypeConverterTest extends TestCase
                 ],
             ],
             'string' => [
-              'string',
-              'uri',
-              [
-                'media_link',
-              ],
+                'string',
+                'uri',
+                [
+                    'media_file',
+                    'media_link',
+                ],
             ],
         ];
     }

@@ -3,12 +3,6 @@ Feature: Create Identifier Generator
 
   Background:
     Given the 'sku' attribute of type 'pim_catalog_identifier'
-    And the 'tshirt' family
-    And the 'name' attribute of type 'pim_catalog_text'
-    And the 'color' attribute of type 'pim_catalog_simpleselect'
-    And the 'red', 'green' and 'blue' options for 'color' attribute
-    And the 'a_multi_select' attribute of type 'pim_catalog_multiselect'
-    And the 'option_a', 'option_b' and 'option_c' options for 'a_multi_select' attribute
 
   Scenario: Can create a valid identifier generator
     When I create an identifier generator
@@ -39,6 +33,7 @@ Feature: Create Identifier Generator
     And the identifier generator should not be created
 
   Scenario: Cannot create an identifier with non identifier target
+    Given the 'name' attribute of type 'pim_catalog_text'
     When I try to create an identifier generator with target 'name'
     Then I should get an error with message 'target: The "name" attribute code is "pim_catalog_text" type and should be of type "pim_catalog_identifier".'
     And the identifier generator should not be created

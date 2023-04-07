@@ -28,10 +28,12 @@ interface ValueExtractorInterface
     public const SOURCE_TYPE_ATTRIBUTE_METRIC = 'pim_catalog_metric';
 
     public const SUB_SOURCE_TYPE_ATTRIBUTE_TEXT = 'text';
+    public const SUB_SOURCE_TYPE_ATTRIBUTE_MEDIA_FILE = 'media_file';
     public const SUB_SOURCE_TYPE_ATTRIBUTE_MEDIA_LINK = 'media_link';
 
     public const SOURCE_TYPE_CATEGORIES = 'categories';
     public const SOURCE_TYPE_FAMILY = 'family';
+    public const SOURCE_TYPE_STATUS = 'status';
 
     public const TARGET_TYPE_ARRAY_OF_STRINGS = 'array<string>';
     public const TARGET_TYPE_BOOLEAN = 'boolean';

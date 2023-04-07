@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
-use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Application\Command\DeactivateAttributeCommand;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,15 +30,11 @@ class DeactivateAttributeController
             throw new AccessDeniedException();
         }
 
-        try {
-            $command = DeactivateAttributeCommand::create(
-                templateUuid: $templateUuid,
-                attributeUuid: $attributeUuid,
-            );
-            $this->categoryCommandBus->dispatch($command);
-        } catch (ViolationsException $exception) {
-            return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
-        }
+        $command = DeactivateAttributeCommand::create(
+            templateUuid: $templateUuid,
+            attributeUuid: $attributeUuid,
+        );
+        $this->categoryCommandBus->dispatch($command);
 
         return new JsonResponse(null, Response::HTTP_OK);
     }

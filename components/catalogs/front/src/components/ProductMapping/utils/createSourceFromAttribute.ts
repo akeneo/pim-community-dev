@@ -7,7 +7,6 @@ export const createSourceFromAttribute = (attribute: Attribute): Source => {
         locale: null,
         scope: null,
     };
-
     if (
         attribute.type === 'categories' ||
         attribute.type === 'family' ||

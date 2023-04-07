@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\Acceptance\Context;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Enabled;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
@@ -53,7 +54,17 @@ final class DatabaseContext implements Context
      */
     public function theIdentifierShouldNotBeCreated(): void
     {
-        Assert::null($this->generatorRepository->get(BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE));
+        try {
+            $this->generatorRepository->get(BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE);
+
+            throw new \InvalidArgumentException(
+                \sprintf(
+                    'An identifier generator with code "%s" was created.',
+                    BaseCreateOrUpdateIdentifierGenerator::DEFAULT_IDENTIFIER_GENERATOR_CODE
+                )
+            );
+        } catch (CouldNotFindIdentifierGeneratorException) {
+        }
     }
 
     /**
