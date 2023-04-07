@@ -38,9 +38,6 @@ class InternalApiToStdSpec extends ObjectBehavior
                 ]
             ],
             'attributes' => [
-                'attribute_codes' => [
-                    "title_87939c45-1d85-4134-9579-d594fff65030",
-                ],
                 'title_87939c45-1d85-4134-9579-d594fff65030_fr_FR' => [
                     "data" => "Les chaussures dont vous avez besoin !",
                     "locale" => "fr_FR",
@@ -56,9 +53,6 @@ class InternalApiToStdSpec extends ObjectBehavior
                 'en_US' => 'Socks'
             ],
             'values' => [
-                'attribute_codes' => [
-                    "title_87939c45-1d85-4134-9579-d594fff65030",
-                ],
                 'title_87939c45-1d85-4134-9579-d594fff65030_fr_FR' => [
                     'data' => "Les chaussures dont vous avez besoin !",
                     'locale' => "fr_FR",

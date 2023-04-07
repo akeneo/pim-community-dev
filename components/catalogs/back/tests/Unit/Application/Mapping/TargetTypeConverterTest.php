@@ -62,6 +62,7 @@ class TargetTypeConverterTest extends TestCase
                 '',
                 [
                     'pim_catalog_boolean',
+                    'status',
                 ],
             ],
             'number' => [

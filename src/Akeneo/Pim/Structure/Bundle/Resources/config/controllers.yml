@@ -136,7 +136,6 @@ services:
             - '@pim_catalog.updater.attribute_group'
             - '@validator'
             - '@pim_catalog.saver.attribute_group'
-            - '@pim_catalog.remover.attribute_group'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.updater.attribute'
             - '@pim_catalog.saver.attribute'
@@ -145,7 +144,9 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '@akeneo.pim.structure.query.find_attribute_codes_for_attribute_groups'
-            - '@translator'
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
 
     pim_enrich.controller.rest.family:
         public: true

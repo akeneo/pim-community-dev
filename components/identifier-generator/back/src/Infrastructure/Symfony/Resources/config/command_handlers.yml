@@ -9,6 +9,18 @@ services:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\UpdateGeneratorCommandValidator'
 
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorsHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Delete\DeleteGeneratorHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository'
