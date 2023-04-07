@@ -35,6 +35,11 @@ final class StringDateTimeFromDateAttributeValueExtractor implements StringValue
         return self::SOURCE_TYPE_ATTRIBUTE_DATE;
     }
 
+    public function getSupportedSubSourceType(): ?string
+    {
+        return null;
+    }
+
     public function getSupportedTargetType(): string
     {
         return self::TARGET_TYPE_STRING;

@@ -46,6 +46,11 @@ final class StringFromCategoriesValueExtractor implements StringValueExtractorIn
         return self::SOURCE_TYPE_CATEGORIES;
     }
 
+    public function getSupportedSubSourceType(): ?string
+    {
+        return null;
+    }
+
     public function getSupportedTargetType(): string
     {
         return self::TARGET_TYPE_STRING;

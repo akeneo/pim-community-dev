@@ -208,6 +208,7 @@ services:
     Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry:
         arguments:
             -
+                - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromAssetCollectionTextAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromCategoriesValueExtractor'
                 - '@Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor'

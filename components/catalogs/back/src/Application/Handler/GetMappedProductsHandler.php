@@ -110,7 +110,6 @@ final class GetMappedProductsHandler
         foreach ($productMapping as $targetSourceAssociation) {
             if ('categories' === $targetSourceAssociation['source']
                 && isset($targetSourceAssociation['parameters']['label_locale'])
-                && \is_string($targetSourceAssociation['parameters']['label_locale'])
                 && $targetSourceAssociation['parameters']['label_locale'] !== ''
                 && !\in_array($targetSourceAssociation['parameters']['label_locale'], $categoryLocales)
             ) {

@@ -30,6 +30,11 @@ final class StringFromTextAttributeValueExtractor implements StringValueExtracto
         return self::SOURCE_TYPE_ATTRIBUTE_TEXT;
     }
 
+    public function getSupportedSubSourceType(): ?string
+    {
+        return null;
+    }
+
     public function getSupportedTargetType(): string
     {
         return self::TARGET_TYPE_STRING;

@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  * @psalm-suppress PropertyNotSetInConstructor
  *
  * @phpstan-type AttributeCriterion array{field: string, value: array<string>}
- * @phpstan-type Attribute array{code: string, label: string, type: string, scopable: bool, localizable: bool}
+ * @phpstan-import-type Attribute from FindOneAttributeByCodeQueryInterface
  */
 final class AttributeCriterionContainsValidAttributeOptionsValidator extends ConstraintValidator
 {
