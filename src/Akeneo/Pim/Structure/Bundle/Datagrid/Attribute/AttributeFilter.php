@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Datagrid\Attribute;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\AbstractFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface as PimFilterDatasourceAdapterInterface;
 
 class AttributeFilter extends AbstractFilter
 {
@@ -14,6 +14,10 @@ class AttributeFilter extends AbstractFilter
      */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
+        if (!$ds instanceof PimFilterDatasourceAdapterInterface) {
+            return false;
+        }
+
         $data = $this->parseData($data);
         if (0 === count($data)) {
             return false;
@@ -27,13 +31,13 @@ class AttributeFilter extends AbstractFilter
                 $ds->expr()->orX(
                     $ds->expr()->comparison(
                         "$rootAlias.code",
-                        Operators::IS_LIKE,
+                        'LIKE',
                         $parameterName,
                         true
                     ),
                     $ds->expr()->comparison(
                         'translation.label',
-                        Operators::IS_LIKE,
+                        'LIKE',
                         $parameterName,
                         true
                     )

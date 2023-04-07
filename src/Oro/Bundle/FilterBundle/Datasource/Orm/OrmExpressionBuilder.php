@@ -25,7 +25,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function orX($_)
+    public function orX(...$_)
     {
         return call_user_func_array([$this->expr, 'orX'], func_get_args());
     }
