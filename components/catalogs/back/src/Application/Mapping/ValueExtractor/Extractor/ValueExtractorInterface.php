@@ -29,6 +29,7 @@ interface ValueExtractorInterface
     public const SOURCE_TYPE_ATTRIBUTE_METRIC = 'pim_catalog_metric';
 
     public const SUB_SOURCE_TYPE_ATTRIBUTE_TEXT = 'text';
+    public const SUB_SOURCE_TYPE_ATTRIBUTE_IMAGE = 'image';
     public const SUB_SOURCE_TYPE_ATTRIBUTE_MEDIA_FILE = 'media_file';
 
     public const SOURCE_TYPE_CATEGORIES = 'categories';
