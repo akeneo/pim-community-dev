@@ -98,7 +98,9 @@ catalogs-integration-back:
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Integration \
-		--order-by random \
+		--random-order-seed 1680510512 \
+		--testdox \
+		--verbose \
 		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml
 
 .PHONY: catalogs-acceptance-back
