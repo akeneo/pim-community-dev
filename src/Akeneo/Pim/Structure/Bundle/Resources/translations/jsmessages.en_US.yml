@@ -295,10 +295,10 @@ pim_enrich.entity.attribute_group:
     selected: '{0}0 attribute group selected|{1}1 attribute group selected|]1, Inf[{{ count }} attribute groups selected'
     mass_delete:
         confirm: '{1}Are you sure you want to delete this attribute group?|]1, Inf[Are you sure you want to delete these {{ count }} attribute groups?'
-        confirmation_phrase: 'Please type "{{ confirmation_word }}" to confirm:'
+        confirmation_phrase: 'Please type "{{ confirmation_word }}"'
         confirmation_word: delete
         attribute_warning: '{1}Deleting these attribute groups will impact {{ number_of_attribute }} related attribute. You will need to move this related attribute to a new attribute group.|]1, Inf[Deleting these attribute groups will impact {{ number_of_attribute }} related attributes. You will need to move these related attributes to a new attribute group.'
-        select_attribute_group: '{1}Please select the attribute group to move the related attribute to:|]1, Inf[Please select the attribute group to move the {{ number_of_attribute }} related attributes to:'
+        select_attribute_group: '{1}Please select the attribute group to move the related attribute to|]1, Inf[Please select the attribute group to move the {{ number_of_attribute }} related attributes to'
         empty_result_label: 'No attribute group found'
         placeholder: 'Select attribute group'
         open_label: 'attribute group list'

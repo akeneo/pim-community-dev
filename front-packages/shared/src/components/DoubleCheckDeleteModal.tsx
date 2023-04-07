@@ -1,6 +1,14 @@
 import React, {useState} from 'react';
+import styled from 'styled-components';
 import {DeleteModal, DeleteModalProps} from './DeleteModal';
 import {TextField} from './TextField';
+
+const Content = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
 
 type DoubleCheckDeleteModalProps = DeleteModalProps & {
   doubleCheckInputLabel: string;
@@ -28,8 +36,10 @@ const DoubleCheckDeleteModal = ({
 
   return (
     <DeleteModal {...deleteModalProps} canConfirmDelete={canConfirm} onConfirm={handleConfirm}>
-      {children}
-      <TextField value={value} label={doubleCheckInputLabel} onChange={setValue} onSubmit={handleConfirm} />
+      <Content>
+        {children}
+        <TextField value={value} label={doubleCheckInputLabel} onChange={setValue} onSubmit={handleConfirm} />
+      </Content>
     </DeleteModal>
   );
 };

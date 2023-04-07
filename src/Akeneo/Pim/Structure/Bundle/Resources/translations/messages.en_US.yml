@@ -61,10 +61,10 @@ job_execution.summary:
 pim_import_export:
     notification:
         attribute_group_mass_delete:
-            error: Mass delete of attribute groups failed
-            warning: Mass delete of attribute groups finished with some warnings
-            success: Mass delete of attribute groups finished
+            error: Bulk delete of attribute groups failed
+            warning: Bulk delete of attribute groups finished with some warnings
+            success: Bulk delete of attribute groups finished
         attribute_mass_delete:
-            error: Mass delete of attributes failed
-            warning: Mass delete of attributes finished with some warnings
-            success: Mass delete of attributes finished
+            error: Bulk delete of attributes failed
+            warning: Bulk delete of attributes finished with some warnings
+            success: Bulk delete of attributes finished
