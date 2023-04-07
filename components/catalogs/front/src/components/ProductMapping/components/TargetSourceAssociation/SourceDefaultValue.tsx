@@ -10,7 +10,7 @@ export const SourceDefaultValue: FC<Props> = ({sourceDefaultValue}) => {
 
     let valueToDisplay = String(sourceDefaultValue);
     if (typeof sourceDefaultValue === 'boolean') {
-        valueToDisplay = valueToDisplay.charAt(0).toUpperCase() + valueToDisplay.slice(1);
+        valueToDisplay = sourceDefaultValue ? translate('pim_common.yes') : translate('pim_common.no');
     }
 
     return (
