@@ -140,10 +140,6 @@ SQL;
 
         $this->get('database_connection')->executeQuery($query, [
             'value_collection' => json_encode([
-                'attribute_codes' => [
-                    'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030',
-                    'photo'.AbstractValue::SEPARATOR.'8587cda6-58c8-47fa-9278-033e1d8c735c',
-                ],
                 'title'.AbstractValue::SEPARATOR.'87939c45-1d85-4134-9579-d594fff65030'.AbstractValue::SEPARATOR.'ecommerce'.AbstractValue::SEPARATOR.'en_US' => [
                     'data' => 'All the shoes you need!',
                     'type' => 'text',

@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {DeleteAttributeGroupModal} from '@akeneo-pim-community/settings-ui';
-import {fireEvent, screen, act} from '@testing-library/react';
+import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 const deleteAttributeGroup = jest.fn();
@@ -24,26 +24,19 @@ beforeEach(() => {
   deleteAttributeGroup.mockReset();
 });
 
-test('it renders a confirm modal delete button', () => {
-  renderWithProviders(<DeleteAttributeGroupModal attributeGroupCode="attribute_group_1" />);
-
-  expect(screen.getByText('pim_common.delete')).toBeInTheDocument();
-  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-});
-
-test('it opens a modal with helper if there are child attributes', () => {
-  renderWithProviders(<DeleteAttributeGroupModal attributeGroupCode="attribute_group_1" />);
-
-  userEvent.click(screen.getByText('pim_common.delete'));
+test('it renders a modal with helper if there are child attributes', () => {
+  renderWithProviders(
+    <DeleteAttributeGroupModal attributeGroupCode="attribute_group_1" isOpen={true} onClose={jest.fn()} />
+  );
 
   expect(screen.getByText('pim_enrich.entity.attribute_group.delete.confirm')).toBeInTheDocument();
   expect(screen.getByText('pim_enrich.entity.attribute_group.delete.attribute_warning')).toBeInTheDocument();
 });
 
 test('it can select an attribute group to assign affected attributes', () => {
-  renderWithProviders(<DeleteAttributeGroupModal attributeGroupCode="attribute_group_1" />);
-
-  userEvent.click(screen.getByText('pim_common.delete'));
+  renderWithProviders(
+    <DeleteAttributeGroupModal attributeGroupCode="attribute_group_1" isOpen={true} onClose={jest.fn()} />
+  );
 
   expect(screen.getByText('pim_enrich.entity.attribute_group.delete.select_attribute_group')).toBeInTheDocument();
   expect(screen.getByText('pim_enrich.entity.attribute_group.delete.confirm')).toBeInTheDocument();
@@ -56,29 +49,30 @@ test('it can select an attribute group to assign affected attributes', () => {
   userEvent.click(screen.getByText('[attribute_group_3]'));
 });
 
-test('it launch delete', async () => {
-  renderWithProviders(<DeleteAttributeGroupModal attributeGroupCode="attribute_group_1" />);
+test('it launches delete', async () => {
+  const onClose = jest.fn();
+  renderWithProviders(
+    <DeleteAttributeGroupModal attributeGroupCode="attribute_group_1" isOpen={true} onClose={onClose} />
+  );
 
-  userEvent.click(screen.getAllByText('pim_common.delete')[0]);
   userEvent.click(screen.getByLabelText('pim_enrich.entity.attribute_group.delete.select_attribute_group'));
   userEvent.click(screen.getByText('[attribute_group_2]'));
 
   await act(async () => {
-    await userEvent.click(screen.getAllByText('pim_common.delete')[1]);
+    await userEvent.click(screen.getByText('pim_common.delete'));
   });
   expect(deleteAttributeGroup).toBeCalled();
+  expect(onClose).toBeCalled();
 });
 
-test('it resets assigned attribute group when modal is closed', () => {
-  renderWithProviders(<DeleteAttributeGroupModal attributeGroupCode="attribute_group_1" />);
+test('it close the modal when user clicks on cancel', async () => {
+  const onClose = jest.fn();
+  renderWithProviders(
+    <DeleteAttributeGroupModal attributeGroupCode="attribute_group_1" isOpen={true} onClose={onClose} />
+  );
 
-  userEvent.click(screen.getByText('pim_common.delete'));
-  userEvent.click(screen.getByLabelText('pim_enrich.entity.attribute_group.delete.select_attribute_group'));
-  userEvent.click(screen.getByText('[attribute_group_2]'));
-  expect(screen.getByText('[attribute_group_2]')).toBeInTheDocument();
-
-  userEvent.click(screen.getByText('pim_common.cancel'));
-  userEvent.click(screen.getByText('pim_common.delete'));
-
-  expect(screen.queryByText('[attribute_group_2]')).not.toBeInTheDocument();
+  await act(async () => {
+    await userEvent.click(screen.getByText('pim_common.cancel'));
+  });
+  expect(onClose).toBeCalled();
 });

@@ -52,7 +52,7 @@ final class GetProductIdentifiersQuery implements GetProductIdentifiersQueryInte
         $results = $pqb->execute();
 
         return \array_map(
-            fn (IdentifierResult $result) => $result->getIdentifier() ?:
+            fn (IdentifierResult $result): string => $result->getIdentifier() ?:
                 $this->getUuidFromIdentifierResult($result->getId()),
             \iterator_to_array($results),
         );
