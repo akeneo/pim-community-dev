@@ -39,7 +39,7 @@ class GetProductCategoriesLabelsQuery implements GetProductCategoriesLabelsQuery
         $this->warmup([$productUuid], [$locale]);
 
         return \array_map(
-            fn (string $categoryCode) => $this->categoryLabelsByLocale[$locale][$categoryCode] ?? \sprintf('[%s]', $categoryCode),
+            fn (string $categoryCode): string => $this->categoryLabelsByLocale[$locale][$categoryCode] ?? \sprintf('[%s]', $categoryCode),
             $this->categoryCodesByProduct[$productUuid] ?? [],
         );
     }

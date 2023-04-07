@@ -27,6 +27,11 @@ final class BooleanFromStatusValueExtractor implements BooleanValueExtractorInte
         return self::SOURCE_TYPE_STATUS;
     }
 
+    public function getSupportedSubSourceType(): ?string
+    {
+        return null;
+    }
+
     public function getSupportedTargetType(): string
     {
         return self::TARGET_TYPE_BOOLEAN;
