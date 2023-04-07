@@ -84,6 +84,7 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
             ],
             BooleanFromStatusValueExtractor::class => [
                 'sourceType' => 'status',
+                'subSourceType' => null,
                 'targetType' => 'boolean',
                 'targetFormat' => null,
                 'extractorClassName' => BooleanFromStatusValueExtractor::class,
