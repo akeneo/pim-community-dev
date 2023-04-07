@@ -7,12 +7,12 @@ use Oro\Bundle\FilterBundle\Filter\AbstractFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface as PimFilterDatasourceAdapterInterface;
 
-class AttributeFilter extends AbstractFilter
+final class AttributeFilter extends AbstractFilter
 {
     /**
      * {@inheritDoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         if (!$ds instanceof PimFilterDatasourceAdapterInterface) {
             return false;
@@ -60,10 +60,8 @@ class AttributeFilter extends AbstractFilter
 
     /**
      * @param mixed $data
-     *
-     * @return array
      */
-    protected function parseData($data)
+    protected function parseData($data): array
     {
         if (!is_array($data) || !array_key_exists('value', $data) || !$data['value']) {
             return [];
