@@ -6,7 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence\Category;
 
 use Akeneo\Catalogs\Application\Persistence\Category\GetCategoriesByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Category\GetProductCategoriesLabelsQueryInterface;
-use Akeneo\Catalogs\Application\Persistence\WarmupableQueryInterface;
+use Akeneo\Catalogs\Application\Persistence\WarmupAwareQueryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductCategoryCodesQuery;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetProductCategoriesLabelsQuery implements GetProductCategoriesLabelsQueryInterface, WarmupableQueryInterface
+class GetProductCategoriesLabelsQuery implements GetProductCategoriesLabelsQueryInterface, WarmupAwareQueryInterface
 {
     /** @var array<string, string[]> $categoryCodesByProduct */
     private array $categoryCodesByProduct = [];
