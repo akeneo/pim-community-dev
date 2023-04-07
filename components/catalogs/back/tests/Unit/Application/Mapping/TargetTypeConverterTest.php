@@ -85,6 +85,7 @@ class TargetTypeConverterTest extends TestCase
                 'string',
                 'uri',
                 [
+                    'pim_catalog_asset_collection',
                     'pim_catalog_image',
                 ],
             ],
@@ -126,6 +127,13 @@ class TargetTypeConverterTest extends TestCase
                 '',
                 [
                     'text',
+                ],
+            ],
+            'string' => [
+                'string',
+                'uri',
+                [
+                    'media_file',
                 ],
             ],
         ];
