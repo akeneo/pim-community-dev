@@ -2,24 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Integration\Application\Command\CleanCategoryEnrichedValuesByTemplateUuid;
+namespace Akeneo\Category\back\tests\Integration\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues;
 
-use Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommandHandler;
-use Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand;
+use Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommand;
+use Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler;
+use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CleanCategoryTemplateAndEnrichedValuesCommandHandlerIntegration extends CategoryTestCase
+class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandlerIntegration extends CategoryTestCase
 {
-    public function testItCleansValueCollectionOnTemplateDeactivation(): void
+    public function testItCleansValueCollectionOnTemplateAttributeDeactivation(): void
     {
+        $templateUuid = '6344aa2a-2be9-4093-b644-259ca7aee50c';
         $categorySocks = $this->useTemplateFunctionalCatalog(
-            '6344aa2a-2be9-4093-b644-259ca7aee50c',
+            $templateUuid,
             'socks',
         );
 
@@ -29,12 +32,20 @@ class CleanCategoryTemplateAndEnrichedValuesCommandHandlerIntegration extends Ca
         $category = $getCategory->byCode('socks');
         $this->assertCount(3, $category->getAttributes()->getValues());
 
-        $command = new CleanCategoryTemplateAndEnrichedValuesCommand('6344aa2a-2be9-4093-b644-259ca7aee50c');
-        $commandHandler = $this->get(CleanCategoryTemplateAndEnrichedValuesCommandHandler::class);
-        ($commandHandler)($command);
+        $attributes = $this->get(GetAttribute::class)->byTemplateUuid(TemplateUuid::fromString($templateUuid));
+        $deletedAttributesUuid = [];
+        foreach (range(0, 2) as $index) {
+            $attributeUuid = $attributes->getAttributes()[$index]->getUuid();
+            $deletedAttributesUuid[] = $attributeUuid;
+            $command = new CleanCategoryTemplateAttributeAndEnrichedValuesCommand($templateUuid, (string) $attributeUuid);
+            $commandHandler = $this->get(CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler::class);
+            ($commandHandler)($command);
+        }
 
         $category = $getCategory->byCode('socks');
         $this->assertCount(1, $category->getAttributes()->getValues());
+        $attributesDeletedInDatabase = $this->get(GetAttribute::class)->byUuids($deletedAttributesUuid);
+        $this->assertCount(0, $attributesDeletedInDatabase);
     }
 
     private function updateCategoryValues(string $code, string $channel = 'ecommerce'): void

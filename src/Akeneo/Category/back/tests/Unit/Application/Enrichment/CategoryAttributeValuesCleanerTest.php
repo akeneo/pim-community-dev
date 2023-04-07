@@ -89,9 +89,6 @@ class CategoryAttributeValuesCleanerTest extends TestCase
     private function getValuesByCodeForCategory1(): array
     {
         return json_decode('{
-            "attribute_codes": [
-                "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233"
-            ],
             "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|ecommerce|fr_FR": {
                 "data": "<p>Ma description enrichie pour le ecommerce</p>",
                 "type": "textarea",
@@ -130,9 +127,6 @@ class CategoryAttributeValuesCleanerTest extends TestCase
     private function getValuesByCodeForCategory2(): array
     {
         return json_decode('{
-            "attribute_codes": [
-                "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233"
-            ],
             "long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|print|fr_FR": {
                 "data": "<p>Ma description enrichie pour l\'imprimerie</p>",
                 "type": "textarea",
@@ -157,10 +151,6 @@ class CategoryAttributeValuesCleanerTest extends TestCase
     private function getValuesByCodeForCategory3(): array
     {
         return json_decode('{
-            "attribute_codes": [
-                "url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911",
-                "seo_keywords|be2a1d6e-0563-409a-8407-0be494c34b84"
-            ],
             "url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911": {
                 "data": "all_scope_all_locale_url_slug",
                 "type": "text",
@@ -187,9 +177,6 @@ class CategoryAttributeValuesCleanerTest extends TestCase
     {
         return [
             'category_1' => ValueCollection::fromDatabase([
-                'attribute_codes' => [
-                    'long_description|c91e6a4e-733b-4d77-aefc-129edbf03233',
-                ],
                 'long_description|c91e6a4e-733b-4d77-aefc-129edbf03233|ecommerce|fr_FR' => [
                     'data' => '<p>Ma description enrichie pour le ecommerce</p>',
                     'type' => 'textarea',
@@ -210,9 +197,6 @@ class CategoryAttributeValuesCleanerTest extends TestCase
     {
         return [
             'category_3' => ValueCollection::fromDatabase([
-                'attribute_codes' => [
-                    'url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911',
-                ],
                 'url_slug|d8617b1f-1db8-4e49-a6b0-404935fe2911' => [
                     'data' => 'all_scope_all_locale_url_slug',
                     'type' => 'text',

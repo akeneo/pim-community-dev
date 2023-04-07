@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues;
+namespace Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues;
 
 use Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner;
-use Akeneo\Category\Application\Query\DeleteTemplateAndAttributes;
 use Akeneo\Category\Application\Query\GetAttribute;
-use Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid;
+use Akeneo\Category\Domain\Query\DeleteTemplateAttribute;
 use Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CleanCategoryTemplateAndEnrichedValuesCommandHandler
+class CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler
 {
     private const CATEGORY_BATCH_SIZE = 100;
 
@@ -23,16 +23,16 @@ class CleanCategoryTemplateAndEnrichedValuesCommandHandler
         private readonly GetEnrichedValuesByTemplateUuid $getEnrichedValuesByTemplateUuid,
         private readonly CategoryAttributeValuesCleaner $categoryDataCleaner,
         private readonly GetAttribute $getCategoryTemplateAttributes,
-        private readonly DeleteTemplateAndAttributes $deleteTemplateAndAttributes,
-        private readonly DeleteCategoryTreeTemplateByTemplateUuid $deleteCategoryTreeTemplateByTemplateUuid,
+        private readonly DeleteTemplateAttribute $deleteTemplateAttribute,
     ) {
     }
 
-    public function __invoke(CleanCategoryTemplateAndEnrichedValuesCommand $command): void
+    public function __invoke(CleanCategoryTemplateAttributeAndEnrichedValuesCommand $command): void
     {
         $templateUuid = TemplateUuid::fromString($command->templateUuid);
+        $attributeUuid = AttributeUuid::fromString($command->attributeUuid);
         $templateAttributes = $this->getCategoryTemplateAttributes
-            ->byTemplateUuid($templateUuid)
+            ->byUuids([$attributeUuid])
             ->getAttributes();
         foreach ($this->getEnrichedValuesByTemplateUuid->byBatchesOf(
             $templateUuid,
@@ -41,7 +41,6 @@ class CleanCategoryTemplateAndEnrichedValuesCommandHandler
             $this->categoryDataCleaner->cleanByTemplateAttributesUuid($valuesByCode, $templateAttributes);
         }
 
-        ($this->deleteCategoryTreeTemplateByTemplateUuid)($templateUuid);
-        ($this->deleteTemplateAndAttributes)($templateUuid);
+        ($this->deleteTemplateAttribute)($templateUuid, $attributeUuid);
     }
 }

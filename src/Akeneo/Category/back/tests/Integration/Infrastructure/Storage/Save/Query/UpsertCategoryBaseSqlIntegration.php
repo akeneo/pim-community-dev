@@ -73,8 +73,8 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
             id: null,
             code: new Code('myCategory'),
             templateUuid: null,
-            rootId: new CategoryId(1),
             parentId: new CategoryId((int)$parentId),
+            rootId: new CategoryId(1),
         );
 
         $upsertCategoryBaseQuery->execute($category);
@@ -118,7 +118,6 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
 
         $expected = [
             "value_collection" => [
-                "attribute_codes" => ["seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d"],
                 "seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|ecommerce|en_US" => [
                     "data" => "Meta shoes",
                     "type" => "text",
@@ -161,8 +160,8 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
             id: $categoryInserted->getId(),
             code: $categoryInserted->getCode(),
             templateUuid: null,
-            rootId: new CategoryId(1),
             parentId: $expectedParentId,
+            rootId: new CategoryId(1),
             attributes: $expectedData
         );
 
@@ -180,12 +179,6 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
         $this->assertSame($updatedCategory['code'], (string)$categoryInserted->getCode());
         $this->assertEquals($updatedCategory['parent_id'], $categoryInserted->getParentId()?->getValue());
         $this->assertEquals($updatedCategory['root_id'], $categoryInserted->getRootId()?->getValue());
-
-        $this->assertArrayHasKey('attribute_codes', $valueCollectionUpdated);
-        $this->assertNotEquals(
-            $valueCollectionUpdated['attribute_codes'],
-            $categoryInserted->getAttributeCodes()
-        );
 
         $this->assertArrayHasKey($expectedCompositeKey, $valueCollectionUpdated);
 
@@ -269,9 +262,6 @@ class UpsertCategoryBaseSqlIntegration extends CategoryTestCase
 
         $this->assertEquals(
             [
-                "attribute_codes" => [
-                    "seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d"
-                ],
                 "seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|ecommerce|en_US" => [
                     "data" => "Meta shoes",
                     "type" => "text",
