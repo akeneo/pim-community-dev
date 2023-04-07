@@ -28,6 +28,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -295,7 +296,7 @@ class JobInstanceController
             return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error'], 400);
         }
 
-        if (null !== $file) {
+        if ($file instanceof UploadedFile) {
             if (UPLOAD_ERR_OK !== $file->getError()) {
                 return new JsonResponse(['message' => 'pim_import_export.entity.import_profile.flash.upload.error'], 400);
             }
@@ -314,7 +315,8 @@ class JobInstanceController
                 return new JsonResponse($errors, 400);
             }
 
-            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR.$file->getClientOriginalName(), true);
+            $fileName = $this->getSanitizedClientFileName($file);
+            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR.$fileName, true);
 
             if ($this->filesystem->fileExists($jobFileLocation->path())) {
                 $this->filesystem->delete($jobFileLocation->path());
@@ -579,5 +581,10 @@ class JobInstanceController
     private function isFileUpload(Request $request): bool
     {
         return $request->server->get('CONTENT_LENGTH') > 0;
+    }
+
+    private function getSanitizedClientFileName(UploadedFile $file): string
+    {
+        return preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $file->getClientOriginalName());
     }
 }
