@@ -15,7 +15,9 @@ const Illustration = styled.div`
 const Message = styled.div`
     color: ${getColor('grey140')};
     font-size: ${getFontSize('title')};
-    margin: 11px 0 20px;
+    margin: 11px auto 20px;
+    line-height: 40px;
+    max-width: 700px;
 `;
 
 const Empty: FC = () => {
