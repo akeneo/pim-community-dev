@@ -179,8 +179,12 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             return false;
         }
 
-        $itemStepState = new ItemStepState($this->reader->getState(), $this->writer->getState());
-        $this->jobStopper->pause($stepExecution, $itemStepState);
+        $stepState = [
+            'reader' => $this->reader->getState(),
+            'writer' => $this->writer->getState(),
+        ];
+        $this->jobStopper->pause($stepExecution, $stepState);
+
         return true;
     }
 

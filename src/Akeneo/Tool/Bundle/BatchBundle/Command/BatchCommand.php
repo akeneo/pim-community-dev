@@ -54,12 +54,6 @@ class BatchCommand extends Command
         parent::__construct();
     }
 
-    private function handleSigTerm(int $executionId): void
-    {
-        // here we can fetch the job execution (or get it by params) and check if it is pausable
-        $this->updateJobExecutionStatus->updateByJobExecutionId($executionId, new BatchStatus(BatchStatus::PAUSING));
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -127,7 +121,7 @@ class BatchCommand extends Command
             $this->notifier->setRecipients($emails);
         }
 
-        $executionId = $input->hasArgument('execution') ? (int) $input->getArgument('execution') : null;
+        $executionId = $input->hasArgument('execution') ? $input->getArgument('execution') : null;
 
         if (null !== $executionId && null !== $input->getOption('config')) {
             throw new \InvalidArgumentException(
@@ -145,10 +139,11 @@ class BatchCommand extends Command
 
         if (null === $executionId) {
             $jobExecution = $this->jobExecutionFactory->createFromBatchCode($code, $config, $username);
-            $executionId = (int)$jobExecution->getId();
+            $executionId = $jobExecution->getId();
         }
-        pcntl_signal(\SIGTERM, fn () => $this->handleSigTerm($executionId));
-        $jobExecution = $this->jobExecutionRunner->executeFromJobExecutionId($executionId);
+        // We listen the sigterm in this command for spiking, maybe we should listen inside the watchdog or inside the daemon
+        pcntl_signal(\SIGTERM, fn () => $this->handleSigTerm((int) $executionId));
+        $jobExecution = $this->jobExecutionRunner->executeFromJobExecutionId((int) $executionId);
 
         $verbose = $input->getOption('verbose');
         $jobInstance = $jobExecution->getJobInstance();
@@ -193,6 +188,16 @@ class BatchCommand extends Command
 
                 $exitCode = self::EXIT_WARNING_CODE;
             }
+        } elseif (ExitStatus::PAUSED === $jobExecution->getExitStatus()->getExitCode()) {
+            $output->writeln(
+                sprintf(
+                    '<comment>%s %s has been paused.</comment>',
+                    ucfirst($jobInstance->getType()),
+                    $jobInstance->getCode(),
+                )
+            );
+
+            $exitCode = self::EXIT_WARNING_CODE;
         } else {
             $output->writeln(
                 sprintf(
@@ -255,5 +260,11 @@ class BatchCommand extends Command
     private function decodeConfiguration(string $data): array
     {
         return \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    private function handleSigTerm(int $executionId): void
+    {
+        // We have to check if the job is pausable before
+        $this->updateJobExecutionStatus->updateByJobExecutionId($executionId, new BatchStatus(BatchStatus::PAUSING));
     }
 }

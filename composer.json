@@ -70,6 +70,7 @@
         "ext-intl": "*",
         "ext-mbstring": "*",
         "ext-openssl": "*",
+        "ext-pcntl": "*",
         "ext-pdo": "*",
         "ext-xml": "*",
         "ext-zip": "*",

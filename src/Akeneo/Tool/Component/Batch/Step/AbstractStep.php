@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobInterruptedException;
+use Akeneo\Tool\Component\Batch\Job\JobPausedException;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -78,7 +79,7 @@ abstract class AbstractStep implements StepInterface
         try {
             $this->doExecute($stepExecution);
 
-            $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
+            $exitStatus = new ExitStatus(BatchStatus::PAUSED === $stepExecution->getStatus()->getValue() ? ExitStatus::PAUSED : ExitStatus::COMPLETED);
             $exitStatus->logicalAnd($stepExecution->getExitStatus());
 
             $this->jobRepository->updateStepExecution($stepExecution);
@@ -88,6 +89,7 @@ abstract class AbstractStep implements StepInterface
                 throw new JobInterruptedException("JobExecution interrupted.");
             }
 
+            // We don't know is it is useful to set the batch status to PAUSED here because it is not persisted
             // Need to upgrade here not set, in case the execution was stopped
             $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
             $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_SUCCEEDED, $stepExecution);

@@ -42,10 +42,10 @@ class JobStopper
         $this->jobRepository->updateStepExecution($stepExecution);
     }
 
-    public function pause(StepExecution $stepExecution, ItemStepState $itemStepState): void
+    public function pause(StepExecution $stepExecution, array $stepState): void
     {
         $stepExecution->setStatus(new BatchStatus(BatchStatus::PAUSED));
-        $stepExecution->setRawState($itemStepState->normalize());
+        $stepExecution->setRawState($stepState);
         $this->jobRepository->updateStepExecution($stepExecution);
     }
 }

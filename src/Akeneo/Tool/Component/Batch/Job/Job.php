@@ -198,9 +198,20 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         /* @var StepExecution $stepExecution */
         $stepExecution = null;
 
-        foreach ($this->steps as $index => $step) {
-            $stepExecution1 = $jobExecution->getStepExecutions()[$index] ?? null;
-            $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution1);
+        foreach ($this->steps as $step) {
+            $stepExecution = array_filter(
+                $jobExecution->getStepExecutions()->toArray(),
+                static fn (StepExecution $stepExecution) => $stepExecution->getStepName() === $step->getName(),
+            )[0] ?? null;
+
+            if (
+                null !== $stepExecution &&
+                !in_array($stepExecution->getStatus()->getValue(), [BatchStatus::STARTING, BatchStatus::PAUSED])
+            ) {
+                continue;
+            }
+
+            $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution);
             $this->jobRepository->updateStepExecution($stepExecution);
 
             if ($stepExecution->getStatus()->getValue() !== BatchStatus::COMPLETED) {
