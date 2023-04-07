@@ -6,6 +6,7 @@ namespace Akeneo\Category\Application\Storage\Save\Saver;
 
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\Query\UpdateCategoryUpdatedDate;
 
 /**
  * This class is used to call the save query for label translations of the category (data stored in translation table).
@@ -20,14 +21,16 @@ class CategoryTranslationsSaver implements CategorySaver
      * @param string[] $supportedUserIntents
      */
     public function __construct(
-        private UpsertCategoryTranslations $upsertCategoryTranslations,
-        private array $supportedUserIntents,
+        private readonly UpsertCategoryTranslations $upsertCategoryTranslations,
+        private readonly UpdateCategoryUpdatedDate $updateCategoryUpdatedDate,
+        private readonly array $supportedUserIntents,
     ) {
     }
 
     public function save(Category $categoryModel): void
     {
         $this->upsertCategoryTranslations->execute($categoryModel);
+        $this->updateCategoryUpdatedDate->execute((string) $categoryModel->getCode());
     }
 
     public function getSupportedUserIntents(): array

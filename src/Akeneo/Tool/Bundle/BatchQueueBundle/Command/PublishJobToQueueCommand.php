@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
+use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueueInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -30,7 +30,7 @@ class PublishJobToQueueCommand extends Command
 
     public const EXIT_SUCCESS_CODE = 0;
 
-    /** @var PublishJobToQueue */
+    /** @var PublishJobToQueueInterface */
     private $publishJobToQueue;
 
     /** @var JobRepositoryInterface */
@@ -46,7 +46,7 @@ class PublishJobToQueueCommand extends Command
     private $jobInstanceClass;
 
     public function __construct(
-        PublishJobToQueue $publishJobToQueue,
+        PublishJobToQueueInterface $publishJobToQueue,
         JobRepositoryInterface $jobRepository,
         JobRegistry $jobRegistry,
         JobParametersFactory $jobParametersFactory,

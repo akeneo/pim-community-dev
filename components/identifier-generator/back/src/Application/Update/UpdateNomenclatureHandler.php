@@ -29,15 +29,9 @@ final class UpdateNomenclatureHandler
         $this->validator->validate($command);
 
         if ($command->getPropertyCode() === FamilyProperty::TYPE) {
-            $nomenclatureRepository = $this->familyNomenclatureRepository;
+            $nomenclatureDefinition = $this->familyNomenclatureRepository->get() ?? new NomenclatureDefinition();
         } else {
-            $nomenclatureRepository = $this->simpleSelectNomenclatureRepository;
-        }
-
-        $nomenclatureDefinition = $nomenclatureRepository->get($command->getPropertyCode());
-
-        if (null === $nomenclatureDefinition) {
-            $nomenclatureDefinition = new NomenclatureDefinition();
+            $nomenclatureDefinition = $this->simpleSelectNomenclatureRepository->get($command->getPropertyCode()) ?? new NomenclatureDefinition();
         }
 
         Assert::notNull($command->getOperator());
@@ -50,6 +44,10 @@ final class UpdateNomenclatureHandler
             ->withGenerateIfEmpty($command->getGenerateIfEmpty())
             ->withValues($command->getValues());
 
-        $nomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
+        if ($command->getPropertyCode() === FamilyProperty::TYPE) {
+            $this->familyNomenclatureRepository->update($nomenclatureDefinition);
+        } else {
+            $this->simpleSelectNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
+        }
     }
 }

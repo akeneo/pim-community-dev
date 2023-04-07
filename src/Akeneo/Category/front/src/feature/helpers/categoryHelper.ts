@@ -92,7 +92,8 @@ function populateCategoryAttributes(
     };
   });
 
-  // attribute_codes is a special entry in attributes, useful only on DB side
+  // [DEPRECATED] keep this filter to manage uncleaned data from previous code version
+  // attribute_codes is a deprecated entry in attributes,
   // should not come to front via GET
   // but if it does we should ignore it (would break POSTing)
   delete fixedCategory.attributes['attribute_codes'];
