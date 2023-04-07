@@ -91,7 +91,7 @@ const SectionTitle = ({children, ...rest}: SectionTitleProps) => {
 
     if (isValidElement<ButtonProps>(child) && child.type === Button) {
       return cloneElement(child, {
-        level: 'tertiary',
+        level: child.props?.level ?? 'tertiary',
         size: 'small',
         ghost: true,
       });
