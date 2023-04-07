@@ -39,5 +39,9 @@ class FilePathValidator extends ConstraintValidator
                 ],
             );
         }
+
+        if (preg_match('#\p{C}+#u', $filePath)) {
+            $this->context->addViolation(FilePath::NON_PRINTABLE_FILE_PATH);
+        }
     }
 }
