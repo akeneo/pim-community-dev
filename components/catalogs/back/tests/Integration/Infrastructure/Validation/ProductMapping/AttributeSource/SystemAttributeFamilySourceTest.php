@@ -46,6 +46,22 @@ class SystemAttributeFamilySourceTest extends AbstractAttributeSourceTest
         $this->assertEmpty($violations);
     }
 
+    public function testItReturnsNoViolationWithDefaultValue(): void
+    {
+        $source = [
+            'source' => 'family',
+            'scope' => null,
+            'locale' => null,
+            'default' => 'Default value',
+            'parameters' => [
+                'label_locale' => 'en_US',
+            ],
+        ];
+        $violations = $this->validator->validate($source, new SystemAttributeFamilySource());
+
+        $this->assertEmpty($violations);
+    }
+
     /**
      * @dataProvider invalidDataProvider
      */
@@ -195,6 +211,18 @@ class SystemAttributeFamilySourceTest extends AbstractAttributeSourceTest
                     ],
                 ],
                 'expectedMessage' => 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.',
+            ],
+            'invalid default value type' => [
+                'source' => [
+                    'source' => 'family',
+                    'scope' => null,
+                    'locale' => null,
+                    'parameters' => [
+                        'label_locale' => 'en_EN',
+                    ],
+                    'default' => true,
+                ],
+                'expectedMessage' => 'This value should be of type string.',
             ],
         ];
     }
