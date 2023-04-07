@@ -33,6 +33,7 @@ final class SqlGetFamilyIntegration extends TestCase
             [
                 'code' => 'accessories',
                 'labels' => [
+                    'de_DE' => 'Zubehör',
                     'en_US' => 'Accessories',
                     'fr_FR' => 'Accessoires',
                 ],
@@ -44,10 +45,6 @@ final class SqlGetFamilyIntegration extends TestCase
             ],
             [
                 'code' => 'hats',
-                'labels' => [
-                    'en_US' => 'Hats',
-                    'fr_FR' => 'Chapeaux',
-                ],
                 'attributes' => [
                     'sku',
                     'description',
@@ -55,6 +52,7 @@ final class SqlGetFamilyIntegration extends TestCase
                 ],
             ],
         ]);
+        $this->givenActiveLocales(['en_US', 'fr_FR', 'de_DE']);
     }
 
     public function test_it_gets_families_by_codes(): void
@@ -65,6 +63,7 @@ final class SqlGetFamilyIntegration extends TestCase
             'accessories' => new Family(
                 'accessories',
                 [
+                    'de_DE' => 'Zubehör',
                     'en_US' => 'Accessories',
                     'fr_FR' => 'Accessoires',
                 ],
@@ -78,8 +77,13 @@ final class SqlGetFamilyIntegration extends TestCase
                 ],
                 ['sku', 'description', 'price'],
             ),
+            'hats' => new Family(
+                'hats',
+                [],
+                ['sku', 'description', 'name'],
+            ),
         ];
-        $actual = $query->byCodes(['shoes', 'accessories']);
+        $actual = $query->byCodes(['shoes', 'accessories', 'hats']);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
@@ -100,6 +104,7 @@ final class SqlGetFamilyIntegration extends TestCase
         $expected = new Family(
             'accessories',
             [
+                'de_DE' => 'Zubehör',
                 'en_US' => 'Accessories',
                 'fr_FR' => 'Accessoires',
             ],
@@ -159,5 +164,16 @@ final class SqlGetFamilyIntegration extends TestCase
         }, $attributeCodes);
 
         $this->get('pim_catalog.saver.attribute')->saveAll($attributes);
+    }
+
+    private function givenActiveLocales(array $localeCodes): void
+    {
+        $ecommerce = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('ecommerce');
+        foreach ($localeCodes as $localeCode) {
+
+            $locale = $this->get('pim_catalog.repository.locale')->findOneByIdentifier($localeCode);
+            $ecommerce->addLocale($locale);
+        }
+        $this->get('pim_catalog.saver.channel')->save($ecommerce);
     }
 }
