@@ -5,6 +5,7 @@ services:
     Akeneo\Category\Application\Storage\Save\Saver\CategoryTranslationsSaver:
         arguments:
             - '@Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations'
+            - '@Akeneo\Category\Domain\Query\UpdateCategoryUpdatedDate'
             - [
                 '%pim.category.api.user_intent.set_label.class%'
             ]

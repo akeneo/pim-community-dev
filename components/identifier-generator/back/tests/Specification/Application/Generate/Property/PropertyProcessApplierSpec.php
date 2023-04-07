@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Ge
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedNomenclatureException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
@@ -16,7 +17,6 @@ class PropertyProcessApplierSpec extends ObjectBehavior
 {
     private static string $TARGET = 'sku';
     private static string $PREFIX = 'AKN-';
-    private static string $NOMENCLATURE_PROPERTY_CODE = 'family';
     private static string $SIMPLE_SELECT_ATTRIBUTE_CODE = 'size';
 
     public function let(
@@ -32,7 +32,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
             Process::fromNormalized([
                 'type' => 'no',
             ]),
-            self::$NOMENCLATURE_PROPERTY_CODE,
+            FamilyProperty::TYPE,
             'familyCode',
             self::$TARGET,
             self::$PREFIX,
@@ -47,7 +47,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
                 'operator' => Process::PROCESS_OPERATOR_LTE,
                 'value' => 3,
             ]),
-            self::$NOMENCLATURE_PROPERTY_CODE,
+            FamilyProperty::TYPE,
             'familyCode',
             self::$TARGET,
             self::$PREFIX,
@@ -62,7 +62,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
                 'operator' => Process::PROCESS_OPERATOR_LTE,
                 'value' => 3,
             ]),
-            self::$NOMENCLATURE_PROPERTY_CODE,
+            FamilyProperty::TYPE,
             'fa',
             self::$TARGET,
             self::$PREFIX,
@@ -79,7 +79,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
                     'operator' => Process::PROCESS_OPERATOR_EQ,
                     'value' => 4,
                 ]),
-                self::$NOMENCLATURE_PROPERTY_CODE,
+                FamilyProperty::TYPE,
                 'fam',
                 self::$TARGET,
                 self::$PREFIX,
@@ -95,7 +95,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
                 'operator' => Process::PROCESS_OPERATOR_EQ,
                 'value' => 3,
             ]),
-            self::$NOMENCLATURE_PROPERTY_CODE,
+            FamilyProperty::TYPE,
             'fam',
             self::$TARGET,
             self::$PREFIX
@@ -105,7 +105,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
     public function it_should_throw_an_error_if_nomenclature_doesnt_exist(FamilyNomenclatureRepository $familyNomenclatureRepository): void
     {
         $familyNomenclatureRepository
-            ->get(self::$NOMENCLATURE_PROPERTY_CODE)
+            ->get()
             ->shouldBeCalled()
             ->willReturn(null);
 
@@ -115,7 +115,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
                 Process::fromNormalized([
                     'type' => Process::PROCESS_TYPE_NOMENCLATURE,
                 ]),
-                self::$NOMENCLATURE_PROPERTY_CODE,
+                FamilyProperty::TYPE,
                 'familyCode',
                 self::$TARGET,
                 self::$PREFIX,
@@ -126,7 +126,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
     public function it_should_throw_an_error_if_nomenclature_doesnt_have_value_and_no_flag_generate_if_empty(FamilyNomenclatureRepository $familyNomenclatureRepository): void
     {
         $familyNomenclatureRepository
-            ->get(self::$NOMENCLATURE_PROPERTY_CODE)
+            ->get()
             ->shouldBeCalled()
             ->willReturn(null);
 
@@ -136,7 +136,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
                 Process::fromNormalized([
                     'type' => Process::PROCESS_TYPE_NOMENCLATURE,
                 ]),
-                self::$NOMENCLATURE_PROPERTY_CODE,
+                FamilyProperty::TYPE,
                 'familyCode',
                 self::$TARGET,
                 self::$PREFIX,
@@ -148,7 +148,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
     {
         $nomenclature = new NomenclatureDefinition('=', 3, false, ['familyCode' => 'ab']);
         $familyNomenclatureRepository
-            ->get(self::$NOMENCLATURE_PROPERTY_CODE)
+            ->get()
             ->shouldBeCalledOnce()
             ->willReturn($nomenclature);
 
@@ -158,7 +158,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
                 Process::fromNormalized([
                     'type' => Process::PROCESS_TYPE_NOMENCLATURE,
                 ]),
-                self::$NOMENCLATURE_PROPERTY_CODE,
+                FamilyProperty::TYPE,
                 'familyCode',
                 self::$TARGET,
                 self::$PREFIX,
@@ -170,7 +170,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
     {
         $nomenclature = new NomenclatureDefinition('<=', 3, false, ['familyCode' => 'abcd']);
         $familyNomenclatureRepository
-            ->get(self::$NOMENCLATURE_PROPERTY_CODE)
+            ->get()
             ->shouldBeCalledOnce()
             ->willReturn($nomenclature);
 
@@ -180,7 +180,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
                 Process::fromNormalized([
                     'type' => Process::PROCESS_TYPE_NOMENCLATURE,
                 ]),
-                self::$NOMENCLATURE_PROPERTY_CODE,
+                FamilyProperty::TYPE,
                 'familyCode',
                 self::$TARGET,
                 self::$PREFIX,
@@ -192,7 +192,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
     {
         $nomenclature = new NomenclatureDefinition('<=', 3, false, ['familyCode' => 'abc']);
         $familyNomenclatureRepository
-            ->get(self::$NOMENCLATURE_PROPERTY_CODE)
+            ->get()
             ->shouldBeCalledOnce()
             ->willReturn($nomenclature);
 
@@ -200,7 +200,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
             Process::fromNormalized([
                 'type' => Process::PROCESS_TYPE_NOMENCLATURE,
             ]),
-            self::$NOMENCLATURE_PROPERTY_CODE,
+            FamilyProperty::TYPE,
             'familyCode',
             self::$TARGET,
             self::$PREFIX,
@@ -231,7 +231,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
     {
         $nomenclature = new NomenclatureDefinition('<=', 3, true, []);
         $familyNomenclatureRepository
-            ->get(self::$NOMENCLATURE_PROPERTY_CODE)
+            ->get()
             ->shouldBeCalledOnce()
             ->willReturn($nomenclature);
 
@@ -239,7 +239,7 @@ class PropertyProcessApplierSpec extends ObjectBehavior
             Process::fromNormalized([
                 'type' => Process::PROCESS_TYPE_NOMENCLATURE,
             ]),
-            self::$NOMENCLATURE_PROPERTY_CODE,
+            FamilyProperty::TYPE,
             'familyCode',
             self::$TARGET,
             self::$PREFIX,

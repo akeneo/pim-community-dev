@@ -50,7 +50,7 @@ final class PropertyProcessApplier
                 return \substr($code, 0, $process->value());
             case Process::PROCESS_TYPE_NOMENCLATURE:
                 if ($nomenclatureProperty === FamilyProperty::TYPE) {
-                    $nomenclature = $this->familyNomenclatureRepository->get($nomenclatureProperty);
+                    $nomenclature = $this->familyNomenclatureRepository->get();
                 } else {
                     $nomenclature = $this->simpleSelectNomenclatureRepository->get($nomenclatureProperty);
                 }

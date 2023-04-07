@@ -45,6 +45,7 @@ services:
   Akeneo\Category\Application\Command\DeactivateAttributeCommandHandler:
     arguments:
       - '@Akeneo\Category\Domain\Query\DeactivateAttribute'
+      - '@event_dispatcher'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeactivateAttributeCommand' }
 
@@ -59,3 +60,12 @@ services:
     arguments:
       - '@Akeneo\Category\Infrastructure\Validation\ExternalApiSearchFiltersValidator'
       - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+
+  Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid'
+      - '@Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Domain\Query\DeleteTemplateAttribute'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommand' }

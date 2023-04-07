@@ -47,6 +47,7 @@ final class ValueCollection implements \IteratorAggregate, \Countable
      */
     public static function fromDatabase(array $values): self
     {
+        // We keep this filter to manage uncleaned data from previous code version
         $values = array_filter($values, function ($valueKey) {
             return $valueKey !== 'attribute_codes';
         }, ARRAY_FILTER_USE_KEY);

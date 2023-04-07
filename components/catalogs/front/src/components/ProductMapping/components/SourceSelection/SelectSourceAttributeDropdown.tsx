@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useMemo, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import {Dropdown, Field, GroupsIllustration, Helper, Search, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useInfiniteSourceAttributes} from '../../hooks/useInfiniteSourceAttributes';
@@ -29,16 +29,9 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
     const [search, setSearch] = useState<string>('');
     const {data: attributes, fetchNextPage} = useInfiniteSourceAttributes({target: target, search});
     const {data: attribute} = useAttribute(selectedCode);
-    const systemAttributes = useSystemAttributes();
+    const systemAttributes = useSystemAttributes({target, search});
+
     const attributeLabel = attribute?.label ?? (selectedCode.length > 0 ? `[${selectedCode}]` : '');
-    const filteredSystemAttributes: Attribute[] = useMemo(() => {
-        if (['string', 'array<string>'].includes(target.type) && target.format === null) {
-            const regex = new RegExp(search, 'i');
-            return systemAttributes.filter(attribute => attribute.label.match(regex));
-        } else {
-            return [];
-        }
-    }, [systemAttributes, search, target.type, target.format]);
 
     const handleAttributeSelection = useCallback(
         (attribute: Attribute) => {
@@ -95,12 +88,12 @@ export const SelectSourceAttributeDropdown: FC<Props> = ({selectedCode, target, 
                                 onNextPage={fetchNextPage}
                             >
                                 {/* system attributes */}
-                                {filteredSystemAttributes.length > 0 && (
+                                {systemAttributes.length > 0 && (
                                     <Dropdown.Section>
                                         {translate('akeneo_catalogs.product_selection.add_criteria.section_system')}
                                     </Dropdown.Section>
                                 )}
-                                {filteredSystemAttributes?.map(attribute => (
+                                {systemAttributes?.map(attribute => (
                                     <Dropdown.Item
                                         key={attribute.code}
                                         onClick={() => handleAttributeSelection(attribute)}

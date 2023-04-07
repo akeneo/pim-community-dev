@@ -69,7 +69,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
                 'lft' => 1,
                 'rgt' => 2,
                 'value_collection' => $this->normalizeValueCollection(
-                    $categoryModel->getAttributeCodes(),
                     $categoryModel->getAttributes(),
                 ),
             ],
@@ -126,7 +125,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             [
                 'category_code' => (string) $categoryModel->getCode(),
                 'value_collection' => $this->normalizeValueCollection(
-                    $categoryModel->getAttributeCodes(),
                     $categoryModel->getAttributes(),
                 ),
             ],
@@ -137,7 +135,7 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
         );
     }
 
-    private function normalizeValueCollection(array $attributeCodes, ?ValueCollection $valueCollection): ?array
+    private function normalizeValueCollection(?ValueCollection $valueCollection): ?array
     {
         if (null === $valueCollection) {
             return null;
@@ -147,8 +145,6 @@ class UpsertCategoryBaseSql implements UpsertCategoryBase
             $valueCollection->normalize(),
             fn (array $attributeValue) => null !== $attributeValue['data'],
         );
-
-        $attributeValues['attribute_codes'] = $attributeCodes;
 
         return $attributeValues;
     }

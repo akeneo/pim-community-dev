@@ -294,9 +294,6 @@ class ValueCollectionSpec extends ObjectBehavior
     public function it_creates_value_collection_from_database()
     {
         $givenDatabaseValues = [
-            'attribute_codes' => [
-                'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d'
-            ],
             'seo_meta_description|69e251b3-b876-48b5-9c09-92f54bfb528d|ecommerce|en_us' => [
                 'data' => 'Meta shoes',
                 'type' => 'text',

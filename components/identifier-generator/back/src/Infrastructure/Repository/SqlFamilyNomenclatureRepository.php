@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
@@ -20,9 +21,9 @@ class SqlFamilyNomenclatureRepository implements FamilyNomenclatureRepository
     ) {
     }
 
-    public function get(string $propertyCode): ?NomenclatureDefinition
+    public function get(): ?NomenclatureDefinition
     {
-        $nomenclatureDefinition = $this->getNomenclatureDefinition($propertyCode);
+        $nomenclatureDefinition = $this->getNomenclatureDefinition();
         if (null !== $nomenclatureDefinition) {
             $values = $this->getNomenclatureValues();
             $nomenclatureDefinition = $nomenclatureDefinition->withValues($values);
@@ -31,11 +32,11 @@ class SqlFamilyNomenclatureRepository implements FamilyNomenclatureRepository
         return $nomenclatureDefinition;
     }
 
-    public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
+    public function update(NomenclatureDefinition $nomenclatureDefinition): void
     {
         $this->connection->beginTransaction();
 
-        $this->updateDefinition($propertyCode, $nomenclatureDefinition);
+        $this->updateDefinition($nomenclatureDefinition);
         $this->updateValues($nomenclatureDefinition);
 
         $this->connection->commit();
@@ -126,7 +127,7 @@ SQL;
         $statement->executeStatement();
     }
 
-    private function updateDefinition(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
+    private function updateDefinition(NomenclatureDefinition $nomenclatureDefinition): void
     {
         $sql = <<<SQL
 INSERT INTO pim_catalog_identifier_generator_nomenclature_definition (property_code, definition)
@@ -139,7 +140,7 @@ SQL;
         Assert::notNull($nomenclatureDefinition->generateIfEmpty());
 
         $this->connection->executeStatement($sql, [
-            'property_code' => $propertyCode,
+            'property_code' => FamilyProperty::TYPE,
             'definition' => \json_encode([
                 'operator' => $nomenclatureDefinition->operator(),
                 'value' => $nomenclatureDefinition->value(),
@@ -180,11 +181,10 @@ SQL;
     }
 
     /**
-     * @param string $propertyCode
      * @return NomenclatureDefinition|null
      * @throws \Doctrine\DBAL\Exception
      */
-    private function getNomenclatureDefinition(string $propertyCode): ?NomenclatureDefinition
+    private function getNomenclatureDefinition(): ?NomenclatureDefinition
     {
         $sql = <<<SQL
 SELECT definition
@@ -192,7 +192,7 @@ FROM pim_catalog_identifier_generator_nomenclature_definition
 WHERE property_code=:property_code
 SQL;
         $definition = $this->connection->fetchOne($sql, [
-            'property_code' => $propertyCode,
+            'property_code' => FamilyProperty::TYPE,
         ]);
         if (false === $definition) {
             return null;
