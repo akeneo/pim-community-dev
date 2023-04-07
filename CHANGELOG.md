@@ -42,6 +42,7 @@
 - PIM-10876: Does not save empty ('') labels and don't show null labels on API REST
 - PIM-10894: Allow research user by email as username.
 - PIM-10888: Disable adding an item to an association of its parent already contains the same item.
+- PIM-10925: The search by code is missing on the attribute page
 - PIM-10906: Use user timezone to display dates in history grid
 - PIM-10915: Fix attribute with numeric code throw 500 error on product history
 - PIM-10889: Update Category updated date after setting a labels and show category filtered by updated date on API REST 
