@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
 use Akeneo\Tool\Component\Batch\Item\PausableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\PausableItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobProgress\ItemStepState;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
@@ -92,7 +93,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
      */
     public function doExecute(StepExecution $stepExecution)
     {
-        $this->batchSize = 1;
+        $this->batchSize = 5;
         $itemsToWrite = [];
         $batchCount = 0;
 
@@ -203,6 +204,15 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
     public function flushStepElements()
     {
+        /**
+         * :confident:
+         * It avoids to write file when we pause the job because we don't want it
+         * BUT maybe it breaks some side effects linked to flush
+         */
+        if ($this->stepExecution->getStatus()->isPaused()) {
+            return;
+        }
+
         foreach ($this->getStepElements() as $element) {
             if ($element instanceof FlushableInterface) {
                 $element->flush();

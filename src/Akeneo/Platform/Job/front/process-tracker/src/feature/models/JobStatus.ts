@@ -7,6 +7,7 @@ const AVAILABLE_JOB_STATUSES = [
   'STOPPED',
   'STOPPING',
   'UNKNOWN',
+  'PAUSED',
 ] as const;
 
 type JobStatus = typeof AVAILABLE_JOB_STATUSES[number];

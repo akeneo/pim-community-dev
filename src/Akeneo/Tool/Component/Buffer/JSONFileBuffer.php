@@ -28,7 +28,7 @@ class JSONFileBuffer implements BufferInterface
     public function __construct(?string $filename)
     {
         $this->filename = $filename ?? tempnam(sys_get_temp_dir(), self::FILE_PREFIX);
-        $this->file = new \SplFileObject($this->filename, 'r+');
+        $this->file = new \SplFileObject($this->filename, 'a+');
 
         $this->file->setFlags(\SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
     }
