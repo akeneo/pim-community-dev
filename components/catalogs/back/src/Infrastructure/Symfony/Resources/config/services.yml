@@ -1,7 +1,3 @@
-parameters:
-    akeneo_catalog.max_number_of_catalogs_per_user: 15
-    akeneo_catalog.max_criteria_per_catalog: 25
-
 services:
     _defaults:
         autowire: true
@@ -14,11 +10,12 @@ services:
     Akeneo\Catalogs\:
         resource: '../../../../'
         exclude:
-            - '../../../Symfony/'
             - '../../../../Domain/'
             - '../../../../ServiceAPI/'
-            - '../../../../Application/Exception'
-            - '../../../../Application/Mapping/Measurement/Exception'
+            - '../../../../Application/Persistence'
+            - '../../../../Infrastructure/EventSubscriber'
+            - '../../../../Infrastructure/Job'
+            - '../../../../Infrastructure/Persistence'
             - '../../../../Infrastructure/Validation'
 
     Akeneo\Catalogs\Application\Handler\:
@@ -29,14 +26,6 @@ services:
         resource: '../../../../Infrastructure/Controller/'
         tags: [ 'controller.service_arguments' ]
         public: true
-
-    Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus:
-        arguments:
-            $messageBus: '@catalogs.command.bus'
-
-    Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus:
-        arguments:
-            $messageBus: '@catalogs.query.bus'
 
     Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface:
         alias: 'oro_security.security_facade'
@@ -70,140 +59,9 @@ services:
             - '@Akeneo\Catalogs\Infrastructure\TemporaryEnrichmentBridge\SearchAfterSizeUuidResultCursorFactory'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
 
-    # Validation
-    Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid: ~
-
-    Akeneo\Catalogs\Application\Validation\IsCatalogValidInterface: '@Akeneo\Catalogs\Infrastructure\Validation\IsCatalogValid'
-
-    Akeneo\Catalogs\Infrastructure\Validation\:
-        resource: '../../../Validation/**/*Validator.php'
-
-    Akeneo\Catalogs\Infrastructure\Validation\CatalogProductSelectionCriteriaValidator:
-        arguments:
-            $maxCriteriaPerCatalog: '%akeneo_catalog.max_criteria_per_catalog%'
-
-    # Persistence
-    Akeneo\Catalogs\Infrastructure\Persistence\Catalog\IsCatalogsNumberLimitReachedQuery:
-        arguments:
-            $limit: '%akeneo_catalog.max_number_of_catalogs_per_user%'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Family\SearchFamilyQuery:
-        arguments:
-            - '@pim_enrich.repository.family.search'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Family\GetFamiliesByCodeQuery:
-        arguments:
-            - '@pim_enrich.repository.family.search'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Family\GetFamilyLabelByCodeAndLocaleQuery:
-        arguments:
-            - '@pim_enrich.repository.family.search'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Attribute\SearchAttributesQuery:
-        arguments:
-            - '@pim_enrich.repository.attribute.search'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Attribute\SearchAttributeOptionsQuery:
-        arguments:
-            - '@pim_enrich.repository.attribute_option.search'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Attribute\GetAttributeOptionsByCodeQuery:
-        arguments:
-            - '@pim_enrich.repository.attribute_option.search'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Attribute\FindOneAttributeByCodeQuery:
-        arguments:
-            $repository: '@pim_catalog.repository.attribute'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetChannelLocalesQuery:
-        arguments:
-            - '@pim_catalog.repository.channel'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelQuery:
-        arguments:
-            - '@pim_catalog.repository.channel'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelsQuery:
-        arguments:
-            - '@pim_catalog.repository.channel'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelsByCodeQuery:
-        arguments:
-            - '@pim_catalog.repository.channel'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetLocalesQuery:
-        arguments:
-            - '@pim_catalog.repository.locale'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Locale\GetLocalesByCodeQuery:
-        arguments:
-            - '@pim_catalog.repository.locale'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetCategoriesByCodeQuery:
-        arguments:
-            - '@pim_catalog.repository.category'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetCategoryTreeRootsQuery:
-        arguments:
-            - '@akeneo.enrichment.public_api.find_category_trees'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetCategoryChildrenQuery:
-        arguments:
-            - '@pim_catalog.repository.category'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Category\GetProductCategoriesLabelsQuery:
-        arguments:
-            $enrichmentQueryBus: '@pim_enrich.product.query_message_bus'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsWithFilteredValuesQuery:
-        arguments:
-            $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductQuery:
-        arguments:
-            $getConnectorProducts: '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Measurement\GetMeasurementsFamilyQuery:
-        arguments:
-            - '@akeneo_measurement.service_api.find_measurement_families'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Currency\IsCurrencyActivatedQuery:
-        arguments:
-            - '@pim_catalog.repository.currency'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetCurrenciesQuery:
-        arguments:
-            - '@pim_catalog.repository.currency'
-
-    Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetChannelCurrenciesQuery:
-        arguments:
-            - '@pim_catalog.repository.channel'
-
-    # Storage
     Akeneo\Catalogs\Infrastructure\Storage\CatalogsMappingStorage:
         arguments:
             $filesystem: '@oneup_flysystem.catalogs_mapping_filesystem'
-
-    # EventSubscriber
-    Akeneo\Catalogs\Infrastructure\EventSubscriber\CurrencyDeactivationSubscriber:
-        arguments:
-            $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
-            $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
-
-    Akeneo\Catalogs\Infrastructure\EventSubscriber\ChannelRemovalSubscriber:
-        arguments:
-            $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
-            $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
-
-    Akeneo\Catalogs\Infrastructure\EventSubscriber\LocaleDeactivationSubscriber:
-        arguments:
-            $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
-            $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
-
-    Akeneo\Catalogs\Infrastructure\EventSubscriber\AttributeRemovalSubscriber:
-        arguments:
-            $jobInstanceRepository: '@akeneo_batch.job.job_instance_repository'
-            $jobLauncher: '@akeneo_batch_queue.launcher.queue_job_launcher'
 
     Akeneo\Catalogs\Application\Mapping\ValueExtractor\Registry\ValueExtractorRegistry:
         arguments:
