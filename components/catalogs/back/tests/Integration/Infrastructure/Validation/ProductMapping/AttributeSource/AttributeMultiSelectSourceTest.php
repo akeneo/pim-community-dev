@@ -377,14 +377,15 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
             ],
             'source with extra field' => [
                 'attribute' => [
-                    'code' => 'size',
+                    'code' => 'video_output',
                     'type' => 'pim_catalog_multiselect',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
                 ],
                 'source' => [
-                    'source' => 'size',
+                    'source' => 'video_output',
                     'scope' => null,
                     'locale' => null,
                     'category' => 'dimension',
@@ -396,14 +397,15 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
             ],
             'source with extra parameter field' => [
                 'attribute' => [
-                    'code' => 'size',
+                    'code' => 'video_output',
                     'type' => 'pim_catalog_multiselect',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
                 ],
                 'source' => [
-                    'source' => 'size',
+                    'source' => 'video_output',
                     'scope' => null,
                     'locale' => null,
                     'parameters' => [
@@ -415,14 +417,15 @@ class AttributeMultiSelectSourceTest extends AbstractAttributeSourceTest
             ],
             'source with invalid default value type' => [
                 'attribute' => [
-                    'code' => 'size',
+                    'code' => 'video_output',
                     'type' => 'pim_catalog_multiselect',
                     'group' => 'other',
                     'scopable' => false,
                     'localizable' => false,
+                    'options' => ['VGA', 'HDMI', 'DisplayPort', 'miniHDMI', 'miniDisplayPort'],
                 ],
                 'source' => [
-                    'source' => 'size',
+                    'source' => 'video_output',
                     'scope' => null,
                     'locale' => null,
                     'default' => true,

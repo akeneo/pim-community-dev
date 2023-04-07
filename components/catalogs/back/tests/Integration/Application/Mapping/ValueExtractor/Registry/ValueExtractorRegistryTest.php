@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Registry;
 
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Exception\ValueExtractorNotFoundException;
+use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromAssetCollectionTextAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromCategoriesValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\ArrayOfStrings\ArrayOfStringsFromMultiSelectAttributeValueExtractor;
 use Akeneo\Catalogs\Application\Mapping\ValueExtractor\Extractor\Boolean\BooleanFromBooleanAttributeValueExtractor;
@@ -47,11 +48,12 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
      */
     public function testItFindsTheExtractor(
         string $sourceType,
+        ?string $subSourceType,
         string $targetType,
         ?string $targetFormat,
         string $extractorClassName,
     ): void {
-        $extractor = $this->registry->find($sourceType, $targetType, $targetFormat);
+        $extractor = $this->registry->find($sourceType, $subSourceType, $targetType, $targetFormat);
 
         $this->assertEquals($extractorClassName, $extractor::class);
     }
@@ -61,102 +63,119 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
         return [
             ArrayOfStringsFromCategoriesValueExtractor::class => [
                 'sourceType' => 'categories',
+                'subSourceType' => null,
                 'targetType' => 'array<string>',
                 'targetFormat' => null,
                 'extractorClassName' => ArrayOfStringsFromCategoriesValueExtractor::class,
             ],
             ArrayOfStringsFromMultiSelectAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_multiselect',
+                'subSourceType' => null,
                 'targetType' => 'array<string>',
                 'targetFormat' => null,
                 'extractorClassName' => ArrayOfStringsFromMultiSelectAttributeValueExtractor::class,
             ],
             BooleanFromBooleanAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_boolean',
+                'subSourceType' => null,
                 'targetType' => 'boolean',
                 'targetFormat' => null,
                 'extractorClassName' => BooleanFromBooleanAttributeValueExtractor::class,
             ],
             BooleanFromStatusValueExtractor::class => [
                 'sourceType' => 'status',
+                'subSourceType' => null,
                 'targetType' => 'boolean',
                 'targetFormat' => null,
                 'extractorClassName' => BooleanFromStatusValueExtractor::class,
             ],
             NumberFromMetricAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_metric',
+                'subSourceType' => null,
                 'targetType' => 'number',
                 'targetFormat' => null,
                 'extractorClassName' => NumberFromMetricAttributeValueExtractor::class,
             ],
             NumberFromNumberAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_number',
+                'subSourceType' => null,
                 'targetType' => 'number',
                 'targetFormat' => null,
                 'extractorClassName' => NumberFromNumberAttributeValueExtractor::class,
             ],
             NumberFromPriceCollectionAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_price_collection',
+                'subSourceType' => null,
                 'targetType' => 'number',
                 'targetFormat' => null,
                 'extractorClassName' => NumberFromPriceCollectionAttributeValueExtractor::class,
             ],
             StringFromCategoriesValueExtractor::class => [
                 'sourceType' => 'categories',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromCategoriesValueExtractor::class,
             ],
             StringFromFamilyValueExtractor::class => [
                 'sourceType' => 'family',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromFamilyValueExtractor::class,
             ],
             StringFromIdentifierAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_identifier',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromIdentifierAttributeValueExtractor::class,
             ],
             StringFromMultiSelectAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_multiselect',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromMultiSelectAttributeValueExtractor::class,
             ],
             StringFromNumberAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_number',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromNumberAttributeValueExtractor::class,
             ],
             StringFromSimpleSelectAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_simpleselect',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromSimpleSelectAttributeValueExtractor::class,
             ],
             StringFromTextareaAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_textarea',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromTextareaAttributeValueExtractor::class,
             ],
             StringFromTextAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_text',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => null,
                 'extractorClassName' => StringFromTextAttributeValueExtractor::class,
             ],
             StringDateTimeFromDateAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_date',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => 'date-time',
                 'extractorClassName' => StringDateTimeFromDateAttributeValueExtractor::class,
             ],
             StringUriFromImageAttributeValueExtractor::class => [
                 'sourceType' => 'pim_catalog_image',
+                'subSourceType' => null,
                 'targetType' => 'string',
                 'targetFormat' => 'uri',
                 'extractorClassName' => StringUriFromImageAttributeValueExtractor::class,
@@ -168,6 +187,6 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
     {
         $this->expectException(ValueExtractorNotFoundException::class);
 
-        $this->registry->find('pim_catalog_text', 'boolean', null);
+        $this->registry->find('pim_catalog_text', null, 'boolean', null);
     }
 }

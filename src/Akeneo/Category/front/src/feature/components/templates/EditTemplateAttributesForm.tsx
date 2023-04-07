@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {Attribute} from '../../models';
 import {AttributeList} from './AttributeList';
 import {AttributeSettings} from './AttributeSettings';
+import {useFeatureFlags} from "@akeneo-pim-community/shared";
 
 interface Props {
   attributes: Attribute[];
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
+  const featureFlag = useFeatureFlags();
   const [selectedAttribute, setSelectedAttribute] = useState<Attribute>(attributes[0]);
   const handleAttributeSelection = (attribute: Attribute) => {
     setSelectedAttribute(attribute);
@@ -24,7 +26,9 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
         ></AttributeList>
-        <AttributeSettings attribute={selectedAttribute}></AttributeSettings>
+        {featureFlag.isEnabled('category_template_customization') &&
+          <AttributeSettings attribute={selectedAttribute}></AttributeSettings>
+        }
       </Attributes>
     </FormContainer>
   );

@@ -6,6 +6,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping;
 
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -17,18 +18,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  *
- * @phpstan-type AttributeSource array{source: string, scope: string|null, locale: string|null}
- * @phpstan-type Attribute array{
- *    attribute_group_code: string,
- *    attribute_group_label: string,
- *    code: string,
- *    default_measurement_unit?: string,
- *    label: string,
- *    localizable: bool,
- *    measurement_family?: string,
- *    scopable: bool,
- *    type: string
- * }
+ * @phpstan-import-type SourceAssociation from Catalog
+ * @phpstan-import-type Attribute from FindOneAttributeByCodeQueryInterface
  */
 final class AttributeSourceContainsValidScopeValidator extends ConstraintValidator
 {
@@ -48,7 +39,11 @@ final class AttributeSourceContainsValidScopeValidator extends ConstraintValidat
             throw new UnexpectedValueException($value, 'array');
         }
 
-        /** @var AttributeSource $value */
+        /** @var SourceAssociation $value */
+
+        if (null === $value['source']) {
+            return;
+        }
 
         $attribute = $this->findOneAttributeByCodeQuery->execute($value['source']);
 
@@ -56,18 +51,17 @@ final class AttributeSourceContainsValidScopeValidator extends ConstraintValidat
             throw new \LogicException('Attribute not found');
         }
 
-        $this->validateNonScopableSourceHasNoScope($attribute, $value);
-        $this->validateScopableSourceHasScope($attribute, $value);
-        $this->validateScopableSourceHasValidScope($attribute, $value);
+        $this->validateNonScopableSourceHasNoScope($attribute, $value['scope']);
+        $this->validateScopableSourceHasScope($attribute, $value['scope']);
+        $this->validateScopableSourceHasValidScope($attribute, $value['scope']);
     }
 
     /**
      * @param Attribute $attribute
-     * @param AttributeSource $value
      */
-    private function validateNonScopableSourceHasNoScope(array $attribute, array $value): void
+    private function validateNonScopableSourceHasNoScope(array $attribute, ?string $scope): void
     {
-        if ($attribute['scopable'] || null === $value['scope']) {
+        if ($attribute['scopable'] || null === $scope) {
             return;
         }
 
@@ -79,15 +73,14 @@ final class AttributeSourceContainsValidScopeValidator extends ConstraintValidat
 
     /**
      * @param Attribute $attribute
-     * @param AttributeSource $value
      */
-    private function validateScopableSourceHasScope(array $attribute, array $value): void
+    private function validateScopableSourceHasScope(array $attribute, ?string $scope): void
     {
         if (!$attribute['scopable']) {
             return;
         }
 
-        if (null === $value['scope']) {
+        if (null === $scope) {
             $this->context
                 ->buildViolation('akeneo_catalogs.validation.product_mapping.source.channel.empty')
                 ->atPath('[scope]')
@@ -97,15 +90,14 @@ final class AttributeSourceContainsValidScopeValidator extends ConstraintValidat
 
     /**
      * @param Attribute $attribute
-     * @param AttributeSource $value
      */
-    private function validateScopableSourceHasValidScope(array $attribute, array $value): void
+    private function validateScopableSourceHasValidScope(array $attribute, ?string $scope): void
     {
-        if (!$attribute['scopable'] || null === $value['scope']) {
+        if (!$attribute['scopable'] || null === $scope) {
             return;
         }
 
-        $channel = $this->getChannelQuery->execute($value['scope']);
+        $channel = $this->getChannelQuery->execute($scope);
 
         if (null === $channel) {
             $this->context

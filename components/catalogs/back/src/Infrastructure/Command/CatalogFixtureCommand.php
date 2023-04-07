@@ -295,7 +295,7 @@ class CatalogFixtureCommand extends Command
               "title": "Categories"
             }
           },
-          "required": ["name", "size"]
+          "required": ["name"]
         }
         JSON_WRAP;
     }

@@ -37,6 +37,11 @@ final class NumberFromPriceCollectionAttributeValueExtractor implements NumberVa
         return self::SOURCE_TYPE_ATTRIBUTE_PRICE_COLLECTION;
     }
 
+    public function getSupportedSubSourceType(): ?string
+    {
+        return null;
+    }
+
     public function getSupportedTargetType(): string
     {
         return self::TARGET_TYPE_NUMBER;

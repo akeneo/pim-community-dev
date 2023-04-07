@@ -30,6 +30,11 @@ final class StringFromNumberAttributeValueExtractor implements StringValueExtrac
         return self::SOURCE_TYPE_ATTRIBUTE_NUMBER;
     }
 
+    public function getSupportedSubSourceType(): ?string
+    {
+        return null;
+    }
+
     public function getSupportedTargetType(): string
     {
         return self::TARGET_TYPE_STRING;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Validation\ProductMapping\AttributeSource;
 
+use Akeneo\Catalogs\Application\Persistence\AssetManager\FindOneAssetAttributeByIdentifierQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Channel\GetChannelQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Currency\GetChannelCurrenciesQueryInterface;
@@ -11,6 +12,7 @@ use Akeneo\Catalogs\Application\Persistence\Currency\IsCurrencyActivatedQueryInt
 use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Measurement\GetMeasurementsFamilyQueryInterface;
+use Akeneo\Catalogs\Infrastructure\Persistence\AssetManager\FindOneAssetAttributeByIdentifierQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Attribute\FindOneAttributeByCodeQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Channel\GetChannelQuery;
 use Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetChannelCurrenciesQuery;
@@ -27,6 +29,7 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 abstract class AbstractAttributeSourceTest extends IntegrationTestCase
 {
     protected ?FindOneAttributeByCodeQueryInterface $findOneAttributeByCodeQuery;
+    protected ?FindOneAssetAttributeByIdentifierQueryInterface $findOneAssetAttributeByIdentifierQuery;
     protected ?GetChannelQueryInterface $getChannelQuery;
     protected ?GetLocalesQueryInterface $getLocalesQuery;
     protected ?GetChannelLocalesQueryInterface $getChannelLocalesQuery;
@@ -35,6 +38,7 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
     protected ?GetMeasurementsFamilyQueryInterface $getMeasurementsFamilyQuery;
 
     private array $attributes = [];
+    private array $assetAttributes = [];
     private array $channels = [];
     private array $channelLocales = [];
     private array $locales = [];
@@ -89,6 +93,12 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
             ->willReturnCallback(fn ($code) => $this->attributes[$code] ?? null);
         self::getContainer()->set(FindOneAttributeByCodeQuery::class, $this->findOneAttributeByCodeQuery);
 
+        $this->findOneAssetAttributeByIdentifierQuery = $this->createMock(FindOneAssetAttributeByIdentifierQueryInterface::class);
+        $this->findOneAssetAttributeByIdentifierQuery
+            ->method('execute')
+            ->willReturnCallback(fn ($identifier) => $this->assetAttributes[$identifier] ?? null);
+        self::getContainer()->set(FindOneAssetAttributeByIdentifierQuery::class, $this->findOneAssetAttributeByIdentifierQuery);
+
         $this->getChannelQuery = $this->createMock(GetChannelQueryInterface::class);
         $this->getChannelQuery
             ->method('execute')
@@ -141,6 +151,11 @@ abstract class AbstractAttributeSourceTest extends IntegrationTestCase
     protected function createAttribute(array $data): void
     {
         $this->attributes[$data['code']] = $data;
+    }
+
+    protected function createAssetAttribute(array $data): void
+    {
+        $this->assetAttributes[$data['identifier']] = $data;
     }
 
     protected function createMeasurementsFamily(array $data): void

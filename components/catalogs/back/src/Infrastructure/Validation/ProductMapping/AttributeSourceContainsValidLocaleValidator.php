@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetChannelLocalesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Locale\GetLocalesQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -18,18 +19,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  *
- * @phpstan-type AttributeSource array{source: string, scope: string|null, locale: string|null}
- * @phpstan-type Attribute array{
- *    attribute_group_code: string,
- *    attribute_group_label: string,
- *    code: string,
- *    default_measurement_unit?: string,
- *    label: string,
- *    localizable: bool,
- *    measurement_family?: string,
- *    scopable: bool,
- *    type: string
- * }
+ * @phpstan-import-type SourceAssociation from Catalog
+ * @phpstan-import-type Attribute from FindOneAttributeByCodeQueryInterface
  */
 final class AttributeSourceContainsValidLocaleValidator extends ConstraintValidator
 {
@@ -50,7 +41,11 @@ final class AttributeSourceContainsValidLocaleValidator extends ConstraintValida
             throw new UnexpectedValueException($value, 'array');
         }
 
-        /** @var AttributeSource $value */
+        /** @var SourceAssociation $value */
+
+        if (null === $value['source']) {
+            return;
+        }
 
         $attribute = $this->findOneAttributeByCodeQuery->execute($value['source']);
 
@@ -58,19 +53,18 @@ final class AttributeSourceContainsValidLocaleValidator extends ConstraintValida
             throw new \LogicException('Attribute not found');
         }
 
-        $this->validateNonLocalizableSourceHasNoLocale($attribute, $value);
-        $this->validateLocalizableSourceHasLocale($attribute, $value);
-        $this->validateNonScopableAndLocalizableSourceHasAnyValidLocale($attribute, $value);
-        $this->validateScopableAndLocalizableSourceHasValidChannelLocale($attribute, $value);
+        $this->validateNonLocalizableSourceHasNoLocale($attribute, $value['locale']);
+        $this->validateLocalizableSourceHasLocale($attribute, $value['locale']);
+        $this->validateNonScopableAndLocalizableSourceHasAnyValidLocale($attribute, $value['locale']);
+        $this->validateScopableAndLocalizableSourceHasValidChannelLocale($attribute, $value['scope'], $value['locale']);
     }
 
     /**
      * @param Attribute $attribute
-     * @param AttributeSource $value
      */
-    private function validateNonLocalizableSourceHasNoLocale(array $attribute, array $value): void
+    private function validateNonLocalizableSourceHasNoLocale(array $attribute, ?string $localeCode): void
     {
-        if (!$attribute['localizable'] && null !== $value['locale']) {
+        if (!$attribute['localizable'] && null !== $localeCode) {
             $this->context
                 ->buildViolation('akeneo_catalogs.validation.product_mapping.source.locale.not_empty')
                 ->atPath('[locale]')
@@ -80,11 +74,10 @@ final class AttributeSourceContainsValidLocaleValidator extends ConstraintValida
 
     /**
      * @param Attribute $attribute
-     * @param AttributeSource $value
      */
-    private function validateLocalizableSourceHasLocale(array $attribute, array $value): void
+    private function validateLocalizableSourceHasLocale(array $attribute, ?string $localeCode): void
     {
-        if ($attribute['localizable'] && null === $value['locale']) {
+        if ($attribute['localizable'] && null === $localeCode) {
             $this->context
                 ->buildViolation('akeneo_catalogs.validation.product_mapping.source.locale.empty')
                 ->atPath('[locale]')
@@ -94,9 +87,8 @@ final class AttributeSourceContainsValidLocaleValidator extends ConstraintValida
 
     /**
      * @param Attribute $attribute
-     * @param AttributeSource $value
      */
-    private function validateNonScopableAndLocalizableSourceHasAnyValidLocale(array $attribute, array $value): void
+    private function validateNonScopableAndLocalizableSourceHasAnyValidLocale(array $attribute, ?string $localeCode): void
     {
         if (!$attribute['localizable'] || $attribute['scopable']) {
             return;
@@ -104,7 +96,7 @@ final class AttributeSourceContainsValidLocaleValidator extends ConstraintValida
 
         $locales = $this->getLocalesQuery->execute();
 
-        $exists = \count(\array_filter($locales, static fn (array $locale): bool => $locale['code'] === $value['locale'])) > 0;
+        $exists = \count(\array_filter($locales, static fn (array $locale): bool => $locale['code'] === $localeCode)) > 0;
 
         if (!$exists) {
             $this->context
@@ -116,20 +108,19 @@ final class AttributeSourceContainsValidLocaleValidator extends ConstraintValida
 
     /**
      * @param Attribute $attribute
-     * @param AttributeSource $value
      */
-    private function validateScopableAndLocalizableSourceHasValidChannelLocale(array $attribute, array $value): void
+    private function validateScopableAndLocalizableSourceHasValidChannelLocale(array $attribute, ?string $scope, ?string $localeCode): void
     {
         if (!$attribute['localizable'] || !$attribute['scopable']) {
             return;
         }
 
-        if (null === $value['scope']) {
+        if (null === $scope) {
             return;
         }
 
         try {
-            $locales = $this->getChannelLocalesQuery->execute($value['scope']);
+            $locales = $this->getChannelLocalesQuery->execute($scope);
         } catch (\LogicException) {
             $this->context
                 ->buildViolation('akeneo_catalogs.validation.product_mapping.source.channel.unknown')
@@ -139,7 +130,7 @@ final class AttributeSourceContainsValidLocaleValidator extends ConstraintValida
             return;
         }
 
-        $exists = \count(\array_filter($locales, static fn (array $locale): bool => $locale['code'] === $value['locale'])) > 0;
+        $exists = \count(\array_filter($locales, static fn (array $locale): bool => $locale['code'] === $localeCode)) > 0;
 
         if (!$exists) {
             $this->context

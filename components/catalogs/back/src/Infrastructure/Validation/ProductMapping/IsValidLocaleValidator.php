@@ -15,19 +15,6 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @psalm-suppress PropertyNotSetInConstructor
- *
- * @phpstan-type AttributeSource array{source: string, scope: string|null, locale: string|null}
- * @phpstan-type Attribute array{
- *    attribute_group_code: string,
- *    attribute_group_label: string,
- *    code: string,
- *    default_measurement_unit?: string,
- *    label: string,
- *    localizable: bool,
- *    measurement_family?: string,
- *    scopable: bool,
- *    type: string
- * }
  */
 final class IsValidLocaleValidator extends ConstraintValidator
 {

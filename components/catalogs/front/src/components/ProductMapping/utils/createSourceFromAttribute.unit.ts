@@ -111,6 +111,27 @@ const attributeToSourceTests = [
             },
         },
     },
+    {
+        attribute: {
+            code: 'images',
+            label: 'images',
+            type: 'pim_catalog_asset_collection',
+            scopable: true,
+            localizable: true,
+            attribute_group_code: 'marketing',
+            attribute_group_label: 'Marketing',
+        },
+        expectedSource: {
+            source: 'images',
+            locale: null,
+            scope: null,
+            parameters: {
+                sub_source: null,
+                sub_scope: null,
+                sub_locale: null,
+            },
+        },
+    },
 ];
 
 test.each(attributeToSourceTests)('it creates targets from an attribute', ({attribute, expectedSource}) => {
