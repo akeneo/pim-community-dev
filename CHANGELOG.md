@@ -46,6 +46,7 @@
 - PIM-10906: Use user timezone to display dates in history grid
 - PIM-10915: Fix attribute with numeric code throw 500 error on product history
 - PIM-10889: Update Category updated date after setting a labels and show category filtered by updated date on API REST 
+- PIM-10919: Fix Cleaning Products with removed attributes using identifiers instead of uuids
 
 ## Improvements
 

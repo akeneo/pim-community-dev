@@ -24,53 +24,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductAndProductModelWithRemovedAttributeLoader
 {
-    private $productBuilder;
-    private $productSaver;
-    private $productModelBuilder;
-    private $productModelSaver;
-    private $familyVariantBuilder;
-    private $familyVariantSaver;
-    private $familyBuilder;
-    private $familySaver;
-    private $attributeBuilder;
-    private $attributeSaver;
-    private $attributeRepository;
-    private $attributeRemover;
-    private $entityValidator;
-    private $productAndProductModelEsClient;
+    private array $productIdentifierToUuidMapping = [];
 
     public function __construct(
-        ProductBuilder $productBuilder,
-        SaverInterface $productSaver,
-        ProductModelBuilder $productModelBuilder,
-        SaverInterface $productModelSaver,
-        FamilyVariantBuilder $familyVariantBuilder,
-        SaverInterface $familyVariantSaver,
-        FamilyBuilder $familyBuilder,
-        FamilySaver $familySaver,
-        AttributeBuilder $attributeBuilder,
-        AttributeSaver $attributeSaver,
-        AttributeRepository $attributeRepository,
-        RemoverInterface $attributeRemover,
-        ValidatorInterface $entityValidator,
-        Client $productAndProductModelEsClient
-    )
-    {
-
-        $this->productBuilder = $productBuilder;
-        $this->productSaver = $productSaver;
-        $this->productModelBuilder = $productModelBuilder;
-        $this->productModelSaver = $productModelSaver;
-        $this->familyVariantBuilder = $familyVariantBuilder;
-        $this->familyVariantSaver = $familyVariantSaver;
-        $this->familyBuilder = $familyBuilder;
-        $this->familySaver = $familySaver;
-        $this->attributeBuilder = $attributeBuilder;
-        $this->attributeSaver = $attributeSaver;
-        $this->attributeRepository = $attributeRepository;
-        $this->attributeRemover = $attributeRemover;
-        $this->entityValidator = $entityValidator;
-        $this->productAndProductModelEsClient = $productAndProductModelEsClient;
+        private ProductBuilder $productBuilder,
+        private SaverInterface $productSaver,
+        private ProductModelBuilder $productModelBuilder,
+        private SaverInterface $productModelSaver,
+        private FamilyVariantBuilder $familyVariantBuilder,
+        private SaverInterface $familyVariantSaver,
+        private FamilyBuilder $familyBuilder,
+        private FamilySaver $familySaver,
+        private AttributeBuilder $attributeBuilder,
+        private AttributeSaver $attributeSaver,
+        private AttributeRepository $attributeRepository,
+        private RemoverInterface $attributeRemover,
+        private ValidatorInterface $entityValidator,
+        private Client $productAndProductModelEsClient
+    ) {
     }
 
     public function load(): void
@@ -155,7 +126,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
         ]);
 
         // Simple product
-        $this->createProduct([
+        $this->productIdentifierToUuidMapping['product_1'] = $this->createProduct([
             'identifier' => 'product_1',
             'family' => 'a_family',
             'values' => [
@@ -174,10 +145,10 @@ class ProductAndProductModelWithRemovedAttributeLoader
                     ],
                 ],
             ],
-        ]);
+        ])->getUuid()->toString();
 
         // Simple product
-        $this->createProduct([
+        $this->productIdentifierToUuidMapping['product_2'] = $this->createProduct([
             'identifier' => 'product_2',
             'family' => 'a_second_family',
             'values' => [
@@ -196,10 +167,10 @@ class ProductAndProductModelWithRemovedAttributeLoader
                     ],
                 ],
             ],
-        ]);
+        ])->getUuid()->toString();
 
         // Simple product
-        $this->createProduct([
+        $this->productIdentifierToUuidMapping['product_4'] = $this->createProduct([
             'identifier' => 'product_4',
             'family' => 'a_second_family',
             'values' => [
@@ -218,15 +189,30 @@ class ProductAndProductModelWithRemovedAttributeLoader
                     ],
                 ],
             ],
-        ]);
+        ])->getUuid()->toString();
 
 
         // Simple product
-        $this->createProduct([
+        $this->productIdentifierToUuidMapping['product_5'] = $this->createProduct([
             'identifier' => 'product_5',
             'family' => 'a_family',
             'values' => [],
-        ]);
+        ])->getUuid()->toString();
+
+        // Simple product with no identifier
+        $this->productIdentifierToUuidMapping['product_6'] = $this->createProduct([
+            'identifier' => null,
+            'family' => 'a_family',
+            'values' => [
+                'a_third_attribute' => [
+                    [
+                        'data' => 'super value',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+            ],
+        ])->getUuid()->toString();
 
         // Product model with only one level of variations
         $this->createProductModel([
@@ -295,7 +281,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
         ]);
 
         // Variant product for the two level of variations
-        $this->createProduct([
+        $this->productIdentifierToUuidMapping['product_3'] = $this->createProduct([
             'identifier' => 'product_3',
             'family' => 'a_family',
             'parent' => 'a_sub_product_model',
@@ -315,10 +301,15 @@ class ProductAndProductModelWithRemovedAttributeLoader
                     ],
                 ],
             ],
-        ]);
+        ])->getUuid()->toString();
 
         $this->removeAttribute('an_attribute');
         $this->removeAttribute('a_third_attribute');
+    }
+
+    public function getproductIdentifierToUuidMapping(): array
+    {
+        return $this->productIdentifierToUuidMapping;
     }
 
     private function createProduct(array $data = []): ProductInterface
