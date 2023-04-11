@@ -5,7 +5,7 @@ import {AbbreviationType, IdentifierGenerator, PROPERTY_NAMES} from '../../../mo
 import initialGenerator from '../../../tests/fixtures/initialGenerator';
 import {waitFor} from '@testing-library/react';
 
-jest.mock('../ImplicitSimpleSelectCondition');
+jest.mock('../ImplicitAttributeCondition');
 
 const mockedGenerator: IdentifierGenerator = {
   ...initialGenerator,
@@ -59,18 +59,18 @@ describe('ImplicitConditionsList', () => {
           attributeCode: 'designer',
           process: {type: AbbreviationType.NO},
           scope: 'ecommerce',
-          locale: 'en_US'
-        }
+          locale: 'en_US',
+        },
       ],
     };
     const screen = render(<ImplicitConditionsList generator={generator} />);
 
     await waitFor(() => {
-      expect(screen.getAllByText('ImplicitSimpleSelectConditionMocked').length).toEqual(2);
+      expect(screen.getAllByText('ImplicitAttributeConditionMocked').length).toEqual(3);
     });
 
-    expect(screen.getAllByText('Implicit attribute scope:').length).toEqual(1);
-    expect(screen.getAllByText('Implicit attribute locale:').length).toEqual(1);
+    expect(screen.getAllByText('Implicit attribute scope:').length).toEqual(2);
+    expect(screen.getAllByText('Implicit attribute locale:').length).toEqual(2);
 
     expect(screen.getByText('Implicit attribute code: color')).toBeInTheDocument();
     expect(screen.getByText('Implicit attribute code: brand')).toBeInTheDocument();

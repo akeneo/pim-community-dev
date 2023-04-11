@@ -28,12 +28,7 @@ const ImplicitAttributeCondition: React.FC<Props> = ({attributeCode, scope, loca
           <TextInput value={translate('pim_common.operators.NOT EMPTY')} readOnly={true} />
         </Styled.OperatorContainer>
         {data?.code && (
-          <ScopeAndLocaleSelector
-            attributeCode={data?.code}
-            readOnly={true}
-            scope={scope}
-            locale={locale}
-          />
+          <ScopeAndLocaleSelector attributeCode={data?.code} readOnly={true} scope={scope} locale={locale} />
         )}
       </Styled.SelectionInputsContainer>
       <Table.Cell />
