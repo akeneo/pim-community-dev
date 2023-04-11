@@ -102,3 +102,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryEnrichedValuesSql
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetDeactivatedTemplateAttributesSql
+    arguments:
+      - '@database_connection'
