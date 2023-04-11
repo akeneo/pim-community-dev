@@ -20,7 +20,11 @@ describe('ImplicitAttributeCondition', () => {
     const screen = render(
       <table>
         <tbody>
-          <ImplicitAttributeCondition attributeCode={property.attributeCode} scope={property.scope} locale={property.locale} />
+          <ImplicitAttributeCondition
+            attributeCode={property.attributeCode}
+            scope={property.scope}
+            locale={property.locale}
+          />
         </tbody>
       </table>
     );
@@ -44,7 +48,11 @@ describe('ImplicitAttributeCondition', () => {
     const screen = render(
       <table>
         <tbody>
-          <ImplicitAttributeCondition attributeCode={property.attributeCode} scope={property.scope} locale={property.locale} />
+          <ImplicitAttributeCondition
+            attributeCode={property.attributeCode}
+            scope={property.scope}
+            locale={property.locale}
+          />
         </tbody>
       </table>
     );

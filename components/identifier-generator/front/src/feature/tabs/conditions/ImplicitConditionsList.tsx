@@ -50,12 +50,7 @@ const ImplicitConditionsList: React.FC<Props> = ({generator}) => {
         </Table.Row>
       )}
       {attributeProperties?.map(({attributeCode, scope, locale}) => (
-        <ImplicitAttributeCondition
-          attributeCode={attributeCode}
-          scope={scope}
-          locale={locale}
-          key={attributeCode}
-        />
+        <ImplicitAttributeCondition attributeCode={attributeCode} scope={scope} locale={locale} key={attributeCode} />
       ))}
     </>
   );
