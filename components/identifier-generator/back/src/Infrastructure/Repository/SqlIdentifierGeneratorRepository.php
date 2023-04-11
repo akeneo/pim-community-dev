@@ -68,20 +68,6 @@ VALUES (
 );
 SQL;
 
-        if ($this->isPreviousDatabaseVersion()) {
-            $query = <<<SQL
-INSERT INTO pim_catalog_identifier_generator (uuid, code, target_id, options, labels, conditions, structure)
-VALUES (
-    UUID_TO_BIN(:uuid),
-    :code,
-    (SELECT id FROM pim_catalog_attribute WHERE pim_catalog_attribute.code=:target),
-    JSON_OBJECT('delimiter', :delimiter, 'text_transformation', :text_transformation),
-    :labels,
-    :conditions
-);
-SQL;
-        }
-
         try {
             $this->connection->executeStatement($query, $parameters);
         } catch (Exception $e) {
@@ -168,11 +154,8 @@ SELECT
     pim_catalog_attribute.code AS target
 FROM pim_catalog_identifier_generator
 INNER JOIN pim_catalog_attribute ON pim_catalog_identifier_generator.target_id=pim_catalog_attribute.id
+ORDER BY pim_catalog_identifier_generator.sort_order ASC
 SQL;
-
-        if (!$this->isPreviousDatabaseVersion()) {
-            $sql = \sprintf('%s ORDER BY pim_catalog_identifier_generator.sort_order ASC', $sql);
-        }
 
         $stmt = $this->connection->prepare($sql);
 
@@ -240,13 +223,6 @@ SQL;
         $this->get($identifierGeneratorCode);
 
         $sql = <<<SQL
-DELETE FROM pim_catalog_identifier_generator
-WHERE code=:code
-LIMIT 1;
-SQL;
-
-        if (!$this->isPreviousDatabaseVersion()) {
-            $sql = <<<SQL
 UPDATE pim_catalog_identifier_generator
 SET sort_order = sort_order - 1
 WHERE sort_order > (
@@ -256,8 +232,10 @@ WHERE sort_order > (
     ) AS pcig
     WHERE pcig.code=:code
 );
-SQL . $sql;
-        }
+DELETE FROM pim_catalog_identifier_generator
+WHERE code=:code
+LIMIT 1;
+SQL;
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam('code', $identifierGeneratorCode, \PDO::PARAM_STR);
@@ -267,19 +245,5 @@ SQL . $sql;
         } catch (DriverException) {
             throw new UnableToDeleteIdentifierGeneratorException(\sprintf('Cannot delete the identifier generator "%s"', $identifierGeneratorCode));
         }
-    }
-
-    private function isPreviousDatabaseVersion(): bool
-    {
-        return !$this->columnExists('sort_order');
-    }
-
-    private function columnExists(string $columnName): bool
-    {
-        $rows = $this->connection->fetchAllAssociative(\strtr(<<<SQL
-SHOW COLUMNS FROM pim_catalog_identifier_generator LIKE '{{ columnName }}'
-SQL, ['{{ columnName }}' => $columnName]));
-
-        return \count($rows) >= 1;
     }
 }
