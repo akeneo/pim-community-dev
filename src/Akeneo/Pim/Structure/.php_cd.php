@@ -23,6 +23,8 @@ $rules = [
         'Oro\Bundle\FilterBundle\Grid\Extension\Configuration',
         'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
         'Oro\Bundle\FilterBundle\Filter\ChoiceFilter',
+        'Oro\Bundle\FilterBundle\Filter\AbstractFilter',
+        'Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType',
         'Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface',
         'Psr\Log\LoggerInterface',
         'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
