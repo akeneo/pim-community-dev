@@ -40,6 +40,20 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener, lazy: true }
 
+    akeneo_batch.mount_file_listener:
+        class: Akeneo\Tool\Bundle\BatchBundle\EventListener\MountFileListener
+        arguments:
+            - '@oneup_flysystem.jobs_storage_filesystem'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_batch.backup_file_listener:
+        class: Akeneo\Tool\Bundle\BatchBundle\EventListener\BackupFileListener
+        arguments:
+            - '@oneup_flysystem.jobs_storage_filesystem'
+        tags:
+            - { name: kernel.event_subscriber }
+
     akeneo_batch.mail_notifier:
         class: '%akeneo_batch.mail_notifier.class%'
         arguments:

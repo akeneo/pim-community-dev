@@ -126,7 +126,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     public function getState(): array
     {
         if ($this->filesystemOperator) {
-            $flatBufferFilePath = 'paused_job/' . $this->stepExecution->getId();
+            $flatBufferFilePath = 'paused_job/step/' . $this->stepExecution->getId();
             $this->filesystemOperator->write($flatBufferFilePath, file_get_contents($this->flatRowBuffer->getFilename()));
 
             return [

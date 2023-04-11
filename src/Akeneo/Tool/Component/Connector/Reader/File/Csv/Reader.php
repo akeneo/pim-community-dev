@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Component\Connector\Reader\File\Csv;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
-use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\PausableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
@@ -129,6 +128,11 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         $this->fileIterator = null;
     }
 
+    public function __destruct()
+    {
+        $this->fileIterator = null;
+    }
+
     /**
      * Returns the options for array converter. It can be overridden in the sub classes.
      *
@@ -217,6 +221,13 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
     {
         if (!isset($state['position'])) {
             return;
+        }
+
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('storage')['file_path'];
+
+        if (null === $this->fileIterator) {
+            $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
         }
 
         $this->fileIterator->current();

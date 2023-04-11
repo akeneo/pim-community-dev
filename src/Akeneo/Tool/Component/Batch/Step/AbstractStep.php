@@ -6,8 +6,6 @@ use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobInterruptedException;

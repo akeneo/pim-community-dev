@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\Batch\Job;
 
+use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -118,6 +119,10 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
 
             $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION, $jobExecution);
 
+            if ($jobExecution->getStatus()->isPaused()) {
+                $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION_RESUME, $jobExecution);
+            }
+
             if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
                 $jobExecution->setStartTime(new \DateTime());
                 $this->updateStatus($jobExecution, BatchStatus::STARTED);
@@ -199,10 +204,10 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         $stepExecution = null;
 
         foreach ($this->steps as $step) {
-            $stepExecution = array_filter(
+            $stepExecution = array_values(array_filter(
                 $jobExecution->getStepExecutions()->toArray(),
                 static fn (StepExecution $stepExecution) => $stepExecution->getStepName() === $step->getName(),
-            )[0] ?? null;
+            ))[0] ?? null;
 
             if (
                 null !== $stepExecution &&
@@ -230,7 +235,11 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
 
         // Update the job status to be the same as the last step
         if ($stepExecution !== null) {
-            $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_STATUS_UPGRADE, $jobExecution);
+            if ($jobExecution->getStatus()->isPaused()) {
+                $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_EXECUTION_PAUSE, $jobExecution);
+            } else {
+                $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_STATUS_UPGRADE, $jobExecution);
+            }
 
             $jobExecution->upgradeStatus($stepExecution->getStatus()->getValue());
             $jobExecution->setExitStatus($stepExecution->getExitStatus());
