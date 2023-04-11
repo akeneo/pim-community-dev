@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
 import {Helper, SelectInput, Field} from 'akeneo-design-system';
 import {useAttributeGroups, useDeleteAttributeGroup} from '../hooks/attribute-groups';
 import {
@@ -10,15 +9,9 @@ import {
   useNotify,
   useUserContext,
   useRouter,
+  Section,
 } from '@akeneo-pim-community/shared';
 import {DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP} from '../models';
-
-const ModalContent = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
 
 type DeleteAttributeGroupModalProps = {
   attributeGroupCode: string;
@@ -69,7 +62,7 @@ const DeleteAttributeGroupModal = ({attributeGroupCode, isOpen, onClose}: Delete
           onConfirm={() => handleConfirm()}
           onCancel={onClose}
         >
-          <ModalContent>
+          <Section>
             <p>{translate('pim_enrich.entity.attribute_group.delete.confirm')}</p>
             {0 < attributeGroup.attribute_count && (
               <>
@@ -104,7 +97,7 @@ const DeleteAttributeGroupModal = ({attributeGroupCode, isOpen, onClose}: Delete
                 </Field>
               </>
             )}
-          </ModalContent>
+          </Section>
         </DeleteModal>
       )}
     </>
