@@ -11,12 +11,15 @@ akeneo.category:
             unhandled_attribute_type: Could not find attribute field builder for attribute type "{{ type }}"
         template:
             title: Template
+            no_attribute_title: There is no attribute in this template
+            no_attribute_instructions: The template associated to this category is empty, you can add attributes to this template from the category tree page.
             fetching_failed: An error occurred while fetching template
         unsaved_changes: You will lose changes to the category if you leave the page.
     tree:
         create: Create tree
         delete: Delete tree
     template:
+        learn_more: Learn more about category template
         create: Activate template
         edit: View template
         notification_success: Template activated successfully
@@ -29,8 +32,14 @@ akeneo.category:
                 textarea: Text Area
                 richtext: Rich Text
                 image: Image
+            delete_button: Delete Attribute
+            settings:
+                title: Settings
         add_attribute:
+            no_attribute_title: Create your first attribute
+            no_attribute_instructions: Define the content you want to associate to your categories by adding Text, Text Area or Image attributes to this template.
             add_button: Add Attribute
+            create_button: Create Attribute
             confirmation_modal:
                 section_title: Add Attribute
                 title: Create a new category attribute
@@ -80,7 +89,7 @@ akeneo.category:
         content:
             activate_template: Activate category enrichment through pre-configured templates
             enrich_attribute_values: Enrich Text, Text Area and Image attributes in categories
-            deactivate_template: Enrichment deactivation and custom template will be coming shortly
+            custom_template: Custom template will be coming shortly
         survey_link_label: Tell us what you think
         learn_more_link_label: Learn more about Enriched Categories
 

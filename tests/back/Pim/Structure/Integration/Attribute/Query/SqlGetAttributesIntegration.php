@@ -27,28 +27,29 @@ final class SqlGetAttributesIntegration extends TestCase
                 'type' => AttributeTypes::BOOLEAN,
                 'localizable' => false,
                 'scopable' => false,
-                'group' => 'other'
+                'group' => 'other',
+                'labels' => ['en_US' => 'a boolean', 'fr_FR' => 'Un booléen'],
             ],
             [
                 'code' => 'a_textarea',
                 'type' => AttributeTypes::TEXTAREA,
                 'localizable' => false,
                 'scopable' => false,
-                'group' => 'other'
+                'group' => 'other',
             ],
             [
                 'code' => 'a_text',
                 'type' => AttributeTypes::TEXT,
                 'localizable' => false,
                 'scopable' => false,
-                'group' => 'other'
+                'group' => 'other',
             ],
             [
                 'code' => '123',
                 'type' => AttributeTypes::TEXT,
                 'localizable' => false,
                 'scopable' => false,
-                'group' => 'other'
+                'group' => 'other',
             ],
             [
                 'code' => 'a_locale_specific_attribute',
@@ -100,7 +101,7 @@ final class SqlGetAttributesIntegration extends TestCase
         return [
             'a_text' => new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
             'a_textarea' => new Attribute('a_textarea', AttributeTypes::TEXTAREA, [], false, false, null, null, false, 'textarea', []),
-            'a_boolean' => new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, null, false, 'boolean', []),
+            'a_boolean' => new Attribute('a_boolean', AttributeTypes::BOOLEAN, [], false, false, null, null, false, 'boolean', [], null, ['en_US' => 'a boolean', 'fr_FR' => 'Un booléen']),
             'unknown_attribute_code' => null,
             '123' => new Attribute('123', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []),
             'a_locale_specific_attribute' => new Attribute('a_locale_specific_attribute', AttributeTypes::BOOLEAN, [], true, false, null, null, false, 'boolean', ['en_US']),

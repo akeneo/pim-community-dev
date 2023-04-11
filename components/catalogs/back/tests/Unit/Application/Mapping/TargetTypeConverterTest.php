@@ -24,7 +24,7 @@ class TargetTypeConverterTest extends TestCase
     }
 
     /**
-     * @dataProvider validConversionProvider
+     * @dataProvider validAttributeTypesConversionProvider
      * @param array<string> $expectedAttributeTypes
      */
     public function testItConvertsTargetTypeToAttributeTypes(
@@ -38,7 +38,7 @@ class TargetTypeConverterTest extends TestCase
         );
     }
 
-    public function validConversionProvider(): array
+    public function validAttributeTypesConversionProvider(): array
     {
         return [
             'array<string>' => [
@@ -46,6 +46,7 @@ class TargetTypeConverterTest extends TestCase
                 '',
                 [
                     'categories',
+                    'pim_catalog_asset_collection',
                     'pim_catalog_multiselect',
                 ],
             ],
@@ -54,6 +55,7 @@ class TargetTypeConverterTest extends TestCase
                 '',
                 [
                     'pim_catalog_boolean',
+                    'status',
                 ],
             ],
             'number' => [
@@ -83,6 +85,7 @@ class TargetTypeConverterTest extends TestCase
                 'string',
                 'uri',
                 [
+                    'pim_catalog_asset_collection',
                     'pim_catalog_image',
                 ],
             ],
@@ -96,10 +99,50 @@ class TargetTypeConverterTest extends TestCase
         ];
     }
 
-    public function testItThrowsANoCompatibleAttributeTypeException(): void
+    public function testItThrowsANoCompatibleAttributeTypeExceptionWhenThereAreNoMatchingAttributeTypes(): void
     {
         $this->expectException(NoCompatibleAttributeTypeFoundException::class);
-        $this->targetTypeConverter->toAttributeTypes('unexpected_type');
+        $this->targetTypeConverter->toAttributeTypes('unexpected_target_type');
+    }
+
+    /**
+     * @dataProvider validAssetAttributeTypesConversionProvider
+     */
+    public function testItConvertsTargetTypeToAssetAttributeTypes(
+        string $targetType,
+        string $targetFormat,
+        array $expectedAssetAttributeTypes,
+    ): void {
+        $this->assertEquals(
+            $expectedAssetAttributeTypes,
+            $this->targetTypeConverter->toAssetAttributeTypes($targetType, $targetFormat),
+        );
+    }
+
+    public function validAssetAttributeTypesConversionProvider(): array
+    {
+        return [
+            'array<string>' => [
+                'array<string>',
+                '',
+                [
+                    'text',
+                ],
+            ],
+            'string' => [
+                'string',
+                'uri',
+                [
+                    'media_file',
+                ],
+            ],
+        ];
+    }
+
+    public function testItThrowsANoCompatibleAttributeTypeExceptionWhenThereAreNoMatchingAssetAttributeTypes(): void
+    {
+        $this->expectException(NoCompatibleAttributeTypeFoundException::class);
+        $this->targetTypeConverter->toAssetAttributeTypes('unexpected_target_type');
     }
 
     public function testItDoesNotFlattensNonArrayTargetType(): void

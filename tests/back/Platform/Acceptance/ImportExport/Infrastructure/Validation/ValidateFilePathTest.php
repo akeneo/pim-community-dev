@@ -49,6 +49,16 @@ class ValidateFilePathTest extends AbstractValidationTest
                 '',
                 '/tmp/file.csv',
             ],
+            'file path with non breaking space' => [
+                'pim_import_export.form.job_instance.validation.file_path.non_printable_filepath',
+                '',
+                '/tmp/File​with​non​breaking​space.xlsx',
+            ],
+            'file path with soft hyphen' => [
+                'pim_import_export.form.job_instance.validation.file_path.non_printable_filepath',
+                '',
+                '/tmp/File­with­soft­hyphen.xlsx',
+            ]
         ];
     }
 }

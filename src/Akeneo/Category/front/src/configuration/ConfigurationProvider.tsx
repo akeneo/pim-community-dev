@@ -4,7 +4,6 @@ import {useStorageState} from '@akeneo-pim-community/shared';
 type Configuration = {
   features: {
     permission: boolean;
-    category_template_deactivation: boolean;
     enriched_category: boolean;
     category_template_customization: boolean;
   };
@@ -25,7 +24,6 @@ type Configuration = {
 type WriteConfiguration = {
   features?: {
     permission?: boolean;
-    category_template_deactivation?: boolean;
     enriched_category?: boolean;
     category_template_customization?: boolean;
   };
@@ -55,7 +53,6 @@ const CONFIGURATION_STORAGE_KEY = 'CategoryMicroFrontendConfiguration';
 const DEFAULT_CONFIGURATION: Configuration = {
   features: {
     permission: true,
-    category_template_deactivation: true,
     enriched_category: true,
     category_template_customization: true,
   },
@@ -82,7 +79,6 @@ const ConfigurationProvider: FC = ({children}) => {
     setConfiguration({
       features: {
         permission: false,
-        category_template_deactivation: true,
         enriched_category: true,
         category_template_customization: true,
       },
@@ -105,7 +101,6 @@ const ConfigurationProvider: FC = ({children}) => {
     setConfiguration({
       features: {
         permission: true,
-        category_template_deactivation: true,
         enriched_category: true,
         category_template_customization: true,
       },

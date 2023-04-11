@@ -91,6 +91,13 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: datagrid_attribute_family_filter }
 
+    Akeneo\Pim\Structure\Bundle\Datagrid\Attribute\AttributeFilter:
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: attribute_search }
+
     Akeneo\Pim\Structure\Component\Security\CatalogStructureScopeMapper:
         tags:
             - { name: pim_api.security.scope_mapper }

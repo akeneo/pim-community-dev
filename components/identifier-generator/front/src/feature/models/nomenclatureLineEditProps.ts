@@ -1,7 +1,8 @@
 import {FamilyCode} from './family';
+import {AttributeCode} from './attribute';
 
 type NomenclatureLineEditProps = {
-  code: FamilyCode;
+  code: FamilyCode | AttributeCode;
   label: string;
   value: string;
 };

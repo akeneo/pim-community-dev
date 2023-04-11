@@ -206,6 +206,7 @@ pim_common:
     label: Label
     label_translations: Label translations
     Label or identifier: label or identifier
+    code_or_label: code or label
     less_than: Less than
     loading: Loading...
     media_upload: Drag and drop to upload or click here
@@ -371,6 +372,10 @@ pim_menu:
         help:
             title: Help
             helper: Akeneo Help center
+            new: NEW
+            news: What’s new?
+            help_center: Help Center
+            akademy_training: Akademy training
     item:
         association_type: Association types
         attribute_group: Attribute groups
@@ -451,6 +456,12 @@ pim_system:
     enabled: SSO enabled
     disabled: SSO disabled
     title: SAML-based Single Sign-On
+  reset_pim:
+    button:
+      label: Reset instance
+  sandbox:
+    helper:
+      text: This is a sandbox environment; your changes will not impact your production.
 
 pim_datagrid:
   mass_action:

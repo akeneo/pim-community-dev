@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Integration\Repository;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\UnableToSaveIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\Conditions;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Delimiter;
@@ -94,6 +95,24 @@ class SqlIdentifierGeneratorRepositoryIntegration extends TestCase
     }
 
     /** @test */
+    public function it_gets_an_identifier_generator_case_insensitive(): void
+    {
+        $identifierGenerator = $this->getIdentifierGenerator('default');
+        $this->identifierGeneratorRepository->save($identifierGenerator);
+
+        $identifierGeneratorFromDB = $this->identifierGeneratorRepository->get('dEfAuLt');
+
+        Assert::assertInstanceOf(IdentifierGenerator::class, $identifierGenerator);
+        Assert::assertEquals($identifierGenerator->id()->asString(), $identifierGeneratorFromDB->id()->asString());
+        Assert::assertEquals($identifierGenerator->code()->asString(), $identifierGeneratorFromDB->code()->asString());
+        Assert::assertEquals($identifierGenerator->target()->asString(), $identifierGeneratorFromDB->target()->asString());
+        Assert::assertEquals($identifierGenerator->delimiter()->asString(), $identifierGeneratorFromDB->delimiter()->asString());
+        Assert::assertEquals($identifierGenerator->labelCollection()->normalize(), $identifierGeneratorFromDB->labelCollection()->normalize());
+        Assert::assertEquals($identifierGenerator->conditions()->normalize(), $identifierGeneratorFromDB->conditions()->normalize());
+        Assert::assertEquals($identifierGenerator->structure()->normalize(), $identifierGeneratorFromDB->structure()->normalize());
+    }
+
+    /** @test */
     public function it_throws_an_exception_if_identifier_code_already_exists(): void
     {
         $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'same_code'));
@@ -102,11 +121,18 @@ class SqlIdentifierGeneratorRepositoryIntegration extends TestCase
     }
 
     /** @test */
+    public function it_throws_an_exception_if_identifier_code_already_exists_with_different_case(): void
+    {
+        $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'same_code'));
+        $this->expectException(UnableToSaveIdentifierGeneratorException::class);
+        $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'sAmE_cOde'));
+    }
+
+    /** @test */
     public function its_gets_an_unknown_identifier_generator(): void
     {
-        $identifierGenerator = $this->identifierGeneratorRepository->get('unknown');
-
-        Assert::assertEquals($identifierGenerator, null);
+        $this->expectException(CouldNotFindIdentifierGeneratorException::class);
+        $this->identifierGeneratorRepository->get('unknown');
     }
 
     /** @test */
@@ -150,6 +176,17 @@ class SqlIdentifierGeneratorRepositoryIntegration extends TestCase
         Assert::assertEquals(0, $this->getSortOrder('identifier_generator0'));
         Assert::assertEquals(1, $this->getSortOrder('identifier_generator2'));
         Assert::assertEquals(2, $this->getSortOrder('identifier_generator3'));
+    }
+
+    /** @test */
+    public function it_can_delete_an_identifier_generator_regardless_of_case(): void
+    {
+        $this->identifierGeneratorRepository->save($this->getIdentifierGenerator(code: 'identifier_generator0'));
+
+        Assert::assertEquals(1, $this->identifierGeneratorRepository->count());
+
+        $this->identifierGeneratorRepository->delete('identifier_generator0');
+        Assert::assertEquals(0, $this->identifierGeneratorRepository->count());
     }
 
     protected function getConfiguration(): Configuration

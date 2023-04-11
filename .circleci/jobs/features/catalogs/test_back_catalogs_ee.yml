@@ -15,7 +15,7 @@ jobs:
             -   start_test_containers
             -   run:
                     name: Integration back
-                    command: PIM_CONTEXT=catalogs make catalogs-integration-back
+                    command: PIM_CONTEXT=catalogs make catalogs-integration-back catalogs-integration-ee-back
             -   run:
                     name: Acceptance back
                     command: PIM_CONTEXT=catalogs make catalogs-acceptance-back

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGeneratorId;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
@@ -34,11 +35,11 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
     /**
      * {@inheritdoc}
      */
-    public function get(string $identifierGeneratorCode): ?IdentifierGenerator
+    public function get(string $identifierGeneratorCode): IdentifierGenerator
     {
         $index = $this->getGeneratorIndex($identifierGeneratorCode);
         if (null === $index) {
-            return null;
+            throw new CouldNotFindIdentifierGeneratorException($identifierGeneratorCode);
         }
 
         return $this->generators[$index];
@@ -79,6 +80,7 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
     public function reorder(array $identifierGeneratorCodes): void
     {
         $generators = $this->generators;
+        $identifierGeneratorCodes = \array_map('mb_strtolower', $identifierGeneratorCodes);
 
         \usort(
             $generators,
@@ -92,7 +94,7 @@ class InMemoryIdentifierGeneratorRepository implements IdentifierGeneratorReposi
     private function getGeneratorIndex(string $identifierGeneratorCode): ?int
     {
         foreach ($this->generators as $i => $generator) {
-            if ($generator->code()->asString() === $identifierGeneratorCode) {
+            if (\mb_strtolower($generator->code()->asString()) === \mb_strtolower($identifierGeneratorCode)) {
                 return $i;
             }
         }

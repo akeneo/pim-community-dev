@@ -18,10 +18,12 @@ final class TargetTypeConverter
     private const PIM_ATTRIBUTE_TYPES = [
         'array<string>' => [
             'categories',
+            'pim_catalog_asset_collection',
             'pim_catalog_multiselect',
         ],
         'boolean' => [
             'pim_catalog_boolean',
+            'status',
         ],
         'number' => [
             'pim_catalog_metric',
@@ -42,7 +44,17 @@ final class TargetTypeConverter
             'pim_catalog_date',
         ],
         'string+uri' => [
+            'pim_catalog_asset_collection',
             'pim_catalog_image',
+        ],
+    ];
+
+    private const PIM_ASSET_ATTRIBUTE_TYPES = [
+        'array<string>' => [
+            'text',
+        ],
+        'string+uri' => [
+            'media_file',
         ],
     ];
 
@@ -62,6 +74,24 @@ final class TargetTypeConverter
         }
 
         return self::PIM_ATTRIBUTE_TYPES[$key];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function toAssetAttributeTypes(string $targetType, string $targetFormat = ''): array
+    {
+        $key = $targetType;
+
+        if ('' !== $targetFormat) {
+            $key = \sprintf('%s+%s', $targetType, $targetFormat);
+        }
+
+        if (!isset(self::PIM_ASSET_ATTRIBUTE_TYPES[$key])) {
+            throw new NoCompatibleAttributeTypeFoundException();
+        }
+
+        return self::PIM_ASSET_ATTRIBUTE_TYPES[$key];
     }
 
     /**

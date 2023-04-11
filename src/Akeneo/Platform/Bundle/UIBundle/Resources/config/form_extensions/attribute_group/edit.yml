@@ -2,6 +2,12 @@ extensions:
     pim-attribute-group-edit-form:
         module: pim/form/common/edit-form
 
+    pim-attribute-group-edit-form-sandbox-helper:
+        module: pim/sandbox-helper
+        parent: pim-attribute-group-edit-form
+        targetZone: helper
+        feature: reset_pim
+
     pim-attribute-group-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-attribute-group-edit-form
@@ -36,26 +42,10 @@ extensions:
         position: 110
 
     pim-attribute-group-edit-form-secondary-actions:
-        module: pim/form/common/secondary-actions
+        module: pim/attribute-group-edit-form/secondary-actions
         parent: pim-attribute-group-edit-form
         targetZone: buttons
         position: 50
-
-    pim-attribute-group-edit-form-delete:
-        module: pim/attribute-group-edit-form/delete
-        parent: pim-attribute-group-edit-form-secondary-actions
-        targetZone: secondary-actions
-        aclResourceId: pim_enrich_attributegroup_remove
-        position: 100
-        config:
-            trans:
-                title: pim_enrich.entity.attribute_group.module.delete.confirm
-                subTitle: pim_enrich.entity.attribute_group.plural_label
-                content: pim_common.confirm_deletion
-                success: pim_enrich.entity.attribute_group.flash.delete.success
-                fail: pim_enrich.entity.attribute_group.flash.delete.fail
-                buttonText: pim_common.delete
-            redirect: pim_enrich_attributegroup_index
 
     pim-attribute-group-edit-form-save-buttons:
         module: pim/form/common/save-buttons

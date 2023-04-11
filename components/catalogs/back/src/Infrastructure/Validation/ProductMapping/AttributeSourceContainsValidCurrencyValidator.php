@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping;
 use Akeneo\Catalogs\Application\Persistence\Attribute\FindOneAttributeByCodeQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Currency\GetChannelCurrenciesQueryInterface;
 use Akeneo\Catalogs\Application\Persistence\Currency\IsCurrencyActivatedQueryInterface;
+use Akeneo\Catalogs\Domain\Catalog;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -18,13 +19,7 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  *
  * @psalm-suppress PropertyNotSetInConstructor
  * @phpstan-import-type Attribute from FindOneAttributeByCodeQueryInterface
- * @phpstan-type SourceParameters array{currency: string}
- * @phpstan-type AttributeSource array{
- *    source: string,
- *    scope: string|null,
- *    locale: string|null,
- *    parameters: SourceParameters
- * }
+ * @phpstan-import-type SourceAssociation from Catalog
  */
 class AttributeSourceContainsValidCurrencyValidator extends ConstraintValidator
 {
@@ -45,28 +40,31 @@ class AttributeSourceContainsValidCurrencyValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, 'array');
         }
 
-        /** @var AttributeSource $value */
+        /** @var SourceAssociation $value */
+
+        if (null === $value['source'] || !isset($value['parameters']) || !isset($value['parameters']['currency'])) {
+            return;
+        }
 
         $attribute = $this->findOneAttributeByCodeQuery->execute($value['source']);
         if (null === $attribute) {
             throw new \LogicException('Attribute not found');
         }
 
-        $this->validateNonScopableSourceHasAValidCurrency($attribute, $value);
-        $this->validateScopableSourceHasAValidCurrency($attribute, $value);
+        $this->validateNonScopableSourceHasAValidCurrency($attribute, $value['parameters']['currency']);
+        $this->validateScopableSourceHasAValidCurrency($attribute, $value['parameters']['currency'], $value['scope']);
     }
 
     /**
      * @param Attribute $attribute
-     * @param AttributeSource $value
      */
-    private function validateNonScopableSourceHasAValidCurrency(array $attribute, array $value): void
+    private function validateNonScopableSourceHasAValidCurrency(array $attribute, string $currency): void
     {
         if ($attribute['scopable']) {
             return;
         }
 
-        if (!$this->isCurrencyActivatedQuery->execute($value['parameters']['currency'])) {
+        if (!$this->isCurrencyActivatedQuery->execute($currency)) {
             $this->context
                 ->buildViolation('akeneo_catalogs.validation.product_mapping.source.currency.disabled')
                 ->atPath('[parameters][currency]')
@@ -76,16 +74,14 @@ class AttributeSourceContainsValidCurrencyValidator extends ConstraintValidator
 
     /**
      * @param Attribute $attribute
-     * @param AttributeSource $value
      */
-    private function validateScopableSourceHasAValidCurrency(array $attribute, array $value): void
+    private function validateScopableSourceHasAValidCurrency(array $attribute, string $currency, ?string $scope): void
     {
-        if (!$attribute['scopable'] || null === $value['scope']) {
+        if (!$attribute['scopable'] || null === $scope) {
             return;
         }
 
-        $currency = $value['parameters']['currency'];
-        $channelCurrencies = $this->getChannelCurrenciesQuery->execute($value['scope']);
+        $channelCurrencies = $this->getChannelCurrenciesQuery->execute($scope);
 
         if (!\in_array($currency, $channelCurrencies, true)) {
             $this->context

@@ -134,7 +134,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     {
         $attributeCodes = [];
         foreach (array_keys($changeset) as $valueHeader) {
-            $attributeCode = $this->extractAttributeCode($valueHeader);
+            $attributeCode = $this->extractAttributeCode((string) $valueHeader);
 
             $attributeCodes[$attributeCode] = true;
         }
@@ -143,7 +143,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
         foreach ($changeset as $valueHeader => $valueChanges) {
             $context['versioned_attribute'] = $valueHeader;
-            $attributeCode = $this->extractAttributeCode($valueHeader);
+            $attributeCode = $this->extractAttributeCode((string) $valueHeader);
             $context['attribute'] = $attributeCode;
 
             if (isset($attributeTypes[$attributeCode])) {
@@ -168,10 +168,10 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      * For example, in "price-EUR", the attribute code is "price".
      * For "desc-ecom-en_US", this is "desc".
      */
-    protected function extractAttributeCode($valueHeader)
+    protected function extractAttributeCode(string $valueHeader): string
     {
-        if (($separatorPos = strpos($valueHeader, self::ATTRIBUTE_HEADER_SEPARATOR)) !== false) {
-            return substr($valueHeader, 0, $separatorPos);
+        if (($separatorPos = \strpos($valueHeader, self::ATTRIBUTE_HEADER_SEPARATOR)) !== false) {
+            return \substr($valueHeader, 0, $separatorPos);
         }
 
         return $valueHeader;

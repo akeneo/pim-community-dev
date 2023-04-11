@@ -70,4 +70,16 @@ class ValidateIdentifiersLimitSpec extends ObjectBehavior
             ]
         ]]);
     }
+
+    function it_validates_query_of_products_with_search_identifiers_not_an_array()
+    {
+        $this->shouldThrow(UnprocessableEntityHttpException::class)->during('validate', [[
+            'identifier' => [
+                [
+                    'operator' => Operators::IN_LIST,
+                    'value' => 'not_an_array',
+                ]
+            ]
+        ]]);
+    }
 }

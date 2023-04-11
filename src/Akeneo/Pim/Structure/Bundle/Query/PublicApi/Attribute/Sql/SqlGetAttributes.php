@@ -33,6 +33,15 @@ WITH locale_specific_codes AS (
     FROM pim_catalog_attribute_locale attribute_locale
     INNER JOIN pim_catalog_locale locale ON attribute_locale.locale_id = locale.id
     GROUP BY attribute_locale.attribute_id
+),
+translation as (
+    SELECT attribute.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
+    FROM pim_catalog_attribute as attribute
+        JOIN pim_catalog_attribute_translation translation ON translation.foreign_key = attribute.id
+    WHERE translation.label IS NOT NULL
+        AND translation.label != ''
+        AND attribute.code IN (:attributeCodes)
+    GROUP BY attribute.code
 )
 SELECT attribute.code,
        attribute.attribute_type,
@@ -44,10 +53,13 @@ SELECT attribute.code,
        attribute.decimals_allowed,
        attribute.backend_type,
        attribute.useable_as_grid_filter,
-       COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes
+       COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes,
+       translation.translations
 FROM pim_catalog_attribute attribute
-    LEFT JOIN locale_specific_codes on attribute.id = attribute_id    
-WHERE code IN (:attributeCodes)
+    LEFT JOIN locale_specific_codes on attribute.id = attribute_id
+    LEFT JOIN translation on attribute.code = translation.code
+WHERE attribute.code IN (:attributeCodes)
+GROUP BY attribute.id
 SQL;
 
         $rawResults = $this->connection->executeQuery(
@@ -61,6 +73,8 @@ SQL;
         foreach ($rawResults as $rawAttribute) {
             $properties = unserialize($rawAttribute['properties']);
 
+            $translations = $rawAttribute['translations'] !== null ? json_decode($rawAttribute['translations'], true) : [];
+
             $attributes[$rawAttribute['code']] = new Attribute(
                 $rawAttribute['code'],
                 $rawAttribute['attribute_type'],
@@ -72,7 +86,8 @@ SQL;
                 boolval($rawAttribute['decimals_allowed']),
                 $rawAttribute['backend_type'],
                 json_decode($rawAttribute['available_locale_codes']),
-                boolval($rawAttribute['useable_as_grid_filter'])
+                boolval($rawAttribute['useable_as_grid_filter']),
+                $translations,
             );
         }
 

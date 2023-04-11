@@ -2,7 +2,7 @@ import React, {useCallback, useMemo} from 'react';
 import {Operator, SimpleOrMultiSelectCondition, SimpleSelectOperators} from '../../models';
 import {Button, Helper, Table} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
-import {OperatorSelector} from '../../components';
+import {OperatorSelector, ScopeAndLocaleSelector} from '../../components';
 import {
   ChannelCode,
   getLabel,
@@ -13,9 +13,8 @@ import {
 } from '@akeneo-pim-community/shared';
 import {SimpleSelectOptionsSelector} from '../../components/SimpleSelectOptionsSelector';
 import {OptionCode} from '../../models/option';
-import {ScopeAndLocaleSelector} from '../../components/ScopeAndLocaleSelector';
-import {useGetAttributeByCode} from '../../hooks/useGetAttributeByCode';
-import {Unauthorized, AttributeNotFound} from '../../errors';
+import {useGetAttributeByCode} from '../../hooks';
+import {AttributeNotFound, Unauthorized} from '../../errors';
 import {useIdentifierGeneratorAclContext} from '../../context';
 
 type SimpleOrMultiSelectLineProps = {

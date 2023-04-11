@@ -61,6 +61,8 @@ const AttributeGroupsIndex = () => {
     defaultTargetAttributeGroup
   );
 
+  const showToolbar = 0 < filteredAttributeGroups.length && !!selectionState;
+
   useAutoFocus(inputRef);
 
   return (
@@ -116,7 +118,7 @@ const AttributeGroupsIndex = () => {
         />
       </Content>
       {!isPending && (
-        <Toolbar isVisible={!!selectionState}>
+        <Toolbar isVisible={showToolbar}>
           <Toolbar.SelectionContainer>
             <Checkbox checked={selectionState} onChange={onSelectAllChange} />
             <Dropdown>

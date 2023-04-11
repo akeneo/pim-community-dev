@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToSetIdentifierException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorQuery;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\MatchIdentifierGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\Error;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\ErrorList;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
@@ -47,6 +49,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         private readonly ValidatorInterface $validator,
         private readonly MetadataFactoryInterface $metadataFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly MatchIdentifierGeneratorHandler $matchIdentifierGeneratorHandler,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -78,8 +81,10 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
                     $product->isEnabled(),
                     $product->getFamily()?->getCode(),
                     $this->flatValues($product),
+                    $product->getCategoryCodes(),
                 );
-                if ($identifierGenerator->match($productProjection)) {
+                $query = new MatchIdentifierGeneratorQuery($identifierGenerator, $productProjection);
+                if (($this->matchIdentifierGeneratorHandler)($query)) {
                     try {
                         $this->setGeneratedIdentifier($identifierGenerator, $productProjection, $product);
                         $this->logger->notice(\sprintf(

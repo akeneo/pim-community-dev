@@ -60,3 +60,14 @@ akeneo_catalogs:
                     unit:
                         not_exist: 'The unit of the field "{{ field }}" does not exist.'
                         not_empty: 'The unit must not be empty.'
+                sub_source:
+                    invalid: 'This sub attribute has been deleted.'
+                    channel:
+                        not_empty: 'This channel must be empty.'
+                        empty: 'This channel must not be empty.'
+                        unknown: 'This channel has been deleted. Please check your channel settings or update this value.'
+                    locale:
+                        not_empty: 'This locale must be empty.'
+                        empty: 'This locale must not be empty.'
+                        unknown: 'This locale is disabled or does not exist anymore. Please check your channels and locales settings.'
+                        disabled: 'This locale is disabled. Please check your channels and locales settings or update this value.'

@@ -16,6 +16,16 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\EmptyIdenti
  * @phpstan-import-type StructureNormalized from Structure
  * @phpstan-import-type LabelsNormalized from LabelCollection
  * @phpstan-import-type TextTransformationNormalized from TextTransformation
+ * @phpstan-type NormalizedIdentifierGenerator array{
+ *     uuid: string,
+ *     code: string,
+ *     conditions: ConditionsNormalized,
+ *     structure: StructureNormalized,
+ *     labels: LabelsNormalized,
+ *     target: string,
+ *     delimiter: string | null,
+ *     text_transformation: TextTransformationNormalized
+ * }
  */
 final class IdentifierGenerator
 {
@@ -156,16 +166,7 @@ final class IdentifierGenerator
     }
 
     /**
-     * @return array{
-     *     uuid: string,
-     *     code: string,
-     *     conditions: ConditionsNormalized,
-     *     structure: StructureNormalized,
-     *     labels: LabelsNormalized,
-     *     target: string,
-     *     delimiter: string | null,
-     *     text_transformation: TextTransformationNormalized
-     * }
+     * @return NormalizedIdentifierGenerator
      */
     public function normalize(): array
     {
@@ -181,17 +182,10 @@ final class IdentifierGenerator
         ];
     }
 
-    public function match(ProductProjection $productProjection): bool
-    {
-        $conditionsWithImplicitOnes = $this->conditions->and($this->getImplicitConditions());
-
-        return $conditionsWithImplicitOnes->match($productProjection);
-    }
-
     /**
      * @return ConditionInterface[]
      */
-    private function getImplicitConditions(): array
+    public function getImplicitConditions(): array
     {
         $conditions = [new EmptyIdentifier($this->target()->asString())];
 

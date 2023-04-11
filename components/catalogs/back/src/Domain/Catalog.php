@@ -24,16 +24,25 @@ use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\ProductMappingRespe
  * @phpstan-type ProductValueFilters array{
  *      channels?: array<string>,
  *      locales?: array<string>,
- *      currencies?: array<string>,
+ *      currencies?: array<string>
  * }
  *
- * @phpstan-type ProductMapping array<string, array{
+ * @phpstan-type SourceAssociation array{
  *      source: string|null,
  *      locale: string|null,
  *      scope: string|null,
  *      default?: string|boolean|numeric|null,
- *      parameters?: array<string, mixed>,
- * }>
+ *      parameters?: array{
+ *          label_locale?: string|null,
+ *          currency?: string|null,
+ *          unit?: string|null,
+ *          sub_source?: string|null,
+ *          sub_scope?: string|null,
+ *          sub_locale?: string|null
+ *      }
+ * }
+ *
+ * @phpstan-type ProductMapping array<string, SourceAssociation>
  */
 #[ProductMappingRespectsSchema]
 final class Catalog

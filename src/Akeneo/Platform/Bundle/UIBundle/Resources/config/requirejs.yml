@@ -624,7 +624,7 @@ config:
     # Attribute group
     pim/model/attribute:                  pimui/js/model/attribute.ts
     pim/model/attribute-group:            pimui/js/model/attribute-group.ts
-    pim/attribute-group-edit-form/delete: pimui/js/attribute-group/form/delete
+    pim/attribute-group-edit-form/secondary-actions: pimui/js/attribute-group/form/secondary-actions
     pim/attribute-group-edit-form/list:   pimui/js/attribute-group/form/list
 
     # Group type
@@ -1275,7 +1275,8 @@ config:
     pim/template/catalog-volume/number:       pimui/templates/catalog-volume/number.html
     pim/template/catalog-volume/average-max:     pimui/templates/catalog-volume/average-max.html
 
-
     pim/edition: pimui/js/pim-edition.ts
     pim/job/common/edit/field/file-path: pimui/js/job/common/edit/field/file-path.ts
     pim/job/common/edit/field/allow-file-upload: pimui/js/job/common/edit/field/allow-file-upload.ts
+
+    pim/sandbox-helper: pimui/js/SandboxHelper.tsx

@@ -20,9 +20,8 @@ Feature flags are defined by a _key_, representing the feature, and a _service_ 
 
 akeneo_feature_flag:
     feature_flags:
-        - { feature: 'myCoolFeature', service: '@service_that_defines_if_myCoolFeature_feature_is_enabled' }
-        - { feature: 'foo', service: '@service_that_defines_if_foo_feature_is_enabled' }
-        - ...
+        foo: 'service_that_defines_if_foo_feature_is_enabled'
+        bar: 'service_that_defines_if_bar_feature_is_enabled'
 ```
 
 The most important here is to decouple the decision point (the place where I need to know if a feature is enabled) from the decision logic (how do I know if this feature is enabled). 

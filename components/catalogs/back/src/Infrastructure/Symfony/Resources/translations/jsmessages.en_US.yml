@@ -9,8 +9,7 @@ akeneo_catalogs:
         status: Status
         enabled: enabled
         disabled: disabled
-        empty: There is no catalog
-        more_information: Check out our Help center for more information.
+        empty: Please check the app page on the Akeneo App Store to know if it manages our catalogs feature.
     catalog_edit:
         tabs:
             settings: Catalog settings
@@ -150,10 +149,16 @@ akeneo_catalogs:
                     helper: Select the unit in which the value should be sent.
             select_source:
                 label: Pim source
-                search: Search criterion
+                search: Search source
                 no_results: No matches found
                 section_system: System
                 section_attributes: Attributes
+                attribute_label_asset_collection: Asset Collection
+            select_source_asset_attribute:
+                label: Asset attribute
+                placeholder: Select an asset attribute
+                search: Search asset attribute
+                no_results: No matches found
             placeholder:
                 title: Select source
                 illustration_title: Click on a target in the right panel to configure your catalog mapping.
@@ -178,3 +183,5 @@ akeneo_catalogs:
                     label: Categories
                 family:
                     label: Family
+                status:
+                    label: Status

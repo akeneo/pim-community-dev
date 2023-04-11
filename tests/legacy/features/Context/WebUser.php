@@ -1764,18 +1764,16 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string $label
-     * @param string $value
-     *
      * @When /^I fill the input labelled '(.*)' with '(.*)'$/
      */
-    public function iFillTheInputLabelledWith($label, $value)
+    public function iFillTheInputLabelledWith(string $label, string $value): void
     {
         $page = $this->getCurrentPage();
 
-        $label = $this->spin(function () use ($page, $label) {
-            return $page->find('css', sprintf('label:contains(%s)', $label));
-        }, sprintf("Can not find any label with content '%s'", $label));
+        $label = $this->spin(
+            static fn () => $page->find('css', sprintf('label:contains("%s")', $label)),
+            sprintf("Can not find any label with content '%s'", $label),
+        );
 
         $input = $page->findByID($label->getAttribute('for'));
         $input->setValue($value);
@@ -1873,6 +1871,28 @@ class WebUser extends PimContext
                 ->getCurrentPage()
                 ->find('css', sprintf(join(',', $selectors), $buttonLabel));
         }, sprintf('Cannot find "%s" button label in modal', $buttonLabel));
+
+        $buttonElement->press();
+
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I press the "([^"]*)" button in the bulk actions panel$/
+     */
+    public function iPressTheButtonInTheBulkActionsPanel(string $buttonLabel)
+    {
+        $buttonElement = $this->spin(function () use ($buttonLabel) {
+            $selectors = [
+                '.mass-actions-panel a:contains("%1$s")',
+                '.mass-actions-panel button:contains("%1$s")',
+                '.mass-actions-panel .AknButton:contains("%1$s")',
+            ];
+
+            return $this
+                ->getCurrentPage()
+                ->find('css', sprintf(join(',', $selectors), $buttonLabel));
+        }, sprintf('Cannot find "%s" button in bulk actions panel', $buttonLabel));
 
         $buttonElement->press();
 

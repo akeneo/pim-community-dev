@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
 import {Button, useBooleanState, Helper, SelectInput, Field} from 'akeneo-design-system';
 import {
   DoubleCheckDeleteModal,
@@ -8,16 +7,10 @@ import {
   useTranslate,
   useNotify,
   useUserContext,
+  Section,
 } from '@akeneo-pim-community/shared';
 import {AttributeGroup, DEFAULT_REPLACEMENT_ATTRIBUTE_GROUP} from '../../../models';
 import {useMassDeleteAttributeGroups} from '../../../hooks';
-
-const ModalContent = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
 
 type MassDeleteAttributeGroupsModalProps = {
   impactedAttributeGroups: AttributeGroup[];
@@ -76,7 +69,7 @@ const MassDeleteAttributeGroupsModal = ({
           onConfirm={handleLaunchMassDelete}
           onCancel={closeMassDeleteModal}
         >
-          <ModalContent>
+          <Section>
             <p>
               {translate(
                 'pim_enrich.entity.attribute_group.mass_delete.confirm',
@@ -123,7 +116,7 @@ const MassDeleteAttributeGroupsModal = ({
                 </Field>
               </>
             )}
-          </ModalContent>
+          </Section>
         </DoubleCheckDeleteModal>
       )}
     </>

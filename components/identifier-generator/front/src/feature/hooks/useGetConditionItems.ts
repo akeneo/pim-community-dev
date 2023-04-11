@@ -74,7 +74,7 @@ const useGetConditionItems: (
         search: debouncedSearchValue,
         page: state === STATE.USER_CHANGED_SEARCH ? 1 : page,
         limit,
-        systemFields: ['family', 'enabled'].filter(value => !conditionTypes.includes(value)),
+        systemFields: ['family', 'enabled', 'categories'].filter(value => !conditionTypes.includes(value)),
       };
       fetch(router.generate('akeneo_identifier_generator_get_conditions', parameters), {
         method: 'GET',

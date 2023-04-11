@@ -3,7 +3,7 @@ import {Button, Field, getColor, getFontSize, Helper, Modal, TextInput} from 'ak
 import {useTranslate} from '../../../shared/translate';
 import styled from '../../../common/styled-with-theme';
 import {CustomAppCredentials} from '../../../model/Apps/custom-app-credentials';
-import {useCreateCustomApp, CustomApp} from '../../hooks/use-create-custom-app';
+import {CustomApp, useCreateCustomApp} from '../../hooks/use-create-custom-app';
 
 const Title = styled.h2`
     color: ${getColor('grey', 140)};
@@ -61,7 +61,7 @@ export const CreateCustomAppForm: FC<Props> = ({onCancel, setCredentials}) => {
                         'akeneo_connectivity.connection.connect.custom_apps.create_modal.app_information.description'
                     )}
                     <span className='cline-any cline-neutral'>&nbsp;</span>
-                    <Link href={'https://help.akeneo.com/pim/articles/manage-your-apps.html#create-a-test-app'}>
+                    <Link href={'https://api.akeneo.com/apps/create-custom-app.html'}>
                         {translate(
                             'akeneo_connectivity.connection.connect.custom_apps.create_modal.app_information.link'
                         )}

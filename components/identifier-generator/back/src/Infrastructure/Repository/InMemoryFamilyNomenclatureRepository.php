@@ -13,29 +13,28 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatu
  */
 class InMemoryFamilyNomenclatureRepository implements FamilyNomenclatureRepository
 {
-    /** @var array<string, NomenclatureDefinition> */
-    private array $nomenclatureDefinitions = [];
+    private ?NomenclatureDefinition $nomenclatureDefinition = null;
     /**
      * @var array<string, string>
      */
     private array $values = [];
 
-    public function get(string $propertyCode): ?NomenclatureDefinition
+    public function get(): ?NomenclatureDefinition
     {
-        return $this->nomenclatureDefinitions[$propertyCode] ?? null;
+        return $this->nomenclatureDefinition;
     }
 
-    public function update(string $propertyCode, NomenclatureDefinition $nomenclatureDefinition): void
+    public function update(NomenclatureDefinition $nomenclatureDefinition): void
     {
         foreach ($nomenclatureDefinition->values() as $familyCode => $value) {
             if (null === $value) {
-                unset($this->values[$familyCode]);
+                unset($this->values[\mb_strtolower($familyCode)]);
             } else {
-                $this->values[$familyCode] = $value;
+                $this->values[\mb_strtolower($familyCode)] = $value;
             }
         }
 
-        $this->nomenclatureDefinitions[$propertyCode] = new NomenclatureDefinition(
+        $this->nomenclatureDefinition = new NomenclatureDefinition(
             $nomenclatureDefinition->operator(),
             $nomenclatureDefinition->value(),
             $nomenclatureDefinition->generateIfEmpty(),

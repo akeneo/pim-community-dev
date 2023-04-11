@@ -26,6 +26,7 @@ Feature: Update Family Nomenclature
   Scenario: Can update an existing nomenclature operator
     When I update the family nomenclature operator to =, value to 3 and no generation if empty
     Then the family nomenclature operator should be =
+    And the family nomenclature generation if empty should be false
 
   Scenario: Can update an existing nomenclature value
     When I update the family nomenclature operator to <=, value to 5 and no generation if empty
@@ -35,10 +36,19 @@ Feature: Update Family Nomenclature
     When I update the family nomenclature operator to <=, value to 3 and generation if empty
     Then the family nomenclature generation if empty should be true
 
+  Scenario: Can update an existing nomenclature generation if empty
+    When I update the family nomenclature operator to <=, value to 3 and no generation if empty
+    Then the family nomenclature generation if empty should be false
+
   Scenario: Cannot update the nomenclature value
     When I update the family nomenclature operator to <=, value to 6 and no generation if empty
-    Then I should have an error 'value: This value should be less than or equal to 5.'
+    Then I should get an error with message 'value: This value should be less than or equal to 5.'
 
   Scenario: Cannot update the nomenclature operator
     When I update the family nomenclature operator to foo, value to 3 and no generation if empty
-    Then I should have an error 'operator: The value you selected is not a valid choice.'
+    Then I should get an error with message 'operator: The value you selected is not a valid choice.'
+
+  Scenario: Can update an existing value in family nomenclature ignoring family case
+    When I update Qux value for FaMilY2 family
+    Then The value for family1 should be Foo
+    And The value for family2 should be Qux

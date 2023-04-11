@@ -12,7 +12,11 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
 
-class SimpleSelectNomenclatureContext implements Context
+/**
+ * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+final class SimpleSelectNomenclatureContext implements Context
 {
     private ?ViolationsException $violations = null;
     private const DEFAULT_OPERATOR = '<=';
@@ -103,7 +107,7 @@ class SimpleSelectNomenclatureContext implements Context
             propertyCode: $attributeCode,
             operator: $operator,
             value: \intval($value),
-            generateIfEmpty: $no !== '',
+            generateIfEmpty: $no !== ' no',
         );
 
         try {

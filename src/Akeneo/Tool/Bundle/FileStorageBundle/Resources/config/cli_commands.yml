@@ -6,3 +6,11 @@ services:
         tags:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    Akeneo\Tool\Bundle\FileStorageBundle\Command\V20230324153137AddIndexOnFileInfoZddMigration:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+        public: true
