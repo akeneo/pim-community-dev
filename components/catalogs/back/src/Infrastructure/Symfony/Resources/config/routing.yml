@@ -1,6 +1,0 @@
-akeneo_catalogs_public:
-    resource: ./routing/public.yml
-    defaults: { _feature: 'catalogs' }
-
-akeneo_catalogs_internal:
-    resource: ./routing/internal.yml
