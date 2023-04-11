@@ -206,6 +206,7 @@ pim_common:
     label: Label
     label_translations: Label translations
     Label or identifier: label or identifier
+    code_or_label: code or label
     less_than: Less than
     loading: Loading...
     media_upload: Drag and drop to upload or click here

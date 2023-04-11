@@ -68,9 +68,9 @@ datagrid:
         filters:
             columns:
                 label:
-                    type: search
-                    label: label
-                    data_name: translation.label
+                    type: attribute_search
+                    label: code_or_label
+                    data_name: code_or_label
                 type:
                     type:      choice
                     data_name: a.type
