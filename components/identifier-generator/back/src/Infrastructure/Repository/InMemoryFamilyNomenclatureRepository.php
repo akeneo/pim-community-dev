@@ -28,9 +28,9 @@ class InMemoryFamilyNomenclatureRepository implements FamilyNomenclatureReposito
     {
         foreach ($nomenclatureDefinition->values() as $familyCode => $value) {
             if (null === $value) {
-                unset($this->values[$familyCode]);
+                unset($this->values[\mb_strtolower($familyCode)]);
             } else {
-                $this->values[$familyCode] = $value;
+                $this->values[\mb_strtolower($familyCode)] = $value;
             }
         }
 
