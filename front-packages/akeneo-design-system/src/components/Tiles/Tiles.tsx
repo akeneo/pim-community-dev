@@ -38,7 +38,6 @@ const TileContainer = styled.div<
     }
     return css`
       height: auto;
-      width: 100%;
     `;
   }}
   transition: border-color 0.2s, color 0.2s, background 0.2s;
