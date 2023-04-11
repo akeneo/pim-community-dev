@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.80 (2023-04-11)
+
 ## Bug fixes
 
 - PIM-10922: Update dompdf library
