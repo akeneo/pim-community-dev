@@ -1,19 +1,20 @@
+import React from 'react';
 import {SkeletonPlaceholder, Table, TextInput} from 'akeneo-design-system';
 import {Styled} from '../../components/Styled';
 import {ScopeAndLocaleSelector} from '../../components';
-import React from 'react';
-import {SimpleSelectProperty} from '../../models';
-import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {ChannelCode, getLabel, LocaleCode, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useGetAttributeByCode} from '../../hooks';
 
 type Props = {
-  simpleSelectProperty: SimpleSelectProperty;
+  attributeCode?: string;
+  locale?: LocaleCode | null;
+  scope?: ChannelCode | null;
 };
 
-const ImplicitSimpleSelectCondition: React.FC<Props> = ({simpleSelectProperty}) => {
+const ImplicitAttributeCondition: React.FC<Props> = ({attributeCode, scope, locale}) => {
   const translate = useTranslate();
-  const {data, isLoading} = useGetAttributeByCode(simpleSelectProperty.attributeCode);
-  const locale = useUserContext().get('catalogLocale');
+  const {data, isLoading} = useGetAttributeByCode(attributeCode);
+  const catalogLocale = useUserContext().get('catalogLocale');
 
   return isLoading ? (
     <Table.Row>
@@ -21,7 +22,7 @@ const ImplicitSimpleSelectCondition: React.FC<Props> = ({simpleSelectProperty}) 
     </Table.Row>
   ) : (
     <Table.Row aria-colspan={3} key={data?.code}>
-      <Styled.TitleCell>{getLabel(data?.labels || {}, locale, data?.code || '')}</Styled.TitleCell>
+      <Styled.TitleCell>{getLabel(data?.labels || {}, catalogLocale, data?.code || '')}</Styled.TitleCell>
       <Styled.SelectionInputsContainer>
         <Styled.OperatorContainer>
           <TextInput value={translate('pim_common.operators.NOT EMPTY')} readOnly={true} />
@@ -30,8 +31,8 @@ const ImplicitSimpleSelectCondition: React.FC<Props> = ({simpleSelectProperty}) 
           <ScopeAndLocaleSelector
             attributeCode={data?.code}
             readOnly={true}
-            scope={simpleSelectProperty.scope}
-            locale={simpleSelectProperty.locale}
+            scope={scope}
+            locale={locale}
           />
         )}
       </Styled.SelectionInputsContainer>
@@ -40,4 +41,4 @@ const ImplicitSimpleSelectCondition: React.FC<Props> = ({simpleSelectProperty}) 
   );
 };
 
-export {ImplicitSimpleSelectCondition};
+export {ImplicitAttributeCondition};
