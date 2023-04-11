@@ -27,10 +27,11 @@ class GetDeactivatedTemplateAttributesSqlIntegration extends CategoryTestCase
 
         $getAttributes = $this->get(GetAttribute::class);
         $attributes = $getAttributes->byTemplateUuid(TemplateUuid::fromString(self::TEMPLATE_UUID))->getAttributes();
-        $firstAttributeUuid = $attributes[0]->normalize()['uuid'];
-        $this->deactivateAttribute($firstAttributeUuid);
+        $attributeToBeDeactivated = $attributes[0]->normalize();
+        $this->deactivateAttribute($attributeToBeDeactivated['uuid']);
 
         $deactivatedAttributes = $getDeactivatedTemplateAttributes->execute();
-        $this->assertArrayHasKey($firstAttributeUuid, $deactivatedAttributes);
+        $this->assertEquals($attributeToBeDeactivated['uuid'], $deactivatedAttributes[0]['attribute_uuid']);
+        $this->assertEquals($attributeToBeDeactivated['code'], $deactivatedAttributes[0]['code']);
     }
 }
