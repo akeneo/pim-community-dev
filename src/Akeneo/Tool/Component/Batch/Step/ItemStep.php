@@ -42,7 +42,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
     protected int $batchSize;
     protected ?StepExecution $stepExecution = null;
     private bool $stoppable = false;
-    private ?JobStopper $jobStopper = null;
 
     public function __construct(
         string $name,
@@ -52,15 +51,14 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer,
         int $batchSize = 100,
-        JobStopper $jobStopper = null
+        JobStopper $jobStopper = null,
     ) {
-        parent::__construct($name, $eventDispatcher, $jobRepository);
+        parent::__construct($name, $eventDispatcher, $jobRepository, $jobStopper);
 
         $this->reader = $reader;
         $this->processor = $processor;
         $this->writer = $writer;
         $this->batchSize = $batchSize;
-        $this->jobStopper = $jobStopper;
     }
 
     public function getReader(): ?ItemReaderInterface
@@ -141,7 +139,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
                     break;
                 }
-                $paused = $this->pauseIfNeeded($stepExecution);
+                $paused = $this->pauseIfPossible($stepExecution);
                 if ($paused) {
                     break;
                 }
@@ -161,22 +159,14 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             $this->jobStopper->stop($stepExecution);
         }
 
-        $this->pauseIfNeeded($stepExecution);
+        $this->pauseIfPossible($stepExecution);
 
         $this->flushStepElements();
     }
 
-    private function pauseIfNeeded(StepExecution $stepExecution): bool
+    private function pauseIfPossible(StepExecution $stepExecution): bool
     {
         if (!$this->reader instanceof PausableItemReaderInterface || !$this->writer instanceof PausableItemWriterInterface) {
-            return false;
-        }
-
-        if (null === $this->jobStopper) {
-            return false;
-        }
-
-        if (!$this->jobStopper->isPausing($stepExecution)) {
             return false;
         }
 
@@ -184,9 +174,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             'reader' => $this->reader->getState(),
             'writer' => $this->writer->getState(),
         ];
-        $this->jobStopper->pause($stepExecution, $stepState);
-
-        return true;
+        return $this->pause($stepExecution, $stepState);
     }
 
     protected function initializeStepElements(StepExecution $stepExecution)

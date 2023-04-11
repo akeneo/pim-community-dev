@@ -41,6 +41,7 @@ class ValidatorStep extends AbstractStep
      */
     protected function doExecute(StepExecution $stepExecution)
     {
+        sleep(10);
         $this->charsetValidator->setStepExecution($stepExecution);
         $this->charsetValidator->validate();
     }

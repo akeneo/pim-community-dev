@@ -6,11 +6,14 @@ use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobInterruptedException;
 use Akeneo\Tool\Component\Batch\Job\JobPausedException;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -30,7 +33,8 @@ abstract class AbstractStep implements StepInterface
     public function __construct(
         protected string $name,
         protected EventDispatcherInterface $eventDispatcher,
-        protected JobRepositoryInterface $jobRepository
+        protected JobRepositoryInterface $jobRepository,
+        protected ?JobStopper $jobStopper = null
     ) {
     }
 
@@ -169,5 +173,21 @@ abstract class AbstractStep implements StepInterface
     private function dispatch(Event $event, $eventName): void
     {
         $this->eventDispatcher->dispatch($event, $eventName);
+    }
+
+    protected function pause(StepExecution $stepExecution,array $stepState): bool
+    {
+        if (null === $this->jobStopper) {
+            return false;
+        }
+
+        if (!$this->jobStopper->isPausing($stepExecution)) {
+            return false;
+        }
+
+        // put inside a try catch
+        $this->jobStopper->pause($stepExecution, $stepState);
+
+        return true;
     }
 }
