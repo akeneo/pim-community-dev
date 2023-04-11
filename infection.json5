@@ -1,0 +1,14 @@
+{
+    "$schema": "vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": [
+            "components/identifier-generator/back/src"
+        ]
+    },
+    "mutators": {
+        "@default": true
+    },
+    "logs": {
+        "text": "infection.log"
+    },
+}
