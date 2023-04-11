@@ -38,7 +38,7 @@ describe('ImplicitConditionsList', () => {
     });
   });
 
-  it('should add simple selects not empty when there are simple select structure properties', async () => {
+  it('should add attribute not empty when there are attribute structure properties', async () => {
     const generator: IdentifierGenerator = {
       ...initialGenerator,
       structure: [
@@ -54,6 +54,13 @@ describe('ImplicitConditionsList', () => {
           locale: 'en_US',
           process: {type: AbbreviationType.NO},
         },
+        {
+          type: PROPERTY_NAMES.REF_ENTITY,
+          attributeCode: 'designer',
+          process: {type: AbbreviationType.NO},
+          scope: 'ecommerce',
+          locale: 'en_US'
+        }
       ],
     };
     const screen = render(<ImplicitConditionsList generator={generator} />);
@@ -67,7 +74,11 @@ describe('ImplicitConditionsList', () => {
 
     expect(screen.getByText('Implicit attribute code: color')).toBeInTheDocument();
     expect(screen.getByText('Implicit attribute code: brand')).toBeInTheDocument();
-    expect(screen.getByText('ecommerce')).toBeInTheDocument();
-    expect(screen.getByText('en_US')).toBeInTheDocument();
+
+    expect(screen.getByText('Implicit attribute code: designer')).toBeInTheDocument();
+    expect(screen.getByText('Implicit attribute code: designer')).toBeInTheDocument();
+
+    expect(screen.getAllByText('ecommerce').length).toEqual(2);
+    expect(screen.getAllByText('en_US').length).toEqual(2);
   });
 });

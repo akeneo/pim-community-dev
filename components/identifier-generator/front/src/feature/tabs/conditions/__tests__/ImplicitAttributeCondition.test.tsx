@@ -1,12 +1,12 @@
 import React from 'react';
 import {render} from '../../../tests/test-utils';
-import {ImplicitSimpleSelectCondition} from '../ImplicitSimpleSelectCondition';
+import {ImplicitAttributeCondition} from '../ImplicitAttributeCondition';
 import {AbbreviationType, PROPERTY_NAMES, SimpleSelectProperty} from '../../../models';
 import {waitFor} from '@testing-library/react';
 import mockedScopes from '../../../tests/fixtures/scopes';
 
-describe('ImplicitSimpleSelectCondition', () => {
-  it('should render implicit simple select localizable and scopable', async () => {
+describe('ImplicitAttributeCondition', () => {
+  it('should render implicit attribute localizable and scopable conditions', async () => {
     mockSimpleSelectCalls({localizable: true, scopable: true});
 
     const property: SimpleSelectProperty = {
@@ -20,7 +20,7 @@ describe('ImplicitSimpleSelectCondition', () => {
     const screen = render(
       <table>
         <tbody>
-          <ImplicitSimpleSelectCondition simpleSelectProperty={property} />
+          <ImplicitAttributeCondition attributeCode={property.attributeCode} scope={property.scope} locale={property.locale} />
         </tbody>
       </table>
     );
@@ -44,7 +44,7 @@ describe('ImplicitSimpleSelectCondition', () => {
     const screen = render(
       <table>
         <tbody>
-          <ImplicitSimpleSelectCondition simpleSelectProperty={property} />
+          <ImplicitAttributeCondition attributeCode={property.attributeCode} scope={property.scope} locale={property.locale} />
         </tbody>
       </table>
     );
