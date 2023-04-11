@@ -93,7 +93,7 @@ final class UpdateFamilyNomenclatureContext implements Context
             propertyCode: 'family',
             operator: $operator,
             value: \intval($value),
-            generateIfEmpty: $no !== '',
+            generateIfEmpty: $no !== ' no',
         );
 
         try {

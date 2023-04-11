@@ -14,32 +14,34 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNome
 class InMemorySimpleSelectNomenclatureRepository implements SimpleSelectNomenclatureRepository
 {
     /** @var array<string, NomenclatureDefinition> */
-    private array $nomenclatureDefinitions = [];
-    /**
-     * @var array<string, string>
-     */
-    private array $values = [];
+    public array $nomenclatureDefinitions = [];
 
     public function get(string $attributeCode): ?NomenclatureDefinition
     {
-        return $this->nomenclatureDefinitions[$attributeCode] ?? null;
+        return $this->nomenclatureDefinitions[\mb_strtolower($attributeCode)] ?? null;
     }
 
     public function update(string $attributeCode, NomenclatureDefinition $nomenclatureDefinition): void
     {
+        if (\array_key_exists(\mb_strtolower($attributeCode), $this->nomenclatureDefinitions)) {
+            $values = $this->nomenclatureDefinitions[\mb_strtolower($attributeCode)]->values();
+        } else {
+            $values = [];
+        }
+
         foreach ($nomenclatureDefinition->values() as $attributeOptionCode => $value) {
             if (null === $value) {
-                unset($this->values[$attributeOptionCode]);
+                unset($values[\mb_strtolower($attributeOptionCode)]);
             } else {
-                $this->values[$attributeOptionCode] = $value;
+                $values[\mb_strtolower($attributeOptionCode)] = $value;
             }
         }
 
-        $this->nomenclatureDefinitions[$attributeCode] = new NomenclatureDefinition(
+        $this->nomenclatureDefinitions[\mb_strtolower($attributeCode)] = new NomenclatureDefinition(
             $nomenclatureDefinition->operator(),
             $nomenclatureDefinition->value(),
             $nomenclatureDefinition->generateIfEmpty(),
-            $this->values
+            $values
         );
     }
 }

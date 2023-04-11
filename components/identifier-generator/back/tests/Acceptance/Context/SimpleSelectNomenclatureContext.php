@@ -107,7 +107,7 @@ final class SimpleSelectNomenclatureContext implements Context
             propertyCode: $attributeCode,
             operator: $operator,
             value: \intval($value),
-            generateIfEmpty: $no !== '',
+            generateIfEmpty: $no !== ' no',
         );
 
         try {

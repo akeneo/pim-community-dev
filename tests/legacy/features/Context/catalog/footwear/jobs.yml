@@ -360,6 +360,16 @@ jobs:
         alias:     delete_products_and_product_models
         label:     Mass delete products
         type:      mass_delete
+    delete_attributes:
+        connector: Akeneo Mass Edit Connector
+        alias: delete_attributes
+        label: Bulk delete attributes
+        type: attribute_mass_delete
+    delete_attribute_groups:
+        connector: Akeneo Mass Edit Connector
+        alias: delete_attribute_groups
+        label: Bulk delete attribute groups
+        type: attribute_group_mass_delete
     csv_product_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_quick_export

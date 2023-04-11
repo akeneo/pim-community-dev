@@ -820,7 +820,7 @@ services:
     pim_connector.tasklet.clean_attribute.clean_product:
         class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\CleanProductTasklet'
         arguments:
-            - '@akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.get_product_uuids_with_removed_attribute'
             - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
             - '@pim_catalog.product_values.remove_values_from_products'
             - '@akeneo_batch.job_repository'

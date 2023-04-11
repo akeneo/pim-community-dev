@@ -16,6 +16,7 @@ const Message = styled.div`
     color: ${getColor('grey140')};
     font-size: ${getFontSize('title')};
     margin: 11px 0 20px;
+    line-height: 40px;
 `;
 
 const Empty: FC = () => {

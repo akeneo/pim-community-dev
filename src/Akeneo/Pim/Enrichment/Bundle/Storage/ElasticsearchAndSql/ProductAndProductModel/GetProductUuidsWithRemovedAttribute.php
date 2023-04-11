@@ -4,10 +4,10 @@ namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndPro
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductIdentifiersWithRemovedAttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductUuidsWithRemovedAttributeInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
-final class GetProductIdentifiersWithRemovedAttribute implements GetProductIdentifiersWithRemovedAttributeInterface
+final class GetProductUuidsWithRemovedAttribute implements GetProductUuidsWithRemovedAttributeInterface
 {
     private SearchQueryBuilder $searchQueryBuilder;
 
@@ -31,18 +31,18 @@ final class GetProductIdentifiersWithRemovedAttribute implements GetProductIdent
         ]);
 
         $this->searchQueryBuilder->addSort([
-            'identifier' => 'asc',
+            'id' => 'asc',
         ]);
 
-        $body = array_merge(['size' => $batchSize, '_source' => ['identifier']], $this->searchQueryBuilder->getQuery());
+        $body = array_merge(['size' => $batchSize, '_source' => ['id']], $this->searchQueryBuilder->getQuery());
 
         $rows = $this->elasticsearchClient->search($body);
 
         while (!empty($rows['hits']['hits'])) {
-            $identifiers = array_map(function (array $product) {
-                return $product['_source']['identifier'];
+            $uuids = array_map(function (array $product) {
+                return \str_replace('product_', '', $product['_source']['id']);
             }, $rows['hits']['hits']);
-            yield $identifiers;
+            yield $uuids;
             $body['search_after'] = end($rows['hits']['hits'])['sort'];
             $rows = $this->elasticsearchClient->search($body);
         }

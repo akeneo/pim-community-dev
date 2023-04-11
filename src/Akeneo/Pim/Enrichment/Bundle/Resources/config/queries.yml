@@ -417,8 +417,8 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
 
-    akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute:
-        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductIdentifiersWithRemovedAttribute
+    akeneo.pim.enrichment.product.query.get_product_uuids_with_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductUuidsWithRemovedAttribute
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
 
