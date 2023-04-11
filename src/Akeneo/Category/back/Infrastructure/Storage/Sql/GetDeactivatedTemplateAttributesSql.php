@@ -22,10 +22,10 @@ class GetDeactivatedTemplateAttributesSql implements GetDeactivatedTemplateAttri
     public function execute(): array
     {
         $sql = <<<SQL
-            SELECT BIN_TO_UUID(uuid) AS attribute_uuid
+            SELECT BIN_TO_UUID(uuid) AS attribute_uuid, code
             FROM pim_catalog_category_attribute
             WHERE is_deactivated = 1
         SQL;
-        return $this->connection->executeQuery($sql)->fetchAllAssociativeIndexed();
+        return $this->connection->executeQuery($sql)->fetchAllAssociative();
     }
 }
