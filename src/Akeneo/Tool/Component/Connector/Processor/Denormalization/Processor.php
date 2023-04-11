@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -135,6 +136,11 @@ class Processor extends AbstractProcessor implements ItemProcessorInterface, Ste
      */
     protected function saveProcessedItemInStepExecutionContext(string $itemIdentifier, $processedItem)
     {
+        // We need to persist the execution context and restore it at job resume
+        if (null === $this->stepExecution->getExecutionContext()) {
+            $this->stepExecution->setExecutionContext(new ExecutionContext());
+        }
+
         $executionContext = $this->stepExecution->getExecutionContext();
         $processedItemsBatch = $executionContext->get('processed_items_batch') ?? [];
         $processedItemsBatch[$itemIdentifier] = $processedItem;
