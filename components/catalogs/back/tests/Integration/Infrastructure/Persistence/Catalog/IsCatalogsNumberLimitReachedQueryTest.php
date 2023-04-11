@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
 class IsCatalogsNumberLimitReachedQueryTest extends IntegrationTestCase
 {
     private ?IsCatalogsNumberLimitReachedQuery $query;
-    private int $catalogsNumberMaxLimit;
+    private ?int $catalogsNumberMaxLimit;
 
     protected function setUp(): void
     {
