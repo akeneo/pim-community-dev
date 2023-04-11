@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {getColor, getFontSize, Link, ProductsIllustration} from 'akeneo-design-system';
+import {getColor, getFontSize, ProductsIllustration} from 'akeneo-design-system';
 import styled from 'styled-components';
 
 const EmptyContainer = styled.div`
@@ -15,7 +15,9 @@ const Illustration = styled.div`
 const Message = styled.div`
     color: ${getColor('grey140')};
     font-size: ${getFontSize('title')};
-    margin: 11px 0 20px;
+    margin: 11px auto 20px;
+    line-height: 40px;
+    max-width: 700px;
 `;
 
 const Empty: FC = () => {
@@ -27,7 +29,6 @@ const Empty: FC = () => {
                 <ProductsIllustration />
             </Illustration>
             <Message>{translate('akeneo_catalogs.catalog_list.empty')}</Message>
-            <Link href='#'>{translate('akeneo_catalogs.catalog_list.more_information')}</Link>
         </EmptyContainer>
     );
 };

@@ -9,8 +9,7 @@ akeneo_catalogs:
         status: Status
         enabled: enabled
         disabled: disabled
-        empty: There is no catalog
-        more_information: Check out our Help center for more information.
+        empty: Please check the app page on the Akeneo App Store to know if it manages our catalogs feature.
     catalog_edit:
         tabs:
             settings: Catalog settings

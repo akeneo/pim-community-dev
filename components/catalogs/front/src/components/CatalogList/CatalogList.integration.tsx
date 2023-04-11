@@ -69,3 +69,17 @@ test('it calls the callback when a catalog is clicked', async () => {
     fireEvent.click(await screen.findByText('Store US'));
     expect(handleClick).toHaveBeenCalledWith('123e4567-e89b-12d3-a456-426614174000');
 });
+
+test('it renders a message when there is no catalogs', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify([]));
+
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <ReactQueryWrapper>
+                <CatalogList owner={'shopifi'} onCatalogClick={jest.fn()} />
+            </ReactQueryWrapper>
+        </ThemeProvider>
+    );
+
+    expect(await screen.findByText('akeneo_catalogs.catalog_list.empty')).toBeInTheDocument();
+});
