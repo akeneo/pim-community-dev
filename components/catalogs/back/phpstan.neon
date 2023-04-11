@@ -1,4 +1,0 @@
-parameters:
-  treatPhpDocTypesAsCertain: false
-  excludePaths:
-    - src/Infrastructure/TemporaryEnrichmentBridge/SearchAfterSizeUuidResultCursorFactory.php
