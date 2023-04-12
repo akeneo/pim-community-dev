@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {
   Button,
-  DeleteIcon,
   DeleteIllustration,
   Helper,
   Modal,
   ProgressIndicator,
   Tile,
   Tiles,
+  Tooltip,
   getColor,
   useProgress,
 } from 'akeneo-design-system';
@@ -57,28 +57,24 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
           <Modal.Title>{translate('pim_system.reset_pim.modal.steps.impact.title')}</Modal.Title>
           <Section>
             {translate('pim_system.reset_pim.modal.steps.impact.text')}
-            <Tiles>
-              <Tile
-                title={translate('pim_system.reset_pim.modal.steps.impact.users.tooltip')}
-                selected={true}
-                // TODO remove icon and set inline
-                icon={<DeleteIcon />}
-              >
+            <Tiles inline={true}>
+              <Tile selected={true}>
                 {translate('pim_system.reset_pim.modal.steps.impact.users.name')}
+                <Tooltip direction="bottom">
+                  {translate('pim_system.reset_pim.modal.steps.impact.users.tooltip')}
+                </Tooltip>
               </Tile>
-              <Tile
-                title={translate('pim_system.reset_pim.modal.steps.impact.user_groups.tooltip')}
-                selected={true}
-                icon={<DeleteIcon />}
-              >
+              <Tile selected={true}>
                 {translate('pim_system.reset_pim.modal.steps.impact.user_groups.name')}
+                <Tooltip direction="bottom">
+                  {translate('pim_system.reset_pim.modal.steps.impact.user_groups.tooltip')}
+                </Tooltip>
               </Tile>
-              <Tile
-                title={translate('pim_system.reset_pim.modal.steps.impact.roles.tooltip')}
-                selected={true}
-                icon={<DeleteIcon />}
-              >
+              <Tile selected={true}>
                 {translate('pim_system.reset_pim.modal.steps.impact.roles.name')}
+                <Tooltip direction="bottom">
+                  {translate('pim_system.reset_pim.modal.steps.impact.roles.tooltip')}
+                </Tooltip>
               </Tile>
             </Tiles>
           </Section>
