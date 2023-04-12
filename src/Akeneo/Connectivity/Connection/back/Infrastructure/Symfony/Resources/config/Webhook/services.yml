@@ -23,6 +23,8 @@ services:
             -
                 concurrency: '%webhook_concurrency%'
                 timeout: '%webhook_timeout%'
+            - '@pim_catalog.version_provider'
+            - '%env(default::PFID)%'
 
     Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder:
         arguments:
@@ -57,6 +59,8 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.webhook.guzzle_client'
             - '@validator'
+            - '@pim_catalog.version_provider'
+            - '%env(default::PFID)%'
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\GenerateSecret: ~
 

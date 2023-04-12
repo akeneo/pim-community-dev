@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Validation\ExternalUrl;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -30,14 +31,12 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
     const CONNECTION_FAILED = 'Failed to connect to server';
     private const PROHIBITED_REDIRECTION = 'Server response contains a redirection. This is not allowed.';
 
-    private ClientInterface $client;
-
-    private ValidatorInterface $validator;
-
-    public function __construct(ClientInterface $client, ValidatorInterface $validator)
-    {
-        $this->client = $client;
-        $this->validator = $validator;
+    public function __construct(
+        private readonly ClientInterface $client,
+        private readonly ValidatorInterface $validator,
+        private readonly VersionProviderInterface $versionProvider,
+        private readonly string | null $pfid,
+    ) {
     }
 
     public function check(string $url, string $secret): UrlReachabilityStatus
@@ -57,11 +56,16 @@ class WebhookReachabilityChecker implements UrlReachabilityCheckerInterface
 
         $timestamp = \time();
         $signature = Signature::createSignature($secret, $timestamp);
+        $userAgent = 'AkeneoPIM/' . $this->versionProvider->getVersion();
+        if (null !== $this->pfid) {
+            $userAgent .= ' '.$this->pfid;
+        }
 
         $headers = [
             'Content-Type' => 'application/json',
             RequestHeaders::HEADER_REQUEST_SIGNATURE => $signature,
             RequestHeaders::HEADER_REQUEST_TIMESTAMP => $timestamp,
+            RequestHeaders::HEADER_REQUEST_USERAGENT => $userAgent,
         ];
 
         try {
