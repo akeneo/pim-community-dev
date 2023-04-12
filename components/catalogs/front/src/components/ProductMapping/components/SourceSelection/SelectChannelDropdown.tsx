@@ -6,6 +6,13 @@ import {useUniqueEntitiesByCode} from '../../../../hooks/useUniqueEntitiesByCode
 import {Channel} from '../../../../models/Channel';
 import {useChannel} from '../../../../hooks/useChannel';
 import {Source} from '../../models/Source';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+`;
 
 type Props = {
     source: Source;
@@ -20,7 +27,7 @@ export const SelectChannelDropdown: FC<Props> = ({source, onChange, error}) => {
     const channels = useUniqueEntitiesByCode<Channel>(selected ? [selected] : [], results);
 
     return (
-        <>
+        <Wrapper>
             <SelectInput
                 value={source.scope}
                 onChange={newChannel => onChange({...source, scope: newChannel, locale: null})}
@@ -43,6 +50,6 @@ export const SelectChannelDropdown: FC<Props> = ({source, onChange, error}) => {
                     {error}
                 </Helper>
             )}
-        </>
+        </Wrapper>
     );
 };

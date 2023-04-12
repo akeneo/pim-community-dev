@@ -11,7 +11,10 @@ import {ArrowIcon, getColor} from 'akeneo-design-system';
 import styled from 'styled-components';
 
 const Bullet = styled(ArrowIcon)`
+    margin-top: 10px;
     color: ${getColor('grey', 100)};
+    width: 22px;
+    height: 22px;
 `;
 
 const BulletLine = styled.div`
@@ -22,7 +25,7 @@ const BulletLine = styled.div`
     margin-top: 5px;
     padding-left: 10px;
     max-width: 460px;
-    align-items: center;
+    align-items: flex-start;
 `;
 
 type Props = {

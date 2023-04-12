@@ -6,6 +6,13 @@ import {Source} from '../../models/Source';
 import {useInfiniteLocales} from '../../../../hooks/useInfiniteLocales';
 import {useLocalesByCodes} from '../../../../hooks/useLocalesByCodes';
 import {Locale} from '../../../../models/Locale';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+`;
 
 type Props = {
     source: Source;
@@ -20,7 +27,7 @@ export const SelectLocaleDropdown: FC<Props> = ({source, onChange, error}) => {
     const locales = useUniqueEntitiesByCode<Locale>(selected, results);
 
     return (
-        <>
+        <Wrapper>
             <SelectInput
                 value={source.locale}
                 onChange={newLocale => onChange({...source, locale: newLocale})}
@@ -43,6 +50,6 @@ export const SelectLocaleDropdown: FC<Props> = ({source, onChange, error}) => {
                     {error}
                 </Helper>
             )}
-        </>
+        </Wrapper>
     );
 };

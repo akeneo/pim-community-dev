@@ -3,6 +3,13 @@ import {Helper, Locale, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Source} from '../../models/Source';
 import {useChannelLocales} from '../../../../hooks/useChannelLocales';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+`;
 
 type Props = {
     source: Source;
@@ -16,7 +23,7 @@ export const SelectChannelLocaleDropdown: FC<Props> = ({source, onChange, error,
     const {data: locales} = useChannelLocales(source.scope);
 
     return (
-        <>
+        <Wrapper>
             <SelectInput
                 value={source.locale}
                 onChange={newLocale => onChange({...source, locale: newLocale})}
@@ -39,6 +46,6 @@ export const SelectChannelLocaleDropdown: FC<Props> = ({source, onChange, error,
                     {error}
                 </Helper>
             )}
-        </>
+        </Wrapper>
     );
 };
