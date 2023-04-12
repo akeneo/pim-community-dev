@@ -257,4 +257,14 @@ SQL;
 SQL;
         $this->jobManager->getConnection()->executeQuery($sqlQuery, ['step_execution_id' => $stepExecutionId, 'step' => $step]);
     }
+
+    public function getPausedJobExecutionIds(): array
+    {
+        $sql = <<<SQL
+            SELECT id FROM akeneo_batch_job_execution
+            WHERE exit_code = 'PAUSED';
+        SQL;
+
+        return $this->jobManager->getConnection()->executeQuery($sql)->fetchAllAssociative();
+    }
 }

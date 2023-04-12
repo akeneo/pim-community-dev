@@ -68,6 +68,7 @@ framework:
             'Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage': ui_job
             'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': import_export_job
             'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': import_export_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\PausedJobExecutionMessage': job_to_resume
             'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage': data_maintenance_job
             'Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessage': scheduled_job
             'Akeneo\Tool\Component\BatchQueue\Queue\JobToResumeMessage': job_to_resume
