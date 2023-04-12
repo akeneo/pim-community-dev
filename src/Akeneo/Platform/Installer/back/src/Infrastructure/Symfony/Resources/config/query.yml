@@ -1,0 +1,5 @@
+services:
+
+  Akeneo\Platform\Installer\Infrastructure\Query\Elasticsearch\ResetIndexes:
+    arguments:
+      - '@akeneo_elasticsearch.registry.clients'
