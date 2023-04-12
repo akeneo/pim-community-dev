@@ -457,6 +457,7 @@ class JobExecution
 
         return $this;
     }
+
     /**
      * Get failure exceptions
      * @return mixed

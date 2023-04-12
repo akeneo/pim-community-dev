@@ -2,44 +2,64 @@ framework:
     messenger:
         transports:
             webhook:
-                dsn: doctrine://default
+                dsn: 'gps:'
                 options:
-                    table_name: messenger_messages
-                    queue_name: default
-                    redeliver_timeout: 3600
-                    auto_setup: false
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_WEBHOOK)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
                 serializer: pim_enrich.messenger.serializer.business_event
             ui_job:
-                dsn: doctrine://default
+                dsn: 'gps:'
                 options:
-                    table_name: messenger_messages
-                    queue_name: ui_job
-                    redeliver_timeout: 86400
-                    auto_setup: false
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_UI)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
                 serializer: akeneo_batch_queue.messenger.serializer
             import_export_job:
-                dsn: doctrine://default
+                dsn: 'gps:'
                 options:
-                    table_name: messenger_messages
-                    queue_name: import_export_job
-                    redeliver_timeout: 86400
-                    auto_setup: false
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
                 serializer: akeneo_batch_queue.messenger.serializer
             data_maintenance_job:
-                dsn: doctrine://default
+                dsn: 'gps:'
                 options:
-                    table_name: messenger_messages
-                    queue_name: data_maintenance_job
-                    redeliver_timeout: 86400
-                    auto_setup: false
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
                 serializer: akeneo_batch_queue.messenger.serializer
             scheduled_job:
-                dsn: doctrine://default
+                dsn: 'gps:'
                 options:
-                    table_name: messenger_messages
-                    queue_name: scheduled_job
-                    redeliver_timeout: 86400
-                    auto_setup: false
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_SCHEDULED_JOB)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_SCHEDULED_JOB)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
+                serializer: akeneo_batch_queue.messenger.serializer
+            job_to_resume:
+                dsn: 'gps:'
+                options:
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_JOB_TO_RESUME)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_JOB_TO_RESUME)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
                 serializer: akeneo_batch_queue.messenger.serializer
 
         routing:
@@ -50,3 +70,4 @@ framework:
             'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': import_export_job
             'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage': data_maintenance_job
             'Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessage': scheduled_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\JobToResumeMessage': job_to_resume
