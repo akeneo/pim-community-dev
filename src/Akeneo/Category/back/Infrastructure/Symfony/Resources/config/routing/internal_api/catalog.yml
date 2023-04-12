@@ -1,0 +1,5 @@
+pim_catalog_activated_locales:
+  path: /rest/catalog/activated_locales
+  defaults:
+    _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetActivatedLocalesController
+  methods: [GET]

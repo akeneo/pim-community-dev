@@ -26,3 +26,8 @@ pim_category_template_edit:
     requirements:
         treeId: \d+
         templateUuid: '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
+
+# Other Bounded Contexts
+pim_catalog_activated_locales:
+    resource: '@AkeneoCategoryBundle/Resources/config/routing/internal_api/catalog.yml'
+    prefix: /category
