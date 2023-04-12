@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 final class GetCatalogIdsUsingLocalesInMappingQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogIdsUsingLocalesInMappingQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetCatalogIdsUsingLocalesInMappingQuery::class);
     }
 
     /**
@@ -55,7 +51,7 @@ final class GetCatalogIdsUsingLocalesInMappingQueryTest extends IntegrationTestC
             ownerUsername: 'shopifi',
         );
 
-        $resultBothCatalogs = $this->query->execute($localesQueried);
+        $resultBothCatalogs = self::getContainer()->get(GetCatalogIdsUsingLocalesInMappingQuery::class)->execute($localesQueried);
         $this->assertEquals($expectedCatalogs, $resultBothCatalogs);
     }
 

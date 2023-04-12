@@ -17,15 +17,11 @@ use PHPUnit\Framework\Assert;
  */
 class DeleteProductMappingSchemaQueryTest extends IntegrationTestCase
 {
-    private ?DeleteProductMappingSchemaQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(DeleteProductMappingSchemaQuery::class);
     }
 
     public function testItDeletesProductMappingSchema(): void
@@ -38,7 +34,7 @@ class DeleteProductMappingSchemaQueryTest extends IntegrationTestCase
             productMappingSchema: $this->getValidSchemaData(),
         );
 
-        $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        self::getContainer()->get(DeleteProductMappingSchemaQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $queryExistsProductMappingSchema = self::getContainer()->get(ExistsProductMappingSchemaQuery::class);
         Assert::assertFalse($queryExistsProductMappingSchema->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c'));

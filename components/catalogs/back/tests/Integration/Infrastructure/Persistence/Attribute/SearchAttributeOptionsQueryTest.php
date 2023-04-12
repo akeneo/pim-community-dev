@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class SearchAttributeOptionsQueryTest extends IntegrationTestCase
 {
-    private ?SearchAttributeOptionsQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(SearchAttributeOptionsQuery::class);
     }
 
     public function testItReturnsPaginatedAttributeOptions(): void
@@ -34,7 +30,7 @@ class SearchAttributeOptionsQueryTest extends IntegrationTestCase
             'options' => ['XS', 'S', 'M', 'L', 'XL'],
         ]);
 
-        $result = $this->query->execute('clothing_size', 'en_US', search: null, page: 1, limit: 2);
+        $result = self::getContainer()->get(SearchAttributeOptionsQuery::class)->execute('clothing_size', 'en_US', search: null, page: 1, limit: 2);
         $this->assertEquals([
             [
                 'code' => 'xs',
@@ -46,7 +42,7 @@ class SearchAttributeOptionsQueryTest extends IntegrationTestCase
             ],
         ], $result);
 
-        $result = $this->query->execute('clothing_size', 'en_US', search: null, page: 2, limit: 2);
+        $result = self::getContainer()->get(SearchAttributeOptionsQuery::class)->execute('clothing_size', 'en_US', search: null, page: 2, limit: 2);
         $this->assertEquals([
             [
                 'code' => 'm',
@@ -67,7 +63,7 @@ class SearchAttributeOptionsQueryTest extends IntegrationTestCase
             'options' => ['XS', 'S', 'M', 'L', 'XL'],
         ]);
 
-        $result = $this->query->execute('clothing_size', 'en_US', search: 'X');
+        $result = self::getContainer()->get(SearchAttributeOptionsQuery::class)->execute('clothing_size', 'en_US', search: 'X');
         $this->assertEquals([
             [
                 'code' => 'xs',
@@ -88,7 +84,7 @@ class SearchAttributeOptionsQueryTest extends IntegrationTestCase
             'options' => ['XS', 'S', 'M', 'L', 'XL'],
         ]);
 
-        $result = $this->query->execute('clothing_size', 'jp_JP', search: null, page: 1, limit: 1);
+        $result = self::getContainer()->get(SearchAttributeOptionsQuery::class)->execute('clothing_size', 'jp_JP', search: null, page: 1, limit: 1);
         $this->assertEquals([
             [
                 'code' => 'xs',

@@ -16,15 +16,11 @@ use PHPUnit\Framework\Assert;
  */
 class ExistsProductMappingSchemaQueryTest extends IntegrationTestCase
 {
-    private ?ExistsProductMappingSchemaQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(ExistsProductMappingSchemaQuery::class);
     }
 
     public function testProductMappingSchemaExists(): void
@@ -37,7 +33,7 @@ class ExistsProductMappingSchemaQueryTest extends IntegrationTestCase
             productMappingSchema: $this->getValidSchemaData(),
         );
 
-        Assert::assertTrue($this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
+        Assert::assertTrue(self::getContainer()->get(ExistsProductMappingSchemaQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
     }
 
     public function testProductMappingSchemaDoesNotExistsForExistingCatalog(): void
@@ -49,12 +45,12 @@ class ExistsProductMappingSchemaQueryTest extends IntegrationTestCase
             ownerUsername: 'test',
         );
 
-        Assert::assertFalse($this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
+        Assert::assertFalse(self::getContainer()->get(ExistsProductMappingSchemaQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
     }
 
     public function testProductMappingSchemaDoesNotExistsForUnexistingCatalog(): void
     {
-        Assert::assertFalse($this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
+        Assert::assertFalse(self::getContainer()->get(ExistsProductMappingSchemaQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
     }
 
     private function getValidSchemaData(): string

@@ -17,15 +17,11 @@ use PHPUnit\Framework\Assert;
  */
 class GetProductMappingSchemaQueryTest extends IntegrationTestCase
 {
-    private ?GetProductMappingSchemaQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetProductMappingSchemaQuery::class);
     }
 
     public function testItGetsProductMappingSchema(): void
@@ -38,7 +34,7 @@ class GetProductMappingSchemaQueryTest extends IntegrationTestCase
             productMappingSchema: $this->getValidSchemaData(),
         );
 
-        $schema = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $schema = self::getContainer()->get(GetProductMappingSchemaQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $expectedSchema = \json_decode($this->getValidSchemaData(), true, 512, JSON_THROW_ON_ERROR);
 
@@ -49,7 +45,7 @@ class GetProductMappingSchemaQueryTest extends IntegrationTestCase
     {
         $this->expectException(ProductMappingSchemaNotFoundException::class);
 
-        $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        self::getContainer()->get(GetProductMappingSchemaQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
     }
 
     private function getValidSchemaData(): string

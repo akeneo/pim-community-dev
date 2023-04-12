@@ -15,13 +15,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EnabledCriterionTest extends AbstractSystemCriterionTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -29,7 +25,7 @@ class EnabledCriterionTest extends AbstractSystemCriterionTest
      */
     public function testItReturnsNoViolation(array $criterion): void
     {
-        $violations = $this->validator->validate($criterion, new EnabledCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new EnabledCriterion());
 
         $this->assertEmpty($violations);
     }
@@ -59,7 +55,7 @@ class EnabledCriterionTest extends AbstractSystemCriterionTest
      */
     public function testItReturnsViolationsWhenInvalid(array $criterion, string $expectedMessage): void
     {
-        $violations = $this->validator->validate($criterion, new EnabledCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new EnabledCriterion());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

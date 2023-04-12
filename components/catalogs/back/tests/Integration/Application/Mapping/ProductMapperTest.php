@@ -16,15 +16,11 @@ use Ramsey\Uuid\Uuid;
  */
 class ProductMapperTest extends IntegrationTestCase
 {
-    private ?ProductMapper $productMapper;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->productMapper = self::getContainer()->get(ProductMapper::class);
     }
 
     public function testItMapsProducts(): void
@@ -67,7 +63,7 @@ class ProductMapperTest extends IntegrationTestCase
             ],
         ];
 
-        $mappedProduct = $this->productMapper->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
+        $mappedProduct = self::getContainer()->get(ProductMapper::class)->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
 
         $expected = [
             'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
@@ -117,7 +113,7 @@ class ProductMapperTest extends IntegrationTestCase
             ],
         ];
 
-        $mappedProduct = $this->productMapper->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
+        $mappedProduct = self::getContainer()->get(ProductMapper::class)->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
 
         $expected = [
             'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
@@ -153,7 +149,7 @@ class ProductMapperTest extends IntegrationTestCase
             ],
         ];
 
-        $mappedProduct = $this->productMapper->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
+        $mappedProduct = self::getContainer()->get(ProductMapper::class)->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
 
         $expected = [
             'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
@@ -203,7 +199,7 @@ class ProductMapperTest extends IntegrationTestCase
             ],
         ];
 
-        $mappedProduct = $this->productMapper->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
+        $mappedProduct = self::getContainer()->get(ProductMapper::class)->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
 
         $expected = [
             'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',
@@ -248,7 +244,7 @@ class ProductMapperTest extends IntegrationTestCase
             ],
         ];
 
-        $mappedProduct = $this->productMapper->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
+        $mappedProduct = self::getContainer()->get(ProductMapper::class)->getMappedProduct($product, $this->getProductMappingSchema(), $mapping);
 
         $expected = [
             'uuid' => '8985de43-08bc-484d-aee0-4489a56ba02d',

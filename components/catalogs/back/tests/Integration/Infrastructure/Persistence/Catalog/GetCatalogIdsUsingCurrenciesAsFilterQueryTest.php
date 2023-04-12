@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 final class GetCatalogIdsUsingCurrenciesAsFilterQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogIdsUsingCurrenciesAsFilterQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetCatalogIdsUsingCurrenciesAsFilterQuery::class);
     }
 
     /**
@@ -55,7 +51,7 @@ final class GetCatalogIdsUsingCurrenciesAsFilterQueryTest extends IntegrationTes
             ownerUsername: 'shopifi',
         );
 
-        $resultBothCatalogs = $this->query->execute($currenciesQueried);
+        $resultBothCatalogs = self::getContainer()->get(GetCatalogIdsUsingCurrenciesAsFilterQuery::class)->execute($currenciesQueried);
         $this->assertEquals($expectedCatalogs, $resultBothCatalogs);
     }
 

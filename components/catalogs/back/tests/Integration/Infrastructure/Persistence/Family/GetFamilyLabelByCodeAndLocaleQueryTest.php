@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetFamilyLabelByCodeAndLocaleQueryTest extends IntegrationTestCase
 {
-    private ?GetFamilyLabelByCodeAndLocaleQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetFamilyLabelByCodeAndLocaleQuery::class);
     }
 
     public function testItReturnsFamilyLabel(): void
@@ -33,15 +29,15 @@ class GetFamilyLabelByCodeAndLocaleQueryTest extends IntegrationTestCase
             'en_US' => 'Shoes',
         ]]);
 
-        $result = $this->query->execute('shoes', 'en_US');
+        $result = self::getContainer()->get(GetFamilyLabelByCodeAndLocaleQuery::class)->execute('shoes', 'en_US');
         $this->assertEquals('Shoes', $result);
-        $result = $this->query->execute('shoes', 'fr_FR');
+        $result = self::getContainer()->get(GetFamilyLabelByCodeAndLocaleQuery::class)->execute('shoes', 'fr_FR');
         $this->assertEquals('Chaussures', $result);
     }
 
     public function testItReturnsFamilyCodeWhenFamilyIsNotFound(): void
     {
-        $result = $this->query->execute('shoes', 'en_US');
+        $result = self::getContainer()->get(GetFamilyLabelByCodeAndLocaleQuery::class)->execute('shoes', 'en_US');
         $this->assertEquals('[shoes]', $result);
     }
 
@@ -51,7 +47,7 @@ class GetFamilyLabelByCodeAndLocaleQueryTest extends IntegrationTestCase
             'fr_FR' => 'Chaussures',
         ]]);
 
-        $result = $this->query->execute('shoes', 'en_US');
+        $result = self::getContainer()->get(GetFamilyLabelByCodeAndLocaleQuery::class)->execute('shoes', 'en_US');
         $this->assertEquals('[shoes]', $result);
     }
 }

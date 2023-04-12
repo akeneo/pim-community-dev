@@ -20,9 +20,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
  */
 class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogQueryInterface $getCatalogQuery;
-    private ?GetProductsWithFilteredValuesQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,9 +27,6 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->getCatalogQuery = self::getContainer()->get(GetCatalogQueryInterface::class);
-        $this->query = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class);
     }
 
     public function testItReturnsProductsMatchingTheCatalog(): void
@@ -59,9 +53,9 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(false)]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 10);
+        $result = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class)->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -151,9 +145,9 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(false)]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 10);
+        $result = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class)->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -254,9 +248,9 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
             new SetTextValue('name', 'print', 'en_US', 'Indigo'),
         ]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 10);
+        $result = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class)->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -347,9 +341,9 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
             new SetTextValue('name', 'print', 'de_DE', 'Blau'),
         ]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 10);
+        $result = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class)->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -446,9 +440,9 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
             ]),
         ]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 10);
+        $result = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class)->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -564,9 +558,9 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
             ]),
         ]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 10);
+        $result = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class)->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -650,9 +644,9 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(true)]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00');
+        $result = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class)->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
             [
@@ -724,9 +718,9 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(true)]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 100, null, '2022-09-01T17:35:00+02:00');
+        $result = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class)->execute($catalog, null, 100, null, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
             [
@@ -798,9 +792,9 @@ class GetProductsWithFilteredValuesQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(true)]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
+        $result = self::getContainer()->get(GetProductsWithFilteredValuesQuery::class)->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
 
         $this->assertEquals([
             [

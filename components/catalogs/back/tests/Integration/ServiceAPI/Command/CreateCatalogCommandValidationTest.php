@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateCatalogCommandValidationTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
     private IsCatalogsNumberLimitReachedQueryInterface&MockObject $isCatalogsNumberLimitReachedQuery;
 
     protected function setUp(): void
@@ -30,8 +29,6 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
             MaxNumberOfCatalogsPerUserValidator::class,
             new MaxNumberOfCatalogsPerUserValidator($this->isCatalogsNumberLimitReachedQuery),
         );
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -39,7 +36,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
      */
     public function testItValidatesTheCommand(CreateCatalogCommand $command, string $error): void
     {
-        $violations = $this->validator->validate($command);
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($command);
 
         $this->assertViolationsListContains($violations, $error);
     }

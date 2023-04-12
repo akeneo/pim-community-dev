@@ -13,13 +13,9 @@ use PHPUnit\Framework\Assert;
  */
 class GetFamiliesActionTest extends IntegrationTestCase
 {
-    private ?Connection $connection;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->connection = self::getContainer()->get(Connection::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -97,7 +93,7 @@ class GetFamiliesActionTest extends IntegrationTestCase
     private function insertFamilies(array $codes): void
     {
         foreach ($codes as $code) {
-            $this->connection->insert(
+            self::getContainer()->get(Connection::class)->insert(
                 'pim_catalog_family',
                 ['code' => $code, 'created' => '2022-06-27 16:38:45', 'updated' => '2022-06-27 16:38:45'],
             );

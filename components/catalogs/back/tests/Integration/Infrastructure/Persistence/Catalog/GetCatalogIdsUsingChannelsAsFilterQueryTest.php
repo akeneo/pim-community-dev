@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 final class GetCatalogIdsUsingChannelsAsFilterQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogIdsUsingChannelsAsFilterQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetCatalogIdsUsingChannelsAsFilterQuery::class);
     }
 
     /**
@@ -55,7 +51,7 @@ final class GetCatalogIdsUsingChannelsAsFilterQueryTest extends IntegrationTestC
             ownerUsername: 'shopifi',
         );
 
-        $resultBothCatalogs = $this->query->execute($channelsQueried);
+        $resultBothCatalogs = self::getContainer()->get(GetCatalogIdsUsingChannelsAsFilterQuery::class)->execute($channelsQueried);
         $this->assertEquals($expectedCatalogs, $resultBothCatalogs);
     }
 

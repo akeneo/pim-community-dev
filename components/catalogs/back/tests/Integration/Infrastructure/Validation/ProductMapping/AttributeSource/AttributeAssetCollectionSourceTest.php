@@ -15,13 +15,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeAssetCollectionSourceTest extends AbstractAttributeSourceTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -32,7 +28,7 @@ class AttributeAssetCollectionSourceTest extends AbstractAttributeSourceTest
         $this->createAttribute($attribute);
         $this->createAssetAttribute($assetAttribute);
 
-        $violations = $this->validator->validate($source, new AttributeAssetCollectionSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeAssetCollectionSource());
 
         $this->assertEmpty($violations);
     }
@@ -163,7 +159,7 @@ class AttributeAssetCollectionSourceTest extends AbstractAttributeSourceTest
         $this->createAttribute($attribute);
         $this->createAssetAttribute($assetAttribute);
 
-        $violations = $this->validator->validate($source, new AttributeAssetCollectionSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeAssetCollectionSource());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

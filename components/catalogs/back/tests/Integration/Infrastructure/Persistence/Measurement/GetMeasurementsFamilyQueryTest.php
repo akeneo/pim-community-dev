@@ -15,20 +15,16 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetMeasurementsFamilyQueryTest extends IntegrationTestCase
 {
-    private ?GetMeasurementsFamilyQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetMeasurementsFamilyQuery::class);
     }
 
     public function testItGetsMeasurementsFamily(): void
     {
-        $result = $this->query->execute('Weight', 'en_US');
+        $result = self::getContainer()->get(GetMeasurementsFamilyQuery::class)->execute('Weight', 'en_US');
 
         $expected = [
             'code' => 'Weight',
@@ -166,7 +162,7 @@ class GetMeasurementsFamilyQueryTest extends IntegrationTestCase
 
     public function testItGetsNullWithInvalidCode(): void
     {
-        $result = $this->query->execute('not_a_measurement_code', 'en_US');
+        $result = self::getContainer()->get(GetMeasurementsFamilyQuery::class)->execute('not_a_measurement_code', 'en_US');
 
         self::assertNull($result);
     }

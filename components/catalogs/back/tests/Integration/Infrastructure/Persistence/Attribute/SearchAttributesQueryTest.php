@@ -15,24 +15,19 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class SearchAttributesQueryTest extends IntegrationTestCase
 {
-    private ?SearchAttributesQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
         $this->loadAttributeGroups();
-
-        $this->query = self::getContainer()->get(SearchAttributesQuery::class);
     }
 
     public function testItGetsAllowedAttributesTypes(): void
     {
         $this->loadAttributes();
 
-        $result = $this->query->execute(
+        $result = self::getContainer()->get(SearchAttributesQuery::class)->execute(
             null,
             1,
             100,
@@ -148,7 +143,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
             'group' => 'marketing',
         ]);
 
-        $result = $this->query->execute('desc');
+        $result = self::getContainer()->get(SearchAttributesQuery::class)->execute('desc');
 
         $this->assertEquals([
             [
@@ -167,7 +162,12 @@ class SearchAttributesQueryTest extends IntegrationTestCase
     {
         $this->loadAttributes();
 
-        $result = $this->query->execute(null, 1, 100, ['pim_catalog_text','pim_catalog_simpleselect']);
+        $result = self::getContainer()->get(SearchAttributesQuery::class)->execute(
+            null,
+            1,
+            100,
+            ['pim_catalog_text', 'pim_catalog_simpleselect'],
+        );
 
         $this->assertEquals([
             [
@@ -187,7 +187,7 @@ class SearchAttributesQueryTest extends IntegrationTestCase
                 'localizable' => false,
                 'attribute_group_code' => 'marketing',
                 'attribute_group_label' => '[marketing]',
-        ],
+            ],
         ], $result);
     }
 

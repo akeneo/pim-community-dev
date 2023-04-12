@@ -17,8 +17,6 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class DeleteCatalogActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client = null;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,7 +26,7 @@ class DeleteCatalogActionTest extends IntegrationTestCase
 
     public function testItDeletesTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
@@ -39,56 +37,56 @@ class DeleteCatalogActionTest extends IntegrationTestCase
             ownerUsername: 'shopifi',
         );
 
-        $this->client->request(
+        $client->request(
             'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(204, $response->getStatusCode());
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([]);
+        $client = $this->getAuthenticatedPublicApiClient([]);
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
         );
 
-        $this->client->request(
+        $client->request(
             'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
         ]);
 
-        $this->client->request(
+        $client->request(
             'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotBelongToCurrentUser(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
@@ -100,12 +98,12 @@ class DeleteCatalogActionTest extends IntegrationTestCase
             ownerUsername: 'magendo',
         );
 
-        $this->client->request(
+        $client->request(
             'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }

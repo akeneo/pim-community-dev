@@ -18,20 +18,16 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?NumberFromPriceCollectionAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->extractor = self::getContainer()->get(NumberFromPriceCollectionAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(NumberFromPriceCollectionAttributeValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(NumberFromPriceCollectionAttributeValueExtractor::class),
         );
     }
 
@@ -41,7 +37,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
      */
     public function testItReturnsTheValueForPriceCollectionAttribute(array $product, int|float $expectedValue): void
     {
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromPriceCollectionAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'price',
             locale: 'en_US',
@@ -149,7 +145,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
      */
     public function testItReturnsNullIfInconsistentRawValue(array $product): void
     {
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromPriceCollectionAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'price',
             locale: 'en_US',
@@ -205,7 +201,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromPriceCollectionAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'price',
             locale: '<all_locales>',
@@ -232,7 +228,7 @@ class NumberFromPriceCollectionAttributeValueExtractorTest extends ValueExtracto
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromPriceCollectionAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'price',
             locale: 'en_US',

@@ -16,15 +16,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class FindOneCatalogByIdQueryTest extends IntegrationTestCase
 {
-    private ?FindOneCatalogByIdQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(FindOneCatalogByIdQuery::class);
     }
 
     public function testItFindsTheCatalog(): void
@@ -34,7 +30,7 @@ class FindOneCatalogByIdQueryTest extends IntegrationTestCase
 
         $this->createCatalog($id, 'Store US', 'test', isEnabled: false);
 
-        $result = $this->query->execute($id);
+        $result = self::getContainer()->get(FindOneCatalogByIdQuery::class)->execute($id);
 
         $expected = new Catalog($id, 'Store US', 'test', false);
 
@@ -43,7 +39,7 @@ class FindOneCatalogByIdQueryTest extends IntegrationTestCase
 
     public function testItReturnsNullIfUnknownId(): void
     {
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $result = self::getContainer()->get(FindOneCatalogByIdQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $this->assertNull($result);
     }

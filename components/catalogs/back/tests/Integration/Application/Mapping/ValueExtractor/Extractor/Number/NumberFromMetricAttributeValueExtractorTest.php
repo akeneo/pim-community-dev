@@ -16,22 +16,18 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?NumberFromMetricAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->extractor = self::getContainer()->get(NumberFromMetricAttributeValueExtractor::class);
     }
 
     public function testItReturnTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(NumberFromMetricAttributeValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(NumberFromMetricAttributeValueExtractor::class),
         );
     }
 
@@ -50,7 +46,7 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
             'default_metric_unit' => 'KILOGRAM',
         ]);
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromMetricAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'weight',
             locale: 'en_US',
@@ -76,7 +72,7 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
             'default_metric_unit' => 'KILOGRAM',
         ]);
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromMetricAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'weight',
             locale: 'en_US',
@@ -111,7 +107,7 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
                 ],
             ],
         ];
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromMetricAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'weight',
             locale: 'en_US',
@@ -137,7 +133,7 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
                 ],
             ],
         ];
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromMetricAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'weight',
             locale: 'fr_FR',
@@ -163,7 +159,7 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
                     ],
             ],
         ];
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromMetricAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'weight',
             locale: 'en_US',
@@ -190,7 +186,7 @@ class NumberFromMetricAttributeValueExtractorTest extends ValueExtractorTestCase
                 ],
             ],
         ];
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromMetricAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'density',
             locale: 'en_US',

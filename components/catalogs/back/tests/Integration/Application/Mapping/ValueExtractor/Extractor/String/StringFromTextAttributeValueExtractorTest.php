@@ -18,20 +18,16 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class StringFromTextAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringFromTextAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->extractor = self::getContainer()->get(StringFromTextAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(StringFromTextAttributeValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(StringFromTextAttributeValueExtractor::class),
         );
     }
 
@@ -48,7 +44,7 @@ class StringFromTextAttributeValueExtractorTest extends ValueExtractorTestCase
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromTextAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'name',
             locale: 'en_US',
@@ -72,7 +68,7 @@ class StringFromTextAttributeValueExtractorTest extends ValueExtractorTestCase
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromTextAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'name',
             locale: '<all_locales>',
@@ -96,7 +92,7 @@ class StringFromTextAttributeValueExtractorTest extends ValueExtractorTestCase
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromTextAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'name',
             locale: 'en_US',

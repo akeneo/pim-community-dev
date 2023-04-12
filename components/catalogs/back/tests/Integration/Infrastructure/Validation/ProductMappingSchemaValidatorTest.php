@@ -18,13 +18,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductMappingSchemaValidatorTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -34,7 +30,7 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
     {
         $schema = \json_decode($raw, false, 512, JSON_THROW_ON_ERROR);
 
-        $violations = $this->validator->validate($schema, new ProductMappingSchema());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($schema, new ProductMappingSchema());
 
         $this->assertEmpty($violations);
     }
@@ -50,7 +46,7 @@ class ProductMappingSchemaValidatorTest extends IntegrationTestCase
         }
 
         /** @var array<ConstraintViolation> $violations */
-        $violations = $this->validator->validate($schema, new ProductMappingSchema());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($schema, new ProductMappingSchema());
 
         $this->assertCount(1, $violations);
         $this->assertEquals('You must provide a valid schema.', $violations[0]->getMessage());

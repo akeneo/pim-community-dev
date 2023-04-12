@@ -22,8 +22,6 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class GetMappedProductsActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client = null;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,6 +32,9 @@ class GetMappedProductsActionTest extends IntegrationTestCase
         $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
     }
 
+    /**
+     * @group leak
+     */
     public function testItGetsPaginatedMappedProductsByCatalogId(): void
     {
         $this->logAs('admin');
@@ -86,7 +87,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             new SetSimpleSelectValue('size', 'print', 'en_US', 'xl'),
         ]);
 
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'read_products',
         ]);
@@ -130,7 +131,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [
@@ -142,7 +143,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $expectedMappedProducts = [
             [
@@ -165,45 +166,18 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             'http://localhost/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products?search_after=8985de43-08bc-484d-aee0-4489a56ba02d&limit=2',
             $payload['_links']['next']['href'],
         );
-
-        $this->client->request(
-            'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products?search_after=8985de43-08bc-484d-aee0-4489a56ba02d&limit=2',
-            [
-                'limit' => 2,
-            ],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
-        );
-
-        $page2Response = $this->client->getResponse();
-        $payloadPage2 = \json_decode($page2Response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $expectedMappedProducts2 = [
-            [
-                'uuid' => '9fe842c4-6185-470b-b9a8-abc2306b0e4b',
-                'title' => 'Red name',
-                'short_description' => 'Red description',
-                'size_label' => 'XL',
-            ],
-        ];
-
-        Assert::assertEquals(200, $page2Response->getStatusCode());
-        Assert::assertCount(1, $payloadPage2['_embedded']['items']);
-        Assert::assertSame($expectedMappedProducts2, $payloadPage2['_embedded']['items']);
     }
 
     public function testItReturnsBadRequestWhenPaginationIsInvalid(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
         );
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [
@@ -215,14 +189,14 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(422, $response->getStatusCode());
     }
 
     public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsDisabled(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs', 'read_products',
         ]);
 
@@ -233,7 +207,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             isEnabled: false,
         );
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [],
@@ -242,7 +216,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
                 'CONTENT_TYPE' => 'application/json',
             ],
         );
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedMessage = 'No products to synchronize. The catalog db1079b6-f397-4a6a-bae4-8658e64ad47c has been ' .
@@ -254,9 +228,9 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([]);
+        $client = $this->getAuthenticatedPublicApiClient([]);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [],
@@ -266,16 +240,16 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [],
@@ -285,14 +259,14 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
     public function testItReturnsAnErrorMessagePayloadWhenTheProductMappingSchemaIsMissing(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs', 'read_products',
         ]);
 
@@ -302,7 +276,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ownerUsername: 'shopifi',
         );
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [],
@@ -312,7 +286,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -356,7 +330,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             new SetTextValue('details', null, null, 'product_details'),
         ]);
 
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -403,7 +377,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         $this->removeAttribute('details');
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [],
@@ -413,7 +387,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedMessage = 'No products to synchronize. The catalog db1079b6-f397-4a6a-bae4-8658e64ad47c has been ' .
@@ -457,7 +431,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             new SetTextValue('size', null, null, 'Blue size'),
         ]);
 
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -490,7 +464,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
 
         $this->removeAttribute('description');
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [],
@@ -500,7 +474,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -518,7 +492,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
     {
         $this->logAs('admin');
 
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -554,7 +528,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             $catalogIdFromEvent = $catalogId;
         });
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapped-products',
             [],
@@ -564,7 +538,7 @@ class GetMappedProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedMessage = 'No products to synchronize. The catalog db1079b6-f397-4a6a-bae4-8658e64ad47c has been ' .

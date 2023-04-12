@@ -17,13 +17,9 @@ use Ramsey\Uuid\Uuid;
  */
 class UpdateCatalogActionTest extends IntegrationTestCase
 {
-    private ?Connection $connection;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->connection = self::getContainer()->get(Connection::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -237,7 +233,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         WHERE id = :id
         SQL;
 
-        $row = (bool) $this->connection->executeQuery($query, [
+        $row = (bool) self::getContainer()->get(Connection::class)->executeQuery($query, [
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchOne();
 
@@ -252,7 +248,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         WHERE id = :id
         SQL;
 
-        $row = $this->connection->executeQuery($query, [
+        $row = self::getContainer()->get(Connection::class)->executeQuery($query, [
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchOne();
 
@@ -267,7 +263,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         WHERE id = :id
         SQL;
 
-        $row = $this->connection->executeQuery($query, [
+        $row = self::getContainer()->get(Connection::class)->executeQuery($query, [
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchOne();
 
@@ -282,7 +278,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         WHERE id = :id
         SQL;
 
-        $row = $this->connection->executeQuery($query, [
+        $row = self::getContainer()->get(Connection::class)->executeQuery($query, [
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchOne();
 

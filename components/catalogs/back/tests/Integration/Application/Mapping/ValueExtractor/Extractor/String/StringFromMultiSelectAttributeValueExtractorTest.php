@@ -18,22 +18,20 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class StringFromMultiSelectAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringFromMultiSelectAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->extractor = self::getContainer()->get(StringFromMultiSelectAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(
+                StringFromMultiSelectAttributeValueExtractor::class,
+            )->getSupportedTargetType()],
+            self::getContainer()->get(StringFromMultiSelectAttributeValueExtractor::class),
         );
     }
 
@@ -60,7 +58,7 @@ class StringFromMultiSelectAttributeValueExtractorTest extends ValueExtractorTes
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromMultiSelectAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'video_output',
             locale: 'en_US',
@@ -86,7 +84,7 @@ class StringFromMultiSelectAttributeValueExtractorTest extends ValueExtractorTes
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromMultiSelectAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'video_output',
             locale: '<all_locales>',
@@ -120,7 +118,7 @@ class StringFromMultiSelectAttributeValueExtractorTest extends ValueExtractorTes
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromMultiSelectAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'video_output',
             locale: 'en_US',
@@ -155,7 +153,7 @@ class StringFromMultiSelectAttributeValueExtractorTest extends ValueExtractorTes
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromMultiSelectAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'video_output',
             locale: 'en_US',

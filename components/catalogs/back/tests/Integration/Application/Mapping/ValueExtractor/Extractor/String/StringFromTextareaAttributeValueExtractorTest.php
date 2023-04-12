@@ -18,20 +18,16 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class StringFromTextareaAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringFromTextareaAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->extractor = self::getContainer()->get(StringFromTextareaAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(StringFromTextareaAttributeValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(StringFromTextareaAttributeValueExtractor::class),
         );
     }
 
@@ -48,7 +44,7 @@ class StringFromTextareaAttributeValueExtractorTest extends ValueExtractorTestCa
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromTextareaAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'description',
             locale: 'en_US',
@@ -72,7 +68,7 @@ class StringFromTextareaAttributeValueExtractorTest extends ValueExtractorTestCa
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromTextareaAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'description',
             locale: '<all_locales>',
@@ -96,7 +92,7 @@ class StringFromTextareaAttributeValueExtractorTest extends ValueExtractorTestCa
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromTextareaAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'description',
             locale: 'en_US',

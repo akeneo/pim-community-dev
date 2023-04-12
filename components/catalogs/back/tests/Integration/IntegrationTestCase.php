@@ -149,6 +149,8 @@ abstract class IntegrationTestCase extends WebTestCase
 
         $this->ensureKernelShutdown();
 
+        $this->clock = null;
+
         parent::tearDown();
     }
 

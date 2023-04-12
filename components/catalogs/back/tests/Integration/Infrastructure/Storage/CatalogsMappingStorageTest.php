@@ -14,9 +14,6 @@ use League\Flysystem\Filesystem;
  */
 class CatalogsMappingStorageTest extends IntegrationTestCase
 {
-    private ?CatalogsMappingStorage $storage;
-    private ?Filesystem $filesystem;
-
     private const SCHEMA = <<<'EOS'
 {
   "$schema": "https://api.akeneo.com/schema/2022-08/product",
@@ -38,44 +35,41 @@ EOS;
         parent::setUp();
 
         $this->purgeData();
-
-        $this->storage = self::getContainer()->get(CatalogsMappingStorage::class);
-        $this->filesystem = self::getContainer()->get('oneup_flysystem.catalogs_mapping_filesystem');
     }
 
     public function testItCreatesAFile(): void
     {
-        $this->storage->write('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json', self::SCHEMA);
+        self::getContainer()->get(CatalogsMappingStorage::class)->write('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json', self::SCHEMA);
 
-        $contents = $this->filesystem->read('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json');
+        $contents = self::getContainer()->get('oneup_flysystem.catalogs_mapping_filesystem')->read('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json');
 
         $this->assertSame(self::SCHEMA, $contents);
     }
 
     public function testItChecksIfAFileExists(): void
     {
-        $this->filesystem->write('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json', self::SCHEMA);
+        self::getContainer()->get('oneup_flysystem.catalogs_mapping_filesystem')->write('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json', self::SCHEMA);
 
-        $exists = $this->storage->exists('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json');
+        $exists = self::getContainer()->get(CatalogsMappingStorage::class)->exists('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json');
 
         $this->assertTrue($exists);
     }
 
     public function testItReturnsAFileContents(): void
     {
-        $this->filesystem->write('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json', self::SCHEMA);
+        self::getContainer()->get('oneup_flysystem.catalogs_mapping_filesystem')->write('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json', self::SCHEMA);
 
-        $contents = \stream_get_contents($this->storage->read('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
+        $contents = \stream_get_contents(self::getContainer()->get(CatalogsMappingStorage::class)->read('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
 
         $this->assertSame(self::SCHEMA, $contents);
     }
 
     public function testItDeletesAFile(): void
     {
-        $this->filesystem->write('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json', self::SCHEMA);
+        self::getContainer()->get('oneup_flysystem.catalogs_mapping_filesystem')->write('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json', self::SCHEMA);
 
-        $this->storage->delete('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json');
+        self::getContainer()->get(CatalogsMappingStorage::class)->delete('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json');
 
-        $this->assertFalse($this->filesystem->fileExists('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
+        $this->assertFalse(self::getContainer()->get('oneup_flysystem.catalogs_mapping_filesystem')->fileExists('db1079b6-f397-4a6a-bae4-8658e64ad47c_product.json'));
     }
 }

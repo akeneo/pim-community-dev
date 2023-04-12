@@ -10,12 +10,9 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 class DisableCatalogQueryTest extends IntegrationTestCase
 {
-    private ?DisableCatalogQueryInterface $disableCatalogQuery;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->disableCatalogQuery = self::getContainer()->get(DisableCatalogQuery::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -29,7 +26,7 @@ class DisableCatalogQueryTest extends IntegrationTestCase
         $this->createCatalog($catalogIdUS, 'Store US', 'shopifi');
         $this->createCatalog($catalogIdFR, 'Store FR', 'shopifi');
 
-        $this->disableCatalogQuery->execute($catalogIdUS);
+        self::getContainer()->get(DisableCatalogQuery::class)->execute($catalogIdUS);
 
         $this->assertCatalogIsDisabled($catalogIdUS);
         $this->assertCatalogIsEnabled($catalogIdFR);
@@ -41,7 +38,7 @@ class DisableCatalogQueryTest extends IntegrationTestCase
         $catalogIdUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->createCatalog($catalogIdUS, 'Store US', 'shopifi', false);
 
-        $this->disableCatalogQuery->execute($catalogIdUS);
+        self::getContainer()->get(DisableCatalogQuery::class)->execute($catalogIdUS);
 
         $this->assertCatalogIsDisabled($catalogIdUS);
     }

@@ -20,17 +20,11 @@ use Ramsey\Uuid\Uuid;
  */
 class GetCatalogQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogQuery $query;
-    private ?Connection $connection;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->connection = self::getContainer()->get(Connection::class);
-        $this->query = self::getContainer()->get(GetCatalogQuery::class);
     }
 
     public function testItGetsCatalog(): void
@@ -48,7 +42,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
             ],
         );
 
-        $result = $this->query->execute($id);
+        $result = self::getContainer()->get(GetCatalogQuery::class)->execute($id);
 
         $expected = new Catalog(
             $id,
@@ -102,7 +96,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
             ],
         );
 
-        $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $result = self::getContainer()->get(GetCatalogQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $expectedProductMappingKeys = ['uuid', 'title', 'short_description', 'size_label'];
 
@@ -113,7 +107,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
     {
         $this->expectException(CatalogNotFoundException::class);
 
-        $this->query->execute('017c3d69-5c7d-4cd9-9d19-4ffe856026a3');
+        self::getContainer()->get(GetCatalogQuery::class)->execute('017c3d69-5c7d-4cd9-9d19-4ffe856026a3');
     }
 
     public function testItThrowsWhenProductSelectionCriteriaIsInvalid(): void
@@ -132,7 +126,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Invalid JSON in product_selection_criteria column');
 
-        $this->query->execute($id);
+        self::getContainer()->get(GetCatalogQuery::class)->execute($id);
     }
 
     public function testItThrowsWhenProductValueFiltersIsInvalid(): void
@@ -146,12 +140,12 @@ class GetCatalogQueryTest extends IntegrationTestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Invalid JSON in product_value_filters column');
 
-        $this->query->execute($id);
+        self::getContainer()->get(GetCatalogQuery::class)->execute($id);
     }
 
     private function setInvalidCatalogProductSelectionCriteria(string $id): void
     {
-        $this->connection->executeQuery(
+        self::getContainer()->get(Connection::class)->executeQuery(
             'UPDATE akeneo_catalog SET product_selection_criteria = :criteria WHERE id = :id',
             [
                 'id' => Uuid::fromString($id)->getBytes(),
@@ -165,7 +159,7 @@ class GetCatalogQueryTest extends IntegrationTestCase
 
     private function setInvalidCatalogProductValueFilters(string $id): void
     {
-        $this->connection->executeQuery(
+        self::getContainer()->get(Connection::class)->executeQuery(
             'UPDATE akeneo_catalog SET product_value_filters = :filters WHERE id = :id',
             [
                 'id' => Uuid::fromString($id)->getBytes(),

@@ -15,8 +15,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SystemAttributeFamilySourceTest extends AbstractAttributeSourceTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,7 +26,6 @@ class SystemAttributeFamilySourceTest extends AbstractAttributeSourceTest
             'attribute_group_code' => 'system',
             'attribute_group_label' => 'System',
         ]);
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     public function testItReturnsNoViolation(): void
@@ -41,7 +38,7 @@ class SystemAttributeFamilySourceTest extends AbstractAttributeSourceTest
                 'label_locale' => 'en_US',
             ],
         ];
-        $violations = $this->validator->validate($source, new SystemAttributeFamilySource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new SystemAttributeFamilySource());
 
         $this->assertEmpty($violations);
     }
@@ -53,7 +50,7 @@ class SystemAttributeFamilySourceTest extends AbstractAttributeSourceTest
         array $source,
         string $expectedMessage,
     ): void {
-        $violations = $this->validator->validate($source, new SystemAttributeFamilySource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new SystemAttributeFamilySource());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetProductUuidFromIdentifierQueryTest extends IntegrationTestCase
 {
-    private ?GetProductUuidFromIdentifierQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetProductUuidFromIdentifierQuery::class);
     }
 
     public function testItGetsProductUuidFromIdentifier(): void
@@ -35,7 +31,7 @@ class GetProductUuidFromIdentifierQueryTest extends IntegrationTestCase
         $product = $this->createProduct('tshirt-green', [], $user->getId());
         $expected = $product->getUuid();
 
-        $result = $this->query->execute('tshirt-green');
+        $result = self::getContainer()->get(GetProductUuidFromIdentifierQuery::class)->execute('tshirt-green');
 
         $this->assertEquals($expected, $result);
     }

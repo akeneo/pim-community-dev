@@ -16,18 +16,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UuidSourceTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     public function testItReturnsNoViolation(): void
     {
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             [
                 'source' => 'uuid',
                 'scope' => null,
@@ -44,7 +40,7 @@ class UuidSourceTest extends IntegrationTestCase
      */
     public function testItReturnsViolationsWhenInvalid(array $source, string $expectedMessage): void
     {
-        $violations = $this->validator->validate($source, new UuidSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new UuidSource());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

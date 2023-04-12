@@ -14,13 +14,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetCatalogQueryValidationTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -28,7 +24,7 @@ class GetCatalogQueryValidationTest extends IntegrationTestCase
      */
     public function testItValidatesTheQuery(GetCatalogQuery $query, string $error): void
     {
-        $violations = $this->validator->validate($query);
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($query);
 
         $this->assertViolationsListContains($violations, $error);
     }

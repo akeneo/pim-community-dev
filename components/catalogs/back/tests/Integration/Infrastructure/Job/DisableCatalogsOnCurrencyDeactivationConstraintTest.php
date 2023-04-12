@@ -10,24 +10,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DisableCatalogsOnCurrencyDeactivationConstraintTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
-    private ?DisableCatalogsOnCurrencyDeactivationConstraint $disableCatalogConstraint;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
-        $this->disableCatalogConstraint = self::getContainer()->get(DisableCatalogsOnCurrencyDeactivationConstraint::class);
 
         $this->purgeData();
     }
 
     public function testItProvidesConstraintToValidateParameters(): void
     {
-        $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
+        $constraintCollection = self::getContainer()->get(DisableCatalogsOnCurrencyDeactivationConstraint::class)->getConstraintCollection();
         $parameters = ['currency_codes' => ['EUR', 'USD']];
-        $violations = $this->validator->validate($parameters, $constraintCollection);
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($parameters, $constraintCollection);
 
         $this->assertEmpty($violations);
     }
@@ -39,8 +33,8 @@ class DisableCatalogsOnCurrencyDeactivationConstraintTest extends IntegrationTes
         array $parameters,
         string $expectedMessage,
     ): void {
-        $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
-        $violations = $this->validator->validate($parameters, $constraintCollection);
+        $constraintCollection = self::getContainer()->get(DisableCatalogsOnCurrencyDeactivationConstraint::class)->getConstraintCollection();
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($parameters, $constraintCollection);
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

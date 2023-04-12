@@ -19,32 +19,27 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class UpdateCatalogActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client = null;
-    private ?CommandBus $commandBus;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
     public function testItUpdatesTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
         ]);
-        $this->commandBus->execute(new CreateCatalogCommand(
+        self::getContainer()->get(CommandBus::class)->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
             'shopifi',
         ));
 
-        $this->client->request(
+        $client->request(
             'PATCH',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
@@ -57,7 +52,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             ]),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -66,14 +61,14 @@ class UpdateCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([]);
-        $this->commandBus->execute(new CreateCatalogCommand(
+        $client = $this->getAuthenticatedPublicApiClient([]);
+        self::getContainer()->get(CommandBus::class)->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
             'shopifi',
         ));
 
-        $this->client->request(
+        $client->request(
             'PATCH',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
@@ -86,20 +81,20 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             ]),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
         ]);
 
-        $this->client->request(
+        $client->request(
             'PATCH',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
@@ -112,26 +107,26 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             ]),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotBelongToCurrentUser(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
         ]);
         $this->createUser('magendo');
-        $this->commandBus->execute(new CreateCatalogCommand(
+        self::getContainer()->get(CommandBus::class)->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
             'magendo',
         ));
 
-        $this->client->request(
+        $client->request(
             'PATCH',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
@@ -144,7 +139,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             ]),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }

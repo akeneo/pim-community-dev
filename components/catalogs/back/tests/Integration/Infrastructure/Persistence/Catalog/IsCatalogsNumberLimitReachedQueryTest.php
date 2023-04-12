@@ -14,25 +14,21 @@ use Ramsey\Uuid\Uuid;
  */
 class IsCatalogsNumberLimitReachedQueryTest extends IntegrationTestCase
 {
-    private ?IsCatalogsNumberLimitReachedQuery $query;
-    private int $catalogsNumberMaxLimit;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(IsCatalogsNumberLimitReachedQuery::class);
-        $this->catalogsNumberMaxLimit = self::getContainer()->getParameter('akeneo_catalog.max_number_of_catalogs_per_user');
     }
 
     public function testItReturnsTrueWhenTheCatalogsNumberLimitIsReached(): void
     {
         $this->createUser('shopifi');
+        $limit = self::getContainer()->getParameter('akeneo_catalog.max_number_of_catalogs_per_user');
 
-        $this->assertFalse($this->query->execute('shopifi'));
-        for ($i = 0; $i < $this->catalogsNumberMaxLimit; $i++) {
+        $this->assertFalse(self::getContainer()->get(IsCatalogsNumberLimitReachedQuery::class)->execute('shopifi'));
+
+        for ($i = 0; $i < $limit; $i++) {
             $this->createCatalog(
                 Uuid::uuid4()->toString(),
                 "Store $i",
@@ -40,6 +36,6 @@ class IsCatalogsNumberLimitReachedQueryTest extends IntegrationTestCase
             );
         }
 
-        $this->assertTrue($this->query->execute('shopifi'));
+        $this->assertTrue(self::getContainer()->get(IsCatalogsNumberLimitReachedQuery::class)->execute('shopifi'));
     }
 }

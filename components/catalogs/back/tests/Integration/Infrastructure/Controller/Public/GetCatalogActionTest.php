@@ -17,8 +17,6 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class GetCatalogActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client = null;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,7 +26,7 @@ class GetCatalogActionTest extends IntegrationTestCase
 
     public function testItFindsTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
@@ -36,7 +34,7 @@ class GetCatalogActionTest extends IntegrationTestCase
             isEnabled: false,
         );
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
@@ -46,7 +44,7 @@ class GetCatalogActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -57,9 +55,9 @@ class GetCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([]);
+        $client = $this->getAuthenticatedPublicApiClient([]);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
@@ -69,16 +67,16 @@ class GetCatalogActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
@@ -88,14 +86,14 @@ class GetCatalogActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotBelongToCurrentUser(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
         $this->createUser('magendo');
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -103,7 +101,7 @@ class GetCatalogActionTest extends IntegrationTestCase
             ownerUsername: 'magendo',
         );
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
@@ -113,7 +111,7 @@ class GetCatalogActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }

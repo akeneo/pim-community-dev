@@ -16,20 +16,16 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class BooleanFromStatusValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?BooleanFromStatusValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->extractor = self::getContainer()->get(BooleanFromStatusValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(BooleanFromStatusValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(BooleanFromStatusValueExtractor::class),
         );
     }
 
@@ -40,7 +36,7 @@ class BooleanFromStatusValueExtractorTest extends ValueExtractorTestCase
             'is_enabled' => true,
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(BooleanFromStatusValueExtractor::class)->extract(
             product: $product,
             code: 'is_enabled',
             locale: null,
@@ -58,7 +54,7 @@ class BooleanFromStatusValueExtractorTest extends ValueExtractorTestCase
             'is_enabled' => null,
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(BooleanFromStatusValueExtractor::class)->extract(
             product: $product,
             code: 'is_enabled',
             locale: 'en_US',

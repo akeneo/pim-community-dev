@@ -21,21 +21,16 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client = null;
-    private ?QueryBus $queryBus;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->queryBus = self::getContainer()->get(QueryBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
     public function testItUpdatesTheCatalogProductMappingSchema(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
         ]);
 
@@ -45,7 +40,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             ownerUsername: 'shopifi',
         );
 
-        $this->client->request(
+        $client->request(
             'PUT',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
@@ -56,11 +51,11 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             $this->getValidProductMappingSchema(),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(204, $response->getStatusCode());
 
-        $productMappingSchema = $this->queryBus->execute(
+        $productMappingSchema = self::getContainer()->get(QueryBus::class)->execute(
             new GetProductMappingSchemaQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'),
         );
         Assert::assertJsonStringEqualsJsonString(
@@ -71,14 +66,14 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([]);
+        $client = $this->getAuthenticatedPublicApiClient([]);
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
         );
 
-        $this->client->request(
+        $client->request(
             'PUT',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
@@ -89,18 +84,18 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             $this->getValidProductMappingSchema(),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
         ]);
 
-        $this->client->request(
+        $client->request(
             'PUT',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
@@ -111,14 +106,14 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             $this->getValidProductMappingSchema(),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotBelongToCurrentUser(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
         ]);
 
@@ -129,7 +124,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             ownerUsername: 'magendo',
         );
 
-        $this->client->request(
+        $client->request(
             'PUT',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
@@ -140,14 +135,14 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             $this->getValidProductMappingSchema(),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
     public function testItReturnsBadRequestWhenPayloadIsNotValidJson(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
         ]);
 
@@ -157,7 +152,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             ownerUsername: 'shopifi',
         );
 
-        $this->client->request(
+        $client->request(
             'PUT',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
@@ -168,14 +163,14 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             '{',
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(400, $response->getStatusCode());
     }
 
     public function testItReturnsUnprocessableEntityWhenPayloadIsNotAValidSchema(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
         ]);
 
@@ -185,7 +180,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             ownerUsername: 'shopifi',
         );
 
-        $this->client->request(
+        $client->request(
             'PUT',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
@@ -196,14 +191,14 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             '{}',
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(422, $response->getStatusCode());
     }
 
     public function testItCreatesTheProductMapping(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
         ]);
 
@@ -213,7 +208,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
             ownerUsername: 'shopifi',
         );
 
-        $this->client->request(
+        $client->request(
             'PUT',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],
@@ -250,7 +245,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
 
     public function testItUpdatesTheProductMappingWithAddedAndRemovedTargets(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'write_catalogs',
         ]);
 
@@ -302,7 +297,7 @@ class UpdateProductMappingSchemaActionTest extends IntegrationTestCase
         }
         JSON_WRAP;
 
-        $this->client->request(
+        $client->request(
             'PUT',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/mapping-schemas/product',
             [],

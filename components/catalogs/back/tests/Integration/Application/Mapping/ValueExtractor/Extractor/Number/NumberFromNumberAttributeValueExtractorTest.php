@@ -18,20 +18,16 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?NumberFromNumberAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->extractor = self::getContainer()->get(NumberFromNumberAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(NumberFromNumberAttributeValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(NumberFromNumberAttributeValueExtractor::class),
         );
     }
 
@@ -51,7 +47,7 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromNumberAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'optical_zoom',
             locale: 'en_US',
@@ -97,7 +93,7 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromNumberAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'optical_zoom',
             locale: '<all_locales>',
@@ -121,7 +117,7 @@ class NumberFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(NumberFromNumberAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'optical_zoom',
             locale: 'en_US',

@@ -20,9 +20,6 @@ use Ramsey\Uuid\UuidInterface;
  */
 class GetRawProductsQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogQueryInterface $getCatalogQuery;
-    private ?GetRawProductsQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,9 +27,6 @@ class GetRawProductsQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->getCatalogQuery = self::getContainer()->get(GetCatalogQueryInterface::class);
-        $this->query = self::getContainer()->get(GetRawProductsQuery::class);
     }
 
     public function testItReturnsProductsMatchingTheCatalog(): void
@@ -71,9 +65,9 @@ class GetRawProductsQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(false)]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 10);
+        $result = self::getContainer()->get(GetRawProductsQuery::class)->execute($catalog, null, 10);
 
         $this->assertEquals([
             [
@@ -129,9 +123,9 @@ class GetRawProductsQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(true)]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00');
+        $result = self::getContainer()->get(GetRawProductsQuery::class)->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
             [
@@ -178,9 +172,9 @@ class GetRawProductsQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(true)]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 100, null, '2022-09-01T17:35:00+02:00');
+        $result = self::getContainer()->get(GetRawProductsQuery::class)->execute($catalog, null, 100, null, '2022-09-01T17:35:00+02:00');
 
         $this->assertEquals([
             [
@@ -227,9 +221,9 @@ class GetRawProductsQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-09-01T15:40:00+00:00'));
         $this->createProduct('tshirt-green', [new SetEnabled(true)]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $result = $this->query->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
+        $result = self::getContainer()->get(GetRawProductsQuery::class)->execute($catalog, null, 100, '2022-09-01T17:35:00+02:00', '2022-09-01T17:45:00+02:00');
 
         $this->assertEquals([
             [

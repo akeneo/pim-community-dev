@@ -13,12 +13,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeMetricSourceTest extends AbstractAttributeSourceTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
 
         $this->createMeasurementsFamily([
             'code' => 'Weight',
@@ -42,7 +39,7 @@ class AttributeMetricSourceTest extends AbstractAttributeSourceTest
     public function testItReturnsNoViolation(array $attribute, array $source): void
     {
         $this->createAttribute($attribute);
-        $violations = $this->validator->validate($source, new AttributeMetricSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeMetricSource());
         $this->assertEmpty($violations);
     }
 
@@ -56,7 +53,7 @@ class AttributeMetricSourceTest extends AbstractAttributeSourceTest
         string $expectedMessage,
     ): void {
         $this->createAttribute($attribute);
-        $violations = $this->validator->validate($source, new AttributeMetricSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeMetricSource());
         $this->assertViolationsListContains($violations, $expectedMessage);
     }
 

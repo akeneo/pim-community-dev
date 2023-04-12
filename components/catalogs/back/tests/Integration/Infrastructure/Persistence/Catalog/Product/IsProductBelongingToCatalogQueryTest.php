@@ -15,17 +15,11 @@ use Ramsey\Uuid\Uuid;
 
 class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
 {
-    private ?IsProductBelongingToCatalogQueryInterface $isProductBelongingToCatalogQuery;
-    private ?GetCatalogQueryInterface $getCatalogQuery;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->isProductBelongingToCatalogQuery = self::getContainer()->get(IsProductBelongingToCatalogQueryInterface::class);
-        $this->getCatalogQuery = self::getContainer()->get(GetCatalogQueryInterface::class);
     }
 
     public function testAProductBelongingToTheCatalog(): void
@@ -49,9 +43,9 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
         $tshirtBlue = $this->createProduct('tshirt-blue', [new SetEnabled(true)]);
         $this->createProduct('tshirt-red', [new SetEnabled(true)]);
 
-        $catalog = $this->getCatalogQuery->execute($catalogId);
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute($catalogId);
 
-        $isProductBelongingToCatalog = $this->isProductBelongingToCatalogQuery->execute($catalog, (string) $tshirtBlue->getUuid());
+        $isProductBelongingToCatalog = self::getContainer()->get(IsProductBelongingToCatalogQueryInterface::class)->execute($catalog, (string) $tshirtBlue->getUuid());
         $this->assertTrue($isProductBelongingToCatalog);
     }
 
@@ -76,9 +70,9 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
         $tshirt = $this->createProduct('tshirt-blue', [new SetEnabled(false)]);
         $this->createProduct('tshirt-red', [new SetEnabled(true)]);
 
-        $catalog = $this->getCatalogQuery->execute($catalogId);
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute($catalogId);
 
-        $isProductBelongingToCatalog = $this->isProductBelongingToCatalogQuery->execute($catalog, (string) $tshirt->getUuid());
+        $isProductBelongingToCatalog = self::getContainer()->get(IsProductBelongingToCatalogQueryInterface::class)->execute($catalog, (string) $tshirt->getUuid());
         $this->assertFalse($isProductBelongingToCatalog);
     }
 
@@ -147,11 +141,11 @@ class IsProductBelongingToCatalogQueryTest extends IntegrationTestCase
             new SetTextValue('name', 'mobile', 'en_US', ''),
         ]);
 
-        $catalog = $this->getCatalogQuery->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+        $catalog = self::getContainer()->get(GetCatalogQueryInterface::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $isProductBelongingToCatalog = $this->isProductBelongingToCatalogQuery->execute($catalog, '00380587-3893-46e6-a8c2-8fee6404cc9e');
+        $isProductBelongingToCatalog = self::getContainer()->get(IsProductBelongingToCatalogQueryInterface::class)->execute($catalog, '00380587-3893-46e6-a8c2-8fee6404cc9e');
         $this->assertTrue($isProductBelongingToCatalog);
-        $isProductBelongingToCatalog = $this->isProductBelongingToCatalogQuery->execute($catalog, '8985de43-08bc-484d-aee0-4489a56ba02d');
+        $isProductBelongingToCatalog = self::getContainer()->get(IsProductBelongingToCatalogQueryInterface::class)->execute($catalog, '8985de43-08bc-484d-aee0-4489a56ba02d');
 
         $this->assertFalse($isProductBelongingToCatalog);
     }

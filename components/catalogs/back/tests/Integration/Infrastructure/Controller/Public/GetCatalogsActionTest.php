@@ -19,38 +19,33 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class GetCatalogsActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client = null;
-    private ?CommandBus $commandBus;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
     public function testItGetsPaginatedCatalogsByOwnerUsnermae(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
-        $this->commandBus->execute(new CreateCatalogCommand(
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
+        self::getContainer()->get(CommandBus::class)->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
             'shopifi',
         ));
-        $this->commandBus->execute(new CreateCatalogCommand(
+        self::getContainer()->get(CommandBus::class)->execute(new CreateCatalogCommand(
             'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             'Store FR',
             'shopifi',
         ));
-        $this->commandBus->execute(new CreateCatalogCommand(
+        self::getContainer()->get(CommandBus::class)->execute(new CreateCatalogCommand(
             '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             'Store UK',
             'shopifi',
         ));
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs',
             [
@@ -63,7 +58,7 @@ class GetCatalogsActionTest extends IntegrationTestCase
             ],
         );
 
-        $firstPageResponse = $this->client->getResponse();
+        $firstPageResponse = $client->getResponse();
         $firstPagePayload = \json_decode($firstPageResponse->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $firstPageResponse->getStatusCode());
@@ -78,9 +73,9 @@ class GetCatalogsActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([]);
+        $client = $this->getAuthenticatedPublicApiClient([]);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs',
             [],
@@ -90,21 +85,21 @@ class GetCatalogsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
     public function testItGetsBadRequestWithWrongPagination(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
-        $this->commandBus->execute(new CreateCatalogCommand(
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
+        self::getContainer()->get(CommandBus::class)->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
             'shopifi',
         ));
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs',
             [
@@ -117,7 +112,7 @@ class GetCatalogsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(400, $response->getStatusCode());
     }

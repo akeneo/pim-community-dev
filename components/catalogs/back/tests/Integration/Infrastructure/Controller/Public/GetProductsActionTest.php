@@ -20,8 +20,6 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class GetProductsActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client = null;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -39,7 +37,7 @@ class GetProductsActionTest extends IntegrationTestCase
         $this->createProduct(Uuid::fromString('9fe842c4-6185-470b-b9a8-abc2306b0e4b'), [new SetEnabled(true)]);
         $this->createProduct(Uuid::fromString('2fe842c4-6185-470b-b9a8-abc230678910'), [new SetEnabled(false)]);
 
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
@@ -59,7 +57,7 @@ class GetProductsActionTest extends IntegrationTestCase
             $productCountFromEvent = $productCount;
         });
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [
@@ -71,7 +69,7 @@ class GetProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -83,7 +81,7 @@ class GetProductsActionTest extends IntegrationTestCase
             '8985de43-08bc-484d-aee0-4489a56ba02d',
         ], $uuids);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products?search_after=8985de43-08bc-484d-aee0-4489a56ba02d&limit=2',
             [
@@ -95,7 +93,7 @@ class GetProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $page2Response = $this->client->getResponse();
+        $page2Response = $client->getResponse();
         $payloadPage2 = \json_decode($page2Response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertEquals(200, $page2Response->getStatusCode());
         Assert::assertCount(1, $payloadPage2['_embedded']['items']);
@@ -112,7 +110,7 @@ class GetProductsActionTest extends IntegrationTestCase
         $this->logAs('admin'); // Creating products requires an authenticated user with higher permissions
         $this->createProduct('blue');
 
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
@@ -120,7 +118,7 @@ class GetProductsActionTest extends IntegrationTestCase
             isEnabled: false,
         );
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [],
@@ -130,7 +128,7 @@ class GetProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $expectedMessage = 'No products to synchronize. The catalog db1079b6-f397-4a6a-bae4-8658e64ad47c has been ' .
             'disabled on the PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.';
@@ -141,11 +139,11 @@ class GetProductsActionTest extends IntegrationTestCase
 
     public function testItReturnsBadRequestWhenPaginationIsInvalidGetProductsQueryInterfaced(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c', 'Store US', 'shopifi');
         $this->enableCatalog('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [
@@ -157,16 +155,16 @@ class GetProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(422, $response->getStatusCode());
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([]);
+        $client = $this->getAuthenticatedPublicApiClient([]);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [],
@@ -176,16 +174,16 @@ class GetProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [],
@@ -195,14 +193,14 @@ class GetProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
     public function testItReturnsAnErrorMessagePayloadWhenTheCatalogIsEnabledAndInvalid(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createAttribute([
             'code' => 'color',
             'type' => 'pim_catalog_multiselect',
@@ -222,7 +220,7 @@ class GetProductsActionTest extends IntegrationTestCase
         ]);
         $this->removeAttributeOption('color.red');
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products',
             [],
@@ -232,7 +230,7 @@ class GetProductsActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $expectedMessage = 'No products to synchronize. The catalog db1079b6-f397-4a6a-bae4-8658e64ad47c has been ' .
             'disabled on the PIM side. Note that you can get catalogs status with the GET /api/rest/v1/catalogs endpoint.';

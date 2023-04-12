@@ -14,13 +14,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
 
         $this->createMeasurementsFamily([
             'code' => 'Weight',
@@ -41,7 +37,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
     {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($criterion, new AttributeMeasurementCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new AttributeMeasurementCriterion());
 
         $this->assertEmpty($violations);
     }
@@ -302,7 +298,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
     ): void {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($criterion, new AttributeMeasurementCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new AttributeMeasurementCriterion());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }
@@ -590,7 +586,7 @@ class AttributeMeasurementCriterionTest extends AbstractAttributeCriterionTest
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage($expectedMessage);
 
-        $this->validator->validate($criterion, new AttributeMeasurementCriterion());
+        self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new AttributeMeasurementCriterion());
     }
 
     public function exceptionDataProvider(): array

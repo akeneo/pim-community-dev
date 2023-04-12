@@ -17,15 +17,12 @@ use Ramsey\Uuid\Uuid;
  */
 class GetProductCategoriesLabelsQueryTest extends IntegrationTestCase
 {
-    private ?GetProductCategoriesLabelsQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
         $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
-        $this->query = self::getContainer()->get(GetProductCategoriesLabelsQuery::class);
         $this->logAs('admin');
     }
 
@@ -38,7 +35,7 @@ class GetProductCategoriesLabelsQueryTest extends IntegrationTestCase
             new SetCategories(['cameras', 'digital_cameras']),
         ]);
 
-        $result = $this->query->execute('008cc715-77f4-4061-ab7b-8cb6d9fc4ce3', 'en_US');
+        $result = self::getContainer()->get(GetProductCategoriesLabelsQuery::class)->execute('008cc715-77f4-4061-ab7b-8cb6d9fc4ce3', 'en_US');
 
         $this->assertEquals([
             'Cameras',
@@ -55,7 +52,7 @@ class GetProductCategoriesLabelsQueryTest extends IntegrationTestCase
             new SetCategories(['cameras', 'digital_cameras']),
         ]);
 
-        $result = $this->query->execute('008cc715-77f4-4061-ab7b-8cb6d9fc4ce3', 'fr_FR');
+        $result = self::getContainer()->get(GetProductCategoriesLabelsQuery::class)->execute('008cc715-77f4-4061-ab7b-8cb6d9fc4ce3', 'fr_FR');
 
         $this->assertEquals([
             '[cameras]',
@@ -67,7 +64,7 @@ class GetProductCategoriesLabelsQueryTest extends IntegrationTestCase
     {
         $this->createProduct(Uuid::fromString('008cc715-77f4-4061-ab7b-8cb6d9fc4ce3'));
 
-        $result = $this->query->execute('008cc715-77f4-4061-ab7b-8cb6d9fc4ce3', 'fr_FR');
+        $result = self::getContainer()->get(GetProductCategoriesLabelsQuery::class)->execute('008cc715-77f4-4061-ab7b-8cb6d9fc4ce3', 'fr_FR');
 
         $this->assertEmpty($result, 'No category should be found');
     }

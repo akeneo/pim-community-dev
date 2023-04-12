@@ -13,13 +13,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -29,7 +25,7 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
     {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($source, new AttributePriceCollectionSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributePriceCollectionSource());
 
         $this->assertEmpty($violations);
     }
@@ -136,7 +132,7 @@ class AttributePriceCollectionSourceTest extends AbstractAttributeSourceTest
     ): void {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($source, new AttributePriceCollectionSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributePriceCollectionSource());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

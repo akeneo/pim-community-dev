@@ -18,20 +18,16 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class StringFromIdentifierAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringFromIdentifierAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->extractor = self::getContainer()->get(StringFromIdentifierAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(StringFromIdentifierAttributeValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(StringFromIdentifierAttributeValueExtractor::class),
         );
     }
 
@@ -49,7 +45,7 @@ class StringFromIdentifierAttributeValueExtractorTest extends ValueExtractorTest
             'identifier' => 't-shirt blue',
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromIdentifierAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'sku',
             locale: '<all_locales>',
@@ -67,7 +63,7 @@ class StringFromIdentifierAttributeValueExtractorTest extends ValueExtractorTest
             'raw_values' => [],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromIdentifierAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'sku',
             locale: '<all_locales>',
@@ -92,7 +88,7 @@ class StringFromIdentifierAttributeValueExtractorTest extends ValueExtractorTest
             'identifier' => 't-shirt blue',
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromIdentifierAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'sku',
             locale: '<all_locales>',

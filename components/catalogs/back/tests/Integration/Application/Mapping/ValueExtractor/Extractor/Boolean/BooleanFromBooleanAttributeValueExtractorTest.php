@@ -18,20 +18,16 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class BooleanFromBooleanAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?BooleanFromBooleanAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->extractor = self::getContainer()->get(BooleanFromBooleanAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(BooleanFromBooleanAttributeValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(BooleanFromBooleanAttributeValueExtractor::class),
         );
     }
 
@@ -48,7 +44,7 @@ class BooleanFromBooleanAttributeValueExtractorTest extends ValueExtractorTestCa
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(BooleanFromBooleanAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'is_released',
             locale: 'en_US',
@@ -72,7 +68,7 @@ class BooleanFromBooleanAttributeValueExtractorTest extends ValueExtractorTestCa
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(BooleanFromBooleanAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'is_released',
             locale: '<all_locales>',
@@ -96,7 +92,7 @@ class BooleanFromBooleanAttributeValueExtractorTest extends ValueExtractorTestCa
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(BooleanFromBooleanAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'is_released',
             locale: 'en_US',

@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 final class GetCatalogIdsUsingLocalesAsFilterQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogIdsUsingLocalesAsFilterQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetCatalogIdsUsingLocalesAsFilterQuery::class);
     }
 
     /**
@@ -55,7 +51,7 @@ final class GetCatalogIdsUsingLocalesAsFilterQueryTest extends IntegrationTestCa
             ownerUsername: 'shopifi',
         );
 
-        $resultBothCatalogs = $this->query->execute($localesQueried);
+        $resultBothCatalogs = self::getContainer()->get(GetCatalogIdsUsingLocalesAsFilterQuery::class)->execute($localesQueried);
         $this->assertEquals($expectedCatalogs, $resultBothCatalogs);
     }
 

@@ -18,20 +18,16 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class StringFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringFromNumberAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->extractor = self::getContainer()->get(StringFromNumberAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(StringFromNumberAttributeValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(StringFromNumberAttributeValueExtractor::class),
         );
     }
 
@@ -48,7 +44,7 @@ class StringFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromNumberAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'optical_zoom',
             locale: 'en_US',
@@ -72,7 +68,7 @@ class StringFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromNumberAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'optical_zoom',
             locale: '<all_locales>',
@@ -96,7 +92,7 @@ class StringFromNumberAttributeValueExtractorTest extends ValueExtractorTestCase
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromNumberAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'optical_zoom',
             locale: 'en_US',

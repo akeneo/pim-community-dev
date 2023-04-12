@@ -15,13 +15,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeTextareaSourceTest extends AbstractAttributeSourceTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -31,7 +27,7 @@ class AttributeTextareaSourceTest extends AbstractAttributeSourceTest
     {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($source, new AttributeTextareaSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeTextareaSource());
 
         $this->assertEmpty($violations);
     }
@@ -123,7 +119,7 @@ class AttributeTextareaSourceTest extends AbstractAttributeSourceTest
     ): void {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($source, new AttributeTextareaSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeTextareaSource());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

@@ -15,13 +15,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -31,7 +27,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
     {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($source, new AttributeSimpleSelectSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeSimpleSelectSource());
 
         $this->assertEmpty($violations);
     }
@@ -140,7 +136,7 @@ class AttributeSimpleSelectSourceTest extends AbstractAttributeSourceTest
     ): void {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($source, new AttributeSimpleSelectSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeSimpleSelectSource());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

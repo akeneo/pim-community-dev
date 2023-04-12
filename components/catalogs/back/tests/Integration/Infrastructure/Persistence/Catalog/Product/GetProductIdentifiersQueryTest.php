@@ -18,19 +18,11 @@ use Doctrine\DBAL\Connection;
  */
 class GetProductIdentifiersQueryTest extends IntegrationTestCase
 {
-    private ?GetProductIdentifiersQuery $query;
-    private ?Connection $connection;
-    private ?GetCatalogQuery $getCatalogQuery;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetProductIdentifiersQuery::class);
-        $this->connection = self::getContainer()->get(Connection::class);
-        $this->getCatalogQuery = self::getContainer()->get(GetCatalogQuery::class);
     }
 
     public function testItGetsPaginatedProductsUuids(): void
@@ -47,16 +39,16 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
         $this->createProduct('tshirt-red', [new SetEnabled(true)]);
         $this->createProduct('tshirt-yellow', [new SetEnabled(false)]);
 
-        $catalog = $this->getCatalogQuery->execute($catalogId);
+        $catalog = self::getContainer()->get(GetCatalogQuery::class)->execute($catalogId);
 
         $expected = ['tshirt-blue', 'tshirt-green'];
-        $result = $this->query->execute($catalog, null, 2);
+        $result = self::getContainer()->get(GetProductIdentifiersQuery::class)->execute($catalog, null, 2);
 
         $this->assertEquals($expected, $result);
 
         $searchAfter = $this->findProductUuid('tshirt-green');
         $expected = ['tshirt-red'];
-        $result = $this->query->execute($catalog, $searchAfter, 2);
+        $result = self::getContainer()->get(GetProductIdentifiersQuery::class)->execute($catalog, $searchAfter, 2);
 
         $this->assertEquals($expected, $result);
     }
@@ -68,11 +60,11 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
         $catalogId = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->createCatalog($catalogId, 'Store US', 'owner');
 
-        $catalog = $this->getCatalogQuery->execute($catalogId);
+        $catalog = self::getContainer()->get(GetCatalogQuery::class)->execute($catalogId);
 
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->query->execute($catalog, 'invalid_search_after');
+        self::getContainer()->get(GetProductIdentifiersQuery::class)->execute($catalog, 'invalid_search_after');
     }
 
     public function testItGetsPaginatedProductIdentifiersFromCatalogCriteriaWithScopeAndChannel(): void
@@ -105,9 +97,9 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
             ],
         ]);
 
-        $catalog = $this->getCatalogQuery->execute($catalogId);
+        $catalog = self::getContainer()->get(GetCatalogQuery::class)->execute($catalogId);
 
-        $result = $this->query->execute($catalog);
+        $result = self::getContainer()->get(GetProductIdentifiersQuery::class)->execute($catalog);
 
         $this->assertEquals(['tshirt-blue'], $result);
     }
@@ -120,7 +112,7 @@ class GetProductIdentifiersQueryTest extends IntegrationTestCase
             WHERE identifier = :identifier
         SQL;
 
-        return $this->connection->fetchOne($sql, [
+        return self::getContainer()->get(Connection::class)->fetchOne($sql, [
             'identifier' => $identifier,
         ]);
     }

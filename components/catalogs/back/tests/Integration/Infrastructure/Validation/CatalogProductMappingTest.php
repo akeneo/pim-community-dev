@@ -16,13 +16,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CatalogProductMappingTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
 
@@ -44,7 +40,7 @@ class CatalogProductMappingTest extends IntegrationTestCase
             'localizable' => false,
         ]);
 
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
                 'Store US',
@@ -72,7 +68,7 @@ class CatalogProductMappingTest extends IntegrationTestCase
 
     public function testItReturnsViolationsWhenProductMappingIsNotAssociativeArray(): void
     {
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
                 'Store US',
@@ -103,7 +99,7 @@ class CatalogProductMappingTest extends IntegrationTestCase
             'localizable' => false,
         ]);
 
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
                 'Store US',
@@ -138,7 +134,7 @@ class CatalogProductMappingTest extends IntegrationTestCase
             'localizable' => false,
         ]);
 
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
                 'Store US',

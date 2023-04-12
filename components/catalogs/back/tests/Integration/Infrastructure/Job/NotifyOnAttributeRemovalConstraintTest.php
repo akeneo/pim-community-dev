@@ -10,24 +10,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NotifyOnAttributeRemovalConstraintTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
-    private ?NotifyOnAttributeRemovalConstraint $notifyOnAttributeRemovalConstraint;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
-        $this->notifyOnAttributeRemovalConstraint = self::getContainer()->get(NotifyOnAttributeRemovalConstraint::class);
 
         $this->purgeData();
     }
 
     public function testItProvidesConstraintToValidateParameters(): void
     {
-        $constraintCollection = $this->notifyOnAttributeRemovalConstraint->getConstraintCollection();
+        $constraintCollection = self::getContainer()->get(NotifyOnAttributeRemovalConstraint::class)->getConstraintCollection();
         $parameters = ['attribute_codes' => ['name', 'description']];
-        $violations = $this->validator->validate($parameters, $constraintCollection);
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($parameters, $constraintCollection);
 
         $this->assertEmpty($violations);
     }
@@ -39,8 +33,8 @@ class NotifyOnAttributeRemovalConstraintTest extends IntegrationTestCase
         array $parameters,
         string $expectedMessage,
     ): void {
-        $constraintCollection = $this->notifyOnAttributeRemovalConstraint->getConstraintCollection();
-        $violations = $this->validator->validate($parameters, $constraintCollection);
+        $constraintCollection = self::getContainer()->get(NotifyOnAttributeRemovalConstraint::class)->getConstraintCollection();
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($parameters, $constraintCollection);
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

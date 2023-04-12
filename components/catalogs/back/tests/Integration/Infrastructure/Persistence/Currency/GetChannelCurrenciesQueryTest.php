@@ -16,27 +16,23 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetChannelCurrenciesQueryTest extends IntegrationTestCase
 {
-    private ?GetChannelCurrenciesQueryInterface $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetChannelCurrenciesQuery::class);
     }
 
     public function testItGetsChannelCurrency(): void
     {
         $this->createChannel('print', ['en_US'], ['USD', 'EUR', 'GBP']);
-        $this->assertEquals(['USD', 'EUR', 'GBP'], $this->query->execute('print'));
+        $this->assertEquals(['USD', 'EUR', 'GBP'], self::getContainer()->get(GetChannelCurrenciesQuery::class)->execute('print'));
     }
 
     public function testItGetsAnEmptyList(): void
     {
         $this->createChannel('print', ['en_US'], []);
-        $this->assertEmpty($this->query->execute('print'));
+        $this->assertEmpty(self::getContainer()->get(GetChannelCurrenciesQuery::class)->execute('print'));
     }
 
     public function testItThrowsAnExceptionWhenChannelCodeIsWrong(): void
@@ -44,6 +40,6 @@ class GetChannelCurrenciesQueryTest extends IntegrationTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Channel \'unknown_channel_code\' not found');
 
-        $this->query->execute('unknown_channel_code');
+        self::getContainer()->get(GetChannelCurrenciesQuery::class)->execute('unknown_channel_code');
     }
 }

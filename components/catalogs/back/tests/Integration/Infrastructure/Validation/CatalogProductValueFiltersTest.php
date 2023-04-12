@@ -16,20 +16,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CatalogProductValueFiltersTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
     public function testItValidates(): void
     {
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
                 'Store US',
@@ -55,7 +51,7 @@ class CatalogProductValueFiltersTest extends IntegrationTestCase
         array $filters,
         string $expectedMessage,
     ): void {
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
                 'Store US',

@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 final class GetCatalogIdsUsingAttributesInProductMappingQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogIdsUsingAttributesInProductMappingQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetCatalogIdsUsingAttributesInProductMappingQuery::class);
     }
 
     /**
@@ -56,7 +52,7 @@ final class GetCatalogIdsUsingAttributesInProductMappingQueryTest extends Integr
             ownerUsername: 'shopifi',
         );
 
-        $resultBothCatalogs = $this->query->execute($attributesQueried);
+        $resultBothCatalogs = self::getContainer()->get(GetCatalogIdsUsingAttributesInProductMappingQuery::class)->execute($attributesQueried);
         $this->assertEquals($expectedCatalogs, $resultBothCatalogs);
     }
 

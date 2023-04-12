@@ -15,16 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetLocalesByCodeQueryTest extends IntegrationTestCase
 {
-    public ?object $connection;
-    private ?GetLocalesByCodeQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetLocalesByCodeQuery::class);
     }
 
     public function testItGetsPaginatedLocalesByCode(): void
@@ -32,9 +27,9 @@ class GetLocalesByCodeQueryTest extends IntegrationTestCase
         // Locales are only activated when used in a channel
         $this->createChannel('mobile', ['en_US', 'fr_FR']);
 
-        $page1 = $this->query->execute(['en_US', 'fr_FR'], 1, 1);
-        $page2 = $this->query->execute(['en_US', 'fr_FR'], 2, 1);
-        $page3 = $this->query->execute(['en_US', 'fr_FR'], 3, 1);
+        $page1 = self::getContainer()->get(GetLocalesByCodeQuery::class)->execute(['en_US', 'fr_FR'], 1, 1);
+        $page2 = self::getContainer()->get(GetLocalesByCodeQuery::class)->execute(['en_US', 'fr_FR'], 2, 1);
+        $page3 = self::getContainer()->get(GetLocalesByCodeQuery::class)->execute(['en_US', 'fr_FR'], 3, 1);
 
         $expectedPage1 = [
             [
@@ -57,7 +52,7 @@ class GetLocalesByCodeQueryTest extends IntegrationTestCase
 
     public function testItGetsNoLocales(): void
     {
-        $page = $this->query->execute([], 1, 2);
+        $page = self::getContainer()->get(GetLocalesByCodeQuery::class)->execute([], 1, 2);
 
         self::assertEquals([], $page);
     }

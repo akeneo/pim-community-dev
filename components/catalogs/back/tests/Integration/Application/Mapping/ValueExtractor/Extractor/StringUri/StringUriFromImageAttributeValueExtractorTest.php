@@ -18,20 +18,16 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class StringUriFromImageAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringUriFromImageAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->extractor = self::getContainer()->get(StringUriFromImageAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(StringUriFromImageAttributeValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(StringUriFromImageAttributeValueExtractor::class),
         );
     }
 
@@ -48,7 +44,7 @@ class StringUriFromImageAttributeValueExtractorTest extends ValueExtractorTestCa
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringUriFromImageAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'picture',
             locale: 'en_US',
@@ -75,7 +71,7 @@ class StringUriFromImageAttributeValueExtractorTest extends ValueExtractorTestCa
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringUriFromImageAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'picture',
             locale: '<all_locales>',
@@ -99,7 +95,7 @@ class StringUriFromImageAttributeValueExtractorTest extends ValueExtractorTestCa
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringUriFromImageAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'picture',
             locale: 'en_US',

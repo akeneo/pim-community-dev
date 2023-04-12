@@ -20,23 +20,20 @@ use Ramsey\Uuid\Uuid;
  */
 class ArrayOfStringsFromCategoriesValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?ArrayOfStringsFromCategoriesValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
         $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
-        $this->extractor = self::getContainer()->get(ArrayOfStringsFromCategoriesValueExtractor::class);
         $this->logAs('admin');
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(ArrayOfStringsFromCategoriesValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(ArrayOfStringsFromCategoriesValueExtractor::class),
         );
     }
 
@@ -55,7 +52,7 @@ class ArrayOfStringsFromCategoriesValueExtractorTest extends ValueExtractorTestC
             'uuid' => Uuid::fromString($productUuid),
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(ArrayOfStringsFromCategoriesValueExtractor::class)->extract(
             product: $rawProduct,
             code: 'categories',
             locale: null,
@@ -77,7 +74,7 @@ class ArrayOfStringsFromCategoriesValueExtractorTest extends ValueExtractorTestC
             'uuid' => Uuid::fromString($productUuid),
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(ArrayOfStringsFromCategoriesValueExtractor::class)->extract(
             product: $rawProduct,
             code: 'categories',
             locale: null,
@@ -105,7 +102,7 @@ class ArrayOfStringsFromCategoriesValueExtractorTest extends ValueExtractorTestC
             'uuid' => Uuid::fromString($productUuid),
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(ArrayOfStringsFromCategoriesValueExtractor::class)->extract(
             product: $rawProduct,
             code: 'categories',
             locale: null,

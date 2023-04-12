@@ -13,13 +13,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeBooleanCriterionTest extends AbstractAttributeCriterionTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -29,7 +25,7 @@ class AttributeBooleanCriterionTest extends AbstractAttributeCriterionTest
     {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($criterion, new AttributeBooleanCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new AttributeBooleanCriterion());
 
         $this->assertEmpty($violations);
     }
@@ -114,7 +110,7 @@ class AttributeBooleanCriterionTest extends AbstractAttributeCriterionTest
     ): void {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($criterion, new AttributeBooleanCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new AttributeBooleanCriterion());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

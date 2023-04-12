@@ -16,27 +16,23 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class IsCurrencyActivatedQueryTest extends IntegrationTestCase
 {
-    private ?IsCurrencyActivatedQueryInterface $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(IsCurrencyActivatedQuery::class);
     }
 
     public function testItDefinesIfACurrencyIsActivated(): void
     {
-        $isActivated = $this->query->execute('EUR');
+        $isActivated = self::getContainer()->get(IsCurrencyActivatedQuery::class)->execute('EUR');
 
         self::assertTrue($isActivated);
     }
 
     public function testItDefinesIfACurrencyIsNotActivated(): void
     {
-        $isActivated = $this->query->execute('AUD');
+        $isActivated = self::getContainer()->get(IsCurrencyActivatedQuery::class)->execute('AUD');
 
         self::assertFalse($isActivated);
     }

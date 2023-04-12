@@ -20,22 +20,19 @@ use Ramsey\Uuid\Uuid;
  */
 class StringFromFamilyValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringFromFamilyValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->purgeDataAndLoadMinimalCatalog();
         $this->createUser('admin', ['IT support'], ['ROLE_ADMINISTRATOR']);
-        $this->extractor = self::getContainer()->get(StringFromFamilyValueExtractor::class);
         $this->logAs('admin');
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(StringFromFamilyValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(StringFromFamilyValueExtractor::class),
         );
     }
 
@@ -56,7 +53,7 @@ class StringFromFamilyValueExtractorTest extends ValueExtractorTestCase
             'family_code' => 'shoes',
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromFamilyValueExtractor::class)->extract(
             product: $product,
             code: 'family',
             locale: null,
@@ -85,7 +82,7 @@ class StringFromFamilyValueExtractorTest extends ValueExtractorTestCase
             'family_code' => 'shoes',
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromFamilyValueExtractor::class)->extract(
             product: $product,
             code: 'family',
             locale: null,

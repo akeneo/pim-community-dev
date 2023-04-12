@@ -17,8 +17,6 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class CreateCatalogActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client = null;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,9 +26,9 @@ class CreateCatalogActionTest extends IntegrationTestCase
 
     public function testItCreatesTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['write_catalogs']);
+        $client = $this->getAuthenticatedPublicApiClient(['write_catalogs']);
 
-        $this->client->request(
+        $client->request(
             'POST',
             '/api/rest/v1/catalogs',
             [],
@@ -43,7 +41,7 @@ class CreateCatalogActionTest extends IntegrationTestCase
             ]),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(201, $response->getStatusCode());
@@ -54,9 +52,9 @@ class CreateCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsUnprocessableEntityWhenInvalid(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['write_catalogs']);
+        $client = $this->getAuthenticatedPublicApiClient(['write_catalogs']);
 
-        $this->client->request(
+        $client->request(
             'POST',
             '/api/rest/v1/catalogs',
             [],
@@ -69,7 +67,7 @@ class CreateCatalogActionTest extends IntegrationTestCase
             ]),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(422, $response->getStatusCode());
@@ -79,9 +77,9 @@ class CreateCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([]);
+        $client = $this->getAuthenticatedPublicApiClient([]);
 
-        $this->client->request(
+        $client->request(
             'POST',
             '/api/rest/v1/catalogs',
             [],
@@ -94,7 +92,7 @@ class CreateCatalogActionTest extends IntegrationTestCase
             ]),
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(403, $response->getStatusCode());
     }

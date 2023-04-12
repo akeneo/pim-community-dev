@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetLocalesQueryTest extends IntegrationTestCase
 {
-    private ?GetLocalesQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetLocalesQuery::class);
     }
 
     public function testItGetsLocales(): void
@@ -31,7 +27,7 @@ class GetLocalesQueryTest extends IntegrationTestCase
         // Locales are only activated when used in a channel
         $this->createChannel('mobile', ['en_US', 'fr_FR']);
 
-        $result = $this->query->execute();
+        $result = self::getContainer()->get(GetLocalesQuery::class)->execute();
 
         $expected = [
             ['code' => 'en_US', 'label' => 'English (United States)'],

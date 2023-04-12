@@ -18,22 +18,18 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringFromSimpleSelectAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->extractor = self::getContainer()->get(StringFromSimpleSelectAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(StringFromSimpleSelectAttributeValueExtractor::class)->getSupportedTargetType()],
+            self::getContainer()->get(StringFromSimpleSelectAttributeValueExtractor::class),
         );
     }
 
@@ -58,7 +54,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromSimpleSelectAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'color',
             locale: 'en_US',
@@ -82,7 +78,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromSimpleSelectAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'color',
             locale: '<all_locales>',
@@ -114,7 +110,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromSimpleSelectAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'color',
             locale: 'en_US',
@@ -146,7 +142,7 @@ class StringFromSimpleSelectAttributeValueExtractorTest extends ValueExtractorTe
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringFromSimpleSelectAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'color',
             locale: 'en_US',

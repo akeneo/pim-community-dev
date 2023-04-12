@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetCategoriesByCodeQueryTest extends IntegrationTestCase
 {
-    private ?GetCategoriesByCodeQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetCategoriesByCodeQuery::class);
     }
 
     public function testItGetsCategoriesFromCodeList(): void
@@ -51,7 +47,7 @@ class GetCategoriesByCodeQueryTest extends IntegrationTestCase
             'isLeaf' => false,
         ];
 
-        $result = $this->query->execute(['tshirt', 'shoes', 'pants', 'non_existing_category'], 'en_US');
+        $result = self::getContainer()->get(GetCategoriesByCodeQuery::class)->execute(['tshirt', 'shoes', 'pants', 'non_existing_category'], 'en_US');
 
         $this->assertEquals([
             $expectedPantsCategory,
@@ -64,7 +60,7 @@ class GetCategoriesByCodeQueryTest extends IntegrationTestCase
     {
         $this->createCategory(['code' => 'tshirt']);
 
-        $result = $this->query->execute([], 'en_US');
+        $result = self::getContainer()->get(GetCategoriesByCodeQuery::class)->execute([], 'en_US');
 
         $this->assertEmpty($result, 'No category should be found');
     }
@@ -73,7 +69,7 @@ class GetCategoriesByCodeQueryTest extends IntegrationTestCase
     {
         $this->createCategory(['code' => 'tshirt']);
 
-        $result = $this->query->execute(['unknown', 'shoes', 'pants'], 'en_US');
+        $result = self::getContainer()->get(GetCategoriesByCodeQuery::class)->execute(['unknown', 'shoes', 'pants'], 'en_US');
 
         $this->assertEmpty($result, 'No category should be found');
     }

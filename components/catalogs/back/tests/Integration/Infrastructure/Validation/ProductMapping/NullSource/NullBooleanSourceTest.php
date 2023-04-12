@@ -16,13 +16,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class NullBooleanSourceTest extends AbstractAttributeSourceTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -30,7 +26,7 @@ class NullBooleanSourceTest extends AbstractAttributeSourceTest
      */
     public function testItReturnsNoViolation(array $source): void
     {
-        $violations = $this->validator->validate($source, new NullBooleanSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new NullBooleanSource());
 
         $this->assertEmpty($violations);
     }
@@ -79,7 +75,7 @@ class NullBooleanSourceTest extends AbstractAttributeSourceTest
         array $source,
         string $expectedMessage,
     ): void {
-        $violations = $this->validator->validate($source, new NullBooleanSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new NullBooleanSource());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

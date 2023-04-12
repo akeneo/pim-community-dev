@@ -19,8 +19,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
  */
 class GetProductQueryTest extends IntegrationTestCase
 {
-    private ?GetProductQuery $getProductQuery;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,8 +26,6 @@ class GetProductQueryTest extends IntegrationTestCase
         $this->clock->set(new \DateTimeImmutable('2022-08-30T15:30:00+00:00'));
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->getProductQuery = self::getContainer()->get(GetProductQuery::class);
     }
 
     public function testItReturnsAProductMatchingTheCatalog(): void
@@ -52,7 +48,7 @@ class GetProductQueryTest extends IntegrationTestCase
         $this->createProduct('tshirt-green', [new SetEnabled(false)]);
         $productEnabledUuid = (string) $productEnabled->getUuid();
 
-        $result = $this->getProductQuery->execute($catalog, $productEnabledUuid);
+        $result = self::getContainer()->get(GetProductQuery::class)->execute($catalog, $productEnabledUuid);
 
         $this->assertEquals([
             'uuid' => $productEnabledUuid,
@@ -134,7 +130,7 @@ class GetProductQueryTest extends IntegrationTestCase
         ]);
         $productUuid = (string) $product->getUuid();
 
-        $result = $this->getProductQuery->execute($catalog, $productUuid);
+        $result = self::getContainer()->get(GetProductQuery::class)->execute($catalog, $productUuid);
 
         $this->assertEquals([
             'uuid' => $productUuid,
@@ -225,7 +221,7 @@ class GetProductQueryTest extends IntegrationTestCase
         ]);
         $productUuid = (string) $product->getUuid();
 
-        $result = $this->getProductQuery->execute($catalog, $productUuid);
+        $result = self::getContainer()->get(GetProductQuery::class)->execute($catalog, $productUuid);
 
         $this->assertEquals([
             'uuid' => $productUuid,
@@ -321,7 +317,7 @@ class GetProductQueryTest extends IntegrationTestCase
         ]);
 
         $productUuid = (string) $product->getUuid();
-        $result = $this->getProductQuery->execute($catalog, $productUuid);
+        $result = self::getContainer()->get(GetProductQuery::class)->execute($catalog, $productUuid);
 
         $this->assertEquals([
             'uuid' => $productUuid,
@@ -438,7 +434,7 @@ class GetProductQueryTest extends IntegrationTestCase
         ]);
         $productUuid = (string) $product->getUuid();
 
-        $result = $this->getProductQuery->execute($catalog, $productUuid);
+        $result = self::getContainer()->get(GetProductQuery::class)->execute($catalog, $productUuid);
 
         $this->assertEquals([
             'uuid' => $productUuid,

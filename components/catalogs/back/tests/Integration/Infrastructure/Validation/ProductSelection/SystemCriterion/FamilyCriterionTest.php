@@ -15,13 +15,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class FamilyCriterionTest extends AbstractSystemCriterionTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
 
         $this->createFamily(['code' => 'familyA', 'label' => '[familyA]']);
         $this->createFamily(['code' => 'familyB', 'label' => '[familyB]']);
@@ -32,7 +28,7 @@ class FamilyCriterionTest extends AbstractSystemCriterionTest
      */
     public function testItReturnsNoViolation(array $criterion): void
     {
-        $violations = $this->validator->validate($criterion, new FamilyCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new FamilyCriterion());
 
         $this->assertEmpty($violations);
     }
@@ -76,7 +72,7 @@ class FamilyCriterionTest extends AbstractSystemCriterionTest
      */
     public function testItReturnsViolationsWhenInvalid(array $criterion, string $expectedMessage): void
     {
-        $violations = $this->validator->validate($criterion, new FamilyCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new FamilyCriterion());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

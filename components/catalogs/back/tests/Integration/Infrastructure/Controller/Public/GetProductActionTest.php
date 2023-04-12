@@ -19,8 +19,6 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
  */
 class GetProductActionTest extends IntegrationTestCase
 {
-    private ?KernelBrowser $client = null;
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -29,6 +27,9 @@ class GetProductActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
+    /**
+     * @group leak
+     */
     public function testItGetsProductByCatalogIdAndUuid(): void
     {
         $productCountFromEvent = 0;
@@ -36,7 +37,7 @@ class GetProductActionTest extends IntegrationTestCase
             $productCountFromEvent = $productCount;
         });
 
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
@@ -48,7 +49,7 @@ class GetProductActionTest extends IntegrationTestCase
         $this->createProduct('green', [new SetEnabled(false)]);
         $productUuid = (string) $product->getUuid();
 
-        $this->client->request(
+        $client->request(
             'GET',
             "/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/$productUuid",
             [],
@@ -58,7 +59,7 @@ class GetProductActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $result = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -69,9 +70,9 @@ class GetProductActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingReadProductsPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/c335c87e-ec23-4c5b-abfa-0638f141933a',
             [],
@@ -81,16 +82,16 @@ class GetProductActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
     public function testItReturnsForbiddenWhenMissingReadCatalogsPermissions(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_products']);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/c335c87e-ec23-4c5b-abfa-0638f141933a',
             [],
@@ -100,16 +101,16 @@ class GetProductActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
 
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/c335c87e-ec23-4c5b-abfa-0638f141933a',
             [],
@@ -119,7 +120,7 @@ class GetProductActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedMessage = 'Either catalog "db1079b6-f397-4a6a-bae4-8658e64ad47c" does not exist or you can\'t access'.
@@ -131,14 +132,14 @@ class GetProductActionTest extends IntegrationTestCase
 
     public function testItReturnsNotFoundWhenProductDoesNotExistForTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
             ownerUsername: 'shopifi',
         );
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/c335c87e-ec23-4c5b-abfa-0638f141933a',
             [],
@@ -148,7 +149,7 @@ class GetProductActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedMessage = 'Either catalog "db1079b6-f397-4a6a-bae4-8658e64ad47c" does not exist or you can\'t access'.
@@ -160,7 +161,7 @@ class GetProductActionTest extends IntegrationTestCase
 
     public function testItReturnsNotFoundWhenTheProductIsFilteredOut(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient([
+        $client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'read_products',
         ]);
@@ -182,7 +183,7 @@ class GetProductActionTest extends IntegrationTestCase
             ],
         );
 
-        $this->client->request(
+        $client->request(
             'GET',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/c335c87e-ec23-4c5b-abfa-0638f141933a',
             [],
@@ -192,7 +193,7 @@ class GetProductActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $payload = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedMessage = 'Either catalog "db1079b6-f397-4a6a-bae4-8658e64ad47c" does not exist or you can\'t access'.
@@ -205,7 +206,7 @@ class GetProductActionTest extends IntegrationTestCase
 
     public function testItReturnsAnErrorWhenCatalogIsDisabled(): void
     {
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
         $this->createCatalog(
             id: 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             name: 'Store US',
@@ -216,7 +217,7 @@ class GetProductActionTest extends IntegrationTestCase
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
         $productUuid = (string) $product->getUuid();
 
-        $this->client->request(
+        $client->request(
             'GET',
             "/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/$productUuid",
             [],
@@ -226,7 +227,7 @@ class GetProductActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $result = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());
@@ -242,7 +243,7 @@ class GetProductActionTest extends IntegrationTestCase
             'options' => ['red', 'blue'],
         ]);
 
-        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
+        $client = $this->getAuthenticatedPublicApiClient(['read_catalogs', 'read_products']);
 
         $product = $this->createProduct('blue', [new SetEnabled(true)]);
         $productUuid = (string) $product->getUuid();
@@ -264,7 +265,7 @@ class GetProductActionTest extends IntegrationTestCase
 
         $this->removeAttributeOption('color.red');
 
-        $this->client->request(
+        $client->request(
             'GET',
             "/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c/products/$productUuid",
             [],
@@ -274,7 +275,7 @@ class GetProductActionTest extends IntegrationTestCase
             ],
         );
 
-        $response = $this->client->getResponse();
+        $response = $client->getResponse();
         $result = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(200, $response->getStatusCode());

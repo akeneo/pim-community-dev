@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetAttributeOptionsByCodeQueryTest extends IntegrationTestCase
 {
-    private ?GetAttributeOptionsByCodeQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetAttributeOptionsByCodeQuery::class);
     }
 
     public function testItReturnsAttributeOptions(): void
@@ -34,7 +30,7 @@ class GetAttributeOptionsByCodeQueryTest extends IntegrationTestCase
             'options' => ['XS', 'S', 'M', 'L', 'XL'],
         ]);
 
-        $result = $this->query->execute('clothing_size', ['xs', 'm', 'xl'], 'en_US');
+        $result = self::getContainer()->get(GetAttributeOptionsByCodeQuery::class)->execute('clothing_size', ['xs', 'm', 'xl'], 'en_US');
         $this->assertEquals([
             [
                 'code' => 'xs',
@@ -59,7 +55,7 @@ class GetAttributeOptionsByCodeQueryTest extends IntegrationTestCase
             'options' => ['XS', 'S', 'M', 'L', 'XL'],
         ]);
 
-        $result = $this->query->execute('clothing_size', ['xs', 'm', 'xl'], 'jp_JP');
+        $result = self::getContainer()->get(GetAttributeOptionsByCodeQuery::class)->execute('clothing_size', ['xs', 'm', 'xl'], 'jp_JP');
         $this->assertEquals([
             [
                 'code' => 'xs',

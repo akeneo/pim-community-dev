@@ -10,24 +10,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DisableCatalogsOnLocaleDeactivationConstraintTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
-    private ?DisableCatalogsOnLocaleDeactivationConstraint $disableCatalogConstraint;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
-        $this->disableCatalogConstraint = self::getContainer()->get(DisableCatalogsOnLocaleDeactivationConstraint::class);
 
         $this->purgeData();
     }
 
     public function testItProvidesConstraintToValidateParameters(): void
     {
-        $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
+        $constraintCollection = self::getContainer()->get(
+            DisableCatalogsOnLocaleDeactivationConstraint::class,
+        )->getConstraintCollection();
         $parameters = ['locale_codes' => ['fr_FR', 'en_US']];
-        $violations = $this->validator->validate($parameters, $constraintCollection);
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
+            $parameters,
+            $constraintCollection,
+        );
 
         $this->assertEmpty($violations);
     }
@@ -39,8 +38,13 @@ class DisableCatalogsOnLocaleDeactivationConstraintTest extends IntegrationTestC
         array $parameters,
         string $expectedMessage,
     ): void {
-        $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
-        $violations = $this->validator->validate($parameters, $constraintCollection);
+        $constraintCollection = self::getContainer()->get(
+            DisableCatalogsOnLocaleDeactivationConstraint::class,
+        )->getConstraintCollection();
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
+            $parameters,
+            $constraintCollection,
+        );
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

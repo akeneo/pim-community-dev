@@ -15,22 +15,18 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetChannelQueryTest extends IntegrationTestCase
 {
-    private ?GetChannelQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetChannelQuery::class);
     }
 
     public function testItGetsChannelByCode(): void
     {
         $this->createChannel('mobile', ['en_US']);
 
-        $result = $this->query->execute('mobile');
+        $result = self::getContainer()->get(GetChannelQuery::class)->execute('mobile');
 
         $expected = [
             'code' => 'mobile',
@@ -42,7 +38,7 @@ class GetChannelQueryTest extends IntegrationTestCase
 
     public function testItGetsNullWithInvalidCode(): void
     {
-        $result = $this->query->execute('not_a_channel_code');
+        $result = self::getContainer()->get(GetChannelQuery::class)->execute('not_a_channel_code');
 
         self::assertNull($result);
     }

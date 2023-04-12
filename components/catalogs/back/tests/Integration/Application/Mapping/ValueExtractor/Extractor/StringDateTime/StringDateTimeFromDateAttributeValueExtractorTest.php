@@ -18,22 +18,20 @@ use Akeneo\Catalogs\Test\Integration\Application\Mapping\ValueExtractor\Extracto
  */
 class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTestCase
 {
-    private ?StringDateTimeFromDateAttributeValueExtractor $extractor;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->extractor = self::getContainer()->get(StringDateTimeFromDateAttributeValueExtractor::class);
     }
 
     public function testItReturnsTheCorrectType(): void
     {
         $this->assertInstanceOf(
-            self::TARGET_TYPES_INTERFACES_MAPPING[$this->extractor->getSupportedTargetType()],
-            $this->extractor,
+            self::TARGET_TYPES_INTERFACES_MAPPING[self::getContainer()->get(
+                StringDateTimeFromDateAttributeValueExtractor::class,
+            )->getSupportedTargetType()],
+            self::getContainer()->get(StringDateTimeFromDateAttributeValueExtractor::class),
         );
     }
 
@@ -55,7 +53,7 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
             ],
         ];
 
-        $releaseDate = $this->extractor->extract(
+        $releaseDate = self::getContainer()->get(StringDateTimeFromDateAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'release_date',
             locale: '<all_locales>',
@@ -65,7 +63,7 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
 
         $this->assertEquals('2012-04-08T00:00:00+00:00', $releaseDate);
 
-        $endOfLife = $this->extractor->extract(
+        $endOfLife = self::getContainer()->get(StringDateTimeFromDateAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'end_of_life',
             locale: 'en_US',
@@ -97,7 +95,7 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
             'localizable' => false,
         ]);
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringDateTimeFromDateAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'release_date',
             locale: null,
@@ -121,7 +119,7 @@ class StringDateTimeFromDateAttributeValueExtractorTest extends ValueExtractorTe
             ],
         ];
 
-        $result = $this->extractor->extract(
+        $result = self::getContainer()->get(StringDateTimeFromDateAttributeValueExtractor::class)->extract(
             product: $product,
             code: 'release_date',
             locale: 'en_US',

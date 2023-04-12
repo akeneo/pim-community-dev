@@ -6,7 +6,6 @@ namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Internal;
 
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -16,13 +15,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class GetAllCatalogsByOwnerActionTest extends IntegrationTestCase
 {
-    public ?object $tokenStorage;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->tokenStorage = self::getContainer()->get(TokenStorageInterface::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }

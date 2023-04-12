@@ -18,13 +18,9 @@ use PHPUnit\Framework\Assert;
  */
 class GetProductMappingSchemaActionTest extends IntegrationTestCase
 {
-    private ?CommandBus $commandBus;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->commandBus = self::getContainer()->get(CommandBus::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -33,12 +29,12 @@ class GetProductMappingSchemaActionTest extends IntegrationTestCase
     {
         $client = $this->getAuthenticatedInternalApiClient();
 
-        $this->commandBus->execute(new CreateCatalogCommand(
+        self::getContainer()->get(CommandBus::class)->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
             'admin',
         ));
-        $this->commandBus->execute(new UpdateProductMappingSchemaCommand(
+        self::getContainer()->get(CommandBus::class)->execute(new UpdateProductMappingSchemaCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             \json_decode($this->getValidSchemaData(), false, 512, JSON_THROW_ON_ERROR),
         ));
@@ -84,7 +80,7 @@ class GetProductMappingSchemaActionTest extends IntegrationTestCase
     public function testItReturnsNotFoundWhenCatalogHasNoProductMappingSchema(): void
     {
         $client = $this->getAuthenticatedInternalApiClient();
-        $this->commandBus->execute(new CreateCatalogCommand(
+        self::getContainer()->get(CommandBus::class)->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
             'admin',

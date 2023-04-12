@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class FindOneAttributeByCodeQueryTest extends IntegrationTestCase
 {
-    private ?FindOneAttributeByCodeQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(FindOneAttributeByCodeQuery::class);
     }
 
     public function testItReturnsTheNormalizedAttribute(): void
@@ -33,7 +29,7 @@ class FindOneAttributeByCodeQueryTest extends IntegrationTestCase
             'type' => 'pim_catalog_text',
         ]);
 
-        $result = $this->query->execute('name');
+        $result = self::getContainer()->get(FindOneAttributeByCodeQuery::class)->execute('name');
 
         $this->assertEquals([
             'code' => 'name',
@@ -55,7 +51,7 @@ class FindOneAttributeByCodeQueryTest extends IntegrationTestCase
             'default_metric_unit' => 'KILOGRAM',
         ]);
 
-        $result = $this->query->execute('weight');
+        $result = self::getContainer()->get(FindOneAttributeByCodeQuery::class)->execute('weight');
 
         $this->assertEquals([
             'code' => 'weight',
@@ -72,7 +68,7 @@ class FindOneAttributeByCodeQueryTest extends IntegrationTestCase
 
     public function testItReturnsNullIfNotFound(): void
     {
-        $result = $this->query->execute('unknown');
+        $result = self::getContainer()->get(FindOneAttributeByCodeQuery::class)->execute('unknown');
 
         $this->assertNull($result);
     }

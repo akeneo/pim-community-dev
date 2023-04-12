@@ -16,20 +16,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CatalogProductSelectionCriteriaTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
     public function testItValidates(): void
     {
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
                 'Store US',
@@ -69,7 +65,7 @@ class CatalogProductSelectionCriteriaTest extends IntegrationTestCase
 
     public function testItReturnsViolationsWhenProductSelectionCriteriaIsAssociativeArray(): void
     {
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
                 'Store US',
@@ -104,7 +100,7 @@ class CatalogProductSelectionCriteriaTest extends IntegrationTestCase
 
     public function testItReturnsViolationsWhenFieldIsInvalid(): void
     {
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
                 'Store US',
@@ -130,7 +126,7 @@ class CatalogProductSelectionCriteriaTest extends IntegrationTestCase
      */
     public function testItValidatesTheNumberOfProductSelectionCriteria(int $number, bool $allowed): void
     {
-        $violations = $this->validator->validate(
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new Catalog(
                 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
                 'Store US',

@@ -16,13 +16,10 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class IsCatalogValidTest extends IntegrationTestCase
 {
-    private ?IsCatalogValidInterface $isCatalogValid;
-
     protected function setUp(): void
     {
         parent::setUp();
         $this->disableExperimentalTestDatabase();
-        $this->isCatalogValid = self::getContainer()->get(IsCatalogValidInterface::class);
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
@@ -47,7 +44,7 @@ class IsCatalogValidTest extends IntegrationTestCase
             ],
         ]);
 
-        $isCatalogValid = ($this->isCatalogValid)($this->getCatalogDomain($catalogIdUS));
+        $isCatalogValid = (self::getContainer()->get(IsCatalogValidInterface::class))($this->getCatalogDomain($catalogIdUS));
         $this->assertTrue($isCatalogValid);
     }
 
@@ -73,7 +70,7 @@ class IsCatalogValidTest extends IntegrationTestCase
         ]);
         $this->removeAttributeOption('color.red');
 
-        $isCatalogValid = ($this->isCatalogValid)($this->getCatalogDomain($catalogIdUS));
+        $isCatalogValid = (self::getContainer()->get(IsCatalogValidInterface::class))($this->getCatalogDomain($catalogIdUS));
         $this->assertFalse($isCatalogValid);
     }
 

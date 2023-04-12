@@ -15,13 +15,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CompletenessCriterionTest extends AbstractSystemCriterionTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -29,7 +25,7 @@ class CompletenessCriterionTest extends AbstractSystemCriterionTest
      */
     public function testItReturnsNoViolation(array $criterion): void
     {
-        $violations = $this->validator->validate($criterion, new CompletenessCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new CompletenessCriterion());
 
         $this->assertEmpty($violations);
     }
@@ -81,7 +77,7 @@ class CompletenessCriterionTest extends AbstractSystemCriterionTest
      */
     public function testItReturnsViolationsWhenInvalid(array $criterion, string $expectedMessage): void
     {
-        $violations = $this->validator->validate($criterion, new CompletenessCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new CompletenessCriterion());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

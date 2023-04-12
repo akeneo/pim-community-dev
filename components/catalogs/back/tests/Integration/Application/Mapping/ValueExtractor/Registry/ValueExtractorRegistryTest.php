@@ -34,13 +34,9 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class ValueExtractorRegistryTest extends IntegrationTestCase
 {
-    private ?ValueExtractorRegistry $registry;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->registry = self::getContainer()->get(ValueExtractorRegistry::class);
     }
 
     /**
@@ -53,7 +49,7 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
         ?string $targetFormat,
         string $extractorClassName,
     ): void {
-        $extractor = $this->registry->find($sourceType, $subSourceType, $targetType, $targetFormat);
+        $extractor = self::getContainer()->get(ValueExtractorRegistry::class)->find($sourceType, $subSourceType, $targetType, $targetFormat);
 
         $this->assertEquals($extractorClassName, $extractor::class);
     }
@@ -187,6 +183,6 @@ class ValueExtractorRegistryTest extends IntegrationTestCase
     {
         $this->expectException(ValueExtractorNotFoundException::class);
 
-        $this->registry->find('pim_catalog_text', null, 'boolean', null);
+        self::getContainer()->get(ValueExtractorRegistry::class)->find('pim_catalog_text', null, 'boolean', null);
     }
 }

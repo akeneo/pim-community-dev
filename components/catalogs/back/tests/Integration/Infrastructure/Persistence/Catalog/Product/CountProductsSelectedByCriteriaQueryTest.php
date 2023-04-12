@@ -13,15 +13,11 @@ use PHPUnit\Framework\Assert;
 
 class CountProductsSelectedByCriteriaQueryTest extends IntegrationTestCase
 {
-    private ?CountProductsSelectedByCriteriaQueryInterface $getProductsCountQuery;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->getProductsCountQuery = self::getContainer()->get(CountProductsSelectedByCriteriaQueryInterface::class);
     }
 
     public function testItCountsTheNumberOfProductsInTheSelection(): void
@@ -41,7 +37,7 @@ class CountProductsSelectedByCriteriaQueryTest extends IntegrationTestCase
             ],
         ];
 
-        $count = $this->getProductsCountQuery->execute($productSelectionCriteria);
+        $count = self::getContainer()->get(CountProductsSelectedByCriteriaQueryInterface::class)->execute($productSelectionCriteria);
         Assert::assertEquals(2, $count);
     }
 
@@ -61,7 +57,7 @@ class CountProductsSelectedByCriteriaQueryTest extends IntegrationTestCase
             ],
         ];
 
-        $count = $this->getProductsCountQuery->execute($productSelectionCriteria);
+        $count = self::getContainer()->get(CountProductsSelectedByCriteriaQueryInterface::class)->execute($productSelectionCriteria);
         Assert::assertEquals(0, $count);
     }
 
@@ -79,6 +75,6 @@ class CountProductsSelectedByCriteriaQueryTest extends IntegrationTestCase
         ];
 
         $this->expectException(InvalidProductSelectionCriteriaException::class);
-        $this->getProductsCountQuery->execute($productSelectionCriteria);
+        self::getContainer()->get(CountProductsSelectedByCriteriaQueryInterface::class)->execute($productSelectionCriteria);
     }
 }

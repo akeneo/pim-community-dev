@@ -16,16 +16,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetChannelsByCodeQueryTest extends IntegrationTestCase
 {
-    public ?object $connection;
-    private ?GetChannelsByCodeQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetChannelsByCodeQuery::class);
     }
 
     public function testItGetsPaginatedChannelsByCode(): void
@@ -34,9 +29,9 @@ class GetChannelsByCodeQueryTest extends IntegrationTestCase
         $this->createChannel('tablet', ['en_US']);
         $this->createChannel('mobile', ['en_US']);
 
-        $page1 = $this->query->execute(['tablet', 'ecommerce'], 1, 1);
-        $page2 = $this->query->execute(['tablet', 'ecommerce'], 2, 1);
-        $page3 = $this->query->execute(['tablet', 'ecommerce'], 3, 1);
+        $page1 = self::getContainer()->get(GetChannelsByCodeQuery::class)->execute(['tablet', 'ecommerce'], 1, 1);
+        $page2 = self::getContainer()->get(GetChannelsByCodeQuery::class)->execute(['tablet', 'ecommerce'], 2, 1);
+        $page3 = self::getContainer()->get(GetChannelsByCodeQuery::class)->execute(['tablet', 'ecommerce'], 3, 1);
 
         $expectedPage1 = [
             [
@@ -59,7 +54,7 @@ class GetChannelsByCodeQueryTest extends IntegrationTestCase
 
     public function testItGetsNoChannels(): void
     {
-        $page = $this->query->execute([], 1, 2);
+        $page = self::getContainer()->get(GetChannelsByCodeQuery::class)->execute([], 1, 2);
 
         self::assertEquals([], $page);
     }

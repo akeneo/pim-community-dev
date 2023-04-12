@@ -17,15 +17,11 @@ use PHPUnit\Framework\Assert;
  */
 class UpdateProductMappingSchemaQueryTest extends IntegrationTestCase
 {
-    private ?UpdateProductMappingSchemaQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(UpdateProductMappingSchemaQuery::class);
     }
 
     public function testItUpdatesProductMappingSchema(): void
@@ -62,7 +58,7 @@ class UpdateProductMappingSchemaQueryTest extends IntegrationTestCase
         }
         JSON_WRAP;
 
-        $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', $newProductMappingSchema);
+        self::getContainer()->get(UpdateProductMappingSchemaQuery::class)->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c', $newProductMappingSchema);
 
         $queryGetProductMappingSchema = self::getContainer()->get(GetProductMappingSchemaQuery::class);
         $updatedSchema = $queryGetProductMappingSchema->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');

@@ -10,24 +10,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DisableCatalogsOnChannelRemovalConstraintTest extends IntegrationTestCase
 {
-    private ?ValidatorInterface $validator;
-    private ?DisableCatalogsOnChannelRemovalConstraint $disableCatalogConstraint;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
-        $this->disableCatalogConstraint = self::getContainer()->get(DisableCatalogsOnChannelRemovalConstraint::class);
 
         $this->purgeData();
     }
 
     public function testItProvidesConstraintToValidateParameters(): void
     {
-        $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
+        $constraintCollection = self::getContainer()->get(
+            DisableCatalogsOnChannelRemovalConstraint::class,
+        )->getConstraintCollection();
         $parameters = ['channel_codes' => ['print', 'mobile']];
-        $violations = $this->validator->validate($parameters, $constraintCollection);
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
+            $parameters,
+            $constraintCollection,
+        );
 
         $this->assertEmpty($violations);
     }
@@ -39,8 +38,13 @@ class DisableCatalogsOnChannelRemovalConstraintTest extends IntegrationTestCase
         array $parameters,
         string $expectedMessage,
     ): void {
-        $constraintCollection = $this->disableCatalogConstraint->getConstraintCollection();
-        $violations = $this->validator->validate($parameters, $constraintCollection);
+        $constraintCollection = self::getContainer()->get(
+            DisableCatalogsOnChannelRemovalConstraint::class,
+        )->getConstraintCollection();
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
+            $parameters,
+            $constraintCollection,
+        );
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

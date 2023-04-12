@@ -15,12 +15,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeNumberSourceTest extends AbstractAttributeSourceTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -30,7 +27,7 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
     public function testItReturnsNoViolation(array $attribute, array $source): void
     {
         $this->createAttribute($attribute);
-        $violations = $this->validator->validate($source, new AttributeNumberSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeNumberSource());
         $this->assertEmpty($violations);
     }
 
@@ -44,7 +41,7 @@ class AttributeNumberSourceTest extends AbstractAttributeSourceTest
         string $expectedMessage,
     ): void {
         $this->createAttribute($attribute);
-        $violations = $this->validator->validate($source, new AttributeNumberSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeNumberSource());
         $this->assertViolationsListContains($violations, $expectedMessage);
     }
 

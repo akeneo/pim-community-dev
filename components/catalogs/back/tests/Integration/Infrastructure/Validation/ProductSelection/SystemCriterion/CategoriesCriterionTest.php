@@ -15,13 +15,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CategoriesCriterionTest extends AbstractSystemCriterionTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
 
         $this->createCategory(['code' => 'categoryA', 'label' => '[categoryA]']);
         $this->createCategory(['code' => 'categoryB', 'label' => '[categoryB]']);
@@ -32,7 +28,7 @@ class CategoriesCriterionTest extends AbstractSystemCriterionTest
      */
     public function testItReturnsNoViolation(array $criterion): void
     {
-        $violations = $this->validator->validate($criterion, new CategoriesCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new CategoriesCriterion());
 
         $this->assertEmpty($violations);
     }
@@ -90,7 +86,7 @@ class CategoriesCriterionTest extends AbstractSystemCriterionTest
      */
     public function testItReturnsViolationsWhenInvalid(array $criterion, string $expectedMessage): void
     {
-        $violations = $this->validator->validate($criterion, new CategoriesCriterion());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($criterion, new CategoriesCriterion());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }

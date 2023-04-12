@@ -15,22 +15,18 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetChannelLocalesQueryTest extends IntegrationTestCase
 {
-    private ?GetChannelLocalesQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetChannelLocalesQuery::class);
     }
 
     public function testItGetsChannelLocales(): void
     {
         $this->createChannel('mobile', ['en_US', 'fr_FR']);
 
-        $result = $this->query->execute('mobile');
+        $result = self::getContainer()->get(GetChannelLocalesQuery::class)->execute('mobile');
 
         $expected = [
             ['code' => 'en_US', 'label' => 'English (United States)'],
@@ -44,6 +40,6 @@ class GetChannelLocalesQueryTest extends IntegrationTestCase
     {
         $this->expectException(\LogicException::class);
 
-        $this->query->execute('mobile');
+        self::getContainer()->get(GetChannelLocalesQuery::class)->execute('mobile');
     }
 }

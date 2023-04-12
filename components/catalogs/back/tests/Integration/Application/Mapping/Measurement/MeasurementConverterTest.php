@@ -7,13 +7,9 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
 class MeasurementConverterTest extends IntegrationTestCase
 {
-    private ?MeasurementConverter $measurementConverter;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->measurementConverter = self::getContainer()->get(MeasurementConverter::class);
 
         $this->purgeDataAndLoadMinimalCatalog();
     }
@@ -36,7 +32,7 @@ class MeasurementConverterTest extends IntegrationTestCase
      */
     public function testItConvertsFromMilligram(string $targetUnit, int|float $expectedValue): void
     {
-        $result = $this->measurementConverter->convert('weight', $targetUnit, 'MILLIGRAM', 12000);
+        $result = self::getContainer()->get(MeasurementConverter::class)->convert('weight', $targetUnit, 'MILLIGRAM', 12000);
         $this->assertEquals($expectedValue, $result);
     }
 
@@ -58,7 +54,7 @@ class MeasurementConverterTest extends IntegrationTestCase
      */
     public function testItConvertsFromOnce(string $targetUnit, int|float $expectedValue): void
     {
-        $result = $this->measurementConverter->convert('weight', $targetUnit, 'OUNCE', 12);
+        $result = self::getContainer()->get(MeasurementConverter::class)->convert('weight', $targetUnit, 'OUNCE', 12);
         $this->assertEquals($expectedValue, $result);
     }
 }

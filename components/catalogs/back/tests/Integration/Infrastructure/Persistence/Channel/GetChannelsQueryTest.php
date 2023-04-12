@@ -15,16 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetChannelsQueryTest extends IntegrationTestCase
 {
-    public ?object $connection;
-    private ?GetChannelsQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetChannelsQuery::class);
     }
 
     public function testItGetsPaginatedChannels(): void
@@ -33,8 +28,8 @@ class GetChannelsQueryTest extends IntegrationTestCase
         $this->createChannel('tablet', ['en_US']);
         $this->createChannel('mobile', ['en_US']);
 
-        $page1 = $this->query->execute(1, 2);
-        $page2 = $this->query->execute(2, 2);
+        $page1 = self::getContainer()->get(GetChannelsQuery::class)->execute(1, 2);
+        $page2 = self::getContainer()->get(GetChannelsQuery::class)->execute(2, 2);
 
         $expectedPage1 = [
             [

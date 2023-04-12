@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetCategoryChildrenQueryTest extends IntegrationTestCase
 {
-    private ?GetCategoryChildrenQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetCategoryChildrenQuery::class);
     }
 
     public function testItGetsCategoryChildren(): void
@@ -67,7 +63,7 @@ class GetCategoryChildrenQueryTest extends IntegrationTestCase
             'isLeaf' => true,
         ];
 
-        $result = $this->query->execute('parent_category', 'en_US');
+        $result = self::getContainer()->get(GetCategoryChildrenQuery::class)->execute('parent_category', 'en_US');
 
         $this->assertEquals([$expectedChild1, $expectedChild2, $expectedChild3], $result);
     }
@@ -76,7 +72,7 @@ class GetCategoryChildrenQueryTest extends IntegrationTestCase
     {
         $this->createCategory(['code' => 'parent_category']);
 
-        $result = $this->query->execute('some_category_code', 'en_US');
+        $result = self::getContainer()->get(GetCategoryChildrenQuery::class)->execute('some_category_code', 'en_US');
 
         $this->assertEmpty($result, 'Unknown category code should not have any children');
     }

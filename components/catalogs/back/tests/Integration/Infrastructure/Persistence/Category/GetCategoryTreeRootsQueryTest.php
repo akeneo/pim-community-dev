@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetCategoryTreeRootsQueryTest extends IntegrationTestCase
 {
-    private ?GetCategoryTreeRootsQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetCategoryTreeRootsQuery::class);
     }
 
     public function testItGetsCategoryTreeRoots(): void
@@ -51,7 +47,7 @@ class GetCategoryTreeRootsQueryTest extends IntegrationTestCase
             'isLeaf' => false,
         ];
 
-        $result = $this->query->execute('en_US');
+        $result = self::getContainer()->get(GetCategoryTreeRootsQuery::class)->execute('en_US');
 
         $this->assertEquals([$expectedMasterCategory, $expectedTshirtCategory, $expectedSkirtCategory], $result);
     }

@@ -17,17 +17,11 @@ use Ramsey\Uuid\Uuid;
  */
 class DeleteCatalogQueryTest extends IntegrationTestCase
 {
-    private ?DeleteCatalogQuery $query;
-    private ?Connection $connection;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->connection = self::getContainer()->get(Connection::class);
-        $this->query = self::getContainer()->get(DeleteCatalogQuery::class);
     }
 
     public function testItDeletesACatalog(): void
@@ -38,7 +32,7 @@ class DeleteCatalogQueryTest extends IntegrationTestCase
 
         $this->assertCatalogExists($id);
 
-        $this->query->execute($id);
+        self::getContainer()->get(DeleteCatalogQuery::class)->execute($id);
 
         $this->assertCatalogDoesNotExists($id);
     }
@@ -51,7 +45,7 @@ class DeleteCatalogQueryTest extends IntegrationTestCase
         WHERE id = :id
         SQL;
 
-        $count = (int) $this->connection->executeQuery($query, [
+        $count = (int) self::getContainer()->get(Connection::class)->executeQuery($query, [
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchOne();
 
@@ -66,7 +60,7 @@ class DeleteCatalogQueryTest extends IntegrationTestCase
         WHERE id = :id
         SQL;
 
-        $count = (int) $this->connection->executeQuery($query, [
+        $count = (int) self::getContainer()->get(Connection::class)->executeQuery($query, [
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchOne();
 

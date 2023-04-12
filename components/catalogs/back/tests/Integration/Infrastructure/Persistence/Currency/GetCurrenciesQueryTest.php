@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence\Currency;
 
-use Akeneo\Catalogs\Application\Persistence\Currency\GetCurrenciesQueryInterface;
 use Akeneo\Catalogs\Infrastructure\Persistence\Currency\GetCurrenciesQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 
@@ -17,19 +16,15 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 class GetCurrenciesQueryTest extends IntegrationTestCase
 {
-    private ?GetCurrenciesQueryInterface $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetCurrenciesQuery::class);
     }
 
     public function testItGetsCurrencies(): void
     {
-        self::assertEquals(['EUR', 'USD'], $this->query->execute());
+        self::assertEquals(['EUR', 'USD'], self::getContainer()->get(GetCurrenciesQuery::class)->execute());
     }
 }

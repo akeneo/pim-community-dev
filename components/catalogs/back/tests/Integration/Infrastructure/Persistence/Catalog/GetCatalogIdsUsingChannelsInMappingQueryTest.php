@@ -15,15 +15,11 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
  */
 final class GetCatalogIdsUsingChannelsInMappingQueryTest extends IntegrationTestCase
 {
-    private ?GetCatalogIdsUsingChannelsInMappingQuery $query;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->query = self::getContainer()->get(GetCatalogIdsUsingChannelsInMappingQuery::class);
     }
 
     /**
@@ -55,7 +51,7 @@ final class GetCatalogIdsUsingChannelsInMappingQueryTest extends IntegrationTest
             ownerUsername: 'shopifi',
         );
 
-        $resultBothCatalogs = $this->query->execute($channelsQueried);
+        $resultBothCatalogs = self::getContainer()->get(GetCatalogIdsUsingChannelsInMappingQuery::class)->execute($channelsQueried);
         $this->assertEquals($expectedCatalogs, $resultBothCatalogs);
     }
 

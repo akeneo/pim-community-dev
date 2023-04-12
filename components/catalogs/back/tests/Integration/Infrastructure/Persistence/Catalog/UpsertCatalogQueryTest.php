@@ -18,17 +18,11 @@ use Ramsey\Uuid\Uuid;
  */
 class UpsertCatalogQueryTest extends IntegrationTestCase
 {
-    private ?UpsertCatalogQuery $query;
-    private ?Connection $connection;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->connection = self::getContainer()->get(Connection::class);
-        $this->query = self::getContainer()->get(UpsertCatalogQuery::class);
     }
 
     public function testItCreatesACatalog(): void
@@ -56,7 +50,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             ],
         ];
 
-        $this->query->execute(new Catalog(
+        self::getContainer()->get(UpsertCatalogQuery::class)->execute(new Catalog(
             $id,
             'Store US',
             'test',
@@ -101,7 +95,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             ],
         ];
 
-        $this->query->execute(new Catalog(
+        self::getContainer()->get(UpsertCatalogQuery::class)->execute(new Catalog(
             $id,
             'Store US',
             'test',
@@ -111,7 +105,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             [],
         ));
 
-        $this->query->execute(new Catalog(
+        self::getContainer()->get(UpsertCatalogQuery::class)->execute(new Catalog(
             $id,
             'Store US [NEW]',
             'test',
@@ -140,7 +134,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         FROM akeneo_catalog catalog
         SQL;
 
-        $result = (int) $this->connection->executeQuery($query)->fetchOne();
+        $result = (int) self::getContainer()->get(Connection::class)->executeQuery($query)->fetchOne();
 
         $this->assertEquals($expected, $result);
     }
@@ -160,7 +154,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         WHERE id = :id
         SQL;
 
-        $row = $this->connection->executeQuery($query, [
+        $row = self::getContainer()->get(Connection::class)->executeQuery($query, [
             'id' => Uuid::fromString($values['id'])->getBytes(),
         ])->fetchAssociative();
 
@@ -186,7 +180,7 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
             'value' => false,
         ];
 
-        $this->query->execute(new Catalog(
+        self::getContainer()->get(UpsertCatalogQuery::class)->execute(new Catalog(
             $id,
             'Store US',
             'test',

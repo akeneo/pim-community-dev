@@ -15,13 +15,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeDateSourceTest extends AbstractAttributeSourceTest
 {
-    private ?ValidatorInterface $validator;
-
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->validator = self::getContainer()->get(ValidatorInterface::class);
     }
 
     /**
@@ -31,7 +27,7 @@ class AttributeDateSourceTest extends AbstractAttributeSourceTest
     {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($source, new AttributeDateSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeDateSource());
 
         $this->assertEmpty($violations);
     }
@@ -108,7 +104,7 @@ class AttributeDateSourceTest extends AbstractAttributeSourceTest
     ): void {
         $this->createAttribute($attribute);
 
-        $violations = $this->validator->validate($source, new AttributeDateSource());
+        $violations = self::getContainer()->get(ValidatorInterface::class)->validate($source, new AttributeDateSource());
 
         $this->assertViolationsListContains($violations, $expectedMessage);
     }
