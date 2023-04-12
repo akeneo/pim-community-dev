@@ -40,15 +40,15 @@ final class PublishPausedJobToQueueCommand extends Command
         try {
             $pausedJobIds = $this->jobRepository->getPausedJobExecutionIds();
 
-            if (empty($pausedJob)) {
+            if (empty($pausedJobIds)) {
                 return Command::SUCCESS;
             }
 
             foreach ($pausedJobIds as $pausedJobId) {
                 $message = $this->jobExecutionMessageFactory->buildFromNormalized([
-                    'id' => UuidV4::uuid4(),
-                    'job_execution_id' => $pausedJobId,
-                    'created_time' => new \DateTime('now'),
+                    'id' => UuidV4::uuid4()->toString(),
+                    'job_execution_id' => (int) $pausedJobId['id'],
+                    'created_time' => null,
                     'updated_time' => null,
                     'options' => []
                 ], PausedJobExecutionMessage::class);

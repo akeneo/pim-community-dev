@@ -103,7 +103,7 @@ database:
 
 .PHONY: start-job-worker
 start-job-worker:
-	$(PHP_RUN) bin/console messenger:consume ui_job import_export_job data_maintenance_job ${O}
+	$(PHP_RUN) bin/console messenger:consume ui_job import_export_job data_maintenance_job job_to_resume ${O}
 
 .PHONY: stop-workers
 stop-workers:
