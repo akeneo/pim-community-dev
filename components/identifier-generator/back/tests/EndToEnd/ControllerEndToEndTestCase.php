@@ -26,7 +26,7 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
     protected KernelBrowser $client;
     protected CatalogInterface $catalog;
 
-    protected const DEFAULT_HEADER = [
+    private const DEFAULT_HEADER = [
         'HTTP_X-Requested-With' => 'XMLHttpRequest',
     ];
 
