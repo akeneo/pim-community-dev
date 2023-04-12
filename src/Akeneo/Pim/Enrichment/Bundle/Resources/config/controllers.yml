@@ -340,7 +340,6 @@ services:
             - '@pim_versioning.repository.version'
             - '@pim_catalog.resolver.fqcn'
             - '@pim_internal_api_serializer'
-            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.count_impacted_items_by_attribute_deletion:
         public: true
