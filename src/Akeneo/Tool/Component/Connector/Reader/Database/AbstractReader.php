@@ -6,7 +6,6 @@ use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\PausableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Job\JobProgress\ItemReaderState;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
@@ -82,7 +81,7 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     public function getState(): array
     {
         return [
-            'position' => $this->results->key()
+            'position' => $this->results->key(),
         ];
     }
 

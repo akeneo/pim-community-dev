@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\Batch\Job;
 
-use Akeneo\Tool\Component\Batch\Job\JobProgress\ItemStepState;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Query\GetJobExecutionStatusInterface;
 
@@ -30,9 +29,9 @@ class JobStopper
 
     public function isPausing(StepExecution $stepExecution): bool
     {
-        return BatchStatus::PAUSING === $this->getJobExecutionStatus->getByJobExecutionId(
+        return $this->getJobExecutionStatus->getByJobExecutionId(
             $stepExecution->getJobExecution()->getId()
-        )->getValue();
+        )->isPausing();
     }
 
     public function stop(StepExecution $stepExecution): void

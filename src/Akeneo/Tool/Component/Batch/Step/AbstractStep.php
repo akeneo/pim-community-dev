@@ -32,7 +32,7 @@ abstract class AbstractStep implements StepInterface
         protected string $name,
         protected EventDispatcherInterface $eventDispatcher,
         protected JobRepositoryInterface $jobRepository,
-        protected ?JobStopper $jobStopper = null
+        protected ?JobStopper $jobStopper = null,
     ) {
     }
 
@@ -183,7 +183,6 @@ abstract class AbstractStep implements StepInterface
             return false;
         }
 
-        // put inside a try catch
         $this->jobStopper->pause($stepExecution, $stepState);
 
         return true;

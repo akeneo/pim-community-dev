@@ -7,6 +7,7 @@ const AVAILABLE_JOB_STATUSES = [
   'STOPPED',
   'STOPPING',
   'UNKNOWN',
+  'PAUSING',
   'PAUSED',
 ] as const;
 

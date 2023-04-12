@@ -6,7 +6,6 @@ use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\PausableItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Job\JobProgress\ItemWriterState;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
@@ -48,7 +47,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
-        private ?FilesystemOperator $filesystemOperator = null
+        private ?FilesystemOperator $filesystemOperator = null,
     ) {
         parent::__construct();
 
@@ -65,6 +64,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         $path = null;
         $writerState = $this->stepExecution->getRawState()['writer'] ?? null;
 
+        // We restore the buffer file from the state
         if (null !== $writerState) {
             $content = $this->filesystemOperator->read($writerState['flat_buffer_file_path']);
 
@@ -125,7 +125,8 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
 
     public function getState(): array
     {
-        if ($this->filesystemOperator) {
+        // We need to save the buffer file somewhere
+        if (null !== $this->filesystemOperator) {
             $flatBufferFilePath = 'paused_job/step/' . $this->stepExecution->getId();
             $this->filesystemOperator->write($flatBufferFilePath, file_get_contents($this->flatRowBuffer->getFilename()));
 

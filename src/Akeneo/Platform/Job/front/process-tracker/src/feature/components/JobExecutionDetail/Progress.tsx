@@ -75,8 +75,6 @@ const getStepExecutionTrackingProgressLabel = (
       return translate('pim_import_export.tracking.in_progress', {
         duration: formatSecondsIntl(translate, durationLeft),
       });
-    case 'PAUSED':
-      return translate('pim_import_export.tracking.paused');
     case 'ABANDONED':
     case 'COMPLETED':
     case 'FAILED':

@@ -261,7 +261,6 @@ pim_import_export:
         not_started: "Pending"
         untrackable: Untrackable step
         estimating: "Estimating time remaining..."
-        paused: Paused
 
 confirmation:
     remove:

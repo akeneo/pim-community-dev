@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\Batch\Job;
 
-use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -204,11 +203,13 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         $stepExecution = null;
 
         foreach ($this->steps as $step) {
+            // We search for a step execution matching defined step
             $stepExecution = array_values(array_filter(
                 $jobExecution->getStepExecutions()->toArray(),
                 static fn (StepExecution $stepExecution) => $stepExecution->getStepName() === $step->getName(),
             ))[0] ?? null;
 
+            // We don't handle the current step if there is a non starting or paused step execution matching it
             if (
                 null !== $stepExecution &&
                 !in_array($stepExecution->getStatus()->getValue(), [BatchStatus::STARTING, BatchStatus::PAUSED])

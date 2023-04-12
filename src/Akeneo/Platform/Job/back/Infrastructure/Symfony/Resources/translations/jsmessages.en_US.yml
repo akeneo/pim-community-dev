@@ -13,6 +13,8 @@ akeneo_job:
     ABANDONED: Abandoned
     UNKNOWN: Unknown
     IN_PROGRESS: In progress
+    PAUSING: Pausing
+    PAUSED: Paused
 
 akeneo_job_process_tracker:
   last_operations:
@@ -74,4 +76,3 @@ akeneo_job_process_tracker:
     not_started: Pending
     untrackable: Untrackable step
     estimating: Estimating time remaining...
-    paused: Paused
