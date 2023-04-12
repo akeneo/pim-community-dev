@@ -66,7 +66,7 @@ describe('ImplicitConditionsList', () => {
     const screen = render(<ImplicitConditionsList generator={generator} />);
 
     await waitFor(() => {
-      expect(screen.getAllByText('ImplicitAttributeConditionMocked').length).toEqual(3);
+      expect(screen.getAllByText('ImplicitAttributeConditionMock').length).toEqual(3);
     });
 
     expect(screen.getAllByText('Implicit attribute scope:').length).toEqual(2);
