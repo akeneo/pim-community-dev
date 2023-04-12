@@ -89,7 +89,7 @@ describe('validateStructure', () => {
       {
         path: 'structure[0]',
         message:
-          'The property type "unknown" is unknown. Please choose one of the following: free_text, auto_number, family, simple_select',
+          'The property type "unknown" is unknown. Please choose one of the following: free_text, auto_number, family, simple_select, reference_entity',
       },
     ]);
   });

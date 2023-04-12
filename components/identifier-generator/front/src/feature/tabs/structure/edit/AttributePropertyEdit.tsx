@@ -1,6 +1,12 @@
 import React from 'react';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
-import {AbbreviationType, CanUseNomenclatureProperty, SimpleSelectProperty} from '../../../models';
+import {
+  AbbreviationType,
+  CanUseNomenclatureProperty,
+  PROPERTY_NAMES,
+  RefEntityProperty,
+  SimpleSelectProperty,
+} from '../../../models';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
 import {ScopeAndLocaleSelector} from '../../../components';
 import {ProcessablePropertyEdit} from '../ProcessablePropertyEdit';
@@ -16,7 +22,9 @@ const options = [
   },
 ];
 
-const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = ({selectedProperty, onChange}) => {
+type AttributePropertyTypes = SimpleSelectProperty | RefEntityProperty;
+
+const AttributePropertyEdit: PropertyEditFieldsProps<AttributePropertyTypes> = ({selectedProperty, onChange}) => {
   const label = useGetAttributeLabel(selectedProperty.attributeCode);
   const handleScopeAndLocaleChange = (newValue: {scope?: ChannelCode | null; locale?: LocaleCode | null}) => {
     onChange({
@@ -25,19 +33,24 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
     });
   };
 
-  const handleChange = (simpleSelectProperty: CanUseNomenclatureProperty) => {
+  const handleChange = (attributeProperty: CanUseNomenclatureProperty | RefEntityProperty) => {
     onChange({
-      ...simpleSelectProperty,
+      ...attributeProperty,
       attributeCode: selectedProperty.attributeCode,
-    } as SimpleSelectProperty);
+    } as AttributePropertyTypes);
   };
+
+  const operatorsOptions =
+    selectedProperty.type === PROPERTY_NAMES.REF_ENTITY
+      ? options.filter(({value}) => value !== AbbreviationType.NOMENCLATURE)
+      : options;
 
   return (
     <>
       <SectionTitle>
         <SectionTitle.Title>{label}</SectionTitle.Title>
       </SectionTitle>
-      <ProcessablePropertyEdit selectedProperty={selectedProperty} onChange={handleChange} options={options}>
+      <ProcessablePropertyEdit selectedProperty={selectedProperty} onChange={handleChange} options={operatorsOptions}>
         {selectedProperty.attributeCode && (
           <ScopeAndLocaleSelector
             attributeCode={selectedProperty.attributeCode}
@@ -52,4 +65,4 @@ const SimpleSelectPropertyEdit: PropertyEditFieldsProps<SimpleSelectProperty> = 
   );
 };
 
-export {SimpleSelectPropertyEdit};
+export {AttributePropertyEdit};

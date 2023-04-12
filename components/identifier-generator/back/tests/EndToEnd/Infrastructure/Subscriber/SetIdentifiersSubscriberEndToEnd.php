@@ -7,6 +7,9 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
@@ -18,6 +21,7 @@ use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\EndToEndTestCase;
+use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -69,6 +73,37 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         ]);
 
         Assert::assertSame('akeneo-medium-akn-050-my_family', $product->getValue('sku')->getData());
+    }
+
+    /** @test */
+    public function it_should_generate_an_identifier_with_a_reference_entity_on_create(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createRecords('brand', ['Akeneo', 'Other']);
+
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+
+        $this->createIdentifierGenerator(structure:[
+            [
+                'type' => 'reference_entity',
+                'attributeCode' => 'a_reference_entity_attribute',
+                'process' => ['type' => 'no'],
+            ],
+        ]);
+        $product = $this->createProduct(userIntents: [
+            new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'akeneo'),
+        ]);
+
+        Assert::assertSame('akeneo-akn-050-my_family', $product->getValue('sku')->getData());
     }
 
     /** @test */
@@ -156,7 +191,9 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
 
         $this->createFamily('tshirt');
         $this->setProductFamily($productFromDatabase->getUuid(), 'tshirt');
-        Assert::assertSame('akn-050-tshirt', $productFromDatabase->getIdentifier());
+
+        $productUpdate = $this->getProductRepository()->find($productFromDatabase->getUuid());
+        Assert::assertSame('akn-050-tshirt', $productUpdate->getIdentifier());
     }
 
     /** @test */
@@ -172,7 +209,9 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
         Assert::assertSame(null, $productFromDatabase->getIdentifier());
 
         $this->setSimpleSelectProductValue($productFromDatabase->getUuid());
-        Assert::assertSame('akn-050-my_family', $productFromDatabase->getIdentifier());
+
+        $productUpdate = $this->getProductRepository()->find($productFromDatabase->getUuid());
+        Assert::assertSame('akn-050-my_family', $productUpdate->getIdentifier());
     }
 
     private function createIdentifierGenerator(
@@ -239,6 +278,42 @@ SQL);
         $attributeOptionViolations = $this->getValidator()->validate($attributeOption);
         $this->assertCount(0, $attributeOptionViolations);
         $this->getAttributeOptionSaver()->save($attributeOption);
+    }
+
+    private function createAttribute(array $data): void
+    {
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+
+        $attributeViolations = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $attributeViolations, \sprintf('The attribute is invalid: %s', $attributeViolations));
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+    }
+
+    private function createReferenceEntity(string $referenceEntityCode): void
+    {
+        $this->get('feature_flags')->enable('reference_entity');
+
+        /** @phpstan-ignore-next-line */
+        $createReferenceEntityCommand = new CreateReferenceEntityCommand($referenceEntityCode, []);
+        $validator = $this->get('validator');
+        $violations = $validator->validate($createReferenceEntityCommand);
+        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))(
+            $createReferenceEntityCommand
+        );
+    }
+
+    private function createRecords(string $referenceEntityCode, array $recordCodes): void
+    {
+        $validator = $this->get('validator');
+        foreach ($recordCodes as $recordCode) {
+            /** @phpstan-ignore-next-line */
+            $createRecord = new CreateRecordCommand($referenceEntityCode, $recordCode, []);
+            $violations = $validator->validate($createRecord);
+            Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+            ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createRecord);
+        }
     }
 
     private function getCreateGeneratorHandler(): CreateGeneratorHandler

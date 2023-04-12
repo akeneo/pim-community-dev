@@ -5,26 +5,26 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ConditionInterface;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\SimpleSelect;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Condition\ReferenceEntity;
 use Webmozart\Assert\Assert;
 
 /**
- * Simple Select Property that can be added to an Identifier Generator's structure
+ * Reference Entity Property that can be added to an Identifier Generator's structure
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @phpstan-import-type ProcessNormalized from Process
- * @phpstan-type SimpleSelectPropertyNormalized array{
- *  type: 'simple_select',
+ * @phpstan-type ReferenceEntityPropertyNormalized array{
+ *  type: 'reference_entity',
  *  attributeCode: string,
  *  process: ProcessNormalized,
  *  scope?: string|null,
  *  locale?: string|null
  * }
  */
-final class SimpleSelectProperty implements PropertyInterface
+final class ReferenceEntityProperty implements PropertyInterface
 {
-    private const TYPE = 'simple_select';
+    private const TYPE = 'reference_entity';
 
     private function __construct(
         private readonly string $attributeCode,
@@ -32,6 +32,7 @@ final class SimpleSelectProperty implements PropertyInterface
         private readonly ?string $scope = null,
         private readonly ?string $locale = null
     ) {
+        Assert::stringNotEmpty($this->attributeCode);
     }
 
     public static function type(): string
@@ -45,24 +46,40 @@ final class SimpleSelectProperty implements PropertyInterface
     }
 
     /**
-     * @return SimpleSelectPropertyNormalized
+     * @return ReferenceEntityPropertyNormalized
      */
     public function normalize(): array
     {
-        $simpleSelectProperty = [
+        $referenceEntityProperty = [
             'type' => self::TYPE,
             'attributeCode' => $this->attributeCode,
             'process' => $this->process->normalize(),
         ];
 
         if (null !== $this->scope) {
-            $simpleSelectProperty['scope'] = $this->scope;
+            $referenceEntityProperty['scope'] = $this->scope;
         }
         if (null !== $this->locale) {
-            $simpleSelectProperty['locale'] = $this->locale;
+            $referenceEntityProperty['locale'] = $this->locale;
         }
 
-        return $simpleSelectProperty;
+        return $referenceEntityProperty;
+    }
+
+    public function getImplicitCondition(): ?ConditionInterface
+    {
+        return ReferenceEntity::fromNormalized([
+            'type' => ReferenceEntity::type(),
+            'attributeCode' => $this->attributeCode,
+            'operator' => 'NOT EMPTY',
+            'scope' => $this->scope,
+            'locale' => $this->locale,
+        ]);
+    }
+
+    public function attributeCode(): string
+    {
+        return $this->attributeCode;
     }
 
     /**
@@ -74,7 +91,7 @@ final class SimpleSelectProperty implements PropertyInterface
         Assert::same($normalizedProperty['type'], self::type());
 
         Assert::keyExists($normalizedProperty, 'attributeCode');
-        Assert::string($normalizedProperty['attributeCode']);
+        Assert::stringNotEmpty($normalizedProperty['attributeCode']);
 
         Assert::keyExists($normalizedProperty, 'process');
         Assert::isArray($normalizedProperty['process']);
@@ -88,21 +105,5 @@ final class SimpleSelectProperty implements PropertyInterface
             $normalizedProperty['scope'] ?? null,
             $normalizedProperty['locale'] ?? null
         );
-    }
-
-    public function getImplicitCondition(): ?ConditionInterface
-    {
-        return SimpleSelect::fromNormalized([
-            'type' => SimpleSelect::type(),
-            'attributeCode' => $this->attributeCode,
-            'operator' => 'NOT EMPTY',
-            'scope' => $this->scope,
-            'locale' => $this->locale,
-        ]);
-    }
-
-    public function attributeCode(): string
-    {
-        return $this->attributeCode;
     }
 }

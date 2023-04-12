@@ -1,6 +1,6 @@
 import React from 'react';
 import {Property, PROPERTY_NAMES} from '../../models';
-import {AutoNumberEdit, FamilyPropertyEdit, FreeTextEdit, SimpleSelectPropertyEdit} from './edit/';
+import {AutoNumberEdit, FamilyPropertyEdit, FreeTextEdit, AttributePropertyEdit} from './edit/';
 import {Styled} from '../../components/Styled';
 
 type PropertyEditProps = {
@@ -17,7 +17,8 @@ const components = {
   [PROPERTY_NAMES.FREE_TEXT]: FreeTextEdit,
   [PROPERTY_NAMES.AUTO_NUMBER]: AutoNumberEdit,
   [PROPERTY_NAMES.FAMILY]: FamilyPropertyEdit,
-  [PROPERTY_NAMES.SIMPLE_SELECT]: SimpleSelectPropertyEdit,
+  [PROPERTY_NAMES.SIMPLE_SELECT]: AttributePropertyEdit,
+  [PROPERTY_NAMES.REF_ENTITY]: AttributePropertyEdit,
 };
 
 const PropertyEdit: React.FC<PropertyEditProps> = ({selectedProperty, onChange}) => {
