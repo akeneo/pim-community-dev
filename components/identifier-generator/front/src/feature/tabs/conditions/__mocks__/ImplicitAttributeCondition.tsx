@@ -9,7 +9,7 @@ type Props = {
 
 const ImplicitAttributeCondition: React.FC<Props> = ({attributeCode, scope, locale}) => (
   <>
-    <p>ImplicitAttributeConditionMocked</p>
+    <p>ImplicitAttributeConditionMock</p>
     <p>Implicit attribute code: {attributeCode}</p>
     {scope && (
       <p>
