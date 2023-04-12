@@ -42,7 +42,7 @@ export const TargetSourceAssociation: FC<Props> = memo(
                     {targetLabel ?? targetCode}
                     {isRequired && <RequiredPill level='warning' data-testid='required-pill' />}
                 </TargetCell>
-                {null === source.source && (undefined === source.default || null === source.default) && (
+                {null === source.source && undefined === source.default && (
                     <PlaceholderCell>
                         {translate('akeneo_catalogs.product_mapping.target.table.placeholder')}
                         {hasError && <ErrorPill data-testid='error-pill' level='danger' />}
@@ -55,7 +55,7 @@ export const TargetSourceAssociation: FC<Props> = memo(
                         {hasError && <ErrorPill data-testid='error-pill' level='danger' />}
                     </Table.Cell>
                 )}
-                {null === source.source && undefined !== source.default && null !== source.default && (
+                {null === source.source && undefined !== source.default && (
                     <Table.Cell>
                         <SourceDefaultValue sourceDefaultValue={source.default} />
                         {hasError && <ErrorPill data-testid='error-pill' level='danger' />}

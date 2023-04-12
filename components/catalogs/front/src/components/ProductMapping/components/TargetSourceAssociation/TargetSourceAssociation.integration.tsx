@@ -223,7 +223,7 @@ test('it displays the source default boolean value capitalized', () => {
         </ThemeProvider>
     );
 
-    expect(screen.getByText('True', {exact: false})).toBeInTheDocument();
+    expect(screen.getByText('pim_common.yes', {exact: false})).toBeInTheDocument();
 });
 
 test('it displays the source when defined', async () => {
