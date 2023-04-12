@@ -53,28 +53,15 @@ final class GetCategoriesSql implements GetCategoriesInterface
                 SELECT code, position 
                 FROM (
                     SELECT
-                        category.id,
                         category.code,
-                        category.parent_id,
-                        category.root,
-                        category.updated,
-                        category.lft,
-                        category.rgt,
-                        category.lvl,
                         category.id as category_id,
                         sibling.id as sibling_id,
-                        ROW_NUMBER() over (PARTITION BY category.parent_id ORDER BY sibling.lft) as position
+                        ROW_NUMBER() over (PARTITION BY category.parent_id, category.id ORDER BY sibling.lft) as position
                     FROM pim_catalog_category category
-                        JOIN pim_catalog_category sibling on category.id = sibling.id AND category.parent_id = sibling.parent_id
-                    WHERE category.parent_id IN (
-                        SELECT category.parent_id
-                        FROM pim_catalog_category category
-                        WHERE $sqlWhere               
-                    )
-                    AND category.parent_id IS NOT NULL
-                ) category
+                        JOIN pim_catalog_category sibling on category.parent_id = sibling.parent_id
+                    WHERE $sqlWhere
+                ) r
                 WHERE sibling_id = category_id
-                AND $sqlWhere
             )
             SELECT
                 category.id,
