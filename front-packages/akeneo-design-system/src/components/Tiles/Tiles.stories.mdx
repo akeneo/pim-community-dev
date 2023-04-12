@@ -11,6 +11,7 @@ import {
   AssetsIcon,
 } from '../../icons';
 import {useTabBar} from "../../hooks/useTabBar";
+import { Tooltip } from '../Tooltip/Tooltip';
 
 <Meta
   title="Components/Tiles"
@@ -91,6 +92,26 @@ The component is displayed in a configurable responsive grid (width and gap). Ti
             </Tile>
             <Tile icon={<DateIcon/>}>
               Big Date
+            </Tile>
+          </Tiles>
+          <Tiles size={'small'} inline={true}>
+              <Tile>
+                Big Assets collection
+                <Tooltip direction={'bottom'}>Big Assets collection</Tooltip>
+              </Tile>
+              <Tile>
+                Big Date
+                <Tooltip direction={'bottom'}>Big Date</Tooltip>
+              </Tile>
+            </Tiles>
+          <Tiles size={'big'} inline={true}>
+            <Tile>
+              Big Assets collection
+              <Tooltip direction={'bottom'}>Big Assets collection</Tooltip>
+            </Tile>
+            <Tile>
+              Big Date
+              <Tooltip direction={'bottom'}>Big Date</Tooltip>
             </Tile>
           </Tiles>
         </>

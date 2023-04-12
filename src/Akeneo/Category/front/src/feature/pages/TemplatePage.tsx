@@ -38,7 +38,6 @@ const TemplatePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const userContext = useUserContext();
-  const featureFlags = useFeatureFlags();
 
   const catalogLocale = userContext.get('catalogLocale');
 

@@ -1,8 +1,10 @@
-import {Button, SectionTitle} from 'akeneo-design-system';
+import {Button, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
 import React from 'react';
 import {userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
+import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
+import {getLabelFromAttribute} from '../attributes';
 
 type Props = {
   attribute: Attribute;
@@ -10,18 +12,31 @@ type Props = {
 
 export const AttributeSettings = ({attribute}: Props) => {
   const translate = useTranslate();
-  const catalogLocale = userContext.get('catalogLocale');
+  const label = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
+  const [
+    isDeactivateTemplateAttributeModalOpen,
+    openDeactivateTemplateAttributeModal,
+    closeDeactivateTemplateAttributeModal,
+  ] = useBooleanState(false);
+
   return (
     <SettingsContainer>
       <SectionTitle sticky={0}>
         <SectionTitle.Title>
-          {attribute.labels[catalogLocale]} {translate('akeneo.category.template.attribute.settings.title')}
+          {label} {translate('akeneo.category.template.attribute.settings.title')}
         </SectionTitle.Title>
       </SectionTitle>
       <Footer>
-        <Button level="danger" ghost>
+        <Button level="danger" ghost onClick={openDeactivateTemplateAttributeModal}>
           {translate('akeneo.category.template.attribute.delete_button')}
         </Button>
+        {isDeactivateTemplateAttributeModalOpen && (
+          <DeactivateTemplateAttributeModal
+            templateUuid={attribute.template_uuid}
+            attribute={{uuid: attribute.uuid, label: label}}
+            onClose={closeDeactivateTemplateAttributeModal}
+          />
+        )}
       </Footer>
     </SettingsContainer>
   );
