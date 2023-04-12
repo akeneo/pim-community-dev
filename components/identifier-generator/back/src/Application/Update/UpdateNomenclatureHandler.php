@@ -7,7 +7,9 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Update;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\ReferenceEntityProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReferenceEntityNomenclatureRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
 use Webmozart\Assert\Assert;
 
@@ -20,6 +22,7 @@ final class UpdateNomenclatureHandler
     public function __construct(
         private readonly FamilyNomenclatureRepository $familyNomenclatureRepository,
         private readonly SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository,
+        private readonly ReferenceEntityNomenclatureRepository $refenceEntityNomenclatureRepository,
         private readonly CommandValidatorInterface $validator,
     ) {
     }
@@ -28,11 +31,11 @@ final class UpdateNomenclatureHandler
     {
         $this->validator->validate($command);
 
-        if ($command->getPropertyCode() === FamilyProperty::TYPE) {
-            $nomenclatureDefinition = $this->familyNomenclatureRepository->get() ?? new NomenclatureDefinition();
-        } else {
-            $nomenclatureDefinition = $this->simpleSelectNomenclatureRepository->get($command->getPropertyCode()) ?? new NomenclatureDefinition();
-        }
+        $nomenclatureDefinition = match ($command->getPropertyCode()) {
+            FamilyProperty::TYPE => $this->familyNomenclatureRepository->get() ?? new NomenclatureDefinition(),
+            ReferenceEntityProperty::TYPE => $this->refenceEntityNomenclatureRepository->get($command->getPropertyCode()) ?? new NomenclatureDefinition(),
+            default => $this->simpleSelectNomenclatureRepository->get($command->getPropertyCode()) ?? new NomenclatureDefinition(),
+        };
 
         Assert::notNull($command->getOperator());
         Assert::notNull($command->getValue());
@@ -44,10 +47,15 @@ final class UpdateNomenclatureHandler
             ->withGenerateIfEmpty($command->getGenerateIfEmpty())
             ->withValues($command->getValues());
 
-        if ($command->getPropertyCode() === FamilyProperty::TYPE) {
-            $this->familyNomenclatureRepository->update($nomenclatureDefinition);
-        } else {
-            $this->simpleSelectNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
+        switch ($command->getPropertyCode()) {
+            case FamilyProperty::TYPE:
+                $this->familyNomenclatureRepository->update($nomenclatureDefinition);
+                break;
+            case ReferenceEntityProperty::TYPE:
+                $this->refenceEntityNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
+                break;
+            default:
+                $this->simpleSelectNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
         }
     }
 }
