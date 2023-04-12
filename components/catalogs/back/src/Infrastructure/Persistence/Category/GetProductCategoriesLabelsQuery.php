@@ -67,6 +67,12 @@ class GetProductCategoriesLabelsQuery implements GetProductCategoriesLabelsQuery
         }
     }
 
+    public function reset(): void
+    {
+        $this->categoryCodesByProduct = [];
+        $this->categoryLabelsByLocale = [];
+    }
+
     /**
      * @param string[] $productUuids
      */

@@ -83,6 +83,8 @@ services:
     Akeneo\Catalogs\Infrastructure\Persistence\Category\GetProductCategoriesLabelsQuery:
         arguments:
             $enrichmentQueryBus: '@pim_enrich.product.query_message_bus'
+        tags:
+            - { name: kernel.reset, method: reset }
 
     Akeneo\Catalogs\Infrastructure\Persistence\Catalog\Product\GetProductsWithFilteredValuesQuery:
         arguments:
