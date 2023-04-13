@@ -54,7 +54,8 @@ SELECT attribute.code,
        attribute.backend_type,
        attribute.useable_as_grid_filter,
        COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes,
-       translation.translations
+       translation.translations,
+       attribute.main_identifier
 FROM pim_catalog_attribute attribute
     LEFT JOIN locale_specific_codes on attribute.id = attribute_id
     LEFT JOIN translation on attribute.code = translation.code
@@ -88,6 +89,7 @@ SQL;
                 json_decode($rawAttribute['available_locale_codes']),
                 boolval($rawAttribute['useable_as_grid_filter']),
                 $translations,
+                \boolval($rawAttribute['main_identifier'])
             );
         }
 

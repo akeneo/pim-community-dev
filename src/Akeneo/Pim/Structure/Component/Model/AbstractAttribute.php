@@ -164,6 +164,8 @@ abstract class AbstractAttribute implements AttributeInterface
 
     protected ?array $rawTableConfiguration = null;
 
+    protected bool $mainIdentifier;
+
     /**
      * Constructor
      */
@@ -180,6 +182,7 @@ abstract class AbstractAttribute implements AttributeInterface
         $this->translations = new ArrayCollection();
         $this->validationRule = null;
         $this->properties = [];
+        $this->mainIdentifier = false;
     }
 
     /**
@@ -1103,5 +1106,15 @@ abstract class AbstractAttribute implements AttributeInterface
     public function setRawTableConfiguration(?array $rawTableConfiguration): void
     {
         $this->rawTableConfiguration = $rawTableConfiguration;
+    }
+
+    public function isMainIdentifier(): bool
+    {
+        return $this->mainIdentifier;
+    }
+
+    public function setIsMainIdentifier(bool $isMainIdentifier): void
+    {
+        $this->mainIdentifier = $isMainIdentifier;
     }
 }

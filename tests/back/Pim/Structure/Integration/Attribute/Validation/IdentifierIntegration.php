@@ -9,7 +9,7 @@ namespace AkeneoTest\Pim\Structure\Integration\Attribute\Validation;
  */
 class IdentifierIntegration extends AbstractAttributeTestCase
 {
-    public function testSingleIdentifier()
+    public function testMultipleIdentifiers()
     {
         $attribute = $this->createAttribute();
 
@@ -25,9 +25,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
 
         $violations = $this->validateAttribute($attribute);
 
-        $this->assertCount(1, $violations);
-        $this->assertSame('An identifier attribute already exists.', $violations->get(0)->getMessage());
-        $this->assertSame('type', $violations->get(0)->getConstraint()->payload['standardPropertyName']);
+        $this->assertCount(0, $violations);
     }
 
     public function testIdentifierIsUsableAsGridFilter()

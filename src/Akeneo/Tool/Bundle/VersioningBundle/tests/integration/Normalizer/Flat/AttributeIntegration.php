@@ -42,6 +42,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
             'localizable'            => false,
             'auto_option_sorting'    => null,
             'default_value'          => null,
+            'is_main_identifier'     => true,
             'locale_specific'        => false,
             'guidelines-en_US'       => 'this is the sku',
             'options'                => null,

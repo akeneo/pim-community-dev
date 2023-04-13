@@ -253,3 +253,15 @@ services:
             - '@akeneo_batch.job.job_instance_repository'
             - '@oro_security.security_facade'
         tags: ['controller.service_arguments']
+
+    ### Changing Main Identifier
+    Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifierHandler:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@database_connection'
+
+    Akeneo\Pim\Structure\Bundle\Controller\InternalApi\UpdateMainIdentifierAction:
+        arguments:
+            - '@Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifierHandler'
+        tags:
+            - { name: controller.service_arguments }

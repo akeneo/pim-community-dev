@@ -74,6 +74,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getProperty('auto_option_sorting')->willReturn(null);
         $attribute->getProperty('default_value')->willReturn(null);
         $attribute->getGuidelines()->willReturn(['en_US' => 'the guidelines', 'fr_FR' => 'les indications']);
+        $attribute->isMainIdentifier()->willReturn(false);
 
         $this->normalize($attribute)->shouldReturn(
             [
@@ -105,7 +106,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'labels'                 => [],
                 'guidelines'             => ['en_US' => 'the guidelines', 'fr_FR' => 'les indications'],
                 'auto_option_sorting'    => null,
-                'default_value'           => null,
+                'default_value'          => null,
             ]
         );
     }
@@ -155,6 +156,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getProperty('default_value')->willReturn('default');
         $attribute->getProperty('is_read_only')->willReturn(true);
         $attribute->getGuidelines()->willReturn(['en_US' => 'the guidelines']);
+        $attribute->isMainIdentifier()->willReturn(false);
 
         $dateTimeNormalizer->normalize($dateMin)->willReturn('2015-05-23T15:55:50+01:00');
         $dateTimeNormalizer->normalize($dateMax)->willReturn('2015-06-23T15:55:50+01:00');

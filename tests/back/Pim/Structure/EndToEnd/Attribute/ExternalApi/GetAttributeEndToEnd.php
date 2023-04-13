@@ -47,6 +47,7 @@ class GetAttributeEndToEnd extends ApiTestCase
     "sort_order": 0,
     "localizable": false,
     "scopable": false,
+    "is_main_identifier": true,
     "labels": {},
     "auto_option_sorting": null,
     "default_value": null,

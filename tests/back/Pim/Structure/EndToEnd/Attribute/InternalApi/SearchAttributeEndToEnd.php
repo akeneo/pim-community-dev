@@ -169,6 +169,7 @@ JSON;
             "sort_order": 0,
             "localizable": false,
             "scopable": false,
+            "is_main_identifier": true,
             "labels": [],
             "guidelines": {"en_US": "this is the sku"},
             "auto_option_sorting": null,

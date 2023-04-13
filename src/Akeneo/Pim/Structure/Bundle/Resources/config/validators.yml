@@ -82,13 +82,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_metric_validator }
 
-    pim_catalog.validator.constraint.single_identifier:
-        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttributeValidator'
-        arguments:
-            - '@pim_catalog.repository.attribute'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }
-
     pim_catalog.validator.constraint.blacklisted_attribute_code:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCodeValidator'
         arguments:

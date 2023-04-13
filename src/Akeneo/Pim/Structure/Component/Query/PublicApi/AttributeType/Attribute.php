@@ -22,6 +22,7 @@ final class Attribute
         private array $availableLocaleCodes,
         private ?bool $useableAsGridFilter = null,
         private array $labels = [],
+        private bool $isMainIdentifier = false
     ) {
     }
 
@@ -94,5 +95,10 @@ final class Attribute
     public function labels(): array
     {
         return $this->labels;
+    }
+
+    public function isMainIdentifier(): bool
+    {
+        return $this->isMainIdentifier;
     }
 }

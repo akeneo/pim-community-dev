@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -71,6 +72,10 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
 
         if ($this->isReadOnlyFeatureAvailableAndEnabled()) {
             $normalizedAttribute['is_read_only'] = $attribute->getProperty('is_read_only');
+        }
+
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            $normalizedAttribute['is_main_identifier'] = $attribute->isMainIdentifier();
         }
 
         return $normalizedAttribute;
