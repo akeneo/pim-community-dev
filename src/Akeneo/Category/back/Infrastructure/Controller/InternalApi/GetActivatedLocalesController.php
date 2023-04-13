@@ -16,11 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 class GetActivatedLocalesController
 {
     public function __construct(
-        private readonly FindLocales $findLocales
+        private readonly FindLocales $findLocales,
     ) {
     }
 
-    public function __invoke() {
+    public function __invoke()
+    {
         $locales = $this->findLocales->findAllActivated();
         $localeCodes = array_map(fn (Locale $locale) => $locale->getCode(), $locales);
 

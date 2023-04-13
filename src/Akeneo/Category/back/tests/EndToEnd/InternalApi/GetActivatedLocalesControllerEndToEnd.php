@@ -34,7 +34,7 @@ class GetActivatedLocalesControllerEndToEnd extends ControllerIntegrationTestCas
         // locale 'en_US' is present in DB by default
         $this->assertEqualsCanonicalizing(
             ['en_US', 'yy_YY'],
-            json_decode($response->getContent(), true)
+            json_decode($response->getContent(), true),
         );
     }
 
@@ -43,7 +43,7 @@ class GetActivatedLocalesControllerEndToEnd extends ControllerIntegrationTestCas
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function addLocale($code, $isActivated)
+    private function addLocale(string $code, bool $isActivated): void
     {
         $sql = <<<SQL
             INSERT INTO pim_catalog_locale (code, is_activated) VALUES (:code, :isActivated);
@@ -52,7 +52,7 @@ class GetActivatedLocalesControllerEndToEnd extends ControllerIntegrationTestCas
         $this->get('database_connection')->executeQuery(
             $sql,
             ['code' => $code, 'isActivated' => $isActivated],
-            ['code' => \PDO::PARAM_STR, 'isActivated' => \PDO::PARAM_BOOL]
+            ['code' => \PDO::PARAM_STR, 'isActivated' => \PDO::PARAM_BOOL],
         );
     }
 }
