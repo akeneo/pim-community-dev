@@ -12,9 +12,6 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityNotFoundException;
-use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
@@ -34,82 +31,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeOptionController
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var EntityManager */
-    protected $entityManager;
-
-    /** @var FormFactoryInterface */
-    protected $formFactory;
-
-    /** @var ViewHandlerInterface */
-    protected $viewHandler;
-
-    /** @var AttributeOptionsSorter */
-    protected $sorter;
-
-    /** @var SimpleFactoryInterface */
-    protected $optionFactory;
-
-    /** @var RemoverInterface */
-    protected $optionRemover;
-
-    /** @var SaverInterface */
-    protected $optionSaver;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var AttributeOptionRepositoryInterface */
-    protected $optionRepository;
-
-    /** @var AttributeOptionSearchableRepository */
-    private $attributeOptionRepository;
-
-    /** @var NormalizerInterface */
-    private $structureNormalizer;
-
-    /**
-     * @param NormalizerInterface                 $normalizer
-     * @param EntityManager                       $entityManager
-     * @param FormFactoryInterface                $formFactory
-     * @param ViewHandlerInterface                $viewHandler
-     * @param AttributeOptionsSorter              $sorter
-     * @param SimpleFactoryInterface              $optionFactory
-     * @param SaverInterface                      $optionSaver
-     * @param RemoverInterface                    $optionRemover
-     * @param AttributeRepositoryInterface        $attributeRepository
-     * @param AttributeOptionRepositoryInterface  $attributeOptionRepository
-     * @param AttributeOptionSearchableRepository $attributeOptionSearchableRepo
-     * @param NormalizerInterface                 $structureNormalizer
-     */
     public function __construct(
-        NormalizerInterface $normalizer,
-        EntityManager $entityManager,
-        FormFactoryInterface $formFactory,
-        ViewHandlerInterface $viewHandler,
-        AttributeOptionsSorter $sorter,
-        SimpleFactoryInterface $optionFactory,
-        SaverInterface $optionSaver,
-        RemoverInterface $optionRemover,
-        AttributeRepositoryInterface $attributeRepository,
-        AttributeOptionRepositoryInterface $attributeOptionRepository,
-        AttributeOptionSearchableRepository $attributeOptionSearchableRepo,
-        NormalizerInterface $structureNormalizer
+        private NormalizerInterface $normalizer,
+        private FormFactoryInterface $formFactory,
+        private AttributeOptionsSorter $sorter,
+        private SimpleFactoryInterface $optionFactory,
+        private SaverInterface $optionSaver,
+        private RemoverInterface $optionRemover,
+        private AttributeRepositoryInterface $attributeRepository,
+        private AttributeOptionRepositoryInterface $optionRepository,
+        private AttributeOptionSearchableRepository $attributeOptionRepository,
+        private NormalizerInterface $structureNormalizer
     ) {
-        $this->normalizer = $normalizer;
-        $this->entityManager = $entityManager;
-        $this->formFactory = $formFactory;
-        $this->viewHandler = $viewHandler;
-        $this->sorter = $sorter;
-        $this->optionFactory = $optionFactory;
-        $this->optionRemover = $optionRemover;
-        $this->optionSaver = $optionSaver;
-        $this->attributeRepository = $attributeRepository;
-        $this->optionRepository = $attributeOptionRepository;
-        $this->attributeOptionRepository = $attributeOptionSearchableRepo;
-        $this->structureNormalizer = $structureNormalizer;
     }
 
     /**
@@ -333,10 +266,11 @@ class AttributeOptionController
      */
     protected function findAttributeOr404($id)
     {
-        try {
-            $result = $this->attributeRepository->find($id);
-        } catch (EntityNotFoundException $e) {
-            throw new NotFoundHttpException($e->getMessage());
+        $result = $this->attributeRepository->find($id);
+        if (null === $result) {
+            throw new NotFoundHttpException(
+                sprintf('Attribute "%d" does not exist or you do not have permission to access it.', $id)
+            );
         }
 
         return $result;
@@ -353,10 +287,11 @@ class AttributeOptionController
      */
     protected function findAttributeOptionOr404($id)
     {
-        try {
-            $result = $this->optionRepository->find($id);
-        } catch (EntityNotFoundException $e) {
-            throw new NotFoundHttpException($e->getMessage());
+        $result = $this->optionRepository->find($id);
+        if (null === $result) {
+            throw new NotFoundHttpException(
+                sprintf('Option "%d" does not exist or you do not have permission to access it.', $id)
+            );
         }
 
         return $result;
