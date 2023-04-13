@@ -20,8 +20,6 @@ imports:
     - { resource: ../../../src/Akeneo/Platform/Job/back/tests/Integration/Resources/config/services.yml }
     # FeatureFlag
     - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_services.yml }
-    # Catalogs
-    - { resource: ../../../components/catalogs/back/tests/Acceptance/services.yml }
     # MessengerBundle
     - { resource: ../../../src/Akeneo/Tool/Bundle/MessengerBundle/Resources/config/test_services.yml }
 
@@ -219,9 +217,6 @@ services:
             - '@pim_enrich.repository.job_execution'
             - '@akeneo_batch.saver.job_instance'
             - '@doctrine.orm.default_entity_manager'
-
-    akeneo_integration_tests.catalogs:
-        class: 'Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog'
 
     ### Builder
     akeneo_integration_tests.catalog.product.builder:
