@@ -182,9 +182,7 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeOptionController'
         arguments:
             - '@pim_internal_api_serializer'
-            - '@doctrine.orm.entity_manager'
             - '@form.factory'
-            - '@fos_rest.view_handler'
             - '@pim_catalog.manager.attribute_options_sorter'
             - '@pim_catalog.factory.attribute_option'
             - '@pim_catalog.saver.attribute_option'
