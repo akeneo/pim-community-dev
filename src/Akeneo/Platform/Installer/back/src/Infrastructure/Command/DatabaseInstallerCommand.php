@@ -13,6 +13,8 @@ use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
+use Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallCommand;
+use Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler;
 use Akeneo\Platform\Installer\Application\ResetElasticsearchIndexes\ResetElasticSearchIndexesCommand;
 use Akeneo\Platform\Installer\Application\ResetElasticsearchIndexes\ResetElasticSearchIndexesHandler;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
@@ -29,27 +31,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class DatabaseInstallerCommand extends Command
 {
-    public static $defaultName = 'pim:installer-2:db';
+    public static $defaultName = 'pim:installer:db-2';
 
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
 
     public function __construct(
-        private readonly ResetElasticSearchIndexesHandler $resetElasticSearchIndexesHandler,
-        private readonly EntityManagerInterface $entityManager,
-        private ?CommandExecutor $commandExecutor = null
+        private readonly DatabaseInstallHandler $databaseInstallHandler,
     )
     {
-        parent::__construct();
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->commandExecutor = new CommandExecutor(
-            $input,
-            $output,
-            $this->getApplication()
-        );
+        parent::__construct(self::$defaultName);
     }
 
     /**
@@ -91,7 +82,12 @@ final class DatabaseInstallerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $this->databaseInstallHandler->handle(new DatabaseInstallCommand(
+            new SymfonyStyle($input, $output),
+            $input->getOptions()
+        ));
+
+        /**
         $io->title('Prepare database schema');
 
         try {
@@ -113,7 +109,6 @@ final class DatabaseInstallerCommand extends Command
             $this->resetElasticSearchIndexesHandler->handle(new ResetElasticSearchIndexesCommand($io));
         }
 
-        /**
         $entityManager = $this->entityManager;
         $entityManager->clear();
 

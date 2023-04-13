@@ -2,5 +2,7 @@ services:
 
   Akeneo\Platform\Installer\Infrastructure\Command\DatabaseInstallerCommand:
     arguments:
-      - '@Akeneo\Platform\Installer\Application\ResetElasticsearchIndexes\ResetElasticSearchIndexesHandler'
+      - '@Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler'
       - '@doctrine.orm.default_entity_manager'
+    tags:
+      - { name: 'console.command' }

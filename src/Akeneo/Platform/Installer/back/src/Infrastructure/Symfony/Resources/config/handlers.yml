@@ -1,5 +1,5 @@
 services:
 
-  Akeneo\Platform\Installer\Application\ResetElasticsearchIndexes\ResetElasticSearchIndexesHandler:
+  Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler:
     arguments:
       - '@Akeneo\Platform\Installer\Infrastructure\Query\Elasticsearch\ResetIndexes'
