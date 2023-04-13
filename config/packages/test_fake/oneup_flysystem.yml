@@ -10,5 +10,3 @@ oneup_flysystem:
             memory: ~
         local_storage_adapter:
             memory: ~
-        catalogs_mapping_adapter:
-            memory: ~

@@ -5,10 +5,3 @@ framework:
             messenger.bus.default:
                 middleware:
                     - Akeneo\Tool\Bundle\MessengerBundle\Middleware\UcsMiddleware
-            catalogs.command.bus:
-                middleware:
-                    - validation
-                    - doctrine_transaction
-            catalogs.query.bus:
-                middleware:
-                    - validation
