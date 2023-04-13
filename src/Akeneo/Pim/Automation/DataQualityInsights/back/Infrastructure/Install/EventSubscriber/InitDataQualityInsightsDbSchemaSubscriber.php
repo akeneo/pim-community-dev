@@ -25,7 +25,7 @@ class InitDataQualityInsightsDbSchemaSubscriber implements EventSubscriberInterf
         ];
     }
 
-    public function initDbSchema(InstallerEvent $event): void
+    public function initDbSchema(): void
     {
         $query = <<<'SQL'
 CREATE TABLE pim_data_quality_insights_product_criteria_evaluation (

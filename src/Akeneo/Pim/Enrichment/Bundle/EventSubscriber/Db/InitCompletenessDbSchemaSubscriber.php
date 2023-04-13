@@ -34,7 +34,7 @@ class InitCompletenessDbSchemaSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function initDbSchema(InstallerEvent $event): void
+    public function initDbSchema(): void
     {
         $completenessTableSql = <<<SQL
 CREATE TABLE IF NOT EXISTS `pim_catalog_completeness` (

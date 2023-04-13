@@ -34,7 +34,7 @@ class InitDataQualityInsightsJobsSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function initJobs(InstallerEvent $event): void
+    public function initJobs(): void
     {
         $this->initializeJobs->initialize();
     }

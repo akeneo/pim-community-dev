@@ -2,4 +2,7 @@ services:
 
   Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler:
     arguments:
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineSchemaUpdate'
       - '@Akeneo\Platform\Installer\Infrastructure\Query\Elasticsearch\ResetIndexes'
+      - '@doctrine.orm.default_entity_manager'
+      - '@event_dispatcher'

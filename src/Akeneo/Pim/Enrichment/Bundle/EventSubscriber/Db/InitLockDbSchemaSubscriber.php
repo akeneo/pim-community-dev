@@ -30,7 +30,7 @@ class InitLockDbSchemaSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function initDbSchema(InstallerEvent $event): void
+    public function initDbSchema(): void
     {
         $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS lock_keys (

@@ -9,25 +9,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Command;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
-use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
 use Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallCommand;
 use Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler;
-use Akeneo\Platform\Installer\Application\ResetElasticsearchIndexes\ResetElasticSearchIndexesCommand;
-use Akeneo\Platform\Installer\Application\ResetElasticsearchIndexes\ResetElasticSearchIndexesHandler;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
-use Akeneo\Tool\Component\Console\CommandExecutor;
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class DatabaseInstallerCommand extends Command
 {
@@ -82,10 +70,18 @@ final class DatabaseInstallerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->databaseInstallHandler->handle(new DatabaseInstallCommand(
-            new SymfonyStyle($input, $output),
-            $input->getOptions()
-        ));
+        $io = new SymfonyStyle($input, $output);
+
+        try {
+            $this->databaseInstallHandler->handle(new DatabaseInstallCommand(
+                $io,
+                $input->getOptions()
+            ));
+            return Command::SUCCESS;
+        } catch (\Exception $e) {
+            $io->error($e->getMessage());
+            return Command::FAILURE;
+        }
 
         /**
         $io->title('Prepare database schema');

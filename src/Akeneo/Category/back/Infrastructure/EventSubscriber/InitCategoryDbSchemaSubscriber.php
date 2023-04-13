@@ -22,7 +22,7 @@ class InitCategoryDbSchemaSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function initDbSchema(InstallerEvent $event): void
+    public function initDbSchema(): void
     {
         $this->addValueCollectionInCategoryTable();
         $this->addCategoryTemplateTable();
