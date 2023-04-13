@@ -9,6 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Domain\Query\CommandExecutor;
 
-interface DoctrineSchemaUpdateInterface extends CommandExecutorInterface
+interface DoctrineMigrationsSyncMetadataStorageInterface extends CommandExecutorInterface
 {
 }

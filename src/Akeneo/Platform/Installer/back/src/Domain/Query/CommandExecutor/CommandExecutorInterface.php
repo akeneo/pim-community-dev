@@ -9,6 +9,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Domain\Query\CommandExecutor;
 
-interface DoctrineSchemaUpdateInterface extends CommandExecutorInterface
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+
+interface CommandExecutorInterface
 {
+    public function execute(?array $options): void;
+
+    public function getApplication(): Application;
 }

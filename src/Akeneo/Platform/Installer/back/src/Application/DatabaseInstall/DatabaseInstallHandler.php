@@ -58,6 +58,7 @@ final class DatabaseInstallHandler
         $this->entityManager->clear();
 
         // TODO check if a listener still need catalog don't seems like it
+        // TODO recheck all query make idempotent the one that are not
         $this->eventDispatcher->dispatch(
             new InstallerEvent(null, [
                 'catalog' => $command->getOptions()['catalog'],
