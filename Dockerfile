@@ -79,6 +79,17 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get --yes install libjudy-dev php8.1-dev php-pear build-essential && pecl install memprof
+
+RUN cd /tmp && git clone https://github.com/BitOne/php-meminfo.git && \
+    cd php-meminfo/extension && \
+    phpize && \
+    ./configure --enable-meminfo && \
+    make && \
+    make install && \
+    echo extension=meminfo.so > /etc/php/8.1/cli/conf.d/99-meminfo.ini && \
+    phpenmod meminfo
+
 COPY docker/build/xdebug.ini /etc/php/8.1/cli/conf.d/99-akeneo-xdebug.ini
 COPY docker/build/xdebug.ini /etc/php/8.1/fpm/conf.d/99-akeneo-xdebug.ini
 COPY docker/build/blackfire.ini /etc/php/8.1/cli/conf.d/99-akeneo-blackfire.ini
