@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributeIdentifier;
 use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes;
-use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -19,13 +18,29 @@ class GetDeactivatedTemplateAttributesSql implements GetDeactivatedTemplateAttri
     {
     }
 
+    /**
+     * @return array<DeactivatedTemplateAttributeIdentifier>
+     *
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function execute(): array
     {
         $sql = <<<SQL
-            SELECT BIN_TO_UUID(uuid) AS attribute_uuid, code
+            SELECT BIN_TO_UUID(uuid) AS uuid, code
             FROM pim_catalog_category_attribute
             WHERE is_deactivated = 1
         SQL;
-        return $this->connection->executeQuery($sql)->fetchAllAssociative();
+        $results = $this->connection->executeQuery($sql)->fetchAllAssociative();
+
+        $deactivatedTemplateAttributeList = [];
+        foreach ($results as $result) {
+            $deactivatedTemplateAttributeList[] = new DeactivatedTemplateAttributeIdentifier(
+                $result['uuid'],
+                $result['code'],
+            );
+        }
+
+        return $deactivatedTemplateAttributeList;
     }
 }

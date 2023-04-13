@@ -31,7 +31,7 @@ class GetDeactivatedTemplateAttributesSqlIntegration extends CategoryTestCase
         $this->deactivateAttribute($attributeToBeDeactivated['uuid']);
 
         $deactivatedAttributes = $getDeactivatedTemplateAttributes->execute();
-        $this->assertEquals($attributeToBeDeactivated['uuid'], $deactivatedAttributes[0]['attribute_uuid']);
-        $this->assertEquals($attributeToBeDeactivated['code'], $deactivatedAttributes[0]['code']);
+        $this->assertEquals($attributeToBeDeactivated['uuid'], $deactivatedAttributes[0]->uuid);
+        $this->assertEquals($attributeToBeDeactivated['code'], $deactivatedAttributes[0]->code);
     }
 }
