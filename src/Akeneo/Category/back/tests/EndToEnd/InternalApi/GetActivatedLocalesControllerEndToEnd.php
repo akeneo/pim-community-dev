@@ -24,7 +24,7 @@ class GetActivatedLocalesControllerEndToEnd extends ControllerIntegrationTestCas
 
         $this->callApiRoute(
             client: $this->client,
-            route: 'pim_catalog_activated_locales',
+            route: 'internal_api_category_catalog_activated_locales',
             method: Request::METHOD_GET,
         );
 

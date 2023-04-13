@@ -48,6 +48,7 @@
 - PIM-10889: Update Category updated date after setting a labels and show category filtered by updated date on API REST 
 - PIM-10919: Fix Cleaning Products with removed attributes using identifiers instead of uuids
 - PIM-10911: Add user-agent when sending an event
+- PIM-10885: Use React shared component for locale selector in product form locale switcher
 
 ## Improvements
 
