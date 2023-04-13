@@ -34,6 +34,8 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
   const [isCurrentStep, nextStep, previousStep] = useProgress(STEPS);
   const [confirmationWord, setConfirmationWord] = useState<string>('');
 
+  const canConfirm = confirmationWord === translate('pim_system.reset_pim.modal.confirmation_word');
+
   const handleMoveToConfirmStep = () => {
     nextStep();
   };
@@ -43,6 +45,10 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
   };
 
   const handleConfirm = () => {
+    if (!canConfirm) {
+      return;
+    }
+
     onConfirm();
   };
 
@@ -102,11 +108,7 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
             <Button level="tertiary" onClick={handleCancel}>
               {translate('pim_common.cancel')}
             </Button>
-            <Button
-              level="danger"
-              disabled={confirmationWord !== translate('pim_system.reset_pim.modal.confirmation_word')}
-              onClick={handleConfirm}
-            >
+            <Button level="danger" disabled={!canConfirm} onClick={handleConfirm}>
               {translate('pim_system.reset_pim.button.confirm')}
             </Button>
           </Modal.BottomButtons>

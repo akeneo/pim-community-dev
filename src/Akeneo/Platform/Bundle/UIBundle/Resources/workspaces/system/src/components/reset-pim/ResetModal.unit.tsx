@@ -28,3 +28,16 @@ test('it can be confirmed after going through every steps and confirming', () =>
 
   expect(handleConfirm).toHaveBeenCalled();
 });
+
+test('it cannot be confirmed if the confirmation word is incorrect', () => {
+  const handleConfirm = jest.fn();
+
+  renderWithProviders(<ResetModal onCancel={jest.fn()} onConfirm={handleConfirm} />);
+
+  userEvent.click(screen.getByText('pim_common.next'));
+  userEvent.type(screen.getByLabelText('pim_system.reset_pim.modal.confirmation_phrase'), 'jambon');
+  userEvent.type(screen.getByLabelText('pim_system.reset_pim.modal.confirmation_phrase'), '{enter}');
+
+  expect(screen.getByText('pim_system.reset_pim.button.confirm')).toBeDisabled();
+  expect(handleConfirm).not.toHaveBeenCalled();
+});
