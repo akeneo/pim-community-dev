@@ -2,6 +2,7 @@
 
 namespace Akeneo\Test\Category\EndToEnd\ExternalApi;
 
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
@@ -581,6 +582,93 @@ JSON;
 
         $expectedCategory = $categories['master'];
         $expectedCategory['values'] = [];
+        $expected = [
+            '_links' => [
+                'self' => [
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22master%22%5D%7D%5D%7D&with_enriched_attributes=true',
+                ],
+                'first' => [
+                    'href' => 'http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&search=%7B%22code%22:%5B%7B%22operator%22:%22IN%22,%22value%22:%5B%22master%22%5D%7D%5D%7D&with_enriched_attributes=true',
+                ],
+            ],
+            'current_page' => 1,
+            '_embedded' => [
+                'items' => [
+                    $expectedCategory,
+                ],
+            ],
+        ];
+
+        $this->assertSameResponse($expected, $client->getResponse());
+    }
+
+    public function testListCategoriesWithEnrichedValuesOnDeactivateAttribute(): void
+    {
+        $category = $this->get(GetCategoryInterface::class)->byCode('master');
+        $this->updateCategoryWithValues('master');
+
+        $attributes = [
+            [
+                'type' => 'image',
+                'uuid' => '8587cda6-58c8-47fa-9278-033e1d8c735c',
+                'code' => 'photo',
+                'order' => 1,
+                'is_required' => true,
+                'is_scopable' => false,
+                'is_localizable' => false,
+                'labels' => ['en_US' => 'photo'],
+                'template_uuid' => '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+                'additional_properties' => [],
+            ],
+            [
+                'type' => 'text',
+                'uuid' => '87939c45-1d85-4134-9579-d594fff65030',
+                'code' => 'title',
+                'order' => 2,
+                'is_required' => true,
+                'is_scopable' => true,
+                'is_localizable' => true,
+                'labels' => ['en_US' => 'title'],
+                'template_uuid' => '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+                'additional_properties' => [],
+            ],
+        ];
+
+        $templateModel = $this->generateMockedCategoryTemplateModel(
+            categoryTreeId: $category->getId()->getValue(),
+            templateAttributes: $attributes,
+        );
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTemplateAttributeSaver::class)->insert(
+            $templateModel->getUuid(),
+            $templateModel->getAttributeCollection(),
+        );
+
+        $this->deactivateAttribute('87939c45-1d85-4134-9579-d594fff65030');
+
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/categories?search={"code":[{"operator":"IN","value":["master"]}]}&with_enriched_attributes=true');
+
+        $categories = $this->getStandardizedCategories(false, false);
+
+        $expectedCategory = $categories['master'];
+        $expectedCategory['values'] = [
+            'photo|8587cda6-58c8-47fa-9278-033e1d8c735c' => [
+                'data' => [
+                    'size' => 168107,
+                    'extension' => 'jpg',
+                    'file_path' => '8/8/3/d/883d041fc9f22ce42fee07d96c05b0b7ec7e66de_shoes.jpg',
+                    'mime_type' => 'image/jpeg',
+                    'original_filename' => 'shoes.jpg',
+                ],
+                'type' => 'image',
+                'channel' => null,
+                'locale' => null,
+                'attribute_code' => 'photo|8587cda6-58c8-47fa-9278-033e1d8c735c',
+            ],
+        ];
         $expected = [
             '_links' => [
                 'self' => [
