@@ -4,3 +4,9 @@ services:
             - '@database_connection'
         tags:
             - { name: console.command }
+
+    Akeneo\Category\Infrastructure\Cli\RemoveOrphanCategories\RemoveOrphanCategories:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }
