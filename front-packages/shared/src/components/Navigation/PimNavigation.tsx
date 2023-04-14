@@ -64,7 +64,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
     event.stopPropagation();
     event.preventDefault();
 
-    analytics.track('navigation:entry:clicked', {
+    analytics.appcuesTrack('navigation:entry:clicked', {
       code: entry.code,
     });
 
