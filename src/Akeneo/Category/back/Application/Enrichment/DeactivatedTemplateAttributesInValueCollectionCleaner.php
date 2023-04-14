@@ -23,7 +23,7 @@ class DeactivatedTemplateAttributesInValueCollectionCleaner
      */
     public function __invoke(array $deactivatedAttributes, array $rawCategory): array
     {
-        if (empty($deactivatedAttributes) || array_key_exists('value_collection', $rawCategory) === false) {
+        if (empty($deactivatedAttributes) || empty($rawCategory['value_collection']) ) {
             return $rawCategory;
         }
 
