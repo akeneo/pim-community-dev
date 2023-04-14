@@ -19,7 +19,7 @@ define([
   'pim/user-context',
   'pim/router',
   'pim/common/property',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function (
   $,
   _,
@@ -115,7 +115,7 @@ define([
               router.redirectToRoute(this.config.redirectAfter, params);
             }
 
-            analytics.track('common:form:saved', {
+            analytics.appcuesTrack('common:form:saved', {
               code: this.code,
             });
           }.bind(this)

@@ -16,7 +16,7 @@ define([
   'pim/form/common/edit-form',
   'oro/loading-mask',
   'pim/template/mass-edit/form',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function ($, _, __, router, Routing, messenger, BaseForm, LoadingMask, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),

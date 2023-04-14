@@ -19,7 +19,7 @@ define([
   'pim/form-builder',
   'require-context',
   'oro/messenger',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function (
   _,
   __,
@@ -107,7 +107,7 @@ define([
       this.getRoot().trigger('pim_enrich:form:render:after');
       this.getRoot().trigger('pim_enrich:form:extension:render:after');
 
-      analytics.track('form:edit:opened', {
+      analytics.appcuesTrack('form:edit:opened', {
         code: this.code,
         model: this.model,
       });

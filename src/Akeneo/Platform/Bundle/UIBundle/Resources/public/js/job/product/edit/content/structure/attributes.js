@@ -18,7 +18,7 @@ define([
   'pim/fetcher-registry',
   'pim/user-context',
   'pim/job/product/edit/content/structure/attributes-selector',
-  'pim/analytics',
+  'pim/appcues/analytics',
   'react',
   'akeneo-design-system',
 ], function (
@@ -138,7 +138,7 @@ define([
           modal.close();
           this.render();
 
-          analytics.track('export-profile:product:attribute-applied');
+          analytics.appcuesTrack('export-profile:product:attribute-applied');
         }.bind(this)
       );
     },

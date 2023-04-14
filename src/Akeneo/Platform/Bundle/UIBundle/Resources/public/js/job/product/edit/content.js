@@ -13,7 +13,7 @@ define([
   'backbone',
   'pim/template/export/product/edit/content',
   'pim/form',
-  'pim/analytics',
+  'pim/appcues/analytics',
   '@akeneo-pim-community/shared',
 ], function (_, __, Backbone, template, BaseForm, analytics, {filterErrors}) {
   return BaseForm.extend({
@@ -69,7 +69,7 @@ define([
 
       this.$el.html(this.template({}));
 
-      analytics.track('export-profile:product:content-tab-opened', {
+      analytics.appcuesTrack('export-profile:product:content-tab-opened', {
         code: this.code,
       });
 

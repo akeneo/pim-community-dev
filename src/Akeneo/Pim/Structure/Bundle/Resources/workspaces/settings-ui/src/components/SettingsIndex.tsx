@@ -8,7 +8,7 @@ import {
   useSecurity,
   useTranslate,
   Translate,
-  useAnalytics,
+  useAppcuesAnalytics,
   useFeatureFlags,
 } from '@akeneo-pim-community/shared';
 import {
@@ -57,7 +57,7 @@ const SettingsIndex = () => {
   const {isGranted} = useSecurity();
   const router = useRouter();
   const theme = useTheme();
-  const analytics = useAnalytics();
+  const analytics = useAppcuesAnalytics();
   const featureFlags = useFeatureFlags();
 
   const canAccessCategories = isGranted('pim_enrich_product_category_list');
@@ -236,7 +236,7 @@ const SettingsIndex = () => {
                     icon={<ValueIcon />}
                     label={translate('pim_enrich.entity.attribute.plural_label')}
                     onClick={() => {
-                      analytics.track('settings:attributes:clicked');
+                      analytics.appcuesTrack('settings:attributes:clicked');
                       redirectToRoute('pim_enrich_attribute_index');
                     }}
                     content={getPluralizedTranslation(
@@ -253,7 +253,7 @@ const SettingsIndex = () => {
                     icon={<AttributeFileIcon />}
                     label={translate('pim_menu.item.family')}
                     onClick={() => {
-                      analytics.track('settings:families:clicked');
+                      analytics.appcuesTrack('settings:families:clicked');
                       redirectToRoute('pim_enrich_family_index');
                     }}
                     content={getPluralizedTranslation(

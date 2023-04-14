@@ -7,7 +7,7 @@ define([
   'pim/controller/front',
   'pim/form-builder',
   'routing',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function ($, _, __, BaseController, FormBuilder, Routing, analytics) {
   const ACTION_PRODUCT_GRID = 'product-edit';
 
@@ -45,7 +45,7 @@ define([
       }).value.split(',');
       const queryWithoutValues = query.replace(/&values=[^&]+/, '');
 
-      analytics.track('grid:mass-edit:clicked', {
+      analytics.appcuesTrack('grid:mass-edit:clicked', {
         name: actionName,
       });
 

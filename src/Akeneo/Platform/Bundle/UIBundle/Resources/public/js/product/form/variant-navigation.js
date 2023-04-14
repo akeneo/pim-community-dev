@@ -25,7 +25,7 @@ define([
   'pim/template/product/form/variant-navigation/product-item',
   'pim/template/product/form/variant-navigation/product-model-item',
   'pim/template/product/form/variant-navigation/add-child-button',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function (
   $,
   _,

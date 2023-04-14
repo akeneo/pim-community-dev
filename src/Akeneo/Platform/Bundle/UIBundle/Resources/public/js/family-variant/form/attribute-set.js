@@ -18,7 +18,7 @@ define([
   'pim/dialog',
   'pim/template/family-variant/attribute-set',
   'pim/template/family-variant/attribute-group',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function (
   $,
   _,

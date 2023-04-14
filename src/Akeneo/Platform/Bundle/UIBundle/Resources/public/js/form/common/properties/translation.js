@@ -13,7 +13,7 @@ define([
   'pim/form',
   'pim/fetcher-registry',
   'pim/template/form/properties/translation',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function ($, _, BaseForm, FetcherRegistry, template, analytics) {
   return BaseForm.extend({
     className: 'translation-container',
@@ -118,7 +118,7 @@ define([
 
       data.labels[event.target.dataset.locale] = event.target.value;
 
-      analytics.track('translation:form:value-changed', {
+      analytics.appcuesTrack('translation:form:value-changed', {
         code: this.code,
         localeCode: event.target.dataset.locale,
       });

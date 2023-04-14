@@ -17,7 +17,7 @@ define([
   'oro/messenger',
   'oro/loading-mask',
   'pim/template/export/common/edit/launch',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function ($, _, __, BaseForm, Routing, router, propertyAccessor, messenger, LoadingMask, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),
@@ -74,7 +74,7 @@ define([
             router.reloadPage();
           }
 
-          analytics.track('job-instance:export:launched', {
+          analytics.appcuesTrack('job-instance:export:launched', {
             url: this.url,
           });
         })

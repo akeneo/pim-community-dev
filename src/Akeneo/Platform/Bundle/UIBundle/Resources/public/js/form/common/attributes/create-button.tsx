@@ -7,7 +7,7 @@ import {ThemeProvider} from 'styled-components';
 import {AttributeData, CreateAttributeButtonApp} from '../../../attribute/form/CreateAttributeButtonApp';
 const translate = require('oro/translator');
 const router = require('pim/router');
-const analytics = require('pim/analytics');
+const analytics = require('pim/appcues/analytics');
 
 type CreateButtonConfig = {
   buttonTitle: string;
@@ -33,7 +33,7 @@ class CreateButton extends BaseView {
   }
 
   onClick(data: AttributeData): void {
-    analytics.track('attribute:create:type-selected', {type: data.attribute_type});
+    analytics.appcuesTrack('attribute:create:type-selected', {type: data.attribute_type});
 
     router.redirectToRoute('pim_enrich_attribute_create', data);
   }

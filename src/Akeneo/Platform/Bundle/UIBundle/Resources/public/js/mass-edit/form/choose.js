@@ -12,7 +12,7 @@ define([
   'oro/translator',
   'pim/form',
   'pim/template/mass-edit/choose',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function ($, _, __, BaseForm, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),

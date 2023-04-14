@@ -11,7 +11,7 @@ const __ = require('oro/translator');
 const FetcherRegistry = require('../../fetcher/fetcher-registry');
 const localeFetcher = FetcherRegistry.getFetcher('locale');
 const userContext = require('pim/user-context');
-const analytics = require('pim/analytics');
+const analytics = require('pim/appcues/analytics');
 
 class LocaleSwitcher extends BaseView {
   private config: any;

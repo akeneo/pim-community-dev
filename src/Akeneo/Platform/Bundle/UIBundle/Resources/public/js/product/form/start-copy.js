@@ -12,7 +12,7 @@ define([
   'oro/translator',
   'pim/form',
   'pim/template/product/start-copy',
-  'pim/analytics',
+  'pim/appcues/analytics',
   'pim/feature-flags',
 ], function ($, _, __, BaseForm, template, analytics, FeatureFlags) {
   return BaseForm.extend({
@@ -55,7 +55,7 @@ define([
       this.isCopying = true;
       this.getRoot().trigger('pim_enrich:form:start_copy');
 
-      analytics.track('product:form:compare-clicked');
+      analytics.appcuesTrack('product:form:compare-clicked');
       this.render();
     },
 

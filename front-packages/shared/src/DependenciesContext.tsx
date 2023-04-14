@@ -8,6 +8,7 @@ import {
   ViewBuilder,
   Mediator,
   FeatureFlags,
+  AppcuesAnalytics,
   Analytics,
 } from './DependenciesProvider.type';
 
@@ -20,6 +21,7 @@ type DependenciesContextProps = {
   viewBuilder?: ViewBuilder;
   mediator?: Mediator;
   featureFlags?: FeatureFlags;
+  appcuesAnalytics?: AppcuesAnalytics;
   analytics?: Analytics;
 };
 

@@ -18,7 +18,7 @@ define([
   'pim/user-context',
   'routing',
   'pim/router',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function ($, _, __, BaseSave, messenger, FieldManager, i18n, UserContext, Routing, router, analytics) {
   return BaseSave.extend({
     updateSuccessMessage: __('pim_import_export.entity.job_instance.flash.update.success'),
@@ -45,7 +45,7 @@ define([
             this.setData(data);
             this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
 
-            analytics.track('job-instance:form-edit:saved', {
+            analytics.appcuesTrack('job-instance:form-edit:saved', {
               code: jobInstance.code,
             });
 

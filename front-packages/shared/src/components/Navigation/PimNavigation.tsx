@@ -4,7 +4,7 @@ import {PimView} from '../PimView';
 import {useRouter, useTranslate} from '../../hooks';
 import {HelpIcon, IconProps, LockIcon, MainNavigationItem, Tag, useTheme} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
-import {useAnalytics} from '../../hooks';
+import {useAppcuesAnalytics} from '../../hooks';
 
 const StyledMainNavigationItem = styled(MainNavigationItem)<{align?: 'bottom'; freeTrialEnabled: boolean}>`
   ${({align}) =>
@@ -48,7 +48,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
   const translate = useTranslate();
   const router = useRouter();
   const theme = useTheme();
-  const analytics = useAnalytics();
+  const analytics = useAppcuesAnalytics();
   const [pimVersion, setPimVersion] = useState<PimVersion | undefined>();
   const [showHelpDropdown, setShowHelpDropdown] = useState(false);
 

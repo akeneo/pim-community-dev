@@ -11,7 +11,7 @@ const columnsTemplate = require('pim/template/datagrid/column-selector/columns')
 const innerModalTemplate = require('pim/template/datagrid/column-selector/modal');
 const selectedTemplate = require('pim/template/datagrid/column-selector/selected');
 const modalTemplate = require('pim/template/common/modal-centered');
-const analytics = require('pim/analytics');
+const analytics = require('pim/appcues/analytics');
 
 interface AttributeGroup {
   code: string;
@@ -477,7 +477,7 @@ class ColumnSelector extends BaseView {
       return;
     }
 
-    analytics.track('product-grid:column:selected', {
+    analytics.appcuesTrack('product-grid:column:selected', {
       gridName: this.config.gridName,
       column: selected,
     });

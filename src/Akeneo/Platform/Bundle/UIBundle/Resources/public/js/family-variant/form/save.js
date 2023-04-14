@@ -18,7 +18,7 @@ define([
   'pim/i18n',
   'pim/user-context',
   'oro/mediator',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function ($, _, __, BaseSave, messenger, FamilyVariantSaver, FieldManager, i18n, UserContext, mediator, analytics) {
   return BaseSave.extend({
     updateSuccessMessage: __('pim_enrich.entity.family_variant.flash.update.success'),

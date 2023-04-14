@@ -9,7 +9,7 @@ define([
   'pim/user-context',
   'pim/common/form-modal-creator',
   'pim/template/family/tab/family-variant',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function (_, BaseForm, mediator, Grid, __, UserContext, formModalCreator, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),
@@ -55,7 +55,7 @@ define([
         });
       }
 
-      analytics.track('family:edit:variant-selected', {
+      analytics.appcuesTrack('family:edit:variant-selected', {
         code: this.code,
       });
 

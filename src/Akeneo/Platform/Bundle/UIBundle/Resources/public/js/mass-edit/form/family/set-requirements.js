@@ -16,7 +16,7 @@ define([
   'pim/common/property',
   'pim/fetcher-registry',
   'pim/template/mass-edit/family/set-requirements',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function (
   _,
   __,

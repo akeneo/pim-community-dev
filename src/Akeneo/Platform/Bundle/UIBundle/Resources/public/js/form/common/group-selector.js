@@ -16,7 +16,7 @@ define([
   'oro/mediator',
   'pim/fetcher-registry',
   'pim/template/form/group-selector',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function ($, _, __, UserContext, BaseForm, mediator, fetcherRegistry, template, analytics) {
   return BaseForm.extend({
     tagName: 'ul',
@@ -125,7 +125,7 @@ define([
           this.getRoot().trigger('group:change');
         }
 
-        analytics.track('product-grid:attribute-group:selected', {
+        analytics.appcuesTrack('product-grid:attribute-group:selected', {
           code: current,
         });
 

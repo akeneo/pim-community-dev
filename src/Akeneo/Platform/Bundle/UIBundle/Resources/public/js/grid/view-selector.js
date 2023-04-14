@@ -22,7 +22,7 @@ define([
   'pim/fetcher-registry',
   'pim/form-builder',
   'oro/mediator',
-  'pim/analytics',
+  'pim/appcues/analytics',
 ], function (
   $,
   _,
@@ -471,7 +471,7 @@ define([
       mediator.trigger('grid:view:selected', view);
       FetcherRegistry.getFetcher('locale').clear();
 
-      analytics.track('product-grid:view:selected', {
+      analytics.appcuesTrack('product-grid:view:selected', {
         name: view.label ?? view.text,
       });
       this.reloadPage();
