@@ -9,9 +9,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Query\Sql;
 
+use Akeneo\Platform\Installer\Domain\Query\Sql\InsertDatabaseInstallationDateInterface;
 use Doctrine\DBAL\Connection;
 
-final class InsertDatabaseInstallationDate
+final class InsertDatabaseInstallationDate implements InsertDatabaseInstallationDateInterface
 {
     public function __construct(
         private readonly Connection $connection

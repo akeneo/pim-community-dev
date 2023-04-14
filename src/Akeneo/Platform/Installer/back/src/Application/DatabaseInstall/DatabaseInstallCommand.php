@@ -28,4 +28,9 @@ final class DatabaseInstallCommand
     {
         return $this->options;
     }
+
+    public function getOption(string $key): string
+    {
+        return $this->getOptions()[$key];
+    }
 }

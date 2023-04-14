@@ -14,9 +14,9 @@ use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineMigrationsSyn
 use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineMigrationsVersionInterface;
 use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineSchemaUpdateInterface;
 use Akeneo\Platform\Installer\Domain\Query\Elasticsearch\ResetIndexesInterface;
+use Akeneo\Platform\Installer\Domain\Query\Sql\InsertDatabaseInstallationDateInterface;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
-use Akeneo\Platform\Installer\Infrastructure\Query\Sql\InsertDatabaseInstallationDate;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -28,7 +28,7 @@ final class DatabaseInstallHandler
         private readonly DoctrineMigrationsVersionInterface $doctrineMigrationsVersion,
         private readonly DoctrineMigrationsSyncMetadataStorageInterface $doctrineMigrationsSyncMetadataStorage,
         private readonly DoctrineMigrationsLatestInterface $doctrineMigrationsLatest,
-        private readonly InsertDatabaseInstallationDate $databaseInstallationDate,
+        private readonly InsertDatabaseInstallationDateInterface $databaseInstallationDate,
         private readonly ResetIndexesInterface $resetIndexes,
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcher $eventDispatcher
@@ -55,21 +55,9 @@ final class DatabaseInstallHandler
 
         $this->setLatestKnownMigration($io, $command->getOptions()['env']);
 
-        if (false === $command->getOptions()['withoutFixtures']) {
-            $this->eventDispatcher->dispatch(
-                new InstallerEvent(),
-                InstallerEvents::PRE_LOAD_FIXTURES
-            );
-
-            $this->eventDispatcher->dispatch(
-                new InstallerEvent(null, [
-                    'catalog' => $command->getOptions()['catalog'],
-                ]),
-                InstallerEvents::POST_LOAD_FIXTURES
-            );
-        }
-
+        $io->info('Set database installation date');
         $this->databaseInstallationDate->withDateTime(new \DateTimeImmutable());
+        $io->success('Installation date set');
     }
 
     private function prepareDatabase(SymfonyStyle $io): void

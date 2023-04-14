@@ -14,5 +14,5 @@ services:
   Akeneo\Platform\Installer\Application\FixturesLoad\FixturesLoadHandler:
     arguments:
       - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\AkeneoBatchJob'
-      - '@doctrine.orm.default_entity_manager'
+      - '@Akeneo\Platform\Installer\Infrastructure\FixtureLoader\JobInstancesBuilder'
       - '@event_dispatcher'
