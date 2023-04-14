@@ -8,19 +8,3 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\EventSubscriber\GroupAllIsRemovedFromUsersUsedByAppsOnUpdateEventSubscriber:
         tags:
             - { name: kernel.event_subscriber }
-
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\EventSubscriber\NotifyOnDisabledCatalogEventSubscriber:
-        arguments:
-            - '@Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier\DisabledCatalogNotifier'
-            - '@logger'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\EventSubscriber\NotifyOnAttributeRemovalEventSubscriber:
-        arguments:
-            - '@Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Notifier\AttributeRemovedNotifier'
-            - '@logger'
-        tags:
-            - { name: kernel.event_subscriber }
