@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Update;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedAttributeException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReferenceEntityNomenclatureRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Webmozart\Assert\Assert;
 
 /**
@@ -21,6 +27,9 @@ final class UpdateNomenclatureHandler
         private readonly FamilyNomenclatureRepository $familyNomenclatureRepository,
         private readonly SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository,
         private readonly CommandValidatorInterface $validator,
+        private readonly GetNomenclatureHandler $getNomenclatureHandler,
+        private readonly GetAttributes $getAttributes,
+        private readonly ReferenceEntityNomenclatureRepository $referenceEntityNomenclatureRepository,
     ) {
     }
 
@@ -28,11 +37,16 @@ final class UpdateNomenclatureHandler
     {
         $this->validator->validate($command);
 
-        if ($command->getPropertyCode() === FamilyProperty::TYPE) {
-            $nomenclatureDefinition = $this->familyNomenclatureRepository->get() ?? new NomenclatureDefinition();
-        } else {
-            $nomenclatureDefinition = $this->simpleSelectNomenclatureRepository->get($command->getPropertyCode()) ?? new NomenclatureDefinition();
-        }
+        $getNomenclatureCommand = new GetNomenclatureCommand($command->getPropertyCode());
+        $normalizedNomenclature = ($this->getNomenclatureHandler)($getNomenclatureCommand);
+
+        // TODO: not sure we have to get existing nomenclature as we re-construct it wholy line 55
+        $nomenclatureDefinition = new NomenclatureDefinition(
+            $normalizedNomenclature['operator'],
+            $normalizedNomenclature['value'],
+            $normalizedNomenclature['generate_if_empty'],
+            $normalizedNomenclature['values']
+        );
 
         Assert::notNull($command->getOperator());
         Assert::notNull($command->getValue());
@@ -47,7 +61,18 @@ final class UpdateNomenclatureHandler
         if ($command->getPropertyCode() === FamilyProperty::TYPE) {
             $this->familyNomenclatureRepository->update($nomenclatureDefinition);
         } else {
-            $this->simpleSelectNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
+            $attribute = $this->getAttributes->forCode($command->getPropertyCode());
+
+            if (null === $attribute) {
+                throw new UndefinedAttributeException(
+                    \sprintf('The "%s" attribute is not found', $command->getPropertyCode())
+                );
+            }
+            if ($attribute->type() === AttributeTypes::OPTION_SIMPLE_SELECT) {
+                $this->simpleSelectNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
+            } else {
+                $this->referenceEntityNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
+            }
         }
     }
 }
