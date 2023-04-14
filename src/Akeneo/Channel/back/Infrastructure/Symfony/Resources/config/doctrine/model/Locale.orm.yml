@@ -21,5 +21,4 @@ Akeneo\Channel\Infrastructure\Component\Model\Locale:
             targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
             mappedBy: locales
             cascade:
-                - persist
                 - detach
