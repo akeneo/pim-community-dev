@@ -6,9 +6,8 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReferenceEntityNomenclatureRepository;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
 use Webmozart\Assert\Assert;
 
 /**
@@ -17,8 +16,10 @@ use Webmozart\Assert\Assert;
  */
 class SqlReferenceEntityNomenclatureRepository implements ReferenceEntityNomenclatureRepository
 {
-    public function __construct(private readonly Connection $connection)
-    {
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly GetAttributes $getAttributes
+    ) {
     }
 
     public function get(string $attributeCode): ?NomenclatureDefinition
@@ -249,26 +250,14 @@ SQL;
         $statement->executeStatement();
     }
 
-    /**
-     * @throws \Doctrine\DBAL\Exception
-     */
     private function getRefEntityCodeByAttributeCode(string $attributeCode): string
     {
-        // TODO: USE GetAttributes (dans public API)
-        $sqlFindRefDataName = <<<SQL
-SELECT properties FROM pim_catalog_attribute WHERE code = :attributeCode;
-SQL;
-        $attributeProperties = $this->connection->fetchOne($sqlFindRefDataName, [
-            'attributeCode' => $attributeCode,
-        ]);
+        $attribute = $this->getAttributes->forCode($attributeCode);
 
-        $platform = $this->connection->getDatabasePlatform();
+        if (null === $attribute) {
+            return '';
+        }
 
-        $properties = Type::getType(Types::ARRAY)->convertToPhpValue($attributeProperties, $platform);
-        Assert::isArray($properties);
-        Assert::keyExists($properties, 'reference_data_name');
-        $refDataName = $properties['reference_data_name'];
-
-        return $refDataName;
+        return $attribute->properties()['reference_data_name'];
     }
 }
