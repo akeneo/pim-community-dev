@@ -59,7 +59,7 @@ class GetCategoryTemplateAttributeSqlIntegration extends CategoryTestCase
         $this->assertNotNull($attributeCollection->getAttributeByCode('image_alt_text_1'));
     }
 
-    public function testDoesntGetCategoryDeactivatedTemplateAttributeByTemplateUuid(): void
+    public function testDoesNotGetCategoryDeactivatedTemplateAttributeByTemplateUuid(): void
     {
         $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
         $longDescriptionUuid = AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950');
@@ -78,7 +78,7 @@ class GetCategoryTemplateAttributeSqlIntegration extends CategoryTestCase
         $this->assertNotNull($templateCategoryAttributes->getAttributeByCode('image_alt_text_1'));
     }
 
-    public function testDoesntGetCategoryDeactivatedTemplateAttributeByUuids(): void
+    public function testDoesNotGetCategoryDeactivatedTemplateAttributeByUuids(): void
     {
         $longDescriptionUuid = AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950');
         $urlSlugUuid = AttributeUuid::fromString('4873080d-32a3-42a7-ae5c-1be518e40f3d');
@@ -111,7 +111,7 @@ class GetCategoryTemplateAttributeSqlIntegration extends CategoryTestCase
         parent::setUp();
 
         $templateUuid = '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
-        $productCode = "myCategory";
+        $productCode = 'myCategory';
         $this->useTemplateFunctionalCatalog($templateUuid, $productCode);
     }
 }
