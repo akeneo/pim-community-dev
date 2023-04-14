@@ -37,10 +37,10 @@ export const DefaultValue: FC<Props> = ({source, onChange, error, targetTypeKey}
                 <BooleanInput
                     data-testid={'boolean-default-value'}
                     onChange={value => onChangeMiddleware({...source, default: value})}
-                    clearLabel='Clear value'
+                    clearLabel={translate('pim_common.clear_value')}
                     clearable
-                    noLabel='No'
-                    yesLabel='Yes'
+                    yesLabel={translate('pim_common.yes')}
+                    noLabel={translate('pim_common.no')}
                     value={typeof source.default === 'boolean' ? source.default : null}
                     readOnly={false}
                 />
