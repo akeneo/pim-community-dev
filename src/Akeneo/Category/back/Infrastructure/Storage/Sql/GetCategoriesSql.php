@@ -103,7 +103,6 @@ final class GetCategoriesSql implements GetCategoriesInterface
             return [];
         }
         $deactivatedAttributes = $this->getDeactivatedTemplateAttributes->execute();
-//        $deactivatedAttributes = [new DeactivatedTemplateAttributeIdentifier('87939c45-1d85-4134-9579-d594fff65030', 'title')];
         $retrievedCategories = [];
 
         foreach ($results as $rawCategory) {
@@ -132,29 +131,4 @@ final class GetCategoriesSql implements GetCategoriesInterface
 
         return $result ? (int) $result : null;
     }
-
-//    private function filterOutDeactivatedAttributesValues(array $deactivatedAttributes, array $rawCategory): array
-//    {
-//        if (empty($deactivatedAttributes) || array_key_exists('value_collection', $rawCategory) === false) {
-//            return $rawCategory;
-//        }
-//
-//        foreach ($deactivatedAttributes as $deactivatedAttribute) {
-//            $decodedRawValueCollection = json_decode(
-//                $rawCategory['value_collection'],
-//                true,
-//                512,
-//                JSON_THROW_ON_ERROR,
-//            );
-//            $attributeCode = $deactivatedAttribute->code.AbstractValue::SEPARATOR.$deactivatedAttribute->uuid;
-//            foreach ($decodedRawValueCollection as $key => $rawValue) {
-//                if ($rawValue['attribute_code'] === $attributeCode) {
-//                    unset($decodedRawValueCollection[$key]);
-//                }
-//            }
-//        }
-//        $rawCategory['value_collection'] = json_encode($decodedRawValueCollection, JSON_THROW_ON_ERROR);
-//
-//        return $rawCategory;
-//    }
 }

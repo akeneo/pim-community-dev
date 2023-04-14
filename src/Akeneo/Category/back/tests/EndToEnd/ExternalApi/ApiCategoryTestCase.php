@@ -183,6 +183,17 @@ SQL;
         ]);
     }
 
+    protected function deactivateAttribute(string $uuid): void
+    {
+        $query = <<<SQL
+            UPDATE pim_catalog_category_attribute SET is_deactivated = 1 WHERE uuid = :uuid;
+        SQL;
+
+        $this->get('database_connection')->executeQuery($query, [
+            'uuid' => Uuid::fromString($uuid)->getBytes(),
+        ]);
+    }
+
     protected function givenAttributes(TemplateUuid $templateUuid): AttributeCollection
     {
         return AttributeCollection::fromArray([
