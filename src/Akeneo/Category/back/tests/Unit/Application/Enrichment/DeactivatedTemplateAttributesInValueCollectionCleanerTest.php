@@ -20,7 +20,7 @@ class DeactivatedTemplateAttributesInValueCollectionCleanerTest extends Category
     public function testItRemovesDeactivatedAttributesFromValueCollection(): void
     {
         $deactivatedAttributes = [
-            new DeactivatedTemplateAttributeIdentifier('87939c45-1d85-4134-9579-d594fff65030', 'title')
+            new DeactivatedTemplateAttributeIdentifier('87939c45-1d85-4134-9579-d594fff65030', 'title'),
         ];
         $rawCategory = [
             'id' => '1',

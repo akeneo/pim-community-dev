@@ -7,9 +7,7 @@ namespace Akeneo\Category\Infrastructure\Storage\Sql;
 use Akeneo\Category\Application\Enrichment\DeactivatedTemplateAttributesInValueCollectionCleaner;
 use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
-use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributeIdentifier;
 use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes;
-use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Doctrine\DBAL\Connection;
 
@@ -22,7 +20,7 @@ final class GetCategoriesSql implements GetCategoriesInterface
     public function __construct(
         private readonly Connection $connection,
         private readonly GetDeactivatedTemplateAttributes $getDeactivatedTemplateAttributes,
-        private readonly DeactivatedTemplateAttributesInValueCollectionCleaner $deactivatedAttributesInValueCollectionCleaner
+        private readonly DeactivatedTemplateAttributesInValueCollectionCleaner $deactivatedAttributesInValueCollectionCleaner,
     ) {
     }
 
@@ -104,8 +102,8 @@ final class GetCategoriesSql implements GetCategoriesInterface
         if (!$results) {
             return [];
         }
-//        $deactivatedAttributes = $this->getDeactivatedTemplateAttributes->execute();
-        $deactivatedAttributes = [new DeactivatedTemplateAttributeIdentifier('87939c45-1d85-4134-9579-d594fff65030', 'title')];
+        $deactivatedAttributes = $this->getDeactivatedTemplateAttributes->execute();
+//        $deactivatedAttributes = [new DeactivatedTemplateAttributeIdentifier('87939c45-1d85-4134-9579-d594fff65030', 'title')];
         $retrievedCategories = [];
 
         foreach ($results as $rawCategory) {
