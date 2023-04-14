@@ -184,6 +184,17 @@ define([
     getNextObject: function () {
       var objectSet = this.model.get('objectSet');
       var currentIndex = findObjectIndex(objectSet, this.getFormData().meta.id, this.getFormData().meta.model_type);
+      // if currentIndex is -1 it means the user clicked on a product_variant
+      if (currentIndex === -1 && this.getFormData().meta.model_type === 'product') {
+        const productModelId = this.getFormData().meta.variant_navigation[0]?.selected?.id;
+        if (productModelId !== undefined) {
+          const productModelIndex = findObjectIndex(objectSet, productModelId, 'product_model');
+
+          return objectSet[productModelIndex + 1];
+        }
+
+        return undefined;
+      }
 
       return objectSet[currentIndex + 1];
     },
