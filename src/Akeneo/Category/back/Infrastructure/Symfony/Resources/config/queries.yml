@@ -13,7 +13,7 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesSql
     arguments:
       - '@database_connection'
-      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes'
+      - '@Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes'
       - '@Akeneo\Category\Application\Enrichment\DeactivatedTemplateAttributesInValueCollectionCleaner'
 
   Akeneo\Category\Domain\Query\GetCategoryTreesInterface:
@@ -111,7 +111,7 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes:
+  Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetDeactivatedTemplateAttributesSql
     arguments:
       - '@database_connection'
