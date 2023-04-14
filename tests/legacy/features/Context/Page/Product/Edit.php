@@ -3,12 +3,13 @@
 namespace Context\Page\Product;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Model\Category;
+use Behat\Mink\Element\Element;
 use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\ProductEditForm;
 use Context\Spin\TimeoutException;
-use Pim\Behat\Decorator\ContextSwitcherDecorator;
+use Pim\Behat\Decorator\ReactContextSwitcherDecorator;
 use Pim\Behat\Decorator\Tab\ComparableTabDecorator;
 use Pim\Behat\Decorator\TabElement\ComparisonPanelDecorator;
 use Pim\Behat\Decorator\Tree\TreeDecorator;
@@ -33,7 +34,6 @@ class Edit extends ProductEditForm
     public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
-
         $this->elements = array_merge(
             $this->elements,
             [
@@ -67,14 +67,14 @@ class Edit extends ProductEditForm
                 'Comparison panel' => [
                     'css'        => '.tab-container .attribute-actions .attribute-copy-actions',
                     'decorators' => [
-                        ContextSwitcherDecorator::class,
-                        ComparisonPanelDecorator::class
+                        ComparisonPanelDecorator::class,
+                        ReactContextSwitcherDecorator::class
                     ]
                 ],
                 'Main context selector' => [
                     'css'        => '.AknTitleContainer-context',
                     'decorators' => [
-                        ContextSwitcherDecorator::class
+                        ReactContextSwitcherDecorator::class
                     ]
                 ]
             ]
@@ -88,11 +88,19 @@ class Edit extends ProductEditForm
      */
     public function countLocaleLinks($copy = false)
     {
-        return count(
-            $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown')
-                ->findAll('css', '[data-locale]')
-        );
+        $localeButton = $this->getLocaleButton($copy);
+
+        // If the dropdown is already opened, we don't try and click again
+        $dropdown = $this->findAll('css', '#dropdown-root *[role=listbox]');
+        if (count($dropdown) === 0) {
+            $localeButton->click();
+        }
+
+        $localesDropDown = $this->findAll('css', '#dropdown-root *[role=listbox] > *');
+
+        return count($localesDropDown);
     }
+
 
     /**
      * @param string $localeCode locale code
@@ -106,29 +114,14 @@ class Edit extends ProductEditForm
      */
     public function findLocaleLink($localeCode, $label = null, $flag = null, $copy = false)
     {
-        $dropdown = $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown');
-        $link = $this->spin(function () use ($dropdown, $localeCode) {
-            if (!$dropdown->hasClass('open')) {
-                $dropdown->click();
-            }
-
-            return $dropdown->find('css', sprintf('[data-locale="%s"]', $localeCode));
-        }, 'Can not click on the locale dropdown button');
-
-        if ($flag) {
-            $flagElement = $link->find('css', 'span.flag-language i');
-            if (!$flagElement) {
-                throw new ElementNotFoundException(
-                    $this->getSession(),
-                    sprintf('Flag not found for locale %s link', $localeCode)
-                );
-            }
-            if (strpos($flagElement->getAttribute('class'), $flag) === false) {
-                return null;
+        $localesDropDown = $this->findAll('css', '#dropdown-root *[role=listbox] > *');
+        foreach ($localesDropDown as $locale) {
+            if (str_contains($locale->getHtml(), $label)) {
+                return $locale;
             }
         }
 
-        return $link;
+        return null;
     }
 
     /**
@@ -137,6 +130,27 @@ class Edit extends ProductEditForm
     public function selectLanguage($language)
     {
         $this->getElement('Locales selector')->selectOption(ucfirst($language), true);
+    }
+
+    private function getLocaleButton(?bool $copy = false)
+    {
+        return $this->spin(function () use ($copy) {
+            if ($copy) {
+                $buttons = $this->findAll('css', '.attribute-copy-actions button');
+            } else {
+                $buttons = $this->findAll('css', '.AknTitleContainer-mainContainer button');
+            }
+
+            /** @var Element $button */
+            foreach ($buttons as $button) {
+                $text = $button->getText();
+                if (\str_starts_with($text, 'Locale:')) {
+                    return $button;
+                }
+            }
+
+            return null;
+        }, 'Cannot find any Locale Button');
     }
 
     /**

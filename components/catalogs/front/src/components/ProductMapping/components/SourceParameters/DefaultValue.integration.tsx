@@ -118,7 +118,7 @@ test('it updates the source for type boolean when a default value changes', () =
     expect(booleanInput).toBeInTheDocument();
 
     expect(booleanInput.getAttribute('aria-checked')).toBe('false');
-    const booleanInputTrue = screen.getByText('Yes');
+    const booleanInputTrue = screen.getByText('pim_common.yes');
 
     fireEvent.click(booleanInputTrue);
 
@@ -149,7 +149,7 @@ test('it removes the source default value for type boolean when clear button is 
     const booleanInput = screen.getByTestId('boolean-default-value');
     expect(booleanInput).toBeInTheDocument();
 
-    const booleanInputTrue = screen.getByText('Clear value');
+    const booleanInputTrue = screen.getByText('pim_common.clear_value');
     fireEvent.click(booleanInputTrue);
 
     expect(onChange).toHaveBeenCalledWith({

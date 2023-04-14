@@ -47,7 +47,7 @@ const StructureTab: React.FC<StructureTabProps> = ({
   );
   const queryClient = useQueryClient();
   const selectedProperty = useMemo(
-    () => structure.find(propertyWithId => propertyWithId.id === selectedPropertyId),
+    () => structure.find(({id}) => id === selectedPropertyId),
     [selectedPropertyId, structure]
   );
   const isLimitReached = useMemo(() => structure.length === LIMIT_NUMBER, [structure.length]);

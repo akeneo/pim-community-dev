@@ -1,6 +1,6 @@
 import React from 'react';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
-import {AbbreviationType, CanUseNomenclatureProperty, FamilyProperty} from '../../../models';
+import {AbbreviationType, CanUseNomenclatureProperty, FamilyProperty, RefEntityProperty} from '../../../models';
 import {ProcessablePropertyEdit} from '../ProcessablePropertyEdit';
 import {PropertyEditTitle} from '../PropertyEditTitle';
 
@@ -14,7 +14,7 @@ const options = [
 ];
 
 const FamilyPropertyEdit: PropertyEditFieldsProps<FamilyProperty> = ({selectedProperty, onChange}) => {
-  const handleChange = (property: CanUseNomenclatureProperty) => {
+  const handleChange = (property: CanUseNomenclatureProperty | RefEntityProperty) => {
     onChange(property as FamilyProperty);
   };
 

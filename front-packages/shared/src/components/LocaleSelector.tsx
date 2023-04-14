@@ -53,7 +53,7 @@ const LocaleSelector = ({value, values, completeValues, onChange}: LocaleSelecto
         <HighlightLocaleWithFlag code={selectedLocale.code} languageLabel={selectedLocale.label} />
       </SwitcherButton>
       {isOpen && (
-        <Dropdown.Overlay verticalPosition="down" onClose={close}>
+        <Dropdown.Overlay onClose={close}>
           <Dropdown.Header>
             <Dropdown.Title>{translate('pim_common.locale')}</Dropdown.Title>
           </Dropdown.Header>

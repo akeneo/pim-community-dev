@@ -124,6 +124,7 @@ akeneo_catalogs:
                 illustration_title: No catalog target available
         source:
             title: Select source
+            default_value: Default value
             parameters:
                 placeholder: Select an attribute
                 title: Source parameters

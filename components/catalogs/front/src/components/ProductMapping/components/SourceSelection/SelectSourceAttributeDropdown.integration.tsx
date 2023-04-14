@@ -45,6 +45,10 @@ beforeEach(() => {
                 },
             ],
         },
+        {
+            url: '/rest/catalogs/attributes-by-target-type-and-target-format?page=1&limit=20&search=&targetType=array%3Cstring%3E&targetFormat=',
+            json: [],
+        },
     ]);
 });
 
