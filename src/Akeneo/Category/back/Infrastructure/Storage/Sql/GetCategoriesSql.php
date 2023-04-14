@@ -61,11 +61,10 @@ final class GetCategoriesSql implements GetCategoriesInterface
                         category.code,
                         category.id as category_id,
                         sibling.id as sibling_id,
-                        ROW_NUMBER() over (PARTITION BY category.parent_id ORDER BY sibling.lft) as position
+                        ROW_NUMBER() over (PARTITION BY category.parent_id, category.id ORDER BY sibling.lft) as position
                     FROM pim_catalog_category category
-                        JOIN pim_catalog_category sibling on category.id = sibling.id
+                        JOIN pim_catalog_category sibling on category.parent_id = sibling.parent_id
                     WHERE $sqlWhere
-                    AND category.parent_id IS NOT NULL
                 ) r
                 WHERE sibling_id = category_id
             )
