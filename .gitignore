@@ -47,3 +47,5 @@ front-packages/akeneo-design-system/lib
 /.env.local
 /.env.local.php
 /.env.*.local
+/.php-cs-fixer.cache
+.idea/
