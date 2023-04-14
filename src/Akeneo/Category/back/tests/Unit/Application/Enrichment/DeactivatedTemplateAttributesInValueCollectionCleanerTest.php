@@ -6,7 +6,7 @@ namespace Akeneo\Category\back\tests\Unit\Application\Enrichment;
 
 use Akeneo\Category\Application\Enrichment\DeactivatedTemplateAttributesInValueCollectionCleaner;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributeIdentifier;
+use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributeIdentifier;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)

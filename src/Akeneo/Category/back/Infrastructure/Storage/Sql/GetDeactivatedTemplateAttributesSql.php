@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributeIdentifier;
-use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes;
+use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributeIdentifier;
+use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes;
 use Doctrine\DBAL\Connection;
 
 /**

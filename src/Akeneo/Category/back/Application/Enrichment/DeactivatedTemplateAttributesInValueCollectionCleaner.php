@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Enrichment;
 
-use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributeIdentifier;
+use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributeIdentifier;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 
 /**
@@ -23,7 +23,7 @@ class DeactivatedTemplateAttributesInValueCollectionCleaner
      */
     public function __invoke(array $deactivatedAttributes, array $rawCategory): array
     {
-        if (empty($deactivatedAttributes) || empty($rawCategory['value_collection']) ) {
+        if (empty($deactivatedAttributes) || empty($rawCategory['value_collection'])) {
             return $rawCategory;
         }
 
