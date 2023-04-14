@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSource;
 
-use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\AttributeSourceContainsValidLocale;
 use Akeneo\Catalogs\Infrastructure\Validation\ProductMapping\IsActivatedLocale;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -38,6 +37,12 @@ final class SystemAttributeCategoriesSource extends Compound
                         ],
                         'locale' => [
                             new Assert\IsNull(),
+                        ],
+                        'default' => [
+                            new Assert\Optional([
+                                new Assert\Type('string'),
+                                new Assert\NotBlank(allowNull: false),
+                            ]),
                         ],
                         'parameters' => [
                             new Assert\Collection([

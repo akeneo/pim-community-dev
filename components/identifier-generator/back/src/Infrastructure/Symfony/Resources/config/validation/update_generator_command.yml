@@ -44,11 +44,12 @@ Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorComm
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\AutoNumberShouldBeValid: ~
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\FamilyPropertyShouldBeValid: ~
                 - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\SimpleSelectPropertyShouldBeValid: ~
+                - Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Validation\ReferenceEntityPropertyShouldBeValid: ~
                 - Collection:
                     fields:
                         type:
                             - Choice:
-                                choices: ['free_text', 'auto_number', 'family', 'simple_select']
+                                choices: ['free_text', 'auto_number', 'family', 'simple_select', 'reference_entity']
                                 message: 'Type {{ value }} can only be one of the following: {{ choices }}.'
                         string:
                             - Optional:

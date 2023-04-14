@@ -1,13 +1,15 @@
 import React, {useCallback} from 'react';
 import {Field, NumberInput, SelectInput} from 'akeneo-design-system';
-import {AbbreviationType, CanUseNomenclatureProperty, Operator} from '../../models';
+import {AbbreviationType, CanUseNomenclatureProperty, Operator, PROPERTY_NAMES, RefEntityProperty} from '../../models';
 import {NomenclatureEdit, OperatorSelector} from '../../components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useIdentifierGeneratorAclContext} from '../../context';
 
+type ProcessablePropertyType = CanUseNomenclatureProperty | RefEntityProperty;
+
 type Props = {
-  selectedProperty: CanUseNomenclatureProperty;
-  onChange: (property: CanUseNomenclatureProperty) => void;
+  selectedProperty: ProcessablePropertyType;
+  onChange: (property: ProcessablePropertyType) => void;
   children?: React.ReactNode;
   options: {value: AbbreviationType; label: string}[];
 };
@@ -36,7 +38,11 @@ const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, c
             type: AbbreviationType.NO,
           },
         });
-      } else if (type === AbbreviationType.NOMENCLATURE) {
+        // TODO: CPM-1028 Remove this condition when nomenclature is used by every attribute properties
+      } else if (
+        type === AbbreviationType.NOMENCLATURE &&
+        (selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT || selectedProperty.type === PROPERTY_NAMES.FAMILY)
+      ) {
         onChange({
           type: selectedProperty.type,
           process: {
@@ -120,9 +126,11 @@ const ProcessablePropertyEdit: React.FC<Props> = ({selectedProperty, onChange, c
         </>
       )}
       {children}
-      {selectedProperty.process.type === AbbreviationType.NOMENCLATURE && (
-        <NomenclatureEdit selectedProperty={selectedProperty} />
-      )}
+      {selectedProperty.process.type === AbbreviationType.NOMENCLATURE &&
+        // TODO: CPM-1028 Remove this condition when nomenclature is used by every attribute properties
+        (selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT || selectedProperty.type === PROPERTY_NAMES.FAMILY) && (
+          <NomenclatureEdit selectedProperty={selectedProperty} />
+        )}
     </>
   );
 };

@@ -40,6 +40,42 @@ test('Tiles supports ...rest props', () => {
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
+test('It can be small', () => {
+  render(
+    <Tiles size={'small'}>
+      <Tile icon={<AssetCollectionIcon />}>small</Tile>
+    </Tiles>
+  );
+  expect(screen.getByText('small')).toBeInTheDocument();
+});
+
+test('It can be big', () => {
+  render(
+    <Tiles size={'big'}>
+      <Tile icon={<AssetCollectionIcon />}>big</Tile>
+    </Tiles>
+  );
+  expect(screen.getByText('big')).toBeInTheDocument();
+});
+
+test('It can be inline and small', () => {
+  render(
+    <Tiles size={'small'} inline={true}>
+      <Tile>inline</Tile>
+    </Tiles>
+  );
+  expect(screen.getByText('inline')).toBeInTheDocument();
+});
+
+test('It can be inline and big', () => {
+  render(
+    <Tiles size={'small'} inline={true}>
+      <Tile>inline</Tile>
+    </Tiles>
+  );
+  expect(screen.getByText('inline')).toBeInTheDocument();
+});
+
 test('it triggers onclick when pressing enter with focus', () => {
   const handleClick = jest.fn();
 

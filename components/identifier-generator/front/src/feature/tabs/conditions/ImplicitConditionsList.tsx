@@ -1,11 +1,11 @@
 import React from 'react';
 import {Styled} from '../../components/Styled';
 import {Table, TextInput} from 'akeneo-design-system';
-import {IdentifierGenerator, PROPERTY_NAMES, SimpleSelectProperty} from '../../models';
+import {IdentifierGenerator, PROPERTY_NAMES, RefEntityProperty, SimpleSelectProperty} from '../../models';
 import {useIdentifierAttributes} from '../../hooks';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {ListSkeleton} from '../../components';
-import {ImplicitSimpleSelectCondition} from './ImplicitSimpleSelectCondition';
+import {ImplicitAttributeCondition} from './ImplicitAttributeCondition';
 
 type Props = {
   generator: IdentifierGenerator;
@@ -17,9 +17,9 @@ const ImplicitConditionsList: React.FC<Props> = ({generator}) => {
   const {data: identifiers, isLoading} = useIdentifierAttributes();
 
   const hasFamilyStructureProperty = generator.structure.filter(({type}) => type === PROPERTY_NAMES.FAMILY)?.length > 0;
-  const simpleSelectProperties = generator.structure.filter(
-    ({type}) => type === PROPERTY_NAMES.SIMPLE_SELECT
-  ) as SimpleSelectProperty[];
+  const attributeProperties = generator.structure.filter(
+    ({type}) => type === PROPERTY_NAMES.SIMPLE_SELECT || type === PROPERTY_NAMES.REF_ENTITY
+  ) as (SimpleSelectProperty | RefEntityProperty)[];
 
   return (
     <>
@@ -49,11 +49,8 @@ const ImplicitConditionsList: React.FC<Props> = ({generator}) => {
           <Table.Cell />
         </Table.Row>
       )}
-      {simpleSelectProperties?.map(simpleSelectProperty => (
-        <ImplicitSimpleSelectCondition
-          simpleSelectProperty={simpleSelectProperty}
-          key={simpleSelectProperty.attributeCode}
-        />
+      {attributeProperties?.map(({attributeCode, scope, locale}) => (
+        <ImplicitAttributeCondition attributeCode={attributeCode} scope={scope} locale={locale} key={attributeCode} />
       ))}
     </>
   );

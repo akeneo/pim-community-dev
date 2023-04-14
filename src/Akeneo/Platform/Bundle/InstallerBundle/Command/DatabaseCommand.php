@@ -111,7 +111,7 @@ class DatabaseCommand extends Command
             $this->commandExecutor
                 ->runCommand(
                     'doctrine:schema:update',
-                    ['--force' => true, '--no-interaction' => true]
+                    ['--force' => true, '--no-interaction' => true, '--complete' => true]
                 );
         } catch (\Exception $e) {
             $this->logger->critical('Trying to install PIM on an existing database is impossible.');

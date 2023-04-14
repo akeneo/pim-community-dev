@@ -6,6 +6,7 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\ControllerEndToEndTestCase;
+use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,6 +84,80 @@ final class GetAvailablePropertiesControllerEndToEnd extends ControllerEndToEndT
                             'id' => 'a_simple_select_size',
                             'text' => 'The size',
                             'type' => 'pim_catalog_simpleselect',
+                        ],
+                    ],
+                ],
+            ]
+        );
+    }
+
+    /** @test */
+    public function it_gets_a_list_of_available_properties_with_ref_entities(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand', []);
+        $this->createRecords('brand', ['Akeneo', 'Other']);
+
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+
+        $this->assertResponse(
+            ['systemFields' => ['free_text', 'auto_number', 'family']],
+            [
+                [
+                    'id' => 'system',
+                    'text' => 'System',
+                    'children' => [
+                        [
+                            'id' => 'free_text',
+                            'text' => 'Free text',
+                        ],
+                        [
+                            'id' => 'auto_number',
+                            'text' => 'Auto Number',
+                        ],
+                        [
+                            'id' => 'family',
+                            'text' => 'Family',
+                        ],
+                    ],
+                ],
+                [
+                    'id' => 'attributeGroupB',
+                    'text' => 'Attribute group B',
+                    'children' => [
+                        [
+                            'id' => 'a_simple_select',
+                            'text' => 'A simple select',
+                            'type' => 'pim_catalog_simpleselect',
+                        ],
+                        [
+                            'id' => 'a_simple_select_color',
+                            'text' => 'The color',
+                            'type' => 'pim_catalog_simpleselect',
+                        ],
+                        [
+                            'id' => 'a_simple_select_size',
+                            'text' => 'The size',
+                            'type' => 'pim_catalog_simpleselect',
+                        ],
+                    ],
+                ],
+                [
+                    'id' => 'other',
+                    'text' => 'Other',
+                    'children' => [
+                        [
+                            'id' => 'a_reference_entity_attribute',
+                            'text' => '[a_reference_entity_attribute]',
+                            'type' => 'akeneo_reference_entity',
                         ],
                     ],
                 ],

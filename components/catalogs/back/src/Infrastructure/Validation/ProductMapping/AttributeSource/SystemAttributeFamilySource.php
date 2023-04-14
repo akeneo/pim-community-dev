@@ -38,6 +38,12 @@ final class SystemAttributeFamilySource extends Compound
                         'locale' => [
                             new Assert\IsNull(),
                         ],
+                        'default' => [
+                            new Assert\Optional([
+                                new Assert\Type('string'),
+                                new Assert\NotBlank(allowNull: false),
+                            ]),
+                        ],
                         'parameters' => [
                             new Assert\Collection([
                                 'fields' => [

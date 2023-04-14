@@ -7,12 +7,12 @@ import userEvent from '@testing-library/user-event';
 
 const queryClient = new QueryClient();
 
-test('It send the form with new attribute code', async () => {
+test('It sends the form with new attribute code', async () => {
   const jestSpy = jest.spyOn(window, 'fetch').mockResolvedValueOnce(new Response('{}'));
 
   renderWithProviders(
     <QueryClientProvider client={queryClient}>
-      <AddTemplateAttributeModal templateId={'test'} onClose={jest.fn()} />
+      <AddTemplateAttributeModal templateId={'73962f60-e216-4046-82d8-cd06110207cc'} onClose={jest.fn()} />
     </QueryClientProvider>
   );
 

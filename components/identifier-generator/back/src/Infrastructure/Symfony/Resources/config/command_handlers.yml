@@ -48,6 +48,12 @@ services:
     tags:
       - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
 
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\GenerateReferenceEntityHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property\PropertyProcessApplier'
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.generate_property' }
+
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\GenerateIdentifierHandler:
     arguments:
       - !tagged_iterator { tag: 'akeneo.pim.automation.identifier_generator.generate_property' }
@@ -90,6 +96,10 @@ services:
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchCategoryHandler:
     arguments:
       - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\AntiCorruptionLayer\CategoriesHaveAtLeastOneChild'
+    tags:
+      - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
+
+  Akeneo\Pim\Automation\IdentifierGenerator\Application\Match\Condition\MatchReferenceEntityHandler:
     tags:
       - { name: 'akeneo.pim.automation.identifier_generator.match_condition' }
 

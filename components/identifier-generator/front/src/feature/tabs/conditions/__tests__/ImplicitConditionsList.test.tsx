@@ -5,7 +5,7 @@ import {AbbreviationType, IdentifierGenerator, PROPERTY_NAMES} from '../../../mo
 import initialGenerator from '../../../tests/fixtures/initialGenerator';
 import {waitFor} from '@testing-library/react';
 
-jest.mock('../ImplicitSimpleSelectCondition');
+jest.mock('../ImplicitAttributeCondition');
 
 const mockedGenerator: IdentifierGenerator = {
   ...initialGenerator,
@@ -38,7 +38,7 @@ describe('ImplicitConditionsList', () => {
     });
   });
 
-  it('should add simple selects not empty when there are simple select structure properties', async () => {
+  it('should add attribute not empty when there are attribute structure properties', async () => {
     const generator: IdentifierGenerator = {
       ...initialGenerator,
       structure: [
@@ -54,20 +54,31 @@ describe('ImplicitConditionsList', () => {
           locale: 'en_US',
           process: {type: AbbreviationType.NO},
         },
+        {
+          type: PROPERTY_NAMES.REF_ENTITY,
+          attributeCode: 'designer',
+          process: {type: AbbreviationType.NO},
+          scope: 'ecommerce',
+          locale: 'en_US',
+        },
       ],
     };
     const screen = render(<ImplicitConditionsList generator={generator} />);
 
     await waitFor(() => {
-      expect(screen.getAllByText('ImplicitSimpleSelectConditionMocked').length).toEqual(2);
+      expect(screen.getAllByText('ImplicitAttributeConditionMock').length).toEqual(3);
     });
 
-    expect(screen.getAllByText('Implicit attribute scope:').length).toEqual(1);
-    expect(screen.getAllByText('Implicit attribute locale:').length).toEqual(1);
+    expect(screen.getAllByText('Implicit attribute scope:').length).toEqual(2);
+    expect(screen.getAllByText('Implicit attribute locale:').length).toEqual(2);
 
     expect(screen.getByText('Implicit attribute code: color')).toBeInTheDocument();
     expect(screen.getByText('Implicit attribute code: brand')).toBeInTheDocument();
-    expect(screen.getByText('ecommerce')).toBeInTheDocument();
-    expect(screen.getByText('en_US')).toBeInTheDocument();
+
+    expect(screen.getByText('Implicit attribute code: designer')).toBeInTheDocument();
+    expect(screen.getByText('Implicit attribute code: designer')).toBeInTheDocument();
+
+    expect(screen.getAllByText('ecommerce').length).toEqual(2);
+    expect(screen.getAllByText('en_US').length).toEqual(2);
   });
 });
