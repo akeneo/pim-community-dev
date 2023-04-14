@@ -17,21 +17,17 @@ class DualIndexationClientSpec extends ObjectBehavior
 {
     function let(
         NativeClient $nativeClient,
-        ClientBuilder $clientBuilder,
         Loader $indexConfigurationLoader,
         Client $dualClient
     ) {
         $this->beConstructedWith(
-            $clientBuilder,
+            $nativeClient,
             $indexConfigurationLoader,
-            ['localhost:9200'],
             'an_index_name',
             '',
             100000000,
             $dualClient
         );
-        $clientBuilder->setHosts(['localhost:9200'])->willReturn($clientBuilder);
-        $clientBuilder->build()->willReturn($nativeClient);
     }
 
     function it_can_be_instantiated()
