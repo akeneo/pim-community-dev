@@ -5,7 +5,7 @@ import fetchMock from 'jest-fetch-mock';
 import {renderWithProviders, historyMock} from '../../../test-utils';
 import {ConnectedAppCatalogContainer} from '@src/connect/components/ConnectedApp/Catalog/ConnectedAppCatalogContainer';
 import {useConnectedApp} from '@src/connect/hooks/use-connected-app';
-import {useCatalog} from '@akeneo-pim-community/catalogs/lib/hooks/useCatalog';
+import {useCatalog} from '@akeneo-pim-community/catalogs';
 import {ConnectedAppCatalogPage} from '@src/connect/pages/ConnectedAppCatalogPage';
 
 beforeEach(() => {
@@ -19,7 +19,7 @@ jest.mock('@src/connect/components/ConnectedApp/Catalog/ConnectedAppCatalogConta
 }));
 
 jest.mock('@src/connect/hooks/use-connected-app');
-jest.mock('@akeneo-pim-community/catalogs/lib/hooks/useCatalog');
+jest.mock('@akeneo-pim-community/catalogs');
 
 test('The connected app catalog page displays nothing while loading connected app', () => {
     (useConnectedApp as jest.Mock).mockImplementation(() => ({loading: true, error: null, payload: null}));
