@@ -3,6 +3,16 @@ services:
   Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler:
     arguments:
       - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineSchemaUpdate'
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsVersion'
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsSyncMetadataStorage'
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsLatest'
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\Sql\InsertDatabaseInstallationDate'
       - '@Akeneo\Platform\Installer\Infrastructure\Query\Elasticsearch\ResetIndexes'
+      - '@doctrine.orm.default_entity_manager'
+      - '@event_dispatcher'
+
+  Akeneo\Platform\Installer\Application\FixturesLoad\FixturesLoadHandler:
+    arguments:
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\AkeneoBatchJob'
       - '@doctrine.orm.default_entity_manager'
       - '@event_dispatcher'

@@ -7,11 +7,11 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Installer\Application\DatabaseInstall;
+namespace Akeneo\Platform\Installer\Application\FixturesLoad;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class DatabaseInstallCommand
+final class FixtureLoadCommand
 {
     public function __construct(
         private readonly SymfonyStyle $io,

@@ -4,6 +4,26 @@ services:
     arguments:
       - '@kernel'
 
+  Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsVersion:
+    arguments:
+      - '@kernel'
+
+  Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsSyncMetadataStorage:
+    arguments:
+      - '@kernel'
+
+  Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsLatest:
+    arguments:
+      - '@kernel'
+
+  Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\AkeneoBatchJob:
+    arguments:
+      - '@kernel'
+
+  Akeneo\Platform\Installer\Infrastructure\Query\Sql\InsertDatabaseInstallationDate:
+    arguments:
+      - '@database_connection'
+
   Akeneo\Platform\Installer\Infrastructure\Query\Elasticsearch\ResetIndexes:
     arguments:
       - '@akeneo_elasticsearch.registry.clients'

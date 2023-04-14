@@ -12,32 +12,39 @@ namespace Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor;
 use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\CommandExecutorInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractCommandExecutor implements CommandExecutorInterface
 {
-    public const COMMAND_NAME = 'implement-command-name';
+    abstract function getName(): string;
     public function __construct(
         private readonly KernelInterface $kernel
     ) {}
 
-    public function execute(?array $options): void
+    public function execute(?array $options, bool $withOutput = false): null|OutputInterface
     {
         $command = [
-            'command' => self::COMMAND_NAME
+            'command' => $this->getName()
         ];
 
         if ($options) {
             $command = \array_merge($command, $options);
         }
 
-        $this->getApplication()->run(new ArrayInput($command), new NullOutput());
+        $output = $withOutput ? new BufferedOutput() : new NullOutput();
+
+        $this->getApplication()->run(new ArrayInput($command), $output);
+
+        return $withOutput ? $output : null;
     }
 
     public function getApplication(): Application
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
+        return $application;
     }
 }

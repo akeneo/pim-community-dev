@@ -17,5 +17,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class DoctrineMigrationsVersion extends AbstractCommandExecutor implements DoctrineMigrationsVersionInterface
 {
-    public const COMMAND_NAME = 'doctrine:migrations:version';
+    public function getName(): string
+    {
+        return 'doctrine:migrations:version';
+    }
 }

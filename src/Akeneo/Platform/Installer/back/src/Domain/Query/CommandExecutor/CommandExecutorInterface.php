@@ -10,10 +10,12 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Installer\Domain\Query\CommandExecutor;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Output\OutputInterface;
 
 interface CommandExecutorInterface
 {
-    public function execute(?array $options): void;
+    public function getName(): string;
+    public function execute(?array $options, bool $withOutput = false): null|OutputInterface;
 
     public function getApplication(): Application;
 }

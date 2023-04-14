@@ -17,5 +17,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class DoctrineSchemaUpdate extends AbstractCommandExecutor implements DoctrineSchemaUpdateInterface
 {
-    public const COMMAND_NAME = 'doctrine:schema:update';
+    function getName(): string
+    {
+        return 'doctrine:schema:update';
+    }
 }

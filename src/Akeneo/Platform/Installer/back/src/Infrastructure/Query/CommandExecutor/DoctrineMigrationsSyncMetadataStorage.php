@@ -13,5 +13,8 @@ use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineMigrationsSyn
 
 final class DoctrineMigrationsSyncMetadataStorage extends AbstractCommandExecutor implements DoctrineMigrationsSyncMetadataStorageInterface
 {
-    public const COMMAND_NAME = 'doctrine:migrations:sync-metadata-storage';
+    public function getName() :string
+    {
+        return 'doctrine:migrations:sync-metadata-storage';
+    }
 }
