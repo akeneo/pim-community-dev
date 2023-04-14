@@ -26,29 +26,27 @@ final class FixturesLoadHandler
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
 
-    public function handle(DatabaseInstallCommand $command): void
+    public function handle(FixtureLoadCommand $command): void
     {
         $io = $command->getIo();
 
-        if (false === $command->getOptions()['withoutFixtures']) {
-            $io->title('Load fixture');
+        $io->title('Load fixture');
 
-            $this->eventDispatcher->dispatch(
-                new InstallerEvent(null, [
-                    'catalog' => $command->getOption('catalog'),
-                ]),
-                InstallerEvents::PRE_LOAD_FIXTURES
-            );
+        $this->eventDispatcher->dispatch(
+            new InstallerEvent(null, [
+                'catalog' => $command->getOption('catalog'),
+            ]),
+            InstallerEvents::PRE_LOAD_FIXTURES
+        );
 
-            $this->loadFixturesStep($io, $command->getOptions());
+        $this->loadFixturesStep($io, $command->getOptions());
 
-            $this->eventDispatcher->dispatch(
-                new InstallerEvent( null, [
-                    'catalog' => $command->getOption('catalog'),
-                ]),
-                InstallerEvents::POST_LOAD_FIXTURES
-            );
-        }
+        $this->eventDispatcher->dispatch(
+            new InstallerEvent( null, [
+                'catalog' => $command->getOption('catalog'),
+            ]),
+            InstallerEvents::POST_LOAD_FIXTURES
+        );
     }
 
     private function loadFixturesStep(SymfonyStyle $io, array $options): void

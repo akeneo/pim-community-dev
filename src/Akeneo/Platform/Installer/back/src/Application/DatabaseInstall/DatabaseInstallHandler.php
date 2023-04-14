@@ -123,42 +123,4 @@ final class DatabaseInstallHandler
             ]);
         }
     }
-
-    protected function loadFixturesStep($io): DatabaseCommand
-    {
-        $catalog = $input->getOption('catalog');
-        if ($input->getOption('env') === 'behat') {
-            $input->setOption('fixtures', self::LOAD_BASE);
-        }
-
-        $io->info(sprintf('Load jobs for fixtures. (data set: %s)', $catalog));
-        $this->fixtureJobLoader->loadJobInstances($input->getOption('catalog'));
-
-        $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
-        foreach ($jobInstances as $jobInstance) {
-            $params = [
-                'code' => $jobInstance->getCode(),
-                '--no-debug' => true,
-                '--no-log' => true,
-                '-v' => true,
-            ];
-
-            $this->logger->info(
-                sprintf('Please wait, the "%s" are processing...', $jobInstance->getCode())
-            );
-            $this->commandExecutor->runCommand('akeneo:batch:job', $params);
-            $this->eventDispatcher->dispatch(
-                new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
-                    'job_name' => $jobInstance->getJobName(),
-                    'catalog' => $catalog,
-                ]),
-                InstallerEvents::POST_LOAD_FIXTURE
-            );
-        }
-
-        $this->logger->info('Delete jobs for fixtures');
-        $this->fixtureJobLoader->deleteJobInstances();
-
-        return $this;
-    }
 }

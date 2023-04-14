@@ -11,6 +11,8 @@ namespace Akeneo\Platform\Installer\Infrastructure\Command;
 
 use Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallCommand;
 use Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler;
+use Akeneo\Platform\Installer\Application\FixturesLoad\FixtureLoadCommand;
+use Akeneo\Platform\Installer\Application\FixturesLoad\FixturesLoadHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,6 +28,7 @@ final class DatabaseInstallerCommand extends Command
 
     public function __construct(
         private readonly DatabaseInstallHandler $databaseInstallHandler,
+        private readonly FixturesLoadHandler $fixturesLoadHandler
     )
     {
         parent::__construct(self::$defaultName);
@@ -77,67 +80,15 @@ final class DatabaseInstallerCommand extends Command
                 $io,
                 $input->getOptions()
             ));
+
+            if (false === $input->getOption('withoutFixtures')) {
+                $this->fixturesLoadHandler->handle(new FixtureLoadCommand($io, $input->getOptions()));
+            }
+
             return Command::SUCCESS;
         } catch (\Exception $e) {
             $io->error($e->getMessage());
             return Command::FAILURE;
         }
-
-        /**
-        $io->title('Prepare database schema');
-
-        try {
-            $this->commandExecutor
-                ->runCommand(
-                    'doctrine:schema:update',
-                    ['--force' => true, '--no-interaction' => true]
-                );
-        } catch (\Exception $e) {
-            $io->error([
-                'Trying to install PIM on an existing database is impossible.',
-                $e->getMessage()
-            ]);
-
-            return Command::FAILURE;
-        }
-
-        if (false === $input->getOption('withoutIndexes')) {
-            $this->resetElasticSearchIndexesHandler->handle(new ResetElasticSearchIndexesCommand($io));
-        }
-
-        $entityManager = $this->entityManager;
-        $entityManager->clear();
-
-        $this->eventDispatcher->dispatch(
-            new InstallerEvent($this->commandExecutor, null, [
-                'catalog' => $input->getOption('catalog'),
-            ]),
-            InstallerEvents::POST_DB_CREATE
-        );
-
-        $this->setLatestKnownMigration($input);
-
-        if (false === $input->getOption('withoutFixtures')) {
-            $this->eventDispatcher->dispatch(
-                new InstallerEvent($this->commandExecutor, null, [
-                    'catalog' => $input->getOption('catalog'),
-                ]),
-                InstallerEvents::PRE_LOAD_FIXTURES
-            );
-
-            $this->loadFixturesStep($input, $output);
-
-            $this->eventDispatcher->dispatch(
-                new InstallerEvent($this->commandExecutor, null, [
-                    'catalog' => $input->getOption('catalog'),
-                ]),
-                InstallerEvents::POST_LOAD_FIXTURES
-            );
-        }
-
-        $this->installTimeQuery->withDatetime(new \DateTimeImmutable());
-        **/
-
-        return Command::SUCCESS;
     }
 }
