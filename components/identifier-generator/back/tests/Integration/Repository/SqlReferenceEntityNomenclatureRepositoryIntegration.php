@@ -21,6 +21,7 @@ final class SqlReferenceEntityNomenclatureRepositoryIntegration extends Controll
     protected function setUp(): void
     {
         parent::setUp();
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
         $this->referenceEntityNomenclatureRepository = $this->get(ReferenceEntityNomenclatureRepository::class);
 
         $this->createReferenceEntity('brand', ['en_US' => 'Brand']);
