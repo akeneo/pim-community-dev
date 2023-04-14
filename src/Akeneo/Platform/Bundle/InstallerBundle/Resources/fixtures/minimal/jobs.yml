@@ -196,11 +196,6 @@ jobs:
         alias:     connectivity_create_openid_keys
         label:     Create or update a public/private openId key couple
         type:      scheduled_job
-    notify_on_attribute_removal:
-        connector: internal
-        alias:     notify_on_attribute_removal
-        label:     Notify on attribute removal
-        type:      notify_on_attribute_removal
     clean_categories_enriched_values:
         connector: internal
         alias: clean_categories_enriched_values
