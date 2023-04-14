@@ -8,7 +8,7 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
 /**
- * @covers \Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAttributesByTargetTypeAndTargetFormatAction
+ * @covers \Akeneo\Catalogs\Infrastructure\Controller\Public\GetAutoFilledMappingWithAI
  */
 class GetAutoFilledMappingWithAITest extends IntegrationTestCase
 {
@@ -66,64 +66,4 @@ class GetAutoFilledMappingWithAITest extends IntegrationTestCase
         Assert::assertEquals('sku', $attributes[1]['code']);
     }
 
-    public function testItSearchesAttributes(): void
-    {
-        $client = $this->getAuthenticatedInternalApiClient('admin');
-        $this->createAttribute([
-            'code' => 'name',
-            'type' => 'pim_catalog_text',
-        ]);
-        $this->createAttribute([
-            'code' => 'description',
-            'type' => 'pim_catalog_text',
-        ]);
-
-        $client->request(
-            'GET',
-            '/rest/catalogs/attributes-by-target-type-and-target-format',
-            [
-                'search' => 'name',
-                'targetType' => 'string',
-            ],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ],
-        );
-
-        $response = $client->getResponse();
-        Assert::assertEquals(200, $response->getStatusCode());
-
-        $attributes = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        Assert::assertCount(1, $attributes);
-        Assert::assertSame('name', $attributes[0]['code']);
-        Assert::assertArrayHasKey('label', $attributes[0]);
-        Assert::assertArrayHasKey('type', $attributes[0]);
-        Assert::assertArrayHasKey('scopable', $attributes[0]);
-        Assert::assertArrayHasKey('localizable', $attributes[0]);
-        Assert::assertArrayHasKey('attribute_group_code', $attributes[0]);
-        Assert::assertArrayHasKey('attribute_group_label', $attributes[0]);
-    }
-
-    public function testItThrowsABadRequestException(): void
-    {
-        $client = $this->getAuthenticatedInternalApiClient('admin');
-        $this->createAttribute([
-            'code' => 'name',
-            'type' => 'pim_catalog_text',
-        ]);
-
-        $client->request(
-            'GET',
-            '/rest/catalogs/attributes-by-target-type-and-target-format',
-            ['targetType' => 'unexpected_type'],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-            ],
-        );
-
-        $response = $client->getResponse();
-        Assert::assertEquals(400, $response->getStatusCode());
-    }
 }

@@ -75,7 +75,7 @@ export const AutoFill = ({closeModal, productMapping, onChange}: Props) => {
     };
 
     const callAI = async function () {
-        const API_KEY = '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';
+        const API_KEY = '';
 
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',

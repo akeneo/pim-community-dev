@@ -67,3 +67,8 @@ akeneo_catalogs_public_get_mapped_product:
     path: '/api/rest/v1/catalogs/{catalogId}/mapped-products/{productUuid}'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetMappedProductAction
     methods: [ GET ]
+
+akeneo_catalogs_internal_get_autofilled_mapping_with_ai:
+    path: '/api/rest/v1/catalogs/{catalogId}/autofill-ai'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetAutoFilledMappingWithAI
+    methods: [ GET ]
