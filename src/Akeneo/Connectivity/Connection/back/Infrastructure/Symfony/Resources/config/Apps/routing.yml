@@ -85,11 +85,6 @@ akeneo_connectivity_connection_connect_apps_v1_scopes_update:
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\FlagConnectedAppWithOutdatedScopesAction
     methods: [ POST ]
 
-akeneo_connectivity_connection_connect_apps_v1_redirect_to_catalog:
-    path: '/connect/apps/v1/catalogs/{id}'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditCatalogAction
-    methods: [ GET ]
-
 akeneo_connectivity_connection_connect_apps_v1_redirect_to_connected_app:
     path: '/connect/apps/v1/connected_app/{id}'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditConnectedAppAction
@@ -124,12 +119,6 @@ akeneo_connectivity_connection_connect_connected_apps_open:
     path: '/connect/connected-apps/{connectionCode}/open'
     requirements:
         connectionCode: '[a-zA-Z0-9_-]+'
-
-akeneo_connectivity_connection_connect_connected_apps_catalogs_edit:
-    path: '/connect/connected-apps/{connectionCode}/catalogs/{catalogId}'
-    requirements:
-        connectionCode: '[a-zA-Z0-9_-]+'
-        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 
 akeneo_connectivity_connection_connect_connected_apps_regenerate_secret:
     path: '/connect/connected-apps/{connectionCode}/regenerate-secret'
