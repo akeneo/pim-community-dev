@@ -16,7 +16,9 @@ class DeactivatedTemplateAttributesInValueCollectionCleaner
     /**
      * @param array<DeactivatedTemplateAttributeIdentifier> $deactivatedAttributes
      * @param array<string, string|null> $rawCategory
+     *
      * @return array<string, string|null>
+     *
      * @throws \JsonException
      */
     public function __invoke(array $deactivatedAttributes, array $rawCategory): array
