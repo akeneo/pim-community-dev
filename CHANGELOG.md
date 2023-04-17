@@ -49,6 +49,7 @@
 - PIM-10919: Fix Cleaning Products with removed attributes using identifiers instead of uuids
 - PIM-10911: Add user-agent when sending an event
 - PIM-10885: Use React shared component for locale selector in product form locale switcher
+- PIM-10941: Fix unitary attribute group deletion
 - PIM-10916: Fix external categories endpoint with_position always return 1
 - PIM-10887: Prevent channel creation on validation error during import
 
