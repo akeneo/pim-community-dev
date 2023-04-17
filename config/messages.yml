@@ -8,3 +8,6 @@ queues:
               service_handler: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsHandler'
     products_were_updated_queue:
         message_class: Akeneo\Pim\Enrichment\Product\API\Event\ProductsWereUpdated
+        consumers:
+            - name: dqi_products_were_updated_consumer
+              service_handler: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\ProductsWereUpdatedHandler
