@@ -218,6 +218,9 @@ services:
             - '@akeneo_batch.saver.job_instance'
             - '@doctrine.orm.default_entity_manager'
 
+    akeneo_integration_tests.catalogs:
+        class: 'Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog'
+
     ### Builder
     akeneo_integration_tests.catalog.product.builder:
         class: 'Akeneo\Test\Common\EntityWithValue\Builder\Product'
