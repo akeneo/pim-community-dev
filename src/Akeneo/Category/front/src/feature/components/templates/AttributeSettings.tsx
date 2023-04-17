@@ -1,19 +1,21 @@
-import {Button, Field, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
+import {Button, Checkbox, Field, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
-import React from 'react';
 import {userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {getLabelFromAttribute} from '../attributes';
+import {useUiLocales} from "../../hooks/useUiLocales";
 
 type Props = {
   attribute: Attribute;
-  locales: string[];
+  catalogLocales: string[];
 };
 
-export const AttributeSettings = ({attribute, locales}: Props) => {
+export const AttributeSettings = ({attribute, catalogLocales}: Props) => {
   const translate = useTranslate();
-  const label = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
+  const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
+  const {data: uiLocales} = useUiLocales();
+
   const [
     isDeactivateTemplateAttributeModalOpen,
     openDeactivateTemplateAttributeModal,
@@ -22,28 +24,36 @@ export const AttributeSettings = ({attribute, locales}: Props) => {
 
   return (
     <SettingsContainer>
-      <SectionTitle sticky={0}>
+      <StyledSectionTitle sticky={0}>
         <SectionTitle.Title>
-          {label} {translate('akeneo.category.template.attribute.settings.title')}
+          {attributeLabel} {translate('akeneo.category.template.attribute.settings.title')}
         </SectionTitle.Title>
-      </SectionTitle>
-        <SectionTitle sticky={0}>
-            <SectionTitle.Title>
-                {translate('akeneo.category.template.attribute.settings.options')}
-            </SectionTitle.Title>
-        </SectionTitle>
-        <SectionTitle sticky={0}>
-            <SectionTitle.Title>
-                {translate('akeneo.category.template.attribute.settings.label_translations')}
-            </SectionTitle.Title>
-        </SectionTitle>
-        <LabelTranslationsContainer>
-            {locales !== null && locales.map((value, index): JSX.Element => (
-                <TranslationField label={''} locale={value} key={index}>
-                    <TextInput readOnly onChange={() => {}} value={attribute.labels[value] || ''}></TextInput>
-                </TranslationField>
-            ))}
-        </LabelTranslationsContainer>
+      </StyledSectionTitle>
+      <StyledSectionTitle sticky={0}>
+          <SectionTitle.Title>
+              {translate('akeneo.category.template.attribute.settings.options.title')}
+          </SectionTitle.Title>
+      </StyledSectionTitle>
+        {<div>
+            {['textarea', 'richtext'].indexOf(attribute.type) != -1 && (
+                <OptionField checked={attribute.type === 'richtext'}>{translate('akeneo.category.template.attribute.settings.options.rich_text')}</OptionField>
+            )}
+            <OptionField checked={attribute.is_localizable} readOnly={true}>{translate('akeneo.category.template.attribute.settings.options.value_per_locale')}</OptionField>
+            <OptionField checked={attribute.is_scopable} readOnly={true}>{translate('akeneo.category.template.attribute.settings.options.value_per_channel')}</OptionField>
+        </div>}
+      <StyledSectionTitle sticky={0}>
+          <SectionTitle.Title>
+              {translate('akeneo.category.template.attribute.settings.translations.title')}
+          </SectionTitle.Title>
+      </StyledSectionTitle>
+      <div>
+          {uiLocales?.map((locale, index) => (
+              catalogLocales.indexOf(locale.code) != -1 &&
+              <TranslationField label={locale.label} locale={locale.code} key={index}>
+                  <TextInput readOnly onChange={() => {}} value={attribute.labels[locale.code] || ''}></TextInput>
+              </TranslationField>
+          ))}
+      </div>
       <Footer>
         <Button level="danger" ghost onClick={openDeactivateTemplateAttributeModal}>
           {translate('akeneo.category.template.attribute.delete_button')}
@@ -51,7 +61,7 @@ export const AttributeSettings = ({attribute, locales}: Props) => {
         {isDeactivateTemplateAttributeModalOpen && (
           <DeactivateTemplateAttributeModal
             templateUuid={attribute.template_uuid}
-            attribute={{uuid: attribute.uuid, label: label}}
+            attribute={{uuid: attribute.uuid, label: attributeLabel}}
             onClose={closeDeactivateTemplateAttributeModal}
           />
         )}
@@ -68,11 +78,16 @@ const SettingsContainer = styled.div`
   overflow-y: auto;
 `;
 
-const LabelTranslationsContainer = styled.div`
+const StyledSectionTitle = styled(SectionTitle)`
+  margin-top: 10px;
+`;
+
+const OptionField = styled(Checkbox)`
+  margin: 10px 0 0 0;
 `;
 
 const TranslationField = styled(Field)`
-  margin: 5px 0 5px 0;
+  margin: 20px 0 0 0;
 `;
 
 const Footer = styled.div`
