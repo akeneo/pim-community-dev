@@ -139,6 +139,8 @@ class BatchCommand extends Command
             $executionId = $jobExecution->getId();
         }
         $jobExecution = $this->jobExecutionRunner->executeFromJobExecutionId((int)$executionId);
+        // We listen the sigterm in this command for spiking, maybe we should listen inside the watchdog or inside the daemon
+        pcntl_signal(\SIGTERM, fn () => $this->handleSigTerm((int) $executionId));
 
         $verbose = $input->getOption('verbose');
         $jobInstance = $jobExecution->getJobInstance();
@@ -245,5 +247,12 @@ class BatchCommand extends Command
     private function decodeConfiguration(string $data): array
     {
         return \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    private function handleSigTerm(int $jobExecutionId)
+    {
+        $this->logger->info('Sigterm is received', [
+            'job_execution_id' => $jobExecutionId
+        ]);
     }
 }
