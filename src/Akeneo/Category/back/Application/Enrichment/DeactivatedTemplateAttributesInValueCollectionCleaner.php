@@ -26,14 +26,13 @@ class DeactivatedTemplateAttributesInValueCollectionCleaner
         if (empty($deactivatedAttributes) || empty($rawCategory['value_collection'])) {
             return $rawCategory;
         }
-
+        $decodedRawValueCollection = json_decode(
+            $rawCategory['value_collection'],
+            true,
+            512,
+            JSON_THROW_ON_ERROR,
+        );
         foreach ($deactivatedAttributes as $deactivatedAttribute) {
-            $decodedRawValueCollection = json_decode(
-                $rawCategory['value_collection'],
-                true,
-                512,
-                JSON_THROW_ON_ERROR,
-            );
             $attributeCode = $deactivatedAttribute->code.AbstractValue::SEPARATOR.$deactivatedAttribute->uuid;
             foreach ($decodedRawValueCollection as $key => $rawValue) {
                 if ($rawValue['attribute_code'] === $attributeCode) {
