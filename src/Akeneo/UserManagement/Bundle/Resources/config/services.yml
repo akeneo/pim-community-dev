@@ -46,3 +46,8 @@ services:
             - '@pim_user.factory.role_with_permissions'
             - '@pim_user.repository.role_with_permissions'
             - '@pim_user.saver.role_with_permissions'
+
+    Akeneo\UserManagement\Application\CheckAdminRolePermissions:
+        arguments:
+            - '@pim_user.repository.role'
+            - '@oro_security.acl.manager'
