@@ -89,7 +89,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
      */
     public function doExecute(StepExecution $stepExecution)
     {
-        $this->batchSize = 5;
         $itemsToWrite = [];
         $batchCount = 0;
 
@@ -116,7 +115,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 continue;
             }
 
-            usleep(500000);
             $batchCount++;
             $processedItem = $this->process($readItem);
             if (null !== $processedItem) {
