@@ -52,6 +52,7 @@
 - PIM-10916: Fix external categories endpoint with_position always return 1
 - PIM-10887: Prevent channel creation on validation error during import
 - PIM-10929: Add limit on get product history
+- PIM-10940 : Add command to remove orphan categories
 
 ## Improvements
 

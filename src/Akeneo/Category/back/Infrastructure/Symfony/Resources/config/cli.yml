@@ -7,6 +7,6 @@ services:
 
     Akeneo\Category\Infrastructure\Cli\RemoveOrphanCategories\RemoveOrphanCategories:
         arguments:
-            - '@database_connection'
+            - '@Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql'
         tags:
             - { name: console.command }
