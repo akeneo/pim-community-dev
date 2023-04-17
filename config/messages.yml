@@ -6,3 +6,5 @@ queues:
             - name: dqi_launch_product_evaluations_consumer
               env_var: PUBSUB_SUBSCRIPTION_DQI_LAUNCH_PRODUCT_EVALUATIONS_CONSUMER
               service_handler: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsHandler'
+    products_were_updated_queue:
+        message_class: Akeneo\Pim\Enrichment\Product\API\Event\ProductsWereUpdated

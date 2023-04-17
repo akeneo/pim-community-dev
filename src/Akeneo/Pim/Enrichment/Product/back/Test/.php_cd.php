@@ -19,6 +19,9 @@ $rules = [
         'Ramsey\Uuid\Uuid',
         'Ramsey\Uuid\UuidInterface',
         'Symfony\Component\Messenger\Stamp',
+
+        // PIM
+        'Akeneo\Tool\Component\Messenger',
     ])->in('Akeneo\Pim\Enrichment\Product\API'),
 
     $builder->only([
