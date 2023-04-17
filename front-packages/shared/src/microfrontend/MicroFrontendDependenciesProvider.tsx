@@ -157,11 +157,9 @@ const MicroFrontendDependenciesProvider = ({
       featureFlags: {
         isEnabled: () => false,
       },
-      appcuesAnalytics: {
-        appcuesTrack: (event: string, properties?: object) => console.log('Track event', event, properties),
-      },
       analytics: {
         track: (event: string, properties?: object) => console.log('Track event', event, properties),
+        appcuesTrack: (event: string, properties?: object) => console.log('Track event', event, properties),
       },
     }),
     [notify, userContext, securityContext, translations, generateUrl, translator]

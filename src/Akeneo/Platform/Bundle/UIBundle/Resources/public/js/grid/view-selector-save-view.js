@@ -21,7 +21,7 @@ define([
   'pim/user-context',
   'pim/saver/datagrid-view',
   'oro/messenger',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function (
   $,
   _,

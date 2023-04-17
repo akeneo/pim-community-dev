@@ -18,7 +18,7 @@ define([
   'pim/user-context',
   'routing',
   'pim/router',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, _, __, BaseSave, messenger, FieldManager, i18n, UserContext, Routing, router, analytics) {
   return BaseSave.extend({
     updateSuccessMessage: __('pim_import_export.entity.job_instance.flash.update.success'),

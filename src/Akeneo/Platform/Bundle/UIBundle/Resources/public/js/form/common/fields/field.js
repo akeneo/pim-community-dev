@@ -15,7 +15,7 @@ define([
   'pim/common/property',
   'pim/common/tab',
   'pim/template/form/common/fields/field',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, _, __, BaseForm, propertyAccessor, Tab, template, analytics) {
   return BaseForm.extend({
     className: 'AknFieldContainer',

@@ -13,7 +13,7 @@ define([
   'pim/form',
   'pim/fetcher-registry',
   'pim/template/form/properties/translation',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, _, BaseForm, FetcherRegistry, template, analytics) {
   return BaseForm.extend({
     className: 'translation-container',

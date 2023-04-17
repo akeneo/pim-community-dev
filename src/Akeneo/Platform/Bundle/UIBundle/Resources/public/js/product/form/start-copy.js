@@ -12,7 +12,7 @@ define([
   'oro/translator',
   'pim/form',
   'pim/template/product/start-copy',
-  'pim/appcues/analytics',
+  'pim/analytics',
   'pim/feature-flags',
 ], function ($, _, __, BaseForm, template, analytics, FeatureFlags) {
   return BaseForm.extend({

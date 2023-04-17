@@ -19,7 +19,7 @@ define([
   'pim/user-context',
   'pim/router',
   'pim/common/property',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function (
   $,
   _,

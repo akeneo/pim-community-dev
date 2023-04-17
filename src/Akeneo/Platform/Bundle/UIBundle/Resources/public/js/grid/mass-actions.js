@@ -14,7 +14,7 @@ define([
   'backbone',
   'pim/form',
   'pim/template/grid/mass-actions',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, _, __, Backbone, BaseForm, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),

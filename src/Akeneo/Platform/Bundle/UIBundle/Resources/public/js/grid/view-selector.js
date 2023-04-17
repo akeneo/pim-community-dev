@@ -22,7 +22,7 @@ define([
   'pim/fetcher-registry',
   'pim/form-builder',
   'oro/mediator',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function (
   $,
   _,

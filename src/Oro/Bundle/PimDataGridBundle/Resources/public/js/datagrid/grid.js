@@ -14,7 +14,7 @@ define([
   'oro/datagrid/select-all-header-cell',
   'pim/template/common/no-data',
   'pim/template/common/grid',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function (
   $,
   _,

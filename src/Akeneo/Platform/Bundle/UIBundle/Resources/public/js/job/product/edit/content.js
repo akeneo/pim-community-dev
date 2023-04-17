@@ -13,7 +13,7 @@ define([
   'backbone',
   'pim/template/export/product/edit/content',
   'pim/form',
-  'pim/appcues/analytics',
+  'pim/analytics',
   '@akeneo-pim-community/shared',
 ], function (_, __, Backbone, template, BaseForm, analytics, {filterErrors}) {
   return BaseForm.extend({

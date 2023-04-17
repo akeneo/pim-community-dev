@@ -13,7 +13,7 @@ import {
 import {useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useScrollToAttribute} from '../../hooks';
-import {useAppcuesAnalytics} from '@akeneo-pim-community/shared';
+import {useAnalytics} from '@akeneo-pim-community/shared';
 
 type Props = {
   currentCompleteness: CurrentCompleteness | null;
@@ -28,7 +28,7 @@ const ProductCurrentCompleteness: FC<Props> = ({
   redirectToAttributeTab,
   changeLocale,
 }) => {
-  const analytics = useAppcuesAnalytics();
+  const analytics = useAnalytics();
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
   const userContext = useUserContext();

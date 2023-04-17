@@ -8,7 +8,7 @@ import {
   useSecurity,
   useTranslate,
   Translate,
-  useAppcuesAnalytics,
+  useAnalytics,
   useFeatureFlags,
 } from '@akeneo-pim-community/shared';
 import {
@@ -57,7 +57,7 @@ const SettingsIndex = () => {
   const {isGranted} = useSecurity();
   const router = useRouter();
   const theme = useTheme();
-  const analytics = useAppcuesAnalytics();
+  const analytics = useAnalytics();
   const featureFlags = useFeatureFlags();
 
   const canAccessCategories = isGranted('pim_enrich_product_category_list');

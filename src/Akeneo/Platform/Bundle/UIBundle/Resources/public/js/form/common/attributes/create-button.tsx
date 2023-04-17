@@ -7,7 +7,7 @@ import {ThemeProvider} from 'styled-components';
 import {AttributeData, CreateAttributeButtonApp} from '../../../attribute/form/CreateAttributeButtonApp';
 const translate = require('oro/translator');
 const router = require('pim/router');
-const analytics = require('pim/appcues/analytics');
+const analytics = require('pim/analytics');
 
 type CreateButtonConfig = {
   buttonTitle: string;

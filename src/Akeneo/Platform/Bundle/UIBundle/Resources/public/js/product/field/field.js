@@ -16,7 +16,7 @@ define([
   'pim/attribute-manager',
   'pim/i18n',
   'oro/mediator',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, Backbone, _, fieldTemplate, guidelinesTemplate, AttributeManager, i18n, mediator, analytics) {
   var FieldModel = Backbone.Model.extend({
     values: [],

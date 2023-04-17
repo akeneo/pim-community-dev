@@ -16,7 +16,7 @@ define([
   'pim/fetcher-registry',
   'pim/attribute-manager',
   'pim/formatter/choices/base',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, _, __, BaseAddSelect, LineView, FetcherRegistry, AttributeManager, ChoicesFormatter, analytics) {
   return BaseAddSelect.extend({
     className: 'AknButtonList-item add-attribute',

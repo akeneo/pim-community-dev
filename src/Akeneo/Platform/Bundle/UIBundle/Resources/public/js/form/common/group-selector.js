@@ -16,7 +16,7 @@ define([
   'oro/mediator',
   'pim/fetcher-registry',
   'pim/template/form/group-selector',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, _, __, UserContext, BaseForm, mediator, fetcherRegistry, template, analytics) {
   return BaseForm.extend({
     tagName: 'ul',

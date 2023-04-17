@@ -17,7 +17,7 @@ define([
   'pim/field-manager',
   'pim/i18n',
   'pim/user-context',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, _, __, BaseSave, messenger, ProductSaver, FieldManager, i18n, UserContext, analytics) {
   return BaseSave.extend({
     updateSuccessMessage: __('pim_enrich.entity.product.flash.update.success'),

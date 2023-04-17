@@ -18,7 +18,7 @@ define([
   'pim/fetcher-registry',
   'pim/user-context',
   'pim/job/product/edit/content/structure/attributes-selector',
-  'pim/appcues/analytics',
+  'pim/analytics',
   'react',
   'akeneo-design-system',
 ], function (

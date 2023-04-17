@@ -17,7 +17,7 @@ define([
   'oro/messenger',
   'oro/loading-mask',
   'pim/template/export/common/edit/launch',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, _, __, BaseForm, Routing, router, propertyAccessor, messenger, LoadingMask, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),

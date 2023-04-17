@@ -19,7 +19,7 @@ define([
   'pim/form-builder',
   'require-context',
   'oro/messenger',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function (
   _,
   __,

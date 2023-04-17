@@ -7,7 +7,7 @@ define([
   'pim/controller/front',
   'pim/form-builder',
   'routing',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, _, __, BaseController, FormBuilder, Routing, analytics) {
   const ACTION_PRODUCT_GRID = 'product-edit';
 

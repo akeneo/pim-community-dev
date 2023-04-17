@@ -17,5 +17,4 @@ export * from './useFetch';
 export * from './useSessionStorageState';
 export * from './useSetPageTitle';
 export * from './useFeatureFlags';
-export * from './useAppcuesAnalytics';
 export * from './useAnalytics';

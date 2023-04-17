@@ -16,7 +16,7 @@ define([
   'pim/fetcher-registry',
   'pim/template/export/product/edit/content/structure/attributes-selector',
   'pim/template/export/product/edit/content/structure/attribute-list',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function ($, _, __, Backbone, i18n, userContext, fetcherRegistry, template, attributeListTemplate, analytics) {
   return Backbone.View.extend({
     events: {

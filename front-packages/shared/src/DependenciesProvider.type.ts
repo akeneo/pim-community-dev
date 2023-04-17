@@ -48,12 +48,9 @@ type FeatureFlags = {
   isEnabled(feature: string): boolean;
 };
 
-type AppcuesAnalytics = {
-  appcuesTrack(event: string, properties?: object): void;
-};
-
 type Analytics = {
   track(event: string, properties?: object): void;
+  appcuesTrack(event: string, properties?: object): void;
 };
 
 export {NotificationLevel};
@@ -68,6 +65,5 @@ export type {
   ViewBuilder,
   Mediator,
   FeatureFlags,
-  AppcuesAnalytics,
   Analytics,
 };

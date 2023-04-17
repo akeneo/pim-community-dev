@@ -19,7 +19,7 @@ define([
   'pim/i18n',
   'pim/common/property',
   'pim/template/mass-edit/product/edit-common-attributes',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function (
   $,
   _,

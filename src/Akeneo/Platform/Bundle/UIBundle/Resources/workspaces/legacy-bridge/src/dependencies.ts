@@ -9,7 +9,6 @@ const userContext = require('pim/user-context');
 const securityContext = require('pim/security-context');
 const mediator = require('oro/mediator');
 const featureFlags = require('pim/feature-flags');
-const appcuesAnalytics = require('pim/appcues/analytics');
 const analytics = require('pim/analytics');
 
 const dependencies: DependenciesContextProps = {
@@ -23,7 +22,6 @@ const dependencies: DependenciesContextProps = {
   },
   mediator,
   featureFlags,
-  appcuesAnalytics,
   analytics,
 };
 

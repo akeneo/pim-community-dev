@@ -46,11 +46,9 @@ const mockedDependencies = {
   featureFlags: {
     isEnabled: (_feature: string) => true,
   },
-  appcuesAnalytics: {
-    appcuesTrack: (event: string) => event,
-  },
   analytics: {
     track: (event: string) => event,
+    appcuesTrack: (event: string) => event,
   },
 };
 

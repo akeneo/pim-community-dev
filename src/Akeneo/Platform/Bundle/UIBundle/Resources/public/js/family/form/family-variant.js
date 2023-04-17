@@ -9,7 +9,7 @@ define([
   'pim/user-context',
   'pim/common/form-modal-creator',
   'pim/template/family/tab/family-variant',
-  'pim/appcues/analytics',
+  'pim/analytics',
 ], function (_, BaseForm, mediator, Grid, __, UserContext, formModalCreator, template, analytics) {
   return BaseForm.extend({
     template: _.template(template),
