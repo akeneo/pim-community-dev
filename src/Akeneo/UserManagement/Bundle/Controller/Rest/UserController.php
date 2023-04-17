@@ -9,7 +9,9 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Application\CheckAdminRolePermissions;
 use Akeneo\UserManagement\Component\Event\UserEvent;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
@@ -18,13 +20,16 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -62,6 +67,7 @@ class UserController
     private RemoverInterface $remover;
     private TranslatorInterface $translator;
     private SecurityFacade $securityFacade;
+    private CheckAdminRolePermissions $checkAdminRolePermissions;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -79,7 +85,8 @@ class UserController
         RemoverInterface $remover,
         NumberFactory $numberFactory,
         TranslatorInterface $translator,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        CheckAdminRolePermissions $checkAdminRolePermissions,
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -97,6 +104,7 @@ class UserController
         $this->numberFactory = $numberFactory;
         $this->translator = $translator;
         $this->securityFacade = $securityFacade;
+        $this->checkAdminRolePermissions = $checkAdminRolePermissions;
     }
 
     /**
@@ -145,6 +153,7 @@ class UserController
      * @param int     $identifier
      *
      * @return Response
+     * @throws \HttpException
      *
      * @AclAncestor("pim_user_user_edit")
      */
@@ -168,6 +177,20 @@ class UserController
             unset($data['groups']);
         }
 
+        $adminRolesPrivileges = $this->checkAdminRolePermissions->getRolesWithMinimumAdminPrivileges();
+        $adminRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $adminRolesPrivileges);
+        $adminRoleLeft = array_filter($data['roles'], (function ($role) use ($adminRolesNamePrivileges) {
+            return in_array($role, $adminRolesNamePrivileges);
+        }));
+        if(count($adminRoleLeft) < 1) {
+            $usersWithAdminRoles = $this->checkAdminRolePermissions->getUsersWithAdminRoles();
+            if(count($usersWithAdminRoles) <= 1) {
+                $lastUser = $usersWithAdminRoles[0];
+                if($lastUser && $lastUser === $user) {
+                    throw new NotFoundHttpException('This user is the last with admin privileges');
+                }
+            }
+        }
         return $this->updateUser($user, $data);
     }
 

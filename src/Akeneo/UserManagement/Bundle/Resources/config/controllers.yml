@@ -24,6 +24,7 @@ services:
             - '@pim_catalog.localization.factory.number'
             - '@translator'
             - '@oro_security.security_facade'
+            - '@Akeneo\UserManagement\Application\CheckAdminRolePermissions'
 
     pim_user.controller.security_rest:
         public: true
