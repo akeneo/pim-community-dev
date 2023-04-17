@@ -1,0 +1,7 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Subscriber\ProductWasUpdatedSubscriber:
+        arguments:
+            - '@messenger.bus.default'
+            - '@logger'
+        tags:
+            - { name: kernel.event_subscriber }
