@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Application;
 
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,8 +14,8 @@ use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 class CheckAdminRolePermissions
 {
     public function __construct(
+        private RoleWithPermissionsRepository $roleWithPermissionsRepository,
         private RoleRepository $roleRepository,
-        private AclManager $aclManager,
     ) {
     }
 
@@ -31,14 +32,13 @@ class CheckAdminRolePermissions
         $usersWithPrivileges = [];
         /** @var RoleInterface $role */
         foreach ($roles as $role) {
-            /** @var ArrayCollection $privileges */
-            $privileges = $this->aclManager->getPrivilegeRepository()->getPrivileges($this->aclManager->getSid($role));
-            $minimumPrivileges = $privileges->filter(function (AclPrivilege $entry) use ($minimumAdminPrivileges) {
-                $hasRights = $entry->getPermissions()->get('EXECUTE')->getAccessLevel() != AccessLevel::NONE_LEVEL;
-                $isMinimumAdminPrivileges = in_array($entry->getIdentity()->getId(), $minimumAdminPrivileges);
-                return $entry->getExtensionKey() === 'action' && $entry->isVisible() && $isMinimumAdminPrivileges && $hasRights;
-            });
-            if($minimumPrivileges->count() === count($minimumAdminPrivileges)) {
+            $roleWithPermission = $this->roleWithPermissionsRepository->findOneByIdentifier($role->getRole());
+            $rolePermissions = $roleWithPermission->permissions();
+            $minimumPrivileges = array_filter($rolePermissions, function ($permission) use ($rolePermissions, $minimumAdminPrivileges) {
+                $isMinimumAdminPrivileges = in_array($permission, $minimumAdminPrivileges);
+                return $isMinimumAdminPrivileges && $rolePermissions[$permission];
+            }, ARRAY_FILTER_USE_KEY);
+            if(count($minimumPrivileges) === count($minimumAdminPrivileges)) {
                 $minimumPrivilegesRoles[] = $role;
             }
         }
