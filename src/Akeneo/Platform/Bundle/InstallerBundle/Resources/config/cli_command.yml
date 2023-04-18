@@ -25,20 +25,6 @@ services:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
 
-    Akeneo\Platform\Bundle\InstallerBundle\Command\DatabaseCommand:
-        class: '%installer_bundle.command.database_command.class%'
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-            - '@akeneo_elasticsearch.registry.clients'
-            - '@database_connection'
-            - '@pim_installer.fixture_loader.job_loader'
-            - '@event_dispatcher'
-            - '@Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData'
-            - '@logger'
-        tags:
-            - { name: console.command }
-            - { name: 'akeneo.command.authenticated_as_admin_user' }
-
     Akeneo\Platform\Bundle\InstallerBundle\Command\DumpRequirePathsCommand:
         arguments:
             - '%kernel.project_dir%/src'

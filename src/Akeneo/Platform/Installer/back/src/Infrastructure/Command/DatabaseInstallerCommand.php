@@ -21,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DatabaseInstallerCommand extends Command
 {
-    public static $defaultName = 'pim:installer:db-2';
+    public static $defaultName = 'pim:installer:db';
 
     const LOAD_ALL = 'all';
     const LOAD_BASE = 'base';
