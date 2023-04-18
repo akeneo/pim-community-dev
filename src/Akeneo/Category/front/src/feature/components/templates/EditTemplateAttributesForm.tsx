@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import {Attribute} from '../../models';
 import {AttributeList} from './AttributeList';
 import {AttributeSettings} from './AttributeSettings';
-import {useFeatureFlags} from "@akeneo-pim-community/shared";
-import {useCatalogActivatedLocales} from "../../hooks/useCatalogActivatedLocales";
+import {useFeatureFlags} from '@akeneo-pim-community/shared';
+import {useCatalogActivatedLocales} from '../../hooks/useCatalogActivatedLocales';
 
 interface Props {
   attributes: Attribute[];
@@ -31,9 +31,9 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
         ></AttributeList>
-        {featureFlag.isEnabled('category_template_customization') &&
+        {featureFlag.isEnabled('category_template_customization') && (
           <AttributeSettings attribute={selectedAttribute} catalogLocales={locales || []}></AttributeSettings>
-        }
+        )}
       </Attributes>
     </FormContainer>
   );

@@ -5,5 +5,3 @@ export type UiLocale = {
   region: string;
   language: string;
 };
-
-

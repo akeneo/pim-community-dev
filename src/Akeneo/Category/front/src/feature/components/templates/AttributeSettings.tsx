@@ -4,7 +4,7 @@ import {userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {getLabelFromAttribute} from '../attributes';
-import {useUiLocales} from "../../hooks/useUiLocales";
+import {useUiLocales} from '../../hooks/useUiLocales';
 
 type Props = {
   attribute: Attribute;
@@ -30,29 +30,37 @@ export const AttributeSettings = ({attribute, catalogLocales}: Props) => {
         </SectionTitle.Title>
       </StyledSectionTitle>
       <StyledSectionTitle sticky={0}>
-          <SectionTitle.Title>
-              {translate('akeneo.category.template.attribute.settings.options.title')}
-          </SectionTitle.Title>
-      </StyledSectionTitle>
-        {<div>
-            {['textarea', 'richtext'].indexOf(attribute.type) != -1 && (
-                <OptionField checked={attribute.type === 'richtext'}>{translate('akeneo.category.template.attribute.settings.options.rich_text')}</OptionField>
-            )}
-            <OptionField checked={attribute.is_localizable} readOnly={true}>{translate('akeneo.category.template.attribute.settings.options.value_per_locale')}</OptionField>
-            <OptionField checked={attribute.is_scopable} readOnly={true}>{translate('akeneo.category.template.attribute.settings.options.value_per_channel')}</OptionField>
-        </div>}
-      <StyledSectionTitle sticky={0}>
-          <SectionTitle.Title>
-              {translate('akeneo.category.template.attribute.settings.translations.title')}
-          </SectionTitle.Title>
+        <SectionTitle.Title>
+          {translate('akeneo.category.template.attribute.settings.options.title')}
+        </SectionTitle.Title>
       </StyledSectionTitle>
       <div>
-          {uiLocales?.map((locale, index) => (
-              catalogLocales.indexOf(locale.code) != -1 &&
+        {['textarea', 'richtext'].indexOf(attribute.type) != -1 && (
+          <OptionField checked={attribute.type === 'richtext'}>
+            {translate('akeneo.category.template.attribute.settings.options.rich_text')}
+          </OptionField>
+        )}
+        <OptionField checked={attribute.is_localizable} readOnly={true}>
+          {translate('akeneo.category.template.attribute.settings.options.value_per_locale')}
+        </OptionField>
+        <OptionField checked={attribute.is_scopable} readOnly={true}>
+          {translate('akeneo.category.template.attribute.settings.options.value_per_channel')}
+        </OptionField>
+      </div>
+      <StyledSectionTitle sticky={0}>
+        <SectionTitle.Title>
+          {translate('akeneo.category.template.attribute.settings.translations.title')}
+        </SectionTitle.Title>
+      </StyledSectionTitle>
+      <div>
+        {uiLocales?.map(
+          (locale, index) =>
+            catalogLocales.indexOf(locale.code) != -1 && (
               <TranslationField label={locale.label} locale={locale.code} key={index}>
-                  <TextInput readOnly onChange={() => {}} value={attribute.labels[locale.code] || ''}></TextInput>
+                <TextInput readOnly onChange={() => {}} value={attribute.labels[locale.code] || ''}></TextInput>
               </TranslationField>
-          ))}
+            )
+        )}
       </div>
       <Footer>
         <Button level="danger" ghost onClick={openDeactivateTemplateAttributeModal}>
