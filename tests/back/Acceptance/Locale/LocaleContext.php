@@ -11,18 +11,10 @@ use PHPUnit\Framework\Assert;
 
 final class LocaleContext implements Context
 {
-    /** @var InMemoryLocaleRepository */
-    private $localeRepository;
-
-    /** @var EntityBuilder */
-    private $localeBuilder;
-
     public function __construct(
-        InMemoryLocaleRepository $localeRepository,
-        EntityBuilder $localeBuilder
+        private InMemoryLocaleRepository $localeRepository,
+        private EntityBuilder $localeBuilder
     ) {
-        $this->localeRepository = $localeRepository;
-        $this->localeBuilder = $localeBuilder;
     }
 
     /**
@@ -40,15 +32,19 @@ final class LocaleContext implements Context
     }
 
     /**
-     * @Then the locales :localeCodes is activated
+     * @Then /^the locale(?:s|) "(?P<localeCodes>.*)" should be (?P<activation>activated|deactivated)$/
      */
-    public function iShouldHaveActivatedLocales(string $localeCodes)
+    public function iShouldHaveLocales(string $localeCodes, string $activation)
     {
         $localeCodes = new ListOfCodes($localeCodes);
 
         foreach ($localeCodes->explode() as $localeCode) {
             $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-            Assert::assertTrue($locale->isActivated());
+            if ('activated' === $activation) {
+                Assert::assertTrue($locale->isActivated());
+            } else {
+                Assert::assertFalse($locale->isActivated());
+            }
         }
     }
 }

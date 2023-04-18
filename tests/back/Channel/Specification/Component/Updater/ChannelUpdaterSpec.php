@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Channel\Component\Updater;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\ChannelTranslationInterface;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Channel\Component\Updater\ChannelUpdater;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
@@ -15,12 +15,23 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
+
+function makeLocale(string $code): Locale
+{
+    $locale = new Locale();
+    $locale->setCode($code);
+    return $locale;
+}
 class ChannelUpdaterSpec extends ObjectBehavior
 {
+    private static Locale $enUS;
+    private static Locale $frFR;
+
     function let(
         IdentifiableObjectRepositoryInterface $categoryRepository,
         IdentifiableObjectRepositoryInterface $localeRepository,
@@ -28,6 +39,8 @@ class ChannelUpdaterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $attributeRepository,
         TranslatableUpdater $translatableUpdater
     ) {
+        $this::$enUS = $this::$enUS ?? makeLocale('en_US');
+        $this::$frFR = $this::$frFR ?? makeLocale('fr_FR');
         $this->beConstructedWith(
             $categoryRepository,
             $localeRepository,
@@ -68,8 +81,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $translatableUpdater,
         ChannelInterface $channel,
         CategoryInterface $tree,
-        LocaleInterface $enUS,
-        LocaleInterface $frFR,
         CurrencyInterface $usd,
         CurrencyInterface $eur,
         AttributeInterface $maximumDiagonalAttribute,
@@ -95,13 +106,20 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $categoryRepository->findOneByIdentifier('master_catalog')->willReturn($tree);
         $channel->setCategory($tree)->shouldBeCalled();
 
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
-        $channel->setLocales([$enUS, $frFR])->shouldBeCalled();
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($this::$enUS);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($this::$frFR);
+        $channel->addLocale($this::$enUS)
+            ->shouldBeCalledOnce();
+        $channel->addLocale($this::$frFR)
+            ->shouldBeCalledOnce();
+        $channel->getLocales()
+            ->shouldBeCalledOnce()
+            ->willReturn(new ArrayCollection([$this::$enUS, $this::$frFR]));
 
         $currencyRepository->findOneByIdentifier('EUR')->willReturn($eur);
         $currencyRepository->findOneByIdentifier('USD')->willReturn($usd);
-        $channel->setCurrencies([$eur, $usd])->shouldBeCalled();
+        $channel->setCurrencies([$eur, $usd])
+            ->shouldBeCalledOnce();
 
         $maximumDiagonalAttribute->getMetricFamily()->willReturn('Length');
         $weightAttribute->getMetricFamily()->willReturn('Weight');
@@ -119,7 +137,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $this->update($channel, $values, []);
     }
 
-
     function it_updates_a_channel_with_conversion_units_empty(
         $categoryRepository,
         $localeRepository,
@@ -127,8 +144,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $attributeRepository,
         ChannelInterface $channel,
         CategoryInterface $tree,
-        LocaleInterface $enUS,
-        LocaleInterface $frFR,
         CurrencyInterface $usd,
         CurrencyInterface $eur,
         ChannelTranslationInterface $channelTranslation,
@@ -152,9 +167,15 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $categoryRepository->findOneByIdentifier('master_catalog')->willReturn($tree);
         $channel->setCategory($tree)->shouldBeCalled();
 
-        $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
-        $channel->setLocales([$enUS, $frFR])->shouldBeCalled();
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($this::$enUS);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($this::$frFR);
+        $channel->addLocale($this::$enUS)
+            ->shouldBeCalledOnce();
+        $channel->addLocale($this::$frFR)
+            ->shouldBeCalledOnce();
+        $channel->getLocales()
+            ->shouldBeCalledOnce()
+            ->willReturn(new ArrayCollection([$this::$enUS, $this::$frFR]));
 
         $currencyRepository->findOneByIdentifier('EUR')->willReturn($eur);
         $currencyRepository->findOneByIdentifier('USD')->willReturn($usd);
@@ -173,6 +194,35 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $channel->setConversionUnits([])->shouldBeCalled();
 
         $this->update($channel, $values, []);
+    }
+
+    function it_does_locale_code_normalization_when_updating_labels(
+        $localeRepository,
+        $translatableUpdater,
+        ChannelInterface $channel
+    ) {
+        $inputLabels = [
+            'fr_FR' => 'Tablette',
+            'EN_us' => 'Tablet',
+            'foo_bar' => 'Tablefoo'
+        ];
+        $normalizedLabels = [
+            'fr_FR' => 'Tablette',
+            'en_US' => 'Tablet',
+            'foo_bar' => 'Tablefoo'
+        ];
+        $values = [
+            'code' => 'ecommerce',
+            'labels' => $inputLabels,
+        ];
+
+        $localeRepository->findOneByIdentifier('EN_us')->willReturn($this::$enUS); // by case-insentive matching BDD-side
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($this::$frFR);
+        $localeRepository->findOneByIdentifier('foo_bar')->willReturn(null); // unknown to PIM
+
+        $this->update($channel, $values, []);
+
+        $translatableUpdater->update($channel, $normalizedLabels)->shouldBeCalled();
     }
 
     function it_throws_an_exception_if_category_not_found(
