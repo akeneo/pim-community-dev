@@ -53,6 +53,7 @@
 - PIM-10916: Fix external categories endpoint with_position always return 1
 - PIM-10887: Prevent channel creation on validation error during import
 - PIM-10929: Add limit on get product history
+- PIM-10936: Fix an issue where completeness could not be saved after migrating to UUIDs
 
 ## Improvements
 
