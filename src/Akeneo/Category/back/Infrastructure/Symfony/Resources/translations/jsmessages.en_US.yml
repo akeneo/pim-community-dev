@@ -19,7 +19,6 @@ akeneo.category:
         create: Create tree
         delete: Delete tree
     template:
-        toto_test: Toto Test
         learn_more: Learn more about category template
         create: Activate template
         edit: View template
