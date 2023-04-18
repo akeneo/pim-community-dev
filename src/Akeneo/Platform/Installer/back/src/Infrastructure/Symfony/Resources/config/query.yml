@@ -24,6 +24,16 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Platform\Installer\Infrastructure\Query\Sql\RemoveJobInstance:
+    arguments:
+      - '@database_connection'
+
   Akeneo\Platform\Installer\Infrastructure\Query\Elasticsearch\ResetIndexes:
     arguments:
       - '@akeneo_elasticsearch.registry.clients'
+
+
+  Akeneo\Platform\Installer\Infrastructure\Query\Yaml\ReadJobDefinition:
+    arguments:
+      - '@file_locator'
+      - '@pim_connector.reader.file.yaml_job_instance'

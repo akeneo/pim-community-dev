@@ -10,11 +10,18 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Installer\Application\FixturesLoad;
 
 use Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallCommand;
+use Akeneo\Platform\Installer\Domain\FixtureLoad\FixturePathResolver;
+use Akeneo\Platform\Installer\Domain\FixtureLoad\JobInstanceConfigurator;
+use Akeneo\Platform\Installer\Domain\FixtureLoad\JobOrderer;
 use Akeneo\Platform\Installer\Domain\FixtureLoader\JobInstanceBuilderInterface;
 use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\AkeneoBatchJobInterface;
+use Akeneo\Platform\Installer\Domain\Query\Sql\RemoveJobInstanceInterface;
+use Akeneo\Platform\Installer\Domain\Query\Yaml\ReadJobDefinitionInterface;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Akeneo\Platform\Installer\Infrastructure\FixtureLoader\JobInstancesConfigurator;
+use Akeneo\Platform\Installer\Infrastructure\Query\Yaml\ReadJobDefinition;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -24,10 +31,13 @@ final class FixturesLoadHandler
 {
     public function __construct(
         private readonly AkeneoBatchJobInterface $akeneoBatchJob,
-        private readonly JobInstancesConfigurator $jobInstancesConfigurator,
         private readonly BulkSaverInterface $jobInstanceSaver,
-        private readonly JobInstanceBuilderInterface $jobInstanceBuilder,
+        private readonly ReadJobDefinitionInterface $readJobDefinition,
+        private readonly RemoveJobInstanceInterface $removeJobInstance,
+        private readonly ItemProcessorInterface $jobProcessor,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly array $bundles,
+        private readonly array $jobsFilePaths,
     ) {}
 
     public function handle(FixtureLoadCommand $command): void
@@ -43,7 +53,11 @@ final class FixturesLoadHandler
             InstallerEvents::PRE_LOAD_FIXTURES
         );
 
-        $this->loadFixturesStep($io, $command->getOptions());
+        $jobInstances = $this->createJobInstances($io, $command->getOptions());
+
+        $this->loadFixtures($jobInstances, $io, $command->getOptions());
+
+        $this->cleanJobInstances($io);
 
         $this->eventDispatcher->dispatch(
             new InstallerEvent( null, [
@@ -53,14 +67,32 @@ final class FixturesLoadHandler
         );
     }
 
-    private function loadFixturesStep(SymfonyStyle $io, array $options): void
+    private function createJobInstances(SymfonyStyle $io, array $options): array
     {
         $io->info(sprintf('Load jobs for fixtures. (data set: %s)', $options['catalog']));
 
-        $jobInstances = $this->jobInstanceBuilder->build();
-        $configuredJobInstances = $this->configureJobInstances($options['catalog'], $jobInstances, []);
+        $normalizedJobs = [];
+        $jobInstances = [];
+
+        foreach ($this->jobsFilePaths as $jobsFilePath) {
+            $normalizedJobs = $this->readJobDefinition->read($jobsFilePath);
+            JobOrderer::order($normalizedJobs);
+
+            foreach ($normalizedJobs as $normalizedJob) {
+                unset($normalizedJob['order']);
+                $jobInstances[] = $this->jobProcessor->process($normalizedJob);
+            }
+        }
+
+        $installerPathData = FixturePathResolver::resolve($options['catalog'], $this->bundles);
+        $configuredJobInstances = JobInstanceConfigurator::configure($installerPathData, $jobInstances);
         $this->jobInstanceSaver->saveAll($configuredJobInstances, ['is_installation' => true]);
 
+        return $configuredJobInstances;
+    }
+
+    private function loadFixtures(array $configuredJobInstances, SymfonyStyle $io, array $options): void
+    {
         foreach ($configuredJobInstances as $jobInstance) {
             $params = [
                 'code' => $jobInstance->getCode(),
@@ -79,8 +111,13 @@ final class FixturesLoadHandler
             $io->info(
                 sprintf('Please wait, the "%s" are processing...', $jobInstance->getCode())
             );
-            $output = $this->akeneoBatchJob->execute($params, true);
-            $io->block($output->fetch());
+
+            try {
+                $output = $this->akeneoBatchJob->execute($params, true);
+                $io->success($output->fetch());
+            } catch (\Exception $e) {
+                $io->error($e->getMessage());
+            }
 
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($jobInstance->getCode(), [
@@ -92,15 +129,9 @@ final class FixturesLoadHandler
         }
     }
 
-    protected function configureJobInstances(string $catalogPath, array $jobInstances, array $replacePaths): array
+    private function cleanJobInstances(SymfonyStyle $io): void
     {
-        if (0 === count($replacePaths)) {
-            return $this->jobInstancesConfigurator->configureJobInstancesWithInstallerData($catalogPath, $jobInstances);
-        } else {
-            return $this->jobInstancesConfigurator->configureJobInstancesWithReplacementPaths(
-                $jobInstances,
-                $replacePaths
-            );
-        }
+        $io->info('Start removing fixtures job instance');
+        $this->removeJobInstance->remove();
     }
 }

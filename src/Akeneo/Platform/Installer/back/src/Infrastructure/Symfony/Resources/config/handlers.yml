@@ -14,7 +14,10 @@ services:
   Akeneo\Platform\Installer\Application\FixturesLoad\FixturesLoadHandler:
     arguments:
       - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\AkeneoBatchJob'
-      - '@Akeneo\Platform\Installer\Infrastructure\FixtureLoader\JobInstancesConfigurator'
       - '@akeneo_batch.saver.job_instance'
-      - '@Akeneo\Platform\Installer\Infrastructure\FixtureLoader\JobInstancesBuilder'
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\Yaml\ReadJobDefinition'
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\Sql\RemoveJobInstance'
+      - '@pim_installer.processor.denormalization.job_instance'
       - '@event_dispatcher'
+      - '%kernel.bundles%'
+      - [ 'AkeneoInstallerBundle/Resources/fixtures/fixtures_jobs.yml' ]
