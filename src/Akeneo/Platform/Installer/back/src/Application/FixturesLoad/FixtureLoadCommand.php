@@ -28,4 +28,9 @@ final class FixtureLoadCommand
     {
         return $this->options;
     }
+
+    public function getOption(string $key): string
+    {
+        return $this->options[$key];
+    }
 }

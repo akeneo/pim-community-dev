@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Install;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
+use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -37,7 +37,7 @@ class InstallSubscriber implements EventSubscriberInterface
         $this->dbalConnection->executeStatement(CreateRevokedAppTokenTableQuery::QUERY);
     }
 
-    public function loadFixtures(GenericEvent $event): void
+    public function loadFixtures(InstallerEvent $event): void
     {
         if (!\str_ends_with($event->getArgument('catalog'), 'icecat_demo_dev')) {
             return;

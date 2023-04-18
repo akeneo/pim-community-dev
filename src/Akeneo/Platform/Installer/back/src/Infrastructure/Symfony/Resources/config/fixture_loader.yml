@@ -5,4 +5,8 @@ services:
       - '@file_locator'
       - '@pim_connector.reader.file.yaml_job_instance'
       - '@pim_installer.processor.denormalization.job_instance'
-      - [ 'AkeneoInstallerBundle/Infrastructure/Symfony/Resources/fixtures/fixtures_jobs.yml' ]
+      - [ 'AkeneoInstallerBundle/Resources/fixtures/fixtures_jobs.yml' ]
+
+  Akeneo\Platform\Installer\Infrastructure\FixtureLoader\JobInstancesConfigurator:
+    arguments:
+      - '%kernel.bundles%'

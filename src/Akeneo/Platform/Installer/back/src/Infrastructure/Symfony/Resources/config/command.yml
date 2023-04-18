@@ -3,6 +3,6 @@ services:
   Akeneo\Platform\Installer\Infrastructure\Command\DatabaseInstallerCommand:
     arguments:
       - '@Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler'
-      - '@doctrine.orm.default_entity_manager'
+      - '@Akeneo\Platform\Installer\Application\FixturesLoad\FixturesLoadHandler'
     tags:
       - { name: 'console.command' }

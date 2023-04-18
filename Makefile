@@ -99,7 +99,7 @@ check-requirements:
 database:
 	$(PHP_RUN) bin/console doctrine:database:drop --force
 	$(PHP_RUN) bin/console doctrine:database:create --if-not-exists
-	$(PHP_RUN) bin/console pim:installer:db ${O}
+	$(PHP_RUN) bin/console pim:installer:db-2 ${O}
 
 .PHONY: start-job-worker
 start-job-worker:

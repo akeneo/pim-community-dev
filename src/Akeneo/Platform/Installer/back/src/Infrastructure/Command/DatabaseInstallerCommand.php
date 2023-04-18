@@ -81,9 +81,11 @@ final class DatabaseInstallerCommand extends Command
                 $input->getOptions()
             ));
 
-            if (false === $input->getOption('withoutFixtures')) {
-                $this->fixturesLoadHandler->handle(new FixtureLoadCommand($io, $input->getOptions()));
+            if ($input->getOption('withoutFixtures')) {
+                return Command::SUCCESS;
             }
+
+            $this->fixturesLoadHandler->handle(new FixtureLoadCommand($io, $input->getOptions()));
 
             return Command::SUCCESS;
         } catch (\Exception $e) {

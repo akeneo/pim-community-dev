@@ -14,6 +14,8 @@ use Akeneo\Platform\Installer\Domain\FixtureLoader\JobInstanceBuilderInterface;
 use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\AkeneoBatchJobInterface;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
+use Akeneo\Platform\Installer\Infrastructure\FixtureLoader\JobInstancesConfigurator;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -22,6 +24,8 @@ final class FixturesLoadHandler
 {
     public function __construct(
         private readonly AkeneoBatchJobInterface $akeneoBatchJob,
+        private readonly JobInstancesConfigurator $jobInstancesConfigurator,
+        private readonly BulkSaverInterface $jobInstanceSaver,
         private readonly JobInstanceBuilderInterface $jobInstanceBuilder,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {}
@@ -54,7 +58,49 @@ final class FixturesLoadHandler
         $io->info(sprintf('Load jobs for fixtures. (data set: %s)', $options['catalog']));
 
         $jobInstances = $this->jobInstanceBuilder->build();
-        $configuredJobInstances = $this->configureJobInstances($catalogPath, $jobInstances, $replacePaths);
+        $configuredJobInstances = $this->configureJobInstances($options['catalog'], $jobInstances, []);
         $this->jobInstanceSaver->saveAll($configuredJobInstances, ['is_installation' => true]);
+
+        foreach ($configuredJobInstances as $jobInstance) {
+            $params = [
+                'code' => $jobInstance->getCode(),
+                '--no-debug' => true,
+                '--no-log' => true,
+                '-v' => true,
+            ];
+
+            $this->eventDispatcher->dispatch(
+                new InstallerEvent($jobInstance->getCode(), [
+                    'catalog' => $options['catalog'],
+                ]),
+                InstallerEvents::PRE_LOAD_FIXTURE
+            );
+
+            $io->info(
+                sprintf('Please wait, the "%s" are processing...', $jobInstance->getCode())
+            );
+            $output = $this->akeneoBatchJob->execute($params, true);
+            $io->block($output->fetch());
+
+            $this->eventDispatcher->dispatch(
+                new InstallerEvent($jobInstance->getCode(), [
+                    'job_name' => $jobInstance->getJobName(),
+                    'catalog' => $options['catalog'],
+                ]),
+                InstallerEvents::POST_LOAD_FIXTURE
+            );
+        }
+    }
+
+    protected function configureJobInstances(string $catalogPath, array $jobInstances, array $replacePaths): array
+    {
+        if (0 === count($replacePaths)) {
+            return $this->jobInstancesConfigurator->configureJobInstancesWithInstallerData($catalogPath, $jobInstances);
+        } else {
+            return $this->jobInstancesConfigurator->configureJobInstancesWithReplacementPaths(
+                $jobInstances,
+                $replacePaths
+            );
+        }
     }
 }

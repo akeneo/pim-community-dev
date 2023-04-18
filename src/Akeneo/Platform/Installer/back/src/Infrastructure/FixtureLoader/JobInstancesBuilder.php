@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Installer\Infrastructure\FixtureLoader;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
-use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\YamlReader;
 use Akeneo\Platform\Installer\Domain\FixtureLoader\JobInstanceBuilderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
