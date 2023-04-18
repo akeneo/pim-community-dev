@@ -3,4 +3,4 @@ services:
         arguments:
             - '@Akeneo\Category\Application\Storage\UpdateCategoryEnrichedValues'
 
-    Akeneo\Category\Application\Enrichment\DeactivatedTemplateAttributesInValueCollectionCleaner: ~
+    Akeneo\Category\Application\Enrichment\Filter\DeactivatedTemplateAttributesInValueCollectionFilter: ~

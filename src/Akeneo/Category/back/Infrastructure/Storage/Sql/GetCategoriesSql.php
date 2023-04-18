@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Enrichment\DeactivatedTemplateAttributesInValueCollectionCleaner;
+use Akeneo\Category\Application\Enrichment\Filter\DeactivatedTemplateAttributesInValueCollectionFilter;
 use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes;
@@ -20,7 +20,7 @@ final class GetCategoriesSql implements GetCategoriesInterface
     public function __construct(
         private readonly Connection $connection,
         private readonly GetDeactivatedTemplateAttributes $getDeactivatedTemplateAttributes,
-        private readonly DeactivatedTemplateAttributesInValueCollectionCleaner $deactivatedAttributesInValueCollectionCleaner,
+        private readonly DeactivatedTemplateAttributesInValueCollectionFilter $deactivatedAttributesInValueCollectionFilter,
     ) {
     }
 
@@ -106,7 +106,7 @@ final class GetCategoriesSql implements GetCategoriesInterface
         $retrievedCategories = [];
 
         foreach ($results as $rawCategory) {
-            $filteredRawCategory = ($this->deactivatedAttributesInValueCollectionCleaner)($deactivatedAttributes, $rawCategory);
+            $filteredRawCategory = ($this->deactivatedAttributesInValueCollectionFilter)($deactivatedAttributes, $rawCategory);
             $retrievedCategories[] = ExternalApiCategory::fromDatabase($filteredRawCategory);
         }
 
