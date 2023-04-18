@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Get;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\IdentifierGenerator;
-use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReadModelIdentifierGeneratorRepository;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -16,7 +16,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGenera
 final class GetGeneratorHandler
 {
     public function __construct(
-        private readonly IdentifierGeneratorRepository $identifierGeneratorRepository,
+        private readonly ReadModelIdentifierGeneratorRepository $identifierGeneratorRepository,
     ) {
     }
 

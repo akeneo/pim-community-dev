@@ -4,6 +4,11 @@ services:
     arguments:
       - '@database_connection'
 
+  Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReadModelIdentifierGeneratorRepository:
+    class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Repository\SqlReadModelIdentifierGeneratorRepository'
+    arguments:
+      - '@database_connection'
+
   Akeneo\Pim\Automation\IdentifierGenerator\Domain\Query\GetNextIdentifierQuery:
     class: 'Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlGetSequencedNextIdentifierQuery'
     arguments:

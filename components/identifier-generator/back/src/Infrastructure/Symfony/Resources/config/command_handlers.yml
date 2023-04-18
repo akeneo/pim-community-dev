@@ -11,7 +11,7 @@ services:
 
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler:
     arguments:
-      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository'
+      - '@Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReadModelIdentifierGeneratorRepository'
 
   Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorsHandler:
     arguments:
