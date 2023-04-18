@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Channel\Bundle\Processor\Denormalization;
+namespace Specification\Akeneo\Channel\Infrastructure\Processor\Denormalization;
 
-use Akeneo\Channel\Bundle\Processor\Denormalization\ChannelProcessor;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Updater\ChannelUpdater;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Updater\ChannelUpdater;
+use Akeneo\Channel\Infrastructure\Processor\Denormalization\ChannelProcessor;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;

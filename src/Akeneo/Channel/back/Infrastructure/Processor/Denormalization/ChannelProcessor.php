@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Channel\Bundle\Processor\Denormalization;
+namespace Akeneo\Channel\Infrastructure\Processor\Denormalization;
 
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;

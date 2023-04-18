@@ -2,8 +2,10 @@
 
 namespace Specification\Akeneo\Channel\Infrastructure\EventListener;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\EventListener\ChannelLocaleSubscriber;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -11,10 +13,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Infrastructure\EventListener\ChannelLocaleSubscriber;
-use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
-use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
-use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
