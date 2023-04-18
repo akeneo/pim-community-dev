@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.81 (2023-04-18)
+
 ## Bug fixes
 
 - [Backport PIM-10887] PIM-10937: Prevent channel creation on validation error during import
