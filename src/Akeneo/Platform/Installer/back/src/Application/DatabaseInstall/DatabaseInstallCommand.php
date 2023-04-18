@@ -13,6 +13,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DatabaseInstallCommand
 {
+    /**
+     * @param SymfonyStyle $io
+     * @param string[] $options
+     */
     public function __construct(
         private readonly SymfonyStyle $io,
         private readonly array $options,

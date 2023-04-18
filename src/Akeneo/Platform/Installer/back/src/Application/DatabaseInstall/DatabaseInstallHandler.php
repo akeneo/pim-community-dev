@@ -18,6 +18,7 @@ use Akeneo\Platform\Installer\Domain\Query\Sql\InsertDatabaseInstallationDateInt
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -66,6 +67,7 @@ final class DatabaseInstallHandler
 
         try {
             $io->info(sprintf('RUN: %s', $this->doctrineSchemaUpdate->getName()));
+            /** @var BufferedOutput $output */
             $output = $this->doctrineSchemaUpdate->execute(['--force' => true, '--no-interaction' => true], true);
             $io->block($output->fetch());
             $io->success(sprintf('%s success', $this->doctrineSchemaUpdate->getName()));
@@ -95,19 +97,23 @@ final class DatabaseInstallHandler
     {
         try {
             $io->info(sprintf('RUN: %s', $this->doctrineMigrationsLatest->getName()));
-            $latestMigration = $this->doctrineMigrationsLatest->execute([
+            /** @var BufferedOutput $output */
+            $output = $this->doctrineMigrationsLatest->execute([
                 '--no-debug' => true,
                 '--env' => $env
-            ], true)->fetch();
+            ], true);
+            $latestMigration = $output->fetch();
             $io->block($latestMigration);
             $io->success(sprintf('%s success', $this->doctrineMigrationsLatest->getName()));
 
             $io->info(sprintf('RUN: %s', $this->doctrineMigrationsSyncMetadataStorage->getName()));
+            /** @var BufferedOutput $output */
             $output = $this->doctrineMigrationsSyncMetadataStorage->execute(['-q' => true], true);
             $io->block($output->fetch());
             $io->success(sprintf('%s success', $this->doctrineMigrationsSyncMetadataStorage->getName()));
 
             $io->info(sprintf('RUN: %s', $this->doctrineMigrationsVersion->getName()));
+            /** @var BufferedOutput $output */
             $output = $this->doctrineMigrationsVersion->execute([
                 'version' => $latestMigration,
                 '--add' => true,

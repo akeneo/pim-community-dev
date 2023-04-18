@@ -17,6 +17,7 @@ use Akeneo\Platform\Installer\Domain\Query\Sql\RemoveJobInstanceInterface;
 use Akeneo\Platform\Installer\Domain\Query\Yaml\ReadJobDefinitionInterface;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -24,6 +25,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class FixturesLoadHandler
 {
+    /**
+     * @param AkeneoBatchJobInterface $akeneoBatchJob
+     * @param BulkSaverInterface $jobInstanceSaver
+     * @param ReadJobDefinitionInterface $readJobDefinition
+     * @param RemoveJobInstanceInterface $removeJobInstance
+     * @param ItemProcessorInterface $jobProcessor
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string[] $bundles
+     * @param string[] $jobsFilePaths
+     */
     public function __construct(
         private readonly AkeneoBatchJobInterface $akeneoBatchJob,
         private readonly BulkSaverInterface $jobInstanceSaver,
@@ -62,6 +73,12 @@ final class FixturesLoadHandler
         );
     }
 
+    /**
+     * @params SymfonyStyle $io
+     * @params string[] $options
+     *
+     * @return JobInstance[]
+     */
     private function createJobInstances(SymfonyStyle $io, array $options): array
     {
         $io->info(sprintf('Load jobs for fixtures. (data set: %s)', $options['catalog']));
