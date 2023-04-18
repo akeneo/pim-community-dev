@@ -291,10 +291,6 @@ class AttributeGroupController
             return new JsonResponse(status: Response::HTTP_UNAUTHORIZED);
         }
 
-        if (!$this->securityFacade->isGranted('pim_enrich_attributegroup_mass_delete')) {
-            return new JsonResponse(status: Response::HTTP_FORBIDDEN);
-        }
-
         $attributeGroupCodes = [$identifier];
         $replacementAttributeGroupCode = $request->get('replacement_attribute_group_code', AttributeGroupInterface::DEFAULT_CODE);
 
