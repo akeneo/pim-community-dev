@@ -54,6 +54,7 @@
 - PIM-10887: Prevent channel creation on validation error during import
 - PIM-10929: Add limit on get product history
 - PIM-10940 : Add command to remove orphan categories
+- PIM-10936: Fix an issue where completeness could not be saved after migrating to UUIDs
 
 ## Improvements
 
