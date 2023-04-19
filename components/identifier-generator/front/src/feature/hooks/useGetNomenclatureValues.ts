@@ -15,6 +15,7 @@ import {
 import {useNomenclatureDisplay} from './useNomenclatureDisplay';
 import {useGetSelectOptions} from './useGetSelectOptions';
 import {useGetFamilies} from './useGetFamilies';
+import {useGetReferenceEntitiesRecord} from './useGetReferenceEntitiesRecord';
 
 type HookResult = {
   data: NomenclatureLineEditProps[];
@@ -43,7 +44,9 @@ const useGetNomenclatureValues = (
   const [hasValueInvalid, setHasValueInvalid] = useState<boolean>(false);
   const typeSelectedProperty = selectedProperty.type;
   const attributeCode =
-    selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT ? selectedProperty.attributeCode : undefined;
+    selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT || selectedProperty.type === PROPERTY_NAMES.REF_ENTITY
+      ? selectedProperty.attributeCode
+      : undefined;
 
   const {data: families = []} = useGetFamilies({
     limit: -1,
@@ -54,6 +57,14 @@ const useGetNomenclatureValues = (
     attributeCode,
     enabled: typeSelectedProperty === PROPERTY_NAMES.SIMPLE_SELECT,
     limit: -1,
+  });
+
+  const {data: records} = useGetReferenceEntitiesRecord({
+    attributeCode,
+    limit: itemsPerPage,
+    enabled: typeSelectedProperty === PROPERTY_NAMES.REF_ENTITY,
+    page,
+    search,
   });
 
   const getValueBeforeUserUpdate = useCallback(
@@ -129,11 +140,17 @@ const useGetNomenclatureValues = (
   );
 
   const items = useMemo(() => {
-    return selectedProperty.type === PROPERTY_NAMES.FAMILY ? families : options;
-  }, [selectedProperty, families, options]);
+    if (selectedProperty.type === PROPERTY_NAMES.FAMILY) {
+      return families;
+    } else if (selectedProperty.type === PROPERTY_NAMES.REF_ENTITY) {
+      return records?.items ?? [];
+    } else {
+      return options;
+    }
+  }, [selectedProperty, families, options, records]);
 
   const data = useMemo(() => {
-    if (items.length === 0) return [];
+    if (items.length === 0 && !records?.total_count) return [];
 
     let filteredButNotDisplayedDataCount = 0;
     let filteredValuesCount = 0;
@@ -156,10 +173,16 @@ const useGetNomenclatureValues = (
       hasNomenclatureValueInvalid =
         hasNomenclatureValueInvalid || !isValid(getValueAfterUserUpdateOrPlaceholder(item.code));
 
-      if (entityMatchSearch(item) && matchFilter(item.code)) addFilteredData(item);
+      if (typeSelectedProperty === PROPERTY_NAMES.REF_ENTITY) {
+        filteredData.push(getLineValue(item));
+      } else if (entityMatchSearch(item) && matchFilter(item.code)) {
+        addFilteredData(item);
+      }
     }
 
-    setFilteredValuesCount(filteredValuesCount);
+    setFilteredValuesCount(
+      typeSelectedProperty === PROPERTY_NAMES.REF_ENTITY ? records?.matches_count ?? 0 : filteredValuesCount
+    );
     setHasValueInvalid(hasNomenclatureValueInvalid);
 
     return filteredData;
@@ -172,6 +195,8 @@ const useGetNomenclatureValues = (
     getValueAfterUserUpdateOrPlaceholder,
     entityMatchSearch,
     matchFilter,
+    typeSelectedProperty,
+    records,
   ]);
 
   const innerSetSearch = (search: string) => {
@@ -186,7 +211,7 @@ const useGetNomenclatureValues = (
     search,
     setSearch: innerSetSearch,
     filteredValuesCount,
-    totalValuesCount: items.length,
+    totalValuesCount: selectedProperty.type === PROPERTY_NAMES.REF_ENTITY ? records?.total_count ?? 0 : items.length,
     hasValueInvalid,
   };
 };
