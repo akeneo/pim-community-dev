@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Enrichment\DeactivatedTemplateAttributesInValueCollectionCleaner;
+use Akeneo\Category\Application\Enrichment\Filter\DeactivatedTemplateAttributesInValueCollectionFilter;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
@@ -20,7 +20,7 @@ class GetCategorySql implements GetCategoryInterface
     public function __construct(
         private readonly Connection $connection,
         private readonly GetDeactivatedTemplateAttributes $getDeactivatedTemplateAttributes,
-        private readonly DeactivatedTemplateAttributesInValueCollectionCleaner $deactivatedAttributesInValueCollectionCleaner,
+        private readonly DeactivatedTemplateAttributesInValueCollectionFilter $deactivatedAttributesInValueCollectionFilter,
     ) {
     }
 
@@ -130,7 +130,7 @@ class GetCategorySql implements GetCategoryInterface
         }
 
         $deactivatedAttributes = $this->getDeactivatedTemplateAttributes->execute();
-        $filteredCategory = ($this->deactivatedAttributesInValueCollectionCleaner)($deactivatedAttributes, $result);
+        $filteredCategory = ($this->deactivatedAttributesInValueCollectionFilter)($deactivatedAttributes, $result);
 
         return Category::fromDatabase($filteredCategory);
     }
@@ -151,7 +151,7 @@ class GetCategorySql implements GetCategoryInterface
         $deactivatedAttributes = $this->getDeactivatedTemplateAttributes->execute();
 
         while (($result = $stmt->fetchAssociative()) !== false) {
-            $filteredCategory = ($this->deactivatedAttributesInValueCollectionCleaner)($deactivatedAttributes, $result);
+            $filteredCategory = ($this->deactivatedAttributesInValueCollectionFilter)($deactivatedAttributes, $result);
             yield Category::fromDatabase($filteredCategory);
         }
     }
