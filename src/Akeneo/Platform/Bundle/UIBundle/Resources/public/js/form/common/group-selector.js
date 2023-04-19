@@ -125,7 +125,7 @@ define([
           this.getRoot().trigger('group:change');
         }
 
-        analytics.track('product-grid:attribute-group:selected', {
+        analytics.appcuesTrack('product-grid:attribute-group:selected', {
           code: current,
         });
 

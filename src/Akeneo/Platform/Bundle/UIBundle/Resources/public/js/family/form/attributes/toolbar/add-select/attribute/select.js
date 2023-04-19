@@ -59,7 +59,7 @@ define(['jquery', 'underscore', 'pim/product/add-select/attribute', 'pim/fetcher
     addItems: function () {
       this.getRoot().trigger(this.addEvent, {codes: this.selection});
 
-      analytics.track('family-grid:mass-edit:attributes-added', {
+      analytics.appcuesTrack('family-grid:mass-edit:attributes-added', {
         codes: this.selection,
       });
     },
