@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor;
 
-use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineSchemaUpdateInterface;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineSchemaUpdateInterface;
 
 final class DoctrineSchemaUpdate extends AbstractCommandExecutor implements DoctrineSchemaUpdateInterface
 {

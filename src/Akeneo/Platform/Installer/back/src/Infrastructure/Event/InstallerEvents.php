@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Event;
 
+// TODO move to domain
 /**
  * Events dispached during installation process.
  */

@@ -18,6 +18,7 @@ final class FixturePathResolver
     {
         $installerDataDir = null;
 
+        // TODO this do not occurs to remove
         if (preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $catalogPath, $matches)) {
             $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
             $installerDataDir = dirname($reflection->getFilename()).'/Resources/fixtures/'.$matches['directory'];

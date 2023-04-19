@@ -18,6 +18,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Reader\File\Yaml\Reader;
 use Symfony\Component\Config\FileLocator;
 
+//TODO GetJobDefinition instead
 final class ReadJobDefinition implements ReadJobDefinitionInterface
 {
     public function __construct(
@@ -33,6 +34,7 @@ final class ReadJobDefinition implements ReadJobDefinitionInterface
      */
     public function read(string $jobsFilePath): array
     {
+        //TODO sort job here
         $rawJobs = [];
 
         $realPath = $this->fileLocator->locate('@'.$jobsFilePath);

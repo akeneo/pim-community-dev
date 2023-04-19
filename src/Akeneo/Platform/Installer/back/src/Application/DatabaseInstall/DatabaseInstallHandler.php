@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Application\DatabaseInstall;
 
-use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineMigrationsLatestInterface;
-use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineMigrationsSyncMetadataStorageInterface;
-use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineMigrationsVersionInterface;
-use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineSchemaUpdateInterface;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsLatestInterface;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsSyncMetadataStorageInterface;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsVersionInterface;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineSchemaUpdateInterface;
 use Akeneo\Platform\Installer\Domain\Query\Elasticsearch\ResetIndexesInterface;
 use Akeneo\Platform\Installer\Domain\Query\Sql\InsertDatabaseInstallationDateInterface;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
@@ -25,6 +25,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 final class DatabaseInstallHandler
 {
     public function __construct(
+        /** TODO replace interface with CreateTable */
         private readonly DoctrineSchemaUpdateInterface $doctrineSchemaUpdate,
         private readonly DoctrineMigrationsVersionInterface $doctrineMigrationsVersion,
         private readonly DoctrineMigrationsSyncMetadataStorageInterface $doctrineMigrationsSyncMetadataStorage,
@@ -80,6 +81,7 @@ final class DatabaseInstallHandler
 
     private function setLatestKnownMigration(SymfonyStyle $io, string $env): void
     {
+        // TODO Abtract in an infra layer "Migration has been"
         $io->info(sprintf('RUN: %s', $this->doctrineMigrationsLatest->getName()));
         /** @var BufferedOutput $output */
         $output = $this->doctrineMigrationsLatest->execute([

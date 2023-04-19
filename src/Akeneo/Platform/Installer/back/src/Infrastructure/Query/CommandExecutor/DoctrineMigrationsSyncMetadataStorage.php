@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor;
 
-use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineMigrationsSyncMetadataStorageInterface;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsSyncMetadataStorageInterface;
 
 final class DoctrineMigrationsSyncMetadataStorage extends AbstractCommandExecutor implements DoctrineMigrationsSyncMetadataStorageInterface
 {

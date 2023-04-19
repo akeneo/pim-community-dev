@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor;
 
-use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineMigrationsVersionInterface;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsVersionInterface;
 
 final class DoctrineMigrationsVersion extends AbstractCommandExecutor implements DoctrineMigrationsVersionInterface
 {

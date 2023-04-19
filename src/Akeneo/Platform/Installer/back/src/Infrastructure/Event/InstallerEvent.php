@@ -9,9 +9,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Event;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\Event;
 
-final class InstallerEvent extends GenericEvent
+// TODO Move to domain
+final class InstallerEvent extends Event
 {
     /**
      * @param string[] $arguments

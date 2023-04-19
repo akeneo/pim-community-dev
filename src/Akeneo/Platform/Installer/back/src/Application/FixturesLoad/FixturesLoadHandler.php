@@ -10,10 +10,10 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Installer\Application\FixturesLoad;
 
 use _PHPStan_0f7d3d695\Symfony\Component\Console\Output\BufferedOutput;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\AkeneoBatchJobInterface;
 use Akeneo\Platform\Installer\Domain\FixtureLoad\FixturePathResolver;
 use Akeneo\Platform\Installer\Domain\FixtureLoad\JobInstanceConfigurator;
 use Akeneo\Platform\Installer\Domain\FixtureLoad\JobOrderer;
-use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\AkeneoBatchJobInterface;
 use Akeneo\Platform\Installer\Domain\Query\Sql\RemoveJobInstanceInterface;
 use Akeneo\Platform\Installer\Domain\Query\Yaml\ReadJobDefinitionInterface;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
@@ -56,6 +56,7 @@ final class FixturesLoadHandler
             InstallerEvents::PRE_LOAD_FIXTURES,
         );
 
+        // TODO check public api to create job instance
         $jobInstances = $this->createJobInstances($io, $command->getOptions());
 
         $this->loadFixtures($jobInstances, $io, $command->getOptions());
@@ -129,7 +130,7 @@ final class FixturesLoadHandler
             /** @var BufferedOutput $output */
             $output = $this->akeneoBatchJob->execute($params, true);
             $io->success($output->fetch());
-
+            //TODO listen in Job context for job deletion
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($jobInstance->getCode(), [
                     'job_name' => $jobInstance->getJobName(),

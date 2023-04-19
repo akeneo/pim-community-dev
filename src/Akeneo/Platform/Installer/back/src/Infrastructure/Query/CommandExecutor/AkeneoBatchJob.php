@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor;
 
-use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\AkeneoBatchJobInterface;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\AkeneoBatchJobInterface;
 
 final class AkeneoBatchJob extends AbstractCommandExecutor implements AkeneoBatchJobInterface
 {
