@@ -36,7 +36,7 @@ export const AttributeSettings = ({attribute, catalogLocales}: Props) => {
       </StyledSectionTitle>
       <div>
         {['textarea', 'richtext'].indexOf(attribute.type) != -1 && (
-          <OptionField checked={attribute.type === 'richtext'}>
+          <OptionField checked={attribute.type === 'richtext'} readOnly={true}>
             {translate('akeneo.category.template.attribute.settings.options.rich_text')}
           </OptionField>
         )}
