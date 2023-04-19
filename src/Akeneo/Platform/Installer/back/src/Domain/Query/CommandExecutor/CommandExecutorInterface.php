@@ -15,6 +15,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 interface CommandExecutorInterface
 {
     public function getName(): string;
+
+    /**
+     * @param mixed[]|null $options
+     */
     public function execute(?array $options, bool $withOutput = false): null|OutputInterface;
 
     public function getApplication(): Application;

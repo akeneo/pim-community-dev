@@ -23,21 +23,20 @@ final class DatabaseInstallerCommand extends Command
 {
     public static $defaultName = 'pim:installer:db';
 
-    const LOAD_ALL = 'all';
-    const LOAD_BASE = 'base';
+    public const LOAD_ALL = 'all';
+    public const LOAD_BASE = 'base';
 
     public function __construct(
         private readonly DatabaseInstallHandler $databaseInstallHandler,
-        private readonly FixturesLoadHandler $fixturesLoadHandler
-    )
-    {
+        private readonly FixturesLoadHandler $fixturesLoadHandler,
+    ) {
         parent::__construct(self::$defaultName);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption(
@@ -45,28 +44,28 @@ final class DatabaseInstallerCommand extends Command
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Determines fixtures to load (can be just OroPlatform or all)',
-                self::LOAD_ALL
+                self::LOAD_ALL,
             )
             ->addOption(
                 'withoutIndexes',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Should the command setup the elastic search indexes',
-                false
+                false,
             )
             ->addOption(
                 'withoutFixtures',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Should the command install any fixtures',
-                false
+                false,
             )
             ->addOption(
                 'catalog',
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Directory of the fixtures to install',
-                'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal'
+                'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal',
             )
         ;
     }
@@ -78,7 +77,7 @@ final class DatabaseInstallerCommand extends Command
         try {
             $this->databaseInstallHandler->handle(new DatabaseInstallCommand(
                 $io,
-                $input->getOptions()
+                $input->getOptions(),
             ));
 
             if ($input->getOption('withoutFixtures')) {
@@ -90,6 +89,7 @@ final class DatabaseInstallerCommand extends Command
             return Command::SUCCESS;
         } catch (\Exception $e) {
             $io->error($e->getMessage());
+
             return Command::FAILURE;
         }
     }

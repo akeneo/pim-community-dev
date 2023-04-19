@@ -11,17 +11,16 @@ namespace Akeneo\Platform\Installer\Domain\FixtureLoad;
 
 final class JobOrderer
 {
-    public static function order(array $jobs)
+    /**
+     * @param mixed[] $jobs
+     *
+     * @return mixed[]
+     */
+    public static function order(array $jobs): array
     {
         usort(
             $jobs,
-            function ($item1, $item2) {
-                if ($item1['order'] === $item2['order']) {
-                    return 0;
-                }
-
-                return ($item1['order'] < $item2['order']) ? -1 : 1;
-            }
+            fn ($item1, $item2) => $item1['order'] <=> $item2['order'],
         );
 
         return $jobs;

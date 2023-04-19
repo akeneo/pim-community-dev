@@ -9,9 +9,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Domain\FixtureLoad;
 
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+
 final class JobInstanceConfigurator
 {
-    public static function configure(string $installerDataPath, array $jobInstances)
+    /**
+     * @param JobInstance[] $jobInstances
+     *
+     * @return JobInstance[]
+     *
+     * @throws \Exception
+     */
+    public static function configure(string $installerDataPath, array $jobInstances): array
     {
         if (!is_dir($installerDataPath)) {
             throw new \Exception(sprintf('Path "%s" not found', $installerDataPath));
@@ -23,13 +32,7 @@ final class JobInstanceConfigurator
 
             $configuration['storage']['file_path'] = sprintf('%s%s', $installerDataPath, $configuration['storage']['file_path']);
             if (!is_readable($configuration['storage']['file_path'])) {
-                throw new \Exception(
-                    sprintf(
-                        'The job "%s" can\'t be processed because the file "%s" is not readable',
-                        $jobInstance->getCode(),
-                        $configuration['storage']['file_path']
-                    )
-                );
+                throw new \Exception(sprintf('The job "%s" can\'t be processed because the file "%s" is not readable', $jobInstance->getCode(), $configuration['storage']['file_path']));
             }
             $jobInstance->setRawParameters($configuration);
             $configuredJobInstances[] = $jobInstance;

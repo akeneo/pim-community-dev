@@ -11,5 +11,8 @@ namespace Akeneo\Platform\Installer\Domain\Query\Yaml;
 
 interface ReadJobDefinitionInterface
 {
+    /**
+     * @return mixed[]
+     */
     public function read(string $jobsFilePath): array;
 }

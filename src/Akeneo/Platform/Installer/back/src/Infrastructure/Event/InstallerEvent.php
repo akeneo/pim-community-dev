@@ -9,14 +9,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Event;
 
-use Akeneo\Tool\Component\Console\CommandExecutor;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class InstallerEvent extends GenericEvent
 {
+    /**
+     * @param string[] $arguments
+     */
     public function __construct(
         ?string $subject = null,
-        array $arguments = []
+        array $arguments = [],
     ) {
         parent::__construct($subject, $arguments);
     }

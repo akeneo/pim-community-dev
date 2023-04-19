@@ -15,8 +15,10 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 final class ResetIndexes implements ResetIndexesInterface
 {
     public function __construct(
-        private ClientRegistry $clientRegistry
-    ) {}
+        private readonly ClientRegistry $clientRegistry,
+    ) {
+    }
+
     public function reset(): void
     {
         $clients = $this->clientRegistry->getClients();

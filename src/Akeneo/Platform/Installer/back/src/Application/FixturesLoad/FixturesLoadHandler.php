@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Application\FixturesLoad;
 
+use _PHPStan_0f7d3d695\Symfony\Component\Console\Output\BufferedOutput;
 use Akeneo\Platform\Installer\Domain\FixtureLoad\FixturePathResolver;
 use Akeneo\Platform\Installer\Domain\FixtureLoad\JobInstanceConfigurator;
 use Akeneo\Platform\Installer\Domain\FixtureLoad\JobOrderer;
@@ -17,8 +18,9 @@ use Akeneo\Platform\Installer\Domain\Query\Sql\RemoveJobInstanceInterface;
 use Akeneo\Platform\Installer\Domain\Query\Yaml\ReadJobDefinitionInterface;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
 use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
-use Akeneo\Platform\Job\ServiceApi\JobInstance\JobInstance;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -26,12 +28,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 final class FixturesLoadHandler
 {
     /**
-     * @param AkeneoBatchJobInterface $akeneoBatchJob
-     * @param BulkSaverInterface $jobInstanceSaver
-     * @param ReadJobDefinitionInterface $readJobDefinition
-     * @param RemoveJobInstanceInterface $removeJobInstance
-     * @param ItemProcessorInterface $jobProcessor
-     * @param EventDispatcherInterface $eventDispatcher
      * @param string[] $bundles
      * @param string[] $jobsFilePaths
      */
@@ -44,7 +40,8 @@ final class FixturesLoadHandler
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly array $bundles,
         private readonly array $jobsFilePaths,
-    ) {}
+    ) {
+    }
 
     public function handle(FixtureLoadCommand $command): void
     {
@@ -56,7 +53,7 @@ final class FixturesLoadHandler
             new InstallerEvent(null, [
                 'catalog' => $command->getOption('catalog'),
             ]),
-            InstallerEvents::PRE_LOAD_FIXTURES
+            InstallerEvents::PRE_LOAD_FIXTURES,
         );
 
         $jobInstances = $this->createJobInstances($io, $command->getOptions());
@@ -66,18 +63,19 @@ final class FixturesLoadHandler
         $this->cleanJobInstances($io);
 
         $this->eventDispatcher->dispatch(
-            new InstallerEvent( null, [
+            new InstallerEvent(null, [
                 'catalog' => $command->getOption('catalog'),
             ]),
-            InstallerEvents::POST_LOAD_FIXTURES
+            InstallerEvents::POST_LOAD_FIXTURES,
         );
     }
 
     /**
-     * @params SymfonyStyle $io
-     * @params string[] $options
+     * @param string[] $options
      *
      * @return JobInstance[]
+     *
+     * @throws InvalidItemException
      */
     private function createJobInstances(SymfonyStyle $io, array $options): array
     {
@@ -103,6 +101,10 @@ final class FixturesLoadHandler
         return $configuredJobInstances;
     }
 
+    /**
+     * @param JobInstance[] $configuredJobInstances
+     * @param string[] $options
+     */
     private function loadFixtures(array $configuredJobInstances, SymfonyStyle $io, array $options): void
     {
         foreach ($configuredJobInstances as $jobInstance) {
@@ -117,13 +119,14 @@ final class FixturesLoadHandler
                 new InstallerEvent($jobInstance->getCode(), [
                     'catalog' => $options['catalog'],
                 ]),
-                InstallerEvents::PRE_LOAD_FIXTURE
+                InstallerEvents::PRE_LOAD_FIXTURE,
             );
 
             $io->info(
-                sprintf('Please wait, the "%s" are processing...', $jobInstance->getCode())
+                sprintf('Please wait, the "%s" are processing...', $jobInstance->getCode()),
             );
 
+            /** @var BufferedOutput $output */
             $output = $this->akeneoBatchJob->execute($params, true);
             $io->success($output->fetch());
 
@@ -132,7 +135,7 @@ final class FixturesLoadHandler
                     'job_name' => $jobInstance->getJobName(),
                     'catalog' => $options['catalog'],
                 ]),
-                InstallerEvents::POST_LOAD_FIXTURE
+                InstallerEvents::POST_LOAD_FIXTURE,
             );
         }
     }

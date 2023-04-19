@@ -13,7 +13,7 @@ use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineMigrationsLat
 
 final class DoctrineMigrationsLatest extends AbstractCommandExecutor implements DoctrineMigrationsLatestInterface
 {
-    function getName(): string
+    public function getName(): string
     {
         return 'doctrine:migrations:latest';
     }

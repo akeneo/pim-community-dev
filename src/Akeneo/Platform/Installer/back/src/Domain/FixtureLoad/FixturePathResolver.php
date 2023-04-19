@@ -11,13 +11,16 @@ namespace Akeneo\Platform\Installer\Domain\FixtureLoad;
 
 final class FixturePathResolver
 {
+    /**
+     * @param string[] $bundles
+     */
     public static function resolve(string $catalogPath, array $bundles): string
     {
         $installerDataDir = null;
 
         if (preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $catalogPath, $matches)) {
             $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
-            $installerDataDir = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
+            $installerDataDir = dirname($reflection->getFilename()).'/Resources/fixtures/'.$matches['directory'];
         } else {
             $installerDataDir = $catalogPath;
         }

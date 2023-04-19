@@ -19,15 +19,20 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractCommandExecutor implements CommandExecutorInterface
 {
-    abstract function getName(): string;
-    public function __construct(
-        private readonly KernelInterface $kernel
-    ) {}
+    abstract public function getName(): string;
 
+    public function __construct(
+        private readonly KernelInterface $kernel,
+    ) {
+    }
+
+    /**
+     * @param string[] $options
+     */
     public function execute(?array $options, bool $withOutput = false): null|OutputInterface
     {
         $command = [
-            'command' => $this->getName()
+            'command' => $this->getName(),
         ];
 
         if ($options) {
@@ -45,6 +50,7 @@ abstract class AbstractCommandExecutor implements CommandExecutorInterface
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
+
         return $application;
     }
 }

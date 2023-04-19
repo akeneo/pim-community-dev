@@ -20,7 +20,7 @@ use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class DatabaseInstallHandler
 {
@@ -32,8 +32,9 @@ final class DatabaseInstallHandler
         private readonly InsertDatabaseInstallationDateInterface $databaseInstallationDate,
         private readonly ResetIndexesInterface $resetIndexes,
         private readonly EntityManagerInterface $entityManager,
-        private readonly EventDispatcher $eventDispatcher
-    ) {}
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {
+    }
 
     public function handle(DatabaseInstallCommand $command): void
     {
@@ -41,7 +42,7 @@ final class DatabaseInstallHandler
 
         $this->prepareDatabase($io);
 
-        if (false === $command->getOptions()['withoutIndexes']) {
+        if (false === $command->getOption('withoutIndexes')) {
             $this->resetIndexes($io);
         }
 
@@ -49,10 +50,10 @@ final class DatabaseInstallHandler
 
         $this->eventDispatcher->dispatch(
             new InstallerEvent(),
-            InstallerEvents::POST_DB_CREATE
+            InstallerEvents::POST_DB_CREATE,
         );
 
-        $this->setLatestKnownMigration($io, $command->getOptions()['env']);
+        $this->setLatestKnownMigration($io, $command->getOption('env'));
 
         $io->info('Set database installation date');
         $this->databaseInstallationDate->withDateTime(new \DateTimeImmutable());
@@ -83,7 +84,7 @@ final class DatabaseInstallHandler
         /** @var BufferedOutput $output */
         $output = $this->doctrineMigrationsLatest->execute([
             '--no-debug' => true,
-            '--env' => $env
+            '--env' => $env,
         ], true);
         $latestMigration = $output->fetch();
         $io->block($latestMigration);
@@ -101,7 +102,7 @@ final class DatabaseInstallHandler
             'version' => $latestMigration,
             '--add' => true,
             '--all' => true,
-            '-q' => true
+            '-q' => true,
         ], true);
         $io->block($output->fetch());
         $io->success(sprintf('%s success', $this->doctrineMigrationsVersion->getName()));

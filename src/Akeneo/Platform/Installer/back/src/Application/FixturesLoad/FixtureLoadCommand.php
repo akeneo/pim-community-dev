@@ -14,20 +14,22 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class FixtureLoadCommand
 {
     /**
-     * @param SymfonyStyle $io
      * @param string[] $options
      */
     public function __construct(
         private readonly SymfonyStyle $io,
         private readonly array $options,
-    )
-    {}
+    ) {
+    }
 
     public function getIo(): SymfonyStyle
     {
         return $this->io;
     }
 
+    /**
+     * @return string[]
+     */
     public function getOptions(): array
     {
         return $this->options;

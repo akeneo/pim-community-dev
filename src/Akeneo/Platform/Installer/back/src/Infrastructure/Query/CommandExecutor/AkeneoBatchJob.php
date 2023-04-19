@@ -13,7 +13,7 @@ use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\AkeneoBatchJobInterfa
 
 final class AkeneoBatchJob extends AbstractCommandExecutor implements AkeneoBatchJobInterface
 {
-    function getName(): string
+    public function getName(): string
     {
         return 'akeneo:batch:job';
     }

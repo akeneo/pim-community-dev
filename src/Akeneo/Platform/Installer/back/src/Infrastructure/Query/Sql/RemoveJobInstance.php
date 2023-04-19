@@ -15,8 +15,10 @@ use Doctrine\DBAL\Connection;
 final class RemoveJobInstance implements RemoveJobInstanceInterface
 {
     public function __construct(
-        private readonly Connection $connection
-    ) {}
+        private readonly Connection $connection,
+    ) {
+    }
+
     public function remove(): void
     {
         $sql = <<<SQL

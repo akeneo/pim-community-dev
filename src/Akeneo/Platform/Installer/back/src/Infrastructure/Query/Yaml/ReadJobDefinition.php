@@ -11,6 +11,7 @@ namespace Akeneo\Platform\Installer\Infrastructure\Query\Yaml;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Installer\Domain\Query\Yaml\ReadJobDefinitionInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -22,12 +23,19 @@ final class ReadJobDefinition implements ReadJobDefinitionInterface
     public function __construct(
         private readonly FileLocator $fileLocator,
         private readonly Reader $yamlReader,
-    ) {}
+    ) {
+    }
+
+    /**
+     * @return mixed[]
+     *
+     * @throws InvalidItemException
+     */
     public function read(string $jobsFilePath): array
     {
         $rawJobs = [];
 
-        $realPath = $this->fileLocator->locate('@' . $jobsFilePath);
+        $realPath = $this->fileLocator->locate('@'.$jobsFilePath);
         $jobExecution = new JobExecution();
         $jobParameters = new JobParameters(['storage' => ['type' => LocalStorage::TYPE, 'file_path' => $realPath]]);
         $jobExecution->setJobParameters($jobParameters);

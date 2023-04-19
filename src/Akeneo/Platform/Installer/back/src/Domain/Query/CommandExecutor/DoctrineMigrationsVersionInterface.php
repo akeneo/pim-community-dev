@@ -11,5 +11,4 @@ namespace Akeneo\Platform\Installer\Domain\Query\CommandExecutor;
 
 interface DoctrineMigrationsVersionInterface extends CommandExecutorInterface
 {
-
 }

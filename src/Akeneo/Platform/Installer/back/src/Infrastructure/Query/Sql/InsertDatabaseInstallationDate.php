@@ -15,8 +15,9 @@ use Doctrine\DBAL\Connection;
 final class InsertDatabaseInstallationDate implements InsertDatabaseInstallationDateInterface
 {
     public function __construct(
-        private readonly Connection $connection
-    ) {}
+        private readonly Connection $connection,
+    ) {
+    }
 
     public function withDateTime(\DateTimeImmutable $installDatetime): void
     {
@@ -28,10 +29,9 @@ final class InsertDatabaseInstallationDate implements InsertDatabaseInstallation
             INSERT INTO pim_configuration (`code`, `values`) VALUES (?, ?);
         SQL;
 
-
         $this->connection->executeStatement(
             $sql,
-            ['install_data', \json_encode($installData)]
+            ['install_data', \json_encode($installData, JSON_THROW_ON_ERROR)],
         );
     }
 }

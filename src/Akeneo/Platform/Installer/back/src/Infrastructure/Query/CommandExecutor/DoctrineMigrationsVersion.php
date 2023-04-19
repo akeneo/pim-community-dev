@@ -10,10 +10,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor;
 
 use Akeneo\Platform\Installer\Domain\Query\CommandExecutor\DoctrineMigrationsVersionInterface;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 final class DoctrineMigrationsVersion extends AbstractCommandExecutor implements DoctrineMigrationsVersionInterface
 {
