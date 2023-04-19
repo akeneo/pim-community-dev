@@ -56,27 +56,23 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
             <Button onClick={nextStep}>{translate('pim_common.next')}</Button>
           </Modal.TopRightButtons>
           <Modal.SectionTitle color="brand">{translate('pim_system.system_navigation')}</Modal.SectionTitle>
-          <Modal.Title>{translate('pim_system.reset_pim.modal.steps.summary.title')}</Modal.Title>
+          <Modal.Title>{translate('pim_system.reset_pim.modal.summary.title')}</Modal.Title>
           <Section>
-            {translate('pim_system.reset_pim.modal.steps.summary.text')}
+            {translate('pim_system.reset_pim.modal.summary.text')}
             <Tiles inline={true}>
               <Tile selected={true}>
-                {translate('pim_system.reset_pim.modal.steps.summary.users.name')}
+                {translate('pim_system.reset_pim.modal.summary.users.name')}
+                <Tooltip direction="bottom">{translate('pim_system.reset_pim.modal.summary.users.tooltip')}</Tooltip>
+              </Tile>
+              <Tile selected={true}>
+                {translate('pim_system.reset_pim.modal.summary.user_groups.name')}
                 <Tooltip direction="bottom">
-                  {translate('pim_system.reset_pim.modal.steps.summary.users.tooltip')}
+                  {translate('pim_system.reset_pim.modal.summary.user_groups.tooltip')}
                 </Tooltip>
               </Tile>
               <Tile selected={true}>
-                {translate('pim_system.reset_pim.modal.steps.summary.user_groups.name')}
-                <Tooltip direction="bottom">
-                  {translate('pim_system.reset_pim.modal.steps.summary.user_groups.tooltip')}
-                </Tooltip>
-              </Tile>
-              <Tile selected={true}>
-                {translate('pim_system.reset_pim.modal.steps.summary.roles.name')}
-                <Tooltip direction="bottom">
-                  {translate('pim_system.reset_pim.modal.steps.summary.roles.tooltip')}
-                </Tooltip>
+                {translate('pim_system.reset_pim.modal.summary.roles.name')}
+                <Tooltip direction="bottom">{translate('pim_system.reset_pim.modal.summary.roles.tooltip')}</Tooltip>
               </Tile>
             </Tiles>
           </Section>
@@ -88,11 +84,11 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
             <Button onClick={previousStep}>{translate('pim_common.previous')}</Button>
           </Modal.TopLeftButtons>
           <Modal.SectionTitle color="brand">{translate('pim_system.system_navigation')}</Modal.SectionTitle>
-          <Modal.Title>{translate('pim_system.reset_pim.modal.steps.confirm.title')}</Modal.Title>
+          <Modal.Title>{translate('pim_system.reset_pim.modal.confirm.title')}</Modal.Title>
           <Section>
             <Helper level="error">
-              <Emphasis>{translate('pim_system.reset_pim.modal.steps.confirm.helper.emphasis')}</Emphasis>&nbsp;
-              {translate('pim_system.reset_pim.modal.steps.confirm.helper.text')}
+              <Emphasis>{translate('pim_system.reset_pim.modal.confirm.helper.emphasis')}</Emphasis>&nbsp;
+              {translate('pim_system.reset_pim.modal.confirm.helper.text')}
             </Helper>
             <TextField
               value={confirmationWord}
@@ -117,7 +113,7 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
         <ProgressIndicator>
           {STEPS.map(step => (
             <ProgressIndicator.Step key={step} current={isCurrentStep(step)}>
-              {translate(`pim_system.reset_pim.modal.steps.${step}.name`)}
+              {translate(`pim_system.reset_pim.modal.${step}.name`)}
             </ProgressIndicator.Step>
           ))}
         </ProgressIndicator>

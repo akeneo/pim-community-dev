@@ -458,26 +458,25 @@ pim_system:
     title: SAML-based Single Sign-On
   reset_pim:
     modal:
-      steps:
-        summary:
-          name: Summary
-          title: 'Warning: resetting your PIM is irreversible'
-          text: 'It will lead to the deletion of all elements except the following:'
-          users:
-            name: Users
-            tooltip: Users are persons you allow to collaborate within your PIM.
-          user_groups:
-            name: User Groups
-            tooltip: User Groups define teams that will perform different actions within your PIM.
-          roles:
-            name: Roles
-            tooltip: Roles define accesses and actions users and user groups can take within your PIM.
-        confirm:
-          name: Confirm
-          title: Confirm reset of your PIM
-          helper:
-            emphasis: There is no going back once you reset your PIM.
-            text: By clicking the reset button, you will be logged out and will be brought back to the login page.
+      summary:
+        name: Summary
+        title: 'Warning: resetting your PIM is irreversible'
+        text: 'It will lead to the deletion of all elements except the following:'
+        users:
+          name: Users
+          tooltip: Users are persons you allow to collaborate within your PIM.
+        user_groups:
+          name: User Groups
+          tooltip: User Groups define teams that will perform different actions within your PIM.
+        roles:
+          name: Roles
+          tooltip: Roles define accesses and actions users and user groups can take within your PIM.
+      confirm:
+        name: Confirm
+        title: Confirm reset of your PIM
+        helper:
+          emphasis: There is no going back once you reset your PIM.
+          text: By clicking the reset button, you will be logged out and will be brought back to the login page.
       confirmation_phrase: Please type "{{ confirmation_word }}"
       confirmation_word: reset
     button:
