@@ -459,10 +459,10 @@ pim_system:
   reset_pim:
     modal:
       steps:
-        impact:
-          name: Impact
-          title: The reset of your PIM will have a big impact
-          text: 'Resetting your PIM will lead to the deletion of all elements except the following:'
+        summary:
+          name: Summary
+          title: 'Warning: resetting your PIM is irreversible'
+          text: 'It will lead to the deletion of all elements except the following:'
           users:
             name: Users
             tooltip: Users are persons you allow to collaborate within your PIM.
@@ -475,7 +475,9 @@ pim_system:
         confirm:
           name: Confirm
           title: Confirm reset of your PIM
-          helper: There is no going back once you reset your PIM. By clicking the reset button, you will be logged out and will be brought back to the login page.
+          helper:
+            emphasis: There is no going back once you reset your PIM.
+            text: By clicking the reset button, you will be logged out and will be brought back to the login page.
       confirmation_phrase: Please type "{{ confirmation_word }}"
       confirmation_word: reset
     button:

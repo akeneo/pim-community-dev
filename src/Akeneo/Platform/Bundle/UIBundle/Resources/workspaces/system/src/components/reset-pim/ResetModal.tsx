@@ -14,7 +14,11 @@ import {
 } from 'akeneo-design-system';
 import {Section, TextField, useTranslate} from '@akeneo-pim-community/shared';
 
-const STEPS = ['impact', 'confirm'];
+const STEPS = ['summary', 'confirm'];
+
+const Emphasis = styled.span`
+  font-weight: bold;
+`;
 
 const Footer = styled.div`
   background-color: ${getColor('white')};
@@ -36,14 +40,6 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
 
   const canConfirm = confirmationWord === translate('pim_system.reset_pim.modal.confirmation_word');
 
-  const handleMoveToConfirmStep = () => {
-    nextStep();
-  };
-
-  const handleCancel = () => {
-    onCancel();
-  };
-
   const handleConfirm = () => {
     if (!canConfirm) {
       return;
@@ -53,33 +49,33 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
   };
 
   return (
-    <Modal closeTitle={translate('pim_common.close')} onClose={handleCancel} illustration={<DeleteIllustration />}>
-      {isCurrentStep('impact') && (
+    <Modal closeTitle={translate('pim_common.close')} onClose={onCancel} illustration={<DeleteIllustration />}>
+      {isCurrentStep('summary') && (
         <>
           <Modal.TopRightButtons>
-            <Button onClick={handleMoveToConfirmStep}>{translate('pim_common.next')}</Button>
+            <Button onClick={nextStep}>{translate('pim_common.next')}</Button>
           </Modal.TopRightButtons>
           <Modal.SectionTitle color="brand">{translate('pim_system.system_navigation')}</Modal.SectionTitle>
-          <Modal.Title>{translate('pim_system.reset_pim.modal.steps.impact.title')}</Modal.Title>
+          <Modal.Title>{translate('pim_system.reset_pim.modal.steps.summary.title')}</Modal.Title>
           <Section>
-            {translate('pim_system.reset_pim.modal.steps.impact.text')}
+            {translate('pim_system.reset_pim.modal.steps.summary.text')}
             <Tiles inline={true}>
               <Tile selected={true}>
-                {translate('pim_system.reset_pim.modal.steps.impact.users.name')}
+                {translate('pim_system.reset_pim.modal.steps.summary.users.name')}
                 <Tooltip direction="bottom">
-                  {translate('pim_system.reset_pim.modal.steps.impact.users.tooltip')}
+                  {translate('pim_system.reset_pim.modal.steps.summary.users.tooltip')}
                 </Tooltip>
               </Tile>
               <Tile selected={true}>
-                {translate('pim_system.reset_pim.modal.steps.impact.user_groups.name')}
+                {translate('pim_system.reset_pim.modal.steps.summary.user_groups.name')}
                 <Tooltip direction="bottom">
-                  {translate('pim_system.reset_pim.modal.steps.impact.user_groups.tooltip')}
+                  {translate('pim_system.reset_pim.modal.steps.summary.user_groups.tooltip')}
                 </Tooltip>
               </Tile>
               <Tile selected={true}>
-                {translate('pim_system.reset_pim.modal.steps.impact.roles.name')}
+                {translate('pim_system.reset_pim.modal.steps.summary.roles.name')}
                 <Tooltip direction="bottom">
-                  {translate('pim_system.reset_pim.modal.steps.impact.roles.tooltip')}
+                  {translate('pim_system.reset_pim.modal.steps.summary.roles.tooltip')}
                 </Tooltip>
               </Tile>
             </Tiles>
@@ -94,7 +90,10 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
           <Modal.SectionTitle color="brand">{translate('pim_system.system_navigation')}</Modal.SectionTitle>
           <Modal.Title>{translate('pim_system.reset_pim.modal.steps.confirm.title')}</Modal.Title>
           <Section>
-            <Helper level="error">{translate('pim_system.reset_pim.modal.steps.confirm.helper')}</Helper>
+            <Helper level="error">
+              <Emphasis>{translate('pim_system.reset_pim.modal.steps.confirm.helper.emphasis')}</Emphasis>&nbsp;
+              {translate('pim_system.reset_pim.modal.steps.confirm.helper.text')}
+            </Helper>
             <TextField
               value={confirmationWord}
               label={translate('pim_system.reset_pim.modal.confirmation_phrase', {
@@ -105,7 +104,7 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
             />
           </Section>
           <Modal.BottomButtons>
-            <Button level="tertiary" onClick={handleCancel}>
+            <Button level="tertiary" onClick={onCancel}>
               {translate('pim_common.cancel')}
             </Button>
             <Button level="danger" disabled={!canConfirm} onClick={handleConfirm}>
