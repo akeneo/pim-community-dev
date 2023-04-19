@@ -78,6 +78,7 @@ services:
             - '@doctrine.orm.entity_manager'
 
     akeneo_batch.launcher.simple_job_launcher:
+        lazy: true
         class: '%akeneo_batch.launcher.simple_job_launcher.class%'
         arguments:
             - '@akeneo_batch.job_repository'

@@ -5,6 +5,7 @@ parameters:
 
 services:
     pim_user.repository.role:
+        lazy: true
         public: true
         class: '%pim_user.repository.role.class%'
         factory: ['@doctrine.orm.entity_manager', 'getRepository']
@@ -13,6 +14,7 @@ services:
             - { name: pim_repository }
 
     pim_user.repository.group:
+        lazy: true
         class: '%pim_user.repository.group.class%'
         factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_user.entity.group.class%']
@@ -20,6 +22,7 @@ services:
             - { name: pim_repository }
 
     pim_user.repository.user:
+        lazy: true
         class: '%pim_user.repository.user.class%'
         factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_user.entity.user.class%']

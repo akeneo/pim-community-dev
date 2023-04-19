@@ -1,5 +1,6 @@
 services:
     pim_user.factory.user:
+        lazy: true
         class: 'Akeneo\UserManagement\Component\Factory\UserFactory'
         arguments:
             - '@pim_catalog.repository.locale'
