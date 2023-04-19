@@ -16,6 +16,7 @@ define([], function () {
      */
     set: function (entities) {
       sessionStorage.setItem('sequential_edit_entities', JSON.stringify(entities));
+      sessionStorage.setItem('sequential_edit_current_index', 0);
     },
 
     /**
@@ -35,5 +36,13 @@ define([], function () {
         ? []
         : JSON.parse(sessionStorage.getItem('sequential_edit_entities'));
     },
+
+    getIndex: function() {
+      return parseInt(sessionStorage.getItem('sequential_edit_current_index') || '0');
+    },
+
+    setIndex: function (i) {
+      sessionStorage.setItem('sequential_edit_current_index', i);
+    }
   };
 });
