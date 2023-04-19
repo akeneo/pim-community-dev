@@ -51,6 +51,7 @@
 - PIM-10885: Use React shared component for locale selector in product form locale switcher
 - PIM-10916: Fix external categories endpoint with_position always return 1
 - PIM-10887: Prevent channel creation on validation error during import
+- PIM-10948: Fix number value comparison
 
 ## Improvements
 
