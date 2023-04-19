@@ -198,6 +198,6 @@ define([
     },
     getCurrentIndex: function () {
       return this.model.get('sequentialEditCurrentIndex');
-    }
+    },
   });
 });
