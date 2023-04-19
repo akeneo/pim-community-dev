@@ -141,9 +141,10 @@ class BatchCommand extends Command
             $jobExecution = $this->jobExecutionFactory->createFromBatchCode($code, $config, $username);
             $executionId = $jobExecution->getId();
         }
+
         // We listen the sigterm in this command for spiking, maybe we should listen inside the watchdog or inside the daemon
-        pcntl_signal(\SIGTERM, fn () => $this->handleSigTerm((int) $executionId));
-        $jobExecution = $this->jobExecutionRunner->executeFromJobExecutionId((int) $executionId);
+        pcntl_signal(\SIGTERM, fn ($signal) => $this->handleSigTerm($signal, (int) $executionId));
+        $jobExecution = $this->jobExecutionRunner->executeFromJobExecutionId((int)$executionId);
 
         $verbose = $input->getOption('verbose');
         $jobInstance = $jobExecution->getJobInstance();
@@ -262,9 +263,11 @@ class BatchCommand extends Command
         return \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
     }
 
-    private function handleSigTerm(int $executionId): void
+    private function handleSigTerm(int $signal, int $jobExecutionId)
     {
-        // We have to check if the job is pausable before
-        $this->updateJobExecutionStatus->updateByJobExecutionId($executionId, new BatchStatus(BatchStatus::PAUSING));
+        $this->logger->error('Signal is received', [
+            'signal' => $signal,
+            'job_execution_id' => $jobExecutionId
+        ]);
     }
 }
