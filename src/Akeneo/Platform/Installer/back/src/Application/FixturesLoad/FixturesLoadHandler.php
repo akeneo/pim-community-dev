@@ -124,12 +124,8 @@ final class FixturesLoadHandler
                 sprintf('Please wait, the "%s" are processing...', $jobInstance->getCode())
             );
 
-            try {
-                $output = $this->akeneoBatchJob->execute($params, true);
-                $io->success($output->fetch());
-            } catch (\Exception $e) {
-                $io->error($e->getMessage());
-            }
+            $output = $this->akeneoBatchJob->execute($params, true);
+            $io->success($output->fetch());
 
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($jobInstance->getCode(), [

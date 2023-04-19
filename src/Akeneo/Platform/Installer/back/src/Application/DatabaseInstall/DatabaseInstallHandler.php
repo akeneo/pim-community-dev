@@ -47,8 +47,6 @@ final class DatabaseInstallHandler
 
         $this->entityManager->clear();
 
-        // TODO check if a listener still need catalog don't seems like it
-        // TODO recheck all query make idempotent the one that are not
         $this->eventDispatcher->dispatch(
             new InstallerEvent(),
             InstallerEvents::POST_DB_CREATE
@@ -65,68 +63,47 @@ final class DatabaseInstallHandler
     {
         $io->title('Prepare database schema');
 
-        try {
-            $io->info(sprintf('RUN: %s', $this->doctrineSchemaUpdate->getName()));
-            /** @var BufferedOutput $output */
-            $output = $this->doctrineSchemaUpdate->execute(['--force' => true, '--no-interaction' => true], true);
-            $io->block($output->fetch());
-            $io->success(sprintf('%s success', $this->doctrineSchemaUpdate->getName()));
-        } catch (\Exception $e) {
-            $io->error([
-                'Trying to install PIM on an existing database is impossible.',
-                $e->getMessage()
-            ]);
-        }
+        $io->info(sprintf('RUN: %s', $this->doctrineSchemaUpdate->getName()));
+        /** @var BufferedOutput $output */
+        $output = $this->doctrineSchemaUpdate->execute(['--force' => true, '--no-interaction' => true], true);
+        $io->block($output->fetch());
+        $io->success(sprintf('%s success', $this->doctrineSchemaUpdate->getName()));
     }
 
     private function resetIndexes(SymfonyStyle $io): void
     {
-        try {
-            $io->info('Reset elasticsearch indexes');
-            $this->resetIndexes->reset();
-            $io->success('Indexes has been reset');
-        } catch (\Exception $e) {
-            $io->error([
-                'Something went wrong during index reset',
-                $e->getMessage()
-            ]);
-        }
+        $io->info('Reset elasticsearch indexes');
+        $this->resetIndexes->reset();
+        $io->success('Indexes has been reset');
     }
 
     private function setLatestKnownMigration(SymfonyStyle $io, string $env): void
     {
-        try {
-            $io->info(sprintf('RUN: %s', $this->doctrineMigrationsLatest->getName()));
-            /** @var BufferedOutput $output */
-            $output = $this->doctrineMigrationsLatest->execute([
-                '--no-debug' => true,
-                '--env' => $env
-            ], true);
-            $latestMigration = $output->fetch();
-            $io->block($latestMigration);
-            $io->success(sprintf('%s success', $this->doctrineMigrationsLatest->getName()));
+        $io->info(sprintf('RUN: %s', $this->doctrineMigrationsLatest->getName()));
+        /** @var BufferedOutput $output */
+        $output = $this->doctrineMigrationsLatest->execute([
+            '--no-debug' => true,
+            '--env' => $env
+        ], true);
+        $latestMigration = $output->fetch();
+        $io->block($latestMigration);
+        $io->success(sprintf('%s success', $this->doctrineMigrationsLatest->getName()));
 
-            $io->info(sprintf('RUN: %s', $this->doctrineMigrationsSyncMetadataStorage->getName()));
-            /** @var BufferedOutput $output */
-            $output = $this->doctrineMigrationsSyncMetadataStorage->execute(['-q' => true], true);
-            $io->block($output->fetch());
-            $io->success(sprintf('%s success', $this->doctrineMigrationsSyncMetadataStorage->getName()));
+        $io->info(sprintf('RUN: %s', $this->doctrineMigrationsSyncMetadataStorage->getName()));
+        /** @var BufferedOutput $output */
+        $output = $this->doctrineMigrationsSyncMetadataStorage->execute(['-q' => true], true);
+        $io->block($output->fetch());
+        $io->success(sprintf('%s success', $this->doctrineMigrationsSyncMetadataStorage->getName()));
 
-            $io->info(sprintf('RUN: %s', $this->doctrineMigrationsVersion->getName()));
-            /** @var BufferedOutput $output */
-            $output = $this->doctrineMigrationsVersion->execute([
-                'version' => $latestMigration,
-                '--add' => true,
-                '--all' => true,
-                '-q' => true
-            ], true);
-            $io->block($output->fetch());
-            $io->success(sprintf('%s success', $this->doctrineMigrationsVersion->getName()));
-        } catch (\Exception $e) {
-            $io->error([
-                'Something went wrong when setting latest migration',
-                $e->getMessage()
-            ]);
-        }
+        $io->info(sprintf('RUN: %s', $this->doctrineMigrationsVersion->getName()));
+        /** @var BufferedOutput $output */
+        $output = $this->doctrineMigrationsVersion->execute([
+            'version' => $latestMigration,
+            '--add' => true,
+            '--all' => true,
+            '-q' => true
+        ], true);
+        $io->block($output->fetch());
+        $io->success(sprintf('%s success', $this->doctrineMigrationsVersion->getName()));
     }
 }
