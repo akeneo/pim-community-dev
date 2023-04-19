@@ -602,7 +602,7 @@ JSON;
         $this->assertSameResponse($expected, $client->getResponse());
     }
 
-    public function testListCategoriesWithEnrichedValuesOnDeactivateAttribute(): void
+    public function testListCategoriesWithEnrichedValuesAndDeactivatedAttributesValuesFilteredOut(): void
     {
         $category = $this->get(GetCategoryInterface::class)->byCode('master');
         $this->updateCategoryWithValues('master');
