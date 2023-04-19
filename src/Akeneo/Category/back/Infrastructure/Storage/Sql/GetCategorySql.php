@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Enrichment\Filter\DeactivatedTemplateAttributesInValueCollectionFilter;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributeIdentifier;
+use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter;
 use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Doctrine\DBAL\Connection;
@@ -130,9 +131,14 @@ class GetCategorySql implements GetCategoryInterface
         }
 
         $deactivatedAttributes = $this->getDeactivatedTemplateAttributes->execute();
-        $filteredCategory = ($this->deactivatedAttributesInValueCollectionFilter)($deactivatedAttributes, $result);
+        if (!empty($deactivatedAttributes) && !empty($result['value_collection'])) {
+            $result['value_collection'] = $this->filterOutEnrichedValuesOfDeactivatedAttributes(
+                $deactivatedAttributes,
+                $result['value_collection'],
+            );
+        }
 
-        return Category::fromDatabase($filteredCategory);
+        return Category::fromDatabase($result);
     }
 
     /**
@@ -151,8 +157,35 @@ class GetCategorySql implements GetCategoryInterface
         $deactivatedAttributes = $this->getDeactivatedTemplateAttributes->execute();
 
         while (($result = $stmt->fetchAssociative()) !== false) {
-            $filteredCategory = ($this->deactivatedAttributesInValueCollectionFilter)($deactivatedAttributes, $result);
-            yield Category::fromDatabase($filteredCategory);
+            if (!empty($deactivatedAttributes) && !empty($result['value_collection'])) {
+                $result['value_collection'] = $this->filterOutEnrichedValuesOfDeactivatedAttributes(
+                    $deactivatedAttributes,
+                    $result['value_collection'],
+                );
+            }
+            yield Category::fromDatabase($result);
         }
+    }
+
+    /**
+     * @param array<DeactivatedTemplateAttributeIdentifier> $deactivatedAttributes
+     *
+     * @throws \JsonException
+     */
+    private function filterOutEnrichedValuesOfDeactivatedAttributes(
+        array $deactivatedAttributes,
+        string $valueCollection,
+    ): string {
+        $decodedRawValueCollection = json_decode(
+            $valueCollection,
+            true,
+            512,
+            JSON_THROW_ON_ERROR,
+        );
+
+        return json_encode(
+            ($this->deactivatedAttributesInValueCollectionFilter)($deactivatedAttributes, $decodedRawValueCollection),
+            JSON_THROW_ON_ERROR,
+        );
     }
 }

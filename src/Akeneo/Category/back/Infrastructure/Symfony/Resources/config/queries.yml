@@ -4,7 +4,7 @@ services:
     arguments:
       - '@database_connection'
       - '@Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes'
-      - '@Akeneo\Category\Application\Enrichment\Filter\DeactivatedTemplateAttributesInValueCollectionFilter'
+      - '@Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter'
 
   Akeneo\Category\Domain\Query\GetCategoryByIds:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryByIdsSql

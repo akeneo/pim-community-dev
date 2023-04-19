@@ -23,6 +23,11 @@ class GetCategorySqlIntegration extends CategoryTestCase
 {
     private CategoryDoctrine|Category $category;
 
+    /**
+     * @var array<array<string, mixed>>
+     */
+    private array $attributes;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,6 +39,45 @@ class GetCategorySqlIntegration extends CategoryTestCase
                 'en_US' => 'Socks'
             ]
         ]);
+
+        $this->attributes = [
+                [
+                    'type' => 'image',
+                    'uuid' => '8587cda6-58c8-47fa-9278-033e1d8c735c',
+                    'code' => 'photo',
+                    'order' => 1,
+                    'is_required' => true,
+                    'is_scopable' => false,
+                    'is_localizable' => false,
+                    'labels' => ['en_US' => 'photo'],
+                    'template_uuid' => '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+                    'additional_properties' => [],
+                ],
+                [
+                    'type' => 'text',
+                    'uuid' => '57665726-8a6e-4550-9bcf-06f81c0d1e24',
+                    'code' => 'description',
+                    'order' => 1,
+                    'is_required' => true,
+                    'is_scopable' => true,
+                    'is_localizable' => true,
+                    'labels' => ['en_US' => 'description'],
+                    'template_uuid' => '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+                    'additional_properties' => [],
+                ],
+                [
+                    'type' => 'text',
+                    'uuid' => '87939c45-1d85-4134-9579-d594fff65030',
+                    'code' => 'title',
+                    'order' => 2,
+                    'is_required' => true,
+                    'is_scopable' => true,
+                    'is_localizable' => true,
+                    'labels' => ['en_US' => 'title'],
+                    'template_uuid' => '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
+                    'additional_properties' => [],
+                ],
+            ];
 
         $this->updateCategoryWithValues($this->category->getCode());
     }
@@ -157,52 +201,14 @@ class GetCategorySqlIntegration extends CategoryTestCase
         $this->assertNull($retrievedCategory->getTemplateUuid());
     }
 
-    public function testItDoesNotRetrieveDeactivatedAttributesValue(): void
+    public function testItDoesNotRetrieveDeactivatedAttributesValueForOneCategory(): void
     {
-        $category = $this->get(GetCategoryInterface::class)->byCode('master');
-        $this->updateCategoryWithValues('master');
+        $category = $this->get(GetCategoryInterface::class)->byCode('socks');
+        $this->updateCategoryWithValues('socks');
 
-        $attributes = [
-            [
-                'type' => 'image',
-                'uuid' => '8587cda6-58c8-47fa-9278-033e1d8c735c',
-                'code' => 'photo',
-                'order' => 1,
-                'is_required' => true,
-                'is_scopable' => false,
-                'is_localizable' => false,
-                'labels' => ['en_US' => 'photo'],
-                'template_uuid' => '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
-                'additional_properties' => [],
-            ],
-            [
-                'type' => 'text',
-                'uuid' => '57665726-8a6e-4550-9bcf-06f81c0d1e24',
-                'code' => 'description',
-                'order' => 1,
-                'is_required' => true,
-                'is_scopable' => true,
-                'is_localizable' => true,
-                'labels' => ['en_US' => 'description'],
-                'template_uuid' => '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
-                'additional_properties' => [],
-            ],
-            [
-                'type' => 'text',
-                'uuid' => '87939c45-1d85-4134-9579-d594fff65030',
-                'code' => 'title',
-                'order' => 2,
-                'is_required' => true,
-                'is_scopable' => true,
-                'is_localizable' => true,
-                'labels' => ['en_US' => 'title'],
-                'template_uuid' => '02274dac-e99a-4e1d-8f9b-794d4c3ba330',
-                'additional_properties' => [],
-            ],
-        ];
         $templateModel = $this->generateMockedCategoryTemplateModel(
             categoryTreeId: $category->getId()->getValue(),
-            templateAttributes: $attributes,
+            templateAttributes: $this->attributes,
         );
 
         $this->get(CategoryTemplateSaver::class)->insert($templateModel);
@@ -216,11 +222,47 @@ class GetCategorySqlIntegration extends CategoryTestCase
         $this->deactivateAttribute('57665726-8a6e-4550-9bcf-06f81c0d1e24');
 
         /** @var Category $filteredCategory */
-        $filteredCategory = $this->get(GetCategoryInterface::class)->byCode('master');
+        $filteredCategory = $this->get(GetCategoryInterface::class)->byCode('socks');
         $values = $filteredCategory->getAttributes()?->getValues();
         $this->assertCount(1, $values);
         $this->assertEquals('photo', $values[0]->getCode());
 
+    }
+
+    public function testItDoesNotRetrieveDeactivatedAttributesValueForSeveralCategories(): void
+    {
+        $category = $this->get(GetCategoryInterface::class)->byCode('socks');
+        $this->updateCategoryWithValues('socks');
+
+        $templateModel = $this->generateMockedCategoryTemplateModel(
+            categoryTreeId: $category->getId()->getValue(),
+            templateAttributes: $this->attributes,
+        );
+
+        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+        $this->get(CategoryTemplateAttributeSaver::class)->insert(
+            $templateModel->getUuid(),
+            $templateModel->getAttributeCollection(),
+        );
+
+        $this->createOrUpdateCategory(
+            code: 'japanese_socks',
+            parentId: $category->getId()->getValue(),
+            rootId: $category->getId()->getValue()
+        );
+        $this->updateCategoryWithValues('japanese_socks');
+
+        $this->deactivateAttribute('87939c45-1d85-4134-9579-d594fff65030');
+        $this->deactivateAttribute('57665726-8a6e-4550-9bcf-06f81c0d1e24');
+
+        /** @var Category $filteredCategory */
+        foreach ($this->get(GetCategoryInterface::class)->byCodes(['socks', 'japanese_socks']) as $filteredCategory)
+        {
+            $values = $filteredCategory->getAttributes()?->getValues();
+            $this->assertCount(1, $values);
+            $this->assertEquals('photo', $values[0]->getCode());
+        }
     }
 
     private function getLastCategoryId(): int
