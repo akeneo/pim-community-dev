@@ -286,7 +286,7 @@ define([
         if (!actionConfiguration || actionConfiguration[action.name] !== false) {
           action.run();
 
-          analytics.track('grid:item:selected', {
+          analytics.appcuesTrack('grid:item:selected', {
             name: this.name,
             entityHint: this.entityHint,
             model: action.model,

@@ -121,7 +121,7 @@ define([
     updateModel: function (event) {
       this.setValue(event.values);
 
-      analytics.track('product-grid:mass-edit:attributes-added', {
+      analytics.appcuesTrack('product-grid:mass-edit:attributes-added', {
         values: event.values,
       });
     },

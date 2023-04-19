@@ -109,7 +109,7 @@ define([
     setSelected: function (selected) {
       this.selected = selected;
 
-      analytics.track('export-profile:product:attribute-added', {
+      analytics.appcuesTrack('export-profile:product:attribute-added', {
         column: this.selected.join(','),
       });
 
