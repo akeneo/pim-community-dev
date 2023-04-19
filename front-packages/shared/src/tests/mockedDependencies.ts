@@ -48,6 +48,7 @@ const mockedDependencies = {
   },
   analytics: {
     track: (event: string) => event,
+    appcuesTrack: (event: string) => event,
   },
 };
 

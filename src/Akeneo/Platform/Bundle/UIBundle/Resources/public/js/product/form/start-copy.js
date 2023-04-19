@@ -55,7 +55,7 @@ define([
       this.isCopying = true;
       this.getRoot().trigger('pim_enrich:form:start_copy');
 
-      analytics.track('product:form:compare-clicked');
+      analytics.appcuesTrack('product:form:compare-clicked');
       this.render();
     },
 
