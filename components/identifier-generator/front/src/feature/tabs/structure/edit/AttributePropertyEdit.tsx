@@ -1,12 +1,6 @@
 import React from 'react';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
-import {
-  AbbreviationType,
-  CanUseNomenclatureProperty,
-  PROPERTY_NAMES,
-  RefEntityProperty,
-  SimpleSelectProperty,
-} from '../../../models';
+import {AbbreviationType, CanUseNomenclatureProperty, RefEntityProperty, SimpleSelectProperty} from '../../../models';
 import {PropertyEditFieldsProps} from '../PropertyEdit';
 import {ScopeAndLocaleSelector} from '../../../components';
 import {ProcessablePropertyEdit} from '../ProcessablePropertyEdit';
@@ -40,17 +34,12 @@ const AttributePropertyEdit: PropertyEditFieldsProps<AttributePropertyTypes> = (
     } as AttributePropertyTypes);
   };
 
-  const operatorsOptions =
-    selectedProperty.type === PROPERTY_NAMES.REF_ENTITY
-      ? options.filter(({value}) => value !== AbbreviationType.NOMENCLATURE)
-      : options;
-
   return (
     <>
       <SectionTitle>
         <SectionTitle.Title>{label}</SectionTitle.Title>
       </SectionTitle>
-      <ProcessablePropertyEdit selectedProperty={selectedProperty} onChange={handleChange} options={operatorsOptions}>
+      <ProcessablePropertyEdit selectedProperty={selectedProperty} onChange={handleChange} options={options}>
         {selectedProperty.attributeCode && (
           <ScopeAndLocaleSelector
             attributeCode={selectedProperty.attributeCode}

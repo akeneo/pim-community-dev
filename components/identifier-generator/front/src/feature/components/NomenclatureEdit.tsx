@@ -41,7 +41,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({selectedProperty, itemsPer
   const [isOpen, open, close] = useBooleanState();
   const [nomenclature, setNomenclature] = useState<Nomenclature | undefined>(undefined);
   const {data: fetchedNomenclature} = useGetNomenclature(
-    selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT ? selectedProperty.attributeCode ?? '' : 'family'
+    selectedProperty.type === PROPERTY_NAMES.FAMILY ? 'family' : selectedProperty.attributeCode ?? ''
   );
   const [filter, setFilter] = useState<NomenclatureFilter>('all');
   const [valuesToSave, setValuesToSave] = useState<NomenclatureValues>({});
@@ -121,8 +121,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({selectedProperty, itemsPer
         {
           ...nomenclature,
           propertyCode:
-            (selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT ? selectedProperty.attributeCode : 'family') ??
-            'family',
+            selectedProperty.type === PROPERTY_NAMES.FAMILY ? 'family' : selectedProperty.attributeCode ?? '',
           values: valuesToSave,
         },
         {
@@ -148,9 +147,18 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({selectedProperty, itemsPer
     selectedProperty.type === PROPERTY_NAMES.FAMILY ? translate('pim_enrich.entity.family.plural_label') : label;
 
   const titleIndex =
-    selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT
+    selectedProperty.type === PROPERTY_NAMES.FAMILY
+      ? 'pim_enrich.entity.family.page_title.index'
+      : selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT
       ? 'pim_enrich.entity.attribute_option.page_title.index'
-      : 'pim_enrich.entity.family.page_title.index';
+      : 'pim_reference_entity.record.count';
+
+  const titleNoEntities =
+    selectedProperty.type === PROPERTY_NAMES.FAMILY
+      ? 'pim_enrich.entity.family.plural_label'
+      : selectedProperty.type === PROPERTY_NAMES.SIMPLE_SELECT
+      ? 'pim_enrich.entity.attribute_option.short_uppercase_label'
+      : 'pim_reference_entity.record.plural_label';
 
   return (
     <>
@@ -263,7 +271,7 @@ const NomenclatureEdit: FC<NomenclatureEditProps> = ({selectedProperty, itemsPer
                               size={'large'}
                               illustration={<AttributesIllustration />}
                               title={translate('pim_datagrid.no_entities', {
-                                entityHint: translate('pim_enrich.entity.family.plural_label'),
+                                entityHint: translate(titleNoEntities),
                               })}
                             >
                               {translate('pim_datagrid.no_results_subtitle')}
