@@ -50,6 +50,7 @@ type FeatureFlags = {
 
 type Analytics = {
   track(event: string, properties?: object): void;
+  appcuesTrack(event: string, properties?: object): void;
 };
 
 export {NotificationLevel};

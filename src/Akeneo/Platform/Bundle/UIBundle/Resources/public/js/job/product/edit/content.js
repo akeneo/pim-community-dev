@@ -69,7 +69,7 @@ define([
 
       this.$el.html(this.template({}));
 
-      analytics.track('export-profile:product:content-tab-opened', {
+      analytics.appcuesTrack('export-profile:product:content-tab-opened', {
         code: this.code,
       });
 

@@ -33,7 +33,7 @@ class CreateButton extends BaseView {
   }
 
   onClick(data: AttributeData): void {
-    analytics.track('attribute:create:type-selected', {type: data.attribute_type});
+    analytics.appcuesTrack('attribute:create:type-selected', {type: data.attribute_type});
 
     router.redirectToRoute('pim_enrich_attribute_create', data);
   }

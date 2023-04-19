@@ -59,7 +59,7 @@ define([
             this.getRoot().trigger('pim_enrich:form:entity:post_save', data);
             mediator.trigger('datagrid:doRefresh:family-variant-grid');
 
-            analytics.track('family:variant:saved');
+            analytics.appcuesTrack('family:variant:saved');
           }.bind(this)
         )
         .fail(this.fail.bind(this))

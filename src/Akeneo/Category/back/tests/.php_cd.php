@@ -78,6 +78,8 @@ $rules = [
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
         'Akeneo\UserManagement\Component\Query\PublicApi',
         'Akeneo\UserManagement\ServiceApi',
+        'Akeneo\Channel\API\Query\FindLocales',
+        'Akeneo\Channel\API\Query\Locale',
         // Other Domains Components
         'Akeneo\Channel\Infrastructure\Component\Model\Channel',
         'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',

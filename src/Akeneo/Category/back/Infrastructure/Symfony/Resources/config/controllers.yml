@@ -121,3 +121,8 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@category.command.message_bus'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\GetActivatedLocalesController:
+        public: true
+        arguments:
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
