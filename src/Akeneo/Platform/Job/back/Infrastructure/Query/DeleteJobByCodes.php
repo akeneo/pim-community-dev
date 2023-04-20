@@ -11,17 +11,16 @@ namespace Akeneo\Platform\Job\Infrastructure\Query;
 
 use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobByCodesInterface;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
 
 final class DeleteJobByCodes implements DeleteJobByCodesInterface
 {
     public function __construct(
         private readonly Connection $connection
-    ) {}
+    ) {
+    }
 
     /**
      * @param string[] $codes
-     * @throws Exception
      */
     public function delete(array $codes): void
     {

@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance;
 
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
-
 final class DeleteJobInstanceCommand
 {
     /**
@@ -18,5 +16,6 @@ final class DeleteJobInstanceCommand
      */
     public function __construct(
         public array $codes,
-    ) {}
+    ) {
+    }
 }

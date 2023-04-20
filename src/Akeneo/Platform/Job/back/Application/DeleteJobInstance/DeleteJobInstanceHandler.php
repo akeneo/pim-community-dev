@@ -16,7 +16,9 @@ final class DeleteJobInstanceHandler implements DeleteJobInstanceHandlerInterfac
 {
     public function __construct(
         private readonly DeleteJobByCodesInterface $deleteJobByCodes
-    ) {}
+    ) {
+    }
+
     public function handle(DeleteJobInstanceCommand $command): void
     {
         $this->deleteJobByCodes->delete($command->codes);

@@ -13,7 +13,7 @@ use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobByCodesInterface;
 
 final class InMemoryDeleteJobByCodes implements DeleteJobByCodesInterface
 {
-    const JOBS = [
+    public const JOBS = [
         ['code' => 'job_1'],
         ['code' => 'job_2'],
     ];
