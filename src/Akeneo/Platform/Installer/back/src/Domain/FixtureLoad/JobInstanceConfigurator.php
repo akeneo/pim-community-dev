@@ -26,7 +26,7 @@ final class JobInstanceConfigurator
             throw new \Exception(sprintf('Path "%s" not found', $installerDataPath));
         }
 
-        //TODO Move this elsewhere check with JobLaunchInstance service api.
+        // TODO Move this elsewhere check with JobLaunchInstance service api.
         $configuredJobInstances = [];
         foreach ($jobInstances as $jobInstance) {
             $configuration = $jobInstance->getRawParameters();

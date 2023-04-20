@@ -7,12 +7,8 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Installer\Domain\Query\Yaml;
+namespace Akeneo\Platform\Installer\Domain\CommandExecutor;
 
-interface ReadJobDefinitionInterface
+interface CreateTableInterface extends CommandExecutorInterface
 {
-    /**
-     * @return mixed[]
-     */
-    public function read(string $jobsFilePath): array;
 }

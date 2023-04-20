@@ -2,10 +2,8 @@ services:
 
   Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler:
     arguments:
-      - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineSchemaUpdate'
-      - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsVersion'
-      - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsSyncMetadataStorage'
-      - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsLatest'
+      - '@Akeneo\Platform\Installer\Infrastructure\CommandExecutor\CreateTable'
+      - '@Akeneo\Platform\Installer\Infrastructure\CommandExecutor\SetLatestMigration'
       - '@Akeneo\Platform\Installer\Infrastructure\Query\Sql\InsertDatabaseInstallationDate'
       - '@Akeneo\Platform\Installer\Infrastructure\Query\Elasticsearch\ResetIndexes'
       - '@doctrine.orm.default_entity_manager'
@@ -13,11 +11,9 @@ services:
 
   Akeneo\Platform\Installer\Application\FixturesLoad\FixturesLoadHandler:
     arguments:
-      - '@Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\AkeneoBatchJob'
-      - '@akeneo_batch.saver.job_instance'
-      - '@Akeneo\Platform\Installer\Infrastructure\Query\Yaml\ReadJobDefinition'
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\Yaml\GetJobDefinition'
       - '@Akeneo\Platform\Installer\Infrastructure\Query\Sql\RemoveJobInstance'
-      - '@pim_installer.processor.denormalization.job_instance'
+      - '@Akeneo\Platform\Job\Application\CreateJobInstanceHandler'
+      - '@Akeneo\Platform\Job\Application\LaunchJobInstance\LaunchJobInstanceHandler'
       - '@event_dispatcher'
-      - '%kernel.bundles%'
       - [ 'AkeneoInstallerBundle/Resources/fixtures/fixtures_jobs.yml' ]

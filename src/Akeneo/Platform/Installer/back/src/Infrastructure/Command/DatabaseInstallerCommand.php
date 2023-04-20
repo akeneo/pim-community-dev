@@ -23,9 +23,6 @@ final class DatabaseInstallerCommand extends Command
 {
     public static $defaultName = 'pim:installer:db';
 
-    public const LOAD_ALL = 'all';
-    public const LOAD_BASE = 'base';
-
     public function __construct(
         private readonly DatabaseInstallHandler $databaseInstallHandler,
         private readonly FixturesLoadHandler $fixturesLoadHandler,
@@ -39,13 +36,6 @@ final class DatabaseInstallerCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption(
-                'fixtures',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Determines fixtures to load (can be just OroPlatform or all)',
-                self::LOAD_ALL,
-            )
             ->addOption(
                 'withoutIndexes',
                 null,

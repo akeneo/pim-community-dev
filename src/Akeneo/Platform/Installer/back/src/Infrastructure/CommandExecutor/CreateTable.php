@@ -7,11 +7,11 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor;
+namespace Akeneo\Platform\Installer\Infrastructure\CommandExecutor;
 
-use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineSchemaUpdateInterface;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\CreateTableInterface;
 
-final class DoctrineSchemaUpdate extends AbstractCommandExecutor implements DoctrineSchemaUpdateInterface
+final class CreateTable extends AbstractCommandExecutor implements CreateTableInterface
 {
     public function getName(): string
     {

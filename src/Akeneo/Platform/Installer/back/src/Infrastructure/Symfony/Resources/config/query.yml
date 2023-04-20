@@ -1,25 +1,5 @@
 services:
 
-  Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineSchemaUpdate:
-    arguments:
-      - '@kernel'
-
-  Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsVersion:
-    arguments:
-      - '@kernel'
-
-  Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsSyncMetadataStorage:
-    arguments:
-      - '@kernel'
-
-  Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\DoctrineMigrationsLatest:
-    arguments:
-      - '@kernel'
-
-  Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor\AkeneoBatchJob:
-    arguments:
-      - '@kernel'
-
   Akeneo\Platform\Installer\Infrastructure\Query\Sql\InsertDatabaseInstallationDate:
     arguments:
       - '@database_connection'
@@ -33,7 +13,7 @@ services:
       - '@akeneo_elasticsearch.registry.clients'
 
 
-  Akeneo\Platform\Installer\Infrastructure\Query\Yaml\ReadJobDefinition:
+  Akeneo\Platform\Installer\Infrastructure\Query\Yaml\GetJobDefinition:
     arguments:
       - '@file_locator'
       - '@pim_connector.reader.file.yaml_job_instance'

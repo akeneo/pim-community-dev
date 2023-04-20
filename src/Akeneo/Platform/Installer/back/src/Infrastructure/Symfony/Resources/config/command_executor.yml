@@ -1,0 +1,27 @@
+services:
+
+  Akeneo\Platform\Installer\Infrastructure\CommandExecutor\CreateTable:
+    arguments:
+      - '@kernel'
+
+  Akeneo\Platform\Installer\Infrastructure\CommandExecutor\DoctrineMigrationsVersion:
+    arguments:
+      - '@kernel'
+
+  Akeneo\Platform\Installer\Infrastructure\CommandExecutor\DoctrineMigrationsSyncMetadataStorage:
+    arguments:
+      - '@kernel'
+
+  Akeneo\Platform\Installer\Infrastructure\CommandExecutor\DoctrineMigrationsLatest:
+    arguments:
+      - '@kernel'
+
+  Akeneo\Platform\Installer\Infrastructure\CommandExecutor\AkeneoBatchJob:
+    arguments:
+      - '@kernel'
+
+  Akeneo\Platform\Installer\Infrastructure\CommandExecutor\SetLatestMigration:
+    arguments:
+      - '@Akeneo\Platform\Installer\Infrastructure\CommandExecutor\DoctrineMigrationsVersion'
+      - '@Akeneo\Platform\Installer\Infrastructure\CommandExecutor\DoctrineMigrationsSyncMetadataStorage'
+      - '@Akeneo\Platform\Installer\Infrastructure\CommandExecutor\DoctrineMigrationsLatest'

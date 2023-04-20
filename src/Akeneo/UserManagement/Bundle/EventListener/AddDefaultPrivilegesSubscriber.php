@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
-use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
+use Akeneo\Platform\Installer\Domain\Event\InstallerEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;

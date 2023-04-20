@@ -7,20 +7,19 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Installer\Infrastructure\Event;
+namespace Akeneo\Platform\Installer\Domain\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
-// TODO Move to domain
-final class InstallerEvent extends Event
+final class InstallerEvent extends GenericEvent
 {
     /**
      * @param string[] $arguments
      */
     public function __construct(
-        ?string $subject = null,
-        array $arguments = [],
+        protected $subject = null,
+        protected $arguments = [],
     ) {
-        parent::__construct($subject, $arguments);
+        parent::__construct();
     }
 }

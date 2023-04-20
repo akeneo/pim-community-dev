@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Domain\CommandExecutor;
 
-interface DoctrineSchemaUpdateInterface extends CommandExecutorInterface
+interface SetLatestMigrationInterface
 {
+    public function setMigration(string $env): void;
 }

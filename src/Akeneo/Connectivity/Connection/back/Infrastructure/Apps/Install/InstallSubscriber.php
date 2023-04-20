@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Install;
 
-use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
-use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
+use Akeneo\Platform\Installer\Domain\Event\InstallerEvent;
+use Akeneo\Platform\Installer\Domain\Event\InstallerEvents;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

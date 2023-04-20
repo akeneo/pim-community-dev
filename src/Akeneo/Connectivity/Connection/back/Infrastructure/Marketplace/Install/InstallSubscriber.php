@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Install;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
-use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
+use Akeneo\Platform\Installer\Domain\Event\InstallerEvents;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

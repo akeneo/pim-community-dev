@@ -9,36 +9,29 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Application\FixturesLoad;
 
-use _PHPStan_0f7d3d695\Symfony\Component\Console\Output\BufferedOutput;
-use Akeneo\Platform\Installer\Domain\CommandExecutor\AkeneoBatchJobInterface;
-use Akeneo\Platform\Installer\Domain\FixtureLoad\FixturePathResolver;
-use Akeneo\Platform\Installer\Domain\FixtureLoad\JobInstanceConfigurator;
-use Akeneo\Platform\Installer\Domain\FixtureLoad\JobOrderer;
+use Akeneo\Platform\Installer\Domain\Event\InstallerEvent;
+use Akeneo\Platform\Installer\Domain\Event\InstallerEvents;
 use Akeneo\Platform\Installer\Domain\Query\Sql\RemoveJobInstanceInterface;
-use Akeneo\Platform\Installer\Domain\Query\Yaml\ReadJobDefinitionInterface;
-use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvent;
-use Akeneo\Platform\Installer\Infrastructure\Event\InstallerEvents;
-use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
-use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Platform\Installer\Domain\Query\Yaml\GetJobDefinitionInterface;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceCommand;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceHandlerInterface;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\File;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceCommand;
+use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceHandlerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class FixturesLoadHandler
 {
     /**
-     * @param string[] $bundles
      * @param string[] $jobsFilePaths
      */
     public function __construct(
-        private readonly AkeneoBatchJobInterface $akeneoBatchJob,
-        private readonly BulkSaverInterface $jobInstanceSaver,
-        private readonly ReadJobDefinitionInterface $readJobDefinition,
+        private readonly GetJobDefinitionInterface $getJobDefinition,
         private readonly RemoveJobInstanceInterface $removeJobInstance,
-        private readonly ItemProcessorInterface $jobProcessor,
+        private readonly CreateJobInstanceHandlerInterface $createJobInstanceHandler,
+        private readonly LaunchJobInstanceHandlerInterface $launchJobInstanceHandler,
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly array $bundles,
         private readonly array $jobsFilePaths,
     ) {
     }
@@ -56,10 +49,9 @@ final class FixturesLoadHandler
             InstallerEvents::PRE_LOAD_FIXTURES,
         );
 
-        // TODO check public api to create job instance
-        $jobInstances = $this->createJobInstances($io, $command->getOptions());
+        $jobDefinitions = $this->createJobInstances($io, $command->getOptions());
 
-        $this->loadFixtures($jobInstances, $io, $command->getOptions());
+        $this->loadFixtures($jobDefinitions, $io, $command->getOptions());
 
         $this->cleanJobInstances($io);
 
@@ -74,66 +66,62 @@ final class FixturesLoadHandler
     /**
      * @param string[] $options
      *
-     * @return JobInstance[]
-     *
-     * @throws InvalidItemException
+     * @return mixed[]
      */
     private function createJobInstances(SymfonyStyle $io, array $options): array
     {
         $io->info(sprintf('Load jobs for fixtures. (data set: %s)', $options['catalog']));
 
-        $normalizedJobs = [];
-        $jobInstances = [];
-
-        foreach ($this->jobsFilePaths as $jobsFilePath) {
-            $normalizedJobs = $this->readJobDefinition->read($jobsFilePath);
-            JobOrderer::order($normalizedJobs);
-
-            foreach ($normalizedJobs as $normalizedJob) {
-                unset($normalizedJob['order']);
-                $jobInstances[] = $this->jobProcessor->process($normalizedJob);
-            }
+        $jobDefinitions = $this->getJobDefinition->get($this->jobsFilePaths);
+        foreach ($jobDefinitions as $jobDefinition) {
+            $this->createJobInstanceHandler->handle(new CreateJobInstanceCommand(
+                $jobDefinition['type'],
+                $jobDefinition['code'],
+                $jobDefinition['label'],
+                $jobDefinition['connector'],
+                $jobDefinition['alias'],
+                $jobDefinition['configuration'],
+            ));
         }
 
-        $installerPathData = FixturePathResolver::resolve($options['catalog'], $this->bundles);
-        $configuredJobInstances = JobInstanceConfigurator::configure($installerPathData, $jobInstances);
-        $this->jobInstanceSaver->saveAll($configuredJobInstances, ['is_installation' => true]);
-
-        return $configuredJobInstances;
+        return $jobDefinitions;
     }
 
     /**
-     * @param JobInstance[] $configuredJobInstances
+     * @param mixed[] $jobDefinitions
      * @param string[] $options
      */
-    private function loadFixtures(array $configuredJobInstances, SymfonyStyle $io, array $options): void
+    private function loadFixtures(array $jobDefinitions, SymfonyStyle $io, array $options): void
     {
-        foreach ($configuredJobInstances as $jobInstance) {
-            $params = [
-                'code' => $jobInstance->getCode(),
-                '--no-debug' => true,
-                '--no-log' => true,
-                '-v' => true,
-            ];
-
+        foreach ($jobDefinitions as $jobDefinition) {
             $this->eventDispatcher->dispatch(
-                new InstallerEvent($jobInstance->getCode(), [
+                new InstallerEvent($jobDefinition['code'], [
                     'catalog' => $options['catalog'],
                 ]),
                 InstallerEvents::PRE_LOAD_FIXTURE,
             );
 
             $io->info(
-                sprintf('Please wait, the "%s" are processing...', $jobInstance->getCode()),
+                sprintf('Please wait, the "%s" are processing...', $jobDefinition['code']),
             );
 
-            /** @var BufferedOutput $output */
-            $output = $this->akeneoBatchJob->execute($params, true);
-            $io->success($output->fetch());
-            //TODO listen in Job context for job deletion
+            $filePath = sprintf('%s/%s', $options['catalog'], $jobDefinition['configuration']['storage']['file_path']);
+
+            if (!$resource = fopen($filePath, 'r')) {
+                throw new \Exception(sprintf('unknown file %s', $filePath));
+            }
+
+            $this->launchJobInstanceHandler->handle(new LaunchJobInstanceCommand(
+                $jobDefinition['code'],
+                new File(
+                    $jobDefinition['configuration']['storage']['file_path'],
+                    $resource,
+                ),
+            ));
+
             $this->eventDispatcher->dispatch(
-                new InstallerEvent($jobInstance->getCode(), [
-                    'job_name' => $jobInstance->getJobName(),
+                new InstallerEvent($jobDefinition['code'], [
+                    'job_name' => $jobDefinition['alias'],
                     'catalog' => $options['catalog'],
                 ]),
                 InstallerEvents::POST_LOAD_FIXTURE,

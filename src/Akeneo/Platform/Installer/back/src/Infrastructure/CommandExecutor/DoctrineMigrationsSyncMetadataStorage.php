@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Installer\Infrastructure\Query\CommandExecutor;
+namespace Akeneo\Platform\Installer\Infrastructure\CommandExecutor;
 
 use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsSyncMetadataStorageInterface;
 
