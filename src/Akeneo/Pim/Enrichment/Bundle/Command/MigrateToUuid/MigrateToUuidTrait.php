@@ -135,4 +135,32 @@ trait MigrateToUuidTrait
             'table_name' => $tableName
         ]);
     }
+
+    protected function isUuidColumnCompletelyFilled(string $tableName, string $uuidColumnName): bool
+    {
+        if (!$this->tableExists($tableName)) {
+            return false;
+        }
+
+        $sql = <<<SQL
+            SELECT EXISTS (
+                SELECT 1
+                FROM {table_name} t
+                WHERE {column_name} IS NULL
+                {extra_condition}
+            ) as missing
+        SQL;
+
+        $query = \strtr($sql, [
+            '{table_name}' => $tableName,
+            '{column_name}' => $uuidColumnName,
+            '{extra_condition}' => \in_array($tableName, ['pim_versioning_version', 'pim_comment_comment'])
+                ? ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"'
+                : '',
+        ]);
+
+        $hasEmptyValue = (bool) $this->connection->fetchOne($query);
+
+        return !$hasEmptyValue;
+    }
 }
