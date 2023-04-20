@@ -55,6 +55,7 @@
 - PIM-10929: Add limit on get product history
 - PIM-10936: Fix an issue where completeness could not be saved after migrating to UUIDs
 - PIM-10938: Fix getNextObject when use clicks on variant during sequential edit
+- PIM-10948: Fix number value comparison
 
 ## Improvements
 
