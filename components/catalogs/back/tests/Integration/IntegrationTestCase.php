@@ -87,6 +87,7 @@ abstract class IntegrationTestCase extends WebTestCase
         self::getContainer()->get(ExperimentalTransactionHelper::class)->beginTransactions();
 
         self::getContainer()->get(FeatureFlags::class)->enable('catalogs');
+        self::getContainer()->get(FeatureFlags::class)->enable('asset_manager');
     }
 
     protected function overrideServices(): void
