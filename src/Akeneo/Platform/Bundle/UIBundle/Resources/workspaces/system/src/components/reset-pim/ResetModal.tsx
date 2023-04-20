@@ -16,10 +16,6 @@ import {Section, TextField, useTranslate} from '@akeneo-pim-community/shared';
 
 const STEPS = ['summary', 'confirm'];
 
-const Emphasis = styled.span`
-  font-weight: bold;
-`;
-
 const Footer = styled.div`
   background-color: ${getColor('white')};
   position: fixed;
@@ -87,7 +83,7 @@ const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
           <Modal.Title>{translate('pim_system.reset_pim.modal.confirm.title')}</Modal.Title>
           <Section>
             <Helper level="error">
-              <Emphasis>{translate('pim_system.reset_pim.modal.confirm.helper.emphasis')}</Emphasis>&nbsp;
+              <b>{translate('pim_system.reset_pim.modal.confirm.helper.emphasis')}</b>&nbsp;
               {translate('pim_system.reset_pim.modal.confirm.helper.text')}
             </Helper>
             <TextField

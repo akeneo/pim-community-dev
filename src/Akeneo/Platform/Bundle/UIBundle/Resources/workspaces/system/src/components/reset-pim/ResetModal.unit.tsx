@@ -5,13 +5,13 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ResetModal} from './ResetModal';
 
 test('it can be cancelled', () => {
-  const handleConfirm = jest.fn();
+  const handleCancel = jest.fn();
 
-  renderWithProviders(<ResetModal onConfirm={jest.fn()} onCancel={handleConfirm} />);
+  renderWithProviders(<ResetModal onConfirm={jest.fn()} onCancel={handleCancel} />);
 
   userEvent.click(screen.getByTitle('pim_common.close'));
 
-  expect(handleConfirm).toHaveBeenCalled();
+  expect(handleCancel).toHaveBeenCalled();
 });
 
 test('it can be confirmed after going through every steps and confirming', () => {
