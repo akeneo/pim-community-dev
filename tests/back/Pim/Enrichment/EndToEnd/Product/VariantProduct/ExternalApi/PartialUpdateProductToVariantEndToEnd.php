@@ -60,7 +60,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertEventCount(1, ProductUpdated::class);
 
-       $this->assertSameProducts($expectedProduct, 'product_family_variant');
+        $this->assertSameProducts($expectedProduct, 'product_family_variant');
 
         $this->assertArrayHasKey('location', $response->headers->all());
         $this->assertSame(

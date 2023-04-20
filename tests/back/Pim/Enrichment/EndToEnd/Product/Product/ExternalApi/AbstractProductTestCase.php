@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -59,9 +60,9 @@ abstract class AbstractProductTestCase extends ApiTestCase
     {
         $this->getAuthenticator()->logIn('admin');
 
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('admin'),
-            productIdentifier: $identifier,
+            productIdentifier: ProductIdentifier::fromIdentifier($identifier),
             userIntents: $userIntents
         );
 

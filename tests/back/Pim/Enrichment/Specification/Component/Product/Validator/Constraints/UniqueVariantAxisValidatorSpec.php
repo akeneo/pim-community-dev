@@ -17,6 +17,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -352,7 +353,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
     ) {
         $axes = [$color];
 
-        $entity->getIdentifier()->willReturn('my_identifier');
+        $uuid = Uuid::uuid4();
+        $entity->getIdentifier()->willReturn(null);
+        $entity->getUuid()->shouldBeCalled()->willReturn($uuid);
         $entity->getParent()->willReturn($parent);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($values);
@@ -381,10 +384,11 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 [
                     '%values%' => '[blue]',
                     '%attributes%' => 'color',
-                    '%validated_entity%' => 'my_identifier',
+                    '%validated_entity%' => $uuid->toString(),
                     '%sibling_with_same_value%' => 'sibling2',
                 ]
             )
+            ->shouldBeCalled()
             ->willReturn($violation);
         $violation->atPath('attribute')->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
@@ -482,7 +486,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
     ) {
         $axes = [$color, $size];
 
-        $entity->getIdentifier()->willReturn('entity_code');
+        $uuid = Uuid::uuid4();
+        $entity->getIdentifier()->willReturn(null);
+        $entity->getUuid()->willReturn($uuid);
         $entity->getParent()->willReturn($parent);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $entity->getValuesForVariation()->willReturn($values);
@@ -519,10 +525,11 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 [
                     '%values%' => '[blue],[xl]',
                     '%attributes%' => 'color,size',
-                    '%validated_entity%' => 'entity_code',
+                    '%validated_entity%' => $uuid->toString(),
                     '%sibling_with_same_value%' => 'sibling2',
                 ]
             )
+            ->shouldBeCalled()
             ->willReturn($violation);
         $violation->atPath('attribute')->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
@@ -609,7 +616,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $color->getCode()->willReturn('color');
         $getValuesOfSiblings->for($entity1, ['color'])->willReturn([]);
 
-        $entity2->getIdentifier()->willReturn('entity_2');
+        $uuid = Uuid::uuid4();
+        $entity2->getIdentifier()->willReturn(null);
+        $entity2->getUuid()->willReturn($uuid);
         $entity2->getParent()->willReturn($parent);
         $entity2->getFamilyVariant()->willReturn($familyVariant);
         $getValuesOfSiblings->for($entity2, ['color'])->willReturn([]);
@@ -629,10 +638,11 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 [
                     '%values%' => '[blue]',
                     '%attributes%' => 'color',
-                    '%validated_entity%' => 'entity_2',
+                    '%validated_entity%' => $uuid->toString(),
                     '%sibling_with_same_value%' => 'entity_1',
                 ]
             )
+            ->shouldBeCalled()
             ->willReturn($violation);
         $violation->atPath('attribute')->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();

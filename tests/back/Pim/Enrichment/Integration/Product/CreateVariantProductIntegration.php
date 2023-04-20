@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Damien Carcel <damien.carcel@gmail.com>
@@ -27,14 +28,45 @@ class CreateVariantProductIntegration extends TestCase
                         'data' => 'm',
                     ],
                 ],
+                'color' => [
+                    ['scope' => null, 'locale' => null, 'data' => 'red']
+                ],
             ],
         ]);
 
         $errors = $this->get('pim_catalog.validator.product')->validate($variantProduct);
-        $this->assertEquals(4, $errors->count());
+        $this->assertEquals(3, $errors->count());
         $this->assertEquals(
             'The variant product cannot have product model "minerva" as parent, (this product model can only have other product models as children)',
-            $errors->get(1)->getMessage()
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    public function testVariantProductWithUuidHasValidParent(): void
+    {
+        $variantProductUuid = Uuid::uuid4();
+        $variantProduct = $this->get('pim_catalog.builder.product')->createProduct(null, null, $variantProductUuid->toString());
+        $this->get('pim_catalog.updater.product')->update($variantProduct, [
+            'parent' => 'minerva',
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'm',
+                    ],
+                ],
+                'color' => [
+                    ['scope' => null, 'locale' => null, 'data' => 'red']
+                ],
+            ],
+        ]);
+
+        $errors = $this->get('pim_catalog.validator.product')->validate($variantProduct);
+        $this->assertEquals(2, $errors->count());
+        $this->assertEquals(
+            'The variant product cannot have product model "minerva" as parent, (this product model can only have other product models as children)',
+            $errors->get(0)->getMessage()
         );
     }
 
@@ -65,7 +97,8 @@ class CreateVariantProductIntegration extends TestCase
 
     public function testVariantAxisValuesCombinationIsUniqueInMemory(): void
     {
-        $variantProduct1 = $this->get('pim_catalog.builder.product')->createProduct('apollon_blue_l_1');
+        $variantProduct1Uuid = Uuid::uuid4();
+        $variantProduct1 = $this->get('pim_catalog.builder.product')->createProduct('apollon_blue_l_1', null, $variantProduct1Uuid->toString());
         $this->get('pim_catalog.updater.product')->update($variantProduct1, [
             'parent' => 'apollon_blue',
             'values' => [
@@ -97,7 +130,47 @@ class CreateVariantProductIntegration extends TestCase
         $errors = $this->get('pim_catalog.validator.product')->validate($variantProduct2);
         $this->assertEquals(1, $errors->count());
         $this->assertEquals(
-            'Cannot set value "[l]" for the attribute axis "size" on variant product "apollon_blue_l_2", as the variant product "apollon_blue_l_1" already has this value',
+            sprintf('Cannot set value "[l]" for the attribute axis "size" on variant product "apollon_blue_l_2", as the variant product "%s" already has this value', 'apollon_blue_l_1'),
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    public function testVariantAxisValuesCombinationIsUniqueInMemoryUsingNoIdentifier(): void
+    {
+        $variantProduct1Uuid = Uuid::uuid4();
+        $variantProduct1 = $this->get('pim_catalog.builder.product')->createProduct(null, null, $variantProduct1Uuid->toString());
+        $this->get('pim_catalog.updater.product')->update($variantProduct1, [
+            'parent' => 'apollon_blue',
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'l',
+                    ],
+                ],
+            ],
+        ]);
+        $errors = $this->get('pim_catalog.validator.product')->validate($variantProduct1);
+        $this->assertEquals(0, $errors->count());
+
+        $variantProduct2 = $this->get('pim_catalog.builder.product')->createProduct('apollon_blue_l_2');
+        $this->get('pim_catalog.updater.product')->update($variantProduct2, [
+            'parent' => 'apollon_blue',
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'l',
+                    ],
+                ],
+            ],
+        ]);
+        $errors = $this->get('pim_catalog.validator.product')->validate($variantProduct2);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            sprintf('Cannot set value "[l]" for the attribute axis "size" on variant product "apollon_blue_l_2", as the variant product "%s" already has this value', $variantProduct1Uuid),
             $errors->get(0)->getMessage()
         );
     }

@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -399,6 +400,72 @@ JSON;
 
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testCreateProductVariantWithSameValuesInTheAxeAttribute()
+    {
+        $client = $this->createAuthenticatedClient();
+        $productUuid = Uuid::uuid4()->toString();
+        $data =
+            <<<JSON
+    {
+        "parent": "amor",
+        "family": "familyA",
+        "uuid": "$productUuid",
+        "values": {
+          "a_yes_no": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": true
+            }
+          ]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products-uuid', [], [], [], $data);
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+
+        $productUuid2 = Uuid::uuid4()->toString();
+        $duplicatedData =
+            <<<JSON
+    {
+        "parent": "amor",
+        "family": "familyA",
+        "uuid": "$productUuid2",
+        "values": {
+          "a_yes_no": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": true
+            }
+          ]
+        }
+    }
+JSON;
+
+        $client2 = $this->createAuthenticatedClient();
+        $client2->request('POST', 'api/rest/v1/products-uuid', [], [], [], $duplicatedData);
+
+        $response2 = $client2->getResponse();
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'property' => 'attribute',
+                    'message'  => sprintf('Cannot set value "1" for the attribute axis "a_yes_no" on variant product "%s", as the variant product "%s" already has this value', $productUuid2, $productUuid),
+                ],
+            ],
+        ];
+
+        $this->assertSame($expectedContent, json_decode($response2->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response2->getStatusCode());
     }
 
     public function testCreateProductVariantWithNoAxeAttribute()

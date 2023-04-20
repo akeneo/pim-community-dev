@@ -10,15 +10,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Ramsey\Uuid\Uuid;
 
 class UniqueAxesCombinationSetSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(UniqueAxesCombinationSet::class);
     }
 
-    function it_adds_combinations_of_axis_values()
+    public function it_adds_combinations_of_axis_values(): void
     {
         $familyVariant = new FamilyVariant();
         $familyVariant->setCode('family_variant');
@@ -61,7 +62,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $this->addCombination($variantProductB, '[another_size]');
     }
 
-    function it_does_not_add_same_combination_of_axis_values_twice_for_product_models()
+    public function it_does_not_add_same_combination_of_axis_values_twice_for_product_models(): void
     {
         $familyVariant = new FamilyVariant();
         $familyVariant->setCode('family_variant');
@@ -91,7 +92,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
             ->during('addCombination', [$invalidProductModel, '[a_color]']);
     }
 
-    function it_does_not_add_same_combination_of_axis_values_twice_for_variant_products()
+    public function it_does_not_add_same_combination_of_axis_values_twice_for_variant_products(): void
     {
         $familyVariant = new FamilyVariant();
         $familyVariant->setCode('family_variant');
@@ -110,22 +111,71 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $variantProduct->setFamilyVariant($familyVariant);
         $variantProduct->setParent($productModel);
 
-        $invalidIdentifier = ScalarValue::value('sku', 'invalid_product');
-
-        $invalidVariantProduct = new Product();
-        $invalidVariantProduct->addValue($invalidIdentifier);
-        $invalidVariantProduct->setIdentifier('invalid_product');
-        $invalidVariantProduct->setFamilyVariant($familyVariant);
-        $invalidVariantProduct->setParent($productModel);
-
         $this->addCombination($variantProduct, '[a_color]');
+
+        $invalidVariantProductWithIdentifier = new Product();
+        $invalidVariantProductWithIdentifier->addValue(ScalarValue::value('sku', 'invalid_product'));
+        $invalidVariantProductWithIdentifier->setIdentifier('invalid_product');
+        $invalidVariantProductWithIdentifier->setFamilyVariant($familyVariant);
+        $invalidVariantProductWithIdentifier->setParent($productModel);
 
         $exception = new AlreadyExistingAxisValueCombinationException(
             'valid_variant_product',
-            'Variant product "valid_variant_product" already have the "[a_color]" combination of axis values.'
+            sprintf('Variant product "%s" already have the "[a_color]" combination of axis values.', 'valid_variant_product')
         );
         $this
             ->shouldThrow($exception)
-            ->during('addCombination', [$invalidVariantProduct, '[a_color]']);
+            ->during('addCombination', [$invalidVariantProductWithIdentifier, '[a_color]']);
+
+        $invalidProductUuid = Uuid::uuid4();
+        $invalidVariantProductWithoutIdentifier = new Product($invalidProductUuid);
+        $invalidVariantProductWithoutIdentifier->setFamilyVariant($familyVariant);
+        $invalidVariantProductWithoutIdentifier->setParent($productModel);
+
+        $exception2 = new AlreadyExistingAxisValueCombinationException(
+            'valid_variant_product',
+            sprintf('Variant product "%s" already have the "[a_color]" combination of axis values.', 'valid_variant_product')
+        );
+        $this
+            ->shouldThrow($exception2)
+            ->during('addCombination', [$invalidVariantProductWithoutIdentifier, '[a_color]']);
+    }
+
+    public function it_does_not_add_same_combination_of_axis_values_twice_for_variant_products_without_identifier(): void
+    {
+        $familyVariant = new FamilyVariant();
+        $familyVariant->setCode('family_variant');
+
+        $productModel = new ProductModel();
+        $productModel->setCode('root_product_model');
+        $productModel->setFamilyVariant($familyVariant);
+
+        $productVariantUuid = Uuid::uuid4();
+        $variantProduct = new Product($productVariantUuid);
+        $variantProduct->setFamilyVariant($familyVariant);
+        $variantProduct->setParent($productModel);
+
+        $this->addCombination($variantProduct, '[a_color]');
+
+        $invalidVariantProductWithIdentifier = new Product();
+        $invalidVariantProductWithIdentifier->addValue(ScalarValue::value('sku', 'invalid_product'));
+        $invalidVariantProductWithIdentifier->setIdentifier('invalid_product');
+        $invalidVariantProductWithIdentifier->setFamilyVariant($familyVariant);
+        $invalidVariantProductWithIdentifier->setParent($productModel);
+
+        $invalidVariantProductWithoutIdentifier = new Product(Uuid::uuid4());
+        $invalidVariantProductWithoutIdentifier->setFamilyVariant($familyVariant);
+        $invalidVariantProductWithoutIdentifier->setParent($productModel);
+
+        $exception = new AlreadyExistingAxisValueCombinationException(
+            $productVariantUuid->toString(),
+            sprintf('Variant product "%s" already have the "[a_color]" combination of axis values.', $productVariantUuid->toString())
+        );
+        $this
+            ->shouldThrow($exception)
+            ->during('addCombination', [$invalidVariantProductWithIdentifier, '[a_color]']);
+        $this
+            ->shouldThrow($exception)
+            ->during('addCombination', [$invalidVariantProductWithoutIdentifier, '[a_color]']);
     }
 }

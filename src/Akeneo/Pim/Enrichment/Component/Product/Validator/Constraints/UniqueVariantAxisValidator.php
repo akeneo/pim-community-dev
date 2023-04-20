@@ -200,15 +200,18 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $axes
         ));
 
-        $message = UniqueVariantAxis::DUPLICATE_VALUE_IN_PRODUCT_MODEL;
         if ($entityWithFamilyVariant instanceof ProductInterface) {
             $message = UniqueVariantAxis::DUPLICATE_VALUE_IN_VARIANT_PRODUCT;
+            $identifierOrUuid = $entityWithFamilyVariant->getIdentifier() ?? $entityWithFamilyVariant->getUuid()->toString();
+        } else {
+            $message = UniqueVariantAxis::DUPLICATE_VALUE_IN_PRODUCT_MODEL;
+            $identifierOrUuid = $entityWithFamilyVariant->getIdentifier();
         }
 
         $this->context->buildViolation($message, [
             '%values%' => $combination,
             '%attributes%' => $axesCodes,
-            '%validated_entity%' => $entityWithFamilyVariant->getIdentifier(),
+            '%validated_entity%' => $identifierOrUuid,
             '%sibling_with_same_value%' => $siblingIdentifier,
         ])->atPath('attribute')->addViolation();
     }

@@ -13,8 +13,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -53,6 +57,20 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
     public function test_that_it_gets_the_siblings_values_of_a_new_variant_product()
     {
         $variantProduct = $this->createProduct('new_identifier', [
+            new ChangeParent('sub_sweat_option_a'),
+            new SetBooleanValue('a_yes_no', null, null, false)
+        ]);
+
+        $valuesOfSiblings = $this->getValuesOfSiblings($variantProduct);
+        Assert::assertCount(2, $valuesOfSiblings);
+        Assert::assertArrayHasKey('apollon_optiona_true', $valuesOfSiblings);
+        Assert::assertArrayHasKey('apollon_optiona_false', $valuesOfSiblings);
+    }
+
+    public function test_that_it_gets_the_siblings_values_of_a_new_variant_product_without_identifier()
+    {
+        $uuid = Uuid::uuid4();
+        $variantProduct = $this->createProductWithUuid(ProductUuid::fromUuid($uuid), [
             new ChangeParent('sub_sweat_option_a'),
             new SetBooleanValue('a_yes_no', null, null, false)
         ]);
@@ -166,7 +184,7 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
         );
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
@@ -177,14 +195,27 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
     private function createProduct($identifier, array $userIntents = []): ProductInterface
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
-        $command = UpsertProductCommand::createFromCollection(
+        $command = UpsertProductCommand::createWithIdentifier(
             userId: $this->getUserId('admin'),
-            productIdentifier: $identifier,
+            productIdentifier: ProductIdentifier::fromIdentifier($identifier),
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
+
+    private function createProductWithUuid(ProductUuid $productUuid, array $userIntents = []): ProductInterface
+    {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createWithUuid(
+            userId: $this->getUserId('admin'),
+            productUuid: $productUuid,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+
+        return $this->get('pim_catalog.repository.product')->find($productUuid->uuid()->toString());
     }
 
     private function createProductModel(array $data = [], bool $save = true): ProductModelInterface

@@ -47,7 +47,7 @@ SQL;
         } elseif ($entity instanceof ProductInterface) {
             $identifier = $entity->getUuid()->toString();
             $sql = <<<SQL
-SELECT identifier, raw_values
+SELECT identifier, BIN_TO_UUID(uuid) AS uuid, raw_values
 FROM pim_catalog_product
 WHERE product_model_id = :parentId
 AND uuid != UUID_TO_BIN(:identifier)
@@ -74,7 +74,8 @@ SQL;
                 }, ARRAY_FILTER_USE_KEY);
             }
 
-            $valuesOfSiblings[$row['identifier']] = $this->valueCollectionFactory->createFromStorageFormat(
+            $identifierKey = $row['identifier'] ?? $row['uuid'];
+            $valuesOfSiblings[$identifierKey] = $this->valueCollectionFactory->createFromStorageFormat(
                 $rawValues
             );
         }

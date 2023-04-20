@@ -386,6 +386,71 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testCreateProductVariantWithSameValuesInTheAxeAttribute()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "identifier": "product_variant_creation",
+        "parent": "amor",
+        "family": "familyA",
+        "values": {
+          "a_yes_no": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": true
+            }
+          ]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+
+        $duplicatedData =
+            <<<JSON
+    {
+        "identifier": "product_variant_creation_2",
+        "parent": "amor",
+        "family": "familyA",
+        "values": {
+          "a_yes_no": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": true
+            }
+          ]
+        }
+    }
+JSON;
+
+        $client2 = $this->createAuthenticatedClient();
+        $client2->request('POST', 'api/rest/v1/products', [], [], [], $duplicatedData);
+
+        $response2 = $client2->getResponse();
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'Validation failed.',
+            'errors'  => [
+                [
+                    'property' => 'attribute',
+                    'message'  => 'Cannot set value "1" for the attribute axis "a_yes_no" on variant product "product_variant_creation_2", as the variant product "product_variant_creation" already has this value',
+                ],
+            ],
+        ];
+
+        $this->assertSame($expectedContent, json_decode($response2->getContent(), true));
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response2->getStatusCode());
+    }
+
     public function testCreateProductVariantWithNoAxeAttribute()
     {
         $client = $this->createAuthenticatedClient();
