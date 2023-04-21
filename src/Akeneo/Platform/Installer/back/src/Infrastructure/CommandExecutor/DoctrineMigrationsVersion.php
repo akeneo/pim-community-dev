@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\CommandExecutor;
 
-use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsVersionInterface;
-
 final class DoctrineMigrationsVersion extends AbstractCommandExecutor implements DoctrineMigrationsVersionInterface
 {
     public function getName(): string

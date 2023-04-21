@@ -9,9 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\CommandExecutor;
 
-use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsLatestInterface;
-use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsSyncMetadataStorageInterface;
-use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsVersionInterface;
 use Akeneo\Platform\Installer\Domain\CommandExecutor\SetLatestMigrationInterface;
 use Symfony\Component\Console\Output\BufferedOutput;
 

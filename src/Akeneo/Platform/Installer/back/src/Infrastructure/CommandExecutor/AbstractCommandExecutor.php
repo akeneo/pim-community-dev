@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\CommandExecutor;
 
-use Akeneo\Platform\Installer\Domain\CommandExecutor\CommandExecutorInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;

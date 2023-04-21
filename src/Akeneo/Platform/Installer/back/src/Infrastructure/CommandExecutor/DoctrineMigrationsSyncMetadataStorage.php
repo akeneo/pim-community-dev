@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\CommandExecutor;
 
-use Akeneo\Platform\Installer\Domain\CommandExecutor\DoctrineMigrationsSyncMetadataStorageInterface;
-
 final class DoctrineMigrationsSyncMetadataStorage extends AbstractCommandExecutor implements DoctrineMigrationsSyncMetadataStorageInterface
 {
     public function getName(): string

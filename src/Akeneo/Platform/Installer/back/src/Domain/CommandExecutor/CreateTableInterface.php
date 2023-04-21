@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Domain\CommandExecutor;
 
+use Akeneo\Platform\Installer\Infrastructure\CommandExecutor\CommandExecutorInterface;
+
 interface CreateTableInterface extends CommandExecutorInterface
 {
 }
