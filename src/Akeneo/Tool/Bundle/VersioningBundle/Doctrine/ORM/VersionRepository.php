@@ -28,7 +28,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getLogEntries(string $resourceName, ?string $resourceId, ?UuidInterface $resourceUuid)
+    public function getLogEntries(string $resourceName, ?string $resourceId, ?UuidInterface $resourceUuid, ?int $limit = null)
     {
         $params = [
             'resourceName' => $resourceName,
@@ -40,7 +40,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
             $params['resourceId'] = $resourceId;
         }
 
-        return $this->findBy($params, ['version' => 'desc']);
+        return $this->findBy($params, ['version' => 'desc'], $limit);
     }
 
     /**

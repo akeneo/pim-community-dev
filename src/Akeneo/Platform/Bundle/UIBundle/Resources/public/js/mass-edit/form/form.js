@@ -170,7 +170,7 @@ define([
      * @param {String} action
      */
     applyAction: function (action) {
-      analytics.track('grid:mass-edit:action-step', {
+      analytics.appcuesTrack('grid:mass-edit:action-step', {
         name: action,
       });
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Test\Channel\Integration;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
-use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
@@ -78,22 +77,6 @@ class ChannelTestCase extends TestCase
         $this->get('pim_user.saver.user')->save($user);
 
         return $user;
-    }
-
-    /**
-     * @param ChannelInterface[] $channels
-     */
-    protected function createLocale(string $localeCode, array $channels = []): LocaleInterface
-    {
-        $locale = $this->get('pim_catalog.factory.locale')->create();
-        $locale->setCode($localeCode);
-        $locale->setChannels($channels);
-
-        $violations = $this->get('validator')->validate($locale);
-        Assert::assertSame(0, $violations->count(), (string) $violations);
-        $this->get('pim_catalog.saver.locale')->save($locale);
-
-        return $locale;
     }
 
     /**

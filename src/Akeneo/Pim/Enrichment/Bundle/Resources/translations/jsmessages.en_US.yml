@@ -72,6 +72,7 @@ pim_enrich.entity.product:
             modified: Modified
             old_value: Old value
             new_value: New value
+            limit: 'Only the last {{ limit }} versions are displayed.'
         meta:
             updated: Last update
             groups: Groups

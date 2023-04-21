@@ -49,6 +49,14 @@
 - PIM-10919: Fix Cleaning Products with removed attributes using identifiers instead of uuids
 - PIM-10911: Add user-agent when sending an event
 - PIM-10885: Use React shared component for locale selector in product form locale switcher
+- PIM-10941: Fix unitary attribute group deletion
+- PIM-10916: Fix external categories endpoint with_position always return 1
+- PIM-10887: Prevent channel creation on validation error during import
+- PIM-10929: Add limit on get product history
+- PIM-10936: Fix an issue where completeness could not be saved after migrating to UUIDs
+- PIM-10938: Fix getNextObject when use clicks on variant during sequential edit
+- PIM-10948: Fix number value comparison
+- PIM-10955: Temporary rollback of PIM-10916 causing performance issue on categories API
 
 ## Improvements
 
