@@ -30,13 +30,13 @@ export const AttributeSettings = ({attribute, catalogLocales}: Props) => {
         </SectionTitle.Title>
       </StyledSectionTitle>
       <StyledSectionTitle sticky={0}>
-        <SectionTitle.Title>
+        <SectionTitle.Title level="secondary">
           {translate('akeneo.category.template.attribute.settings.options.title')}
         </SectionTitle.Title>
       </StyledSectionTitle>
       <div>
         {['textarea', 'richtext'].indexOf(attribute.type) != -1 && (
-          <OptionField checked={attribute.type === 'richtext'} readOnly={true}>
+          <OptionField checked={attribute.type === 'richtext'}  readOnly={true}>
             {translate('akeneo.category.template.attribute.settings.options.rich_text')}
           </OptionField>
         )}
@@ -48,7 +48,7 @@ export const AttributeSettings = ({attribute, catalogLocales}: Props) => {
         </OptionField>
       </div>
       <StyledSectionTitle sticky={0}>
-        <SectionTitle.Title>
+        <SectionTitle.Title level="secondary">
           {translate('akeneo.category.template.attribute.settings.translations.title')}
         </SectionTitle.Title>
       </StyledSectionTitle>

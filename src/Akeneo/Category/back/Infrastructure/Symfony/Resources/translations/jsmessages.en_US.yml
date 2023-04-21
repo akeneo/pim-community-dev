@@ -39,7 +39,7 @@ akeneo.category:
                     title: Options
                     value_per_channel: Value per Channel
                     value_per_locale: Value per Locale
-                    rich_text: Text Rich Area
+                    rich_text: Rich Text Editor
                 translations:
                     title: Label translations
         add_attribute:

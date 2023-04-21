@@ -31,8 +31,8 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
         ></AttributeList>
-        {featureFlag.isEnabled('category_template_customization') && (
-          <AttributeSettings attribute={selectedAttribute} catalogLocales={locales || []}></AttributeSettings>
+        {featureFlag.isEnabled('category_template_customization') && locales && (
+          <AttributeSettings attribute={selectedAttribute} catalogLocales={locales}></AttributeSettings>
         )}
       </Attributes>
     </FormContainer>
