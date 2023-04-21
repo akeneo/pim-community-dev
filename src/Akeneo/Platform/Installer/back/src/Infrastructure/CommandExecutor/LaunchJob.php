@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\CommandExecutor;
 
-use Akeneo\Platform\Installer\Domain\CommandExecutor\AkeneoBatchJobInterface;
+use Akeneo\Platform\Installer\Domain\CommandExecutor\LaunchJobInterface;
 
-final class AkeneoBatchJob extends AbstractCommandExecutor implements AkeneoBatchJobInterface
+final class LaunchJob extends AbstractCommandExecutor implements LaunchJobInterface
 {
     public function getName(): string
     {

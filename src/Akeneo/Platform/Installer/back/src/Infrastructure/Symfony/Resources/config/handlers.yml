@@ -14,6 +14,6 @@ services:
       - '@Akeneo\Platform\Installer\Infrastructure\Query\Yaml\GetJobDefinition'
       - '@Akeneo\Platform\Installer\Infrastructure\Query\Sql\RemoveJobInstance'
       - '@Akeneo\Platform\Job\Application\CreateJobInstanceHandler'
-      - '@Akeneo\Platform\Job\Application\LaunchJobInstance\LaunchJobInstanceHandler'
+      - '@Akeneo\Platform\Installer\Infrastructure\CommandExecutor\LaunchJob'
       - '@event_dispatcher'
       - [ 'AkeneoInstallerBundle/Resources/fixtures/fixtures_jobs.yml' ]

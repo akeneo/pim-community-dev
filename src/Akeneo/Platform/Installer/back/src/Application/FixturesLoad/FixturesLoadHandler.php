@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Application\FixturesLoad;
 
+use Akeneo\Platform\Installer\Domain\CommandExecutor\LaunchJobInterface;
 use Akeneo\Platform\Installer\Domain\Event\InstallerEvent;
 use Akeneo\Platform\Installer\Domain\Event\InstallerEvents;
 use Akeneo\Platform\Installer\Domain\Query\Sql\RemoveJobInstanceInterface;
@@ -18,6 +19,7 @@ use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstan
 use Akeneo\Platform\Job\ServiceApi\JobInstance\File;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceCommand;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\LaunchJobInstanceHandlerInterface;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -30,7 +32,7 @@ final class FixturesLoadHandler
         private readonly GetJobDefinitionInterface $getJobDefinition,
         private readonly RemoveJobInstanceInterface $removeJobInstance,
         private readonly CreateJobInstanceHandlerInterface $createJobInstanceHandler,
-        private readonly LaunchJobInstanceHandlerInterface $launchJobInstanceHandler,
+        private readonly LaunchJobInterface $launchJob,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly array $jobsFilePaths,
     ) {
@@ -74,6 +76,7 @@ final class FixturesLoadHandler
 
         $jobDefinitions = $this->getJobDefinition->get($this->jobsFilePaths);
         foreach ($jobDefinitions as $jobDefinition) {
+            $jobDefinition['configuration']['storage']['file_path'] = sprintf('%s/%s', $options['catalog'], $jobDefinition['configuration']['storage']['file_path']);
             $this->createJobInstanceHandler->handle(new CreateJobInstanceCommand(
                 $jobDefinition['type'],
                 $jobDefinition['code'],
@@ -105,19 +108,15 @@ final class FixturesLoadHandler
                 sprintf('Please wait, the "%s" are processing...', $jobDefinition['code']),
             );
 
-            $filePath = sprintf('%s/%s', $options['catalog'], $jobDefinition['configuration']['storage']['file_path']);
+            /** @var BufferedOutput $output */
+            $output = $this->launchJob->execute([
+                'code' => $jobDefinition['code'],
+                '--no-debug' => true,
+                '--no-log' => true,
+                '-v' => true,
+            ], true);
 
-            if (!$resource = fopen($filePath, 'r')) {
-                throw new \Exception(sprintf('unknown file %s', $filePath));
-            }
-
-            $this->launchJobInstanceHandler->handle(new LaunchJobInstanceCommand(
-                $jobDefinition['code'],
-                new File(
-                    $jobDefinition['configuration']['storage']['file_path'],
-                    $resource,
-                ),
-            ));
+            $io->write($output->fetch());
 
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($jobDefinition['code'], [

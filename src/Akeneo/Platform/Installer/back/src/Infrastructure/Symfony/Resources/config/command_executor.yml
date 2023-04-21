@@ -16,7 +16,7 @@ services:
     arguments:
       - '@kernel'
 
-  Akeneo\Platform\Installer\Infrastructure\CommandExecutor\AkeneoBatchJob:
+  Akeneo\Platform\Installer\Infrastructure\CommandExecutor\LaunchJob:
     arguments:
       - '@kernel'
 

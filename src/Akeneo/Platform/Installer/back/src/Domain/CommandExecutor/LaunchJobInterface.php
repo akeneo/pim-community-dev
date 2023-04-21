@@ -9,6 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Domain\CommandExecutor;
 
-interface AkeneoBatchJobInterface extends CommandExecutorInterface
+interface LaunchJobInterface extends CommandExecutorInterface
 {
 }
