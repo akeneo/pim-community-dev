@@ -56,6 +56,7 @@
 - PIM-10936: Fix an issue where completeness could not be saved after migrating to UUIDs
 - PIM-10938: Fix getNextObject when use clicks on variant during sequential edit
 - PIM-10948: Fix number value comparison
+- PIM-10955: Temporary rollback of PIM-10916 causing performance issue on categories API
 
 ## Improvements
 
