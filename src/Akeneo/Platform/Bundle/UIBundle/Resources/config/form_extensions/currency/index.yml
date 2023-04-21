@@ -30,7 +30,7 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-currency-index
         targetZone: helper
-        feature: reset_pim
+        feature: sandbox_banner
 
     pim-currency-index-breadcrumbs:
         module: pim/common/breadcrumbs

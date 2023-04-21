@@ -6,7 +6,7 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-attribute-group-edit-form
         targetZone: helper
-        feature: reset_pim
+        feature: sandbox_banner
 
     pim-attribute-group-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs

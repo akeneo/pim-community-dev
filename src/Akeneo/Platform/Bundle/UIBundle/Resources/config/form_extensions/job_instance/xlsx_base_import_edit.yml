@@ -21,7 +21,7 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-job-instance-xlsx-base-import-edit
         targetZone: helper
-        feature: reset_pim
+        feature: sandbox_banner
 
     pim-job-instance-xlsx-base-import-edit-breadcrumbs:
         module: pim/job/common/breadcrumb/breadcrumb

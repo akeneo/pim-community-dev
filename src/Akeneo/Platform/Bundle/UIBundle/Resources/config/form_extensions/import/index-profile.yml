@@ -30,7 +30,7 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-import-profile-index
         targetZone: helper
-        feature: reset_pim
+        feature: sandbox_banner
 
     pim-import-profile-index-breadcrumbs:
         module: pim/common/breadcrumbs

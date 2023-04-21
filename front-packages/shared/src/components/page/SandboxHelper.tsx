@@ -18,7 +18,7 @@ const SandboxHelper = () => {
   const translate = useTranslate();
   const {isEnabled} = useFeatureFlags();
 
-  if (!isEnabled('reset_pim')) {
+  if (!isEnabled('sandbox_banner')) {
     return null;
   }
 

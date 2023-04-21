@@ -30,7 +30,7 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-user-role-index
         targetZone: helper
-        feature: reset_pim
+        feature: sandbox_banner
 
     pim-user-role-index-breadcrumbs:
         module: pim/common/breadcrumbs

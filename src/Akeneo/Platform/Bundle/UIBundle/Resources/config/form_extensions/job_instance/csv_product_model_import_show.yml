@@ -21,7 +21,7 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-job-instance-csv-product-model-import-show
         targetZone: helper
-        feature: reset_pim
+        feature: sandbox_banner
 
     pim-job-instance-csv-product-model-import-show-breadcrumbs:
         module: pim/job/common/breadcrumb/breadcrumb
