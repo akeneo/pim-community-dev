@@ -18,3 +18,8 @@ Feature: Filter attributes
     When I search "side_view"
     Then the grid should contain 1 elements
     And I should see entities Side view
+
+  Scenario: Successfully search on label or code with special characters
+    When I search "_color"
+    Then the grid should contain 4 elements
+    And I should see entities Lace color, Heel color, Sole color and Cap color
