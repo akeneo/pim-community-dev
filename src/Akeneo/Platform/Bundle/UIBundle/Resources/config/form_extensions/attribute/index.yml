@@ -33,7 +33,6 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-attribute-index
         targetZone: helper
-        feature: sandbox_banner
 
     pim-attribute-index-breadcrumbs:
         module: pim/common/breadcrumbs

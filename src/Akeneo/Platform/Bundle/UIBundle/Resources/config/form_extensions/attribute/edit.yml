@@ -6,7 +6,6 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-attribute-edit-form
         targetZone: helper
-        feature: sandbox_banner
 
     pim-attribute-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs

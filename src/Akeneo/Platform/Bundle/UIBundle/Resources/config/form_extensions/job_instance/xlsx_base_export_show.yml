@@ -21,7 +21,6 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-job-instance-xlsx-base-export-show
         targetZone: helper
-        feature: sandbox_banner
 
     pim-job-instance-xlsx-base-export-show-breadcrumbs:
         module: pim/job/common/breadcrumb/breadcrumb

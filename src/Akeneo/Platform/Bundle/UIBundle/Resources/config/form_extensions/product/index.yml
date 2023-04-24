@@ -12,7 +12,6 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-product-index
         targetZone: helper
-        feature: sandbox_banner
 
     pim-product-index-grid-container:
         module: pim/common/simple-view
