@@ -54,6 +54,10 @@
 - PIM-10887: Prevent channel creation on validation error during import
 - PIM-10929: Add limit on get product history
 - PIM-10936: Fix an issue where completeness could not be saved after migrating to UUIDs
+- PIM-10938: Fix getNextObject when use clicks on variant during sequential edit
+- PIM-10948: Fix number value comparison
+- PIM-10955: Temporary rollback of PIM-10916 causing performance issue on categories API
+- PIM-10951: Fix grid search with special characters
 
 ## Improvements
 

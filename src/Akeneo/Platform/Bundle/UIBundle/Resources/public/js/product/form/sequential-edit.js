@@ -63,7 +63,11 @@ define([
       BaseForm.prototype.initialize.apply(this, arguments);
     },
     configure: function () {
-      this.model.set({objectSet: sequentialEditProvider.get()});
+      const objectSet = sequentialEditProvider.get();
+      const sequentialEditCurrentIndex = sequentialEditProvider.getIndex();
+
+      this.model.set({objectSet});
+      this.model.set({sequentialEditCurrentIndex});
 
       return BaseForm.prototype.configure.apply(this, arguments);
     },
@@ -106,8 +110,7 @@ define([
     },
     getTemplateParameters: function () {
       const objectSet = this.model.get('objectSet');
-      const currentMeta = this.getFormData().meta;
-      const index = findObjectIndex(objectSet, currentMeta.id, currentMeta.model_type);
+      const index = this.getCurrentIndex();
       const previous = objectSet[index - 1];
       const next = objectSet[index + 1];
 
@@ -142,7 +145,7 @@ define([
     },
     preloadNext: function () {
       var objectSet = this.model.get('objectSet');
-      var currentIndex = findObjectIndex(objectSet, this.getFormData().meta.id, this.getFormData().meta.model_type);
+      var currentIndex = this.getCurrentIndex();
       var pending = objectSet[currentIndex + 2];
       if (pending) {
         setTimeout(() => {
@@ -169,6 +172,12 @@ define([
       });
     },
     goToProduct: function (type, id) {
+      const objectSet = this.model.get('objectSet');
+      const sequentialEditCurrentIndex = findObjectIndex(objectSet, id, type);
+      if (sequentialEditCurrentIndex !== -1) {
+        sequentialEditProvider.setIndex(sequentialEditCurrentIndex);
+      }
+
       if (type === 'product') {
         router.redirectToRoute('pim_enrich_product_edit', {uuid: id});
       } else {
@@ -182,10 +191,13 @@ define([
       return FetcherRegistry.getFetcher(type.replace('_', '-')).fetch(id);
     },
     getNextObject: function () {
-      var objectSet = this.model.get('objectSet');
-      var currentIndex = findObjectIndex(objectSet, this.getFormData().meta.id, this.getFormData().meta.model_type);
+      const objectSet = this.model.get('objectSet');
+      const currentIndex = this.getCurrentIndex();
 
       return objectSet[currentIndex + 1];
+    },
+    getCurrentIndex: function () {
+      return this.model.get('sequentialEditCurrentIndex');
     },
   });
 });
