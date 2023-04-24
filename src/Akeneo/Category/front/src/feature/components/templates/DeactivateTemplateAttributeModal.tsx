@@ -15,7 +15,7 @@ export const DeactivateTemplateAttributeModal = ({templateUuid, attribute, onClo
   const queryClient = useQueryClient();
 
   const deactivateTemplateAttribute = useDeactivateTemplateAttribute(templateUuid, attribute);
-  const handleDeactivateTemplateAttribute = async() => {
+  const handleDeactivateTemplateAttribute = async () => {
     await deactivateTemplateAttribute();
     await queryClient.invalidateQueries(['template', templateUuid]);
     onClose();
