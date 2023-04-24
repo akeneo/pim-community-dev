@@ -27,7 +27,7 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
 
     /**
      * In EE, products & associations are cloned for the Permission feature.
-     * Because of that, sometimes, we will have in the association 2 differents instances of the same product or model
+     * Because of that, sometimes, we will have in the association 2 different instances of the same product or model
      * and Doctrine will throw an error saying it found a detached entity.
      * To fix this, we look for cloned objects by comparing the identifier.
      *
@@ -38,9 +38,13 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
         string $associationTypeCode,
         EntityWithAssociationsInterface $associatedEntity
     ): void {
-        if ($owner instanceof ProductInterface
-            && $associatedEntity instanceof ProductInterface
-            && $this->hasSameProductUuid($owner, $associatedEntity)) {
+        if ($owner instanceof ProductInterface && $associatedEntity instanceof ProductInterface &&
+            $this->hasSameProductUuid($owner, $associatedEntity)
+        ) {
+            throw new TwoWayAssociationWithTheSameProductException();
+        } elseif ($owner instanceof ProductModelInterface && $associatedEntity instanceof ProductModelInterface &&
+            $owner->getCode() === $associatedEntity->getCode()
+        ) {
             throw new TwoWayAssociationWithTheSameProductException();
         }
 

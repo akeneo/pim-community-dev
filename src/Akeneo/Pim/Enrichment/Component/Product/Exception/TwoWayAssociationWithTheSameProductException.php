@@ -10,7 +10,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
  */
 class TwoWayAssociationWithTheSameProductException extends \LogicException
 {
-    const TWO_WAY_ASSOCIATIONS_ERROR_MESSAGE = 'A 2-way association only allows two different products to be associated';
+    const TWO_WAY_ASSOCIATIONS_ERROR_MESSAGE = 'A 2-way association only allows two different products or product models to be associated';
     const TWO_WAY_ASSOCIATIONS_HELP_URL = 'https://help.akeneo.com/pim/serenity/articles/manage-your-association-types.html#create-a-2-way-association-type';
 
     public function __construct()
