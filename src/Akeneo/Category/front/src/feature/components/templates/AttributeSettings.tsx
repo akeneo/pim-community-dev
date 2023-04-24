@@ -5,22 +5,25 @@ import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {getLabelFromAttribute} from '../attributes';
 import {useUiLocales} from '../../hooks/useUiLocales';
+import {useCatalogLocales} from '../../hooks/useCatalogLocales';
 
 type Props = {
   attribute: Attribute;
-  catalogLocales: string[];
+  activatedCatalogLocales: string[];
 };
 
-export const AttributeSettings = ({attribute, catalogLocales}: Props) => {
+export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) => {
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
-  const {data: uiLocales} = useUiLocales();
+  const catalogLocales = useCatalogLocales();
 
   const [
     isDeactivateTemplateAttributeModalOpen,
     openDeactivateTemplateAttributeModal,
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
+
+  console.log(catalogLocales);
 
   return (
     <SettingsContainer>
@@ -35,8 +38,8 @@ export const AttributeSettings = ({attribute, catalogLocales}: Props) => {
         </SectionTitle.Title>
       </StyledSectionTitle>
       <div>
-        {['textarea', 'richtext'].indexOf(attribute.type) != -1 && (
-          <OptionField checked={attribute.type === 'richtext'}  readOnly={true}>
+        {['textarea', 'richtext'].includes(attribute.type) && (
+          <OptionField checked={attribute.type === 'richtext'} readOnly={true}>
             {translate('akeneo.category.template.attribute.settings.options.rich_text')}
           </OptionField>
         )}
@@ -53,14 +56,18 @@ export const AttributeSettings = ({attribute, catalogLocales}: Props) => {
         </SectionTitle.Title>
       </StyledSectionTitle>
       <div>
-        {uiLocales?.map(
-          (locale, index) =>
-            catalogLocales.indexOf(locale.code) != -1 && (
-              <TranslationField label={locale.label} locale={locale.code} key={index}>
-                <TextInput readOnly onChange={() => {}} value={attribute.labels[locale.code] || ''}></TextInput>
-              </TranslationField>
-            )
-        )}
+        {activatedCatalogLocales.map((activatedLocaleCode, index) => (
+          <TranslationField
+            label={
+              catalogLocales?.find(catalogLocale => catalogLocale.code === activatedLocaleCode)?.label ||
+              activatedLocaleCode
+            }
+            locale={activatedLocaleCode}
+            key={activatedLocaleCode}
+          >
+            <TextInput readOnly onChange={() => {}} value={attribute.labels[activatedLocaleCode] || ''}></TextInput>
+          </TranslationField>
+        ))}
       </div>
       <Footer>
         <Button level="danger" ghost onClick={openDeactivateTemplateAttributeModal}>

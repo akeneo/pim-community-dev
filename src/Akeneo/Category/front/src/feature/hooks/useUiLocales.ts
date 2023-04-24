@@ -1,21 +1,17 @@
-import {UiLocale} from '../models';
 import {useRoute} from '@akeneo-pim-community/shared';
 import {useQuery} from 'react-query';
 import {apiFetch} from '../tools/apiFetch';
 import {useCallback} from 'react';
-import {ResponseStatus} from '../models/ResponseStatus';
 
-const UI_LOCALES_FETCH_STALE_TIME = 60 * 60 * 1000;
-
-type ResultError = Error | null;
-
-type Result = {
-  status: ResponseStatus;
-  data: UiLocale[] | undefined;
-  error: ResultError;
+type UiLocale = {
+  id: number;
+  code: string;
+  label: string;
+  region: string;
+  language: string;
 };
 
-const useUiLocales = (): Result => {
+const useUiLocales = () => {
   const url = useRoute('pim_localization_locale_index', {});
 
   const fetchUiLocales = useCallback(async () => {
@@ -23,9 +19,10 @@ const useUiLocales = (): Result => {
   }, [url]);
 
   const options = {
-    staleTime: UI_LOCALES_FETCH_STALE_TIME,
+    staleTime: 60 * 60 * 1000,
   };
 
-  return useQuery<UiLocale[], ResultError, UiLocale[]>(['get-ui-locales'], fetchUiLocales, options);
+  const {data} = useQuery<UiLocale[]>(['get-ui-locales'], fetchUiLocales, options);
+  return data;
 };
 export {useUiLocales};

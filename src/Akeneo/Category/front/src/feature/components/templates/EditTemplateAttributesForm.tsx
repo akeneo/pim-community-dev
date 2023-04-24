@@ -14,10 +14,8 @@ interface Props {
 export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
   const featureFlag = useFeatureFlags();
   const [selectedAttribute, setSelectedAttribute] = useState<Attribute>(attributes[0]);
-  const {load: fetchLocales, localeCodes: locales} = useCatalogActivatedLocales();
-  useEffect(() => {
-    fetchLocales();
-  }, []);
+  const locales = useCatalogActivatedLocales();
+
   const handleAttributeSelection = (attribute: Attribute) => {
     setSelectedAttribute(attribute);
   };
@@ -30,9 +28,9 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           selectedAttribute={selectedAttribute}
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
-        ></AttributeList>
+        />
         {featureFlag.isEnabled('category_template_customization') && locales && (
-          <AttributeSettings attribute={selectedAttribute} catalogLocales={locales}></AttributeSettings>
+          <AttributeSettings attribute={selectedAttribute} activatedCatalogLocales={locales} />
         )}
       </Attributes>
     </FormContainer>
