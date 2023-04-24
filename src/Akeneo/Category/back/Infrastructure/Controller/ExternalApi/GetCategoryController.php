@@ -5,11 +5,13 @@ namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -18,6 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class GetCategoryController
 {
     public function __construct(
+        private readonly SecurityFacade $securityFacade,
         private readonly GetCategoriesParametersBuilder $parametersBuilder,
         private readonly GetCategoriesInterface $getCategories,
     ) {
@@ -28,6 +31,11 @@ final class GetCategoryController
      */
     public function __invoke(Request $request, string $code): JsonResponse|Response
     {
+        if ($this->securityFacade->isGranted('pim_api_category_list') === false) {
+            // even if this is a read endpoint, the user must be granted edition rights
+            // as this should only be used for the purpose of updating a category from the UI
+            throw new AccessDeniedException();
+        }
         $searchFilters = ['code' => [['operator' => 'IN', 'value' => [$code]]]];
         $withEnrichedAttributes = $request->query->getBoolean('with_enriched_attributes');
         $withPosition = $request->query->getBoolean('with_position');

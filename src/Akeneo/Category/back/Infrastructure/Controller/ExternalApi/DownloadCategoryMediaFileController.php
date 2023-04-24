@@ -6,8 +6,10 @@ use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -18,6 +20,7 @@ final class DownloadCategoryMediaFileController
     private const CATEGORY_STORAGE_ALIAS = 'categoryStorage';
 
     public function __construct(
+        private readonly SecurityFacade $securityFacade,
         private readonly ApiResourceRepositoryInterface $mediaRepository,
         private readonly FilesystemProvider $filesystemProvider,
         private readonly FileFetcherInterface $fileFetcher,
@@ -29,6 +32,12 @@ final class DownloadCategoryMediaFileController
      */
     public function __invoke(string $code)
     {
+        if ($this->securityFacade->isGranted('pim_api_category_list') === false) {
+            // even if this is a read endpoint, the user must be granted edition rights
+            // as this should only be used for the purpose of updating a category from the UI
+            throw new AccessDeniedException();
+        }
+
         $filename = urldecode($code);
 
         $fileInfo = $this->mediaRepository->findOneBy([
