@@ -64,36 +64,38 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults(
             [
-                'identifiers'            => [],
-                'excluded_identifiers'   => [],
-                'limit'                  => null,
-                'page'                   => null,
-                'locale'                 => null,
-                'user_groups_ids'        => null,
-                'types'                  => null,
                 'attribute_groups'       => [],
-                'rights'                 => true,
-                'localizable'            => null,
-                'scopable'               => null,
-                'is_locale_specific'     => null,
-                'useable_as_grid_filter' => null,
+                'code'                   => null,
+                'excluded_identifiers'   => [],
                 'families'               => null,
+                'identifiers'            => [],
+                'is_locale_specific'     => null,
+                'limit'                  => null,
+                'locale'                 => null,
+                'localizable'            => null,
+                'page'                   => null,
+                'rights'                 => true,
+                'scopable'               => null,
+                'types'                  => null,
+                'useable_as_grid_filter' => null,
+                'user_groups_ids'        => null,
             ]
         );
-        $resolver->setAllowedTypes('identifiers', 'array');
-        $resolver->setAllowedTypes('excluded_identifiers', 'array');
-        $resolver->setAllowedTypes('limit', ['int', 'string', 'null']);
-        $resolver->setAllowedTypes('page', ['int', 'string', 'null']);
-        $resolver->setAllowedTypes('locale', ['string', 'null']);
-        $resolver->setAllowedTypes('user_groups_ids', ['array', 'null']);
-        $resolver->setAllowedTypes('types', ['array', 'null']);
         $resolver->setAllowedTypes('attribute_groups', ['array']);
-        $resolver->setAllowedTypes('rights', ['bool']);
-        $resolver->setAllowedTypes('localizable', ['bool', 'null']);
-        $resolver->setAllowedTypes('scopable', ['bool', 'null']);
-        $resolver->setAllowedTypes('is_locale_specific', ['bool', 'null']);
-        $resolver->setAllowedTypes('useable_as_grid_filter', ['bool', 'null']);
+        $resolver->setAllowedTypes('code', ['array', 'null']);
+        $resolver->setAllowedTypes('excluded_identifiers', 'array');
         $resolver->setAllowedTypes('families', ['array', 'null']);
+        $resolver->setAllowedTypes('identifiers', 'array');
+        $resolver->setAllowedTypes('is_locale_specific', ['bool', 'null']);
+        $resolver->setAllowedTypes('limit', ['int', 'string', 'null']);
+        $resolver->setAllowedTypes('locale', ['string', 'null']);
+        $resolver->setAllowedTypes('localizable', ['bool', 'null']);
+        $resolver->setAllowedTypes('page', ['int', 'string', 'null']);
+        $resolver->setAllowedTypes('rights', ['bool']);
+        $resolver->setAllowedTypes('scopable', ['bool', 'null']);
+        $resolver->setAllowedTypes('types', ['array', 'null']);
+        $resolver->setAllowedTypes('useable_as_grid_filter', ['bool', 'null']);
+        $resolver->setAllowedTypes('user_groups_ids', ['array', 'null']);
 
         return $resolver;
     }
@@ -160,6 +162,16 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         if (null !== $options['useable_as_grid_filter']) {
             $qb->andWhere('a.useableAsGridFilter = :useable_as_grid_filter');
             $qb->setParameter('useable_as_grid_filter', $options['useable_as_grid_filter']);
+        }
+
+        if (null !== $options['code']) {
+            match($options['code']['type']) {
+                "1" => $qb->andWhere('a.code LIKE (%:code%)'),
+                "2" => $qb->andWhere('a.code NOT LIKE (%:code%)'),
+                "3" => $qb->andWhere('a.code = :code'),
+                "4" => $qb->andWhere('a.code LIKE (%:code)'),
+            };
+            $qb->setParameter('code', $options['code']['value']);
         }
 
         if (null !== $options['types']) {

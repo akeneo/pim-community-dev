@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oro\Bundle\PimDataGridBundle\Adapter;
 
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
+use spec\Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusherSpec;
 
 /**
  * Transform Oro filters into Akeneo PIM filters
@@ -77,6 +78,7 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
             'search' => $filters['label']['value'] ?? null,
             'options' => [
                 'excluded_identifiers' => $parameters['values'],
+                'code' => !empty($filters['code']) ? $filters['code'] : null,
                 'types' => $this->adaptArrayFilter($filters['type']['value'] ?? [], null),
                 'attribute_groups' =>  $this->adaptArrayFilter($filters['group']['value'] ?? [], []),
                 'scopable' => $this->adaptTrileanFilter($filters['scopable']['value'] ?? null),
