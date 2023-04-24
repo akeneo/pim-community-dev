@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Infrastructure\Query;
 
-use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobByCodesInterface;
+use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceInterface;
 use Doctrine\DBAL\Connection;
 
-final class DeleteJobByCodes implements DeleteJobByCodesInterface
+final class DeleteJobInstance implements DeleteJobInstanceInterface
 {
     public function __construct(
         private readonly Connection $connection
@@ -22,12 +22,12 @@ final class DeleteJobByCodes implements DeleteJobByCodesInterface
     /**
      * @param string[] $codes
      */
-    public function delete(array $codes): void
+    public function byCodes(array $codes): void
     {
         $sql = <<<SQL
             DELETE FROM akeneo_batch_job_instance WHERE code IN (:codes)
         SQL;
 
-        $this->connection->executeQuery($sql, ['codes' => $codes])->execute();
+        $this->connection->executeQuery($sql, ['codes' => $codes], ['codes' => Connection::PARAM_STR_ARRAY])->execute();
     }
 }

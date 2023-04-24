@@ -15,12 +15,12 @@ use Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance\DeleteJobInstan
 final class DeleteJobInstanceHandler implements DeleteJobInstanceHandlerInterface
 {
     public function __construct(
-        private readonly DeleteJobByCodesInterface $deleteJobByCodes
+        private readonly DeleteJobInstanceInterface $deleteJobInstance
     ) {
     }
 
     public function handle(DeleteJobInstanceCommand $command): void
     {
-        $this->deleteJobByCodes->delete($command->codes);
+        $this->deleteJobInstance->byCodes($command->codes);
     }
 }

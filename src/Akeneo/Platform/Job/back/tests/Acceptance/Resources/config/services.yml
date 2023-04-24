@@ -17,8 +17,8 @@ services:
   Akeneo\Platform\Job\Application\LaunchJobInstance\JobFileStorerInterface:
     class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryJobFileStorer
 
-  Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobByCodesInterface:
-    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryDeleteJobByCodes
+  Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceInterface:
+    class: Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryDeleteJobInstance
     arguments:
       - '@database_connection'
 

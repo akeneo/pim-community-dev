@@ -15,7 +15,7 @@ final class DeleteJobInstanceCommand
      * @param string[] $codes
      */
     public function __construct(
-        public array $codes,
+        public readonly array $codes,
     ) {
     }
 }

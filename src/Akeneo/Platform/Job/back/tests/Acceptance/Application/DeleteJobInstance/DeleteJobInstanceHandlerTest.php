@@ -9,24 +9,25 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Acceptance\Application\DeleteJobInstance;
 
-use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobByCodesInterface;
+use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceInterface;
 use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceHandler;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance\DeleteJobInstanceCommand;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance\DeleteJobInstanceHandlerInterface;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
-use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryDeleteJobByCodes;
+use Akeneo\Platform\Job\Test\Acceptance\FakeServices\InMemoryDeleteJobInstance;
 
 final class DeleteJobInstanceHandlerTest extends AcceptanceTestCase
 {
     private DeleteJobInstanceHandlerInterface $deleteJobInstanceHandler;
 
-    private InMemoryDeleteJobByCodes $deleteJobByCodes;
+    private InMemoryDeleteJobInstance $deleteJobInstance;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->deleteJobInstanceHandler = $this->get(DeleteJobInstanceHandler::class);
-        $this->deleteJobByCodes = $this->get(DeleteJobByCodesInterface::class);
-        DeleteJobInstanceHandlerTest::bootKernel(['debug' => false]);
+        $this->deleteJobInstance = $this->get(DeleteJobInstanceInterface::class);
     }
 
     /**
@@ -34,11 +35,11 @@ final class DeleteJobInstanceHandlerTest extends AcceptanceTestCase
      */
     public function it_delete_one_job()
     {
-        $this->deleteJobByCodes->reset();
+        $this->assertContains('job_1', $this->deleteJobInstance->getJobCodes());
 
         $this->deleteJobInstanceHandler->handle(new DeleteJobInstanceCommand(['job_1']));
 
-        $this->assertNotContains(['code' => 'job_1'], $this->deleteJobByCodes->getJobs());
+        $this->assertNotContains('job_1', $this->deleteJobInstance->getJobCodes());
     }
 
     /**
@@ -46,13 +47,12 @@ final class DeleteJobInstanceHandlerTest extends AcceptanceTestCase
      */
     public function it_delete_several_job()
     {
-        $this->deleteJobByCodes->reset();
+        $this->assertContains('job_1', $this->deleteJobInstance->getJobCodes());
+        $this->assertContains('job_2', $this->deleteJobInstance->getJobCodes());
 
         $this->deleteJobInstanceHandler->handle(new DeleteJobInstanceCommand(['job_1', 'job_2']));
 
-        $this->assertNotContains([
-            ['code' => 'job_1'],
-            ['code' => 'job_2']
-        ], $this->deleteJobByCodes->getJobs());
+        $this->assertNotContains('job_1', $this->deleteJobInstance->getJobCodes());
+        $this->assertNotContains('job_2', $this->deleteJobInstance->getJobCodes());
     }
 }

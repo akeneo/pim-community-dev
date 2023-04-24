@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Application\DeleteJobInstance;
 
-interface DeleteJobByCodesInterface
+interface DeleteJobInstanceInterface
 {
-    public function delete(array $codes): void;
+    public function byCodes(array $codes): void;
 }
