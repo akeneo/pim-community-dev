@@ -46,7 +46,7 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
     });
   }, [uuid, url]);
 
-  const response = useQuery<Template, any>(['template', uuid], fetchTemplate);
+  const response = useQuery<Template, any>(['template', uuid], fetchTemplate, {enabled: uuid !== null && url !== null});
 
   return {
     ...response,

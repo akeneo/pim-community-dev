@@ -120,7 +120,6 @@ describe('useEditCategoryForm', () => {
   let categoryResult = mockedUseCategoryResult();
 
   const renderUseEditCategoryForm = (categoryId: number) => {
-    // return renderHookWithProviders(() => useEditCategoryForm(categoryId));
     return categoryRenderHookWithProviders(() => useEditCategoryForm(categoryId));
   };
 
@@ -354,7 +353,7 @@ describe('useEditCategoryForm', () => {
     });
 
     await act(async () => {
-      result.current.saveCategory();
+      await result.current.saveCategory();
     });
 
     expect(result.current.isModified).toBe(true);

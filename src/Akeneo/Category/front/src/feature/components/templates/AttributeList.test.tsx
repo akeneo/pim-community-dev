@@ -1,10 +1,10 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
-import {EditTemplateAttributesForm} from './EditTemplateAttributesForm';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import userEvent from '@testing-library/user-event';
 import {Attribute, CategoryAttributeType} from '../../models';
+import {AttributeList} from './AttributeList';
 
 const queryClient = new QueryClient();
 
@@ -28,7 +28,12 @@ test('It open the add attribute modal when clicking on add attribute button', as
 
   renderWithProviders(
     <QueryClientProvider client={queryClient}>
-      <EditTemplateAttributesForm attributes={attributes} templateId={'template_uuid'} />
+      <AttributeList
+        attributes={attributes}
+        selectedAttribute={attributes[0]}
+        templateId={'template_uuid'}
+        onAttributeSelection={() => {}}
+      />
     </QueryClientProvider>
   );
 
