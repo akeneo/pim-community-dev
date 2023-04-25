@@ -7,7 +7,6 @@ use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,14 +31,9 @@ class ListCategoriesController
     ) {
     }
 
-    /**
-     * @AclAncestor("pim_api_category_list")
-     */
     public function __invoke(Request $request): JsonResponse|Response
     {
         if ($this->securityFacade->isGranted('pim_api_category_list') === false) {
-            // even if this is a read endpoint, the user must be granted edition rights
-            // as this should only be used for the purpose of updating a category from the UI
             throw new AccessDeniedException();
         }
         try {

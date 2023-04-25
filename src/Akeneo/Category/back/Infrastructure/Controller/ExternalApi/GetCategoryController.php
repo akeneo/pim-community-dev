@@ -4,7 +4,6 @@ namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,14 +25,9 @@ final class GetCategoryController
     ) {
     }
 
-    /**
-     * @AclAncestor("pim_api_category_list")
-     */
     public function __invoke(Request $request, string $code): JsonResponse|Response
     {
         if ($this->securityFacade->isGranted('pim_api_category_list') === false) {
-            // even if this is a read endpoint, the user must be granted edition rights
-            // as this should only be used for the purpose of updating a category from the UI
             throw new AccessDeniedException();
         }
         $searchFilters = ['code' => [['operator' => 'IN', 'value' => [$code]]]];

@@ -12,7 +12,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,8 +78,6 @@ class CategoryController
      *
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
-     *
-     * @AclAncestor("pim_api_category_edit")
      */
     public function createAction(Request $request)
     {
@@ -102,8 +99,6 @@ class CategoryController
      * @return Response
      *
      * @throws HttpException
-     *
-     * @AclAncestor("pim_api_category_edit")
      */
     public function partialUpdateListAction(Request $request)
     {
@@ -121,8 +116,6 @@ class CategoryController
      *
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
-     *
-     * @AclAncestor("pim_api_category_edit")
      */
     public function partialUpdateAction(Request $request, $code)
     {
@@ -182,8 +175,6 @@ class CategoryController
      * @param string $anchor
      *
      * @throws DocumentedHttpException
-     *
-     * @AclAncestor("pim_api_category_edit")
      */
     protected function updateCategory(CategoryInterface $category, array $data, $anchor)
     {
@@ -251,8 +242,6 @@ class CategoryController
     private function checkAclRights()
     {
         if ($this->securityFacade->isGranted('pim_api_category_edit') === false) {
-            // even if this is a read endpoint, the user must be granted edition rights
-            // as this should only be used for the purpose of updating a category from the UI
             throw new AccessDeniedException();
         }
     }
