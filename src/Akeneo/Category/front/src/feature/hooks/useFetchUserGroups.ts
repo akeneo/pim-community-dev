@@ -3,8 +3,6 @@ import {useCallback} from 'react';
 import {useQuery} from 'react-query';
 import {ResponseStatus} from '../models/ResponseStatus';
 
-const USER_GROUPS_FETCH_STALE_TIME = 60 * 60 * 1000;
-
 type ResultError = Error | null;
 
 type Result = {
@@ -32,9 +30,5 @@ export const useFetchUserGroups = (): Result => {
     return await response.json();
   }, [url]);
 
-  const options = {
-    staleTime: USER_GROUPS_FETCH_STALE_TIME,
-  };
-
-  return useQuery<UserGroup[], ResultError, UserGroup[]>(['user-groups'], fetchUserGroups, options);
+  return useQuery<UserGroup[], ResultError, UserGroup[]>(['user-groups'], fetchUserGroups);
 };

@@ -5,6 +5,7 @@ import {AttributeList} from './AttributeList';
 import {AttributeSettings} from './AttributeSettings';
 import {useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
 import {NoTemplateAttribute} from './NoTemplateAttribute';
+import {useCatalogActivatedLocales} from '../../hooks/useCatalogActivatedLocales';
 
 interface Props {
   attributes: Attribute[];
@@ -15,6 +16,7 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
   const featureFlag = useFeatureFlags();
   const translate = useTranslate();
   const [selectedAttributeUuid, setSelectedAttributeUuid] = useState<string | null>(null);
+  const locales = useCatalogActivatedLocales();
   const handleAttributeSelection = (attribute: Attribute) => {
     setSelectedAttributeUuid(attribute.uuid);
   };
@@ -40,9 +42,10 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           selectedAttribute={getSelectedAttribute()}
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
-        ></AttributeList>
-        {featureFlag.isEnabled('category_template_customization') && (
-          <AttributeSettings attribute={getSelectedAttribute()}></AttributeSettings>
+
+        />
+        {featureFlag.isEnabled('category_template_customization') && locales && (
+          <AttributeSettings attribute={getSelectedAttribute()} activatedCatalogLocales={locales} />
         )}
       </Attributes>
     </FormContainer>

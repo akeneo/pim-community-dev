@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductMo
 use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\EntityWithValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -213,7 +214,17 @@ class ProductModelController
         $data = json_decode($request->getContent(), true);
         $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $productModel]);
 
-        $this->updateProductModel($productModel, $data);
+        try {
+            $this->updateProductModel($productModel, $data);
+        } catch (TwoWayAssociationWithTheSameProductException $e) {
+            return new JsonResponse(
+                [
+                    'message' => $e->getMessage(),
+                    'global' => true,
+                ],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
 
         $violations = $this->productModelValidator->validate($productModel);
         $violations->addAll($this->localizedConverter->getViolations());
