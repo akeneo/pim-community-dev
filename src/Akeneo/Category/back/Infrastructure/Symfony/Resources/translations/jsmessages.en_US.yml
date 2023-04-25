@@ -35,6 +35,13 @@ akeneo.category:
             delete_button: Delete Attribute
             settings:
                 title: Settings
+                options:
+                    title: Options
+                    value_per_channel: Value per Channel
+                    value_per_locale: Value per Locale
+                    rich_text: Rich Text Editor
+                translations:
+                    title: Label translations
         add_attribute:
             no_attribute_title: Create your first attribute
             no_attribute_instructions: Define the content you want to associate to your categories by adding Text, Text Area or Image attributes to this template.

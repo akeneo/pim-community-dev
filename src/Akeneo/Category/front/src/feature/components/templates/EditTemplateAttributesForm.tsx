@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Attribute} from '../../models';
 import {AttributeList} from './AttributeList';
 import {AttributeSettings} from './AttributeSettings';
-import {useFeatureFlags} from "@akeneo-pim-community/shared";
+import {useFeatureFlags} from '@akeneo-pim-community/shared';
+import {useCatalogActivatedLocales} from '../../hooks/useCatalogActivatedLocales';
 
 interface Props {
   attributes: Attribute[];
@@ -13,6 +14,8 @@ interface Props {
 export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
   const featureFlag = useFeatureFlags();
   const [selectedAttribute, setSelectedAttribute] = useState<Attribute>(attributes[0]);
+  const locales = useCatalogActivatedLocales();
+
   const handleAttributeSelection = (attribute: Attribute) => {
     setSelectedAttribute(attribute);
   };
@@ -25,10 +28,10 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           selectedAttribute={selectedAttribute}
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
-        ></AttributeList>
-        {featureFlag.isEnabled('category_template_customization') &&
-          <AttributeSettings attribute={selectedAttribute}></AttributeSettings>
-        }
+        />
+        {featureFlag.isEnabled('category_template_customization') && locales && (
+          <AttributeSettings attribute={selectedAttribute} activatedCatalogLocales={locales} />
+        )}
       </Attributes>
     </FormContainer>
   );
