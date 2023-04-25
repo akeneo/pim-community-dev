@@ -58,6 +58,7 @@
 - PIM-10948: Fix number value comparison
 - PIM-10955: Temporary rollback of PIM-10916 causing performance issue on categories API
 - PIM-10951: Fix grid search with special characters
+- PIM-10639 : Prevent users to change his password without providing its current password
 
 ## Improvements
 

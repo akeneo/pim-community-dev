@@ -363,6 +363,7 @@ class UserController
         $passwordViolations = new ConstraintViolationList();
 
         $previousUserName = $user->getUserIdentifier();
+        unset($data['password']);
         if ($this->isPasswordUpdating($data)) {
             $passwordViolations = $this->validatePassword($user, $data);
             if ($passwordViolations->count() === 0) {
@@ -491,9 +492,7 @@ class UserController
 
     private function isPasswordUpdating($data): bool
     {
-        return (isset($data['current_password']) && !empty($data['current_password'])) ||
-            (isset($data['new_password']) && !empty($data['new_password'])) ||
-            (isset($data['new_password_repeat']) && !empty($data['new_password_repeat']));
+        return array_key_exists('current_password', $data) || array_key_exists('new_password', $data) || array_key_exists('new_password_repeat', $data);
     }
 
     private function additionalProperties($user): array
