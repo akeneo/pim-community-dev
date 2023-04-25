@@ -38,9 +38,10 @@ type LocaleSelectorProps = {
   values: Locale[];
   completeValues?: LocaleCode[];
   onChange?: (localeCode: LocaleCode) => void;
+  inline?: boolean;
 };
 
-const LocaleSelector = ({value, values, completeValues, onChange}: LocaleSelectorProps) => {
+const LocaleSelector = ({value, values, completeValues, onChange, inline = true}: LocaleSelectorProps) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState();
   const selectedLocale: Locale = values.find(locale => locale.code === value) || values[0];
@@ -49,7 +50,7 @@ const LocaleSelector = ({value, values, completeValues, onChange}: LocaleSelecto
 
   return (
     <DropdownContainer>
-      <SwitcherButton label={translate('pim_common.locale')} onClick={open}>
+      <SwitcherButton label={translate('pim_common.locale')} onClick={open} inline={inline}>
         <HighlightLocaleWithFlag code={selectedLocale.code} languageLabel={selectedLocale.label} />
       </SwitcherButton>
       {isOpen && (

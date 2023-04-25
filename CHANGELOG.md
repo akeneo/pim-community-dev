@@ -60,6 +60,7 @@
 - PIM-10959: Fix API response when trying to associate a product model to itself in a 2-way association
 - PIM-10951: Fix grid search with special characters
 - PIM-10916: Fix with_position results on get categories Rest API endpoint
+- PIM-10961: Use React component for product grid locale switcher
 
 ## Improvements
 
