@@ -335,6 +335,10 @@ class AttributeGroupController
             );
         }
 
+        if ($request->request->has('forAttributeCodes')) {
+            $options['forAttributeCodes'] = $request->request->get('forAttributeCodes');
+        }
+
         return $options;
     }
 

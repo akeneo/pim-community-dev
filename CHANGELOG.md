@@ -65,6 +65,7 @@
 - PIM-10909: Refactor command to remove non-existing products and models from ES index
 - PIM-10932: Fix data in NumberValueFactory if data contains a white space
 - PIM-10814: Wysiwyg now supports languages that use right-to-left (rtl) scripts
+- PIM-10783: Load only attribute groups of the current product on PEF
 
 ## Improvements
 
