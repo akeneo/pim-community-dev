@@ -93,8 +93,10 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('locale', ['string', 'null']);
         $resolver->setAllowedTypes('localizable', ['bool', 'null']);
         $resolver->setAllowedTypes('page', ['int', 'string', 'null']);
+        $resolver->setAllowedTypes('quality', ['string', 'null']);
         $resolver->setAllowedTypes('rights', ['bool']);
         $resolver->setAllowedTypes('scopable', ['bool', 'null']);
+        $resolver->setAllowedTypes('smart', ['bool', 'null']);
         $resolver->setAllowedTypes('types', ['array', 'null']);
         $resolver->setAllowedTypes('useable_as_grid_filter', ['bool', 'null']);
         $resolver->setAllowedTypes('user_groups_ids', ['array', 'null']);

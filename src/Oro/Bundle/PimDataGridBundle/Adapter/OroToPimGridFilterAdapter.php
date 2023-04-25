@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Oro\Bundle\PimDataGridBundle\Adapter;
 
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher;
-use spec\Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusherSpec;
 
 /**
  * Transform Oro filters into Akeneo PIM filters
