@@ -86,6 +86,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
   }, [activeNavigationEntry, activeSubEntryCode]);
 
   const helpCenterUrl = useMemo(() => {
+    if (!pimVersion) return 'https://help.akeneo.com';
     const isSerenity = pimVersion?.pim_version.split('.').length === 1;
     const version = isSerenity ? 'serenity' : `v${pimVersion?.pim_version.split('.')[0]}`;
     const campaign = isSerenity ? 'serenity' : `${pimVersion?.pim_edition}${pimVersion?.pim_version}`;

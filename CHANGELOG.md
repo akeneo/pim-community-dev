@@ -57,6 +57,8 @@
 - PIM-10938: Fix getNextObject when use clicks on variant during sequential edit
 - PIM-10948: Fix number value comparison
 - PIM-10955: Temporary rollback of PIM-10916 causing performance issue on categories API
+- PIM-10959: Fix API response when trying to associate a product model to itself in a 2-way association
+- PIM-10951: Fix grid search with special characters
 
 ## Improvements
 
