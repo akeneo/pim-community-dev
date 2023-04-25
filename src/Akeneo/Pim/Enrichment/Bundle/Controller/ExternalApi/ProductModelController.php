@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQ
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductModelsQueryValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductModelNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
@@ -481,6 +482,12 @@ class ProductModelController
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
                 sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                $exception
+            );
+        } catch (TwoWayAssociationWithTheSameProductException $exception) {
+            throw new DocumentedHttpException(
+                TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_HELP_URL,
+                TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_ERROR_MESSAGE,
                 $exception
             );
         } catch (InvalidArgumentException $exception) {
