@@ -170,19 +170,19 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
 
         if (null !== $options['code']) {
             switch ($options['code']['type']) {
-                case "1":
-                    $qb->andWhere("a.code LIKE :code");
+                case '1':
+                    $qb->andWhere('a.code LIKE :code');
                     $qb->setParameter('code', '%'.$options['code']['value'].'%');
                     break;
-                case "2":
+                case '2':
                     $qb->andWhere('a.code NOT LIKE :code');
                     $qb->setParameter('code', '%'.$options['code']['value'].'%');
                     break;
-                case "3":
+                case '3':
                     $qb->andWhere('a.code = :code');
                     $qb->setParameter('code', $options['code']['value']);
                     break;
-                case "4":
+                case '4':
                     $qb->andWhere('a.code LIKE :code');
                     $qb->setParameter('code', $options['code']['value'].'%');
                     break;
