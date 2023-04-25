@@ -27,7 +27,7 @@
 - PIM-10829: Fix case-sensitive locale on translatable business objects
 - PIM-10840: Fix attribute update date on attribute options change above 10000 options
 - PIM-10793: Add a command to delete expired tokens
-- PIM-10840: Fix attribute update date on attribute options change above 10000 options 
+- PIM-10840: Fix attribute update date on attribute options change above 10000 options
 - PIM-10868: Fix checkboxes on category trees
 - PIM-10832: Fix compute completeness job after removing an attribute from a family
 - PIM-10820: Partially revert [PIM-10350] to fix case sensitivity on options import
@@ -45,7 +45,7 @@
 - PIM-10925: The search by code is missing on the attribute page
 - PIM-10906: Use user timezone to display dates in history grid
 - PIM-10915: Fix attribute with numeric code throw 500 error on product history
-- PIM-10889: Update Category updated date after setting a labels and show category filtered by updated date on API REST 
+- PIM-10889: Update Category updated date after setting a labels and show category filtered by updated date on API REST
 - PIM-10919: Fix Cleaning Products with removed attributes using identifiers instead of uuids
 - PIM-10911: Add user-agent when sending an event
 - PIM-10885: Use React shared component for locale selector in product form locale switcher
@@ -59,6 +59,7 @@
 - PIM-10955: Temporary rollback of PIM-10916 causing performance issue on categories API
 - PIM-10959: Fix API response when trying to associate a product model to itself in a 2-way association
 - PIM-10951: Fix grid search with special characters
+- PIM-10949: Fix Duplicated product variant through import if you don't specify the sku
 
 ## Improvements
 
