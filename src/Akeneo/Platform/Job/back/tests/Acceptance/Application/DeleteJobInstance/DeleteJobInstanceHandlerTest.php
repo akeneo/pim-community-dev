@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Acceptance\Application\DeleteJobInstance;
 
-use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceInterface;
 use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceHandler;
+use Akeneo\Platform\Job\Application\DeleteJobInstance\DeleteJobInstanceInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance\DeleteJobInstanceCommand;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\DeleteJobInstance\DeleteJobInstanceHandlerInterface;
 use Akeneo\Platform\Job\Test\Acceptance\AcceptanceTestCase;
