@@ -36,7 +36,7 @@ class UpdateIndexVersionIntegration extends TestCase
         $numberOfDocumentBeforeMigration = $this->getNumberOfIndexedProductAndProductModel();
         $firstDocumentBeforeMigration = $this->getFirstProductAndProductModel();
 
-        $this->runUpdateIndexVersionCommand();
+        $this->assertCommandSuccess($this->runUpdateIndexVersionCommand($this->productAndProductModelIndexName));
 
         $productIndexNameAfterMigration = $this->getProductAndProductModelIndexName();
         $numberOfDocumentAfterMigration = $this->getNumberOfIndexedProductAndProductModel();
@@ -47,6 +47,14 @@ class UpdateIndexVersionIntegration extends TestCase
         $this->assertEquals($firstDocumentBeforeMigration, $firstDocumentAfterMigration);
     }
 
+    public function testCommandFailedItTheIndexGivenHaveAnAlias()
+    {
+        $this->assertCommandFailedWithMessage(
+            $this->runUpdateIndexVersionCommand($this->getProductAndProductModelIndexName()),
+            "Index with alias is not allowed, you should give the alias instead"
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -55,17 +63,18 @@ class UpdateIndexVersionIntegration extends TestCase
         return $this->catalog->useFunctionalCatalog('catalog_modeling');
     }
 
-    private function runUpdateIndexVersionCommand(): void
+    private function runUpdateIndexVersionCommand(string $indexName): CommandTester
     {
         $application = new Application(self::$kernel);
         $command = $application->find('akeneo:elasticsearch:update-index-version');
         $commandTester = new CommandTester($command);
-        $exitCode = $commandTester->execute([
-            'command' => $command->getName(),
-            'indices' => [$this->productAndProductModelIndexName]
-        ]);
 
-        $this->assertSame(0, $exitCode);
+        $commandTester->execute([
+            'command' => $command->getName(),
+            'indices' => [$indexName]
+        ], ['capture_stderr_separately' => true]);
+
+        return $commandTester;
     }
 
     private function getClient(): Client
@@ -104,5 +113,20 @@ class UpdateIndexVersionIntegration extends TestCase
         $response = $this->getClient()->search(['index' => $this->productAndProductModelIndexName, "size" => 1]);
 
         return $response['hits']['hits'][0]['_source'];
+    }
+
+    private function assertCommandSuccess(CommandTester $commandTester): void
+    {
+        $exitCode = $commandTester->getStatusCode();
+
+        $this->assertSame(0, $exitCode);
+    }
+
+    private function assertCommandFailedWithMessage(CommandTester $commandTester, string $errorMessage): void
+    {
+        $exitCode = $commandTester->getStatusCode();
+
+        $this->assertSame(1, $exitCode);
+        $this->assertStringContainsString($errorMessage, $commandTester->getErrorOutput());
     }
 }

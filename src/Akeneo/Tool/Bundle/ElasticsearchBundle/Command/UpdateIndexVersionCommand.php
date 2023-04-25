@@ -16,6 +16,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -67,7 +68,8 @@ class UpdateIndexVersionCommand extends Command
                     $destinationIndexName
                 );
             } catch (\Exception $e) {
-                $output->writeln(sprintf(
+                $errOutput = $output instanceof ConsoleOutputInterface ? $output->getErrorOutput() : $output;
+                $errOutput->writeln(sprintf(
                     "<error>Index %s have not been updated du to the following error: \n%s</error>",
                     $sourceAliasName,
                     $e->getMessage()
@@ -88,8 +90,12 @@ class UpdateIndexVersionCommand extends Command
         string $destinationIndexName,
     ): void {
         $sourceIndexConfiguration = $this->indexUpdaterClient->getIndexConfiguration($sourceAliasName);
-        $sourceIndexHaveAlias = $this->indexUpdaterClient->indexHaveAlias($sourceAliasName);
-        if (!$sourceIndexHaveAlias) {
+        $sourceIsAnAlias = $this->indexUpdaterClient->isAnAlias($sourceAliasName);
+        if (!$sourceIsAnAlias && $this->indexUpdaterClient->haveAlias($sourceAliasName)) {
+            throw new \Exception('Index with alias is not allowed, you should give the alias instead');
+        }
+
+        if (!$sourceIsAnAlias) {
             $newSourceAliasName = sprintf('%s_migration_alias', $sourceAliasName);
             $this->indexUpdaterClient->createAlias($newSourceAliasName, $sourceAliasName);
             $sourceAliasName = $newSourceAliasName;
@@ -109,7 +115,7 @@ class UpdateIndexVersionCommand extends Command
 
         $this->indexUpdaterClient->reindexDocumentsAfterSwitch($destinationAliasName, $sourceAliasName);
         $this->indexUpdaterClient->removeIndex($sourceIndexName);
-        if (!$sourceIndexHaveAlias) {
+        if (!$sourceIsAnAlias) {
             $this->indexUpdaterClient->renameAlias($sourceAliasName, $sourceIndexName, $destinationIndexName);
         }
     }
