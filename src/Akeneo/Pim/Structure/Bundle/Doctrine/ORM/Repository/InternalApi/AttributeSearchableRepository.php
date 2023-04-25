@@ -74,8 +74,10 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 'locale'                 => null,
                 'localizable'            => null,
                 'page'                   => null,
+                'quality'                => null,
                 'rights'                 => true,
                 'scopable'               => null,
+                'smart'                  => null,
                 'types'                  => null,
                 'useable_as_grid_filter' => null,
                 'user_groups_ids'        => null,
@@ -165,13 +167,24 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         }
 
         if (null !== $options['code']) {
-            match($options['code']['type']) {
-                "1" => $qb->andWhere('a.code LIKE (%:code%)'),
-                "2" => $qb->andWhere('a.code NOT LIKE (%:code%)'),
-                "3" => $qb->andWhere('a.code = :code'),
-                "4" => $qb->andWhere('a.code LIKE (%:code)'),
-            };
-            $qb->setParameter('code', $options['code']['value']);
+            switch ($options['code']['type']) {
+                case "1":
+                    $qb->andWhere("a.code LIKE :code");
+                    $qb->setParameter('code', '%'.$options['code']['value'].'%');
+                    break;
+                case "2":
+                    $qb->andWhere('a.code NOT LIKE :code');
+                    $qb->setParameter('code', '%'.$options['code']['value'].'%');
+                    break;
+                case "3":
+                    $qb->andWhere('a.code = :code');
+                    $qb->setParameter('code', $options['code']['value']);
+                    break;
+                case "4":
+                    $qb->andWhere('a.code LIKE :code');
+                    $qb->setParameter('code', $options['code']['value'].'%');
+                    break;
+            }
         }
 
         if (null !== $options['types']) {
