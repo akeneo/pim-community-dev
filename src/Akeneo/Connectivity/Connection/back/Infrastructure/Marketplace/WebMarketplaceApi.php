@@ -39,7 +39,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
         $edition = $this->webMarketplaceAliases->getEdition();
         $version = $this->webMarketplaceAliases->getVersion();
 
-        $response = $this->client->request('GET', '/api/2.0/extensions', [
+        $response = $this->client->request('GET', '/api/1.0/extensions', [
             'query' => [
                 'extension_type' => 'connector',
                 'edition' => $edition,
@@ -61,7 +61,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
         $edition = $this->webMarketplaceAliases->getEdition();
         $version = $this->webMarketplaceAliases->getVersion();
 
-        $response = $this->client->request('GET', '/api/2.0/extensions', [
+        $response = $this->client->request('GET', '/api/1.0/extensions', [
             'query' => [
                 'extension_type' => 'app',
                 'edition' => $edition,
@@ -95,7 +95,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
     public function validateCodeChallenge(string $appId, string $codeIdentifier, string $codeChallenge): bool
     {
         try {
-            $response = $this->client->request('POST', \sprintf('/api/2.0/app/%s/challenge', $appId), [
+            $response = $this->client->request('POST', \sprintf('/api/1.0/app/%s/challenge', $appId), [
                 'json' => [
                     'code_identifier' => $codeIdentifier,
                     'code_challenge' => $codeChallenge,
