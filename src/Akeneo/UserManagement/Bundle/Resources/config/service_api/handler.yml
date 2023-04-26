@@ -30,3 +30,18 @@ services:
     arguments:
       - '@pim_user.repository.user'
       - '@pim_user.manager'
+
+  Akeneo\UserManagement\ServiceApi\User\UpdateUserHandlerInterface:
+    class: Akeneo\UserManagement\Application\Handler\UpdateUserHandler
+    arguments:
+      - '@pim_user.updater.user'
+      - '@validator'
+      - '@doctrine.orm.entity_manager'
+      - '@pim_user.saver.user'
+      - '@Akeneo\UserManagement\ServiceApi\PasswordCheckerInterface'
+
+  Akeneo\UserManagement\ServiceApi\PasswordCheckerInterface:
+    class: Akeneo\UserManagement\Application\Handler\PasswordChecker
+    arguments:
+      - '@security.password_hasher'
+      - '@translator'

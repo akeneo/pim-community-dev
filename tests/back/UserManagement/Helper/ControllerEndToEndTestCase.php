@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Routing\RouterInterface;
 
-abstract class ControllerIntegrationTestCase extends WebTestCase
+abstract class ControllerEndToEndTestCase extends WebTestCase
 {
     protected KernelBrowser $client;
     protected CatalogInterface $catalog;

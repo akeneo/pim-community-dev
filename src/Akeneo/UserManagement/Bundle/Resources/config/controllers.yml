@@ -16,14 +16,14 @@ services:
             - '@pim_user.saver.user'
             - '@pim_enrich.normalizer.violation'
             - '@pim_user.factory.user'
-            - '@security.password_hasher'
             - '@event_dispatcher'
             - '@session'
-            - '@doctrine.orm.entity_manager'
             - '@pim_user.remover.user'
             - '@pim_catalog.localization.factory.number'
             - '@translator'
             - '@oro_security.security_facade'
+            - '@Akeneo\UserManagement\ServiceApi\PasswordCheckerInterface'
+            - '@Akeneo\UserManagement\ServiceApi\User\UpdateUserHandlerInterface'
 
     pim_user.controller.security_rest:
         public: true

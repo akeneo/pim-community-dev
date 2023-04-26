@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace AkeneoTest\UserManagement\EndToEnd\Bundle\Controller\Rest;
 
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Tool\Bundle\BatchBundle\Item\Validator\ValidatorInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\UserManagement\Component\Factory\UserFactory;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use AkeneoTest\UserManagement\Helper\ControllerIntegrationTestCase;
+use AkeneoTest\UserManagement\Helper\ControllerEndToEndTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserControllerEndToEnd extends ControllerIntegrationTestCase
+class UserControllerEndToEnd extends ControllerEndToEndTestCase
 {
     protected function setUp(): void
     {
@@ -25,14 +21,7 @@ class UserControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItUpdatePassword(): void
     {
-        $user = $this->createUser([
-            'username' => 'Julien',
-            'first_name' => 'Julien',
-            'last_name' => 'Julien',
-            'email' => 'Julien@akeneo.com',
-            'password' => 'Julien',
-            'default_category_tree' => 'master',
-        ]);
+        $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
 
         $newPassword = 'newJulien';
         $this->callApiRoute(
@@ -99,14 +88,7 @@ class UserControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItUpdateUser(): void
     {
-        $user = $this->createUser([
-            'username' => 'Julien',
-            'first_name' => 'Julien',
-            'last_name' => 'Julien',
-            'email' => 'Julien@akeneo.com',
-            'password' => 'Julien',
-            'default_category_tree' => 'master',
-        ]);
+        $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
 
         $this->callApiRoute(
             client: $this->client,
@@ -195,16 +177,9 @@ class UserControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertJsonStringEqualsJsonString(json_encode($expectedContent), $response->getContent());
     }
 
-    public function testItThrowsWrongPasswordError(): void
+    public function testItThrowsPasswordErrors(): void
     {
-        $user = $this->createUser([
-            'username' => 'Julien',
-            'first_name' => 'Julien',
-            'last_name' => 'Julien',
-            'email' => 'Julien@akeneo.com',
-            'password' => 'Julien',
-            'default_category_tree' => 'master',
-        ]);
+        $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
 
         $newPassword = 'newJulien';
         $this->callApiRoute(
@@ -216,8 +191,8 @@ class UserControllerEndToEnd extends ControllerIntegrationTestCase
             method: Request::METHOD_POST,
             content: json_encode([
                 'current_password' => 'FalseJulien',
-                'new_password' => $newPassword,
-                'new_password_repeat' => $newPassword
+                'new_password' => '1234',
+                'new_password_repeat' => 'otherJulien'
             ]),
         );
 
@@ -226,44 +201,16 @@ class UserControllerEndToEnd extends ControllerIntegrationTestCase
                 'path' => "current_password",
                 'message'=> "Wrong password",
                 'global' => false
-            ]
-        ];
-        $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString(json_encode($expectedContent), $response->getContent());
-    }
-
-    public function testItThrowsPasswordDoesNotMatch(): void
-    {
-        $user = $this->createUser([
-            'username' => 'Julien',
-            'first_name' => 'Julien',
-            'last_name' => 'Julien',
-            'email' => 'Julien@akeneo.com',
-            'password' => 'Julien',
-            'default_category_tree' => 'master',
-        ]);
-
-        $newPassword = 'newJulien';
-        $this->callApiRoute(
-            client: $this->client,
-            route: 'pim_user_user_rest_post',
-            routeArguments: [
-                'identifier' => (string) $user->getId(),
             ],
-            method: Request::METHOD_POST,
-            content: json_encode([
-                'current_password' => 'Julien',
-                'new_password' => $newPassword,
-                'new_password_repeat' => 'otherJulien'
-            ]),
-        );
-
-        $expectedContent = [
             [
-                'path'=> "new_password_repeat",
-                'message' => "Passwords do not match",
-                'global'=> false
+                'path' => "new_password",
+                'message'=> "Password must contain at least 8 characters",
+                'global' => false
+            ],
+            [
+                'path' => "new_password_repeat",
+                'message'=> "Passwords do not match",
+                'global' => false
             ]
         ];
         $response = $this->client->getResponse();
@@ -273,14 +220,7 @@ class UserControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItTryToForcePasswordUpdateWithNullNewPasswordsPropertyFailed(): void
     {
-        $user = $this->createUser([
-            'username' => 'Julien',
-            'first_name' => 'Julien',
-            'last_name' => 'Julien',
-            'email' => 'Julien@akeneo.com',
-            'password' => 'Julien',
-            'default_category_tree' => 'master',
-        ]);
+        $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
 
         $this->callApiRoute(
             client: $this->client,
@@ -317,14 +257,7 @@ class UserControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItTryToForcePasswordUpdateFailed(): void
     {
-        $user = $this->createUser([
-            'username' => 'Julien',
-            'first_name' => 'Julien',
-            'last_name' => 'Julien',
-            'email' => 'Julien@akeneo.com',
-            'password' => 'Julien',
-            'default_category_tree' => 'master',
-        ]);
+        $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
 
         $tryPassword = 'newJulien';
         $this->callApiRoute(
@@ -387,28 +320,8 @@ class UserControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertTrue($this->get('security.user_password_hasher')->isPasswordValid($user, 'Julien'));
     }
 
-    private function createUser(array $data): UserInterface
-    {
-        /** @var UserFactory $userFactory */
-        $userFactory = $this->get('pim_user.factory.user');
-        /** @var ObjectUpdaterInterface $userUpdater */
-        $userUpdater = $this->get('pim_user.updater.user');
-        /** @var ValidatorInterface $validator */
-        $validator = $this->get('validator');
-        /** @var SaverInterface $validator */
-        $userSaver = $this->get('pim_user.saver.user');
-
-        $user = $userFactory->create();
-        $userUpdater->update($user, $data);
-
-        $violations = $validator->validate($user);
-        if (count($violations) > 0) {
-            throw new \InvalidArgumentException((string)$violations);
-        }
-
-        $userSaver->save($user);
-
-        return $user;
+    private function getUserLoader(): UserLoader {
+        return $this->get(UserLoader::class);
     }
     
     protected function getConfiguration(): Configuration

@@ -11,6 +11,11 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\ServiceApi\PasswordCheckerInterface;
+use Akeneo\UserManagement\ServiceApi\User\DeleteUserCommand;
+use Akeneo\UserManagement\ServiceApi\User\UpdateUserCommand;
+use Akeneo\UserManagement\ServiceApi\User\UpdateUserHandlerInterface;
+use Akeneo\UserManagement\ServiceApi\ViolationsException;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -28,7 +33,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -41,62 +45,27 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserController
+final class UserController
 {
-    private const PASSWORD_MINIMUM_LENGTH = 8;
-    private const PASSWORD_MAXIMUM_LENGTH = 4096;
-
-    protected TokenStorageInterface $tokenStorage;
-    protected NormalizerInterface $normalizer;
-    protected ObjectRepository $repository;
-    protected ObjectUpdaterInterface $updater;
-    protected ValidatorInterface $validator;
-    protected SaverInterface $saver;
-    protected NormalizerInterface $constraintViolationNormalizer;
-    protected SimpleFactoryInterface $factory;
-    protected UserPasswordHasherInterface $encoder;
-    private EventDispatcherInterface $eventDispatcher;
-    private Session $session;
-    private ObjectManager $objectManager;
-    private NumberFactory $numberFactory;
-    private RemoverInterface $remover;
-    private TranslatorInterface $translator;
-    private SecurityFacade $securityFacade;
 
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        ObjectRepository $repository,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        SaverInterface $saver,
-        NormalizerInterface $constraintViolationNormalizer,
-        SimpleFactoryInterface $factory,
-        UserPasswordHasherInterface $encoder,
-        EventDispatcherInterface $eventDispatcher,
-        Session $session,
-        ObjectManager $objectManager,
-        RemoverInterface $remover,
-        NumberFactory $numberFactory,
-        TranslatorInterface $translator,
-        SecurityFacade $securityFacade
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly NormalizerInterface $normalizer,
+        private readonly ObjectRepository $repository,
+        private readonly ObjectUpdaterInterface $updater,
+        private readonly ValidatorInterface $validator,
+        private readonly SaverInterface $saver,
+        private readonly NormalizerInterface $constraintViolationNormalizer,
+        private readonly SimpleFactoryInterface $factory,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Session $session,
+        private readonly RemoverInterface $remover,
+        private readonly NumberFactory $numberFactory,
+        private readonly TranslatorInterface $translator,
+        private readonly SecurityFacade $securityFacade,
+        private readonly PasswordCheckerInterface $passwordChecker,
+        private readonly UpdateUserHandlerInterface $updateUserHandler,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->normalizer = $normalizer;
-        $this->repository = $repository;
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->saver = $saver;
-        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->factory = $factory;
-        $this->encoder = $encoder;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->session = $session;
-        $this->objectManager = $objectManager;
-        $this->remover = $remover;
-        $this->numberFactory = $numberFactory;
-        $this->translator = $translator;
-        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -168,7 +137,22 @@ class UserController
             unset($data['groups']);
         }
 
-        return $this->updateUser($user, $data);
+        try {
+            $updateUserCommand = new UpdateUserCommand($user, $data);
+            $user = $this->updateUserHandler->handle($updateUserCommand);
+            $previousUserName = $user->getUserIdentifier();
+
+            return new JsonResponse($this->normalizer->normalize($this->update($user, $previousUserName), 'internal_api'));
+        } catch (ViolationsException $violationsException) {
+            $normalizedViolations = [];
+            foreach ($violationsException->violations() as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api'
+                );
+            }
+            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -196,7 +180,8 @@ class UserController
         unset($data['groups']);
         unset($data['visible_group_ids']);
 
-        return $this->updateUser($user, $data);
+        $updateUserCommand = new UpdateUserCommand($user, $data);
+        return $this->updateUserHandler->handle($updateUserCommand);
     }
 
     protected function update(UserInterface $user, ?string $previousUsername = null)
@@ -351,59 +336,6 @@ class UserController
         return $user;
     }
 
-    /**
-     * @param UserInterface $user
-     * @param array $data
-     *
-     * @return JsonResponse
-     */
-    private function updateUser(UserInterface $user, array $data): JsonResponse
-    {
-        $violations = new ConstraintViolationList();
-        $passwordViolations = new ConstraintViolationList();
-
-        $previousUserName = $user->getUserIdentifier();
-        unset($data['password']);
-        if ($this->isPasswordUpdating($data)) {
-            $passwordViolations = $this->validatePassword($user, $data);
-            if ($passwordViolations->count() === 0) {
-                $data['password'] = $data['new_password'];
-            }
-        }
-
-        unset($data['current_password'], $data['new_password'], $data['new_password_repeat']);
-
-        if (0 === $passwordViolations->count()) {
-            $this->updater->update($user, $data);
-            $violations = $this->validator->validate($user);
-        }
-
-        if (0 < $violations->count() || 0 < $passwordViolations->count()) {
-            $normalizedViolations = [];
-            foreach ($violations as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                    $violation,
-                    'internal_api'
-                );
-            }
-
-            unset($data['password']);
-            foreach ($passwordViolations as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                    $violation,
-                    'internal_api'
-                );
-            }
-            $this->objectManager->refresh($user);
-
-            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
-        }
-
-        $this->saver->save($user);
-
-        return new JsonResponse($this->normalizer->normalize($this->update($user, $previousUserName), 'internal_api'));
-    }
-
     private function validatePasswordCreate(array $data): ConstraintViolationListInterface
     {
         $violations = new ConstraintViolationList();
@@ -411,88 +343,10 @@ class UserController
         $newPassword = $data['password'] ?? '';
         $newPasswordRepeat = $data['password_repeat'] ?? '';
 
-        $violations->addAll($this->validatePasswordLength($newPassword, 'password'));
-        $violations->addAll($this->validatePasswordMatch($newPassword, $newPasswordRepeat, 'password_repeat'));
+        $violations->addAll($this->passwordChecker->validatePasswordLength($newPassword, 'password'));
+        $violations->addAll($this->passwordChecker->validatePasswordMatch($newPassword, $newPasswordRepeat, 'password_repeat'));
 
         return $violations;
-    }
-
-    private function validatePassword(UserInterface $user, array $data): ConstraintViolationListInterface
-    {
-        $violations = new ConstraintViolationList();
-
-        $currentPassword = $data['current_password'] ?? '';
-        $newPassword = $data['new_password'] ?? '';
-        $newPasswordRepeat = $data['new_password_repeat'] ?? '';
-
-        if (!$this->encoder->isPasswordValid($user, $currentPassword)) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.current_password.wrong'),
-                '',
-                [],
-                '',
-                'current_password',
-                ''
-            ));
-        }
-
-        $violations->addAll($this->validatePasswordLength($newPassword, 'new_password'));
-        $violations->addAll($this->validatePasswordMatch($newPassword, $newPasswordRepeat, 'new_password_repeat'));
-
-        return $violations;
-    }
-
-    private function validatePasswordMatch(string $password, string $passwordRepeat, string $propertyPath): ConstraintViolationListInterface
-    {
-        $violations = new ConstraintViolationList();
-
-        if ($password !== $passwordRepeat) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.new_password_repeat.not_match'),
-                '',
-                [],
-                '',
-                $propertyPath,
-                ''
-            ));
-        }
-
-        return $violations;
-    }
-
-    private function validatePasswordLength(string $password, string $propertyPath): ConstraintViolationListInterface
-    {
-        $violations = new ConstraintViolationList();
-
-        if (self::PASSWORD_MINIMUM_LENGTH > mb_strlen($password)) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.new_password.minimum_length'),
-                '',
-                [],
-                '',
-                $propertyPath,
-                ''
-            ));
-        // We have to use `strlen` here because Symfony's BasePasswordEncoder will check
-        // the actual byte count when trying to encode it with salt.
-        // See: Symfony\Component\Security\Core\Encoder\BasePasswordEncoder
-        } elseif (self::PASSWORD_MAXIMUM_LENGTH < strlen($password)) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.new_password.maximum_length'),
-                '',
-                [],
-                '',
-                $propertyPath,
-                ''
-            ));
-        }
-
-        return $violations;
-    }
-
-    private function isPasswordUpdating($data): bool
-    {
-        return array_key_exists('current_password', $data) || array_key_exists('new_password', $data) || array_key_exists('new_password_repeat', $data);
     }
 
     private function additionalProperties($user): array
