@@ -4,7 +4,6 @@ import {userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {getLabelFromAttribute} from '../attributes';
-import {useUiLocales} from '../../hooks/useUiLocales';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
 
 type Props = {
@@ -22,8 +21,6 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     openDeactivateTemplateAttributeModal,
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
-
-  console.log(catalogLocales);
 
   return (
     <SettingsContainer>

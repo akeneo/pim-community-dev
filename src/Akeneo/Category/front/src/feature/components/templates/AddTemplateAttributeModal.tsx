@@ -44,7 +44,7 @@ type Props = {
 };
 
 export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
-  const catalogLocale = userContext.get('catalogLocale');
+  const defaultCatalogLocale = userContext.get('catalog_default_locale');
   const mutation = useCreateAttribute();
   const notify = useNotify();
   const queryClient = useQueryClient();
@@ -77,7 +77,7 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
       {
         templateId,
         code: form.code,
-        locale: catalogLocale,
+        locale: defaultCatalogLocale,
         label: form.label,
         type: form.type,
         isScopable: form.isScopable,
@@ -110,7 +110,7 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
               {translate('akeneo.category.template.add_attribute.confirmation_modal.link')}
             </Link>
           </HelperContent>
-          <Field label={translate('pim_common.label')} locale={catalogLocale}>
+          <Field label={translate('pim_common.label')} locale={defaultCatalogLocale}>
             <TextInput
               value={form.label}
               invalid={!!error.label}
