@@ -464,7 +464,7 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
-                      INSTANCE_NAME_PREFIX=heedjy
+                      INSTANCE_NAME_PREFIX=heedjy-2
                       INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
                       ACTIVATE_MONITORING=true
                       echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
