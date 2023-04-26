@@ -64,6 +64,7 @@ class AkeneoElasticsearchExtension extends Extension
                 $container->register($index['service_name'], DualIndexationClient::class)
                     ->setArguments([
                         new Reference('akeneo_elasticsearch.client_builder'),
+                        new Reference('event_dispatcher'),
                         new Reference($configurationLoaderServiceName),
                         $config['hosts'],
                         $index['index_name'],
@@ -78,6 +79,7 @@ class AkeneoElasticsearchExtension extends Extension
                 $container->register($index['service_name'], Client::class)
                     ->setArguments([
                         new Reference('akeneo_elasticsearch.client_builder'),
+                        new Reference('event_dispatcher'),
                         new Reference($configurationLoaderServiceName),
                         $config['hosts'],
                         $index['index_name'],

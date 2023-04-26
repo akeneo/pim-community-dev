@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Event\RequestMade;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\ElasticsearchProjection;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
@@ -13,6 +14,7 @@ use Elasticsearch\ClientBuilder;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\Conflict409Exception;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Wrapper for the PHP Elasticsearch client.
@@ -28,6 +30,7 @@ class Client
     private const NUMBER_OF_BATCHES_ON_RETRY = 2;
 
     private ClientBuilder $builder;
+    private EventDispatcherInterface $dispatcher;
     private Loader $configurationLoader;
     private array $hosts;
     private string $indexName;
@@ -44,6 +47,7 @@ class Client
      */
     public function __construct(
         ClientBuilder $builder,
+        EventDispatcherInterface $dispatcher,
         Loader $configurationLoader,
         array $hosts,
         string $indexName,
@@ -53,6 +57,7 @@ class Client
         int $maxNumberOfRetries=3
     ) {
         $this->builder = $builder;
+        $this->dispatcher = $dispatcher;
         $this->configurationLoader = $configurationLoader;
         $this->hosts = $hosts;
         $this->indexName = $indexName;
@@ -88,6 +93,7 @@ class Client
 
         try {
             $response = $this->client->index($params);
+            $this->dispatcher->dispatch(new RequestMade('index', $params, $response));
         } catch (\Exception $e) {
             throw new IndexationException($e->getMessage(), $e->getCode(), $e);
         }
@@ -185,6 +191,7 @@ class Client
         foreach ($chunkedBody as $chunk) {
             $bulkRequest['body'] = $chunk;
             $response = $this->client->bulk($bulkRequest);
+            $this->dispatcher->dispatch(new RequestMade('bulk', $bulkRequest, $response));
 
             if (isset($response['errors']) && true === $response['errors']) {
                 $mergedResponse['errors'] = true;
@@ -212,7 +219,10 @@ class Client
             'id' => $this->idPrefix.$id,
         ];
 
-        return $this->client->get($params);
+        $response = $this->client->get($params);
+        $this->dispatcher->dispatch(new RequestMade('get', $params, $response));
+
+        return $response;
     }
 
     /**
@@ -227,7 +237,10 @@ class Client
             'body' => $body,
         ];
 
-        return $this->client->search($params);
+        $response = $this->client->search($params);
+        $this->dispatcher->dispatch(new RequestMade('search', $params, $response));
+
+        return $response;
     }
 
     /**
@@ -242,7 +255,10 @@ class Client
             'body' => $body,
         ];
 
-        return $this->client->msearch($params);
+        $response = $this->client->msearch($params);
+        $this->dispatcher->dispatch(new RequestMade('msearch', $params, $response));
+
+        return $response;
     }
 
     /**
@@ -257,7 +273,10 @@ class Client
             'body' => $body,
         ];
 
-        return $this->client->count($params);
+        $response = $this->client->count($params);
+        $this->dispatcher->dispatch(new RequestMade('count', $params, $response));
+
+        return $response;
     }
 
     /**
@@ -272,7 +291,10 @@ class Client
             'id' => $this->idPrefix.$id,
         ];
 
-        return $this->client->delete($params);
+        $response = $this->client->delete($params);
+        $this->dispatcher->dispatch(new RequestMade('delete', $params, $response));
+
+        return $response;
     }
 
     /**
@@ -293,7 +315,10 @@ class Client
             ];
         }
 
-        return $this->client->bulk($params);
+        $response = $this->client->bulk($params);
+        $this->dispatcher->dispatch(new RequestMade('bulk', $params, $response));
+
+        return $response;
     }
 
     public function bulkUpdate($documentIds, $params)
@@ -311,7 +336,10 @@ class Client
             $queries['body'][] = $params[$identifier];
         }
 
-        return $this->client->bulk($queries);
+        $response = $this->client->bulk($queries);
+        $this->dispatcher->dispatch(new RequestMade('bulk', $queries, $response));
+
+        return $response;
     }
 
     /**
@@ -423,10 +451,11 @@ class Client
         do {
             $attempts++;
             try {
-                $this->client->deleteByQuery([
+                $response = $this->client->deleteByQuery($params = [
                     'index' => $this->indexName,
                     'body' => $body,
                 ]);
+                $this->dispatcher->dispatch(new RequestMade('deleteByQuery', $params, $response));
                 return;
             } catch (Conflict409Exception $e) {
                 $exception = $e;
@@ -442,10 +471,11 @@ class Client
      */
     public function updateByQuery(array $body): void
     {
-        $this->client->updateByQuery([
+        $response = $this->client->updateByQuery($params = [
             'index'     => $this->indexName,
             'conflicts' => 'proceed',
             'body'      => $body,
         ]);
+        $this->dispatcher->dispatch(new RequestMade('updateByQuery', $params, $response));
     }
 }

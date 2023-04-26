@@ -12,17 +12,22 @@ use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Namespaces\IndicesNamespace;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Event\RequestMade;
 
 class DualIndexationClientSpec extends ObjectBehavior
 {
     function let(
         NativeClient $nativeClient,
         ClientBuilder $clientBuilder,
+	EventDispatcherInterface $dispatcher,
         Loader $indexConfigurationLoader,
         Client $dualClient
     ) {
         $this->beConstructedWith(
             $clientBuilder,
+	    $dispatcher,
             $indexConfigurationLoader,
             ['localhost:9200'],
             'an_index_name',
@@ -30,6 +35,7 @@ class DualIndexationClientSpec extends ObjectBehavior
             100000000,
             $dualClient
         );
+	$dispatcher->dispatch(Argument::any())->willReturn(new RequestMade('type', [], []));
         $clientBuilder->setHosts(['localhost:9200'])->willReturn($clientBuilder);
         $clientBuilder->build()->willReturn($nativeClient);
     }
@@ -100,7 +106,7 @@ class DualIndexationClientSpec extends ObjectBehavior
         $nativeClient->deleteByQuery([
             'index' => 'an_index_name',
             'body' => $query,
-        ])->shouldBeCalled();
+        ])->willReturn([])->shouldBeCalled();
         $dualClient->deleteByQuery($query)->shouldBeCalled();
 
         $this->deleteByQuery($query);
