@@ -188,6 +188,8 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                     $qb->setParameter('code', $options['code']['value'].'%');
                     break;
                 case TextFilterType::TYPE_EMPTY:
+                    $qb->andWhere('a.code = :code');
+                    $qb->setParameter('code', null);
                     break;
                 default:
                     throw new \Exception('unknown text filter type given, for code filter');
