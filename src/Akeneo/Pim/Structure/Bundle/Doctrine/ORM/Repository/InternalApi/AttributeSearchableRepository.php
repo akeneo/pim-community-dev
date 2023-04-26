@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -170,22 +171,26 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
 
         if (null !== $options['code']) {
             switch ($options['code']['type']) {
-                case '1':
+                case TextFilterType::TYPE_CONTAINS:
                     $qb->andWhere('a.code LIKE :code');
                     $qb->setParameter('code', '%'.$options['code']['value'].'%');
                     break;
-                case '2':
+                case TextFilterType::TYPE_NOT_CONTAINS:
                     $qb->andWhere('a.code NOT LIKE :code');
                     $qb->setParameter('code', '%'.$options['code']['value'].'%');
                     break;
-                case '3':
+                case TextFilterType::TYPE_EQUAL:
                     $qb->andWhere('a.code = :code');
                     $qb->setParameter('code', $options['code']['value']);
                     break;
-                case '4':
+                case TextFilterType::TYPE_STARTS_WITH:
                     $qb->andWhere('a.code LIKE :code');
                     $qb->setParameter('code', $options['code']['value'].'%');
                     break;
+                case TextFilterType::TYPE_EMPTY:
+                    break;
+                default:
+                    throw new \Exception('unknown text filter type given, for code filter');
             }
         }
 
