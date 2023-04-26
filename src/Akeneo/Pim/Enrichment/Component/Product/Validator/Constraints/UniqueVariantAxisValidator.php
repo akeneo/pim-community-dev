@@ -106,7 +106,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         }
 
         if (in_array(strtolower($ownCombination), $siblingsCombinations, true)) {
-            $alreadyInDatabaseSiblingIdentifier = array_search($ownCombination, $siblingsCombinations);
+            $alreadyInDatabaseSiblingIdentifier = array_search(strtolower($ownCombination), $siblingsCombinations);
 
             $this->addViolation(
                 $axes,
