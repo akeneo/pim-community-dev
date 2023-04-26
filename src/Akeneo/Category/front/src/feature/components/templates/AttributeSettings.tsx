@@ -32,7 +32,7 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
           {attributeLabel} {translate('akeneo.category.template.attribute.settings.title')}
         </SectionTitle.Title>
       </StyledSectionTitle>
-      <StyledSectionTitle sticky={0}>
+      <StyledSectionTitle>
         <SectionTitle.Title level="secondary">
           {translate('akeneo.category.template.attribute.settings.options.title')}
         </SectionTitle.Title>
@@ -50,7 +50,7 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
           {translate('akeneo.category.template.attribute.settings.options.value_per_channel')}
         </OptionField>
       </div>
-      <StyledSectionTitle sticky={0}>
+      <StyledSectionTitle>
         <SectionTitle.Title level="secondary">
           {translate('akeneo.category.template.attribute.settings.translations.title')}
         </SectionTitle.Title>
@@ -94,7 +94,7 @@ const SettingsContainer = styled.div`
 `;
 
 const StyledSectionTitle = styled(SectionTitle)`
-  margin-top: 10px;
+  margin-bottom: 0;
 `;
 
 const OptionField = styled(Checkbox)`
@@ -109,7 +109,7 @@ const Footer = styled.div`
   display: flex;
   flex-direction: row-reverse;
   padding: 5px 0 5px;
-  margin-top: 2px;
+  margin-top: 5px;
   position: sticky;
   bottom: 0;
   background-color: #ffffff;
