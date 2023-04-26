@@ -77,6 +77,7 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
             'search' => $filters['label']['value'] ?? null,
             'options' => [
                 'excluded_identifiers' => $parameters['values'],
+                'code' => !empty($filters['code']) ? $filters['code'] : null,
                 'types' => $this->adaptArrayFilter($filters['type']['value'] ?? [], null),
                 'attribute_groups' =>  $this->adaptArrayFilter($filters['group']['value'] ?? [], []),
                 'scopable' => $this->adaptTrileanFilter($filters['scopable']['value'] ?? null),

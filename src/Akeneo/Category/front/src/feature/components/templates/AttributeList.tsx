@@ -25,14 +25,18 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
     onAttributeSelection(attribute);
   };
 
-  const sortedAttributes = useMemo(() => attributes.sort((attribute1: Attribute, attribute2: Attribute): number => {
-    if (attribute1.order >= attribute2.order) {
-      return 1;
-    } else if (attribute1.order < attribute2.order) {
-      return -1;
-    }
-    return 0;
-  }), [attributes]);
+  const sortedAttributes = useMemo(
+    () =>
+      attributes.sort((attribute1: Attribute, attribute2: Attribute): number => {
+        if (attribute1.order >= attribute2.order) {
+          return 1;
+        } else if (attribute1.order < attribute2.order) {
+          return -1;
+        }
+        return 0;
+      }),
+    [attributes]
+  );
 
   return (
     <AttributeListContainer>

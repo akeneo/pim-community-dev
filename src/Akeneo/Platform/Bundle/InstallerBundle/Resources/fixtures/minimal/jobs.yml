@@ -196,26 +196,6 @@ jobs:
         alias:     connectivity_create_openid_keys
         label:     Create or update a public/private openId key couple
         type:      scheduled_job
-    disable_catalogs_on_currency_deactivation:
-        connector: internal
-        alias:     disable_catalogs_on_currency_deactivation
-        label:     Disable catalogs on currency deactivation
-        type:      disable_catalogs_on_currency_deactivation
-    disable_catalogs_on_channel_removal:
-        connector: internal
-        alias:     disable_catalogs_on_channel_removal
-        label:     Disable catalogs on channel removal
-        type:      disable_catalogs_on_channel_removal
-    disable_catalogs_on_locale_deactivation:
-        connector: internal
-        alias:     disable_catalogs_on_locale_deactivation
-        label:     Disable catalogs on locale deactivation
-        type:      disable_catalogs_on_locale_deactivation
-    notify_on_attribute_removal:
-        connector: internal
-        alias:     notify_on_attribute_removal
-        label:     Notify on attribute removal
-        type:      notify_on_attribute_removal
     clean_categories_enriched_values:
         connector: internal
         alias: clean_categories_enriched_values

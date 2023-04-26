@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -32,70 +33,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductCommentController
 {
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var FormFactoryInterface */
-    protected $formFactory;
-
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
-
-    /** @var CommentRepositoryInterface */
-    protected $commentRepository;
-
-    /** @var SaverInterface */
-    protected $commentSaver;
-
-    /** @var CommentBuilder */
-    protected $commentBuilder;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var PresenterInterface */
-    protected $datetimePresenter;
-
-    /** @var LocaleResolver */
-    protected $localeResolver;
-
-    /**
-     * @param TokenStorageInterface      $tokenStorage
-     * @param FormFactoryInterface       $formFactory
-     * @param ProductRepositoryInterface $productRepository
-     * @param CommentRepositoryInterface $commentRepository
-     * @param SaverInterface             $commentSaver
-     * @param CommentBuilder             $commentBuilder
-     * @param NormalizerInterface        $normalizer
-     * @param ValidatorInterface         $validator
-     * @param PresenterInterface         $datetimePresenter
-     * @param LocaleResolver             $localeResolver
-     */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ProductRepositoryInterface $productRepository,
-        CommentRepositoryInterface $commentRepository,
-        SaverInterface $commentSaver,
-        CommentBuilder $commentBuilder,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        PresenterInterface $datetimePresenter,
-        LocaleResolver $localeResolver
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly CommentRepositoryInterface $commentRepository,
+        private readonly SaverInterface $commentSaver,
+        private readonly CommentBuilder $commentBuilder,
+        private readonly NormalizerInterface $normalizer,
+        private readonly ValidatorInterface $validator,
+        private readonly PresenterInterface $datetimePresenter,
+        private readonly LocaleResolver $localeResolver,
+        private readonly UserContext $userContext,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->formFactory = $formFactory;
-        $this->productRepository = $productRepository;
-        $this->commentRepository = $commentRepository;
-        $this->commentSaver = $commentSaver;
-        $this->commentBuilder = $commentBuilder;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->datetimePresenter = $datetimePresenter;
-        $this->localeResolver = $localeResolver;
     }
 
     /**
@@ -256,8 +206,12 @@ class ProductCommentController
      */
     protected function presentDate($date)
     {
-        $context = ['locale' => $this->localeResolver->getCurrentLocale()];
+        $context = [
+            'locale' => $this->localeResolver->getCurrentLocale(),
+            'timezone' => $this->userContext->getUserTimezone(),
+        ];
+        $dateTime = new \DateTime($date);
 
-        return $this->datetimePresenter->present($date, $context);
+        return $this->datetimePresenter->present($dateTime, $context);
     }
 }

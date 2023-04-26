@@ -159,14 +159,6 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdentifierQuery'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditCatalogAction:
-        public: true
-        arguments:
-            - '@router'
-            - '@oro_security.security_facade'
-            - '@Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdentifierQuery'
-
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RedirectToEditConnectedAppAction:
         public: true
         arguments:
