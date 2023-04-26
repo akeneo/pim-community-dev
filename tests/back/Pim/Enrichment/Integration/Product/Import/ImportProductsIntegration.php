@@ -8,13 +8,18 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueriesClearerInterface;
 use Doctrine\DBAL\Connection;
+use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -112,12 +117,50 @@ uuid;family;X_SELL-products
 CSV;
 
         $this->getJobLauncher()->launchImport('csv_product_import', $csv);
-        var_dump($this->getWarnings());
         $this->assertEmpty($this->getWarnings());
         $this->assertEquals(2, $this->getProductRepository()->countAll());
     }
 
-    protected function getConfiguration()
+    public function testImportDuplicateVariantProductsWithoutIdentifier(): void
+    {
+        $this->createProductModel('root');
+
+        $csv = <<<CSV
+uuid;sku;parent;a_simple_select;a_yes_no
+a4e9faf5-202d-46e0-8928-1deb83a875ed;;root;optionA;1
+a1660308-3ec0-4b12-a3ec-f77db6eaff2e;;root;optionA;1
+CSV;
+
+        $this->getJobLauncher()->launchImport('csv_product_import', $csv);
+        $warnings = $this->getWarnings();
+        $this->assertCount(1, $warnings, 'No warning was raised, whereas one was expected');
+        $this->assertStringContainsString('Cannot set value "[optionA],1" for the attribute axis "a_simple_select,a_yes_no" on variant product "a1660308-3ec0-4b12-a3ec-f77db6eaff2e", as the variant product "a4e9faf5-202d-46e0-8928-1deb83a875ed" already has this value', $warnings[0]['reason']);
+        $this->assertEquals(1, $this->getProductRepository()->countAll());
+    }
+
+    public function testImportDuplicateVariantProductsInDatabaseWithoutIdentifier(): void
+    {
+        $this->createProductModel('root');
+
+        $this->createProduct('variant_product', [
+            new ChangeParent('root'),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA'),
+            new SetBooleanValue('a_yes_no', null, null, true),
+        ]);
+
+        $csv = <<<CSV
+uuid;sku;parent;a_simple_select;a_yes_no
+a4e9faf5-202d-46e0-8928-1deb83a875ed;;root;optionA;1
+CSV;
+
+        $this->getJobLauncher()->launchImport('csv_product_import', $csv);
+        $warnings = $this->getWarnings();
+        $this->assertCount(1, $warnings, 'No warning was raised, whereas one was expected');
+        $this->assertStringContainsString('Cannot set value "[optionA],1" for the attribute axis "a_simple_select,a_yes_no" on variant product "a4e9faf5-202d-46e0-8928-1deb83a875ed", as the variant product "variant_product" already has this value', $warnings[0]['reason']);
+        $this->assertEquals(1, $this->getProductRepository()->countAll());
+    }
+
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
@@ -135,6 +178,18 @@ CSV;
         $this->getCacheClearer()->clear();
 
         return $this->getProductUuid($identifier)->toString();
+    }
+
+    private function createProductModel(string $code): void
+    {
+        $productModel = $this->get('pim_catalog.factory.product_model')->create();
+        $this->get('pim_catalog.updater.product_model')->update($productModel, [
+            'code' => $code,
+            'family_variant' => 'familyVariantA2',
+        ]);
+        Assert::assertEmpty($this->get('pim_catalog.validator.product_model')->validate($productModel));
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+        $this->getCacheClearer()->clear();;
     }
 
     private function getUserId(string $username): int
