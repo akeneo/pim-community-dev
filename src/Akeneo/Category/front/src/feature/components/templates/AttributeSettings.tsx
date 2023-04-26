@@ -4,7 +4,6 @@ import {userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {getLabelFromAttribute} from '../attributes';
-import {useUiLocales} from '../../hooks/useUiLocales';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
 
 type Props = {
@@ -27,17 +26,17 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
 
   return (
     <SettingsContainer>
-      <StyledSectionTitle sticky={0}>
+      <SectionTitle sticky={0}>
         <SectionTitle.Title>
           {attributeLabel} {translate('akeneo.category.template.attribute.settings.title')}
         </SectionTitle.Title>
-      </StyledSectionTitle>
-      <StyledSectionTitle>
+      </SectionTitle>
+      <SectionTitle>
         <SectionTitle.Title level="secondary">
           {translate('akeneo.category.template.attribute.settings.options.title')}
         </SectionTitle.Title>
-      </StyledSectionTitle>
-      <div>
+      </SectionTitle>
+      <OptionsContainer>
         {['textarea', 'richtext'].includes(attribute.type) && (
           <OptionField checked={attribute.type === 'richtext'} readOnly={true}>
             {translate('akeneo.category.template.attribute.settings.options.rich_text')}
@@ -49,12 +48,12 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
         <OptionField checked={attribute.is_scopable} readOnly={true}>
           {translate('akeneo.category.template.attribute.settings.options.value_per_channel')}
         </OptionField>
-      </div>
-      <StyledSectionTitle>
+      </OptionsContainer>
+      <SectionTitle>
         <SectionTitle.Title level="secondary">
           {translate('akeneo.category.template.attribute.settings.translations.title')}
         </SectionTitle.Title>
-      </StyledSectionTitle>
+      </SectionTitle>
       <div>
         {activatedCatalogLocales.map((activatedLocaleCode, index) => (
           <TranslationField
@@ -93,8 +92,8 @@ const SettingsContainer = styled.div`
   overflow-y: auto;
 `;
 
-const StyledSectionTitle = styled(SectionTitle)`
-  margin-bottom: 0;
+const OptionsContainer = styled.div`
+  margin-bottom: 15px;
 `;
 
 const OptionField = styled(Checkbox)`
