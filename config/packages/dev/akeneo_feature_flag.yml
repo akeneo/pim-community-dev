@@ -1,3 +1,0 @@
-akeneo_feature_flag:
-    feature_flags:
-        catalogs: 'akeneo.feature_flag.service.always_enabled_feature'

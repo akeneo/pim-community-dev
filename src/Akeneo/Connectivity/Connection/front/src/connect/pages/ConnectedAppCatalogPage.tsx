@@ -5,7 +5,7 @@ import {useParams} from 'react-router-dom';
 import {useConnectedApp} from '../hooks/use-connected-app';
 import {ConnectedAppCatalogContainer} from '../components/ConnectedApp/Catalog/ConnectedAppCatalogContainer';
 import {HttpError} from '../../model/http-error.enum';
-import {useCatalog} from '@akeneo-pim-community/catalogs/lib/hooks/useCatalog';
+import {useCatalog} from '@akeneo-pim-community/catalogs';
 
 export const ConnectedAppCatalogPage: FC = () => {
     const translate = useTranslate();

@@ -31,41 +31,53 @@ final class GetCategoriesSql implements GetCategoriesInterface
         $sqlLimitOffset = $sqlParameters->getLimitAndOffset();
 
         $sqlQuery = <<<SQL
-            WITH translation as (
-                SELECT category.code, JSON_OBJECTAGG(translation.locale, translation.label) as translations
+            WITH category_filtered_cte as (
+                SELECT category.id,
+                    category.root,
+                    category.lft,
+                    category.parent_id,
+                    category.value_collection
                 FROM pim_catalog_category category
-                JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
                 WHERE $sqlWhere
-                AND translation.label IS NOT NULL
-                AND translation.label != ''
-                GROUP BY category.code
+                ORDER BY category.root,
+                    category.lft
+                $sqlLimitOffset
             ),
-            enriched_values as (
-                SELECT category.id, category.value_collection
-                FROM pim_catalog_category category
-                LEFT JOIN pim_catalog_category_tree_template ctt ON ctt.category_tree_id = category.id
-                LEFT JOIN pim_catalog_category_template template ON template.uuid = ctt.category_template_uuid
-                WHERE $sqlWhere
-                AND template.is_deactivated IS NULL
-                    OR template.is_deactivated = 0
+            translation_cte as (
+                SELECT category.id as category_id,
+                    JSON_OBJECTAGG(translation.locale, translation.label) as translations
+                FROM category_filtered_cte category
+                    INNER JOIN pim_catalog_category_translation translation ON translation.foreign_key = category.id
+                WHERE translation.label IS NOT NULL
+                    AND translation.label != ''
+                GROUP BY category.id
             ),
-            position as (
-                SELECT code, position
+            position_cte as (
+                SELECT category_id,
+                    position
                 FROM (
-                    SELECT
-                        category.code,
-                        category.id as category_id,
-                        sibling.id as sibling_id,
-                        ROW_NUMBER() over (PARTITION BY category.parent_id ORDER BY sibling.lft) as position
-                    FROM pim_catalog_category category
-                        JOIN pim_catalog_category sibling on category.id = sibling.id
-                    WHERE $sqlWhere
-                    AND category.parent_id IS NOT NULL
-                ) r
+                        SELECT category.id as category_id,
+                            sibling.id as sibling_id,
+                            ROW_NUMBER() over (
+                                PARTITION BY category.parent_id,
+                                category.id
+                                ORDER BY sibling.lft
+                            ) as position
+                        FROM category_filtered_cte category
+                            INNER JOIN pim_catalog_category sibling on category.parent_id = sibling.parent_id
+                    ) r
                 WHERE sibling_id = category_id
+            ),
+            value_collection_cte as (
+                SELECT category.id as category_id,
+                    category.value_collection
+                FROM category_filtered_cte category
+                    LEFT JOIN pim_catalog_category_tree_template ctt ON ctt.category_tree_id = category.id
+                    LEFT JOIN pim_catalog_category_template template ON template.uuid = ctt.category_template_uuid
+                WHERE template.is_deactivated IS NULL
+                    OR template.is_deactivated = 0
             )
-            SELECT
-                category.id,
+            SELECT category_filtered_cte.id,
                 category.code,
                 category.parent_id,
                 parent_category.code as parent_code,
@@ -74,18 +86,23 @@ final class GetCategoriesSql implements GetCategoriesInterface
                 category.lft,
                 category.rgt,
                 category.lvl,
-                translation.translations,
-                IF(:with_position, COALESCE(position.position, 1), '') as position,
-                IF(:with_enriched_attributes, enriched_values.value_collection, '') as value_collection
-            FROM
-                pim_catalog_category category
-                LEFT JOIN translation ON translation.code = category.code
-                LEFT JOIN position on position.code = category.code
-                LEFT JOIN enriched_values on enriched_values.id = category.id
+                translation_cte.translations,
+                IF(
+                    :with_position,
+                    COALESCE(position_cte.position, 1),
+                    ''
+                ) as position,
+                IF(
+                    :with_enriched_attributes,
+                    value_collection_cte.value_collection,
+                    ''
+                ) as value_collection
+            FROM category_filtered_cte
+                LEFT JOIN pim_catalog_category as category on category_filtered_cte.id = category.id
                 LEFT JOIN pim_catalog_category as parent_category on category.parent_id = parent_category.id
-            WHERE $sqlWhere
-            ORDER BY category.root, category.lft
-            $sqlLimitOffset
+                LEFT JOIN translation_cte ON category_filtered_cte.id = translation_cte.category_id
+                LEFT JOIN position_cte on category_filtered_cte.id = position_cte.category_id
+                LEFT JOIN value_collection_cte on category_filtered_cte.id = value_collection_cte.category_id;
         SQL;
 
         $results = $this->connection->executeQuery(

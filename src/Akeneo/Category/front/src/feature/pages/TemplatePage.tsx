@@ -2,7 +2,6 @@ import {
   getLabel,
   PageHeader,
   PimView,
-  useFeatureFlags,
   useRouter,
   useSessionStorageState,
   useTranslate,

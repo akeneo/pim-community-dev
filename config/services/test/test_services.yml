@@ -20,8 +20,6 @@ imports:
     - { resource: ../../../src/Akeneo/Platform/Job/back/tests/Integration/Resources/config/services.yml }
     # FeatureFlag
     - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_services.yml }
-    # Catalogs
-    - { resource: ../../../components/catalogs/back/tests/Acceptance/services.yml }
     # MessengerBundle
     - { resource: ../../../src/Akeneo/Tool/Bundle/MessengerBundle/Resources/config/test_services.yml }
 
