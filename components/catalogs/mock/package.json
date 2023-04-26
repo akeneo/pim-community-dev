@@ -1,0 +1,15 @@
+{
+  "name": "@akeneo-pim-community/catalogs",
+  "version": "1.0.0",
+  "license": "OSL-3.0",
+  "private": true,
+  "main": "lib/exports.js",
+  "dependencies": {},
+  "peerDependencies": {},
+  "scripts": {
+    "lib:build": "tsc -p tsconfig.build.json"
+  },
+  "devDependencies": {
+    "typescript": "~4.4.4"
+  }
+}

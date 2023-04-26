@@ -187,7 +187,7 @@
     "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
     "src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front",
     "src/Oro/Bundle/ConfigBundle/front",
-    "components/catalogs/front",
+    "components/catalogs/mock",
     "src/Akeneo/Platform/Bundle/ImportExportBundle/front",
     "components/identifier-generator/front"
   ]
