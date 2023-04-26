@@ -147,6 +147,14 @@ abstract class IntegrationTestCase extends WebTestCase
         $connectionCloser = self::getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
+        $refl = new \ReflectionObject($this);
+        foreach ($refl->getProperties() as $prop) {
+            if (!$prop->isStatic() && !\str_starts_with($prop->getDeclaringClass()->getName(), 'PHPUnit_') && $prop->getType()->allowsNull()) {
+                $prop->setAccessible(true);
+                $prop->setValue($this, null);
+            }
+        }
+
         $this->ensureKernelShutdown();
 
         parent::tearDown();
