@@ -1,9 +1,0 @@
-{
-  "$schema": "https://api.akeneo.com/mapping/product/0.0.4/schema",
-  "description": "The data must must match the const value at #/properties/uuid/type",
-  "properties": {
-    "uuid": {
-      "type": "boolean"
-    }
-  }
-}
