@@ -4,3 +4,8 @@ services:
     public: true
     arguments:
       - '@akeneo.installer.fixtures.installer'
+
+  Akeneo\Platform\Installer\Application\ResetDatabase\ResetDatabaseHandler:
+    arguments:
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\FindTables'
+      - '@Akeneo\Platform\Installer\Infrastructure\DatabaseResetter\MySqlDatabaseResetter'

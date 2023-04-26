@@ -1,0 +1,5 @@
+services:
+  Akeneo\Platform\Installer\Infrastructure\DatabaseResetter\MySqlDatabaseResetter:
+    class: Akeneo\Platform\Installer\Infrastructure\DatabaseResetter\MySqlDatabaseResetter
+    arguments:
+      - '@database_connection'

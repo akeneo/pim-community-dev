@@ -14,3 +14,4 @@ akeneo_feature_flag:
         import_export_local_storage: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature'
         promote_unlock: 'akeneo.feature_flag.service.only_growth_and_serenity_feature'
         category_template_customization: 'akeneo.category.template.customization'
+        reset_pim: 'akeneo.feature_flag.service.only_saas_feature'

@@ -24,6 +24,7 @@ final class OnlySaasFeatureFlag implements FeatureFlag
 
     public function isEnabled(): bool
     {
+        return true;
         return \in_array($this->edition, self::SAAS_EDITIONS);
     }
 }
