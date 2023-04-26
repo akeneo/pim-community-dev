@@ -57,7 +57,7 @@ class AttributeGroupSearchableRepository implements SearchableRepositoryInterfac
                 'limit'                => null,
                 'page'                 => null,
                 'locale'               => null,
-                'forAttributeCodes'   => null,
+                'forAttributeCodes'    => null,
             ]
         );
         $resolver->setAllowedTypes('identifiers', 'array');
@@ -122,6 +122,7 @@ class AttributeGroupSearchableRepository implements SearchableRepositoryInterfac
         }
 
         if (null !== $options['forAttributeCodes']) {
+            $qb->distinct();
             $qb->leftJoin('ag.attributes', 'a');
             $qb->andWhere('a.code in (:attributeCodes)');
             $qb->setParameter('attributeCodes', $options['forAttributeCodes']);

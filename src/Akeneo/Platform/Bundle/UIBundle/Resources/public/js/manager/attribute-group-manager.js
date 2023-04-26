@@ -11,10 +11,10 @@ define(['jquery', 'underscore', 'pim/fetcher-registry'], function ($, _, Fetcher
      */
     getAttributeGroupsForObject: function (product) {
       return FetcherRegistry.getFetcher('attribute-group')
-          .search({forAttributeCodes: _.keys(product.values)})
-          .then((attributeGroups) => {
-            return attributeGroups;
-          });
+        .search({forAttributeCodes: _.keys(product.values)})
+        .then(attributeGroups => {
+          return attributeGroups;
+        });
     },
 
     /**
