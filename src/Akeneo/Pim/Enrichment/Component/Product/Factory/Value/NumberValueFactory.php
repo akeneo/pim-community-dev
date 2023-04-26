@@ -33,6 +33,10 @@ final class NumberValueFactory extends ScalarValueFactory implements ValueFactor
     {
         $attributeCode = $attribute->code();
 
+        if (\is_string($data)) {
+            $data = \trim($data);
+        }
+
         if ($attribute->isLocalizableAndScopable()) {
             return NumberValue::scopableLocalizableValue($attributeCode, $data, $channelCode, $localeCode);
         }
