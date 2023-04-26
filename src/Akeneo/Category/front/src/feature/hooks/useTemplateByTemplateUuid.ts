@@ -4,8 +4,6 @@ import {FetchStatus, NotificationLevel, useNotify, useRouter, useTranslate} from
 import {useCallback, useMemo} from 'react';
 import {useHistory} from 'react-router';
 
-const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
-
 type Result = {
   status: FetchStatus;
   data: Template | undefined;
@@ -48,12 +46,7 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
     });
   }, [uuid, url]);
 
-  const options = {
-    enabled: uuid !== null && url !== null,
-    staleTime: TEMPLATE_FETCH_STALE_TIME,
-  };
-
-  const response = useQuery<Template, any>(['template', uuid], fetchTemplate, options);
+  const response = useQuery<Template, any>(['template', uuid], fetchTemplate, {enabled: uuid !== null && url !== null});
 
   return {
     ...response,

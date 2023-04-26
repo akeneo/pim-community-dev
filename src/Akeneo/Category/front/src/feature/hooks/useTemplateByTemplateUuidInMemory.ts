@@ -4,8 +4,6 @@ import {useRoute} from '@akeneo-pim-community/shared';
 import {useCallback} from 'react';
 import {ResponseStatus} from '../models/ResponseStatus';
 
-const TEMPLATE_FETCH_STALE_TIME = 60 * 60 * 1000;
-
 type ResultError = Error | null;
 type Result = {
   status: ResponseStatus;
@@ -37,10 +35,5 @@ export const useTemplateByTemplateUuidInMemory = ({uuid, enabled = true}: UseTem
     return await response.json();
   }, [uuid, url]);
 
-  const options = {
-    enabled,
-    staleTime: TEMPLATE_FETCH_STALE_TIME,
-  };
-
-  return useQuery<Template, ResultError, Template>(['template'], fetchTemplate, options);
+  return useQuery<Template, ResultError, Template>(['template'], fetchTemplate);
 };

@@ -17,6 +17,7 @@ class ReactContextSwitcherDecorator extends ContextSwitcherDecorator
         'fr_FR' => 'French (France)',
         'de_DE' => 'German (Germany)',
         'en_GB' => 'English (United Kingdom)',
+        'es_MX' => 'Spanish (Mexico)',
     ];
 
     private array $localesMappingFr_FR = [
@@ -54,8 +55,9 @@ class ReactContextSwitcherDecorator extends ContextSwitcherDecorator
 
             /** @var Element $button */
             foreach ($buttons as $button) {
-                $text = $button->getText();
-                if (\str_starts_with($text, 'Locale:')) {
+                // Label is either Locale: or LOCALE depending on the style of the button
+                $text = \strtolower($button->getText());
+                if (\str_starts_with($text, 'locale')) {
                     return $button;
                 }
             }
