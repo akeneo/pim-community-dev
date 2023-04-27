@@ -10,9 +10,9 @@ const view: View = {
 
 const mockedDependencies: DependenciesContextProps = {
   router: {
-    generate: (route: string) => route,
-    redirect: (url: string) => url,
-    redirectToRoute: (route: string) => route,
+    generate: jest.fn((route: string) => route),
+    redirect: jest.fn((url: string) => url),
+    redirectToRoute: jest.fn((route: string) => route),
   },
   translate: (key: string) => key,
   viewBuilder: {

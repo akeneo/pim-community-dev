@@ -28,9 +28,8 @@ test('It redirects the user to the entry route and closes the menu when clicking
 
   fireEvent.click(screen.getByTestId('openSubNavigationDropdownButton'));
 
-  mockedDependencies.router.redirect = jest.fn();
   fireEvent.click(screen.getByText('Sub entry 1'));
 
-  expect(mockedDependencies.router.redirect).toHaveBeenCalledWith('subentry1_route');
+  expect(mockedDependencies.router?.redirect).toHaveBeenCalledWith('subentry1_route');
   expect(screen.queryByText('Sub navigation title')).toBeFalsy();
 });

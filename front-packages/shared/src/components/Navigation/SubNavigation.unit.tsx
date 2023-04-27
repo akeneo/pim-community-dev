@@ -58,9 +58,8 @@ test('It redirects the user to the clicked entry route', () => {
     <SubNavigation entries={subNavigationEntries} activeSubEntryCode={'subentry2'} sections={sections} />
   );
 
-  mockedDependencies.router.redirect = jest.fn();
   fireEvent.click(screen.getByText('Sub entry 1'));
-  expect(mockedDependencies.router.redirect).toHaveBeenCalledWith('subentry1_route');
+  expect(mockedDependencies.router?.redirect).toHaveBeenCalledWith('subentry1_route');
 });
 
 test('It handles back link', () => {
