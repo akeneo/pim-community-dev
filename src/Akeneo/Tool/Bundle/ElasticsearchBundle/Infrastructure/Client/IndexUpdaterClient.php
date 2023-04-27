@@ -9,18 +9,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client;
 
-use Elasticsearch\Client;
+use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use Monolog\Logger;
 use Webmozart\Assert\Assert;
 
 final class IndexUpdaterClient
 {
-    private Client $client;
+    private NativeClient $client;
 
-    public function __construct(private Logger $logger, ClientBuilder $clientBuilder, array $hosts)
+    public function __construct(private readonly Logger $logger, NativeClient $client)
     {
-        $this->client = $clientBuilder->setHosts($hosts)->build();
+        $this->client = $client;
     }
 
     public function switchIndexAliasToNewIndex(

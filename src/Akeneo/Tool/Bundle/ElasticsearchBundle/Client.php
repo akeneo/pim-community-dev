@@ -9,7 +9,6 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Elasticsearch\Client as NativeClient;
-use Elasticsearch\ClientBuilder;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\Conflict409Exception;
 use Ramsey\Uuid\Uuid;
@@ -26,10 +25,7 @@ class Client
 {
     /** Number of split requests when retrying bulk index */
     private const NUMBER_OF_BATCHES_ON_RETRY = 2;
-
-    private ClientBuilder $builder;
     private Loader $configurationLoader;
-    private array $hosts;
     private string $indexName;
     private NativeClient $client;
     private string $idPrefix;
@@ -43,26 +39,21 @@ class Client
      * To learn more, please see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_configuration.html}
      */
     public function __construct(
-        ClientBuilder $builder,
+        NativeClient $client,
         Loader $configurationLoader,
-        array $hosts,
         string $indexName,
         string $idPrefix = '',
         int $maxChunkSize = 100000000,
         int $maxExpectedIndexationLatencyInMilliseconds=0,
         int $maxNumberOfRetries=3
     ) {
-        $this->builder = $builder;
+        $this->client = $client;
         $this->configurationLoader = $configurationLoader;
-        $this->hosts = $hosts;
         $this->indexName = $indexName;
         $this->idPrefix = $idPrefix;
         $this->maxChunkSize = $maxChunkSize;
         $this->maxExpectedIndexationLatencyInMicroseconds = $maxExpectedIndexationLatencyInMilliseconds*1000;
         $this->maxNumberOfRetries = $maxNumberOfRetries;
-
-        $builder->setHosts($hosts);
-        $this->client = $builder->build();
     }
 
     /**

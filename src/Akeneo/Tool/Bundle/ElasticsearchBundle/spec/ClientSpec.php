@@ -5,11 +5,9 @@ namespace spec\Akeneo\Tool\Bundle\ElasticsearchBundle;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\IndexConfiguration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Elasticsearch\Client as NativeClient;
-use Elasticsearch\ClientBuilder;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Namespaces\IndicesNamespace;
 use PhpSpec\ObjectBehavior;
@@ -22,11 +20,9 @@ class ClientSpec extends ObjectBehavior
         $this->shouldHaveType(Client::class);
     }
 
-    function let(NativeClient $client, ClientBuilder $clientBuilder, Loader $indexConfigurationLoader)
+    function let(NativeClient $client, Loader $indexConfigurationLoader)
     {
-        $this->beConstructedWith($clientBuilder, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name');
-        $clientBuilder->setHosts(Argument::any())->willReturn($clientBuilder);
-        $clientBuilder->build()->willReturn($client);
+        $this->beConstructedWith($client, $indexConfigurationLoader, 'an_index_name');
     }
 
     public function it_indexes_a_document($client)
@@ -315,10 +311,9 @@ class ClientSpec extends ObjectBehavior
 
     function it_split_bulk_index_when_size_is_more_than_max_batch_size(
         NativeClient $client,
-        ClientBuilder $clientBuilder,
         Loader $indexConfigurationLoader
     ) {
-        $this->beConstructedWith($clientBuilder, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name', '', 200);
+        $this->beConstructedWith($client, $indexConfigurationLoader, 'an_index_name', '', 200);
 
         $client->bulk([
             'body' => [

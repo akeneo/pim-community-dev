@@ -63,9 +63,8 @@ class AkeneoElasticsearchExtension extends Extension
             if (isset($index['activate_dual_indexation_with_service'])) {
                 $container->register($index['service_name'], DualIndexationClient::class)
                     ->setArguments([
-                        new Reference('akeneo_elasticsearch.client_builder'),
+                        new Reference('akeneo_elasticsearch_native_client'),
                         new Reference($configurationLoaderServiceName),
-                        $config['hosts'],
                         $index['index_name'],
                         $index['id_prefix'],
                         $config['max_chunk_size'],
@@ -77,9 +76,8 @@ class AkeneoElasticsearchExtension extends Extension
             } else {
                 $container->register($index['service_name'], Client::class)
                     ->setArguments([
-                        new Reference('akeneo_elasticsearch.client_builder'),
+                        new Reference('akeneo_elasticsearch_native_client'),
                         new Reference($configurationLoaderServiceName),
-                        $config['hosts'],
                         $index['index_name'],
                         $index['id_prefix'],
                         $config['max_chunk_size'],
