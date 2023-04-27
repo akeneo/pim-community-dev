@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\UserManagement\Application\Handler;
+namespace Akeneo\UserManagement\Infrastructure;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\ServiceApi\PasswordCheckerInterface;
+use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;

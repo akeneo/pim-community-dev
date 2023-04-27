@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Test\UserManagement\Integration\ServiceApi\User;
+namespace Akeneo\Test\UserManagement\Integration\Infrastructure;
 
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\ServiceApi\PasswordCheckerInterface;
+use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
 use PHPUnit\Framework\Assert;
 
 final class PasswordCheckerIntegration extends TestCase

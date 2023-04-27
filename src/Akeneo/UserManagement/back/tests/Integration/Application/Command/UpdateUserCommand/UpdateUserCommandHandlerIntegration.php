@@ -11,18 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Test\UserManagement\Integration\ServiceApi\User;
+namespace Akeneo\Test\UserManagement\Integration\Application\Command\UpdateUserCommand;
 
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\UserManagement\ServiceApi\User\UpdateUserCommand;
-use Akeneo\UserManagement\ServiceApi\User\UpdateUserHandlerInterface;
+use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommand;
+use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler;
+use Akeneo\UserManagement\ServiceApi\ViolationsException;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Akeneo\UserManagement\ServiceApi\ViolationsException;
 
-final class UpdateUserHandlerIntegration extends TestCase
+final class UpdateUserCommandHandlerIntegration extends TestCase
 {
 
     public function testItUpdateUserPassword(): void
@@ -79,8 +79,8 @@ final class UpdateUserHandlerIntegration extends TestCase
         ];
         $this->getHandler()->handle(new UpdateUserCommand($user, $data));
     }
-    private function getHandler():UpdateUserHandlerInterface {
-        return $this->get(UpdateUserHandlerInterface::class);
+    private function getHandler():UpdateUserCommandHandler {
+        return $this->get(UpdateUserCommandHandler::class);
     }
 
     private function getUserLoader(): UserLoader {

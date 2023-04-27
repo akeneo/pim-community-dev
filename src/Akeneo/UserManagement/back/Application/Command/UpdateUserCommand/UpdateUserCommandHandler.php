@@ -7,20 +7,18 @@ declare(strict_types=1);
  * @license https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\UserManagement\Application\Handler;
+namespace Akeneo\UserManagement\Application\Command\UpdateUserCommand;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\ServiceApi\PasswordCheckerInterface;
-use Akeneo\UserManagement\ServiceApi\User\UpdateUserCommand;
-use Akeneo\UserManagement\ServiceApi\User\UpdateUserHandlerInterface;
+use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
 use Akeneo\UserManagement\ServiceApi\ViolationsException;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class UpdateUserHandler implements UpdateUserHandlerInterface
+final class UpdateUserCommandHandler
 {
     public function __construct(
         private readonly ObjectUpdaterInterface $updater,
@@ -36,6 +34,9 @@ final class UpdateUserHandler implements UpdateUserHandlerInterface
      */
     public function handle(UpdateUserCommand $updateUserCommand): UserInterface
     {
+
+        // if current user then skip acl check on role_edit / group_edit
+
         $violations = new ConstraintViolationList();
         $passwordViolations = new ConstraintViolationList();
 
@@ -65,6 +66,9 @@ final class UpdateUserHandler implements UpdateUserHandlerInterface
         }
 
         $this->saver->save($user);
+
+        // event with previous username
+
         return $user;
     }
 

@@ -51,7 +51,8 @@ class PimUserExtension extends Extension
         $loader->load('steps.yml');
         $loader->load('writers.yml');
         $loader->load('array_converters.yml');
-        $loader->load('commands.yml');
+        $loader->load('command_cli.yml');
+        $loader->load('command_handler.yml');
         $loader->load('processors.yml');
 
         $loader->load('service_api/handler.yml');

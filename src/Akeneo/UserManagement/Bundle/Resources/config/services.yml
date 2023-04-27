@@ -46,3 +46,9 @@ services:
             - '@pim_user.factory.role_with_permissions'
             - '@pim_user.repository.role_with_permissions'
             - '@pim_user.saver.role_with_permissions'
+
+    Akeneo\UserManagement\Domain\PasswordCheckerInterface:
+        class: Akeneo\UserManagement\Infrastructure\PasswordChecker
+        arguments:
+            - '@security.password_hasher'
+            - '@translator'

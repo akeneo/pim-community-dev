@@ -22,8 +22,8 @@ services:
             - '@pim_catalog.localization.factory.number'
             - '@translator'
             - '@oro_security.security_facade'
-            - '@Akeneo\UserManagement\ServiceApi\PasswordCheckerInterface'
-            - '@Akeneo\UserManagement\ServiceApi\User\UpdateUserHandlerInterface'
+            - '@Akeneo\UserManagement\Domain\PasswordCheckerInterface'
+            - '@Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler'
 
     pim_user.controller.security_rest:
         public: true

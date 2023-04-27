@@ -9,14 +9,12 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommand;
+use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler;
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\ServiceApi\PasswordCheckerInterface;
-use Akeneo\UserManagement\ServiceApi\User\DeleteUserCommand;
-use Akeneo\UserManagement\ServiceApi\User\UpdateUserCommand;
-use Akeneo\UserManagement\ServiceApi\User\UpdateUserHandlerInterface;
+use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
 use Akeneo\UserManagement\ServiceApi\ViolationsException;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -30,7 +28,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -63,7 +60,7 @@ final class UserController
         private readonly TranslatorInterface $translator,
         private readonly SecurityFacade $securityFacade,
         private readonly PasswordCheckerInterface $passwordChecker,
-        private readonly UpdateUserHandlerInterface $updateUserHandler,
+        private readonly UpdateUserCommandHandler $updateUserCommandHandler,
     ) {
     }
 
@@ -138,7 +135,7 @@ final class UserController
 
         try {
             $updateUserCommand = new UpdateUserCommand($user, $data);
-            $user = $this->updateUserHandler->handle($updateUserCommand);
+            $user = $this->updateUserCommandHandler->handle($updateUserCommand);
             $previousUserName = $user->getUserIdentifier();
 
             return new JsonResponse($this->normalizer->normalize($this->update($user, $previousUserName), 'internal_api'));
@@ -180,7 +177,7 @@ final class UserController
         unset($data['visible_group_ids']);
 
         $updateUserCommand = new UpdateUserCommand($user, $data);
-        return $this->updateUserHandler->handle($updateUserCommand);
+        return $this->updateUserCommandHandler->handle($updateUserCommand);
     }
 
     protected function update(UserInterface $user, ?string $previousUsername = null)
