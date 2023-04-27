@@ -42,6 +42,7 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           selectedAttribute={getSelectedAttribute()}
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
+
         />
         {featureFlag.isEnabled('category_template_customization') && locales && (
           <AttributeSettings attribute={getSelectedAttribute()} activatedCatalogLocales={locales} />
