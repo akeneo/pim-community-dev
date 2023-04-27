@@ -43,8 +43,9 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
                 is_localizable, 
                 additional_properties
             FROM pim_catalog_category_attribute
-            WHERE category_template_uuid=:template_uuid
-            ORDER BY attribute_order
+            WHERE category_template_uuid = :template_uuid
+            AND is_deactivated = 0
+            ORDER BY attribute_order;
         SQL;
 
         $results = $this->connection->executeQuery(
@@ -89,6 +90,7 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
                 additional_properties
             FROM pim_catalog_category_attribute
             WHERE uuid IN ({$placeholders})
+            AND is_deactivated = 0;
         SQL;
 
         $statement = $this->connection->prepare($sql);
@@ -128,7 +130,8 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
                 is_localizable, 
                 additional_properties
             FROM pim_catalog_category_attribute
-            WHERE code = :code;
+            WHERE code = :code
+            AND is_deactivated = 0;
         SQL;
 
         $attribute = $this->connection->executeQuery(
