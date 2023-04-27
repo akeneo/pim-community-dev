@@ -25,16 +25,17 @@ const Footer = styled.div`
 `;
 
 type ResetModalProps = {
+  canConfirm: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 };
 
-const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
+const ResetModal = ({canConfirm, onConfirm, onCancel}: ResetModalProps) => {
   const translate = useTranslate();
   const [isCurrentStep, nextStep, previousStep] = useProgress(STEPS);
   const [confirmationWord, setConfirmationWord] = useState<string>('');
 
-  const canConfirm = confirmationWord === translate('pim_system.reset_pim.modal.confirmation_word');
+  const canConfirm = canConfirm && confirmationWord === translate('pim_system.reset_pim.modal.confirmation_word');
 
   const handleConfirm = () => {
     if (!canConfirm) {
