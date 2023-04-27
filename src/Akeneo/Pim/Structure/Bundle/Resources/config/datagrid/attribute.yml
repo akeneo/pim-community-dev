@@ -67,6 +67,10 @@ datagrid:
                 label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         filters:
             columns:
+                code:
+                    type: string
+                    label: pim_common.code
+                    data_name: a.code
                 label:
                     type: attribute_search
                     label: code_or_label
