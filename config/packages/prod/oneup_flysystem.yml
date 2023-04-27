@@ -15,6 +15,3 @@ oneup_flysystem:
         local_storage_adapter:
             local:
                 location: '/'
-        catalogs_mapping_adapter:
-            local:
-                location: '%kernel.project_dir%/var/file_storage/catalogs_mapping'

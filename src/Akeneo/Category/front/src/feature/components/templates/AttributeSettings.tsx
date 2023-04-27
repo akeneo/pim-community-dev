@@ -22,8 +22,6 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
 
-  console.log(catalogLocales);
-
   return (
     <SettingsContainer>
       <SectionTitle sticky={0}>
