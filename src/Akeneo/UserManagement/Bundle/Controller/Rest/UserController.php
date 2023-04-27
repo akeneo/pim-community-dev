@@ -47,7 +47,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 final class UserController
 {
-
     public function __construct(
         private readonly TokenStorageInterface $tokenStorage,
         private readonly NormalizerInterface $normalizer,

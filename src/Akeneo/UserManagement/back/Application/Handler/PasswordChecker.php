@@ -83,9 +83,9 @@ class PasswordChecker implements PasswordCheckerInterface
                 $propertyPath,
                 ''
             ));
-            // We have to use `strlen` here because Symfony's BasePasswordEncoder will check
-            // the actual byte count when trying to encode it with salt.
-            // See: Symfony\Component\Security\Core\Encoder\BasePasswordEncoder
+        // We have to use `strlen` here because Symfony's BasePasswordEncoder will check
+        // the actual byte count when trying to encode it with salt.
+        // See: Symfony\Component\Security\Core\Encoder\BasePasswordEncoder
         } elseif (self::PASSWORD_MAXIMUM_LENGTH < strlen($password)) {
             $violations->add(new ConstraintViolation(
                 $this->translator->trans('pim_user.user.fields_errors.new_password.maximum_length'),
