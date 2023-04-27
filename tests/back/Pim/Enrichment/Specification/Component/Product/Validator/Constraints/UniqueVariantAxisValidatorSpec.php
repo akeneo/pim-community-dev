@@ -369,18 +369,18 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
         $values->getByCodes('color')->willReturn($blue);
         $valuesOfFirstSibling->getByCodes('color')->willReturn($yellow);
-        $valuesOfSecondSibling->getByCodes('color')->willReturn($blue);
+        $valuesOfSecondSibling->getByCodes('color')->willReturn('[blue]');
 
         $blue->__toString()->willReturn('[Blue]');
         $yellow->__toString()->willReturn('[yellow]');
 
-        $uniqueAxesCombinationSet->addCombination($entity, '[blue]')->shouldBeCalled();
+        $uniqueAxesCombinationSet->addCombination($entity, $blue)->shouldBeCalled();
 
         $context
             ->buildViolation(
                 UniqueVariantAxis::DUPLICATE_VALUE_IN_PRODUCT_MODEL,
                 [
-                    '%values%' => '[blue]',
+                    '%values%' => '[Blue]',
                     '%attributes%' => 'color',
                     '%validated_entity%' => 'entity_code',
                     '%sibling_with_same_value%' => 'sibling2',
