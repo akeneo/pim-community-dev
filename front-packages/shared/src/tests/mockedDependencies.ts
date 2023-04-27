@@ -10,9 +10,9 @@ const view: View = {
 
 const mockedDependencies: DependenciesContextProps = {
   router: {
-    generate: jest.fn((route: string) => route),
-    redirect: jest.fn((url: string) => url),
-    redirectToRoute: jest.fn((route: string) => route),
+    generate: (route: string) => route,
+    redirect: (url: string) => url,
+    redirectToRoute: (route: string) => route,
   },
   translate: (key: string) => key,
   viewBuilder: {
@@ -50,9 +50,9 @@ const mockedDependencies: DependenciesContextProps = {
     appcuesTrack: (event: string) => event,
   },
   systemConfiguration: {
-    initialize: jest.fn(),
-    refresh: jest.fn(),
-    get: jest.fn((key: string) => key),
+    initialize: () => Promise.resolve(),
+    refresh: () => Promise.resolve(),
+    get: (key: string) => key,
   },
 };
 
