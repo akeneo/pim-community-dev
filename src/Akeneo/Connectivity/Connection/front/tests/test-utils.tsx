@@ -61,7 +61,7 @@ const DefaultProviders: FC = ({children}) => {
                         get: (_key: string) => true,
                         initialize: () => Promise.resolve(),
                         refresh: () => Promise.resolve(),
-                    }
+                    },
                 }}
             >
                 <ThemeProvider theme={theme}>
