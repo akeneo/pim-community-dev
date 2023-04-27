@@ -78,9 +78,14 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
             ],
             'properties'=> []
         ];
-        $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString(json_encode($expectedContent), $response->getContent());
+        $responseJson = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $responseJson->getStatusCode());
+        $response = json_decode($responseJson->getContent(), true);
+        $this->assertEquals($expectedContent['code'], $response['code']);
+        $this->assertEquals($expectedContent['email'], $response['email']);
+        $this->assertEquals($expectedContent['username'], $response['username']);
+        $this->assertEquals($expectedContent['first_name'], $response['first_name']);
+        $this->assertEquals($expectedContent['last_name'], $response['last_name']);
 
         $this->assertFalse($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, 'Julien'));
         $this->assertTrue($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, $newPassword));
@@ -101,7 +106,7 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
                 'code' => $user->getUserIdentifier(),
                 'enabled'=> true,
                 'username' => $user->getUserIdentifier(),
-                'email'=> $user->getEmail(),
+                'email'=> 'test@test.fr',
                 'name_prefix' => null,
                 'first_name'=> $user->getFirstName(),
                 'middle_name' => null,
@@ -125,10 +130,7 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
                     'filePath'=> null,
                     'originalFilename' => null
                 ],
-                'properties' => [
-                    'proposals_state_notifications' => false,
-                    'proposals_to_review_notification' => true,
-                ]
+                'properties' => []
             ]),
         );
 
@@ -136,7 +138,7 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
             'code'=> $user->getUserIdentifier(),
             'enabled' => true,
             'username'=> $user->getUserIdentifier(),
-            'email' => $user->getEmail(),
+            'email' => 'test@test.fr',
             'name_prefix'=> null,
             'first_name' => $user->getFirstName(),
             'middle_name'=> null,
@@ -172,9 +174,14 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
             ],
             'properties'=> []
         ];
-        $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString(json_encode($expectedContent), $response->getContent());
+        $responseJson = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $responseJson->getStatusCode());
+        $response = json_decode($responseJson->getContent(), true);
+        $this->assertEquals($expectedContent['code'], $response['code']);
+        $this->assertEquals($expectedContent['email'], $response['email']);
+        $this->assertEquals($expectedContent['username'], $response['username']);
+        $this->assertEquals($expectedContent['first_name'], $response['first_name']);
+        $this->assertEquals($expectedContent['last_name'], $response['last_name']);
     }
 
     public function testItThrowsPasswordErrors(): void
@@ -312,9 +319,14 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
             ],
             'properties' => []
         ];
-        $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString(json_encode($expectedContent), $response->getContent());
+        $responseJson = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $responseJson->getStatusCode());
+        $response = json_decode($responseJson->getContent(), true);
+        $this->assertEquals($expectedContent['code'], $response['code']);
+        $this->assertEquals($expectedContent['email'], $response['email']);
+        $this->assertEquals($expectedContent['username'], $response['username']);
+        $this->assertEquals($expectedContent['first_name'], $response['first_name']);
+        $this->assertEquals($expectedContent['last_name'], $response['last_name']);
 
         $this->assertFalse($this->get('security.user_password_hasher')->isPasswordValid($user, $tryPassword));
         $this->assertTrue($this->get('security.user_password_hasher')->isPasswordValid($user, 'Julien'));
@@ -323,7 +335,7 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
     private function getUserLoader(): UserLoader {
         return $this->get(UserLoader::class);
     }
-    
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

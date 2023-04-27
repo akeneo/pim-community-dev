@@ -9,12 +9,21 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Application\Command\UpdateUserCommand;
 
+use _PHPStan_0f7d3d695\Symfony\Component\Finder\Exception\AccessDeniedException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Application\Exception\UserNotFoundException;
+use Akeneo\UserManagement\Component\Event\UserEvent;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
 use Akeneo\UserManagement\ServiceApi\ViolationsException;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -26,6 +35,11 @@ final class UpdateUserCommandHandler
         private readonly ObjectManager $objectManager,
         private readonly SaverInterface $saver,
         private readonly PasswordCheckerInterface $passwordChecker,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Session $session,
+        private readonly ObjectRepository $repository,
+        private readonly SecurityFacade $securityFacade,
+        private readonly TokenStorageInterface $tokenStorage,
     ) {
     }
 
@@ -34,14 +48,34 @@ final class UpdateUserCommandHandler
      */
     public function handle(UpdateUserCommand $updateUserCommand): UserInterface
     {
+        $identifier = $updateUserCommand->identifier;
+        $user = $this->repository->findOneBy(['id' => $identifier]);
 
-        // if current user then skip acl check on role_edit / group_edit
+        if (null === $user || true === $user->isApiUser()) {
+            throw new UserNotFoundException($identifier);
+        }
 
         $violations = new ConstraintViolationList();
         $passwordViolations = new ConstraintViolationList();
 
-        $user = $updateUserCommand->user;
         $data = $updateUserCommand->data;
+
+        $token = $this->tokenStorage->getToken();
+        $currentUser = null !== $token ? $token->getUser() : null;
+        if (null === $currentUser || $currentUser->getId() !== $user->getId()) {
+            if (!$this->securityFacade->isGranted('pim_user_role_edit')) {
+                unset($data['roles']);
+            }
+            if (!$this->securityFacade->isGranted('pim_user_group_edit')) {
+                unset($data['groups']);
+            }
+        } else {
+            unset($data['roles']);
+            unset($data['groups']);
+        }
+
+        $previousUserName = $user->getUserIdentifier();
+
         unset($data['password']);
         if ($this->isPasswordUpdating($data)) {
             $passwordViolations = $this->passwordChecker->validatePassword($user, $data);
@@ -67,7 +101,16 @@ final class UpdateUserCommandHandler
 
         $this->saver->save($user);
 
-        // event with previous username
+        $this->eventDispatcher->dispatch(
+            new GenericEvent($user, [
+                'current_user' => $this->tokenStorage->getToken()->getUser(),
+                'previous_username' => $previousUserName,
+            ]),
+            UserEvent::POST_UPDATE
+        );
+
+        $this->session->remove('dataLocale');
+
 
         return $user;
     }

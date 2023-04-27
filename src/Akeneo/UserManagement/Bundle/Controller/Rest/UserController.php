@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommand;
 use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler;
-use Akeneo\UserManagement\Component\Event\UserEvent;
+use Akeneo\UserManagement\Application\Exception\UserNotFoundException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
 use Akeneo\UserManagement\ServiceApi\ViolationsException;
@@ -19,13 +19,10 @@ use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -53,8 +50,6 @@ final class UserController
         private readonly SaverInterface $saver,
         private readonly NormalizerInterface $constraintViolationNormalizer,
         private readonly SimpleFactoryInterface $factory,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly Session $session,
         private readonly RemoverInterface $remover,
         private readonly NumberFactory $numberFactory,
         private readonly TranslatorInterface $translator,
@@ -113,32 +108,27 @@ final class UserController
      *
      * @AclAncestor("pim_user_user_edit")
      */
-    public function postAction(Request $request, $identifier): Response
+    public function postAction(Request $request, int $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
 
-        //code is useful to reach the route, cannot forget it in the query
-        unset($data['code']);
-        unset($data['visible_group_ids']);
+        return $this->updateUser($identifier, $data);
+    }
 
-        if (!$this->securityFacade->isGranted('pim_user_role_edit')) {
-            unset($data['roles']);
-        }
-        if (!$this->securityFacade->isGranted('pim_user_group_edit')) {
-            unset($data['groups']);
-        }
-
+    /**
+     * @param array $data
+     */
+    private function updateUser(int $identifier, array $data): Response
+    {
         try {
-            $updateUserCommand = new UpdateUserCommand($user, $data);
+            $updateUserCommand = new UpdateUserCommand($identifier, $data);
             $user = $this->updateUserCommandHandler->handle($updateUserCommand);
-            $previousUserName = $user->getUserIdentifier();
 
-            return new JsonResponse($this->normalizer->normalize($this->update($user, $previousUserName), 'internal_api'));
+            return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
         } catch (ViolationsException $violationsException) {
             $normalizedViolations = [];
             foreach ($violationsException->violations() as $violation) {
@@ -148,7 +138,12 @@ final class UserController
                 );
             }
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+        } catch (UserNotFoundException $userNotFoundException) {
+            throw new NotFoundHttpException($userNotFoundException->getMessage());
         }
+//        catch (AccessDeniedException $accessDeniedException) {
+//            throw new AccessDeniedHttpException();
+//        }
     }
 
     /**
@@ -162,37 +157,18 @@ final class UserController
             return new RedirectResponse('/');
         }
 
-        $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
 
         $token = $this->tokenStorage->getToken();
         $currentUser = null !== $token ? $token->getUser() : null;
-        if (null === $currentUser || $currentUser->getId() !== $user->getId()) {
+        if (null === $currentUser || $currentUser->getId() !== $identifier) {
             throw new AccessDeniedHttpException();
         }
 
-        unset($data['code']);
         unset($data['roles']);
         unset($data['groups']);
-        unset($data['visible_group_ids']);
 
-        $updateUserCommand = new UpdateUserCommand($user, $data);
-        return $this->updateUserCommandHandler->handle($updateUserCommand);
-    }
-
-    protected function update(UserInterface $user, ?string $previousUsername = null)
-    {
-        $this->eventDispatcher->dispatch(
-            new GenericEvent($user, [
-                'current_user' => $this->tokenStorage->getToken()->getUser(),
-                'previous_username' => $previousUsername,
-            ]),
-            UserEvent::POST_UPDATE
-        );
-
-        $this->session->remove('dataLocale');
-
-        return $user;
+        return $this->updateUser($identifier, $data);
     }
 
     /**

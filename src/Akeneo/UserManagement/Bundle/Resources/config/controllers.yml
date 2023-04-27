@@ -16,8 +16,6 @@ services:
             - '@pim_user.saver.user'
             - '@pim_enrich.normalizer.violation'
             - '@pim_user.factory.user'
-            - '@event_dispatcher'
-            - '@session'
             - '@pim_user.remover.user'
             - '@pim_catalog.localization.factory.number'
             - '@translator'

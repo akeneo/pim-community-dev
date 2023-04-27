@@ -17,9 +17,10 @@ final class UpdateUserCommand
      * @param array $data
      */
     public function __construct(
-        public UserInterface $user,
+        public int $identifier,
         public array $data,
     ) {
-        // unset common keys
+        unset($this->data['code']);
+        unset($this->data['visible_group_ids']);
     }
 }
