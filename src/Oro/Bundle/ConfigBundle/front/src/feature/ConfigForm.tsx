@@ -6,6 +6,7 @@ import {
   PimView,
   Section,
   UnsavedChanges,
+  useFeatureFlags,
   useRoute,
   useSystemConfiguration,
   useTranslate,
@@ -24,6 +25,7 @@ const ConfigForm = () => {
   const systemHref = useRoute('pim_system_index');
   const configFetchResult = useFetchConfig();
   const systemConfiguration = useSystemConfiguration();
+  const {isEnabled} = useFeatureFlags();
 
   // configuration object under edition
   const [config, setConfig] = useState<ConfigServicePayloadFrontend | null>(null);
@@ -156,18 +158,22 @@ const ConfigForm = () => {
               onChange={handleChange('pim_analytics___version_update')}
             />
           </Field>
-          <SectionTitle>
-            <SectionTitle.Title>{translate('oro_config.form.config.group.environment.title')}</SectionTitle.Title>
-          </SectionTitle>
-          <Field label={translate('oro_config.form.config.group.environment.fields.sandbox_banner.label')}>
-            <BooleanInput
-              readOnly={false}
-              value={config.pim_ui___sandbox_banner.value}
-              yesLabel={translate('pim_common.yes')}
-              noLabel={translate('pim_common.no')}
-              onChange={handleChange('pim_ui___sandbox_banner')}
-            />
-          </Field>
+          {isEnabled('sandbox_banner') && (
+            <>
+              <SectionTitle>
+                <SectionTitle.Title>{translate('oro_config.form.config.group.environment.title')}</SectionTitle.Title>
+              </SectionTitle>
+              <Field label={translate('oro_config.form.config.group.environment.fields.sandbox_banner.label')}>
+                <BooleanInput
+                  readOnly={false}
+                  value={config.pim_ui___sandbox_banner.value}
+                  yesLabel={translate('pim_common.yes')}
+                  noLabel={translate('pim_common.no')}
+                  onChange={handleChange('pim_ui___sandbox_banner')}
+                />
+              </Field>
+            </>
+          )}
         </Section>
       </PageContent>
     </>
