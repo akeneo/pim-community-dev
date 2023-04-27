@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Domain\Service;
 
-interface ResetDatabaseInterface
+interface FixtureInstallerInterface
 {
-
+    public function install(): void;
 }

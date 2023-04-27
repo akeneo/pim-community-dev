@@ -11,7 +11,9 @@ const ResetButton = () => {
   const [isResetModalOpen, openResetModal, closeResetModal] = useBooleanState(false);
 
   const handleResetInstance = async () => {
+    document.body.style.cursor = 'progress';
     await resetInstance();
+    document.body.style.cursor = 'default';
     closeResetModal();
     router.redirectToRoute('pim_user_security_login');
   };

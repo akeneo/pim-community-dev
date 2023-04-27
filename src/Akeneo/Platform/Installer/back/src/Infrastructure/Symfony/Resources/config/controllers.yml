@@ -3,3 +3,4 @@ services:
     public: true
     arguments:
       - '@Akeneo\Platform\Installer\Application\ResetDatabase\ResetDatabaseHandler'
+      - '@Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\IcecatFixtureInstaller'

@@ -1,5 +1,8 @@
 services:
   Akeneo\Platform\Installer\Infrastructure\DatabaseResetter\MySqlDatabaseResetter:
-    class: Akeneo\Platform\Installer\Infrastructure\DatabaseResetter\MySqlDatabaseResetter
     arguments:
       - '@database_connection'
+
+  Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\IcecatFixtureInstaller:
+    arguments:
+      - '%kernel.project_dir%'

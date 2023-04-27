@@ -15,17 +15,22 @@ namespace Akeneo\Platform\Installer\Infrastructure\Controller;
 
 use Akeneo\Platform\Installer\Application\ResetDatabase\ResetDatabaseCommand;
 use Akeneo\Platform\Installer\Application\ResetDatabase\ResetDatabaseHandler;
+use Akeneo\Platform\Installer\Domain\Service\FixtureInstallerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ResetInstanceAction
 {
-    public function __construct(private readonly ResetDatabaseHandler $resetDatabaseHandler)
-    {
+    public function __construct(
+        private readonly ResetDatabaseHandler $resetDatabaseHandler,
+        private readonly FixtureInstallerInterface $fixtureInstaller,
+    ) {
     }
 
     public function __invoke(): JsonResponse
     {
         $this->resetDatabaseHandler->handle(new ResetDatabaseCommand([]));
+        /** To replace by the new application */
+        $this->fixtureInstaller->install();
 
         return new JsonResponse();
     }
