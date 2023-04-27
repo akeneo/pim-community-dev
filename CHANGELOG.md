@@ -62,6 +62,7 @@
 - PIM-10951: Fix grid search with special characters
 - PIM-10916: Fix with_position results on get categories Rest API endpoint
 - PIM-10961: Use React component for product grid locale switcher
+- PIM-10932: Fix data in NumberValueFactory if data contains a white space
 
 ## Improvements
 
