@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes;
+namespace Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
