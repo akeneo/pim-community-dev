@@ -58,7 +58,7 @@ const DefaultProviders: FC = ({children}) => {
                     translate: (id: string) => id,
                     featureFlags: {isEnabled: (_feature: string) => true},
                     systemConfiguration: {
-                        get: (_key: string) => true,
+                        get: (key: string) => key,
                         initialize: () => Promise.resolve(),
                         refresh: () => Promise.resolve(),
                     },
