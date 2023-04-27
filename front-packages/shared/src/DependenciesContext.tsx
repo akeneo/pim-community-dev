@@ -9,6 +9,7 @@ import {
   Mediator,
   FeatureFlags,
   Analytics,
+  SystemConfiguration,
 } from './DependenciesProvider.type';
 
 type DependenciesContextProps = {
@@ -21,6 +22,7 @@ type DependenciesContextProps = {
   mediator?: Mediator;
   featureFlags?: FeatureFlags;
   analytics?: Analytics;
+  systemConfiguration?: SystemConfiguration;
 };
 
 const DependenciesContext = createContext<DependenciesContextProps>({});

@@ -17,6 +17,7 @@ export interface ConfigServicePayloadBackend {
   pim_analytics___version_update: ScopedValue<BooleanBackend>;
   pim_ui___loading_message_enabled: ScopedValue<BooleanBackend>;
   pim_ui___loading_messages: ScopedValue<string>;
+  pim_ui___sandbox_banner: ScopedValue<BooleanBackend>;
 }
 
 /**
@@ -28,6 +29,7 @@ export interface ConfigServicePayloadFrontend {
   pim_analytics___version_update: ScopedValue<boolean>;
   pim_ui___loading_message_enabled: ScopedValue<boolean>;
   pim_ui___loading_messages: ScopedValue<string>;
+  pim_ui___sandbox_banner: ScopedValue<boolean>;
 }
 
 function scopedValueBoolFrontToBack(sv: ScopedValue<boolean>): ScopedValue<string> {
@@ -49,6 +51,7 @@ export function configFrontToBack(config: ConfigServicePayloadFrontend): ConfigS
     ...config,
     pim_analytics___version_update: scopedValueBoolFrontToBack(config.pim_analytics___version_update),
     pim_ui___loading_message_enabled: scopedValueBoolFrontToBack(config.pim_ui___loading_message_enabled),
+    pim_ui___sandbox_banner: scopedValueBoolFrontToBack(config.pim_ui___sandbox_banner),
   };
 }
 
@@ -57,5 +60,6 @@ export function configBackToFront(config: ConfigServicePayloadBackend): ConfigSe
     ...config,
     pim_analytics___version_update: scopedValueBoolBackToFront(config.pim_analytics___version_update),
     pim_ui___loading_message_enabled: scopedValueBoolBackToFront(config.pim_ui___loading_message_enabled),
+    pim_ui___sandbox_banner: scopedValueBoolBackToFront(config.pim_ui___sandbox_banner),
   };
 }

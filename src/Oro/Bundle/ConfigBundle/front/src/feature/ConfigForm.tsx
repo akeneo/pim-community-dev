@@ -1,24 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
-
 import {
   PageContent as PageContentWithoutMargin,
   PageHeader,
   PimView,
+  Section,
   UnsavedChanges,
   useRoute,
+  useSystemConfiguration,
   useTranslate,
 } from '@akeneo-pim-community/shared';
-import {
-  BooleanInput,
-  Breadcrumb,
-  Button,
-  Field as FieldWithoutMargin,
-  Helper,
-  SectionTitle,
-  TextAreaInput,
-} from 'akeneo-design-system';
-
+import {BooleanInput, Breadcrumb, Button, Field, Helper, SectionTitle, TextAreaInput} from 'akeneo-design-system';
 import {LocaleSelector} from './components/LocaleSelector';
 import {ConfigServicePayloadFrontend} from './models/ConfigServicePayload';
 import {useFetchConfig, useSaveConfig} from './hooks';
@@ -27,22 +19,11 @@ const PageContent = styled(PageContentWithoutMargin)`
   padding-bottom: 40px;
 `;
 
-const Section = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-`;
-
-const Field = styled(FieldWithoutMargin)`
-  margin-top: 20px;
-`;
-
 const ConfigForm = () => {
   const translate = useTranslate();
-
   const systemHref = useRoute('pim_system_index');
-
   const configFetchResult = useFetchConfig();
+  const systemConfiguration = useSystemConfiguration();
 
   // configuration object under edition
   const [config, setConfig] = useState<ConfigServicePayloadFrontend | null>(null);
@@ -75,12 +56,13 @@ const ConfigForm = () => {
     if (config === null) return;
     const feedbackConfig = await doSaveConfig(config);
     setConfig(feedbackConfig);
+
+    await systemConfiguration.refresh();
     setIsModified(false);
   };
 
   useEffect(() => {
     if (configFetchResult.type === 'fetched') {
-      //console.log('configFetchResult', { configFetchResult })
       setConfig({...configFetchResult.payload});
     }
   }, [configFetchResult]);
@@ -112,7 +94,7 @@ const ConfigForm = () => {
         </PageHeader.UserActions>
         <PageHeader.Actions>
           <Button className="AknButton--apply" onClick={handleSave}>
-            Save
+            {translate('pim_common.save')}
           </Button>
         </PageHeader.Actions>
         {isModified && (
@@ -124,10 +106,12 @@ const ConfigForm = () => {
       </PageHeader>
       <PageContent>
         <Section>
-          <SectionTitle>
-            <SectionTitle.Title>{translate('oro_config.form.config.group.loading_message.title')}</SectionTitle.Title>
-          </SectionTitle>
-          <Helper level="info">{translate('oro_config.form.config.group.loading_message.helper')}</Helper>
+          <div>
+            <SectionTitle>
+              <SectionTitle.Title>{translate('oro_config.form.config.group.loading_message.title')}</SectionTitle.Title>
+            </SectionTitle>
+            <Helper level="info">{translate('oro_config.form.config.group.loading_message.helper')}</Helper>
+          </div>
           <Field
             data-testid="loading_message__enabler"
             label={translate('oro_config.form.config.group.loading_message.fields.enabler.label')}
@@ -148,20 +132,18 @@ const ConfigForm = () => {
               placeholder={translate('oro_config.form.config.group.loading_message.placeholder')}
             />
           </Field>
-        </Section>
-        <Section>
           <SectionTitle>
             <SectionTitle.Title>{translate('oro_config.form.config.group.localization.title')}</SectionTitle.Title>
           </SectionTitle>
           <Field label={translate('oro_config.form.config.group.localization.fields.system_locale.label')}>
             <LocaleSelector value={config.pim_ui___language.value} onChange={handleChange('pim_ui___language')} />
           </Field>
-        </Section>
-        <Section>
-          <SectionTitle>
-            <SectionTitle.Title>{translate('oro_config.form.config.group.notification.title')}</SectionTitle.Title>
-          </SectionTitle>
-          <Helper level="info">{translate('oro_config.form.config.group.notification.helper')}</Helper>
+          <div>
+            <SectionTitle>
+              <SectionTitle.Title>{translate('oro_config.form.config.group.notification.title')}</SectionTitle.Title>
+            </SectionTitle>
+            <Helper level="info">{translate('oro_config.form.config.group.notification.helper')}</Helper>
+          </div>
           <Field
             data-testid="notification_message__enabler"
             label={translate('oro_config.form.config.group.notification.fields.enabler.label')}
@@ -172,6 +154,18 @@ const ConfigForm = () => {
               yesLabel={translate('pim_common.yes')}
               noLabel={translate('pim_common.no')}
               onChange={handleChange('pim_analytics___version_update')}
+            />
+          </Field>
+          <SectionTitle>
+            <SectionTitle.Title>{translate('oro_config.form.config.group.environment.title')}</SectionTitle.Title>
+          </SectionTitle>
+          <Field label={translate('oro_config.form.config.group.environment.fields.sandbox_banner.label')}>
+            <BooleanInput
+              readOnly={false}
+              value={config.pim_ui___sandbox_banner.value}
+              yesLabel={translate('pim_common.yes')}
+              noLabel={translate('pim_common.no')}
+              onChange={handleChange('pim_ui___sandbox_banner')}
             />
           </Field>
         </Section>

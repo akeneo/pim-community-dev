@@ -526,7 +526,6 @@ config:
     pim/controller/group:                  pimui/js/controller/group
     pim/controller/role:                   pimui/js/controller/role
     pim/controller/group-type:             pimui/js/controller/group-type
-    pim/controller/system:                 pimui/js/controller/system
     pim/controller/user:                   pimui/js/controller/user
     pim/controller/attribute-group/edit:   pimui/js/controller/attribute-group/edit
     pim/controller/attribute-group/create: pimui/js/controller/attribute-group/create
@@ -1279,4 +1278,4 @@ config:
     pim/job/common/edit/field/file-path: pimui/js/job/common/edit/field/file-path.ts
     pim/job/common/edit/field/allow-file-upload: pimui/js/job/common/edit/field/allow-file-upload.ts
 
-    pim/sandbox-helper: pimui/js/SandboxHelper.tsx
+    pim/sandbox-helper: pimui/js/SandboxHelperView.tsx
