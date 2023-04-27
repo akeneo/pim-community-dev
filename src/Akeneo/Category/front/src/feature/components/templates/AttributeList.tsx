@@ -1,7 +1,7 @@
 import {Button, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
 import {getLabelFromAttribute} from '../attributes';
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';

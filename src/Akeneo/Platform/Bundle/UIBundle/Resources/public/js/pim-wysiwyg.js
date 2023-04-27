@@ -22,6 +22,7 @@ define(['jquery', 'underscore', 'backbone', 'summernote'], function ($, _, Backb
       ['view', ['codeview']],
     ],
     prettifyHtml: false,
+    direction: 'auto',
   };
 
   Backbone.Router.prototype.on('route', function () {

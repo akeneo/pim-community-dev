@@ -28,7 +28,7 @@
 - PIM-10829: Fix case-sensitive locale on translatable business objects
 - PIM-10840: Fix attribute update date on attribute options change above 10000 options
 - PIM-10793: Add a command to delete expired tokens
-- PIM-10840: Fix attribute update date on attribute options change above 10000 options 
+- PIM-10840: Fix attribute update date on attribute options change above 10000 options
 - PIM-10868: Fix checkboxes on category trees
 - PIM-10832: Fix compute completeness job after removing an attribute from a family
 - PIM-10820: Partially revert [PIM-10350] to fix case sensitivity on options import
@@ -46,7 +46,7 @@
 - PIM-10925: The search by code is missing on the attribute page
 - PIM-10906: Use user timezone to display dates in history grid
 - PIM-10915: Fix attribute with numeric code throw 500 error on product history
-- PIM-10889: Update Category updated date after setting a labels and show category filtered by updated date on API REST 
+- PIM-10889: Update Category updated date after setting a labels and show category filtered by updated date on API REST
 - PIM-10919: Fix Cleaning Products with removed attributes using identifiers instead of uuids
 - PIM-10911: Add user-agent when sending an event
 - PIM-10885: Use React shared component for locale selector in product form locale switcher
@@ -62,6 +62,10 @@
 - PIM-10951: Fix grid search with special characters
 - PIM-10916: Fix with_position results on get categories Rest API endpoint
 - PIM-10961: Use React component for product grid locale switcher
+- PIM-10909: Refactor command to remove non-existing products and models from ES index
+- PIM-10932: Fix data in NumberValueFactory if data contains a white space
+- PIM-10814: Wysiwyg now supports languages that use right-to-left (rtl) scripts
+- PIM-10914: Add title and ellipsis for long labels on attribute select
 - PIM-10639 : Prevent users to change his password without providing its current password
 
 ## Improvements

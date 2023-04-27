@@ -43,6 +43,7 @@ define(['jquery', 'pim/field', 'underscore', 'pim/template/product/field/textare
             ['view', ['codeview']],
           ],
           prettifyHtml: false,
+          direction: 'auto',
         })
         .on('summernote.blur', this.updateModel.bind(this))
         .on('summernote.keyup', this.removeEmptyTags.bind(this));
