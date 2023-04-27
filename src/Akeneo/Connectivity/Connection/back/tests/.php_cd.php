@@ -163,8 +163,6 @@ $rules = [
             'FOS\RestBundle\Serializer\Serializer',
 
             'Ramsey\Uuid\Uuid',
-
-            'Akeneo\Catalogs\ServiceAPI\Model\Catalog',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -203,8 +201,6 @@ $rules = [
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
-
-            'Akeneo\Catalogs\ServiceAPI\Model\Catalog',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Apps'),
 

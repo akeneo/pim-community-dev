@@ -1,7 +1,6 @@
-import {useCallback, useContext, useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {cloneDeep, set} from 'lodash/fp';
-import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-
+import {Channel, Locale, NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
 import {EditCategoryContext} from '../components';
@@ -12,12 +11,14 @@ import {CategoryPermissions} from '../models/CategoryPermission';
 import {UserGroup} from './useFetchUserGroups';
 import {DEACTIVATED_TEMPLATE} from '../models/ResponseStatus';
 import {useHistory} from 'react-router';
+import {useQueryClient} from 'react-query';
 
 const useEditCategoryForm = (categoryId: number) => {
   const router = useRouter();
   const notify = useNotify();
   const translate = useTranslate();
   const history = useHistory();
+  const queryClient = useQueryClient();
 
   const {load: loadCategory, category: fetchedCategory, status: categoryStatus} = useCategory(categoryId);
 
@@ -34,17 +35,16 @@ const useEditCategoryForm = (categoryId: number) => {
   const isModified =
     categoryStatus === 'fetched' && !!category && !!categoryEdited && !categoriesAreEqual(category, categoryEdited);
 
-  const initializeEditionState = useCallback(function (
+  const initializeEditionState = (
     category: EnrichCategory,
     template: Template | null,
-    channels,
-    locales
-  ) {
+    channels: {[code: string]: Channel},
+    locales: {[code: string]: Locale}
+  ) => {
     const populated = populateCategory(category, template, Object.keys(channels), Object.keys(locales));
     setCategory(populated);
     setCategoryEdited(cloneDeep(populated));
-  },
-  []);
+  };
 
   // fetching the category
   useEffect(() => {
@@ -72,7 +72,7 @@ const useEditCategoryForm = (categoryId: number) => {
     [setCanLeavePage]
   );
 
-  const saveCategory = useCallback(async () => {
+  const saveCategory = async () => {
     if (categoryEdited === null) {
       return;
     }
@@ -87,34 +87,23 @@ const useEditCategoryForm = (categoryId: number) => {
       initializeEditionState(response.category, template ?? null, channels, locales);
       setHistoryVersion((prevVersion: number) => prevVersion + 1);
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
+
+      // force to fetch attribute list from template to hide potentially deleted attributes
+      await queryClient.invalidateQueries(['template', fetchedCategory?.template_uuid]);
     } else {
       notify(NotificationLevel.ERROR, response.error.message);
-
       if (response.error.code && response.error.code === DEACTIVATED_TEMPLATE) {
         history.push('/');
       }
     }
-  }, [
-    router,
-    categoryEdited,
-    applyPermissionsOnChildren,
-    initializeEditionState,
-    translate,
-    notify,
-    channels,
-    locales,
-    template,
-  ]);
+  };
 
-  const onChangeCategoryLabel = useCallback(
-    (localeCode: string, label: string) => {
-      if (categoryEdited === null) {
-        return;
-      }
-      setCategoryEdited(set(['properties', 'labels', localeCode], label === '' ? null : label, categoryEdited));
-    },
-    [categoryEdited]
-  );
+  const onChangeCategoryLabel = (localeCode: string, label: string) => {
+    if (categoryEdited === null) {
+      return;
+    }
+    setCategoryEdited(set(['properties', 'labels', localeCode], label === '' ? null : label, categoryEdited));
+  };
 
   const onChangePermissions = (userGroups: UserGroup[], type: keyof CategoryPermissions, values: number[]) => {
     if (categoryEdited === null) {
@@ -126,36 +115,33 @@ const useEditCategoryForm = (categoryId: number) => {
     setCategoryEdited(set('permissions', consistentPermissions, categoryEdited));
   };
 
-  const onChangeAttribute = useCallback(
-    (
-      attribute: Attribute,
-      channelCode: string | null,
-      localeCode: string | null,
-      attributeValue: CategoryAttributeValueData
-    ) => {
-      if (categoryEdited === null) {
-        return;
-      }
+  const onChangeAttribute = (
+    attribute: Attribute,
+    channelCode: string | null,
+    localeCode: string | null,
+    attributeValue: CategoryAttributeValueData
+  ) => {
+    if (categoryEdited === null) {
+      return;
+    }
 
-      const compositeKey = buildCompositeKey(attribute, channelCode, localeCode);
-      const compositeKeyWithoutChannelAndLocale = buildCompositeKey(attribute);
+    const compositeKey = buildCompositeKey(attribute, channelCode, localeCode);
+    const compositeKeyWithoutChannelAndLocale = buildCompositeKey(attribute);
 
-      const value = {
-        data: attributeValue,
-        channel: attribute.is_scopable ? channelCode : null,
-        locale: attribute.is_localizable ? localeCode : null,
-        attribute_code: compositeKeyWithoutChannelAndLocale,
-      };
+    const value = {
+      data: attributeValue,
+      channel: attribute.is_scopable ? channelCode : null,
+      locale: attribute.is_localizable ? localeCode : null,
+      attribute_code: compositeKeyWithoutChannelAndLocale,
+    };
 
-      const newCategoryEdited = set(['attributes', compositeKey], value, categoryEdited);
-      if (categoriesAreEqual(categoryEdited, newCategoryEdited)) {
-        return;
-      }
+    const newCategoryEdited = set(['attributes', compositeKey], value, categoryEdited);
+    if (categoriesAreEqual(categoryEdited, newCategoryEdited)) {
+      return;
+    }
 
-      setCategoryEdited(newCategoryEdited);
-    },
-    [categoryEdited]
-  );
+    setCategoryEdited(newCategoryEdited);
+  };
 
   return {
     categoryFetchingStatus: categoryStatus,

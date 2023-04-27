@@ -4,7 +4,6 @@
 /src/Akeneo/Connectivity @akeneo/squad-octopus
 /components/catalogs @akeneo/squad-octopus
 .circleci/workflows/squads/octopus @akeneo/squad-octopus
-.circleci/jobs/features/catalogs @akeneo/squad-octopus
 
 # Chipmunks
 /src/Akeneo/Pim/Enrichment @akeneo/squad-chipmunks

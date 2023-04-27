@@ -1,6 +1,0 @@
-pim_api.acl_group.catalog: 目录
-akeneo_catalogs:
-  acl:
-    catalog_list: 列出目录
-    catalog_edit: 创建并更新目录
-    catalog_remove: 删除目录
