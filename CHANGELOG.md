@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10950: Fix wrongly removed code filter on attribute page
 - PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
 - PIM-10779: Fix lowercase on get attribute group code for dqi activation
 - PIM-10791: Fix product and product model completeness compute on attribute removal
@@ -59,7 +60,9 @@
 - PIM-10955: Temporary rollback of PIM-10916 causing performance issue on categories API
 - PIM-10959: Fix API response when trying to associate a product model to itself in a 2-way association
 - PIM-10951: Fix grid search with special characters
+- PIM-10916: Fix with_position results on get categories Rest API endpoint
 - PIM-10961: Use React component for product grid locale switcher
+- PIM-10932: Fix data in NumberValueFactory if data contains a white space
 
 ## Improvements
 

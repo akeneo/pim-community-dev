@@ -103,6 +103,13 @@ final class NumberValueFactorySpec extends ObjectBehavior
         $value->shouldBeLike(NumberValue::value('an_attribute', 1234567890));
     }
 
+    public function it_creates_a_non_localizable_and_non_scopable_value_without_checking_the_data_with_space()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $value = $this->createWithoutCheckingData($attribute, null, null, ' 1234567890');
+        $value->shouldBeLike(NumberValue::value('an_attribute', 1234567890));
+    }
+
     public function it_throws_an_exception_if_it_is_not_a_scalar()
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [

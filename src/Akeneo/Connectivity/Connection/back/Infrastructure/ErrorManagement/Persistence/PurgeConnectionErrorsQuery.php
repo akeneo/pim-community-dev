@@ -40,6 +40,10 @@ class PurgeConnectionErrorsQuery
         $msearchResults = $this->esClient->msearch($msearch);
         $esIdsToKeep = [];
         foreach ($msearchResults['responses'] as $result) {
+            if (!isset($result['hits']) || !isset($result['hits']['hits'])) {
+                continue;
+            }
+
             foreach ($result['hits']['hits'] as $hit) {
                 $esIdsToKeep[] = $hit['_source']['id'];
             }
