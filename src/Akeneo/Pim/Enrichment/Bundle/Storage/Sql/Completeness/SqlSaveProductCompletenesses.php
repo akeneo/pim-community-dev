@@ -19,16 +19,8 @@ use Ramsey\Uuid\Uuid;
  */
 final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    public function __construct(Connection $connection, LoggerInterface $logger)
+    public function __construct(private readonly Connection $connection, private readonly LoggerInterface $logger)
     {
-        $this->connection = $connection;
-        $this->logger = $logger;
     }
 
     /**
@@ -45,8 +37,8 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
      *
      * @see https://dev.mysql.com/doc/refman/5.7/en/insert-optimization.html
      *
-     * There is retry strategy to mitigate the risk of dead lock when loading data with high concurrency.
-     * With a high concurrency (30 threads), despite the retry strategy, it's still possible to have dead locks.
+     * There is retry strategy to mitigate the risk of deadlock when loading data with high concurrency.
+     * With a high concurrency (30 threads), despite the retry strategy, it's still possible to have deadlocks.
      * In that case, we serialize the queries by locking the completeness table.
      *
      * @see https://dev.mysql.com/doc/refman/8.0/en/innodb-deadlocks-handling.html
@@ -91,7 +83,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
                 $numberCompletenessRow += count($productCompletenessCollection);
             }
-            $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, UUID_TO_BIN(?), ?, ?)'));
+            $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, ?, ?, ?)'));
 
             if (empty($placeholders)) {
                 return;
@@ -112,13 +104,13 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                 foreach ($productCompletenessCollection as $productCompleteness) {
                     $stmt->bindValue($placeholderIndex++, $localeIdsFromCode[$productCompleteness->localeCode()]);
                     $stmt->bindValue($placeholderIndex++, $channelIdsFromCode[$productCompleteness->channelCode()]);
-                    $stmt->bindValue($placeholderIndex++, $productCompletenessCollection->productId());
+                    $stmt->bindValue($placeholderIndex++, Uuid::fromString($productCompletenessCollection->productId())->getBytes(), ParameterType::BINARY);
                     $stmt->bindValue($placeholderIndex++, $productCompleteness->missingAttributesCount(), ParameterType::INTEGER);
                     $stmt->bindValue($placeholderIndex++, $productCompleteness->requiredCount(), ParameterType::INTEGER);
                 }
             }
 
-            $stmt->execute();
+            $stmt->executeStatement();
         };
 
         try {

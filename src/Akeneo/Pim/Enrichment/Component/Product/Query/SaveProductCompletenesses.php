@@ -13,7 +13,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
  */
 interface SaveProductCompletenesses
 {
+
     public function save(ProductCompletenessWithMissingAttributeCodesCollection $completenesses): void;
 
+    /**
+     * @param ProductCompletenessWithMissingAttributeCodesCollection[] $productCompletenessCollections
+     */
     public function saveAll(array $productCompletenessCollections): void;
 }
