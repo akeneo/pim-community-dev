@@ -1,0 +1,37 @@
+version: 2.1
+
+jobs:
+    coverage_phpspec:
+        machine:
+            image: 'ubuntu-2004:2022.04.1'
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   fix_files_permissions
+            -   load_docker_image_php
+            -   run:
+                    name: Coverage phpspec
+                    command: XDEBUG_MODE=coverage docker-compose run -T --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+            -   store_artifacts:
+                    path: var/tests/phpspec
+
+workflows:
+    version: 2
+    coverage_phpspec:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            -   start?:
+                    type: approval
+            -   checkout_ce:
+                    requires:
+                        - start?
+            -   install_back_dependencies:
+                    edition: ce
+                    requires:
+                        - checkout_ce
+            -   coverage_phpspec:
+                    requires:
+                        - install_back_dependencies

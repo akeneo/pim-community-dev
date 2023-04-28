@@ -297,3 +297,10 @@ suites:
         spec_path: src/Akeneo/Platform/Installer/back/tests
         src_path: src/Akeneo/Platform/Installer/back/src
         spec_prefix: Specification
+
+extensions:
+  FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension:
+    format:
+      - clover
+    output:
+      clover: var/tests/phpspec/coverage.cov

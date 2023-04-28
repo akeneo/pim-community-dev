@@ -1,0 +1,40 @@
+version: 2.1
+
+jobs:
+    coverage_phpunit:
+        machine:
+            image: 'ubuntu-2004:2022.04.1'
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   fix_files_permissions
+            -   load_docker_image_php
+            -   run:
+                    name: Coverage phpunit unit
+                    command: XDEBUG_MODE=coverage APP_ENV=test docker-compose run -T --rm php php vendor/bin/phpunit -c . --testsuite PIM_All_Unit_Test --coverage-clover var/tests/phpunit/unit.cov
+            -   run:
+                    name: Coverage phpunit integration
+                    command: XDEBUG_MODE=coverage APP_ENV=test docker-compose run -T --rm php php vendor/bin/phpunit -c . --testsuite PIM_All_Integration_Test --coverage-clover var/tests/phpunit/integration.cov
+            -   store_artifacts:
+                    path: var/tests/phpunit
+
+workflows:
+    version: 2
+    coverage_phpunit:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            -   start?:
+                    type: approval
+            -   checkout_ce:
+                    requires:
+                        - start?
+            -   install_back_dependencies:
+                    edition: ce
+                    requires:
+                        - checkout_ce
+            -   coverage_phpunit:
+                    requires:
+                        - install_back_dependencies
