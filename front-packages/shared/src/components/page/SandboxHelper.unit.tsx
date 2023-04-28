@@ -11,6 +11,12 @@ jest.mock('@akeneo-pim-community/shared/src/hooks/useFeatureFlags', () => ({
   }),
 }));
 
+jest.mock('@akeneo-pim-community/shared/src/hooks/useSystemConfiguration', () => ({
+  useSystemConfiguration: () => ({
+    get: (_key: string) => true,
+  }),
+}));
+
 test('it renders its content', () => {
   renderWithProviders(<SandboxHelper />);
 
