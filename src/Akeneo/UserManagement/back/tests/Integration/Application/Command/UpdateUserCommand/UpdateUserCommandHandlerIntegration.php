@@ -29,11 +29,16 @@ final class UpdateUserCommandHandlerIntegration extends TestCase
     public function testItUpdateUserPassword(): void
     {
         $user = $this->getUserLoader()->createUser('userA', [], ['ROLE_USER']);
+
+        $this->assertTrue($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, 'userA'));
+        $this->assertFalse($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, 'realPassword'));
+
         $data = [
             'current_password' => 'userA',
             'new_password' => 'realPassword',
             'new_password_repeat' => 'realPassword',
         ];
+
         $actualUser = $this->getHandler()->handle(new UpdateUserCommand($user->getId(), $data));
 
         $this->assertFalse($this->get(UserPasswordHasherInterface::class)->isPasswordValid($actualUser, 'userA'));

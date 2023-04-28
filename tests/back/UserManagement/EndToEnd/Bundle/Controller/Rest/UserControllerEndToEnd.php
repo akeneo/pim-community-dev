@@ -24,6 +24,10 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
 
         $newPassword = 'newJulien';
+
+        $this->assertTrue($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, 'Julien'));
+        $this->assertFalse($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, $newPassword));
+
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_user_user_rest_post',
@@ -267,6 +271,10 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
 
         $tryPassword = 'newJulien';
+
+        $this->assertFalse($this->get('security.user_password_hasher')->isPasswordValid($user, $tryPassword));
+        $this->assertTrue($this->get('security.user_password_hasher')->isPasswordValid($user, 'Julien'));
+
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_user_user_rest_post',
