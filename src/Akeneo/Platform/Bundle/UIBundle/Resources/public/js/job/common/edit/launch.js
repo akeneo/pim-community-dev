@@ -74,7 +74,7 @@ define([
             router.reloadPage();
           }
 
-          analytics.track('job-instance:export:launched', {
+          analytics.appcuesTrack('job-instance:export:launched', {
             url: this.url,
           });
         })

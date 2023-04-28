@@ -113,7 +113,7 @@ define([
     addItems: function () {
       this.trigger(this.addEvent, {codes: this.selection});
 
-      analytics.track('grid:mass-edit:attributes-added', {
+      analytics.appcuesTrack('grid:mass-edit:attributes-added', {
         codes: this.selection,
       });
     },

@@ -29,7 +29,7 @@ class SearchFilter extends AbstractFilter
                     true
                 )
             );
-            $ds->setParameter($parameterName, addcslashes($word, '_'));
+            $ds->setParameter($parameterName, $word);
         }
 
         return true;
@@ -55,7 +55,7 @@ class SearchFilter extends AbstractFilter
         }
 
         return array_map(function ($word) {
-            return sprintf('%%%s%%', $word);
+            return sprintf('%%%s%%', \addcslashes($word, '_%'));
         }, preg_split('/\s+/', $words = $data['value']));
     }
 }

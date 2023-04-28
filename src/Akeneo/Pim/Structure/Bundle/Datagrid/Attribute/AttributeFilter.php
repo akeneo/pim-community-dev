@@ -68,7 +68,7 @@ final class AttributeFilter extends AbstractFilter
         }
 
         return array_map(function ($word) {
-            return sprintf('%%%s%%', $word);
-        }, preg_split('/\s+/', $words = $data['value']));
+            return sprintf('%%%s%%', \addcslashes($word, '_%'));
+        }, preg_split('/\s+/', $data['value']));
     }
 }

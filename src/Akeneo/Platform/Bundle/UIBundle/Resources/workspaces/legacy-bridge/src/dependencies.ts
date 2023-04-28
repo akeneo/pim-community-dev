@@ -1,4 +1,4 @@
-import {DependenciesContextProps} from '@akeneo-pim-community/shared';
+import {DependenciesContextProps, systemConfiguration} from '@akeneo-pim-community/shared';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const router = require('pim/router');
@@ -23,6 +23,7 @@ const dependencies: DependenciesContextProps = {
   mediator,
   featureFlags,
   analytics,
+  systemConfiguration,
 };
 
 export {dependencies};

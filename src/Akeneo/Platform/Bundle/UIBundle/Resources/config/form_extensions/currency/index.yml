@@ -30,7 +30,6 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-currency-index
         targetZone: helper
-        feature: reset_pim
 
     pim-currency-index-breadcrumbs:
         module: pim/common/breadcrumbs

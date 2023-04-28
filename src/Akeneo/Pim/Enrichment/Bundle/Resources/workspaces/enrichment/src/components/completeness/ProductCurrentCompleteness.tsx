@@ -91,7 +91,7 @@ const ProductCurrentCompleteness: FC<Props> = ({
         onClick={() => {
           open();
 
-          analytics.track('product-grid:completeness:opened', {
+          analytics.appcuesTrack('product-grid:completeness:opened', {
             name: product.identifier,
           });
         }}

@@ -57,7 +57,7 @@ define([
       this.showLoadingMask();
       this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
-      analytics.track('product-model:form:saved', {
+      analytics.appcuesTrack('product-model:form:saved', {
         code: productModel.code,
       });
 

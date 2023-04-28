@@ -110,7 +110,7 @@ define([
           function (response) {
             this.getRoot().trigger('grid:view-selector:view-saved', response.id);
 
-            analytics.track('product-grid:view:saved', {
+            analytics.appcuesTrack('product-grid:view:saved', {
               name: currentView.label,
             });
           }.bind(this)

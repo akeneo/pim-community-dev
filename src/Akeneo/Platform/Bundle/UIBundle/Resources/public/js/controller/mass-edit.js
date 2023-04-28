@@ -45,7 +45,7 @@ define([
       }).value.split(',');
       const queryWithoutValues = query.replace(/&values=[^&]+/, '');
 
-      analytics.track('grid:mass-edit:clicked', {
+      analytics.appcuesTrack('grid:mass-edit:clicked', {
         name: actionName,
       });
 

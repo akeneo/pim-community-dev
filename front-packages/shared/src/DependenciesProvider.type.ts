@@ -50,19 +50,27 @@ type FeatureFlags = {
 
 type Analytics = {
   track(event: string, properties?: object): void;
+  appcuesTrack(event: string, properties?: object): void;
+};
+
+type SystemConfiguration = {
+  initialize: () => Promise<void>;
+  refresh: () => Promise<void>;
+  get: (key: string, defaultValue?: string | number | boolean | null) => string | number | boolean | null;
 };
 
 export {NotificationLevel};
 export type {
+  Analytics,
+  FeatureFlags,
+  Mediator,
   Notify,
   RouteParams,
   Router,
   Security,
+  SystemConfiguration,
   Translate,
   UserContext,
   View,
   ViewBuilder,
-  Mediator,
-  FeatureFlags,
-  Analytics,
 };

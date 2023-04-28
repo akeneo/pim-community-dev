@@ -457,7 +457,7 @@ define([
         return;
       }
 
-      analytics.track('product-model:form:variant-selected', {
+      analytics.appcuesTrack('product-model:form:variant-selected', {
         identifier: entity.identifier,
       });
 

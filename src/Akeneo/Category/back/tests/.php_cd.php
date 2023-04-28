@@ -148,9 +148,6 @@ $rules = [
     ])->in('Akeneo\Category\Infrastructure'),
 
     $builder->only([
-        // ???
-        'Akeneo\Category\Domain\ValueObject\CategoryId',
-
         // Vendors
         'Symfony\Component\Messenger',
         'Symfony\Component\Validator',

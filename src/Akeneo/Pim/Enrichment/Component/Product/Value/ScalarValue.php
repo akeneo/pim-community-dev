@@ -11,7 +11,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  *   - pim_catalog_text
  *   - pim_catalog_textarea
  *   - pim_catalog_boolean
- *   - pim_catalog_number
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -55,16 +54,8 @@ class ScalarValue extends AbstractValue implements ValueInterface
             return false;
         }
 
-        $comparison = $value->getData() === $this->getData();
-        if (\is_numeric($value->getData()) && \is_numeric($this->getData())) {
-            try {
-                $comparison = bccomp($value->getData(), $this->getData()) === 0;
-            } catch (\Throwable) {
-            }
-        }
-
         return $this->getScopeCode() === $value->getScopeCode() &&
             $this->getLocaleCode() === $value->getLocaleCode() &&
-            $comparison;
+            $value->getData() === $this->getData();
     }
 }

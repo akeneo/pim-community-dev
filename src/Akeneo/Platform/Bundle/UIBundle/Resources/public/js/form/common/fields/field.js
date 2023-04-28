@@ -230,7 +230,7 @@ define([
       const data = this.getFormData();
       propertyAccessor.updateProperty(data, this.fieldName, value);
 
-      analytics.track('common:form:value-changed', {
+      analytics.appcuesTrack('common:form:value-changed', {
         code: this.code,
         name: this.fieldName,
       });

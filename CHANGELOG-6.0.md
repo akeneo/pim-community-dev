@@ -1,5 +1,11 @@
 # 6.0.x
 
+# 6.0.81 (2023-04-18)
+
+## Bug fixes
+
+- [Backport PIM-10887] PIM-10937: Prevent channel creation on validation error during import
+
 # 6.0.80 (2023-04-11)
 
 ## Bug fixes
@@ -12,7 +18,7 @@
 
 ## Bug fixes
 
-- PIM-10913: Fix attribute creation form when a label contains a question mark 
+- PIM-10913: Fix attribute creation form when a label contains a question mark
 
 # 6.0.77 (2023-03-24)
 
@@ -233,7 +239,7 @@
 - PIM-10449: Remove old table related to old queue system
 - PIM-10451: Add migration to add an index on start_time on the job_execution table
 - MW-373: Prepare the marketplace migration to another subdomain
-- PIM-10452, PIM-10454, PIM-10455, PIM-10456 : Fix migration to set some fields to NOT NULL on job & step execution tables 
+- PIM-10452, PIM-10454, PIM-10455, PIM-10456 : Fix migration to set some fields to NOT NULL on job & step execution tables
 - PIM-10453: Add migration to add an index on updated on pim_catalog_category table
 
 # 6.0.28 (2022-05-13)

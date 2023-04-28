@@ -45,7 +45,7 @@ define([
             this.setData(data);
             this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
 
-            analytics.track('job-instance:form-edit:saved', {
+            analytics.appcuesTrack('job-instance:form-edit:saved', {
               code: jobInstance.code,
             });
 

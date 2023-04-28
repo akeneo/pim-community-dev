@@ -230,6 +230,7 @@ services:
             - '@validator'
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_enrich.resolver.locale'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.product_model_category:
         public: true

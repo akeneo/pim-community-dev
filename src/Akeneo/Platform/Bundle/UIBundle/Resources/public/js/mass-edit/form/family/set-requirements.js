@@ -113,7 +113,7 @@ define([
 
       data.actions = values;
 
-      analytics.track('grid:mass-edit:requirements-checked', {
+      analytics.appcuesTrack('grid:mass-edit:requirements-checked', {
         actions: data.actions,
       });
 
