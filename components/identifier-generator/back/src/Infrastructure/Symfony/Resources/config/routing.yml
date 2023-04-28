@@ -30,6 +30,13 @@ akeneo_identifier_generator_get_attribute_options:
     defaults:
         _feature: identifier_generator
 
+akeneo_identifier_generator_get_reference_entities_values:
+    path: '/identifier-generator/reference-entities-values/{referenceEntityIdentifier}'
+    controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetValuesReferenceEntitiesController
+    methods: [GET]
+    defaults:
+        _feature: identifier_generator
+
 akeneo_identifier_generator_get_conditions:
     path: '/identifier-generator/conditions'
     controller: Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailableConditionsController

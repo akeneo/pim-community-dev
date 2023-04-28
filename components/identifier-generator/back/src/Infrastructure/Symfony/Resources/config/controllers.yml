@@ -51,6 +51,11 @@ services:
       - '@Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\FindAttributeOptions'
       - '@oro_security.security_facade'
 
+  Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetValuesReferenceEntitiesController:
+    public: true
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_searchable_records'
+
   Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller\GetAvailableConditionsController:
     public: true
     arguments:
