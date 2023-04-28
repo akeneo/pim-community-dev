@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\Registry;
 
-use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
 use Akeneo\Category\ServiceApi\Handler\CategoryAdditionalPropertiesFinder;
 use PhpSpec\ObjectBehavior;
 

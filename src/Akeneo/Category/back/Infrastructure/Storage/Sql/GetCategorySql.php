@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributeIdentifier;
 use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter;
 use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes;
-use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
