@@ -19,7 +19,7 @@ services:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
 
-    Akeneo\UserManagement\Infrastructure\Cli\AssignAllUsersToOneCategoryCommand:
+    Akeneo\UserManagement\Infrastructure\Cli\AssignAllUsersToOneCategoryTreeCommand:
         arguments:
             - '@Akeneo\UserManagement\Domain\Storage\AssignAllUsersToOneCategory'
             - '@Akeneo\Category\ServiceApi\CategoryQueryInterface'
