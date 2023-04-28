@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+  php:
+    environment:
+      COMPOSER_HOME: '/srv/pim/.composer'
+    user: $DEV_UID:$DEV_GID
+    volumes:
+      - '${HOST_COMPOSER_HOME:-~/.composer}:/srv/pim/.composer'
+  fpm:
+    image: 'akeneo/pim-php-dev:8.1'
+    environment:
+      APP_ENV: '${APP_ENV:-prod}'
+      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
+      BEHAT_SCREENSHOT_PATH: '/srv/pim/var/tests/screenshots'
+      PHP_IDE_CONFIG: 'serverName=pim-docker-web'
+      XDEBUG_MODE: '${XDEBUG_MODE:-off}'
+      XDEBUG_CONFIG: 'client_host=172.17.0.1'
+      BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
+      BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
+    volumes:
+      - './:/srv/pim'
+      - './var/logs:/var/log'
+      - './var:/var/run/php'
+    working_dir: '/srv/pim'
+    command: 'php-fpm -F -g /tmp/php8.1-fpm.pid'
+    user: $DEV_UID:$DEV_GID
+    networks:
+      - 'pim'
+    ports: []
+
+  node:
+    environment:
+      HOME: '/home/new_user'
+      YARN_CACHE_FOLDER: '/home/new_user/.cache/yarn'
+      CYPRESS_CACHE_FOLDER: '/home/new_user/.cache/cypress'
+    user: $DEV_UID:$DEV_GID
+    volumes:
+      - ~/.cache/yarn:/home/new_user/.cache/yarn
+      - ~/.cache/cypress:/home/new_user/.cache/cypress
+      - ~/.yarnrc:/home/new_user/.yarnrc
+
+  httpd:
+    image: 'httpd:2.4'
+    environment:
+      APP_ENV: '${APP_ENV:-prod}'
+    depends_on:
+      - 'fpm'
+    ports:
+      - '${DOCKER_PORT_HTTP:-8080}:80'
+    volumes:
+      - './:/srv/pim:ro'
+      - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
+      - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
+    networks:
+      - 'pim'
