@@ -54,3 +54,5 @@ services:
       - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
     networks:
       - 'pim'
+    container_name: httpd
+

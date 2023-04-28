@@ -42,8 +42,7 @@ services:
       - '${DOCKER_PORT_HTTP:-8080}:80'
     networks:
       - 'pim'
-    extra_hosts:
-      - "fpm:127.0.0.1"
+    container_name: fpm
 
   node:
     image: 'akeneo/node:18'
