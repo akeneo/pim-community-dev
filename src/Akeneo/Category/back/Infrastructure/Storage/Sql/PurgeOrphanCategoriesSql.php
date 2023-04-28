@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Domain\Query\PurgeOrphanCategories;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -12,10 +13,10 @@ use Doctrine\DBAL\Connection;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PurgeOrphanCategoriesSql
+final class PurgeOrphanCategoriesSql implements PurgeOrphanCategories
 {
     public function __construct(
-        private Connection $connection,
+        private readonly Connection $connection,
     ) {
     }
 

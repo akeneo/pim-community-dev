@@ -5,8 +5,8 @@ services:
         tags:
             - { name: console.command }
 
-    Akeneo\Category\Infrastructure\Cli\RemoveOrphanCategories\RemoveOrphanCategories:
+    Akeneo\Category\Infrastructure\Cli\RemoveOrphanCategories\RemoveOrphanCategoriesCommand:
         arguments:
-            - '@Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql'
+            - '@Akeneo\Category\Domain\Query\PurgeOrphanCategories'
         tags:
             - { name: console.command }

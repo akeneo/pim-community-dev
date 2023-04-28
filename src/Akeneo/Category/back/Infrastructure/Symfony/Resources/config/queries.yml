@@ -114,7 +114,7 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql:
+  Akeneo\Category\Domain\Query\PurgeOrphanCategories:
     class: 'Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql'
     arguments:
       - '@database_connection'

@@ -11,6 +11,7 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Save\Que
 
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\Query\PurgeOrphanCategories;
 use Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql;
 
 class PurgeOrphanCategoriesSqlIntegration extends CategoryTestCase
@@ -48,7 +49,7 @@ class PurgeOrphanCategoriesSqlIntegration extends CategoryTestCase
             rootId: $parent->getId()->getValue(),
         );
 
-        $affectedRows = $this->get(PurgeOrphanCategoriesSql::class)->execute();
+        $affectedRows = $this->get(PurgeOrphanCategories::class)->execute();
         $this->assertEquals(0, $affectedRows);
 
         $this->assertNotNull($child3->getParentId());
@@ -57,7 +58,7 @@ class PurgeOrphanCategoriesSqlIntegration extends CategoryTestCase
         $child3 = $this->get(GetCategoryInterface::class)->byCode('child3');
         $this->assertNull($child3->getParentId());
 
-        $affectedRows = $this->get(PurgeOrphanCategoriesSql::class)->execute();
+        $affectedRows = $this->get(PurgeOrphanCategories::class)->execute();
         $this->assertEquals(3, $affectedRows);
 
         $nonOrphanCategoriesGenerator = $this->get(GetCategoryInterface::class)->byCodes(['parent', 'child1', 'child2', 'child3', 'child4', 'child5']);

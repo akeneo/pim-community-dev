@@ -20,3 +20,8 @@ services:
     Akeneo\UserManagement\Infrastructure\Storage\SqlFindAllUserRoles:
         arguments:
             - '@database_connection'
+
+    Akeneo\UserManagement\Domain\Storage\AssignAllUsersToOneCategory:
+        class: 'Akeneo\UserManagement\Infrastructure\Storage\SqlAssignAllUsersToOneCategory'
+        arguments:
+            - '@database_connection'

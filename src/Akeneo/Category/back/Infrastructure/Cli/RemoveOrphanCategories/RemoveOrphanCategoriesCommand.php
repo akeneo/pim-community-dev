@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Cli\RemoveOrphanCategories;
 
-use Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql;
+use Akeneo\Category\Domain\Query\PurgeOrphanCategories;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,12 +15,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RemoveOrphanCategories extends Command
+final class RemoveOrphanCategoriesCommand extends Command
 {
     protected static $defaultName = 'akeneo:categories:remove-orphans';
 
     public function __construct(
-        private readonly PurgeOrphanCategoriesSql $purgeOrphanCategories,
+        private readonly PurgeOrphanCategories $purgeOrphanCategories,
     ) {
         parent::__construct();
     }
@@ -28,7 +28,7 @@ class RemoveOrphanCategories extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Remove categories that have no parent and aren\'t category trees');
     }
