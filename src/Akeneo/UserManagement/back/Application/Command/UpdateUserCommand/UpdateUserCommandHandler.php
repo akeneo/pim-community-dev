@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Application\Command\UpdateUserCommand;
 
-use _PHPStan_0f7d3d695\Symfony\Component\Finder\Exception\AccessDeniedException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Application\Exception\UserNotFoundException;

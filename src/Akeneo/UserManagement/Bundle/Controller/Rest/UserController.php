@@ -120,33 +120,6 @@ final class UserController
     }
 
     /**
-     * @param array $data
-     */
-    private function updateUser(int $identifier, array $data): Response
-    {
-        try {
-            $updateUserCommand = new UpdateUserCommand($identifier, $data);
-            $user = $this->updateUserCommandHandler->handle($updateUserCommand);
-
-            return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
-        } catch (ViolationsException $violationsException) {
-            $normalizedViolations = [];
-            foreach ($violationsException->violations() as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                    $violation,
-                    'internal_api'
-                );
-            }
-            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
-        } catch (UserNotFoundException $userNotFoundException) {
-            throw new NotFoundHttpException($userNotFoundException->getMessage());
-        }
-//        catch (AccessDeniedException $accessDeniedException) {
-//            throw new AccessDeniedHttpException();
-//        }
-    }
-
-    /**
      * @return JsonResponse|RedirectResponse
      * @throws \HttpException
      *
@@ -306,6 +279,30 @@ final class UserController
         }
 
         return $user;
+    }
+
+    /**
+     * @param array $data
+     */
+    private function updateUser(int $identifier, array $data): Response
+    {
+        try {
+            $updateUserCommand = new UpdateUserCommand($identifier, $data);
+            $user = $this->updateUserCommandHandler->handle($updateUserCommand);
+
+            return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
+        } catch (ViolationsException $violationsException) {
+            $normalizedViolations = [];
+            foreach ($violationsException->violations() as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api'
+                );
+            }
+            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+        } catch (UserNotFoundException $userNotFoundException) {
+            throw new NotFoundHttpException($userNotFoundException->getMessage());
+        }
     }
 
     private function validatePasswordCreate(array $data): ConstraintViolationListInterface
