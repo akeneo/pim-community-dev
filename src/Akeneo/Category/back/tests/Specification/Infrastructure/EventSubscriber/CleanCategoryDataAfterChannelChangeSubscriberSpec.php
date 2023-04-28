@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\EventSubscriber;
 
-use Akeneo\Category\Application\Enrichment\Filter\ByChannelAndLocalesFilter;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryDataAfterChannelChangeSubscriber;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
@@ -11,13 +10,13 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class CleanCategoryDataAfterChannelChangeSubscriberSpec extends ObjectBehavior
 {
