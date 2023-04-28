@@ -3,7 +3,7 @@ import {screen} from '@testing-library/react';
 import {renderWithProviders} from '../../tests/utils';
 import {SandboxHelper} from './SandboxHelper';
 
-let mockedFeatureFlags: string[] = ['reset_pim'];
+let mockedFeatureFlags: string[] = ['sandbox_banner'];
 
 jest.mock('@akeneo-pim-community/shared/src/hooks/useFeatureFlags', () => ({
   useFeatureFlags: () => ({
