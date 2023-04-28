@@ -4,12 +4,23 @@ const systemConfigurationData = {};
 
 const systemConfiguration: SystemConfiguration = {
   initialize: async () => {
-    const response = await fetch('/system/rest');
-    const data = await response.json();
+    try {
+      const response = await fetch('/system/rest');
 
-    systemConfigurationData['sandbox_banner'] = '1' === data.pim_ui___sandbox_banner.value;
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
 
-    return Promise.resolve();
+      const data = await response.json();
+
+      systemConfigurationData['sandbox_banner'] = '1' === data.pim_ui___sandbox_banner.value;
+
+      return Promise.resolve();
+    } catch (error) {
+      systemConfigurationData['sandbox_banner'] = true;
+
+      return Promise.resolve();
+    }
   },
 
   refresh: async () => await systemConfiguration.initialize(),
