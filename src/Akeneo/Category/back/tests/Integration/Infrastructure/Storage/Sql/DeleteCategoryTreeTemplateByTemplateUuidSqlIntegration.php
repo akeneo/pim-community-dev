@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
-use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid;
-use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Akeneo\Test\Integration\Configuration;
+use Doctrine\DBAL\Connection;
+use PDO;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -19,49 +16,106 @@ use Akeneo\Test\Integration\Configuration;
  */
 class DeleteCategoryTreeTemplateByTemplateUuidSqlIntegration extends CategoryTestCase
 {
+    private DeleteCategoryTreeTemplateByTemplateUuid $deleteCategoryTreeTemplateByTemplateUuid;
 
-    public function testItDeletesLinkForTemplate(): void
+    protected function setUp(): void
     {
-        /** @var Category $category */
-        $category = $this->get(GetCategoryInterface::class)->byCode('master');
-        $templateModel = $this->generateMockedCategoryTemplateModel(categoryTreeId: $category->getId()->getValue());
+        parent::setUp();
 
-        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
-        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
-
-        $this->assertTrue($this->isExistingLinkBetweenCategoryTreeAndTemplate($category->getId()->getValue(), $templateModel->getUuid()));
-
-        ($this->get(DeleteCategoryTreeTemplateByTemplateUuid::class))($templateModel->getUuid());
-
-        $this->assertFalse($this->isExistingLinkBetweenCategoryTreeAndTemplate($category->getId()->getValue(), $templateModel->getUuid()));
+        $this->deleteCategoryTreeTemplateByTemplateUuid = $this->get(DeleteCategoryTreeTemplateByTemplateUuid::class);
     }
 
-    private function isExistingLinkBetweenCategoryTreeAndTemplate(int $categoryTreeId, TemplateUuid $templateUuid): bool
+    public function testItDeletesCategoryTreeTemplate(): void
     {
-        $query = <<< SQL
-            SELECT COUNT(*) 
-            FROM pim_catalog_category_tree_template
-            WHERE category_tree_id = :category_tree_id
-            AND category_template_uuid = :template_uuid
-        SQL;
+        // Arrange
 
-        $result = $this->get('database_connection')->executeQuery(
-            $query,
+        $templateUuid = TemplateUuid::fromString('8605bafb-d912-4c47-b915-d31031248a7d');
+
+        $this->useTemplateFunctionalCatalog(
+            categoryCode: 'master',
+            templateUuid: $templateUuid->getValue(),
+        );
+
+        // Act
+
+        ($this->deleteCategoryTreeTemplateByTemplateUuid)($templateUuid);
+
+        // Assert
+
+        $this->assertCategoryTreeTemplateLinkIsDeleted($templateUuid);
+        $this->assertCategoryTemplateAttributesAreDeleted($templateUuid);
+        $this->assertCategoryTemplateIsDeleted($templateUuid);
+    }
+
+    private function assertCategoryTreeTemplateLinkIsDeleted(TemplateUuid $templateUuid): void
+    {
+        /** @var Connection */
+        $connection = $this->get(Connection::class);
+
+        $result = $connection->executeQuery(
+            <<<SQL
+            SELECT * FROM pim_catalog_category_tree_template
+            WHERE category_template_uuid = :template_uuid
+        SQL,
             [
-                'category_tree_id' => $categoryTreeId,
                 'template_uuid' => $templateUuid->toBytes(),
             ],
             [
-                'category_tree_id' => \PDO::PARAM_INT,
-                'template_uuid' => \PDO::PARAM_STR,
+                'template_uuid' => PDO::PARAM_STR,
             ],
-        )->fetchOne();
+        );
 
-        return $result === '1';
+        $this->assertFalse(
+            $result->fetchOne(),
+            'The category tree template link should be deleted'
+        );
     }
 
-    protected function getConfiguration(): Configuration
+    private function assertCategoryTemplateAttributesAreDeleted(TemplateUuid $templateUuid): void
     {
-        return $this->catalog->useMinimalCatalog();
+        /** @var Connection */
+        $connection = $this->get(Connection::class);
+
+        $result = $connection->executeQuery(
+            <<<SQL
+            SELECT * FROM pim_catalog_category_attribute
+            WHERE category_template_uuid = :template_uuid
+        SQL,
+            [
+                'template_uuid' => $templateUuid->toBytes(),
+            ],
+            [
+                'template_uuid' => PDO::PARAM_STR,
+            ],
+        );
+
+        $this->assertFalse(
+            $result->fetchOne(),
+            'The template attributes should be deleted'
+        );
+    }
+
+    private function assertCategoryTemplateIsDeleted(TemplateUuid $templateUuid): void
+    {
+        /** @var Connection */
+        $connection = $this->get(Connection::class);
+
+        $result = $connection->executeQuery(
+            <<<SQL
+            SELECT * FROM pim_catalog_category_template
+            WHERE uuid = :template_uuid
+        SQL,
+            [
+                'template_uuid' => $templateUuid->toBytes(),
+            ],
+            [
+                'template_uuid' => PDO::PARAM_STR,
+            ],
+        );
+
+        $this->assertFalse(
+            $result->fetchOne(),
+            'The template should be deleted'
+        );
     }
 }
