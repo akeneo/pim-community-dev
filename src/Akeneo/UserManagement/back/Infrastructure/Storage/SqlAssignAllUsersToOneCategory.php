@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Infrastructure\Storage;
 
-
 use Akeneo\UserManagement\Domain\Storage\AssignAllUsersToOneCategory;
 use Doctrine\DBAL\Connection;
 use PDO;
@@ -15,7 +14,8 @@ use PDO;
  */
 final class SqlAssignAllUsersToOneCategory implements AssignAllUsersToOneCategory
 {
-    public function __construct(private readonly Connection $connection) {
+    public function __construct(private readonly Connection $connection)
+    {
     }
 
     public function execute(int $categoryId): int
