@@ -12,10 +12,11 @@ import {
   Content,
 } from './header';
 import {SandboxHelper} from './SandboxHelper';
+import {useFeatureFlags} from '../../hooks';
 
-const Header = styled.header`
+const Header = styled.header<{top: number}>`
   position: sticky;
-  top: 0;
+  top: ${({top}) => top}px;
   padding: 40px 40px 20px;
   background: white;
   z-index: 10;
@@ -127,10 +128,12 @@ const PageHeader: PageHeaderInterface = ({children, showPlaceholder}) => {
     showPlaceholder
   );
 
+  const {isEnabled} = useFeatureFlags();
+
   return (
     <>
       <SandboxHelper />
-      <Header>
+      <Header top={isEnabled('sandbox_banner') ? 44 : 0}>
         <LineContainer>
           {illustration}
           <MainContainer>
