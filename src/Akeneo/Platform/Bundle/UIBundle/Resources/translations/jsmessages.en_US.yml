@@ -122,6 +122,12 @@ oro_config:
                     fields:
                         enabler:
                             label: Enabled
+                environment:
+                    title: Environment settings
+                    fields:
+                        sandbox_banner:
+                            label: Display sandbox alert banner
+
                 loading_message:
                     title: Customized loading messages
                     helper: Entertain your users with customized messages for loading screens.

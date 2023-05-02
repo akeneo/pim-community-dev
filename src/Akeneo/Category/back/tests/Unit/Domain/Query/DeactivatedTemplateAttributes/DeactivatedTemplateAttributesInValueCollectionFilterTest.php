@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Unit\Domain\Query\DeactivatedTemplateAttributes;
 
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributeIdentifier;
-use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter;
+use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributeIdentifier;
+use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)

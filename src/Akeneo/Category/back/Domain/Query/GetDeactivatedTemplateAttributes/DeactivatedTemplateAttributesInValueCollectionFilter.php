@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes;
+namespace Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes;
 
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 
