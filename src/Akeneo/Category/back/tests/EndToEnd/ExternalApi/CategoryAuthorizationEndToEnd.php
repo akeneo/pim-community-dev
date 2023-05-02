@@ -19,10 +19,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CategoryAuthorizationEndToEnd extends ApiTestCase
 {
-
     private static string $PIM_API_OVERALL_ACCESS_ROLE = 'pim_api_overall_access';
     private static string $PIM_API_CATEGORY_LIST_ROLE = 'pim_api_category_list';
     private static string $PIM_API_CATEGORY_EDIT_ROLE = 'pim_api_category_edit';
+
     protected function setUp(): void
     {
         parent::setUp();
