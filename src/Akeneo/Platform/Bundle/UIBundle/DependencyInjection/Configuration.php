@@ -33,7 +33,7 @@ class Configuration implements ConfigurationInterface
                 'loading_messages' => [
                     'value' => null,
                 ],
-                'sandbox_banner' => ['value' => true],
+                'sandbox_banner' => ['value' => '1'],
             ]
         );
 
