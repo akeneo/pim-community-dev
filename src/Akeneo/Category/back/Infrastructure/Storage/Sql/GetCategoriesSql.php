@@ -6,9 +6,9 @@ namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
-use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributeIdentifier;
-use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter;
-use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes;
+use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributeIdentifier;
+use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter;
+use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Doctrine\DBAL\Connection;
 

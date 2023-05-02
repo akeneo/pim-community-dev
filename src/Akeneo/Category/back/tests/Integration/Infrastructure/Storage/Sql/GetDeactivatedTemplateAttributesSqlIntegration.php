@@ -6,7 +6,7 @@ namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes;
+use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**

@@ -22,3 +22,6 @@ services:
                 -
                     section: pim_ui
                     name: loading_messages
+                -
+                    section: pim_ui
+                    name: sandbox_banner
