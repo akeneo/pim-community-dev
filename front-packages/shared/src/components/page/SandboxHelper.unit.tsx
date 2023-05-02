@@ -3,11 +3,17 @@ import {screen} from '@testing-library/react';
 import {renderWithProviders} from '../../tests/utils';
 import {SandboxHelper} from './SandboxHelper';
 
-let mockedFeatureFlags: string[] = ['reset_pim'];
+let mockedFeatureFlags: string[] = ['sandbox_banner'];
 
 jest.mock('@akeneo-pim-community/shared/src/hooks/useFeatureFlags', () => ({
   useFeatureFlags: () => ({
     isEnabled: (featureFlag: string) => mockedFeatureFlags.includes(featureFlag),
+  }),
+}));
+
+jest.mock('@akeneo-pim-community/shared/src/hooks/useSystemConfiguration', () => ({
+  useSystemConfiguration: () => ({
+    get: (_key: string) => true,
   }),
 }));
 

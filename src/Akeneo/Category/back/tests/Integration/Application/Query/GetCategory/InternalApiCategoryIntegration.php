@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Category\Integration\Application\Query\GetCategory;
 
-use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Application\Query\GetCategory\InternalApiCategory;
+use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)

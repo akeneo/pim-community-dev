@@ -6,6 +6,9 @@ namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
+use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributeIdentifier;
+use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter;
+use Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
 use Doctrine\DBAL\Connection;
 
@@ -15,8 +18,11 @@ use Doctrine\DBAL\Connection;
  */
 final class GetCategoriesSql implements GetCategoriesInterface
 {
-    public function __construct(private readonly Connection $connection)
-    {
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly GetDeactivatedTemplateAttributes $getDeactivatedTemplateAttributes,
+        private readonly DeactivatedTemplateAttributesInValueCollectionFilter $deactivatedAttributesInValueCollectionFilter,
+    ) {
     }
 
     /**
@@ -114,9 +120,17 @@ final class GetCategoriesSql implements GetCategoriesInterface
         if (!$results) {
             return [];
         }
-
+        $deactivatedAttributes = $this->getDeactivatedTemplateAttributes->execute();
         $retrievedCategories = [];
+
         foreach ($results as $rawCategory) {
+            if (!empty($deactivatedAttributes) && !empty($rawCategory['value_collection'])) {
+                $rawCategory['value_collection'] = $this->filterOutEnrichedValuesOfDeactivatedAttributes(
+                    $deactivatedAttributes,
+                    $rawCategory['value_collection'],
+                );
+            }
+
             $retrievedCategories[] = ExternalApiCategory::fromDatabase($rawCategory);
         }
 
@@ -140,5 +154,27 @@ final class GetCategoriesSql implements GetCategoriesInterface
         )->fetchOne();
 
         return $result ? (int) $result : null;
+    }
+
+    /**
+     * @param array<DeactivatedTemplateAttributeIdentifier> $deactivatedAttributes
+     *
+     * @throws \JsonException
+     */
+    private function filterOutEnrichedValuesOfDeactivatedAttributes(
+        array $deactivatedAttributes,
+        string $valueCollection,
+    ): string {
+        $decodedRawValueCollection = json_decode(
+            $valueCollection,
+            true,
+            512,
+            JSON_THROW_ON_ERROR,
+        );
+
+        return json_encode(
+            ($this->deactivatedAttributesInValueCollectionFilter)($deactivatedAttributes, $decodedRawValueCollection),
+            JSON_THROW_ON_ERROR,
+        );
     }
 }

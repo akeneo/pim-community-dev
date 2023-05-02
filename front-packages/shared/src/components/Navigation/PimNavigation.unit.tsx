@@ -40,9 +40,13 @@ test('It redirects the user to the clicked entry route', async () => {
     <PimNavigation entries={aMainNavigation()} activeEntryCode="entry1" activeSubEntryCode="subentry2" />
   );
 
-  mockedDependencies.router.redirect = jest.fn();
+  if (!mockedDependencies.router) {
+    return;
+  }
+
+  const redirect = jest.spyOn(mockedDependencies.router, 'redirect');
   fireEvent.click(screen.getByText('Entry 1'));
-  expect(mockedDependencies.router.redirect).toHaveBeenCalledWith('entry1_route');
+  expect(redirect).toHaveBeenCalledWith('entry1_route');
 });
 
 test('It show disabled entries as locked for the Free Trial', async () => {

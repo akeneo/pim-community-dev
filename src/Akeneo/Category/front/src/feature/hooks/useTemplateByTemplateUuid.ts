@@ -1,7 +1,7 @@
 import {useQuery} from 'react-query';
 import {Template} from '../models';
 import {FetchStatus, NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {useCallback, useMemo} from 'react';
+import {useMemo} from 'react';
 import {useHistory} from 'react-router';
 
 type Result = {
@@ -31,7 +31,7 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
     });
   }, [router, uuid]);
 
-  const fetchTemplate = useCallback(async () => {
+  const fetchTemplate = async () => {
     if (url === null || uuid === null || uuid.length === 0) {
       return {};
     }
@@ -44,7 +44,7 @@ export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
 
       return response.json();
     });
-  }, [uuid, url]);
+  };
 
   const response = useQuery<Template, any>(['template', uuid], fetchTemplate, {enabled: uuid !== null && url !== null});
 

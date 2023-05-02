@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import BaseView = require('pimui/js/view/base');
+import {systemConfiguration} from '@akeneo-pim-community/shared';
 
 const mediator = require('oro/mediator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -35,7 +36,12 @@ class PimApp extends BaseView {
     this.listenTo(mediator, 'pim-app:overlay:show', this.showOverlay);
     this.listenTo(mediator, 'pim-app:overlay:hide', this.hideOverlay);
 
-    return $.when(FetcherRegistry.initialize(), DateContext.initialize(), UserContext.initialize())
+    return $.when(
+      FetcherRegistry.initialize(),
+      DateContext.initialize(),
+      UserContext.initialize(),
+      systemConfiguration.initialize()
+    )
       .then(initTranslator.fetch)
       .then(() => {
         init();

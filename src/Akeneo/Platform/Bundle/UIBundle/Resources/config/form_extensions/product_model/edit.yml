@@ -6,7 +6,6 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-product-model-edit-form
         targetZone: helper
-        feature: reset_pim
 
     pim-product-model-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs

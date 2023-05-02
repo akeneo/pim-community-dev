@@ -13,6 +13,7 @@ import {
     DependenciesContext,
     Translate as SharedTranslate,
     FeatureFlags as SharedFeatureFlags,
+    systemConfiguration,
 } from '@akeneo-pim-community/shared';
 
 interface Props {
@@ -31,6 +32,7 @@ const DependenciesProvider = ({children, ...dependencies}: PropsWithChildren<Pro
         value={{
             translate: dependencies.translate as SharedTranslate,
             featureFlags: dependencies.featureFlags as SharedFeatureFlags,
+            systemConfiguration,
             user: dependencies.user,
         }}
     >
