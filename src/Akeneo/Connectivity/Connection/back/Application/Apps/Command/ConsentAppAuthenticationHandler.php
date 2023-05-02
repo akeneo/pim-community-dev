@@ -19,24 +19,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ConsentAppAuthenticationHandler
 {
-    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
-    private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private CreateUserConsentQueryInterface $createUserConsentQuery;
-    private ClockInterface $clock;
-    private ValidatorInterface $validator;
-
-    public function __construct(
-        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        AppAuthorizationSessionInterface $appAuthorizationSession,
-        CreateUserConsentQueryInterface $createUserConsentQuery,
-        ClockInterface $clock,
-        ValidatorInterface $validator
-    ) {
-        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
-        $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->createUserConsentQuery = $createUserConsentQuery;
-        $this->clock = $clock;
-        $this->validator = $validator;
+    public function __construct(private GetAppConfirmationQueryInterface $getAppConfirmationQuery, private AppAuthorizationSessionInterface $appAuthorizationSession, private CreateUserConsentQueryInterface $createUserConsentQuery, private ClockInterface $clock, private ValidatorInterface $validator)
+    {
     }
 
     public function handle(ConsentAppAuthenticationCommand $command): void

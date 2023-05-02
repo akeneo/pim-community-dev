@@ -19,26 +19,10 @@ use OAuth2\Model\IOAuth2Client;
  */
 class AuthorizationCodeGenerator implements AuthorizationCodeGeneratorInterface
 {
-    private const AUTH_CODE_LIFETIME = 30; // 30 seconds
+    private const AUTH_CODE_LIFETIME = 30;
 
-    private ClientManagerInterface $clientManager;
-    private UserRepositoryInterface $userRepository;
-    private IOAuth2GrantCode $storage;
-    private RandomCodeGeneratorInterface $randomCodeGenerator;
-    private ClockInterface $clock;
-
-    public function __construct(
-        ClientManagerInterface $clientManager,
-        UserRepositoryInterface $userRepository,
-        IOAuth2GrantCode $storage,
-        RandomCodeGeneratorInterface $randomCodeGenerator,
-        ClockInterface $clock
-    ) {
-        $this->clientManager = $clientManager;
-        $this->userRepository = $userRepository;
-        $this->storage = $storage;
-        $this->randomCodeGenerator = $randomCodeGenerator;
-        $this->clock = $clock;
+    public function __construct(private ClientManagerInterface $clientManager, private UserRepositoryInterface $userRepository, private IOAuth2GrantCode $storage, private RandomCodeGeneratorInterface $randomCodeGenerator, private ClockInterface $clock)
+    {
     }
 
     public function generate(

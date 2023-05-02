@@ -13,32 +13,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionT
  */
 class Connection
 {
-    private string $code;
-
-    private string $label;
-
-    private string $flowType;
-
-    private ?string $image;
-
-    private bool $auditable;
-
-    private string $type;
-
-    public function __construct(
-        string $code,
-        string $label,
-        string $flowType,
-        ?string $image = null,
-        bool $auditable = false,
-        string $type = ConnectionType::DEFAULT_TYPE
-    ) {
-        $this->code = $code;
-        $this->label = $label;
-        $this->flowType = $flowType;
-        $this->image = $image;
-        $this->auditable = $auditable;
-        $this->type = $type;
+    public function __construct(private string $code, private string $label, private string $flowType, private ?string $image = null, private bool $auditable = false, private string $type = ConnectionType::DEFAULT_TYPE)
+    {
     }
 
     public function code(): string

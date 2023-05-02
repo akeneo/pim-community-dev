@@ -44,7 +44,7 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
             \json_encode(['url' => 'http://www.get-response-200.com'])
         );
 
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => true, 'message' => '200 OK'], $result);
@@ -64,7 +64,7 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
             \json_encode(['url' => 'I_AM_NOT_AN_URL'])
         );
 
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => false, 'message' => 'This value is not a valid URL.'], $result);
@@ -84,7 +84,7 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
             \json_encode(['url' => ''])
         );
 
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => false, 'message' => 'This value should not be blank.'], $result);
@@ -117,7 +117,7 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
             \json_encode(['url' => 'http://www.get-response-451.com'])
         );
 
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => false, 'message' => '451 Unavailable For Legal Reasons'], $result);
@@ -149,7 +149,7 @@ class CheckWebhookReachabilityEndToEnd extends WebTestCase
             \json_encode(['url' => 'http://www.get-response-451.com'])
         );
 
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertIsArray($result);
         Assert::assertEquals(['success' => false, 'message' => 'Failed to connect to server'], $result);

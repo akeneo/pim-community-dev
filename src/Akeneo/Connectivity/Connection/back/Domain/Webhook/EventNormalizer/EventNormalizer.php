@@ -18,7 +18,7 @@ final class EventNormalizer implements EventNormalizerInterface
     }
 
     /**
-     * @return array<mixed>
+     * @return array{action: string, event_id: string, event_datetime: string, author: string, author_type: string}
      */
     public function normalize(EventInterface $event): array
     {

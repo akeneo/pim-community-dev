@@ -11,54 +11,10 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
  */
 class ConnectionWithCredentials
 {
-    private string $code;
-
-    private string $label;
-
-    private string $flowType;
-
-    private string $clientId;
-
-    private string $secret;
-
-    private string $username;
-
     private ?string $password = null;
 
-    private ?string $image;
-
-    private string $userRoleId;
-
-    private ?string $userGroupId;
-
-    private bool $auditable;
-
-    private string $type;
-
-    public function __construct(
-        string $code,
-        string $label,
-        string $flowType,
-        ?string $image,
-        string $clientId,
-        string $secret,
-        string $username,
-        string $userRoleId,
-        ?string $userGroupId,
-        bool $auditable,
-        string $type
-    ) {
-        $this->code = $code;
-        $this->label = $label;
-        $this->flowType = $flowType;
-        $this->clientId = $clientId;
-        $this->secret = $secret;
-        $this->image = $image;
-        $this->username = $username;
-        $this->userRoleId = $userRoleId;
-        $this->userGroupId = $userGroupId;
-        $this->auditable = $auditable;
-        $this->type = $type;
+    public function __construct(private string $code, private string $label, private string $flowType, private ?string $image, private string $clientId, private string $secret, private string $username, private string $userRoleId, private ?string $userGroupId, private bool $auditable, private string $type)
+    {
     }
 
     public function code(): string

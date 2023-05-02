@@ -17,18 +17,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCred
  */
 class ConnectionLoader
 {
-    /** @var CreateConnectionHandler */
-    private $createConnectionHandler;
-
-    /** @var UpdateConnectionHandler */
-    private $updateConnectionHandler;
-
-    public function __construct(
-        CreateConnectionHandler $createConnectionHandler,
-        UpdateConnectionHandler $updateConnectionHandler
-    ) {
-        $this->createConnectionHandler = $createConnectionHandler;
-        $this->updateConnectionHandler = $updateConnectionHandler;
+    public function __construct(private CreateConnectionHandler $createConnectionHandler, private UpdateConnectionHandler $updateConnectionHandler)
+    {
     }
 
     public function createConnection(

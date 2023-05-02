@@ -9,11 +9,11 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class FlowType
+class FlowType implements \Stringable
 {
-    const DATA_SOURCE = 'data_source';
-    const DATA_DESTINATION = 'data_destination';
-    const OTHER = 'other';
+    public const DATA_SOURCE = 'data_source';
+    public const DATA_DESTINATION = 'data_destination';
+    public const OTHER = 'other';
 
     private const CONSTRAINT_KEY = 'akeneo_connectivity.connection.connection.constraint.flow_type.%s';
 

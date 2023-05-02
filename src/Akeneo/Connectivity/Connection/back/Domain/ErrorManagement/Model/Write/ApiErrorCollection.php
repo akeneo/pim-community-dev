@@ -58,8 +58,6 @@ class ApiErrorCollection
     }
 
     /**
-     * @param string $errorType
-     *
      * @return ApiErrorInterface[]
      */
     public function getByType(string $errorType): array

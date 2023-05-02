@@ -16,9 +16,6 @@ interface CreateUserInterface
     /**
      * Creates and persists a new user
      *
-     * @param string $username
-     * @param string $firstname
-     * @param string $lastname
      * @param string[]|null $groups
      * @param string[]|null $roles
      * @return User

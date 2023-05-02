@@ -41,7 +41,7 @@ class GetAllCustomAppsQuery implements GetAllCustomAppsQueryInterface
 
         return GetAllCustomAppsResult::create(
             \count($rows),
-            \array_map(function ($row) {
+            \array_map(function ($row): \Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App {
                 $row['connected'] = (bool) $row['connected'];
 
                 return App::fromCustomAppValues($row);

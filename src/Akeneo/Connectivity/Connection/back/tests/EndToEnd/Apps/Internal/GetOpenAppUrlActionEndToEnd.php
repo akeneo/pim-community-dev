@@ -74,7 +74,7 @@ class GetOpenAppUrlActionEndToEnd extends WebTestCase
         ];
 
         self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        self::assertEquals($expectedContent, \json_decode($response->getContent(), true));
+        self::assertEquals($expectedContent, \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR));
         self::assertFalse($this->connectedAppHasOutdatedScopes('a_client_id'), 'Connected app should not be flagged with outdated scopes');
     }
 

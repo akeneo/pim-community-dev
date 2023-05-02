@@ -19,20 +19,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UpdateConnectionHandler
 {
-    private ValidatorInterface $validator;
-
-    private ConnectionRepositoryInterface $repository;
-
-    private UpdateUserPermissionsInterface $updateUserPermissions;
-
-    public function __construct(
-        ValidatorInterface $validator,
-        ConnectionRepositoryInterface $repository,
-        UpdateUserPermissionsInterface $updateUserPermissions
-    ) {
-        $this->validator = $validator;
-        $this->repository = $repository;
-        $this->updateUserPermissions = $updateUserPermissions;
+    public function __construct(private ValidatorInterface $validator, private ConnectionRepositoryInterface $repository, private UpdateUserPermissionsInterface $updateUserPermissions)
+    {
     }
 
     public function handle(UpdateConnectionCommand $command): void

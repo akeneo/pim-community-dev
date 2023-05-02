@@ -13,11 +13,8 @@ use Doctrine\DBAL\Connection as DbalConnection;
  */
 class DbalSaveWebhookSecretQuery implements SaveWebhookSecretQueryInterface
 {
-    private DbalConnection $dbalConnection;
-
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(private DbalConnection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     public function execute(string $code, string $secret): bool
@@ -28,7 +25,7 @@ SET webhook_secret = :secret
 WHERE code = :code
 SQL;
 
-        return (bool) $this->dbalConnection->executeUpdate(
+        return (bool) $this->dbalConnection->executeStatement(
             $query,
             [
                 'code' => $code,

@@ -11,36 +11,8 @@ namespace Akeneo\Connectivity\Connection\Application\Settings\Command;
  */
 final class UpdateConnectionCommand
 {
-    private string $code;
-
-    private string $label;
-
-    private string $flowType;
-
-    private ?string $image;
-
-    private string $userRoleId;
-
-    private ?string $userGroupId;
-
-    private bool $auditable;
-
-    public function __construct(
-        string $code,
-        string $label,
-        string $flowType,
-        ?string $image,
-        string $userRoleId,
-        ?string $userGroupId,
-        bool $auditable
-    ) {
-        $this->code = $code;
-        $this->label = $label;
-        $this->flowType = $flowType;
-        $this->image = $image;
-        $this->userRoleId = $userRoleId;
-        $this->userGroupId = $userGroupId;
-        $this->auditable = $auditable;
+    public function __construct(private string $code, private string $label, private string $flowType, private ?string $image, private string $userRoleId, private ?string $userGroupId, private bool $auditable)
+    {
     }
 
     public function code(): string

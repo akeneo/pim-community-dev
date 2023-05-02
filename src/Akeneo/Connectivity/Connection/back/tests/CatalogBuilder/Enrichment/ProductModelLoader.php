@@ -17,33 +17,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductModelLoader
 {
-    /** @var SimpleFactoryInterface */
-    private $factory;
-
-    /** @var ObjectUpdaterInterface */
-    private $updater;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SaverInterface */
-    private $saver;
-
-    /** @var Client */
-    private $client;
-
-    public function __construct(
-        SimpleFactoryInterface $factory,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        SaverInterface $saver,
-        Client $client
-    ) {
-        $this->factory = $factory;
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->saver = $saver;
-        $this->client = $client;
+    public function __construct(private SimpleFactoryInterface $factory, private ObjectUpdaterInterface $updater, private ValidatorInterface $validator, private SaverInterface $saver, private Client $client)
+    {
     }
 
     /**

@@ -31,11 +31,11 @@ class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
     /** @var ExtractConnectionsProductEventCountQueryInterface */
     private $extractConnectionsProductEventCountQuery;
 
-    /** @var DbalConnection */
-    private $dbalConnection;
+    /** @var DbalConnection|null */
+    private ?object $dbalConnection;
 
-    /** @var string */
-    private $productClass;
+    /** @var string|null */
+    private bool|string|int|float|\UnitEnum|array|null $productClass;
 
     protected function setUp(): void
     {

@@ -32,7 +32,7 @@ class ProduceEventOnBulkProductModelCreationIntegration extends TestCase
         $this->productModelUpdater = $this->get('pim_catalog.updater.product_model');
     }
 
-    public function test_the_bulk_product_model_creation_event()
+    public function test_the_bulk_product_model_creation_event(): void
     {
         $count = 3;
         $productModels = [];

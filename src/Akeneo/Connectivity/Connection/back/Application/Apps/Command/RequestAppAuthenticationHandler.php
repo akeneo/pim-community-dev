@@ -17,21 +17,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class RequestAppAuthenticationHandler
 {
-    private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery;
-    private CreateUserConsentQueryInterface $createUserConsentQuery;
-    private ClockInterface $clock;
-    private ValidatorInterface $validator;
-
-    public function __construct(
-        GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
-        CreateUserConsentQueryInterface $createUserConsentQuery,
-        ClockInterface $clock,
-        ValidatorInterface $validator
-    ) {
-        $this->getUserConsentedAuthenticationScopesQuery = $getUserConsentedAuthenticationScopesQuery;
-        $this->createUserConsentQuery = $createUserConsentQuery;
-        $this->clock = $clock;
-        $this->validator = $validator;
+    public function __construct(private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery, private CreateUserConsentQueryInterface $createUserConsentQuery, private ClockInterface $clock, private ValidatorInterface $validator)
+    {
     }
 
     public function handle(RequestAppAuthenticationCommand $command): void
@@ -45,7 +32,7 @@ class RequestAppAuthenticationHandler
         $appId = $command->getAppId();
 
         // If openid scope isn't requested, clear all the user consented scopes & skip the authentication.
-        if (false === $command->getRequestedAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
+        if (!$command->getRequestedAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
             $this->createUserConsentQuery->execute(
                 $userId,
                 $appId,

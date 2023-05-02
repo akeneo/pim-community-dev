@@ -18,21 +18,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class CreateUserGroup implements CreateUserGroupInterface
 {
     private const APP_USER_GROUP_TYPE = 'app';
-    private SimpleFactoryInterface $userGroupFactory;
-    private ObjectUpdaterInterface $userGroupUpdater;
-    private SaverInterface $userGroupSaver;
-    private ValidatorInterface $validator;
 
-    public function __construct(
-        SimpleFactoryInterface $userGroupFactory,
-        ObjectUpdaterInterface $userGroupUpdater,
-        SaverInterface $userGroupSaver,
-        ValidatorInterface $validator
-    ) {
-        $this->userGroupFactory = $userGroupFactory;
-        $this->userGroupUpdater = $userGroupUpdater;
-        $this->userGroupSaver = $userGroupSaver;
-        $this->validator = $validator;
+    public function __construct(private SimpleFactoryInterface $userGroupFactory, private ObjectUpdaterInterface $userGroupUpdater, private SaverInterface $userGroupSaver, private ValidatorInterface $validator)
+    {
     }
 
     public function execute(string $groupName): GroupInterface

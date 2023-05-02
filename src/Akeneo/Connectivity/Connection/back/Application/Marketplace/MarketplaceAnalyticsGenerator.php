@@ -15,22 +15,12 @@ use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
  */
 class MarketplaceAnalyticsGenerator
 {
-    private GetUserProfileQueryInterface $getUserProfileQuery;
-    private WebMarketplaceAliasesInterface $webMarketplaceAliases;
-    private PimUrl $pimUrl;
-
-    public function __construct(
-        GetUserProfileQueryInterface $getUserProfileQuery,
-        WebMarketplaceAliasesInterface $webMarketplaceAliases,
-        PimUrl $pimUrl
-    ) {
-        $this->getUserProfileQuery = $getUserProfileQuery;
-        $this->webMarketplaceAliases = $webMarketplaceAliases;
-        $this->pimUrl = $pimUrl;
+    public function __construct(private GetUserProfileQueryInterface $getUserProfileQuery, private WebMarketplaceAliasesInterface $webMarketplaceAliases, private PimUrl $pimUrl)
+    {
     }
 
     /**
-     * @return array<string, string>
+     * @return array{utm_medium: string, utm_content: string, utm_source: string, utm_term?: string, utm_campaign?: string}
      */
     public function getExtensionQueryParameters(string $username): array
     {

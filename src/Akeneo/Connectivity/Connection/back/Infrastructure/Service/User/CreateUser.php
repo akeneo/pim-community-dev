@@ -18,28 +18,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateUser implements CreateUserInterface
 {
-    /** @var SimpleFactoryInterface */
-    private $userFactory;
-
-    /** @var ObjectUpdaterInterface */
-    private $userUpdater;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var SaverInterface */
-    private $userSaver;
-
-    public function __construct(
-        SimpleFactoryInterface $userFactory,
-        ObjectUpdaterInterface $userUpdater,
-        ValidatorInterface $validator,
-        SaverInterface $userSaver
-    ) {
-        $this->userFactory = $userFactory;
-        $this->userUpdater = $userUpdater;
-        $this->validator = $validator;
-        $this->userSaver = $userSaver;
+    public function __construct(private SimpleFactoryInterface $userFactory, private ObjectUpdaterInterface $userUpdater, private ValidatorInterface $validator, private SaverInterface $userSaver)
+    {
     }
 
     /**
@@ -92,7 +72,7 @@ class CreateUser implements CreateUserInterface
 
     private function generateUsername(string $username): string
     {
-        $randomNumberString = \str_pad((string) \rand(1, 9999), 4, "0", STR_PAD_LEFT);
+        $randomNumberString = \str_pad((string) \random_int(1, 9999), 4, "0", STR_PAD_LEFT);
 
         return \sprintf('%s_%s', $username, $randomNumberString);
     }

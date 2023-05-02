@@ -15,15 +15,8 @@ use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueriesClearerInterface;
  */
 class CacheClearer implements CacheClearerInterface
 {
-    private UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer;
-    private CachedQueriesClearerInterface $cachedQueriesClearer;
-
-    public function __construct(
-        UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer,
-        CachedQueriesClearerInterface $cachedQueriesClearer
-    ) {
-        $this->unitOfWorkAndRepositoriesClearer = $unitOfWorkAndRepositoriesClearer;
-        $this->cachedQueriesClearer = $cachedQueriesClearer;
+    public function __construct(private UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer, private CachedQueriesClearerInterface $cachedQueriesClearer)
+    {
     }
 
     public function clear(): void

@@ -45,16 +45,14 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
         $this->authenticateAsAdmin();
 
         $this->generateLogs(
-            function () use ($timestamp) {
-                return [
-                    'id' => Uuid::uuid4()->toString(),
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::NOTICE,
-                    'message' => 'Foo bar',
-                    'connection_code' => null,
-                    'context' => [],
-                ];
-            },
+            fn (): array => [
+                'id' => Uuid::uuid4()->toString(),
+                'timestamp' => $timestamp,
+                'level' => EventsApiDebugLogLevels::NOTICE,
+                'message' => 'Foo bar',
+                'connection_code' => null,
+                'context' => [],
+            ],
             30
         );
 
@@ -67,7 +65,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
             ]
         );
 
-        $response = \json_decode($this->client->getResponse()->getContent(), true);
+        $response = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertCount(25, $response['results']);
         Assert::assertEquals(30, $response['total']);
@@ -80,7 +78,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
             ['connection_code' => $sapConnection->code(), 'search_after' => $searchAfter, 'filters' => '{}']
         );
 
-        $response = \json_decode($this->client->getResponse()->getContent(), true);
+        $response = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertCount(5, $response['results']);
     }
@@ -126,7 +124,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
             ],
         );
 
-        $response = \json_decode($this->client->getResponse()->getContent(), true);
+        $response = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertCount(1, $response['results']);
         Assert::assertEquals(1, $response['total']);
@@ -142,7 +140,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
         $this->eventSubscriptionLogLoader->bulkInsert($logs);
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

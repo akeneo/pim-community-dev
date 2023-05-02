@@ -22,17 +22,17 @@ class EventsApiRequestSucceededEventSpec extends ObjectBehavior
         $this->shouldHaveType(EventsApiRequestSucceededEvent::class);
     }
 
-    public function it_provides_the_events(EventInterface $event)
+    public function it_provides_the_events(EventInterface $event): void
     {
         $this->getEvents()->shouldBe([$event]);
     }
 
-    public function it_provides_the_connection_code()
+    public function it_provides_the_connection_code(): void
     {
         $this->getConnectionCode()->shouldBe('connectionCode');
     }
 
-    public function it_throws_when_events_have_an_unexpected_class()
+    public function it_throws_when_events_have_an_unexpected_class(): void
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('__construct', ['code', [new \stdClass()]]);
     }

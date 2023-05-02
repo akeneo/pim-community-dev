@@ -19,27 +19,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInterface
 {
-    private GetDelayUntilNextRequest $getDelayUntilNextRequest;
-    private int $webhookRequestsLimit;
-    private Sleep $sleep;
-    private ReachRequestLimitLogger $reachRequestLimitLogger;
-    private LimitOfEventsApiRequestsReachedLoggerInterface $limitOfEventsApiRequestsReachedLogger;
-    private EventsApiDebugRepositoryInterface $eventsApiDebugRepository;
-
-    public function __construct(
-        GetDelayUntilNextRequest $getDelayUntilNextRequest,
-        int $webhookRequestsLimit,
-        Sleep $sleep,
-        ReachRequestLimitLogger $reachRequestLimitLogger,
-        LimitOfEventsApiRequestsReachedLoggerInterface $limitOfEventsApiRequestsReachedLogger,
-        EventsApiDebugRepositoryInterface $eventsApiDebugRepository
-    ) {
-        $this->getDelayUntilNextRequest = $getDelayUntilNextRequest;
-        $this->webhookRequestsLimit = $webhookRequestsLimit;
-        $this->sleep = $sleep;
-        $this->reachRequestLimitLogger = $reachRequestLimitLogger;
-        $this->limitOfEventsApiRequestsReachedLogger = $limitOfEventsApiRequestsReachedLogger;
-        $this->eventsApiDebugRepository = $eventsApiDebugRepository;
+    public function __construct(private GetDelayUntilNextRequest $getDelayUntilNextRequest, private int $webhookRequestsLimit, private Sleep $sleep, private ReachRequestLimitLogger $reachRequestLimitLogger, private LimitOfEventsApiRequestsReachedLoggerInterface $limitOfEventsApiRequestsReachedLogger, private EventsApiDebugRepositoryInterface $eventsApiDebugRepository)
+    {
     }
 
     public static function getSubscribedEvents(): array

@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 {
-    public function test_the_secret_regeneration_disables_the_access_token()
+    public function test_the_secret_regeneration_disables_the_access_token(): void
     {
         $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
@@ -53,7 +53,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
         // Assert API client
         $apiClient->reload();
-        $responseContent = \json_decode($apiClient->getResponse()->getContent(), true);
+        $responseContent = \json_decode($apiClient->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertEquals(Response::HTTP_UNAUTHORIZED, $responseContent['code']);
         Assert::assertEquals('The access token provided is invalid.', $responseContent['message']);
 
@@ -62,7 +62,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertCount(0, $results);
     }
 
-    public function test_the_secret_regeneration_disables_the_secret()
+    public function test_the_secret_regeneration_disables_the_secret(): void
     {
         $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
@@ -91,7 +91,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertNotEquals($apiConnection->secret(), $newConnection->secret());
     }
 
-    public function test_the_secret_regeneration_disables_the_refresh_token()
+    public function test_the_secret_regeneration_disables_the_refresh_token(): void
     {
         $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
         $serverParams = [
@@ -116,7 +116,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
         // Assert API client
         $responseContent = $apiClient->getResponse()->getContent();
-        $decodedResponse = \json_decode($responseContent, true);
+        $decodedResponse = \json_decode($responseContent, true, 512, JSON_THROW_ON_ERROR);
         $authParams = ['grant_type' => 'refresh_token', 'refresh_token' => $decodedResponse['refresh_token']];
 
         static::ensureKernelShutdown();
@@ -143,7 +143,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertCount(0, $results);
     }
 
-    public function test_the_password_regeneration_disables_the_access_token()
+    public function test_the_password_regeneration_disables_the_access_token(): void
     {
         $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
@@ -172,7 +172,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
         // Assert API client
         $apiClient->reload();
-        $responseContent = \json_decode($apiClient->getResponse()->getContent(), true);
+        $responseContent = \json_decode($apiClient->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertEquals(Response::HTTP_UNAUTHORIZED, $responseContent['code']);
         Assert::assertEquals('The access token provided is invalid.', $responseContent['message']);
 
@@ -181,7 +181,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertCount(0, $results);
     }
 
-    public function test_the_password_regeneration_disables_the_password()
+    public function test_the_password_regeneration_disables_the_password(): void
     {
         $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
@@ -207,7 +207,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
         Assert::assertEquals(Response::HTTP_UNPROCESSABLE_ENTITY, $apiClient->getResponse()->getStatusCode());
     }
 
-    public function test_the_password_regeneration_disables_the_refresh_token()
+    public function test_the_password_regeneration_disables_the_refresh_token(): void
     {
         $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
         $serverParams = [
@@ -232,7 +232,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
 
         // Assert API client
         $responseContent = $apiClient->getResponse()->getContent();
-        $decodedResponse = \json_decode($responseContent, true);
+        $decodedResponse = \json_decode($responseContent, true, 512, JSON_THROW_ON_ERROR);
         $authParams = ['grant_type' => 'refresh_token', 'refresh_token' => $decodedResponse['refresh_token']];
 
         static::ensureKernelShutdown();
@@ -281,7 +281,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
     /**
      * @return Configuration
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

@@ -13,11 +13,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class PurgeConnectionErrorsQuery
 {
-    private Client $esClient;
-
-    public function __construct(Client $esClient)
+    public function __construct(private Client $esClient)
     {
-        $this->esClient = $esClient;
     }
 
     /**
@@ -51,6 +48,9 @@ class PurgeConnectionErrorsQuery
         $this->esClient->deleteByQuery($this->getDeleteAllDocumentsButGivenIdsQuery($esIdsToKeep));
     }
 
+    /**
+     * @return array{query: array{bool: array{must_not: array{terms: array{id: mixed[]}}}}}
+     */
     private function getDeleteAllDocumentsButGivenIdsQuery(array $idsToKeep): array
     {
         return [
@@ -62,6 +62,9 @@ class PurgeConnectionErrorsQuery
         ];
     }
 
+    /**
+     * @return array{_source: string[], sort: array<int, array{error_datetime: array{order: string}}>, size: int, query: array{constant_score: array{filter: array{bool: array{filter: array{exists: array{field: string}}[]|array{term: array{connection_code: string}}[], must_not: array{range: array{error_datetime: array{lt: string}}}}}}}}
+     */
     private function getEsIdsToKeepForGivenConnectionQuery(
         string $code,
         int $nbOfErrorsToKeep,

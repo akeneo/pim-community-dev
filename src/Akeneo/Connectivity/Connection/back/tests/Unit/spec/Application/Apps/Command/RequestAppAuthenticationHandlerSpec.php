@@ -37,7 +37,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_instantiable()
+    public function it_is_instantiable(): void
     {
         $this->shouldHaveType(RequestAppAuthenticationHandler::class);
     }

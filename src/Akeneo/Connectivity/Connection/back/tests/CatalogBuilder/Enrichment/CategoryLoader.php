@@ -16,21 +16,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CategoryLoader
 {
-    private SimpleFactoryInterface $builder;
-    private ObjectUpdaterInterface $updater;
-    private SaverInterface $saver;
-    private ValidatorInterface $validator;
-
-    public function __construct(
-        SimpleFactoryInterface $builder,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        SaverInterface $saver
-    ) {
-        $this->builder = $builder;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->validator = $validator;
+    public function __construct(private SimpleFactoryInterface $builder, private ObjectUpdaterInterface $updater, private ValidatorInterface $validator, private SaverInterface $saver)
+    {
     }
 
     public function create(array $data = []): void

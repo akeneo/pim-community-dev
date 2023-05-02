@@ -20,30 +20,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductLoader
 {
-    private ProductBuilderInterface $builder;
-    private ObjectUpdaterInterface $updater;
-    private SaverInterface $saver;
-    private ValidatorInterface $validator;
-    private Client $client;
-    private TraceableMessageBus $messageBus;
-
-    public function __construct(
-        ProductBuilderInterface $builder,
-        ObjectUpdaterInterface $updater,
-        SaverInterface $saver,
-        ValidatorInterface $validator,
-        Client $client,
-        TraceableMessageBus $messageBus
-    ) {
-        $this->builder = $builder;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->validator = $validator;
-        $this->client = $client;
-        $this->messageBus = $messageBus;
+    public function __construct(private ProductBuilderInterface $builder, private ObjectUpdaterInterface $updater, private SaverInterface $saver, private ValidatorInterface $validator, private Client $client, private TraceableMessageBus $messageBus)
+    {
     }
 
-    public function createWithUuid($uuid, $identifier, array $data): ProductInterface
+    public function createWithUuid(?string $uuid, ?string $identifier, array $data): ProductInterface
     {
         $family = $data['family'] ?? null;
 
@@ -55,7 +36,7 @@ class ProductLoader
         return $product;
     }
 
-    public function create($identifier, array $data): ProductInterface
+    public function create(?string $identifier, array $data): ProductInterface
     {
         return $this->createWithUuid(Uuid::uuid4()->toString(), $identifier, $data);
     }

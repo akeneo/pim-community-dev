@@ -34,21 +34,19 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
     }
 
-    public function test_it_returns_the_correct_amount_of_notice_and_info_logs()
+    public function test_it_returns_the_correct_amount_of_notice_and_info_logs(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
 
         $this->generateLogs(
-            function ($index) use ($timestamp) {
-                return [
-                    'id' => Uuid::uuid4()->toString(),
-                    'timestamp' => $timestamp,
-                    'level' => $index % 2 ? EventsApiDebugLogLevels::NOTICE : EventsApiDebugLogLevels::INFO,
-                    'message' => 'Foo bar',
-                    'connection_code' => null,
-                    'context' => [],
-                ];
-            },
+            fn ($index): array => [
+                'id' => Uuid::uuid4()->toString(),
+                'timestamp' => $timestamp,
+                'level' => $index % 2 !== 0 ? EventsApiDebugLogLevels::NOTICE : EventsApiDebugLogLevels::INFO,
+                'message' => 'Foo bar',
+                'connection_code' => null,
+                'context' => [],
+            ],
             101
         );
 
@@ -57,7 +55,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals(100, \iterator_count($result));
     }
 
-    public function test_it_returns_only_the_newest_notice_and_info_logs()
+    public function test_it_returns_only_the_newest_notice_and_info_logs(): void
     {
         $timestampNow = $this->clock->now()->getTimestamp() - 10;
         $timestampStep = 10;
@@ -65,13 +63,13 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $excludeTimestamp = $timestampNow - $timestampStep * $countOfGeneratedLogs;
 
         $this->generateLogs(
-            function ($index) use (&$timestampNow, $timestampStep) {
+            function ($index) use (&$timestampNow, $timestampStep): array {
                 $timestampNow -= $timestampStep;
 
                 return [
                     'id' => Uuid::uuid4()->toString(),
                     'timestamp' => $timestampNow,
-                    'level' => $index % 2 ? EventsApiDebugLogLevels::NOTICE : EventsApiDebugLogLevels::INFO,
+                    'level' => $index % 2 !== 0 ? EventsApiDebugLogLevels::NOTICE : EventsApiDebugLogLevels::INFO,
                     'message' => 'Foo bar',
                     'connection_code' => null,
                     'context' => [],
@@ -83,16 +81,14 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $logs = \iterator_to_array($this->getEventSubscriptionLogsQuery->execute('a_connection_code'));
 
         $timestamps = \array_map(
-            function ($log) {
-                return $log['timestamp'];
-            },
+            fn ($log): int => $log['timestamp'],
             $logs
         );
 
         Assert::assertNotContains($excludeTimestamp, $timestamps);
     }
 
-    public function test_it_returns_the_last_warning_and_error_logs()
+    public function test_it_returns_the_last_warning_and_error_logs(): void
     {
         // The limit is 72 hours before now.
         $timestampLimit = $this->clock->now()->getTimestamp() - (72 * 60 * 60);
@@ -141,7 +137,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals(2, \iterator_count($result));
     }
 
-    public function test_it_returns_logs_ordered_by_date_asc()
+    public function test_it_returns_logs_ordered_by_date_asc(): void
     {
         $timestampNow = $this->clock->now()->getTimestamp();
 
@@ -199,7 +195,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals($timestampNow - 1, $logs[4]['timestamp']);
     }
 
-    public function test_it_returns_logs_only_for_the_specified_connection()
+    public function test_it_returns_logs_only_for_the_specified_connection(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
 
@@ -255,7 +251,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
     /**
      * @inheritDoc
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

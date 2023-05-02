@@ -18,15 +18,8 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  */
 class EventSubscriptionsLimitValidator extends ConstraintValidator
 {
-    private SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery;
-    private int $activeEventSubscriptionsLimit;
-
-    public function __construct(
-        SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery,
-        int $activeEventSubscriptionsLimit
-    ) {
-        $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
-        $this->activeEventSubscriptionsLimit = $activeEventSubscriptionsLimit;
+    public function __construct(private SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery, private int $activeEventSubscriptionsLimit)
+    {
     }
 
     public function validate($eventSubscription, Constraint $constraint): void
@@ -40,7 +33,7 @@ class EventSubscriptionsLimitValidator extends ConstraintValidator
         }
 
         // Skip the limit check if the event subscription is disabled.
-        if (false === $eventSubscription->enabled()) {
+        if (!$eventSubscription->enabled()) {
             return;
         }
 
@@ -48,7 +41,7 @@ class EventSubscriptionsLimitValidator extends ConstraintValidator
         $activeEventSubscriptionsCount = \count(
             \array_filter(
                 $this->selectActiveWebhooksQuery->execute(),
-                fn (ActiveWebhook $activeEventSubscription) => $activeEventSubscription->connectionCode() !== $eventSubscription->code(),
+                fn (ActiveWebhook $activeEventSubscription): bool => $activeEventSubscription->connectionCode() !== $eventSubscription->code(),
             ),
         );
 

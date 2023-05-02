@@ -17,11 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class GetOpenIdPublicKeyAction
 {
-    private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery;
-
-    public function __construct(GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery)
+    public function __construct(private GetAsymmetricKeysQueryInterface $getAsymmetricKeysQuery)
     {
-        $this->getAsymmetricKeysQuery = $getAsymmetricKeysQuery;
     }
 
     public function __invoke(Request $request): JsonResponse

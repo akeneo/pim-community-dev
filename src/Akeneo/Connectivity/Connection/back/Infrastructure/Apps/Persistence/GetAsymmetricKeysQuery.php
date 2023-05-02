@@ -32,7 +32,7 @@ final class GetAsymmetricKeysQuery implements GetAsymmetricKeysQueryInterface
             throw new OpenIdKeysNotFoundException();
         }
 
-        $keys = \json_decode($result, true);
+        $keys = \json_decode($result, true, 512, JSON_THROW_ON_ERROR);
 
         return AsymmetricKeys::create($keys[AsymmetricKeys::PUBLIC_KEY], $keys[AsymmetricKeys::PRIVATE_KEY]);
     }

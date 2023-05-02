@@ -12,15 +12,8 @@ use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
  */
 final class RequestAppAuthenticationCommand
 {
-    private string $appId;
-    private int $pimUserId;
-    private ScopeList $requestedAuthenticationScopes;
-
-    public function __construct(string $appId, int $pimUserId, ScopeList $requestedAuthenticationScopes)
+    public function __construct(private string $appId, private int $pimUserId, private ScopeList $requestedAuthenticationScopes)
     {
-        $this->appId = $appId;
-        $this->pimUserId = $pimUserId;
-        $this->requestedAuthenticationScopes = $requestedAuthenticationScopes;
     }
 
     public function getAppId(): string

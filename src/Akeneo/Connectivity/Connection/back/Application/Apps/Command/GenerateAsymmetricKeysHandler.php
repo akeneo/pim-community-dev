@@ -12,15 +12,8 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\SaveAsymmetricKeysQue
  */
 class GenerateAsymmetricKeysHandler
 {
-    private AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator;
-    private SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery;
-
-    public function __construct(
-        AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator,
-        SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery
-    ) {
-        $this->asymmetricKeysGenerator = $asymmetricKeysGenerator;
-        $this->saveAsymmetricKeysQuery = $saveAsymmetricKeysQuery;
+    public function __construct(private AsymmetricKeysGeneratorInterface $asymmetricKeysGenerator, private SaveAsymmetricKeysQueryInterface $saveAsymmetricKeysQuery)
+    {
     }
 
     public function handle(GenerateAsymmetricKeysCommand $command): void

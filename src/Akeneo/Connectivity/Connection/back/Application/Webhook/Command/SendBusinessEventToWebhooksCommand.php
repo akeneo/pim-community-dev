@@ -13,11 +13,8 @@ use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
  */
 class SendBusinessEventToWebhooksCommand
 {
-    private BulkEventInterface $event;
-
-    public function __construct(BulkEventInterface $event)
+    public function __construct(private BulkEventInterface $event)
     {
-        $this->event = $event;
     }
 
     public function event(): BulkEventInterface

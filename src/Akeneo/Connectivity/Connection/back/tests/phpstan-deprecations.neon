@@ -3,13 +3,6 @@ includes:
 parameters:
     reportUnmatchedIgnoredErrors: false
     ignoreErrors:
-        # Doctrine DBAL migration (CPM-741-upgrade-doctrine)
-        - '#Call to deprecated method executeUpdate#'
-        - '#Call to deprecated method fetch\(\) of class Doctrine\\DBAL\\Driver\\ResultStatement#'
-        - '#Call to deprecated method execute\(\) of class Doctrine\\DBAL\\Statement#'
-        - '#Call to deprecated method fetchAll\(\) of class Doctrine\\DBAL\\Driver\\ResultStatement#'
-        - '#Call to deprecated method fetchAll\(\) of class Doctrine\\DBAL\\Connection#'
-        - '#Fetching class constant COLUMN of deprecated class Doctrine\\DBAL\\FetchMode#'
         # To revalidate
         - '#Class PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Formatting\\SpaceAfterNotSniff not found.#'
         - '#Class PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Files\\LineLengthSniff not found.#'

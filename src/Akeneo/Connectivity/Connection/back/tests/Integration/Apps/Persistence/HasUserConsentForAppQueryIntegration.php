@@ -29,7 +29,7 @@ class HasUserConsentForAppQueryIntegration extends WebTestCase
     private UserGroupLoader $groupLoader;
 
 
-    protected function getConfiguration()
+    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

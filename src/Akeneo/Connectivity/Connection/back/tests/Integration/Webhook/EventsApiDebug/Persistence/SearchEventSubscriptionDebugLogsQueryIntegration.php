@@ -36,21 +36,19 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
     }
 
-    public function test_it_returns_the_correct_amount_of_logs_by_page()
+    public function test_it_returns_the_correct_amount_of_logs_by_page(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
 
         $this->generateLogs(
-            function () use ($timestamp) {
-                return [
-                    'id' => Uuid::uuid4()->toString(),
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::INFO,
-                    'message' => 'Foo bar',
-                    'connection_code' => null,
-                    'context' => [],
-                ];
-            },
+            fn (): array => [
+                'id' => Uuid::uuid4()->toString(),
+                'timestamp' => $timestamp,
+                'level' => EventsApiDebugLogLevels::INFO,
+                'message' => 'Foo bar',
+                'connection_code' => null,
+                'context' => [],
+            ],
             30
         );
 
@@ -60,21 +58,19 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals(30, $result['total']);
     }
 
-    public function test_it_returns_the_total_amount_of_notice_and_info_logs()
+    public function test_it_returns_the_total_amount_of_notice_and_info_logs(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
 
         $this->generateLogs(
-            function ($index) use ($timestamp) {
-                return [
-                    'id' => Uuid::uuid4()->toString(),
-                    'timestamp' => $timestamp,
-                    'level' => $index % 2 ? EventsApiDebugLogLevels::NOTICE : EventsApiDebugLogLevels::INFO,
-                    'message' => 'Foo bar',
-                    'connection_code' => null,
-                    'context' => [],
-                ];
-            },
+            fn ($index): array => [
+                'id' => Uuid::uuid4()->toString(),
+                'timestamp' => $timestamp,
+                'level' => $index % 2 !== 0 ? EventsApiDebugLogLevels::NOTICE : EventsApiDebugLogLevels::INFO,
+                'message' => 'Foo bar',
+                'connection_code' => null,
+                'context' => [],
+            ],
             101
         );
 
@@ -91,21 +87,19 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals(100, $result['total']);
     }
 
-    public function test_it_returns_the_total_amount_of_logs_filtered_by_level()
+    public function test_it_returns_the_total_amount_of_logs_filtered_by_level(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
 
         $this->generateLogs(
-            function ($index) use ($timestamp) {
-                return [
-                    'id' => Uuid::uuid4()->toString(),
-                    'timestamp' => $timestamp,
-                    'level' => EventsApiDebugLogLevels::NOTICE,
-                    'message' => 'Foo bar',
-                    'connection_code' => null,
-                    'context' => [],
-                ];
-            },
+            fn ($index): array => [
+                'id' => Uuid::uuid4()->toString(),
+                'timestamp' => $timestamp,
+                'level' => EventsApiDebugLogLevels::NOTICE,
+                'message' => 'Foo bar',
+                'connection_code' => null,
+                'context' => [],
+            ],
             101
         );
 
@@ -124,7 +118,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals(100, $result['total']);
     }
 
-    public function test_it_returns_the_last_warning_and_error_logs()
+    public function test_it_returns_the_last_warning_and_error_logs(): void
     {
         // The limit is 72 hours before now.
         $timestampLimit = $this->clock->now()->getTimestamp() - (72 * 60 * 60);
@@ -173,7 +167,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertCount(2, $result['results']);
     }
 
-    public function test_it_returns_logs_ordered_by_date_desc()
+    public function test_it_returns_logs_ordered_by_date_desc(): void
     {
         $timestampNow = $this->clock->now()->getTimestamp();
 
@@ -231,7 +225,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals($timestampNow - 5, $logs[4]['timestamp']);
     }
 
-    public function test_it_returns_logs_only_for_the_specified_connection()
+    public function test_it_returns_logs_only_for_the_specified_connection(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
 
@@ -273,20 +267,18 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         }
     }
 
-    public function test_it_ignores_new_logs_when_using_search_after()
+    public function test_it_ignores_new_logs_when_using_search_after(): void
     {
         $firstTimestamp = $this->clock->now()->getTimestamp();
         $this->generateLogs(
-            function () use ($firstTimestamp) {
-                return [
-                    'id' => Uuid::uuid4()->toString(),
-                    'timestamp' => $firstTimestamp,
-                    'level' => EventsApiDebugLogLevels::INFO,
-                    'message' => 'Foo bar',
-                    'connection_code' => null,
-                    'context' => [],
-                ];
-            },
+            fn (): array => [
+                'id' => Uuid::uuid4()->toString(),
+                'timestamp' => $firstTimestamp,
+                'level' => EventsApiDebugLogLevels::INFO,
+                'message' => 'Foo bar',
+                'connection_code' => null,
+                'context' => [],
+            ],
             30
         );
 
@@ -296,16 +288,14 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->clock->setNow($this->clock->now()->modify('+30 seconds'));
         $secondTimestamp = $this->clock->now()->getTimestamp();
         $this->generateLogs(
-            function () use ($secondTimestamp) {
-                return [
-                    'id' => Uuid::uuid4()->toString(),
-                    'timestamp' => $secondTimestamp,
-                    'level' => EventsApiDebugLogLevels::INFO,
-                    'message' => 'Foo bar',
-                    'connection_code' => null,
-                    'context' => [],
-                ];
-            },
+            fn (): array => [
+                'id' => Uuid::uuid4()->toString(),
+                'timestamp' => $secondTimestamp,
+                'level' => EventsApiDebugLogLevels::INFO,
+                'message' => 'Foo bar',
+                'connection_code' => null,
+                'context' => [],
+            ],
             30
         );
 
@@ -320,7 +310,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         }
     }
 
-    public function test_it_filters_on_log_level()
+    public function test_it_filters_on_log_level(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
 
@@ -377,9 +367,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         \usort(
             $result['results'],
-            function ($a, $b) {
-                return \strcmp($a['level'], $b['level']);
-            }
+            fn ($a, $b): int => \strcmp($a['level'], $b['level'])
         );
 
         Assert::assertEquals(2, $result['total']);
@@ -388,7 +376,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals(EventsApiDebugLogLevels::NOTICE, $result['results'][1]['level']);
     }
 
-    public function test_it_does_not_filter()
+    public function test_it_does_not_filter(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
 
@@ -445,16 +433,14 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         \usort(
             $result['results'],
-            function ($a, $b) {
-                return \strcmp($a['level'], $b['level']);
-            }
+            fn ($a, $b): int => \strcmp($a['level'], $b['level'])
         );
 
         Assert::assertEquals(5, $result['total']);
         Assert::assertCount(5, $result['results']);
     }
 
-    public function test_it_filters_on_log_timestamp_from()
+    public function test_it_filters_on_log_timestamp_from(): void
     {
         $timestampFrom = $this->clock->now()->getTimestamp();
 
@@ -503,13 +489,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         \usort(
             $result['results'],
-            function ($a, $b) {
-                if ($a['timestamp'] === $b['timestamp']) {
-                    return 0;
-                }
-
-                return ($a['timestamp'] < $b['timestamp']) ? -1 : 1;
-            }
+            fn ($a, $b): int => $a['timestamp'] <=> $b['timestamp']
         );
 
         Assert::assertEquals(2, $result['total']);
@@ -519,7 +499,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals($timestampFrom + 20, $result['results'][1]['timestamp']);
     }
 
-    public function test_it_filters_on_log_timestamp_to()
+    public function test_it_filters_on_log_timestamp_to(): void
     {
         $timestampTo = $this->clock->now()->getTimestamp();
 
@@ -568,13 +548,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         \usort(
             $result['results'],
-            function ($a, $b) {
-                if ($a['timestamp'] === $b['timestamp']) {
-                    return 0;
-                }
-
-                return ($a['timestamp'] < $b['timestamp']) ? -1 : 1;
-            }
+            fn ($a, $b): int => $a['timestamp'] <=> $b['timestamp']
         );
 
         Assert::assertEquals(2, $result['total']);
@@ -584,7 +558,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals(EventsApiDebugLogLevels::INFO, $result['results'][1]['level']);
     }
 
-    public function test_it_searches_a_pattern_on_message()
+    public function test_it_searches_a_pattern_on_message(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
         $firstTimestampToFind = $timestamp - 40;
@@ -643,9 +617,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $result = $this->query->execute('a_connection_code', null, $filters);
 
         $resultTimestamps = \array_map(
-            function ($log) {
-                return $log['timestamp'];
-            },
+            fn ($log): int => $log['timestamp'],
             $result['results']
         );
         \sort($resultTimestamps);
@@ -655,7 +627,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         Assert::assertEquals($secondTimestampToFind, $resultTimestamps[1]);
     }
 
-    public function test_it_searches_a_pattern_on_context()
+    public function test_it_searches_a_pattern_on_context(): void
     {
         $timestamp = $this->clock->now()->getTimestamp() - 10;
         $firstTimestampToFind = $timestamp - 20;
@@ -729,9 +701,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $result = $this->query->execute('a_connection_code', null, $filters);
 
         $resultTimestamps = \array_map(
-            function ($log) {
-                return $log['timestamp'];
-            },
+            fn ($log): int => $log['timestamp'],
             $result['results']
         );
         \sort($resultTimestamps);
@@ -751,7 +721,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->eventSubscriptionLogLoader->bulkInsert($logs);
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

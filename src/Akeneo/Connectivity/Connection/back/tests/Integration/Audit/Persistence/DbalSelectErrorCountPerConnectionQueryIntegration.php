@@ -42,7 +42,7 @@ class DbalSelectErrorCountPerConnectionQueryIntegration extends TestCase
         $this->selectErrorCountPerConnectionQuery = $this->get(DbalSelectErrorCountPerConnectionQuery::class);
     }
 
-    public function test_it_gets_error_count_per_connection()
+    public function test_it_gets_error_count_per_connection(): void
     {
         $this->connectionLoader->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
         $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);

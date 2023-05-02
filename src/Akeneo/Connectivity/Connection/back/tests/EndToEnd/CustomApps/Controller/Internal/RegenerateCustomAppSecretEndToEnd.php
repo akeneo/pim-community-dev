@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class RegenerateCustomAppSecretEndToEnd extends WebTestCase
 {
-    private ?FilePersistedFeatureFlags $featureFlags;
+    private ?FilePersistedFeatureFlags $featureFlags = null;
     private ?Connection $connection;
     private ?CustomAppLoader $customAppLoader;
 

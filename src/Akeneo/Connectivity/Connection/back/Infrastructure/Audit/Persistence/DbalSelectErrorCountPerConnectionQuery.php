@@ -19,11 +19,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class DbalSelectErrorCountPerConnectionQuery implements SelectErrorCountPerConnectionQueryInterface
 {
-    private Connection $dbalConnection;
-
-    public function __construct(Connection $dbalConnection)
+    public function __construct(private Connection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     public function execute(

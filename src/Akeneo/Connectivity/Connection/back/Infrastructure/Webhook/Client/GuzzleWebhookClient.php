@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceede
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
+use Generator;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
@@ -48,7 +49,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
     {
         $logs = [];
 
-        $guzzleRequests = function () use (&$webhookRequests, &$logs) {
+        $guzzleRequests = function () use (&$webhookRequests, &$logs): Generator {
             foreach ($webhookRequests as $webhookRequest) {
                 $body = $this->encoder->encode($webhookRequest->content(), 'json');
 
@@ -84,7 +85,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                     'timeout' => $this->config['timeout'] ?? null,
                     'allow_redirects' => false,
                 ],
-                'fulfilled' => function (Response $response, int $index) use (&$logs) {
+                'fulfilled' => function (Response $response, int $index) use (&$logs): void {
                     /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */
                     $webhookRequestLog = $logs[$index];
                     $webhookRequestLog->setSuccess(true);
@@ -92,7 +93,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                     $webhookRequestLog->setResponse($response);
 
                     $pimEvents = \array_map(
-                        static fn (WebhookEvent $apiEvent) => $apiEvent->getPimEvent(),
+                        static fn (WebhookEvent $apiEvent): \Akeneo\Platform\Component\EventQueue\EventInterface => $apiEvent->getPimEvent(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents()
                     );
 
@@ -109,7 +110,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                         $response->getHeaders(),
                     );
                 },
-                'rejected' => function (RequestException|ConnectException $reason, int $index) use (&$logs) {
+                'rejected' => function (RequestException|ConnectException $reason, int $index) use (&$logs): void {
                     $this->eventDispatcher->dispatch(new EventsApiRequestFailedEvent());
 
                     /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */

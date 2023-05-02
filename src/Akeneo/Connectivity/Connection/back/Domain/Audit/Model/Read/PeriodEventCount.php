@@ -13,28 +13,11 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\HourlyEventCount;
  */
 final class PeriodEventCount
 {
-    private string $connectionCode;
-
-    private \DateTimeImmutable $fromDateTime;
-
-    private \DateTimeImmutable $upToDateTime;
-
-    /** @var HourlyEventCount[] */
-    private array $hourlyEventCounts;
-
     /**
      * @param HourlyEventCount[] $hourlyEventCounts
      */
-    public function __construct(
-        string $connectionCode,
-        \DateTimeImmutable $fromDateTime,
-        \DateTimeImmutable $upToDateTime,
-        array $hourlyEventCounts
-    ) {
-        $this->connectionCode = $connectionCode;
-        $this->fromDateTime = $fromDateTime;
-        $this->upToDateTime = $upToDateTime;
-        $this->hourlyEventCounts = $hourlyEventCounts;
+    public function __construct(private string $connectionCode, private \DateTimeImmutable $fromDateTime, private \DateTimeImmutable $upToDateTime, private array $hourlyEventCounts)
+    {
     }
 
     public function connectionCode(): string

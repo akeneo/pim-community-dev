@@ -23,25 +23,17 @@ class EventsApiDebugLogger implements
     EventsApiRequestLoggerInterface,
     ApiEventBuildErrorLoggerInterface
 {
-    private ClockInterface $clock;
-    private EventsApiDebugRepositoryInterface $repository;
     private EventNormalizerInterface $defaultEventNormalizer;
-
-    /** @var iterable<EventNormalizerInterface> */
-    private iterable $eventNormalizers;
 
     /**
      * @param iterable<EventNormalizerInterface> $eventNormalizers
      */
     public function __construct(
-        EventsApiDebugRepositoryInterface $repository,
-        ClockInterface $clock,
-        iterable $eventNormalizers
+        private EventsApiDebugRepositoryInterface $repository,
+        private ClockInterface $clock,
+        private iterable $eventNormalizers
     ) {
-        $this->repository = $repository;
-        $this->clock = $clock;
         $this->defaultEventNormalizer = new EventNormalizer();
-        $this->eventNormalizers = $eventNormalizers;
     }
 
     public function logEventSubscriptionSkippedOwnEvent(
@@ -77,9 +69,7 @@ class EventsApiDebugLogger implements
                 'event_subscription_url' => $url,
                 'status_code' => $statusCode,
                 'headers' => $headers,
-                'events' => \array_map(function ($webhookEvent) {
-                    return $this->normalizeEvent($webhookEvent->getPimEvent());
-                }, $events),
+                'events' => \array_map(fn ($webhookEvent): array => $this->normalizeEvent($webhookEvent->getPimEvent()), $events),
             ]
         ]);
     }
@@ -131,9 +121,7 @@ class EventsApiDebugLogger implements
                 'event_subscription_url' => $url,
                 'status_code' => $statusCode,
                 'headers' => $headers,
-                'events' => \array_map(function ($webhookEvent) {
-                    return $this->normalizeEvent($webhookEvent->getPimEvent());
-                }, $webhookEvents),
+                'events' => \array_map(fn ($webhookEvent): array => $this->normalizeEvent($webhookEvent->getPimEvent()), $webhookEvents),
             ]
         ]);
     }
@@ -152,9 +140,7 @@ class EventsApiDebugLogger implements
             'connection_code' => $connectionCode,
             'context' => [
                 'event_subscription_url' => $url,
-                'events' => \array_map(function ($webhookEvent) {
-                    return $this->normalizeEvent($webhookEvent->getPimEvent());
-                }, $events),
+                'events' => \array_map(fn ($webhookEvent): array => $this->normalizeEvent($webhookEvent->getPimEvent()), $events),
             ],
         ]);
     }
@@ -165,7 +151,7 @@ class EventsApiDebugLogger implements
     private function normalizeEvent(EventInterface $event): array
     {
         foreach ($this->eventNormalizers as $normalizer) {
-            if (true === $normalizer->supports($event)) {
+            if ($normalizer->supports($event)) {
                 return $normalizer->normalize($event);
             }
         }

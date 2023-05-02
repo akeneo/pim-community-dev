@@ -13,8 +13,6 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 final class ElasticsearchEventsApiDebugRepository implements EventsApiDebugRepositoryInterface
 {
-    private Client $client;
-
     /**
      * @var array<array{
      *  timestamp: int,
@@ -24,19 +22,17 @@ final class ElasticsearchEventsApiDebugRepository implements EventsApiDebugRepos
      *  context: array
      * }>
      */
-    private array $buffer;
+    private array $buffer = [];
 
-    public function __construct(Client $client)
+    public function __construct(private Client $client)
     {
-        $this->client = $client;
-        $this->buffer = [];
     }
 
     public function persist(array $log): void
     {
         $flattenedContext = '';
 
-        \array_walk_recursive($log['context'], function ($value, $key) use (&$flattenedContext) {
+        \array_walk_recursive($log['context'], function ($value, $key) use (&$flattenedContext): void {
             $flattenedContext .= $value . ' ';
         });
 

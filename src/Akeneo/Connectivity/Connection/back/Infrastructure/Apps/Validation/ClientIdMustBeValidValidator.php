@@ -16,11 +16,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ClientIdMustBeValidValidator extends ConstraintValidator
 {
-    private ClientManagerInterface $clientManager;
-
-    public function __construct(ClientManagerInterface $clientManager)
+    public function __construct(private ClientManagerInterface $clientManager)
     {
-        $this->clientManager = $clientManager;
     }
 
     public function validate($value, Constraint $constraint)

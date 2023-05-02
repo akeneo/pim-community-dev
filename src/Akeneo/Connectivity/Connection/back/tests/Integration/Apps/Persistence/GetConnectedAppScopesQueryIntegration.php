@@ -38,7 +38,7 @@ class GetConnectedAppScopesQueryIntegration extends TestCase
         $this->query = $this->get(GetConnectedAppScopesQuery::class);
     }
 
-    public function test_it_gets_connected_app_scopes_from_the_database()
+    public function test_it_gets_connected_app_scopes_from_the_database(): void
     {
         $this->connectionLoader->createConnection('connectionCodeA', 'Connector A', FlowType::DATA_DESTINATION, false);
         $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
@@ -60,7 +60,7 @@ class GetConnectedAppScopesQueryIntegration extends TestCase
         $this->assertEquals(['scope A1', 'scope A2', 'scope A3'], $result);
     }
 
-    public function test_it_returns_an_empty_array()
+    public function test_it_returns_an_empty_array(): void
     {
         $result = $this->query->execute('undefinedAppId');
 

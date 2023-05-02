@@ -21,7 +21,7 @@ final class SuffixInterfaceRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
-        if (!\is_a($node, ClassLike::class, true)) {
+        if (!$node instanceof \PhpParser\Node\Stmt\ClassLike) {
             return [];
         }
 

@@ -24,7 +24,7 @@ class MarketplaceUrlGeneratorSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(MarketplaceUrlGenerator::class);
         $this->shouldImplement(MarketplaceUrlGeneratorInterface::class);

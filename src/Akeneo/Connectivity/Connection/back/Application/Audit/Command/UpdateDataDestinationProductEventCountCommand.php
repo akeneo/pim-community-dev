@@ -13,20 +13,8 @@ use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
  */
 final class UpdateDataDestinationProductEventCountCommand
 {
-    private string $connectionCode;
-
-    private HourlyInterval $hourlyInterval;
-
-    private int $productEventCount;
-
-    public function __construct(
-        string $connectionCode,
-        HourlyInterval $hourlyInterval,
-        int $productEventCount
-    ) {
-        $this->connectionCode = $connectionCode;
-        $this->hourlyInterval = $hourlyInterval;
-        $this->productEventCount = $productEventCount;
+    public function __construct(private string $connectionCode, private HourlyInterval $hourlyInterval, private int $productEventCount)
+    {
     }
 
     public function connectionCode(): string

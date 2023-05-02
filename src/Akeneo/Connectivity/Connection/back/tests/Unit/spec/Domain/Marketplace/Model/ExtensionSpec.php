@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ExtensionSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedThrough('fromWebMarketplaceValues', [
             [
@@ -35,7 +35,7 @@ class ExtensionSpec extends ObjectBehavior
         $this->shouldHaveType(Extension::class);
     }
 
-    public function it_is_normalizable()
+    public function it_is_normalizable(): void
     {
         $this->normalize()->shouldBe([
             'id' => '3881aefa-16a3-4b4f-94c3-0d6e858b60b8',
@@ -50,7 +50,7 @@ class ExtensionSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_adds_analytics()
+    public function it_adds_analytics(): void
     {
         $this->withAnalytics([
             'utm_campaign' => 'foobar',

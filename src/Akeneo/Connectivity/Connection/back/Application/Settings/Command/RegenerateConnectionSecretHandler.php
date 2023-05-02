@@ -14,14 +14,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\Connec
  */
 class RegenerateConnectionSecretHandler
 {
-    private ConnectionRepositoryInterface $repository;
-
-    private RegenerateClientSecretInterface $regenerateClientSecret;
-
-    public function __construct(ConnectionRepositoryInterface $repository, RegenerateClientSecretInterface $regenerateClientSecret)
+    public function __construct(private ConnectionRepositoryInterface $repository, private RegenerateClientSecretInterface $regenerateClientSecret)
     {
-        $this->repository = $repository;
-        $this->regenerateClientSecret = $regenerateClientSecret;
     }
 
     public function handle(RegenerateConnectionSecretCommand $command): void

@@ -45,21 +45,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDebugLogsQueryInterface
 {
-    const MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS = 100;
-    const MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS = 72 * 60 * 60; // 72h
+    public const MAX_NUMBER_OF_NOTICE_AND_INFO_LOGS = 100;
+    public const MAX_LIFETIME_OF_WARNING_AND_ERROR_LOGS = 72 * 60 * 60;
 
-    private Client $elasticsearchClient;
-    private ClockInterface $clock;
-    private Encrypter $encrypter;
-
-    public function __construct(
-        Client $elasticsearchClient,
-        ClockInterface $clock,
-        Encrypter $encrypter
-    ) {
-        $this->elasticsearchClient = $elasticsearchClient;
-        $this->clock = $clock;
-        $this->encrypter = $encrypter;
+    public function __construct(private Client $elasticsearchClient, private ClockInterface $clock, private Encrypter $encrypter)
+    {
     }
 
     public function execute(string $connectionCode, ?string $encryptedSearchAfter = null, array $filters = []): array
@@ -85,9 +75,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
 
         return [
             'results' => \array_map(
-                function ($hit) {
-                    return $hit['_source'];
-                },
+                fn ($hit) => $hit['_source'],
                 $result['hits']['hits']
             ),
             'search_after' => $this->encrypter->encrypt(
@@ -96,7 +84,8 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
                         'search_after' => \end($result['hits']['hits'])['sort'] ?? null,
                         'first_notice_and_info_id' => $lastNoticeAndInfoIds['first_id'],
                         'first_notice_and_info_search_after' => $lastNoticeAndInfoIds['first_search_after'],
-                    ]
+                    ],
+                    JSON_THROW_ON_ERROR
                 )
             ),
             'total' => $result['hits']['total']['value'],
@@ -116,7 +105,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
      *  timestamp_to?: int,
      *  text?: string,
      * } $filters
-     * @return array<mixed>
+     * @return array{size: int, sort: array{timestamp: string, id: string}, track_total_hits: true, query: array{bool: array{filter: array{exists: array{field: string}}[]|array{bool: array{should: array{bool: array{must: array<int, array{terms: array{id: string[]}}>}}[]|array{bool: array{must: array{terms: array{level: class-string<\error>[]|string[]}}[]|array{range: array{timestamp: array{gte: int}}}[]|array{bool: array{should: array{term: array{connection_code: string}}[]|array{bool: array{must_not: array{exists: array{field: string}}}}[]}}[]}}[]}}[]|array{terms: array{level: mixed[]}}[]|array{range: array{timestamp: array{gte: int}}}[]|array{range: array{timestamp: array{lte: int}}}[]|array{query_string: array{fields: string[], query: string, fuzziness: int, default_operator: string}}[]}}, search_after?: mixed[]}
      */
     private function buildQuery(
         string $connectionCode,
@@ -258,11 +247,13 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
         }
 
         $decryptedSearchAfter = $this->encrypter->decrypt($encryptedSearchAfter);
-        $parameters = \json_decode($decryptedSearchAfter, true);
 
-        return $parameters;
+        return \json_decode($decryptedSearchAfter, true, 512, JSON_THROW_ON_ERROR);
     }
 
+    /**
+     * @return array{_source: string[], sort: array{timestamp: string, id: string}, size: int, query: array{bool: array{must: array{exists: array{field: string}}[]|array{terms: array{level: string[]}}[]|array{bool: array{should: array{term: array{connection_code: string}}[]|array{bool: array{must_not: array{exists: array{field: string}}}}[]}}[]}}}
+     */
     private function getLastNoticeAndInfoIdsQuery(string $connectionCode): array
     {
         return [
@@ -369,7 +360,7 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
 
         $resolver->setAllowedValues(
             'levels',
-            function ($levels) {
+            function ($levels): bool {
                 if (null === $levels) {
                     return true;
                 }

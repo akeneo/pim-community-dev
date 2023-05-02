@@ -14,18 +14,8 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnecti
  */
 class GetAConnectionWebhookHandler
 {
-    private GetAConnectionWebhookQueryInterface $getAConnectionWebhookQuery;
-    private int $activeEventSubscriptionsLimit;
-    private CountActiveEventSubscriptionsQueryInterface $countActiveEventSubscriptionsQuery;
-
-    public function __construct(
-        GetAConnectionWebhookQueryInterface $getAConnectionWebhookQuery,
-        int $activeEventSubscriptionsLimit,
-        CountActiveEventSubscriptionsQueryInterface $countActiveEventSubscriptionsQuery
-    ) {
-        $this->getAConnectionWebhookQuery = $getAConnectionWebhookQuery;
-        $this->activeEventSubscriptionsLimit = $activeEventSubscriptionsLimit;
-        $this->countActiveEventSubscriptionsQuery = $countActiveEventSubscriptionsQuery;
+    public function __construct(private GetAConnectionWebhookQueryInterface $getAConnectionWebhookQuery, private int $activeEventSubscriptionsLimit, private CountActiveEventSubscriptionsQueryInterface $countActiveEventSubscriptionsQuery)
+    {
     }
 
     public function handle(GetAConnectionWebhookQuery $query): ?EventSubscriptionFormData

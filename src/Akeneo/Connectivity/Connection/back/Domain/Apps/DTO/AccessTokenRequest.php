@@ -11,24 +11,8 @@ namespace Akeneo\Connectivity\Connection\Domain\Apps\DTO;
  */
 class AccessTokenRequest
 {
-    private string $clientId;
-    private string $authorizationCode;
-    private string $grantType;
-    private string $codeIdentifier;
-    private string $codeChallenge;
-
-    public function __construct(
-        string $clientId,
-        string $authorizationCode,
-        string $grantType,
-        string $codeIdentifier,
-        string $codeChallenge
-    ) {
-        $this->clientId = $clientId;
-        $this->authorizationCode = $authorizationCode;
-        $this->grantType = $grantType;
-        $this->codeIdentifier = $codeIdentifier;
-        $this->codeChallenge = $codeChallenge;
+    public function __construct(private string $clientId, private string $authorizationCode, private string $grantType, private string $codeIdentifier, private string $codeChallenge)
+    {
     }
 
     public function getClientId(): string

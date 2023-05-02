@@ -14,40 +14,11 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  */
 class WebhookEvent
 {
-    private string $action;
-
-    private string $eventId;
-
-    private string $eventDateTime;
-
-    /** @var array<mixed> */
-    private array $data;
-
-    private Author $author;
-
-    private string $pimSource;
-
-    private EventInterface $pimEvent;
-
     /**
      * @param array<mixed> $data
      */
-    public function __construct(
-        string $action,
-        string $eventId,
-        string $eventDateTime,
-        Author $author,
-        string $pimSource,
-        array $data,
-        EventInterface $pimEvent
-    ) {
-        $this->action = $action;
-        $this->eventId = $eventId;
-        $this->eventDateTime = $eventDateTime;
-        $this->data = $data;
-        $this->author = $author;
-        $this->pimSource = $pimSource;
-        $this->pimEvent = $pimEvent;
+    public function __construct(private string $action, private string $eventId, private string $eventDateTime, private Author $author, private string $pimSource, private array $data, private EventInterface $pimEvent)
+    {
     }
 
     public function action(): string
