@@ -110,7 +110,6 @@ $rules = [
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
         'Akeneo\Tool\Bundle\ApiBundle\Documentation',
         'Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse',
-        'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass',
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType',
