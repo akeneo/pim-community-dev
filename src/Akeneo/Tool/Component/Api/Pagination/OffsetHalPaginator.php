@@ -18,15 +18,9 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class OffsetHalPaginator implements PaginatorInterface
 {
-    /** @var RouterInterface */
-    protected $router;
+    protected RouterInterface $router;
+    protected OptionsResolver $resolver;
 
-    /** @var OptionsResolver */
-    protected $resolver;
-
-    /**
-     * @param RouterInterface $router
-     */
     public function __construct(RouterInterface $router)
     {
         $this->resolver = new OptionsResolver();
@@ -145,7 +139,7 @@ class OffsetHalPaginator implements PaginatorInterface
      */
     protected function createNextLink($routeName, array $parameters, $items)
     {
-        if (count($items) < (int) $parameters['limit']) {
+        if (count($items) <= (int) $parameters['limit']) {
             return null;
         }
 

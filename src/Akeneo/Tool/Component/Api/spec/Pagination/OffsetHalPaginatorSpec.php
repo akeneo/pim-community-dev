@@ -63,19 +63,17 @@ class OffsetHalPaginatorSpec extends ObjectBehavior
         $expectedItems = [
             '_links'       => [
                 'self'     => [
-                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?limit=2&page=3',
+                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?limit=2&page=2',
                 ],
                 'first'    => [
                     'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?limit=2&page=1',
                 ],
                 'previous' => [
-                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?limit=2&page=2',
+                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?limit=2&page=1',
                 ],
-                'next'     => [
-                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?limit=2&page=4',
-                ],
+
             ],
-            'current_page' => 3,
+            'current_page' => 2,
             '_embedded'    => [
                 'items' => [
                     [
@@ -100,7 +98,7 @@ class OffsetHalPaginatorSpec extends ObjectBehavior
 
         $parameters = [
             'uri_parameters'      => ['attributeCode' => 'a_multi_select'],
-            'query_parameters'    => ['page' => 3, 'limit' => 2],
+            'query_parameters'    => ['page' => 2, 'limit' => 2],
             'list_route_name'     => 'attribute_option_list_route',
             'item_route_name'     => 'attribute_option_item_route',
             'item_identifier_key' => 'code',
@@ -108,7 +106,6 @@ class OffsetHalPaginatorSpec extends ObjectBehavior
 
         $this->paginate($standardItems, $parameters, null)->shouldReturn($expectedItems);
     }
-
     function it_paginates_in_hal_format_with_count($router)
     {
         // links
@@ -152,9 +149,6 @@ class OffsetHalPaginatorSpec extends ObjectBehavior
                 ],
                 'previous' => [
                     'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?limit=2&page=2',
-                ],
-                'next'     => [
-                    'href' => 'http://akeneo.com/api/rest/v1/attributes/a_multi_select/options?limit=2&page=4',
                 ],
             ],
             'current_page' => 3,
@@ -230,9 +224,6 @@ class OffsetHalPaginatorSpec extends ObjectBehavior
                 ],
                 'first' => [
                     'href' => 'http://akeneo.com/api/rest/v1/categories/?limit=2&page=1',
-                ],
-                'next'  => [
-                    'href' => 'http://akeneo.com/api/rest/v1/categories/?limit=2&page=2',
                 ],
             ],
             'current_page' => 1,
@@ -425,6 +416,98 @@ class OffsetHalPaginatorSpec extends ObjectBehavior
         ];
 
         $this->paginate([], $parameters, 0)->shouldReturn($expectedItems);
+    }
+
+    function it_paginates_without_next_link_when_number_of_remaining_items_equals_the_limit($router)
+    {
+        // links
+        $router
+            ->generate('category_list_route', ['page' => 1, 'limit'=> 3], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->willReturn('http://akeneo.com/api/rest/v1/categories/?limit=3&page=1');
+
+        $router
+            ->generate('category_list_route', ['page' => 2, 'limit'=> 3], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->willReturn('http://akeneo.com/api/rest/v1/categories/?limit=3&page=2');
+        // embedded
+        $router
+            ->generate('category_item_route', ['code' => 'category_1'], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->willReturn('http://akeneo.com/api/rest/v1/categories/category_1');
+        $router
+            ->generate('category_item_route', ['code' => 'category_2'], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->willReturn('http://akeneo.com/api/rest/v1/categories/category_2');
+        $router
+            ->generate('category_item_route', ['code' => 'category_3'], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->willReturn('http://akeneo.com/api/rest/v1/categories/category_3');
+
+        $standardItems = [
+            [
+                'code'   => 'category_1',
+                'parent' => null,
+            ],
+            [
+                'code'   => 'category_2',
+                'parent' => null,
+            ],
+            [
+                'code'   => 'category_3',
+                'parent' => null,
+            ],
+        ];
+
+        $expectedItems = [
+            '_links'       => [
+                'self'     => [
+                    'href' => 'http://akeneo.com/api/rest/v1/categories/?limit=3&page=2',
+                ],
+                'first'    => [
+                    'href' => 'http://akeneo.com/api/rest/v1/categories/?limit=3&page=1',
+                ],
+                'previous' => [
+                    'href' => 'http://akeneo.com/api/rest/v1/categories/?limit=3&page=1',
+                ],
+            ],
+            'current_page' => 2,
+            'items_count'  => 3,
+            '_embedded'    => [
+                'items' => [
+                    [
+                        '_links' => [
+                            'self' => [
+                                'href' => 'http://akeneo.com/api/rest/v1/categories/category_1',
+                            ],
+                        ],
+                        'code'   => 'category_1',
+                        'parent' => null,
+                    ],
+                    [
+                        '_links' => [
+                            'self' => [
+                                'href' => 'http://akeneo.com/api/rest/v1/categories/category_2',
+                            ],
+                        ],
+                        'code'   => 'category_2',
+                        'parent' => null,
+                    ],
+                    [
+                        '_links' => [
+                            'self' => [
+                                'href' => 'http://akeneo.com/api/rest/v1/categories/category_3',
+                            ],
+                        ],
+                        'code'   => 'category_3',
+                        'parent' => null,
+                    ],
+                ],
+            ],
+        ];
+
+        $parameters = [
+            'query_parameters'    => ['page' => 2, 'limit' => 3],
+            'list_route_name'     => 'category_list_route',
+            'item_route_name'     => 'category_item_route',
+        ];
+
+        $this->paginate($standardItems, $parameters, 3)->shouldReturn($expectedItems);
     }
 
     function it_throws_an_exception_when_unknown_parameter_given()
