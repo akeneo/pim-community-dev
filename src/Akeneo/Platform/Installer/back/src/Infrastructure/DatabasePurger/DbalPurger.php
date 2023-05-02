@@ -7,18 +7,21 @@ declare(strict_types=1);
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Installer\Infrastructure\DatabaseResetter;
+namespace Akeneo\Platform\Installer\Infrastructure\DatabasePurger;
 
-use Akeneo\Platform\Installer\Domain\Service\DatabaseResetterInterface;
+use Akeneo\Platform\Installer\Domain\Service\DatabasePurgerInterface;
 use Doctrine\DBAL\Connection;
 
-class MySqlDatabaseResetter implements DatabaseResetterInterface
+class DbalPurger implements DatabasePurgerInterface
 {
     public function __construct(private readonly Connection $connection)
     {
     }
 
-    public function reset(array $tableToReset)
+    /**
+     * @inheritDoc
+     */
+    public function purge(array $tableToReset): void
     {
         $sql = 'SET FOREIGN_KEY_CHECKS = 0;';
         foreach ($tableToReset as $table) {

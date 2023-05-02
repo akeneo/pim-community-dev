@@ -11,5 +11,8 @@ namespace Akeneo\Platform\Installer\Domain\Query;
 
 interface FindTablesInterface
 {
-    public function all();
+    /**
+     * @return string[]
+     */
+    public function all(): array;
 }

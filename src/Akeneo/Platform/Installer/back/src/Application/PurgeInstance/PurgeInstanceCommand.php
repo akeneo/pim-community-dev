@@ -7,12 +7,11 @@ declare(strict_types=1);
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-namespace Akeneo\Platform\Installer\Application\ResetDatabase;
+namespace Akeneo\Platform\Installer\Application\PurgeInstance;
 
-class ResetDatabaseCommand
+class PurgeInstanceCommand
 {
-    public function __construct(
-        public readonly array $tablesToKeep
-    ) {
+    public function __construct()
+    {
     }
 }

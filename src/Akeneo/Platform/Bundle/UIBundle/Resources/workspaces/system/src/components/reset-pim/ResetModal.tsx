@@ -35,7 +35,7 @@ const ResetModal = ({canConfirm, onConfirm, onCancel}: ResetModalProps) => {
   const [isCurrentStep, nextStep, previousStep] = useProgress(STEPS);
   const [confirmationWord, setConfirmationWord] = useState<string>('');
 
-  const canConfirm = canConfirm && confirmationWord === translate('pim_system.reset_pim.modal.confirmation_word');
+  canConfirm = canConfirm && confirmationWord === translate('pim_system.reset_pim.modal.confirmation_word');
 
   const handleConfirm = () => {
     if (!canConfirm) {

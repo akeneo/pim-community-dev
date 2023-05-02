@@ -19,7 +19,6 @@ class AkeneoInstallerExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
-        $loader->load('fixtures.yml');
         $loader->load('handlers.yml');
         $loader->load('queries.yml');
         $loader->load('services.yml');

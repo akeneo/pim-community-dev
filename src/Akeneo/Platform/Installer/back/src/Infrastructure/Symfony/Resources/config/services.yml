@@ -1,8 +1,8 @@
 services:
-  Akeneo\Platform\Installer\Infrastructure\DatabaseResetter\MySqlDatabaseResetter:
+  Akeneo\Platform\Installer\Infrastructure\DatabasePurger\DbalPurger:
     arguments:
       - '@database_connection'
 
-  Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\IcecatFixtureInstaller:
+  Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller:
     arguments:
       - '%kernel.project_dir%'

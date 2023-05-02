@@ -1,3 +1,0 @@
-services:
-  akeneo.installer.fixtures.installer:
-    class: Akeneo\Platform\Installer\Infrastructure\Fixtures\FixturesInstaller

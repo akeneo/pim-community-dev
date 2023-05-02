@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
-class IcecatFixtureInstaller implements FixtureInstallerInterface
+class MinimalFixtureInstaller implements FixtureInstallerInterface
 {
     public function __construct(private string $projectDir)
     {

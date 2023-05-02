@@ -9,7 +9,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Domain\Service;
 
-interface DatabaseResetterInterface
+interface DatabasePurgerInterface
 {
-
+    /**
+     * @param string[] $tableToReset
+     */
+    public function purge(array $tableToReset): void;
 }
