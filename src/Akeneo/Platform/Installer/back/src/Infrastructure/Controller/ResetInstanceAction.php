@@ -25,7 +25,7 @@ class ResetInstanceAction
     public function __invoke(): JsonResponse
     {
         $this->purgeInstanceHandler->handle(new PurgeInstanceCommand());
-        /** To replace by the new handler/command */
+        /* To replace by the new handler/command */
         $this->fixtureInstaller->install();
 
         return new JsonResponse();

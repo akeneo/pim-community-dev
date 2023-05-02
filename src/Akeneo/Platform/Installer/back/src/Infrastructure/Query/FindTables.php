@@ -14,17 +14,17 @@ use Doctrine\DBAL\Connection;
 
 class FindTables implements FindTablesInterface
 {
-    public function __construct(private Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function all(): array
     {
         return $this->connection->executeQuery(
-            "SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()",
+            'SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()',
         )->fetchFirstColumn();
     }
 }

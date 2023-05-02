@@ -32,11 +32,10 @@ beforeEach(() => {
     fetchMock.resetMocks();
     historyMock.reset();
     jest.clearAllMocks();
-
-    delete global.window.location;
-    global.window = Object.create(window);
-    global.window.location = {
-        assign: jest.fn(),
+    global.window =  {
+        location: {
+            assign: jest.fn(),
+        }
     };
 });
 

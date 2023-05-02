@@ -12,7 +12,8 @@ import {
   getColor,
   useProgress,
 } from 'akeneo-design-system';
-import {Section, TextField, useTranslate} from '@akeneo-pim-community/shared';
+import {NotificationLevel, Section, TextField, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
+import {useResetInstance} from '../../hooks';
 
 const STEPS = ['summary', 'confirm'];
 
@@ -25,24 +26,34 @@ const Footer = styled.div`
 `;
 
 type ResetModalProps = {
-  canConfirm: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 };
 
-const ResetModal = ({canConfirm, onConfirm, onCancel}: ResetModalProps) => {
+const ResetModal = ({onConfirm, onCancel}: ResetModalProps) => {
   const translate = useTranslate();
+  const notify = useNotify();
+  const loginRoute = useRoute('pim_user_security_login');
   const [isCurrentStep, nextStep, previousStep] = useProgress(STEPS);
   const [confirmationWord, setConfirmationWord] = useState<string>('');
+  const [isLoading, resetInstance] = useResetInstance();
+  const canConfirm = !isLoading && confirmationWord === translate('pim_system.reset_pim.modal.confirmation_word');
 
-  canConfirm = canConfirm && confirmationWord === translate('pim_system.reset_pim.modal.confirmation_word');
-
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!canConfirm) {
       return;
     }
 
-    onConfirm();
+    document.body.style.cursor = 'progress';
+    try {
+      await resetInstance();
+      onConfirm();
+      location.assign(loginRoute);
+    } catch (e) {
+      notify(NotificationLevel.ERROR, translate('pim_system.reset_pim.error_notification'));
+    }
+
+    document.body.style.cursor = 'default';
   };
 
   return (

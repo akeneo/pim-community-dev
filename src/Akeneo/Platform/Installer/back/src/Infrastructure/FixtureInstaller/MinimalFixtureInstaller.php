@@ -10,14 +10,12 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Installer\Infrastructure\FixtureInstaller;
 
 use Akeneo\Platform\Installer\Domain\Service\FixtureInstallerInterface;
-use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
 class MinimalFixtureInstaller implements FixtureInstallerInterface
 {
-    public function __construct(private string $projectDir)
+    public function __construct(private readonly string $projectDir)
     {
     }
 
@@ -36,7 +34,7 @@ class MinimalFixtureInstaller implements FixtureInstallerInterface
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new \Exception(sprintf('Install failed, "%s".', $process->getOutput() . PHP_EOL . $process->getErrorOutput()));
+            throw new \Exception(sprintf('Install failed, "%s".', $process->getOutput().PHP_EOL.$process->getErrorOutput()));
         }
 
         $process = new Process([
@@ -51,14 +49,14 @@ class MinimalFixtureInstaller implements FixtureInstallerInterface
             'test@example.com',
             'John',
             'Doe',
-            'en_US'
+            'en_US',
         ], $this->projectDir);
 
         $process->setTimeout(null);
         $process->run();
 
         if (!$process->isSuccessful()) {
-            throw new \Exception(sprintf('Install failed, "%s".', $process->getOutput() . PHP_EOL . $process->getErrorOutput()));
+            throw new \Exception(sprintf('Install failed, "%s".', $process->getOutput().PHP_EOL.$process->getErrorOutput()));
         }
     }
 }

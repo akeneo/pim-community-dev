@@ -19,7 +19,7 @@ class DbalPurger implements DatabasePurgerInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function purge(array $tableToReset): void
     {

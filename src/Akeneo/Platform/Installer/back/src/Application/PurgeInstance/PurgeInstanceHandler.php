@@ -18,7 +18,7 @@ class PurgeInstanceHandler
 
     public function __construct(
         private readonly FindTablesInterface $findTables,
-        private readonly DatabasePurgerInterface $databasePurger
+        private readonly DatabasePurgerInterface $databasePurger,
     ) {
     }
 
