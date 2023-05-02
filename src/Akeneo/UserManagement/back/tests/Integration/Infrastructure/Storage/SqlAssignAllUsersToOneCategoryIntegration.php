@@ -15,7 +15,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlAssignAllUsersToOneCategoryIntegration extends TestCase
 {
-    private readonly Connection $connection;
+    private Connection $connection;
 
     protected function setUp(): void
     {
