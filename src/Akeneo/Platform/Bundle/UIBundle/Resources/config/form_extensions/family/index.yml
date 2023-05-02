@@ -33,7 +33,6 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-family-index
         targetZone: helper
-        feature: reset_pim
 
     pim-family-breadcrumbs:
         module: pim/common/breadcrumbs

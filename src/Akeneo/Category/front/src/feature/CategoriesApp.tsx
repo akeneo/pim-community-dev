@@ -12,30 +12,26 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
   const queryClient = new QueryClient();
 
   return (
-    <Router basename="/enrich/product-category-tree">
-      <Switch>
-        <Route path="/:treeId/tree">
-          <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <Router basename="/enrich/product-category-tree">
+        <Switch>
+          <Route path="/:treeId/tree">
             <CategoriesTreePage />
-          </QueryClientProvider>
-        </Route>
-        <Route path="/:categoryId/edit">
-          <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
-            <CategoryEditPage />
-          </EditCategoryProvider>
-        </Route>
-        <Route path="/:treeId/template/:templateId">
-          <QueryClientProvider client={queryClient}>
+          </Route>
+          <Route path="/:categoryId/edit">
+            <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
+              <CategoryEditPage />
+            </EditCategoryProvider>
+          </Route>
+          <Route path="/:treeId/template/:templateId">
             <TemplatePage />
-          </QueryClientProvider>
-        </Route>
-        <Route path="/">
-          <QueryClientProvider client={queryClient}>
+          </Route>
+          <Route path="/">
             <CategoriesIndex />
-          </QueryClientProvider>
-        </Route>
-      </Switch>
-    </Router>
+          </Route>
+        </Switch>
+      </Router>
+    </QueryClientProvider>
   );
 };
 

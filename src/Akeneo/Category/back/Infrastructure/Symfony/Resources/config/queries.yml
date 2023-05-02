@@ -3,6 +3,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql
     arguments:
       - '@database_connection'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter'
 
   Akeneo\Category\Domain\Query\GetCategoryByIds:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryByIdsSql
@@ -13,8 +15,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesSql
     arguments:
       - '@database_connection'
-      - '@Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes'
-      - '@Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter'
 
   Akeneo\Category\Domain\Query\GetCategoryTreesInterface:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreesSql
@@ -106,12 +108,12 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Domain\Query\DeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\GetDeactivatedTemplateAttributesSql
+  Akeneo\Category\Domain\Query\UpdateCategoryUpdatedDate:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryUpdatedDateSql
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Domain\Query\UpdateCategoryUpdatedDate:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryUpdatedDateSql
+  Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetDeactivatedTemplateAttributesSql
     arguments:
       - '@database_connection'

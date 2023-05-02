@@ -21,7 +21,6 @@ extensions:
         module: pim/sandbox-helper
         parent: pim-job-instance-xlsx-product-export-show
         targetZone: helper
-        feature: reset_pim
 
     pim-job-instance-xlsx-product-export-show-breadcrumbs:
         module: pim/job/common/breadcrumb/breadcrumb
