@@ -12,7 +12,7 @@ import {
   Content,
 } from './header';
 import {SandboxHelper} from './SandboxHelper';
-import {useFeatureFlags} from '../../hooks';
+import {useFeatureFlags, useSystemConfiguration} from '../../hooks';
 
 const Header = styled.header<{top: number}>`
   position: sticky;
@@ -129,11 +129,12 @@ const PageHeader: PageHeaderInterface = ({children, showPlaceholder}) => {
   );
 
   const {isEnabled} = useFeatureFlags();
+  const isSandboxBannerDisplayed = isEnabled('sandbox_banner') && useSystemConfiguration().get('sandbox_banner');
 
   return (
     <>
       <SandboxHelper />
-      <Header top={isEnabled('sandbox_banner') ? 44 : 0}>
+      <Header top={isSandboxBannerDisplayed ? 44 : 0}>
         <LineContainer>
           {illustration}
           <MainContainer>
