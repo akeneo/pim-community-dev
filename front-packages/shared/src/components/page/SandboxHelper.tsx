@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Helper, InfoIcon, getColor} from 'akeneo-design-system';
-import {useFeatureFlags, useTranslate} from '../../hooks';
+import {useFeatureFlags, useSystemConfiguration, useTranslate} from '../../hooks';
 
 const HELPER_BACKGROUND_COLOR = '#5e63b6';
 
@@ -17,8 +17,9 @@ const DarkBlueHelper = styled(Helper)`
 const SandboxHelper = () => {
   const translate = useTranslate();
   const {isEnabled} = useFeatureFlags();
+  const shouldDisplayBanner = isEnabled('sandbox_banner') && true === useSystemConfiguration().get('sandbox_banner');
 
-  if (!isEnabled('reset_pim')) {
+  if (!shouldDisplayBanner) {
     return null;
   }
 
