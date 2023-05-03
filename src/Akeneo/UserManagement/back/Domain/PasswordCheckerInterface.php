@@ -14,6 +14,8 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 interface PasswordCheckerInterface
 {
+
+    /** @param array<mixed> $data */
     public function validatePassword(UserInterface $user, array $data): ConstraintViolationListInterface;
     public function validatePasswordMatch(string $password, string $passwordRepeat, string $propertyPath): ConstraintViolationListInterface;
     public function validatePasswordLength(string $password, string $propertyPath): ConstraintViolationListInterface;

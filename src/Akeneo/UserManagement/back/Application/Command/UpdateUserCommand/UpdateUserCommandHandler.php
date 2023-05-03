@@ -48,9 +48,10 @@ final class UpdateUserCommandHandler
     public function handle(UpdateUserCommand $updateUserCommand): UserInterface
     {
         $identifier = $updateUserCommand->identifier;
+        /** @var UserInterface $user */
         $user = $this->repository->findOneBy(['id' => $identifier]);
 
-        if (null === $user || true === $user->isApiUser()) {
+        if (null === $user || true === $user->isApiUser() || true === $user->isJobUser()) {
             throw new UserNotFoundException($identifier);
         }
 
@@ -91,7 +92,6 @@ final class UpdateUserCommandHandler
         }
 
         if (0 < $violations->count() || 0 < $passwordViolations->count()) {
-            unset($data['password']);
             $this->objectManager->refresh($user);
             $allViolations = new ConstraintViolationList($violations);
             $allViolations->addAll($passwordViolations);

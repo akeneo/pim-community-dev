@@ -16,21 +16,31 @@ namespace Akeneo\Test\UserManagement\Integration\Infrastructure;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler;
 use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class PasswordCheckerIntegration extends TestCase
 {
+    private PasswordCheckerInterface $passwordChecker;
+    private UserLoader $userLoader;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->passwordChecker = $this->get(PasswordCheckerInterface::class);
+        $this->userLoader = $this->get(UserLoader::class);
+    }
 
     public function testItValidatePasswordLength(): void
     {
-        $violations = $this->getPasswordChecker()->validatePasswordLength('12345678', 'password');
+        $violations = $this->passwordChecker->validatePasswordLength('12345678', 'password');
         Assert::assertEmpty($violations);
     }
 
     public function testPasswordLengthTooShort(): void
     {
-        $violations = $this->getPasswordChecker()->validatePasswordLength('1234', 'password');
+        $violations = $this->passwordChecker->validatePasswordLength('1234', 'password');
         Assert::assertCount(1, $violations);
         $violation = $violations->get(0);
         Assert::assertEquals('Password must contain at least 8 characters', $violation->getMessage());
@@ -47,7 +57,7 @@ final class PasswordCheckerIntegration extends TestCase
             Maecenas interdum, neque blandit ultricies vulputate, sapien orci rutrum dui, id malesuada lacus erat ac massa. In hac habitasse platea dictumst. Ut gravida turpis venenatis ante lobortis fringilla. Cras efficitur justo.
         EOF;
 
-        $violations = $this->getPasswordChecker()->validatePasswordLength($password, 'password');
+        $violations = $this->passwordChecker->validatePasswordLength($password, 'password');
         Assert::assertCount(1, $violations);
         $violation = $violations->get(0);
         Assert::assertEquals('Password must contain less than 4096 characters', $violation->getMessage());
@@ -55,13 +65,13 @@ final class PasswordCheckerIntegration extends TestCase
 
     public function testItValidatePasswordsMatch(): void
     {
-        $violations = $this->getPasswordChecker()->validatePasswordMatch('password', 'password', 'password');
+        $violations = $this->passwordChecker->validatePasswordMatch('password', 'password', 'password');
         Assert::assertEmpty($violations);
     }
 
     public function testPasswordsDoesNotMatch(): void
     {
-        $violations = $this->getPasswordChecker()->validatePasswordMatch('password', 'password1', 'password');
+        $violations = $this->passwordChecker->validatePasswordMatch('password', 'password1', 'password');
         Assert::assertCount(1, $violations);
         $violation = $violations->get(0);
         Assert::assertEquals('Passwords do not match', $violation->getMessage());
@@ -69,25 +79,25 @@ final class PasswordCheckerIntegration extends TestCase
 
     public function testItValidateUserPassword(): void
     {
-        $user = $this->getUserLoader()->createUser('userA', [], ['ROLE_USER']);
+        $user = $this->userLoader->createUser('userA', [], ['ROLE_USER']);
         $data = [
             'current_password' => 'userA',
             'new_password' => 'realPassword',
             'new_password_repeat' => 'realPassword',
         ];
-        $violations = $this->getPasswordChecker()->validatePassword($user, $data);
+        $violations = $this->passwordChecker->validatePassword($user, $data);
         Assert::assertEmpty($violations);
     }
 
     public function testUserWrongCurrentPassword(): void
     {
-        $user = $this->getUserLoader()->createUser('userA', [], ['ROLE_USER']);
+        $user = $this->userLoader->createUser('userA', [], ['ROLE_USER']);
         $data = [
             'current_password' => 'userAFake',
             'new_password' => '1234',
             'new_password_repeat' => '12345',
         ];
-        $violations = $this->getPasswordChecker()->validatePassword($user, $data);
+        $violations = $this->passwordChecker->validatePassword($user, $data);
         Assert::assertCount(3, $violations);
         $violation = $violations->get(0);
         Assert::assertEquals('Wrong password', $violation->getMessage());
@@ -95,14 +105,6 @@ final class PasswordCheckerIntegration extends TestCase
         Assert::assertEquals('Password must contain at least 8 characters', $violation->getMessage());
         $violation = $violations->get(2);
         Assert::assertEquals('Passwords do not match', $violation->getMessage());
-    }
-
-    private function getPasswordChecker(): PasswordCheckerInterface {
-        return $this->get(PasswordCheckerInterface::class);
-    }
-
-    private function getUserLoader(): UserLoader {
-        return $this->get(UserLoader::class);
     }
 
     protected function getConfiguration(): Configuration

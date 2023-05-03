@@ -13,20 +13,25 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserControllerEndToEnd extends ControllerEndToEndTestCase
 {
+    private UserPasswordHasherInterface $userPasswordHasher;
+    private UserLoader $userLoader;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->userPasswordHasher = $this->get(UserPasswordHasherInterface::class);
+        $this->userLoader = $this->get(UserLoader::class);
         $this->logAs('julia');
     }
 
     public function testItUpdatePassword(): void
     {
-        $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
+        $user = $this->userLoader->createUser('Julien', [], ['ROLE_USER']);
 
         $newPassword = 'newJulien';
 
-        $this->assertTrue($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, 'Julien'));
-        $this->assertFalse($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, $newPassword));
+        $this->assertTrue($this->userPasswordHasher->isPasswordValid($user, 'Julien'));
+        $this->assertFalse($this->userPasswordHasher->isPasswordValid($user, $newPassword));
 
         $this->callApiRoute(
             client: $this->client,
@@ -91,13 +96,13 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         $this->assertEquals($expectedContent['first_name'], $response['first_name']);
         $this->assertEquals($expectedContent['last_name'], $response['last_name']);
 
-        $this->assertFalse($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, 'Julien'));
-        $this->assertTrue($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, $newPassword));
+        $this->assertFalse($this->userPasswordHasher->isPasswordValid($user, 'Julien'));
+        $this->assertTrue($this->userPasswordHasher->isPasswordValid($user, $newPassword));
     }
 
     public function testItUpdateUser(): void
     {
-        $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
+        $user = $this->userLoader->createUser('Julien', [], ['ROLE_USER']);
 
         $this->callApiRoute(
             client: $this->client,
@@ -190,7 +195,7 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
 
     public function testItThrowsPasswordErrors(): void
     {
-        $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
+        $user = $this->userLoader->createUser('Julien', [], ['ROLE_USER']);
 
         $newPassword = 'newJulien';
         $this->callApiRoute(
@@ -231,7 +236,7 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
 
     public function testItTryToForcePasswordUpdateWithNullNewPasswordsPropertyFailed(): void
     {
-        $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
+        $user = $this->userLoader->createUser('Julien', [], ['ROLE_USER']);
 
         $this->callApiRoute(
             client: $this->client,
@@ -268,12 +273,12 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
 
     public function testItTryToForcePasswordUpdateFailed(): void
     {
-        $user = $this->getUserLoader()->createUser('Julien', [], ['ROLE_USER']);
+        $user = $this->userLoader->createUser('Julien', [], ['ROLE_USER']);
 
         $tryPassword = 'newJulien';
 
-        $this->assertFalse($this->get('security.user_password_hasher')->isPasswordValid($user, $tryPassword));
-        $this->assertTrue($this->get('security.user_password_hasher')->isPasswordValid($user, 'Julien'));
+        $this->assertFalse($this->userPasswordHasher->isPasswordValid($user, $tryPassword));
+        $this->assertTrue($this->userPasswordHasher->isPasswordValid($user, 'Julien'));
 
         $this->callApiRoute(
             client: $this->client,
@@ -336,12 +341,8 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         $this->assertEquals($expectedContent['first_name'], $response['first_name']);
         $this->assertEquals($expectedContent['last_name'], $response['last_name']);
 
-        $this->assertFalse($this->get('security.user_password_hasher')->isPasswordValid($user, $tryPassword));
-        $this->assertTrue($this->get('security.user_password_hasher')->isPasswordValid($user, 'Julien'));
-    }
-
-    private function getUserLoader(): UserLoader {
-        return $this->get(UserLoader::class);
+        $this->assertFalse($this->userPasswordHasher->isPasswordValid($user, $tryPassword));
+        $this->assertTrue($this->userPasswordHasher->isPasswordValid($user, 'Julien'));
     }
 
     protected function getConfiguration(): Configuration

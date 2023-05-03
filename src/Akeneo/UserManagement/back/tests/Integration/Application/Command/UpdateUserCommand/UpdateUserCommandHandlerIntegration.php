@@ -25,13 +25,22 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UpdateUserCommandHandlerIntegration extends TestCase
 {
-
+    private UserPasswordHasherInterface $userPasswordHasher;
+    private UpdateUserCommandHandler $updateUserCommandHandler;
+    private UserLoader $userLoader;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->userPasswordHasher = $this->get(UserPasswordHasherInterface::class);
+        $this->updateUserCommandHandler = $this->get(UpdateUserCommandHandler::class);
+        $this->userLoader = $this->get(UserLoader::class);
+    }
     public function testItUpdateUserPassword(): void
     {
-        $user = $this->getUserLoader()->createUser('userA', [], ['ROLE_USER']);
+        $user = $this->userLoader->createUser('userA', [], ['ROLE_USER']);
 
-        $this->assertTrue($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, 'userA'));
-        $this->assertFalse($this->get(UserPasswordHasherInterface::class)->isPasswordValid($user, 'realPassword'));
+        $this->assertTrue($this->userPasswordHasher->isPasswordValid($user, 'userA'));
+        $this->assertFalse($this->userPasswordHasher->isPasswordValid($user, 'realPassword'));
 
         $data = [
             'current_password' => 'userA',
@@ -39,15 +48,15 @@ final class UpdateUserCommandHandlerIntegration extends TestCase
             'new_password_repeat' => 'realPassword',
         ];
 
-        $actualUser = $this->getHandler()->handle(new UpdateUserCommand($user->getId(), $data));
+        $actualUser = $this->updateUserCommandHandler->handle(new UpdateUserCommand($user->getId(), $data));
 
-        $this->assertFalse($this->get(UserPasswordHasherInterface::class)->isPasswordValid($actualUser, 'userA'));
-        $this->assertTrue($this->get(UserPasswordHasherInterface::class)->isPasswordValid($actualUser, 'realPassword'));
+        $this->assertFalse($this->userPasswordHasher->isPasswordValid($actualUser, 'userA'));
+        $this->assertTrue($this->userPasswordHasher->isPasswordValid($actualUser, 'realPassword'));
     }
 
     public function testItUpdateUser(): void
     {
-        $user = $this->getUserLoader()->createUser('userA', [], ['ROLE_USER']);
+        $user = $this->userLoader->createUser('userA', [], ['ROLE_USER']);
 
         Assert::assertCount(1, $user->getRoles());
         Assert::assertEquals('en_US', $user->getUiLocale()->getCode());
@@ -59,7 +68,7 @@ final class UpdateUserCommandHandlerIntegration extends TestCase
             'user_default_locale' => "fr_FR",
             'roles'=> ["ROLE_USER", "ROLE_CATALOG_MANAGER"],
         ];
-        $actualUser = $this->getHandler()->handle(new UpdateUserCommand($user->getId(), $data));
+        $actualUser = $this->updateUserCommandHandler->handle(new UpdateUserCommand($user->getId(), $data));
 
         Assert::assertCount(2, $actualUser->getRoles());
         Assert::assertEquals('fr_FR', $user->getUiLocale()->getCode());
@@ -75,7 +84,7 @@ final class UpdateUserCommandHandlerIntegration extends TestCase
             'new_password' => '1234',
             'new_password_repeat' => '12345',
         ];
-        $this->getHandler()->handle(new UpdateUserCommand(-1, $data));
+        $this->updateUserCommandHandler->handle(new UpdateUserCommand(-1, $data));
     }
 
     public function testItThrowsValidationErrors(): void
@@ -84,20 +93,13 @@ final class UpdateUserCommandHandlerIntegration extends TestCase
         $this->expectExceptionMessage('Wrong password');
         $this->expectExceptionMessage('Password must contain at least 8 characters');
         $this->expectExceptionMessage('Passwords do not match');
-        $user = $this->getUserLoader()->createUser('userA', [], ['ROLE_USER']);
+        $user = $this->userLoader->createUser('userA', [], ['ROLE_USER']);
         $data = [
             'current_password' => 'userFakeA',
             'new_password' => '1234',
             'new_password_repeat' => '12345',
         ];
-        $this->getHandler()->handle(new UpdateUserCommand($user->getId(), $data));
-    }
-    private function getHandler():UpdateUserCommandHandler {
-        return $this->get(UpdateUserCommandHandler::class);
-    }
-
-    private function getUserLoader(): UserLoader {
-        return $this->get(UserLoader::class);
+        $this->updateUserCommandHandler->handle(new UpdateUserCommand($user->getId(), $data));
     }
     protected function getConfiguration(): Configuration
     {

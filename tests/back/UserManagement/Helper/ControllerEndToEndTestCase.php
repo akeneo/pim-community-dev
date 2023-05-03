@@ -6,6 +6,9 @@ namespace AkeneoTest\UserManagement\Helper;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
+use Akeneo\Test\IntegrationTestsBundle\Helper\AuthenticatorHelper;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Routing\RouterInterface;
@@ -15,6 +18,7 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
     protected KernelBrowser $client;
     protected CatalogInterface $catalog;
     private RouterInterface $router;
+    private AuthenticatorHelper $authenticatorHelper;
 
     abstract protected function getConfiguration(): Configuration;
 
@@ -25,11 +29,15 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
 
         $this->router = $this->get('router');
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
+        $this->authenticatorHelper = $this->get('akeneo_integration_tests.helper.authenticator');
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($this->getConfiguration());
-
-        $this->get('akeneo_integration_tests.security.system_user_authenticator')->createSystemUser();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        /** @var SystemUserAuthenticator $systemAuthenticator */
+        $systemAuthenticator = $this->get('akeneo_integration_tests.security.system_user_authenticator');
+        $systemAuthenticator->createSystemUser();
+        /** @var UnitOfWorkAndRepositoriesClearer $cacheCLearer */
+        $cacheCLearer = $this->get('pim_connector.doctrine.cache_clearer');
+        $cacheCLearer->clear();
     }
 
     protected function get(string $service): ?object
@@ -88,6 +96,6 @@ abstract class ControllerEndToEndTestCase extends WebTestCase
 
     protected function logAs(string $username): void
     {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($username, $this->client);
+        $this->authenticatorHelper->logIn($username, $this->client);
     }
 }
