@@ -100,11 +100,11 @@ akeneo.category:
         new: New
 
     discover_enriched_categories_information:
-        title: Discover Enriched Categories Early Access
+        title: Discover Enriched Categories
         content:
-            activate_template: Activate category enrichment through pre-configured templates
-            enrich_attribute_values: Enrich Text, Text Area and Image attributes in categories
-            custom_template: Custom template will be coming shortly
+            enrich_attribute_values: Enrich any level of your Category Trees with Text, Text Area, and Image attributes
+            customizable_templates: Offer the Product Experience you wish thanks to customizable templates
+            edit_attributes: 'Coming soon: update the settings of any of those category attributes'
         survey_link_label: Tell us what you think
         learn_more_link_label: Learn more about Enriched Categories
 
