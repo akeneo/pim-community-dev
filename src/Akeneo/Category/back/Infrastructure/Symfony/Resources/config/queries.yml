@@ -67,8 +67,8 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuidSql
+  Akeneo\Category\Domain\Query\GetCategoryTreeTemplates:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreeTemplatesSql
     arguments:
       - '@database_connection'
 
@@ -79,11 +79,6 @@ services:
 
   Akeneo\Category\Application\Query\IsTemplateDeactivated:
     class: Akeneo\Category\Infrastructure\Storage\Sql\IsTemplateDeactivatedSql
-    arguments:
-      - '@database_connection'
-
-  Akeneo\Category\Application\Query\DeleteTemplateAndAttributes:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteTemplateAndAttributesSql
     arguments:
       - '@database_connection'
 

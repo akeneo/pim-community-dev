@@ -32,6 +32,7 @@ $rules = [
         // Outside /!\
         'Akeneo\Category\Infrastructure\Builder\TemplateBuilder',
         'Akeneo\Category\Infrastructure\Builder\TemplateBuilder',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd',
         'Akeneo\Category\Infrastructure\Exception\ArrayConversionException',
         'Akeneo\Category\Infrastructure\Exception\ContentArrayConversionException',
@@ -40,6 +41,7 @@ $rules = [
         'Akeneo\Tool\Component\FileStorage\File\FileStorer',
         'Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface',
         'Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface',
+        'Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
 
         // Vendors
