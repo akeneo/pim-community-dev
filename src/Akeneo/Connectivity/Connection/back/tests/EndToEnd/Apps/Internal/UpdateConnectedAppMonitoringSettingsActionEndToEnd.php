@@ -88,10 +88,9 @@ class UpdateConnectedAppMonitoringSettingsActionEndToEnd extends WebTestCase
             \json_encode($data)
         );
         $response = $this->client->getResponse();
-        $result = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        Assert::assertNull($result);
+        Assert::assertEquals('', $response->getContent());
         Assert::assertEquals($data, $this->getConnectionMonitoringSettings('connectionCodeA'));
     }
 
