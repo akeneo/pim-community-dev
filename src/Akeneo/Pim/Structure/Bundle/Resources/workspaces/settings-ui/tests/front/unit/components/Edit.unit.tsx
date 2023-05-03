@@ -34,17 +34,10 @@ const option: AttributeOption = {
   id: 80,
   code: 'black',
   optionValues: {
-    en_US: {
-      id: 1,
-      value: 'Black',
-      locale: 'en_US',
-    },
-    fr_FR: {
-      id: 2,
-      value: 'Noir',
-      locale: 'fr_FR',
-    },
+    en_US: {id: 3, value: 'Black', locale: 'en_US'},
+    fr_FR: {id: 4, value: 'Noir', locale: 'fr_FR'},
   },
+  toImprove: undefined,
 };
 
 describe('Edit an attribute option', () => {
@@ -88,16 +81,17 @@ describe('Edit an attribute option', () => {
       code: 'black',
       optionValues: {
         en_US: {
-          id: 1,
+          id: 3,
           value: 'Black 2',
           locale: 'en_US',
         },
         fr_FR: {
-          id: 2,
+          id: 4,
           value: 'Noir',
           locale: 'fr_FR',
         },
       },
+      toImprove: undefined,
     });
     expect(saveCallback).toHaveBeenNthCalledWith(1, expectedOption);
   });
