@@ -2,9 +2,5 @@ includes:
     - '%rootDir%/../phpstan-deprecation-rules/rules.neon'
 parameters:
     reportUnmatchedIgnoredErrors: false
-    ignoreErrors:
-        # To revalidate
-        - '#Class PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Formatting\\SpaceAfterNotSniff not found.#'
-        - '#Class PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Files\\LineLengthSniff not found.#'
     excludePaths:
         - %currentWorkingDirectory%/*Spec.php
