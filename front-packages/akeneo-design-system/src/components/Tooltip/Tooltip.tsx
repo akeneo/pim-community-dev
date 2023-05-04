@@ -100,6 +100,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
     return (
       <TooltipContainer
         ref={forwardedRef}
+        role="tooltip"
         {...rest}
         size={iconSize}
         onMouseEnter={showTooltip}

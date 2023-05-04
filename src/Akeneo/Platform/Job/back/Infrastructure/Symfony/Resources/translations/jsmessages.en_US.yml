@@ -13,8 +13,12 @@ akeneo_job:
     ABANDONED: Abandoned
     UNKNOWN: Unknown
     IN_PROGRESS: In progress
+    PAUSING: Pausing
+    PAUSED: Paused
 
 akeneo_job_process_tracker:
+  tooltip:
+    paused: This job has been paused due to internal maintenance on your instance. It will be resumed automatically when it is done.
   last_operations:
     title: Last operations
     view_all: View all

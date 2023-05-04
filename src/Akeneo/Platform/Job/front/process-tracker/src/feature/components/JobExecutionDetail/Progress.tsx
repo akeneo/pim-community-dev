@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Level, ProgressBar, ProgressBarPercent} from 'akeneo-design-system';
-import {StepExecutionTracking} from '../../models/JobExecutionDetail';
+import {StepExecutionTracking, isPaused} from '../../models';
 import {Translate, useTranslate} from '@akeneo-pim-community/shared';
 import {formatSecondsIntl} from '../../tools/intl-duration';
 
@@ -16,6 +16,7 @@ const Container = styled.div`
 const guessStepExecutionTrackingLevel = (step: StepExecutionTracking): Level => {
   if (step.hasError) return 'danger';
   if (step.hasWarning) return 'warning';
+  if (isPaused(step.status)) return 'tertiary';
 
   return 'primary';
 };
@@ -75,6 +76,9 @@ const getStepExecutionTrackingProgressLabel = (
       return translate('pim_import_export.tracking.in_progress', {
         duration: formatSecondsIntl(translate, durationLeft),
       });
+    case 'PAUSED':
+    case 'PAUSING':
+      return translate('akeneo_job.job_status.PAUSED');
     case 'ABANDONED':
     case 'COMPLETED':
     case 'FAILED':

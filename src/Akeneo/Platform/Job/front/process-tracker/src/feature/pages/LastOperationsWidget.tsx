@@ -61,6 +61,7 @@ const LastOperationsWidget = () => {
                 <Table.Cell>{jobExecutionRow.username}</Table.Cell>
                 <Table.Cell>
                   <JobExecutionStatus
+                    showTooltip={false}
                     status={jobExecutionRow.status}
                     hasWarning={0 < jobExecutionRow.warning_count}
                     hasError={jobExecutionRow.has_error}

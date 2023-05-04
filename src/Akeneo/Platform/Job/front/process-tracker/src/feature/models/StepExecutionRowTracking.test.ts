@@ -19,6 +19,7 @@ test('it can get the badge level for a given step tracking', () => {
   expect(getStepExecutionRowTrackingLevel({...stepTracking, has_error: true})).toEqual('danger');
   expect(getStepExecutionRowTrackingLevel({...stepTracking, warning_count: 2})).toEqual('warning');
   expect(getStepExecutionRowTrackingLevel({...stepTracking, has_error: true, warning_count: 2})).toEqual('danger');
+  expect(getStepExecutionRowTrackingLevel({...stepTracking, status: 'PAUSED'})).toEqual('tertiary');
 });
 
 test('it can get the progress percent for a given step tracking', () => {
