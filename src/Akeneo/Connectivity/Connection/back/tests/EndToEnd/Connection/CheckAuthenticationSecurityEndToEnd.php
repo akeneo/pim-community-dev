@@ -281,7 +281,7 @@ class CheckAuthenticationSecurityEndToEnd extends ApiTestCase
     /**
      * @return Configuration
      */
-    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

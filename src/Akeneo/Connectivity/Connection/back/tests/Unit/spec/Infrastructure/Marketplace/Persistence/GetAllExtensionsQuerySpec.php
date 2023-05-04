@@ -89,6 +89,6 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
             ],
         ]);
 
-        $this->execute()->shouldBeLike(GetAllExtensionsResult::create(3, \array_map(fn ($item): \Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension => Extension::fromWebMarketplaceValues($item), $items)));
+        $this->execute()->shouldBeLike(GetAllExtensionsResult::create(3, \array_map(fn ($item): Extension => Extension::fromWebMarketplaceValues($item), $items)));
     }
 }

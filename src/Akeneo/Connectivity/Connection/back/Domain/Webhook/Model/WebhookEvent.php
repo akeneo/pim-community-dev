@@ -17,8 +17,15 @@ class WebhookEvent
     /**
      * @param array<mixed> $data
      */
-    public function __construct(private string $action, private string $eventId, private string $eventDateTime, private Author $author, private string $pimSource, private array $data, private EventInterface $pimEvent)
-    {
+    public function __construct(
+        private string $action,
+        private string $eventId,
+        private string $eventDateTime,
+        private Author $author,
+        private string $pimSource,
+        private array $data,
+        private EventInterface $pimEvent
+    ) {
     }
 
     public function action(): string

@@ -105,7 +105,37 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
      *  timestamp_to?: int,
      *  text?: string,
      * } $filters
-     * @return array{size: int, sort: array{timestamp: string, id: string}, track_total_hits: true, query: array{bool: array{filter: array{exists: array{field: string}}[]|array{bool: array{should: array{bool: array{must: array<int, array{terms: array{id: string[]}}>}}[]|array{bool: array{must: array{terms: array{level: class-string<\error>[]|string[]}}[]|array{range: array{timestamp: array{gte: int}}}[]|array{bool: array{should: array{term: array{connection_code: string}}[]|array{bool: array{must_not: array{exists: array{field: string}}}}[]}}[]}}[]}}[]|array{terms: array{level: mixed[]}}[]|array{range: array{timestamp: array{gte: int}}}[]|array{range: array{timestamp: array{lte: int}}}[]|array{query_string: array{fields: string[], query: string, fuzziness: int, default_operator: string}}[]}}, search_after?: mixed[]}
+     *
+     * @return array{
+     *     size: int,
+     *     sort: array{timestamp: string, id: string},
+     *     track_total_hits: true,
+     *     query: array{
+     *         bool: array{
+     *             filter: array{exists: array{field: string}}[]
+     *                 |array{
+     *                     bool: array{
+     *                         should: array{bool: array{must: array<int, array{terms: array{id: string[]}}>}}[]
+     *                             |array{
+     *                                 bool: array{
+     *                                     must: array{terms: array{level: class-string<\error>[]|string[]}}[]
+     *                                         |array{range: array{timestamp: array{gte: int}}}[]
+     *                                         |array{bool: array{should:
+     *                                             array{term: array{connection_code: string}}[]
+     *                                             |array{bool: array{must_not: array{exists: array{field: string}}}}[]
+     *                                         }}[]
+     *                                 }
+     *                             }[]
+     *                     }
+     *                 }[]
+     *                 |array{terms: array{level: mixed[]}}[]
+     *                 |array{range: array{timestamp: array{gte: int}}}[]
+     *                 |array{range: array{timestamp: array{lte: int}}}[]
+     *                 |array{query_string: array{fields: string[], query: string, fuzziness: int, default_operator: string}}[]
+     *         }
+     *     },
+     *     search_after?: mixed[]
+     * }
      */
     private function buildQuery(
         string $connectionCode,
@@ -252,7 +282,24 @@ class SearchEventSubscriptionDebugLogsQuery implements SearchEventSubscriptionDe
     }
 
     /**
-     * @return array{_source: string[], sort: array{timestamp: string, id: string}, size: int, query: array{bool: array{must: array{exists: array{field: string}}[]|array{terms: array{level: string[]}}[]|array{bool: array{should: array{term: array{connection_code: string}}[]|array{bool: array{must_not: array{exists: array{field: string}}}}[]}}[]}}}
+     * @return array{
+     *     _source:
+     *     string[],
+     *     sort: array{timestamp: string, id: string},
+     *     size: int,
+     *     query: array{
+     *         bool: array{
+     *             must: array{exists: array{field: string}}[]
+     *                 |array{terms: array{level: string[]}}[]
+     *                 |array{
+     *                     bool: array{
+     *                         should: array{term: array{connection_code: string}}[]
+     *                             |array{bool: array{must_not: array{exists: array{field: string}}}}[]
+     *                     }
+     *             }[]
+     *         }
+     *     }
+     * }
      */
     private function getLastNoticeAndInfoIdsQuery(string $connectionCode): array
     {

@@ -16,12 +16,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class ProductLoader
 {
-    public function __construct(private ProductBuilderInterface $builder, private ObjectUpdaterInterface $updater, private SaverInterface $saver, private ValidatorInterface $validator, private Client $client, private TraceableMessageBus $messageBus)
-    {
+    public function __construct(
+        private ProductBuilderInterface $builder,
+        private ObjectUpdaterInterface $updater,
+        private SaverInterface $saver,
+        private ValidatorInterface $validator,
+        private Client $client,
+        private TraceableMessageBus $messageBus,
+    ) {
     }
 
     public function createWithUuid(?string $uuid, ?string $identifier, array $data): ProductInterface

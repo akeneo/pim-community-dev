@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\SearchEventSubscriptionDebugLogsQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
@@ -721,7 +722,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->eventSubscriptionLogLoader->bulkInsert($logs);
     }
 
-    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

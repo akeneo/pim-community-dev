@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache\LRUCachedGetAttributes;
 use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueriesClearerInterface;
 
@@ -15,8 +14,10 @@ use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueriesClearerInterface;
  */
 class CacheClearer implements CacheClearerInterface
 {
-    public function __construct(private UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer, private CachedQueriesClearerInterface $cachedQueriesClearer)
-    {
+    public function __construct(
+        private UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer,
+        private CachedQueriesClearerInterface $cachedQueriesClearer
+    ) {
     }
 
     public function clear(): void

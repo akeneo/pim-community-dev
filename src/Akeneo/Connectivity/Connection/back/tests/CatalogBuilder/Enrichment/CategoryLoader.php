@@ -16,8 +16,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CategoryLoader
 {
-    public function __construct(private SimpleFactoryInterface $builder, private ObjectUpdaterInterface $updater, private ValidatorInterface $validator, private SaverInterface $saver)
-    {
+    public function __construct(
+        private SimpleFactoryInterface $builder,
+        private ObjectUpdaterInterface $updater,
+        private ValidatorInterface $validator,
+        private SaverInterface $saver,
+    ) {
     }
 
     public function create(array $data = []): void

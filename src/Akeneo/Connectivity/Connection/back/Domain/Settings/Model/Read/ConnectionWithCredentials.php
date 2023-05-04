@@ -5,16 +5,27 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
 
 /**
- * @author Romain Monceau <romain@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class ConnectionWithCredentials
 {
     private ?string $password = null;
 
-    public function __construct(private string $code, private string $label, private string $flowType, private ?string $image, private string $clientId, private string $secret, private string $username, private string $userRoleId, private ?string $userGroupId, private bool $auditable, private string $type)
-    {
+    public function __construct(
+        private string $code,
+        private string $label,
+        private string $flowType,
+        private ?string $image,
+        private string $clientId,
+        private string $secret,
+        private string $username,
+        private string $userRoleId,
+        private ?string $userGroupId,
+        private bool $auditable,
+        private string $type
+    ) {
     }
 
     public function code(): string

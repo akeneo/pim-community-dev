@@ -17,15 +17,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class RequestAppAuthenticationHandler
 {
-    public function __construct(private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery, private CreateUserConsentQueryInterface $createUserConsentQuery, private ClockInterface $clock, private ValidatorInterface $validator)
-    {
+    public function __construct(
+        private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
+        private CreateUserConsentQueryInterface $createUserConsentQuery,
+        private ClockInterface $clock,
+        private ValidatorInterface $validator
+    ) {
     }
 
     public function handle(RequestAppAuthenticationCommand $command): void
     {
         $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {
-            throw new \InvalidArgumentException((string)$violations->get(0)->getMessage());
+            throw new \InvalidArgumentException((string) $violations->get(0)->getMessage());
         }
 
         $userId = $command->getPimUserId();

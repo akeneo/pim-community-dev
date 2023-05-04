@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
+use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Ramsey\Uuid\Uuid;
@@ -219,7 +220,7 @@ class CreateUserConsentQueryIntegration extends WebTestCase
         $this->assertTrue(Uuid::isValid($result['uuid']));
     }
 
-    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

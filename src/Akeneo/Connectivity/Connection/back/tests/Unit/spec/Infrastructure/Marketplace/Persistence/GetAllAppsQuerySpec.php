@@ -126,7 +126,7 @@ class GetAllAppsQuerySpec extends ObjectBehavior
         $getAllPendingAppsPublicIdsQuery->execute()->willReturn([]);
         $getAllConnectedAppsPublicIdsQuery->execute()->willReturn([]);
 
-        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(fn ($item): \Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App => App::fromWebMarketplaceValues($item), $this->items)));
+        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(fn ($item): App => App::fromWebMarketplaceValues($item), $this->items)));
     }
 
     public function it_sets_connected_to_true_on_connected_apps(
@@ -143,7 +143,7 @@ class GetAllAppsQuerySpec extends ObjectBehavior
         $this->items[1]['connected'] = false;
         $this->items[2]['connected'] = true;
 
-        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(fn ($item): \Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App => App::fromWebMarketplaceValues($item), $this->items)));
+        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(fn ($item): App => App::fromWebMarketplaceValues($item), $this->items)));
     }
 
     public function it_sets_pending_to_true_on_pending_apps(
@@ -170,6 +170,6 @@ class GetAllAppsQuerySpec extends ObjectBehavior
         $this->items[3]['connected'] = false;
         $this->items[3]['isPending'] = true;
 
-        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(fn ($item): \Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App => App::fromWebMarketplaceValues($item), $this->items)));
+        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(fn ($item): App => App::fromWebMarketplaceValues($item), $this->items)));
     }
 }

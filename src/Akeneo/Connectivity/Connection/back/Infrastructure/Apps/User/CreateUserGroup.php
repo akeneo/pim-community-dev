@@ -19,8 +19,12 @@ class CreateUserGroup implements CreateUserGroupInterface
 {
     private const APP_USER_GROUP_TYPE = 'app';
 
-    public function __construct(private SimpleFactoryInterface $userGroupFactory, private ObjectUpdaterInterface $userGroupUpdater, private SaverInterface $userGroupSaver, private ValidatorInterface $validator)
-    {
+    public function __construct(
+        private SimpleFactoryInterface $userGroupFactory,
+        private ObjectUpdaterInterface $userGroupUpdater,
+        private SaverInterface $userGroupSaver,
+        private ValidatorInterface $validator
+    ) {
     }
 
     public function execute(string $groupName): GroupInterface

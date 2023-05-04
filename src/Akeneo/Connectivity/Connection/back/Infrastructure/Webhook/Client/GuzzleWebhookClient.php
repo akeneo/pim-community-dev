@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceede
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Generator;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ConnectException;
@@ -93,7 +94,7 @@ class GuzzleWebhookClient implements WebhookClientInterface
                     $webhookRequestLog->setResponse($response);
 
                     $pimEvents = \array_map(
-                        static fn (WebhookEvent $apiEvent): \Akeneo\Platform\Component\EventQueue\EventInterface => $apiEvent->getPimEvent(),
+                        static fn (WebhookEvent $apiEvent): EventInterface => $apiEvent->getPimEvent(),
                         $webhookRequestLog->getWebhookRequest()->apiEvents()
                     );
 

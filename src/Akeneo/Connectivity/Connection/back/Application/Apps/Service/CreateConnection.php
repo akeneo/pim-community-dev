@@ -17,8 +17,10 @@ class CreateConnection implements CreateConnectionInterface
 {
     private const CONNECTION_TYPE_APP = 'app';
 
-    public function __construct(private ConnectionRepositoryInterface $repository, private SelectConnectionWithCredentialsByCodeQueryInterface $selectConnectionWithCredentialsByCodeQuery)
-    {
+    public function __construct(
+        private ConnectionRepositoryInterface $repository,
+        private SelectConnectionWithCredentialsByCodeQueryInterface $selectConnectionWithCredentialsByCodeQuery
+    ) {
     }
 
     public function execute(

@@ -13,14 +13,20 @@ use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * @author Pierre Jolly <pierre.jolly@akeneo.com>
+ * @author    Pierre Jolly <pierre.jolly@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private GetDelayUntilNextRequest $getDelayUntilNextRequest, private int $webhookRequestsLimit, private Sleep $sleep, private ReachRequestLimitLogger $reachRequestLimitLogger, private LimitOfEventsApiRequestsReachedLoggerInterface $limitOfEventsApiRequestsReachedLogger, private EventsApiDebugRepositoryInterface $eventsApiDebugRepository)
-    {
+    public function __construct(
+        private GetDelayUntilNextRequest $getDelayUntilNextRequest,
+        private int $webhookRequestsLimit,
+        private Sleep $sleep,
+        private ReachRequestLimitLogger $reachRequestLimitLogger,
+        private LimitOfEventsApiRequestsReachedLoggerInterface $limitOfEventsApiRequestsReachedLogger,
+        private EventsApiDebugRepositoryInterface $eventsApiDebugRepository
+    ) {
     }
 
     public static function getSubscribedEvents(): array

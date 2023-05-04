@@ -26,8 +26,12 @@ class RandomCodeGenerator implements RandomCodeGeneratorInterface
         }
         // Last resort: mt_rand
         if (empty($randomData)) { // Get 108 bytes of (pseudo-random, insecure) data
-            $randomData = \random_int(0, \mt_getrandmax()) . \random_int(0, \mt_getrandmax()) . \random_int(0, \mt_getrandmax()) . \uniqid((string) \random_int(0, \mt_getrandmax()), true) . \microtime(true) .
-                \uniqid((string) \random_int(0, \mt_getrandmax()), true);
+            $randomData = \random_int(0, \mt_getrandmax())
+                . \random_int(0, \mt_getrandmax())
+                . \random_int(0, \mt_getrandmax())
+                . \uniqid((string) \random_int(0, \mt_getrandmax()), true)
+                . \microtime(true)
+                . \uniqid((string) \random_int(0, \mt_getrandmax()), true);
         }
 
         return \rtrim(\strtr(\base64_encode(\hash('sha256', $randomData)), '+/', '-_'), '=');

@@ -24,7 +24,14 @@ class PurgeEventsApiErrorLogsQuery
     }
 
     /**
-     * @return array{query: array{bool: array{must: array{terms: array{level: class-string<\error>[]|string[]}}[]|array{range: array{timestamp: array{lt: int}}}[]}}}
+     * @return array{
+     *     query: array{
+     *         bool: array{
+     *             must: array{terms: array{level: class-string<\error>[]|string[]}}[]
+     *              |array{range: array{timestamp: array{lt: int}}}[]
+     *         }
+     *     }
+     * }
      */
     private function getDeleteErrorDocumentsOlderThanTheGivenDateQuery(\DateTimeImmutable $olderThanDatetime): array
     {

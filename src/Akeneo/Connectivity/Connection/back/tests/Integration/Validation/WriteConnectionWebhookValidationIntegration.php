@@ -5,6 +5,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Validation;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -24,7 +25,7 @@ class WriteConnectionWebhookValidationIntegration extends TestCase
         $connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
     }
 
-    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

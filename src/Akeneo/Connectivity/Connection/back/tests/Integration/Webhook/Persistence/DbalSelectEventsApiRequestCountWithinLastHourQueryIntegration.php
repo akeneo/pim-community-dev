@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\Persistence;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventsApiRequestCountLoader;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -65,7 +66,7 @@ class DbalSelectEventsApiRequestCountWithinLastHourQueryIntegration extends Test
         Assert::assertEquals(['event_count' => 10, 'updated' => '2021-01-02 11:40:10'], $eventsApiRequestCountWithinLastHour[1]);
     }
 
-    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

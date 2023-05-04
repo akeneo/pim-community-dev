@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\GetAllEventSubscriptionDebugLogsQuery;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PHPUnit\Framework\Assert;
@@ -248,10 +249,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->elasticsearchClient->refreshIndex();
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getConfiguration(): \Akeneo\Test\Integration\Configuration
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

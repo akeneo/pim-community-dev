@@ -21,12 +21,22 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class ConnectedAppLoader
 {
-    public function __construct(private DbalConnection $dbalConnection, private UserRoleLoader $userRoleLoader, private OAuthStorage $OAuthStorage, private ClientProviderInterface $clientProvider, private CreateUserGroupInterface $createUserGroup, private CreateUserInterface $createUser, private CreateConnectionInterface $createConnection, private CreateConnectedAppInterface $createApp, private UserRepositoryInterface $userRepository, private UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer)
-    {
+    public function __construct(
+        private DbalConnection $dbalConnection,
+        private UserRoleLoader $userRoleLoader,
+        private OAuthStorage $OAuthStorage,
+        private ClientProviderInterface $clientProvider,
+        private CreateUserGroupInterface $createUserGroup,
+        private CreateUserInterface $createUser,
+        private CreateConnectionInterface $createConnection,
+        private CreateConnectedAppInterface $createApp,
+        private UserRepositoryInterface $userRepository,
+        private UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer
+    ) {
     }
 
     /**

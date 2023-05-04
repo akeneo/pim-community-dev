@@ -12,14 +12,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class WebMarketplaceApi implements WebMarketplaceApiInterface
 {
     private string $fixturePath;
 
-    public function __construct(private ClientInterface $client, private WebMarketplaceAliasesInterface $webMarketplaceAliases, private LoggerInterface $logger, private FeatureFlag $fakeAppsFeatureFlag)
-    {
+    public function __construct(
+        private ClientInterface $client,
+        private WebMarketplaceAliasesInterface $webMarketplaceAliases,
+        private LoggerInterface $logger,
+        private FeatureFlag $fakeAppsFeatureFlag
+    ) {
     }
 
     public function getExtensions(int $offset = 0, int $limit = 10): array

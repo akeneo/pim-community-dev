@@ -53,7 +53,20 @@ class PurgeEventsApiSuccessLogsQuery
     }
 
     /**
-     * @return array{_source: string[], sort: array<int, array{timestamp: array{order: string}}>, size: int, query: array{constant_score: array{filter: array{bool: array{filter: array{exists: array{field: string}}[]|array{terms: array{level: string[]}}[]}}}}}
+     * @return array{
+     *     _source: string[],
+     *     sort: array<int, array{timestamp: array{order: string}}>,
+     *     size: int,
+     *     query: array{
+     *         constant_score: array{
+     *             filter: array{
+     *                 bool: array{
+     *                     filter: array{exists: array{field: string}}[]|array{terms: array{level: string[]}}[]
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
      */
     private function getEsIdsToKeepQuery(int $nbOfNoticesAndInfosToKeep): array
     {
