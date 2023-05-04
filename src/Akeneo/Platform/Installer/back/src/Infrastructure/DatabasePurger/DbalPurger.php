@@ -21,10 +21,10 @@ class DbalPurger implements DatabasePurgerInterface
     /**
      * {@inheritDoc}
      */
-    public function purge(array $tableToReset): void
+    public function purge(array $tablesToReset): void
     {
         $sql = 'SET FOREIGN_KEY_CHECKS = 0;';
-        foreach ($tableToReset as $table) {
+        foreach ($tablesToReset as $table) {
             $sql .= sprintf('TRUNCATE TABLE %s;', $table);
         }
 

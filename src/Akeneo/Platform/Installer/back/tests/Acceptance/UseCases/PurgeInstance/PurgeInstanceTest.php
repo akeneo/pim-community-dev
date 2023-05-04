@@ -19,7 +19,7 @@ class PurgeInstanceTest extends KernelTestCase
     {
         $this->getHandler()->handle(new PurgeInstanceCommand());
 
-        $this->assertTableHaveBeenPurged([
+        $this->assertTablesHaveBeenPurged([
             'akeneo_batch_job_instance',
             'akeneo_batch_job_execution',
             'akeneo_measurement',
@@ -38,9 +38,9 @@ class PurgeInstanceTest extends KernelTestCase
         ]);
     }
 
-    private function assertTableHaveBeenPurged(array $tablesName): void
+    private function assertTablesHaveBeenPurged(array $tableNames): void
     {
-        $this->getDatabasePurger()->assertTablesHaveBeenPurged($tablesName);
+        $this->getDatabasePurger()->assertTablesHaveBeenPurged($tableNames);
     }
 
     private function getDatabasePurger(): FakeDatabasePurger

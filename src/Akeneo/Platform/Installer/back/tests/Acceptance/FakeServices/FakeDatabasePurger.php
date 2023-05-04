@@ -14,22 +14,22 @@ use PHPUnit\Framework\Assert;
 
 class FakeDatabasePurger implements DatabasePurgerInterface
 {
-    private array $tablePurged = [];
+    private array $tablesPurged = [];
 
-    public function purge(array $tableToReset): void
+    public function purge(array $tablesToReset): void
     {
-        $this->tablePurged = $tableToReset;
+        $this->tablesPurged = $tablesToReset;
     }
 
-    public function assertTablesHaveBeenPurged(array $tablesName): void
+    public function assertTablesHaveBeenPurged(array $tableNames): void
     {
-        Assert::assertEqualsCanonicalizing($this->tablePurged, $tablesName, 'Failed asserting that tables have been purged.');
+        Assert::assertEqualsCanonicalizing($this->tablesPurged, $tableNames, 'Failed asserting that tables have been purged.');
     }
 
-    public function assertTablesHaveNotBeenPurged(array $tablesName): void
+    public function assertTablesHaveNotBeenPurged(array $tableNames): void
     {
-        foreach ($tablesName as $tableName) {
-            if (in_array($tableName, $this->tablePurged)) {
+        foreach ($tableNames as $tableName) {
+            if (in_array($tableName, $this->tablesPurged)) {
                 Assert::fail("Failed asserting that table $tableName have not been purged.");
             }
         }

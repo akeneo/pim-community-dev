@@ -14,7 +14,7 @@ use Akeneo\Platform\Installer\Domain\Service\DatabasePurgerInterface;
 
 class PurgeInstanceHandler
 {
-    private const TABLE_TO_KEEP = [];
+    private const TABLES_TO_KEEP = [];
 
     public function __construct(
         private readonly FindTablesInterface $findTables,
@@ -24,8 +24,11 @@ class PurgeInstanceHandler
 
     public function handle(PurgeInstanceCommand $command): void
     {
-        $tables = $this->findTables->all();
-        $tablesToPurge = array_filter($tables, fn (string $table) => !in_array($table, self::TABLE_TO_KEEP));
+        $tableNames = $this->findTables->all();
+        $tablesToPurge = array_filter(
+            $tableNames,
+            static fn (string $tableName): bool => !in_array($tableName, self::TABLES_TO_KEEP)
+        );
 
         $this->databasePurger->purge($tablesToPurge);
     }

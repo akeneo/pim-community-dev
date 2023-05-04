@@ -12,7 +12,7 @@ namespace Akeneo\Platform\Installer\Domain\Service;
 interface DatabasePurgerInterface
 {
     /**
-     * @param string[] $tableToReset
+     * @param string[] $tablesToReset
      */
-    public function purge(array $tableToReset): void;
+    public function purge(array $tablesToReset): void;
 }
