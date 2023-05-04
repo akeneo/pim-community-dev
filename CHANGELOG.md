@@ -67,6 +67,7 @@
 - PIM-10814: Wysiwyg now supports languages that use right-to-left (rtl) scripts
 - PIM-10956: Fix deletion of category with enriched category template
 - PIM-10914: Add title and ellipsis for long labels on attribute select
+- PIM-10639 : Prevent users to change his password without providing its current password
 
 ## Improvements
 
