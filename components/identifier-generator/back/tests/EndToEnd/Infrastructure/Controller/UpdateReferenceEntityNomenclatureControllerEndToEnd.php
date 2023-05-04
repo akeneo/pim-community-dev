@@ -69,13 +69,13 @@ final class UpdateReferenceEntityNomenclatureControllerEndToEnd extends Controll
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $nomenclatureDefinition = $this->getNomenclatureRepository()->get('a_reference_entity_attribute');
-        Assert::assertSame($nomenclatureDefinition->operator(), '<=');
-        Assert::assertSame($nomenclatureDefinition->value(), 4);
-        Assert::assertSame($nomenclatureDefinition->generateIfEmpty(), true);
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['akeneo'] ?? null, 'akn');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['adidas'] ?? null, 'adds');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['zara'] ?? null, null);
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['unknown'] ?? null, null);
+        Assert::assertSame('<=', $nomenclatureDefinition->operator());
+        Assert::assertSame(4, $nomenclatureDefinition->value());
+        Assert::assertSame(true, $nomenclatureDefinition->generateIfEmpty());
+        Assert::assertSame('akn', ($nomenclatureDefinition->values() ?? [])['akeneo'] ?? null);
+        Assert::assertSame('adds', ($nomenclatureDefinition->values() ?? [])['adidas'] ?? null);
+        Assert::assertSame(null, ($nomenclatureDefinition->values() ?? [])['zara'] ?? null);
+        Assert::assertSame(null, ($nomenclatureDefinition->values() ?? [])['unknown'] ?? null);
 
         $this->callUpdateRoute(
             'akeneo_identifier_generator_nomenclature_rest_update',
@@ -95,9 +95,9 @@ final class UpdateReferenceEntityNomenclatureControllerEndToEnd extends Controll
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $nomenclatureDefinition = $this->getNomenclatureRepository()->get('a_reference_entity_attribute');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['akeneo'] ?? null, 'akn');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['adidas'] ?? null, null);
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['zara'] ?? null, 'zr');
+        Assert::assertSame('akn', ($nomenclatureDefinition->values() ?? [])['akeneo'] ?? null);
+        Assert::assertSame(null, ($nomenclatureDefinition->values() ?? [])['adidas'] ?? null);
+        Assert::assertSame('zr', ($nomenclatureDefinition->values() ?? [])['zara'] ?? null);
     }
 
     /** @test */

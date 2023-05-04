@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedAttributeException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnexpectedAttributeTypeException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler;
@@ -49,6 +50,8 @@ final class UpdateNomenclatureController
             return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         } catch (UndefinedAttributeException $e) {
             throw new NotFoundHttpException($e->getMessage());
+        } catch (UnexpectedAttributeTypeException $e) {
+            throw new BadRequestHttpException($e->getMessage());
         }
 
         return new JsonResponse();

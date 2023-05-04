@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Update;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedAttributeException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnexpectedAttributeTypeException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
@@ -40,7 +41,6 @@ final class UpdateNomenclatureHandler
         $getNomenclatureCommand = new GetNomenclatureCommand($command->getPropertyCode());
         $normalizedNomenclature = ($this->getNomenclatureHandler)($getNomenclatureCommand);
 
-        // TODO: not sure we have to get existing nomenclature as we re-construct it wholy line 55
         $nomenclatureDefinition = new NomenclatureDefinition(
             $normalizedNomenclature['operator'],
             $normalizedNomenclature['value'],
@@ -64,15 +64,14 @@ final class UpdateNomenclatureHandler
             $attribute = $this->getAttributes->forCode($command->getPropertyCode());
 
             if (null === $attribute) {
-                throw new UndefinedAttributeException(
-                    \sprintf('The "%s" attribute is not found', $command->getPropertyCode())
-                );
+                throw UndefinedAttributeException::withAttributeCode($command->getPropertyCode());
             }
-            if ($attribute->type() === AttributeTypes::OPTION_SIMPLE_SELECT) {
-                $this->simpleSelectNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
-            } else {
-                $this->referenceEntityNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition);
-            }
+
+            match ($attribute->type()) {
+                AttributeTypes::OPTION_SIMPLE_SELECT => $this->simpleSelectNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition),
+                AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT => $this->referenceEntityNomenclatureRepository->update($command->getPropertyCode(), $nomenclatureDefinition),
+                default => throw UnexpectedAttributeTypeException::withAttributeCode($attribute->type(), $attribute->code())
+            };
         }
     }
 }
