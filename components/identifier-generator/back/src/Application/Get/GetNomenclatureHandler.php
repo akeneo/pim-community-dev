@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Get;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedAttributeException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnexpectedAttributeTypeException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
@@ -44,15 +45,13 @@ final class GetNomenclatureHandler
             $attribute = $this->getAttributes->forCode($query->propertyCode());
 
             if (null === $attribute) {
-                throw new UndefinedAttributeException(
-                    \sprintf('The "%s" attribute is not found', $query->propertyCode())
-                );
+                throw UndefinedAttributeException::withAttributeCode($query->propertyCode());
             }
-            if ($attribute->type() === AttributeTypes::OPTION_SIMPLE_SELECT) {
-                $nomenclature = $this->simpleSelectNomenclatureRepository->get($query->propertyCode()) ?? new NomenclatureDefinition();
-            } else {
-                $nomenclature = $this->referenceEntityNomenclatureRepository->get($query->propertyCode()) ?? new NomenclatureDefinition();
-            }
+            $nomenclature = match ($attribute->type()) {
+                AttributeTypes::OPTION_SIMPLE_SELECT => $this->simpleSelectNomenclatureRepository->get($attribute->code()) ?? new NomenclatureDefinition(),
+                AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT => $this->referenceEntityNomenclatureRepository->get($attribute->code()) ?? new NomenclatureDefinition(),
+                default => throw UnexpectedAttributeTypeException::withAttributeCode($attribute->type(), $attribute->code())
+            };
         }
 
         Assert::allNotNull($nomenclature->values());
