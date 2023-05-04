@@ -9,26 +9,24 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\UserManagement\Component\Event\UserEvent;
+use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommand;
+use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler;
+use Akeneo\UserManagement\Application\Exception\UserNotFoundException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Persistence\ObjectManager;
+use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
+use Akeneo\UserManagement\ServiceApi\ViolationsException;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -41,62 +39,24 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserController
+final class UserController
 {
-    private const PASSWORD_MINIMUM_LENGTH = 8;
-    private const PASSWORD_MAXIMUM_LENGTH = 4096;
-
-    protected TokenStorageInterface $tokenStorage;
-    protected NormalizerInterface $normalizer;
-    protected ObjectRepository $repository;
-    protected ObjectUpdaterInterface $updater;
-    protected ValidatorInterface $validator;
-    protected SaverInterface $saver;
-    protected NormalizerInterface $constraintViolationNormalizer;
-    protected SimpleFactoryInterface $factory;
-    protected UserPasswordHasherInterface $encoder;
-    private EventDispatcherInterface $eventDispatcher;
-    private Session $session;
-    private ObjectManager $objectManager;
-    private NumberFactory $numberFactory;
-    private RemoverInterface $remover;
-    private TranslatorInterface $translator;
-    private SecurityFacade $securityFacade;
-
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer,
-        ObjectRepository $repository,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        SaverInterface $saver,
-        NormalizerInterface $constraintViolationNormalizer,
-        SimpleFactoryInterface $factory,
-        UserPasswordHasherInterface $encoder,
-        EventDispatcherInterface $eventDispatcher,
-        Session $session,
-        ObjectManager $objectManager,
-        RemoverInterface $remover,
-        NumberFactory $numberFactory,
-        TranslatorInterface $translator,
-        SecurityFacade $securityFacade
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly NormalizerInterface $normalizer,
+        private readonly ObjectRepository $repository,
+        private readonly ObjectUpdaterInterface $updater,
+        private readonly ValidatorInterface $validator,
+        private readonly SaverInterface $saver,
+        private readonly NormalizerInterface $constraintViolationNormalizer,
+        private readonly SimpleFactoryInterface $factory,
+        private readonly RemoverInterface $remover,
+        private readonly NumberFactory $numberFactory,
+        private readonly TranslatorInterface $translator,
+        private readonly SecurityFacade $securityFacade,
+        private readonly PasswordCheckerInterface $passwordChecker,
+        private readonly UpdateUserCommandHandler $updateUserCommandHandler,
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->normalizer = $normalizer;
-        $this->repository = $repository;
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->saver = $saver;
-        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->factory = $factory;
-        $this->encoder = $encoder;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->session = $session;
-        $this->objectManager = $objectManager;
-        $this->remover = $remover;
-        $this->numberFactory = $numberFactory;
-        $this->translator = $translator;
-        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -148,27 +108,15 @@ class UserController
      *
      * @AclAncestor("pim_user_user_edit")
      */
-    public function postAction(Request $request, $identifier): Response
+    public function postAction(Request $request, int $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
 
-        //code is useful to reach the route, cannot forget it in the query
-        unset($data['code']);
-        unset($data['visible_group_ids']);
-
-        if (!$this->securityFacade->isGranted('pim_user_role_edit')) {
-            unset($data['roles']);
-        }
-        if (!$this->securityFacade->isGranted('pim_user_group_edit')) {
-            unset($data['groups']);
-        }
-
-        return $this->updateUser($user, $data);
+        return $this->updateUser($identifier, $data);
     }
 
     /**
@@ -182,36 +130,18 @@ class UserController
             return new RedirectResponse('/');
         }
 
-        $user = $this->getUserOr404($identifier);
         $data = json_decode($request->getContent(), true);
 
         $token = $this->tokenStorage->getToken();
         $currentUser = null !== $token ? $token->getUser() : null;
-        if (null === $currentUser || $currentUser->getId() !== $user->getId()) {
+        if (null === $currentUser || $currentUser->getId() !== $identifier) {
             throw new AccessDeniedHttpException();
         }
 
-        unset($data['code']);
         unset($data['roles']);
         unset($data['groups']);
-        unset($data['visible_group_ids']);
 
-        return $this->updateUser($user, $data);
-    }
-
-    protected function update(UserInterface $user, ?string $previousUsername = null)
-    {
-        $this->eventDispatcher->dispatch(
-            new GenericEvent($user, [
-                'current_user' => $this->tokenStorage->getToken()->getUser(),
-                'previous_username' => $previousUsername,
-            ]),
-            UserEvent::POST_UPDATE
-        );
-
-        $this->session->remove('dataLocale');
-
-        return $user;
+        return $this->updateUser($identifier, $data);
     }
 
     /**
@@ -352,55 +282,27 @@ class UserController
     }
 
     /**
-     * @param UserInterface $user
      * @param array $data
-     *
-     * @return JsonResponse
      */
-    private function updateUser(UserInterface $user, array $data): JsonResponse
+    private function updateUser(int $identifier, array $data): Response
     {
-        $violations = new ConstraintViolationList();
-        $passwordViolations = new ConstraintViolationList();
+        try {
+            $updateUserCommand = new UpdateUserCommand($identifier, $data);
+            $user = $this->updateUserCommandHandler->handle($updateUserCommand);
 
-        $previousUserName = $user->getUserIdentifier();
-        if ($this->isPasswordUpdating($data)) {
-            $passwordViolations = $this->validatePassword($user, $data);
-            if ($passwordViolations->count() === 0) {
-                $data['password'] = $data['new_password'];
-            }
-        }
-
-        unset($data['current_password'], $data['new_password'], $data['new_password_repeat']);
-
-        if (0 === $passwordViolations->count()) {
-            $this->updater->update($user, $data);
-            $violations = $this->validator->validate($user);
-        }
-
-        if (0 < $violations->count() || 0 < $passwordViolations->count()) {
+            return new JsonResponse($this->normalizer->normalize($user, 'internal_api'));
+        } catch (ViolationsException $violationsException) {
             $normalizedViolations = [];
-            foreach ($violations as $violation) {
+            foreach ($violationsException->violations() as $violation) {
                 $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
                     $violation,
                     'internal_api'
                 );
             }
-
-            unset($data['password']);
-            foreach ($passwordViolations as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                    $violation,
-                    'internal_api'
-                );
-            }
-            $this->objectManager->refresh($user);
-
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+        } catch (UserNotFoundException $userNotFoundException) {
+            throw new NotFoundHttpException($userNotFoundException->getMessage());
         }
-
-        $this->saver->save($user);
-
-        return new JsonResponse($this->normalizer->normalize($this->update($user, $previousUserName), 'internal_api'));
     }
 
     private function validatePasswordCreate(array $data): ConstraintViolationListInterface
@@ -410,90 +312,10 @@ class UserController
         $newPassword = $data['password'] ?? '';
         $newPasswordRepeat = $data['password_repeat'] ?? '';
 
-        $violations->addAll($this->validatePasswordLength($newPassword, 'password'));
-        $violations->addAll($this->validatePasswordMatch($newPassword, $newPasswordRepeat, 'password_repeat'));
+        $violations->addAll($this->passwordChecker->validatePasswordLength($newPassword, 'password'));
+        $violations->addAll($this->passwordChecker->validatePasswordMatch($newPassword, $newPasswordRepeat, 'password_repeat'));
 
         return $violations;
-    }
-
-    private function validatePassword(UserInterface $user, array $data): ConstraintViolationListInterface
-    {
-        $violations = new ConstraintViolationList();
-
-        $currentPassword = $data['current_password'] ?? '';
-        $newPassword = $data['new_password'] ?? '';
-        $newPasswordRepeat = $data['new_password_repeat'] ?? '';
-
-        if (!$this->encoder->isPasswordValid($user, $currentPassword)) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.current_password.wrong'),
-                '',
-                [],
-                '',
-                'current_password',
-                ''
-            ));
-        }
-
-        $violations->addAll($this->validatePasswordLength($newPassword, 'new_password'));
-        $violations->addAll($this->validatePasswordMatch($newPassword, $newPasswordRepeat, 'new_password_repeat'));
-
-        return $violations;
-    }
-
-    private function validatePasswordMatch(string $password, string $passwordRepeat, string $propertyPath): ConstraintViolationListInterface
-    {
-        $violations = new ConstraintViolationList();
-
-        if ($password !== $passwordRepeat) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.new_password_repeat.not_match'),
-                '',
-                [],
-                '',
-                $propertyPath,
-                ''
-            ));
-        }
-
-        return $violations;
-    }
-
-    private function validatePasswordLength(string $password, string $propertyPath): ConstraintViolationListInterface
-    {
-        $violations = new ConstraintViolationList();
-
-        if (self::PASSWORD_MINIMUM_LENGTH > mb_strlen($password)) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.new_password.minimum_length'),
-                '',
-                [],
-                '',
-                $propertyPath,
-                ''
-            ));
-        // We have to use `strlen` here because Symfony's BasePasswordEncoder will check
-        // the actual byte count when trying to encode it with salt.
-        // See: Symfony\Component\Security\Core\Encoder\BasePasswordEncoder
-        } elseif (self::PASSWORD_MAXIMUM_LENGTH < strlen($password)) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.new_password.maximum_length'),
-                '',
-                [],
-                '',
-                $propertyPath,
-                ''
-            ));
-        }
-
-        return $violations;
-    }
-
-    private function isPasswordUpdating($data): bool
-    {
-        return (isset($data['current_password']) && !empty($data['current_password'])) ||
-            (isset($data['new_password']) && !empty($data['new_password'])) ||
-            (isset($data['new_password_repeat']) && !empty($data['new_password_repeat']));
     }
 
     private function additionalProperties($user): array
