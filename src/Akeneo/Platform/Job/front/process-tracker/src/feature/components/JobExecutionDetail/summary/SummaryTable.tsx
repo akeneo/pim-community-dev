@@ -4,7 +4,7 @@ import {Table, Badge, Helper, Level} from 'akeneo-design-system';
 import {Translate, useTranslate} from '@akeneo-pim-community/shared';
 import {InnerTable} from './InnerTable';
 import {WarningHelper} from './WarningHelper';
-import {JobExecution, StepExecution} from '../../../models';
+import {JobExecution, StepExecution, isStepPaused} from '../../../models';
 
 const SpacedTable = styled(Table)`
   margin-bottom: 40px;
@@ -31,13 +31,17 @@ const getStepLabel = (translate: Translate, step: StepExecution): string => {
   return translate(key);
 };
 
-const getStepStatusLevel = (step: StepExecution): Level => {
+const getStepStatusLevel = (translate: Translate, step: StepExecution): Level => {
   if (0 < step.errors.length || 0 < step.failures.length) {
     return 'danger';
   }
 
   if (0 < step.warnings.length) {
     return 'warning';
+  }
+
+  if (isStepPaused(translate, step.status)) {
+    return 'tertiary';
   }
 
   return 'primary';
@@ -69,7 +73,7 @@ const SummaryTable = ({jobExecution}: SummaryTableProps) => {
                 {getStepLabel(translate, step)}
               </Table.Cell>
               <Table.Cell>
-                <Badge level={getStepStatusLevel(step)}>{step.status}</Badge>
+                <Badge level={getStepStatusLevel(translate, step)}>{step.status}</Badge>
               </Table.Cell>
               <SummaryCell>
                 <InnerTable content={step.summary} />

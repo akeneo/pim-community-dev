@@ -97,6 +97,17 @@ const jobExecution: JobExecution = {
       errors: [],
       failures: [],
     },
+    {
+      job: 'product_export',
+      label: 'Another step',
+      status: 'akeneo_job.job_status.PAUSED',
+      summary: {},
+      startedAt: '15',
+      endedAt: '16',
+      warnings: [],
+      errors: [],
+      failures: [],
+    },
   ],
 };
 

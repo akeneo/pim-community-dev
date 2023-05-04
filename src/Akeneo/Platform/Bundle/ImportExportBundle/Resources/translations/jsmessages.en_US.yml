@@ -242,6 +242,8 @@ pim_import_export:
         6: Failed
         7: Abandoned
         8: Unknown
+        9: Pausing
+        10: Paused
     job_status:
         COMPLETED: Completed
         STARTING: Starting
@@ -251,6 +253,8 @@ pim_import_export:
         FAILED:  Failed
         ABANDONED: Abandoned
         UNKNOWN: Unknown
+        PAUSING: Pausing
+        PAUSED: Paused
     tracking:
         completed: "Time spent: {{ duration }}"
         in_progress: "Estimated time left: {{ duration }}"

@@ -1,3 +1,5 @@
+import {Translate} from '@akeneo-pim-community/shared';
+
 type StepStatus =
   | 'ABANDONED'
   | 'COMPLETED'
@@ -6,6 +8,12 @@ type StepStatus =
   | 'STARTING'
   | 'STOPPED'
   | 'STOPPING'
-  | 'UNKNOWN';
+  | 'UNKNOWN'
+  | 'PAUSED'
+  | 'PAUSING';
+
+const isStepPaused = (translate: Translate, stepStatus: string) =>
+  [translate('akeneo_job.job_status.PAUSING'), translate('akeneo_job.job_status.PAUSED')].includes(stepStatus);
 
 export type {StepStatus};
+export {isStepPaused};

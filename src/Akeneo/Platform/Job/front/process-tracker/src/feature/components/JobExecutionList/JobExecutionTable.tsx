@@ -101,6 +101,7 @@ const JobExecutionTable = ({
             <ProgressCell jobExecutionRow={jobExecutionRow} />
             <Table.Cell>
               <JobExecutionStatus
+                showTooltip={true}
                 status={jobExecutionRow.status}
                 hasWarning={jobExecutionRow.warning_count > 0}
                 hasError={jobExecutionRow.has_error}
