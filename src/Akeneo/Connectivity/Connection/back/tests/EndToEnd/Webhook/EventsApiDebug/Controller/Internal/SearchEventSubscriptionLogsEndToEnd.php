@@ -11,7 +11,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
-use \Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 

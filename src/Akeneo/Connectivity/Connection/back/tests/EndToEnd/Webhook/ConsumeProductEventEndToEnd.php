@@ -60,7 +60,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $this->productLoader = static::getContainer()->get(
             'akeneo_connectivity.connection.fixtures.enrichment.product'
         );
-        $this->historyContainer = $this->get(\Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer::class);
+        $this->historyContainer = $this->get(GuzzleJsonHistoryContainer::class);
 
         $this->tshirtProduct = $this->productLoader->create(
             'blue-t-shirt',

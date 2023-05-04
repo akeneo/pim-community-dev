@@ -31,7 +31,7 @@ class PurgeEventsApiSuccessLogsQuery
     }
 
     /**
-     * @return array{query: array{bool: array{must_not: array{terms: array{id: mixed[]}}, must: array{terms: array{level: string[]}}}}}
+     * @return array{query: array<mixed>}
      */
     private function getDeleteAllDocumentsButGivenIdsQuery(array $idsToKeep): array
     {
@@ -57,15 +57,7 @@ class PurgeEventsApiSuccessLogsQuery
      *     _source: string[],
      *     sort: array<int, array{timestamp: array{order: string}}>,
      *     size: int,
-     *     query: array{
-     *         constant_score: array{
-     *             filter: array{
-     *                 bool: array{
-     *                     filter: array{exists: array{field: string}}[]|array{terms: array{level: string[]}}[]
-     *                 }
-     *             }
-     *         }
-     *     }
+     *     query: array<mixed>
      * }
      */
     private function getEsIdsToKeepQuery(int $nbOfNoticesAndInfosToKeep): array

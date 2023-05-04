@@ -49,7 +49,7 @@ class PurgeConnectionErrorsQuery
     }
 
     /**
-     * @return array{query: array{bool: array{must_not: array{terms: array{id: mixed[]}}}}}
+     * @return array{query: array<mixed>}
      */
     private function getDeleteAllDocumentsButGivenIdsQuery(array $idsToKeep): array
     {
@@ -67,16 +67,7 @@ class PurgeConnectionErrorsQuery
      *     _source: string[],
      *     sort: array<int, array{error_datetime: array{order: string}}>,
      *     size: int,
-     *     query: array{
-     *         constant_score: array{
-     *             filter: array{
-     *                 bool: array{
-     *                     filter: array{exists: array{field: string}}[]|array{term: array{connection_code: string}}[],
-     *                     must_not: array{range: array{error_datetime: array{lt: string}}}
-     *                 }
-     *             }
-     *         }
-     *     }
+     *     query: array<mixed>
      * }
      */
     private function getEsIdsToKeepForGivenConnectionQuery(
