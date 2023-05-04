@@ -18,7 +18,7 @@ test('it can be cancelled', () => {
   expect(handleCancel).toHaveBeenCalled();
 });
 
-test.only('it can be confirmed after going through every steps and confirming', async () => {
+test('it can be confirmed after going through every steps and confirming', async () => {
   const handleConfirm = jest.fn();
   const handleRedirect = jest.fn();
 
