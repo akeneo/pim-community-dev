@@ -14,17 +14,17 @@ use PhpSpec\ObjectBehavior;
  */
 class FindAConnectionQuerySpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith('bynder');
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(FindAConnectionQuery::class);
     }
 
-    public function it_returns_a_connection_code()
+    public function it_returns_a_connection_code(): void
     {
         $this->connectionCode()->shouldReturn('bynder');
     }

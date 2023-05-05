@@ -33,6 +33,6 @@ final class GetUserConsentedAuthenticationScopesQuery implements GetUserConsente
             return [];
         }
 
-        return \json_decode($scopes);
+        return \json_decode($scopes, null, 512, JSON_THROW_ON_ERROR);
     }
 }

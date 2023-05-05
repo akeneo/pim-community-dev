@@ -155,7 +155,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $eventDispatcher
             ->dispatch(Argument::allOf(
                 Argument::type(EventsApiRequestSucceededEvent::class),
-                Argument::that(function (EventsApiRequestSucceededEvent $event) use ($Request1pimEvent) {
+                Argument::that(function (EventsApiRequestSucceededEvent $event) use ($Request1pimEvent): bool {
                     if ('ecommerce' !== $event->getConnectionCode() || $Request1pimEvent !== $event->getEvents()[0]) {
                         return false;
                     }
@@ -190,7 +190,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $eventDispatcher
             ->dispatch(Argument::allOf(
                 Argument::type(EventsApiRequestSucceededEvent::class),
-                Argument::that(function (EventsApiRequestSucceededEvent $event) use ($Request2pimEvent) {
+                Argument::that(function (EventsApiRequestSucceededEvent $event) use ($Request2pimEvent): bool {
                     if ('erp' !== $event->getConnectionCode() || $Request2pimEvent !== $event->getEvents()[0]) {
                         return false;
                     }

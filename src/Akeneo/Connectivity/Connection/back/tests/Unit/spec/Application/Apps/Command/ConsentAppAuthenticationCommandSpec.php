@@ -18,17 +18,17 @@ class ConsentAppAuthenticationCommandSpec extends ObjectBehavior
         $this->beConstructedWith('a_client_id', 1);
     }
 
-    public function it_is_instantiable()
+    public function it_is_instantiable(): void
     {
         $this->shouldHaveType(ConsentAppAuthenticationCommand::class);
     }
 
-    public function it_gets_client_id()
+    public function it_gets_client_id(): void
     {
         $this->getClientId()->shouldReturn('a_client_id');
     }
 
-    public function it_gets_pim_user_id()
+    public function it_gets_pim_user_id(): void
     {
         $this->getPimUserId()->shouldReturn(1);
     }

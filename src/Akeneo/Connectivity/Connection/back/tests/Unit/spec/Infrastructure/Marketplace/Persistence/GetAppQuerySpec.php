@@ -20,7 +20,7 @@ class GetAppQuerySpec extends ObjectBehavior
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
         GetCustomAppQuery $getCustomAppQuery,
-    ) {
+    ): void {
         $this->beConstructedWith(
             $webMarketplaceApi,
             $getCustomAppQuery,

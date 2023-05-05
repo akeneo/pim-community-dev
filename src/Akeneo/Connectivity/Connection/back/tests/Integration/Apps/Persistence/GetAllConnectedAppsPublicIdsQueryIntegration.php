@@ -31,14 +31,14 @@ class GetAllConnectedAppsPublicIdsQueryIntegration extends TestCase
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
     }
 
-    public function test_it_returns_nothing_when_no_connected_app_exists()
+    public function test_it_returns_nothing_when_no_connected_app_exists(): void
     {
         $result = $this->query->execute();
 
         $this->assertEmpty($result);
     }
 
-    public function test_it_returns_connected_app_codes()
+    public function test_it_returns_connected_app_codes(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',

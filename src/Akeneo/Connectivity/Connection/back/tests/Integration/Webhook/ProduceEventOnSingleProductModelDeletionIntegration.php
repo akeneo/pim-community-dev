@@ -35,7 +35,7 @@ class ProduceEventOnSingleProductModelDeletionIntegration extends TestCase
         $this->productModelRemover = $this->get('pim_catalog.remover.product_model');
     }
 
-    public function test_the_single_product_model_deletion_event()
+    public function test_the_single_product_model_deletion_event(): void
     {
         $productModel = $this->productModelFactory->create();
         $this->productModelUpdater->update($productModel, [

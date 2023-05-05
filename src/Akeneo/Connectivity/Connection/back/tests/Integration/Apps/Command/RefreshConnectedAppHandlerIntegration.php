@@ -98,7 +98,7 @@ class RefreshConnectedAppHandlerIntegration extends TestCase
         );
     }
 
-    private function refreshConnectedApp($id): void
+    private function refreshConnectedApp(string $id): void
     {
         $this->refreshConnectedAppHandler->handle(new RefreshConnectedAppCommand($id));
     }

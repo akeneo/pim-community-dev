@@ -11,19 +11,15 @@ namespace Akeneo\Connectivity\Connection\Application\Audit\Query;
  */
 class GetErrorCountPerConnectionQuery
 {
-    private string $errorType;
-
     private \DateTimeImmutable $fromDateTime;
 
     private \DateTimeImmutable $upToDateTime;
 
     public function __construct(
-        string $errorType,
+        private string $errorType,
         \DateTimeImmutable $fromDateTime,
         \DateTimeImmutable $upToDateTime
     ) {
-        $this->errorType = $errorType;
-
         $this->checkTimezoneIsUtc($fromDateTime);
         $this->fromDateTime = $fromDateTime;
 

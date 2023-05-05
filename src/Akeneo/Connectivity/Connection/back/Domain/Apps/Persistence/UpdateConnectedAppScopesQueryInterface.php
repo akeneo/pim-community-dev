@@ -7,7 +7,6 @@ interface UpdateConnectedAppScopesQueryInterface
 {
     /**
      * @param string[] $scopes
-     * @param string $appId
      */
     public function execute(array $scopes, string $appId): void;
 }

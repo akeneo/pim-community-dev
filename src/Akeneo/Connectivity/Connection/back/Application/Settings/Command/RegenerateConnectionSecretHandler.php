@@ -8,20 +8,16 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateClient
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 
 /**
- * @author Romain Monceau <romain@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class RegenerateConnectionSecretHandler
 {
-    private ConnectionRepositoryInterface $repository;
-
-    private RegenerateClientSecretInterface $regenerateClientSecret;
-
-    public function __construct(ConnectionRepositoryInterface $repository, RegenerateClientSecretInterface $regenerateClientSecret)
-    {
-        $this->repository = $repository;
-        $this->regenerateClientSecret = $regenerateClientSecret;
+    public function __construct(
+        private ConnectionRepositoryInterface $repository,
+        private RegenerateClientSecretInterface $regenerateClientSecret
+    ) {
     }
 
     public function handle(RegenerateConnectionSecretCommand $command): void

@@ -7,7 +7,6 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\Internal;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
@@ -74,7 +73,7 @@ class GetOpenAppUrlActionEndToEnd extends WebTestCase
         ];
 
         self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        self::assertEquals($expectedContent, \json_decode($response->getContent(), true));
+        self::assertEquals($expectedContent, \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR));
         self::assertFalse($this->connectedAppHasOutdatedScopes('a_client_id'), 'Connected app should not be flagged with outdated scopes');
     }
 

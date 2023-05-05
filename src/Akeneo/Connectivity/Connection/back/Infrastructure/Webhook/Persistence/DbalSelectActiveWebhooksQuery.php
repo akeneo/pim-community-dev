@@ -15,11 +15,8 @@ use Doctrine\DBAL\Connection as DbalConnection;
  */
 class DbalSelectActiveWebhooksQuery implements SelectActiveWebhooksQueryInterface
 {
-    private DbalConnection $dbalConnection;
-
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(private DbalConnection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     /**

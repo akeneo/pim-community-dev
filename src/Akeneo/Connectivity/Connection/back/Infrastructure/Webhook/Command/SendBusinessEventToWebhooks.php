@@ -50,7 +50,7 @@ class SendBusinessEventToWebhooks extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $message = \json_decode($input->getArgument('message'), true);
+        $message = \json_decode($input->getArgument('message'), true, 512, JSON_THROW_ON_ERROR);
         $event = $this->bulkEventNormalizer->denormalize($message, BulkEvent::class);
 
         // Errors are thrown when the database or ElasticSearch are off following a deployment

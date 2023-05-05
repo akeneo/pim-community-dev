@@ -25,7 +25,7 @@ final class ProductEventNormalizer implements EventNormalizerInterface
     /**
      * @param ProductCreated|ProductUpdated|ProductRemoved $event
      *
-     * @return array<mixed>
+     * @return array{product_identifier: string|null, product_uuid: string, action: string, event_id: string, event_datetime: string, author: string, author_type: string}
      */
     public function normalize(EventInterface $event): array
     {

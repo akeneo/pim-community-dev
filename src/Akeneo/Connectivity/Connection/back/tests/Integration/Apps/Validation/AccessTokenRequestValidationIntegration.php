@@ -209,7 +209,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $responseContent = \json_decode($response->getContent(), true);
+        $responseContent = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertArrayHasKey('redirectUrl', $responseContent);

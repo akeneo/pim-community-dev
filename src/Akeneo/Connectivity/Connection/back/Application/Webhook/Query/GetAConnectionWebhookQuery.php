@@ -10,11 +10,8 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Query;
  */
 class GetAConnectionWebhookQuery
 {
-    private string $code;
-
-    public function __construct(string $code)
+    public function __construct(private string $code)
     {
-        $this->code = $code;
     }
 
     public function code(): string

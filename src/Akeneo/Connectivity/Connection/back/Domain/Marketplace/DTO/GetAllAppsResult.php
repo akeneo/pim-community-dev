@@ -12,15 +12,13 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
  */
 final class GetAllAppsResult
 {
-    private int $total;
-
     /** @var array<App> */
     private array $apps;
 
     /**
      * @param array<App> $apps
      */
-    private function __construct(int $total, array $apps)
+    private function __construct(private int $total, array $apps)
     {
         foreach ($apps as $app) {
             if (!$app instanceof App) {
@@ -31,7 +29,6 @@ final class GetAllAppsResult
                 ));
             }
         }
-        $this->total = $total;
         $this->apps = $apps;
     }
 
@@ -50,9 +47,7 @@ final class GetAllAppsResult
     {
         return self::create(
             $this->total,
-            \array_map(function (App $app) use ($queryParameters) {
-                return $app->withAnalytics($queryParameters);
-            }, $this->apps),
+            \array_map(fn (App $app): \Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App => $app->withAnalytics($queryParameters), $this->apps),
         );
     }
 
@@ -63,9 +58,7 @@ final class GetAllAppsResult
     {
         return self::create(
             $this->total,
-            \array_map(function (App $app) use ($queryParameters) {
-                return $app->withPimUrlSource($queryParameters);
-            }, $this->apps),
+            \array_map(fn (App $app): \Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App => $app->withPimUrlSource($queryParameters), $this->apps),
         );
     }
 

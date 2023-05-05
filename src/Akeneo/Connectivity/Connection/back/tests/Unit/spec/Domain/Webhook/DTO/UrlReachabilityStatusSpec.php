@@ -23,17 +23,17 @@ class UrlReachabilityStatusSpec extends ObjectBehavior
         $this->shouldHaveType(UrlReachabilityStatus::class);
     }
 
-    public function it_returns_success()
+    public function it_returns_success(): void
     {
         $this->success()->shouldReturn(true);
     }
 
-    public function it_returns_message()
+    public function it_returns_message(): void
     {
         $this->message()->shouldReturn('Lorem ipsum dolor sit amet');
     }
 
-    public function it_normalizes()
+    public function it_normalizes(): void
     {
         $this->normalize()->shouldReturn(
             [

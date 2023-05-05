@@ -19,7 +19,7 @@ class DeleteAppCommandSpec extends ObjectBehavior
         $this->shouldHaveType(DeleteAppCommand::class);
     }
 
-    public function it_gets_app_id()
+    public function it_gets_app_id(): void
     {
         $this->getAppId()->shouldReturn('test');
     }

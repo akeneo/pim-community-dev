@@ -258,7 +258,7 @@ class FixturesLoader
             throw new \InvalidArgumentException(
                 \sprintf(
                     'Object "%s" is not valid, cf following constraint violations "%s"',
-                    \get_class($object),
+                    $object::class,
                     \implode(', ', $messages)
                 )
             );

@@ -13,13 +13,10 @@ use Psr\Log\LoggerInterface;
  */
 class ReachRequestLimitLogger
 {
-    const TYPE = 'event_api.reach_requests_limit';
+    public const TYPE = 'event_api.reach_requests_limit';
 
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     public function log(int $limit, \DateTimeImmutable $reachedLimitDateTime, int $delayUntilNextRequest): void

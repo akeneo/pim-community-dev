@@ -17,14 +17,14 @@ class ConnectionImageMustBeValidSpec extends ObjectBehavior
         $this->shouldHaveType(ConnectionImageMustBeValid::class);
     }
 
-    public function it_does_not_build_a_violation_if_the_image_is_valid(ExecutionContextInterface $context)
+    public function it_does_not_build_a_violation_if_the_image_is_valid(ExecutionContextInterface $context): void
     {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate('a/b/c/path.jpg', $context);
     }
 
-    public function it_does_not_build_a_violation_if_the_image_is_null(ExecutionContextInterface $context)
+    public function it_does_not_build_a_violation_if_the_image_is_null(ExecutionContextInterface $context): void
     {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
@@ -34,7 +34,7 @@ class ConnectionImageMustBeValidSpec extends ObjectBehavior
     public function it_builds_a_violation_if_image_is_not_valid(
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
-    ) {
+    ): void {
         $context->buildViolation('akeneo_connectivity.connection.connection.constraint.image.not_empty')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 

@@ -21,14 +21,14 @@ class SaveReadProductEventCountEndToEnd extends ApiTestCase
     /** @var Connection */
     private $dbalConnection;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->dbalConnection = $this->get('database_connection');
     }
 
-    public function test_it_save_read_product_event_count()
+    public function test_it_save_read_product_event_count(): void
     {
         $this->createProduct('product1');
         $this->createProduct('product2');
@@ -53,7 +53,7 @@ class SaveReadProductEventCountEndToEnd extends ApiTestCase
         Assert::assertEquals(3, (int) $this->getEventCount('ecommerce'));
     }
 
-    public function test_it_save_and_increment_read_product_event_count()
+    public function test_it_save_and_increment_read_product_event_count(): void
     {
         $this->createProduct('product1');
         $this->createProduct('product2');
