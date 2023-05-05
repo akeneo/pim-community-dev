@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
 
 class GetAConnectionWebhookHandlerSpec extends ObjectBehavior
 {
-    const ACTIVE_EVENT_SUBSCRIPTIONS_LIMIT = 3;
+    public const ACTIVE_EVENT_SUBSCRIPTIONS_LIMIT = 3;
 
     public function let(
         GetAConnectionWebhookQueryInterface $getAConnectionWebhookQuery,

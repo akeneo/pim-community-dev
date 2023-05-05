@@ -100,7 +100,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         Client $client,
         Response $response,
         StreamInterface $stream
-    ) {
+    ): void {
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
         $codeIdentifier = '2DkpkyHfgm';
         $codeChallenge = 'JN2eVHPP4F';
@@ -122,7 +122,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         Client $client,
         Response $response,
         StreamInterface $stream
-    ) {
+    ): void {
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
         $codeIdentifier = '2DkpkyHfgm';
         $codeChallenge = 'JN2eVHPP4F';
@@ -144,7 +144,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         Client $client,
         Response $response,
         StreamInterface $stream
-    ) {
+    ): void {
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
         $codeIdentifier = '2DkpkyHfgm';
         $codeChallenge = 'JN2eVHPP4F';

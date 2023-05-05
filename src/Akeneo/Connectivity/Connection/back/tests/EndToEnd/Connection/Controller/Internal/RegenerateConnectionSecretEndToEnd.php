@@ -22,12 +22,10 @@ class RegenerateConnectionSecretEndToEnd extends WebTestCase
 
         $this->authenticateAsAdmin();
         $this->client->request('POST', '/rest/connections/franklin/regenerate-secret');
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $response = $this->client->getResponse();
 
-        $expectedResult = null;
-
-        Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals($expectedResult, $result);
+        Assert::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        Assert::assertEquals('', $response->getContent());
     }
 
     protected function getConfiguration(): Configuration

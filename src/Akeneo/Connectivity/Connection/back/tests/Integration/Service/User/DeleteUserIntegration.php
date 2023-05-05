@@ -19,7 +19,7 @@ use PHPUnit\Framework\Assert;
  */
 class DeleteUserIntegration extends TestCase
 {
-    public function test_it_deletes_a_user()
+    public function test_it_deletes_a_user(): void
     {
         $user = $this->getCreateUserService()->execute('pimgento', 'Pimgento', ' ');
 

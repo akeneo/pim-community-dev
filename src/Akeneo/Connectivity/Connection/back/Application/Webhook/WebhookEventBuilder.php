@@ -76,7 +76,7 @@ class WebhookEventBuilder
     private function getEventDataBuilder(BulkEventInterface $event): EventDataBuilderInterface
     {
         foreach ($this->eventDataBuilders as $builder) {
-            if (true === $builder->supports($event)) {
+            if ($builder->supports($event)) {
                 return $builder;
             }
         }

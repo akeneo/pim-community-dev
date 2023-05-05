@@ -10,7 +10,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Install;
  */
 final class CreateTestAppTableQuery
 {
-    const QUERY = <<<SQL
+    public const QUERY = <<<SQL
         CREATE TABLE IF NOT EXISTS akeneo_connectivity_test_app(
             client_id VARCHAR(36) NOT NULL PRIMARY KEY,
             client_secret VARCHAR(100) NOT NULL,

@@ -50,7 +50,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriptionSkippedOwnEventLoggerInterface::class);
 
         $eventsApiDebugRepository->persist(
-            Argument::that(function ($actual) {
+            Argument::that(function ($actual): bool {
                 if (!isset($actual['id']) || !\is_string($actual['id'])) {
                     return false;
                 }
@@ -99,7 +99,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriptionSkippedOwnEventLoggerInterface::class);
 
         $eventsApiDebugRepository->persist(
-            Argument::that(function ($actual) {
+            Argument::that(function ($actual): bool {
                 if (!isset($actual['id']) || !\is_string($actual['id'])) {
                     return false;
                 }
@@ -137,7 +137,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         $this->shouldImplement(LimitOfEventsApiRequestsReachedLoggerInterface::class);
 
         $eventsApiDebugRepository->persist(
-            Argument::that(function ($actual) {
+            Argument::that(function ($actual): bool {
                 if (!isset($actual['id']) || !\is_string($actual['id'])) {
                     return false;
                 }
@@ -166,7 +166,7 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
         );
         $this->shouldImplement(ApiEventBuildErrorLoggerInterface::class);
         $eventsApiDebugRepository->persist(
-            Argument::that(function ($actual) {
+            Argument::that(function ($actual): bool {
                 if (!isset($actual['id']) || !\is_string($actual['id'])) {
                     return false;
                 }
@@ -194,19 +194,17 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
 
     private function createEvent(): EventInterface
     {
-        $event = new class(Author::fromNameAndType('julia', Author::TYPE_UI), [], 0, '9979c367-595d-42ad-9070-05f62f31f49b') extends Event {
+        return new class(Author::fromNameAndType('julia', Author::TYPE_UI), [], 0, '9979c367-595d-42ad-9070-05f62f31f49b') extends Event {
             public function getName(): string
             {
                 return 'my_event';
             }
         };
-
-        return $event;
     }
 
     private function createWebhookEvent(): WebhookEvent
     {
-        $event = new WebhookEvent(
+        return new WebhookEvent(
             'product.created',
             '9979c367-595d-42ad-9070-05f62f31f49b',
             '1970-01-01T00:00:00+00:00',
@@ -215,7 +213,5 @@ class EventsApiDebugLoggerSpec extends ObjectBehavior
             [],
             $this->createEvent()
         );
-
-        return $event;
     }
 }

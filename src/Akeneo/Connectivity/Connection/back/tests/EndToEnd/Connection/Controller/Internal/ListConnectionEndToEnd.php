@@ -23,7 +23,7 @@ class ListConnectionEndToEnd extends WebTestCase
 
         $this->authenticateAsAdmin();
         $this->client->request('GET', '/rest/connections');
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedResult = [
             [

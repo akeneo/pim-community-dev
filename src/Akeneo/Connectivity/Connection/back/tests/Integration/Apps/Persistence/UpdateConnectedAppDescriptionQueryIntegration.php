@@ -35,7 +35,7 @@ class UpdateConnectedAppDescriptionQueryIntegration extends TestCase
         $this->findOneConnectedAppByIdQuery = $this->get(FindOneConnectedAppByIdQuery::class);
     }
 
-    public function test_it_updates_the_description_of_a_connected_app()
+    public function test_it_updates_the_description_of_a_connected_app(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',
@@ -70,7 +70,7 @@ class UpdateConnectedAppDescriptionQueryIntegration extends TestCase
         ]);
     }
 
-    private function updateConnectedAppDescription($id, $values): void
+    private function updateConnectedAppDescription(string $id, array $values): void
     {
         $connectedApp = $this->findOneConnectedAppByIdQuery->execute($id);
 
@@ -86,7 +86,7 @@ class UpdateConnectedAppDescriptionQueryIntegration extends TestCase
         $this->query->execute($updatedConnectedApp);
     }
 
-    private function assertConnectedAppHasValues($id, array $expected): void
+    private function assertConnectedAppHasValues(string $id, array $expected): void
     {
         $connectedApp = $this->findOneConnectedAppByIdQuery->execute($id);
         $normalizedConnectedApp = $connectedApp->normalize();

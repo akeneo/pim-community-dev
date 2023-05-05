@@ -14,14 +14,14 @@ use PhpSpec\ObjectBehavior;
  */
 class FetchConnectionsQuerySpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->beConstructedWith([]);
 
         $this->shouldHaveType(FetchConnectionsQuery::class);
     }
 
-    public function it_returns_types()
+    public function it_returns_types(): void
     {
         $this->beConstructedWith([
             'types' => [
@@ -33,7 +33,7 @@ class FetchConnectionsQuerySpec extends ObjectBehavior
         $this->getTypes()->shouldReturn([ConnectionType::DEFAULT_TYPE, ConnectionType::APP_TYPE]);
     }
 
-    public function it_returns_an_empty_type_list()
+    public function it_returns_an_empty_type_list(): void
     {
         $this->beConstructedWith([]);
         $this->getTypes()->shouldReturn([]);

@@ -42,7 +42,7 @@ class ProduceProductModelEventEndToEnd extends ApiTestCase
         $this->productModelRemover = $this->get('pim_catalog.remover.product_model');
     }
 
-    public function test_create_product_model_add_business_event_to_queue()
+    public function test_create_product_model_add_business_event_to_queue(): void
     {
         $this->attributeLoader->create(
             [
@@ -105,7 +105,7 @@ JSON;
         $this->assertEventCount(1, ProductModelCreated::class);
     }
 
-    public function test_update_product_model_add_business_event_to_queue()
+    public function test_update_product_model_add_business_event_to_queue(): void
     {
         $this->attributeLoader->create(
             [
@@ -174,7 +174,7 @@ JSON;
         $this->assertEventCount(1, ProductModelUpdated::class);
     }
 
-    public function test_remove_product_model_add_business_event_to_queue()
+    public function test_remove_product_model_add_business_event_to_queue(): void
     {
         $this->attributeLoader->create(
             [

@@ -14,11 +14,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class PurgeEventsApiErrorLogsQuery
 {
-    private Client $esClient;
-
-    public function __construct(Client $esClient)
+    public function __construct(private Client $esClient)
     {
-        $this->esClient = $esClient;
     }
 
     public function execute(\DateTimeImmutable $olderThanDatetime): void
@@ -26,6 +23,11 @@ class PurgeEventsApiErrorLogsQuery
         $this->esClient->deleteByQuery($this->getDeleteErrorDocumentsOlderThanTheGivenDateQuery($olderThanDatetime));
     }
 
+    /**
+     * @return array{
+     *     query: array<mixed>,
+     * }
+     */
     private function getDeleteErrorDocumentsOlderThanTheGivenDateQuery(\DateTimeImmutable $olderThanDatetime): array
     {
         return [

@@ -45,7 +45,7 @@ class UpdateConnectionErrorCountHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_does_not_update_a_0_count($errorCountRepository)
+    public function it_does_not_update_a_0_count($errorCountRepository): void
     {
         $firstCount = new HourlyErrorCount(
             'erp',

@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ClientSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith(
             42,
@@ -23,22 +23,22 @@ class ClientSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(Client::class);
     }
 
-    public function it_returns_the_id()
+    public function it_returns_the_id(): void
     {
         $this->id()->shouldReturn(42);
     }
 
-    public function it_returns_the_client_id()
+    public function it_returns_the_client_id(): void
     {
         $this->clientId()->shouldReturn('my_client_id');
     }
 
-    public function it_returns_the_secret()
+    public function it_returns_the_secret(): void
     {
         $this->secret()->shouldReturn('my_secret');
     }

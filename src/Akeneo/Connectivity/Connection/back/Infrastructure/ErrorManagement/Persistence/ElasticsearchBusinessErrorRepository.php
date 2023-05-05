@@ -16,12 +16,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class ElasticsearchBusinessErrorRepository implements BusinessErrorRepositoryInterface
 {
-    /** @var Client */
-    private $errorClient;
-
-    public function __construct(Client $errorClient)
+    public function __construct(private Client $errorClient)
     {
-        $this->errorClient = $errorClient;
     }
 
     public function bulkInsert(ConnectionCode $connectionCode, array $businessErrors): void
@@ -31,9 +27,7 @@ class ElasticsearchBusinessErrorRepository implements BusinessErrorRepositoryInt
         }
 
         $code = (string) $connectionCode;
-        $documents = \array_map(function (BusinessError $businessError) use ($code) {
-            return \array_merge(['connection_code' => $code], $businessError->normalize());
-        }, $businessErrors);
+        $documents = \array_map(fn (BusinessError $businessError): array => \array_merge(['connection_code' => $code], $businessError->normalize()), $businessErrors);
 
         $this->errorClient->bulkIndexes($documents);
     }

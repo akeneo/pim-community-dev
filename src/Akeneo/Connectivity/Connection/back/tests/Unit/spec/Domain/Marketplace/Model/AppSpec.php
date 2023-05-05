@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
  */
 class AppSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedThrough('fromWebMarketplaceValues', [
             [

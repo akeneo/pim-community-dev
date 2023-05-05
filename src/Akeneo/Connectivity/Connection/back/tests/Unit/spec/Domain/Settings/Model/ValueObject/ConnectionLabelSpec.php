@@ -14,13 +14,13 @@ use PhpSpec\ObjectBehavior;
  */
 class ConnectionLabelSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->beConstructedWith('Magento Connector');
         $this->shouldBeAnInstanceOf(ConnectionLabel::class);
     }
 
-    public function it_cannot_contains_a_string_shorter_than_3_characters()
+    public function it_cannot_contains_a_string_shorter_than_3_characters(): void
     {
         $this->beConstructedWith('aa');
         $this->shouldThrow(
@@ -28,7 +28,7 @@ class ConnectionLabelSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    public function it_cannot_contains_a_string_longer_than_100_characters()
+    public function it_cannot_contains_a_string_longer_than_100_characters(): void
     {
         $this->beConstructedWith(\str_repeat('a', 101));
         $this->shouldThrow(
@@ -36,13 +36,13 @@ class ConnectionLabelSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    public function it_returns_the_connection_label_as_a_string()
+    public function it_returns_the_connection_label_as_a_string(): void
     {
         $this->beConstructedWith('Magento Connector');
         $this->__toString()->shouldReturn('Magento Connector');
     }
 
-    public function it_cannot_contains_an_empty_string()
+    public function it_cannot_contains_an_empty_string(): void
     {
         $this->beConstructedWith('');
         $this->shouldThrow(

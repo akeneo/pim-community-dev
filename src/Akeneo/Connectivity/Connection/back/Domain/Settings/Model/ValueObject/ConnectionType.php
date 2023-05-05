@@ -8,16 +8,16 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ConnectionType
+final class ConnectionType implements \Stringable
 {
-    const DEFAULT_TYPE = 'default';
-    const APP_TYPE = 'app';
+    public const DEFAULT_TYPE = 'default';
+    public const APP_TYPE = 'app';
 
     private string $type;
 
     public function __construct(?string $type = self::DEFAULT_TYPE)
     {
-        $type = $type ?? self::DEFAULT_TYPE;
+        $type ??= self::DEFAULT_TYPE;
 
         if (empty($type)) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.type.required');

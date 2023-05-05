@@ -33,7 +33,7 @@ class DbalAreCredentialsValidCombinationQueryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_credentials_are_valid_combination()
+    public function test_credentials_are_valid_combination(): void
     {
         $this->connectionLoader->createConnection('connectionA', 'Connection A', FlowType::DATA_DESTINATION, false);
         $connectionB = $this->connectionLoader->createConnection('connectionB', 'Connection B', FlowType::OTHER, false);
@@ -44,7 +44,7 @@ class DbalAreCredentialsValidCombinationQueryIntegration extends TestCase
         Assert::assertTrue($areCredentialsValidCombination);
     }
 
-    public function test_credentials_are_not_valid_combination()
+    public function test_credentials_are_not_valid_combination(): void
     {
         $this->connectionLoader->createConnection('connectionA', 'Connection A', FlowType::DATA_DESTINATION, false);
 

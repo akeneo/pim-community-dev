@@ -32,7 +32,7 @@ class ProduceEventOnBulkProductDeletionIntegration extends TestCase
         $this->productRemover = $this->get('pim_catalog.remover.product');
     }
 
-    public function test_the_bulk_product_remove_event()
+    public function test_the_bulk_product_remove_event(): void
     {
         $count = 3;
         $products = [];

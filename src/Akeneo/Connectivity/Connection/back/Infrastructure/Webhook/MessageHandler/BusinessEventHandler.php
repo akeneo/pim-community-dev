@@ -20,7 +20,7 @@ class BusinessEventHandler implements MessageSubscriberInterface
     ) {
     }
 
-    public static function getHandledMessages(): iterable
+    public static function getHandledMessages(): \Iterator
     {
         yield BulkEventInterface::class => [
             'from_transport' => 'webhook',
@@ -58,7 +58,7 @@ class BusinessEventHandler implements MessageSubscriberInterface
 
     private function buildBatchCommand(BulkEventInterface $event): array
     {
-        $message = \json_encode($this->normalizer->normalize($event));
+        $message = \json_encode($this->normalizer->normalize($event), JSON_THROW_ON_ERROR);
         return [
             \sprintf('%s/bin/console', $this->projectDir),
             SendBusinessEventToWebhooks::getDefaultName(),

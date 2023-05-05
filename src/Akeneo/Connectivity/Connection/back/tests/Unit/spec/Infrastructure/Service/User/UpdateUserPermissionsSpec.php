@@ -33,7 +33,7 @@ class UpdateUserPermissionsSpec extends ObjectBehavior
         $this->beConstructedWith($userManager, $roleRepository, $groupRepository, $userUpdater);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(UpdateUserPermissions::class);
         $this->shouldImplement(UpdateUserPermissionsInterface::class);
@@ -44,7 +44,7 @@ class UpdateUserPermissionsSpec extends ObjectBehavior
         $roleRepository,
         $groupRepository,
         $userUpdater
-    ) {
+    ): void {
         $userId = new UserId(1234);
         $user = new User();
         $roleId = 321;
@@ -62,7 +62,7 @@ class UpdateUserPermissionsSpec extends ObjectBehavior
         $this->execute($userId, $roleId, $groupId);
     }
 
-    public function it_throws_an_exception_if_user_not_found($userManager, $userUpdater)
+    public function it_throws_an_exception_if_user_not_found($userManager, $userUpdater): void
     {
         $userId = new UserId(1234);
         $roleId = 321;
@@ -77,7 +77,7 @@ class UpdateUserPermissionsSpec extends ObjectBehavior
             ->during('execute', [$userId, $roleId, $groupId]);
     }
 
-    public function it_throws_an_exception_if_role_not_found($roleRepository, $userManager, $userUpdater)
+    public function it_throws_an_exception_if_role_not_found($roleRepository, $userManager, $userUpdater): void
     {
         $userId = new UserId(1234);
         $user = new User();
@@ -99,7 +99,7 @@ class UpdateUserPermissionsSpec extends ObjectBehavior
         $roleRepository,
         $userManager,
         $userUpdater
-    ) {
+    ): void {
         $userId = new UserId(1234);
         $user = new User();
         $roleId = 321;

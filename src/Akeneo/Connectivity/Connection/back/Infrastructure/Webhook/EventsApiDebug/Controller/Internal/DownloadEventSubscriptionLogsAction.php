@@ -26,7 +26,7 @@ final class DownloadEventSubscriptionLogsAction
 
     public function __invoke(Request $request): Response
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+        if (!$this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -44,7 +44,7 @@ final class DownloadEventSubscriptionLogsAction
         $response->headers->set('Content-Disposition', $disposition);
 
         $response->setCallback(
-            function () use ($logs) {
+            function () use ($logs): void {
                 /**
                  * @var array{
                  *  timestamp: int,
@@ -64,7 +64,7 @@ final class DownloadEventSubscriptionLogsAction
                         )->format('Y/m/d H:i:s'),
                         \strtoupper($log['level']),
                         $log['message'],
-                        \json_encode($log['context']),
+                        \json_encode($log['context'], JSON_THROW_ON_ERROR),
                         PHP_EOL
                     );
                     \flush();

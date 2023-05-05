@@ -16,7 +16,7 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
     private Client $esClient;
     private PurgeEventsApiErrorLogsQuery $purgeErrorLogsQuery;
 
-    public function test_it_purges_error_logs_older_than_the_given_date()
+    public function test_it_purges_error_logs_older_than_the_given_date(): void
     {
         $interval = new \DateInterval('PT1H');
         // We generate logs for each hour and we iterate 10 times
@@ -61,7 +61,7 @@ class PurgeEventsApiErrorLogsQueryIntegration extends TestCase
         Assert::assertEquals($twoHoursAgo, $errorResults['hits']['hits'][2]['_source']['timestamp']);
     }
 
-    public function test_it_purges_nothing_if_there_is_no_error_logs_to_purge()
+    public function test_it_purges_nothing_if_there_is_no_error_logs_to_purge(): void
     {
         $interval = new \DateInterval('PT1H');
         // We generate logs for each hour and we iterate 10 times

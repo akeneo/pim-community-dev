@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  */
 class GetAllAppsResultSpec extends ObjectBehavior
 {
-    public function let(App $app)
+    public function let(App $app): void
     {
         $this->beConstructedThrough('create', [12, [$app]]);
     }
@@ -43,7 +43,7 @@ class GetAllAppsResultSpec extends ObjectBehavior
     public function it_adds_analytics(
         App $app,
         App $appWithAnalytics
-    ) {
+    ): void {
         $queryParameters = [
             'utm_campaign' => 'foobar',
         ];
@@ -72,7 +72,7 @@ class GetAllAppsResultSpec extends ObjectBehavior
     public function it_adds_the_pim_url(
         App $app,
         App $appWithPimUrl
-    ) {
+    ): void {
         $queryParameters = [
             'pim_url' => 'http://pim',
         ];

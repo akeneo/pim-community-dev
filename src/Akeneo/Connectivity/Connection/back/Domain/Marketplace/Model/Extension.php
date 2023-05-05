@@ -14,8 +14,8 @@ class Extension
     private string $name;
     private string $logo;
     private string $author;
-    private ?string $partner;
-    private ?string $description;
+    private ?string $partner = null;
+    private ?string $description = null;
     private string $url;
     private bool $certified;
     /** @var array<string> */
@@ -93,11 +93,7 @@ class Extension
         $values = $this->normalize();
 
         $url = $values['url'];
-        if (\parse_url($url, PHP_URL_QUERY)) {
-            $url = \sprintf('%s&%s', $url, $query);
-        } else {
-            $url = \sprintf('%s?%s', $url, $query);
-        }
+        $url = \parse_url($url, PHP_URL_QUERY) ? \sprintf('%s&%s', $url, $query) : \sprintf('%s?%s', $url, $query);
 
         $values['url'] = $url;
 

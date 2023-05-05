@@ -51,7 +51,7 @@ abstract class WebTestCase extends TestCase
         return $user;
     }
 
-    private function authenticate(UserInterface $user)
+    private function authenticate(UserInterface $user): void
     {
         $firewallName = 'main';
         $firewallContext = 'main';

@@ -45,7 +45,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
         $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
         $this->dbalConnection = $this->get('database_connection');
-        $this->historyContainer = $this->get('Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer');
+        $this->historyContainer = $this->get(\Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer::class);
 
         $this->referenceProduct = $this->loadReferenceProduct();
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
@@ -60,7 +60,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $this->get('akeneo_connectivity.connection.fixtures.webhook_loader')->initWebhook($connection->code());
     }
 
-    public function test_it_increments_events_api_request_count()
+    public function test_it_increments_events_api_request_count(): void
     {
         $message = new BulkEvent(
             [
