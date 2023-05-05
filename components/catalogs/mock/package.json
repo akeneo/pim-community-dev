@@ -7,7 +7,7 @@
   "dependencies": {},
   "peerDependencies": {},
   "scripts": {
-    "lib:build": "tsc -p tsconfig.build.json"
+    "catalogs:lib:build": "tsc -p tsconfig.build.json"
   },
   "devDependencies": {
     "typescript": "~4.4.4"

@@ -32,7 +32,7 @@
     "shared:build": "yarn workspace @akeneo-pim-community/shared lib:build",
     "measurement:lint:check": "yarn workspace @akeneo-pim-community/measurement lint:check",
     "measurement:build": "yarn workspace @akeneo-pim-community/measurement lib:build",
-    "catalogs:build": "yarn workspace @akeneo-pim-community/catalogs lib:build",
+    "catalogs:build": "yarn workspace @akeneo-pim-community/catalogs catalogs:lib:build",
     "process-tracker:lint:check": "yarn workspace @akeneo-pim-community/process-tracker lint:check",
     "process-tracker:build": "yarn workspace @akeneo-pim-community/process-tracker lib:build",
     "import-export:lint:check": "yarn workspace @akeneo-pim-community/import-export lint:check",
