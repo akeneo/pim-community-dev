@@ -6,9 +6,7 @@ namespace Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
 use Akeneo\Tool\Bundle\MessengerBundle\Handler\MessageWrapperHandler;
-use Akeneo\Tool\Bundle\MessengerBundle\Handler\TraceableMessageBridgeHandler;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessageWrapper;
-use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;

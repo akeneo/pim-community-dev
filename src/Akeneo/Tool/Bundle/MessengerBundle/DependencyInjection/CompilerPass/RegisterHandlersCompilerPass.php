@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection\CompilerPass;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
-use Akeneo\Tool\Bundle\MessengerBundle\Registry\TraceableMessageHandlerRegistry;
+use Akeneo\Tool\Bundle\MessengerBundle\Registry\MessageHandlerRegistry;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -18,7 +18,7 @@ final class RegisterHandlersCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        $registryDefinition = $container->getDefinition(TraceableMessageHandlerRegistry::class);
+        $registryDefinition = $container->getDefinition(MessageHandlerRegistry::class);
 
         $projectDir = $container->getParameter('kernel.project_dir');
         $env = $container->getParameter('kernel.environment');

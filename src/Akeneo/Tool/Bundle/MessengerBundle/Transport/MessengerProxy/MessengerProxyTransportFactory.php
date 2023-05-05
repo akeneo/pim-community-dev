@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsMessage;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Messenger\Transport\TransportFactoryInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
@@ -17,27 +18,32 @@ final class MessengerProxyTransportFactory implements TransportFactoryInterface
     public function __construct(
         private TransportFactoryInterface $gcpTransportFactory,
         private readonly string $googleCloudProject,
-        private readonly SerializerInterface $gpsSerializer
+        private readonly SerializerInterface $gpsSerializer,
+        private readonly string $env
     ) {
     }
 
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface
     {
-        return new MessengerProxyTransport(
-            [
-                'prod' => $this->gcpTransportFactory->createTransport('gps:', [
+        // TODO: create transport depending on the env and the topics/consumers in config file (see MessengerConfigBuilder)
+        if ($this->env === 'dev') {
+            return new MessengerProxyTransport(
+                [
+                    LaunchProductAndProductModelEvaluationsMessage::class => $this->gcpTransportFactory->createTransport('gps:',
+                        [
+                            'project_id' => $this->googleCloudProject,
+                            'topic_name' => 'launch_product_and_product_model_evaluations_queue', // TODO: use the config file
+                            'auto_setup' => true, //\in_array($this->env, ['dev', 'test', 'test_fake']),
+                        ], $this->gpsSerializer),
+                ],
+                $this->gcpTransportFactory->createTransport('gps:', [
                     'project_id' => $this->googleCloudProject,
                     'topic_name' => 'launch_product_and_product_model_evaluations_queue', // TODO: use the config file
                     'auto_setup' => true, //\in_array($this->env, ['dev', 'test', 'test_fake']),
                 ], $this->gpsSerializer),
-            ],
-            $this->gcpTransportFactory->createTransport('gps:', [
-                'project_id' => $this->googleCloudProject,
-                'topic_name' => 'launch_product_and_product_model_evaluations_queue', // TODO: use the config file
-                'auto_setup' => true, //\in_array($this->env, ['dev', 'test', 'test_fake']),
-            ], $this->gpsSerializer),
-            'dev'
-        );
+                'dev'
+            );
+        }
     }
 
     public function supports(string $dsn, array $options): bool

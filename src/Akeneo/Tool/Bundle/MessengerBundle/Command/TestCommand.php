@@ -9,7 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsMessage;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\LaunchEvaluationsCommand;
-use Akeneo\Tool\Bundle\MessengerBundle\Registry\TraceableMessageHandlerRegistry;
+use Akeneo\Tool\Bundle\MessengerBundle\Registry\MessageHandlerRegistry;
 use Akeneo\Tool\Bundle\MessengerBundle\tests\config\Message1;
 use Akeneo\Tool\Component\Messenger\CorrelationAwareInterface;
 use Psr\Log\LoggerInterface;

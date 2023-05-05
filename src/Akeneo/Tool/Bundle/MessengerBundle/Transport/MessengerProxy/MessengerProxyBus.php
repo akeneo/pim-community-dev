@@ -6,7 +6,6 @@ namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy;
 
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\StampInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)

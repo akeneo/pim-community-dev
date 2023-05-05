@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Command;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Registry\TraceableMessageHandlerRegistry;
+use Akeneo\Tool\Bundle\MessengerBundle\Registry\MessageHandlerRegistry;
 use Akeneo\Tool\Component\Messenger\CorrelationAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -28,7 +28,7 @@ final class ProcessMessageCommand extends Command
 
     public function __construct(
         private readonly SerializerInterface $serializer,
-        private readonly TraceableMessageHandlerRegistry $traceableMessageHandlerRegistry,
+        private readonly MessageHandlerRegistry $traceableMessageHandlerRegistry,
         private readonly LoggerInterface $logger
     ) {
         parent::__construct();
@@ -58,9 +58,7 @@ final class ProcessMessageCommand extends Command
             ($handler)($message);
         } catch (\Throwable $t) {
             $context = ['trace' => $t->getTraceAsString()];
-            if ($message instanceof CorrelationAwareInterface) {
-                $context['correlation_id'] = $message->getCorrelationId();
-            }
+//                $context['correlation_id'] = $message->getCorrelationId();
 
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), $context);
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MessengerBundle\Handler;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessageWrapper;
-use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Process\Process;
@@ -58,7 +57,7 @@ final class MessageWrapperHandler implements MessageHandlerInterface
                 $this->serializer->serialize($message, 'json'),
             ], null, $env);
 
-            $this->runProcess($process, $message);
+            $this->runProcess($process, $messageWrapper);
         } catch (\Throwable $t) {
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), [
                 'trace' => $t->getTraceAsString(),
@@ -66,7 +65,7 @@ final class MessageWrapperHandler implements MessageHandlerInterface
         }
     }
 
-    private function runProcess(Process $process, object $message): void
+    private function runProcess(Process $process, MessageWrapper $messageWrapper): void
     {
         $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
@@ -76,9 +75,9 @@ final class MessageWrapperHandler implements MessageHandlerInterface
         while ($process->isRunning()) {
             if (!$warningLogIsSent && self::LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS <= time() - $startTime) {
                 $this->logger->warning('Message handler has a long running process', [
-                    'tenant_id' => $message->getTenantId(),
-                    'correlation_id' => $message->getCorrelationId(),
-                    'message_class' => \get_class($message),
+                    'tenant_id' => $messageWrapper->tenantId(),
+                    'correlation_id' => $messageWrapper->correlationId(),
+                    'message_class' => \get_class($messageWrapper->message()),
                     'command_line' => $process->getCommandLine(),
                 ]);
                 $warningLogIsSent = true;
@@ -87,8 +86,8 @@ final class MessageWrapperHandler implements MessageHandlerInterface
         }
 
         $this->logger->debug('Command akeneo:process-message executed', [
-            'tenant_id' => $message->getTenantId(),
-            'correlation_id' => $message->getCorrelationId(),
+            'tenant_id' => $messageWrapper->tenantId(),
+            'correlation_id' => $messageWrapper->correlationId(),
             'execution_time_in_sec' => time() - $startTime,
             'process_exit_code' => $process->getExitCode(),
             'process_output' => $process->getOutput(),

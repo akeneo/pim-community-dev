@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MessengerBundle\Normalizer;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessageWrapper;
-use Akeneo\Tool\Component\Messenger\NormalizableMessageInterface;
-use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
@@ -19,10 +17,10 @@ use Webmozart\Assert\Assert;
  */
 final class MessageWrapperNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function __construct(
-        private NormalizerInterface $normalizer,
-        private DenormalizerInterface $denormalizer,
-    )
+    /**
+     * @param (NormalizerInterface|DenormalizerInterface)[] $normalizers
+     */
+    public function __construct(private iterable $normalizers)
     {
     }
 
@@ -35,11 +33,22 @@ final class MessageWrapperNormalizer implements NormalizerInterface, Denormalize
     {
         Assert::isInstanceOf($messageWrapper, MessageWrapper::class);
 
+        $message = $messageWrapper->message();
+        $normalizedMessage = null;
+        /** @var NormalizerInterface $normalizer */
+        foreach ($this->normalizers as $normalizer) {
+            if ($normalizer->supportsNormalization($message, $format, $context)) {
+                $normalizedMessage = $normalizer->normalize($message, $format, $context);
+            }
+        }
+
+        Assert::notNull($normalizedMessage, \sprintf('Normalizer for "%s" is not found', \get_class($message)));
+
         $normalized = [
             'tenant_id' => $messageWrapper->tenantId(),
             'correlation_id' => $messageWrapper->correlationId(),
-            'message' => $this->normalizer->normalize($messageWrapper->message()),
-            'message_class' => \get_class($messageWrapper->message()),
+            'message' => $normalizedMessage,
+            'message_class' => \get_class($message),
         ];
 
         return $normalized;
@@ -59,10 +68,15 @@ final class MessageWrapperNormalizer implements NormalizerInterface, Denormalize
         ?string $format = null,
         array $context = []
     ): MessageWrapper {
-        return MessageWrapper::fromNormalized(
-            $this->denormalizer->denormalize($data['message'], $data['message_class'], $format, $context),
-            $data['tenant_id'],
-            $data['correlation_id'] // TODO: handle creation with correlation_id
-        );
+        $message = null;
+        /** @var DenormalizerInterface $normalizer */
+        foreach ($this->normalizers as $normalizer) {
+            if ($normalizer->supportsDenormalization($data['message'], $data['message_class'], $format)) {
+                $message = $normalizer->denormalize($data['message'], $data['message_class'], $format, $context);
+            }
+        }
+
+
+        return MessageWrapper::fromNormalized($message, $data['tenant_id'], $data['correlation_id']);
     }
 }

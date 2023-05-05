@@ -1,2 +1,2 @@
 services:
-    Akeneo\Tool\Bundle\MessengerBundle\Registry\TraceableMessageHandlerRegistry: ~
+    Akeneo\Tool\Bundle\MessengerBundle\Registry\MessageHandlerRegistry: ~
