@@ -11,7 +11,7 @@ It's also where users can:
 - enable the connection tracking. Connection tracking is used to track data in the Connection dashboard.
 - set-up the user group and role that will be used for permissions application
 
-**Features:** Settings
+**Features:** Settings 
 
 ## Connection monitoring
 
