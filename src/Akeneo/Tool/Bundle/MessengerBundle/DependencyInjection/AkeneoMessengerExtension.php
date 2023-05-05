@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
+use Akeneo\Tool\Bundle\MessengerBundle\Handler\MessageWrapperHandler;
 use Akeneo\Tool\Bundle\MessengerBundle\Handler\TraceableMessageBridgeHandler;
+use Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessageWrapper;
 use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -49,7 +51,7 @@ class AkeneoMessengerExtension extends Extension
             foreach ($queueConfig['consumers'] as $consumerConfig) {
                 $container->register(
                     'akeneo.messaging.handler.'.$consumerConfig['name'],
-                    TraceableMessageBridgeHandler::class
+                    MessageWrapperHandler::class
                 )
                     ->setArguments([
                         new Reference('akeneo_messenger.message.serializer'),
@@ -57,7 +59,7 @@ class AkeneoMessengerExtension extends Extension
                         $consumerConfig['name'],
                     ])
                     ->addTag('messenger.message_handler', [
-                        'handles' => TraceableMessageInterface::class,
+                        'handles' => MessageWrapper::class,
                         'from_transport' => $consumerConfig['name'],
                     ]);
             }

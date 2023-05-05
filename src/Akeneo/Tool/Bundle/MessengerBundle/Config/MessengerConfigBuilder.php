@@ -69,20 +69,15 @@ final class MessengerConfigBuilder
         }
 
         $transports = [];
-        $routing = [];
 
         $allTransportNames = [];
         foreach ($config['queues'] as $queueName => $pimMessageConfig) {
             $transportNames = [];
 
             if ($transportType === TransportType::PUB_SUB) {
-                // Create 1 transport to send event on the topic
-                $transportNames[] = $queueName;
-                $allTransportNames[$queueName] = ($allTransportNames[$queueName] ?? 0) + 1;
-                $transports[$queueName] = $this->createPubSubProducerTransport($queueName);
-
                 // Create 1 transport by subscription/consumer to receive the messages.
                 foreach ($pimMessageConfig['consumers'] as $consumer) {
+                    $allTransportNames[$consumer['name']] = ($allTransportNames[$consumer['name']] ?? 0) + 1;
                     $transports[$consumer['name']] = $this->createPubSubReceiverTransport($queueName, $consumer['name']);
                 }
             } else {
@@ -98,8 +93,6 @@ final class MessengerConfigBuilder
                     };
                 }
             }
-
-            $routing[$pimMessageConfig['message_class']] = $transportNames;
         }
 
         $duplicateTransportNames = \array_filter($allTransportNames, static fn (int $count) => $count > 1);
@@ -107,10 +100,7 @@ final class MessengerConfigBuilder
             throw new \LogicException('These transports are defined more than once: ' . \implode(', ', $duplicateTransportNames));
         }
 
-        return [] !== $transports
-            ? ['transports' => $transports, 'routing' => $routing]
-            : []
-        ;
+        return [] !== $transports ? ['transports' => $transports] : [];
     }
 
     /**

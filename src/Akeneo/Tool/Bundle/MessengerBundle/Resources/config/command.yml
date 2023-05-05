@@ -6,3 +6,9 @@ services:
             - '@logger'
         tags:
             - { name: console.command }
+
+    Akeneo\Tool\Bundle\MessengerBundle\Command\TestCommand:
+        arguments:
+            - '@akeneo_messenger.bus.proxy'
+        tags:
+            - { name: console.command }

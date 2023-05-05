@@ -16,3 +16,16 @@ services:
     Akeneo\Tool\Bundle\MessengerBundle\Middleware\UcsMiddleware:
         arguments:
             - '%env(default::string:APP_TENANT_ID)%'
+
+    Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessengerProxyTransportFactory:
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransportFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '@akeneo_messenger.envelope.serializer'
+        tags: [messenger.transport_factory]
+
+    akeneo_messenger.bus.proxy:
+        class: Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessengerProxyBus
+        arguments:
+            - '@messenger.default_bus'
+            - '%env(default::string:APP_TENANT_ID)%'

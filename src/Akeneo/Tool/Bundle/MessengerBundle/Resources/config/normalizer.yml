@@ -10,3 +10,10 @@ services:
     Akeneo\Tool\Bundle\MessengerBundle\Normalizer\NormalizableMessageNormalizer:
         tags:
             - { name: akeneo_messenger.message.normalizer, priority: 0 }
+
+    Akeneo\Tool\Bundle\MessengerBundle\Normalizer\MessageWrapperNormalizer:
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Normalizer\NormalizableMessageNormalizer'
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Normalizer\NormalizableMessageNormalizer'
+        tags:
+            - { name: akeneo_messenger.message.normalizer, priority: 0 }
