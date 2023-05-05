@@ -34,9 +34,56 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
         $this->insertAttributes($attributeCollection->getAttributes());
     }
 
-    public function update(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void
+    public function update(TemplateUuid $templateUuid, Attribute $attribute): void
     {
-        // TODO: Implement update() method.
+        if (($this->isTemplateDeactivated)($templateUuid)) {
+            return;
+        }
+
+        $query = <<<SQL
+            UPDATE pim_catalog_category_attribute
+            SET code = :code, 
+                category_template_uuid = UUID_TO_BIN(:template_uuid), 
+                labels = :labels,
+                attribute_type = :type,
+                attribute_order = :order,
+                is_required = :is_required,
+                is_scopable = :is_scopable,
+                is_localizable = :is_localizable,
+                additional_properties = :properties
+            WHERE uuid = UUID_TO_BIN(:uuid);
+        SQL;
+
+        $this->connection->executeQuery(
+            $query,
+            [
+                'code' => (string) $attribute->getCode(),
+                'template_uuid' => $attribute->getTemplateUuid()->getValue(),
+                'labels' => $attribute->getLabelCollection()->normalize(),
+                'type' => (string)  $attribute->getType(),
+                'order' => (int)  $attribute->getOrder(),
+                'is_required' => (bool)  $attribute->isRequired(),
+                'is_scopable' => (bool)  $attribute->isScopable(),
+                'is_localizable' => (bool)  $attribute->isLocalizable(),
+                'properties' => $attribute->getAdditionalProperties()->normalize(),
+                'uuid' => $attribute->getUuid()->getValue(),
+            ],
+            [
+                'code' => \PDO::PARAM_STR,
+                'template_uuid' => \PDO::PARAM_STR,
+                'labels' => Types::JSON,
+                'type' => \PDO::PARAM_STR,
+                'order' => \PDO::PARAM_INT,
+                'is_required' => \PDO::PARAM_BOOL,
+                'is_scopable' => \PDO::PARAM_BOOL,
+                'is_localizable' => \PDO::PARAM_BOOL,
+                'properties' => Types::JSON,
+                'uuid' => \PDO::PARAM_STR,
+            ],
+        );
+
+//        $statement->bindValue(++$placeholderIndex, (string) $attribute->getUuid(), \PDO::PARAM_STR);
+//        $statement->bindValue(++$placeholderIndex, $attribute->getAdditionalProperties()->normalize(), Types::JSON);
     }
 
     /**
