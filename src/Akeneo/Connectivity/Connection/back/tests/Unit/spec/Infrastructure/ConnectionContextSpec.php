@@ -23,7 +23,7 @@ class ConnectionContextSpec extends ObjectBehavior
         AreCredentialsValidCombinationQueryInterface $areCredentialsValidCombinationQuery,
         SelectConnectionCodeByClientIdQueryInterface $selectConnectionCode,
         ConnectionRepositoryInterface $connectionRepository
-    ) {
+    ): void {
         $this->beConstructedWith($areCredentialsValidCombinationQuery, $selectConnectionCode, $connectionRepository);
     }
 

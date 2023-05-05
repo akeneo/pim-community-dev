@@ -16,7 +16,7 @@ class SelectAllAuditableConnectionCodeQueryIntegration extends TestCase
     private ConnectionLoader $connectionLoader;
     private SelectAllAuditableConnectionCodeQuery $selectAuditableConnectionsCodeQuery;
 
-    public function test_it_selects_only_auditable_connections_code()
+    public function test_it_selects_only_auditable_connections_code(): void
     {
         $this->connectionLoader->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
         $this->connectionLoader->createConnection('translation', 'Translation', FlowType::OTHER, true);

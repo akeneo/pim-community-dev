@@ -73,11 +73,11 @@ class GuzzleJsonHistoryContainer implements \ArrayAccess, \Countable
             return [];
         }
 
-        return \json_decode(\file_get_contents($this->filepath), true);
+        return \json_decode(\file_get_contents($this->filepath), true, 512, JSON_THROW_ON_ERROR);
     }
 
     private function writeFile(array $history): void
     {
-        \file_put_contents($this->filepath, \json_encode($history));
+        \file_put_contents($this->filepath, \json_encode($history, JSON_THROW_ON_ERROR));
     }
 }

@@ -47,7 +47,7 @@ class App
         private readonly bool $isPending,
         private readonly bool $isCustomApp,
     ) {
-        if (true === $this->isPending && true === $this->connected) {
+        if ($this->isPending && $this->connected) {
             throw new \DomainException('An App can not be both connected and pending.');
         }
     }
@@ -234,13 +234,7 @@ class App
     {
         $query = \http_build_query($queryParameters);
 
-        if (\parse_url($url, PHP_URL_QUERY)) {
-            $url = \sprintf('%s&%s', $url, $query);
-        } else {
-            $url = \sprintf('%s?%s', $url, $query);
-        }
-
-        return $url;
+        return \parse_url($url, PHP_URL_QUERY) ? \sprintf('%s&%s', $url, $query) : \sprintf('%s?%s', $url, $query);
     }
 
     /**

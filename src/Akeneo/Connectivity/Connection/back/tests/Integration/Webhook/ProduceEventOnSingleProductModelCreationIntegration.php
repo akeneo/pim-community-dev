@@ -32,7 +32,7 @@ class ProduceEventOnSingleProductModelCreationIntegration extends TestCase
         $this->productModelUpdater = $this->get('pim_catalog.updater.product_model');
     }
 
-    public function test_the_single_product_model_creation_event()
+    public function test_the_single_product_model_creation_event(): void
     {
         $productModel = $this->productModelFactory->create();
         $this->productModelUpdater->update($productModel, [

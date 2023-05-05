@@ -22,7 +22,7 @@ class CreateUserIntegration extends TestCase
     private ?CreateUserGroup $createUserGroup;
     private ?UserRepositoryInterface $userRepository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

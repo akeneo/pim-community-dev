@@ -11,14 +11,8 @@ namespace Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model
  */
 class WrongCredentialsCombination
 {
-    private string $username;
-
-    private string $connectionCode;
-
-    public function __construct(string $connectionCode, string $username)
+    public function __construct(private string $connectionCode, private string $username)
     {
-        $this->connectionCode = $connectionCode;
-        $this->username = $username;
     }
 
     public function username(): string

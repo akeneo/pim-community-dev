@@ -37,7 +37,7 @@ class DeleteUserRoleIntegration extends TestCase
     /**
      * @group ce
      */
-    public function test_it_deletes_an_user_role()
+    public function test_it_deletes_an_user_role(): void
     {
         $this->userRoleLoader->create([
             'role' => 'ROLE_FOO',

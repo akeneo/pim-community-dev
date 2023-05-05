@@ -186,11 +186,5 @@ connectivity-connection-coverage:
 		--html coverage/Connectivity/Back/Global/ \
 		coverage/Connectivity/Back/Global/
 
-connectivity-connection-insight:
-	$(PHP_RUN) vendor/bin/phpinsights analyse --summary --no-interaction --config-path=src/Akeneo/Connectivity/Connection/back/tests/phpinsights.php src/Akeneo/Connectivity/Connection/back
-
-connectivity-connection-psalm:
-	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml
-
 connectivity-connection-unused-coupling-rules:
 	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back

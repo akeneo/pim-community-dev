@@ -15,7 +15,7 @@ class WebhookEventDataBuilderNotFoundException extends \RuntimeException impleme
     public function __construct(object $event)
     {
         parent::__construct(
-            \sprintf('Webhook event data builder was not found for class %s', \get_class($event))
+            \sprintf('Webhook event data builder was not found for class %s', $event::class)
         );
     }
 }

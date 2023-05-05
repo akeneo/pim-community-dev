@@ -11,25 +11,18 @@ use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 final class MarketplaceUrlGenerator implements MarketplaceUrlGeneratorInterface
 {
     private const START_QUERY = '/?';
-
-    private VersionProviderInterface $versionProvider;
-    private string $envUrl;
     private string $marketplaceUrl;
-    private GetUserProfileQueryInterface $getUserProfileQuery;
 
     public function __construct(
         string $marketplaceUrl,
-        VersionProviderInterface $versionProvider,
-        string $envUrl,
-        GetUserProfileQueryInterface $getUserProfileQuery
+        private VersionProviderInterface $versionProvider,
+        private string $envUrl,
+        private GetUserProfileQueryInterface $getUserProfileQuery
     ) {
         if (false === \filter_var($marketplaceUrl, FILTER_VALIDATE_URL)) {
             throw new \InvalidArgumentException('$marketplaceUrl must be a valid URL.');
         }
         $this->marketplaceUrl = $marketplaceUrl;
-        $this->versionProvider = $versionProvider;
-        $this->envUrl = $envUrl;
-        $this->getUserProfileQuery = $getUserProfileQuery;
     }
 
     public function generateUrl(string $username): string

@@ -248,15 +248,18 @@ class CreateCustomAppActionSpec extends ObjectBehavior
         $this->__invoke($request)->shouldBeAValidCreateCustomAppResponse('app_secret');
     }
 
+    /**
+     * @return array{beAValidCreateCustomAppResponse: Closure(mixed, mixed):true}
+     */
     public function getMatchers(): array
     {
         return [
-            'beAValidCreateCustomAppResponse' => function ($subject, $value) {
+            'beAValidCreateCustomAppResponse' => function ($subject, $value): bool {
                 if (!$subject instanceof JsonResponse || $subject->getStatusCode() !== Response::HTTP_CREATED) {
                     throw new FailureException('Response should be a JsonResponse with 201 as status code');
                 }
 
-                $jsonData = \json_decode($subject->getContent(), true);
+                $jsonData = \json_decode($subject->getContent(), true, 512, JSON_THROW_ON_ERROR);
                 $clientId = $jsonData['client_id'] ?? null;
                 $clientSecret = $jsonData['client_secret'] ?? null;
 

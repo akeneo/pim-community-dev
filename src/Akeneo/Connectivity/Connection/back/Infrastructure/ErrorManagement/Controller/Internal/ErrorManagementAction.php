@@ -37,6 +37,6 @@ final class ErrorManagementAction
      */
     public function normalizeBusinessErrors(array $businessErrors): array
     {
-        return \array_map(fn (BusinessError $businessError) => $businessError->normalize(), $businessErrors);
+        return \array_map(fn (BusinessError $businessError): array => $businessError->normalize(), $businessErrors);
     }
 }

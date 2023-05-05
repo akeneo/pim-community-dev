@@ -40,7 +40,7 @@ class ScopeMapperRegistryIntegration extends TestCase
      *
      * /!\ warning /!\
      */
-    public function test_it_retrieves_all_authorization_scopes()
+    public function test_it_retrieves_all_authorization_scopes(): void
     {
         $scopes = $this->scopeMapperRegistry->getAllScopes();
         \sort($scopes);
@@ -75,7 +75,7 @@ class ScopeMapperRegistryIntegration extends TestCase
      *
      * /!\ warning /!\
      */
-    public function test_it_retrieves_all_acls()
+    public function test_it_retrieves_all_acls(): void
     {
         $expected = [
             'read_channel_localization' => [

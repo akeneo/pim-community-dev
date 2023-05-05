@@ -13,37 +13,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class AttributeLoader
 {
-    /** @var SimpleFactoryInterface */
-    private $factory;
-
-    /** @var ObjectUpdaterInterface */
-    private $updater;
-
-    /** @var SaverInterface */
-    private $saver;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
     public function __construct(
-        SimpleFactoryInterface $factory,
-        ObjectUpdaterInterface $updater,
-        SaverInterface $saver,
-        ValidatorInterface $validator
+        private SimpleFactoryInterface $factory,
+        private ObjectUpdaterInterface $updater,
+        private SaverInterface $saver,
+        private ValidatorInterface $validator,
     ) {
-        $this->factory = $factory;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->validator = $validator;
     }
 
     public function create(array $data): void
     {
-        $data['group'] = $data['group'] ?? AttributeGroupInterface::DEFAULT_CODE;
+        $data['group'] ??= AttributeGroupInterface::DEFAULT_CODE;
 
         $attribute = $this->factory->create();
         $this->updater->update($attribute, $data);

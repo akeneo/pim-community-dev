@@ -14,11 +14,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class PurgeEventsApiSuccessLogsQuery
 {
-    private Client $esClient;
-
-    public function __construct(Client $esClient)
+    public function __construct(private Client $esClient)
     {
-        $this->esClient = $esClient;
     }
 
     public function execute(int $nbOfNoticesAndInfosToKeep = 100): void
@@ -33,6 +30,9 @@ class PurgeEventsApiSuccessLogsQuery
         $this->esClient->deleteByQuery($this->getDeleteAllDocumentsButGivenIdsQuery($esIdsToKeep));
     }
 
+    /**
+     * @return array{query: array<mixed>}
+     */
     private function getDeleteAllDocumentsButGivenIdsQuery(array $idsToKeep): array
     {
         return [
@@ -52,6 +52,14 @@ class PurgeEventsApiSuccessLogsQuery
         ];
     }
 
+    /**
+     * @return array{
+     *     _source: string[],
+     *     sort: array<int, array{timestamp: array{order: string}}>,
+     *     size: int,
+     *     query: array<mixed>
+     * }
+     */
     private function getEsIdsToKeepQuery(int $nbOfNoticesAndInfosToKeep): array
     {
         return [

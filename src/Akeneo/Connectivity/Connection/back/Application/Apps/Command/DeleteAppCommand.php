@@ -11,11 +11,8 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
  */
 final class DeleteAppCommand
 {
-    private string $appId;
-
-    public function __construct(string $appId)
+    public function __construct(private string $appId)
     {
-        $this->appId = $appId;
     }
 
     public function getAppId(): string

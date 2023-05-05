@@ -10,14 +10,8 @@ namespace Akeneo\Connectivity\Connection\Domain\ValueObject;
  */
 final class HourlyInterval
 {
-    private \DateTimeInterface $fromDateTime;
-
-    private \DateTimeInterface $upToDateTime;
-
-    private function __construct(\DateTimeInterface $fromDateTime, \DateTimeInterface $upToDateTime)
+    private function __construct(private \DateTimeInterface $fromDateTime, private \DateTimeInterface $upToDateTime)
     {
-        $this->fromDateTime = $fromDateTime;
-        $this->upToDateTime = $upToDateTime;
     }
 
     public function fromDateTime(): \DateTimeInterface

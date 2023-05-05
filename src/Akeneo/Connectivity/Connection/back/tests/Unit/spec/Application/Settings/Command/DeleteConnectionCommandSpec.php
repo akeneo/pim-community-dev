@@ -14,17 +14,17 @@ use PhpSpec\ObjectBehavior;
  */
 class DeleteConnectionCommandSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith('magento');
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(DeleteConnectionCommand::class);
     }
 
-    public function it_returns_the_code()
+    public function it_returns_the_code(): void
     {
         $this->code()->shouldReturn('magento');
     }

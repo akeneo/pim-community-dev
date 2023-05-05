@@ -34,7 +34,7 @@ class GetCustomAppsQuery implements GetCustomAppsQueryInterface
         ORDER BY app.client_id
         SQL;
 
-        $results = $this->connection->fetchAllAssociative(
+        return $this->connection->fetchAllAssociative(
             $query,
             [
                 'user_id' => $userId,
@@ -43,7 +43,5 @@ class GetCustomAppsQuery implements GetCustomAppsQueryInterface
                 'user_id' => Types::INTEGER,
             ]
         );
-
-        return $results;
     }
 }

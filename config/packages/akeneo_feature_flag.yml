@@ -15,3 +15,4 @@ akeneo_feature_flag:
         promote_unlock: 'akeneo.feature_flag.service.only_growth_and_serenity_feature'
         category_template_customization: 'akeneo.category.template.customization'
         category_update_template_attribute: 'akeneo.category.update.template.attribute'
+        pause_jobs: 'akeneo.job.pause_jobs.feature'

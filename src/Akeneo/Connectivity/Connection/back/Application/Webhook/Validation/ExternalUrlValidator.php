@@ -24,22 +24,16 @@ class ExternalUrlValidator extends ConstraintValidator
         'mysql',
     ];
 
-    private DnsLookupInterface $dnsLookup;
-
-    private IpMatcherInterface $ipMatcher;
-
     /**
      * @var string[]
      */
     private array $networkWhitelist;
 
     public function __construct(
-        DnsLookupInterface $dnsLookup,
-        IpMatcherInterface $ipMatcher,
+        private DnsLookupInterface $dnsLookup,
+        private IpMatcherInterface $ipMatcher,
         string $networkWhitelist = ''
     ) {
-        $this->dnsLookup = $dnsLookup;
-        $this->ipMatcher = $ipMatcher;
         $this->networkWhitelist = empty($networkWhitelist) ? [] : \explode(',', $networkWhitelist);
     }
 
@@ -83,7 +77,7 @@ class ExternalUrlValidator extends ConstraintValidator
 
     private function isInWhitelist(string $ip): bool
     {
-        if (empty($this->networkWhitelist)) {
+        if ($this->networkWhitelist === []) {
             return false;
         }
 
@@ -95,10 +89,7 @@ class ExternalUrlValidator extends ConstraintValidator
         return !\filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_NO_PRIV_RANGE | \FILTER_FLAG_NO_RES_RANGE);
     }
 
-    /**
-     * @param mixed $value
-     */
-    private function valueToString($value): string
+    private function valueToString(mixed $value): string
     {
         if (\is_string($value)) {
             return $value;

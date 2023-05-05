@@ -9,26 +9,17 @@ use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteUserInterf
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 
 /**
- * @author Pierre Jolly <pierre.jolly@akeneo.com>
+ * @author    Pierre Jolly <pierre.jolly@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class DeleteConnectionHandler
 {
-    private ConnectionRepositoryInterface $repository;
-
-    private DeleteClientInterface $deleteClient;
-
-    private DeleteUserInterface $deleteUser;
-
     public function __construct(
-        ConnectionRepositoryInterface $repository,
-        DeleteClientInterface $deleteClient,
-        DeleteUserInterface $deleteUser
+        private ConnectionRepositoryInterface $repository,
+        private DeleteClientInterface $deleteClient,
+        private DeleteUserInterface $deleteUser
     ) {
-        $this->repository = $repository;
-        $this->deleteClient = $deleteClient;
-        $this->deleteUser = $deleteUser;
     }
 
     public function handle(DeleteConnectionCommand $command): void

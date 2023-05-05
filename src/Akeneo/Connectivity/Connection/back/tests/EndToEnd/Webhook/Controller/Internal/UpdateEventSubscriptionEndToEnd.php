@@ -55,7 +55,7 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            \json_encode($data),
+            \json_encode($data, JSON_THROW_ON_ERROR),
         );
 
         Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
@@ -83,9 +83,9 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            \json_encode($data),
+            \json_encode($data, JSON_THROW_ON_ERROR),
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedResult = [
             'errors' => [
@@ -126,9 +126,9 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            \json_encode($data),
+            \json_encode($data, JSON_THROW_ON_ERROR),
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedResult = [
             'errors' => [
@@ -164,7 +164,7 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
             ['CONTENT_TYPE' => 'application/json'],
             \json_encode($data),
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedResult = [
             'errors' => [
@@ -183,7 +183,7 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         Assert::assertEquals($expectedResult, $result);
     }
 
-    public function test_it_fails_to_enable_an_event_subscription_once_the_limit_of_active_subscription_is_reached()
+    public function test_it_fails_to_enable_an_event_subscription_once_the_limit_of_active_subscription_is_reached(): void
     {
         // Enable enough event subscription to reach the limit.
         $erpConnection = $this->connectionLoader->createConnection(
@@ -229,9 +229,9 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            \json_encode($data),
+            \json_encode($data, JSON_THROW_ON_ERROR),
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(
             Response::HTTP_UNPROCESSABLE_ENTITY,
@@ -273,7 +273,7 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            \json_encode($data),
+            \json_encode($data, JSON_THROW_ON_ERROR),
         );
 
         Assert::assertEquals(

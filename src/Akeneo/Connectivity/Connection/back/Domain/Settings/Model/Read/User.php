@@ -10,15 +10,8 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
  */
 class User
 {
-    private int $id;
-    private string $username;
-    private string $password;
-
-    public function __construct(int $id, string $username, string $password)
+    public function __construct(private int $id, private string $username, private string $password)
     {
-        $this->id = $id;
-        $this->username = $username;
-        $this->password = $password;
     }
 
     public function id(): int

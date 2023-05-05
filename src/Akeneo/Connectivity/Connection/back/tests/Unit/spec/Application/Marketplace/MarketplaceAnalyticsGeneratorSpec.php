@@ -29,7 +29,7 @@ class MarketplaceAnalyticsGeneratorSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(MarketplaceAnalyticsGenerator::class);
     }

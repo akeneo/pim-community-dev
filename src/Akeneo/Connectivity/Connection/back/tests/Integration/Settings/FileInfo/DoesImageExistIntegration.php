@@ -14,7 +14,7 @@ class DoesImageExistIntegration extends TestCase
 {
     private DoesImageExistQueryInterface $imageExistQuery;
 
-    public function test_that_an_image_exist()
+    public function test_that_an_image_exist(): void
     {
         $this->addFileInfo();
         $exist = $this->imageExistQuery->execute('a/b/c/image.jpg');
@@ -34,7 +34,7 @@ class DoesImageExistIntegration extends TestCase
         $this->imageExistQuery = $this->get(DoesImageExistQuery::class);
     }
 
-    private function addFileInfo()
+    private function addFileInfo(): void
     {
         $query = <<<SQL
     INSERT INTO akeneo_file_storage_file_info (file_key, original_filename, mime_type, size, extension)

@@ -38,7 +38,7 @@ class GenerateAsymmetricKeysHandlerIntegration extends TestCase
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_save_new_asymmetric_keys()
+    public function test_it_save_new_asymmetric_keys(): void
     {
         $this->resetPimConfiguration();
 

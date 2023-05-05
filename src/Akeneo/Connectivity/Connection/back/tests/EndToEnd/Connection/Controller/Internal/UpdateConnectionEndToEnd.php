@@ -37,14 +37,12 @@ class UpdateConnectionEndToEnd extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            \json_encode($data)
+            \json_encode($data, JSON_THROW_ON_ERROR)
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $response = $this->client->getResponse();
 
-        $expectedResult = null;
-
-        Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals($expectedResult, $result);
+        Assert::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        Assert::assertEquals('', $response->getContent());
     }
 
     public function test_it_fails_to_update_a_connection_with_a_bad_request(): void
@@ -68,9 +66,9 @@ class UpdateConnectionEndToEnd extends WebTestCase
             [],
             [],
             ['CONTENT_TYPE' => 'application/json'],
-            \json_encode($data)
+            \json_encode($data, JSON_THROW_ON_ERROR)
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedResult = [
             "message" => "akeneo_connectivity.connection.constraint_violation_list_exception",

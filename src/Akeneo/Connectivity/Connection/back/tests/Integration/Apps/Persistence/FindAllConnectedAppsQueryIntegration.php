@@ -35,7 +35,7 @@ class FindAllConnectedAppsQueryIntegration extends TestCase
         $this->dbalConnection = $this->get('database_connection');
     }
 
-    public function test_it_finds_all_ordered_by_name()
+    public function test_it_finds_all_ordered_by_name(): void
     {
         // Test App
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(

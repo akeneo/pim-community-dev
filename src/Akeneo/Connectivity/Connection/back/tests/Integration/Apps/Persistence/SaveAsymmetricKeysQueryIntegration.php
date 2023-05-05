@@ -71,7 +71,7 @@ class SaveAsymmetricKeysQueryIntegration extends TestCase
             AsymmetricKeys::PUBLIC_KEY => 'the_public_key',
             AsymmetricKeys::PRIVATE_KEY => 'the_private_key',
             'updated_at' => $this->clock->now()->format(\DateTimeInterface::ATOM),
-        ], \json_decode($result['values'], true));
+        ], \json_decode($result['values'], true, 512, JSON_THROW_ON_ERROR));
     }
 
     public function test_it_overrides_asymmetric_keys_into_the_database(): void
@@ -95,7 +95,7 @@ class SaveAsymmetricKeysQueryIntegration extends TestCase
             AsymmetricKeys::PUBLIC_KEY => 'the_new_public_key',
             AsymmetricKeys::PRIVATE_KEY => 'the_new_private_key',
             'updated_at' => $this->clock->now()->format(\DateTimeInterface::ATOM),
-        ], \json_decode($result['values'], true));
+        ], \json_decode($result['values'], true, 512, JSON_THROW_ON_ERROR));
     }
 
     protected function getConfiguration(): Configuration

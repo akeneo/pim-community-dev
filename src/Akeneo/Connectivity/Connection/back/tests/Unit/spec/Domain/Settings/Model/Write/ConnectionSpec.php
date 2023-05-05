@@ -35,43 +35,43 @@ class ConnectionSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(Connection::class);
     }
 
-    public function it_returns_the_code()
+    public function it_returns_the_code(): void
     {
         $this->code()->shouldBeLike(new ConnectionCode('magento'));
     }
 
-    public function it_returns_the_label()
+    public function it_returns_the_label(): void
     {
         $this->label()->shouldBeLike(new ConnectionLabel('Magento Connector'));
     }
 
-    public function it_returns_the_flow_type()
+    public function it_returns_the_flow_type(): void
     {
         $this->flowType()->shouldBeLike(new FlowType(FlowType::DATA_DESTINATION));
     }
 
-    public function it_returns_the_client_id()
+    public function it_returns_the_client_id(): void
     {
         $this->clientId()->shouldBeLike(new ClientId(42));
     }
 
-    public function it_returns_the_user_id()
+    public function it_returns_the_user_id(): void
     {
         $this->userId()->shouldBeLike(new UserId(24));
     }
 
-    public function it_returns_the_auditable()
+    public function it_returns_the_auditable(): void
     {
         $this->auditable()->shouldBeBoolean();
         $this->auditable()->shouldBe(true);
     }
 
-    public function it_provides_the_image()
+    public function it_provides_the_image(): void
     {
         $this->beConstructedWith(
             'magento',
@@ -86,12 +86,12 @@ class ConnectionSpec extends ObjectBehavior
         $this->image()->shouldBeLike(new ConnectionImage('a/b/c/image_path.jpg'));
     }
 
-    public function it_is_instantiable_without_image()
+    public function it_is_instantiable_without_image(): void
     {
         $this->image()->shouldBeNull();
     }
 
-    public function it_changes_the_image()
+    public function it_changes_the_image(): void
     {
         $this->image()->shouldBeNull();
         $image = new ConnectionImage('a/b/c/image_path.jpg');
@@ -99,7 +99,7 @@ class ConnectionSpec extends ObjectBehavior
         $this->image()->shouldReturn($image);
     }
 
-    public function it_changes_the_label()
+    public function it_changes_the_label(): void
     {
         $this->label()->shouldBeLike(new ConnectionLabel('Magento Connector'));
 
@@ -107,7 +107,7 @@ class ConnectionSpec extends ObjectBehavior
         $this->label()->shouldBeLike(new ConnectionLabel('Bynder'));
     }
 
-    public function it_changes_the_flow_type()
+    public function it_changes_the_flow_type(): void
     {
         $this->flowType()->shouldBeLike(new FlowType(FlowType::DATA_DESTINATION));
 
@@ -115,7 +115,7 @@ class ConnectionSpec extends ObjectBehavior
         $this->flowType()->shouldBeLike(new FlowType(FlowType::OTHER));
     }
 
-    public function it_changes_the_auditable()
+    public function it_changes_the_auditable(): void
     {
         $this->auditable()->shouldBe(true);
 
