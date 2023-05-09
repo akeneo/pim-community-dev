@@ -35,26 +35,17 @@ class UpdateAttributeCommandHandler
 
         $attributeUuid = AttributeUuid::fromString($command->attributeUuid);
         $attributes = $this->getAttribute->byUuids([$attributeUuid]);
-        if(isEmpty($attributes)) {
+        if($attributes->count() == 0) {
             throw new ObjectNotFoundException();
         }
 
         /** @var Attribute $attribute */
-        $attribute = $attributes[0];
+        $attribute = $attributes->getAttributes()[0];
 
         $data = [
           'is_rich_text_area'  => $command->isRichTextArea,
         ];
         $attribute->update($data);
         $this->categoryTemplateAttributeSaver->update($attribute);
-    }
-
-    private function getAttributeLabel(string $locale, ?string $label = null): LabelCollection
-    {
-        if ($label === null || $label === '') {
-            return LabelCollection::fromArray([]);
-        }
-
-        return LabelCollection::fromArray([$locale => $label]);
     }
 }
