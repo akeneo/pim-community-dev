@@ -28,7 +28,8 @@ class AkeneoMessengerExtension extends Extension
         $loader->load('registry.yml');
         $loader->load('transport.yml');
 
-        $this->registerMessengerHandlers($container);
+        // TODO: remove the function. We only need one handler for messages MessageWrapper
+        //$this->registerMessengerHandlers($container);
     }
 
     /**

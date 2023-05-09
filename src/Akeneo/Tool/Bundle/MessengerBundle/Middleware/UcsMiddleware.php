@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Middleware;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\ConsumerNameStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
+use Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessageWrapper;
 use Akeneo\Tool\Component\Messenger\Tenant\TenantAwareInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
@@ -39,6 +41,11 @@ class UcsMiddleware implements MiddlewareInterface
         // Enrich the message with the tenant ID
         if ($this->pimTenantId && $envelope->getMessage() instanceof TenantAwareInterface) {
             $envelope->getMessage()->setTenantId($this->pimTenantId);
+        }
+
+        $consumerNameStamp = $envelope->last(ConsumerNameStamp::class);
+        if (null !== $consumerNameStamp && $envelope->getMessage() instanceof MessageWrapper) {
+            $envelope->getMessage()->setConsumerName((string) $consumerNameStamp);
         }
 
         return $stack->next()->handle($envelope, $stack);

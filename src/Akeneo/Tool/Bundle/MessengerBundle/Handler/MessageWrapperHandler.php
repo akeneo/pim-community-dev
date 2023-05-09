@@ -26,7 +26,6 @@ final class MessageWrapperHandler implements MessageHandlerInterface
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly LoggerInterface $logger,
-        private readonly string $consumerName,
     ) {
     }
 
@@ -52,7 +51,7 @@ final class MessageWrapperHandler implements MessageHandlerInterface
                 'php',
                 'bin/console',
                 'akeneo:process-message',
-                $this->consumerName,
+                (string) $messageWrapper->consumerName(),
                 \get_class($message),
                 $this->serializer->serialize($message, 'json'),
             ], null, $env);

@@ -63,6 +63,9 @@ final class MessengerConfigBuilder
      */
     public function build(string $projectDir, TransportType $transportType): array
     {
+        // TODO remove all the function and its call in messenger.php
+        return [];
+
         $config = self::loadConfig($projectDir, $this->env);
         if ([] === $config) {
             return [];
