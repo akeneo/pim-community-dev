@@ -35,15 +35,7 @@ class UpdateAttributeController
 
         $command = UpdateAttributeCommand::create(
             attributeUuid: $attributeUuid,
-            code: $data['code'],
-            order: $data['order'],
-            locale: $data['locale'],
-            label: $data['label'],
-            type: $data['type'],
-            isRequired: $data['is_required'],
-            isScopable: $data['is_scopable'],
-            isLocalizable: $data['is_localizable'],
-            templateUuid: $templateUuid,
+            isRichTextArea: $data['is_rich_text_area'],
         );
         $this->categoryCommandBus->dispatch($command);
 

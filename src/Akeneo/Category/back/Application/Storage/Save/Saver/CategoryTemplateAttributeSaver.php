@@ -10,5 +10,5 @@ interface CategoryTemplateAttributeSaver
 {
     public function insert(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void;
 
-    public function update(TemplateUuid $templateUuid, Attribute $attribute): void;
+    public function update(Attribute $attribute): void;
 }
