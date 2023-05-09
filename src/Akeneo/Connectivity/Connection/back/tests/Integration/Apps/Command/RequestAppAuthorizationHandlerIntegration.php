@@ -49,7 +49,7 @@ class RequestAppAuthorizationHandlerIntegration extends TestCase
         return $client;
     }
 
-    public function test_it_throws_when_the_client_id_is_not_valid()
+    public function test_it_throws_when_the_client_id_is_not_valid(): void
     {
         $command = new RequestAppAuthorizationCommand(
             'e4d35502-08c9-40b4-a378-05d4cb255862',
@@ -63,7 +63,7 @@ class RequestAppAuthorizationHandlerIntegration extends TestCase
         $this->handler->handle($command);
     }
 
-    public function test_it_throws_when_the_response_type_is_not_code()
+    public function test_it_throws_when_the_response_type_is_not_code(): void
     {
         $this->createOAuth2Client([
             'marketplacePublicAppId' => 'e4d35502-08c9-40b4-a378-05d4cb255862',
@@ -81,7 +81,7 @@ class RequestAppAuthorizationHandlerIntegration extends TestCase
         $this->handler->handle($command);
     }
 
-    public function test_it_throws_when_the_scope_is_too_long()
+    public function test_it_throws_when_the_scope_is_too_long(): void
     {
         $this->createOAuth2Client([
             'marketplacePublicAppId' => 'e4d35502-08c9-40b4-a378-05d4cb255862',

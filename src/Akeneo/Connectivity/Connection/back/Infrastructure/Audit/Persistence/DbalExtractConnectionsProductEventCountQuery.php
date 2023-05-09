@@ -20,14 +20,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class DbalExtractConnectionsProductEventCountQuery implements ExtractConnectionsProductEventCountQueryInterface
 {
-    private DbalConnection $dbalConnection;
-
-    private string $productClass;
-
-    public function __construct(DbalConnection $dbalConnection, string $productClass)
+    public function __construct(private DbalConnection $dbalConnection, private string $productClass)
     {
-        $this->dbalConnection = $dbalConnection;
-        $this->productClass = $productClass;
     }
 
     /**

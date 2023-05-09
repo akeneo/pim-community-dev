@@ -35,7 +35,7 @@ class ProduceEventOnBulkProductModelDeletionIntegration extends TestCase
         $this->productModelRemover = $this->get('pim_catalog.remover.product_model');
     }
 
-    public function test_the_bulk_product_model_deletion_event()
+    public function test_the_bulk_product_model_deletion_event(): void
     {
         $count = 3;
         $productModels = [];

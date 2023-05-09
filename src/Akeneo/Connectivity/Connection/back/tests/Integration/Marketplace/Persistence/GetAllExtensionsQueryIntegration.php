@@ -70,7 +70,7 @@ class GetAllExtensionsQueryIntegration extends TestCase
         $this->webMarketplaceApi->setExtensions($extensions);
     }
 
-    public function test_it_returns_all_apps()
+    public function test_it_returns_all_apps(): void
     {
         $result = $this->query->execute();
 

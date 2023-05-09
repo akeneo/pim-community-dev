@@ -26,26 +26,14 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class CollectApiError
 {
-    private BusinessErrorRepositoryInterface $repository;
-
-    private ConnectionContextInterface $connectionContext;
-
-    private UpdateConnectionErrorCountHandler $updateErrorCountHandler;
-
-    private Serializer $serializer;
-
     private ApiErrorCollection $errors;
 
     public function __construct(
-        ConnectionContextInterface $connectionContext,
-        BusinessErrorRepositoryInterface $repository,
-        UpdateConnectionErrorCountHandler $updateErrorCountHandler,
-        Serializer $serializer
+        private ConnectionContextInterface $connectionContext,
+        private BusinessErrorRepositoryInterface $repository,
+        private UpdateConnectionErrorCountHandler $updateErrorCountHandler,
+        private Serializer $serializer
     ) {
-        $this->connectionContext = $connectionContext;
-        $this->repository = $repository;
-        $this->updateErrorCountHandler = $updateErrorCountHandler;
-        $this->serializer = $serializer;
         $this->errors = new ApiErrorCollection();
     }
 
@@ -53,7 +41,7 @@ class CollectApiError
         \Throwable $error,
         Context $context
     ): void {
-        if (false === $this->isConnectionCollectable()) {
+        if (!$this->isConnectionCollectable()) {
             return;
         }
         $json = $this->serializer->serialize($error, 'json', $context);
@@ -67,7 +55,7 @@ class CollectApiError
         ConstraintViolationListInterface $constraintViolationList,
         Context $context
     ): void {
-        if (false === $this->isConnectionCollectable()) {
+        if (!$this->isConnectionCollectable()) {
             return;
         }
 
@@ -79,7 +67,7 @@ class CollectApiError
 
     public function collectFromTechnicalError(\Throwable $error): void
     {
-        if (false === $this->isConnectionCollectable()) {
+        if (!$this->isConnectionCollectable()) {
             return;
         }
 
@@ -129,7 +117,7 @@ class CollectApiError
         }
 
         if (
-            false === $this->connectionContext->isCollectable() ||
+            !$this->connectionContext->isCollectable() ||
             FlowType::DATA_SOURCE !== (string) $connection->flowType()
         ) {
             return false;

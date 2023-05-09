@@ -17,7 +17,7 @@ class AppAuthorization
     private ScopeList $authorizationScope;
     private ScopeList $authenticationScope;
     private string $redirectUri;
-    private ?string $state;
+    private ?string $state = null;
 
     private function __construct()
     {

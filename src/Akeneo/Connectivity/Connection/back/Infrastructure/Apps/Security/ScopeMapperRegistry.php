@@ -34,7 +34,7 @@ final class ScopeMapperRegistry implements ScopeMapperRegistryInterface
                         \sprintf(
                             'The scope "%s" is already supported by the scope mapper "%s".',
                             $scope,
-                            \get_class($this->scopeMappers[$scope])
+                            $this->scopeMappers[$scope]::class
                         )
                     );
                 }
@@ -114,7 +114,7 @@ final class ScopeMapperRegistry implements ScopeMapperRegistryInterface
     private function filterByKeepingHighestLevels(array $scopeList, array $lowerLevelScopes): array
     {
         return \array_values(
-            \array_filter($scopeList, fn (string $scope) => !\in_array($scope, $lowerLevelScopes))
+            \array_filter($scopeList, fn (string $scope): bool => !\in_array($scope, $lowerLevelScopes))
         );
     }
 

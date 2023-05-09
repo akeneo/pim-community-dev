@@ -12,15 +12,12 @@ use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
  */
 final class AppUrlGenerator
 {
-    private PimUrl $pimUrl;
-
-    public function __construct(PimUrl $pimUrl)
+    public function __construct(private PimUrl $pimUrl)
     {
-        $this->pimUrl = $pimUrl;
     }
 
     /**
-     * @return array<string, string>
+     * @return array{pim_url: string}
      */
     public function getAppQueryParameters(): array
     {

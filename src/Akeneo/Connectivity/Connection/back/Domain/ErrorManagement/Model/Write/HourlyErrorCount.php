@@ -18,20 +18,17 @@ class HourlyErrorCount
 {
     private ConnectionCode $connectionCode;
 
-    private HourlyInterval $hourlyInterval;
-
     private int $errorCount;
 
     private ErrorType $errorType;
 
     public function __construct(
         string $connectionCode,
-        HourlyInterval $hourlyInterval,
+        private HourlyInterval $hourlyInterval,
         int $errorCount,
         string $errorType
     ) {
         $this->connectionCode = new ConnectionCode($connectionCode);
-        $this->hourlyInterval = $hourlyInterval;
         if (0 > $errorCount) {
             throw new \InvalidArgumentException(
                 \sprintf('The error count must be positive. Negative number "%s" given.', $errorCount)

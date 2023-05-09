@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetWeeklyAuditActionEndToEnd extends WebTestCase
 {
-    public function test_it_get_weekly_audit_for_created_product()
+    public function test_it_get_weekly_audit_for_created_product(): void
     {
         $this->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
         $this->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
@@ -91,13 +91,13 @@ class GetWeeklyAuditActionEndToEnd extends WebTestCase
                 'end_date' => '2020-01-08'
             ],
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);
     }
 
-    public function test_it_get_weekly_audit_for_read_product()
+    public function test_it_get_weekly_audit_for_read_product(): void
     {
         $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION, true);
 
@@ -150,7 +150,7 @@ class GetWeeklyAuditActionEndToEnd extends WebTestCase
                 'end_date' => '2020-01-08'
             ],
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);

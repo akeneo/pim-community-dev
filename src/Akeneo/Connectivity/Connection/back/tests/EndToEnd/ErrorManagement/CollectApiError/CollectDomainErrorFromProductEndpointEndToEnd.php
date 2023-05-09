@@ -158,7 +158,7 @@ class CollectDomainErrorFromProductEndpointEndToEnd extends ApiTestCase
         ]);
 
         $streamedContent = '';
-        \ob_start(function ($buffer) use (&$streamedContent) {
+        \ob_start(function ($buffer) use (&$streamedContent): string {
             $streamedContent .= $buffer;
             return '';
         });

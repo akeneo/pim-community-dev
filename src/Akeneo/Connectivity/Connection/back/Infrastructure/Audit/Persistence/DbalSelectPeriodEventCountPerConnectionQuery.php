@@ -23,11 +23,8 @@ class DbalSelectPeriodEventCountPerConnectionQuery implements SelectPeriodEventC
 {
     use PeriodEventCountTrait;
 
-    private Connection $dbalConnection;
-
-    public function __construct(Connection $dbalConnection)
+    public function __construct(private Connection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     /**
@@ -151,20 +148,12 @@ SQL;
     {
         $flowType = '';
 
-        switch ($eventType) {
-            case EventTypes::PRODUCT_CREATED:
-            case EventTypes::PRODUCT_UPDATED:
-                $flowType = FlowType::DATA_SOURCE;
-                break;
-            case EventTypes::PRODUCT_READ:
-                $flowType = FlowType::DATA_DESTINATION;
-                break;
-            default:
-                throw new \LogicException(
-                    \sprintf('$eventType must be "product_created", "product_updated" or "product_read", but "%s" given.', $eventType)
-                );
-        }
-
-        return $flowType;
+        return match ($eventType) {
+            EventTypes::PRODUCT_CREATED, EventTypes::PRODUCT_UPDATED => FlowType::DATA_SOURCE,
+            EventTypes::PRODUCT_READ => FlowType::DATA_DESTINATION,
+            default => throw new \LogicException(
+                \sprintf('$eventType must be "product_created", "product_updated" or "product_read", but "%s" given.', $eventType)
+            ),
+        };
     }
 }

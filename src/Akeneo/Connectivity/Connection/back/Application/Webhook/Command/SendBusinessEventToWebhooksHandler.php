@@ -15,6 +15,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActive
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Generator;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -45,7 +46,7 @@ class SendBusinessEventToWebhooksHandler
 
         $pimEventBulk = $command->event();
 
-        $requests = function () use ($pimEventBulk, $webhooks) {
+        $requests = function () use ($pimEventBulk, $webhooks): Generator {
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
@@ -93,7 +94,7 @@ class SendBusinessEventToWebhooksHandler
     ): ?BulkEventInterface {
         $events = \array_filter(
             $bulkEvent->getEvents(),
-            function (EventInterface $event) use ($username, $webhook) {
+            function (EventInterface $event) use ($username, $webhook): bool {
                 if ($username === $event->getAuthor()->name()) {
                     $this->eventSubscriptionSkippedOwnEventLogger
                         ->logEventSubscriptionSkippedOwnEvent(

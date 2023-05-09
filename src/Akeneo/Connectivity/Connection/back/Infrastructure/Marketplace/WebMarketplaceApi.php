@@ -12,26 +12,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class WebMarketplaceApi implements WebMarketplaceApiInterface
 {
-    private ClientInterface $client;
-    private WebMarketplaceAliasesInterface $webMarketplaceAliases;
-    private LoggerInterface $logger;
     private string $fixturePath;
-    private FeatureFlag $fakeAppsFeatureFlag;
 
     public function __construct(
-        ClientInterface $client,
-        WebMarketplaceAliasesInterface $webMarketplaceAliases,
-        LoggerInterface $logger,
-        FeatureFlag $fakeAppsFeatureFlag
+        private ClientInterface $client,
+        private WebMarketplaceAliasesInterface $webMarketplaceAliases,
+        private LoggerInterface $logger,
+        private FeatureFlag $fakeAppsFeatureFlag
     ) {
-        $this->client = $client;
-        $this->webMarketplaceAliases = $webMarketplaceAliases;
-        $this->logger = $logger;
-        $this->fakeAppsFeatureFlag = $fakeAppsFeatureFlag;
     }
 
     public function getExtensions(int $offset = 0, int $limit = 10): array
@@ -49,13 +41,13 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
             ],
         ]);
 
-        return \json_decode($response->getBody()->getContents(), true);
+        return \json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
     }
 
     public function getApps(int $offset = 0, int $limit = 10): array
     {
         if ($this->fakeAppsFeatureFlag->isEnabled()) {
-            return \json_decode(\file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true);
+            return \json_decode(\file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true, 512, JSON_THROW_ON_ERROR);
         }
 
         $edition = $this->webMarketplaceAliases->getEdition();
@@ -71,7 +63,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
             ],
         ]);
 
-        return \json_decode($response->getBody()->getContents(), true);
+        return \json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
     }
 
     public function getApp(string $id): ?array
@@ -102,7 +94,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
                 ],
             ]);
 
-            $payload = \json_decode($response->getBody()->getContents(), true);
+            $payload = \json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
             if ($response->getStatusCode() !== Response::HTTP_OK) {
                 $this->logger->warning(
@@ -113,7 +105,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
                 return false;
             }
 
-            if (false === isset($payload['valid'])) {
+            if (!isset($payload['valid'])) {
                 $this->logger->warning(
                     'Marketplace responded to a code challenge with an invalid payload.',
                     ['response' => $response->getBody()->getContents()],
@@ -133,7 +125,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
         }
     }
 
-    public function setFixturePath(string $fixturePath)
+    public function setFixturePath(string $fixturePath): void
     {
         $this->fixturePath = $fixturePath;
     }

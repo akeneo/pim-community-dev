@@ -1,5 +1,5 @@
 import {Button, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
-import {Attribute} from '../../models';
+import {Attribute, CATEGORY_ATTRIBUTE_TYPE_AREA, CATEGORY_ATTRIBUTE_TYPE_RICHTEXT} from '../../models';
 import {getLabelFromAttribute} from '../attributes';
 import React, {useMemo} from 'react';
 import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
@@ -66,7 +66,7 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
               >
                 <Table.Cell rowTitle>{getLabelFromAttribute(attribute, catalogLocale)}</Table.Cell>
                 <Table.Cell>{attribute.code}</Table.Cell>
-                <Table.Cell>{translate(`akeneo.category.template.attribute.type.${attribute.type}`)}</Table.Cell>
+                <Table.Cell>{translate(`akeneo.category.template.attribute.type.${attribute.type !== CATEGORY_ATTRIBUTE_TYPE_RICHTEXT ? attribute.type : CATEGORY_ATTRIBUTE_TYPE_AREA}`)}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

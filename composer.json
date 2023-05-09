@@ -163,7 +163,6 @@
         "league/flysystem-memory": "^3.10.3",
         "liuggio/fastest": "^1.10.0",
         "mcustiel/phiremock": "2.1.1",
-        "nunomaduro/phpinsights": "^2.0",
         "phpspec/phpspec": "^7.1.0",
         "phpspec/prophecy": "^1.16.0",
         "phpstan/phpstan": "^1.9.3",

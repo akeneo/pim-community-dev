@@ -34,7 +34,7 @@ class DeleteConnectedAppQueryIntegration extends TestCase
         $this->query = $this->get(DeleteConnectedAppQuery::class);
     }
 
-    public function test_it_deletes_a_connected_app_from_the_database()
+    public function test_it_deletes_a_connected_app_from_the_database(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',

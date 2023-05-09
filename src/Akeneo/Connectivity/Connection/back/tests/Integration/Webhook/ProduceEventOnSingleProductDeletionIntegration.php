@@ -29,7 +29,7 @@ class ProduceEventOnSingleProductDeletionIntegration extends TestCase
         $this->productLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product');
     }
 
-    public function test_the_single_product_remove_event()
+    public function test_the_single_product_remove_event(): void
     {
         $product = $this->productLoader->create('t-shirt', []);
         $this->productRemover->remove($product);

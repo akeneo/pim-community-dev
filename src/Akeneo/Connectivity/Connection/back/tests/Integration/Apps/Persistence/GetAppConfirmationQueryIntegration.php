@@ -97,7 +97,7 @@ class GetAppConfirmationQueryIntegration extends TestCase
         );
     }
 
-    public function test_it_returns_an_app_confirmation_for_a_valid_id()
+    public function test_it_returns_an_app_confirmation_for_a_valid_id(): void
     {
         $this->createConnectedApp('foo');
 
@@ -112,7 +112,7 @@ class GetAppConfirmationQueryIntegration extends TestCase
         $this->assertIsInt($normalized['fos_client_id']);
     }
 
-    public function test_it_returns_null_for_an_invalid_id()
+    public function test_it_returns_null_for_an_invalid_id(): void
     {
         $result = $this->query->execute('bar');
 

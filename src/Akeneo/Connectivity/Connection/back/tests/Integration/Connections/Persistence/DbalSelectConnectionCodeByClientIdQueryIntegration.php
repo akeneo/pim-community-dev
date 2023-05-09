@@ -33,7 +33,7 @@ class DbalSelectConnectionCodeByClientIdQueryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_returns_the_correct_connection_code()
+    public function test_it_returns_the_correct_connection_code(): void
     {
         $this->connectionLoader->createConnection('connectionA', 'Connection A', FlowType::DATA_DESTINATION, false);
         $connectionB = $this->connectionLoader->createConnection('connectionB', 'Connection B', FlowType::OTHER, false);
@@ -44,7 +44,7 @@ class DbalSelectConnectionCodeByClientIdQueryIntegration extends TestCase
         Assert::assertSame('connectionB', $connectionCode);
     }
 
-    public function test_it_returns_null_when_client_id_does_not_match()
+    public function test_it_returns_null_when_client_id_does_not_match(): void
     {
         $connectionCode = $this->query->execute('wrong-client-id');
 

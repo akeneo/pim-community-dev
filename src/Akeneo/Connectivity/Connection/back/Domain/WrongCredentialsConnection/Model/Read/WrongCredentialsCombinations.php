@@ -12,14 +12,13 @@ namespace Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model
 class WrongCredentialsCombinations
 {
     /** @var array<string, WrongCredentialsCombination> */
-    private array $wrongCombinations;
+    private array $wrongCombinations = [];
 
     /**
      * @param array<array{connection_code: string, users: array<string, string>}> $combinations
      */
     public function __construct(array $combinations)
     {
-        $this->wrongCombinations = [];
         foreach ($combinations as $combination) {
             $connection = $combination['connection_code'];
             $this->wrongCombinations[$connection] = new WrongCredentialsCombination($connection);

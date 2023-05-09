@@ -56,7 +56,7 @@ abstract class ApiError implements ApiErrorInterface
     abstract public function type(): ErrorType;
 
     /**
-     * @return array<string, mixed>
+     * @return array{id: string, content: mixed, error_datetime: string}
      */
     public function normalize(): array
     {

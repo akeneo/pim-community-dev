@@ -22,7 +22,7 @@ class GetDelayUntilNextRequestSpec extends ObjectBehavior
 
     public function it_returns_the_delay_until_next_request_even_when_there_is_no_entry(
         SelectEventsApiRequestCountWithinLastHourQueryInterface $selectEventsApiRequestCountWithinLastHourQuery
-    ) {
+    ): void {
         $selectEventsApiRequestCountWithinLastHourQuery->execute(new \DateTimeImmutable('2021-01-08 10:12:30', new \DateTimeZone('UTC')))
             ->willReturn([]);
 
@@ -32,7 +32,7 @@ class GetDelayUntilNextRequestSpec extends ObjectBehavior
 
     public function it_returns_the_delay_until_next_request(
         SelectEventsApiRequestCountWithinLastHourQueryInterface $selectEventsApiRequestCountWithinLastHourQuery
-    ) {
+    ): void {
         $selectEventsApiRequestCountWithinLastHourQuery->execute(new \DateTimeImmutable('2021-01-08 11:02:10', new \DateTimeZone('UTC')))
             ->willReturn([
                 [

@@ -16,25 +16,23 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DeleteConnectionEndToEnd extends WebTestCase
 {
-    public function test_it_deletes_a_connection()
+    public function test_it_deletes_a_connection(): void
     {
         $this->createConnection('franklin', 'Franklin', FlowType::DATA_SOURCE, false);
 
         $this->authenticateAsAdmin();
         $this->client->request('DELETE', '/rest/connections/franklin');
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $response = $this->client->getResponse();
 
-        $expectedResult = null;
-
-        Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals($expectedResult, $result);
+        Assert::assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        Assert::assertEquals('', $response->getContent());
     }
 
-    public function test_it_fails_to_delete_an_unknown_connection()
+    public function test_it_fails_to_delete_an_unknown_connection(): void
     {
         $this->authenticateAsAdmin();
         $this->client->request('DELETE', '/rest/connections/unknown_connection');
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedResult = [
             'message' => 'Connection with code "unknown_connection" does not exist'

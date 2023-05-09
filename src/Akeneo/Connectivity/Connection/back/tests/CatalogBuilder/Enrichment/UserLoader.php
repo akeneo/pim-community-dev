@@ -30,7 +30,7 @@ class UserLoader
     public function createUser(string $username, array $userGroups, array $userRoles): UserInterface
     {
         $user = $this->userFactory->create();
-        if (false === $user instanceof UserInterface) {
+        if (!$user instanceof UserInterface) {
             throw new \LogicException();
         }
 

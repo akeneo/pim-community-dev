@@ -19,13 +19,13 @@ class CreateClientSpec extends ObjectBehavior
         $this->beConstructedWith($clientManager);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(CreateClient::class);
         $this->shouldImplement(CreateClientInterface::class);
     }
 
-    public function it_creates_a_client_with_a_label(FosClient $fosClient, $clientManager)
+    public function it_creates_a_client_with_a_label(FosClient $fosClient, $clientManager): void
     {
         $clientManager->createClient()->willReturn($fosClient);
         $fosClient->setLabel('new_app')->shouldBeCalled();

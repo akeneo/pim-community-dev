@@ -18,7 +18,7 @@ class DbalErrorCountRepositoryIntegration extends TestCase
     private DbalConnection $dbalConnection;
     private DbalErrorCountRepository $repository;
 
-    public function test_it_inserts_an_error_count()
+    public function test_it_inserts_an_error_count(): void
     {
         $this->repositoryUpsert('erp', '2020-05-15 17:27:00', 1618, ErrorTypes::BUSINESS);
 
@@ -35,7 +35,7 @@ SQL;
         Assert::assertEquals('1618', $result[0]['error_count']);
     }
 
-    public function test_it_upserts_an_error_count_within_the_same_hour()
+    public function test_it_upserts_an_error_count_within_the_same_hour(): void
     {
         $this->repositoryUpsert('erp', '2020-05-15 17:27:00', 1618, ErrorTypes::BUSINESS);
         $this->repositoryUpsert('erp', '2020-05-15 17:42:00', 42, ErrorTypes::BUSINESS);
@@ -53,7 +53,7 @@ SQL;
         Assert::assertEquals('1660', $result[0]['error_count']);
     }
 
-    public function test_it_does_not_upsert_if_the_error_is_not_the_same()
+    public function test_it_does_not_upsert_if_the_error_is_not_the_same(): void
     {
         $this->repositoryUpsert('erp', '2020-05-15 17:27:00', 1618, ErrorTypes::BUSINESS);
         // Not the same code

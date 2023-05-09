@@ -32,7 +32,7 @@ class GetAppDeletionQueryIntegration extends TestCase
         $this->query = $this->get(GetAppDeletionQuery::class);
     }
 
-    public function test_it_gets_an_app_to_delete_from_the_database()
+    public function test_it_gets_an_app_to_delete_from_the_database(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             '2677e764-f852-4956-bf9b-1a1ec1b0d145',

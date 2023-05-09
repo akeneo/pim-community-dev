@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
 {
-    public function test_that_authentication_with_good_combination_does_not_save_wrong_credentials()
+    public function test_that_authentication_with_good_combination_does_not_save_wrong_credentials(): void
     {
         $apiConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
 
@@ -47,7 +47,7 @@ class SaveWrongCredentialsConnectionEndToEnd extends ApiTestCase
         Assert::assertEmpty($wrongCredentialsCombinations->normalize());
     }
 
-    public function test_that_wrong_credentials_combination_is_saved_after_authentication()
+    public function test_that_wrong_credentials_combination_is_saved_after_authentication(): void
     {
         $magentoConnection = $this->createConnection('magento', 'Magento', FlowType::DATA_DESTINATION);
         $bynderConnection = $this->createConnection('bynder', 'Magento', FlowType::DATA_DESTINATION);

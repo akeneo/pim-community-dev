@@ -20,7 +20,7 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
 
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi
-    ) {
+    ): void {
         $this->beConstructedWith($webMarketplaceApi, self::PAGINATION);
     }
 
@@ -31,7 +31,7 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
 
     public function it_execute_and_returns_extension_result(
         WebMarketplaceApiInterface $webMarketplaceApi
-    ) {
+    ): void {
         $items = [
             [
                 'id' => '3881aefa-16a3-4b4f-94c3-0d6e858b60b8',
@@ -89,8 +89,6 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
             ],
         ]);
 
-        $this->execute()->shouldBeLike(GetAllExtensionsResult::create(3, \array_map(function ($item) {
-            return Extension::fromWebMarketplaceValues($item);
-        }, $items)));
+        $this->execute()->shouldBeLike(GetAllExtensionsResult::create(3, \array_map(fn ($item): Extension => Extension::fromWebMarketplaceValues($item), $items)));
     }
 }

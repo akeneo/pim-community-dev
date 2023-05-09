@@ -32,7 +32,7 @@ class PurgeAuditErrorQueryIntegration extends TestCase
         $this->connection = $this->get('database_connection');
     }
 
-    public function test_it_purges_audit_errors_saved_before_the_given_datetime()
+    public function test_it_purges_audit_errors_saved_before_the_given_datetime(): void
     {
         $utc = new \DateTimeZone('UTC');
         $this->auditErrorLoader->insert(

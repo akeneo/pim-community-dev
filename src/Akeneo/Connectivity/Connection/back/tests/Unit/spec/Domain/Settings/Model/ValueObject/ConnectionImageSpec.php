@@ -15,13 +15,13 @@ class ConnectionImageSpec extends ObjectBehavior
         $this->shouldHaveType(ConnectionImage::class);
     }
 
-    public function it_provides_a_file_path()
+    public function it_provides_a_file_path(): void
     {
         $this->beConstructedWith('a/b/c/image_path.png');
         $this->__toString()->shouldReturn('a/b/c/image_path.png');
     }
 
-    public function it_throws_an_error_if_file_path_is_empty()
+    public function it_throws_an_error_if_file_path_is_empty(): void
     {
         $this->beConstructedWith('');
         $this
