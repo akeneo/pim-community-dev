@@ -1,9 +1,12 @@
-import React, {forwardRef, Ref, HTMLAttributes, useState} from 'react';
+import React, {HTMLAttributes, ReactNode, useRef, useEffect, RefObject, useState} from 'react';
+import {createPortal} from 'react-dom';
 import styled from 'styled-components';
 import {Override} from '../../shared';
 import {HelpPlainIcon} from '../../icons';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
-import {useTheme} from '../../hooks';
+import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
+import {useBooleanState} from '../../hooks';
+
+type Direction = 'top' | 'right' | 'bottom' | 'left';
 
 const TooltipIconMargin = 5;
 const TooltipContainer = styled.div<{size: number}>`
@@ -15,12 +18,13 @@ const TooltipContainer = styled.div<{size: number}>`
 
 const TooltipIcon = styled(HelpPlainIcon)`
   margin: ${TooltipIconMargin}px;
+  color: ${getColor('blue', 100)};
 `;
 
-const TooltipContent = styled.div<{direction: string; zIndex: number; width: number} & AkeneoThemedProps>`
-  position: absolute;
+const TooltipContent = styled.div<{direction: Direction; width: number; top: number; left: number} & AkeneoThemedProps>`
+  ${CommonStyle}
+  position: fixed;
   border-radius: 4px;
-  left: 50%;
   padding: 10px;
   width: ${({width}) => width}px;
   color: ${getColor('grey', 120)};
@@ -29,92 +33,118 @@ const TooltipContent = styled.div<{direction: string; zIndex: number; width: num
   font-size: ${getFontSize('default')};
   line-height: 1;
   text-transform: none;
-  z-index: ${({zIndex}) => zIndex};
   box-shadow: 0 0 16px rgba(89, 146, 199, 0.25);
-
-  ${({direction}) => {
-    switch (direction) {
-      case 'bottom':
-        return `
-                top: calc(100%);
-                transform: translateX(-50%);
-              `;
-      case 'left':
-        return `
-                left: auto;
-                top: 50%;
-                right: calc(100%);
-                transform: translateY(-50%);
-              `;
-      case 'right':
-        return `
-                top: 50%;
-                left: calc(100%);
-                transform: translateY(-50%);
-              `;
-      default:
-        return `
-                bottom: calc(100%);
-                transform: translateX(-50%);
-              `;
-    }
-  }}
+  top: ${({top}) => top}px;
+  left: ${({left}) => left}px;
+  opacity: ${({top, left}) => (-1 === top && -1 === left ? 0 : 1)};
 `;
+
+const getPosition = (
+  direction: Direction,
+  parentRef?: RefObject<HTMLDivElement>,
+  elementRef?: RefObject<HTMLDivElement>
+): number[] => {
+  if (
+    undefined === parentRef ||
+    undefined === elementRef ||
+    null === parentRef.current ||
+    null === elementRef.current
+  ) {
+    return [-1, -1];
+  }
+
+  const {
+    top: parentTop,
+    left: parentLeft,
+    width: parentWidth,
+    height: parentHeight,
+  } = parentRef.current.getBoundingClientRect();
+
+  const {width: elementWidth, height: elementHeight} = elementRef.current.getBoundingClientRect();
+
+  const relativeCenterTop = parentTop + parentHeight / 2 - elementHeight / 2;
+  const relativeCenterLeft = parentLeft + parentWidth / 2 - elementWidth / 2;
+
+  switch (direction) {
+    default:
+    case 'top':
+      return [parentTop - elementHeight, relativeCenterLeft];
+    case 'right':
+      return [relativeCenterTop, parentLeft + parentWidth];
+    case 'bottom':
+      return [parentTop + parentHeight, relativeCenterLeft];
+    case 'left':
+      return [relativeCenterTop, parentLeft - elementWidth];
+  }
+};
 
 type TooltipProps = Override<
   HTMLAttributes<HTMLDivElement>,
   {
     /**
-     * Define the direction in which the tooltip will be rendered
+     * Define the direction in which the tooltip will be rendered.
      */
-    direction?: 'top' | 'right' | 'bottom' | 'left';
+    direction?: Direction;
+
     /**
-     * Define the position order of the tooltip
-     */
-    zIndex?: number;
-    /**
-     * Define the icon size
+     * Define the icon size.
      */
     iconSize?: number;
+
     /**
-     * Content of the tooltip
+     * Content of the tooltip.
      */
-    children: React.ReactNode;
+    children: ReactNode;
+
     /**
-     * Define the width of the tooltip
+     * Define the width of the tooltip.
      */
     width?: number;
   }
 >;
 
-const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
-  (
-    {direction = 'top', zIndex = 100, iconSize = 24, width = 200, children, ...rest}: TooltipProps,
-    forwardedRef: Ref<HTMLDivElement>
-  ) => {
-    const [visible, setVisible] = useState(false);
-    const showTooltip = () => setVisible(true);
-    const hideTooltip = () => setVisible(false);
-    const theme = useTheme();
+const Tooltip = ({direction = 'top', iconSize = 24, width = 200, children, ...rest}: TooltipProps) => {
+  const [isVisible, showTooltip, hideTooltip] = useBooleanState(false);
+  const portalNode = document.createElement('div');
+  portalNode.setAttribute('id', 'tooltip-root');
+  const portalRef = useRef<HTMLDivElement>(portalNode);
+  const parentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState<number[]>([0, 0]);
 
-    return (
-      <TooltipContainer
-        ref={forwardedRef}
-        role="tooltip"
-        {...rest}
-        size={iconSize}
-        onMouseEnter={showTooltip}
-        onMouseLeave={hideTooltip}
-      >
-        <TooltipIcon size={iconSize} color={theme.color.blue100} />
-        {visible && (
-          <TooltipContent direction={direction} zIndex={zIndex} width={width}>
+  useEffect(() => {
+    document.body.appendChild(portalRef.current);
+
+    return () => {
+      document.body.removeChild(portalRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    setPosition(getPosition(direction, parentRef, contentRef));
+  }, [children, direction, parentRef, contentRef, isVisible]);
+
+  const [top, left] = position;
+
+  return (
+    <TooltipContainer
+      ref={parentRef}
+      role="tooltip"
+      {...rest}
+      size={iconSize}
+      onMouseEnter={showTooltip}
+      onMouseLeave={hideTooltip}
+    >
+      <TooltipIcon size={iconSize} />
+      {isVisible &&
+        createPortal(
+          <TooltipContent ref={contentRef} direction={direction} width={width} top={top} left={left}>
             {children}
-          </TooltipContent>
+          </TooltipContent>,
+          portalRef.current
         )}
-      </TooltipContainer>
-    );
-  }
-);
+    </TooltipContainer>
+  );
+};
 
 export {Tooltip};
