@@ -24,6 +24,7 @@ const TooltipIcon = styled(HelpPlainIcon)`
 const TooltipContent = styled.div<{direction: Direction; width: number; top: number; left: number} & AkeneoThemedProps>`
   ${CommonStyle}
   position: fixed;
+  z-index: 1901;
   border-radius: 4px;
   padding: 10px;
   width: ${({width}) => width}px;
