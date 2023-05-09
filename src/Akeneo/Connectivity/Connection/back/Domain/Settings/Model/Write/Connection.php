@@ -31,8 +31,6 @@ class Connection
 
     private ?ConnectionImage $image;
 
-    private bool $auditable;
-
     private ConnectionType $type;
 
     public function __construct(
@@ -42,7 +40,7 @@ class Connection
         int $clientId,
         int $userId,
         ?string $image = null,
-        bool $auditable = false,
+        private bool $auditable = false,
         ?string $type = null
     ) {
         $this->code = new ConnectionCode($code);
@@ -51,7 +49,6 @@ class Connection
         $this->clientId = new ClientId($clientId);
         $this->userId = new UserId($userId);
         $this->image = null !== $image ? new ConnectionImage($image) : null;
-        $this->auditable = $auditable;
         $this->type = new ConnectionType($type);
     }
 

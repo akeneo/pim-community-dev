@@ -20,14 +20,14 @@ final class GetConnectedAppScopesQuery implements GetConnectedAppScopesQueryInte
     public function execute(string $appId): array
     {
         $query = <<<SQL
-SELECT scopes FROM akeneo_connectivity_connected_app
-WHERE id = :id
-SQL;
+            SELECT scopes FROM akeneo_connectivity_connected_app
+            WHERE id = :id
+            SQL;
 
         $scopes = $this->connection->fetchOne($query, [
             'id' => $appId,
         ]);
 
-        return !empty($scopes) ? \json_decode($scopes) : [];
+        return empty($scopes) ? [] : \json_decode($scopes, null, 512, JSON_THROW_ON_ERROR);
     }
 }

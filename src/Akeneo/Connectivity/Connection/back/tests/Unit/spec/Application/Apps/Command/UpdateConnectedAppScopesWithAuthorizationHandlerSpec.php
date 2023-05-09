@@ -37,7 +37,7 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerSpec extends ObjectBehavio
         );
     }
 
-    public function it_is_instantiable()
+    public function it_is_instantiable(): void
     {
         $this->shouldHaveType(UpdateConnectedAppScopesWithAuthorizationHandler::class);
     }

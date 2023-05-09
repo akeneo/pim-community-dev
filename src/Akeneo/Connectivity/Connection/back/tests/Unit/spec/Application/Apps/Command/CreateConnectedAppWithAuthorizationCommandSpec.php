@@ -18,12 +18,12 @@ class CreateConnectedAppWithAuthorizationCommandSpec extends ObjectBehavior
         $this->beConstructedWith('test');
     }
 
-    public function it_is_instantiable()
+    public function it_is_instantiable(): void
     {
         $this->shouldHaveType(CreateConnectedAppWithAuthorizationCommand::class);
     }
 
-    public function it_gets_client_id()
+    public function it_gets_client_id(): void
     {
         $this->getClientId()->shouldReturn('test');
     }

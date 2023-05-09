@@ -31,7 +31,7 @@ class DbalConnectionRepositoryIntegration extends TestCase
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
     }
 
-    public function test_it_finds_one_connection_by_code()
+    public function test_it_finds_one_connection_by_code(): void
     {
         $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
 
@@ -50,7 +50,7 @@ class DbalConnectionRepositoryIntegration extends TestCase
         Assert::assertSame('default', (string) $connection->type());
     }
 
-    public function test_it_updates_a_connection_from_its_code()
+    public function test_it_updates_a_connection_from_its_code(): void
     {
         $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
 

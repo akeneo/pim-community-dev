@@ -38,7 +38,7 @@ class IsConnectionsNumberLimitReachedQueryIntegration extends TestCase
         $this->getConnectionsNumberLimit->setLimit(50);
     }
 
-    public function test_it_returns_false_when_connection_count_is_below_the_limit()
+    public function test_it_returns_false_when_connection_count_is_below_the_limit(): void
     {
         $result = $this->connectionsNumberLimitReachedQuery->execute();
 
@@ -50,7 +50,7 @@ class IsConnectionsNumberLimitReachedQueryIntegration extends TestCase
         Assert::assertFalse($result);
     }
 
-    public function test_it_returns_false_when_connection_count_is_above_the_limit()
+    public function test_it_returns_false_when_connection_count_is_above_the_limit(): void
     {
         $this->getConnectionsNumberLimit->setLimit(3);
 

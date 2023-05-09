@@ -50,7 +50,7 @@ class GetAllAppsActionSpec extends ObjectBehavior
 
         Assert::assertEquals(Response::HTTP_OK, $result->getStatusCode()->getWrappedObject());
         Assert::assertEquals(
-            \json_encode(GetAllAppsResult::create(0, [])->normalize()),
+            \json_encode(GetAllAppsResult::create(0, [])->normalize(), JSON_THROW_ON_ERROR),
             $result->getContent()->getWrappedObject()
         );
     }

@@ -60,7 +60,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $this->productLoader = static::getContainer()->get(
             'akeneo_connectivity.connection.fixtures.enrichment.product'
         );
-        $this->historyContainer = $this->get('Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer');
+        $this->historyContainer = $this->get(GuzzleJsonHistoryContainer::class);
 
         $this->tshirtProduct = $this->productLoader->create(
             'blue-t-shirt',
@@ -96,7 +96,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $this->get('akeneo_connectivity.connection.fixtures.webhook_loader')->initWebhook($connection->code());
     }
 
-    public function test_it_sends_a_product_created_webhook_event()
+    public function test_it_sends_a_product_created_webhook_event(): void
     {
         $message = new BulkEvent(
             [
@@ -130,14 +130,14 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         /** @var Request $requestObject */
         $request = $this->historyContainer[0]['request'];
         $requestObject = Message::parseRequest($request);
-        $requestContent = \json_decode($requestObject->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($requestObject->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
         Assert::assertEquals(2, (int)$this->getEventCount('ecommerce'));
         $this->assertEquals($this->expectedProductCreatedPayload($this->tshirtProduct), $requestContent);
     }
 
-    public function test_it_sends_a_product_updated_webhook_event()
+    public function test_it_sends_a_product_updated_webhook_event(): void
     {
         $message = new BulkEvent(
             [
@@ -161,14 +161,14 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
         $request = $this->historyContainer[0]['request'];
         $requestObject = Message::parseRequest($request);
-        $requestContent = \json_decode($requestObject->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($requestObject->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
         Assert::assertEquals(1, (int)$this->getEventCount('ecommerce'));
         $this->assertEquals($this->expectedProductUpdatedPayload($this->tshirtProduct), $requestContent);
     }
 
-    public function test_it_sends_a_product_removed_webhook_event()
+    public function test_it_sends_a_product_removed_webhook_event(): void
     {
         $message = new BulkEvent(
             [
@@ -192,7 +192,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
         $this->assertCount(1, $this->historyContainer);
 
         $request = Message::parseRequest($this->historyContainer[0]['request']);
-        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['events'][0];
 
         Assert::assertEquals(1, (int)$this->getEventCount('ecommerce'));
         $this->assertEquals($this->expectedProductRemovedPayload($this->tshirtProduct), $requestContent);

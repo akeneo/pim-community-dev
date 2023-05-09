@@ -19,11 +19,11 @@ class UpdateDataSourceProductEventCountHandlerSpec extends ObjectBehavior
     public function let(
         ExtractConnectionsProductEventCountQueryInterface $extractConnectionsEventCountQuery,
         BulkInsertEventCountsQueryInterface $bulkInsertEventCountsQuery,
-    ) {
+    ): void {
         $this->beConstructedWith($extractConnectionsEventCountQuery, $bulkInsertEventCountsQuery);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(UpdateDataSourceProductEventCountHandler::class);
     }

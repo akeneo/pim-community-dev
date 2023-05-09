@@ -11,15 +11,13 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
  */
 final class GetAllExtensionsResult
 {
-    private int $total;
-
     /** @var array<Extension> */
     private array $extensions;
 
     /**
      * @param array<Extension> $extensions
      */
-    private function __construct(int $total, array $extensions)
+    private function __construct(private int $total, array $extensions)
     {
         foreach ($extensions as $extension) {
             if (!$extension instanceof Extension) {
@@ -30,7 +28,6 @@ final class GetAllExtensionsResult
                 ));
             }
         }
-        $this->total = $total;
         $this->extensions = $extensions;
     }
 
@@ -49,9 +46,7 @@ final class GetAllExtensionsResult
     {
         return self::create(
             $this->total,
-            \array_map(function (Extension $extension) use ($queryParameters) {
-                return $extension->withAnalytics($queryParameters);
-            }, $this->extensions),
+            \array_map(fn (Extension $extension): \Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension => $extension->withAnalytics($queryParameters), $this->extensions),
         );
     }
 

@@ -16,13 +16,10 @@ use Psr\Log\LoggerInterface;
  */
 class SendApiEventRequestLogger
 {
-    const TYPE = 'event_api.send_api_event_request';
+    public const TYPE = 'event_api.send_api_event_request';
 
-    private LoggerInterface $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     /**
@@ -43,9 +40,9 @@ class SendApiEventRequestLogger
             'headers' => $headers,
             'message' => $message,
             'success' => $success,
-            'response' => $response ? ['status_code' => $response->getStatusCode()] : null,
+            'response' => $response !== null ? ['status_code' => $response->getStatusCode()] : null,
             'event_count' => \count($webhookRequest->apiEvents()),
-            'events' => \array_map(function (WebhookEvent $event) {
+            'events' => \array_map(function (WebhookEvent $event): array {
                 $date = \DateTime::createFromFormat(\DateTime::ATOM, $event->eventDateTime());
                 return [
                     'uuid' => $event->eventId(),

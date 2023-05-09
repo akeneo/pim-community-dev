@@ -14,18 +14,15 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ConnectedPimUserProvider implements ConnectedPimUserProviderInterface
 {
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(private TokenStorageInterface $tokenStorage)
     {
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function getCurrentUserId(): int
     {
         /** @var UserInterface|null */
         $user = $this->tokenStorage->getToken()?->getUser();
-        if (false === $user instanceof UserInterface) {
+        if (!$user instanceof UserInterface) {
             throw new \LogicException();
         }
 

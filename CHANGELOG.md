@@ -66,7 +66,10 @@
 - PIM-10909: Refactor command to remove non-existing products and models from ES index
 - PIM-10932: Fix data in NumberValueFactory if data contains a white space
 - PIM-10814: Wysiwyg now supports languages that use right-to-left (rtl) scripts
+- PIM-10956: Fix deletion of category with enriched category template
 - PIM-10914: Add title and ellipsis for long labels on attribute select
+- PIM-10967: Fix inconsistency on DQI completeness recommendation
+- PIM-10639 : Prevent users to change his password without providing its current password
 
 ## Improvements
 

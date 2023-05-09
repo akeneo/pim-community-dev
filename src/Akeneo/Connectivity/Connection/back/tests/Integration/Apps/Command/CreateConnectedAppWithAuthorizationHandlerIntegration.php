@@ -158,7 +158,7 @@ class CreateConnectedAppWithAuthorizationHandlerIntegration extends TestCase
     /**
      * @dataProvider throwExceptionDataProvider
      */
-    public function test_it_throws_when_the_command_is_not_valid(string $clientId, $expectedMessage)
+    public function test_it_throws_when_the_command_is_not_valid(string $clientId, string $expectedMessage): void
     {
         $command = new CreateConnectedAppWithAuthorizationCommand($clientId);
 
@@ -167,7 +167,7 @@ class CreateConnectedAppWithAuthorizationHandlerIntegration extends TestCase
         $this->handler->handle($command);
     }
 
-    public function test_it_handles_confirmation()
+    public function test_it_handles_confirmation(): void
     {
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
         $appName = 'Akeneo Shopware 6 Connector by EIKONA Media';
@@ -199,9 +199,10 @@ class CreateConnectedAppWithAuthorizationHandlerIntegration extends TestCase
         /** @var Collection $userGroups */
         $userGroups = $foundUser->getGroups();
         Assert::assertEquals(1, $userGroups->count(), 'User do not belong to exactly 1 group');
-        Assert::assertTrue($userGroups->exists(function (int $index, Group $group) {
-            return $group->getType() === 'app' && $group->getName() !== User::GROUP_DEFAULT;
-        }), 'The user group created is not of type "app"');
+        Assert::assertTrue(
+            $userGroups->exists(fn (int $index, Group $group): bool => $group->getType() === 'app' && $group->getName() !== User::GROUP_DEFAULT),
+            'The user group created is not of type "app"'
+        );
 
         $userRoles = $foundUser->getRoles();
         Assert::assertCount(1, $userRoles, 'User do not have exactly 1 role');
@@ -211,7 +212,7 @@ class CreateConnectedAppWithAuthorizationHandlerIntegration extends TestCase
         $this->assertPermissionsGrantedFromScopes($roleWithPermissions->permissions(), $foundApp->getScopes());
     }
 
-    private function assertPermissionsGrantedFromScopes(array $permissions, array $scopes)
+    private function assertPermissionsGrantedFromScopes(array $permissions, array $scopes): void
     {
         $acls = $this->scopeMapperRegistry->getAcls($scopes);
 

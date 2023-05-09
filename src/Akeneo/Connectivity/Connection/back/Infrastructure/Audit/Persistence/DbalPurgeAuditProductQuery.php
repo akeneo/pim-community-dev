@@ -14,11 +14,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class DbalPurgeAuditProductQuery implements PurgeAuditProductQueryInterface
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function execute(\DateTimeImmutable $before): int
@@ -27,7 +24,7 @@ class DbalPurgeAuditProductQuery implements PurgeAuditProductQueryInterface
 DELETE FROM akeneo_connectivity_connection_audit_product
 WHERE event_datetime < :before
 SQL;
-        return $this->connection->executeUpdate(
+        return $this->connection->executeStatement(
             $deleteQuery,
             ['before' => $before],
             ['before' => Types::DATETIME_IMMUTABLE]

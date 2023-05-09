@@ -29,11 +29,11 @@ final class UpdateConnectionAction
 
     public function __invoke(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+        if (!$this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
-        $data = \json_decode($request->getContent(), true);
+        $data = \json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         // TODO: Valid JSON format
 
         $command = new UpdateConnectionCommand(

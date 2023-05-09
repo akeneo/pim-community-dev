@@ -26,7 +26,7 @@ class FosRegenerateClientSecretSpec extends ObjectBehavior
         $this->beConstructedWith($clientManager, $dbalConnection);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(FosRegenerateClientSecret::class);
         $this->shouldImplement(RegenerateClientSecretInterface::class);
@@ -38,7 +38,7 @@ class FosRegenerateClientSecretSpec extends ObjectBehavior
         Client $client,
         Statement $stmt1,
         Statement $stmt2
-    ) {
+    ): void {
         $clientId = new ClientId(1);
 
         $clientManager->findClientBy(['id' => $clientId->id()])->willReturn($client);
@@ -54,7 +54,7 @@ class FosRegenerateClientSecretSpec extends ObjectBehavior
         $this->execute($clientId);
     }
 
-    public function it_throws_an_exception_if_client_not_found($clientManager, $dbalConnection)
+    public function it_throws_an_exception_if_client_not_found($clientManager, $dbalConnection): void
     {
         $clientId = new ClientId(123);
 

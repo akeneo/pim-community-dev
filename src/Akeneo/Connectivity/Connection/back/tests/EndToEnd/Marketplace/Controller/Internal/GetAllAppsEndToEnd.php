@@ -87,7 +87,7 @@ class GetAllAppsEndToEnd extends WebTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals([
@@ -113,7 +113,7 @@ class GetAllAppsEndToEnd extends WebTestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals([

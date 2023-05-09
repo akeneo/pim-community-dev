@@ -355,7 +355,6 @@ services:
         arguments:
             - '@pim_user.context.user'
             - '@pim_catalog.saver.category'
-            - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
@@ -368,7 +367,7 @@ services:
             - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
             - '@Akeneo\Category\Domain\Query\GetCategoryTreesInterface'
-            - '@feature_flags'
+            - '@category.command.message_bus'
             - { related_entity: product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]

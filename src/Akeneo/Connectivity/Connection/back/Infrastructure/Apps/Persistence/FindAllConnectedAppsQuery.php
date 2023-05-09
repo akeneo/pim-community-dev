@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence;
 
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindAllConnectedAppsQueryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -52,13 +53,11 @@ final class FindAllConnectedAppsQuery implements FindAllConnectedAppsQueryInterf
         ORDER BY connected_app.name ASC
         SQL;
 
-        $dataRows = $this->connection->executeQuery($selectSQL)->fetchAll();
+        $dataRows = $this->connection->executeQuery($selectSQL)->fetchAllAssociative();
 
-        $connectedApps = \array_map(
-            fn ($dataRow) => $this->denormalizeRow($dataRow),
+        return \array_map(
+            fn ($dataRow): ConnectedApp => $this->denormalizeRow($dataRow),
             $dataRows
         );
-
-        return $connectedApps;
     }
 }

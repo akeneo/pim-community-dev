@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Marketplace;
 
-use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetUserProfileQueryInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
-use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -15,22 +13,15 @@ use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
  */
 class MarketplaceAnalyticsGenerator
 {
-    private GetUserProfileQueryInterface $getUserProfileQuery;
-    private WebMarketplaceAliasesInterface $webMarketplaceAliases;
-    private PimUrl $pimUrl;
-
     public function __construct(
-        GetUserProfileQueryInterface $getUserProfileQuery,
-        WebMarketplaceAliasesInterface $webMarketplaceAliases,
-        PimUrl $pimUrl
+        private GetUserProfileQueryInterface $getUserProfileQuery,
+        private WebMarketplaceAliasesInterface $webMarketplaceAliases,
+        private PimUrl $pimUrl
     ) {
-        $this->getUserProfileQuery = $getUserProfileQuery;
-        $this->webMarketplaceAliases = $webMarketplaceAliases;
-        $this->pimUrl = $pimUrl;
     }
 
     /**
-     * @return array<string, string>
+     * @return array{utm_medium: string, utm_content: string, utm_source: string, utm_term?: string, utm_campaign?: string}
      */
     public function getExtensionQueryParameters(string $username): array
     {

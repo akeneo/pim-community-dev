@@ -29,7 +29,7 @@ class ProduceProductEventEndToEnd extends ApiTestCase
         $this->productLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product');
     }
 
-    public function test_create_product_add_business_event_to_queue()
+    public function test_create_product_add_business_event_to_queue(): void
     {
         $apiConnectionEcommerce = $this->createConnection('ecommerce', 'Ecommerce', FlowType::DATA_DESTINATION);
         $apiClient = $this->createAuthenticatedClient(
@@ -51,7 +51,7 @@ JSON;
         $this->assertEventCount(1, ProductCreated::class);
     }
 
-    public function test_update_product_add_business_event_to_queue()
+    public function test_update_product_add_business_event_to_queue(): void
     {
         $this->productLoader->create('product_update_test', []);
 
@@ -75,7 +75,7 @@ JSON;
         $this->assertEventCount(1, ProductUpdated::class);
     }
 
-    public function test_remove_product_add_business_event_to_queue()
+    public function test_remove_product_add_business_event_to_queue(): void
     {
         $this->productLoader->create('product_to_remove_test', []);
 

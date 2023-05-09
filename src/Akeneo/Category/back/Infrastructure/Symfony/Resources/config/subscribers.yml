@@ -30,25 +30,9 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Category\Infrastructure\EventSubscriber\RemoveCategoryTreeTemplateSubscriber:
-        arguments:
-            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
-            - '@Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree'
-            - '@Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid'
-            - '@akeneo.category.enriched.feature'
-        tags:
-            - { name: kernel.event_subscriber }
-
     Akeneo\Category\Infrastructure\EventSubscriber\UpdateCategoryVersionSubscriber:
         arguments:
             - '@Akeneo\Tool\Bundle\VersioningBundle\ServiceApi\VersionBuilder'
             - '@Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder'
         tags:
             - { name: 'kernel.event_subscriber' }
-
-    Akeneo\Category\Infrastructure\EventSubscriber\RemoveTemplateAndAttributesAfterCategoryTreeDeletionSubscriber:
-        arguments:
-            - '@akeneo.category.enriched.feature'
-            - '@Akeneo\Category\Application\Query\DeleteTemplateAndAttributes'
-        tags:
-            - { name: kernel.event_subscriber }

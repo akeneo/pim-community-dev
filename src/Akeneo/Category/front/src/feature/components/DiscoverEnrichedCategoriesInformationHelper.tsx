@@ -39,18 +39,18 @@ const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
         title={translate('akeneo.category.discover_enriched_categories_information.title')}
       >
         <List>
-          <Item>{translate('akeneo.category.discover_enriched_categories_information.content.activate_template')}</Item>
+          <Item>{translate('akeneo.category.discover_enriched_categories_information.content.enrich_attribute_values')}</Item>
           <Item>
-            {translate('akeneo.category.discover_enriched_categories_information.content.enrich_attribute_values')}
+            {translate('akeneo.category.discover_enriched_categories_information.content.customizable_templates')}
           </Item>
-          <Item>{translate('akeneo.category.discover_enriched_categories_information.content.custom_template')}</Item>
+          <Item>{translate('akeneo.category.discover_enriched_categories_information.content.edit_attributes')}</Item>
         </List>
         <Footer>
-          <Link href={surveyLink} target="_blank">
-            {translate('akeneo.category.discover_enriched_categories_information.survey_link_label')}
-          </Link>
           <Link href="https://help.akeneo.com/pim/serenity/articles/enrich-your-category.html" target="_blank">
             {translate('akeneo.category.discover_enriched_categories_information.learn_more_link_label')}
+          </Link>
+          <Link href={surveyLink} target="_blank">
+            {translate('akeneo.category.discover_enriched_categories_information.survey_link_label')}
           </Link>
         </Footer>
       </Information>

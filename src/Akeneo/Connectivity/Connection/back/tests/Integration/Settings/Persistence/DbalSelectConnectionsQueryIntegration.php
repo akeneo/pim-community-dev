@@ -32,7 +32,7 @@ class DbalSelectConnectionsQueryIntegration extends TestCase
         $this->selectConnectionsQuery = $this->get(DbalSelectConnectionsQuery::class);
     }
 
-    public function test_it_fetches_connections()
+    public function test_it_fetches_connections(): void
     {
         $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
         \sleep(1); // Avoid having the same creation datetime
@@ -53,7 +53,7 @@ class DbalSelectConnectionsQueryIntegration extends TestCase
         Assert::assertSame('app', $connections[0]->code());
     }
 
-    public function test_it_fetches_without_connection()
+    public function test_it_fetches_without_connection(): void
     {
         $connections = $this->selectConnectionsQuery->execute();
 

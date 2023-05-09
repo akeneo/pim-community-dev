@@ -63,9 +63,7 @@ SQL;
 
         // If there is more than one line, remove the one with the default user group (null).
         if (\count($data) > 1) {
-            $data = \array_filter($data, function (array $row) {
-                return null !== $row['group_id'];
-            });
+            $data = \array_filter($data, fn (array $row): bool => null !== $row['group_id']);
         }
         $row = \array_pop($data);
 

@@ -57,8 +57,8 @@ final class UpdateAuditData
         $hourlyIntervalsToRefresh = $this->selectHourlyIntervalsToRefreshQuery->execute();
         foreach ($hourlyIntervalsToRefresh as $hourlyInterval) {
             // Ignore the current and previous hour; already added.
-            if (true === $currentHourlyInterval->equals($hourlyInterval)
-                || true === $previousHourlyInterval->equals($hourlyInterval)
+            if ($currentHourlyInterval->equals($hourlyInterval)
+                || $previousHourlyInterval->equals($hourlyInterval)
             ) {
                 continue;
             }

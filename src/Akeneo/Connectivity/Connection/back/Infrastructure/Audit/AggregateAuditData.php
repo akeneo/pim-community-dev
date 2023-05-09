@@ -74,7 +74,7 @@ final class AggregateAuditData
             function (array $dailyEventCounts, HourlyEventCount $hourlyEventCount) use ($dateTimeZone): array {
                 $eventDate = $hourlyEventCount->dateTime()->setTimezone($dateTimeZone)->format('Y-m-d');
 
-                if (false === isset($dailyEventCounts[$eventDate])) {
+                if (!isset($dailyEventCounts[$eventDate])) {
                     $dailyEventCounts[$eventDate] = 0;
                 }
                 $dailyEventCounts[$eventDate] += $hourlyEventCount->count();

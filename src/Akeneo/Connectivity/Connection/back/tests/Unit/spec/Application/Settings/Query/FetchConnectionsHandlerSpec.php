@@ -19,17 +19,17 @@ use PhpSpec\ObjectBehavior;
  */
 class FetchConnectionsHandlerSpec extends ObjectBehavior
 {
-    public function let(SelectConnectionsQueryInterface $selectConnectionsQuery)
+    public function let(SelectConnectionsQueryInterface $selectConnectionsQuery): void
     {
         $this->beConstructedWith($selectConnectionsQuery);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(FetchConnectionsHandler::class);
     }
 
-    public function it_fetches_connections(SelectConnectionsQueryInterface $selectConnectionsQuery)
+    public function it_fetches_connections(SelectConnectionsQueryInterface $selectConnectionsQuery): void
     {
         $connections = [
             new Connection('42', 'magento', 'Magento Connector', FlowType::DATA_DESTINATION, true),
