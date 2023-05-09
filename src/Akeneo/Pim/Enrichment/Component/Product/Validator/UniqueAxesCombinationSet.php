@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Contains the state of the unique axis values combination for an entity with family variant.
@@ -53,40 +54,33 @@ class UniqueAxesCombinationSet
         $parentCode = $entity->getParent()->getCode();
 
         if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
-            $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination];
-            if ($cachedIdentifier !== $entity->getIdentifier()) {
-                if ($entity instanceof ProductInterface) {
-                    throw new AlreadyExistingAxisValueCombinationException(
-                        $cachedIdentifier,
-                        sprintf(
-                            'Variant product "%s" already have the "%s" combination of axis values.',
-                            $cachedIdentifier,
-                            $axisValueCombination
-                        )
-                    );
-                }
-
+            $cachedIdentifierOrUuid = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination];
+            if ($entity instanceof ProductInterface && $cachedIdentifierOrUuid['uuid'] !== $entity->getUuid()->toString()) {
                 throw new AlreadyExistingAxisValueCombinationException(
-                    $cachedIdentifier,
+                    $cachedIdentifierOrUuid['identifier'] ?? $cachedIdentifierOrUuid['uuid'],
+                    sprintf(
+                        'Variant product "%s" already have the "%s" combination of axis values.',
+                        $cachedIdentifierOrUuid['identifier'] ?? $cachedIdentifierOrUuid['uuid'],
+                        $axisValueCombination
+                    )
+                );
+            } elseif ($entity instanceof ProductModelInterface && $cachedIdentifierOrUuid['identifier'] !== $entity->getIdentifier()) {
+                throw new AlreadyExistingAxisValueCombinationException(
+                    $cachedIdentifierOrUuid['identifier'],
                     sprintf(
                         'Product model "%s" already have the "%s" combination of axis values.',
-                        $cachedIdentifier,
+                        $cachedIdentifierOrUuid['identifier'],
                         $axisValueCombination
                     )
                 );
             }
         }
 
-        if (!isset($this->uniqueAxesCombination[$familyVariantCode])) {
-            $this->uniqueAxesCombination[$familyVariantCode] = [];
-        }
-
-        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$parentCode] = [];
-        }
-
         if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination] = $entity->getIdentifier();
+            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination]['identifier'] = $entity->getIdentifier();
+            if ($entity instanceof ProductInterface) {
+                $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination]['uuid'] = $entity->getUuid()->toString();
+            }
         }
     }
 }
