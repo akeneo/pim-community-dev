@@ -1113,8 +1113,10 @@ abstract class AbstractAttribute implements AttributeInterface
         return $this->mainIdentifier;
     }
 
-    public function setIsMainIdentifier(bool $isMainIdentifier): void
+    public function setIsMainIdentifier(bool $isMainIdentifier): self
     {
         $this->mainIdentifier = $isMainIdentifier;
+
+        return $this;
     }
 }

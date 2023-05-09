@@ -18,7 +18,6 @@ final class ChangeMainIdentifierHandler
 {
     public function __construct(
         private readonly AttributeRepositoryInterface $attributeRepository,
-        private readonly Connection $connection
     ) {
     }
 
@@ -31,14 +30,6 @@ final class ChangeMainIdentifierHandler
         if ($newMainIdentifier->isMainIdentifier()) {
             return;
         }
-        $this->updateMainIdentifier($newMainIdentifier);
-    }
-
-    private function updateMainIdentifier(AttributeInterface $attribute): void
-    {
-        $this->connection->executeStatement(
-            'UPDATE pim_catalog_attribute SET main_identifier = (code = :code)',
-            ['code' => $attribute->getCode()]
-        );
+        $this->attributeRepository->updateMainIdentifier($newMainIdentifier);
     }
 }

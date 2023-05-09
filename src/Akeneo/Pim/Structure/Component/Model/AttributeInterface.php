@@ -677,5 +677,5 @@ interface AttributeInterface extends
 
     public function isMainIdentifier(): bool;
 
-    public function setIsMainIdentifier(bool $isMainIdentifier): void;
+    public function setIsMainIdentifier(bool $isMainIdentifier): AttributeInterface;
 }

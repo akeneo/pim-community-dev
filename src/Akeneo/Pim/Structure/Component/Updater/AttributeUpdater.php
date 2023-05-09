@@ -149,6 +149,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 'localizable',
                 'scopable',
                 'required',
+                'is_main_identifier'
             ], $this->properties)
         )) {
             if (null !== $data && !is_scalar($data)) {
@@ -244,6 +245,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         try {
             $this->accessor->setValue($attribute, $field, $data);
         } catch (NoSuchPropertyException $e) {
+            dd(2);
             throw UnknownPropertyException::unknownProperty($field, $e);
         }
     }

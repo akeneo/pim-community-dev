@@ -57,6 +57,7 @@ final class ProductCreation implements Context
     {
         $attribute = (new Attribute\Builder())->aIdentifier()
             ->withCode($identifierAttributeCode)
+            ->isMainIdentifier(true)
             ->build();
 
         $this->attributeSaver->save($attribute);

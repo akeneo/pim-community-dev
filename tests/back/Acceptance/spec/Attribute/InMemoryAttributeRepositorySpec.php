@@ -13,22 +13,22 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 class InMemoryAttributeRepositorySpec extends ObjectBehavior
 {
-    function it_is_an_attribute_repository()
+    public function it_is_an_attribute_repository(): void
     {
         $this->shouldImplement(AttributeRepositoryInterface::class);
     }
 
-    function it_is_a_saver()
+    public function it_is_a_saver(): void
     {
         $this->shouldImplement(SaverInterface::class);
     }
 
-    function it_returns_an_identifier_property()
+    public function it_returns_an_identifier_property(): void
     {
         $this->getIdentifierProperties()->shouldReturn(['code']);
     }
 
-    function it_finds_one_attribute_by_identifier()
+    public function it_finds_one_attribute_by_identifier(): void
     {
         $attribute = $this->createAttribute('attribute_1');
         $this->beConstructedWith([$attribute->getCode() => $attribute]);
@@ -36,7 +36,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findOneByIdentifier('attribute_1')->shouldReturn($attribute);
     }
 
-    function it_does_not_find_an_attribute_by_identifier()
+    public function it_does_not_find_an_attribute_by_identifier(): void
     {
         $attribute = $this->createAttribute('attribute_1');
         $this->beConstructedWith([$attribute->getCode() => $attribute]);
@@ -44,7 +44,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findOneByIdentifier('attribute_2')->shouldReturn(null);
     }
 
-    function it_saves_an_attribute()
+    public function it_saves_an_attribute(): void
     {
         $attribute = $this->createAttribute('attribute_1');
         $this->save($attribute);
@@ -52,7 +52,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findOneByIdentifier('attribute_1')->shouldReturn($attribute);
     }
 
-    function it_finds_attributes_by_criteria()
+    public function it_finds_attributes_by_criteria(): void
     {
         $attribute = $this->createAttribute('attribute_1');
         $this->beConstructedWith([$attribute->getCode() => $attribute]);
@@ -60,7 +60,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findBy(['code' => 'attribute_1'])->shouldReturn([$attribute]);
     }
 
-    function it_does_not_find_attributes_by_criteria()
+    public function it_does_not_find_attributes_by_criteria(): void
     {
         $attribute = $this->createAttribute('attribute_1');
         $this->beConstructedWith([$attribute->getCode() => $attribute]);
@@ -68,7 +68,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findBy(['code' => 'attribute_2'])->shouldReturn([]);
     }
 
-    function it_finds_attributes_by_array_criteria()
+    public function it_finds_attributes_by_array_criteria(): void
     {
         $attribute1 = $this->createAttribute('attribute_1');
         $attribute2 = $this->createAttribute('attribute_2');
@@ -83,7 +83,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findBy(['code' => ['attribute_1', 'attribute_2']])->shouldReturn([$attribute1, $attribute2]);
     }
 
-    function it_finds_one_attribute_by_array_criteria()
+    public function it_finds_one_attribute_by_array_criteria(): void
     {
         $attribute1 = $this->createAttribute('attribute_1');
         $attribute2 = $this->createAttribute('attribute_2');
@@ -98,16 +98,19 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findOneBy(['code' => ['attribute_1', 'attribute_2']])->shouldReturn($attribute1);
     }
 
-    function it_throws_an_exception_if_saved_object_is_not_an_attribute(\StdClass $object)
+    public function it_throws_an_exception_if_saved_object_is_not_an_attribute(\StdClass $object): void
     {
         $this
             ->shouldThrow(new \InvalidArgumentException('The object argument should be a attribute'))
             ->during('save', [$object]);
     }
 
-    function it_gets_the_identifier_attribute()
+    public function it_gets_the_main_identifier_attribute(): void
     {
-        $identifier = (new Attribute())->setType(AttributeTypes::IDENTIFIER);
+        $identifier = (new Attribute())
+            ->setType(AttributeTypes::IDENTIFIER)
+            ->setIsMainIdentifier(true)
+        ;
 
         $this->save($identifier);
         $this->save((new Attribute())->setCode('name'));
@@ -115,7 +118,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->getIdentifier()->shouldReturn($identifier);
     }
 
-    function it_gets_attribute_types_by_codes()
+    public function it_gets_attribute_types_by_codes(): void
     {
         $attribute1 = $this->createAttribute('attribute_1', 'attributetype_1');
         $attribute2 = $this->createAttribute('attribute_2', 'attributetype_2');
@@ -135,7 +138,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_finds_media_attribute_codes()
+    public function it_finds_media_attribute_codes(): void
     {
         $attribute1 = $this->createAttribute('attribute_1', null, AttributeTypes::BACKEND_TYPE_BOOLEAN);
         $attribute2 = $this->createAttribute('attribute_2', null, AttributeTypes::BACKEND_TYPE_MEDIA);
@@ -154,7 +157,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findMediaAttributeCodes()->shouldReturn(['attribute_2', 'attribute_4']);
     }
 
-    function it_finds_all_attributes()
+    public function it_finds_all_attributes(): void
     {
         $attribute1 = $this->createAttribute('attribute_1', null, AttributeTypes::BACKEND_TYPE_BOOLEAN);
         $attribute2 = $this->createAttribute('attribute_2', null, AttributeTypes::BACKEND_TYPE_MEDIA);
@@ -176,7 +179,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         ]);
     }
 
-    function it_finds_the_attribute_codes_by_type()
+    public function it_finds_the_attribute_codes_by_type(): void
     {
         $attribute1 = $this->createAttribute('attribute_1', AttributeTypes::BOOLEAN);
         $attribute2 = $this->createAttribute('attribute_2', AttributeTypes::FILE);
@@ -192,6 +195,29 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->getAttributeCodesByType(AttributeTypes::FILE)->shouldReturn(['attribute_2', 'attribute_4']);
         $this->getAttributeCodesByType(AttributeTypes::BOOLEAN)->shouldReturn(['attribute_1']);
         $this->getAttributeCodesByType(AttributeTypes::DATE)->shouldReturn([]);
+    }
+
+    public function it_changes_the_main_identifier(): void
+    {
+        $firstIdentifier = (new Attribute())
+            ->setType(AttributeTypes::IDENTIFIER)
+            ->setCode('name')
+            ->setIsMainIdentifier(true)
+        ;
+
+        $this->save($firstIdentifier);
+
+        $this->getIdentifier()->shouldReturn($firstIdentifier);
+
+        $secondIdentifier = (new Attribute())
+            ->setType(AttributeTypes::IDENTIFIER)
+            ->setCode('new_one')
+        ;
+        $this->save($secondIdentifier);
+        $this->updateMainIdentifier($secondIdentifier);
+        $this->getIdentifier()->shouldReturn($secondIdentifier);
+
+        $this->getAttributeCodesByType(AttributeTypes::IDENTIFIER)->shouldReturn(['name', 'new_one']);
     }
 
     private function createAttribute(string $code, string $type = null, string $backendType = null): AttributeInterface

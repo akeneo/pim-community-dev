@@ -8,9 +8,9 @@ Feature: Validate scopable values of a product
     And the following locales "en_US"
     And the following "ecommerce" channel with locales "en_US"
     And the following attributes:
-      | code        | type                     | scopable |
-      | sku         | pim_catalog_identifier   | 0        |
-      | description | pim_catalog_text         | 1        |
+      | code        | type                     | scopable | is_main_identifier |
+      | sku         | pim_catalog_identifier   | 0        | 1                  |
+      | description | pim_catalog_text         | 1        | 0                  |
 
   @acceptance-back
   Scenario: Providing an existing scopable attribute should not raise an error

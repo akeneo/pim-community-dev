@@ -6,10 +6,10 @@ Feature: Validate simple and multi-select attributes of a product
   Background:
     Given an authenticated user
     And the following attributes:
-      | code        | type                     |
-      | sku         | pim_catalog_identifier   |
-      | color       | pim_catalog_simpleselect |
-      | collections | pim_catalog_multiselect  |
+      | code        | type                     | is_main_identifier |
+      | sku         | pim_catalog_identifier   | 1                  |
+      | color       | pim_catalog_simpleselect | 0                  |
+      | collections | pim_catalog_multiselect  | 0                  |
     And the following attribute options:
       | attribute   | code        |
       | color       | red         |

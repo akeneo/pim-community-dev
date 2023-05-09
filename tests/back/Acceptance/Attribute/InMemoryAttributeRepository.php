@@ -186,6 +186,12 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
             return  $attribute->getType() === AttributeTypes::IDENTIFIER && $attribute->isMainIdentifier();
         })->first();
 
+        if (false === $attribute) {
+            $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
+                return  $attribute->getType() === AttributeTypes::IDENTIFIER && 'sku' === $attribute->getCode();
+            })->first();
+        }
+
         return false !== $attribute ? $attribute : null;
     }
 
@@ -259,5 +265,17 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     public function findAvailableAxes($locale)
     {
         throw new NotImplementedException(__METHOD__);
+    }
+
+    public function updateMainIdentifier(AttributeInterface $attribute): void
+    {
+        $attributesArray = $this->attributes->toArray();
+        \array_walk($attributesArray, function (AttributeInterface $attribute) {
+            $attribute->setIsMainIdentifier(false);
+        });
+
+        /** @var AttributeInterface $mainAttribute */
+        $mainAttribute = $this->attributes->get($attribute->getCode());
+        $mainAttribute->setIsMainIdentifier(true);
     }
 }

@@ -246,10 +246,10 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier(): AttributeInterface
+    public function getIdentifier(): ?AttributeInterface
     {
         // TODO CPM-1053
-        if ($this->isPreviousDatabaseVersion()) {
+        if ($this->isCurrentDatabaseVersion()) {
             return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER, 'mainIdentifier' => true]);
         } else {
             return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
@@ -269,7 +269,7 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
                 ->setMaxResults(1);
 
             // TODO CPM-1053
-            if ($this->isPreviousDatabaseVersion()) {
+            if ($this->isCurrentDatabaseVersion()) {
                 $query->andWhere('a.mainIdentifier = TRUE');
             }
 
@@ -378,10 +378,32 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
     }
 
     // TODO CPM-1053
-    private function isPreviousDatabaseVersion(): bool
+    private function isCurrentDatabaseVersion(): bool
     {
-        $metadata = $this->getEntityManager()->getClassMetadata($this->_entityName);
+        $connection = $this->_em->getConnection();
+        $schema = $connection->getDatabase();
+        $sql = <<<SQL
+            SELECT count(*) FROM information_schema.COLUMNS
+            WHERE table_schema=:schema 
+              AND table_name=:tableName
+              AND column_name=:columnName;
+        SQL;
 
-        return $metadata->hasField('mainIdentifier');
+        $result = $connection->fetchOne($sql, [
+            'schema' => $schema,
+            'tableName' => 'pim_catalog_attribute',
+            'columnName' => 'mainIdentifier'
+        ]);
+
+        return \intval($result) > 0;
+    }
+
+    public function updateMainIdentifier(AttributeInterface $attribute): void
+    {
+        $connection = $this->_em->getConnection();
+        $connection->executeStatement(
+            'UPDATE pim_catalog_attribute SET main_identifier = (code = :code)',
+            ['code' => $attribute->getCode()]
+        );
     }
 }

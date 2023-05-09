@@ -258,7 +258,6 @@ services:
     Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifierHandler:
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@database_connection'
 
     Akeneo\Pim\Structure\Bundle\Controller\InternalApi\UpdateMainIdentifierAction:
         arguments:

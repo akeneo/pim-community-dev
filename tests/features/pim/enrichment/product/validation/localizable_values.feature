@@ -9,11 +9,11 @@ Background:
   And the following "ecommerce" channel with locales "en_US"
   And the following "mobile" channel with locales "fr_FR"
   And the following attributes:
-    | code        | type                   | scopable | localizable | available_locales |
-    | sku         | pim_catalog_identifier | 0        | 0           |                   |
-    | name        | pim_catalog_text       | 0        | 1           |                   |
-    | description | pim_catalog_textarea   | 1        | 1           |                   |
-    | gdpr        | pim_catalog_text       | 0        | 1           | fr_FR             |
+    | code        | type                   | scopable | localizable | available_locales | is_main_identifier |
+    | sku         | pim_catalog_identifier | 0        | 0           |                   | 1                  |
+    | name        | pim_catalog_text       | 0        | 1           |                   | 0                  |
+    | description | pim_catalog_textarea   | 1        | 1           |                   | 0                  |
+    | gdpr        | pim_catalog_text       | 0        | 1           | fr_FR             | 0                  |
 
   @acceptance-back
   Scenario: Providing an active locale should not raise an error

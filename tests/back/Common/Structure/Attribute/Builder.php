@@ -45,6 +45,8 @@ class Builder
     /** @var string[] */
     private array $guidelines = [];
 
+    private bool $isMainIdentifier;
+
     public function __construct()
     {
         $this->code = Code::fromString('code');
@@ -54,6 +56,7 @@ class Builder
         $this->specificlocalizable = false;
         $this->scopable = false;
         $this->backendType = AttributeTypes::BACKEND_TYPE_TEXT;
+        $this->isMainIdentifier = false;
     }
 
     /**
@@ -82,6 +85,7 @@ class Builder
         foreach ($this->guidelines as $localeCode => $localeGuidelines) {
             $attribute->addGuidelines($localeCode, $localeGuidelines);
         }
+        $attribute->setIsMainIdentifier($this->isMainIdentifier);
 
         return $attribute;
     }
@@ -170,6 +174,13 @@ class Builder
     public function scopable(): Builder
     {
         $this->scopable = true;
+
+        return $this;
+    }
+
+    public function isMainIdentifier(bool $isMainIdentifier): Builder
+    {
+        $this->isMainIdentifier = $isMainIdentifier;
 
         return $this;
     }
