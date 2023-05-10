@@ -163,19 +163,19 @@ class LightEntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $variantProductRatioQuery->findComplete($productModel)->willReturn(new CompleteVariantProducts(
             [
                 [
-                    'product_identifier' => 'tshirt_green_s',
+                    'product_uuid' => 'fef4e0bd-63e1-4eba-b89a-8298ab895d78',
                     'channel_code' => 'ecommerce',
                     'locale_code' => 'en_US',
                     'complete' => 0,
                 ],
                 [
-                    'product_identifier' => 'tshirt_green_m',
+                    'product_uuid' => '0285ef68-6d73-4591-bc29-510985834e87',
                     'channel_code' => 'ecommerce',
                     'locale_code' => 'en_US',
                     'complete' => 1,
                 ],
                 [
-                    'product_identifier' => 'tshirt_green_l',
+                    'product_uuid' => '4bda4603-dc11-4754-9934-1105079e5aa6',
                     'channel_code' => 'ecommerce',
                     'locale_code' => 'en_US',
                     'complete' => 1,

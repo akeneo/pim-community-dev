@@ -83,11 +83,11 @@ SQL;
             SELECT
                 channel.code AS channel_code,
                 locale.code AS locale_code,
-                product.identifier as product_identifier,
+                product.uuid as product_uuid,
                 CASE WHEN (product.product_missing_count = 0) THEN 1 ELSE 0 END as complete
             FROM
               (
-                SELECT DISTINCT product.identifier, completeness.locale_id, completeness.channel_id, completeness.missing_count as product_missing_count
+                SELECT DISTINCT product.uuid, completeness.locale_id, completeness.channel_id, completeness.missing_count as product_missing_count
                 %s
                 INNER JOIN pim_catalog_completeness completeness ON product.uuid = completeness.product_uuid
                 WHERE
