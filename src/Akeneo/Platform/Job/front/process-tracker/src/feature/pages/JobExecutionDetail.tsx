@@ -241,7 +241,6 @@ const JobExecutionDetail = ({jobExecutionId}: JobExecutionDetailProps) => {
             <StatusContainer>
               {translate('pim_common.status')}
               <JobExecutionStatus
-                showTooltip={true}
                 data-testid="job-status"
                 status={jobExecution.tracking.status}
                 currentStep={jobExecution.tracking.currentStep}

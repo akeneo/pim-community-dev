@@ -66,7 +66,6 @@ const LastExecutionTable = ({sticky, jobExecutionRows, onTableRefresh}: LastExec
             <ProgressCell jobExecutionRow={jobExecutionRow} />
             <Table.Cell>
               <JobExecutionStatus
-                showTooltip={false}
                 status={jobExecutionRow.status}
                 hasWarning={jobExecutionRow.warning_count > 0}
                 hasError={jobExecutionRow.has_error}

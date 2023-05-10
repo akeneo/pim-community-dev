@@ -28,7 +28,6 @@ type JobExecutionStatusProps = {
   totalSteps: number;
   hasWarning: boolean;
   hasError: boolean;
-  showTooltip: boolean;
 };
 
 const JobExecutionStatus = ({
@@ -37,12 +36,11 @@ const JobExecutionStatus = ({
   totalSteps,
   hasWarning,
   hasError,
-  showTooltip,
   ...props
 }: JobExecutionStatusProps) => {
   const translate = useTranslate();
   const level = badgeLevel(status, hasError, hasWarning);
-  const isTooltipDisplayed = isPaused(status) && showTooltip;
+  const showTooltip = isPaused(status);
 
   const label = isInProgress(status)
     ? `${translate(`akeneo_job.job_status.${status}`)} ${currentStep}/${totalSteps}`
@@ -53,7 +51,7 @@ const JobExecutionStatus = ({
       <Badge level={level} {...props}>
         {label}
       </Badge>
-      {isTooltipDisplayed && (
+      {showTooltip && (
         <Tooltip direction="bottom" iconSize={17}>
           {translate('akeneo_job_process_tracker.tooltip.paused')}
         </Tooltip>

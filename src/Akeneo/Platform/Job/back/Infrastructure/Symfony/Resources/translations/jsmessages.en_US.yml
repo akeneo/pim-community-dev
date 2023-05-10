@@ -65,6 +65,8 @@ akeneo_job_process_tracker:
     stopping: Stopping
     unknown: Unknown
     in_progress: In progress
+    pausing: Pausing
+    paused: Paused
   automation_filter:
     all: All
     yes: Yes
