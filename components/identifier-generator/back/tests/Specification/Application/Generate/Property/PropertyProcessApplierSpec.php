@@ -5,12 +5,19 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\IdentifierGenerator\Application\Generate\Property;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnableToTruncateException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedAttributeException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedNomenclatureException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnexpectedAttributeTypeException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\ReferenceEntityProperty;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReferenceEntityNomenclatureRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
 
 class PropertyProcessApplierSpec extends ObjectBehavior
@@ -18,12 +25,20 @@ class PropertyProcessApplierSpec extends ObjectBehavior
     private static string $TARGET = 'sku';
     private static string $PREFIX = 'AKN-';
     private static string $SIMPLE_SELECT_ATTRIBUTE_CODE = 'size';
+    private static string $REF_ENTITY_ATTRIBUTE_CODE = 'brand';
 
     public function let(
         FamilyNomenclatureRepository $familyNomenclatureRepository,
         SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository,
+        GetAttributes $getAttributes,
+        ReferenceEntityNomenclatureRepository $referenceEntityNomenclatureRepository,
     ) {
-        $this->beConstructedWith($familyNomenclatureRepository, $simpleSelectNomenclatureRepository);
+        $this->beConstructedWith(
+            $familyNomenclatureRepository,
+            $simpleSelectNomenclatureRepository,
+            $getAttributes,
+            $referenceEntityNomenclatureRepository,
+        );
     }
 
     public function it_should_return_code_without_truncate(): void
@@ -244,5 +259,105 @@ class PropertyProcessApplierSpec extends ObjectBehavior
             self::$TARGET,
             self::$PREFIX,
         )->shouldReturn('fam');
+    }
+
+    public function it_should_return_reference_entity_code_with_valid_nomenclature_value(
+        GetAttributes $getAttributes,
+        ReferenceEntityNomenclatureRepository $referenceEntityNomenclatureRepository,
+    ): void {
+        $nomenclature = new NomenclatureDefinition('<=', 3, false, ['blue' => 'bl']);
+        $refEntityAttribute = new Attribute(
+            self::$REF_ENTITY_ATTRIBUTE_CODE,
+            AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT,
+            [],
+            false,
+            false,
+            null,
+            null,
+            null,
+            '',
+            [],
+            false,
+            []
+        );
+        $getAttributes
+            ->forCode(self::$REF_ENTITY_ATTRIBUTE_CODE)
+            ->shouldBeCalledOnce()
+            ->willReturn($refEntityAttribute);
+        $referenceEntityNomenclatureRepository
+            ->get(self::$REF_ENTITY_ATTRIBUTE_CODE)
+            ->shouldBeCalledOnce()
+            ->willReturn($nomenclature);
+
+        $this->apply(
+            Process::fromNormalized([
+                'type' => Process::PROCESS_TYPE_NOMENCLATURE,
+            ]),
+            self::$REF_ENTITY_ATTRIBUTE_CODE,
+            'blue',
+            self::$TARGET,
+            self::$PREFIX,
+        )->shouldReturn('bl');
+    }
+
+    public function it_should_throw_an_error_if_property_attribute_code_does_not_exists(
+        GetAttributes $getAttributes
+    ): void
+    {
+        $getAttributes
+            ->forCode(self::$REF_ENTITY_ATTRIBUTE_CODE)
+            ->shouldBeCalledOnce()
+            ->willReturn(null);
+
+        $this->shouldThrow(UndefinedAttributeException::class)->during(
+            'apply',
+            [
+                Process::fromNormalized([
+                    'type' => Process::PROCESS_TYPE_NOMENCLATURE,
+                ]),
+                ReferenceEntityProperty::type(),
+                self::$REF_ENTITY_ATTRIBUTE_CODE,
+                self::$TARGET,
+                self::$PREFIX,
+            ]
+        );
+    }
+
+    public function it_should_throw_an_error_if_property_attribute_type_is_not_expected(
+        GetAttributes $getAttributes
+    ): void
+    {
+        $getAttributes
+            ->forCode(self::$REF_ENTITY_ATTRIBUTE_CODE)
+            ->shouldBeCalledOnce()
+            ->willReturn(null);
+
+        $unexpectedAttribute = new Attribute(
+            'unexpectedAttribute',
+            AttributeTypes::TEXT,
+            [],
+            false,
+            false,
+            null,
+            null,
+            null,
+            '',
+            [],
+            false,
+            []
+        );
+
+        $this->shouldThrow(UnexpectedAttributeTypeException::class)->during(
+            'apply',
+            [
+                Process::fromNormalized([
+                    'type' => Process::PROCESS_TYPE_NOMENCLATURE,
+                ]),
+                ReferenceEntityProperty::type(),
+                self::$REF_ENTITY_ATTRIBUTE_CODE,
+                self::$TARGET,
+                self::$PREFIX,
+            ]
+        );
     }
 }
