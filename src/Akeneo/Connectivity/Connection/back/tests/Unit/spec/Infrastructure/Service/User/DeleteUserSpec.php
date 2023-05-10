@@ -25,7 +25,7 @@ class DeleteUserSpec extends ObjectBehavior
         $this->beConstructedWith($repository, $remover);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(DeleteUser::class);
         $this->shouldImplement(DeleteUserInterface::class);
@@ -43,7 +43,7 @@ class DeleteUserSpec extends ObjectBehavior
         $this->execute($userId);
     }
 
-    public function it_throws_an_exception_if_user_not_found($repository, $remover)
+    public function it_throws_an_exception_if_user_not_found($repository, $remover): void
     {
         $userId = new UserId(1);
 

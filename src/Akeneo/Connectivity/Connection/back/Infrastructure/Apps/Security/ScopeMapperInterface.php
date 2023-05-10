@@ -26,11 +26,7 @@ interface ScopeMapperInterface
     /**
      * @throw \InvalidArgumentException if the given scope does not exist.
      *
-     * @return array{
-     *      icon: string,
-     *      type: string,
-     *      entities: string,
-     * }
+     * @return array{icon: string, type: string, entities: string}|null
      */
     public function getMessage(string $scopeName): ?array;
 

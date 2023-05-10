@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetErrorCountPerConnectionActionEndToEnd extends WebTestCase
 {
-    public function test_it_get_error_count_per_connection()
+    public function test_it_get_error_count_per_connection(): void
     {
         $this->getConnectionLoader()->createConnection('sap', 'SAP', FlowType::DATA_SOURCE, true);
         $this->getConnectionLoader()->createConnection('bynder', 'Bynder', FlowType::DATA_SOURCE, true);
@@ -51,7 +51,7 @@ class GetErrorCountPerConnectionActionEndToEnd extends WebTestCase
                 'end_date' => '2020-01-07'
             ],
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $expectedResult = [
             'bynder' => 15,

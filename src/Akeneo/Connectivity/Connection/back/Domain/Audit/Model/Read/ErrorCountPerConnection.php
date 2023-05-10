@@ -12,14 +12,13 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Model\Read;
 final class ErrorCountPerConnection
 {
     /** @var ErrorCount[] */
-    private array $errorCounts;
+    private array $errorCounts = [];
 
     /**
      * @param ErrorCount[] $errorCounts
      */
     public function __construct(array $errorCounts)
     {
-        $this->errorCounts = [];
         foreach ($errorCounts as $errorCount) {
             if (!$errorCount instanceof ErrorCount) {
                 throw new \InvalidArgumentException('One of the given element is not an ErrorCount object.');

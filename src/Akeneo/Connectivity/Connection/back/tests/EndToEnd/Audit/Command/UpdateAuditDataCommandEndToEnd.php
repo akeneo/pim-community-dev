@@ -65,7 +65,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(3, $this->getAuditCount($connection->code(), EventTypes::PRODUCT_UPDATED));
     }
 
-    public function test_updates_audit_data_only_for_auditable_connection()
+    public function test_updates_audit_data_only_for_auditable_connection(): void
     {
         $erpConnection = $this->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
         $otherConnection = $this->createConnection('another_source', 'Another source', FlowType::DATA_SOURCE, false);
@@ -102,7 +102,7 @@ class UpdateAuditDataCommandEndToEnd extends CommandTestCase
         Assert::assertEquals(0, $this->getAuditCount($otherConnection->code(), EventTypes::PRODUCT_UPDATED));
     }
 
-    public function test_updates_audit_data_only_for_data_source_connection()
+    public function test_updates_audit_data_only_for_data_source_connection(): void
     {
         $sourceConnection = $this->createConnection('source', 'Source', FlowType::DATA_SOURCE, true);
         $destinationConnection = $this->createConnection('destination', 'Destination', FlowType::DATA_DESTINATION, true);

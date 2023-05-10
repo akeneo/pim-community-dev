@@ -78,7 +78,7 @@ class GetAllAppsQueryIntegration extends TestCase
         $this->webMarketplaceApi->setApps($apps);
     }
 
-    public function test_it_returns_all_apps()
+    public function test_it_returns_all_apps(): void
     {
         $result = $this->query->execute();
 
@@ -119,7 +119,7 @@ class GetAllAppsQueryIntegration extends TestCase
         );
     }
 
-    public function test_it_returns_all_apps_with_a_connected_one()
+    public function test_it_returns_all_apps_with_a_connected_one(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             'b18561ff-378e-41a5-babb-ca0ec0af569a',

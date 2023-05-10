@@ -34,7 +34,7 @@ JOIN akeneo_connectivity_connected_app on akeneo_connectivity_connection.code = 
 WHERE pim_api_client.marketplace_public_app_id = :marketplace_public_app_id
 SQL;
 
-        $rows = $this->connection->fetchAll($query, [
+        $rows = $this->connection->fetchAllAssociative($query, [
             'marketplace_public_app_id' => $marketplaceAppId,
         ]);
 
@@ -42,7 +42,7 @@ SQL;
             throw new \LogicException('There should be only one connected app by marketplace id');
         }
 
-        if (empty($rows)) {
+        if ($rows === []) {
             return null;
         }
 

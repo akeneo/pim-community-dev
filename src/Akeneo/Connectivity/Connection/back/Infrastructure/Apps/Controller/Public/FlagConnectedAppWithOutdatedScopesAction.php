@@ -34,7 +34,7 @@ final class FlagConnectedAppWithOutdatedScopesAction
             throw new AccessDeniedHttpException('Not an authenticated App');
         }
 
-        if (false === $user instanceof UserInterface) {
+        if (!$user instanceof UserInterface) {
             throw new \LogicException();
         }
 

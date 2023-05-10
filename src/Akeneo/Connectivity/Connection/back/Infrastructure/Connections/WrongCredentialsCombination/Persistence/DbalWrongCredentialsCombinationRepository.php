@@ -29,7 +29,7 @@ ON DUPLICATE KEY UPDATE authentication_date = NOW()
 SQL;
 
         $stmt = $this->dbalConnection->prepare($insertSQL);
-        $stmt->execute([
+        $stmt->executeQuery([
             'connection_code' => $wrongCredentialsCombination->connectionCode(),
             'username' => $wrongCredentialsCombination->username(),
         ]);
@@ -49,9 +49,9 @@ SQL;
             ['since' => $since->format('Y-m-d')]
         )->fetchAllAssociative();
 
-        if (null !== $results && !empty($results)) {
-            \array_walk($results, function (array &$combinations) {
-                $combinations['users'] = \json_decode($combinations['users'], true);
+        if (null !== $results && $results !== []) {
+            \array_walk($results, function (array &$combinations): void {
+                $combinations['users'] = \json_decode($combinations['users'], true, 512, JSON_THROW_ON_ERROR);
             });
         }
 

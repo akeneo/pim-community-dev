@@ -13,11 +13,8 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
  */
 class RedirectUriWithAuthorizationCodeGenerator implements RedirectUriWithAuthorizationCodeGeneratorInterface
 {
-    private AuthorizationCodeGeneratorInterface $authorizationCodeGenerator;
-
-    public function __construct(AuthorizationCodeGeneratorInterface $authorizationCodeGenerator)
+    public function __construct(private AuthorizationCodeGeneratorInterface $authorizationCodeGenerator)
     {
-        $this->authorizationCodeGenerator = $authorizationCodeGenerator;
     }
 
     public function generate(
@@ -44,12 +41,6 @@ class RedirectUriWithAuthorizationCodeGenerator implements RedirectUriWithAuthor
     {
         $query = \http_build_query($parameters);
 
-        if (\parse_url($url, PHP_URL_QUERY)) {
-            $url = \sprintf('%s&%s', $url, $query);
-        } else {
-            $url = \sprintf('%s?%s', $url, $query);
-        }
-
-        return $url;
+        return \parse_url($url, PHP_URL_QUERY) ? \sprintf('%s&%s', $url, $query) : \sprintf('%s?%s', $url, $query);
     }
 }

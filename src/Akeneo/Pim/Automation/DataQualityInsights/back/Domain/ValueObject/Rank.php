@@ -84,7 +84,7 @@ final class Rank implements \JsonSerializable
         return $this->code;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): string
     {
         return $this->code;
     }

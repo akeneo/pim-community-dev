@@ -28,7 +28,7 @@ class CreateUserSpec extends ObjectBehavior
         $this->beConstructedWith($userFactory, $userUpdater, $validator, $userSaver);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(CreateUser::class);
         $this->shouldImplement(CreateUserInterface::class);

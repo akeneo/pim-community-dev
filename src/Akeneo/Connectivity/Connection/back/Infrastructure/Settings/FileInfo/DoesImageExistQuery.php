@@ -13,11 +13,8 @@ use Doctrine\DBAL\Connection as DbalConnection;
  */
 class DoesImageExistQuery implements DoesImageExistQueryInterface
 {
-    private DbalConnection $dbalConnection;
-
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(private DbalConnection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     public function execute(string $filePath): bool
@@ -30,6 +27,6 @@ SQL;
 
         $count = $this->dbalConnection->executeQuery($selectSQL, ['filePath' => $filePath])->fetchAssociative()['count'];
 
-        return \boolval($count);
+        return (bool) $count;
     }
 }

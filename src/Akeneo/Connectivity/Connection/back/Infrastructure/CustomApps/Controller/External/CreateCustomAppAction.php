@@ -73,7 +73,7 @@ final class CreateCustomAppAction
                 'message' => $translatedMessage,
             ];
         }
-        if (!empty($errors)) {
+        if ($errors !== []) {
             return new JsonResponse(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 

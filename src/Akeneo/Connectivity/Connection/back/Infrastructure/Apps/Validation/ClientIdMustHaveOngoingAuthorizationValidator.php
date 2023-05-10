@@ -15,11 +15,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ClientIdMustHaveOngoingAuthorizationValidator extends ConstraintValidator
 {
-    private AppAuthorizationSessionInterface $session;
-
-    public function __construct(AppAuthorizationSessionInterface $session)
+    public function __construct(private AppAuthorizationSessionInterface $session)
     {
-        $this->session = $session;
     }
 
     public function validate($value, Constraint $constraint)

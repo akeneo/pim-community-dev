@@ -7,8 +7,6 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Service;
 interface CreateAccessTokenInterface
 {
     /**
-     * @param string $appId
-     * @param string $authCode
      *
      * @throws \InvalidArgumentException
      *

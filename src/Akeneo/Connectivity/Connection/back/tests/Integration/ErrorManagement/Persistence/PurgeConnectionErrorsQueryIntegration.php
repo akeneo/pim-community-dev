@@ -19,7 +19,7 @@ class PurgeConnectionErrorsQueryIntegration extends TestCase
     private Client $esClient;
     private PurgeConnectionErrorsQuery $purgeQuery;
 
-    public function test_it_purges_errors_older_than_the_given_days()
+    public function test_it_purges_errors_older_than_the_given_days(): void
     {
         $interval = new \DateInterval('PT6H');
 
@@ -40,7 +40,7 @@ class PurgeConnectionErrorsQueryIntegration extends TestCase
         Assert::assertEquals(8, $erpResults['hits']['total']['value']);
     }
 
-    public function test_it_purges_errors_over_the_given_number()
+    public function test_it_purges_errors_over_the_given_number(): void
     {
         $interval = new \DateInterval('PT1H');
         // We generate an error each hour and we iterate 10 times

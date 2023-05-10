@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\UserConsentLoader;
+use Akeneo\Test\Integration\Configuration;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -28,7 +29,7 @@ class GetUserConsentedAuthenticationScopesQueryIntegration extends WebTestCase
     private ConnectedAppLoader $connectedAppLoader;
     private UserGroupLoader $groupLoader;
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

@@ -14,18 +14,11 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
  */
 class WebhookRequest
 {
-    private ActiveWebhook $webhook;
-
-    /** @var array<WebhookEvent> */
-    private array $apiEvents;
-
     /**
      * @param array<WebhookEvent> $apiEvents
      */
-    public function __construct(ActiveWebhook $webhook, array $apiEvents)
+    public function __construct(private ActiveWebhook $webhook, private array $apiEvents)
     {
-        $this->webhook = $webhook;
-        $this->apiEvents = $apiEvents;
     }
 
     /**

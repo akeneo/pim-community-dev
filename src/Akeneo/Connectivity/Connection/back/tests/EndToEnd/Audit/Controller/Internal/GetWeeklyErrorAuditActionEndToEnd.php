@@ -100,7 +100,7 @@ class GetWeeklyErrorAuditActionEndToEnd extends WebTestCase
                 'end_date' => '2020-01-10'
             ],
         );
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);

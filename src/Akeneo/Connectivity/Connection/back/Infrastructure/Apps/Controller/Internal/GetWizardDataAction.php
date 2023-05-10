@@ -119,7 +119,7 @@ final class GetWizardDataAction
     {
         return \array_values(\array_filter(
             $scopes,
-            fn (string $scope) => $scope !== AuthenticationScope::SCOPE_OPENID
+            fn (string $scope): bool => $scope !== AuthenticationScope::SCOPE_OPENID
         ));
     }
 }

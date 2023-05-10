@@ -107,7 +107,7 @@ class AuthorizeEndToEnd extends WebTestCase
             'authentication_scope' => 'openid profile',
             'redirect_uri' => 'http://shopware.example.com/callback',
             'state' => 'foo',
-        ], \json_decode($authorizationInSession, true));
+        ], \json_decode($authorizationInSession, true, 512, JSON_THROW_ON_ERROR));
     }
 
     public function test_it_is_redirected_to_the_app_when_already_authorized(): void

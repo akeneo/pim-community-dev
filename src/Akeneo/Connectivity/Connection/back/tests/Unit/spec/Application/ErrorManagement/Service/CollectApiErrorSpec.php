@@ -60,7 +60,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         $serializer->serialize($error, 'json', Argument::any())
             ->willReturn('{"message":"business error"}');
 
-        $updateErrorCountHandler->handle(Argument::that(function (UpdateConnectionErrorCountCommand $command) {
+        $updateErrorCountHandler->handle(Argument::that(function (UpdateConnectionErrorCountCommand $command): bool {
             $hourlyErrorCounts = $command->errorCounts();
             Assert::assertCount(2, $hourlyErrorCounts);
 
@@ -78,7 +78,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         }))
             ->shouldBeCalled();
 
-        $repository->bulkInsert(new ConnectionCode('erp'), Argument::that(function (array $businessErrors) {
+        $repository->bulkInsert(new ConnectionCode('erp'), Argument::that(function (array $businessErrors): bool {
             Assert::assertCount(1, $businessErrors);
 
             Assert::assertInstanceOf(BusinessError::class, $businessErrors[0]);
@@ -121,7 +121,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         $serializer->serialize($violation2, 'json', Argument::any())
             ->willReturn('{"message":"business error 2"}');
 
-        $updateErrorCountHandler->handle(Argument::that(function (UpdateConnectionErrorCountCommand $command) {
+        $updateErrorCountHandler->handle(Argument::that(function (UpdateConnectionErrorCountCommand $command): bool {
             $hourlyErrorCounts = $command->errorCounts();
             Assert::assertCount(2, $hourlyErrorCounts);
 
@@ -139,7 +139,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         }))
             ->shouldBeCalled();
 
-        $repository->bulkInsert(new ConnectionCode('erp'), Argument::that(function (array $businessErrors) {
+        $repository->bulkInsert(new ConnectionCode('erp'), Argument::that(function (array $businessErrors): bool {
             Assert::assertCount(2, $businessErrors);
 
             Assert::assertInstanceOf(BusinessError::class, $businessErrors[0]);
@@ -168,7 +168,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         $connection->code()->willReturn(new ConnectionCode('erp'));
         $connection->flowType()->willReturn(new FlowType(FlowType::DATA_SOURCE));
 
-        $updateErrorCountHandler->handle(Argument::that(function (UpdateConnectionErrorCountCommand $command) {
+        $updateErrorCountHandler->handle(Argument::that(function (UpdateConnectionErrorCountCommand $command): bool {
             $hourlyErrorCounts = $command->errorCounts();
             Assert::assertCount(2, $hourlyErrorCounts);
 
@@ -186,7 +186,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         }))
             ->shouldBeCalled();
 
-        $repository->bulkInsert(new ConnectionCode('erp'), Argument::that(function (array $businessErrors) {
+        $repository->bulkInsert(new ConnectionCode('erp'), Argument::that(function (array $businessErrors): bool {
             Assert::assertCount(0, $businessErrors);
 
             return true;

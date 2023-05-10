@@ -15,12 +15,8 @@ use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
  */
 class AuditErrorLoader
 {
-    /** @var UpdateConnectionErrorCountHandler */
-    private $updateConnectionErrorCountHandler;
-
-    public function __construct(UpdateConnectionErrorCountHandler $updateConnectionErrorCountHandler)
+    public function __construct(private UpdateConnectionErrorCountHandler $updateConnectionErrorCountHandler)
     {
-        $this->updateConnectionErrorCountHandler = $updateConnectionErrorCountHandler;
     }
 
     public function insert(

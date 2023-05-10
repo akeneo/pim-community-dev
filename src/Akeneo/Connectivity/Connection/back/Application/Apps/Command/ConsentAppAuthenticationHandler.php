@@ -6,8 +6,6 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
-use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\CreateUserConsentQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\ClockInterface;
@@ -19,24 +17,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ConsentAppAuthenticationHandler
 {
-    private GetAppConfirmationQueryInterface $getAppConfirmationQuery;
-    private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private CreateUserConsentQueryInterface $createUserConsentQuery;
-    private ClockInterface $clock;
-    private ValidatorInterface $validator;
-
     public function __construct(
-        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
-        AppAuthorizationSessionInterface $appAuthorizationSession,
-        CreateUserConsentQueryInterface $createUserConsentQuery,
-        ClockInterface $clock,
-        ValidatorInterface $validator
+        private GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        private AppAuthorizationSessionInterface $appAuthorizationSession,
+        private CreateUserConsentQueryInterface $createUserConsentQuery,
+        private ClockInterface $clock,
+        private ValidatorInterface $validator
     ) {
-        $this->getAppConfirmationQuery = $getAppConfirmationQuery;
-        $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->createUserConsentQuery = $createUserConsentQuery;
-        $this->clock = $clock;
-        $this->validator = $validator;
     }
 
     public function handle(ConsentAppAuthenticationCommand $command): void
