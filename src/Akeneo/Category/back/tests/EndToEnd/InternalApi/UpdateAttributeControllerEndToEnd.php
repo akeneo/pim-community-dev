@@ -10,6 +10,8 @@ use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\EndToEnd\Helper\ControllerIntegrationTestCase;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
+use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
+use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
@@ -32,60 +34,123 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 {
+
+    private GetCategoryInterface $getCategory;
+    private CategoryTemplateSaver $categoryTemplateSaver;
+    private CategoryTreeTemplateSaver $categoryTreeTemplateSaver;
+    private CategoryTemplateAttributeSaver $categoryTemplateAttributeSaver;
+    private GetAttribute $getAttribute;
+
     private TemplateUuid $templateUuid;
+    private AttributeCollection $attributeCollection;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->getCategory = $this->get(GetCategoryInterface::class);
+        $this->categoryTemplateSaver = $this->get(CategoryTemplateSaver::class);
+        $this->categoryTreeTemplateSaver = $this->get(CategoryTreeTemplateSaver::class);
+        $this->categoryTemplateAttributeSaver = $this->get(CategoryTemplateAttributeSaver::class);
+        $this->getAttribute = $this->get(GetAttribute::class);
 
         $this->get('feature_flags')->enable('category_update_template_attribute');
         $this->logAs('julia');
         $this->createTemplate();
     }
 
-    public function testItAddsAnAttributeToTheTemplate(): void
+    public function testItUpdateAttributeTypeToRichText(): void
     {
+        $longDescription = $this->attributeCollection->getAttributeByCode('text_area');
+        $this->assertEquals((string) $longDescription->getType(), AttributeType::TEXTAREA);
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
             routeArguments: [
                 'templateUuid' => $this->templateUuid->getValue(),
-                'attributeUuid' => $this->templateUuid->getValue(),
+                'attributeUuid' => $longDescription->getUuid()->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
-                'code' => 'attribute_code',
-                'type' => 'text',
-                'is_scopable' => true,
-                'is_localizable' => true,
-                'locale' => 'en_US',
-                'label' => 'The attribute',
+                'is_rich_text_area' => true,
             ]),
         );
 
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
-        $insertedAttributes = $this->get(GetAttribute::class)->byTemplateUuid($this->templateUuid);
-        $this->assertNotNull($insertedAttributes->getAttributeByCode('attribute_code'));
+        $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
+        $longDescription = $insertedAttributes->getAttributeByCode('text_area');
+        $this->assertEquals((string) $longDescription->getType(), AttributeType::RICH_TEXT);
+    }
+
+    public function testItUpdateAttributeTypeToTextArea(): void
+    {
+        $longDescription = $this->attributeCollection->getAttributeByCode('rich_text');
+        $this->assertEquals((string) $longDescription->getType(), AttributeType::RICH_TEXT);
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_category_template_rest_update_attribute',
+            routeArguments: [
+                'templateUuid' => $this->templateUuid->getValue(),
+                'attributeUuid' => $longDescription->getUuid()->getValue(),
+            ],
+            method: Request::METHOD_POST,
+            content: json_encode([
+                'is_rich_text_area' => false,
+            ]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
+        $longDescription = $insertedAttributes->getAttributeByCode('rich_text');
+        $this->assertEquals((string) $longDescription->getType(), AttributeType::TEXTAREA);
     }
     private function createTemplate(): void
     {
         /** @var Category $category */
-        $category = $this->get(GetCategoryInterface::class)->byCode('master');
+        $category = $this->getCategory->byCode('master');
 
         $this->templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 
+        $this->attributeCollection = AttributeCollection::fromArray([
+            AttributeTextArea::create(
+                AttributeUuid::fromString('119e55a5-d838-4b1d-80d6-2328fb6bdc97'),
+                new AttributeCode('text_area'),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsScopable::fromBoolean(true),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'Long description']),
+                $this->templateUuid,
+                AttributeAdditionalProperties::fromArray([]),
+            ),
+            AttributeRichText::create(
+                AttributeUuid::fromString('e6ef21e2-d407-4414-a331-a8e83ffc29a2'),
+                new AttributeCode('rich_text'),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsScopable::fromBoolean(true),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'Long description']),
+                $this->templateUuid,
+                AttributeAdditionalProperties::fromArray([])
+            ),
+        ]);
         $templateModel = new Template(
             uuid: $this->templateUuid,
             code: new TemplateCode('default_template'),
             labelCollection: LabelCollection::fromArray(['en_US' => 'Default template']),
             categoryTreeId: $category->getId(),
-            attributeCollection: null,
+            attributeCollection: $this->attributeCollection,
         );
 
-        $this->get(CategoryTemplateSaver::class)->insert($templateModel);
-        $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
+        $this->categoryTemplateSaver->insert($templateModel);
+        $this->categoryTreeTemplateSaver->insert($templateModel);
+        $this->categoryTemplateAttributeSaver->insert($this->templateUuid, $this->attributeCollection);
+
     }
 
     protected function getConfiguration(): Configuration

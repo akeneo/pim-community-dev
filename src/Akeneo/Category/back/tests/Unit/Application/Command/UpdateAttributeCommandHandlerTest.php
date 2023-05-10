@@ -51,7 +51,7 @@ class UpdateAttributeCommandHandlerTest extends TestCase
             ->willReturn(new ConstraintViolationList());
 
         $attribute = Attribute::fromType(
-            type: new AttributeType(AttributeType::RICH_TEXT),
+            type: new AttributeType(AttributeType::TEXTAREA),
             uuid: AttributeUuid::fromString($attributeUuid),
             code: new AttributeCode('test_attribute'),
             order: AttributeOrder::fromInteger(0),

@@ -38,6 +38,12 @@ services:
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
             - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
 
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateAttributeController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
         public: true
         arguments:
