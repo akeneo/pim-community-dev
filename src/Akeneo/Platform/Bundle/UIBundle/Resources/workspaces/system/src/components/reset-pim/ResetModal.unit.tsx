@@ -3,10 +3,22 @@ import userEvent from '@testing-library/user-event';
 import {act, screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ResetModal} from './ResetModal';
+import {useNotify} from '@akeneo-pim-community/shared';
 
+let mockedResetInstance = jest.fn();
 jest.mock('@akeneo-pim-community/system/src/hooks/useResetInstance', () => ({
-  useResetInstance: () => [false, jest.fn()],
+  useResetInstance: () => [false, mockedResetInstance],
 }));
+
+const notifyMock = jest.fn();
+jest.mock('@akeneo-pim-community/shared', () => ({
+  ...jest.requireActual('@akeneo-pim-community/shared'),
+  useNotify: () => notifyMock,
+}));
+
+beforeEach(() => {
+  notifyMock.mockClear();
+});
 
 test('it can be cancelled', () => {
   const handleCancel = jest.fn();
@@ -43,6 +55,28 @@ test('it can be confirmed after going through every steps and confirming', async
 
   expect(handleConfirm).toHaveBeenCalled();
   expect(handleRedirect).toHaveBeenCalled();
+});
+
+test('it notify the user if an error occurred during the reset', async () => {
+  mockedResetInstance = jest.fn().mockImplementation(() => {
+    throw new Error();
+  });
+
+  const handleConfirm = jest.fn();
+  renderWithProviders(<ResetModal onCancel={jest.fn()} onConfirm={handleConfirm} />);
+
+  userEvent.click(screen.getByText('pim_common.next'));
+  userEvent.type(
+    screen.getByLabelText('pim_system.reset_pim.modal.confirmation_phrase'),
+    'pim_system.reset_pim.modal.confirmation_word'
+  );
+
+  await act(async () => {
+    await userEvent.click(screen.getByText('pim_system.reset_pim.button.confirm'));
+  });
+
+  expect(handleConfirm).not.toHaveBeenCalled();
+  expect(notifyMock).toBeCalledWith('error', 'pim_system.reset_pim.error_notification');
 });
 
 test('it cannot be confirmed if the confirmation word is incorrect', () => {

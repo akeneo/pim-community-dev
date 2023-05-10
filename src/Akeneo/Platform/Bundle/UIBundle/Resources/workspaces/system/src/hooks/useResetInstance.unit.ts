@@ -6,7 +6,7 @@ import {act} from 'react-test-renderer';
 const flushPromises = () => new Promise(setImmediate);
 
 test('it launch a reset instance', async () => {
-  fetchMock.mockResponseOnce(async () => JSON.stringify([]), {
+  fetchMock.mockResponseOnce(JSON.stringify([]), {
     status: 200,
   });
 
