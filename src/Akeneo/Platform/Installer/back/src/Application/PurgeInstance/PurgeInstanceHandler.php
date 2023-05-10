@@ -27,7 +27,7 @@ class PurgeInstanceHandler
         $tableNames = $this->findTables->all();
         $tablesToPurge = array_filter(
             $tableNames,
-            static fn (string $tableName): bool => !in_array($tableName, self::TABLES_TO_KEEP)
+            static fn (string $tableName): bool => !in_array($tableName, self::TABLES_TO_KEEP),
         );
 
         $this->databasePurger->purge($tablesToPurge);

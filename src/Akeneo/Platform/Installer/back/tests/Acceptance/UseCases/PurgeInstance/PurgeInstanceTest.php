@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 class PurgeInstanceTest extends KernelTestCase
 {
-    public function test_it_installs_the_pim(): void
+    public function test_it_purges_the_pim(): void
     {
         $this->getHandler()->handle(new PurgeInstanceCommand());
 
