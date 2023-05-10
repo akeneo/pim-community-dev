@@ -45,7 +45,7 @@ final class ScheduledJobMessageNormalizer implements NormalizerInterface, Denorm
     }
 
     /**
-     * @param array $data The normalized JobExecution message
+     * @param array $data The normalized ScheduledJobMessage
      */
     public function denormalize(
         $data,
