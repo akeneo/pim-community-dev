@@ -128,6 +128,13 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
+    pim_catalog.event_subscriber.init_product_completeness_db_schema:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitProductCompletenessDbSchemaSubscriber'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
     pim_catalog.event_subscriber.init_lock_db_schema:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitLockDbSchemaSubscriber'
         arguments:
