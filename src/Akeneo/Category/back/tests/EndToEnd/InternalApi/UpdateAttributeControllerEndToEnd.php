@@ -10,6 +10,7 @@ use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\EndToEnd\Helper\ControllerIntegrationTestCase;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
+use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
@@ -83,14 +84,14 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItUpdateAttributeTypeToTextArea(): void
     {
-        $longDescription = $this->attributeCollection->getAttributeByCode('rich_text');
-        $this->assertEquals((string) $longDescription->getType(), AttributeType::RICH_TEXT);
+        $richTextAttribute = $this->attributeCollection->getAttributeByCode('rich_text');
+        $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::RICH_TEXT);
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
             routeArguments: [
                 'templateUuid' => $this->templateUuid->getValue(),
-                'attributeUuid' => $longDescription->getUuid()->getValue(),
+                'attributeUuid' => $richTextAttribute->getUuid()->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -102,8 +103,47 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
-        $longDescription = $insertedAttributes->getAttributeByCode('rich_text');
-        $this->assertEquals((string) $longDescription->getType(), AttributeType::TEXTAREA);
+        $richTextAttribute = $insertedAttributes->getAttributeByCode('rich_text');
+        $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::TEXTAREA);
+    }
+
+    public function testItThrowsErrorOnAttributeNotFound(): void
+    {
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_category_template_rest_update_attribute',
+            routeArguments: [
+                'templateUuid' => $this->templateUuid->getValue(),
+                'attributeUuid' => '8934068e-e43f-442c-bfb4-cdd0803424e1',
+            ],
+            method: Request::METHOD_POST,
+            content: json_encode([
+                'is_rich_text_area' => false,
+            ]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+    public function testItThrowsErrorOnWrongType(): void
+    {
+        $textAttribute = $this->attributeCollection->getAttributeByCode('text');
+        $this->assertEquals((string) $textAttribute->getType(), AttributeType::TEXT);
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_category_template_rest_update_attribute',
+            routeArguments: [
+                'templateUuid' => $this->templateUuid->getValue(),
+                'attributeUuid' => $textAttribute->getUuid()->getValue(),
+            ],
+            method: Request::METHOD_POST,
+            content: json_encode([
+                'is_rich_text_area' => false,
+            ]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     private function createTemplate(): void
@@ -136,6 +176,17 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 $this->templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
             ),
+            AttributeText::create(
+                AttributeUuid::fromString('db940968-a743-44ab-b2df-1f3c853efd28'),
+                new AttributeCode('text'),
+                AttributeOrder::fromInteger(1),
+                AttributeIsRequired::fromBoolean(false),
+                AttributeIsScopable::fromBoolean(true),
+                AttributeIsLocalizable::fromBoolean(true),
+                LabelCollection::fromArray(['en_US' => 'Long description']),
+                $this->templateUuid,
+                AttributeAdditionalProperties::fromArray([]),
+            )
         ]);
         $templateModel = new Template(
             uuid: $this->templateUuid,

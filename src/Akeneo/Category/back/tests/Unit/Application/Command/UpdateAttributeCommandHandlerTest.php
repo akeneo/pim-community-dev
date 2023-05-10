@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UpdateAttributeCommandHandlerTest extends TestCase
 {
-    public function testItChangeAttributeToTextArea(): void
+    public function testItChangeAttributeToRichText(): void
     {
         $validator = $this->createMock(ValidatorInterface::class);
         $getAttribute = $this->createMock(GetAttribute::class);
@@ -64,6 +64,38 @@ class UpdateAttributeCommandHandlerTest extends TestCase
             ->method('byUuids')
             ->with([$attributeUuid])
             ->willReturn(AttributeCollection::fromArray([$attribute]));
+
+        $categoryTemplateAttributeSaver
+            ->expects($this->once())
+            ->method('update')
+            ->with($attribute);
+
+        $handler = new UpdateAttributeCommandHandler($validator, $getAttribute, $categoryTemplateAttributeSaver);
+
+        $handler($command);
+    }
+
+    public function testItThrowsInvalidArgumentException(): void
+    {
+        $validator = $this->createMock(ValidatorInterface::class);
+        $getAttribute = $this->createMock(GetAttribute::class);
+        $categoryTemplateAttributeSaver = $this->createMock(CategoryTemplateAttributeSaver::class);
+
+        $attributeUuid = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
+
+        $command = UpdateAttributeCommand::create($attributeUuid, true);
+
+        $validator
+            ->expects($this->once())
+            ->method('validate')
+            ->with($command)
+            ->willReturn(new ConstraintViolationList());
+
+        $getAttribute
+            ->expects($this->once())
+            ->method('byUuids')
+            ->with([$attributeUuid])
+            ->willReturn(AttributeCollection::fromArray([]));
 
         $categoryTemplateAttributeSaver
             ->expects($this->once())

@@ -43,6 +43,7 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@category.command.message_bus'
+            - '@pim_enrich.normalizer.violation'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
         public: true
