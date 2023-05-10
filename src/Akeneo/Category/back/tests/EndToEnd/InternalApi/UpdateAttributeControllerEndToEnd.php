@@ -9,7 +9,6 @@ use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSave
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\EndToEnd\Helper\ControllerIntegrationTestCase;
-use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
@@ -28,13 +27,11 @@ use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Test\Integration\Configuration;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 {
-
     private GetCategoryInterface $getCategory;
     private CategoryTemplateSaver $categoryTemplateSaver;
     private CategoryTreeTemplateSaver $categoryTreeTemplateSaver;
@@ -108,6 +105,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $longDescription = $insertedAttributes->getAttributeByCode('rich_text');
         $this->assertEquals((string) $longDescription->getType(), AttributeType::TEXTAREA);
     }
+
     private function createTemplate(): void
     {
         /** @var Category $category */
@@ -136,7 +134,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 AttributeIsLocalizable::fromBoolean(true),
                 LabelCollection::fromArray(['en_US' => 'Long description']),
                 $this->templateUuid,
-                AttributeAdditionalProperties::fromArray([])
+                AttributeAdditionalProperties::fromArray([]),
             ),
         ]);
         $templateModel = new Template(
@@ -150,7 +148,6 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->categoryTemplateSaver->insert($templateModel);
         $this->categoryTreeTemplateSaver->insert($templateModel);
         $this->categoryTemplateAttributeSaver->insert($this->templateUuid, $this->attributeCollection);
-
     }
 
     protected function getConfiguration(): Configuration

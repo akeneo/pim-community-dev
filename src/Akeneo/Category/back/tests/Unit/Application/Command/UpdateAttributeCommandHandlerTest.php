@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Unit\Application\Command;
 
-use Akeneo\Category\Application\Command\DeactivateTemplateCommand;
-use Akeneo\Category\Application\Command\DeactivateTemplateCommandHandler;
 use Akeneo\Category\Application\Command\UpdateAttributeCommand;
 use Akeneo\Category\Application\Command\UpdateAttributeCommandHandler;
-use Akeneo\Category\Application\Query\DeactivateTemplate;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
@@ -24,7 +21,6 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

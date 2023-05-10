@@ -9,8 +9,7 @@ use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -29,23 +28,30 @@ class UpdateAttributeCommandHandler
     public function __invoke(UpdateAttributeCommand $command): void
     {
         $violations = $this->validator->validate($command);
-        if ($violations->count() > 0) {
-            throw new ViolationsException($violations);
-        }
 
         $attributeUuid = AttributeUuid::fromString($command->attributeUuid);
         $attributes = $this->getAttribute->byUuids([$attributeUuid]);
-        if($attributes->count() == 0) {
-            throw new ObjectNotFoundException();
+        if ($attributes->count() == 0) {
+            throw new \InvalidArgumentException(sprintf('Attribute with uuid: %s does not exist', $command->attributeUuid));
         }
 
         /** @var Attribute $attribute */
         $attribute = $attributes->getAttributes()[0];
 
         $data = [
-          'is_rich_text_area'  => $command->isRichTextArea,
+          'is_rich_text_area' => $command->isRichTextArea,
         ];
-        $attribute->update($data);
+
+        try {
+            $attribute->update($data);
+        } catch (\LogicException $exception) {
+            $violations->add(new ConstraintViolation($exception->getMessage(), $exception->getMessage(), [], null, 'type', null));
+        }
+
+        if ($violations->count() > 0) {
+            throw new ViolationsException($violations);
+        }
+
         $this->categoryTemplateAttributeSaver->update($attribute);
     }
 }

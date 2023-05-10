@@ -49,7 +49,7 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
         $this->connection->executeQuery(
             $query,
             [
-                'type' => (string)  $attribute->getType(),
+                'type' => (string) $attribute->getType(),
                 'uuid' => $attribute->getUuid()->getValue(),
             ],
             [

@@ -15,7 +15,6 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use http\Exception\InvalidArgumentException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -187,12 +186,14 @@ abstract class Attribute
      *     is_rich_text_area: bool
      * } $data
      */
-    public function update(array $data): void {
-        if(array_key_exists( 'is_rich_text_area', $data)) {
+    public function update(array $data): void
+    {
+        if (array_key_exists('is_rich_text_area', $data)) {
             $isRichTextArea = (bool) $data['is_rich_text_area'];
             $validTypes = [AttributeType::TEXTAREA, AttributeType::RICH_TEXT];
-            if(!in_array((string) $this->getType(), $validTypes)) {
-                throw new InvalidArgumentException();
+            if (!in_array((string) $this->getType(), $validTypes)) {
+                $message = sprintf('The type of the attribute is neither %s nor %s', AttributeType::TEXTAREA, AttributeType::RICH_TEXT);
+                throw new \LogicException($message);
             }
             $this->type = new AttributeType(($isRichTextArea) ? AttributeType::RICH_TEXT : AttributeType::TEXTAREA);
         }
