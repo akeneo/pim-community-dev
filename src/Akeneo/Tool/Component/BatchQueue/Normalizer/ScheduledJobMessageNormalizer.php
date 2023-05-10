@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Normalizer;
 
-use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessageInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -13,7 +11,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
 /**
- * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
@@ -29,20 +27,15 @@ final class ScheduledJobMessageNormalizer implements NormalizerInterface, Denorm
     }
 
     /**
-     * @param JobExecutionMessageInterface $jobExecutionMessage
+     * @param ScheduledJobMessageInterface $scheduledJobMessage
      */
-    public function normalize($jobExecutionMessage, $format = null, array $context = []): array
+    public function normalize($scheduledJobMessage, $format = null, array $context = []): array
     {
-        Assert::implementsInterface($jobExecutionMessage, JobExecutionMessageInterface::class);
+        Assert::implementsInterface($scheduledJobMessage, ScheduledJobMessageInterface::class);
 
         return [
-            'id' => $jobExecutionMessage->getId()->toString(),
-            'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
-            'created_time' => $jobExecutionMessage->getCreateTime()->format('c'),
-            'updated_time' => null !== $jobExecutionMessage->getUpdatedTime() ?
-                $jobExecutionMessage->getUpdatedTime()->format('c')
-                : null,
-            'options' => $jobExecutionMessage->getOptions(),
+            'job_code' => $scheduledJobMessage->getJobCode(),
+            'options' => $scheduledJobMessage->getOptions(),
         ];
     }
 
