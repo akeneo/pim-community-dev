@@ -125,6 +125,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
+
     public function testItThrowsErrorOnWrongType(): void
     {
         $textAttribute = $this->attributeCollection->getAttributeByCode('text');
@@ -186,7 +187,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 LabelCollection::fromArray(['en_US' => 'Long description']),
                 $this->templateUuid,
                 AttributeAdditionalProperties::fromArray([]),
-            )
+            ),
         ]);
         $templateModel = new Template(
             uuid: $this->templateUuid,

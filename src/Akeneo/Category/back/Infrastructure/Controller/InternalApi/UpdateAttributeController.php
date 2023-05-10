@@ -48,7 +48,7 @@ class UpdateAttributeController
                 $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
                     $violation,
                     'internal_api',
-                    ['attribute' => $attributeUuid]
+                    ['attribute' => $attributeUuid],
                 );
             }
 

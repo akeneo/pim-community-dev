@@ -100,7 +100,7 @@ class UpdateAttributeCommandHandlerTest extends TestCase
         $categoryTemplateAttributeSaver
             ->expects($this->once())
             ->method('update')
-            ->with($attribute);
+            ->with(null);
 
         $handler = new UpdateAttributeCommandHandler($validator, $getAttribute, $categoryTemplateAttributeSaver);
 
