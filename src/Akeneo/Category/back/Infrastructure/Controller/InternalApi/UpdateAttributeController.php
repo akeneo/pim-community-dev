@@ -44,7 +44,7 @@ class UpdateAttributeController
             $this->categoryCommandBus->dispatch($command);
         } catch (ViolationsException $violationsException) {
             $normalizedViolations = [];
-            foreach ($violationsException as $violation) {
+            foreach ($violationsException->violations() as $violation) {
                 $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
                     $violation,
                     'internal_api',
