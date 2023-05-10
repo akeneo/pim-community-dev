@@ -117,3 +117,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetDeactivatedTemplateAttributesSql
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Domain\Query\PurgeOrphanCategories:
+    class: 'Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql'
+    arguments:
+      - '@database_connection'
