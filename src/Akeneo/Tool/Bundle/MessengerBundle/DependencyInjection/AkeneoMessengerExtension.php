@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
-use Akeneo\Tool\Bundle\MessengerBundle\Handler\MessageWrapperHandler;
-use Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessageWrapper;
+use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigLoader;
+use Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessengerProxyTransportFactory;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -28,40 +26,16 @@ class AkeneoMessengerExtension extends Extension
         $loader->load('registry.yml');
         $loader->load('transport.yml');
 
-        // TODO: remove the function. We only need one handler for messages MessageWrapper
-        //$this->registerMessengerHandlers($container);
+        $this->loadMessengerConfiguration($container);
     }
 
-    /**
-     * For each consumer we register a new service to handle the messages based on the transport used.
-     * The goal for the handler is to have the name of the consumer.
-     */
-    private function registerMessengerHandlers(ContainerBuilder $container): void
+    private function loadMessengerConfiguration(ContainerBuilder $container): void
     {
         $projectDir = $container->getParameter('kernel.project_dir');
         $env = $container->getParameter('kernel.environment');
-        $config = MessengerConfigBuilder::loadConfig($projectDir, $env);
-        if ([] === $config) {
-            return;
-        }
 
-        // Register a handler for each consumer of each queue
-        foreach ($config['queues'] as $queueConfig) {
-            foreach ($queueConfig['consumers'] as $consumerConfig) {
-                $container->register(
-                    'akeneo.messaging.handler.'.$consumerConfig['name'],
-                    MessageWrapperHandler::class
-                )
-                    ->setArguments([
-                        new Reference('akeneo_messenger.message.serializer'),
-                        new Reference('logger'),
-                        $consumerConfig['name'],
-                    ])
-                    ->addTag('messenger.message_handler', [
-                        'handles' => MessageWrapper::class,
-                        'from_transport' => $consumerConfig['name'],
-                    ]);
-            }
-        }
+        $config = MessengerConfigLoader::loadConfig($projectDir, $env);
+
+        $container->getDefinition(MessengerProxyTransportFactory::class)->setArgument('$messengerConfig', $config);
     }
 }

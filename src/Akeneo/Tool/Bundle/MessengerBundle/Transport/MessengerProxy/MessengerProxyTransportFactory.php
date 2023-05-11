@@ -4,13 +4,30 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
 use Akeneo\Tool\Component\Messenger\Config\TransportType;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Messenger\Transport\TransportFactoryInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
+use Webmozart\Assert\Assert;
 
 /**
+ * Using PubSub transport is different from other transport, because one queue
+ * can be consumed by different subscriptions.
+ * So a message that need to be consumed by multiple consumers can be sent once in the topic.
+ *
+ * For other types of transport, a queue can be consumed only once because the messages
+ * are removed as soon they are acked.
+ * So a message that need to be consumed by multiple consumers need to be sent multiple times,
+ * once by each queue.
+ *
+ * PubSub:
+ *  - 1 transport (sender) to send message (= we send a message in a PubSub topic).
+ *    This transport cannot receive/treat messages
+ *  - 1 transport (receiver) by consumer (= for each subscription)
+ *
+ *  Doctrine/sync/...:
+ *  - 1 transport by consumer. Messages are sent on every transport.
+ *
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -21,36 +38,30 @@ final class MessengerProxyTransportFactory implements TransportFactoryInterface
         private readonly TransportFactoryInterface $doctrineTransportFactory,
         private readonly TransportFactoryInterface $inMemoryTransportFactory,
         private readonly TransportFactoryInterface $syncTransportFactory,
-        private readonly string $googleCloudProject,
         private readonly SerializerInterface $messageSerializer,
+        private readonly string $googleCloudProject,
         private readonly string $env,
-        private readonly string $projectDir,
+        private readonly array $messengerConfig,
     ) {
     }
 
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface
     {
-        // TODO use cache to not read the YAML file each call ?
-        $messengerConfig = MessengerConfigBuilder::loadConfig($this->projectDir, $this->env);
+       Assert::notEmpty($this->messengerConfig['queues'] ?? [], 'There must be a Akeneo Messenger configuration');
 
         $sendersByMessage = [];
         $receiversByConsumer = [];
 
-        foreach ($messengerConfig['queues'] as $queueName => $queueConfig) {
-            // TODO ensure message class is not already defined for another queue
+        foreach ($this->messengerConfig['queues'] as $queueName => $queueConfig) {
+            Assert::keyNotExists($sendersByMessage, $queueConfig['message_class'], 'The same message class can not be defined for several queues');
 
             $transportType = $this->getTransportTypeByEnv($this->env);
 
-            /**
-             * For PubSub we need to create one transport that will only send messages in a topic
-             *   And one transport for each consumer (subscription) on this topic to receive the messages
-             */
             if ($transportType === TransportType::PUB_SUB) {
                 $sendersByMessage[$queueConfig['message_class']] = $this->createPubSubSender($queueName);
                 foreach ($queueConfig['consumers'] as $consumer) {
                     $receiversByConsumer[$consumer['name']] = $this->createPubSubReceiver($queueName, $consumer['name']);
                 }
-            /** For other transport types we use the same transport as sender and receiver */
             } else {
                 $transport = match ($transportType) {
                     TransportType::DOCTRINE => $this->createDoctrineTransport($queueName),

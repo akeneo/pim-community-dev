@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection\CompilerPass;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
+use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigLoader;
 use Akeneo\Tool\Bundle\MessengerBundle\Registry\MessageHandlerRegistry;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,7 +22,7 @@ final class RegisterHandlersCompilerPass implements CompilerPassInterface
 
         $projectDir = $container->getParameter('kernel.project_dir');
         $env = $container->getParameter('kernel.environment');
-        $config = MessengerConfigBuilder::loadConfig($projectDir, $env);
+        $config = MessengerConfigLoader::loadConfig($projectDir, $env);
         if ([] === $config) {
             return;
         }

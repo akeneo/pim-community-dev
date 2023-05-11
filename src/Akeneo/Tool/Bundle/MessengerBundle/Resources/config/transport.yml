@@ -19,14 +19,14 @@ services:
 
     Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessengerProxyTransportFactory:
         arguments:
-            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransportFactory'
-            - '@messenger.transport.doctrine.factory'
-            - '@messenger.transport.in_memory.factory'
-            - '@messenger.transport.sync.factory'
-            - '%env(GOOGLE_CLOUD_PROJECT)%'
-            - '@akeneo_messenger.envelope.serializer'
-            - '%env(string:APP_ENV)%'
-            - '%kernel.project_dir%'
+            $gcpTransportFactory: '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransportFactory'
+            $doctrineTransportFactory: '@messenger.transport.doctrine.factory'
+            $inMemoryTransportFactory: '@messenger.transport.in_memory.factory'
+            $syncTransportFactory: '@messenger.transport.sync.factory'
+            $messageSerializer: '@akeneo_messenger.envelope.serializer'
+            $googleCloudProject: '%env(GOOGLE_CLOUD_PROJECT)%'
+            $env: '%env(string:APP_ENV)%'
+            $messengerConfig: []
         tags: [messenger.transport_factory]
 
     akeneo_messenger.bus.proxy:
