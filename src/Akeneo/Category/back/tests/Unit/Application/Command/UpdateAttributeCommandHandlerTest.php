@@ -97,13 +97,9 @@ class UpdateAttributeCommandHandlerTest extends TestCase
             ->with([$attributeUuid])
             ->willReturn(AttributeCollection::fromArray([]));
 
-        $categoryTemplateAttributeSaver
-            ->expects($this->once())
-            ->method('update')
-            ->with(null);
-
         $handler = new UpdateAttributeCommandHandler($validator, $getAttribute, $categoryTemplateAttributeSaver);
 
+        $this->expectException(\InvalidArgumentException::class);
         $handler($command);
     }
 }
