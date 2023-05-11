@@ -39,7 +39,7 @@ class UpdateAttributeCommandHandler
         $attribute = $attributes->getAttributes()[0];
 
         $data = [
-          'is_rich_text_area' => $command->isRichTextArea,
+          'isRichRextArea' => $command->isRichTextArea,
         ];
 
         try {

@@ -30,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UpdateAttributeCommandHandlerTest extends TestCase
 {
-    public function testItChangeAttributeToRichText(): void
+    public function testItChangesAttributeToRichText(): void
     {
         $validator = $this->createMock(ValidatorInterface::class);
         $getAttribute = $this->createMock(GetAttribute::class);

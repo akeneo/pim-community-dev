@@ -183,13 +183,13 @@ abstract class Attribute
 
     /**
      * @param array{
-     *     is_rich_text_area: bool
+     *     isRichRextArea: bool
      * } $data
      */
     public function update(array $data): void
     {
-        if (array_key_exists('is_rich_text_area', $data)) {
-            $isRichTextArea = (bool) $data['is_rich_text_area'];
+        if (array_key_exists('isRichRextArea', $data)) {
+            $isRichTextArea = (bool) $data['isRichRextArea'];
             $validTypes = [AttributeType::TEXTAREA, AttributeType::RICH_TEXT];
             if (!in_array((string) $this->getType(), $validTypes)) {
                 $message = sprintf('The type of the attribute is neither %s nor %s', AttributeType::TEXTAREA, AttributeType::RICH_TEXT);
