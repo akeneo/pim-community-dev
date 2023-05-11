@@ -3,8 +3,10 @@ import {Attribute} from '../../models';
 import {userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
+import {useEditAttributeTextAreaStatus} from '../../hooks/useEditAttributeTextAreaStatus';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
+import {useState} from 'react';
 
 type Props = {
   attribute: Attribute;
@@ -22,6 +24,18 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
 
+  const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
+
+  const editAttributeRichTextAreaStatus = useEditAttributeTextAreaStatus({
+    templateUuid: attribute.template_uuid,
+    attributeUuid: attribute.uuid,
+    isRichTextArea: isRichTextArea,
+  });
+
+  const handleRichTextChange = () => {
+    setIsRichTextArea(!isRichTextArea);
+  };
+
   return (
     <SettingsContainer>
       <SectionTitle sticky={0}>
@@ -36,8 +50,11 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
       </SectionTitle>
       <OptionsContainer>
         {['textarea', 'richtext'].includes(attribute.type) && (
-          <OptionField checked={attribute.type === 'richtext'} readOnly={true}>
+          <OptionField checked={isRichTextArea} onChange={handleRichTextChange}>
             {translate('akeneo.category.template.attribute.settings.options.rich_text')}
+            <Button level="primary" onClick={editAttributeRichTextAreaStatus}>
+              Save
+            </Button>
           </OptionField>
         )}
         <OptionField checked={attribute.is_localizable} readOnly={true}>

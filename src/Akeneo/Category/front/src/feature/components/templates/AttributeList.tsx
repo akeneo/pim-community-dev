@@ -66,7 +66,15 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
               >
                 <Table.Cell rowTitle>{getLabelFromAttribute(attribute, catalogLocale)}</Table.Cell>
                 <Table.Cell>{attribute.code}</Table.Cell>
-                <Table.Cell>{translate(`akeneo.category.template.attribute.type.${attribute.type !== CATEGORY_ATTRIBUTE_TYPE_RICHTEXT ? attribute.type : CATEGORY_ATTRIBUTE_TYPE_AREA}`)}</Table.Cell>
+                <Table.Cell>
+                  {translate(
+                    `akeneo.category.template.attribute.type.${
+                      attribute.type !== CATEGORY_ATTRIBUTE_TYPE_RICHTEXT
+                        ? attribute.type
+                        : CATEGORY_ATTRIBUTE_TYPE_AREA
+                    }`
+                  )}
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
