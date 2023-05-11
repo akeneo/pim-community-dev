@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Test\Acceptance\FakeServices;
 
-use Akeneo\Platform\Installer\Application\InstallPim\InstallFixtures;
+use Akeneo\Platform\Installer\Domain\Service\FixtureInstallerInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class InMemoryFixturesInstaller implements InstallFixtures
+class FakeFixturesInstaller implements FixtureInstallerInterface
 {
     private bool $installed = false;
 
-    public function minimal(): void
+    public function install(): void
     {
         $this->installed = true;
     }

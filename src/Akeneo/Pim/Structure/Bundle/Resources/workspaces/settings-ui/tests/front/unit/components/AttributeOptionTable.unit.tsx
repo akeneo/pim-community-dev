@@ -12,16 +12,16 @@ import {
   queryAllByTestId,
 } from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
-import {AttributeOption} from '../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/model';
+import {AttributeOption} from 'akeneopimstructure/js/attribute-option/model';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
-import AttributeOptionTable from '../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/components/AttributeOptionTable';
+import AttributeOptionTable from 'akeneopimstructure/js/attribute-option/components/AttributeOptionTable';
 import {
+  AttributeContextProvider,
   AttributeOptionsContextProvider,
   LocalesContextProvider,
-} from '../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/contexts';
-import OverridePimStyle from '../../../../../../src/Akeneo/Pim/Structure/Bundle/Resources/public/js/attribute-option/components/OverridePimStyles';
+} from 'akeneopimstructure/js/attribute-option/contexts';
+import OverridePimStyle from 'akeneopimstructure/js/attribute-option/components/OverridePimStyles';
 import baseFetcher from 'akeneopimstructure/js/attribute-option/fetchers/baseFetcher';
 
 jest.mock('akeneopimstructure/js/attribute-option/fetchers/baseFetcher');
@@ -58,11 +58,22 @@ const blackOption: AttributeOption = {
   optionValues: {
     en_US: {id: 3, value: 'Black', locale: 'en_US'},
     fr_FR: {id: 4, value: 'Noir', locale: 'fr_FR'},
+    de_DE: {id: 5, value: 'Schwarz', locale: 'fr_FR'},
   },
   toImprove: undefined,
 };
 
-const options = [blueOption, blackOption];
+const redOption: AttributeOption = {
+  id: 1,
+  code: 'red',
+  optionValues: {
+    en_US: {id: 1, value: 'Red', locale: 'en_US'},
+    fr_FR: {id: 2, value: 'Rouge', locale: 'fr_FR'},
+  },
+  toImprove: undefined,
+};
+
+const options = [blueOption, blackOption, redOption];
 
 describe('Attribute options table', () => {
   test('it renders an empty attribute options list', async () => {
@@ -76,8 +87,8 @@ describe('Attribute options table', () => {
 
     const attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     const attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
-    expect(attributeOptionsLabel.length).toBe(2);
-    expect(attributeOptionsCode.length).toBe(2);
+    expect(attributeOptionsLabel.length).toBe(3);
+    expect(attributeOptionsCode.length).toBe(3);
     expect(attributeOptionsLabel[0].textContent).toBe('Blue');
     expect(attributeOptionsLabel[1].textContent).toBe('Black');
     expect(attributeOptionsCode[0].textContent).toBe('blue');
@@ -91,8 +102,8 @@ describe('Attribute options table', () => {
 
     const attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     const attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
-    expect(attributeOptionsLabel.length).toBe(2);
-    expect(attributeOptionsCode.length).toBe(2);
+    expect(attributeOptionsLabel.length).toBe(3);
+    expect(attributeOptionsCode.length).toBe(3);
     expect(attributeOptionsLabel[0].textContent).toBe('Black');
     expect(attributeOptionsLabel[1].textContent).toBe('Blue');
     expect(attributeOptionsCode[0].textContent).toBe('black');
@@ -104,8 +115,8 @@ describe('Attribute options table', () => {
 
     let attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     let attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
-    expect(attributeOptionsLabel.length).toBe(2);
-    expect(attributeOptionsCode.length).toBe(2);
+    expect(attributeOptionsLabel.length).toBe(3);
+    expect(attributeOptionsCode.length).toBe(3);
     expect(attributeOptionsLabel[0].textContent).toBe('Blue');
     expect(attributeOptionsLabel[1].textContent).toBe('Black');
     expect(attributeOptionsCode[0].textContent).toBe('blue');
@@ -116,8 +127,8 @@ describe('Attribute options table', () => {
 
     attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
-    expect(attributeOptionsLabel.length).toBe(2);
-    expect(attributeOptionsCode.length).toBe(2);
+    expect(attributeOptionsLabel.length).toBe(3);
+    expect(attributeOptionsCode.length).toBe(3);
     expect(attributeOptionsLabel[0].textContent).toBe('Black');
     expect(attributeOptionsLabel[1].textContent).toBe('Blue');
     expect(attributeOptionsCode[0].textContent).toBe('black');
@@ -128,8 +139,8 @@ describe('Attribute options table', () => {
 
     attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
-    expect(attributeOptionsLabel.length).toBe(2);
-    expect(attributeOptionsCode.length).toBe(2);
+    expect(attributeOptionsLabel.length).toBe(3);
+    expect(attributeOptionsCode.length).toBe(3);
     expect(attributeOptionsLabel[0].textContent).toBe('Blue');
     expect(attributeOptionsLabel[1].textContent).toBe('Black');
     expect(attributeOptionsCode[0].textContent).toBe('blue');
@@ -233,6 +244,7 @@ describe('Attribute options table', () => {
     const optionItems = getAllByTestId(container, 'attribute-option-item');
     const blueOption = optionItems[0];
     const blackOption = optionItems[1];
+    const redOption = optionItems[2];
 
     let dataTransferred = '';
     const dataTransfer = {
@@ -251,14 +263,29 @@ describe('Attribute options table', () => {
 
     let attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     let attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
-    expect(attributeOptionsLabel.length).toBe(2);
-    expect(attributeOptionsCode.length).toBe(2);
+    expect(attributeOptionsLabel.length).toBe(3);
+    expect(attributeOptionsCode.length).toBe(3);
     expect(attributeOptionsLabel[0].textContent).toBe('Black');
     expect(attributeOptionsLabel[1].textContent).toBe('Blue');
+    expect(attributeOptionsLabel[2].textContent).toBe('Red');
     expect(attributeOptionsCode[0].textContent).toBe('black');
     expect(attributeOptionsCode[1].textContent).toBe('blue');
+    expect(attributeOptionsCode[2].textContent).toBe('red');
 
     expect(manuallySortAttributeOptionsCallback).toHaveBeenCalled();
+
+    // Move red to the 1st position
+    fireEvent.dragStart(redOption, {dataTransfer});
+    fireEvent.dragEnter(blackOption, {dataTransfer});
+    fireEvent.drop(blackOption, {dataTransfer});
+    fireEvent.dragLeave(blackOption, {dataTransfer});
+    fireEvent.dragEnd(redOption, {dataTransfer});
+
+    attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
+
+    expect(attributeOptionsLabel[0].textContent).toBe('Red');
+    expect(attributeOptionsLabel[1].textContent).toBe('Black');
+    expect(attributeOptionsLabel[2].textContent).toBe('Blue');
   });
 
   test('an attribute option cannot be moved if the options are sorted alphabetically', async () => {

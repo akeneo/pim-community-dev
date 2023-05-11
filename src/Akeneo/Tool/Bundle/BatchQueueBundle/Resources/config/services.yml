@@ -100,6 +100,10 @@ services:
         tags:
             - { name: akeneo_batch_queue.messenger.normalizer, priority: 0 }
 
+    Akeneo\Tool\Component\BatchQueue\Normalizer\ScheduledJobMessageNormalizer:
+        tags:
+            - { name: akeneo_batch_queue.messenger.normalizer, priority: 0 }
+
     Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobMessageHandler:
         arguments:
             - '@logger'

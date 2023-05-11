@@ -488,6 +488,7 @@ pim_system:
     button:
       label: Reset instance
       confirm: Reset and log out
+    error_notification: An error occurred during the PIM reset, please contact system administrator.
   sandbox:
     helper:
       text: This is a sandbox environment; your changes will not impact your production.

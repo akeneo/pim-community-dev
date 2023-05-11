@@ -1,0 +1,4 @@
+services:
+  Akeneo\Platform\Installer\Infrastructure\Query\FindTables:
+    arguments:
+      - '@database_connection'

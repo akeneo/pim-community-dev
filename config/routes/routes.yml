@@ -61,6 +61,9 @@ akeneo_category:
 identifier_generator:
     resource: "@AkeneoIdentifierGeneratorBundle/Resources/config/routing.yml"
 
+installer:
+    resource: "@AkeneoInstallerBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:
