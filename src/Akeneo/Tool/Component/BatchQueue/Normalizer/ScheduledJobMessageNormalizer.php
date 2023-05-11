@@ -17,10 +17,6 @@ use Webmozart\Assert\Assert;
  */
 final class ScheduledJobMessageNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function __construct()
-    {
-    }
-
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ScheduledJobMessage;
