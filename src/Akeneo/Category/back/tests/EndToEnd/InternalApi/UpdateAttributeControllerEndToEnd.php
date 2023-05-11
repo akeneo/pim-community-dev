@@ -70,7 +70,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             ],
             method: Request::METHOD_POST,
             content: json_encode([
-                'is_rich_text_area' => true,
+                'isRichRextArea' => true,
             ]),
         );
 
@@ -95,7 +95,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             ],
             method: Request::METHOD_POST,
             content: json_encode([
-                'is_rich_text_area' => false,
+                'isRichRextArea' => false,
             ]),
         );
 
@@ -118,7 +118,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             ],
             method: Request::METHOD_POST,
             content: json_encode([
-                'is_rich_text_area' => false,
+                'isRichRextArea' => false,
             ]),
         );
 
@@ -139,7 +139,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             ],
             method: Request::METHOD_POST,
             content: json_encode([
-                'is_rich_text_area' => false,
+                'isRichRextArea' => false,
             ]),
         );
 
