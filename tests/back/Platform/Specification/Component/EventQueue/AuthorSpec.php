@@ -26,6 +26,7 @@ class AuthorSpec extends ObjectBehavior
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
         $user->isApiUser()->willReturn(false);
+        $user->isUiUser()->willReturn(true); //todo check if mandatory
 
         $this->beConstructedThrough('fromUser', [$user->getWrappedObject()]);
 
@@ -39,6 +40,7 @@ class AuthorSpec extends ObjectBehavior
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
         $user->isApiUser()->willReturn(true);
+        $user->isUiUser()->willReturn(false); //todo check if mandatory
 
         $this->beConstructedThrough('fromUser', [$user->getWrappedObject()]);
 
