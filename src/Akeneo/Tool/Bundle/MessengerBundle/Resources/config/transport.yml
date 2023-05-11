@@ -20,6 +20,9 @@ services:
     Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessengerProxyTransportFactory:
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsTransportFactory'
+            - '@messenger.transport.doctrine.factory'
+            - '@messenger.transport.in_memory.factory'
+            - '@messenger.transport.sync.factory'
             - '%env(GOOGLE_CLOUD_PROJECT)%'
             - '@akeneo_messenger.envelope.serializer'
             - '%env(string:APP_ENV)%'

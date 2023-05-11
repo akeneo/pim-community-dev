@@ -17,7 +17,10 @@ use Symfony\Component\Messenger\Transport\TransportInterface;
 final class MessengerProxyTransportFactory implements TransportFactoryInterface
 {
     public function __construct(
-        private TransportFactoryInterface $gcpTransportFactory,
+        private readonly TransportFactoryInterface $gcpTransportFactory,
+        private readonly TransportFactoryInterface $doctrineTransportFactory,
+        private readonly TransportFactoryInterface $inMemoryTransportFactory,
+        private readonly TransportFactoryInterface $syncTransportFactory,
         private readonly string $googleCloudProject,
         private readonly SerializerInterface $messageSerializer,
         private readonly string $env,
@@ -38,20 +41,27 @@ final class MessengerProxyTransportFactory implements TransportFactoryInterface
 
             $transportType = $this->getTransportTypeByEnv($this->env);
 
+            /**
+             * For PubSub we need to create one transport that will only send messages in a topic
+             *   And one transport for each consumer (subscription) on this topic to receive the messages
+             */
             if ($transportType === TransportType::PUB_SUB) {
                 $sendersByMessage[$queueConfig['message_class']] = $this->createPubSubSender($queueName);
                 foreach ($queueConfig['consumers'] as $consumer) {
                     $receiversByConsumer[$consumer['name']] = $this->createPubSubReceiver($queueName, $consumer['name']);
                 }
+            /** For other transport types we use the same transport as sender and receiver */
             } else {
-                throw new \Exception('Only PubSub is implemented');
-//                $transport = match ($transportType) {
-//                    TransportType::DOCTRINE => $this->createDoctrineTransport(),
-//                    TransportType::IN_MEMORY => $this->createInMemoryTransport(),
-//                    TransportType::SYNC => $this->createSyncTransport(),
-//                };
-//                $sendersByMessage[$queueConfig['message_class']] = $transport;
-//                $receiversByConsumer[$queueConfig['message_class']] = $transport;
+                $transport = match ($transportType) {
+                    TransportType::DOCTRINE => $this->createDoctrineTransport($queueName),
+                    TransportType::IN_MEMORY => $this->createInMemoryTransport(),
+                    TransportType::SYNC => $this->createSyncTransport(), // To remove if not used
+                };
+
+                $sendersByMessage[$queueConfig['message_class']] = $transport;
+                foreach ($queueConfig['consumers'] as $consumer) {
+                    $receiversByConsumer[$consumer['name']] = $transport;
+                }
             }
         }
 
@@ -78,7 +88,7 @@ final class MessengerProxyTransportFactory implements TransportFactoryInterface
             [
                 'project_id' => $this->googleCloudProject,
                 'topic_name' => $topicName,
-                'auto_setup' => true, //\in_array($this->env, ['dev', 'test', 'test_fake']),
+                'auto_setup' => \in_array($this->env, ['dev', 'test', 'test_fake']),
             ], $this->messageSerializer
         );
     }
@@ -90,8 +100,28 @@ final class MessengerProxyTransportFactory implements TransportFactoryInterface
                 'project_id' => $this->googleCloudProject,
                 'topic_name' => $topicName,
                 'subscription_name' => $subscriptionName,
-                'auto_setup' => true, //\in_array($this->env, ['dev', 'test', 'test_fake']),
+                'auto_setup' => \in_array($this->env, ['dev', 'test', 'test_fake']),
             ], $this->messageSerializer
         );
+    }
+
+    private function createDoctrineTransport(string $queueName): TransportInterface
+    {
+        return $this->doctrineTransportFactory->createTransport('doctrine://default', [
+            'table_name' => 'messenger_messages',
+            'queue_name' => $queueName,
+            'redeliver_timeout' => 86400,
+            'auto_setup' => false,
+        ], $this->messageSerializer);
+    }
+
+    private function createInMemoryTransport(): TransportInterface
+    {
+        return $this->inMemoryTransportFactory->createTransport('in-memory://', [], $this->messageSerializer);
+    }
+
+    private function createSyncTransport(): TransportInterface
+    {
+        return $this->syncTransportFactory->createTransport('sync://', [], $this->messageSerializer);
     }
 }

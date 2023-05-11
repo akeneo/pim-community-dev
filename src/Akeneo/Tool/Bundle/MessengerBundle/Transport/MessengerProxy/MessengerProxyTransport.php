@@ -19,14 +19,16 @@ use Webmozart\Assert\Assert;
 final class MessengerProxyTransport implements TransportInterface, QueueReceiverInterface
 {
     public function __construct(
-        private array $sendersByMessage,
-        private array $receiversByConsumer,
+        private readonly array $sendersByMessage,
+        private readonly array $receiversByConsumer,
     ) {
     }
 
-    public function getFromQueues(array $consumerNames): iterable
+    public function getFromQueues(array $queueNames): iterable
     {
-        foreach ($consumerNames as $consumerName) {
+        // In Symfony Messenger wording, a "queue" is the equivalent of "consumer" for us.
+        // TODO: renaming to avoid confusion ?
+        foreach ($queueNames as $consumerName) {
             $receiver = $this->findReceiver($consumerName);
             foreach ($receiver->get() as $envelope) {
                 yield $envelope->with(new ConsumerNameStamp($consumerName));
