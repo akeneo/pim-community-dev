@@ -41,7 +41,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
     }
 
 
-    public function testInsertNewCategoryAttributeInDatabase(): void
+    public function testInsertsNewCategoryAttributeInDatabase(): void
     {
         /** @var Category $category */
         $category = $this->getCategory->byCode('master');
@@ -91,7 +91,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
         $this->assertEquals(AttributeCollection::fromArray([]), $insertedAttributes);
     }
 
-    public function testItChangeAttributeToTextArea(): void
+    public function testItChangesAttributeToTextArea(): void
     {
         /** @var Category $category */
         $category = $this->getCategory->byCode('master');
@@ -122,7 +122,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
         $this->assertEquals((string) $longDescription->getType(), AttributeType::TEXTAREA);
     }
 
-    public function testItChangeAttributeToRichText(): void
+    public function testItChangesAttributeToRichText(): void
     {
         /** @var Category $category */
         $category = $this->getCategory->byCode('master');
