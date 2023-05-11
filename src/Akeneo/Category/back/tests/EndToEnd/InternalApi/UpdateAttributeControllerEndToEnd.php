@@ -57,7 +57,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->createTemplate();
     }
 
-    public function testItUpdateAttributeTypeToRichText(): void
+    public function testItUpdatesAttributeTypeToRichText(): void
     {
         $longDescription = $this->attributeCollection->getAttributeByCode('text_area');
         $this->assertEquals((string) $longDescription->getType(), AttributeType::TEXTAREA);
@@ -82,7 +82,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertEquals((string) $longDescription->getType(), AttributeType::RICH_TEXT);
     }
 
-    public function testItUpdateAttributeTypeToTextArea(): void
+    public function testItUpdatesAttributeTypeToTextArea(): void
     {
         $richTextAttribute = $this->attributeCollection->getAttributeByCode('rich_text');
         $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::RICH_TEXT);
