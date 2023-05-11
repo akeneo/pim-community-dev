@@ -7,38 +7,20 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionType;
 
 /**
- * @author Romain Monceau <romain@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class Connection
 {
-    private string $code;
-
-    private string $label;
-
-    private string $flowType;
-
-    private ?string $image;
-
-    private bool $auditable;
-
-    private string $type;
-
     public function __construct(
-        string $code,
-        string $label,
-        string $flowType,
-        ?string $image = null,
-        bool $auditable = false,
-        string $type = ConnectionType::DEFAULT_TYPE
+        private string $code,
+        private string $label,
+        private string $flowType,
+        private ?string $image = null,
+        private bool $auditable = false,
+        private string $type = ConnectionType::DEFAULT_TYPE
     ) {
-        $this->code = $code;
-        $this->label = $label;
-        $this->flowType = $flowType;
-        $this->image = $image;
-        $this->auditable = $auditable;
-        $this->type = $type;
     }
 
     public function code(): string

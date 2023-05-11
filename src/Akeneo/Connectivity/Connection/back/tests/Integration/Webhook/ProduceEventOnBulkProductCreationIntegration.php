@@ -29,7 +29,7 @@ class ProduceEventOnBulkProductCreationIntegration extends TestCase
         $this->productSaver = $this->get('pim_catalog.saver.product');
     }
 
-    public function test_the_bulk_product_creation_event()
+    public function test_the_bulk_product_creation_event(): void
     {
         $count = 3;
         $products = [];

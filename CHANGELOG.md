@@ -55,6 +55,7 @@
 - PIM-10916: Fix external categories endpoint with_position always return 1
 - PIM-10887: Prevent channel creation on validation error during import
 - PIM-10929: Add limit on get product history
+- PIM-10940 : Add command to remove orphan categories
 - PIM-10936: Fix an issue where completeness could not be saved after migrating to UUIDs
 - PIM-10938: Fix getNextObject when use clicks on variant during sequential edit
 - PIM-10948: Fix number value comparison
@@ -66,7 +67,12 @@
 - PIM-10909: Refactor command to remove non-existing products and models from ES index
 - PIM-10932: Fix data in NumberValueFactory if data contains a white space
 - PIM-10814: Wysiwyg now supports languages that use right-to-left (rtl) scripts
+- PIM-10956: Fix deletion of category with enriched category template
 - PIM-10914: Add title and ellipsis for long labels on attribute select
+- PIM-10967: Fix inconsistency on DQI completeness recommendation
+- PIM-10639: Prevent users to change his password without providing its current password
+- PIM-10958: Fix attribute option position after clicking on "done"
+- PIM-10976: Fix variant product counter on Product Model Edit Form for variant products without identifier
 
 ## Improvements
 

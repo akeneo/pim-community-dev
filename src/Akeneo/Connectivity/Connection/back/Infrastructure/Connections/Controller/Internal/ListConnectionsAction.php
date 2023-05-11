@@ -24,14 +24,12 @@ final class ListConnectionsAction
 
     public function __invoke(Request $request): JsonResponse
     {
-        $query = new FetchConnectionsQuery(\json_decode($request->get('search', "[]"), true));
+        $query = new FetchConnectionsQuery(\json_decode($request->get('search', "[]"), true, 512, JSON_THROW_ON_ERROR));
 
         $connections = $this->fetchConnectionsHandler->handle($query);
 
         return new JsonResponse(
-            \array_map(function (Connection $connection) {
-                return $connection->normalize();
-            }, $connections)
+            \array_map(fn (Connection $connection): array => $connection->normalize(), $connections)
         );
     }
 }

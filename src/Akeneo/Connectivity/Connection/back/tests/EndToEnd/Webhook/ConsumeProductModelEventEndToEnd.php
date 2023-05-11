@@ -31,13 +31,13 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
 
         $this->referenceProductModel = $this->loadReferenceProductModel();
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $this->historyContainer = $this->get('Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer');
+        $this->historyContainer = $this->get(\Akeneo\Connectivity\Connection\Tests\EndToEnd\GuzzleJsonHistoryContainer::class);
         $connection = $this->loadConnection();
 
         $this->get('akeneo_connectivity.connection.fixtures.webhook_loader')->initWebhook($connection->code());
     }
 
-    public function test_it_sends_a_product_model_created_webhook_event()
+    public function test_it_sends_a_product_model_created_webhook_event(): void
     {
         $message = new BulkEvent(
             [
@@ -57,13 +57,13 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         $this->assertCount(1, $this->historyContainer);
 
         $request = Message::parseRequest($this->historyContainer[0]['request']);
-        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
         $this->assertEquals($this->expectedProductModelCreatedPayload(), $requestContent);
     }
 
-    public function test_it_sends_a_product_model_updated_webhook_event()
+    public function test_it_sends_a_product_model_updated_webhook_event(): void
     {
         $message = new BulkEvent(
             [
@@ -83,13 +83,13 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         $this->assertCount(1, $this->historyContainer);
 
         $request = Message::parseRequest($this->historyContainer[0]['request']);
-        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
         $this->assertEquals($this->expectedProductModelUpdatedPayload(), $requestContent);
     }
 
-    public function test_it_sends_a_product_model_removed_webhook_event()
+    public function test_it_sends_a_product_model_removed_webhook_event(): void
     {
         $message = new BulkEvent(
             [
@@ -112,7 +112,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         $this->assertCount(1, $this->historyContainer);
 
         $request = Message::parseRequest($this->historyContainer[0]['request']);
-        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($request->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR)['events'][0];
 
         $this->assertEquals($this->expectedProductModelRemovedPayload(), $requestContent);
     }

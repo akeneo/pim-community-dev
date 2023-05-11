@@ -6,6 +6,7 @@ services:
         public: true
         class: 'Akeneo\Category\Infrastructure\Controller\ExternalApi\CategoryController'
         arguments:
+            - '@oro_security.security_facade'
             - '@pim_api.repository.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.updater.category'
@@ -90,6 +91,7 @@ services:
     Akeneo\Category\Infrastructure\Controller\ExternalApi\ListCategoriesController:
         public: true
         arguments:
+            - '@oro_security.security_facade'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@Akeneo\Category\Application\Query\GetCategoriesParametersBuilder'
@@ -99,6 +101,7 @@ services:
     Akeneo\Category\Infrastructure\Controller\ExternalApi\GetCategoryController:
         public: true
         arguments:
+            - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Query\GetCategoriesParametersBuilder'
             - '@Akeneo\Category\Application\Query\GetCategoriesInterface'
 
@@ -106,6 +109,7 @@ services:
     Akeneo\Category\Infrastructure\Controller\ExternalApi\DownloadCategoryMediaFileController:
         public: true
         arguments:
+            - '@oro_security.security_facade'
             - '@pim_api.repository.media_file'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'

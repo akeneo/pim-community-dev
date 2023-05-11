@@ -24,7 +24,7 @@ class RedirectToEditConnectedAppActionSpec extends ObjectBehavior
         RouterInterface $router,
         SecurityFacade $security,
         FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
-    ) {
+    ): void {
         $this->beConstructedWith(
             $router,
             $security,
@@ -139,6 +139,6 @@ class RedirectToEditConnectedAppActionSpec extends ObjectBehavior
 
         $this
             ->__invoke($appId)
-            ->shouldBeLike(new RedirectResponse('/#' . '/connect/connected-apps/random_connection_code'));
+            ->shouldBeLike(new RedirectResponse('/#/connect/connected-apps/random_connection_code'));
     }
 }

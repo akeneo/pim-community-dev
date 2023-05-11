@@ -22,7 +22,7 @@ use PHPUnit\Framework\Assert;
  */
 class UpdateUserPermissionsIntegration extends TestCase
 {
-    public function test_it_updates_a_role_and_a_group()
+    public function test_it_updates_a_role_and_a_group(): void
     {
         $connection = $this->createConnection('pimgento');
 

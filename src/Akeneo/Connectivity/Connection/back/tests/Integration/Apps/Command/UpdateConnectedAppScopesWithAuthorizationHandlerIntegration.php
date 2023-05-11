@@ -140,7 +140,7 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerIntegration extends TestCa
     /**
      * @dataProvider throwExceptionDataProvider
      */
-    public function test_it_throws_when_the_command_is_not_valid(string $clientId, $expectedMessage)
+    public function test_it_throws_when_the_command_is_not_valid(string $clientId, string $expectedMessage): void
     {
         $appId = '0dfce574-2238-4b13-b8cc-8d257ce7645b';
 

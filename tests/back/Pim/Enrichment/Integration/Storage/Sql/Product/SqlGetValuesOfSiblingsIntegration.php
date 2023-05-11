@@ -10,9 +10,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -84,6 +86,24 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
             ValueInterface::class,
             $valuesOfSiblings['sub_sweat_option_b']->getByCodes('a_simple_select')
         );
+    }
+
+    public function test_that_it_gets_the_siblings_values_of_an_existing_variant_product_without_identifier()
+    {
+        $apollonATrue = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optiona_true');
+        $apollonAFalse = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_optiona_false');
+        $command = UpsertProductCommand::createWithUuid(
+            userId: $this->getUserId('admin'),
+            productUuid: ProductUuid::fromUuid($apollonATrue->getUuid()),
+            userIntents: [
+                new ClearValue('sku', null, null),
+            ],
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+
+        $valuesOfSiblings = $this->getValuesOfSiblings($apollonAFalse);
+        Assert::assertCount(1, $valuesOfSiblings);
+        Assert::assertArrayHasKey($apollonATrue->getUuid()->toString(), $valuesOfSiblings);
     }
 
     // - sweat

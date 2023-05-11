@@ -17,7 +17,6 @@ extensions:
         module: pim/sandbox-helper
         parent: akeneo-data-quality-insights-dqi-dashboard-index
         targetZone: helper
-        feature: reset_pim
 
     akeneo-data-quality-insights-dqi-dashboard-breadcrumb:
         module: pim/common/breadcrumbs

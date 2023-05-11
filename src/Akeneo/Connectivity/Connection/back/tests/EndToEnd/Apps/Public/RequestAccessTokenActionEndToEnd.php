@@ -45,7 +45,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
             ]
         );
         $response = $this->client->getResponse();
-        $content = \json_decode($response->getContent(), true);
+        $content = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertIsArray($content);
@@ -75,13 +75,13 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
         );
         $creationResponse = $this->client->getResponse();
         Assert::assertEquals(Response::HTTP_OK, $creationResponse->getStatusCode());
-        $creationContent = \json_decode($creationResponse->getContent(), true);
+        $creationContent = \json_decode($creationResponse->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertArrayHasKey('access_token', $creationContent);
         Assert::assertIsString($creationContent['access_token']);
         $createdToken = $creationContent['access_token'];
 
         $secondResponse = $this->client->getResponse();
-        $content = \json_decode($secondResponse->getContent(), true);
+        $content = \json_decode($secondResponse->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertIsArray($content);
         Assert::assertArrayHasKey('access_token', $content);
@@ -105,7 +105,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
             ]
         );
         $response = $this->client->getResponse();
-        $content = \json_decode($response->getContent(), true);
+        $content = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         Assert::assertSame('invalid_request', $content['error']);
@@ -161,7 +161,7 @@ class RequestAccessTokenActionEndToEnd extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $responseContent = \json_decode($response->getContent(), true);
+        $responseContent = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertArrayHasKey('redirectUrl', $responseContent);

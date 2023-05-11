@@ -11,15 +11,11 @@ namespace Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model
  */
 class WrongCredentialsCombination
 {
-    private string $connectionCode;
-
     /** @var array<string, \DateTime> */
-    private array $users;
+    private array $users = [];
 
-    public function __construct(string $connectionCode)
+    public function __construct(private string $connectionCode)
     {
-        $this->connectionCode = $connectionCode;
-        $this->users = [];
     }
 
     /**

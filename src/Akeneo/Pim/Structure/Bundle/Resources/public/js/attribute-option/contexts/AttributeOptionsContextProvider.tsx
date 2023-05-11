@@ -138,6 +138,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
   const reorderAttributeOptions = useCallback(async (sortedAttributeOptions: AttributeOption[]) => {
     setIsSaving(true);
     await attributeOptionManualSort(sortedAttributeOptions);
+    setAttributeOptions(sortedAttributeOptions);
     setIsSaving(false);
   }, []);
 

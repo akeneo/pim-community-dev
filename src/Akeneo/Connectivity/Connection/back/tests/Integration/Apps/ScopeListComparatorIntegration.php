@@ -27,7 +27,7 @@ class ScopeListComparatorIntegration extends TestCase
         return null;
     }
 
-    public function test_it_returns_new_scopes()
+    public function test_it_returns_new_scopes(): void
     {
         $originalScopes = [
             'write_products',
@@ -49,7 +49,7 @@ class ScopeListComparatorIntegration extends TestCase
         $this->assertEquals($newScopes, $expected);
     }
 
-    public function test_it_returns_empty_scopes()
+    public function test_it_returns_empty_scopes(): void
     {
         $originalScopes = [
             'write_products',
@@ -65,7 +65,7 @@ class ScopeListComparatorIntegration extends TestCase
         $this->assertEquals($newScopes, $expected);
     }
 
-    public function test_it_returns_a_new_scope_with_hightest_level()
+    public function test_it_returns_a_new_scope_with_hightest_level(): void
     {
         $originalScopes = ['read_categories'];
 
@@ -78,7 +78,7 @@ class ScopeListComparatorIntegration extends TestCase
         $this->assertEquals($newScopes, $expected);
     }
 
-    public function test_it_returns_empty_scopes_when_lower_lever_scopes_are_requested()
+    public function test_it_returns_empty_scopes_when_lower_lever_scopes_are_requested(): void
     {
         $originalScopes = [
             'write_association_types',

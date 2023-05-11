@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  */
 class AsymmetricKeysGeneratorSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith(__DIR__ . '/openssl.cnf');
     }

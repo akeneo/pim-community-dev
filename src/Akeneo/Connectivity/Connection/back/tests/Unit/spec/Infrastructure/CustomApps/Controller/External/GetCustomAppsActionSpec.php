@@ -23,7 +23,7 @@ class GetCustomAppsActionSpec extends ObjectBehavior
         FeatureFlag $developerModeFeatureFlag,
         TokenStorageInterface $tokenStorage,
         GetCustomAppsQueryInterface $getCustomAppsQuery,
-    ) {
+    ): void {
         $this->beConstructedWith(
             $developerModeFeatureFlag,
             $tokenStorage,

@@ -44,7 +44,7 @@ class FlagAppContainingOutdatedScopesHandler
             $existingScopes->getScopes()
         );
 
-        if (false === empty($newScopes)) {
+        if ($newScopes !== []) {
             $this->saveConnectedAppOutdatedScopesFlagQuery->execute($connectedApp->getId(), true);
             $this->authorizationRequestNotifier->notify($connectedApp);
         }

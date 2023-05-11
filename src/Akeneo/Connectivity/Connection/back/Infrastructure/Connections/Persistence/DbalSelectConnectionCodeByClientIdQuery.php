@@ -9,11 +9,8 @@ use Doctrine\DBAL\Connection;
 
 class DbalSelectConnectionCodeByClientIdQuery implements SelectConnectionCodeByClientIdQueryInterface
 {
-    private Connection $dbalConnection;
-
-    public function __construct(Connection $dbalConnection)
+    public function __construct(private Connection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     public function execute(string $clientId): ?string

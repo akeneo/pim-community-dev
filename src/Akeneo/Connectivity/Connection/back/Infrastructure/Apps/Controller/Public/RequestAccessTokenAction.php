@@ -21,18 +21,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final class RequestAccessTokenAction
 {
-    private FeatureFlag $featureFlag;
-    private ValidatorInterface $validator;
-    private CreateAccessTokenInterface $createAccessToken;
-
-    public function __construct(
-        FeatureFlag $featureFlag,
-        ValidatorInterface $validator,
-        CreateAccessTokenInterface $createAccessToken
-    ) {
-        $this->featureFlag = $featureFlag;
-        $this->validator = $validator;
-        $this->createAccessToken = $createAccessToken;
+    public function __construct(private FeatureFlag $featureFlag, private ValidatorInterface $validator, private CreateAccessTokenInterface $createAccessToken)
+    {
     }
 
     public function __invoke(Request $request): Response

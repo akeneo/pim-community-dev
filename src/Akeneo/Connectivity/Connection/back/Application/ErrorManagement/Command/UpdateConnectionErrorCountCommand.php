@@ -12,15 +12,11 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErro
  */
 final class UpdateConnectionErrorCountCommand
 {
-    /** @var HourlyErrorCount[] */
-    private array $errorCounts;
-
     /**
      * @param HourlyErrorCount[] $errorCounts
      */
-    public function __construct(array $errorCounts)
+    public function __construct(private array $errorCounts)
     {
-        $this->errorCounts = $errorCounts;
     }
 
     /**

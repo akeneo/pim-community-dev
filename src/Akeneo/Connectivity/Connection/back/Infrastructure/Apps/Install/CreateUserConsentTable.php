@@ -10,7 +10,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Install;
  */
 class CreateUserConsentTable
 {
-    const QUERY = <<<'SQL'
+    public const QUERY = <<<'SQL'
         CREATE TABLE IF NOT EXISTS akeneo_connectivity_user_consent(
             user_id INT NOT NULL,
             app_id VARCHAR(36) NOT NULL,

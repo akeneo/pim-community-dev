@@ -163,6 +163,8 @@ $rules = [
             'FOS\RestBundle\Serializer\Serializer',
 
             'Ramsey\Uuid\Uuid',
+
+            'Generator',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -317,6 +319,8 @@ $rules = [
             'Psr\Http\Message\ResponseInterface',
 
             'Ramsey\Uuid\Uuid',
+
+            'Generator',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Webhook'),
 

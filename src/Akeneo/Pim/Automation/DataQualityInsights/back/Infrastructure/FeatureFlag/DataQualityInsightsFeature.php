@@ -19,7 +19,7 @@ final class DataQualityInsightsFeature implements FeatureFlag
         $this->activationFlag = $activationFlag;
     }
 
-    public function isEnabled(): bool
+    public function isEnabled(?string $feature = null): bool
     {
         return (true === $this->activationFlag);
     }

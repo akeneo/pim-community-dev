@@ -31,7 +31,7 @@ class DbalSelectConnectionWithCredentialsByCodeQueryIntegration extends TestCase
         $this->selectConnectionWithCredentialsByCodeQuery = $this->get(DbalSelectConnectionWithCredentialsByCodeQuery::class);
     }
 
-    public function test_it_finds_a_connection_with_its_credentials()
+    public function test_it_finds_a_connection_with_its_credentials(): void
     {
         $this->connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
 
@@ -48,7 +48,7 @@ class DbalSelectConnectionWithCredentialsByCodeQueryIntegration extends TestCase
         Assert::assertFalse($connection->auditable());
     }
 
-    public function test_it_does_not_find_a_connection_when_the_code_does_exists()
+    public function test_it_does_not_find_a_connection_when_the_code_does_exists(): void
     {
         $connection = $this->selectConnectionWithCredentialsByCodeQuery->execute('magento');
 

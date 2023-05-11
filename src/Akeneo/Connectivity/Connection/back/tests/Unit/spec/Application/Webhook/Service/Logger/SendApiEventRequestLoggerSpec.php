@@ -186,7 +186,7 @@ class SendApiEventRequestLoggerSpec extends ObjectBehavior
         );
     }
 
-    public function it_returns_the_log_without_propagation_times(LoggerInterface $logger)
+    public function it_returns_the_log_without_propagation_times(LoggerInterface $logger): void
     {
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook', false);
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);

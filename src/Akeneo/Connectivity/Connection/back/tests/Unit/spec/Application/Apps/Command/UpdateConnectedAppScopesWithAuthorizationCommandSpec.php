@@ -18,12 +18,12 @@ class UpdateConnectedAppScopesWithAuthorizationCommandSpec extends ObjectBehavio
         $this->beConstructedWith('test');
     }
 
-    public function it_is_instantiable()
+    public function it_is_instantiable(): void
     {
         $this->shouldHaveType(UpdateConnectedAppScopesWithAuthorizationCommand::class);
     }
 
-    public function it_gets_client_id()
+    public function it_gets_client_id(): void
     {
         $this->getClientId()->shouldReturn('test');
     }

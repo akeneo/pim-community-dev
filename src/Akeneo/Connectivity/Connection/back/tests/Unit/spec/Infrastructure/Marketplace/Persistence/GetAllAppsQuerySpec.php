@@ -18,13 +18,16 @@ use PhpSpec\ObjectBehavior;
  */
 class GetAllAppsQuerySpec extends ObjectBehavior
 {
-    private $items;
+    /**
+     * @var array<int, array<string, string|string[]|false>>|null
+     */
+    private ?array $items = null;
 
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
         GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery,
         GetAllPendingAppsPublicIdsQueryInterface $getAllPendingAppsPublicIdsQuery,
-    ) {
+    ): void {
         $this->items = [
             [
                 'id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
@@ -119,19 +122,17 @@ class GetAllAppsQuerySpec extends ObjectBehavior
     public function it_executes_and_returns_app_result(
         GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery,
         GetAllPendingAppsPublicIdsQueryInterface $getAllPendingAppsPublicIdsQuery,
-    ) {
+    ): void {
         $getAllPendingAppsPublicIdsQuery->execute()->willReturn([]);
         $getAllConnectedAppsPublicIdsQuery->execute()->willReturn([]);
 
-        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(function ($item) {
-            return App::fromWebMarketplaceValues($item);
-        }, $this->items)));
+        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(fn ($item): App => App::fromWebMarketplaceValues($item), $this->items)));
     }
 
     public function it_sets_connected_to_true_on_connected_apps(
         GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery,
         GetAllPendingAppsPublicIdsQueryInterface $getAllPendingAppsPublicIdsQuery,
-    ) {
+    ): void {
         $getAllPendingAppsPublicIdsQuery->execute()->willReturn([]);
         $getAllConnectedAppsPublicIdsQuery->execute()->willReturn([
             $this->items[0]['id'],
@@ -142,15 +143,13 @@ class GetAllAppsQuerySpec extends ObjectBehavior
         $this->items[1]['connected'] = false;
         $this->items[2]['connected'] = true;
 
-        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(function ($item) {
-            return App::fromWebMarketplaceValues($item);
-        }, $this->items)));
+        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(fn ($item): App => App::fromWebMarketplaceValues($item), $this->items)));
     }
 
     public function it_sets_pending_to_true_on_pending_apps(
         GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery,
         GetAllPendingAppsPublicIdsQueryInterface $getAllPendingAppsPublicIdsQuery,
-    ) {
+    ): void {
         $getAllPendingAppsPublicIdsQuery->execute()->willReturn([
             $this->items[1]['id'],
             $this->items[3]['id'],
@@ -171,8 +170,6 @@ class GetAllAppsQuerySpec extends ObjectBehavior
         $this->items[3]['connected'] = false;
         $this->items[3]['isPending'] = true;
 
-        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(function ($item) {
-            return App::fromWebMarketplaceValues($item);
-        }, $this->items)));
+        $this->execute()->shouldBeLike(GetAllAppsResult::create(4, \array_map(fn ($item): App => App::fromWebMarketplaceValues($item), $this->items)));
     }
 }

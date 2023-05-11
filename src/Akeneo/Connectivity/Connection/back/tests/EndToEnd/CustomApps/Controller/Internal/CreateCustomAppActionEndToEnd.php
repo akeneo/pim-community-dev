@@ -55,7 +55,7 @@ class CreateCustomAppActionEndToEnd extends WebTestCase
             \json_encode($data)
         );
         $response = $this->client->getResponse();
-        $createdResult = \json_decode($response->getContent(), true);
+        $createdResult = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         Assert::assertArrayHasKey('clientId', $createdResult);

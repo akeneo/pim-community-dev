@@ -17,35 +17,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class RequestAppAuthenticationHandler
 {
-    private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery;
-    private CreateUserConsentQueryInterface $createUserConsentQuery;
-    private ClockInterface $clock;
-    private ValidatorInterface $validator;
-
     public function __construct(
-        GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
-        CreateUserConsentQueryInterface $createUserConsentQuery,
-        ClockInterface $clock,
-        ValidatorInterface $validator
+        private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
+        private CreateUserConsentQueryInterface $createUserConsentQuery,
+        private ClockInterface $clock,
+        private ValidatorInterface $validator
     ) {
-        $this->getUserConsentedAuthenticationScopesQuery = $getUserConsentedAuthenticationScopesQuery;
-        $this->createUserConsentQuery = $createUserConsentQuery;
-        $this->clock = $clock;
-        $this->validator = $validator;
     }
 
     public function handle(RequestAppAuthenticationCommand $command): void
     {
         $violations = $this->validator->validate($command);
         if ($violations->count() > 0) {
-            throw new \InvalidArgumentException((string)$violations->get(0)->getMessage());
+            throw new \InvalidArgumentException((string) $violations->get(0)->getMessage());
         }
 
         $userId = $command->getPimUserId();
         $appId = $command->getAppId();
 
         // If openid scope isn't requested, clear all the user consented scopes & skip the authentication.
-        if (false === $command->getRequestedAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
+        if (!$command->getRequestedAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
             $this->createUserConsentQuery->execute(
                 $userId,
                 $appId,

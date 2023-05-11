@@ -38,7 +38,7 @@ class AppRoleWithScopesFactoryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_creates_a_role_with_permissions_derived_from_the_scopes()
+    public function test_it_creates_a_role_with_permissions_derived_from_the_scopes(): void
     {
         $role = $this->factory->createRole('foo', [
             'read_products',

@@ -1,6 +1,5 @@
 services:
-  akeneo.installer.handler.install_pim:
-    class: Akeneo\Platform\Installer\Application\InstallPim\InstallPimHandler
-    public: true
+  Akeneo\Platform\Installer\Application\PurgeInstance\PurgeInstanceHandler:
     arguments:
-      - '@akeneo.installer.fixtures.installer'
+      - '@Akeneo\Platform\Installer\Infrastructure\Query\FindTables'
+      - '@Akeneo\Platform\Installer\Infrastructure\DatabasePurger\DbalPurger'

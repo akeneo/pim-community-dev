@@ -1,0 +1,6 @@
+services:
+  Akeneo\Platform\Installer\Infrastructure\Controller\ResetInstanceAction:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Installer\Application\PurgeInstance\PurgeInstanceHandler'
+      - '@Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller'

@@ -45,7 +45,7 @@ class GetConnectionBusinessErrorsEndToEnd extends WebTestCase
         $this->client->request('GET', '/rest/connections/erp/business-errors', [
             'end_date' => '2020-01-07',
         ]);
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertEquals($expectedResult, $result);

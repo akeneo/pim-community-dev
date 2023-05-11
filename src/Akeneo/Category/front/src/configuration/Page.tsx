@@ -112,6 +112,19 @@ const Page: FC = () => {
                 Enriched Categories: Customize Template
               </Checkbox>
             </Field>
+            <Field>
+              <Checkbox
+                  checked={configuration.features.category_update_template_attribute}
+                  onClick={() =>
+                      changeFeature(
+                          'category_update_template_attribute',
+                          !configuration.features.category_update_template_attribute
+                      )
+                  }
+              >
+                Enriched Categories: Update Templace Attribute
+              </Checkbox>
+            </Field>
           </Content>
         </Section>
 
