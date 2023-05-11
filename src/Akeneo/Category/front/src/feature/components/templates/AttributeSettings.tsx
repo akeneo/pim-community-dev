@@ -1,6 +1,6 @@
 import {Button, Checkbox, Field, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
-import {userContext, useTranslate} from '@akeneo-pim-community/shared';
+import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {useEditAttributeTextAreaStatus} from '../../hooks/useEditAttributeTextAreaStatus';
@@ -17,6 +17,7 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
   const catalogLocales = useCatalogLocales();
+  const featureFlag = useFeatureFlags();
 
   const [
     isDeactivateTemplateAttributeModalOpen,
@@ -32,7 +33,7 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     isRichTextArea: isRichTextArea,
   });
 
-  const handleRichTextChange = () => {
+  const handleRichTextAreaChange = () => {
     setIsRichTextArea(!isRichTextArea);
   };
 
@@ -50,11 +51,16 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
       </SectionTitle>
       <OptionsContainer>
         {['textarea', 'richtext'].includes(attribute.type) && (
-          <OptionField checked={isRichTextArea} onChange={handleRichTextChange}>
+          <OptionField
+              checked={isRichTextArea}
+              onChange={handleRichTextAreaChange}
+              readOnly={!featureFlag.isEnabled('category_update_template_attribute')}>
             {translate('akeneo.category.template.attribute.settings.options.rich_text')}
-            <Button level="primary" onClick={editAttributeRichTextAreaStatus}>
-              Save
-            </Button>
+              {featureFlag.isEnabled('category_update_template_attribute') && (
+                  <Button level="primary" onClick={editAttributeRichTextAreaStatus}>
+                    Save
+                  </Button>
+              )}
           </OptionField>
         )}
         <OptionField checked={attribute.is_localizable} readOnly={true}>
