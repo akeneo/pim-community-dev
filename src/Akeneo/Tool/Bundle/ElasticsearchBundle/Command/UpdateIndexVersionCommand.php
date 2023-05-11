@@ -92,7 +92,7 @@ class UpdateIndexVersionCommand extends Command
         $sourceIndexConfiguration = $this->indexUpdaterClient->getIndexConfiguration($sourceAliasName);
         $sourceIsAnAlias = $this->indexUpdaterClient->isAnAlias($sourceAliasName);
         if (!$sourceIsAnAlias && $this->indexUpdaterClient->haveAlias($sourceAliasName)) {
-            throw new \Exception('Index with alias is not allowed, you should give the alias instead');
+            throw new \Exception('Cannot find index with this alias, Please provide the correct index alias.');
         }
 
         if (!$sourceIsAnAlias) {

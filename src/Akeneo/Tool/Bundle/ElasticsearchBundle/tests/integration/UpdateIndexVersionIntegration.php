@@ -51,7 +51,7 @@ class UpdateIndexVersionIntegration extends TestCase
     {
         $this->assertCommandFailedWithMessage(
             $this->runUpdateIndexVersionCommand($this->getProductAndProductModelIndexName()),
-            "Index with alias is not allowed, you should give the alias instead"
+            "Cannot find index with this alias, Please provide the correct index alias."
         );
     }
 
