@@ -17,13 +17,16 @@ $rules = [
 
     $builder->only(
         [
+            'Akeneo\Platform\Installer\Domain',
         ],
     )->in('Akeneo\Platform\Installer\Application'),
 
     $builder->only(
         [
-            'Symfony\Component',
             'Akeneo\Platform\Installer\Application',
+            'Akeneo\Platform\Installer\Domain',
+            'Doctrine\DBAL\Connection',
+            'Symfony\Component',
         ],
     )->in('Akeneo\Platform\Installer\Infrastructure'),
 ];
