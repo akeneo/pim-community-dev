@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Completeness;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -37,7 +38,7 @@ final class SqlSaveCompletenessesIntegration extends TestCase
         );
     }
 
-    public function test_that_it_saves_completenesses()
+    public function test_that_it_saves_completenesses(): void
     {
         $productUuid = $this->createProduct('a_great_product');
 
@@ -81,7 +82,7 @@ final class SqlSaveCompletenessesIntegration extends TestCase
         );
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
