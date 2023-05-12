@@ -43,7 +43,10 @@ class BusinessEventHandler implements MessageSubscriberInterface
             $process = new Process($processArguments, null, $env);
             $process->setTimeout(null);
 
-            $this->logger->debug(\sprintf('Command line: "%s"', $process->getCommandLine()));
+            $this->logger->info(\sprintf('Command line: "%s"', $process->getCommandLine()), [
+                'cmd_env' => $env,
+                'handler_env' => $_ENV,
+            ]);
 
             $process->run(function ($type, $buffer): void {
                 \fwrite(Process::ERR === $type ? \STDERR : \STDOUT, $buffer);
