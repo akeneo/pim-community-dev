@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Component\Batch\Event;
 
 use Monolog\ErrorHandler;
 use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 
 /**
@@ -13,10 +14,10 @@ use Symfony\Component\Console\Event\ConsoleCommandEvent;
  */
 class ErrorHandlerConfigurationListener
 {
-    private Logger $logger;
+    private LoggerInterface $logger;
     private string $environment;
 
-    public function __construct(Logger $logger, string $environment)
+    public function __construct(LoggerInterface $logger, string $environment)
     {
         $this->logger = $logger;
         $this->environment = $environment;
