@@ -286,66 +286,6 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $this->validate($entity, $constraint);
     }
 
-    function it_raises_a_violation_if_there_is_a_duplicate_value_with_a_different_case_in_any_sibling_product_model(
-        ExecutionContextInterface $context,
-        EntityWithFamilyVariantAttributesProvider $axesProvider,
-        UniqueAxesCombinationSet $uniqueAxesCombinationSet,
-        GetValuesOfSiblings $getValuesOfSiblings,
-        FamilyVariantInterface $familyVariant,
-        ProductModelInterface $parent,
-        ProductModelInterface $entity,
-        AttributeInterface $color,
-        WriteValueCollection $values,
-        WriteValueCollection $valuesOfFirstSibling,
-        WriteValueCollection $valuesOfSecondSibling,
-        ValueInterface $blue,
-        ValueInterface $yellow,
-        UniqueVariantAxis $constraint,
-        ConstraintViolationBuilderInterface $violation
-    ) {
-        $axes = [$color];
-
-        $entity->getIdentifier()->willReturn('entity_code');
-        $entity->getParent()->willReturn($parent);
-        $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->getValuesForVariation()->willReturn($values);
-
-        $axesProvider->getAxes($entity)->willReturn($axes);
-        $color->getCode()->willReturn('color');
-
-        $getValuesOfSiblings->for($entity, ['color'])->willReturn(
-            [
-                'sibling1' => $valuesOfFirstSibling,
-                'sibling2' => $valuesOfSecondSibling,
-            ]
-        );
-
-        $values->getByCodes('color')->willReturn($blue);
-        $valuesOfFirstSibling->getByCodes('color')->willReturn($yellow);
-        $valuesOfSecondSibling->getByCodes('color')->willReturn('[blue]');
-
-        $blue->__toString()->willReturn('[Blue]');
-        $yellow->__toString()->willReturn('[yellow]');
-
-        $uniqueAxesCombinationSet->addCombination($entity, $blue)->shouldBeCalled();
-
-        $context
-            ->buildViolation(
-                UniqueVariantAxis::DUPLICATE_VALUE_IN_PRODUCT_MODEL,
-                [
-                    '%values%' => '[Blue]',
-                    '%attributes%' => 'color',
-                    '%validated_entity%' => 'entity_code',
-                    '%sibling_with_same_value%' => 'sibling2',
-                ]
-            )
-            ->willReturn($violation);
-        $violation->atPath('attribute')->willReturn($violation);
-        $violation->addViolation()->shouldBeCalled();
-
-        $this->validate($entity, $constraint);
-    }
-
     function it_raises_a_violation_if_there_is_a_duplicate_value_in_any_sibling_variant_product(
         ExecutionContextInterface $context,
         EntityWithFamilyVariantAttributesProvider $axesProvider,
@@ -379,6 +319,51 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 UniqueVariantAxis::DUPLICATE_VALUE_IN_VARIANT_PRODUCT,
                 [
                     '%values%' => '[blue]',
+                    '%attributes%' => 'color',
+                    '%validated_entity%' => 'my_identifier',
+                    '%sibling_with_same_value%' => 'sibling2',
+                ]
+            )
+            ->willReturn($violation);
+        $violation->atPath('attribute')->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate($entity, $constraint);
+    }
+
+    function it_raises_a_violation_if_there_is_a_duplicate_value_with_a_different_case_in_any_sibling_product_model(
+        ExecutionContextInterface $context,
+        EntityWithFamilyVariantAttributesProvider $axesProvider,
+        GetValuesOfSiblings $getValuesOfSiblings,
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $parent,
+        AttributeInterface $color,
+        UniqueVariantAxis $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $color->getCode()->willReturn('color');
+        $axes = [$color];
+
+        $entity = new Product();
+        $entity->setIdentifier('my_identifier');
+        $entity->setParent($parent->getWrappedObject());
+        $entity->setFamilyVariant($familyVariant->getWrappedObject());
+        $entity->addValue(OptionValue::value('color', 'Blue'));
+
+        $axesProvider->getAxes($entity)->willReturn($axes);
+
+        $getValuesOfSiblings->for($entity, ['color'])->willReturn(
+            [
+                'sibling1' => new WriteValueCollection([OptionValue::value('color', 'yellow')]),
+                'sibling2' => new WriteValueCollection([OptionValue::value('color', 'blue')]),
+            ]
+        );
+
+        $context
+            ->buildViolation(
+                UniqueVariantAxis::DUPLICATE_VALUE_IN_VARIANT_PRODUCT,
+                [
+                    '%values%' => '[Blue]',
                     '%attributes%' => 'color',
                     '%validated_entity%' => 'my_identifier',
                     '%sibling_with_same_value%' => 'sibling2',

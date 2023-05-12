@@ -92,7 +92,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         foreach ($siblingValues as $siblingIdentifier => $values) {
             $siblingsCombinations[$siblingIdentifier] = $this->getCombinationOfAxisValues($values, $axes);
 
-            if ($ownCombination === $this->getCombinationOfAxisValues($values, $axes)) {
+            if (\mb_strtolower($ownCombination) === \mb_strtolower($this->getCombinationOfAxisValues($values, $axes))) {
                 $this->addViolation(
                     $axes,
                     $ownCombination,
