@@ -9,24 +9,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Controller;
 
-use Akeneo\Platform\Installer\Application\PurgeInstance\PurgeInstanceCommand;
-use Akeneo\Platform\Installer\Application\PurgeInstance\PurgeInstanceHandler;
-use Akeneo\Platform\Installer\Domain\Service\FixtureInstallerInterface;
+use Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceCommand;
+use Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ResetInstanceAction
 {
     public function __construct(
-        private readonly PurgeInstanceHandler $purgeInstanceHandler,
-        private readonly FixtureInstallerInterface $fixtureInstaller,
+        private readonly ResetInstanceHandler $resetInstanceHandler,
     ) {
     }
 
     public function __invoke(): JsonResponse
     {
-        $this->purgeInstanceHandler->handle(new PurgeInstanceCommand());
-        /* To replace by the new handler/command */
-        $this->fixtureInstaller->install();
+        $this->resetInstanceHandler->handle(new ResetInstanceCommand());
 
         return new JsonResponse();
     }
