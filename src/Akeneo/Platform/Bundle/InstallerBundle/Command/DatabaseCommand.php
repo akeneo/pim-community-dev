@@ -55,6 +55,13 @@ class DatabaseCommand extends Command
     {
         $this
             ->addOption(
+                'skip-fixtures',
+                null,
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Determines fixtures to not load',
+                []
+            )
+            ->addOption(
                 'withoutIndexes',
                 null,
                 InputOption::VALUE_OPTIONAL,
@@ -173,6 +180,10 @@ class DatabaseCommand extends Command
 
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
+            if (in_array($jobInstance->getCode(), $input->getOption('skip-fixtures'))) {
+                continue;
+            }
+
             $params = [
                 'code' => $jobInstance->getCode(),
                 '--no-debug' => true,
