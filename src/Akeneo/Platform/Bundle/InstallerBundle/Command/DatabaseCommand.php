@@ -34,9 +34,6 @@ class DatabaseCommand extends Command
     protected static $defaultName = 'pim:installer:db';
     protected static $defaultDescription = 'Prepare database and load fixtures';
 
-    const LOAD_ALL = 'all';
-    const LOAD_BASE = 'base';
-
     protected ?CommandExecutor $commandExecutor;
 
     public function __construct(
@@ -57,13 +54,6 @@ class DatabaseCommand extends Command
     protected function configure()
     {
         $this
-            ->addOption(
-                'fixtures',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Determines fixtures to load (can be just OroPlatform or all)',
-                self::LOAD_ALL
-            )
             ->addOption(
                 'withoutIndexes',
                 null,
@@ -177,9 +167,6 @@ class DatabaseCommand extends Command
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output): DatabaseCommand
     {
         $catalog = $input->getOption('catalog');
-        if ($input->getOption('env') === 'behat') {
-            $input->setOption('fixtures', self::LOAD_BASE);
-        }
 
         $this->logger->info(sprintf('Load jobs for fixtures. (data set: %s)', $catalog));
         $this->fixtureJobLoader->loadJobInstances($input->getOption('catalog'));
