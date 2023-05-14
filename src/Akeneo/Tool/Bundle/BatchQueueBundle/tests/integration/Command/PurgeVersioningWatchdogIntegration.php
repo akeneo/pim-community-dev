@@ -28,35 +28,61 @@ class PurgeVersioningWatchdogIntegration extends TestCase
         $output = $this->runWatchdog();
         $result = $output->fetch();
 
-        var_dump($result);
-
         Assert::assertMatchesRegularExpression('/Launching job execution "\d+"/', $result);
-        Assert::assertMatchesRegularExpression(
-            "/'akeneo:batch:job' 'versioning_purge' '\d+' '--quiet' '--env=test'/",
+        \preg_match('/Launching job execution "(\d+)"/', $result, $matches);
+        $jobExecutionId = (int)$matches[1];
+
+        Assert::assertStringContainsString(
+            sprintf(
+                "akeneo:batch:job' 'versioning_purge' '%d' '--quiet' '--env=test'",
+                $jobExecutionId
+            ),
             $result
         );
         Assert::assertMatchesRegularExpression('/Job execution "\d+" is finished in \d seconds/', $result);
+
+        $jobExecutionRawParameters = $this->getConnection()->executeQuery(
+            'SELECT raw_parameters FROM akeneo_batch_job_execution WHERE id=id',
+            ['id'=> $jobExecutionId]
+        )->fetchOne();
+
+        $jobExecutionRawParameters = \json_decode($jobExecutionRawParameters, true);
+        Assert::assertNull($jobExecutionRawParameters['more-than-days']);
+        Assert::assertNull($jobExecutionRawParameters['less-than-days']);
     }
 
-//    /**
-//     * @test
-//     */
-//    public function it_purges_versions_with_custom_config(): void
-//    {
-//        $output = $this->runWatchdog([
-//            '--job_config' => ['less-than-days' => 5, 'more-than-days' => 15],
-//        ]);
-//        $result = $output->fetch();
-//
-//        var_dump($result);
-//
-//        Assert::assertMatchesRegularExpression('/Launching job execution "\d+"/', $result);
-//        Assert::assertMatchesRegularExpression(
-//            "/'akeneo:batch:job' 'versioning_purge' '\d+' '--quiet' '--config={\"less-than-days\":5,\"more-than-days\":15}' '--env=test'/",
-//            $result
-//        );
-//        Assert::assertMatchesRegularExpression('/Job execution "\d+" is finished in \d seconds/', $result);
-//    }
+    /**
+     * @test
+     */
+    public function it_purges_versions_with_custom_config(): void
+    {
+        $output = $this->runWatchdog([
+            '--job_config' => ['less-than-days' => 5, 'more-than-days' => 15],
+        ]);
+        $result = $output->fetch();
+
+        Assert::assertMatchesRegularExpression('/Launching job execution "\d+"/', $result);
+        \preg_match('/Launching job execution "(\d+)"/', $result, $matches);
+        $jobExecutionId = (int)$matches[1];
+
+        Assert::assertStringContainsString(
+            sprintf(
+                "akeneo:batch:job' 'versioning_purge' '%d' '--quiet' '--env=test'",
+                $jobExecutionId
+            ),
+            $result
+        );
+        Assert::assertMatchesRegularExpression('/Job execution "\d+" is finished in \d seconds/', $result);
+
+        $jobExecutionRawParameters = $this->getConnection()->executeQuery(
+            'SELECT raw_parameters FROM akeneo_batch_job_execution WHERE id=id',
+            ['id'=> $jobExecutionId]
+        )->fetchOne();
+
+        $jobExecutionRawParameters = \json_decode($jobExecutionRawParameters, true);
+        Assert::assertEquals('15', $jobExecutionRawParameters['more-than-days']);
+        Assert::assertEquals('5', $jobExecutionRawParameters['less-than-days']);
+    }
 
     /**
      * @test

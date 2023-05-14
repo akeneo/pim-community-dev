@@ -65,7 +65,7 @@ final class JobExecutionWatchdogCommand extends Command
             ->addOption(
                 'job_config',
                 null,
-                InputOption::VALUE_REQUIRED,
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Job configuration overriding default config'
             )
             ->addOption(
@@ -90,8 +90,8 @@ final class JobExecutionWatchdogCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $jobExecutionId = $input->getOption('job_execution_id') ? (int)$input->getOption('job_execution_id') : null;
-        $jobCode = $input->getOption('job_code') ? (string)$input->getOption('job_code') : null;
+        $jobExecutionId = $input->getOption('job_execution_id') ? (int) $input->getOption('job_execution_id') : null;
+        $jobCode = $input->getOption('job_code') ? (string) $input->getOption('job_code') : null;
 
         if (null === $jobExecutionId && null === $jobCode) {
             throw new \InvalidArgumentException('You must specify job_execution_id or job_code');
@@ -129,10 +129,10 @@ final class JobExecutionWatchdogCommand extends Command
             );
         } finally {
             // update status if the job execution failed due to an uncatchable error as a fatal error
-            if ($this->executionManager->getExitStatus((int)$jobExecutionId)?->isRunning()) {
+            if ($this->executionManager->getExitStatus((int) $jobExecutionId)?->isRunning()) {
                 $this->executionManager->markAsFailed($jobExecutionId);
             }
-            $this->releaseJobLock((int)$jobExecutionId);
+            $this->releaseJobLock((int) $jobExecutionId);
         }
 
         $executionTimeInSec = time() - $startTime;
