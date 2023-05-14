@@ -37,16 +37,16 @@ final class JobExecutionWatchdogCommand extends Command
     private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
     public function __construct(
-        private JobExecutionManager $executionManager,
-        private LoggerInterface $logger,
-        private string $projectDir,
-        private CreateJobExecutionHandlerInterface $createJobExecutionHandler,
-        protected LockFactory $lockFactory,
+        private readonly JobExecutionManager $executionManager,
+        private readonly LoggerInterface $logger,
+        private readonly string $projectDir,
+        private readonly CreateJobExecutionHandlerInterface $createJobExecutionHandler,
+        protected readonly LockFactory $lockFactory,
     ) {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setHidden(true)
@@ -61,6 +61,12 @@ final class JobExecutionWatchdogCommand extends Command
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Job code to launch when no execution id provided'
+            )
+            ->addOption(
+                'job_config',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Job configuration overriding default config'
             )
             ->addOption(
                 'username',
@@ -84,14 +90,15 @@ final class JobExecutionWatchdogCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $jobExecutionId = $input->getOption('job_execution_id') ? (int) $input->getOption('job_execution_id') : null;
-        $jobCode = $input->getOption('job_code') ? (string) $input->getOption('job_code') : null;
+        $jobExecutionId = $input->getOption('job_execution_id') ? (int)$input->getOption('job_execution_id') : null;
+        $jobCode = $input->getOption('job_code') ? (string)$input->getOption('job_code') : null;
 
         if (null === $jobExecutionId && null === $jobCode) {
             throw new \InvalidArgumentException('You must specify job_execution_id or job_code');
         }
         if (null === $jobExecutionId) {
-            $jobExecution = $this->createJobExecutionHandler->createFromBatchCode($jobCode, [], null);
+            $jobConfiguration = $input->getOption('job_config') ?? [];
+            $jobExecution = $this->createJobExecutionHandler->createFromBatchCode($jobCode, $jobConfiguration, null);
             $jobExecutionId = $jobExecution->getId();
         }
 
@@ -102,8 +109,9 @@ final class JobExecutionWatchdogCommand extends Command
             $processArguments = $this->buildBatchCommand(
                 $console,
                 $pathFinder->find(),
+                $jobCode,
                 $jobExecutionId,
-                $input->getOptions()
+                $input->getOptions() ?? [],
             );
             $process = new Process($processArguments);
             $process->setTimeout(null);
@@ -121,10 +129,10 @@ final class JobExecutionWatchdogCommand extends Command
             );
         } finally {
             // update status if the job execution failed due to an uncatchable error as a fatal error
-            if ($this->executionManager->getExitStatus((int) $jobExecutionId)?->isRunning()) {
+            if ($this->executionManager->getExitStatus((int)$jobExecutionId)?->isRunning()) {
                 $this->executionManager->markAsFailed($jobExecutionId);
             }
-            $this->releaseJobLock((int) $jobExecutionId);
+            $this->releaseJobLock((int)$jobExecutionId);
         }
 
         $executionTimeInSec = time() - $startTime;
@@ -139,20 +147,21 @@ final class JobExecutionWatchdogCommand extends Command
     private function buildBatchCommand(
         string $console,
         string $phpPath,
+        string $jobCode,
         int $jobExecutionId,
-        array $watchdogOptions
+        array $batchCommandOptions
     ): array {
         $processArguments = [
             $phpPath,
             $console,
             'akeneo:batch:job',
-            'dummy_code',
+            $jobCode,
             $jobExecutionId,
             '--quiet',
         ];
 
-        foreach ($watchdogOptions as $optionName => $optionValue) {
-            if ('job_execution_id' === $optionName || 'job_code' === $optionName) {
+        foreach ($batchCommandOptions as $optionName => $optionValue) {
+            if (in_array($optionName, ['job_execution_id', 'job_code', 'job_config'])) {
                 continue;
             }
             switch (true) {

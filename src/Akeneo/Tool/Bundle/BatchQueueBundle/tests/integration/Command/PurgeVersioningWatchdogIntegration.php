@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Command;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -22,13 +23,55 @@ class PurgeVersioningWatchdogIntegration extends TestCase
     /**
      * @test
      */
-    public function it_purges_versions_but_keeps_the_first_and_last_version_of_a_family(): void
+    public function it_purges_versions_without_custom_config(): void
     {
         $output = $this->runWatchdog();
         $result = $output->fetch();
 
+        var_dump($result);
+
         Assert::assertMatchesRegularExpression('/Launching job execution "\d+"/', $result);
+        Assert::assertMatchesRegularExpression(
+            "/'akeneo:batch:job' 'versioning_purge' '\d+' '--quiet' '--env=test'/",
+            $result
+        );
         Assert::assertMatchesRegularExpression('/Job execution "\d+" is finished in \d seconds/', $result);
+    }
+
+//    /**
+//     * @test
+//     */
+//    public function it_purges_versions_with_custom_config(): void
+//    {
+//        $output = $this->runWatchdog([
+//            '--job_config' => ['less-than-days' => 5, 'more-than-days' => 15],
+//        ]);
+//        $result = $output->fetch();
+//
+//        var_dump($result);
+//
+//        Assert::assertMatchesRegularExpression('/Launching job execution "\d+"/', $result);
+//        Assert::assertMatchesRegularExpression(
+//            "/'akeneo:batch:job' 'versioning_purge' '\d+' '--quiet' '--config={\"less-than-days\":5,\"more-than-days\":15}' '--env=test'/",
+//            $result
+//        );
+//        Assert::assertMatchesRegularExpression('/Job execution "\d+" is finished in \d seconds/', $result);
+//    }
+
+    /**
+     * @test
+     */
+    public function it_cannot_purges_versions_with_wrong_config(): void
+    {
+        $output = $this->runWatchdog([
+            '--job_config' => ['unknow-option' => 'foo'],
+        ]);
+        $result = $output->fetch();
+
+        Assert::assertMatchesRegularExpression(
+            '/Job instance "versioning_purge" running the job "versioning_purge" is invalid/',
+            $result
+        );
     }
 
     /**
@@ -51,6 +94,9 @@ class PurgeVersioningWatchdogIntegration extends TestCase
         $this->getConnection()->executeQuery('DELETE FROM pim_versioning_version');
     }
 
+    /**
+     * Run watchdog command in verbose mode to test output
+     */
     private function runWatchdog(array $arrayInput = []): BufferedOutput
     {
         $application = new Application(static::$kernel);
