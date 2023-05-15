@@ -75,7 +75,6 @@
 - PIM-10983: Error HTTP 500 when adding a custom app
 - PIM-10977 : Prevent api users to log in to the PIM via the UI
 
-
 ## Improvements
 
 - PIM-10782: Optimize get completeness SQL query
