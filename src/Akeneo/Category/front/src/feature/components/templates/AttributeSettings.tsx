@@ -27,14 +27,11 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
 
   const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
 
-  const editAttributeRichTextAreaStatus = useEditAttributeTextAreaStatus({
-    templateUuid: attribute.template_uuid,
-    attributeUuid: attribute.uuid,
-    isRichTextArea: isRichTextArea,
-  });
+  const editAttributeRichTextAreaStatus = useEditAttributeTextAreaStatus(attribute.template_uuid, attribute.uuid);
 
   const handleRichTextAreaChange = () => {
-    setIsRichTextArea(!isRichTextArea);
+    setIsRichTextArea(isRichTextArea => !isRichTextArea);
+    editAttributeRichTextAreaStatus(!isRichTextArea);
   };
 
   return (
@@ -52,15 +49,11 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
       <OptionsContainer>
         {['textarea', 'richtext'].includes(attribute.type) && (
           <OptionField
-              checked={isRichTextArea}
-              onChange={handleRichTextAreaChange}
-              readOnly={!featureFlag.isEnabled('category_update_template_attribute')}>
+            checked={isRichTextArea}
+            onChange={handleRichTextAreaChange}
+            readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
+          >
             {translate('akeneo.category.template.attribute.settings.options.rich_text')}
-              {featureFlag.isEnabled('category_update_template_attribute') && (
-                  <Button level="primary" onClick={editAttributeRichTextAreaStatus}>
-                    Save
-                  </Button>
-              )}
           </OptionField>
         )}
         <OptionField checked={attribute.is_localizable} readOnly={true}>
