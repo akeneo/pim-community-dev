@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Provider;
 
 use Akeneo\UserManagement\Component\Model\User;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -23,6 +24,10 @@ class CustomUserChecker implements UserCheckerInterface
             $ex = new DisabledException('User account is disabled.');
             $ex->setUser($user);
             throw $ex;
+        }
+
+        if ($user instanceof User && false === $user->isUiUser()) {
+            throw new AccessDeniedException();
         }
     }
 
