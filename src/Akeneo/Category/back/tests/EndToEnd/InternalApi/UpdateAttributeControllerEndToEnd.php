@@ -41,7 +41,10 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
     private GetAttribute $getAttribute;
 
     private TemplateUuid $templateUuid;
-    private AttributeCollection $attributeCollection;
+    private AttributeTextArea $attributeTextArea;
+    private AttributeRichText $attributeRichText;
+    private AttributeText $attributeText;
+
 
     protected function setUp(): void
     {
@@ -60,14 +63,13 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItUpdatesAttributeTypeToRichText(): void
     {
-        $textArea = $this->attributeCollection->getAttributeByCode('text_area');
-        $this->assertEquals((string) $textArea->getType(), AttributeType::TEXTAREA);
+        $this->assertEquals((string) $this->attributeTextArea->getType(), AttributeType::TEXTAREA);
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
             routeArguments: [
                 'templateUuid' => $this->templateUuid->getValue(),
-                'attributeUuid' => $textArea->getUuid()->getValue(),
+                'attributeUuid' => $this->attributeTextArea->getUuid()->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -85,14 +87,13 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItUpdatesAttributeTypeToTextArea(): void
     {
-        $richTextAttribute = $this->attributeCollection->getAttributeByCode('rich_text');
-        $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::RICH_TEXT);
+        $this->assertEquals((string) $this->attributeRichText->getType(), AttributeType::RICH_TEXT);
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
             routeArguments: [
                 'templateUuid' => $this->templateUuid->getValue(),
-                'attributeUuid' => $richTextAttribute->getUuid()->getValue(),
+                'attributeUuid' => $this->attributeRichText->getUuid()->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -129,14 +130,13 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItThrowsErrorOnWrongType(): void
     {
-        $textAttribute = $this->attributeCollection->getAttributeByCode('text');
-        $this->assertEquals((string) $textAttribute->getType(), AttributeType::TEXT);
+        $this->assertEquals((string) $this->attributeText->getType(), AttributeType::TEXT);
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
             routeArguments: [
                 'templateUuid' => $this->templateUuid->getValue(),
-                'attributeUuid' => $textAttribute->getUuid()->getValue(),
+                'attributeUuid' => $this->attributeText->getUuid()->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -202,40 +202,46 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
         $this->templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 
+         $this->attributeTextArea = AttributeTextArea::create(
+            AttributeUuid::fromString('119e55a5-d838-4b1d-80d6-2328fb6bdc97'),
+            new AttributeCode('text_area'),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeIsScopable::fromBoolean(true),
+            AttributeIsLocalizable::fromBoolean(true),
+            LabelCollection::fromArray(['en_US' => 'Long description']),
+            $this->templateUuid,
+            AttributeAdditionalProperties::fromArray([]),
+        );
+
+        $this->attributeRichText = AttributeRichText::create(
+            AttributeUuid::fromString('e6ef21e2-d407-4414-a331-a8e83ffc29a2'),
+            new AttributeCode('rich_text'),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeIsScopable::fromBoolean(true),
+            AttributeIsLocalizable::fromBoolean(true),
+            LabelCollection::fromArray(['en_US' => 'Long description']),
+            $this->templateUuid,
+            AttributeAdditionalProperties::fromArray([]),
+        );
+
+        $this->attributeText = AttributeText::create(
+            AttributeUuid::fromString('db940968-a743-44ab-b2df-1f3c853efd28'),
+            new AttributeCode('text'),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeIsScopable::fromBoolean(true),
+            AttributeIsLocalizable::fromBoolean(true),
+            LabelCollection::fromArray(['en_US' => 'Long description']),
+            $this->templateUuid,
+            AttributeAdditionalProperties::fromArray([]),
+        );
+
         $this->attributeCollection = AttributeCollection::fromArray([
-            AttributeTextArea::create(
-                AttributeUuid::fromString('119e55a5-d838-4b1d-80d6-2328fb6bdc97'),
-                new AttributeCode('text_area'),
-                AttributeOrder::fromInteger(1),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeIsScopable::fromBoolean(true),
-                AttributeIsLocalizable::fromBoolean(true),
-                LabelCollection::fromArray(['en_US' => 'Long description']),
-                $this->templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-            ),
-            AttributeRichText::create(
-                AttributeUuid::fromString('e6ef21e2-d407-4414-a331-a8e83ffc29a2'),
-                new AttributeCode('rich_text'),
-                AttributeOrder::fromInteger(1),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeIsScopable::fromBoolean(true),
-                AttributeIsLocalizable::fromBoolean(true),
-                LabelCollection::fromArray(['en_US' => 'Long description']),
-                $this->templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-            ),
-            AttributeText::create(
-                AttributeUuid::fromString('db940968-a743-44ab-b2df-1f3c853efd28'),
-                new AttributeCode('text'),
-                AttributeOrder::fromInteger(1),
-                AttributeIsRequired::fromBoolean(false),
-                AttributeIsScopable::fromBoolean(true),
-                AttributeIsLocalizable::fromBoolean(true),
-                LabelCollection::fromArray(['en_US' => 'Long description']),
-                $this->templateUuid,
-                AttributeAdditionalProperties::fromArray([]),
-            ),
+            $this->attributeTextArea,
+            $this->attributeRichText,
+            $this->attributeText,
         ]);
         $templateModel = new Template(
             uuid: $this->templateUuid,
