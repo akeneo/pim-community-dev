@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\Middleware\StackInterface;
  */
 class UcsMiddleware implements MiddlewareInterface
 {
-    public function __construct(private ?string $pimTenantId)
+    public function __construct(private readonly ?string $pimTenantId)
     {
     }
 
