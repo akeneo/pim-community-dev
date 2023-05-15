@@ -1,10 +1,12 @@
-import {Button, Checkbox, Field, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
+import {Button, Checkbox, Field, Helper, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
-import {userContext, useTranslate} from '@akeneo-pim-community/shared';
+import {LabelCollection, useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
+import {useState, useRef} from 'react';
+import {useEditAttributeTranslations} from '../../hooks/useEditAttributeTranslations';
 
 type Props = {
   attribute: Attribute;
@@ -15,12 +17,33 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
   const catalogLocales = useCatalogLocales();
+  const featureFlag = useFeatureFlags();
+  const [translations, setTranslations] = useState<LabelCollection>(attribute.labels);
+  const editAttributeTranslations = useEditAttributeTranslations(attribute.template_uuid, attribute.uuid);
+  const editTranslationsTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [
     isDeactivateTemplateAttributeModalOpen,
     openDeactivateTemplateAttributeModal,
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
+
+  // const displayError = (errorMessages: string[]) => {
+  //     return errorMessages.map(message => {
+  //         return <Helper level="error">{message}</Helper>;
+  //     });
+  // };
+
+  const handleTranslationsChange = (locale: string, value: string) => {
+    if (editTranslationsTimerRef.current) {
+      clearTimeout(editTranslationsTimerRef.current);
+    }
+    setTranslations({...translations, [locale]: value});
+    editTranslationsTimerRef.current = setTimeout(() => {
+      editAttributeTranslations({locale, value});
+      console.log(value);
+    }, 2000);
+  };
 
   return (
     <SettingsContainer>
@@ -62,7 +85,13 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
             locale={activatedLocaleCode}
             key={activatedLocaleCode}
           >
-            <TextInput readOnly onChange={() => {}} value={attribute.labels[activatedLocaleCode] || ''}></TextInput>
+            <TextInput
+              readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
+              onChange={(newValue: string) => {
+                handleTranslationsChange(activatedLocaleCode, newValue);
+              }}
+              value={translations[activatedLocaleCode] || ''}
+            ></TextInput>
           </TranslationField>
         ))}
       </div>
