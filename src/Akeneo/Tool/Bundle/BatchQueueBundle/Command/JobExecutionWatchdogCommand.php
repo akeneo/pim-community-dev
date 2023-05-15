@@ -147,7 +147,7 @@ final class JobExecutionWatchdogCommand extends Command
     private function buildBatchCommand(
         string $console,
         string $phpPath,
-        string $jobCode,
+        ?string $jobCode,
         int $jobExecutionId,
         array $batchCommandOptions
     ): array {
