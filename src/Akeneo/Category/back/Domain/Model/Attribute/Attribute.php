@@ -19,6 +19,8 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type LocalizedLabels from LabelCollection
  */
 abstract class Attribute
 {
@@ -183,7 +185,8 @@ abstract class Attribute
 
     /**
      * @param array{
-     *     isRichRextArea: bool
+     *     isRichRextArea: bool,
+     *     labels: LocalizedLabels
      * } $data
      */
     public function update(array $data): void
@@ -196,6 +199,14 @@ abstract class Attribute
                 throw new \LogicException($message);
             }
             $this->type = new AttributeType(($isRichTextArea) ? AttributeType::RICH_TEXT : AttributeType::TEXTAREA);
+        }
+
+        if (array_key_exists('labels', $data)) {
+            $labels = LabelCollection::fromArray($data['labels']);
+
+            foreach ($labels->getIterator() as $local => $label) {
+                $this->labelCollection->setTranslation($local, $label);
+            }
         }
     }
 }

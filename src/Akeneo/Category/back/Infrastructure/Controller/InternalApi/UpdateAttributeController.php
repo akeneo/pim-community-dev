@@ -39,7 +39,8 @@ class UpdateAttributeController
         try {
             $command = UpdateAttributeCommand::create(
                 attributeUuid: $attributeUuid,
-                isRichTextArea: $data['isRichRextArea'],
+                isRichTextArea: $data['isRichRextArea'] ?? false,
+                labels: $data['labels'] ?? [],
             );
             $this->categoryCommandBus->dispatch($command);
         } catch (ViolationsException $violationsException) {

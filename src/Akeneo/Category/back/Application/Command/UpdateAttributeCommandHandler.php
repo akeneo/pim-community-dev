@@ -38,9 +38,14 @@ class UpdateAttributeCommandHandler
         /** @var Attribute $attribute */
         $attribute = $attributes->getAttributes()[0];
 
-        $data = [
-          'isRichRextArea' => $command->isRichTextArea,
-        ];
+        $data = [];
+        if ($command->isRichTextArea) {
+            $data['isRichRextArea'] = $command->isRichTextArea;
+        }
+
+        if ($command->labels) {
+            $data['labels'] = $command->labels;
+        }
 
         try {
             $attribute->update($data);
