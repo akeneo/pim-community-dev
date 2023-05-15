@@ -60,6 +60,9 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         }
 
         $this->validateValueIsNotAlreadyInDatabase($entity, $axes);
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
         $this->validateValueWasNotAlreadyValidated($entity, $axes);
     }
 

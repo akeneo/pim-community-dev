@@ -20,6 +20,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -29,8 +30,12 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
     function let(
         EntityWithFamilyVariantAttributesProvider $axesProvider,
         GetValuesOfSiblings $getValuesOfSiblings,
-        ExecutionContextInterface $context
+        ExecutionContextInterface $context,
+        ConstraintViolationListInterface $constraintViolationList
     ) {
+        $context->getViolations()->willReturn($constraintViolationList);
+        $constraintViolationList->count()->willReturn(0);
+
         $this->beConstructedWith($axesProvider, new UniqueAxesCombinationSet(), $getValuesOfSiblings);
         $this->initialize($context);
     }
