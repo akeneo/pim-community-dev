@@ -16,8 +16,7 @@ use Akeneo\Platform\Installer\Domain\Query\Sql\RemoveJobInstanceInterface;
 use Akeneo\Platform\Installer\Domain\Query\Yaml\GetJobDefinitionInterface;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceCommand;
 use Akeneo\Platform\Job\ServiceApi\JobInstance\CreateJobInstance\CreateJobInstanceHandlerInterface;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class FixturesLoadHandler
@@ -32,48 +31,43 @@ final class FixturesLoadHandler
         private readonly LaunchJobInterface $launchJob,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly array $jobsFilePaths,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
     public function handle(FixtureLoadCommand $command): void
     {
-        $io = $command->getIo();
-
-        $io->title('Load fixture');
+        $this->logger->info(sprintf('Load jobs for fixtures. (data set: %s)', $command->catalog));
 
         $this->eventDispatcher->dispatch(
             new InstallerEvent(null, [
-                'catalog' => $command->getOption('catalog'),
+                'catalog' => $command->catalog,
             ]),
             InstallerEvents::PRE_LOAD_FIXTURES,
         );
 
-        $jobDefinitions = $this->createJobInstances($io, $command->getOptions());
+        $jobDefinitions = $this->createJobInstances($command->catalog);
 
-        $this->loadFixtures($jobDefinitions, $io, $command->getOptions());
+        $this->loadFixtures($jobDefinitions, $command->catalog);
 
-        $this->cleanJobInstances($io);
+        $this->cleanJobInstances();
 
         $this->eventDispatcher->dispatch(
             new InstallerEvent(null, [
-                'catalog' => $command->getOption('catalog'),
+                'catalog' => $command->catalog,
             ]),
             InstallerEvents::POST_LOAD_FIXTURES,
         );
     }
 
     /**
-     * @param string[] $options
-     *
      * @return mixed[]
      */
-    private function createJobInstances(SymfonyStyle $io, array $options): array
+    private function createJobInstances(string $catalog): array
     {
-        $io->info(sprintf('Load jobs for fixtures. (data set: %s)', $options['catalog']));
-
         $jobDefinitions = $this->getJobDefinition->get($this->jobsFilePaths);
         foreach ($jobDefinitions as $jobDefinition) {
-            $jobDefinition['configuration']['storage']['file_path'] = sprintf('%s/%s', $options['catalog'], $jobDefinition['configuration']['storage']['file_path']);
+            $jobDefinition['configuration']['storage']['file_path'] = sprintf('%s/%s', $catalog, $jobDefinition['configuration']['storage']['file_path']);
             $this->createJobInstanceHandler->handle(new CreateJobInstanceCommand(
                 $jobDefinition['type'],
                 $jobDefinition['code'],
@@ -89,45 +83,41 @@ final class FixturesLoadHandler
 
     /**
      * @param mixed[] $jobDefinitions
-     * @param string[] $options
      */
-    private function loadFixtures(array $jobDefinitions, SymfonyStyle $io, array $options): void
+    private function loadFixtures(array $jobDefinitions, string $catalog): void
     {
         foreach ($jobDefinitions as $jobDefinition) {
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($jobDefinition['code'], [
-                    'catalog' => $options['catalog'],
+                    'catalog' => $catalog,
                 ]),
                 InstallerEvents::PRE_LOAD_FIXTURE,
             );
 
-            $io->info(
-                sprintf('Please wait, the "%s" are processing...', $jobDefinition['code']),
+            $this->logger->info(
+                sprintf('Please wait, the "%s" are processing...', $jobDefinition['code'])
             );
 
-            /** @var BufferedOutput $output */
-            $output = $this->launchJob->execute([
+            $this->launchJob->execute([
                 'code' => $jobDefinition['code'],
                 '--no-debug' => true,
                 '--no-log' => true,
                 '-v' => true,
             ], true);
 
-            $io->write($output->fetch());
-
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($jobDefinition['code'], [
                     'job_name' => $jobDefinition['alias'],
-                    'catalog' => $options['catalog'],
+                    'catalog' => $catalog,
                 ]),
                 InstallerEvents::POST_LOAD_FIXTURE,
             );
         }
     }
 
-    private function cleanJobInstances(SymfonyStyle $io): void
+    private function cleanJobInstances(): void
     {
-        $io->info('Start removing fixtures job instance');
+        $this->logger->info('Delete jobs for fixtures');
         $this->removeJobInstance->remove();
     }
 }

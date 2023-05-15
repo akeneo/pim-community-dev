@@ -3,22 +3,27 @@ services:
   Akeneo\Platform\Installer\Infrastructure\CommandExecutor\CreateTable:
     arguments:
       - '@kernel'
+      - '@event_dispatcher'
 
   Akeneo\Platform\Installer\Infrastructure\CommandExecutor\DoctrineMigrationsVersion:
     arguments:
       - '@kernel'
+      - '@event_dispatcher'
 
   Akeneo\Platform\Installer\Infrastructure\CommandExecutor\DoctrineMigrationsSyncMetadataStorage:
     arguments:
       - '@kernel'
+      - '@event_dispatcher'
 
   Akeneo\Platform\Installer\Infrastructure\CommandExecutor\DoctrineMigrationsLatest:
     arguments:
       - '@kernel'
+      - '@event_dispatcher'
 
   Akeneo\Platform\Installer\Infrastructure\CommandExecutor\LaunchJob:
     arguments:
       - '@kernel'
+      - '@event_dispatcher'
 
   Akeneo\Platform\Installer\Infrastructure\CommandExecutor\SetLatestMigration:
     arguments:

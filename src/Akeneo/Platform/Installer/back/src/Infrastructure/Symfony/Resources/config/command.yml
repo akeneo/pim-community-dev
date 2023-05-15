@@ -4,5 +4,7 @@ services:
     arguments:
       - '@Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler'
       - '@Akeneo\Platform\Installer\Application\FixturesLoad\FixturesLoadHandler'
+      - '@event_dispatcher'
+      - '@logger'
     tags:
       - { name: 'console.command' }

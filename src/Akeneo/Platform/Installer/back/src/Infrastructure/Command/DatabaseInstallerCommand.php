@@ -13,11 +13,14 @@ use Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallCommand
 use Akeneo\Platform\Installer\Application\DatabaseInstall\DatabaseInstallHandler;
 use Akeneo\Platform\Installer\Application\FixturesLoad\FixtureLoadCommand;
 use Akeneo\Platform\Installer\Application\FixturesLoad\FixturesLoadHandler;
+use Akeneo\Platform\Installer\Domain\EventSubscriber\InstallerSubscriber;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class DatabaseInstallerCommand extends Command
 {
@@ -26,6 +29,8 @@ final class DatabaseInstallerCommand extends Command
     public function __construct(
         private readonly DatabaseInstallHandler $databaseInstallHandler,
         private readonly FixturesLoadHandler $fixturesLoadHandler,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct(self::$defaultName);
     }
@@ -63,22 +68,23 @@ final class DatabaseInstallerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $this->eventDispatcher->addSubscriber(new InstallerSubscriber($io));
 
         try {
             $this->databaseInstallHandler->handle(new DatabaseInstallCommand(
-                $io,
-                $input->getOptions(),
+                !$input->getOption('withoutIndexes'),
+                $input->getOption('env'),
             ));
 
-            if ($input->getOption('withoutFixtures')) {
-                return Command::SUCCESS;
+            if (false === $input->getOption('withoutFixtures')) {
+                $this->fixturesLoadHandler->handle(new FixtureLoadCommand(
+                    $input->getOption('catalog'),
+                ));
             }
-
-            $this->fixturesLoadHandler->handle(new FixtureLoadCommand($io, $input->getOptions()));
 
             return Command::SUCCESS;
         } catch (\Exception $e) {
-            $io->error($e->getMessage());
+            $this->logger->critical($e->getMessage());
 
             return Command::FAILURE;
         }

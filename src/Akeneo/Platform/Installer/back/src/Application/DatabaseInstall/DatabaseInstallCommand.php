@@ -9,34 +9,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Application\DatabaseInstall;
 
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 final class DatabaseInstallCommand
 {
-    /**
-     * @param string[] $options
-     */
     public function __construct(
-        private readonly SymfonyStyle $io,
-        private readonly array $options,
+        public readonly bool $withIndexes,
+        public readonly string $environment,
     ) {
-    }
-
-    public function getIo(): SymfonyStyle
-    {
-        return $this->io;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getOptions(): array
-    {
-        return $this->options;
-    }
-
-    public function getOption(string $key): mixed
-    {
-        return $this->getOptions()[$key];
     }
 }

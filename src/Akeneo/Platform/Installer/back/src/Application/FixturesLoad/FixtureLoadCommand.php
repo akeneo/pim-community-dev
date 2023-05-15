@@ -9,34 +9,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Application\FixturesLoad;
 
-use Symfony\Component\Console\Style\SymfonyStyle;
-
 final class FixtureLoadCommand
 {
-    /**
-     * @param string[] $options
-     */
     public function __construct(
-        private readonly SymfonyStyle $io,
-        private readonly array $options,
+        public readonly string $catalog,
     ) {
-    }
-
-    public function getIo(): SymfonyStyle
-    {
-        return $this->io;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getOptions(): array
-    {
-        return $this->options;
-    }
-
-    public function getOption(string $key): string
-    {
-        return $this->options[$key];
     }
 }

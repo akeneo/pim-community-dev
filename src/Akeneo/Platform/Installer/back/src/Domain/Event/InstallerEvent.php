@@ -13,13 +13,4 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class InstallerEvent extends GenericEvent
 {
-    /**
-     * @param string[] $arguments
-     */
-    public function __construct(
-        protected $subject = null,
-        protected $arguments = [],
-    ) {
-        parent::__construct();
-    }
 }

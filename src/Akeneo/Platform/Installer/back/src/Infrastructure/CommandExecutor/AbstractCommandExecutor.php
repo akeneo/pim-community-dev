@@ -9,11 +9,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\CommandExecutor;
 
+use Akeneo\Platform\Installer\Domain\Event\InstallerEvent;
+use Akeneo\Platform\Installer\Domain\Event\InstallerEvents;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractCommandExecutor implements CommandExecutorInterface
@@ -22,6 +25,7 @@ abstract class AbstractCommandExecutor implements CommandExecutorInterface
 
     public function __construct(
         private readonly KernelInterface $kernel,
+        private readonly EventDispatcher $eventDispatcher,
     ) {
     }
 
@@ -40,7 +44,16 @@ abstract class AbstractCommandExecutor implements CommandExecutorInterface
 
         $output = $withOutput ? new BufferedOutput() : new NullOutput();
 
-        $this->getApplication()->run(new ArrayInput($command), $output);
+        try {
+            $this->getApplication()->run(new ArrayInput($command), $output);
+        } catch (\Exception $e) {
+            $output = $e->getMessage();
+        }
+
+        $this->eventDispatcher->dispatch(
+            new InstallerEvent(null, ['output' => $output->fetch()]),
+            InstallerEvents::POST_COMMAND_EXECUTED,
+        );
 
         return $withOutput ? $output : null;
     }

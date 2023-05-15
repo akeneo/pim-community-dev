@@ -16,8 +16,7 @@ use Akeneo\Platform\Installer\Domain\Event\InstallerEvents;
 use Akeneo\Platform\Installer\Domain\Query\Elasticsearch\ResetIndexesInterface;
 use Akeneo\Platform\Installer\Domain\Query\Sql\InsertDatabaseInstallationDateInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class DatabaseInstallHandler
@@ -29,17 +28,19 @@ final class DatabaseInstallHandler
         private readonly ResetIndexesInterface $resetIndexes,
         private readonly EntityManagerInterface $entityManager,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
     public function handle(DatabaseInstallCommand $command): void
     {
-        $io = $command->getIo();
+        $this->logger->info('Prepare database schema');
 
-        $this->prepareDatabase($io);
+        $this->createTable->execute(['--force' => true, '--no-interaction' => true], true); // TODO : remove options
 
-        if (false === $command->getOption('withoutIndexes')) {
-            $this->resetIndexes($io);
+        if ($command->withIndexes) {
+            $this->logger->info('Reset elasticsearch indexes');
+            $this->resetIndexes();
         }
 
         $this->entityManager->clear();
@@ -49,28 +50,12 @@ final class DatabaseInstallHandler
             InstallerEvents::POST_DB_CREATE,
         );
 
-        $this->setLatestMigration->setMigration($command->getOption('env'));
-
-        $io->info('Set database installation date');
+        $this->setLatestMigration->setMigration($command->environment);
         $this->databaseInstallationDate->withDateTime(new \DateTimeImmutable());
-        $io->success('Installation date set');
     }
 
-    private function prepareDatabase(SymfonyStyle $io): void
+    private function resetIndexes(): void
     {
-        $io->title('Prepare database schema');
-
-        $io->info(sprintf('RUN: %s', $this->createTable->getName()));
-        /** @var BufferedOutput $output */
-        $output = $this->createTable->execute(['--force' => true, '--no-interaction' => true], true);
-        $io->block($output->fetch());
-        $io->success(sprintf('%s success', $this->createTable->getName()));
-    }
-
-    private function resetIndexes(SymfonyStyle $io): void
-    {
-        $io->info('Reset elasticsearch indexes');
         $this->resetIndexes->reset();
-        $io->success('Indexes has been reset');
     }
 }

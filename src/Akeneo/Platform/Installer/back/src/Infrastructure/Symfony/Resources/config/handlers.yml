@@ -8,6 +8,7 @@ services:
       - '@Akeneo\Platform\Installer\Infrastructure\Query\Elasticsearch\ResetIndexes'
       - '@doctrine.orm.default_entity_manager'
       - '@event_dispatcher'
+      - '@logger'
 
   Akeneo\Platform\Installer\Application\FixturesLoad\FixturesLoadHandler:
     arguments:
@@ -17,3 +18,4 @@ services:
       - '@Akeneo\Platform\Installer\Infrastructure\CommandExecutor\LaunchJob'
       - '@event_dispatcher'
       - [ 'AkeneoInstallerBundle/Resources/fixtures/fixtures_jobs.yml' ]
+      - '@logger'

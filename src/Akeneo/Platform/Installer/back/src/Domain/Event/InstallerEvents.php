@@ -10,10 +10,17 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Installer\Domain\Event;
 
 /**
- * Events dispached during installation process.
+ * Events dispatched during installation process.
  */
 final class InstallerEvents
 {
+    /**
+     * This event is dispatched after having executed a command.
+     *
+     * You can use it to display the command output.
+     */
+    public const POST_COMMAND_EXECUTED = 'pim_installer.post_command_executed';
+
     /**
      * This event is dispatched after having installed the database.
      *
