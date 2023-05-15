@@ -22,23 +22,16 @@ class UcsMiddleware implements MiddlewareInterface
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        // No tenant ID in the env, but existing in the received message
-        // We are in a daemon long-running process
-        if (null === $this->pimTenantId && null !== $envelope->last(TenantIdStamp::class)) {
-            /** @var TenantIdStamp $stamp */
-            $stamp = $envelope->last(TenantIdStamp::class);
-            $this->pimTenantId = $stamp->pimTenantId();
+        // We always try to use the tenantid from the stamp, if there is any, in case of long-running process.
+        // If there is none, we fallback on the tenantid coming from the env variables.
+        $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId() ?: $this->pimTenantId;
+
+        if ($tenantId && null === $envelope->last(TenantIdStamp::class)) {
+            $envelope = $envelope->with(new TenantIdStamp($tenantId));
         }
 
-        // Tenant ID exists in this env
-        // We are in a contextualized process
-        if ($this->pimTenantId && null === $envelope->last(TenantIdStamp::class)) {
-            $envelope = $envelope->with(new TenantIdStamp($this->pimTenantId));
-        }
-
-        // Enrich the message with the tenant ID
-        if ($this->pimTenantId && $envelope->getMessage() instanceof TenantAwareInterface) {
-            $envelope->getMessage()->setTenantId($this->pimTenantId);
+        if ($tenantId && $envelope->getMessage() instanceof TenantAwareInterface) {
+            $envelope->getMessage()->setTenantId($tenantId);
         }
 
         return $stack->next()->handle($envelope, $stack);
