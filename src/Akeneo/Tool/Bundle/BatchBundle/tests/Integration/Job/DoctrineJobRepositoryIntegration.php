@@ -200,8 +200,12 @@ class DoctrineJobRepositoryIntegration extends TestCase
      */
     private function addNewFeatureFlag(string $featureFlag): void
     {
-        $featureFlagService = new class implements FeatureFlag {
-            public function isEnabled(): bool { return false; }
+        $featureFlagService = new class implements FeatureFlag
+        {
+            public function isEnabled(?string $feature = null): bool
+            {
+                return false;
+            }
         };
         $this->get('akeneo.feature_flag.service.registry')->add($featureFlag, $featureFlagService);
     }

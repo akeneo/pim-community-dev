@@ -20,7 +20,7 @@ class ImmutableFeatureFlags implements FeatureFlags
     {
         $flag = $this->registry->get($feature);
 
-        return $flag->isEnabled();
+        return $flag->isEnabled($feature);
     }
 
     public function all(): array

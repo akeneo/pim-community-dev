@@ -47,14 +47,14 @@ class RegistrySpec extends ObjectBehavior
 
 class CustomFlagEnabled implements FeatureFlag
 {
-    public function isEnabled(): bool
+    public function isEnabled(?string $feature = null): bool
     {
         return true;
     }
 }
 class CustomFlagDisabled implements FeatureFlag
 {
-    public function isEnabled(): bool
+    public function isEnabled(?string $feature = null): bool
     {
         return false;
     }
