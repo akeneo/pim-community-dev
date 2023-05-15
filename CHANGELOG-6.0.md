@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10928: Fix pim:update:check-requirements can create indexes which are unreachable from the PIM
+- [Backport PIM-10820] PIM-10981: Export product attribute options with the right case
 
 # 6.0.82 (2023-04-24)
 
