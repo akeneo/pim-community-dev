@@ -45,7 +45,6 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
     private AttributeRichText $attributeRichText;
     private AttributeText $attributeText;
 
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -151,14 +150,13 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
     public function testItDoesNotUpdateOnDeactivateTemplate(): void
     {
         $this->deactivateTemplate($this->templateUuid->getValue());
-        $richTextAttribute = $this->attributeCollection->getAttributeByCode('rich_text');
-        $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::RICH_TEXT);
+        $this->assertEquals((string) $this->attributeRichText->getType(), AttributeType::RICH_TEXT);
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
             routeArguments: [
                 'templateUuid' => $this->templateUuid->getValue(),
-                'attributeUuid' => $richTextAttribute->getUuid()->getValue(),
+                'attributeUuid' => $this->attributeRichText->getUuid()->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -172,19 +170,17 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
         $richTextAttribute = $insertedAttributes->getAttributeByCode('rich_text');
         $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::RICH_TEXT);
-
     }
 
     public function testItDoesNotUpdateOnDeactivateAttribute(): void
     {
-        $richTextAttribute = $this->attributeCollection->getAttributeByCode('rich_text');
-        $this->deactivateAttribute($richTextAttribute->getUuid()->getValue());
+        $this->deactivateAttribute($this->attributeRichText->getUuid()->getValue());
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
             routeArguments: [
                 'templateUuid' => $this->templateUuid->getValue(),
-                'attributeUuid' => $richTextAttribute->getUuid()->getValue(),
+                'attributeUuid' => $this->attributeRichText->getUuid()->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -195,6 +191,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
+
     private function createTemplate(): void
     {
         /** @var Category $category */
@@ -202,7 +199,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
         $this->templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 
-         $this->attributeTextArea = AttributeTextArea::create(
+        $this->attributeTextArea = AttributeTextArea::create(
             AttributeUuid::fromString('119e55a5-d838-4b1d-80d6-2328fb6bdc97'),
             new AttributeCode('text_area'),
             AttributeOrder::fromInteger(1),
@@ -238,7 +235,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             AttributeAdditionalProperties::fromArray([]),
         );
 
-        $this->attributeCollection = AttributeCollection::fromArray([
+        $attributeCollection = AttributeCollection::fromArray([
             $this->attributeTextArea,
             $this->attributeRichText,
             $this->attributeText,
@@ -248,12 +245,12 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             code: new TemplateCode('default_template'),
             labelCollection: LabelCollection::fromArray(['en_US' => 'Default template']),
             categoryTreeId: $category->getId(),
-            attributeCollection: $this->attributeCollection,
+            attributeCollection: $attributeCollection,
         );
 
         $this->categoryTemplateSaver->insert($templateModel);
         $this->categoryTreeTemplateSaver->insert($templateModel);
-        $this->categoryTemplateAttributeSaver->insert($this->templateUuid, $this->attributeCollection);
+        $this->categoryTemplateAttributeSaver->insert($this->templateUuid, $attributeCollection);
     }
 
     protected function deactivateTemplate(string $uuid): void
