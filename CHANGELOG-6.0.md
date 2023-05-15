@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.83 (2023-05-15)
+
 ## Bug fixes
 
 - PIM-10928: Fix pim:update:check-requirements can create indexes which are unreachable from the PIM
