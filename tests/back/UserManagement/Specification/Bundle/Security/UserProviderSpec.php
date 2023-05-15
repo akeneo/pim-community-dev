@@ -54,8 +54,8 @@ class UserProviderSpec extends ObjectBehavior
     {
         $userRepository->find(42)->willReturn($julia);
         $julia->getId()->willReturn(42);
-        $julia->isUiUser()->willReturn(true); //todo check if mandatory
-        $julia->isUiUser()->shouldBeCalled(); //todo check if mandatory
+        $julia->isUiUser()->willReturn(true);
+        $julia->isUiUser()->shouldBeCalled();
         $this->refreshUser($julia)->shouldReturn($julia);
     }
 

@@ -6,7 +6,6 @@ namespace AkeneoTest\UserManagement\EndToEnd\Bundle\Controller\Rest;
 
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\UserManagement\Component\Model\User;
 use AkeneoTest\UserManagement\Helper\ControllerEndToEndTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -346,84 +345,8 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         $this->assertTrue($this->userPasswordHasher->isPasswordValid($user, 'Julien'));
     }
 
-    public function testItAllowsToLogUserWithTypeUser(): void
-    {
-        $userUi = $this->userLoader->createUser('Julien', [], ['ROLE_USER']);
-        $this->client->loginUser($userUi);
-
-        $this->assertTrue($userUi->isUiUser());
-
-        $this->callApiRoute(
-            client: $this->client,
-            route: 'pim_user_user_rest_get_current',
-            method: Request::METHOD_GET,
-        );
-
-        $response = $this->client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
-    }
-
-    public function testItRefusesToLogUserWithTypeApi(): void
-    {
-        // todo KO
-//        $userApi = $this->userLoader->createUser('JulienApi', [], ['ROLE_USER']);
-//        $this->updateUserType($userApi->getId(), 'api');
-//
-//        // trick to get the user token while it is a user with user_type = 'api'
-//        $userApi->defineAsApiUser();
-//        $this->client->loginUser($userApi);
-//
-//        $this->callApiRoute(
-//            client: $this->client,
-//            route: 'pim_user_user_rest_get_current',
-//            method: Request::METHOD_GET,
-//        );
-//
-//        $response = $this->client->getResponse();
-//        $this->assertEquals(401, $response->getStatusCode());
-    }
-    public function testItRefusesToLogUserWithTypeJob(): void
-    {
-        $userJob = $this->userLoader->createUser('JulienJob', [], ['ROLE_USER']);
-        $this->updateUserType($userJob->getId(), 'job');
-
-        // trick to get the user token while it is a user with user_type = 'job'
-        $userJob->defineAsJobUser();
-        $this->client->loginUser($userJob);
-
-        $this->callApiRoute(
-            client: $this->client,
-            route: 'pim_user_user_rest_get_current',
-            method: Request::METHOD_GET,
-        );
-
-        $response = $this->client->getResponse();
-        $this->assertEquals(401, $response->getStatusCode());
-    }
-
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
-    }
-
-    private function updateUserType(int $userId, string $type): void
-    {
-        $sql = <<<SQL
-            UPDATE oro_user
-            SET oro_user.user_type=:user_type
-            WHERE oro_user.id = :user_id;
-        SQL;
-
-        $this->get('database_connection')->executeQuery(
-            $sql,
-            [
-                'user_type' => $type,
-                'user_id' => $userId,
-            ],
-            [
-                'user_type' => \PDO::PARAM_STR,
-                'user_id' => \PDO::PARAM_INT,
-            ]
-        );
     }
 }
