@@ -28,6 +28,7 @@ use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Test\Integration\Configuration;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -147,6 +148,53 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
+    public function testItDoesNotUpdateOnDeactivateTemplate(): void
+    {
+        $this->deactivateTemplate($this->templateUuid->getValue());
+        $richTextAttribute = $this->attributeCollection->getAttributeByCode('rich_text');
+        $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::RICH_TEXT);
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_category_template_rest_update_attribute',
+            routeArguments: [
+                'templateUuid' => $this->templateUuid->getValue(),
+                'attributeUuid' => $richTextAttribute->getUuid()->getValue(),
+            ],
+            method: Request::METHOD_POST,
+            content: json_encode([
+                'isRichRextArea' => false,
+            ]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
+        $richTextAttribute = $insertedAttributes->getAttributeByCode('rich_text');
+        $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::RICH_TEXT);
+
+    }
+
+    public function testItDoesNotUpdateOnDeactivateAttribute(): void
+    {
+        $richTextAttribute = $this->attributeCollection->getAttributeByCode('rich_text');
+        $this->deactivateAttribute($richTextAttribute->getUuid()->getValue());
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_category_template_rest_update_attribute',
+            routeArguments: [
+                'templateUuid' => $this->templateUuid->getValue(),
+                'attributeUuid' => $richTextAttribute->getUuid()->getValue(),
+            ],
+            method: Request::METHOD_POST,
+            content: json_encode([
+                'isRichRextArea' => false,
+            ]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
     private function createTemplate(): void
     {
         /** @var Category $category */
@@ -200,6 +248,28 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->categoryTemplateSaver->insert($templateModel);
         $this->categoryTreeTemplateSaver->insert($templateModel);
         $this->categoryTemplateAttributeSaver->insert($this->templateUuid, $this->attributeCollection);
+    }
+
+    protected function deactivateTemplate(string $uuid): void
+    {
+        $query = <<<SQL
+            UPDATE pim_catalog_category_template SET is_deactivated = 1 WHERE uuid = :uuid;
+        SQL;
+
+        $this->get('database_connection')->executeQuery($query, [
+            'uuid' => Uuid::fromString($uuid)->getBytes(),
+        ]);
+    }
+
+    protected function deactivateAttribute(string $uuid): void
+    {
+        $query = <<<SQL
+            UPDATE pim_catalog_category_attribute SET is_deactivated = 1 WHERE uuid = :uuid;
+        SQL;
+
+        $this->get('database_connection')->executeQuery($query, [
+            'uuid' => Uuid::fromString($uuid)->getBytes(),
+        ]);
     }
 
     protected function getConfiguration(): Configuration
