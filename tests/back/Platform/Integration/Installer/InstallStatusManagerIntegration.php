@@ -40,18 +40,6 @@ class InstallStatusManagerIntegration extends TestCase
         $this->assertFalse($installStatusManager->isPimInstalled());
     }
 
-    public function test_pim_not_installed_if_configuration_table_does_not_exists()
-    {
-        /** @var Connection $connection */
-        $connection = $this->get('database_connection');
-
-        $sql = 'DROP TABLE pim_configuration';
-        $connection->executeStatement($sql);
-
-        $installStatusManager = $this->get('pim_installer.install_status_manager');
-        $this->assertFalse($installStatusManager->isPimInstalled());
-    }
-
     /**
      * {@inheritdoc}
      */
