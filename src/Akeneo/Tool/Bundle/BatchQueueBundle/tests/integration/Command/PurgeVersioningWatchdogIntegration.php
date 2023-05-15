@@ -57,7 +57,7 @@ class PurgeVersioningWatchdogIntegration extends TestCase
     public function it_purges_versions_with_custom_config(): void
     {
         $output = $this->runWatchdog([
-            '--job_config' => ['less-than-days' => 5, 'more-than-days' => 15],
+            '--config' => ['less-than-days' => 5, 'more-than-days' => 15],
         ]);
         $result = $output->fetch();
 
@@ -90,7 +90,7 @@ class PurgeVersioningWatchdogIntegration extends TestCase
     public function it_cannot_purges_versions_with_wrong_config(): void
     {
         $output = $this->runWatchdog([
-            '--job_config' => ['unknow-option' => 'foo'],
+            '--config' => ['unknow-option' => 'foo'],
         ]);
         $result = $output->fetch();
 
@@ -136,7 +136,7 @@ class PurgeVersioningWatchdogIntegration extends TestCase
 
         $arrayInput = array_merge($defaultArrayInput, $arrayInput);
         if (isset($arrayInput['--config'])) {
-            $arrayInput['--config'] = json_encode($arrayInput['--config']);
+            $arrayInput['--config'] = \json_encode($arrayInput['--config']);
         }
 
         $input = new ArrayInput($arrayInput);

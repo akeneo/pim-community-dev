@@ -63,9 +63,9 @@ final class JobExecutionWatchdogCommand extends Command
                 'Job code to launch when no execution id provided'
             )
             ->addOption(
-                'job_config',
+                'config',
                 null,
-                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                InputOption::VALUE_REQUIRED,
                 'Job configuration overriding default config'
             )
             ->addOption(
@@ -97,7 +97,7 @@ final class JobExecutionWatchdogCommand extends Command
             throw new \InvalidArgumentException('You must specify job_execution_id or job_code');
         }
         if (null === $jobExecutionId) {
-            $jobConfiguration = $input->getOption('job_config') ?? [];
+            $jobConfiguration = $input->getOption('config') ? \json_decode($input->getOption('config'), true) : [];
             $jobExecution = $this->createJobExecutionHandler->createFromBatchCode($jobCode, $jobConfiguration, null);
             $jobExecutionId = $jobExecution->getId();
         }
@@ -161,7 +161,7 @@ final class JobExecutionWatchdogCommand extends Command
         ];
 
         foreach ($batchCommandOptions as $optionName => $optionValue) {
-            if (in_array($optionName, ['job_execution_id', 'job_code', 'job_config'])) {
+            if (in_array($optionName, ['job_execution_id', 'job_code', 'config'])) {
                 continue;
             }
             switch (true) {
