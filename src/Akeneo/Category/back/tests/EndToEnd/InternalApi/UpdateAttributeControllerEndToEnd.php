@@ -59,14 +59,14 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItUpdatesAttributeTypeToRichText(): void
     {
-        $longDescription = $this->attributeCollection->getAttributeByCode('text_area');
-        $this->assertEquals((string) $longDescription->getType(), AttributeType::TEXTAREA);
+        $textArea = $this->attributeCollection->getAttributeByCode('text_area');
+        $this->assertEquals((string) $textArea->getType(), AttributeType::TEXTAREA);
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
             routeArguments: [
                 'templateUuid' => $this->templateUuid->getValue(),
-                'attributeUuid' => $longDescription->getUuid()->getValue(),
+                'attributeUuid' => $textArea->getUuid()->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -78,8 +78,8 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
-        $longDescription = $insertedAttributes->getAttributeByCode('text_area');
-        $this->assertEquals((string) $longDescription->getType(), AttributeType::RICH_TEXT);
+        $textArea = $insertedAttributes->getAttributeByCode('text_area');
+        $this->assertEquals((string) $textArea->getType(), AttributeType::RICH_TEXT);
     }
 
     public function testItUpdatesAttributeTypeToTextArea(): void
