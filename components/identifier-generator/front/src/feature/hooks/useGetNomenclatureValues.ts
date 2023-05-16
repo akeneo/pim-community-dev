@@ -61,7 +61,6 @@ const useGetNomenclatureValues = (
 
   const {data: records} = useGetReferenceEntitiesRecord({
     attributeCode,
-    limit: itemsPerPage,
     enabled: typeSelectedProperty === PROPERTY_NAMES.REF_ENTITY,
     page,
     search,
@@ -173,16 +172,12 @@ const useGetNomenclatureValues = (
       hasNomenclatureValueInvalid =
         hasNomenclatureValueInvalid || !isValid(getValueAfterUserUpdateOrPlaceholder(item.code));
 
-      if (typeSelectedProperty === PROPERTY_NAMES.REF_ENTITY) {
-        filteredData.push(getLineValue(item));
-      } else if (entityMatchSearch(item) && matchFilter(item.code)) {
+      if (entityMatchSearch(item) && matchFilter(item.code)) {
         addFilteredData(item);
       }
     }
 
-    setFilteredValuesCount(
-      typeSelectedProperty === PROPERTY_NAMES.REF_ENTITY ? records?.matches_count ?? 0 : filteredValuesCount
-    );
+    setFilteredValuesCount(filteredValuesCount);
     setHasValueInvalid(hasNomenclatureValueInvalid);
 
     return filteredData;
@@ -211,7 +206,7 @@ const useGetNomenclatureValues = (
     search,
     setSearch: innerSetSearch,
     filteredValuesCount,
-    totalValuesCount: selectedProperty.type === PROPERTY_NAMES.REF_ENTITY ? records?.total_count ?? 0 : items.length,
+    totalValuesCount: items.length,
     hasValueInvalid,
   };
 };

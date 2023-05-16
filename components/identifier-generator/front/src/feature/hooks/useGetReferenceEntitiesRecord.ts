@@ -5,7 +5,7 @@ import {ServerError} from '../errors';
 import {AttributeCode} from '../models';
 import {useGetAttributeByCode} from './useGetAttributeByCode';
 
-const DEFAULT_LIMIT_PAGINATION = 20;
+const DEFAULT_LIMIT_PAGINATION = 10000;
 
 type Props = {
   data?: PaginateOption;
