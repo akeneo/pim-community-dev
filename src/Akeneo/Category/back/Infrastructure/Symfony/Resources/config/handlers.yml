@@ -50,7 +50,6 @@ services:
 
   Akeneo\Category\Application\Command\UpdateAttributeCommandHandler:
     arguments:
-      - '@validator'
       - '@Akeneo\Category\Application\Query\GetAttribute'
       - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
     tags:

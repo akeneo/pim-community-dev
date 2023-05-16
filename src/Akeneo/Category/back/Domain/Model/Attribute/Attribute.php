@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\Model\Attribute;
 
+use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
@@ -15,6 +16,8 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -188,14 +191,19 @@ abstract class Attribute
      */
     public function update(array $data): void
     {
+        $violations = new ConstraintViolationList();
         if (array_key_exists('isRichRextArea', $data)) {
             $isRichTextArea = (bool) $data['isRichRextArea'];
             $validTypes = [AttributeType::TEXTAREA, AttributeType::RICH_TEXT];
             if (!in_array((string) $this->getType(), $validTypes)) {
                 $message = sprintf('The type of the attribute is neither %s nor %s', AttributeType::TEXTAREA, AttributeType::RICH_TEXT);
-                throw new \LogicException($message);
+                $violations->add(new ConstraintViolation($message, $message, [], null, 'type', null));
             }
             $this->type = new AttributeType(($isRichTextArea) ? AttributeType::RICH_TEXT : AttributeType::TEXTAREA);
+        }
+
+        if ($violations->count() > 0) {
+            throw new ViolationsException($violations);
         }
     }
 }

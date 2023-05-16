@@ -48,6 +48,11 @@ class GetAttributeInMemory implements GetAttribute
         return $this->attributeCollection;
     }
 
+    public function byUuid(AttributeUuid $attributeUuid): ?Attribute
+    {
+        throw new \RuntimeException('Not yet implemented');
+    }
+
     public function byCode(AttributeCode $attributeCode): Attribute
     {
         $attribute = $this->attributeCollection->getAttributeByCode((string) $attributeCode);

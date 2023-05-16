@@ -11,7 +11,6 @@ use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSave
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -21,8 +20,6 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -32,19 +29,12 @@ class UpdateAttributeCommandHandlerTest extends TestCase
 {
     public function testItChangesAttributeToRichText(): void
     {
-        $validator = $this->createMock(ValidatorInterface::class);
         $getAttribute = $this->createMock(GetAttribute::class);
         $categoryTemplateAttributeSaver = $this->createMock(CategoryTemplateAttributeSaver::class);
 
         $attributeUuid = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
 
         $command = UpdateAttributeCommand::create($attributeUuid, true);
-
-        $validator
-            ->expects($this->once())
-            ->method('validate')
-            ->with($command)
-            ->willReturn(new ConstraintViolationList());
 
         $attribute = Attribute::fromType(
             type: new AttributeType(AttributeType::TEXTAREA),
@@ -61,23 +51,22 @@ class UpdateAttributeCommandHandlerTest extends TestCase
 
         $getAttribute
             ->expects($this->once())
-            ->method('byUuids')
-            ->with([$attributeUuid])
-            ->willReturn(AttributeCollection::fromArray([$attribute]));
+            ->method('byUuid')
+            ->with($attributeUuid)
+            ->willReturn($attribute);
 
         $categoryTemplateAttributeSaver
             ->expects($this->once())
             ->method('update')
             ->with($attribute);
 
-        $handler = new UpdateAttributeCommandHandler($validator, $getAttribute, $categoryTemplateAttributeSaver);
+        $handler = new UpdateAttributeCommandHandler($getAttribute, $categoryTemplateAttributeSaver);
 
         $handler($command);
     }
 
     public function testItThrowsInvalidArgumentException(): void
     {
-        $validator = $this->createMock(ValidatorInterface::class);
         $getAttribute = $this->createMock(GetAttribute::class);
         $categoryTemplateAttributeSaver = $this->createMock(CategoryTemplateAttributeSaver::class);
 
@@ -85,19 +74,13 @@ class UpdateAttributeCommandHandlerTest extends TestCase
 
         $command = UpdateAttributeCommand::create($attributeUuid, true);
 
-        $validator
-            ->expects($this->once())
-            ->method('validate')
-            ->with($command)
-            ->willReturn(new ConstraintViolationList());
-
         $getAttribute
             ->expects($this->once())
-            ->method('byUuids')
-            ->with([$attributeUuid])
-            ->willReturn(AttributeCollection::fromArray([]));
+            ->method('byUuid')
+            ->with($attributeUuid)
+            ->willReturn(null);
 
-        $handler = new UpdateAttributeCommandHandler($validator, $getAttribute, $categoryTemplateAttributeSaver);
+        $handler = new UpdateAttributeCommandHandler($getAttribute, $categoryTemplateAttributeSaver);
 
         $this->expectException(\InvalidArgumentException::class);
         $handler($command);
