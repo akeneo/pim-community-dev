@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Unit\Application\Command;
+namespace Akeneo\Category\back\tests\Unit\Application\Command\UpdateAttributeCommand;
 
-use Akeneo\Category\Application\Command\UpdateAttributeCommand;
-use Akeneo\Category\Application\Command\UpdateAttributeCommandHandler;
+use Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand;
+use Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommandHandler;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;

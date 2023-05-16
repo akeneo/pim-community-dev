@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Command;
+namespace Akeneo\Category\Application\Command\UpdateAttributeCommand;
 
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Webmozart\Assert\Assert;

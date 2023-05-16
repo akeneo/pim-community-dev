@@ -187,22 +187,18 @@ abstract class Attribute
     }
 
     /**
-     * @param array{
-     *     isRichRextArea?: bool,
-     *     labels?: LocalizedLabels
-     * } $data
+     * @param LocalizedLabels $labels
      */
-    public function update(array $data): void
+    public function update(?bool $isRichRextArea, ?array $labels): void
     {
         $violations = new ConstraintViolationList();
-        if (array_key_exists('isRichRextArea', $data)) {
-            $isRichTextArea = (bool) $data['isRichRextArea'];
+        if ($isRichRextArea !== null) {
             $validTypes = [AttributeType::TEXTAREA, AttributeType::RICH_TEXT];
             if (!in_array((string) $this->getType(), $validTypes)) {
                 $message = sprintf('The type of the attribute is neither %s nor %s', AttributeType::TEXTAREA, AttributeType::RICH_TEXT);
                 $violations->add(new ConstraintViolation($message, $message, [], null, 'type', null));
             }
-            $this->type = new AttributeType(($isRichTextArea) ? AttributeType::RICH_TEXT : AttributeType::TEXTAREA);
+            $this->type = new AttributeType(($isRichRextArea) ? AttributeType::RICH_TEXT : AttributeType::TEXTAREA);
         }
 
         if (array_key_exists('labels', $data)) {

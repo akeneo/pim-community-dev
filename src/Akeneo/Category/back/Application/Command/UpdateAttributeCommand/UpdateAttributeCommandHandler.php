@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Application\Command;
+namespace Akeneo\Category\Application\Command\UpdateAttributeCommand;
 
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
@@ -28,16 +28,7 @@ class UpdateAttributeCommandHandler
             throw new \InvalidArgumentException(sprintf('Attribute with uuid: %s does not exist', $command->attributeUuid));
         }
 
-        $data = [];
-        if ($command->isRichTextArea !== null) {
-            $data['isRichRextArea'] = $command->isRichTextArea;
-        }
-
-        if ($command->labels !== null) {
-            $data['labels'] = $command->labels;
-        }
-
-        $attribute->update($data);
+        $attribute->update($command->isRichTextArea, $command->labels);
         $this->categoryTemplateAttributeSaver->update($attribute);
     }
 }
