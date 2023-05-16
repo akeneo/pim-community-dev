@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
-use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand;
+use Akeneo\Category\Domain\Exceptions\ViolationsException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -56,8 +55,6 @@ class UpdateAttributeController
             }
 
             return new JsonResponse(['values' => $normalizedViolations], Response::HTTP_BAD_REQUEST);
-        } catch (\InvalidArgumentException $invalidArgumentException) {
-            throw new NotFoundHttpException($invalidArgumentException->getMessage());
         }
 
         return new JsonResponse(null, Response::HTTP_OK);

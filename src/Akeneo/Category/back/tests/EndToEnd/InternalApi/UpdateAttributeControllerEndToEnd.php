@@ -124,7 +124,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
     public function testItThrowsErrorOnWrongType(): void
@@ -144,7 +144,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
     public function testItDoesNotUpdateOnDeactivateTemplate(): void
@@ -189,7 +189,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
     private function createTemplate(): void
