@@ -1,6 +1,6 @@
 import {Button, Checkbox, Field, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
-import {userContext, useTranslate} from '@akeneo-pim-community/shared';
+import {userContext, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {getLabelFromAttribute} from '../attributes';
@@ -15,6 +15,30 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
   const catalogLocales = useCatalogLocales();
+    const router = useRouter();
+
+    const updateAttribute = (attribute: Attribute): void => {
+        const url = router.generate('pim_category_template_rest_update_attribute', {
+            templateUuid: attribute.template_uuid,
+            attributeUuid: attribute.uuid,
+        });
+
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                'labels' : {
+                    'de_DE' : 'test3',
+                    'fr_FR' : 'test3',
+                    'en_US' : 'test1',
+                },
+            })
+        }).then(response => {
+            if (!response.ok) {
+                console.error(response)
+            }
+            console.log(response.json());
+        });
+        };
 
   const [
     isDeactivateTemplateAttributeModalOpen,
@@ -36,9 +60,16 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
       </SectionTitle>
       <OptionsContainer>
         {['textarea', 'richtext'].includes(attribute.type) && (
-          <OptionField checked={attribute.type === 'richtext'} readOnly={true}>
-            {translate('akeneo.category.template.attribute.settings.options.rich_text')}
-          </OptionField>
+            <div>
+              <OptionField checked={attribute.type === 'richtext'}>
+                {translate('akeneo.category.template.attribute.settings.options.rich_text')}
+              </OptionField>
+                <Button level="primary" ghost onClick={() => {
+                    updateAttribute(attribute);
+                }}>
+                update
+                </Button>
+            </div>
         )}
         <OptionField checked={attribute.is_localizable} readOnly={true}>
           {translate('akeneo.category.template.attribute.settings.options.value_per_locale')}

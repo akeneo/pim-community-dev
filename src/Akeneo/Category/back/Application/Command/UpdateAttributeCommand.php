@@ -23,8 +23,12 @@ final class UpdateAttributeCommand
         public readonly ?bool $isRichTextArea,
         public readonly ?array $labels,
     ) {
-        Assert::uuid($attributeUuid);
-        LabelCollection::fromArray($this->labels);
+        if($isRichTextArea) {
+            Assert::uuid($attributeUuid);
+        }
+        if($labels) {
+            LabelCollection::fromArray($this->labels);
+        }
     }
 
     /**
@@ -32,8 +36,8 @@ final class UpdateAttributeCommand
      */
     public static function create(
         string $attributeUuid,
-        bool $isRichTextArea,
-        array $labels,
+        ?bool $isRichTextArea,
+        ?array $labels,
     ): self {
         return new self(
             attributeUuid: $attributeUuid,
