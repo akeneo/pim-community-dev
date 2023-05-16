@@ -195,10 +195,10 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
 
         $normalizedErrors = json_decode($response->getContent(), true);
-        $this->assertCount(2, $normalizedErrors['values']);
-        foreach ($normalizedErrors['values'] as $error) {
-            $this->assertStringStartsWith('labels', $error['path']);
-            $this->assertEquals('This value is too long. It should have 255 characters or less.', $error['message']);
+        $this->assertCount(2, $normalizedErrors);
+        foreach ($normalizedErrors as $error) {
+            $this->assertStringStartsWith('labels', $error['error']['property']);
+            $this->assertEquals('This value is too long. It should have 255 characters or less.', $error['error']['message']);
         }
     }
 
