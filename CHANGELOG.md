@@ -72,6 +72,8 @@
 - PIM-10639: Prevent users to change his password without providing its current password
 - PIM-10958: Fix attribute option position after clicking on "done"
 - PIM-10976: Fix variant product counter on Product Model Edit Form for variant products without identifier
+- PIM-10983: Error HTTP 500 when adding a custom app
+- PIM-10980: Fix pagination update when applying filters on product association grid
 
 ## Improvements
 

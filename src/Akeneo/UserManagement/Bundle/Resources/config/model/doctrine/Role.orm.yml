@@ -13,10 +13,10 @@ Akeneo\UserManagement\Component\Model\Role:
             type: string
             unique: true
             nullable: false
-            lenght: 30
+            length: 255
         label:
             type: string
-            lenght: 30
+            length: 255
         type:
             type: string
             nullable: false
