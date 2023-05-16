@@ -40,7 +40,7 @@ const TooltipContent = styled.div<{direction: Direction; width: number; top: num
   opacity: ${({top, left}) => (-1 === top && -1 === left ? 0 : 1)};
 `;
 
-const getPosition = (
+const computePosition = (
   direction: Direction,
   parentRef?: RefObject<HTMLDivElement>,
   elementRef?: RefObject<HTMLDivElement>
@@ -122,7 +122,7 @@ const Tooltip = ({direction = 'top', iconSize = 24, width = 200, children, ...re
   }, []);
 
   useEffect(() => {
-    setPosition(getPosition(direction, parentRef, contentRef));
+    setPosition(computePosition(direction, parentRef, contentRef));
   }, [children, direction, parentRef, contentRef, isVisible]);
 
   const [top, left] = position;

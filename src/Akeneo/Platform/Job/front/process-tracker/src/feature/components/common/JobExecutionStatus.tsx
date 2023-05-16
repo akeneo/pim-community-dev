@@ -52,7 +52,7 @@ const JobExecutionStatus = ({
         {label}
       </Badge>
       {showTooltip && (
-        <Tooltip direction="bottom" iconSize={17}>
+        <Tooltip direction="bottom" iconSize={18}>
           {translate('akeneo_job_process_tracker.tooltip.paused')}
         </Tooltip>
       )}
