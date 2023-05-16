@@ -108,6 +108,32 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::TEXTAREA);
     }
 
+    public function testItAddsLabelsToAttribute(): void
+    {
+        $labels = [
+            'fr_FR' => 'Impression',
+            'en_US' => 'Print',
+        ];
+
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_category_template_rest_update_attribute',
+            routeArguments: [
+                'templateUuid' => $this->templateUuid->getValue(),
+                'attributeUuid' => $this->attributeRichText->getUuid()->getValue(),
+            ],
+            method: Request::METHOD_POST,
+            content: json_encode(['labels' => $labels]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
+        $richTextAttribute = $insertedAttributes->getAttributeByCode('rich_text');
+        $this->assertEqualsCanonicalizing($richTextAttribute->getLabelCollection()->getTranslations(), $labels);
+    }
+
     public function testItThrowsErrorOnAttributeNotFound(): void
     {
         $this->callApiRoute(

@@ -23,10 +23,10 @@ final class UpdateAttributeCommand
         public readonly ?bool $isRichTextArea,
         public readonly ?array $labels,
     ) {
-        if($isRichTextArea) {
+        if ($isRichTextArea) {
             Assert::uuid($attributeUuid);
         }
-        if($labels) {
+        if ($labels) {
             LabelCollection::fromArray($this->labels);
         }
     }

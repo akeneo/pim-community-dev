@@ -41,6 +41,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
     }
 
 
+
     public function testInsertsNewCategoryAttributeInDatabase(): void
     {
         /** @var Category $category */
@@ -151,5 +152,41 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
 
         $seoMetaDescription = $insertedAttributes->getAttributeByCode('seo_meta_description');
         $this->assertEquals((string) $seoMetaDescription->getType(), AttributeType::RICH_TEXT);
+    }
+
+    public function testItAddsLabelsToAttribute(): void
+    {
+        /** @var Category $category */
+        $category = $this->getCategory->byCode('master');
+
+        $templateUuid = '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
+        $templateModel = $this->givenTemplateWithAttributes($templateUuid, $category->getId());
+
+        $this->categoryTemplateSaver->insert($templateModel);
+        $this->categoryTreeTemplateSaver->insert($templateModel);
+
+        $this->get(CategoryTemplateAttributeSaver::class)->insert(
+            $templateModel->getUuid(),
+            $templateModel->getAttributeCollection()
+        );
+
+        $insertedAttributes = $this->getAttribute->byTemplateUuid($templateModel->getUuid());
+
+        $longDescription = $insertedAttributes->getAttributeByCode('long_description');
+        $this->assertEquals((string) $longDescription->getType(), AttributeType::RICH_TEXT);
+
+        $labels = [
+            'fr_FR' => 'Impression',
+            'en_US' => 'Print',
+        ];
+
+        $data = [
+            'labels' => $labels
+        ];
+        $longDescription->update($data);
+        $this->categoryTemplateAttributeSaver->update($longDescription);
+
+        $longDescription = $insertedAttributes->getAttributeByCode('long_description');
+        $this->assertEqualsCanonicalizing($longDescription->getLabelCollection()->getTranslations(), $labels);
     }
 }
