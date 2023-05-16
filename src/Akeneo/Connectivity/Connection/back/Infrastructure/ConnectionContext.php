@@ -17,12 +17,6 @@ use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence
  */
 class ConnectionContext implements ConnectionContextInterface
 {
-    private AreCredentialsValidCombinationQueryInterface $areCredentialsValidCombinationQuery;
-
-    private SelectConnectionCodeByClientIdQueryInterface $selectConnectionCodeByClientIdQuery;
-
-    private ConnectionRepositoryInterface $connectionRepository;
-
     private ?string $clientId = null;
 
     private ?string $username = null;
@@ -33,14 +27,8 @@ class ConnectionContext implements ConnectionContextInterface
 
     private ?bool $areCredentialsValidCombination = null;
 
-    public function __construct(
-        AreCredentialsValidCombinationQueryInterface $areCredentialsValidCombinationQuery,
-        SelectConnectionCodeByClientIdQueryInterface $selectConnectionCodeByClientIdQuery,
-        ConnectionRepositoryInterface $connectionRepository
-    ) {
-        $this->areCredentialsValidCombinationQuery = $areCredentialsValidCombinationQuery;
-        $this->selectConnectionCodeByClientIdQuery = $selectConnectionCodeByClientIdQuery;
-        $this->connectionRepository = $connectionRepository;
+    public function __construct(private AreCredentialsValidCombinationQueryInterface $areCredentialsValidCombinationQuery, private SelectConnectionCodeByClientIdQueryInterface $selectConnectionCodeByClientIdQuery, private ConnectionRepositoryInterface $connectionRepository)
+    {
     }
 
     public function setClientId(string $clientId): void

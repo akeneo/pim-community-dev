@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ConnectionWithCredentialsSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith(
             'magento',
@@ -32,47 +32,47 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ConnectionWithCredentials::class);
     }
 
-    public function it_returns_the_code()
+    public function it_returns_the_code(): void
     {
         $this->code()->shouldReturn('magento');
     }
 
-    public function it_returns_the_label()
+    public function it_returns_the_label(): void
     {
         $this->label()->shouldReturn('Magento Connector');
     }
 
-    public function it_returns_the_flow_type()
+    public function it_returns_the_flow_type(): void
     {
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
     }
 
-    public function it_returns_the_client_id()
+    public function it_returns_the_client_id(): void
     {
         $this->clientId()->shouldReturn('my_custom_client_id');
     }
 
-    public function it_returns_the_secret()
+    public function it_returns_the_secret(): void
     {
         $this->secret()->shouldReturn('my_secret');
     }
 
-    public function it_returns_the_username()
+    public function it_returns_the_username(): void
     {
         $this->username()->shouldReturn('my_username');
     }
 
-    public function it_returns_null_when_the_password_is_not_set()
+    public function it_returns_null_when_the_password_is_not_set(): void
     {
         $this->password()->shouldReturn(null);
     }
 
-    public function it_sets_the_password()
+    public function it_sets_the_password(): void
     {
         $this->password()->shouldReturn(null);
 
@@ -81,7 +81,7 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
         $this->password()->shouldReturn('my_password');
     }
 
-    public function it_returns_null_if_there_is_no_image()
+    public function it_returns_null_if_there_is_no_image(): void
     {
         $this->beConstructedWith(
             'magento',
@@ -99,32 +99,32 @@ class ConnectionWithCredentialsSpec extends ObjectBehavior
         $this->image()->shouldBeNull();
     }
 
-    public function it_returns_the_image()
+    public function it_returns_the_image(): void
     {
         $this->image()->shouldReturn('a/b/c/the_path.jpg');
     }
 
-    public function it_returns_the_user_role_id()
+    public function it_returns_the_user_role_id(): void
     {
         $this->userRoleId()->shouldReturn('1');
     }
 
-    public function it_returns_the_user_group_id()
+    public function it_returns_the_user_group_id(): void
     {
         $this->userGroupId()->shouldReturn('2');
     }
 
-    public function it_returns_the_auditable()
+    public function it_returns_the_auditable(): void
     {
         $this->auditable()->shouldReturn(true);
     }
 
-    public function it_returns_the_type()
+    public function it_returns_the_type(): void
     {
         $this->type()->shouldReturn('default');
     }
 
-    public function it_normalizes_a_connection_with_credentials()
+    public function it_normalizes_a_connection_with_credentials(): void
     {
         $this->setPassword('my_password');
 

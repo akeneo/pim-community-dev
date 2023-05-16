@@ -12,11 +12,8 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository
  */
 class UpdateConnectionErrorCountHandler
 {
-    private ErrorCountRepositoryInterface $errorCountRepository;
-
-    public function __construct(ErrorCountRepositoryInterface $errorCountRepository)
+    public function __construct(private ErrorCountRepositoryInterface $errorCountRepository)
     {
-        $this->errorCountRepository = $errorCountRepository;
     }
 
     public function handle(UpdateConnectionErrorCountCommand $command): void

@@ -109,9 +109,9 @@ services:
 
     Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedProductsCommand:
         arguments:
-            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetDeletedProductDocumentIds'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetDeletedProductModelDocumentIds'
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '@database_connection'
         tags:
             - { name: 'console.command' }
             - { name: 'akeneo.command.authenticated_as_admin_user' }

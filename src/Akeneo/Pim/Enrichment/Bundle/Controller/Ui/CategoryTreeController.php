@@ -2,18 +2,17 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
+use Akeneo\Category\Api\Command\CommandMessageBus;
+use Akeneo\Category\Application\Command\DeleteCategoryCommand\DeleteCategoryCommand;
 use Akeneo\Category\Domain\Model\Classification\CategoryTree;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\Query\GetCategoryTreesInterface;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -45,7 +44,6 @@ class CategoryTreeController extends AbstractController
     public function __construct(
         private UserContext $userContext,
         private SaverInterface $categorySaver,
-        private RemoverInterface $categoryRemover,
         private SimpleFactoryInterface $categoryFactory,
         private CategoryRepositoryInterface $categoryRepository,
         private SecurityFacade $securityFacade,
@@ -58,7 +56,7 @@ class CategoryTreeController extends AbstractController
         private CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
         private GetCategoryInterface $getCategory,
         private GetCategoryTreesInterface $getCategoryTrees,
-        private FeatureFlags $featureFlags,
+        private CommandMessageBus $categoryCommandBus,
         array $rawConfiguration,
     ) {
         $resolver = new OptionsResolver();
@@ -127,8 +125,7 @@ class CategoryTreeController extends AbstractController
             return new RedirectResponse('/');
         }
 
-        $aclName = $this->featureFlags->isEnabled("enriched_category") ? 'category_order_trees' : 'category_edit';
-        if (!$this->securityFacade->isGranted($this->buildAclName($aclName))) {
+        if (!$this->securityFacade->isGranted($this->buildAclName('category_order_trees'))) {
             throw new AccessDeniedException();
         }
 
@@ -319,13 +316,8 @@ class CategoryTreeController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $category = $this->findCategory($id);
-
-        $templateUuid = $this->getTemplateUuid($category);
-        $options = $templateUuid ? ['templateUuid' => $templateUuid] : [];
-
         try {
-            $this->categoryRemover->remove($category, $options);
+            $this->categoryCommandBus->dispatch(new DeleteCategoryCommand($id));
         } catch (ConflictHttpException $exception) {
             return new JsonResponse(
                 [
@@ -428,11 +420,6 @@ class CategoryTreeController extends AbstractController
     protected function buildAclName($name)
     {
         return $this->rawConfiguration['acl'] . '_' . $name;
-    }
-
-    public function getTemplateUuid(CategoryInterface $ormCategory): ?TemplateUuid
-    {
-        return $this->getCategory->byId($ormCategory->getId())?->getTemplateUuid();
     }
 
     /**

@@ -12,7 +12,6 @@ use Akeneo\Category\Application\Applier\UserIntentApplier;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Storage\Save\CategorySaverProcessor;
 use Akeneo\Category\Application\UpsertCategoryCommandHandler;
-use Akeneo\Category\Domain\Event\CategoryCreatedEvent;
 use Akeneo\Category\Domain\Event\CategoryUpdatedEvent;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
@@ -99,7 +98,6 @@ class UpsertCategoryCommandHandlerSpec extends ObjectBehavior
         $applierRegistry->getApplier(Argument::type(UserIntent::class))->shouldNotBeCalled();
         $saver->save(Argument::type(Category::class), Argument::cetera())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::type(CategoryUpdatedEvent::class))->shouldNotBeCalled();
-        $eventDispatcher->dispatch(Argument::type(CategoryCreatedEvent::class))->shouldNotBeCalled();
 
         $this->shouldThrow(new ViolationsException($violations))->during('__invoke', [$command]);
     }

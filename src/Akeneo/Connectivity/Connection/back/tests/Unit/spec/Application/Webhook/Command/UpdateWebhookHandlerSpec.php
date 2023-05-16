@@ -52,13 +52,11 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $isUsingUuid = true;
         $secret = 'secret';
         $command = new UpdateWebhookCommand($code, $enabled, $url, $isUsingUuid);
-        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $isUsingUuid) {
-            return $webhook->code() === $code &&
-                $webhook->enabled() === $enabled &&
-                $webhook->isUsingUuid() === $isUsingUuid &&
-                $webhook->url() instanceof Url &&
-                (string) $webhook->url() === $url;
-        };
+        $isAValidWriteModel = fn (ConnectionWebhook $webhook): bool => $webhook->code() === $code &&
+            $webhook->enabled() === $enabled &&
+            $webhook->isUsingUuid() === $isUsingUuid &&
+            $webhook->url() instanceof Url &&
+            (string) $webhook->url() === $url;
 
         $validator->validate(Argument::that($isAValidWriteModel))->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(0);
@@ -67,9 +65,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $selectWebhookSecretQuery->execute($code)->willReturn(null);
         $generateWebhookSecretHandler
             ->handle(
-                Argument::that(function (GenerateWebhookSecretCommand $command) use ($code) {
-                    return $command->connectionCode() === $code;
-                })
+                Argument::that(fn (GenerateWebhookSecretCommand $command): bool => $command->connectionCode() === $code)
             )
             ->shouldBeCalled()
             ->willReturn($secret);
@@ -90,13 +86,11 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $isUsingUuid = true;
         $secret = 'secret';
         $command = new UpdateWebhookCommand($code, $enabled, $url, $isUsingUuid);
-        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $isUsingUuid) {
-            return $webhook->code() === $code &&
-                $webhook->enabled() === $enabled &&
-                $webhook->isUsingUuid() === $isUsingUuid &&
-                $webhook->url() instanceof Url &&
-                (string) $webhook->url() === $url;
-        };
+        $isAValidWriteModel = fn (ConnectionWebhook $webhook): bool => $webhook->code() === $code &&
+            $webhook->enabled() === $enabled &&
+            $webhook->isUsingUuid() === $isUsingUuid &&
+            $webhook->url() instanceof Url &&
+            (string) $webhook->url() === $url;
 
         $validator->validate(Argument::that($isAValidWriteModel))->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(0);
@@ -122,12 +116,10 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $isUsingUuid = true;
         $url = null;
         $command = new UpdateWebhookCommand($code, $enabled, $url, $isUsingUuid);
-        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url, $isUsingUuid) {
-            return $webhook->code() === $code &&
-                $webhook->enabled() === $enabled &&
-                $webhook->isUsingUuid() === $isUsingUuid &&
-                $webhook->url() === null;
-        };
+        $isAValidWriteModel = fn (ConnectionWebhook $webhook): bool => $webhook->code() === $code &&
+            $webhook->enabled() === $enabled &&
+            $webhook->isUsingUuid() === $isUsingUuid &&
+            $webhook->url() === null;
 
         $validator->validate(Argument::that($isAValidWriteModel))->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(1);

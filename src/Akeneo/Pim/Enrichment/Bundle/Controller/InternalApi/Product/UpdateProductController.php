@@ -114,7 +114,8 @@ final class UpdateProductController
             return new JsonResponse(
                 [
                     'message' => $e->getMessage(),
-                    'global' => true],
+                    'global' => true,
+                ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }

@@ -1,2 +1,0 @@
-includes:
-    - '%rootDir%/../phpstan-deprecation-rules/rules.neon'

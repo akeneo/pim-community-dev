@@ -477,7 +477,7 @@ class ColumnSelector extends BaseView {
       return;
     }
 
-    analytics.track('product-grid:column:selected', {
+    analytics.appcuesTrack('product-grid:column:selected', {
       gridName: this.config.gridName,
       column: selected,
     });

@@ -89,7 +89,7 @@ class CreateConnectionCommand extends Command
         $label = $input->getOption('label') ?? $code;
         $flowType = $input->getOption('flow-type');
         $auditable = /* --auditable */ null === $input->getOption('auditable')
-            || /* --auditable=true|false */ false !== \filter_var($input->getOption('auditable'), FILTER_VALIDATE_BOOLEAN);
+            || /* --auditable=true|false */ \filter_var($input->getOption('auditable'), FILTER_VALIDATE_BOOLEAN);
         $userGroup = $input->getOption('user-group');
 
         try {

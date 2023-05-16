@@ -1,7 +1,7 @@
 import {Button, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
-import {Attribute} from '../../models';
+import {Attribute, CATEGORY_ATTRIBUTE_TYPE_AREA, CATEGORY_ATTRIBUTE_TYPE_RICHTEXT} from '../../models';
 import {getLabelFromAttribute} from '../attributes';
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
@@ -25,14 +25,18 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
     onAttributeSelection(attribute);
   };
 
-  const sortedAttributes = useMemo(() => attributes.sort((attribute1: Attribute, attribute2: Attribute): number => {
-    if (attribute1.order >= attribute2.order) {
-      return 1;
-    } else if (attribute1.order < attribute2.order) {
-      return -1;
-    }
-    return 0;
-  }), [attributes]);
+  const sortedAttributes = useMemo(
+    () =>
+      attributes.sort((attribute1: Attribute, attribute2: Attribute): number => {
+        if (attribute1.order >= attribute2.order) {
+          return 1;
+        } else if (attribute1.order < attribute2.order) {
+          return -1;
+        }
+        return 0;
+      }),
+    [attributes]
+  );
 
   return (
     <AttributeListContainer>
@@ -62,7 +66,7 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
               >
                 <Table.Cell rowTitle>{getLabelFromAttribute(attribute, catalogLocale)}</Table.Cell>
                 <Table.Cell>{attribute.code}</Table.Cell>
-                <Table.Cell>{translate(`akeneo.category.template.attribute.type.${attribute.type}`)}</Table.Cell>
+                <Table.Cell>{translate(`akeneo.category.template.attribute.type.${attribute.type !== CATEGORY_ATTRIBUTE_TYPE_RICHTEXT ? attribute.type : CATEGORY_ATTRIBUTE_TYPE_AREA}`)}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

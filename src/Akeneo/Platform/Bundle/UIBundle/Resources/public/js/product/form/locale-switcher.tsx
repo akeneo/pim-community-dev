@@ -42,7 +42,7 @@ class LocaleSwitcher extends BaseView {
       context: context,
     });
 
-    analytics.track('product:form:locale-switched', {
+    analytics.appcuesTrack('product:form:locale-switched', {
       localeCode: localeCode,
       context: context,
     });

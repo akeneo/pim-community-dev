@@ -115,7 +115,7 @@ define([
               router.redirectToRoute(this.config.redirectAfter, params);
             }
 
-            analytics.track('common:form:saved', {
+            analytics.appcuesTrack('common:form:saved', {
               code: this.code,
             });
           }.bind(this)

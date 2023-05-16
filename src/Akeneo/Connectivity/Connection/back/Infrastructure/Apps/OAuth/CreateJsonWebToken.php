@@ -60,7 +60,7 @@ class CreateJsonWebToken
             ->issuedAt($now)
             ->expiresAt($now->modify('+1 hour'));
 
-        if (false === $consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_OPENID)) {
+        if (!$consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_OPENID)) {
             throw new \LogicException('OpenID must be consented to create a JWT');
         }
         if ($consentedAuthenticationScopes->hasScope(AuthenticationScope::SCOPE_PROFILE)) {

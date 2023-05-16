@@ -12,12 +12,12 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ConnectionLabelMustBeValidSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ConnectionLabelMustBeValid::class);
     }
 
-    public function it_does_not_build_violation_on_valid_label(ExecutionContextInterface $context)
+    public function it_does_not_build_violation_on_valid_label(ExecutionContextInterface $context): void
     {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
@@ -27,7 +27,7 @@ class ConnectionLabelMustBeValidSpec extends ObjectBehavior
     public function it_adds_a_violation_when_the_label_is_invalid(
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
-    ) {
+    ): void {
         $context->buildViolation('akeneo_connectivity.connection.connection.constraint.label.too_long')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 
@@ -37,7 +37,7 @@ class ConnectionLabelMustBeValidSpec extends ObjectBehavior
     public function it_adds_a_violation_when_the_label_is_empty(
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
-    ) {
+    ): void {
         $context->buildViolation('akeneo_connectivity.connection.connection.constraint.label.required')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 

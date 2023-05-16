@@ -29,7 +29,7 @@ class GetWebMarketplaceUrlEndToEnd extends WebTestCase
     {
         $this->authenticateAsAdmin();
         $this->client->xmlHttpRequest('GET', '/rest/marketplace/marketplace-url');
-        $result = \json_decode($this->client->getResponse()->getContent(), true);
+        $result = \json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertMatchesRegularExpression(

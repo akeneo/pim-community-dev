@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Contains the state of the unique axis values combination for an entity with family variant.
@@ -51,42 +52,36 @@ class UniqueAxesCombinationSet
     {
         $familyVariantCode = $entity->getFamilyVariant()->getCode();
         $parentCode = $entity->getParent()->getCode();
+        $loweredAxisValueCombination = \mb_strtolower($axisValueCombination);
 
-        if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
-            $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination];
-            if ($cachedIdentifier !== $entity->getIdentifier()) {
-                if ($entity instanceof ProductInterface) {
-                    throw new AlreadyExistingAxisValueCombinationException(
-                        $cachedIdentifier,
-                        sprintf(
-                            'Variant product "%s" already have the "%s" combination of axis values.',
-                            $cachedIdentifier,
-                            $axisValueCombination
-                        )
-                    );
-                }
-
+        if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination])) {
+            $cachedIdentifierOrUuid = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination];
+            if ($entity instanceof ProductInterface && $cachedIdentifierOrUuid['uuid'] !== \mb_strtolower($entity->getUuid()->toString())) {
                 throw new AlreadyExistingAxisValueCombinationException(
-                    $cachedIdentifier,
+                    $cachedIdentifierOrUuid['identifier'] ?? $cachedIdentifierOrUuid['uuid'],
+                    sprintf(
+                        'Variant product "%s" already have the "%s" combination of axis values.',
+                        $cachedIdentifierOrUuid['identifier'] ?? $cachedIdentifierOrUuid['uuid'],
+                        $axisValueCombination
+                    )
+                );
+            } elseif ($entity instanceof ProductModelInterface && $cachedIdentifierOrUuid['identifier'] !== \mb_strtolower($entity->getIdentifier())) {
+                throw new AlreadyExistingAxisValueCombinationException(
+                    $cachedIdentifierOrUuid['identifier'],
                     sprintf(
                         'Product model "%s" already have the "%s" combination of axis values.',
-                        $cachedIdentifier,
+                        $cachedIdentifierOrUuid['identifier'],
                         $axisValueCombination
                     )
                 );
             }
         }
 
-        if (!isset($this->uniqueAxesCombination[$familyVariantCode])) {
-            $this->uniqueAxesCombination[$familyVariantCode] = [];
-        }
-
-        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$parentCode] = [];
-        }
-
-        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination] = $entity->getIdentifier();
+        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination])) {
+            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination]['identifier'] = \is_string($entity->getIdentifier()) ? \mb_strtolower($entity->getIdentifier()) : null;
+            if ($entity instanceof ProductInterface) {
+                $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination]['uuid'] = \mb_strtolower($entity->getUuid()->toString());
+            }
         }
     }
 }

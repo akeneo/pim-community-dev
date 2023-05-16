@@ -16,3 +16,4 @@ services:
     Akeneo\Tool\Bundle\MessengerBundle\Middleware\UcsMiddleware:
         arguments:
             - '%env(default::string:APP_TENANT_ID)%'
+            - '@logger'

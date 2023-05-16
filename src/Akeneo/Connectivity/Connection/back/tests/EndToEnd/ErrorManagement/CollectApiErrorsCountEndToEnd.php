@@ -108,7 +108,7 @@ JSON;
         $this->errorCountMustBe('erp', 1, ErrorTypes::BUSINESS);
     }
 
-    public function test_it_collects_the_error_count_from_a_product_partial_update()
+    public function test_it_collects_the_error_count_from_a_product_partial_update(): void
     {
         $this->attributeLoader->create([
             'code' => 'name',
@@ -219,7 +219,7 @@ JSON;
             ]
         ]);
         $streamedContent = '';
-        \ob_start(function ($buffer) use (&$streamedContent) {
+        \ob_start(function ($buffer) use (&$streamedContent): string {
             $streamedContent .= $buffer;
             return '';
         });

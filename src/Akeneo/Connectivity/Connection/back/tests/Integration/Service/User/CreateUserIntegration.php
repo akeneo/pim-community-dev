@@ -18,7 +18,7 @@ use PHPUnit\Framework\Assert;
  */
 class CreateUserIntegration extends TestCase
 {
-    public function test_it_creates_a_user()
+    public function test_it_creates_a_user(): void
     {
         $user = $this->getCreateUserService()->execute('pimgento', 'Pimgento', ' ');
 
@@ -39,7 +39,7 @@ SQL;
         Assert::assertEquals(true, $results[0]['enabled']);
     }
 
-    public function test_it_creates_a_user_fixing_incorrect_firstname_or_lastname()
+    public function test_it_creates_a_user_fixing_incorrect_firstname_or_lastname(): void
     {
         $user = $this->getCreateUserService()->execute('pimgento', 'Pim&Ecom', 'Pim&Ecom');
 

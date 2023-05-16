@@ -23,7 +23,7 @@ class OnlyGrowthAndSerenitySandboxFeatureFlag implements FeatureFlag
     ) {
     }
 
-    public function isEnabled(): bool
+    public function isEnabled(?string $feature = null): bool
     {
         return $this->isSerenitySandbox || $this->isGrowthEditionSandbox;
     }

@@ -10,11 +10,8 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
  */
 final class UpdateConnectedAppScopesWithAuthorizationCommand
 {
-    private string $clientId;
-
-    public function __construct(string $clientId)
+    public function __construct(private string $clientId)
     {
-        $this->clientId = $clientId;
     }
 
     public function getClientId(): string

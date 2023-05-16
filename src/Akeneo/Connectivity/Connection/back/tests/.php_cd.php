@@ -164,7 +164,7 @@ $rules = [
 
             'Ramsey\Uuid\Uuid',
 
-            'Akeneo\Catalogs\ServiceAPI\Model\Catalog',
+            'Generator',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -203,8 +203,6 @@ $rules = [
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
-
-            'Akeneo\Catalogs\ServiceAPI\Model\Catalog',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Apps'),
 
@@ -321,6 +319,8 @@ $rules = [
             'Psr\Http\Message\ResponseInterface',
 
             'Ramsey\Uuid\Uuid',
+
+            'Generator',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Webhook'),
 

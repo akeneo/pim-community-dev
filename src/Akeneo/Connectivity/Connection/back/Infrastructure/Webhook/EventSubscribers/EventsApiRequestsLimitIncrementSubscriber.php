@@ -16,11 +16,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class EventsApiRequestsLimitIncrementSubscriber implements EventSubscriberInterface
 {
-    private int $count;
+    private int $count = 0;
 
     public function __construct(private UpdateEventsApiRequestCountQueryInterface $updateEventsApiRequestCountQuery)
     {
-        $this->count = 0;
     }
 
     public static function getSubscribedEvents(): array

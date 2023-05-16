@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -20,6 +20,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -29,6 +30,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CategoryController
 {
+    protected SecurityFacade $securityFacade;
+
     /** @var ApiResourceRepositoryInterface */
     protected $repository;
 
@@ -51,6 +54,7 @@ class CategoryController
     protected $partialUpdateStreamResource;
 
     public function __construct(
+        SecurityFacade $securityFacade,
         ApiResourceRepositoryInterface $repository,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
@@ -66,6 +70,7 @@ class CategoryController
         $this->saver = $saver;
         $this->router = $router;
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -73,11 +78,10 @@ class CategoryController
      *
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
-     *
-     * @AclAncestor("pim_api_category_edit")
      */
     public function createAction(Request $request)
     {
+        $this->checkAclRights();
         $data = $this->getDecodedContent($request->getContent());
 
         $category = $this->factory->create();
@@ -95,11 +99,10 @@ class CategoryController
      * @return Response
      *
      * @throws HttpException
-     *
-     * @AclAncestor("pim_api_category_edit")
      */
     public function partialUpdateListAction(Request $request)
     {
+        $this->checkAclRights();
         $resource = $request->getContent(true);
         $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
@@ -113,11 +116,10 @@ class CategoryController
      *
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
-     *
-     * @AclAncestor("pim_api_category_edit")
      */
     public function partialUpdateAction(Request $request, $code)
     {
+        $this->checkAclRights();
         $data = $this->getDecodedContent($request->getContent());
 
         $isCreation = false;
@@ -176,6 +178,7 @@ class CategoryController
      */
     protected function updateCategory(CategoryInterface $category, array $data, $anchor)
     {
+        $this->checkAclRights();
         try {
             $this->updater->update($category, $data);
         } catch (PropertyException $exception) {
@@ -233,6 +236,13 @@ class CategoryController
     {
         if (isset($data['code']) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(sprintf('The code "%s" provided in the request body must match the code "%s" provided in the url.', $data['code'], $code));
+        }
+    }
+
+    private function checkAclRights()
+    {
+        if ($this->securityFacade->isGranted('pim_api_category_edit') === false) {
+            throw new AccessDeniedException();
         }
     }
 }

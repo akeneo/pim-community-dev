@@ -16,7 +16,7 @@ class PurgeEventsApiSuccessLogsQueryIntegration extends TestCase
     private Client $esClient;
     private PurgeEventsApiSuccessLogsQuery $purgeQuery;
 
-    public function test_it_purges_infos_over_the_given_number()
+    public function test_it_purges_infos_over_the_given_number(): void
     {
         $interval = new \DateInterval('PT1H');
         // We generate logs for each hour and we iterate 10 times
@@ -44,7 +44,7 @@ class PurgeEventsApiSuccessLogsQueryIntegration extends TestCase
         Assert::assertEquals(10, $warnResults['hits']['total']['value']);
     }
 
-    public function test_it_purges_nothing_if_no_notice_or_info()
+    public function test_it_purges_nothing_if_no_notice_or_info(): void
     {
         $interval = new \DateInterval('PT1H');
         // We generate logs for each hour and we iterate 10 times

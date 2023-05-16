@@ -118,7 +118,7 @@ define([
 
       data.labels[event.target.dataset.locale] = event.target.value;
 
-      analytics.track('translation:form:value-changed', {
+      analytics.appcuesTrack('translation:form:value-changed', {
         code: this.code,
         localeCode: event.target.dataset.locale,
       });

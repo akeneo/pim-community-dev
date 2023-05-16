@@ -5,6 +5,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Validation;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -24,12 +25,12 @@ class WriteConnectionWebhookValidationIntegration extends TestCase
         $connectionLoader->createConnection('magento', 'Magento Connector', FlowType::DATA_DESTINATION, false);
     }
 
-    public function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_the_url_is_valid_when_has_255_characters()
+    public function test_the_url_is_valid_when_has_255_characters(): void
     {
         $url = $this->createValidUrlOfLength(255);
 
@@ -39,7 +40,7 @@ class WriteConnectionWebhookValidationIntegration extends TestCase
         $this->assertCount(0, $errors);
     }
 
-    public function test_the_url_is_invalid_when_more_than_255_characters()
+    public function test_the_url_is_invalid_when_more_than_255_characters(): void
     {
         $url = $this->createValidUrlOfLength(256);
 

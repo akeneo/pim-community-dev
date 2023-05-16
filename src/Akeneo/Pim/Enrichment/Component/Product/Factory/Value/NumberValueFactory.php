@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\NumberValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -17,7 +18,7 @@ final class NumberValueFactory extends ScalarValueFactory implements ValueFactor
 {
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!\is_scalar($data) || (\is_string($data) && '' === \trim($data))) {
+        if (!\is_int($data) && !\is_float($data) && (!\is_string($data) || '' === \trim($data))) {
             throw InvalidPropertyTypeException::numericExpected(
                 $attribute->code(),
                 static::class,
@@ -25,7 +26,30 @@ final class NumberValueFactory extends ScalarValueFactory implements ValueFactor
             );
         }
 
-        return parent::createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+    }
+
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        $attributeCode = $attribute->code();
+
+        if (\is_string($data)) {
+            $data = \trim($data);
+        }
+
+        if ($attribute->isLocalizableAndScopable()) {
+            return NumberValue::scopableLocalizableValue($attributeCode, $data, $channelCode, $localeCode);
+        }
+
+        if ($attribute->isScopable()) {
+            return NumberValue::scopableValue($attributeCode, $data, $channelCode);
+        }
+
+        if ($attribute->isLocalizable()) {
+            return NumberValue::localizableValue($attributeCode, $data, $localeCode);
+        }
+
+        return NumberValue::value($attributeCode, $data);
     }
 
     public function supportedAttributeType(): string

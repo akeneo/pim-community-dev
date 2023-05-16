@@ -38,7 +38,7 @@ final class GetAllConnectedAppsAction
         $connectedApps = $this->findAllConnectedAppsQuery->execute();
 
         return new JsonResponse(
-            \array_map(fn (ConnectedApp $connectedApp) => $connectedApp->normalize(), $connectedApps)
+            \array_map(fn (ConnectedApp $connectedApp): array => $connectedApp->normalize(), $connectedApps)
         );
     }
 }

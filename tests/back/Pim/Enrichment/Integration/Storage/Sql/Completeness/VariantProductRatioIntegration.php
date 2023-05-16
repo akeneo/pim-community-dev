@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Completeness;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -82,6 +85,36 @@ class VariantProductRatioIntegration extends TestCase
         ], $result->values());
     }
 
+    public function testWithVariantProductsWithoutIdentifier()
+    {
+        $this->createVariantProductWithoutIdentifier('L');
+        $this->createVariantProductWithoutIdentifier('S');
+
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-braided-hat');
+        $result = $this->get('pim_catalog.doctrine.query.find_variant_product_completeness')->findComplete($productModel);
+
+        $this->assertEquals([
+            'completenesses' => [
+                'ecommerce' => [
+                    'de_DE' => 0,
+                    'en_US' => 2,
+                    'fr_FR' => 1,
+                ],
+                'mobile' => [
+                    'de_DE' => 0,
+                    'en_US' => 2,
+                    'fr_FR' => 1,
+                ],
+                'print' => [
+                    'de_DE' => 0,
+                    'en_US' => 2,
+                    'fr_FR' => 1,
+                ],
+            ],
+            'total' => 4,
+        ], $result->values());
+    }
+
     /**
      * This test filters the completeness by channel and locale
      */
@@ -98,6 +131,33 @@ class VariantProductRatioIntegration extends TestCase
             'complete' => 2,
             'total' => 2
         ], $result->value('ecommerce', 'en_US'));
+    }
+
+    private function createVariantProductWithoutIdentifier(string $size): void
+    {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn('admin');
+        $command = UpsertProductCommand::createWithoutUuidNorIdentifier(
+            userId: $this->getUserId('admin'),
+            userIntents: [
+                new ChangeParent('model-braided-hat'),
+                new SetSimpleSelectValue('size', null, null, $size)
+            ]
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+    }
+
+    private function getUserId(string $username): int
+    {
+        $id = $this->get('database_connection')->fetchOne(
+            'SELECT id FROM oro_user WHERE username = :username',
+            ['username' => $username]
+        );
+
+        if (false === $id) {
+            throw new \InvalidArgumentException(\sprintf('The %s user does not exist', $username));
+        }
+
+        return (int) $id;
     }
 
     /**

@@ -55,7 +55,7 @@ define([
         });
       }
 
-      analytics.track('family:edit:variant-selected', {
+      analytics.appcuesTrack('family:edit:variant-selected', {
         code: this.code,
       });
 

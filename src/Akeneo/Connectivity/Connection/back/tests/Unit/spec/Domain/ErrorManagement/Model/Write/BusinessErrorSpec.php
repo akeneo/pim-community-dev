@@ -20,14 +20,14 @@ class BusinessErrorSpec extends ObjectBehavior
         $this->shouldImplement(ApiErrorInterface::class);
     }
 
-    public function it_provides_a_content()
+    public function it_provides_a_content(): void
     {
         $this->beConstructedWith($this->getWellStructuredContent());
 
         $this->content()->shouldReturn($this->getWellStructuredContent());
     }
 
-    public function it_must_have_a_json_content()
+    public function it_must_have_a_json_content(): void
     {
         $this->beConstructedWith('');
 
@@ -38,7 +38,7 @@ class BusinessErrorSpec extends ObjectBehavior
             ->duringInstantiation();
     }
 
-    public function it_must_have_a_content()
+    public function it_must_have_a_content(): void
     {
         $this->beConstructedWith('{}');
 
@@ -59,7 +59,7 @@ class BusinessErrorSpec extends ObjectBehavior
 
         $expected = [
             'id' => $this->id(),
-            'content' => \json_decode($content, true),
+            'content' => \json_decode($content, true, 512, JSON_THROW_ON_ERROR),
             'error_datetime' => '2020-01-01T00:00:00+00:00',
         ];
 

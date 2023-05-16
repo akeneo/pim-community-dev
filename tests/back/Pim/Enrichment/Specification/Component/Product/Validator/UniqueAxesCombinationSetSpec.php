@@ -55,10 +55,17 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $variantProductB->setFamilyVariant($familyVariant);
         $variantProductB->setParent($productModel);
 
+        $variantProductBBis = new Product(strtoupper($variantProductB->getUuid()->toString()));
+        $variantProductBBis->addValue($identifierB);
+        $variantProductBBis->setIdentifier('product_b');
+        $variantProductBBis->setFamilyVariant($familyVariant);
+        $variantProductBBis->setParent($productModel);
+
         $this->addCombination($productModel, '[a_color]');
         $this->addCombination($anotherProductModel, '[another_color]');
         $this->addCombination($variantProductA, '[a_size]');
         $this->addCombination($variantProductB, '[another_size]');
+        $this->addCombination($variantProductBBis, '[another_size]');
     }
 
     function it_does_not_add_same_combination_of_axis_values_twice_for_product_models()
@@ -127,5 +134,60 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $this
             ->shouldThrow($exception)
             ->during('addCombination', [$invalidVariantProduct, '[a_color]']);
+    }
+
+    function it_does_not_add_same_combination_of_axis_values_twice_for_variant_products_without_identifier()
+    {
+        $familyVariant = new FamilyVariant();
+        $familyVariant->setCode('family_variant');
+
+        $productModel = new ProductModel();
+        $productModel->setCode('root_product_model');
+        $productModel->setFamilyVariant($familyVariant);
+
+        $variantProduct = new Product('3d12c8f1-a048-4133-b22e-5ebbf0a45664');
+        $variantProduct->setParent($productModel);
+        $variantProduct->setFamilyVariant($familyVariant);
+
+        $duplicateProduct = new Product();
+        $duplicateProduct->setParent($productModel);
+        $duplicateProduct->setFamilyVariant($familyVariant);
+
+        $this->addCombination($variantProduct, '[optionA],1');
+
+        $exception = new AlreadyExistingAxisValueCombinationException(
+            '3d12c8f1-a048-4133-b22e-5ebbf0a45664',
+            'Variant product "3d12c8f1-a048-4133-b22e-5ebbf0a45664" already have the "[optionA],1" combination of axis values.'
+        );
+        $this->shouldThrow($exception)
+             ->during('addCombination', [$duplicateProduct, '[optionA],1']);
+    }
+
+    function it_does_not_add_same_combination_of_axis_values_twice_for_variant_products_with_identifier_like_a_uuid()
+    {
+        $familyVariant = new FamilyVariant();
+        $familyVariant->setCode('family_variant');
+
+        $productModel = new ProductModel();
+        $productModel->setCode('root_product_model');
+        $productModel->setFamilyVariant($familyVariant);
+
+        $variantProduct = new Product();
+        $variantProduct->setIdentifier('4f8db754-4eff-4b67-bdba-6eac4d17f622');
+        $variantProduct->setParent($productModel);
+        $variantProduct->setFamilyVariant($familyVariant);
+
+        $duplicateProduct = new Product('4f8db754-4eff-4b67-bdba-6eac4d17f622');
+        $duplicateProduct->setParent($productModel);
+        $duplicateProduct->setFamilyVariant($familyVariant);
+
+        $this->addCombination($variantProduct, '[optionA],1');
+
+        $exception = new AlreadyExistingAxisValueCombinationException(
+            '4f8db754-4eff-4b67-bdba-6eac4d17f622',
+            'Variant product "4f8db754-4eff-4b67-bdba-6eac4d17f622" already have the "[OptionA],1" combination of axis values.'
+        );
+        $this->shouldThrow($exception)
+            ->during('addCombination', [$duplicateProduct, '[OptionA],1']);
     }
 }

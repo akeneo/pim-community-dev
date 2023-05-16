@@ -36,17 +36,17 @@ class FlagAppContainingOutdatedScopesCommandSpec extends ObjectBehavior
         $this->beConstructedWith($this->connectedApp, 'requested scopes');
     }
 
-    public function it_is_instantiable()
+    public function it_is_instantiable(): void
     {
         $this->shouldHaveType(FlagAppContainingOutdatedScopesCommand::class);
     }
 
-    public function it_returns_connected_app()
+    public function it_returns_connected_app(): void
     {
         $this->getConnectedApp()->shouldReturn($this->connectedApp);
     }
 
-    public function it_returns_requested_scopes()
+    public function it_returns_requested_scopes(): void
     {
         $this->getRequestedScopes()->shouldReturn('requested scopes');
     }

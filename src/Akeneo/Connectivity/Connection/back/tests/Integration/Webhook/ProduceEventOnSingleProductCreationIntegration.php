@@ -29,7 +29,7 @@ class ProduceEventOnSingleProductCreationIntegration extends TestCase
         $this->productSaver = $this->get('pim_catalog.saver.product');
     }
 
-    public function test_the_single_product_creation_event()
+    public function test_the_single_product_creation_event(): void
     {
         $product = $this->productBuilder->createProduct('t-shirt');
         $this->productSaver->save($product);

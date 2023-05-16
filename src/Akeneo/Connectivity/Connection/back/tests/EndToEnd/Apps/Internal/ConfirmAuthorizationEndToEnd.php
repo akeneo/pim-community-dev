@@ -10,7 +10,6 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
@@ -102,9 +101,9 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         $response = $this->client->getResponse();
 
         Assert::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $content = \json_decode($response->getContent(), true);
+        $content = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         Assert::assertArrayHasKey('errors', $content);
-        Assert::assertGreaterThan(0, \count($content['errors']));
+        Assert::assertGreaterThan(0, \is_countable($content['errors']) ? \count($content['errors']) : -1);
     }
 
     public function test_it_returns_json_with_app_id(): void
@@ -136,7 +135,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $responseContent = \json_decode($response->getContent(), true);
+        $responseContent = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertArrayHasKey('appId', $responseContent, 'Response missing appId');
@@ -176,7 +175,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $responseContent = \json_decode($response->getContent(), true);
+        $responseContent = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertArrayHasKey('appId', $responseContent, 'Response missing appId');

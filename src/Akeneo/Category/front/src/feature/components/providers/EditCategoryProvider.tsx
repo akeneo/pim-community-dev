@@ -1,5 +1,4 @@
 import React, {createContext, FC, useEffect} from 'react';
-import {QueryClient, QueryClientProvider} from 'react-query';
 import {fromPairs} from 'lodash/fp';
 import {Channel, Locale, useFetch, useRoute} from '@akeneo-pim-community/shared';
 
@@ -34,8 +33,6 @@ type Props = {
 };
 
 const EditCategoryProvider: FC<Props> = ({children, setCanLeavePage}) => {
-  const queryClient = new QueryClient();
-
   const channelsUrl = useRoute('pim_enrich_channel_rest_index');
   let [channelsArray, fetchChannels, statusFetchChannels] = useFetch<Channel[]>(channelsUrl);
 
@@ -62,13 +59,9 @@ const EditCategoryProvider: FC<Props> = ({children, setCanLeavePage}) => {
   }, [fetchLocales, fetchChannels]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <EditCategoryContext.Provider
-        value={{setCanLeavePage, channels, channelsFetchFailed, locales, localesFetchFailed}}
-      >
-        {children}
-      </EditCategoryContext.Provider>
-    </QueryClientProvider>
+    <EditCategoryContext.Provider value={{setCanLeavePage, channels, channelsFetchFailed, locales, localesFetchFailed}}>
+      {children}
+    </EditCategoryContext.Provider>
   );
 };
 

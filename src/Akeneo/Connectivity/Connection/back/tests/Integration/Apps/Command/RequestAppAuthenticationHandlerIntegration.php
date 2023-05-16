@@ -72,7 +72,7 @@ class RequestAppAuthenticationHandlerIntegration extends TestCase
             ]
         );
 
-        $this->assertEquals(['openid'], \json_decode($result['scopes'], true));
+        $this->assertEquals(['openid'], \json_decode($result['scopes'], true, 512, JSON_THROW_ON_ERROR));
     }
 
     public function test_it_consents_automatically_when_less_scopes_are_requested(): void
@@ -104,7 +104,7 @@ class RequestAppAuthenticationHandlerIntegration extends TestCase
             ]
         );
 
-        $this->assertEquals(['openid', 'email'], \json_decode($result['scopes'], true));
+        $this->assertEquals(['openid', 'email'], \json_decode($result['scopes'], true, 512, JSON_THROW_ON_ERROR));
     }
 
     public function test_it_throws_when_new_scopes_are_requiring_consent(): void

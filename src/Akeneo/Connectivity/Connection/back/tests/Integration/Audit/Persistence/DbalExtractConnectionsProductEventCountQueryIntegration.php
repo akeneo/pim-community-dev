@@ -25,17 +25,10 @@ use PHPUnit\Framework\Assert;
  */
 class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
 {
-    /** @var ConnectionLoader */
-    private $connectionLoader;
-
-    /** @var ExtractConnectionsProductEventCountQueryInterface */
-    private $extractConnectionsProductEventCountQuery;
-
-    /** @var DbalConnection */
-    private $dbalConnection;
-
-    /** @var string */
-    private $productClass;
+    private ?ConnectionLoader $connectionLoader;
+    private ?ExtractConnectionsProductEventCountQueryInterface $extractConnectionsProductEventCountQuery;
+    private ?DbalConnection $dbalConnection;
+    private ?string $productClass;
 
     protected function setUp(): void
     {

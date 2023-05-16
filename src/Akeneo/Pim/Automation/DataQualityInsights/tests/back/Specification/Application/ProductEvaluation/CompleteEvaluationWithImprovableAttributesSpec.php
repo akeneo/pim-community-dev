@@ -24,7 +24,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -57,12 +56,17 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
             'mobile' => ['en_US'],
         ]));
 
-        $requiredAttributesCompletenessResult = new CompletenessCalculationResult();
-        $requiredAttributesCompletenessResult->addMissingAttributes($channelCodeEcommerce, $localeCodeEn, ['description', 'name']);
-        $requiredAttributesCompletenessResult->addMissingAttributes($channelCodeMobile, $localeCodeEn, []);
+        $requiredAttributesCompletenessResult = (new CompletenessCalculationResult())
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(80))
+            ->addMissingAttributes($channelCodeEcommerce, $localeCodeEn, ['description', 'name'])
+            ->addRate($channelCodeMobile, $localeCodeEn, new Rate(100))
+            ->addMissingAttributes($channelCodeMobile, $localeCodeEn, []);
 
-        $nonRequiredAttributesCompletenessResult = new CompletenessCalculationResult();
-        $nonRequiredAttributesCompletenessResult->addMissingAttributes($channelCodeEcommerce, $localeCodeEn, ['title', 'meta_title']);
+        $nonRequiredAttributesCompletenessResult = (new CompletenessCalculationResult())
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(75))
+            ->addMissingAttributes($channelCodeEcommerce, $localeCodeEn, ['title', 'meta_title'])
+            ->addRate($channelCodeMobile, $localeCodeEn, new Rate(100))
+            ->addMissingAttributes($channelCodeMobile, $localeCodeEn, []);;
 
         $calculateRequiredAttributesCompleteness->calculate($productUuid)->willReturn($requiredAttributesCompletenessResult);
         $calculateNonRequiredAttributesCompleteness->calculate($productUuid)->willReturn($nonRequiredAttributesCompletenessResult);
@@ -86,6 +90,15 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
             ]
         ]);
 
+        $completedRequiredCompletenessEvaluation->getResult()->getRates()->toArrayInt()->shouldBe([
+            'ecommerce' => [
+                'en_US' => 80
+            ],
+            'mobile' => [
+                'en_US' =>100
+            ],
+        ]);
+
         $completedRequiredCompletenessEvaluation->getProductId()->shouldBe($productUuid);
         $completedRequiredCompletenessEvaluation->getStatus()->shouldBe($requiredCompletenessEvaluation->getStatus());
         $completedRequiredCompletenessEvaluation->getEvaluatedAt()->shouldBe($requiredCompletenessEvaluation->getEvaluatedAt());
@@ -104,6 +117,14 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
                 ],
                 'mobile' => ['en_US' => []],
             ]
+        ]);
+        $completedNonRequiredCompletenessEvaluation->getResult()->getRates()->toArrayInt()->shouldBe([
+            'ecommerce' => [
+                'en_US' => 75
+            ],
+            'mobile' => [
+                'en_US' =>100
+            ],
         ]);
 
         $spellingCriterionCode = new CriterionCode('consistency_spelling');
@@ -132,7 +153,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
         $localeCodeEn = new LocaleCode('en_US');
 
         $completenessOfRequiredAttributesRates = (new ChannelLocaleRateCollection())
-            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(95))
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(100))
             ->addRate($channelCodeMobile, $localeCodeEn, new Rate(70));
 
         $completenessOfRequiredAttributesStatus = (new CriterionEvaluationResultStatusCollection())

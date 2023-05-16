@@ -21,7 +21,7 @@ class GroupAllIsRemovedFromUsersUsedByAppsOnUpdateEventSubscriber implements Eve
         return [StorageEvents::PRE_SAVE => 'removeGroupAllFromUsersUsedByApps'];
     }
 
-    public function removeGroupAllFromUsersUsedByApps(GenericEvent $event)
+    public function removeGroupAllFromUsersUsedByApps(GenericEvent $event): void
     {
         $subject = $event->getSubject();
 

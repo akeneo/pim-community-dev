@@ -5,7 +5,6 @@ namespace Specification\Akeneo\Category\Infrastructure\EventSubscriber;
 use Akeneo\Category\Domain\Event\TemplateDeactivatedEvent;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Category\Infrastructure\EventSubscriber\CleanCategoryTemplateAndEnrichedValuesOnTemplateDeactivatedSubscriber;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;

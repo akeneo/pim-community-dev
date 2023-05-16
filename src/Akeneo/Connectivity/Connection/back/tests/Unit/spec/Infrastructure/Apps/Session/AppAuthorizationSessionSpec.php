@@ -32,7 +32,7 @@ class AppAuthorizationSessionSpec extends ObjectBehavior
         ]);
         $session->set(
             '_app_auth_90741597-54c5-48a1-98da-a68e7ee0a715',
-            \json_encode($appAuthorization->normalize())
+            \json_encode($appAuthorization->normalize(), JSON_THROW_ON_ERROR)
         );
 
         $this->initialize($appAuthorization);

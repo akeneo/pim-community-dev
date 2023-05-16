@@ -14,11 +14,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class EventSubscriptionLogLoader
 {
-    private ElasticsearchEventsApiDebugRepository $elasticsearchEventsApiDebugRepository;
-
-    public function __construct(ElasticsearchEventsApiDebugRepository $elasticsearchEventsApiDebugRepository)
+    public function __construct(private ElasticsearchEventsApiDebugRepository $elasticsearchEventsApiDebugRepository)
     {
-        $this->elasticsearchEventsApiDebugRepository = $elasticsearchEventsApiDebugRepository;
     }
 
     /**

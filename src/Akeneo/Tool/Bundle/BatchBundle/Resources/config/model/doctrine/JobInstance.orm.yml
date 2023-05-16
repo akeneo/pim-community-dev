@@ -28,7 +28,6 @@ Akeneo\Tool\Component\Batch\Model\JobInstance:
             column: job_name
         status:
             type: integer
-            lenght: 11
             column: status
         connector:
             type: string

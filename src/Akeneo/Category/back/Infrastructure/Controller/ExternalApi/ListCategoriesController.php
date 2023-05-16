@@ -7,12 +7,13 @@ use Akeneo\Category\Application\Query\GetCategoriesParametersBuilder;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -21,6 +22,7 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 class ListCategoriesController
 {
     public function __construct(
+        private readonly SecurityFacade $securityFacade,
         private readonly PaginatorInterface $paginator,
         private readonly ParameterValidatorInterface $parameterValidator,
         private readonly GetCategoriesParametersBuilder $parametersBuilder,
@@ -29,11 +31,11 @@ class ListCategoriesController
     ) {
     }
 
-    /**
-     * @AclAncestor("pim_api_category_list")
-     */
     public function __invoke(Request $request): JsonResponse|Response
     {
+        if ($this->securityFacade->isGranted('pim_api_category_list') === false) {
+            throw new AccessDeniedException();
+        }
         try {
             $this->parameterValidator->validate($request->query->all());
         } catch (PaginationParametersException $e) {

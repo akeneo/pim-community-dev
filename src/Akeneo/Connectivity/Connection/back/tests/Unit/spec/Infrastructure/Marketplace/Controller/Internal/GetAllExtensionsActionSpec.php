@@ -42,7 +42,7 @@ class GetAllExtensionsActionSpec extends ObjectBehavior
 
         Assert::assertEquals(Response::HTTP_OK, $result->getStatusCode()->getWrappedObject());
         Assert::assertEquals(
-            \json_encode(GetAllExtensionsResult::create(0, [])->normalize()),
+            \json_encode(GetAllExtensionsResult::create(0, [])->normalize(), JSON_THROW_ON_ERROR),
             $result->getContent()->getWrappedObject()
         );
     }

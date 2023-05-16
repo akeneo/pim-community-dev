@@ -18,7 +18,7 @@ use PHPUnit\Framework\Assert;
  */
 class CreateClientIntegration extends TestCase
 {
-    public function test_the_client_creation()
+    public function test_the_client_creation(): void
     {
         Assert::assertCount(0, $this->fetchApiClients());
 

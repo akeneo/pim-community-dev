@@ -57,6 +57,11 @@ const DefaultProviders: FC = ({children}) => {
                 value={{
                     translate: (id: string) => id,
                     featureFlags: {isEnabled: (_feature: string) => true},
+                    systemConfiguration: {
+                        get: (key: string) => key,
+                        initialize: () => Promise.resolve(),
+                        refresh: () => Promise.resolve(),
+                    },
                 }}
             >
                 <ThemeProvider theme={theme}>

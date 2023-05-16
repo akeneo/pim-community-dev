@@ -32,6 +32,7 @@ $rules = [
         // Outside /!\
         'Akeneo\Category\Infrastructure\Builder\TemplateBuilder',
         'Akeneo\Category\Infrastructure\Builder\TemplateBuilder',
+        'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd',
         'Akeneo\Category\Infrastructure\Exception\ArrayConversionException',
         'Akeneo\Category\Infrastructure\Exception\ContentArrayConversionException',
@@ -40,6 +41,7 @@ $rules = [
         'Akeneo\Tool\Component\FileStorage\File\FileStorer',
         'Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface',
         'Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface',
+        'Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
 
         // Vendors
@@ -110,7 +112,6 @@ $rules = [
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
         'Akeneo\Tool\Bundle\ApiBundle\Documentation',
         'Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse',
-        'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass',
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType',
@@ -148,9 +149,6 @@ $rules = [
     ])->in('Akeneo\Category\Infrastructure'),
 
     $builder->only([
-        // ???
-        'Akeneo\Category\Domain\ValueObject\CategoryId',
-
         // Vendors
         'Symfony\Component\Messenger',
         'Symfony\Component\Validator',

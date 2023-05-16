@@ -38,7 +38,7 @@ class Registry
     {
         $featureFlags = [];
         foreach ($this->flags as $feature => $flag) {
-            $featureFlags[$feature] = $flag->isEnabled();
+            $featureFlags[$feature] = $flag->isEnabled($feature);
         }
 
         return $featureFlags;

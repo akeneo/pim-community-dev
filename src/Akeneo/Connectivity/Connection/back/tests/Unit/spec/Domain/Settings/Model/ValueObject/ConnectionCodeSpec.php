@@ -14,19 +14,19 @@ use PhpSpec\ObjectBehavior;
  */
 class ConnectionCodeSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->beConstructedWith('magento');
         $this->shouldBeAnInstanceOf(ConnectionCode::class);
     }
 
-    public function it_cannot_contains_an_empty_string()
+    public function it_cannot_contains_an_empty_string(): void
     {
         $this->beConstructedWith('');
         $this->shouldThrow(new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.required'))->duringInstantiation();
     }
 
-    public function it_cannot_contains_a_string_shorter_than_3_characters()
+    public function it_cannot_contains_a_string_shorter_than_3_characters(): void
     {
         $this->beConstructedWith('aa');
         $this->shouldThrow(
@@ -34,7 +34,7 @@ class ConnectionCodeSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    public function it_cannot_contains_a_string_longer_than_100_characters()
+    public function it_cannot_contains_a_string_longer_than_100_characters(): void
     {
         $this->beConstructedWith(\str_repeat('a', 103));
         $this->shouldThrow(
@@ -42,7 +42,7 @@ class ConnectionCodeSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    public function it_contains_only_alphanumeric_characters()
+    public function it_contains_only_alphanumeric_characters(): void
     {
         $this->beConstructedWith('magento-connector');
         $this->shouldThrow(
@@ -50,7 +50,7 @@ class ConnectionCodeSpec extends ObjectBehavior
         )->duringInstantiation();
     }
 
-    public function it_returns_the_connection_code_as_a_string()
+    public function it_returns_the_connection_code_as_a_string(): void
     {
         $this->beConstructedWith('magento');
         $this->__toString()->shouldReturn('magento');

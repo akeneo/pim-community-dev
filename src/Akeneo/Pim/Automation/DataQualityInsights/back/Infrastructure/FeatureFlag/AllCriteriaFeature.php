@@ -26,7 +26,7 @@ final class AllCriteriaFeature implements FeatureFlag
     ) {
     }
 
-    public function isEnabled(): bool
+    public function isEnabled(?string $feature = null): bool
     {
         return $this->featureFlags->isEnabled('data_quality_insights')
             && $this->onlySerenityFeature->isEnabled();

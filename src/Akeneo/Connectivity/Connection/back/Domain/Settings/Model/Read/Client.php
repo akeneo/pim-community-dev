@@ -11,17 +11,8 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\Read;
  */
 class Client
 {
-    private int $id;
-
-    private string $clientId;
-
-    private string $secret;
-
-    public function __construct(int $id, string $clientId, string $secret)
+    public function __construct(private int $id, private string $clientId, private string $secret)
     {
-        $this->id = $id;
-        $this->clientId = $clientId;
-        $this->secret = $secret;
     }
 
     public function id(): int

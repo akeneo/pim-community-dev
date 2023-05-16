@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Helper;
 
+use Akeneo\Category\Application\Query\DeactivateTemplate;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
@@ -475,8 +476,16 @@ SQL;
 
     protected function deactivateTemplate(string $uuid): void
     {
+        /** @var DeactivateTemplate */
+        $deactivateTemplate = $this->get(DeactivateTemplate::class);
+
+        $deactivateTemplate->execute(TemplateUuid::fromString($uuid));
+    }
+
+    protected function deactivateAttribute(string $uuid): void
+    {
         $query = <<<SQL
-            UPDATE pim_catalog_category_template SET is_deactivated = 1 WHERE uuid = :uuid;
+            UPDATE pim_catalog_category_attribute SET is_deactivated = 1 WHERE uuid = :uuid;
         SQL;
 
         $this->get('database_connection')->executeQuery($query, [

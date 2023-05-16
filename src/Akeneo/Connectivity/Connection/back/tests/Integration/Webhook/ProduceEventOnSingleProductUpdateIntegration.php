@@ -40,7 +40,7 @@ class ProduceEventOnSingleProductUpdateIntegration extends TestCase
         $this->validator = $this->get('validator');
     }
 
-    public function test_the_single_product_update_event()
+    public function test_the_single_product_update_event(): void
     {
         $product = $this->productLoader->create('t-shirt', [
             'enabled' => true,
