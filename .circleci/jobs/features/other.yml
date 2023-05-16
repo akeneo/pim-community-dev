@@ -7,6 +7,12 @@ jobs:
         steps:
             - attach_workspace:
                   at: ~/
+            - restore_cache:
+                  name: Restore PHPStan cache
+                  key: phpstan-master-{{ .Environment.CACHE_VERSION }}
+            - restore_cache:
+                  name: Restore PHP code sniffer cache
+                  key: phpcs-master-{{ .Environment.CACHE_VERSION }}
             - run:
                   name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: sudo chown -R 1000:1000 ../project
@@ -34,6 +40,17 @@ jobs:
             - run:
                   name: Acceptance tests
                   command: PIM_CONTEXT=test make acceptance-back
+            - save_cache:
+                  name: Save PHPStan cache
+                  key: phpstan-master-{{ .Environment.CACHE_VERSION }}
+                  paths:
+                      - var/cache/phpstan
+            - save_cache:
+                  name: Save PHP code sniffer cache
+                  key: phpcs-master-{{ .Environment.CACHE_VERSION }}
+                  paths:
+                      - var/php_cs.cache
+                      - var/php_cs.performance_analytics.cache
             - store_test_results:
                   path: var/tests
             - store_artifacts:

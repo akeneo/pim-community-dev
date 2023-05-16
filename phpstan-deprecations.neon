@@ -1,6 +1,7 @@
 includes:
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
 parameters:
+    tmpDir: %rootDir%/../../../var/cache/phpstan/deprecation-ce/
     paths:
         - components
         - src
@@ -9,9 +10,7 @@ parameters:
         - '#Unsafe usage of new static\(\)\.#'
         # Internal deprecation
         - '#Call to deprecated method useTechnicalSqlCatalog\(\) of class Akeneo\\Test\\IntegrationTestsBundle\\Configuration\\CatalogInterface#'
-        - '#Call to deprecated method fromProductIdentifiers\(\) of class Akeneo\\Pim\\Enrichment\\Product\\Domain\\Query\\GetCategoryCodes.#'
         - '#Call to deprecated method createOAuthClient\(\) of class Akeneo\\Tool\\Bundle\\ApiBundle\\tests\\integration\\ApiTestCase.#'
-        - '#Call to deprecated method createFromCollection\(\) of class Akeneo\\Pim\\Enrichment\\Product\\API\\Command\\UpsertProductCommand.#'
         - '#Call to deprecated method getQueryBuilder\(\) of class Oro\\Bundle\\PimDataGridBundle\\Datasource\\Datasource:#'
         - '#Class Oro\\Bundle\\PimDataGridBundle\\Datasource\\ProductDatasource extends deprecated class Oro\\Bundle\\PimDataGridBundle\\Datasource\\Datasource#'
         - '#Class Oro\\Bundle\\PimDataGridBundle\\Datasource\\ProductAndProductModelDatasource extends deprecated class Oro\\Bundle\\PimDataGridBundle\\Datasource\\Datasource#'
@@ -20,9 +19,6 @@ parameters:
         # Guard symfony migration (RAB-1149)
         - '#Instantiation of deprecated class Symfony\\Component\\Security\\Core\\User\\User#'
         - '#Call to deprecated method setAuthenticated\(\) of class Symfony\\Component\\Security\\Core\\Authentication\\Token\\AbstractToken#'
-        - '#Call to method __construct\(\) of deprecated class Symfony\\Component\\Security\\Core\\Authentication\\Provider\\DaoAuthenticationProvider#'
-        - '#Call to method checkAuthentication\(\) of deprecated class Symfony\\Component\\Security\\Core\\Authentication\\Provider\\DaoAuthenticationProvider#'
-        - '#Class Akeneo\\UserManagement\\Bundle\\Provider\\CustomDaoAuthenticationProvider extends deprecated class#'
         - '#Class Akeneo\\Platform\\Bundle\\UIBundle\\EventListener\\ExceptionListener extends @final class Symfony\\Component\\Security\\Http\\Firewall\\ExceptionListener.#'
         # Doctrine DBAL migration (CPM-741-upgrade-doctrine)
         - '#Call to deprecated method executeUpdate#'
@@ -35,21 +31,10 @@ parameters:
         - '#Call to deprecated method clear\(\) of class Doctrine\\ORM\\EntityRepository#'
         - '#Call to deprecated method ping\(\) of class Doctrine\\DBAL\\Connection.#'
         - '#Call to deprecated method merge\(\) of class Doctrine\\Persistence\\ObjectManager#'
-        - '#Call to deprecated method fetchAll\(\) of class Doctrine\\DBAL\\Connection#'
         - '#Call to deprecated method fetchAllAssociative\(\) of class Doctrine\\DBAL\\Statement:#'
-        - '#Call to deprecated method fetchOne\(\) of class Doctrine\\DBAL\\Statement#'
-        - '#Fetching deprecated class constant DATETIME_IMMUTABLE of class Doctrine\\DBAL\\Types\\Type#'
-        - '#Fetching class constant ASSOCIATIVE of deprecated class Doctrine\\DBAL\\FetchMode#'
-        - '#Fetching class constant COLUMN of deprecated class Doctrine\\DBAL\\FetchMode#'
         # Doctrine DBAL migration (RAB-1192)
         - '#Call to deprecated method getAliasNamespace\(\) of class Doctrine\\Persistence\\ManagerRegistry#'
         - '#Class Oro\\Bundle\\SecurityBundle\\Acl\\Cache\\FilesystemCache extends deprecated class Doctrine\\Common\\Cache\\FilesystemCache#'
-        # Behat
-        - '#Call to deprecated method getSession\(\) of class Behat\\Mink\\Element\\Element:#'
-        # To revalidate
-        - '#Cannot import type alias StandardInternalApi: type alias does not exist in Akeneo\\Category\\Infrastructure\\Converter\\InternalApi\\InternalApiToStd.#'
-        - '#Class PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Formatting\\SpaceAfterNotSniff not found.#'
-        - '#Class PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\Files\\LineLengthSniff not found.#'
     excludePaths:
         - %currentWorkingDirectory%/*Spec.php
         - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Bundle/Resources/fonts/dompdf_font_family_cache.php
