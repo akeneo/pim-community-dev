@@ -6,7 +6,7 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
-use Akeneo\Category\Application\Command\UpdateAttributeCommand;
+use Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

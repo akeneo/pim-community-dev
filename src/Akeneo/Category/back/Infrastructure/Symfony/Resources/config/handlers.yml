@@ -48,7 +48,7 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeactivateAttributeCommand' }
 
-  Akeneo\Category\Application\Command\UpdateAttributeCommandHandler:
+  Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommandHandler:
     arguments:
       - '@Akeneo\Category\Application\Query\GetAttribute'
       - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
