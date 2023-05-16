@@ -36,12 +36,6 @@ class UpdateAttributeCommandHandlerTest extends TestCase
 
         $command = UpdateAttributeCommand::create($attributeUuid, true, null);
 
-        $validator
-            ->expects($this->once())
-            ->method('validate')
-            ->with($command)
-            ->willReturn(new ConstraintViolationList());
-
         $attribute = Attribute::fromType(
             type: new AttributeType(AttributeType::TEXTAREA),
             uuid: AttributeUuid::fromString($attributeUuid),
@@ -57,23 +51,22 @@ class UpdateAttributeCommandHandlerTest extends TestCase
 
         $getAttribute
             ->expects($this->once())
-            ->method('byUuids')
-            ->with([$attributeUuid])
-            ->willReturn(AttributeCollection::fromArray([$attribute]));
+            ->method('byUuid')
+            ->with($attributeUuid)
+            ->willReturn($attribute);
 
         $categoryTemplateAttributeSaver
             ->expects($this->once())
             ->method('update')
             ->with($attribute);
 
-        $handler = new UpdateAttributeCommandHandler($validator, $getAttribute, $categoryTemplateAttributeSaver);
+        $handler = new UpdateAttributeCommandHandler($getAttribute, $categoryTemplateAttributeSaver);
 
         $handler($command);
     }
 
     public function testItAddsLabels(): void
     {
-        $validator = $this->createMock(ValidatorInterface::class);
         $getAttribute = $this->createMock(GetAttribute::class);
         $categoryTemplateAttributeSaver = $this->createMock(CategoryTemplateAttributeSaver::class);
 
@@ -122,7 +115,7 @@ class UpdateAttributeCommandHandlerTest extends TestCase
 
         $attributeUuid = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
 
-        $command = UpdateAttributeCommand::create($attributeUuid, true, null);
+        $command = UpdateAttributeCommand::create($attributeUuid, null, null);
 
         $getAttribute
             ->expects($this->once())

@@ -113,7 +113,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
         $longDescription = $insertedAttributes->getAttributeByCode('long_description');
         $this->assertEquals((string) $longDescription->getType(), AttributeType::RICH_TEXT);
 
-        $longDescription->update(isRichRextArea: false);
+        $longDescription->update(isRichRextArea: false, labels: null);
         $this->categoryTemplateAttributeSaver->update($longDescription);
 
         $longDescription = $insertedAttributes->getAttributeByCode('long_description');
@@ -141,7 +141,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
         $seoMetaDescription = $insertedAttributes->getAttributeByCode('seo_meta_description');
         $this->assertEquals((string) $seoMetaDescription->getType(), AttributeType::TEXTAREA);
 
-        $seoMetaDescription->update(isRichRextArea: true);
+        $seoMetaDescription->update(isRichRextArea: true, labels: null);
         $this->categoryTemplateAttributeSaver->update($seoMetaDescription);
 
         $seoMetaDescription = $insertedAttributes->getAttributeByCode('seo_meta_description');
@@ -174,10 +174,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
             'en_US' => 'Print',
         ];
 
-        $data = [
-            'labels' => $labels
-        ];
-        $longDescription->update($data);
+        $longDescription->update(isRichRextArea: null, labels: $labels);
         $this->categoryTemplateAttributeSaver->update($longDescription);
 
         $longDescription = $insertedAttributes->getAttributeByCode('long_description');
