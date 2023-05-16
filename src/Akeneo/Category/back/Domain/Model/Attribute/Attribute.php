@@ -185,8 +185,8 @@ abstract class Attribute
 
     /**
      * @param array{
-     *     isRichRextArea: bool,
-     *     labels: LocalizedLabels
+     *     isRichRextArea?: bool,
+     *     labels?: LocalizedLabels
      * } $data
      */
     public function update(array $data): void
