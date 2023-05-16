@@ -173,6 +173,35 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
+    public function testItThrowsErrorOnLabelTooLong(): void
+    {
+        $labels = [
+            'fr_FR' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pharetra arcu at nisl malesuada feugiat. Mauris aliquam congue interdum. Etiam varius vestibulum rutrum. Pellentesque fermentum, tortor eu posuere tincidunt, libero ex consectetur arcu fusce.',
+            'en_US' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pharetra arcu at nisl malesuada feugiat. Mauris aliquam congue interdum. Etiam varius vestibulum rutrum. Pellentesque fermentum, tortor eu posuere tincidunt, libero ex consectetur arcu fusce.',
+        ];
+
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_category_template_rest_update_attribute',
+            routeArguments: [
+                'templateUuid' => $this->templateUuid->getValue(),
+                'attributeUuid' => $this->attributeRichText->getUuid()->getValue(),
+            ],
+            method: Request::METHOD_POST,
+            content: json_encode(['labels' => $labels]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+
+        $normalizedErrors = json_decode($response->getContent(), true);
+        $this->assertCount(2, $normalizedErrors['values']);
+        foreach ($normalizedErrors['values'] as $error) {
+            $this->assertStringStartsWith('labels', $error['path']);
+            $this->assertEquals('This value is too long. It should have 255 characters or less.', $error['message']);
+        }
+    }
+
     public function testItDoesNotUpdateOnDeactivateTemplate(): void
     {
         $this->deactivateTemplate($this->templateUuid->getValue());
