@@ -1,6 +1,6 @@
 import React from 'react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {SummaryTable} from './SummaryTable';
 import {JobExecution} from '../../../models';
 
@@ -63,6 +63,7 @@ const jobExecution: JobExecution = {
       job: 'product_export',
       label: 'Export file to export',
       status: 'IN_PROGRESS',
+      status_code: 'IN_PROGRESS',
       summary: {},
       startedAt: '12',
       endedAt: '13',
@@ -73,7 +74,8 @@ const jobExecution: JobExecution = {
     {
       job: 'product_export',
       label: 'Clean file to export',
-      status: 'FINISHED',
+      status: 'COMPLETED',
+      status_code: 'COMPLETED',
       summary: {},
       startedAt: '14',
       endedAt: '15',
@@ -84,7 +86,8 @@ const jobExecution: JobExecution = {
     {
       job: 'product_export',
       label: 'Create file to export',
-      status: 'FINISHED',
+      status: 'COMPLETED',
+      status_code: 'COMPLETED',
       summary: {},
       startedAt: '14',
       endedAt: '15',
@@ -100,7 +103,8 @@ const jobExecution: JobExecution = {
     {
       job: 'product_export',
       label: 'Another step',
-      status: 'akeneo_job.job_status.PAUSED',
+      status: 'PAUSED',
+      status_code: 'PAUSED',
       summary: {},
       startedAt: '15',
       endedAt: '16',

@@ -78,7 +78,7 @@ const getStepExecutionTrackingProgressLabel = (
       });
     case 'PAUSED':
     case 'PAUSING':
-      return translate('akeneo_job.job_status.PAUSED');
+      return translate(`akeneo_job.job_status.${step.status}`);
     case 'ABANDONED':
     case 'COMPLETED':
     case 'FAILED':
