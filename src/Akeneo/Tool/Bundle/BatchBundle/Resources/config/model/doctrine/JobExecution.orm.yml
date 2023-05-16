@@ -78,10 +78,6 @@ Akeneo\Tool\Component\Batch\Model\JobExecution:
             column: is_visible
             options:
                 default: 1
-        currentState:
-            type: json
-            column: currentState
-            nullable: true
     oneToMany:
         stepExecutions:
             targetEntity: Akeneo\Tool\Component\Batch\Model\StepExecution
