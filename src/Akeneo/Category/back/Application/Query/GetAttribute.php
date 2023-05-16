@@ -23,5 +23,7 @@ interface GetAttribute
      */
     public function byUuids(array $attributeUuids): AttributeCollection;
 
+    public function byUuid(AttributeUuid $attributeUuid): ?Attribute;
+
     public function byCode(AttributeCode $attributeCode): Attribute;
 }

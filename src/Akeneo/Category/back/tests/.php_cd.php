@@ -54,6 +54,11 @@ $rules = [
     ])->in('Akeneo\Category\Application'),
 
     $builder->only([
+        // Symfony
+        'Akeneo\Category\Api\Command\Exceptions\ViolationsException',
+        'Symfony\Component\Validator\ConstraintViolation',
+        'Symfony\Component\Validator\ConstraintViolationList',
+
         // Outside /!\
         'Akeneo\Category\Api\Command\UserIntents\UserIntent',
         'Akeneo\Category\Api\Command\UserIntents\SetLabel',
