@@ -5,13 +5,6 @@ pim_category_template_rest_get_by_template_uuid:
         _feature: enriched_category
     methods: [GET]
 
-pim_category_template_rest_get_by_template_uuid_in_memory:
-    path: /rest/in-memory/{templateUuid}
-    defaults:
-        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:byTemplateUuidInMemory
-        _feature: enriched_category
-    methods: [GET]
-
 pim_category_template_rest_create:
     path: /rest/{categoryTreeId}
     defaults:
