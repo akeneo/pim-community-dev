@@ -79,6 +79,7 @@ class JobExecution
     private bool $isStoppable;
     private int $stepCount;
     private bool $isVisible;
+    private array $currentState;
 
     /**
      * Constructor
@@ -664,5 +665,15 @@ class JobExecution
     public function getStepCount(): int
     {
         return $this->stepCount;
+    }
+
+    public function setCurrentState(array $currentState): void
+    {
+        $this->currentState = $currentState;
+    }
+
+    public function getCurrentState(): array
+    {
+        return $this->currentState;
     }
 }

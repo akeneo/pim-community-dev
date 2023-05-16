@@ -20,7 +20,7 @@ final class Version_8_0_20230515140000_add_column_current_state_on_batch_step_ex
             'current_state column already exists in akeneo_batch_step_execution'
         );
 
-        $this->addSql('ALTER TABLE akeneo_batch_step_execution ADD COLUMN current_state INT NULL;');
+        $this->addSql('ALTER TABLE akeneo_batch_step_execution ADD COLUMN current_state JSON NULL;');
     }
 
     public function down(Schema $schema): void
