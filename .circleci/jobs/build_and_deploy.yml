@@ -15,7 +15,7 @@ aliases:
 executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
 
 orbs:
-  git-shallow-clone: guitarrapc/git-shallow-clone@2.4.0
+  git-shallow-clone: guitarrapc/git-shallow-clone@2.5.0
 
 commands:
     set_gcloud_config_dev:
