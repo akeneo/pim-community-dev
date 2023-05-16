@@ -3,7 +3,7 @@ import {Attribute} from '../../models';
 import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
-import {useEditAttributeTextAreaStatus} from '../../hooks/useEditAttributeTextAreaStatus';
+import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
 import {useState} from 'react';
@@ -27,11 +27,11 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
 
   const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
 
-  const editAttributeRichTextAreaStatus = useEditAttributeTextAreaStatus(attribute.template_uuid, attribute.uuid);
+  const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
 
   const handleRichTextAreaChange = () => {
-    setIsRichTextArea(isRichTextArea => !isRichTextArea);
-    editAttributeRichTextAreaStatus(!isRichTextArea);
+    setIsRichTextArea(!isRichTextArea);
+    updateTemplateAttribute(!isRichTextArea);
   };
 
   return (
