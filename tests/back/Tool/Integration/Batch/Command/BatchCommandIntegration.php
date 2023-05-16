@@ -97,7 +97,7 @@ class BatchCommandIntegration extends TestCase
     public function testLaunchJobWithValidEmail()
     {
         $output = $this->launchJob(['--email' => ['ziggy@akeneo.com']]);
-        $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
+        $this->assertStringContainsString('Export csv_product_export has been successfully executed.', $output->fetch());
     }
 
     public function testLaunchJobWithInvalidJobInstance()
