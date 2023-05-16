@@ -112,10 +112,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
         $longDescription = $insertedAttributes->getAttributeByCode('long_description');
         $this->assertEquals((string) $longDescription->getType(), AttributeType::RICH_TEXT);
 
-        $data = [
-            'isRichRextArea' => false
-        ];
-        $longDescription->update($data);
+        $longDescription->update(isRichRextArea: false);
         $this->categoryTemplateAttributeSaver->update($longDescription);
 
         $longDescription = $insertedAttributes->getAttributeByCode('long_description');
@@ -143,10 +140,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
         $seoMetaDescription = $insertedAttributes->getAttributeByCode('seo_meta_description');
         $this->assertEquals((string) $seoMetaDescription->getType(), AttributeType::TEXTAREA);
 
-        $data = [
-            'isRichRextArea' => true
-        ];
-        $seoMetaDescription->update($data);
+        $seoMetaDescription->update(isRichRextArea: true);
         $this->categoryTemplateAttributeSaver->update($seoMetaDescription);
 
         $seoMetaDescription = $insertedAttributes->getAttributeByCode('seo_meta_description');
