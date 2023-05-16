@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\Model\Attribute;
 
-use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
@@ -16,8 +15,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -191,26 +189,18 @@ abstract class Attribute
      */
     public function update(?bool $isRichRextArea, ?array $labels): void
     {
-        $violations = new ConstraintViolationList();
         if ($isRichRextArea !== null) {
             $validTypes = [AttributeType::TEXTAREA, AttributeType::RICH_TEXT];
-            if (!in_array((string) $this->getType(), $validTypes)) {
-                $message = sprintf('The type of the attribute is neither %s nor %s', AttributeType::TEXTAREA, AttributeType::RICH_TEXT);
-                $violations->add(new ConstraintViolation($message, $message, [], null, 'type', null));
-            }
+            Assert::inArray((string) $this->getType(), $validTypes);
             $this->type = new AttributeType(($isRichRextArea) ? AttributeType::RICH_TEXT : AttributeType::TEXTAREA);
         }
 
-        if (array_key_exists('labels', $data)) {
-            $labels = LabelCollection::fromArray($data['labels']);
+        if ($labels !== null) {
+            $labels = LabelCollection::fromArray($labels);
 
             foreach ($labels->getIterator() as $local => $label) {
                 $this->labelCollection->setTranslation($local, $label);
             }
-        }
-
-        if ($violations->count() > 0) {
-            throw new ViolationsException($violations);
         }
     }
 }

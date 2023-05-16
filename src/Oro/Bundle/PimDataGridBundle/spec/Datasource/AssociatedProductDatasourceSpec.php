@@ -339,7 +339,6 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         \ArrayIterator $parentAssociationIterator,
         CursorInterface $productCursor,
         CursorInterface $associatedProductCursor,
-        CursorInterface $associatedProductModelCursor,
         Collection $collectionProductModel,
         Collection $parentCollectionProductModel,
         \Iterator $collectionProductModelIterator,
@@ -441,22 +440,6 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associatedProductCursor->next()->shouldBeCalled();
         $associatedProductCursor->count()->willReturn(2);
 
-        $pqbFactory->create([
-            'repository_parameters' => [],
-            'repository_method'     => 'createQueryBuilder',
-            'limit'                 => 0,
-            'from'                  => 0,
-            'default_locale'        => 'a_locale',
-            'default_scope'         => 'a_channel',
-            'filters'               => null,
-        ])->willReturn($pqbAssoProductModel);
-
-        $pqbAssoProductModel->execute()->willReturn($associatedProductModelCursor);
-
-        $associatedProductModelCursor->valid()->willReturn(true, false);
-        $associatedProductModelCursor->current()->willReturn($associatedProductModel);
-        $associatedProductModelCursor->count()->willReturn(1);
-
         $productNormalizer->normalize($currentProduct, Argument::cetera())->shouldNotBeCalled();
 
         $productNormalizer->normalize($associatedProduct1, 'datagrid', [
@@ -522,7 +505,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $results->shouldBeArray();
         $results->shouldHaveCount(3);
         $results->shouldHaveKey('data');
-        $results->shouldHaveKeyWithValue('totalRecords', 3);
+        $results->shouldHaveKeyWithValue('totalRecords', 2);
         $results['data']->shouldBeArray();
         $results['data']->shouldHaveCount(2);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);

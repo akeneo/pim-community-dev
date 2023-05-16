@@ -16,7 +16,7 @@ $rules = [
         'Akeneo\Category\Domain',
 
         // TBD
-        'Akeneo\Category\Api\Command\Exceptions\ViolationsException',
+        'Akeneo\Category\Domain\Exceptions\ViolationsException',
         'Akeneo\Category\Api\Command\UpsertCategoryCommand',
         'Akeneo\Category\Api\Command\UserIntents\SetImage',
         'Akeneo\Category\Api\Command\UserIntents\SetLabel',
@@ -54,11 +54,6 @@ $rules = [
     ])->in('Akeneo\Category\Application'),
 
     $builder->only([
-        // Symfony
-        'Akeneo\Category\Api\Command\Exceptions\ViolationsException',
-        'Symfony\Component\Validator\ConstraintViolation',
-        'Symfony\Component\Validator\ConstraintViolationList',
-
         // Outside /!\
         'Akeneo\Category\Api\Command\UserIntents\UserIntent',
         'Akeneo\Category\Api\Command\UserIntents\SetLabel',
@@ -73,6 +68,8 @@ $rules = [
         // Vendors
         'Webmozart\Assert',
         'Ramsey\Uuid',
+        'Symfony\Component\Validator\ConstraintViolation',
+        'Symfony\Component\Validator\ConstraintViolationList',
     ])->in('Akeneo\Category\Domain'),
 
     $builder->only([
@@ -156,7 +153,6 @@ $rules = [
     $builder->only([
         // Vendors
         'Symfony\Component\Messenger',
-        'Symfony\Component\Validator',
         'Webmozart\Assert',
     ])->in('Akeneo\Category\Api'),
 
