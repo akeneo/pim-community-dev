@@ -106,7 +106,7 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
         for ($i = $count; $i > 0; $i--) {
             $loggedAt = clone $limitDate;
             $loggedAt->modify(sprintf('-%d DAY', $i));
-            $versionIds[] = $this->createVersion(Product::class, 42, Uuid::fromString('dc9ac794-fdfb-49e6-8a24-f01e0f68907d'), $loggedAt);
+            $versionIds[] = $this->createVersion(Product::class, null, Uuid::fromString('dc9ac794-fdfb-49e6-8a24-f01e0f68907d'), $loggedAt);
         }
 
         return $versionIds;
@@ -117,7 +117,7 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
         $loggedAt = clone $limitDate;
         $loggedAt->modify('+1 DAY');
 
-        $this->createVersion(Attribute::class, 123, null, $loggedAt);
+        $this->createVersion(Attribute::class, 12345678, null, $loggedAt);
     }
 
     private function givenAttributeVersionOlderThan(\DateTime $limitDate): void
@@ -125,7 +125,7 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
         $loggedAt = clone $limitDate;
         $loggedAt->modify('-1 DAY');
 
-        $this->createVersion(Attribute::class, 123, null, $loggedAt);
+        $this->createVersion(Attribute::class, 12345678, null, $loggedAt);
     }
 
     private function createVersion(string $resourceName, ?int $resourceId, ?UuidInterface $resourceUuid, \DateTime $loggedAt): int
@@ -133,6 +133,7 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
         $entityManager = $this->get('doctrine.orm.default_entity_manager');
 
         $version = new Version($resourceName, $resourceId, $resourceUuid, 'system');
+
         $entityManager->persist($version);
         $entityManager->flush();
 
