@@ -32,9 +32,10 @@ class PurgeCommand extends Command
     const DEFAULT_MORE_THAN_DAYS = 90;
 
     public function __construct(
-        private LoggerInterface $logger,
-        private ExecuteJobExecutionHandlerInterface $jobExecutionRunner,
-        private CreateJobExecutionHandlerInterface $jobExecutionFactory,
+        private readonly LoggerInterface $logger,
+        private readonly ExecuteJobExecutionHandlerInterface $jobExecutionRunner,
+        private readonly CreateJobExecutionHandlerInterface $jobExecutionFactory,
+        private readonly ?int $versioningRetentionInDays
     ) {
         parent::__construct();
     }
@@ -145,7 +146,10 @@ class PurgeCommand extends Command
         $lessThanDays = null !== $input->getOption('less-than-days') ? (int)$input->getOption('less-than-days') : null;
 
         if (null === $moreThanDays && null === $lessThanDays) {
-            $moreThanDays = self::DEFAULT_MORE_THAN_DAYS;
+            $moreThanDays = $this->versioningRetentionInDays;
+            if (null === $moreThanDays) {
+                $moreThanDays = self::DEFAULT_MORE_THAN_DAYS;
+            }
         }
 
         $resourceName = $input->hasArgument('entity') ? $input->getArgument('entity') : null;

@@ -29,7 +29,7 @@ class PurgeVersioningCommandIntegration extends TestCase
         $expectedOriginalVersionsCount = 25;
         $this->initializeVersions($expectedOriginalVersionsCount);
 
-        $output = $this->runPurgeCommand();
+        $output = $this->runPurgeCommand(['--more-than-days' => 0]);
         $result = $output->fetch();
 
         $expectedDeletedVersionsCount = 18;
@@ -69,17 +69,33 @@ class PurgeVersioningCommandIntegration extends TestCase
     /**
      * @test
      */
-    public function it_purges_versions_older_than_5_days(): void
+    public function it_purges_versions_with_command_parameter(): void
     {
         $expectedOriginalVersionsCount = 25;
         $this->initializeVersions($expectedOriginalVersionsCount);
 
-        $output = $this->runPurgeCommand(['--more-than-days' => 5,]);
+        $output = $this->runPurgeCommand(['--more-than-days' => 5]);
         $result = $output->fetch();
 
         $expectedDeletedVersionsCount = 10;
 
         $this->assertPurgeResult($result, $expectedOriginalVersionsCount, $expectedDeletedVersionsCount, 5);
+    }
+
+    /**
+     * @test
+     */
+    public function it_purges_versions_with_default_parameter(): void
+    {
+        $expectedOriginalVersionsCount = 25;
+        $this->initializeVersions($expectedOriginalVersionsCount);
+
+        $output = $this->runPurgeCommand();
+        $result = $output->fetch();
+
+        $expectedDeletedVersionsCount = 0;
+
+        $this->assertPurgeResult($result, $expectedOriginalVersionsCount, $expectedDeletedVersionsCount, 90);
     }
 
     private function initializeVersions(int $expectedOriginalVersionsCount): void
@@ -120,10 +136,17 @@ class PurgeVersioningCommandIntegration extends TestCase
             sprintf('Versions count = %d', $expectedOriginalVersionsCount),
             $commandOutput
         );
-        Assert::assertStringContainsString(
-            sprintf('Successfully deleted %s versions', $expectedDeletedVersionsCount),
-            $commandOutput
-        );
+        if ($expectedDeletedVersionsCount > 0) {
+            Assert::assertStringContainsString(
+                sprintf('Successfully deleted %s versions', $expectedDeletedVersionsCount),
+                $commandOutput
+            );
+        } else {
+            Assert::assertStringContainsString(
+                'There are no versions to purge.',
+                $commandOutput
+            );
+        }
 
         $expectedRemainingVersionsCount = $expectedOriginalVersionsCount - $expectedDeletedVersionsCount;
         $versionsCount = $this->countVersions();
@@ -202,7 +225,7 @@ class PurgeVersioningCommandIntegration extends TestCase
     }
 
     /**
-     * Launchthe purge command in verbose mode to test output
+     * Launch the purge command in verbose mode to test output
      */
     private function runPurgeCommand(array $arrayInput = []): BufferedOutput
     {
@@ -212,7 +235,7 @@ class PurgeVersioningCommandIntegration extends TestCase
         $defaultArrayInput = [
             'command' => 'pim:versioning:purge',
             'entity' => Family::class,
-            '--more-than-days' => 0,
+            '--more-than-days' => null,
             '--force' => null,
             '-vv',
         ];
