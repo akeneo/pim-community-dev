@@ -9,6 +9,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
+import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
 import {useState, useRef} from 'react';
@@ -34,6 +35,15 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     openDeactivateTemplateAttributeModal,
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
+
+  const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
+
+  const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
+
+  const handleRichTextAreaChange = () => {
+    setIsRichTextArea(!isRichTextArea);
+    updateTemplateAttribute(!isRichTextArea);
+  };
 
   // const displayError = (errorMessages: string[]) => {
   //     return errorMessages.map(message => {
@@ -63,7 +73,11 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
       </SectionTitle>
       <OptionsContainer>
         {['textarea', 'richtext'].includes(attribute.type) && (
-          <OptionField checked={attribute.type === 'richtext'} readOnly={true}>
+          <OptionField
+            checked={isRichTextArea}
+            onChange={handleRichTextAreaChange}
+            readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
+          >
             {translate('akeneo.category.template.attribute.settings.options.rich_text')}
           </OptionField>
         )}

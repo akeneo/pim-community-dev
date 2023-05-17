@@ -15,6 +15,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -179,5 +180,14 @@ abstract class Attribute
             ) : null;
 
         return Attribute::fromType($type, $id, $code, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties);
+    }
+
+    public function update(?bool $isRichTextArea): void
+    {
+        if ($isRichTextArea !== null) {
+            $validTypes = [AttributeType::TEXTAREA, AttributeType::RICH_TEXT];
+            Assert::inArray((string) $this->getType(), $validTypes);
+            $this->type = new AttributeType(($isRichTextArea) ? AttributeType::RICH_TEXT : AttributeType::TEXTAREA);
+        }
     }
 }

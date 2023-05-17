@@ -59,6 +59,15 @@ class GetCategoryTemplateAttributeSqlIntegration extends CategoryTestCase
         $this->assertNotNull($attributeCollection->getAttributeByCode('image_alt_text_1'));
     }
 
+    public function testGetCategoryTemplateAttributeByUuid(): void
+    {
+        $attributeUuid = AttributeUuid::fromString('840fcd1a-f66b-4f0c-9bbd-596629732950');
+
+        $attribute = $this->get(GetAttribute::class)->byUuid($attributeUuid);
+
+        $this->assertNotNull($attribute);
+    }
+
     public function testDoesNotGetCategoryDeactivatedTemplateAttributeByTemplateUuid(): void
     {
         $templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');

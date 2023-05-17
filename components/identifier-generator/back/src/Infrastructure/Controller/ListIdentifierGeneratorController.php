@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorsCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorsQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorsHandler;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,7 +37,7 @@ final class ListIdentifierGeneratorController
         }
 
         return new JsonResponse(
-            ($this->getGeneratorsHandler)(new GetGeneratorsCommand()),
+            ($this->getGeneratorsHandler)(new GetGeneratorsQuery()),
             Response::HTTP_OK
         );
     }

@@ -1103,6 +1103,16 @@ class User implements UserInterface, EquatableInterface
         return $this;
     }
 
+    public function isUiUser(): bool
+    {
+        return self::TYPE_USER === $this->type;
+    }
+
+    public function defineAsUiUser(): void
+    {
+        $this->type = self::TYPE_USER;
+    }
+
     public function isApiUser(): bool
     {
         return self::TYPE_API === $this->type;

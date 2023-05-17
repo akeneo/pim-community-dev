@@ -552,6 +552,10 @@ interface UserInterface extends LegacyPasswordAuthenticatedUserInterface, BaseUs
      */
     public function getProperty(string $propertyName);
 
+    public function isUiUser(): bool;
+
+    public function defineAsUiUser(): void;
+
     public function isApiUser(): bool;
 
     public function defineAsApiUser(): void;
