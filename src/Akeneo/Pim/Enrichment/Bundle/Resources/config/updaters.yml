@@ -115,6 +115,7 @@ services:
         arguments:
             - '@pim_catalog.updater.category.base'
             - '@pim_enrichment.updater.translatable'
+            - '@Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\ACLUpdateCategoryUpdatedDate'
 
     pim_catalog.updater.group:
         class: '%pim_catalog.updater.group.class%'

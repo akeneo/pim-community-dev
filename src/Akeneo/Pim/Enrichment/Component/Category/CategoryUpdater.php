@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Category;
 
+use Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\ACLUpdateCategoryUpdatedDate;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -15,18 +16,11 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
  */
 class CategoryUpdater implements ObjectUpdaterInterface
 {
-    /** @var ObjectUpdaterInterface */
-    protected $categoryUpdater;
-
-    /** @var TranslatableUpdater */
-    protected $translatableUpdater;
-
-    /**
-     * @param ObjectUpdaterInterface $categoryUpdater
-     * @param TranslatableUpdater    $translatableUpdater
-     */
-    public function __construct(ObjectUpdaterInterface $categoryUpdater, TranslatableUpdater $translatableUpdater)
-    {
+    public function __construct(
+        protected ObjectUpdaterInterface $categoryUpdater,
+        protected TranslatableUpdater $translatableUpdater,
+        private readonly ACLUpdateCategoryUpdatedDate $updateCategoryUpdatedDate
+    ) {
         $this->categoryUpdater = $categoryUpdater;
         $this->translatableUpdater = $translatableUpdater;
     }
@@ -40,6 +34,8 @@ class CategoryUpdater implements ObjectUpdaterInterface
 
         if (isset($data['labels']) && $category instanceof TranslatableInterface) {
             $this->translatableUpdater->update($category, $data['labels']);
+            // PIM-10978: category's date of update must be changed when translations are updated
+            $this->updateCategoryUpdatedDate->execute($category->getCode());
         }
 
         return $this;
