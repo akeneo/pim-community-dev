@@ -3,7 +3,6 @@ import {render, waitFor} from '../../../tests/test-utils';
 import {SimpleOrMultiSelectLine} from '../SimpleOrMultiSelectLine';
 import {CONDITION_NAMES, Operator, SimpleOrMultiSelectCondition} from '../../../models';
 import {fireEvent} from '@testing-library/react';
-import mockedScopes from '../../../tests/fixtures/scopes';
 import {useSecurity} from '@akeneo-pim-community/shared';
 
 const TableMock = ({children}: {children: ReactNode}) => (
@@ -26,8 +25,6 @@ describe('SimpleOrMultiSelectLine', () => {
       locale: null,
     };
 
-    mockSimpleSelectCalls();
-
     const mockedOnChange = jest.fn();
     const screen = render(
       <TableMock>
@@ -44,13 +41,13 @@ describe('SimpleOrMultiSelectLine', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('OptionA')).toBeInTheDocument();
-      fireEvent.click(screen.getByText('OptionA'));
+      expect(screen.getByText('[Option1]')).toBeInTheDocument();
+      fireEvent.click(screen.getByText('[Option1]'));
     });
 
     expect(mockedOnChange).toHaveBeenCalledWith({
       ...condition,
-      value: ['option_a'],
+      value: ['Option1'],
     });
 
     fireEvent.click(screen.getAllByTitle('pim_common.open')[0]);
@@ -75,8 +72,6 @@ describe('SimpleOrMultiSelectLine', () => {
       scope: null,
       locale: null,
     };
-
-    mockSimpleSelectCalls();
 
     const mockedOnChange = jest.fn();
     const screen = render(
@@ -109,12 +104,10 @@ describe('SimpleOrMultiSelectLine', () => {
 
   it('displays locale selector when simple select is localizable', async () => {
     //GIVEN a localizable simple select added in the list of conditions
-    mockSimpleSelectCalls({localizable: true});
-
     const condition: SimpleOrMultiSelectCondition = {
-      attributeCode: 'simple_select',
+      attributeCode: 'simple_select_localizable',
       type: CONDITION_NAMES.SIMPLE_SELECT,
-      value: ['option_a'],
+      value: ['Option1'],
       operator: Operator.IN,
       scope: null,
       locale: null,
@@ -128,9 +121,9 @@ describe('SimpleOrMultiSelectLine', () => {
 
     //THEN I am invited to choose the locale
     await waitFor(() => {
-      expect(screen.getByText('OptionA')).toBeInTheDocument();
+      expect(screen.getByText('Option1')).toBeInTheDocument();
     });
-    expect(screen.getByPlaceholderText('pim_common.locale')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByPlaceholderText('pim_common.locale')).toBeInTheDocument());
     expect(screen.queryByPlaceholderText('pim_common.channel')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByTitle('pim_common.locale'));
@@ -144,12 +137,10 @@ describe('SimpleOrMultiSelectLine', () => {
 
   it('displays channel selector when simple select is scopable', async () => {
     //GIVEN a scopable simple select added in the list of conditions
-    mockSimpleSelectCalls({scopable: true});
-
     const condition: SimpleOrMultiSelectCondition = {
-      attributeCode: 'simple_select',
+      attributeCode: 'simple_select_scopable',
       type: CONDITION_NAMES.SIMPLE_SELECT,
-      value: ['option_a'],
+      value: ['Option1'],
       operator: Operator.IN,
       scope: null,
       locale: null,
@@ -163,9 +154,9 @@ describe('SimpleOrMultiSelectLine', () => {
 
     //THEN I am invited to choose the channel
     await waitFor(() => {
-      expect(screen.getByText('OptionA')).toBeInTheDocument();
+      expect(screen.getByText('Option1')).toBeInTheDocument();
     });
-    expect(screen.getByPlaceholderText('pim_common.channel')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByPlaceholderText('pim_common.channel')).toBeInTheDocument());
     expect(screen.queryByPlaceholderText('pim_common.locale')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByTitle('pim_common.channel'));
@@ -178,10 +169,8 @@ describe('SimpleOrMultiSelectLine', () => {
   });
 
   it('displays unauthorized error when user is not authorized to see attribute', async () => {
-    mockSimpleSelectCalls({inError: true, errorStatus: '401'});
-
     const condition: SimpleOrMultiSelectCondition = {
-      attributeCode: 'unknown_simple_select',
+      attributeCode: 'unauthorized_attribute',
       type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
       operator: Operator.IN,
@@ -201,10 +190,8 @@ describe('SimpleOrMultiSelectLine', () => {
   });
 
   it('displays general error when attribute route fails', async () => {
-    mockSimpleSelectCalls({inError: true, errorStatus: '500'});
-
     const condition: SimpleOrMultiSelectCondition = {
-      attributeCode: 'unknown_simple_select',
+      attributeCode: 'unknown_attribute',
       type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
       operator: Operator.IN,
@@ -224,10 +211,8 @@ describe('SimpleOrMultiSelectLine', () => {
   });
 
   it('displays custom error when attribute was deleted', async () => {
-    mockSimpleSelectCalls({inError: true, errorStatus: '404'});
-
     const condition: SimpleOrMultiSelectCondition = {
-      attributeCode: 'deleted_simple_select',
+      attributeCode: 'deleted_attribute',
       type: CONDITION_NAMES.SIMPLE_SELECT,
       value: ['option_a'],
       operator: Operator.IN,
@@ -246,7 +231,6 @@ describe('SimpleOrMultiSelectLine', () => {
   });
 
   it('displays info message when user has no right to list attributes', async () => {
-    mockSimpleSelectCalls();
     (useSecurity as jest.Mock).mockImplementation(() => ({
       isGranted: (acl: string) =>
         ({
@@ -273,58 +257,3 @@ describe('SimpleOrMultiSelectLine', () => {
     });
   });
 });
-
-const mockSimpleSelectCalls = ({localizable = false, scopable = false, inError = false, errorStatus = ''} = {}) => {
-  const fetchImplementation = jest.fn().mockImplementation((requestUrl: string, args: {method: string}) => {
-    if (requestUrl === 'akeneo_identifier_generator_get_attribute_options') {
-      return Promise.resolve({
-        ok: true,
-        json: () =>
-          Promise.resolve([
-            {code: 'option_a', labels: {en_US: 'OptionA'}},
-            {code: 'option_b', labels: {en_US: 'OptionB'}},
-            {code: 'option_c', labels: {en_US: 'OptionC'}},
-            {code: 'option_d', labels: {en_US: 'OptionD'}},
-            {code: 'option_e', labels: {en_US: 'OptionE'}},
-          ]),
-        statusText: '',
-        status: 200,
-      } as Response);
-    } else if (requestUrl === 'pim_enrich_channel_rest_index') {
-      return Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve(mockedScopes),
-        statusText: '',
-        status: 200,
-      } as Response);
-    } else if (requestUrl === 'pim_enrich_attribute_rest_get') {
-      if (inError) {
-        jest.spyOn(console, 'error');
-        // eslint-disable-next-line no-console
-        (console.error as jest.Mock).mockImplementation(() => null);
-        return Promise.resolve({
-          ok: false,
-          json: () => Promise.resolve(),
-          statusText: errorStatus,
-          status: Number.parseFloat(errorStatus),
-        } as Response);
-      } else {
-        return Promise.resolve({
-          ok: true,
-          json: () =>
-            Promise.resolve({
-              code: 'simple_select',
-              labels: {en_US: 'Simple select', fr_FR: 'Select simple'},
-              localizable,
-              scopable,
-            }),
-          statusText: '',
-          status: 200,
-        } as Response);
-      }
-    }
-
-    throw new Error(`Unmocked url "${requestUrl}" [${args.method}]`);
-  });
-  jest.spyOn(global, 'fetch').mockImplementation(fetchImplementation);
-};

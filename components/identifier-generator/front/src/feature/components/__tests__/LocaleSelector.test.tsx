@@ -1,17 +1,12 @@
 import React from 'react';
-import {mockResponse, render} from '../../tests/test-utils';
+import {render} from '../../tests/test-utils';
 import {LocaleSelector} from '../LocaleSelector';
 import {fireEvent, waitFor} from '@testing-library/react';
 import mockedScopes from '../../tests/fixtures/scopes';
+import {server} from '../../mocks/server';
+import {rest} from 'msw';
 
 describe('LocaleSelector', () => {
-  beforeEach(() => {
-    mockResponse('pim_enrich_channel_rest_index', 'GET', {
-      ok: true,
-      json: mockedScopes,
-    });
-  });
-
   it('should display ui locales if not scopable', async () => {
     const mockedOnChange = jest.fn();
     const screen = render(<LocaleSelector value={null} onChange={mockedOnChange} scopable={false} />);
@@ -53,11 +48,11 @@ describe('LocaleSelector', () => {
   });
 
   it('should display an error when getUiLocales fails', async () => {
-    mockResponse('pim_localization_locale_index', 'GET', {
-      ok: false,
-      json: [],
-      status: 500,
-    });
+    server.use(
+      rest.get('/pim_enrich_channel_rest_index', (req, res, ctx) =>
+        res(ctx.status(500))
+      ),
+    );
     const screen = render(<LocaleSelector value={null} onChange={jest.fn()} scopable={true} />);
     await waitFor(() => {
       expect(screen.getByText('pim_error.general')).toBeInTheDocument();

@@ -1,30 +1,9 @@
 import React from 'react';
-import {fireEvent, mockACLs, mockResponse, render, screen, waitFor} from '../../tests/test-utils';
+import {fireEvent, mockACLs, render, screen, waitFor} from '../../tests/test-utils';
 import {LabelTranslations} from '../LabelTranslations';
-
-const defaultUiLocales = [
-  {
-    id: 42,
-    code: 'en_US',
-    label: 'English (United States)',
-    region: 'United States',
-    language: 'English',
-  },
-  {
-    id: 69,
-    code: 'fr_FR',
-    label: 'French (France)',
-    region: 'France',
-    language: 'French',
-  },
-  {
-    id: 96,
-    code: 'de_DE',
-    label: 'German (Germany)',
-    region: 'Germany',
-    language: 'German',
-  },
-];
+import {server} from '../../mocks/server';
+import {rest} from 'msw';
+import uiLocales from '../../tests/fixtures/uiLocales';
 
 const labelCollection = {
   en_US: 'English Label',
@@ -34,19 +13,16 @@ const labelCollection = {
 describe('LabelTranslations', () => {
   it('should make the labels readonly without ACL', async () => {
     mockACLs(true, false);
-    mockResponse('pim_localization_locale_index', 'GET', {json: defaultUiLocales});
 
     const onLabelsChange = jest.fn();
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
 
     await waitFor(() => screen.getByText('English (United States)'));
-    fireEvent.change(screen.getByTitle(''), {target: {value: 'German Label'}});
+    fireEvent.change(screen.getAllByTitle('')[0], {target: {value: 'German Label'}});
     expect(onLabelsChange).not.toBeCalledWith();
   });
 
   it('should render the initial values', async () => {
-    mockResponse('pim_localization_locale_index', 'GET', {json: defaultUiLocales});
-
     const onLabelsChange = jest.fn();
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
 
@@ -57,27 +33,28 @@ describe('LabelTranslations', () => {
 
     expect(screen.getByTitle('English Label')).toBeInTheDocument();
     expect(screen.getByTitle('French Label')).toBeInTheDocument();
-    expect(screen.getByTitle('')).toBeInTheDocument();
+    expect(screen.getAllByTitle('')[0]).toBeInTheDocument();
   });
 
   it('should update label', async () => {
-    mockResponse('pim_localization_locale_index', 'GET', {json: defaultUiLocales});
-
     const onLabelsChange = jest.fn();
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
 
     await waitFor(() => screen.getByText('English (United States)'));
-    fireEvent.change(screen.getByTitle(''), {target: {value: 'German Label'}});
+    fireEvent.change(screen.getAllByTitle('')[0], {target: {value: 'German Label'}});
     expect(onLabelsChange).toBeCalledWith({
-      de_DE: 'German Label',
+      ca_ES: 'German Label',
       en_US: 'English Label',
       fr_FR: 'French Label',
     });
   });
 
   it('should display an error if impossible to fetch locales', async () => {
-    mockResponse('pim_localization_locale_index', 'GET', {json: [], ok: false});
-
+    server.use(
+      rest.get('/pim_localization_locale_index', (req, res, ctx) => {
+        return res(ctx.status(500), ctx.json(uiLocales));
+      })
+    );
     const onLabelsChange = jest.fn();
     render(<LabelTranslations labelCollection={labelCollection} onLabelsChange={onLabelsChange} />);
     expect(await screen.findByText('pim_error.general')).toBeInTheDocument();

@@ -10,61 +10,24 @@ import {
   SimpleSelectProperty,
 } from '../../models';
 import {NotificationLevel} from '@akeneo-pim-community/shared';
+import {waitFor} from '@testing-library/react';
+import {mockedUserContext} from '../../mocks/contexts';
 
 jest.mock('../NomenclatureValuesDisplayFilter');
 jest.mock('../OperatorSelector');
 
 const mockNotify = jest.fn();
 
-const userContext = {
-  get: (k: string) => {
-    switch (k) {
-      case 'catalogLocale':
-        return 'en_US';
-      case 'uiLocale':
-        return 'en_US';
-      default:
-        throw new Error(`Unknown key ${k}`);
-    }
-  },
-};
-
-const router = {
-  generate: (key: string) => key,
-};
 
 jest.mock('@akeneo-pim-community/shared', () => ({
   ...jest.requireActual('@akeneo-pim-community/shared'),
-  useTranslate: () => (i18nKey: string) => {
-    return i18nKey;
-  },
-  useRouter: () => {
-    return router;
-  },
-  useNotify: () => {
-    return mockNotify;
-  },
-  useUserContext: () => {
-    return userContext;
-  },
+  useTranslate: () => (i18nKey: string) => i18nKey,
+  useRouter: () => ({
+    generate: (key: string) => key,
+  }),
+  useNotify: () => mockNotify,
+  useUserContext: () => mockedUserContext,
 }));
-
-const defaultNomenclature: Nomenclature = {
-  propertyCode: 'family',
-  operator: Operator.EQUALS,
-  value: 3,
-  generate_if_empty: true,
-  values: {
-    family1: 'FA1',
-    family2: 'FA2',
-  },
-};
-
-const defaultFamilies = [
-  {code: 'family1', labels: {en_US: 'Family1 label'}},
-  {code: 'family2', labels: {}},
-  {code: 'family3', labels: {fr_FR: 'Famille 3 label'}},
-];
 
 function updateValue(sourceValue: string, endValue: string) {
   expect(screen.getByTitle(sourceValue)).toBeInTheDocument();
@@ -80,7 +43,7 @@ async function updateFilter(sourceFilter: string, endFilter: string) {
 }
 
 async function familiesShouldBeInTheDocument(families: string[]) {
-  const allFamilies = ['family1', 'family2', 'family3'];
+  const allFamilies = ['Family1', 'Family2', 'Family3'];
   // eslint-disable-next-line @typescript-eslint/no-for-in-array
   for (const i in allFamilies) {
     if (families.includes(allFamilies[i])) {
@@ -106,57 +69,16 @@ const selectedProperty: CanUseNomenclatureProperty = {
 };
 
 describe('NomenclatureEdit', () => {
-  beforeEach(() => {
-    const fetchImplementation = jest
-      .fn()
-      .mockImplementation((requestUrl: string, args: {method: string; body: string}) => {
-        if (requestUrl === 'akeneo_identifier_generator_nomenclature_rest_get') {
-          return Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve(defaultNomenclature),
-            status: 200,
-          } as Response);
-        } else if (requestUrl === 'akeneo_identifier_generator_get_families') {
-          return Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve(defaultFamilies),
-            status: 200,
-          } as Response);
-        } else if (requestUrl === 'akeneo_identifier_generator_nomenclature_rest_update') {
-          const jsonBody = JSON.parse(args.body);
-          if (null === jsonBody.value) {
-            return Promise.resolve({
-              ok: false,
-              json: () =>
-                Promise.resolve([
-                  {path: 'value', message: 'Error on value'},
-                  {path: 'operator', message: 'Error on operator'},
-                ]),
-              status: 400,
-            } as Response);
-          }
-
-          return Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve([]),
-            status: 200,
-          } as Response);
-        }
-        throw new Error(`Unknown url ${JSON.stringify(requestUrl)}`);
-      });
-    jest.spyOn(global, 'fetch').mockImplementation(fetchImplementation);
-  });
-
   it('should render the family codes, labels and nomenclatures', async () => {
     render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
 
-    expect(await screen.findByText('family1')).toBeInTheDocument();
-    expect(await screen.findByText('family2')).toBeInTheDocument();
-    expect(await screen.findByText('family3')).toBeInTheDocument();
+    expect(await screen.findByText('Family1')).toBeInTheDocument();
+    expect(await screen.findByText('Family2')).toBeInTheDocument();
+    expect(await screen.findByText('Family3')).toBeInTheDocument();
     expect(await screen.findByText('Family1 label')).toBeInTheDocument();
-    expect(await screen.findByText('[family2]')).toBeInTheDocument();
-    expect(await screen.findByText('[family3]')).toBeInTheDocument();
+    expect(await screen.findByText('Family2 label')).toBeInTheDocument();
+    expect(await screen.findByText('Family3 label')).toBeInTheDocument();
     expect(screen.getByTitle('FA1')).toBeInTheDocument();
     expect(screen.getByTitle('FA2')).toBeInTheDocument();
     expect(screen.getByText('pim_identifier_generator.nomenclature.helper')).toBeVisible();
@@ -166,7 +88,7 @@ describe('NomenclatureEdit', () => {
     render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     // ['FA1', 'FA2', 'fam' (placeholder)], = 3 chars, display all
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
-    expect(await screen.findByText('family1')).toBeInTheDocument();
+    expect(await screen.findByText('Family0')).toBeInTheDocument();
 
     // Update 1 valid valid to too short value
     // ['FA1', 'FAM2', 'fam' (placeholder)], = 3 chars, display all
@@ -179,7 +101,7 @@ describe('NomenclatureEdit', () => {
 
     // Only errored value is displayed
     // Valid ones: ['FA1', 'fam']
-    await familiesShouldBeInTheDocument(['family2']);
+    await familiesShouldBeInTheDocument(['Family2']);
 
     // Update value
     // ['FA1', 'FAM2', 'fami' (placeholder)], = 4 chars, display errors
@@ -187,7 +109,7 @@ describe('NomenclatureEdit', () => {
 
     // Only errored values is displayed
     // Valid ones: ['fami']
-    await familiesShouldBeInTheDocument(['family1', 'family2']);
+    await familiesShouldBeInTheDocument(['Family1', 'Family2']);
 
     // Update operator
     // ['FA1', 'FAM2', 'fami' (placeholder)], <= 4 chars, display errors
@@ -205,45 +127,45 @@ describe('NomenclatureEdit', () => {
 
     // Only errored values is displayed
     // Valid ones: []
-    await familiesShouldBeInTheDocument(['family1', 'family2', 'family3']);
+    await familiesShouldBeInTheDocument(['Family1', 'Family2', 'Family3']);
   });
 
   it('should navigate with filters', async () => {
     render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
-    expect(await screen.findByText('family1')).toBeInTheDocument();
+    expect(await screen.findByText('Family1')).toBeInTheDocument();
 
     await updateFilter('all', 'filled');
-    await familiesShouldBeInTheDocument(['family1', 'family2']);
+    await familiesShouldBeInTheDocument(['Family1', 'Family2']);
     await updateFilter('filled', 'empty');
-    await familiesShouldBeInTheDocument(['family3']);
+    await familiesShouldBeInTheDocument(['Family3']);
   });
 
   it('should use pagination', async () => {
     render(<NomenclatureEdit selectedProperty={selectedProperty} itemsPerPage={2} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
-    expect(await screen.findByText('family1')).toBeInTheDocument();
+    expect(await screen.findByText('Family1')).toBeInTheDocument();
 
-    await familiesShouldBeInTheDocument(['family1', 'family2']);
+    await familiesShouldBeInTheDocument(['Family0', 'Family1']);
     fireEvent.click(screen.getAllByTitle('No. 2')[0]);
-    await familiesShouldBeInTheDocument(['family3']);
+    await familiesShouldBeInTheDocument(['Family2', 'Family3']);
   });
 
   it('should search', async () => {
     render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     // ['FA1', 'FA2', 'fam' (placeholder)], = 3 chars, display all
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
-    expect(await screen.findByText('family1')).toBeInTheDocument();
+    expect(await screen.findByText('Family1')).toBeInTheDocument();
 
     updateValue('FA2', 'foo');
 
-    await familiesShouldBeInTheDocument(['family1', 'family2', 'family3']);
+    await familiesShouldBeInTheDocument(['Family1', 'Family2', 'Family3']);
 
     fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: 'FOO'}});
-    await familiesShouldBeInTheDocument(['family2']);
+    await familiesShouldBeInTheDocument(['Family2']);
 
     fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: 'FA'}});
-    await familiesShouldBeInTheDocument(['family1', 'family2', 'family3']);
+    await familiesShouldBeInTheDocument(['Family1', 'Family2', 'Family3']);
 
     fireEvent.change(await screen.findByPlaceholderText('pim_common.search'), {target: {value: 'BAZ'}});
     await familiesShouldBeInTheDocument([]);
@@ -251,14 +173,19 @@ describe('NomenclatureEdit', () => {
 
   it('should save', async () => {
     render(<NomenclatureEdit selectedProperty={selectedProperty} />);
+    await waitFor(() => {
+      expect(screen.getByText('pim_identifier_generator.nomenclature.edit')).toBeInTheDocument();
+    });
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
-    expect(await screen.findByText('family1')).toBeInTheDocument();
+    expect(await screen.findByText('Family1')).toBeInTheDocument();
 
     await act(async () => {
       fireEvent.click(await screen.findByText('pim_common.save'));
     });
 
-    expect(screen.queryByText('pim_identifier_generator.nomenclature.section_title')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('pim_identifier_generator.nomenclature.section_title')).not.toBeInTheDocument();
+    });
 
     expect(mockNotify).toHaveBeenCalled();
     expect(mockNotify).toHaveBeenCalledWith(
@@ -270,17 +197,17 @@ describe('NomenclatureEdit', () => {
   it('should save with warnings', async () => {
     render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
-    expect(await screen.findByText('family1')).toBeInTheDocument();
+    expect(await screen.findByText('Family1')).toBeInTheDocument();
 
     updateValue('FA2', 'A');
     await updateFilter('all', 'error');
-    await familiesShouldBeInTheDocument(['family2']);
+    await familiesShouldBeInTheDocument(['Family2']);
 
     await act(async () => {
       fireEvent.click(await screen.findByText('pim_common.save'));
     });
 
-    expect(mockNotify).toHaveBeenCalled();
+    await waitFor(() => expect(mockNotify).toHaveBeenCalled());
     expect(mockNotify).toHaveBeenCalledWith(
       NotificationLevel.WARNING,
       'pim_identifier_generator.nomenclature.flash.warning'
@@ -292,7 +219,7 @@ describe('NomenclatureEdit', () => {
 
     render(<NomenclatureEdit selectedProperty={selectedProperty} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
-    expect(await screen.findByText('family1')).toBeInTheDocument();
+    expect(await screen.findByText('Family1')).toBeInTheDocument();
 
     fireEvent.change(screen.getByTitle('3'), {target: {value: ''}});
 
@@ -300,7 +227,7 @@ describe('NomenclatureEdit', () => {
       fireEvent.click(await screen.findByText('pim_common.save'));
     });
 
-    expect(mockNotify).toHaveBeenCalled();
+    await waitFor(() => expect(mockNotify).toHaveBeenCalled());
     expect(mockNotify).toHaveBeenCalledWith(
       NotificationLevel.ERROR,
       'pim_identifier_generator.nomenclature.flash.error'

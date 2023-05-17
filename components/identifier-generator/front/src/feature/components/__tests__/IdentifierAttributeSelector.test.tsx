@@ -1,15 +1,12 @@
 import React from 'react';
 import {IdentifierAttributeSelector} from '../';
-import {mockResponse, render, screen} from '../../tests/test-utils';
+import {render, screen} from '../../tests/test-utils';
 import {waitFor} from '@testing-library/react';
+import {server} from '../../mocks/server';
+import {rest} from 'msw';
 
 describe('IdentifierAttributeSelector', () => {
   it('should render the identifier selector according to the code', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      ok: true,
-      json: [{code: 'sku', label: 'Sku'}],
-    });
-
     render(<IdentifierAttributeSelector code="sku" />);
 
     await waitFor(() => screen.findByText('Sku'));
@@ -19,11 +16,13 @@ describe('IdentifierAttributeSelector', () => {
   });
 
   it('should show error message when endpoint is forbidden', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      ok: false,
-      statusText: 'Forbidden',
-      json: [],
-    });
+    server.use(
+      rest.get('/akeneo_identifier_generator_get_identifier_attributes', (req, res, ctx) => {
+        return res(
+          ctx.status(403), ctx.json({statusText: 'Forbidden'})
+        );
+      }),
+    );
 
     render(<IdentifierAttributeSelector code="sku" />);
 
@@ -32,11 +31,13 @@ describe('IdentifierAttributeSelector', () => {
   });
 
   it('should show error message when endpoint returns an error', async () => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      ok: false,
-      json: [],
-      statusText: 'unexpected error',
-    });
+    server.use(
+      rest.get('/akeneo_identifier_generator_get_identifier_attributes', (req, res, ctx) => {
+        return res(
+          ctx.status(500), ctx.json({statusText: 'Forbidden'})
+        );
+      }),
+    );
 
     render(<IdentifierAttributeSelector code="sku" />);
 

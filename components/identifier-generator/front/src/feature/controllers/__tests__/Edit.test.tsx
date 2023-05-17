@@ -1,7 +1,9 @@
 import React from 'react';
-import {mockResponse, render, screen} from '../../tests/test-utils';
+import {render, screen} from '../../tests/test-utils';
 import {Edit} from '../';
 import initialGenerator from '../../tests/fixtures/initialGenerator';
+import {rest} from 'msw';
+import {server} from '../../mocks/server';
 
 jest.mock('../../pages/CreateOrEditGeneratorPage');
 
@@ -19,7 +21,11 @@ describe('Edit', () => {
   });
 
   it('should render a 404 on non existing generator', async () => {
-    mockResponse('akeneo_identifier_generator_rest_get', 'GET', {status: 404, ok: false});
+    server.use(
+      rest.get('/akeneo_identifier_generator_rest_get', (req, res, ctx) => {
+        return res(ctx.status(404));
+      })
+    );
 
     render(<Edit />);
     expect(await screen.findByText('pim_error.404')).toBeInTheDocument();
@@ -27,15 +33,16 @@ describe('Edit', () => {
   });
 
   it('should render a generic error', async () => {
-    mockResponse('akeneo_identifier_generator_rest_get', 'GET', {status: 500, ok: false, statusText: 'Fail'});
-
+    server.use(
+      rest.get('/akeneo_identifier_generator_rest_get', (req, res, ctx) => {
+        return res(ctx.status(500));
+      })
+    );
     render(<Edit />);
     expect(await screen.findByText('pim_error.general')).toBeInTheDocument();
   });
 
   it('should render the edit page', async () => {
-    mockResponse('akeneo_identifier_generator_rest_get', 'GET', {json: initialGenerator});
-
     render(<Edit />);
     expect(await screen.findByText('CreateOrEditGeneratorPage')).toBeInTheDocument();
     expect(screen.getByText(JSON.stringify(initialGenerator))).toBeInTheDocument();

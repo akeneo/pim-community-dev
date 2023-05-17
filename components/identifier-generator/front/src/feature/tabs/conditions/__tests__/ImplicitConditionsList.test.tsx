@@ -1,5 +1,5 @@
 import React from 'react';
-import {mockResponse, render} from '../../../tests/test-utils';
+import {render} from '../../../tests/test-utils';
 import {ImplicitConditionsList} from '../ImplicitConditionsList';
 import {AbbreviationType, IdentifierGenerator, PROPERTY_NAMES} from '../../../models';
 import initialGenerator from '../../../tests/fixtures/initialGenerator';
@@ -12,13 +12,8 @@ const mockedGenerator: IdentifierGenerator = {
 };
 
 describe('ImplicitConditionsList', () => {
-  beforeEach(() => {
-    mockResponse('akeneo_identifier_generator_get_identifier_attributes', 'GET', {
-      json: [{code: 'sku', label: 'Sku'}],
-    });
-  });
   it('should display sku as default user added condition', async () => {
-    const screen = render(<ImplicitConditionsList generator={mockedGenerator} />);
+    const screen = render(<table><tbody><ImplicitConditionsList generator={mockedGenerator} /></tbody></table>);
 
     expect(screen.getAllByText('This is a loading label')).toHaveLength(3);
     await waitFor(() => {
@@ -31,7 +26,7 @@ describe('ImplicitConditionsList', () => {
       ...initialGenerator,
       structure: [{type: PROPERTY_NAMES.FAMILY, process: {type: AbbreviationType.NO}}],
     };
-    const screen = render(<ImplicitConditionsList generator={generator} />);
+    const screen = render(<table><tbody><ImplicitConditionsList generator={generator} /></tbody></table>);
 
     await waitFor(() => {
       expect(screen.getByText('pim_identifier_generator.structure.property_type.family')).toBeInTheDocument();

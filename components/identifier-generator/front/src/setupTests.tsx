@@ -4,24 +4,30 @@
 // learn more: https://github.com/testing-library/jest-dom
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
+import { server } from './feature/mocks/server';
+import {RouteParams} from "@akeneo-pim-community/shared";
+import {createQueryParam} from "@akeneo-pim-community/shared/lib/microfrontend/model/queryParam";
+import {mockedUserContext} from "./feature/mocks/contexts";
+// Establish API mocking before all tests.
+beforeAll(() => {
+  server.listen();
+  jest.spyOn(console, 'error').mockImplementation(() => null);
+})
+// Reset any request handlers that we may add during the tests,
+// so they don't affect other tests.
+afterEach(() => server.resetHandlers())
+// Clean up after the tests are finished.
+afterAll(() => server.close())
+
 
 const mockedUseSecurity = jest.fn();
 
-const userContext = {
-  get: (k: string) => {
-    switch (k) {
-      case 'catalogLocale':
-        return 'en_US';
-      case 'uiLocale':
-        return 'en_US';
-      default:
-        throw new Error(`Unknown key ${k}`);
-    }
-  },
-};
-
 const router = {
-  generate: (key: string) => key,
+  generate: (key: string, parameters?: RouteParams) => {
+    if (!parameters) return key;
+    const queryString = createQueryParam(parameters);
+    return `${key}${queryString}`;
+  },
 };
 
 jest.mock('@akeneo-pim-community/shared', () => ({
@@ -32,7 +38,7 @@ jest.mock('@akeneo-pim-community/shared', () => ({
   },
   useNotify: () => () => {},
   useUserContext: () => {
-    return userContext;
+    return mockedUserContext;
   },
   useSecurity: mockedUseSecurity,
 }));

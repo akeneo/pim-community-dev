@@ -1,15 +1,12 @@
 import React from 'react';
-import {mockResponse, render} from '../../tests/test-utils';
+import {render} from '../../tests/test-utils';
 import {ScopeSelector} from '../ScopeSelector';
 import {fireEvent, waitFor} from '@testing-library/react';
-import mockedScopes from '../../tests/fixtures/scopes';
+import {server} from '../../mocks/server';
+import {rest} from 'msw';
 
 describe('ScopeSelector', () => {
   it('should render select with channels', async () => {
-    mockResponse('pim_enrich_channel_rest_index', 'GET', {
-      ok: true,
-      json: () => mockedScopes,
-    });
     const onChange = jest.fn();
     const screen = render(<ScopeSelector value={null} onChange={onChange} />);
 
@@ -25,20 +22,17 @@ describe('ScopeSelector', () => {
   });
 
   it('should render select with value', async () => {
-    mockResponse('pim_enrich_channel_rest_index', 'GET', {
-      ok: true,
-      json: () => mockedScopes,
-    });
     const screen = render(<ScopeSelector value={'ecommerce'} onChange={jest.fn()} />);
 
     await waitFor(() => expect(screen.getByText('Ecommerce')).toBeInTheDocument());
   });
 
   it('should render default error', async () => {
-    mockResponse('pim_enrich_channel_rest_index', 'GET', {
-      ok: false,
-      status: 500,
-    });
+    server.use(
+      rest.get('/pim_enrich_channel_rest_index', (req, res, ctx) => {
+        return res(ctx.status(500));
+      })
+    );
 
     const screen = render(<ScopeSelector value={null} onChange={jest.fn()} />);
 
