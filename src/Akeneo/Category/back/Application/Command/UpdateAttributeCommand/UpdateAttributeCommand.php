@@ -20,7 +20,7 @@ final class UpdateAttributeCommand
      */
     private function __construct(
         public readonly string $attributeUuid,
-        public readonly bool $isRichTextArea,
+        public readonly ?bool $isRichTextArea,
         public readonly ?array $labels,
     ) {
         Assert::uuid($attributeUuid);
