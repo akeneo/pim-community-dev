@@ -86,6 +86,7 @@ SQL;
                     'label' => 'validation',
                     'job' => 'csv_product_import',
                     'status' => 'Completed',
+                    'status_code' => 'COMPLETED',
                     'summary' => [
                         'File encoding:' => 'UTF-8 OK',
                     ],
@@ -99,6 +100,7 @@ SQL;
                     'label' => 'import',
                     'job' => 'csv_product_import',
                     'status' => 'Completed',
+                    'status_code' => 'COMPLETED',
                     'summary' => [
                         'read lines' => 38,
                         'skipped product (no differences)' => 37,
@@ -114,6 +116,7 @@ SQL;
                     'label' => 'import_associations',
                     'job' => 'csv_product_import',
                     'status' => 'Completed',
+                    'status_code' => 'COMPLETED',
                     'summary' => [],
                     'startedAt' => '10/13/2020 01:06 PM',
                     'endedAt' => '10/13/2020 01:06 PM',
