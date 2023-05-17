@@ -48,13 +48,12 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeactivateAttributeCommand' }
 
-  Akeneo\Category\Application\Command\UpdateAttributeCommandHandler:
+  Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommandHandler:
     arguments:
-      - '@validator'
       - '@Akeneo\Category\Application\Query\GetAttribute'
       - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
     tags:
-      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\UpdateAttributeCommand' }
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand' }
 
   Akeneo\Category\Application\Handler\StoreUploadedFile:
     arguments:

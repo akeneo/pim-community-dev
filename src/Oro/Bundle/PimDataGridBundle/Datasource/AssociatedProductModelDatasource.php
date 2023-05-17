@@ -109,6 +109,7 @@ class AssociatedProductModelDatasource extends ProductDatasource
             $locale,
             $scope
         );
+        $associatedProductModels = null;
 
         $normalizedAssociatedProducts = $this->normalizeProductsAndProductModels(
             $associatedProducts,
@@ -137,7 +138,7 @@ class AssociatedProductModelDatasource extends ProductDatasource
             );
         }
 
-        $rows = ['totalRecords' => count($associatedProductsUuids) + count($associatedProductModelsIdentifiers)];
+        $rows = ['totalRecords' => $associatedProducts->count() + ($associatedProductModels?->count() ?? 0)];
         $rows['data'] = array_merge($normalizedAssociatedProducts, $normalizedAssociatedProductModels);
         $rows['meta']['source'] = $this->getNormalizedSource($sourceProduct, $locale, $scope);
 
