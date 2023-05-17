@@ -42,9 +42,7 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
         />
-        {locales && (
-          <AttributeSettings attribute={getSelectedAttribute()} activatedCatalogLocales={locales} />
-        )}
+        {locales && <AttributeSettings attribute={getSelectedAttribute()} activatedCatalogLocales={locales} />}
       </Attributes>
     </FormContainer>
   );

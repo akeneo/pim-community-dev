@@ -42,9 +42,9 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
     <AttributeListContainer>
       <SectionTitle sticky={0}>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
-          <AddAttributeButton ghost size="small" level="tertiary" onClick={openAddTemplateAttributeModal}>
-            {translate('akeneo.category.template.add_attribute.add_button')}
-          </AddAttributeButton>
+        <AddAttributeButton ghost size="small" level="tertiary" onClick={openAddTemplateAttributeModal}>
+          {translate('akeneo.category.template.add_attribute.add_button')}
+        </AddAttributeButton>
       </SectionTitle>
       <ScrollablePanel>
         <Table>
@@ -64,7 +64,15 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
               >
                 <Table.Cell rowTitle>{getLabelFromAttribute(attribute, catalogLocale)}</Table.Cell>
                 <Table.Cell>{attribute.code}</Table.Cell>
-                <Table.Cell>{translate(`akeneo.category.template.attribute.type.${attribute.type !== CATEGORY_ATTRIBUTE_TYPE_RICHTEXT ? attribute.type : CATEGORY_ATTRIBUTE_TYPE_AREA}`)}</Table.Cell>
+                <Table.Cell>
+                  {translate(
+                    `akeneo.category.template.attribute.type.${
+                      attribute.type !== CATEGORY_ATTRIBUTE_TYPE_RICHTEXT
+                        ? attribute.type
+                        : CATEGORY_ATTRIBUTE_TYPE_AREA
+                    }`
+                  )}
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
