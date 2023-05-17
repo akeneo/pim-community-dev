@@ -7,18 +7,18 @@ namespace Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\Process;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
-use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
-use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\EndToEndTestCase;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
@@ -92,18 +92,41 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
             ]
         );
 
+        $this->createReferenceEntity('colors');
+        $this->createRecords('colors', ['blue', 'white']);
+
+        $this->createAttribute(
+            [
+                'code' => 'a_second_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'colors',
+            ]
+        );
+
+        $this->createNomenclature('a_second_reference_entity_attribute', [
+            'blue' => 'blu',
+            'white' => 'whi',
+        ]);
+
         $this->createIdentifierGenerator(structure:[
             [
                 'type' => 'reference_entity',
                 'attributeCode' => 'a_reference_entity_attribute',
                 'process' => ['type' => 'no'],
             ],
+            [
+                'type' => 'reference_entity',
+                'attributeCode' => 'a_second_reference_entity_attribute',
+                'process' => ['type' => Process::PROCESS_TYPE_NOMENCLATURE],
+            ],
         ]);
         $product = $this->createProduct(userIntents: [
             new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'akeneo'),
+            new SetSimpleReferenceEntityValue('a_second_reference_entity_attribute', null, null, 'blue'),
         ]);
 
-        Assert::assertSame('akeneo-akn-050-my_family', $product->getValue('sku')->getData());
+        Assert::assertSame('akeneo-blu-akn-050-my_family', $product->getValue('sku')->getData());
     }
 
     /** @test */
@@ -316,6 +339,18 @@ SQL);
         }
     }
 
+    private function createNomenclature(string $propertyCode, array $values): void
+    {
+        $command = new UpdateNomenclatureCommand($propertyCode, '=', 3, false, $values);
+
+        ($this->getUpdateNomenclatureHandler())($command);
+    }
+
+    private function getUpdateNomenclatureHandler(): UpdateNomenclatureHandler
+    {
+        return $this->get('Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler');
+    }
+
     private function getCreateGeneratorHandler(): CreateGeneratorHandler
     {
         return $this->get('Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler');
@@ -324,21 +359,6 @@ SQL);
     private function getConnection(): Connection
     {
         return $this->get('database_connection');
-    }
-
-    private function getFamilyFactory(): FamilyFactory
-    {
-        return $this->get('pim_catalog.factory.family');
-    }
-
-    private function getFamilyUpdater(): FamilyUpdater
-    {
-        return $this->get('pim_catalog.updater.family');
-    }
-
-    private function getFamilySaver(): FamilySaver
-    {
-        return $this->get('pim_catalog.saver.family');
     }
 
     private function getAttributeFactory(): AttributeFactory
