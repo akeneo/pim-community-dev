@@ -122,10 +122,10 @@ SQL;
      */
     private function getIdentifierAttributes(): array
     {
-        if (null === $this->identifierAttributesCache) {
+        if (null === $this->identifierAttributesCache && null !== $this->attributeRepository->getIdentifier()) {
             $this->identifierAttributesCache = [$this->attributeRepository->getIdentifier()];
         }
 
-        return $this->identifierAttributesCache;
+        return $this->identifierAttributesCache ?? [];
     }
 }

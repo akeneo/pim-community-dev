@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -21,8 +22,7 @@ use Doctrine\ORM\QueryBuilder;
  */
 class AttributeRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface, AttributeRepositoryInterface
 {
-    /** @var string */
-    protected $identifierCode;
+    protected ?string $identifierCode = null;
 
     /**
      * {@inheritdoc}
@@ -246,23 +246,36 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): AttributeInterface
     {
-        return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
+        // TODO CPM-1053
+        if ($this->isCurrentDatabaseVersion()) {
+            $identifier = $this->findOneBy(['type' => AttributeTypes::IDENTIFIER, 'mainIdentifier' => true]);
+        } else {
+            $identifier = $this->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
+        }
+
+        return $identifier;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode()
+    public function getIdentifierCode(): string
     {
         if (null === $this->identifierCode) {
-            $code = $this->createQueryBuilder('a')
+            $query = $this->createQueryBuilder('a')
                 ->select('a.code')
                 ->andWhere('a.type = :type')
                 ->setParameter('type', AttributeTypes::IDENTIFIER)
-                ->setMaxResults(1)
-                ->getQuery()->getSingleResult(Query::HYDRATE_SINGLE_SCALAR);
+                ->setMaxResults(1);
+
+            // TODO CPM-1053
+            if ($this->isCurrentDatabaseVersion()) {
+                $query->andWhere('a.mainIdentifier = TRUE');
+            }
+
+            $code = $query->getQuery()->getSingleResult(Query::HYDRATE_SINGLE_SCALAR);
 
             $this->identifierCode = $code;
         }
@@ -364,5 +377,35 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
             ->setParameter(':family', $family->getId());
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function updateMainIdentifier(AttributeInterface $attribute): void
+    {
+        $connection = $this->_em->getConnection();
+        $connection->executeStatement(
+            'UPDATE pim_catalog_attribute SET main_identifier = (code = :code)',
+            ['code' => $attribute->getCode()]
+        );
+    }
+
+    // TODO CPM-1053
+    private function isCurrentDatabaseVersion(): bool
+    {
+        $connection = $this->_em->getConnection();
+        $schema = $connection->getDatabase();
+        $sql = <<<SQL
+            SELECT count(*) FROM information_schema.COLUMNS
+            WHERE table_schema=:schema 
+              AND table_name=:tableName
+              AND column_name=:columnName;
+        SQL;
+
+        $result = $connection->fetchOne($sql, [
+            'schema' => $schema,
+            'tableName' => 'pim_catalog_attribute',
+            'columnName' => 'mainIdentifier'
+        ]);
+
+        return \intval($result) > 0;
     }
 }
