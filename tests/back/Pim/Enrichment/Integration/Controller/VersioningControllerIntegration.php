@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Controller;
 
-use Akeneo\Category\back\tests\EndToEnd\Helper\ControllerIntegrationTestCase;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
-use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VersioningControllerIntegration extends ControllerIntegrationTestCase
+class VersioningControllerIntegration extends WebTestCase
 {
+    protected KernelBrowser $client;
 
     public function test_it_returns_versioning_count(): void
     {
@@ -113,13 +113,51 @@ class VersioningControllerIntegration extends ControllerIntegrationTestCase
         return \intval($id);
     }
 
-    protected function getConfiguration(): Configuration
+    protected function setUp(): void
     {
-        return $this->catalog->useTechnicalCatalog();
+        $this->client = static::createClient(['environment' => 'test', 'debug' => false]);
+        $this->client->disableReboot();
+
+        $this->router = $this->get('router');
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
+        $fixturesLoader->load($this->get('akeneo_integration_tests.catalogs')->useTechnicalCatalog());
+
+        $this->get('akeneo_integration_tests.security.system_user_authenticator')->createSystemUser();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     protected function logIn(string $username): void
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($username, $this->client);
+    }
+
+    /**
+     * @param array<string, string>|array<empty> $routeArguments
+     * @param array<string, string>|array<empty> $parameters
+     */
+    private function callApiRoute(
+        KernelBrowser $client,
+        string $route,
+        array $routeArguments = [],
+        string $method = 'GET',
+        array $parameters = [],
+        string $content = null,
+    ): void {
+        $headers = [
+            'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            'CONTENT_TYPE' => 'application/json',
+        ];
+        $url = $this->getRouter()->generate($route, $routeArguments);
+        $client->request($method, $url, $parameters, [], $headers, $content);
+    }
+
+    protected function get(string $service)
+    {
+        return self::getContainer()->get($service);
+    }
+
+    private function getRouter(): RouterInterface
+    {
+        return $this->get('router');
     }
 }
