@@ -39,7 +39,9 @@ const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
         title={translate('akeneo.category.discover_enriched_categories_information.title')}
       >
         <List>
-          <Item>{translate('akeneo.category.discover_enriched_categories_information.content.enrich_attribute_values')}</Item>
+          <Item>
+            {translate('akeneo.category.discover_enriched_categories_information.content.enrich_attribute_values')}
+          </Item>
           <Item>
             {translate('akeneo.category.discover_enriched_categories_information.content.customizable_templates')}
           </Item>

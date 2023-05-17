@@ -182,12 +182,12 @@ abstract class Attribute
         return Attribute::fromType($type, $id, $code, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties);
     }
 
-    public function update(?bool $isRichRextArea): void
+    public function update(?bool $isRichTextArea): void
     {
-        if ($isRichRextArea !== null) {
+        if ($isRichTextArea !== null) {
             $validTypes = [AttributeType::TEXTAREA, AttributeType::RICH_TEXT];
             Assert::inArray((string) $this->getType(), $validTypes);
-            $this->type = new AttributeType(($isRichRextArea) ? AttributeType::RICH_TEXT : AttributeType::TEXTAREA);
+            $this->type = new AttributeType(($isRichTextArea) ? AttributeType::RICH_TEXT : AttributeType::TEXTAREA);
         }
     }
 }
