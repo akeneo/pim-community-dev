@@ -55,10 +55,17 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $variantProductB->setFamilyVariant($familyVariant);
         $variantProductB->setParent($productModel);
 
+        $variantProductBBis = new Product(strtoupper($variantProductB->getUuid()->toString()));
+        $variantProductBBis->addValue($identifierB);
+        $variantProductBBis->setIdentifier('product_b');
+        $variantProductBBis->setFamilyVariant($familyVariant);
+        $variantProductBBis->setParent($productModel);
+
         $this->addCombination($productModel, '[a_color]');
         $this->addCombination($anotherProductModel, '[another_color]');
         $this->addCombination($variantProductA, '[a_size]');
         $this->addCombination($variantProductB, '[another_size]');
+        $this->addCombination($variantProductBBis, '[another_size]');
     }
 
     function it_does_not_add_same_combination_of_axis_values_twice_for_product_models()
@@ -178,9 +185,9 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
 
         $exception = new AlreadyExistingAxisValueCombinationException(
             '4f8db754-4eff-4b67-bdba-6eac4d17f622',
-            'Variant product "4f8db754-4eff-4b67-bdba-6eac4d17f622" already have the "[optionA],1" combination of axis values.'
+            'Variant product "4f8db754-4eff-4b67-bdba-6eac4d17f622" already have the "[OptionA],1" combination of axis values.'
         );
         $this->shouldThrow($exception)
-            ->during('addCombination', [$duplicateProduct, '[optionA],1']);
+            ->during('addCombination', [$duplicateProduct, '[OptionA],1']);
     }
 }
