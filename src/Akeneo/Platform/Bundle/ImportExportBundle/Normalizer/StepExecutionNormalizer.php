@@ -44,6 +44,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
             'label' => $stepExecution->getStepName(),
             'job' => $stepExecution->getJobExecution()->getJobInstance()->getJobName(),
             'status' => $this->normalizeStatus($stepExecution->getStatus()->getValue()),
+            'status_code' => (string) $stepExecution->getStatus(),
             'summary' => $this->normalizeSummary($stepExecution->getSummary()),
             'startedAt' => $this->presenter->present($stepExecution->getStartTime(), $context),
             'endedAt' => $this->presenter->present($stepExecution->getEndTime(), $context),

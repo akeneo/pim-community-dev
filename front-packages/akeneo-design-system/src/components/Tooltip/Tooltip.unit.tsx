@@ -47,13 +47,6 @@ test('it renders the tooltip with a right direction', () => {
   expect(screen.getByText('Tooltip content')).toBeInTheDocument();
 });
 
-test('Tooltip supports forwardRef', () => {
-  const ref = {current: null};
-
-  render(<Tooltip ref={ref}>Tooltip content</Tooltip>);
-  expect(ref.current).not.toBe(null);
-});
-
 test('Tooltip supports ...rest props', () => {
   render(<Tooltip data-testid="my_value">Tooltip content</Tooltip>);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();

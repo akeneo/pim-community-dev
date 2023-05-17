@@ -94,7 +94,7 @@ const SectionTitle = ({children, ...rest}: SectionTitleProps) => {
         level: 'tertiary',
         size: 'small',
         ghost: true,
-        ...child.props
+        ...child.props,
       });
     }
 

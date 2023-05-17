@@ -73,6 +73,17 @@ test('it shows the progress of a job', () => {
         {
           jobName: 'csv_product_export',
           stepName: 'export',
+          status: 'PAUSED',
+          isTrackable: true,
+          hasWarning: false,
+          hasError: false,
+          duration: 14,
+          processedItems: 30,
+          totalItems: 135,
+        },
+        {
+          jobName: 'csv_product_export',
+          stepName: 'export',
           status: 'ABANDONED',
           isTrackable: true,
           hasWarning: false,

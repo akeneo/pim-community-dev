@@ -20,7 +20,7 @@ final class UpdateAttributeCommand
      */
     private function __construct(
         public readonly string $attributeUuid,
-        public readonly ?bool $isRichTextArea,
+        public readonly bool $isRichTextArea,
         public readonly ?array $labels,
     ) {
         Assert::uuid($attributeUuid);
@@ -30,7 +30,7 @@ final class UpdateAttributeCommand
     }
 
     /**
-     * @param array<string, string> $labels
+     * @param LocalizedLabels $labels
      */
     public static function create(
         string $attributeUuid,
