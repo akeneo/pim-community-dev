@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Create\CreateGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,7 +53,7 @@ class CreateIdentifierGeneratorController
         }
 
         return new JsonResponse(
-            ($this->getGeneratorHandler)(GetGeneratorCommand::fromCode($content['code'])),
+            ($this->getGeneratorHandler)(GetGeneratorQuery::fromCode($content['code'])),
             Response::HTTP_CREATED
         );
     }

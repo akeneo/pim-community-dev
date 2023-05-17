@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,8 +28,8 @@ final class GetNomenclatureController
             return new RedirectResponse('/');
         }
 
-        $command = new GetNomenclatureCommand($propertyCode);
+        $query = new GetNomenclatureQuery($propertyCode);
 
-        return new JsonResponse(($this->getNomenclatureHandler)($command));
+        return new JsonResponse(($this->getNomenclatureHandler)($query));
     }
 }
