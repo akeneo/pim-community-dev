@@ -223,8 +223,27 @@ class PropertyProcessApplierSpec extends ObjectBehavior
     }
 
     public function it_should_return_simple_select_code_with_valid_nomenclature_value(
-        SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository
+        SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository,
+        GetAttributes $getAttributes,
     ): void {
+        $simpleSelectAttribute = new Attribute(
+            self::$SIMPLE_SELECT_ATTRIBUTE_CODE,
+            AttributeTypes::OPTION_SIMPLE_SELECT,
+            [],
+            false,
+            false,
+            null,
+            null,
+            null,
+            '',
+            [],
+            false,
+            []
+        );
+        $getAttributes
+            ->forCode(self::$SIMPLE_SELECT_ATTRIBUTE_CODE)
+            ->shouldBeCalledOnce()
+            ->willReturn($simpleSelectAttribute);
         $nomenclature = new NomenclatureDefinition('<=', 3, false, ['l' => 'lar']);
         $simpleSelectNomenclatureRepository
             ->get(self::$SIMPLE_SELECT_ATTRIBUTE_CODE)
@@ -315,8 +334,8 @@ class PropertyProcessApplierSpec extends ObjectBehavior
                 Process::fromNormalized([
                     'type' => Process::PROCESS_TYPE_NOMENCLATURE,
                 ]),
-                ReferenceEntityProperty::type(),
                 self::$REF_ENTITY_ATTRIBUTE_CODE,
+                'value',
                 self::$TARGET,
                 self::$PREFIX,
             ]
@@ -327,11 +346,6 @@ class PropertyProcessApplierSpec extends ObjectBehavior
         GetAttributes $getAttributes
     ): void
     {
-        $getAttributes
-            ->forCode(self::$REF_ENTITY_ATTRIBUTE_CODE)
-            ->shouldBeCalledOnce()
-            ->willReturn(null);
-
         $unexpectedAttribute = new Attribute(
             'unexpectedAttribute',
             AttributeTypes::TEXT,
@@ -346,6 +360,10 @@ class PropertyProcessApplierSpec extends ObjectBehavior
             false,
             []
         );
+        $getAttributes
+            ->forCode(self::$REF_ENTITY_ATTRIBUTE_CODE)
+            ->shouldBeCalledOnce()
+            ->willReturn($unexpectedAttribute);
 
         $this->shouldThrow(UnexpectedAttributeTypeException::class)->during(
             'apply',
@@ -353,8 +371,8 @@ class PropertyProcessApplierSpec extends ObjectBehavior
                 Process::fromNormalized([
                     'type' => Process::PROCESS_TYPE_NOMENCLATURE,
                 ]),
-                ReferenceEntityProperty::type(),
                 self::$REF_ENTITY_ATTRIBUTE_CODE,
+                'value',
                 self::$TARGET,
                 self::$PREFIX,
             ]

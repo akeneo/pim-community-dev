@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Automation\IdentifierGenerator\Application\Update;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedAttributeException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnexpectedAttributeTypeException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureHandler;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetNomenclatureQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Validation\CommandValidatorInterface;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\NomenclatureDefinition;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Property\FamilyProperty;
@@ -38,8 +38,8 @@ final class UpdateNomenclatureHandler
     {
         $this->validator->validate($command);
 
-        $getNomenclatureCommand = new GetNomenclatureCommand($command->getPropertyCode());
-        $normalizedNomenclature = ($this->getNomenclatureHandler)($getNomenclatureCommand);
+        $getNomenclatureQuery = new GetNomenclatureQuery($command->getPropertyCode());
+        $normalizedNomenclature = ($this->getNomenclatureHandler)($getNomenclatureQuery);
 
         $nomenclatureDefinition = new NomenclatureDefinition(
             $normalizedNomenclature['operator'],

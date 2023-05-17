@@ -21,19 +21,25 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Structure;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\Target;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Model\TextTransformation;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\FamilyNomenclatureRepository;
+use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\ReferenceEntityNomenclatureRepository;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\SimpleSelectNomenclatureRepository;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
 
 class GenerateSimpleSelectHandlerSpec extends ObjectBehavior
 {
     public function let(
         FamilyNomenclatureRepository $familyNomenclatureRepository,
-        SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository
+        SimpleSelectNomenclatureRepository $simpleSelectNomenclatureRepository,
+        GetAttributes $getAttributes,
+        ReferenceEntityNomenclatureRepository $referenceEntityNomenclatureRepository,
     ) {
         $this->beConstructedWith(
             new PropertyProcessApplier(
                 $familyNomenclatureRepository->getWrappedObject(),
-                $simpleSelectNomenclatureRepository->getWrappedObject()
+                $simpleSelectNomenclatureRepository->getWrappedObject(),
+                $getAttributes->getWrappedObject(),
+                $referenceEntityNomenclatureRepository->getWrappedObject(),
             )
         );
     }

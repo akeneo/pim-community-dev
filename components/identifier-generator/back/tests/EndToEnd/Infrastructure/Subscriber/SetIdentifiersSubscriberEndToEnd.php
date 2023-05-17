@@ -16,12 +16,9 @@ use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\Cre
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
-use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Updater\AttributeUpdater;
-use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Automation\IdentifierGenerator\EndToEnd\Infrastructure\EndToEndTestCase;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
@@ -121,8 +118,8 @@ class SetIdentifiersSubscriberEndToEnd extends EndToEndTestCase
             [
                 'type' => 'reference_entity',
                 'attributeCode' => 'a_second_reference_entity_attribute',
-                'process' => ['type' => Process::PROCESS_TYPE_NOMENCLATURE]
-            ]
+                'process' => ['type' => Process::PROCESS_TYPE_NOMENCLATURE],
+            ],
         ]);
         $product = $this->createProduct(userIntents: [
             new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'akeneo'),
