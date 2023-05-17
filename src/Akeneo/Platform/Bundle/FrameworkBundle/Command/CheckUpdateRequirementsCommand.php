@@ -50,7 +50,7 @@ class CheckUpdateRequirementsCommand extends Command
     private function validateThatElasticsearchIndexesAreCompliant(RequirementCollection $requirements): void
     {
         $firstElasticsearchHost = current($this->elasticsearchHosts);
-        $registeredIndexes = $this->getIndexesUsedByThePIM();
+        $registeredAlias = $this->getAliasUsedByThePIM();
 
         $indexConfigurations = $this->client->indices()->get(['index' => '*']);
         foreach ($indexConfigurations as $indexName => $indexConfiguration) {
@@ -64,7 +64,7 @@ class CheckUpdateRequirementsCommand extends Command
                 new Requirement(
                     str_starts_with($versionCreated, '7') || str_starts_with($versionCreated, '8'),
                     "Index $indexName creation version",
-                    !in_array($indexName, $registeredIndexes) ?
+                    !in_array($aliasName, $registeredAlias) ?
                         "The index $indexName seems to not be used by the PIM, please check if you use it. If you didn't use it delete it: curl --location --request DELETE 'http://$firstElasticsearchHost/$indexName'. If you want to keep it, reindex it with ElasticSearch 7: bin/console akeneo:elasticsearch:update-index-version $aliasName"
                         : "The index $indexName should be re-indexed in order to be created with Elasticsearch 7, run: bin/console akeneo:elasticsearch:update-index-version $aliasName"
                 )
@@ -72,7 +72,7 @@ class CheckUpdateRequirementsCommand extends Command
         }
     }
 
-    private function getIndexesUsedByThePIM(): array
+    private function getAliasUsedByThePIM(): array
     {
         $registeredIndexNames = [];
         $clients = $this->clientRegistry->getClients();

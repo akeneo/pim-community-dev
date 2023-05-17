@@ -52,10 +52,11 @@ class UniqueAxesCombinationSet
     {
         $familyVariantCode = $entity->getFamilyVariant()->getCode();
         $parentCode = $entity->getParent()->getCode();
+        $loweredAxisValueCombination = \mb_strtolower($axisValueCombination);
 
-        if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
-            $cachedIdentifierOrUuid = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination];
-            if ($entity instanceof ProductInterface && $cachedIdentifierOrUuid['uuid'] !== $entity->getUuid()->toString()) {
+        if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination])) {
+            $cachedIdentifierOrUuid = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination];
+            if ($entity instanceof ProductInterface && $cachedIdentifierOrUuid['uuid'] !== \mb_strtolower($entity->getUuid()->toString())) {
                 throw new AlreadyExistingAxisValueCombinationException(
                     $cachedIdentifierOrUuid['identifier'] ?? $cachedIdentifierOrUuid['uuid'],
                     sprintf(
@@ -64,7 +65,7 @@ class UniqueAxesCombinationSet
                         $axisValueCombination
                     )
                 );
-            } elseif ($entity instanceof ProductModelInterface && $cachedIdentifierOrUuid['identifier'] !== $entity->getIdentifier()) {
+            } elseif ($entity instanceof ProductModelInterface && $cachedIdentifierOrUuid['identifier'] !== \mb_strtolower($entity->getIdentifier())) {
                 throw new AlreadyExistingAxisValueCombinationException(
                     $cachedIdentifierOrUuid['identifier'],
                     sprintf(
@@ -76,10 +77,10 @@ class UniqueAxesCombinationSet
             }
         }
 
-        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination]['identifier'] = $entity->getIdentifier();
+        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination])) {
+            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination]['identifier'] = \is_string($entity->getIdentifier()) ? \mb_strtolower($entity->getIdentifier()) : null;
             if ($entity instanceof ProductInterface) {
-                $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination]['uuid'] = $entity->getUuid()->toString();
+                $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$loweredAxisValueCombination]['uuid'] = \mb_strtolower($entity->getUuid()->toString());
             }
         }
     }
