@@ -95,12 +95,11 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
         $this->checkColumnNumber($countHeaders, $countData, $data, $filePath);
 
         if ($countHeaders > $countData) {
-            $missingValuesCount = $countHeaders - $countData;
-            $missingValues = array_fill(0, $missingValuesCount, '');
-            $data = array_merge($data, $missingValues);
+            $dataMask = array_fill(0, $countHeaders, '');
+            $data = array_replace($dataMask, $data);
         }
 
-        $item = array_combine($this->fileIterator->getHeaders(), $data);
+        $item = array_combine($headers, $data);
 
         try {
             $item = $this->converter->convert($item, $this->getArrayConverterOptions());

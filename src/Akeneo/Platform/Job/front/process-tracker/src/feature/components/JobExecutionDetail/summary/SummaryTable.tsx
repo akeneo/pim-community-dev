@@ -4,7 +4,7 @@ import {Table, Badge, Helper, Level} from 'akeneo-design-system';
 import {Translate, useTranslate} from '@akeneo-pim-community/shared';
 import {InnerTable} from './InnerTable';
 import {WarningHelper} from './WarningHelper';
-import {JobExecution, StepExecution} from '../../../models';
+import {JobExecution, StepExecution, isPaused} from '../../../models';
 
 const SpacedTable = styled(Table)`
   margin-bottom: 40px;
@@ -38,6 +38,10 @@ const getStepStatusLevel = (step: StepExecution): Level => {
 
   if (0 < step.warnings.length) {
     return 'warning';
+  }
+
+  if (isPaused(step.status_code)) {
+    return 'tertiary';
   }
 
   return 'primary';
