@@ -42,11 +42,9 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
     <AttributeListContainer>
       <SectionTitle sticky={0}>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
-        {featureFlags.isEnabled('category_template_customization') && (
           <AddAttributeButton ghost size="small" level="tertiary" onClick={openAddTemplateAttributeModal}>
             {translate('akeneo.category.template.add_attribute.add_button')}
           </AddAttributeButton>
-        )}
       </SectionTitle>
       <ScrollablePanel>
         <Table>

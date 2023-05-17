@@ -5,7 +5,6 @@ type Configuration = {
   features: {
     permission: boolean;
     enriched_category: boolean;
-    category_template_customization: boolean;
     category_update_template_attribute: boolean;
   };
   acls: {
@@ -26,7 +25,6 @@ type WriteConfiguration = {
   features?: {
     permission?: boolean;
     enriched_category?: boolean;
-    category_template_customization?: boolean;
     category_update_template_attribute?: boolean;
   };
   acls?: {
@@ -56,7 +54,6 @@ const DEFAULT_CONFIGURATION: Configuration = {
   features: {
     permission: true,
     enriched_category: true,
-    category_template_customization: true,
     category_update_template_attribute: true,
   },
   acls: {
@@ -83,7 +80,6 @@ const ConfigurationProvider: FC = ({children}) => {
       features: {
         permission: false,
         enriched_category: true,
-        category_template_customization: true,
         category_update_template_attribute: true,
       },
       acls: {
@@ -106,7 +102,6 @@ const ConfigurationProvider: FC = ({children}) => {
       features: {
         permission: true,
         enriched_category: true,
-        category_template_customization: true,
         category_update_template_attribute: true,
       },
       acls: {
