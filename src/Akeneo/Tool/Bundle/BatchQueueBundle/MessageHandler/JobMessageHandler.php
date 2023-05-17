@@ -116,6 +116,12 @@ final class JobMessageHandler implements MessageSubscriberInterface
 
         foreach ($jobMessage->getOptions() as $optionName => $optionValue) {
             switch (true) {
+                case 'config' === $optionName:
+                    $arguments[] = sprintf(
+                        '--config=%s',
+                        is_array($optionValue) ? \json_encode($optionValue) : $optionValue
+                    );
+                    break;
                 case true === $optionValue:
                     $arguments[] = sprintf('--%s', $optionName);
                     break;
