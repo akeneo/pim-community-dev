@@ -1,6 +1,12 @@
 import {Button, Checkbox, Field, Helper, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
-import {LabelCollection, useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
+import {
+    LabelCollection,
+    useDebounceCallback,
+    useFeatureFlags,
+    userContext,
+    useTranslate
+} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {getLabelFromAttribute} from '../attributes';
@@ -21,6 +27,7 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
   const [translations, setTranslations] = useState<LabelCollection>(attribute.labels);
   const editAttributeTranslations = useEditAttributeTranslations(attribute.template_uuid, attribute.uuid);
   const editTranslationsTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const debouncedTranslationsEdit = useDebounceCallback(editAttributeTranslations, 500);
 
   const [
     isDeactivateTemplateAttributeModalOpen,
@@ -39,10 +46,7 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
       clearTimeout(editTranslationsTimerRef.current);
     }
     setTranslations({...translations, [locale]: value});
-    editTranslationsTimerRef.current = setTimeout(() => {
-      editAttributeTranslations({locale, value});
-      console.log(value);
-    }, 2000);
+    debouncedTranslationsEdit({locale, value});
   };
 
   return (
