@@ -52,8 +52,9 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $translator->trans('job_execution.summary.write')->willReturn('Write');
 
         $stepExecution->getStatus()->willReturn($status);
-        $status->getValue()->willReturn(9);
-        $translator->trans('pim_import_export.batch_status.9')->willReturn('PENDING');
+        $status->getValue()->willReturn(1);
+        $status->__toString()->willReturn('COMPLETED');
+        $translator->trans('pim_import_export.batch_status.1')->willReturn('Completed');
 
         $stepExecution->getErrors()->willReturn([
             'first error message',
@@ -99,7 +100,8 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
             [
                 'label'     => 'such_step',
                 'job'       => 'wow_job',
-                'status'    => 'PENDING',
+                'status'    => 'Completed',
+                'status_code' => 'COMPLETED',
                 'summary'   => ['Read' => 12, 'Write' => 50],
                 'startedAt' => '22-09-2014',
                 'endedAt'   => null,
@@ -132,8 +134,9 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $translator->trans('job_execution.summary.read')->willReturn('Read');
 
         $stepExecution->getStatus()->willReturn($status);
-        $status->getValue()->willReturn(9);
-        $translator->trans('pim_import_export.batch_status.9')->willReturn('PENDING');
+        $status->getValue()->willReturn(1);
+        $status->__toString()->willReturn('COMPLETED');
+        $translator->trans('pim_import_export.batch_status.1')->willReturn('Completed');
 
         $stepExecution->getErrors()->willReturn([]);
 
@@ -151,7 +154,8 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
             [
                 'label'     => 'such_step',
                 'job'       => 'wow_job',
-                'status'    => 'PENDING',
+                'status'    => 'Completed',
+                'status_code' => 'COMPLETED',
                 'summary'   => ['Read' => ['product' => 10, 'product_model' => 20]],
                 'startedAt' => '22-09-2014',
                 'endedAt'   => null,

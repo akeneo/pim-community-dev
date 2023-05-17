@@ -3,6 +3,7 @@ import {getDownloadLinks, JobExecutionArchives, isJobFinished, JobExecution} fro
 
 const jobExecution: JobExecution = {
   failures: [],
+  status: 'COMPLETED',
   meta: {
     logExists: false,
     archives: {
@@ -98,5 +99,7 @@ describe('job execution', () => {
     expect(isJobFinished(getJobWithStatus('STARTING'))).toBe(false);
     expect(isJobFinished(getJobWithStatus('IN_PROGRESS'))).toBe(false);
     expect(isJobFinished(getJobWithStatus('STOPPING'))).toBe(false);
+    expect(isJobFinished(getJobWithStatus('PAUSING'))).toBe(false);
+    expect(isJobFinished(getJobWithStatus('PAUSED'))).toBe(false);
   });
 });
