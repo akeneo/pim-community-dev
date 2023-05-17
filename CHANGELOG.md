@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10972: Fix shifting data during import
 - PIM-10950: Fix wrongly removed code filter on attribute page
 - PIM-10960: Fix no violation raised when importing variant with already existing siblings
 - PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
@@ -75,6 +76,7 @@
 - PIM-10976: Fix variant product counter on Product Model Edit Form for variant products without identifier
 - PIM-10983: Error HTTP 500 when adding a custom app
 - PIM-10980: Fix pagination update when applying filters on product association grid
+- PIM-10977 : Prevent api users to log in to the PIM via the UI
 
 ## Improvements
 
