@@ -201,9 +201,16 @@ final class IndexUpdaterClient
         $this->assertResponseIsAcknowledged($this->client->indices()->delete(['index' => $indexName]));
     }
 
-    public function indexHaveAlias(string $indexName): bool
+    public function isAnAlias(string $indexName): bool
     {
         return $this->client->indices()->existsAlias(['name' => $indexName]);
+    }
+
+    public function haveAlias(string $indexName): bool
+    {
+        $aliasConfiguration = $this->client->indices()->get(['index' => $indexName]);
+
+        return array_keys($aliasConfiguration)[0] === $indexName;
     }
 
     public function renameAlias(string $sourceAliasName, string $sourceIndexName, string $destinationIndexName): void
