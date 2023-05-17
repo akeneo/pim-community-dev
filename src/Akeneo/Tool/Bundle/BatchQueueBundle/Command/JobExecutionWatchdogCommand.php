@@ -115,6 +115,7 @@ final class JobExecutionWatchdogCommand extends Command
             );
             $process = new Process($processArguments);
             $process->setTimeout(null);
+            pcntl_signal(\SIGTERM, fn () => $process->signal(SIGTERM));
 
             $this->logger->notice('Launching job execution "{job_execution_id}".', [
                 'job_execution_id' => $jobExecutionId,
