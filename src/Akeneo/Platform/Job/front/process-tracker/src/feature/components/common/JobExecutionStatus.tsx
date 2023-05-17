@@ -1,17 +1,25 @@
 import React from 'react';
-import {Badge, Level} from 'akeneo-design-system';
+import styled from 'styled-components';
+import {Badge, Level, Tooltip} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {JobStatus} from '../../models';
+import {JobStatus, isInProgress, isPaused} from '../../models';
+
+const StatusContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const badgeLevel = (status: JobStatus, hasError: boolean, hasWarning: boolean): Level => {
-  if (status === 'FAILED' || hasError) {
-    return 'danger';
+  switch (true) {
+    case status === 'FAILED' || hasError:
+      return 'danger';
+    case hasWarning:
+      return 'warning';
+    case isPaused(status):
+      return 'tertiary';
+    default:
+      return 'primary';
   }
-  if (hasWarning) {
-    return 'warning';
-  }
-
-  return 'primary';
 };
 
 type JobExecutionStatusProps = {
@@ -30,18 +38,25 @@ const JobExecutionStatus = ({
   hasError,
   ...props
 }: JobExecutionStatusProps) => {
-  const level = badgeLevel(status, hasError, hasWarning);
   const translate = useTranslate();
+  const level = badgeLevel(status, hasError, hasWarning);
+  const showTooltip = isPaused(status);
 
-  let label = translate(`akeneo_job.job_status.${status}`);
-  if (['STARTING', 'IN_PROGRESS'].includes(status)) {
-    label = `${label} ${currentStep}/${totalSteps}`;
-  }
+  const label = isInProgress(status)
+    ? `${translate(`akeneo_job.job_status.${status}`)} ${currentStep}/${totalSteps}`
+    : translate(`akeneo_job.job_status.${status}`);
 
   return (
-    <Badge level={level} {...props}>
-      {label}
-    </Badge>
+    <StatusContainer>
+      <Badge level={level} {...props}>
+        {label}
+      </Badge>
+      {showTooltip && (
+        <Tooltip direction="bottom" iconSize={18}>
+          {translate('akeneo_job_process_tracker.tooltip.paused')}
+        </Tooltip>
+      )}
+    </StatusContainer>
   );
 };
 
