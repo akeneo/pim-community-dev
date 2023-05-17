@@ -5,13 +5,6 @@ pim_category_template_rest_get_by_template_uuid:
         _feature: enriched_category
     methods: [GET]
 
-pim_category_template_rest_get_by_template_uuid_in_memory:
-    path: /rest/in-memory/{templateUuid}
-    defaults:
-        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplateController:byTemplateUuidInMemory
-        _feature: enriched_category
-    methods: [GET]
-
 pim_category_template_rest_create:
     path: /rest/{categoryTreeId}
     defaults:
@@ -30,6 +23,13 @@ pim_category_template_rest_add_attribute:
     defaults:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\AddAttributeController
         _feature: category_template_customization
+    methods: [POST]
+
+pim_category_template_rest_update_attribute:
+    path: /rest/{templateUuid}/attribute/{attributeUuid}
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateAttributeController
+        _feature: category_update_template_attribute
     methods: [POST]
 
 pim_category_template_rest_delete_attribute:

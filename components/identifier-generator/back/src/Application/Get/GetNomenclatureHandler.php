@@ -30,12 +30,12 @@ final class GetNomenclatureHandler
      *     values: array<string, string>
      * }
      */
-    public function __invoke(GetNomenclatureCommand $command): array
+    public function __invoke(GetNomenclatureQuery $query): array
     {
-        if ($command->propertyCode() === FamilyProperty::TYPE) {
+        if ($query->propertyCode() === FamilyProperty::TYPE) {
             $nomenclature = $this->familyNomenclatureRepository->get() ?? new NomenclatureDefinition();
         } else {
-            $nomenclature = $this->simpleSelectNomenclatureRepository->get($command->propertyCode()) ?? new NomenclatureDefinition();
+            $nomenclature = $this->simpleSelectNomenclatureRepository->get($query->propertyCode()) ?? new NomenclatureDefinition();
         }
 
         Assert::allNotNull($nomenclature->values());

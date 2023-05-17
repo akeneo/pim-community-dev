@@ -5,6 +5,7 @@ namespace AkeneoTest\Platform\Integration\Installer;
 use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection;
 
 /**
  * @author  JM Leroux <jmleroux.pro@gmail.com>
@@ -33,7 +34,7 @@ class InstallStatusManagerIntegration extends TestCase
         $this->assertTrue($installStatusManager->isPimInstalled());
     }
 
-    public function test_pim_not_installed()
+    public function test_pim_not_installed_if_no_data_in_configuration_table()
     {
         $installStatusManager = $this->get('pim_installer.install_status_manager');
         $this->assertFalse($installStatusManager->isPimInstalled());
@@ -42,7 +43,7 @@ class InstallStatusManagerIntegration extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }

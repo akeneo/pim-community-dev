@@ -91,7 +91,8 @@ const getDownloadLinks = (jobExecutionArchives: JobExecutionArchives | null): Do
 };
 
 const isJobFinished = (jobExecution: JobExecution | null): boolean =>
-  null !== jobExecution && !['STARTING', 'IN_PROGRESS', 'STOPPING'].includes(jobExecution.tracking.status);
+  null !== jobExecution &&
+  !['STARTING', 'IN_PROGRESS', 'STOPPING', 'PAUSING', 'PAUSED'].includes(jobExecution.tracking.status);
 
 export {getDownloadLinks, isJobFinished};
 export type {JobExecution, JobExecutionArchives, JobExecutionTracking, JobInstance, StepExecutionTracking};

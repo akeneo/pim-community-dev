@@ -38,6 +38,13 @@ services:
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
             - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
 
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateAttributeController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+            - '@pim_enrich.normalizer.violation'
+
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
         public: true
         arguments:
@@ -51,8 +58,6 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Query\GetTemplate'
             - '@Akeneo\Category\Application\Query\GetAttribute'
-            - '@Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory'
-            - '@Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory'
 
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController:

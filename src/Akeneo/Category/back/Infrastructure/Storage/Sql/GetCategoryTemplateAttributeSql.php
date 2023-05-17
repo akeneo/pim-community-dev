@@ -110,6 +110,16 @@ class GetCategoryTemplateAttributeSql implements GetAttribute
         return AttributeCollection::fromArray($attributes);
     }
 
+    public function byUuid(AttributeUuid $attributeUuid): ?Attribute
+    {
+        $attributes = $this->byUuids([$attributeUuid]);
+        if ($attributes->count() > 0) {
+            return $attributes->getAttributes()[0];
+        } else {
+            return null;
+        }
+    }
+
     /**
      * @throws \Doctrine\DBAL\Exception
      * @throws \JsonException
