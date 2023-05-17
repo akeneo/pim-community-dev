@@ -1,5 +1,7 @@
 # 6.0.x
 
+- PIM-10872 : Fix case-sensitive when patching scopable price attribute
+
 # 6.0.84 (2023-05-16)
 
 # 6.0.83 (2023-05-15)
