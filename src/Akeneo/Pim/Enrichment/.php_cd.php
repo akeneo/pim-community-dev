@@ -280,6 +280,7 @@ $rules = [
         'Akeneo\Category\Infrastructure\Component\Classification\CategoryAwareInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryFilterableRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
+        'Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\ACLUpdateCategoryUpdatedDate',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

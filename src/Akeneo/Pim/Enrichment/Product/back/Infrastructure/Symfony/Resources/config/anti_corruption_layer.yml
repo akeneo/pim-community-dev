@@ -4,8 +4,8 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
 
-    Akeneo\Category\Domain\Query\ACLUpdateCategoryUpdatedDate:
-        class: Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\ACLUpdateCategoryUpdatedDate
+    Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\ACLUpdateCategoryUpdatedDate:
+        class: ~
         arguments:
             - '@Akeneo\Category\Domain\Query\UpdateCategoryUpdatedDate'
 

@@ -84,6 +84,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface',
         'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
+        'Akeneo\Category\Domain\Query\UpdateCategoryUpdatedDate',
 
         // Symfony, Doctrine DBAL and other libs
         'Webmozart\Assert\Assert',
