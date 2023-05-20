@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\AttributeRemovalSubscriber;
 use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\AttributeIsAFamilyVariantAxis;
 use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
@@ -104,7 +105,8 @@ class AttributeController
         NormalizerInterface $lightAttributeNormalizer,
         TranslatorInterface $translator,
         AttributeIsAFamilyVariantAxis $attributeIsAFamilyVariantAxisQuery,
-        ObjectRepository $channelRepository
+        ObjectRepository $channelRepository,
+        private readonly AttributeRemovalSubscriber $attributeRemovalSubscriber,
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->normalizer = $normalizer;
@@ -346,6 +348,8 @@ class AttributeController
 
             return new JsonResponse(['message' => $message], Response::HTTP_BAD_REQUEST);
         }
+
+        $this->attributeRemovalSubscriber->flushEvents();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

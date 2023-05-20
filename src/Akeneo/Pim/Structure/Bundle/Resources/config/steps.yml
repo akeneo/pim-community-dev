@@ -465,6 +465,7 @@ services:
             - '@pim_enrich.repository.attribute.search'
             - '@pim_catalog.remover.attribute'
             - '@translator'
+            - '@pim_catalog.event_subscriber.attribute_removal'
 
     pim_connector.step.delete_attributes:
         class: 'Akeneo\Tool\Component\Connector\Step\TaskletStep'

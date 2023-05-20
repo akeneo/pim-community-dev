@@ -124,6 +124,7 @@ services:
             - '@translator'
             - '@akeneo.pim.structure.query.attribute_is_an_family_variant_axis'
             - '@pim_catalog.repository.channel'
+            - '@pim_catalog.event_subscriber.attribute_removal'
 
     pim_enrich.controller.rest.attribute_group:
         public: true

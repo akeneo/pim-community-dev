@@ -27,10 +27,10 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
     private array $attributeCodesToClean = [];
 
     public function __construct(
-        private AttributeCodeBlacklister $attributeCodeBlacklister,
-        private JobLauncherInterface $jobLauncher,
-        private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        private TokenStorageInterface $tokenStorage,
+        private readonly AttributeCodeBlacklister $attributeCodeBlacklister,
+        private readonly JobLauncherInterface $jobLauncher,
+        private readonly IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        private readonly TokenStorageInterface $tokenStorage,
     ) {
     }
 
@@ -38,8 +38,6 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::POST_REMOVE => 'blacklistAttributeCodeAndLaunchJob',
-            TerminateEvent::class => 'flushEvents',
-            ConsoleTerminateEvent::class => 'flushEvents',
         ];
     }
 

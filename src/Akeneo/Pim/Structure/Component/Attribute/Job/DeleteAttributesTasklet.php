@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Attribute\Job;
 
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\AttributeRemovalSubscriber;
 use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -26,6 +27,7 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
         private readonly SearchableRepositoryInterface $attributeRepository,
         private readonly RemoverInterface $remover,
         private readonly TranslatorInterface $translator,
+        private readonly AttributeRemovalSubscriber $attributeRemovalSubscriber,
     ) {
     }
 
@@ -51,6 +53,8 @@ class DeleteAttributesTasklet implements TaskletInterface, TrackableTaskletInter
         foreach ($attributes as $attribute) {
             $this->delete($attribute);
         }
+
+        $this->attributeRemovalSubscriber->flushEvents();
     }
 
     /**
