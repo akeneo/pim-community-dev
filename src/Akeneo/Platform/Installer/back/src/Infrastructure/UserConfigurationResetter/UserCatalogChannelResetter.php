@@ -16,8 +16,10 @@ namespace Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter;
 use Akeneo\Platform\Installer\Domain\Service\UserConfigurationResetterInterface;
 use Doctrine\DBAL\Connection;
 
-class UserCatalogScopeResetter implements UserConfigurationResetterInterface
+class UserCatalogChannelResetter implements UserConfigurationResetterInterface
 {
+    private const DEFAULT_CATALOG_CHANNEL_CODE = 'ecommerce';
+
     public function __construct(private readonly Connection $connection)
     {
     }
@@ -28,12 +30,14 @@ class UserCatalogScopeResetter implements UserConfigurationResetterInterface
             UPDATE oro_user SET catalogScope_id = (
                 SELECT id
                 FROM pim_catalog_channel 
-                WHERE code = 'ecommerce'
+                WHERE code = :defaultCatalogChannelCode
             ) 
             WHERE catalogScope_id NOT IN (
                 SELECT id 
                 FROM pim_catalog_channel
             )
-        SQL);
+        SQL, [
+            'defaultCatalogChannelCode' => self::DEFAULT_CATALOG_CHANNEL_CODE,
+        ]);
     }
 }

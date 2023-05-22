@@ -26,21 +26,21 @@ class UserCatalogLocaleResetterTest extends TestCase
      */
     public function it_does_not_change_the_user_catalog_locale_if_the_locale_still_exist()
     {
-        $this->assertUserCalogLocale('fr_FR');
+        $this->assertUserCatalogLocale('fr_FR');
         $this->getResetter()->execute();
-        $this->assertUserCalogLocale('fr_FR');
+        $this->assertUserCatalogLocale('fr_FR');
     }
 
     /**
      * @test
      */
-    public function it_changes_the_user_catalog_locale_to_default_catalog_locale_if_the_locale_does_not_exist()
+    public function it_changes_the_user_catalog_locale_to_en_US_if_the_locale_does_not_exist_anymore()
     {
-        $this->assertUserCalogLocale('fr_FR');
+        $this->assertUserCatalogLocale('fr_FR');
         $this->deleteLocale('fr_FR');
 
         $this->getResetter()->execute();
-        $this->assertUserCalogLocale('en_US');
+        $this->assertUserCatalogLocale('en_US');
     }
 
     protected function getConfiguration(): Configuration
@@ -53,7 +53,7 @@ class UserCatalogLocaleResetterTest extends TestCase
         return $this->get('Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserCatalogLocaleResetter');
     }
 
-    private function assertUserCalogLocale(string $expectedCatalogLocale): void
+    private function assertUserCatalogLocale(string $expectedCatalogLocale): void
     {
         $sql = <<<SQL
             SELECT pim_catalog_locale.code 

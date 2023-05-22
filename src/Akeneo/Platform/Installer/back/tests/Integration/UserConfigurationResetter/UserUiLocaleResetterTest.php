@@ -24,7 +24,7 @@ class UserUiLocaleResetterTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_change_the_user_catalog_locale_if_the_locale_still_exist()
+    public function it_does_not_change_the_user_ui_locale_if_the_locale_still_exist()
     {
         $this->assertUserUiLocale('fr_FR');
         $this->getResetter()->execute();
@@ -34,7 +34,7 @@ class UserUiLocaleResetterTest extends TestCase
     /**
      * @test
      */
-    public function it_changes_the_user_catalog_locale_to_default_catalog_locale_if_the_locale_does_not_exist()
+    public function it_changes_the_user_ui_locale_to_en_US_if_the_locale_does_not_exist_anymore()
     {
         $this->assertUserUiLocale('fr_FR');
         $this->deleteLocale('fr_FR');
