@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UndefinedAttributeException;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\UnexpectedAttributeTypeException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateNomenclatureHandler;
@@ -12,6 +14,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -45,6 +48,10 @@ final class UpdateNomenclatureController
             ($this->updateNomenclatureHandler)($command);
         } catch (ViolationsException $exception) {
             return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
+        } catch (UndefinedAttributeException $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        } catch (UnexpectedAttributeTypeException $e) {
+            throw new BadRequestHttpException($e->getMessage());
         }
 
         return new JsonResponse();

@@ -1,5 +1,5 @@
-import {FamilyProperty, SimpleSelectProperty} from '.';
+import {FamilyProperty, RefEntityProperty, SimpleSelectProperty} from '.';
 
-type CanUseNomenclatureProperty = FamilyProperty | SimpleSelectProperty;
+type CanUseNomenclatureProperty = FamilyProperty | SimpleSelectProperty | RefEntityProperty;
 
 export type {CanUseNomenclatureProperty};

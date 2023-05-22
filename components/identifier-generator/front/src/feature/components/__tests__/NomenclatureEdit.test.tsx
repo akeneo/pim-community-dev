@@ -7,9 +7,11 @@ import {
   Nomenclature,
   Operator,
   PROPERTY_NAMES,
+  RefEntityProperty,
   SimpleSelectProperty,
 } from '../../models';
 import {NotificationLevel} from '@akeneo-pim-community/shared';
+import {PaginateOption} from '../../models/option';
 
 jest.mock('../NomenclatureValuesDisplayFilter');
 jest.mock('../OperatorSelector');
@@ -354,6 +356,82 @@ describe('NomenclatureEdit', () => {
     };
 
     render(<NomenclatureEdit selectedProperty={selectedPropertySimpleSelect} />);
+    fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
+
+    expect(await screen.findByText('pim_identifier_generator.nomenclature.edit')).toBeInTheDocument();
+    expect(await screen.findByText('black')).toBeInTheDocument();
+    expect(await screen.findByText('white')).toBeInTheDocument();
+    expect(await screen.findByText('red')).toBeInTheDocument();
+    expect(await screen.findByText('Black label')).toBeInTheDocument();
+    expect(await screen.findByText('[white]')).toBeInTheDocument();
+    expect(await screen.findByText('[red]')).toBeInTheDocument();
+    expect(screen.getByTitle('BLA')).toBeInTheDocument();
+    expect(screen.getByTitle('WHI')).toBeInTheDocument();
+    expect(screen.getByText('pim_identifier_generator.nomenclature.helper')).toBeVisible();
+  });
+
+  it('should render the record codes, labels and nomenclatures', async () => {
+    const defaultReferenceEntities: PaginateOption = {
+      items: [
+        {code: 'black', labels: {en_US: 'Black label'}},
+        {code: 'white', labels: {}},
+        {code: 'red', labels: {fr_FR: 'Rouge'}},
+      ],
+      total_count: 3,
+      matches_count: 3,
+    };
+
+    const nomenclatureRefEntities: Nomenclature = {
+      propertyCode: 'city',
+      operator: Operator.EQUALS,
+      value: 3,
+      generate_if_empty: true,
+      values: {
+        black: 'BLA',
+        white: 'WHI',
+      },
+    };
+
+    const fetchImplementation = jest.fn().mockImplementation((requestUrl: string) => {
+      if (requestUrl === 'akeneo_identifier_generator_nomenclature_rest_get') {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(nomenclatureRefEntities),
+          status: 200,
+        } as Response);
+      } else if (requestUrl === 'pim_enrich_attribute_rest_get') {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              code: 'brand',
+              labels: {en_US: 'Brand'},
+              localizable: false,
+              scopable: false,
+              type: 'pim_catalog_simpleselect',
+            }),
+          status: 200,
+        });
+      } else if (requestUrl === 'akeneo_reference_entities_record_index_rest') {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve(defaultReferenceEntities),
+          status: 200,
+        } as Response);
+      }
+      throw new Error(`Unknown url ${JSON.stringify(requestUrl)}`);
+    });
+    jest.spyOn(global, 'fetch').mockImplementation(fetchImplementation);
+
+    const referenceEntitiesProperty: RefEntityProperty = {
+      attributeCode: 'city',
+      type: PROPERTY_NAMES.REF_ENTITY,
+      process: {
+        type: AbbreviationType.NO,
+      },
+    };
+
+    render(<NomenclatureEdit selectedProperty={referenceEntitiesProperty} />);
     fireEvent.click(screen.getByText('pim_identifier_generator.nomenclature.edit'));
 
     expect(await screen.findByText('pim_identifier_generator.nomenclature.edit')).toBeInTheDocument();
