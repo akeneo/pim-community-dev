@@ -40,9 +40,20 @@ final class V20230512143522FillNewCompletenessTableZddMigration implements ZddMi
             return;
         }
 
+        $this->log('Start migrating completeness data...');
+
+        $migratedRows = 0;
+        $batches = 0;
         foreach ($this->getProductUuids() as $uuids) {
-            $this->insertCompleteness($uuids);
+            $migratedRows += $this->insertCompleteness($uuids);
+            $batches++;
+            if ($batches >= 100) {
+                $this->log(\sprintf('Completeness rows handled so far: %d', $migratedRows));
+                $batches = 0;
+            }
         }
+
+        $this->log(\sprintf('Migration successful, %d completeness row handled', $migratedRows));
     }
 
     public function migrateNotZdd(): void
@@ -56,7 +67,7 @@ final class V20230512143522FillNewCompletenessTableZddMigration implements ZddMi
         return 'FillNewCompletenessTable';
     }
 
-    private function insertCompleteness(array $uuids): void
+    private function insertCompleteness(array $uuids): int
     {
         $sql = <<<SQL
 INSERT INTO pim_catalog_product_completeness(product_uuid, completeness)
@@ -77,13 +88,11 @@ FROM pim_catalog_completeness c
 GROUP BY c.product_uuid
 ON DUPLICATE KEY UPDATE completeness = VALUES(completeness);
 SQL;
-        $rowCount = $this->connection->executeStatement(
+        return \intval($this->connection->executeStatement(
             $sql,
             ['uuids' => \array_map(static fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids)],
             ['uuids' => Connection::PARAM_STR_ARRAY]
-        );
-
-        $this->log(\sprintf('Inserted %d completeness rows', $rowCount));
+        ));
     }
 
     /**
