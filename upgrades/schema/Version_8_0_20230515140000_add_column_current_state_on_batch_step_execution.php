@@ -31,7 +31,7 @@ final class Version_8_0_20230515140000_add_column_current_state_on_batch_step_ex
 
     private function migrationWasAlreadyApplied(Schema $schema): bool
     {
-        return $schema->getTable('akeneo_batch_step_execution')->hasColumn('current_step');
+        return $schema->getTable('akeneo_batch_step_execution')->hasColumn('current_state');
     }
 
     private function disableMigrationWarning(): void
