@@ -18,6 +18,8 @@ use Doctrine\DBAL\Connection;
 
 class UserCatalogLocaleResetter implements UserConfigurationResetterInterface
 {
+    private const DEFAULT_CATALOG_LOCALE_CODE = 'en_US';
+
     public function __construct(private readonly Connection $connection)
     {
     }
@@ -28,12 +30,14 @@ class UserCatalogLocaleResetter implements UserConfigurationResetterInterface
             UPDATE oro_user SET catalogLocale_id = (
                 SELECT id 
                 FROM pim_catalog_locale 
-                WHERE code = 'en_US'
+                WHERE code = :defaultCatalogLocaleCode
             ) 
             WHERE catalogLocale_id NOT IN (
                 SELECT id 
                 FROM pim_catalog_locale
             )
-        SQL);
+        SQL, [
+            'defaultCatalogLocaleCode' => self::DEFAULT_CATALOG_LOCALE_CODE,
+        ]);
     }
 }

@@ -18,6 +18,8 @@ use Doctrine\DBAL\Connection;
 
 class UserUiLocaleResetter implements UserConfigurationResetterInterface
 {
+    private const DEFAULT_UI_LOCALE_CODE = 'en_US';
+
     public function __construct(private readonly Connection $connection)
     {
     }
@@ -28,12 +30,14 @@ class UserUiLocaleResetter implements UserConfigurationResetterInterface
             UPDATE oro_user SET ui_locale_id = (
                 SELECT id
                 FROM pim_catalog_locale 
-                WHERE code = 'en_US'
+                WHERE code = :defaultUiLocaleCode
             ) 
             WHERE ui_locale_id NOT IN (
                 SELECT id
                 FROM pim_catalog_locale
             )
-        SQL);
+        SQL, [
+            'defaultUiLocaleCode' => self::DEFAULT_UI_LOCALE_CODE,
+        ]);
     }
 }

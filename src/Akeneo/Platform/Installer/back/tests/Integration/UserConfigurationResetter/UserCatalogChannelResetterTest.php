@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Installer\Test\Integration\UserConfigurationResetter;
+namespace Akeneo\Platform\Installer\Test\Integration\UserCatalogChannelResetter;
 
-use Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserCatalogScopeResetter;
+use Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserCatalogChannelResetter;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -13,34 +13,34 @@ use Doctrine\DBAL\Connection;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class UserCatalogScopeResetterTest extends TestCase
+class UserCatalogChannelResetterTest extends TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-        $this->changeUserCatalogScope('tablet');
+        $this->changeUserCatalogChannel('tablet');
     }
 
     /**
      * @test
      */
-    public function it_does_not_change_the_user_catalog_locale_if_the_locale_still_exist()
+    public function it_does_not_change_the_user_catalog_channel_if_the_channel_still_exist()
     {
-        $this->assertUserCalogScope('tablet');
+        $this->assertUserCatalogChannel('tablet');
         $this->getResetter()->execute();
-        $this->assertUserCalogScope('tablet');
+        $this->assertUserCatalogChannel('tablet');
     }
 
     /**
      * @test
      */
-    public function it_changes_the_user_catalog_locale_to_default_catalog_locale_if_the_locale_does_not_exist()
+    public function it_changes_the_user_catalog_channel_to_default_ecommerce_if_the_locale_does_not_exist_anymore()
     {
-        $this->assertUserCalogScope('tablet');
+        $this->assertUserCatalogChannel('tablet');
         $this->deleteChannel('tablet');
 
         $this->getResetter()->execute();
-        $this->assertUserCalogScope('ecommerce');
+        $this->assertUserCatalogChannel('ecommerce');
     }
 
     protected function getConfiguration(): Configuration
@@ -48,12 +48,12 @@ class UserCatalogScopeResetterTest extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function getResetter(): UserCatalogScopeResetter
+    private function getResetter(): UserCatalogChannelResetter
     {
-        return $this->get('Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserCatalogScopeResetter');
+        return $this->get('Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserCatalogChannelResetter');
     }
 
-    private function assertUserCalogScope(string $expectedCatalogScope): void
+    private function assertUserCatalogChannel(string $expectedCatalogChannel): void
     {
         $sql = <<<SQL
             SELECT pim_catalog_channel.code 
@@ -62,12 +62,12 @@ class UserCatalogScopeResetterTest extends TestCase
             WHERE username = 'admin'
         SQL;
 
-        $actualCatalogScope = $this->getConnection()->executeQuery($sql)->fetchOne();
+        $actualCatalogChannel = $this->getConnection()->executeQuery($sql)->fetchOne();
 
-        $this->assertEquals($expectedCatalogScope, $actualCatalogScope);
+        $this->assertEquals($expectedCatalogChannel, $actualCatalogChannel);
     }
 
-    private function changeUserCatalogScope(string $channelCode)
+    private function changeUserCatalogChannel(string $channelCode)
     {
         $sql = <<<SQL
             UPDATE oro_user

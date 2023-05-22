@@ -17,7 +17,7 @@ services:
     tags:
       - {name: akeneo.installer.user_configuration_resetter}
 
-  Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserCatalogScopeResetter:
+  Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserCatalogChannelResetter:
     arguments:
       - '@database_connection'
     tags:

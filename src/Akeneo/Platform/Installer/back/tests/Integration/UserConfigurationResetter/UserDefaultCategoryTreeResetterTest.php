@@ -24,7 +24,7 @@ class UserDefaultCategoryTreeResetterTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_change_the_user_catalog_locale_if_the_locale_still_exist()
+    public function it_does_not_change_the_user_default_category_tree_if_the_category_tree_still_exist()
     {
         $this->assertUserDefaultCategoryTree('categoryA');
         $this->getResetter()->execute();
@@ -34,7 +34,7 @@ class UserDefaultCategoryTreeResetterTest extends TestCase
     /**
      * @test
      */
-    public function it_changes_the_user_catalog_locale_to_default_catalog_locale_if_the_locale_does_not_exist()
+    public function it_changes_the_user_default_category_tree_to_master_if_the_category_does_not_exist_anymore()
     {
         $this->assertUserDefaultCategoryTree('categoryA');
         $this->deleteCategoryTree('categoryA');
