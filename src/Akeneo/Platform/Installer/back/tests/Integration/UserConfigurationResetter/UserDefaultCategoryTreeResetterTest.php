@@ -34,7 +34,7 @@ class UserDefaultCategoryTreeResetterTest extends TestCase
     /**
      * @test
      */
-    public function it_changes_the_user_default_category_tree_to_master_if_the_category_does_not_exist_anymore()
+    public function it_changes_the_user_default_category_tree_to_default_category_if_the_category_does_not_exist_anymore()
     {
         $this->assertUserDefaultCategoryTree('categoryA');
         $this->deleteCategoryTree('categoryA');

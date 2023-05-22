@@ -34,7 +34,7 @@ class UserCatalogChannelResetterTest extends TestCase
     /**
      * @test
      */
-    public function it_changes_the_user_catalog_channel_to_default_ecommerce_if_the_locale_does_not_exist_anymore()
+    public function it_changes_the_user_catalog_channel_to_default_channel_if_the_channel_does_not_exist_anymore()
     {
         $this->assertUserCatalogChannel('tablet');
         $this->deleteChannel('tablet');
