@@ -28,11 +28,11 @@ class MinimalFixtureInstaller implements FixtureInstallerInterface
             'pim:installer:db',
             '--catalog',
             'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal',
-            '--skip-fixtures',
+            '--fixtures-to-skip',
             'fixtures_user_csv',
-            '--skip-fixtures',
+            '--fixtures-to-skip',
             'fixtures_user_role_csv',
-            '--skip-fixtures',
+            '--fixtures-to-skip',
             'fixtures_user_group_csv',
         ], $this->projectDir);
 
