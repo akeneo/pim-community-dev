@@ -23,10 +23,10 @@ final class GetGeneratorHandler
     /**
      * @return NormalizedIdentifierGenerator
      */
-    public function __invoke(GetGeneratorCommand $command): array
+    public function __invoke(GetGeneratorQuery $query): array
     {
         return $this->identifierGeneratorRepository
-            ->get($command->getIdentifierGeneratorCode())
+            ->get($query->getIdentifierGeneratorCode())
             ->normalize();
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Exception\ViolationsException;
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorCommand;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Update\UpdateGeneratorHandler;
@@ -57,7 +57,7 @@ final class UpdateIdentifierGeneratorController
         }
 
         return new JsonResponse(
-            ($this->getGeneratorHandler)(GetGeneratorCommand::fromCode($code)),
+            ($this->getGeneratorHandler)(GetGeneratorQuery::fromCode($code)),
             Response::HTTP_OK
         );
     }

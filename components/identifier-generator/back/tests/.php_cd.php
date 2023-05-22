@@ -23,6 +23,8 @@ $rules = [
 
     $builder->only(
         [
+            'Akeneo\Pim\Structure\Component\AttributeTypes',
+            'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
             'Akeneo\Pim\Automation\IdentifierGenerator\Domain',
             'Webmozart\Assert\Assert',
         ]

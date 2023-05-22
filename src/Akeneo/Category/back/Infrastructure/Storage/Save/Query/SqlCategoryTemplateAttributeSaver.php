@@ -34,9 +34,29 @@ class SqlCategoryTemplateAttributeSaver implements CategoryTemplateAttributeSave
         $this->insertAttributes($attributeCollection->getAttributes());
     }
 
-    public function update(TemplateUuid $templateUuid, AttributeCollection $attributeCollection): void
+    public function update(Attribute $attribute): void
     {
-        // TODO: Implement update() method.
+        if (($this->isTemplateDeactivated)($attribute->getTemplateUuid())) {
+            return;
+        }
+
+        $query = <<<SQL
+            UPDATE pim_catalog_category_attribute
+            SET attribute_type = :type
+            WHERE uuid = UUID_TO_BIN(:uuid);
+        SQL;
+
+        $this->connection->executeQuery(
+            $query,
+            [
+                'type' => (string) $attribute->getType(),
+                'uuid' => $attribute->getUuid()->getValue(),
+            ],
+            [
+                'type' => \PDO::PARAM_STR,
+                'uuid' => \PDO::PARAM_STR,
+            ],
+        );
     }
 
     /**

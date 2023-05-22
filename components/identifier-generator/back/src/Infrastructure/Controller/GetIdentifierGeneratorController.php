@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Controller;
 
-use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorCommand;
+use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorQuery;
 use Akeneo\Pim\Automation\IdentifierGenerator\Application\Get\GetGeneratorHandler;
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Exception\CouldNotFindIdentifierGeneratorException;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
@@ -38,7 +38,7 @@ final class GetIdentifierGeneratorController
         }
 
         try {
-            return new JsonResponse(($this->getGeneratorHandler)(GetGeneratorCommand::fromCode($code)));
+            return new JsonResponse(($this->getGeneratorHandler)(GetGeneratorQuery::fromCode($code)));
         } catch (CouldNotFindIdentifierGeneratorException) {
             return new JsonResponse(
                 \sprintf('Identifier generator "%s" does not exist or you do not have permission to access it.', $code),
