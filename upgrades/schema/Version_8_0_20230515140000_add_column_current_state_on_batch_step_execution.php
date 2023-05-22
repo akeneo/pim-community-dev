@@ -15,10 +15,11 @@ final class Version_8_0_20230515140000_add_column_current_state_on_batch_step_ex
 {
     public function up(Schema $schema): void
     {
-        $this->skipIf(
-            $schema->getTable('akeneo_batch_step_execution')->hasColumn('current_step'),
-            'current_state column already exists in akeneo_batch_step_execution'
-        );
+        if ($this->migrationWasAlreadyApplied($schema)) {
+            $this->disableMigrationWarning();
+
+            return;
+        }
 
         $this->addSql('ALTER TABLE akeneo_batch_step_execution ADD COLUMN current_state JSON NULL;');
     }
@@ -26,5 +27,15 @@ final class Version_8_0_20230515140000_add_column_current_state_on_batch_step_ex
     public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
+    }
+
+    private function migrationWasAlreadyApplied(Schema $schema): bool
+    {
+        return $schema->getTable('akeneo_batch_step_execution')->hasColumn('current_step');
+    }
+
+    private function disableMigrationWarning(): void
+    {
+        $this->addSql('SELECT 1');
     }
 }

@@ -27,8 +27,10 @@ final class Version_8_0_20230515140000_add_column_current_state_on_batch_step_ex
         $this->connection = $this->get('database_connection');
     }
 
-    /** @test */
-    public function it_adds_is_deactivated_column()
+    /**
+     * @test
+     */
+    public function it_adds_current_state_column(): void
     {
         if ($this->hasCurrentStateColumn()) {
             $this->dropCurrentStateColumn();
@@ -39,6 +41,19 @@ final class Version_8_0_20230515140000_add_column_current_state_on_batch_step_ex
         $this->assertTrue($this->hasCurrentStateColumn());
     }
 
+    /**
+     * @test
+     */
+    public function it_does_nothing_if_current_state_column_already_exist(): void
+    {
+        if (!$this->hasCurrentStateColumn()) {
+            $this->createCurrentStateColumn();
+        }
+
+        $this->assertTrue($this->hasCurrentStateColumn());
+        $this->reExecuteMigration(self::MIGRATION_NAME);
+        $this->assertTrue($this->hasCurrentStateColumn());
+    }
 
     protected function getConfiguration(): Configuration
     {
@@ -60,6 +75,15 @@ final class Version_8_0_20230515140000_add_column_current_state_on_batch_step_ex
             ALTER TABLE akeneo_batch_step_execution DROP COLUMN current_state;
         SQL;
 
-        $this->connection->executeQuery($sql);
+        $this->connection->executeStatement($sql);
+    }
+
+    private function createCurrentStateColumn(): void
+    {
+        $sql = <<<SQL
+            ALTER TABLE akeneo_batch_step_execution ADD COLUMN current_state JSON NULL;
+        SQL;
+
+        $this->connection->executeStatement($sql);
     }
 }
