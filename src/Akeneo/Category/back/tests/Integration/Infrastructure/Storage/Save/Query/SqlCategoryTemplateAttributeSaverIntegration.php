@@ -165,18 +165,18 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
 
         $insertedAttributes = $this->getAttribute->byTemplateUuid($templateModel->getUuid());
 
-        $longDescription = $insertedAttributes->getAttributeByCode('long_description');
-        $this->assertEquals((string) $longDescription->getType(), AttributeType::RICH_TEXT);
+        $longDescriptionAttribute = $insertedAttributes->getAttributeByCode('long_description');
+        $this->assertEquals((string) $longDescriptionAttribute->getType(), AttributeType::RICH_TEXT);
 
         $labels = [
             'fr_FR' => 'Impression',
             'en_US' => 'Print',
         ];
 
-        $longDescription->update(isRichRextArea: null, labels: $labels);
-        $this->categoryTemplateAttributeSaver->update($longDescription);
+        $longDescriptionAttribute->update(isRichRextArea: null, labels: $labels);
+        $this->categoryTemplateAttributeSaver->update($longDescriptionAttribute);
 
-        $longDescription = $insertedAttributes->getAttributeByCode('long_description');
-        $this->assertEqualsCanonicalizing($longDescription->getLabelCollection()->getTranslations(), $labels);
+        $longDescriptionAttribute = $insertedAttributes->getAttributeByCode('long_description');
+        $this->assertEqualsCanonicalizing($longDescriptionAttribute->getLabelCollection()->getTranslations(), $labels);
     }
 }
