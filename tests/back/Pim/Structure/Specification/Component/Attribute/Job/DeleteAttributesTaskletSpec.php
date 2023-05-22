@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Structure\Component\Attribute\Job;
 
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\AttributeRemovalSubscriber;
 use Akeneo\Pim\Structure\Component\Attribute\Job\DeleteAttributesTasklet;
 use Akeneo\Pim\Structure\Component\Exception\CannotRemoveAttributeException;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -24,11 +25,13 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
         SearchableRepositoryInterface $attributeRepository,
         RemoverInterface $attributeRemover,
         TranslatorInterface $translator,
+        AttributeRemovalSubscriber $attributeRemovalSubscriber,
     ): void {
         $this->beConstructedWith(
             $attributeRepository,
             $attributeRemover,
             $translator,
+            $attributeRemovalSubscriber,
         );
     }
 
@@ -63,6 +66,7 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
         RemoverInterface $attributeRemover,
         StepExecution $stepExecution,
         JobParameters $jobParameters,
+        AttributeRemovalSubscriber $attributeRemovalSubscriber,
     ): void {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -95,6 +99,8 @@ class DeleteAttributesTaskletSpec extends ObjectBehavior
         $attributeRemover->remove($attribute3)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('deleted_attributes')->shouldBeCalled();
         $stepExecution->incrementProcessedItems()->shouldBeCalled();
+
+        $attributeRemovalSubscriber->flushEvents()->shouldBeCalledOnce();
 
         $this->execute();
     }
