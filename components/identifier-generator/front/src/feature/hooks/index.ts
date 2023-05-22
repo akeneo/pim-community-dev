@@ -18,3 +18,4 @@ export * from './useGetNomenclatureValues';
 export * from './useSaveNomenclature';
 export * from './useGetPropertyItems';
 export * from './useGetAttributeLabel';
+export * from './useGetReferenceEntitiesRecord';
