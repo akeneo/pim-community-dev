@@ -26,7 +26,7 @@ class UpdateAttributeController
     }
 
     /**
-     * @param string $attributeUuid We doesn't use the $templateUuid in the code, but we keep it for interface convention. It maintains explicit link between the attribute UUID with its template.
+     * @param string $attributeUuid We don't use the $templateUuid in the code, but we keep it for interface convention. It maintains explicit link between the attribute UUID with its template.
      */
     public function __invoke(Request $request, string $templateUuid, string $attributeUuid): Response
     {

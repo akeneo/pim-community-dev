@@ -23,7 +23,7 @@ final class GetGeneratorsHandler
     /**
      * @return array<NormalizedIdentifierGenerator>
      */
-    public function __invoke(GetGeneratorsCommand $command): array
+    public function __invoke(GetGeneratorsQuery $query): array
     {
         $identifiersGenerators = $this->identifierGeneratorRepository->getAll();
 
