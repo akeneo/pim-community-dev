@@ -99,7 +99,7 @@ SQL,
         $missingUuids = array_diff($productUuidsAsStrings, array_keys($results));
         if (!empty($missingUuids)) {
             foreach ($missingUuids as $missingUuid) {
-                $results[$missingUuid] = new ProductCompletenessCollection(Uuid::fromString($missingUuid), []);
+                $results[Uuid::fromString($missingUuid)] = new ProductCompletenessCollection(Uuid::fromString($missingUuid), []);
             }
         }
 

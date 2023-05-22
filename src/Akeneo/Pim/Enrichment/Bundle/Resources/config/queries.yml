@@ -136,6 +136,17 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlGetCompletenesses:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\DoubleSqlGetCompleteness:
+        decorates: akeneo.pim.enrichment.product.query.get_product_completenesses
+        arguments:
+            - '@.inner'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlGetCompletenesses'
+            - '@database_connection'
+
     akeneo.pim.enrichment.product.query.save_product_completenesses:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveProductCompletenesses'
         arguments:
@@ -360,6 +371,18 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetProductCompletenessRatio'
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetCompletenessRatio:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SwitchSqlGetCompletenessRatio:
+        decorates: akeneo.pim.enrichment.product.query.product_completeness_ratio
+        arguments:
+            - '@.inner'
+            - '@Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\SqlGetCompletenessRatio'
+            - '@database_connection'
+
 
     akeneo.pim.enrichment.product.query.get_product_and_product_model_identifiers_with_values_ignoring_locale_and_scope:
         class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope

@@ -7,6 +7,17 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ProductCompletenessRemover:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SwitchCompletenessRemover:
+        decorates: pim_catalog.completeness.remover
+        arguments:
+            - '@.inner'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ProductCompletenessRemover'
+            - '@database_connection'
+
     pim_catalog.remover.group_type:
         class: '%pim_catalog.remover.base.class%'
         arguments:
