@@ -68,7 +68,7 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
                 'dsn' => 'gps:',
                 'options' => [
                     'project_id' => '%env(GOOGLE_CLOUD_PROJECT)%',
-                    'topic_name' => 'test_queue1',
+                    'topic_name' => '%env(default::string:PUBSUB_TOPIC_TEST_QUEUE_1)%',
                     'auto_setup' => true,
                 ],
                 'serializer' => 'akeneo_messenger.envelope.serializer',
@@ -80,9 +80,9 @@ final class MessengerConfigBuilderIntegration extends KernelTestCase
                 'dsn' => 'gps:',
                 'options' => [
                     'project_id' => '%env(GOOGLE_CLOUD_PROJECT)%',
-                    'topic_name' => 'test_queue1',
+                    'topic_name' => '%env(default::string:PUBSUB_TOPIC_TEST_QUEUE_1)%',
                     'auto_setup' => true,
-                    'subscription_name' => 'consumer1',
+                    'subscription_name' => '%env(default::string:PUBSUB_SUBSCRIPTION_CONSUMER_1)%',
                 ],
                 'serializer' => 'akeneo_messenger.envelope.serializer',
             ],

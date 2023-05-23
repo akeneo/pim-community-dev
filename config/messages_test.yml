@@ -1,13 +1,18 @@
 queues:
     test_queue1:
         message_class: 'Akeneo\Tool\Bundle\MessengerBundle\tests\config\Message1'
+        env_var: PUBSUB_TOPIC_TEST_QUEUE_1
         consumers:
             - name: consumer1
               service_handler: 'Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler1ForMessage1'
+              env_var: PUBSUB_SUBSCRIPTION_CONSUMER_1
             - name: consumer2
               service_handler: 'Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler2ForMessage1'
+              env_var: PUBSUB_SUBSCRIPTION_CONSUMER_2
     test_queue2:
         message_class: 'Akeneo\Tool\Bundle\MessengerBundle\tests\config\Message2'
+        env_var: PUBSUB_TOPIC_TEST_QUEUE_2
         consumers:
             - name: consumer3
               service_handler: 'Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler1ForMessage2'
+              env_var: PUBSUB_SUBSCRIPTION_CONSUMER_3
