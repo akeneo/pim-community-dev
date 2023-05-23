@@ -13,5 +13,5 @@ Feature: Delete an attribute
     And I click on the "delete" action of the row which contains "SKU"
     And I fill the input labelled 'Please type "sku"' with 'sku'
     And I press the "Delete" button
-    Then I should see the text "Identifier attribute can not be removed"
+    Then I should see the text "Main identifier attribute can not be removed"
     And there should be a "SKU" attribute

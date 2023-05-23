@@ -1,9 +1,6 @@
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttribute:
-            payload:
-                standardPropertyName: type
         - Akeneo\Pim\Structure\Component\Validator\Constraints\IsReferenceDataConfigured: ~
         - Akeneo\Pim\Structure\Component\Validator\Constraints\IsIdentifierUsableAsGridFilter: ~
         - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
