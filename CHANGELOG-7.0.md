@@ -41,6 +41,7 @@
 - PIM-1318 [Backport PIM-10785]: Fix case-insensitive patch product model
 - PIM-1318 [Backport PIM-10808]: Fix Error message on the family modification when an attribute is as required=0
 - PIM-1318 [Backport PIM-10802]: Fix wysiwyg-field add link event
+- PIM-10997: Update error message when trying to delete role with linked users or connections
 
 # 7.0.7 (2023-02-13)
 
