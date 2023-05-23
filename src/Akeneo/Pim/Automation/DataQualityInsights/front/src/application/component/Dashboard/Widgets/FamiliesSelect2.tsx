@@ -43,8 +43,12 @@ export const FamiliesSelect2 = ({onChange, catalogLocale}: Props) => {
           };
 
           const sortedFamilies = Object.values(families).sort((family1: any, family2: any) => {
-            const family1Label = family1.labels[catalogLocale] ? family1.labels[catalogLocale] : '[' + family1.code + ']';
-            const family2Label = family2.labels[catalogLocale] ? family2.labels[catalogLocale] : '[' + family2.code + ']';
+            const family1Label = family1.labels[catalogLocale]
+              ? family1.labels[catalogLocale]
+              : '[' + family1.code + ']';
+            const family2Label = family2.labels[catalogLocale]
+              ? family2.labels[catalogLocale]
+              : '[' + family2.code + ']';
 
             return family1Label.localeCompare(family2Label, catalogLocale.replace('_', '-'), {sensitivity: 'base'});
           });
