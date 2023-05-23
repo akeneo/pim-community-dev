@@ -4,6 +4,8 @@
 
 - PIM-11000: Fallback on filePath when storage type is undefined
 
+# 7.0.15 (2023-05-22)
+
 # 7.0.14 (2023-05-02)
 
 # 7.0.13 (2023-04-19)
