@@ -12,15 +12,15 @@ use Akeneo\Platform\Installer\Domain\Service\FixtureInstallerInterface;
  */
 class FakeFixturesInstaller implements FixtureInstallerInterface
 {
-    private bool $installed = false;
+    private bool $installedWithoutUsersUserGroupsAndUserRoles = false;
 
-    public function install(): void
+    public function installWithoutUsersUserGroupsAndUserRoles(): void
     {
-        $this->installed = true;
+        $this->installedWithoutUsersUserGroupsAndUserRoles = true;
     }
 
-    public function isInstalled(): bool
+    public function isInstalledWithoutUsersUserGroupsAndUserRoles(): bool
     {
-        return $this->installed;
+        return $this->installedWithoutUsersUserGroupsAndUserRoles;
     }
 }

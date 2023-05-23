@@ -142,6 +142,17 @@ services:
             - '@database_connection'
             - '@logger'
 
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveCompletenesses:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\DoubleStorageCompletenesses:
+        decorates: akeneo.pim.enrichment.product.query.save_product_completenesses
+        arguments:
+            - '@.inner'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveCompletenesses'
+            - '@database_connection'
+
     Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductUuids:
         arguments:
             - '@database_connection'
