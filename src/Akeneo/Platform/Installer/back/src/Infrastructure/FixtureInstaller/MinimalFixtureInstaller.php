@@ -19,7 +19,7 @@ class MinimalFixtureInstaller implements FixtureInstallerInterface
     {
     }
 
-    public function install(): void
+    public function installWithoutUsersUserGroupsAndUserRoles(): void
     {
         $pathFinder = new PhpExecutableFinder();
         $process = new Process([
@@ -28,28 +28,12 @@ class MinimalFixtureInstaller implements FixtureInstallerInterface
             'pim:installer:db',
             '--catalog',
             'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal',
-        ], $this->projectDir);
-
-        $process->setTimeout(null);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new \Exception(sprintf('Install failed, "%s".', $process->getOutput().PHP_EOL.$process->getErrorOutput()));
-        }
-
-        $process = new Process([
-            $pathFinder->find(),
-            sprintf('%s/bin/console', $this->projectDir),
-            'pim:user:create',
-            '--admin',
-            '-n',
-            '--',
-            'admin',
-            'admin',
-            'test@example.com',
-            'John',
-            'Doe',
-            'en_US',
+            '--fixtures-to-skip',
+            'fixtures_user_csv',
+            '--fixtures-to-skip',
+            'fixtures_user_role_csv',
+            '--fixtures-to-skip',
+            'fixtures_user_group_csv',
         ], $this->projectDir);
 
         $process->setTimeout(null);
