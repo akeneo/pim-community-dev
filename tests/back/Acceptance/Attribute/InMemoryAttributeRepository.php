@@ -192,7 +192,12 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
             })->first();
         }
 
-        return false !== $attribute ? $attribute : null;
+        if (false !== $attribute) {
+            $attribute->setIsMainIdentifier(true);
+            return $attribute;
+        }
+
+        return null;
     }
 
     /**

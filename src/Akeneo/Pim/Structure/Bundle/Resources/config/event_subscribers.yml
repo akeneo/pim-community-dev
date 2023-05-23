@@ -90,7 +90,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotIdentifierOnDeletionSubscriber:
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeIsNotMainIdentifierOnDeletionSubscriber:
         tags:
             - { name: kernel.event_subscriber }
 
@@ -111,5 +111,17 @@ services:
             - { name: kernel.event_subscriber }
 
     Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeGroupWithAttributeCannotBeRemovedSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ### Changing Main Identifier
+    Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifierHandler:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\Install\InitMainIdentifierSubscriber:
+        arguments:
+            - '@Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifierHandler'
+            - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
