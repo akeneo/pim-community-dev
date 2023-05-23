@@ -7,7 +7,7 @@ aliases:
 
     - &dockerCloudDeployer
         docker:
-            - image: eu.gcr.io/akeneo-cloud/cloud-deployer:7.14
+            - image: eu.gcr.io/akeneo-cloud/cloud-deployer:572fd0a888582f3fe1a358b48ee238fc1dbb2621
               auth:
                   username: _json_key  # default username when using a JSON key file to authenticate
                   password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
