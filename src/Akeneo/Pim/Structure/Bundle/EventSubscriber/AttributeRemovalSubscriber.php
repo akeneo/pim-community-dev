@@ -9,10 +9,11 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Symfony\Component\Console\Event\ConsoleTerminateEvent;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpKernel\Event\TerminateEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -25,12 +26,14 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
     private const BATCH_SIZE = 1000;
 
     private array $attributeCodesToClean = [];
+    private bool $flushEventRegistered = false;
 
     public function __construct(
         private AttributeCodeBlacklister $attributeCodeBlacklister,
         private JobLauncherInterface $jobLauncher,
         private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         private TokenStorageInterface $tokenStorage,
+        private EventDispatcher $eventDispatcher
     ) {
     }
 
@@ -38,8 +41,6 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::POST_REMOVE => 'blacklistAttributeCodeAndLaunchJob',
-            TerminateEvent::class => 'flushEvents',
-            ConsoleTerminateEvent::class => 'flushEvents',
         ];
     }
 
@@ -50,8 +51,9 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $attributeCode = $subject->getCode();
+        $this->registerFlushEventsOnTerminate();
 
+        $attributeCode = $subject->getCode();
         $this->attributeCodesToClean[] = $attributeCode;
         $this->attributeCodeBlacklister->blacklist([$attributeCode]);
 
@@ -73,5 +75,14 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
 
         $this->attributeCodeBlacklister->registerJob($this->attributeCodesToClean, $jobExecution->getId());
         $this->attributeCodesToClean = [];
+    }
+
+    private function registerFlushEventsOnTerminate()
+    {
+        if (!$this->flushEventRegistered) {
+            $this->eventDispatcher->addListener(KernelEvents::TERMINATE, [$this, 'flushEvents']);
+            $this->eventDispatcher->addListener(ConsoleEvents::TERMINATE, [$this, 'flushEvents']);
+            $this->flushEventRegistered = true;
+        }
     }
 }
