@@ -284,4 +284,9 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     {
         throw new NotImplementedException(__METHOD__);
     }
+
+    public function updateMainIdentifier(AttributeInterface $attribute): void
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
 }
