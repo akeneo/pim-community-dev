@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Domain\Service;
 
-interface FixtureInstallerInterface
+interface UserConfigurationResetterInterface
 {
-    public function installWithoutUsersUserGroupsAndUserRoles(): void;
+    public function execute(): void;
 }

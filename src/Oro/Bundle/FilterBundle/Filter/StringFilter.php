@@ -80,7 +80,10 @@ class StringFilter extends AbstractFilter
         }
 
         $data['type'] = isset($data['type']) ? $data['type'] : null;
-        $data['value'] = sprintf($this->getFormatByComparisonType($data['type']), $data['value']);
+        $data['value'] = sprintf(
+            $this->getFormatByComparisonType($data['type']),
+            \addcslashes($data['value'], '_%')
+        );
 
         return $data;
     }
