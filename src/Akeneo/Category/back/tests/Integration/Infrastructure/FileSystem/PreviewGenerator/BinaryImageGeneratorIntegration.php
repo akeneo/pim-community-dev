@@ -6,9 +6,10 @@ declare(strict_types=1);
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
 namespace Akeneo\Test\Category\Integration\Infrastructure\FileSystem\PreviewGenerator;
 
-use Akeneo\Category\Application\Handler\StoreUploadedFile;
+use Akeneo\Category\Domain\Filesystem\Storage;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
@@ -112,7 +113,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     public function it_gets_a_preview_for_an_image_attribute_from_the_cache_removed(): void
     {
         $data = $this->generateJpegImage(10, 1);
-        
+
         $this->binaryImageGenerator->supports(base64_encode($this->fileInfo->getOriginalFilename()), $this->attributeImage, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->binaryImageGenerator->generate($data, $this->attributeImage, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
@@ -182,7 +183,7 @@ class BinaryImageGeneratorIntegration extends TestCase
         $fileInfo = new \SplFileInfo($this->getFixturePath('akeneo.jpg'));
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'image/jpg');
 
-        return $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
+        return $this->get('akeneo_file_storage.file_storage.file.file_storer')->store($fileToUpload, Storage::CATEGORY_STORAGE_ALIAS);
     }
 
     private function generateJpegImage(int $size, int $quality): string
@@ -192,7 +193,7 @@ class BinaryImageGeneratorIntegration extends TestCase
         self::assertTrue(imagejpeg($image, $imageFilename, $quality));
         $fileInfo = new \SplFileInfo($imageFilename);
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'image/jpg');
-        $file = $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
+        $file = $this->get('akeneo_file_storage.file_storage.file.file_storer')->store($fileToUpload, Storage::CATEGORY_STORAGE_ALIAS);
 
         return base64_encode($file->getKey());
     }
@@ -205,7 +206,7 @@ class BinaryImageGeneratorIntegration extends TestCase
         self::assertTrue(imagepng($image, $imageFilename, $quality));
         $fileInfo = new \SplFileInfo($imageFilename);
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'image/png');
-        $file = $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
+        $file = $this->get('akeneo_file_storage.file_storage.file.file_storer')->store($fileToUpload, Storage::CATEGORY_STORAGE_ALIAS);
 
         return base64_encode($file->getKey());
     }
@@ -214,7 +215,7 @@ class BinaryImageGeneratorIntegration extends TestCase
     {
         $fileInfo = new \SplFileInfo($this->getFixturePath('akeneo.pdf'));
         $fileToUpload = new UploadedFile($fileInfo->getPathname(), $fileInfo->getFilename(), 'application/pdf');
-        $file = $this->get(StoreUploadedFile::class)->__invoke($fileToUpload);
+        $file = $this->get('akeneo_file_storage.file_storage.file.file_storer')->store($fileToUpload, Storage::CATEGORY_STORAGE_ALIAS);
 
         return base64_encode($file->getKey());
     }

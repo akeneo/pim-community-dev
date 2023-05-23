@@ -10,3 +10,11 @@ services:
             - '@Akeneo\Category\Domain\Query\PurgeOrphanCategories'
         tags:
             - { name: console.command }
+
+    Akeneo\Category\Infrastructure\Cli\PurgeOrphanCategoryImageFilesCommand:
+        arguments:
+            - '@database_connection'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.repository.file_info'
+        tags:
+            - { name: console.command }

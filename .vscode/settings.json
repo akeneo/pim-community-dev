@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 33006,
+            "driver": "MySQL",
+            "name": "akeneo_pim",
+            "database": "akeneo_pim",
+            "username": "akeneo_pim",
+            "password": "akeneo_pim"
+        }
+    ]
+}
