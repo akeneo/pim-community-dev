@@ -1,11 +1,11 @@
 import {Button, Checkbox, Field, Helper, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
 import {
-    LabelCollection,
-    useDebounceCallback,
-    useFeatureFlags,
-    userContext,
-    useTranslate
+  LabelCollection,
+  useDebounceCallback,
+  useFeatureFlags,
+  userContext,
+  useTranslate,
 } from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
@@ -13,22 +13,29 @@ import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
 import {useState, useRef} from 'react';
-import {useEditAttributeTranslations} from '../../hooks/useEditAttributeTranslations';
+import {BadRequestError} from '../../tools/apiFetch';
 
 type Props = {
   attribute: Attribute;
   activatedCatalogLocales: string[];
 };
 
+type ResponseError = {
+  error: {
+    property: string;
+    message: string;
+  };
+};
+
+type ApiResponseError = ResponseError[];
+
 export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) => {
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
   const catalogLocales = useCatalogLocales();
   const featureFlag = useFeatureFlags();
-  const [translations, setTranslations] = useState<LabelCollection>(attribute.labels);
-  const editAttributeTranslations = useEditAttributeTranslations(attribute.template_uuid, attribute.uuid);
+  const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
   const editTranslationsTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const debouncedTranslationsEdit = useDebounceCallback(editAttributeTranslations, 500);
 
   const [
     isDeactivateTemplateAttributeModalOpen,
@@ -36,27 +43,45 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
 
-  const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
+  const displayError = (errorMessages: string[], key: string) => {
+    return errorMessages.map(message => {
+      return <Helper level="error">{message}</Helper>;
+    });
+  };
 
-  const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
+  const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
+  const [translations, setTranslations] = useState<LabelCollection>(attribute.labels);
+  const [error, setError] = useState<{[locale: string]: string[]}>({});
 
   const handleRichTextAreaChange = () => {
     setIsRichTextArea(!isRichTextArea);
-    updateTemplateAttribute(!isRichTextArea);
+    updateTemplateAttribute({isRichTextArea: !isRichTextArea});
   };
-
-  // const displayError = (errorMessages: string[]) => {
-  //     return errorMessages.map(message => {
-  //         return <Helper level="error">{message}</Helper>;
-  //     });
-  // };
 
   const handleTranslationsChange = (locale: string, value: string) => {
     if (editTranslationsTimerRef.current) {
       clearTimeout(editTranslationsTimerRef.current);
     }
     setTranslations({...translations, [locale]: value});
-    debouncedTranslationsEdit({locale, value});
+    editTranslationsTimerRef.current = setTimeout(() => {
+      console.log(error);
+      updateTemplateAttribute({labels: {[locale]: value}})
+        .then(() => {
+          if (error[locale]) {
+            delete error[locale];
+            setError({...error});
+          }
+        })
+        .catch((error: BadRequestError<ApiResponseError>) => {
+          const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
+            accumulator[currentError.error.property] = [currentError.error.message];
+
+            return accumulator;
+          }, {});
+          setError(errors);
+        });
+      console.log(value);
+    }, 500);
   };
 
   return (
@@ -108,8 +133,10 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
               onChange={(newValue: string) => {
                 handleTranslationsChange(activatedLocaleCode, newValue);
               }}
+              invalid={!!error[activatedLocaleCode]}
               value={translations[activatedLocaleCode] || ''}
             ></TextInput>
+            {error[activatedLocaleCode] && displayError(error[activatedLocaleCode], activatedLocaleCode)}
           </TranslationField>
         ))}
       </div>
