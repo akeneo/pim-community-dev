@@ -20,19 +20,21 @@ final class Version_8_0_20230412073848_add_main_attribute_column extends Abstrac
 
     public function up(Schema $schema): void
     {
-        $this->skipIf(
-            $schema->getTable('pim_catalog_attribute')->hasColumn('main_identifier'),
-            'main_identifier column already exists in pim_catalog_attribute'
-        );
-
-        $this->addSql('ALTER TABLE pim_catalog_attribute ADD main_identifier TINYINT(1) NOT NULL DEFAULT FALSE;');
-        $this->addSql(
-            'UPDATE pim_catalog_attribute SET main_identifier = TRUE WHERE code = \'sku\';'
-        );
+        $table = $schema->getTable('pim_catalog_attribute');
+        if (!$table->hasColumn('main_identifier')) {
+            $this->addSql('ALTER TABLE pim_catalog_attribute ADD main_identifier TINYINT(1) NOT NULL DEFAULT FALSE');
+        } else {
+            $this->disableMigrationWarning();
+        }
     }
 
     public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
+    }
+
+    private function disableMigrationWarning(): void
+    {
+        $this->addSql('SELECT 1');
     }
 }
