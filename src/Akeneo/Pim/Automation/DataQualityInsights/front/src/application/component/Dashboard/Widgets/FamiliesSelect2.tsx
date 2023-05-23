@@ -3,22 +3,20 @@ import {useRef, useEffect} from 'react';
 import $ from 'jquery';
 import {Family} from '../../../../domain';
 const Routing = require('routing');
-const UserContext = require('pim/user-context');
 const i18n = require('pim/i18n');
 
 export interface Props {
   onChange: (value?: any) => void;
+  catalogLocale: string;
 }
 
-export const FamiliesSelect2 = ({onChange}: Props) => {
+export const FamiliesSelect2 = ({onChange, catalogLocale}: Props) => {
   const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (null === ref.current) {
       return;
     }
-
-    const uiLocale = UserContext.get('uiLocale');
 
     const $select = $(ref.current) as any;
     $select.select2({
@@ -34,7 +32,7 @@ export const FamiliesSelect2 = ({onChange}: Props) => {
           return {
             search: term,
             options: {
-              locale: uiLocale,
+              locale: catalogLocale,
               expanded: 0,
             },
           };
@@ -45,16 +43,16 @@ export const FamiliesSelect2 = ({onChange}: Props) => {
           };
 
           const sortedFamilies = Object.values(families).sort((family1: any, family2: any) => {
-            const family1Label = family1.labels[uiLocale] ? family1.labels[uiLocale] : '[' + family1.code + ']';
-            const family2Label = family2.labels[uiLocale] ? family2.labels[uiLocale] : '[' + family2.code + ']';
+            const family1Label = family1.labels[catalogLocale] ? family1.labels[catalogLocale] : '[' + family1.code + ']';
+            const family2Label = family2.labels[catalogLocale] ? family2.labels[catalogLocale] : '[' + family2.code + ']';
 
-            return family1Label.localeCompare(family2Label, uiLocale.replace('_', '-'), {sensitivity: 'base'});
+            return family1Label.localeCompare(family2Label, catalogLocale.replace('_', '-'), {sensitivity: 'base'});
           });
 
           Object.values(sortedFamilies).forEach((family: any) => {
             data.results.push({
               id: family.code,
-              text: i18n.getLabel(family.labels, uiLocale, family.code),
+              text: i18n.getLabel(family.labels, catalogLocale, family.code),
             });
           });
 
