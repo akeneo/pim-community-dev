@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class CheckAttributeIsNotIdentifierOnDeletionSubscriber implements EventSubscriberInterface
+class CheckAttributeIsNotMainIdentifierOnDeletionSubscriber implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array
     {
@@ -34,8 +34,8 @@ class CheckAttributeIsNotIdentifierOnDeletionSubscriber implements EventSubscrib
         }
 
         $isIdentifierType = AttributeTypes::IDENTIFIER === $attribute->getType();
-        if ($isIdentifierType) {
-            throw new CannotRemoveAttributeException('flash.attribute.identifier_not_removable');
+        if ($isIdentifierType && $attribute->isMainIdentifier()) {
+            throw new CannotRemoveAttributeException('flash.attribute.main_identifier_not_removable');
         }
     }
 }
