@@ -5,4 +5,4 @@ fos_oauth_server:
     refresh_token_class:      Akeneo\Tool\Bundle\ApiBundle\Entity\RefreshToken
     auth_code_class:          Akeneo\Tool\Bundle\ApiBundle\Entity\AuthCode
     service:
-        user_provider:        pim_user.provider.user_api
+        user_provider:        security.user.provider.concrete.chain_provider_api
