@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
+namespace Specification\Akeneo\Category\Infrastructure\Doctrine\ORM\Saver;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;

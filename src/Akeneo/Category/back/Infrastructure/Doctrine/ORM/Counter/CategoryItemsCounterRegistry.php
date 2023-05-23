@@ -1,21 +1,27 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter;
+namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
+
+use Akeneo\Category\Infrastructure\Component\CategoryItemsCounterInterface;
 
 /**
- * Category items counter registry
+ * Category items counter registry.
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryItemsCounterRegistry implements CategoryItemsCounterRegistryInterface
+class CategoryItemsCounterRegistry
 {
     /** @var CategoryItemsCounterInterface[] */
     protected static $categoryItemsCounter = [];
 
     /**
-     * {@inheritdoc}
+     * Register a category item counter extension.
+     *
+     * @param string $type
+     *
+     * @return mixed
      */
     public function register(CategoryItemsCounterInterface $categoryItemsCounter, $type)
     {
@@ -25,7 +31,11 @@ class CategoryItemsCounterRegistry implements CategoryItemsCounterRegistryInterf
     }
 
     /**
-     * {@inheritdoc}
+     * Get category item counter extension.
+     *
+     * @param string $name
+     *
+     * @return CategoryItemsCounterInterface
      */
     public function get($name)
     {
