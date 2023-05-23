@@ -45,20 +45,7 @@ final class Version_8_0_20230412073849_set_main_attribute_column_Integration ext
 
     public function test_it_does_nothing_if_a_main_identifier_already_exists(): void
     {
-        $this->connection->executeStatement(
-            <<<SQL
-            UPDATE pim_catalog_attribute pca
-            INNER JOIN
-            (
-                SELECT id
-                FROM pim_catalog_attribute
-                WHERE attribute_type = 'pim_catalog_identifier'
-                ORDER BY id ASC
-                LIMIT 1
-            ) t ON pca.id = t.id
-            SET main_identifier = true
-            SQL
-        );
+        $this->setFirstIdentifierAsMain();
 
         Assert::assertTrue($this->aMainIdentifierExists());
         $this->reExecuteMigration(self::MIGRATION_NAME);
@@ -67,9 +54,8 @@ final class Version_8_0_20230412073849_set_main_attribute_column_Integration ext
 
     public function test_it_adds_a_main_identifier_if_not_exists(): void
     {
-        $this->connection->executeStatement(
-            'UPDATE pim_catalog_attribute SET main_identifier = FALSE;'
-        );
+        $this->setFirstIdentifierAsMain(false);
+
         Assert::assertFalse($this->aMainIdentifierExists());
         $this->reExecuteMigration(self::MIGRATION_NAME);
         Assert::assertTrue($this->aMainIdentifierExists());
@@ -115,5 +101,29 @@ final class Version_8_0_20230412073849_set_main_attribute_column_Integration ext
         SQL;
 
         return (bool) $this->connection->executeQuery($sql)->fetchOne();
+    }
+
+    private function setFirstIdentifierAsMain(bool $isMain = true): void
+    {
+        $this->connection->executeStatement(
+            <<<SQL
+            UPDATE pim_catalog_attribute pca
+            INNER JOIN
+            (
+                SELECT id
+                FROM pim_catalog_attribute
+                WHERE attribute_type = 'pim_catalog_identifier'
+                ORDER BY id ASC
+                LIMIT 1
+            ) t ON pca.id = t.id
+            SET main_identifier = :isMain
+            SQL,
+            [
+                'isMain' => (int) $isMain
+            ],
+            [
+                'isMain' => \PDO::PARAM_INT
+            ]
+        );
     }
 }
