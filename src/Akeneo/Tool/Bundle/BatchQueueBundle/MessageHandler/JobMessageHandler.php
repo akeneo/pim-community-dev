@@ -83,7 +83,6 @@ final class JobMessageHandler implements MessageSubscriberInterface
 
             $process = new Process($arguments, null, $env);
             $process->setTimeout(null);
-            pcntl_signal(\SIGTERM, fn () => $process->signal(SIGTERM));
 
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
