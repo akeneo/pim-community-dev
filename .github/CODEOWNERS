@@ -9,3 +9,7 @@
 /src/Akeneo/Pim/Enrichment @akeneo/squad-chipmunks
 /src/Akeneo/Pim/Structure @akeneo/squad-chipmunks
 /components/identifier-generator @akeneo/squad-chipmunks
+
+# Griffins
+/src/Akeneo/Category @akeneo/squad-griffins
+/src/Akeneo/UserManagement @akeneo/squad-griffins
