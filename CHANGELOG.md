@@ -77,6 +77,7 @@
 - PIM-10983: Error HTTP 500 when adding a custom app
 - PIM-10980: Fix pagination update when applying filters on product association grid
 - PIM-10977 : Prevent api users to log in to the PIM via the UI
+- PIM-11001: Fix code filter on attributes grid with special character
 
 ## Improvements
 

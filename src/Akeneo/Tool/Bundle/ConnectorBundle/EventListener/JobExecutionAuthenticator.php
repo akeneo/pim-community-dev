@@ -19,20 +19,16 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class JobExecutionAuthenticator implements EventSubscriberInterface
 {
-    /** @var UserProviderInterface */
-    protected $userProvider;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
     /**
-     * @param UserProviderInterface $userProvider
+     * @param UserProviderInterface $jobUserProvider
+     * @param UserProviderInterface $uiUserProvider
      * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(UserProviderInterface $userProvider, TokenStorageInterface $tokenStorage)
-    {
-        $this->userProvider = $userProvider;
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(
+        protected UserProviderInterface $jobUserProvider,
+        protected UserProviderInterface $uiUserProvider,
+        protected TokenStorageInterface $tokenStorage
+    ) {
     }
 
     /**
@@ -67,7 +63,12 @@ class JobExecutionAuthenticator implements EventSubscriberInterface
             return;
         }
 
-        $user = $this->userProvider->loadUserByIdentifier($username);
+        try {
+            $user = $this->jobUserProvider->loadUserByIdentifier($username);
+        } catch (UserNotFoundException) {
+            // Fallback to UI user for retro-compatibility
+            $user = $this->uiUserProvider->loadUserByIdentifier($username);
+        }
 
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);

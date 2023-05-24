@@ -108,6 +108,32 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::TEXTAREA);
     }
 
+    public function testItAddsLabelsToAttribute(): void
+    {
+        $labels = [
+            'fr_FR' => 'Impression',
+            'en_US' => 'Print',
+        ];
+
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_category_template_rest_update_attribute',
+            routeArguments: [
+                'templateUuid' => $this->templateUuid->getValue(),
+                'attributeUuid' => $this->attributeRichText->getUuid()->getValue(),
+            ],
+            method: Request::METHOD_POST,
+            content: json_encode(['labels' => $labels]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
+        $richTextAttribute = $insertedAttributes->getAttributeByCode('rich_text');
+        $this->assertEqualsCanonicalizing($richTextAttribute->getLabelCollection()->getTranslations(), $labels);
+    }
+
     public function testItThrowsErrorOnAttributeNotFound(): void
     {
         $this->callApiRoute(
@@ -145,6 +171,35 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+    }
+
+    public function testItThrowsErrorOnLabelTooLong(): void
+    {
+        $labels = [
+            'fr_FR' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pharetra arcu at nisl malesuada feugiat. Mauris aliquam congue interdum. Etiam varius vestibulum rutrum. Pellentesque fermentum, tortor eu posuere tincidunt, libero ex consectetur arcu fusce.',
+            'en_US' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pharetra arcu at nisl malesuada feugiat. Mauris aliquam congue interdum. Etiam varius vestibulum rutrum. Pellentesque fermentum, tortor eu posuere tincidunt, libero ex consectetur arcu fusce.',
+        ];
+
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_category_template_rest_update_attribute',
+            routeArguments: [
+                'templateUuid' => $this->templateUuid->getValue(),
+                'attributeUuid' => $this->attributeRichText->getUuid()->getValue(),
+            ],
+            method: Request::METHOD_POST,
+            content: json_encode(['labels' => $labels]),
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+
+        $normalizedErrors = json_decode($response->getContent(), true);
+        $this->assertCount(2, $normalizedErrors);
+        foreach ($normalizedErrors as $error) {
+            $this->assertStringStartsWith('labels', $error['error']['property']);
+            $this->assertEquals('This value is too long. It should have 255 characters or less.', $error['error']['message']);
+        }
     }
 
     public function testItDoesNotUpdateOnDeactivateTemplate(): void

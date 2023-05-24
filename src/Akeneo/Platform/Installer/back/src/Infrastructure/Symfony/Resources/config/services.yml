@@ -6,3 +6,31 @@ services:
   Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller:
     arguments:
       - '%kernel.project_dir%'
+
+  Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserConfigurationResetter:
+    arguments:
+      - !tagged_iterator 'akeneo.installer.user_configuration_resetter'
+
+  Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserCatalogLocaleResetter:
+    arguments:
+      - '@database_connection'
+    tags:
+      - {name: akeneo.installer.user_configuration_resetter}
+
+  Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserCatalogChannelResetter:
+    arguments:
+      - '@database_connection'
+    tags:
+      - {name: akeneo.installer.user_configuration_resetter}
+
+  Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserDefaultCategoryTreeResetter:
+    arguments:
+      - '@database_connection'
+    tags:
+      - {name: akeneo.installer.user_configuration_resetter}
+
+  Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserUiLocaleResetter:
+    arguments:
+      - '@database_connection'
+    tags:
+      - {name: akeneo.installer.user_configuration_resetter}
