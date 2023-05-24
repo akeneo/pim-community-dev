@@ -1,5 +1,7 @@
 # 7.0.x
 
+# 7.0.16 (2023-05-24)
+
 ## Bug fixes
 
 - PIM-11000: Fallback on filePath when storage type is undefined
