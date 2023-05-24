@@ -32,7 +32,7 @@ class JobStopperSpec extends ObjectBehavior
     ) {
         $jobExecution->getId()->willReturn(3);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $batchStatus->getValue()->willReturn(BatchStatus::STOPPING);
+        $batchStatus->isStopping()->willReturn(true);
         $getJobExecutionStatus->getByJobExecutionId(3)->willReturn($batchStatus);
 
         $this->isStopping($stepExecution)->shouldReturn(true);
@@ -46,7 +46,7 @@ class JobStopperSpec extends ObjectBehavior
     ) {
         $jobExecution->getId()->willReturn(5);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $batchStatus->getValue()->willReturn(BatchStatus::STARTED);
+        $batchStatus->isStopping()->willReturn(false);
         $getJobExecutionStatus->getByJobExecutionId(5)->willReturn($batchStatus);
 
         $this->isStopping($stepExecution)->shouldReturn(false);
@@ -59,4 +59,28 @@ class JobStopperSpec extends ObjectBehavior
 
         $this->stop($stepExecution);
     }
+
+    function it_tells_if_a_job_is_pausing(
+        $getJobExecutionStatus,
+        StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        BatchStatus $batchStatus
+    ) {
+        $jobExecution->getId()->willReturn(3);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $batchStatus->isPausing()->willReturn(true);
+        $getJobExecutionStatus->getByJobExecutionId(3)->willReturn($batchStatus);
+
+        $this->isPausing($stepExecution)->shouldReturn(true);
+    }
+
+    function it_pauses_a_job(StepExecution $stepExecution)
+    {
+        $stepExecution->setStatus(new BatchStatus(BatchStatus::PAUSED))->shouldBeCalled();
+        $stepExecution->setCurrentState(["position" => 1])->shouldBeCalled();
+
+        $this->pause($stepExecution, ["position" => 1]);
+
+    }
+
 }
