@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
@@ -28,7 +29,6 @@ function makeLocale(string $code): Locale
 }
 class ChannelUpdaterSpec extends ObjectBehavior
 {
-
     private static Locale $enUS;
     private static Locale $frFR;
 
@@ -108,11 +108,18 @@ class ChannelUpdaterSpec extends ObjectBehavior
 
         $localeRepository->findOneByIdentifier('en_US')->willReturn($this::$enUS);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($this::$frFR);
-        $channel->setLocales([$this::$enUS, $this::$frFR])->shouldBeCalled();
+        $channel->addLocale($this::$enUS)
+            ->shouldBeCalledOnce();
+        $channel->addLocale($this::$frFR)
+            ->shouldBeCalledOnce();
+        $channel->getLocales()
+            ->shouldBeCalledOnce()
+            ->willReturn(new ArrayCollection([$this::$enUS, $this::$frFR]));
 
         $currencyRepository->findOneByIdentifier('EUR')->willReturn($eur);
         $currencyRepository->findOneByIdentifier('USD')->willReturn($usd);
-        $channel->setCurrencies([$eur, $usd])->shouldBeCalled();
+        $channel->setCurrencies([$eur, $usd])
+            ->shouldBeCalledOnce();
 
         $maximumDiagonalAttribute->getMetricFamily()->willReturn('Length');
         $weightAttribute->getMetricFamily()->willReturn('Weight');
@@ -129,7 +136,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
 
         $this->update($channel, $values, []);
     }
-
 
     function it_updates_a_channel_with_conversion_units_empty(
         $categoryRepository,
@@ -163,7 +169,13 @@ class ChannelUpdaterSpec extends ObjectBehavior
 
         $localeRepository->findOneByIdentifier('en_US')->willReturn($this::$enUS);
         $localeRepository->findOneByIdentifier('fr_FR')->willReturn($this::$frFR);
-        $channel->setLocales([$this::$enUS, $this::$frFR])->shouldBeCalled();
+        $channel->addLocale($this::$enUS)
+            ->shouldBeCalledOnce();
+        $channel->addLocale($this::$frFR)
+            ->shouldBeCalledOnce();
+        $channel->getLocales()
+            ->shouldBeCalledOnce()
+            ->willReturn(new ArrayCollection([$this::$enUS, $this::$frFR]));
 
         $currencyRepository->findOneByIdentifier('EUR')->willReturn($eur);
         $currencyRepository->findOneByIdentifier('USD')->willReturn($usd);

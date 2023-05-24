@@ -205,11 +205,13 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         $hasIdField = $this->hasRawFilter('field', 'id');
         $hasEntityTypeField = $this->hasRawFilter('field', 'entity_type');
         $hasLabelOrIdentifierField = $this->hasRawFilter('field', 'label_or_identifier');
+        $hasIdentifierField = $this->hasRawFilter('field', 'identifier');
 
         return
             !$hasParentField &&
             !$hasIdField &&
             !$hasEntityTypeField &&
-            !$hasLabelOrIdentifierField;
+            !$hasLabelOrIdentifierField &&
+            !$hasIdentifierField;
     }
 }

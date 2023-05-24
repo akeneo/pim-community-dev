@@ -160,7 +160,9 @@ $rules = [
         'Akeneo\Platform\Component\Webhook\EventDataBuilderInterface',
 
         // Required for NonExistentValuesFilter on channels and locales
+        // TODO: there should only be Akeneo\Channel\API exposed
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
+        'Akeneo\Channel\API',
 
         // Required to add quality scores into external API normalized products.
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',

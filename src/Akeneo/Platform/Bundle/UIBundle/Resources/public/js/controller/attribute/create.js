@@ -70,26 +70,9 @@ define([
      * @return  {String}
      */
     getQueryParam: function (url, paramName) {
-      if (-1 === url.lastIndexOf('?')) {
-        return '';
-      }
-      var params = url.substring(url.lastIndexOf('?') + 1);
-      if (!params) {
-        return null;
-      }
+      const searchParams = new URL(url.replace('/#/', '/'))?.searchParams;
 
-      var stringParams = params.split('&');
-      var objectParams = {};
-      stringParams.forEach(function (stringParam) {
-        var tab = stringParam.split('=');
-        if (tab.length === 2) {
-          objectParams[tab[0]] = tab[1];
-        }
-      });
-
-      const value = objectParams[paramName] ?? '';
-
-      return decodeURIComponent(value);
+      return searchParams?.get(paramName);
     },
 
     /**

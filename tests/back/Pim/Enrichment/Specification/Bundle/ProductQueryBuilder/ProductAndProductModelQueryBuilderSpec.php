@@ -293,7 +293,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
-        $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldBeCalled();
+        $searchAggregator->aggregateResults($sqb, $rawFilters)->shouldNotBeCalled();
 
         $this->execute()->shouldReturn($cursor);
     }

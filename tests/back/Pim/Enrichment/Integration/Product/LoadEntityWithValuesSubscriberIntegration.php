@@ -151,7 +151,7 @@ SQL;
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_duplicate_options');
 
         Assert::assertSame(
-            ['OPTIONA', 'OptionB', 'optionA', 'optionb'],
+            ['optionA', 'optionB'],
             $product->getValue('a_multi_select')->getData()
         );
     }

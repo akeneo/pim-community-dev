@@ -315,8 +315,9 @@ class Channel implements ChannelInterface
      */
     public function removeLocale(LocaleInterface $locale)
     {
-        $this->locales->removeElement($locale);
-        $locale->removeChannel($this);
+        if ($this->locales->removeElement($locale)) {
+            $locale->removeChannel($this);
+        }
 
         return $this;
     }

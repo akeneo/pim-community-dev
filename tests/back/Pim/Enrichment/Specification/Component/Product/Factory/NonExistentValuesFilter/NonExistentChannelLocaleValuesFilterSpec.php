@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
+use Akeneo\Channel\API\Query\GetCaseSensitiveChannelCodeInterface;
+use Akeneo\Channel\API\Query\GetCaseSensitiveLocaleCodeInterface;
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -19,15 +21,23 @@ class NonExistentChannelLocaleValuesFilterSpec extends ObjectBehavior
 {
     public function let(
         ChannelExistsWithLocaleInterface $channelsLocales,
+        GetCaseSensitiveLocaleCodeInterface $getCaseSensitiveLocaleCode,
+        GetCaseSensitiveChannelCodeInterface $getCaseSensitiveChannelCode,
         GetAttributes $getAttributes
     )
     {
-        $this->beConstructedWith($channelsLocales, $getAttributes);
+        $this->beConstructedWith($channelsLocales, $getCaseSensitiveLocaleCode, $getCaseSensitiveChannelCode, $getAttributes);
+
+        $getCaseSensitiveLocaleCode->forLocaleCode('en_US')->willReturn('en_US');
+        $getCaseSensitiveLocaleCode->forLocaleCode('fr_FR')->willReturn('fr_FR');
+        $getCaseSensitiveChannelCode->forChannelCode('ecommerce')->willReturn('ecommerce');
     }
 
     public function it_filters_values_of_non_existing_channels(
-        $channelsLocales,
-        $getAttributes
+        ChannelExistsWithLocaleInterface $channelsLocales,
+        GetCaseSensitiveLocaleCodeInterface $getCaseSensitiveLocaleCode,
+        GetCaseSensitiveChannelCodeInterface $getCaseSensitiveChannelCode,
+        GetAttributes $getAttributes
     ) {
         $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType([
             AttributeTypes::OPTION_SIMPLE_SELECT => [
@@ -125,8 +135,12 @@ class NonExistentChannelLocaleValuesFilterSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_filters_values_of_not_activated_locales($channelsLocales, GetAttributes $getAttributes)
-    {
+    public function it_filters_values_of_not_activated_locales(
+        ChannelExistsWithLocaleInterface $channelsLocales,
+        GetCaseSensitiveLocaleCodeInterface $getCaseSensitiveLocaleCode,
+        GetCaseSensitiveChannelCodeInterface $getCaseSensitiveChannelCode,
+        GetAttributes $getAttributes
+    ) {
         $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType([
             AttributeTypes::OPTION_SIMPLE_SELECT => [
                 'a_select' => [

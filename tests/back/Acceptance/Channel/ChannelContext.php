@@ -77,7 +77,7 @@ final class ChannelContext implements Context
     }
 
     /**
-     * @when the locale :localeCode is removed from the :channelCode channel
+     * @When the locale :localeCode is removed from the :channelCode channel
      */
     public function iRemoveTheLocaleFromTheChannel(string $localeCode, string $channelCode)
     {

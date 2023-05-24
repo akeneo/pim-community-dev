@@ -20,7 +20,7 @@ services:
     ### Channel
     #TODO: fix the dependency to the processor class
     pim_connector.processor.denormalization.channel:
-        class: 'Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor'
+        class: 'Akeneo\Channel\Infrastructure\Processor\Denormalization\ChannelProcessor'
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.channel'
