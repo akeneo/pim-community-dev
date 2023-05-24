@@ -1,0 +1,5 @@
+@font-face {
+    font-family: WindowFlagEmoji;
+    unicode-range: U+1F1E6-1F1FF;
+    src: url('https://cdn.jsdelivr.net/npm/country-flag-emoji-polyfill@0.1/dist/TwemojiCountryFlags.woff2') format('woff2');
+}

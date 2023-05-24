@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import {getEmoji} from '../../shared';
 import {getFontSize} from '../../theme';
 
+import './Locale.css';
+
 const LocaleContainer = styled.span`
   display: inline-flex;
   align-items: center;
@@ -34,9 +36,9 @@ const Locale = forwardRef<HTMLSpanElement, LocaleProps>(
     const {0: languageCode, length, [length - 1]: countryCode} = code.split('_');
 
     return (
-      <LocaleContainer ref={forwardedRef} {...rest}>
+      <LocaleContainer className={'icon-flag'} ref={forwardedRef} {...rest}>
         <Emoji role="img" aria-label={countryCode}>
-          {getEmoji(countryCode)}
+            <span style={{fontFamily: 'WindowFlagEmoji'}}>{getEmoji(countryCode)}</span>
         </Emoji>
         {languageLabel || languageCode}
       </LocaleContainer>
