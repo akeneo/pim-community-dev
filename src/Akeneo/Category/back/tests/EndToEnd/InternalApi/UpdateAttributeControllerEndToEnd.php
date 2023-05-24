@@ -62,7 +62,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItUpdatesAttributeTypeToRichText(): void
     {
-        $this->assertEquals((string) $this->attributeTextArea->getType(), AttributeType::TEXTAREA);
+        $this->assertEquals(AttributeType::TEXTAREA, (string) $this->attributeTextArea->getType());
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
@@ -73,7 +73,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             method: Request::METHOD_POST,
             content: json_encode([
                 'isRichTextArea' => true,
-            ]),
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
@@ -81,12 +81,12 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
         $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
         $textArea = $insertedAttributes->getAttributeByCode('text_area');
-        $this->assertEquals((string) $textArea->getType(), AttributeType::RICH_TEXT);
+        $this->assertEquals(AttributeType::RICH_TEXT, (string) $textArea->getType());
     }
 
     public function testItUpdatesAttributeTypeToTextArea(): void
     {
-        $this->assertEquals((string) $this->attributeRichText->getType(), AttributeType::RICH_TEXT);
+        $this->assertEquals(AttributeType::RICH_TEXT, (string) $this->attributeRichText->getType());
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
@@ -97,7 +97,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             method: Request::METHOD_POST,
             content: json_encode([
                 'isRichTextArea' => false,
-            ]),
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
@@ -105,7 +105,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
         $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
         $richTextAttribute = $insertedAttributes->getAttributeByCode('rich_text');
-        $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::TEXTAREA);
+        $this->assertEquals(AttributeType::TEXTAREA, (string) $richTextAttribute->getType());
     }
 
     public function testItAddsLabelsToAttribute(): void
@@ -123,7 +123,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 'attributeUuid' => $this->attributeRichText->getUuid()->getValue(),
             ],
             method: Request::METHOD_POST,
-            content: json_encode(['labels' => $labels]),
+            content: json_encode(['labels' => $labels], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
@@ -146,7 +146,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             method: Request::METHOD_POST,
             content: json_encode([
                 'isRichTextArea' => false,
-            ]),
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
@@ -166,7 +166,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             method: Request::METHOD_POST,
             content: json_encode([
                 'isRichTextArea' => false,
-            ]),
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
@@ -188,24 +188,29 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
                 'attributeUuid' => $this->attributeRichText->getUuid()->getValue(),
             ],
             method: Request::METHOD_POST,
-            content: json_encode(['labels' => $labels]),
+            content: json_encode(['labels' => $labels], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
 
-        $normalizedErrors = json_decode($response->getContent(), true);
+        $normalizedErrors = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertCount(2, $normalizedErrors);
-        foreach ($normalizedErrors as $error) {
-            $this->assertStringStartsWith('labels', $error['error']['property']);
-            $this->assertEquals('This value is too long. It should have 255 characters or less.', $error['error']['message']);
+
+        $localesList = ['fr_FR', 'en_US'];
+        foreach ($localesList as $locale) {
+           $localizedNormalizedError = array_values(array_filter($normalizedErrors, static function ($error) use ($locale) {
+                return $error['error']['property'] === $locale;
+           }));
+           $this->assertCount(1, $localizedNormalizedError);
+           $this->assertEquals('This value is too long. It should have 255 characters or less.', $localizedNormalizedError[0]['error']['message']);
         }
     }
 
     public function testItDoesNotUpdateOnDeactivateTemplate(): void
     {
         $this->deactivateTemplate($this->templateUuid->getValue());
-        $this->assertEquals((string) $this->attributeRichText->getType(), AttributeType::RICH_TEXT);
+        $this->assertEquals(AttributeType::RICH_TEXT, (string) $this->attributeRichText->getType());
         $this->callApiRoute(
             client: $this->client,
             route: 'pim_category_template_rest_update_attribute',
@@ -216,7 +221,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             method: Request::METHOD_POST,
             content: json_encode([
                 'isRichTextArea' => false,
-            ]),
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
@@ -224,7 +229,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
         $insertedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
         $richTextAttribute = $insertedAttributes->getAttributeByCode('rich_text');
-        $this->assertEquals((string) $richTextAttribute->getType(), AttributeType::RICH_TEXT);
+        $this->assertEquals(AttributeType::RICH_TEXT, (string) $richTextAttribute->getType());
     }
 
     public function testItDoesNotUpdateOnDeactivateAttribute(): void
@@ -240,7 +245,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             method: Request::METHOD_POST,
             content: json_encode([
                 'isRichTextArea' => false,
-            ]),
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();

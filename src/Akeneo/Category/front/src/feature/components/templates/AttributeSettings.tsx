@@ -64,7 +64,6 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     }
     setTranslations({...translations, [locale]: value});
     editTranslationsTimerRef.current = setTimeout(() => {
-      console.log(error);
       updateTemplateAttribute({labels: {[locale]: value}})
         .then(() => {
           if (error[locale]) {
@@ -78,9 +77,8 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
 
             return accumulator;
           }, {});
-          setError(errors);
+          setError(state => ({...state, ...errors}));
         });
-      console.log(value);
     }, 500);
   };
 
