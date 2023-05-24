@@ -23,7 +23,7 @@ class DoubleStorageCompletenessesSpec extends ObjectBehavior
         SaveProductCompletenesses $legacySaveProductCompletenesses,
         SaveProductCompletenesses $saveProductCompletenesses,
         Connection $connection,
-    ) {
+    ): void {
         $this->beConstructedWith(
             $legacySaveProductCompletenesses,
             $saveProductCompletenesses,
@@ -31,7 +31,7 @@ class DoubleStorageCompletenessesSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable()
+    function it_is_initializable(): void
     {
         $this->shouldHaveType(DoubleStorageCompletenesses::class);
     }
@@ -41,8 +41,7 @@ class DoubleStorageCompletenessesSpec extends ObjectBehavior
         SaveProductCompletenesses $saveProductCompletenesses,
         Connection $connection,
         Result $result,
-    ): void
-    {
+    ): void {
         $connection->executeQuery(Argument::type('string'), Argument::type('array'))->willReturn($result);
         $result->rowCount()->willReturn(1);
 
@@ -64,8 +63,7 @@ class DoubleStorageCompletenessesSpec extends ObjectBehavior
         SaveProductCompletenesses $saveProductCompletenesses,
         Connection $connection,
         Result $result,
-    ): void
-    {
+    ): void {
         $connection->executeQuery(Argument::type('string'), Argument::type('array'))->willReturn($result);
         $result->rowCount()->willReturn(0);
 
