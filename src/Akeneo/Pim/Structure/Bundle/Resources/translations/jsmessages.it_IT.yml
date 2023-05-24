@@ -87,6 +87,7 @@ pim_enrich.entity.attribute_option:
       add_option: Cliccare qui per crearne uno
       delete_confirmation_title_msg: Eliminare "{{ optionCode }}" dalle tue opzioni?
       delete_confirmation_subtitle_msg: Sei sicuro di che voler eliminare questa integrazione? Non è possibile annullare questa azione.
+      display_options_limit: Sono qui elencate solo le prime 500 opzioni. Se vuoi vederne altre, esegui una ricerca o un'esportazione.
       search:
         placeholder: Cerca su etichetta o codice
         no_result:
@@ -149,7 +150,6 @@ pim_enrich.entity.attribute:
       success: Attributo aggiornato con successo.
       fail: L'attributo non può essere aggiornato.
       fields_not_ready: "L'attributo non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
-      cant_remove_attributes_used_as_label: Impossibile rimuovere gli attributi usati come etichette in una famiglia.
     delete:
       success: Attributo rimosso con successo
       fail: Non è possibile eliminare questo attributo
@@ -229,8 +229,10 @@ pim_enrich.entity.attribute:
       select_locale: Seleziona la tua impostazione locale
     delete:
       confirm: Sei sicuro di voler eliminare questo attributo?
+      attribute_removal: L'attributo verrà rimosso da tutti i prodotti.
       product_count: '{0}0 prodotti|{1}1 prodotto|]1, Inf[{{ count }} prodotti'
       product_model_count: '{0}0 modelli di prodotto|{1}1 modello di prodotto|]1, Inf[{{ count }} modelli di prodotto'
+      used: ']-Inf,1]attualmente ha dei valori impostati per questo attributo.|]1, Inf[attualmente hanno dei valori impostati per questo attributo.'
       helper:
         content: Se è necessario modificare il tipo di attributo, per renderlo localizzabile o applicabile, mantenendo l'accesso ai valori degli attributi esistenti,
         link: consulta il nostro Help Center (per ulteriori informazioni).
@@ -238,6 +240,9 @@ pim_enrich.entity.attribute:
       confirm_from_family: Sei sicuro di voler rimuovere questo attributo dalla famiglia?
       confirm_from_group: Sei sicuro di che voler rimuovere l'attributo {{ attribute }} da questo gruppo di attributi?
       confirm_from_product: Sei sicuro di voler rimuovere questo attributo dal prodotto?
+    mass_delete:
+      modal:
+        title: Attributi
 pim_enrich.entity.attribute_group:
   label: Attributi di gruppo
   uppercase_label: Gruppo attributi
@@ -247,14 +252,18 @@ pim_enrich.entity.attribute_group:
     title: Qui è un po' affollato, ti mostriamo {{ attributeCount }}/{{ totalAttributeCount }} attributi.
     subtitle: Per scoprire tutti gli attributi di questo gruppo, clicca semplicemente sotto!
     button: Visualizza tutti gli attributi
+  dropdown:
+    label: Seleziona
+    all: Tutti i gruppi di attributi
+    none: Nessun gruppo di attributi
   flash:
     update:
       success: Gruppo di attributi aggiornato con successo
       fail: Gruppo di attributi non può essere aggiornato
       fields_not_ready: "Il gruppo attributo non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
-    delete:
-      success: Gruppo di attributi rimosso con successo
-      fail: Non è possibile eliminare questo gruppo attributo
+    mass_delete:
+      success: L'eliminazione è iniziata. Al completamento dell'operazione riceverai una notifica. Nel frattempo, puoi visualizzare il suo avanzamento nel tracker di processo.
+      fail: Si è verificato un errore durante l'avvio dell'operazione di eliminazione
   module:
     add_attribute_group:
       label: Aggiungi per gruppi
@@ -262,6 +271,20 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
     delete:
       confirm: Sei sicuro di voler eliminare questo gruppo di attributi?
+  grid:
+    columns:
+      attribute_count: Conteggio attributi correlati
+  selected: '{0}0 gruppi di attributi selezionati|{1}1 gruppo di attributi selezionato|]1, Inf[{{ count }} gruppi di attributi selezionati'
+  mass_delete:
+    confirm: '{1}Confermi di voler eliminare questo gruppo di attributi?|]1, Inf[Confermi di voler eliminare questi {{ count }} gruppi di attributi?'
+    confirmation_word: elimina
+    empty_result_label: 'Nessun gruppo di attributi trovato'
+    placeholder: 'Seleziona gruppo di attributi'
+    open_label: 'elenco gruppi di attributi'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Elimina gruppi di attributi
 pim_enrich.mass_edit.family:
   title: Azione di massa sulle famiglie
   confirm: "{1}Stai per aggiornare una famiglia con le seguenti informazioni, conferma.|]1, Inf[Stai per aggiornare {{ itemsCount }} famiglie con le seguenti informazioni, conferma."
@@ -282,3 +305,12 @@ pim_enrich.mass_edit.family:
       label: Imposta i requisiti degli attributi
       description: I requisiti degli attributi seguenti saranno applicati alle famiglie selezionate
       label_count: "{1}imposta i requisiti degli attributi di <span class=\"AknFullPage-title--highlight\">1 famiglia</span>|]1, Inf[imposta i requisiti degli attributi di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famiglie</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Elimina gruppi di attributi
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Elimina gruppi di attributi
+pim_notification:
+  types:
+    attribute_group_mass_delete: Eliminazione

@@ -1,6 +1,7 @@
 validation:
   create:
     identifier_limit_reached: 'La limite de "{{limit}}" générateurs d''identifiants a été atteinte. '
+    code_already_used: 'Ce code est déjà utilisé'
   update:
     identifier_generator_code_not_found: 'Le générateur d''identifiants "{{code}}" n''existe pas ou vous n''avez pas la permission d''y accéder.'
   identifier_generator:

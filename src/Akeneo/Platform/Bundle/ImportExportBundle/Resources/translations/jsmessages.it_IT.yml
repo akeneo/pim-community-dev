@@ -235,6 +235,8 @@ pim_import_export:
     6: Fallito
     7: Abbandonato
     8: Sconosciuto
+    9: Pausing
+    10: Paused
   job_status:
     COMPLETED: Completato
     STARTING: In avvio

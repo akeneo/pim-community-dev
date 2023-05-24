@@ -131,6 +131,7 @@ pim_enrich:
       create: Attribuutgroep aanmaken
       edit: Attribuutgroep wijzigen
       remove: Attribuutgroep verwijderen
+      mass_delete: Attribuutgroepen in bulk verwijderen
       sort: Attribuutgroepen sorteren
       add_attribute: Attribuut toevoegen aan een groep
       remove_attribute: Attribuut verwijderen van een groep
@@ -451,6 +452,7 @@ pim_datagrid:
       label: Bijgewerkt
     label_or_identifier:
       label: Label of identifier
+      label_with_uuid: Label, ID of UUID
     parent:
       label: Bovenliggende
     identifier:

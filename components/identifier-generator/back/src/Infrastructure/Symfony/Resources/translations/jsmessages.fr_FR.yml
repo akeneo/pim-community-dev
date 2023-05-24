@@ -46,15 +46,13 @@ pim_identifier_generator:
       info: 'Lorsque votre générateur d''identifiant sera créé, un identifiant sera automatiquement assigné à chaque nouveau produit. '
     check_help_center: 'Consultez notre Help Center pour plus d''informations.'
     max_generator:
-      title: 'Un seul générateur d''identifiant peut être créé pour le moment. '
-      info: 'Vous pourrez bientôt configurer plusieurs générateurs afin de répondre à toutes vos utilisations. '
+      title: 'Vous avez atteint la limite de {{ count }} générateurs d''identifiants.'
     confirmation: 'Confirmez-vous la suppression de cette propriété ?'
   selection:
     limit_reached: 'Vous avez atteint la limite de {{ %limit%}} conditions.'
     helper:
       title: 'Ajoutez des conditions à votre sélection de produits, si vous voulez :'
       automate: 'automatiser la création d''identifiants pour une sélection de produits'
-      multiple: 'avoir plusieurs structures d''identifiants pour différentes sélections de produits (bientôt disponible)'
     empty:
       title: 'Créez votre sélection produit'
       text: 'Tous les produits qui ont un identifiant vide seront impactés.'

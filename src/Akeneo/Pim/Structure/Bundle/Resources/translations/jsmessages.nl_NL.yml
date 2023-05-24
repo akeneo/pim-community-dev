@@ -150,7 +150,6 @@ pim_enrich.entity.attribute:
       success: Attribuut met succes bijgewerkt.
       fail: Het attribuut kon niet geüpdatet worden.
       fields_not_ready: "Het attribuut kan nu niet worden opgeslagen. De volgende velden zijn niet volledig: {{ fields }}"
-      cant_remove_attributes_used_as_label: Attributen die worden gebruikt als labels in een familie kunnen niet worden verwijderd.
     delete:
       success: Attribuut succesvol verwijderd
       fail: Kan dit attribuut niet verwijderen
@@ -241,6 +240,9 @@ pim_enrich.entity.attribute:
       confirm_from_family: Weet u zeker dat u dit attribuut uit de familie wilt verwijderen?
       confirm_from_group: Weet u zeker dat u het attribuut {{ attribute }} van deze attribuutgroep wilt verwijderen?
       confirm_from_product: Bent u zeker dat u dit attribuut wil verwijderen van het product?
+    mass_delete:
+      modal:
+        title: Attributen
 pim_enrich.entity.attribute_group:
   label: attribuutgroep
   uppercase_label: Attribuutgroep
@@ -250,14 +252,18 @@ pim_enrich.entity.attribute_group:
     title: Het is hier een beetje vol, we laten je {{ attributeCount }}/{{ totalAttributeCount }} attributen zien.
     subtitle: Om alle attributen van deze groep te ontdekken, klik hieronder!
     button: Bekijk alle attributen
+  dropdown:
+    label: Selecteren
+    all: Alle attribuutgroepen
+    none: Geen attribuutgroepen
   flash:
     update:
       success: Attribuutgroep succesvol bijgewerkt
       fail: De attribuut groep kon niet geüpdatet worden
       fields_not_ready: "De attribuutgroep kan niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
-    delete:
-      success: Attribuutgroep succesvol verwijderd
-      fail: Kan deze attribuutgroep niet verwijderen
+    mass_delete:
+      success: Het verwijderen is gestart. U krijgt een melding zodra de taak is voltooid. In de tussentijd kunt u de voortgang van het proces volgen in de procestracker.
+      fail: Er is een fout opgetreden tijdens het starten van de verwijdering
   module:
     add_attribute_group:
       label: Toevoegen via groepen
@@ -265,6 +271,20 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} groep(en) geselecteerd'
     delete:
       confirm: Weet u zeker dat u deze attribuut groep wilt verwijderen?
+  grid:
+    columns:
+      attribute_count: Aantal gerelateerde attributen
+  selected: '{0}0 attribuutgroepen geselecteerd|{1}1 attribuutgroep geselecteerd|]1, Inf[{{ count }} attribuutgroepen geselecteerd'
+  mass_delete:
+    confirm: '{1}Weet u zeker dat u deze attribuutgroep wilt verwijderen?|]1, Inf[Weet u zeker dat u deze {{ count }} attribuutgroepen wilt verwijderen?'
+    confirmation_word: verwijderen
+    empty_result_label: 'Geen attribuutgroep gevonden'
+    placeholder: 'Attribuutgroep selecteren'
+    open_label: 'lijst met attribuutgroepen'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Attribuutgroepen verwijderen
 pim_enrich.mass_edit.family:
   title: Gezamenlijke actie voor families
   confirm: "{1}U staat op het punt een familie te updaten met de volgende informatie, bevestig alstublieft.|]1, Inf[U staat op het punt om {{ itemsCount }} families te updaten met de volgende informatie, bevestig alstublieft."
@@ -285,3 +305,12 @@ pim_enrich.mass_edit.family:
       label: Instellen Attribuut vereisten
       description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
       label_count: "{1}stelt attributen vereisten van <span class=\"AknFullPage-title--highlight\">familie</span>|]1, Inf[Stel attributen vereisten in van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Attribuutgroepen verwijderen
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Attribuutgroepen verwijderen
+pim_notification:
+  types:
+    attribute_group_mass_delete: Verwijdering

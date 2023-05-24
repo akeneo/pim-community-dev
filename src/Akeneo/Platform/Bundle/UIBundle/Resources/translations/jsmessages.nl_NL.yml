@@ -428,6 +428,15 @@ pim_system:
     enabled: Eenmalige aanmelding ingeschakeld
     disabled: Eenmalige aanmelding uitgeschakeld
     title: Eenmalige aanmelding (SSO) op basis van SAML
+  reset_pim:
+    modal:
+      summary:
+        users:
+          name: Gebruikers
+        roles:
+          name: Rollen
+      confirm:
+        name: Bevestig
 pim_datagrid:
   mass_action:
     default:

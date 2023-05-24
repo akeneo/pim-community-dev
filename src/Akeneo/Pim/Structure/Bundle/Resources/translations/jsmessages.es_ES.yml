@@ -150,7 +150,6 @@ pim_enrich.entity.attribute:
       success: Atributo exitosamente actualizado.
       fail: El atributo no pudo ser actualizado.
       fields_not_ready: "El atributo no puede ser guardado ahora. No están listos los siguientes campos: {{ fields }}"
-      cant_remove_attributes_used_as_label: Los atributos usados como etiquetas en una familia no se pueden eliminar.
     delete:
       success: Atributo eliminado correctamente
       fail: No se puede eliminar este atributo
@@ -241,6 +240,9 @@ pim_enrich.entity.attribute:
       confirm_from_family: '¿Está seguro que quiere eliminar este atributo de la familia?'
       confirm_from_group: '¿Está seguro que desea eliminar el atributo {{ attribute }} de este grupo de atributos?'
       confirm_from_product: '¿Está usted seguro que desea eliminar el atributo de este producto?'
+    mass_delete:
+      modal:
+        title: Atributos
 pim_enrich.entity.attribute_group:
   label: grupo de atributo
   uppercase_label: Grupo de atributos
@@ -259,9 +261,6 @@ pim_enrich.entity.attribute_group:
       success: Grupo de atributos actualizado correctamente
       fail: El grupo del atributos no pudo ser actualizado
       fields_not_ready: "El grupo de atributos no se puede guardar ahora. No están listos los siguientes campos: {{ fields }}"
-    delete:
-      success: Grupo de atributos eliminado correctamente
-      fail: No se puede eliminar este grupo de atributos
     mass_delete:
       success: La eliminación ha comenzado. Recibirá una notificación una vez finalizado el trabajo. Mientras tanto, puede seguir su progreso en el rastreador de procesos.
       fail: Se ha producido un error durante la inicialización de la eliminación
@@ -278,10 +277,7 @@ pim_enrich.entity.attribute_group:
   selected: '{0}0 grupos de atributos seleccionados|{1}1 grupo de atributos seleccionado|]1, Inf[{{ count }} grupos de atributos seleccionados'
   mass_delete:
     confirm: '{1}¿Seguro que desea eliminar este grupo de atributos?|]1, Inf[¿Seguro que desea eliminar estos {{ count }} grupos de atributos?'
-    confirmation_phrase: 'Escriba «{{ confirmation_word }}» para confirmar:'
     confirmation_word: eliminar
-    attribute_warning: '{1}Eliminar estos grupos de atributos afectará a {{ number_of_attribute }} atributos secundarios. Tendrá que mover este atributo secundario a un nuevo grupo de atributos.|]1, Inf[Eliminar estos grupos de atributos afectará a {{ number_of_attribute }} atributos secundarios. Tendrá que mover estos atributos secundarios a un nuevo grupo de atributos.'
-    select_attribute_group: '{1}Seleccione el grupo de atributos al que desea mover el atributo secundario:|]1, Inf[Seleccione el grupo de atributos al que desea mover los {{ number_of_attribute }} atributos secundarios:'
     empty_result_label: 'No se ha encontrado ningún grupo de atributos'
     placeholder: 'Seleccionar grupo de atributos'
     open_label: 'lista de grupos de atributos'
@@ -289,15 +285,6 @@ pim_enrich.entity.attribute_group:
     delete_attribute_groups:
       delete_attribute_groups:
         label: Eliminar grupos de atributos
-  job_execution:
-    summary:
-      attribute_group_mass_delete: Grupos de atributos eliminados
-pim_import_export:
-  notification:
-    mass_delete_attribute_groups:
-      error: Error al eliminar en masa los grupos de atributos
-      warning: La eliminación en masa de grupos de atributos finalizó con algunas advertencias
-      success: Eliminación en masa de grupos de atributos finalizada
 pim_enrich.mass_edit.family:
   title: Acción masiva sobre las familias
   confirm: "{1}Está a punto de actualizar una familia con la siguiente información, por favor confirme.|]1, Inf[Está a punto de actualizar {{ itemsCount }} familias con la información siguiente, por favor confirme."

@@ -38,8 +38,9 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: 연결된 앱
   akeneo_connectivity_connection_connect_connected_apps_edit: 앱 설정
   akeneo_connectivity_connection_connect_connected_apps_delete: 앱 삭제
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: 테스트 앱 만들기
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: 테스트 앱 삭제
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: 자격 증명 다시 생성
+  akeneo_connectivity_connection_connect_custom_apps_create: 사용자 지정 앱 만들기
+  akeneo_connectivity_connection_connect_custom_apps_delete: 사용자 지정 앱 삭제
   akeneo_connectivity_connection_connect_connected_apps_open: 앱 열기
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: 카탈로그 편집
 akeneo_connectivity.connection:
@@ -73,51 +74,9 @@ akeneo_connectivity.connection:
         empty: 사용 중인 버전과 호환되는 앱이 없습니다
       unreachable: App Store에 연결할 수 없습니다. 잠시 후 다시 시도하십시오.
       scroll_to_top: 맨 위로 스크롤
-      test_apps:
-        title: 내 테스트 앱
+      custom_apps:
+        title: 내 사용자 지정 앱
         removed_user: 제거된 사용자
-        create_a_test_app: 테스트 앱 만들기
-        modal:
-          subtitle: 테스트 앱 만들기
-          app_information:
-            title: 앱 정보
-            description: 도움이 필요한 경우 문서를 확인하십시오
-            link: 앱을 게시하기 전에 테스트하는 방법
-            fields:
-              name: 이름
-              activate_url: 활성화 URL
-              callback_url: 콜백 URL
-          credentials:
-            title: 자격 증명
-            warning: 자격 증명은 여기에서 한 번만 표시되므로 이 정보를 다른 곳에 반드시 저장하십시오.
-            client_id: 클라이언트 ID
-            client_secret: 클라이언트 비밀번호
-        errors:
-          page_not_found: 페이지를 찾을 수 없습니다
-          creation:
-            name:
-              min_length: 테스트 앱 이름이 너무 짧습니다. 3자 이상이어야 합니다.
-              max_length: 테스트 앱 이름이 너무 깁니다. 255자 이하여야 합니다.
-              not_blank: 테스트 앱 이름이 필요합니다.
-            client_id:
-              max_length: 테스트 앱의 클라이언트 ID가 너무 깁니다. 36자 이하여야 합니다.
-              not_blank: 클라이언트 ID가 필요합니다.
-            activate_url:
-              max_length: 테스트 앱의 활성화 URL이 너무 깁니다. 255자 이하여야 합니다.
-              must_be_url: 활성화 URL이 유효한 URL이어야 합니다.
-              not_blank: 활성화 URL이 필요합니다.
-            callback_url:
-              max_length: 테스트 앱의 콜백 URL이 너무 깁니다. 255자 이하여야 합니다.
-              must_be_url: 콜백 URL이 유효한 URL이어야 합니다.
-              not_blank: 콜백 URL이 필요합니다.
-        delete:
-          subtitle: 앱
-          title: 삭제 확인
-          description: 이 PIM에서 테스트 앱을 삭제하려고 합니다.
-          warning: 삭제를 확인하면 App Store 페이지 및 관련된 연결 앱에서 테스트 앱이 삭제됩니다.
-          flash:
-            success: 테스트 앱이 삭제되었습니다.
-            error: 죄송합니다. 테스트 앱을 삭제하는 동안 오류가 발생했습니다.
     connected_apps:
       list:
         apps:
@@ -128,8 +87,8 @@ akeneo_connectivity.connection:
           marketplace_link_anchor: App Store
           at_least_one_is_not_listed_on_the_appstore: 연결된 앱 중 일부가 PIM 버전과 호환되지 않거나 Akeneo App Store에 더 이상 없습니다. 자세한 정보를 확인하려면 문의해주십시오.
           pending_apps: 앱 중 일부가 PIM에 연결되어 있지 않습니다.
-        test_apps:
-          title: 내 테스트 앱
+        custom_apps:
+          title: 연결된 내 사용자 지정 앱
           removed_user: 제거된 사용자
         helper:
           title: '[0,1] PIM이 {{ count }}개 앱에 연결되어 있습니다.|[2,Inf] PIM이 {{ count }}개 앱에 연결되어 있습니다'
@@ -171,6 +130,22 @@ akeneo_connectivity.connection:
             information_link_anchor: 도움말 문서
             openid_only: 이 앱은 사용자의 개인 데이터가 아닌 Akeneo 앱 권한 부여를 사용합니다.
           pending: 이 앱은 PIM에 연결되어 있지 않습니다. 앱을 열면 연결 문제를 해결할 수 있습니다. 그래도 문제가 지속되면 App 지원 팀에 문의해주십시오.
+          credentials:
+            title: 자격 증명
+            client_id: 클라이언트 ID
+            client_secret: 클라이언트 비밀번호
+            regenerate_button: 다시 생성
+            regenerate_secret:
+              flash_error: 죄송합니다. 연결 비밀번호를 다시 생성하는 동안 오류가 발생했습니다. 
+              confirm:
+                title: 다시 생성 확인
+                description: 비밀번호를 다시 생성하면 PIM과의 사용자 지정 앱 연결에 영향을 미칩니다. 계속하시겠습니까?
+                regenerate_button: 다시 생성
+                cancel_button: 취소
+              new_credentials:
+                title: 새 자격 증명
+                subtitle: 자격 증명 다시 생성
+                done_button: 완료
         error_monitoring:
           error: 이런, 문제가 발생했습니다!
           helper:
@@ -295,6 +270,52 @@ akeneo_connectivity.connection:
           must_be_url: redirect_uri는 유효한 URL이 아닙니다.
         scope:
           too_long: 범위 목록은 1,000자 이하여야 합니다.
+    custom_apps:
+      creation_limit_reached: 사용자 지정 앱 20개 제한에 도달했습니다.
+      create_button: 앱 만들기
+      create_modal:
+        subtitle: 사용자 지정 앱 만들기
+        app_information:
+          title: 앱 정보
+          description: 도움이 필요한 경우 문서를 확인하십시오
+          link: 앱을 게시하기 전에 테스트하는 방법
+          fields:
+            name: 이름
+            activate_url: 활성화 URL
+            callback_url: 콜백 URL
+          field_placeholder:
+            name: 앱 이름 정의
+            activate_url: 활성화 URL 입력
+            callback_url: 콜백 URL 입력
+        credentials:
+          title: 자격 증명
+          client_id: 클라이언트 ID
+          client_secret: 클라이언트 비밀번호
+        errors:
+          limit_reached: 최대 20개 사용자 지정 앱을 만들 수 있습니다.
+          name:
+            min_length: 앱 이름이 너무 짧습니다. 3자 이상이어야 합니다.
+            max_length: 앱 이름이 너무 깁니다. 255자 이하여야 합니다.
+            not_blank: 앱 이름이 필요합니다.
+          client_id:
+            max_length: 앱의 클라이언트 ID가 너무 깁니다. 36자 이하여야 합니다.
+            not_blank: 클라이언트 ID가 필요합니다.
+          activate_url:
+            max_length: 앱의 활성화 URL이 너무 깁니다. 255자 이하여야 합니다.
+            must_be_url: 활성화 URL이 유효한 URL이어야 합니다.
+            not_blank: 활성화 URL이 필요합니다.
+          callback_url:
+            max_length: 앱의 콜백 URL이 너무 깁니다. 255자 이하여야 합니다.
+            must_be_url: 콜백 URL이 유효한 URL이어야 합니다.
+            not_blank: 콜백 URL이 필요합니다.
+      delete_modal:
+        subtitle: 사용자 지정 앱 삭제
+        title: 삭제 확인
+        description: 이 PIM에서 앱을 삭제하려고 합니다.
+        warning: 삭제를 확인하면 App Store 페이지 및 관련된 연결 앱에서 앱이 삭제됩니다.
+        flash:
+          success: 사용자 지정 앱이 삭제되었습니다.
+          error: 죄송합니다. 사용자 지정 앱을 삭제하는 동안 오류가 발생했습니다.
   connections: 연결
   secondary_actions:
     title: 기타 작업
@@ -598,4 +619,6 @@ pim_notification:
   connected_app_authorizations:
     button_label: 앱 열기
   disabled_catalog:
+    button_label: 카탈로그 설정
+  attribute_removed:
     button_label: 카탈로그 설정
