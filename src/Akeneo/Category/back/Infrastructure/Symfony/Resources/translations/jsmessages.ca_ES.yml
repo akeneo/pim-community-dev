@@ -13,7 +13,6 @@ akeneo.category:
     delete: Esborra l'arbre
   template:
     create: Activa la plantilla
-    edit: Veure plantilla
     notification_success: La plantilla s'ha activat correctament
     notification_error: No s'ha pogut activar la plantilla
     attribute:
@@ -40,10 +39,5 @@ akeneo.category:
   tag:
     new: Nou
   discover_enriched_categories_information:
-    title: Descobriu les categories enriquides a l'Accés Anticipat
-    content:
-      activate_template: Activeu l'enriquiment de categories mitjançant plantilles preconfigurades
-      enrich_attribute_values: Enriquiu els atributs de text, àrea de text i imatge en categories
-      deactivate_template: La desactivació de l'enriquiment i la plantilla personalitzada arribaran en breu
     survey_link_label: Diguen's el que penses
     learn_more_link_label: Més informació sobre les categories enriquides

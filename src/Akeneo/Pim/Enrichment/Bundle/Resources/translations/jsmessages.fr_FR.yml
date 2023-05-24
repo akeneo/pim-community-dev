@@ -2,6 +2,7 @@ pim_notification:
   types:
     settings: Paramètres
     mass_delete: Suppression
+    attribute_mass_delete: Suppression
 flash:
   comment:
     create:
@@ -113,6 +114,8 @@ pim_enrich.entity.product:
       quantified:
         quantity: Quantité
         unlinked: Dissocié
+      search:
+        placeholder: Recherche par libellé, identifiant ou UUID
       no_data: Il n’y a aucun produit associé.
       remove: Supprimer l'association
       edit: Modifier le produit
@@ -454,6 +457,7 @@ pim_datagrid:
     mass_delete: Suppression massive
     selected:
       family: "]-Inf, 1]{{ count }} famille sélectionnée|]1, +Inf[{{ count }} familles sélectionnées"
+      attribute: "]-Inf, 1]{{ count }} attribut sélectionné|]1, Inf[{{ count }} attributs sélectionnés"
       product: "]-Inf, 1]{{ count }} résultat sélectionné|]1, +Inf[{{ count }} résultats sélectionnés"
   view_selector:
     view: Vues

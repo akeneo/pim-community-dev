@@ -427,6 +427,15 @@ pim_system:
     enabled: SSO aktiviert
     disabled: SSO deaktiviert
     title: SAML-basiertes Single Sign-On
+  reset_pim:
+    modal:
+      summary:
+        users:
+          name: Benutzer
+        roles:
+          name: Rollen
+      confirm:
+        name: Bestätigen
 pim_datagrid:
   mass_action:
     default:

@@ -131,6 +131,7 @@ pim_enrich:
       create: Crea un gruppo attributi
       edit: Modifica un gruppo attributi
       remove: Rimuovi un gruppo attributi
+      mass_delete: Rimuovi in blocco gruppi di attributi
       sort: Ordina attributi di gruppo
       add_attribute: Aggiungere l'attributo a un gruppo
       remove_attribute: Rimuovere l'attributo da un gruppo
@@ -451,6 +452,7 @@ pim_datagrid:
       label: Caricato
     label_or_identifier:
       label: Etichetta o identificatore
+      label_with_uuid: Etichetta, identificatore o UUID
     parent:
       label: Parente
     identifier:
@@ -546,3 +548,4 @@ pim_login:
   footer:
     powered: Con tecnologia
     powered_image_title: logo Akeneo
+pim_system.acl_group.connect: Connetti

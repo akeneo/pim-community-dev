@@ -17,7 +17,6 @@ akeneo.category:
     delete: Strukturbaum löschen
   template:
     create: Vorlage aktivieren
-    edit: Vorlage anzeigen
     notification_success: Vorlage erfolgreich aktiviert
     notification_error: Vorlage konnte nicht aktiviert werden
     not_found: Es gibt keine aktives Template für diese Kategorie
@@ -54,11 +53,6 @@ akeneo.category:
   tag:
     new: Neu
   discover_enriched_categories_information:
-    title: Entdecke angereicherte Kategorien im Early Access
-    content:
-      activate_template: Kategorieanreicherung durch vorkonfigurierte Vorlagen aktivieren
-      enrich_attribute_values: Angereicherten Text, Textbereich und Bildattribute in Kategorien
-      deactivate_template: Deaktivierung der Anreicherung und benutzerdefinierte Vorlage wird in Kürze kommen
     survey_link_label: Sagen Sie uns, was Sie denken
     learn_more_link_label: Erfahren Sie mehr über angereicherte Kategorien
   other_actions: Weitere Aktionen

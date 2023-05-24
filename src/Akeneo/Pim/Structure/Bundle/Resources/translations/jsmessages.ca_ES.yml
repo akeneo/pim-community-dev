@@ -150,7 +150,6 @@ pim_enrich.entity.attribute:
       success: Atribut actualitzat correctament.
       fail: No s'ha pogut actualitzar l'atribut.
       fields_not_ready: "Ara no es pot guardar l'atribut. Els següents camps no estan preparats: {{ fields }}"
-      cant_remove_attributes_used_as_label: Els atributs utilitzats com a etiquetes en una família no es poden eliminar.
     delete:
       success: L'atribut s'ha suprimit correctament
       fail: No podeu eliminar aquest atribut
@@ -239,6 +238,9 @@ pim_enrich.entity.attribute:
       confirm_from_family: Esteu segur que voleu suprimir aquest atribut de la família?
       confirm_from_group: Esteu segur que voleu suprimir l'atribut {{ attribute }} d'aquest grup d'atributs?
       confirm_from_product: Esteu segur que voleu suprimir aquest atribut del producte?
+    mass_delete:
+      modal:
+        title: Atributs
 pim_enrich.entity.attribute_group:
   label: grup d'atributs
   uppercase_label: Grup d'atributs
@@ -253,9 +255,6 @@ pim_enrich.entity.attribute_group:
       success: Grup d'atributs actualitzat correctament
       fail: El grup d'atributs no s'ha pogut actualitzar
       fields_not_ready: "Ara no es pot guardar el grup d'atributs. Els següents camps no estan preparats: {{ fields }}"
-    delete:
-      success: Grup d'atributs suprimit correctament
-      fail: No podeu eliminar aquest grup d'atributs
   module:
     add_attribute_group:
       label: Afegir per grups

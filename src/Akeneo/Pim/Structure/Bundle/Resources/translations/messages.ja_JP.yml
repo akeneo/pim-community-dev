@@ -9,6 +9,10 @@ pim_enrich:
   family:
     info:
       cant_remove_attribute_used_as_axis: ファミリーバリエーションでバリエーション軸として使用中の属性は削除できません
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: 属性が含まれる属性グループは削除できません。削除する前に属性を取り除いてください。
+      attribute_group_other_cannot_be_removed: 属性グループ "other" を取り除けません。
   #Group type
   group_type:
     tab:
@@ -42,3 +46,6 @@ pim_enrich_attribute_form:
   locale_specific: ロケール固有
   group: 属性グループ
   useableAsGridFilter: 一覧表で使用可能
+job_execution.summary:
+  deleted_attribute_groups: 削除された属性グループ
+  skipped_attribute_groups: スキップされた属性グループ

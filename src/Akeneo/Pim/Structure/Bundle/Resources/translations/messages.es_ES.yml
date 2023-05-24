@@ -49,9 +49,3 @@ pim_enrich_attribute_form:
 job_execution.summary:
   deleted_attribute_groups: Grupos de atributos eliminados
   skipped_attribute_groups: Grupos de atributos omitidos
-pim_import_export:
-  notification:
-    attribute_group_mass_delete:
-      error: Error al eliminar en masa los grupos de atributos
-      warning: La eliminación en masa de grupos de atributos finalizó con algunas advertencias
-      success: Eliminación en masa de grupos de atributos finalizada

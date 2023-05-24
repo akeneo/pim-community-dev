@@ -620,3 +620,5 @@ pim_notification:
     button_label: Obre l'aplicació
   disabled_catalog:
     button_label: Configuració del catàleg
+  attribute_removed:
+    button_label: Configuració del catàleg

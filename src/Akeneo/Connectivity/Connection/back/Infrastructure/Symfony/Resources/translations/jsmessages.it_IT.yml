@@ -38,6 +38,9 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: App connesse
   akeneo_connectivity_connection_connect_connected_apps_edit: Impostazioni app
   akeneo_connectivity_connection_connect_connected_apps_delete: Eliminazione app
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: Rigenera credenziali
+  akeneo_connectivity_connection_connect_custom_apps_create: Crea una app personalizzata
+  akeneo_connectivity_connection_connect_custom_apps_delete: Elimina app personalizzata
   akeneo_connectivity_connection_connect_connected_apps_open: Apri app
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Modifica catalogo
 akeneo_connectivity.connection:
@@ -72,6 +75,7 @@ akeneo_connectivity.connection:
       unreachable: Non riusciamo a raggiungere l'App Store, torna più tardi.
       scroll_to_top: Scorri in alto
       custom_apps:
+        title: Le mie app personalizzate
         removed_user: Utente rimosso
     connected_apps:
       list:
@@ -84,6 +88,7 @@ akeneo_connectivity.connection:
           at_least_one_is_not_listed_on_the_appstore: Alcune delle tue app connesse non sono compatibili con la tua versione PIM o non esistono più nell'App Store di Akeneo. Contattaci per maggiori informazioni.
           pending_apps: Alcune delle tue app non sono connesse al tuo PIM.
         custom_apps:
+          title: Le mie app personalizzate collegate
           removed_user: Utente rimosso
         helper:
           title: '[0,1] Il tuo PIM è connesso con {{ count }} app.<unk> [2,Inf] Il tuo PIM è connesso con {{ count }} app.'
@@ -133,8 +138,14 @@ akeneo_connectivity.connection:
             regenerate_secret:
               flash_error: Si è verificato un errore durante la rigenerazione della chiave segreta della connessione.
               confirm:
+                title: Conferma rigenerazione
+                description: Rigenerare il segreto avrà effetto sulla connessione tra la tua app personalizzata e il PIM. Confermi di voler procedere?
                 regenerate_button: Rigenera
                 cancel_button: Annulla
+              new_credentials:
+                title: Nuove credenziali
+                subtitle: Rigenera credenziali
+                done_button: Completato
         error_monitoring:
           error: Ops, si è verificato un errore!
           helper:
@@ -260,7 +271,10 @@ akeneo_connectivity.connection:
         scope:
           too_long: L'elenco ambiti non deve contenere più di 1000 caratteri.
     custom_apps:
+      creation_limit_reached: Hai raggiunto il limite di 20 app personalizzate.
+      create_button: Crea un'app
       create_modal:
+        subtitle: Crea un'app personalizzata
         app_information:
           title: Informazioni app
           description: Se hai bisogno di aiuto, consulta il nostro articolo
@@ -269,21 +283,39 @@ akeneo_connectivity.connection:
             name: Nome
             activate_url: URL di attivazione
             callback_url: URL di callback
+          field_placeholder:
+            name: Definisci nome app
+            activate_url: Inserisci URL di attivazione
+            callback_url: Inserisci URL di callback
         credentials:
           title: Credenziali
           client_id: ID client
           client_secret: Chiave privata client
         errors:
+          limit_reached: Puoi creare fino a 20 app personalizzate.
+          name:
+            min_length: Il nome dell'app è troppo corto. Deve contenere almeno 3 caratteri.
+            max_length: Il nome dell'app è troppo lungo. Non deve contenere più di 255 caratteri.
+            not_blank: Il nome dell'app è obbligatorio.
           client_id:
+            max_length: L'ID client dell'app è troppo lungo. Non deve contenere più di 36 caratteri.
             not_blank: L'ID client è obbligatorio.
           activate_url:
+            max_length: L'URL di attivazione dell'app è troppo lungo. Non deve contenere più di 255 caratteri.
             must_be_url: L'URL di attivazione deve essere un URL valido.
             not_blank: L'URL di attivazione è obbligatorio.
           callback_url:
+            max_length: L'URL di callback dell'app è troppo lungo. Non deve contenere più di 255 caratteri.
             must_be_url: L'URL di callback deve essere un URL valido
             not_blank: L'URL di callback è obbligatorio.
       delete_modal:
+        subtitle: Elimina un'app personalizzata
         title: Conferma eliminazione
+        description: Stai per eliminare la tua app da questo PIM.
+        warning: Confermando l'eliminazione, eliminerai l'app sulla pagina dell'App Store e la corrispondente app connessa.
+        flash:
+          success: App personalizzata eliminata correttamente.
+          error: Spiacenti, si è verificato un errore durante l'eliminazione dell'app personalizzata.
   connections: Connessioni
   secondary_actions:
     title: Altre azioni
@@ -587,4 +619,6 @@ pim_notification:
   connected_app_authorizations:
     button_label: Apri app
   disabled_catalog:
+    button_label: Impostazioni catalogo
+  attribute_removed:
     button_label: Impostazioni catalogo
