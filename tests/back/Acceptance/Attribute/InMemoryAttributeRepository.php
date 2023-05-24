@@ -180,7 +180,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier(): AttributeInterface
+    public function getIdentifier(): ?AttributeInterface
     {
         $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
             return  $attribute->getType() === AttributeTypes::IDENTIFIER && $attribute->isMainIdentifier();
@@ -192,13 +192,17 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
             })->first();
         }
 
+        if (!$attribute) {
+            return null;
+        }
+
         return $attribute;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode(): string
+    public function getIdentifierCode(): ?string
     {
         $identifierAttribute = $this->getIdentifier();
 

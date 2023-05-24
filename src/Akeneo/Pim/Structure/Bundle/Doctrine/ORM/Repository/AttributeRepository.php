@@ -246,7 +246,7 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier(): AttributeInterface
+    public function getIdentifier(): ?AttributeInterface
     {
         // TODO CPM-1053
         if ($this->isCurrentDatabaseVersion()) {
@@ -261,7 +261,7 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode(): string
+    public function getIdentifierCode(): ?string
     {
         if (null === $this->identifierCode) {
             $query = $this->createQueryBuilder('a')
