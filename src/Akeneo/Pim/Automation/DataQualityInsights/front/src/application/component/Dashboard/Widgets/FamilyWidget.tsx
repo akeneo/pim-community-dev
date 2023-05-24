@@ -7,7 +7,7 @@ import {Ranks} from '../../../../domain/Rate.interface';
 import FamilyModal from './FamilyModal';
 import {uniq as _uniq} from 'lodash';
 import {redirectToProductGridFilteredByFamily} from '../../../../infrastructure/ProductGridRouter';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {SeeInGrid} from './SeeInGrid';
 import {RemoveItem} from './RemoveItem';
 import {AddItem} from './AddItem';
@@ -28,12 +28,9 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
   const [watchedFamilyCodes, setWatchedFamilyCodes] = useState<string[]>([]);
   const [familyCodesToWatch, setFamilyCodesToWatch] = useState<string[]>([]);
   const translate = useTranslate();
-  const userContext = useUserContext();
 
   const averageScoreByFamilies = useFetchWidgetFamilies(catalogChannel, catalogLocale, watchedFamilyCodes);
   const families: Family[] = useFetchFamiliesByCodes(averageScoreByFamilies);
-
-  const uiLocale = userContext.get('uiLocale');
 
   const onSelectFamily = (jQueryEvent: any) => {
     const selectedFamilies = jQueryEvent.val.filter((familyCode: string) => !watchedFamilyCodes.includes(familyCode));
@@ -92,6 +89,7 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
 
   const familyModal = (
     <FamilyModal
+      catalogLocale={catalogLocale}
       onConfirm={onConfirm}
       onDismissModal={onDismissModal}
       onSelectFamily={onSelectFamily}
@@ -138,7 +136,7 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
             return (
               <Row key={index}>
                 <Cell highlight={true}>
-                  {family && (family.labels[uiLocale] ? family.labels[uiLocale] : '[' + family.code + ']')}
+                  {family && (family.labels[catalogLocale] ? family.labels[catalogLocale] : '[' + family.code + ']')}
                 </Cell>
                 <Cell align={'center'}>
                   <QualityScore score={averageScoreRank ? Ranks[averageScoreRank] : 'N/A'} />
