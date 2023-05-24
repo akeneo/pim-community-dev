@@ -43,11 +43,6 @@ class UcsMiddleware implements MiddlewareInterface
             $envelope->getMessage()->setTenantId($this->pimTenantId);
         }
 
-        $consumerNameStamp = $envelope->last(ConsumerNameStamp::class);
-        if (null !== $consumerNameStamp && $envelope->getMessage() instanceof MessageWrapper) {
-            $envelope->getMessage()->setConsumerName((string) $consumerNameStamp);
-        }
-
         return $stack->next()->handle($envelope, $stack);
     }
 }

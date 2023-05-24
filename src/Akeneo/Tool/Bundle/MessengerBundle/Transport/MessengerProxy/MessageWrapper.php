@@ -16,7 +16,6 @@ final class MessageWrapper
         private object $message,
         private string $tenantId,
         private string $correlationId,
-        private ?string $consumerName = null,
     ) {
     }
 
@@ -43,15 +42,5 @@ final class MessageWrapper
     public function correlationId(): string
     {
         return $this->correlationId;
-    }
-
-    public function consumerName(): ?string
-    {
-        return $this->consumerName;
-    }
-
-    public function setConsumerName(string $consumerName): void
-    {
-        $this->consumerName = $consumerName;
     }
 }

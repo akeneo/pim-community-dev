@@ -29,7 +29,7 @@ final class MessageWrapperHandler implements MessageHandlerInterface
     ) {
     }
 
-    public function __invoke(MessageWrapper $messageWrapper): void
+    public function __invoke(MessageWrapper $messageWrapper, string $consumerName): void
     {
         $message = $messageWrapper->message();
         $tenantId = $messageWrapper->tenantId();
@@ -51,7 +51,7 @@ final class MessageWrapperHandler implements MessageHandlerInterface
                 'php',
                 'bin/console',
                 'akeneo:process-message',
-                (string) $messageWrapper->consumerName(),
+                $consumerName,
                 \get_class($message),
                 $this->serializer->serialize($message, 'json'),
             ], null, $env);

@@ -39,7 +39,7 @@ services:
         arguments:
             - '@akeneo_messenger.message.serializer'
             - '@logger'
-        tags:
-            -
-                name: messenger.message_handler
-                handles: Akeneo\Tool\Bundle\MessengerBundle\Transport\MessengerProxy\MessageWrapper
+
+    Akeneo\Tool\Bundle\MessengerBundle\Middleware\HandleMessageMiddleware:
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Handler\MessageWrapperHandler'
