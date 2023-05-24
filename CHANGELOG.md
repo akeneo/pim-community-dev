@@ -78,6 +78,7 @@
 - PIM-10980: Fix pagination update when applying filters on product association grid
 - PIM-10977 : Prevent api users to log in to the PIM via the UI
 - PIM-11001: Fix code filter on attributes grid with special character
+- PIM-10997: Update error message when trying to delete role with linked users or connections
 
 ## Improvements
 
