@@ -31,10 +31,26 @@ final class SwitchSqlGetCompleteness implements GetProductCompletenesses
 
     public function fromProductUuids(array $productUuids, ?string $channel = null, array $locales = []): array
     {
-        if ($this->newTableExists()) {
-            return $this->getProductCompletenesses->fromProductUuids($productUuids, $channel, $locales);
+        if (!$this->newTableExists()) {
+            return $this->legacyGetProductCompletenesses->fromProductUuids($productUuids, $channel, $locales);
         }
-        return $this->legacyGetProductCompletenesses->fromProductUuids($productUuids, $channel, $locales);
+
+        $results = $this->getProductCompletenesses->fromProductUuids($productUuids, $channel, $locales);
+        $emptyCompletenessesUuids = \array_map(
+            static fn (ProductCompletenessCollection $collection): UuidInterface => $collection->productUuid(),
+            \array_filter(
+                $results,
+                static fn (ProductCompletenessCollection $productCompletenessCollection) => 0 === $productCompletenessCollection->count()
+            )
+        );
+        if (count($emptyCompletenessesUuids) === 0) {
+            return $results;
+        }
+
+        return \array_replace(
+            $results,
+            $this->legacyGetProductCompletenesses->fromProductUuids($emptyCompletenessesUuids, $channel, $locales)
+        );
     }
 
     private function newTableExists(): bool

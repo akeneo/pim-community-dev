@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness;
 
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
@@ -18,7 +19,8 @@ use Ramsey\Uuid\UuidInterface;
 final class SqlGetCompletenesses implements GetProductCompletenesses
 {
     public function __construct(
-        private Connection $connection
+        private readonly Connection $connection,
+        private readonly ChannelExistsWithLocaleInterface $channelExistsWithLocale,
     ) {
     }
 
@@ -49,28 +51,12 @@ SQL;
 
         $results = [];
         foreach ($rows as $row) {
-            $channels = json_decode($row['completeness'], true);
-            \ksort($channels);
-
-            $completenesses = [];
-            foreach ($channels as $completenessChannel => $completenessLocales) {
-                if ($channel && $completenessChannel !== $channel) {
-                    continue;
-                }
-
-                $filterByLocales = array_filter($completenessLocales, function ($locale) use ($locales) {
-                    return empty($locales) || in_array($locale, $locales);
-                }, ARRAY_FILTER_USE_KEY);
-
-                foreach ($filterByLocales as $locale => $value) {
-                    $completenesses[] = new ProductCompleteness($completenessChannel, $locale, $value['required'], $value['missing']);
-                }
-            }
-            $results[$row['uuid']] = new ProductCompletenessCollection(Uuid::fromString($row['uuid']), $completenesses);
+            $results[$row['uuid']] = $this->filterCompleteness(Uuid::fromString($row['uuid']), \json_decode($row['completeness'], true), $channel, $locales);
         }
 
+        // to fill missing uuids
         $productUuidsAsStrings = \array_map(fn (UuidInterface $uuid): string => $uuid->toString(), $productUuids);
-        $missingUuids = array_diff($productUuidsAsStrings, array_keys($results));
+        $missingUuids = \array_diff($productUuidsAsStrings, \array_keys($results));
         if (!empty($missingUuids)) {
             foreach ($missingUuids as $missingUuid) {
                 $results[$missingUuid] = new ProductCompletenessCollection(Uuid::fromString($missingUuid), []);
@@ -78,5 +64,32 @@ SQL;
         }
 
         return $results;
+    }
+
+    private function filterCompleteness(UuidInterface $uuid, array $completeness, ?string $channel, array $locales): ProductCompletenessCollection
+    {
+        $completenesses = [];
+        \ksort($completeness);
+
+        foreach ($completeness as $channelCode => $completenessByLocale) {
+            if (!$this->channelExistsWithLocale->doesChannelExist($channelCode)) {
+                continue;
+            }
+
+            if (null !== $channel && $channelCode !== $channel) {
+                continue;
+            }
+
+            if (!empty($locales)) {
+                $completenessByLocale = \array_intersect_key($completenessByLocale, \array_flip($locales));
+            }
+
+            foreach ($completenessByLocale as $localeCode => $completeness) {
+                if ($this->channelExistsWithLocale->isLocaleBoundToChannel($localeCode, $channelCode)) {
+                    $completenesses[] = new ProductCompleteness($channelCode, $localeCode, (int) $completeness['required'], (int) $completeness['missing']);
+                }
+            }
+        }
+        return new ProductCompletenessCollection($uuid, $completenesses);
     }
 }
