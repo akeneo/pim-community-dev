@@ -14,6 +14,17 @@ services:
             - '@event_dispatcher'
             - '%pim_catalog.entity.group_type.class%'
 
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ProductCompletenessRemover:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SwitchCompletenessRemover:
+        decorates: pim_catalog.completeness.remover
+        arguments:
+            - '@.inner'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\ProductCompletenessRemover'
+            - '@database_connection'
+
     pim_catalog.remover.product:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Remover\ProductRemover
         arguments:
