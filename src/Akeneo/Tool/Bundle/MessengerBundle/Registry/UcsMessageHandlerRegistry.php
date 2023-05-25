@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Registry;
 
-use Akeneo\Tool\Component\Messenger\UcsMessageHandlerInterface;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 /**
  * @todo To rename
@@ -14,10 +14,10 @@ use Akeneo\Tool\Component\Messenger\UcsMessageHandlerInterface;
  */
 final class UcsMessageHandlerRegistry
 {
-    /** @var array<string, UcsMessageHandlerInterface> */
+    /** @var array<string, MessageHandlerInterface> */
     private array $handlers = [];
 
-    public function registerHandler(UcsMessageHandlerInterface $handler, string $consumerName): void
+    public function registerHandler(MessageHandlerInterface $handler, string $consumerName): void
     {
         if (\array_key_exists($consumerName, $this->handlers)) {
             throw new \LogicException(sprintf('An handler is already registered for the "%s" consumer', $consumerName));
@@ -29,7 +29,7 @@ final class UcsMessageHandlerRegistry
     /**
      * @throw \LogicException
      */
-    public function getHandler(string $consumerName): UcsMessageHandlerInterface
+    public function getHandler(string $consumerName): MessageHandlerInterface
     {
         if (!\array_key_exists($consumerName, $this->handlers)) {
             throw new \LogicException(sprintf('No handler found for the "%s" consumer', $consumerName));
