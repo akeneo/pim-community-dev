@@ -76,7 +76,12 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
                 'productUuid' => $product->getUuid()->getBytes(),
             ]
         );
-
+        $this->get('database_connection')->executeUpdate(
+            'DELETE FROM pim_catalog_product_completeness WHERE product_uuid = :productUuid',
+            [
+                'productUuid' => $product->getUuid()->getBytes(),
+            ]
+        );
         Assert::assertNull(
             $this->getProductCompletenessRatio->forChannelCodeAndLocaleCode($product->getUuid(), 'ecommerce', 'en_US')
         );
