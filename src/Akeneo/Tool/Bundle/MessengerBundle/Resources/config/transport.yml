@@ -17,3 +17,12 @@ services:
         arguments:
             - '%env(default::string:APP_TENANT_ID)%'
             - '@logger'
+
+    Akeneo\Tool\Bundle\MessengerBundle\Handler\UcsEnvelopeMessageHandler:
+        arguments:
+            - '@akeneo_messenger.message.serializer'
+            - '@logger'
+
+    Akeneo\Tool\Bundle\MessengerBundle\Middleware\HandleUcsMessageMiddleware:
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Handler\UcsEnvelopeMessageHandler'

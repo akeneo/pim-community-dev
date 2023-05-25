@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Handler;
 
-use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Handler for all TraceableMessageInterface messages.
- * It extracts the tenant id in order to launch the real treatment of the message
- * in a tenant aware process.
+ * Handler for all messages in UCS infra.
+ * It extracts the tenant id and the consumer name to launch the real treatment of the message in a tenant aware process.
  *
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class TraceableMessageBridgeHandler implements MessageHandlerInterface
+final class UcsEnvelopeMessageHandler
 {
     private const RUNNING_PROCESS_CHECK_INTERVAL_MICROSECONDS = 1000;
     private const LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS = 300;
@@ -26,45 +27,59 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly LoggerInterface $logger,
-        private readonly string $consumerName,
     ) {
     }
 
-    public function __invoke(TraceableMessageInterface $message): void
+    public function __invoke(Envelope $envelope): void
     {
-        $tenantId = $message->getTenantId();
+        $message = $envelope->getMessage();
+        $correlationId = $envelope->last(CorrelationIdStamp::class)?->correlationId();
 
-        $this->logger->debug('Message received', [
+        $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId();
+        if (null === $tenantId) {
+            throw new \LogicException('The envelope must have a tenant ID');
+        }
+
+        $consumerName = $envelope->last(ReceivedStamp::class)?->getTransportName();
+        if (null === $consumerName) {
+            throw new \LogicException('The envelope must have a consumer name from a ReceivedStamp');
+        }
+
+        $context = [
             'tenant_id' => $tenantId,
-            'correlation_id' => $message->getCorrelationId(),
-        ]);
+            'correlation_id' => $correlationId,
+            'consumer_name' => $consumerName,
+            'message_class' => \get_class($message),
+        ];
+
+        $this->logger->debug('Message received', $context);
 
         $env = [
             'SYMFONY_DOTENV_VARS' => false,
+            'APP_TENANT_ID' => $tenantId,
         ];
-        if (null !== $tenantId) {
-            $env['APP_TENANT_ID'] = $tenantId;
-        };
 
         try {
             $process = new Process([
                 'php',
                 'bin/console',
                 'akeneo:process-message',
-                $this->consumerName,
+                $consumerName,
                 \get_class($message),
                 $this->serializer->serialize($message, 'json'),
+                $correlationId,
             ], null, $env);
 
-            $this->runProcess($process, $message);
+            $this->runProcess($process, $context);
         } catch (\Throwable $t) {
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), [
+                ...$context,
                 'trace' => $t->getTraceAsString(),
             ]);
         }
     }
 
-    private function runProcess(Process $process, TraceableMessageInterface $message): void
+    private function runProcess(Process $process, array $context): void
     {
         $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
@@ -74,9 +89,7 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
         while ($process->isRunning()) {
             if (!$warningLogIsSent && self::LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS <= time() - $startTime) {
                 $this->logger->warning('Message handler has a long running process', [
-                    'tenant_id' => $message->getTenantId(),
-                    'correlation_id' => $message->getCorrelationId(),
-                    'message_class' => \get_class($message),
+                    ...$context,
                     'command_line' => $process->getCommandLine(),
                 ]);
                 $warningLogIsSent = true;
@@ -85,8 +98,7 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
         }
 
         $this->logger->debug('Command akeneo:process-message executed', [
-            'tenant_id' => $message->getTenantId(),
-            'correlation_id' => $message->getCorrelationId(),
+            ...$context,
             'execution_time_in_sec' => time() - $startTime,
             'process_exit_code' => $process->getExitCode(),
             'process_output' => $process->getOutput(),
