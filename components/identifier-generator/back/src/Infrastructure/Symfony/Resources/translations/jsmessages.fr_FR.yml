@@ -48,6 +48,11 @@ pim_identifier_generator:
     max_generator:
       title: 'Vous avez atteint la limite de {{ count }} générateurs d''identifiants.'
     confirmation: 'Confirmez-vous la suppression de cette propriété ?'
+  operators:
+    'NOT IN CHILDREN': 'N''est pas dans les enfants'
+    'IN CHILDREN': 'Dans les enfants'
+    UNCLASSIFIED: 'N''est pas catégorisé'
+    CLASSIFIED: 'Catégorisé'
   selection:
     limit_reached: 'Vous avez atteint la limite de {{ %limit%}} conditions.'
     helper:
@@ -65,6 +70,8 @@ pim_identifier_generator:
         placeholder: 'Veuillez sélectionner au moins une famille'
       select_option:
         placeholder: 'Veuillez sélectionner au moins une option'
+      categories:
+        tree: Arborescence
   structure:
     helper: 'Définissez la structure des identifiants produits que vous souhaitez générer. Si vous avez besoin d''aide pour configurer les paramètres des priorités, {{link}}.'
     helper_link: 'Consultez notre Help Center pour plus d''informations.'
