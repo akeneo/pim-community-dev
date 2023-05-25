@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Bundle\MessengerBundle\Registry;
 
-use Akeneo\Tool\Component\Messenger\TraceableMessageHandlerInterface;
+use Akeneo\Tool\Component\Messenger\UcsMessageHandlerInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -13,15 +13,15 @@ use PhpSpec\ObjectBehavior;
  */
 final class TraceableMessageHandlerRegistrySpec extends ObjectBehavior
 {
-    public function let(TraceableMessageHandlerInterface $handler1, TraceableMessageHandlerInterface $handler2)
+    public function let(UcsMessageHandlerInterface $handler1, UcsMessageHandlerInterface $handler2)
     {
         $this->registerHandler($handler1, 'consumer1');
         $this->registerHandler($handler2, 'consumer2');
     }
 
     public function it_returns_the_handler(
-        TraceableMessageHandlerInterface $handler1,
-        TraceableMessageHandlerInterface $handler2
+        UcsMessageHandlerInterface $handler1,
+        UcsMessageHandlerInterface $handler2
     ) {
         $this->getHandler('consumer1')->shouldReturn($handler1);
         $this->getHandler('consumer2')->shouldReturn($handler2);
@@ -33,7 +33,7 @@ final class TraceableMessageHandlerRegistrySpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_when_handler_is_registerer_twice_for_a_consumer(
-        TraceableMessageHandlerInterface $handler3
+        UcsMessageHandlerInterface $handler3
     ) {
         $this->shouldThrow(\LogicException::class)->during('registerHandler', [$handler3, 'consumer1']);
     }

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\MessengerBundle;
 
-use Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection\CompilerPass\RegisterHandlersCompilerPass;
 use Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection\CompilerPass\RegisterNormalizersCompilerPass;
+use Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection\CompilerPass\RegisterUcsHandlersCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -15,7 +15,7 @@ class AkeneoMessengerBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RegisterHandlersCompilerPass());
+        $container->addCompilerPass(new RegisterUcsHandlersCompilerPass());
         $container->addCompilerPass(new RegisterNormalizersCompilerPass());
     }
 }
