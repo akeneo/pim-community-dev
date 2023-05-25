@@ -13,12 +13,11 @@ use Akeneo\Tool\Component\Batch\Query\SqlGetPausedJobExecutionIds;
 
 class PublishPausedJobsToQueue
 {
-
     public function __construct(
         private readonly JobExecutionQueueInterface $jobExecutionQueue,
         private readonly SqlGetPausedJobExecutionIds $getPausedJobExecutionIds
-    )
-    {}
+    ) {
+    }
 
     public function publishPausedJobs(): void
     {
@@ -29,5 +28,4 @@ class PublishPausedJobsToQueue
             $this->jobExecutionQueue->publish($jobExecutionMessage);
         }
     }
-
 }

@@ -10,7 +10,8 @@ use Doctrine\DBAL\Connection;
 class SqlGetPausedJobExecutionIds
 {
     public function __construct(private readonly Connection $connection)
-    {}
+    {
+    }
 
     /**
      * @return array<int>
@@ -28,7 +29,6 @@ SQL;
             ['batch_status' => BatchStatus::PAUSED],
         )->fetchFirstColumn();
 
-        return array_map(static fn(string $id) => (int) $id, $result);
+        return array_map(static fn (string $id) => (int) $id, $result);
     }
-
 }

@@ -74,6 +74,13 @@ services:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
 
+    Akeneo\Tool\Bundle\BatchQueueBundle\Command\PublishPausedJobsToQueueCommand:
+        arguments:
+            - '@akeneo_batch_queue.queue.publish_paused_jobs_to_queue'
+        tags:
+            - { name: console.command }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
+
     Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobExecutionWatchdogCommand:
         arguments:
             - '@akeneo_batch_queue.manager.job_execution_manager'
