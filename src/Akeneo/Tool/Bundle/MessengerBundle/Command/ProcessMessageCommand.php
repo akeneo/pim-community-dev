@@ -27,7 +27,7 @@ final class ProcessMessageCommand extends Command
 
     public function __construct(
         private readonly SerializerInterface $serializer,
-        private readonly UcsMessageHandlerRegistry $traceableMessageHandlerRegistry,
+        private readonly UcsMessageHandlerRegistry $ucsMessageHandlerRegistry,
         private readonly LoggerInterface $logger
     ) {
         parent::__construct();
@@ -52,7 +52,7 @@ final class ProcessMessageCommand extends Command
         );
 
         $consumerName = $input->getArgument('consumer_name');
-        $handler = $this->traceableMessageHandlerRegistry->getHandler($consumerName);
+        $handler = $this->ucsMessageHandlerRegistry->getHandler($consumerName);
 
         try {
             ($handler)($message);

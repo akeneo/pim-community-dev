@@ -11,15 +11,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Eval
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetOutdatedProductModelIdsByDateAndCriteriaQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetOutdatedProductUuidsByDateAndCriteriaQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Tool\Component\Messenger\UcsMessageHandlerInterface;
 use Psr\Log\LoggerInterface;
-use Webmozart\Assert\Assert;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class LaunchProductAndProductModelEvaluationsHandler implements UcsMessageHandlerInterface
+final class LaunchProductAndProductModelEvaluationsHandler implements MessageHandlerInterface
 {
     public function __construct(
         private readonly CriteriaByFeatureRegistry $productCriteriaRegistry,
@@ -34,10 +33,8 @@ final class LaunchProductAndProductModelEvaluationsHandler implements UcsMessage
     ) {
     }
 
-    public function __invoke(object $message): void
+    public function __invoke(LaunchProductAndProductModelEvaluationsMessage $message): void
     {
-        Assert::isInstanceOf($message, LaunchProductAndProductModelEvaluationsMessage::class);
-
         if (!$message->productUuids->isEmpty()) {
             $this->evaluateProducts($message);
         }
