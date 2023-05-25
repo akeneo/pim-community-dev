@@ -7,9 +7,6 @@ namespace Akeneo\Tool\Component\BatchQueue\Queue;
 use Akeneo\Tool\Component\Batch\Query\SqlGetPausedJobExecutionIds;
 
 /**
- * Push a paused job instance to resume into the job execution queue.
- *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
