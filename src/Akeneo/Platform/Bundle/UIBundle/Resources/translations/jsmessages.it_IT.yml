@@ -261,6 +261,7 @@ pim_common:
   product_models: Modelli di prodotto
   more: Altro
   public_view: Visualizzazione pubblica
+  view: Visualizza
 error:
   exception: Si è verificato un errore {{ status_code}}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
@@ -275,6 +276,7 @@ pim_enrich.entity.fallback:
     generic_error: Si è verificato un errore
     update:
       fail: Aggiornamento non riuscito
+      fail_session_expired: La tua sessione utente è scaduta. Esegui nuovamente l'accesso.
       success: Aggiornato correttamente
     delete:
       fail: Non è possibile eliminare questo articolo
@@ -341,6 +343,7 @@ pim_title:
   pim_settings_index: Impostazioni
   pim_system_index: Sistema
 pim_menu:
+  tag.new: Nuovo
   tab:
     activity: Attività
     imports: Importazioni
@@ -380,6 +383,7 @@ pim_menu:
       product: Impostazioni prodotti
       catalog: Impostazioni catalogo
       collapsed_label: Impostazioni
+      automation: Automazione
     product: Navigazione prodotti
     product_infos: Info prodotto
   user:
@@ -395,6 +399,7 @@ pim_settings:
   settings_menu: Menu Impostazioni
   catalog_settings: Impostazioni catalogo
   product_settings: Impostazioni prodotti
+  automation_settings: Automazione
   count:
     category_trees: '{0}Hai 0 alberi |{1}Hai 1 albero |]1, Inf[Hai {{ count }} alberi '
     categories: '{0}e 0 categorie|{1}e 1 categoria|]1, Inf[e {{ count }} categorie'
@@ -409,6 +414,7 @@ pim_settings:
     group_types: '{0}Hai 0 tipi di gruppo|{1}Hai 1 tipo di gruppo|]1, Inf[Hai {{ count }} tipi di gruppo'
     groups: '{0}Hai 0 gruppi|{1}Hai 1 gruppo|]1, Inf[Hai {{ count }} gruppi'
     rules: '{0}Hai 0 regole abilitate|{1}Hai 1 regola abilitata|]1, Inf[Hai {{ count }} regole abilitate'
+    identifier_generators: '{0}Hai 0 generatori di identificatori|{1}Hai 1 generatore di identificatori|]1, Inf[Hai {{ count }} generatori di identificatori'
 pim_system:
   system_menu: Menu di sistema
   system_navigation: Sistema
@@ -422,6 +428,15 @@ pim_system:
     enabled: SSO abilitato
     disabled: SSO disabilitato
     title: Single Sign-On basato su SAML
+  reset_pim:
+    modal:
+      summary:
+        users:
+          name: Utenti
+        roles:
+          name: Ruoli
+      confirm:
+        name: Conferma
 pim_datagrid:
   mass_action:
     default:

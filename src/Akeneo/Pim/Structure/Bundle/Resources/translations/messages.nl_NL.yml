@@ -9,6 +9,10 @@ pim_enrich:
   family:
     info:
       cant_remove_attribute_used_as_axis: Kan dit attribuut niet verwijderen omdat het gebruikt wordt als variant as in een familie variant
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: De attribuutgroep bevat attributen die niet verwijderd kunnen worden. Verwijder de attributen voordat u hem verwijdert.
+      attribute_group_other_cannot_be_removed: Attribuutgroep "overig" kan niet verwijderd worden.
   #Group type
   group_type:
     tab:
@@ -42,3 +46,6 @@ pim_enrich_attribute_form:
   locale_specific: Lokalisatiespecifiek
   group: Attribuutgroep
   useableAsGridFilter: Bruikbaar in raster
+job_execution.summary:
+  deleted_attribute_groups: Verwijderde attribuutgroepen
+  skipped_attribute_groups: Overgeslagen attribuutgroepen

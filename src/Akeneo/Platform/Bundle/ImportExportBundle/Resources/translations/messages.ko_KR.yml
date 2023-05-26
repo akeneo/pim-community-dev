@@ -16,6 +16,8 @@ pim_import_export:
     6: 실패
     7: 중단됨
     8: 알 수 없음
+    9: Pausing
+    10: Paused
   download_archive:
     archive: 생성된 아카이브 다운로드|생성된 아카이브 다운로드
     output: 생성된 파일 다운로드|생성된 파일 다운로드

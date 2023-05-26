@@ -9,6 +9,10 @@ pim_enrich:
   family:
     info:
       cant_remove_attribute_used_as_axis: Impossibile rimuovere questo attributo usato come asse variante in una famiglia variante
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: Non è possibile eliminare un gruppo che contiene degli attributi. Prima di eliminare il gruppo, elimina gli attributi che contiene.
+      attribute_group_other_cannot_be_removed: Impossibile eliminare il gruppo di attributi "altro".
   #Group type
   group_type:
     tab:
@@ -42,3 +46,6 @@ pim_enrich_attribute_form:
   locale_specific: Impostazioni locali specifiche
   group: Gruppo attributi
   useableAsGridFilter: Utilizzabile nella griglia
+job_execution.summary:
+  deleted_attribute_groups: Gruppi di attributi eliminati
+  skipped_attribute_groups: Gruppi di attributi saltati

@@ -87,6 +87,7 @@ pim_enrich.entity.attribute_option:
       add_option: 여기를 클릭하여 추가하십시오.
       delete_confirmation_title_msg: 옵션에서 '{{ optionCode }}'을(를) 삭제하시겠습니까?
       delete_confirmation_subtitle_msg: 이 옵션을 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
+      display_options_limit: 여기에는 처음 500개 옵션만 표시됩니다. 기타 옵션을 보려면 검색 또는 내보내기를 수행하십시오.
       search:
         placeholder: 레이블 또는 코드 검색
         no_result:
@@ -149,7 +150,6 @@ pim_enrich.entity.attribute:
       success: 특성이 업데이트되었습니다.
       fail: 특성을 업데이트할 수 없습니다.
       fields_not_ready: "이 특성은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
-      cant_remove_attributes_used_as_label: 패밀리에서 레이블로 사용된 특성은 제거할 수 없습니다.
     delete:
       success: 특성 제거됨
       fail: 이 특성을 삭제할 수 없음
@@ -229,9 +229,10 @@ pim_enrich.entity.attribute:
       select_locale: 로케일 선택
     delete:
       confirm: 이 특성을 삭제하시겠습니까?
+      attribute_removal: 모든 제품에서 해당 특성이 제거됩니다.
       product_count: '{0}0개 제품|{1}1개 제품|]1, Inf[{{ count }}개 제품'
       product_model_count: '{0}0개 제품 모델|{1}1개 제품 모델|]1, Inf[{{ count }}개 제품 모델'
-      used: ']-Inf,1]이 특성에 대한 값 세트가 현재 있습니다. 이 값은 제거됩니다.|]1, Inf[이 특성에 대한 값 세트가 현재 있습니다. 이 값은 제거됩니다.'
+      used: ']-Inf,1]- 이 특성에 대한 값 세트를 현재 가지고 있습니다.|]1, Inf[- 이 특성에 대한 값 세트를 현재 가지고 있습니다.'
       helper:
         content: 기존 특성 값에 계속 액세스하면서 특성 유형을 변경하거나 지역화 또는 확장 가능하도록 만들어야 하는 경우
         link: 자세한 내용은 도움말을 확인하십시오.
@@ -239,6 +240,9 @@ pim_enrich.entity.attribute:
       confirm_from_family: 패밀리에서 이 특성을 삭제하시겠습니까?
       confirm_from_group: 이 특성 그룹에서 {{ attribute }} 특성을 제거하시겠습니까?
       confirm_from_product: 제품에서 이 특성을 삭제하시겠습니까?
+    mass_delete:
+      modal:
+        title: 특성
 pim_enrich.entity.attribute_group:
   label: 특성 그룹
   uppercase_label: 특성 그룹
@@ -248,14 +252,18 @@ pim_enrich.entity.attribute_group:
     title: 여기는 약간 혼잡합니다. {{ attributeCount }}/{{ totalAttributeCount }}개 특성이 표시됩니다.
     subtitle: 이 그룹의 모든 특성을 알아보려면 아래를 클릭하면 됩니다!
     button: 모든 특성 보기
+  dropdown:
+    label: 선택
+    all: 모든 특성 그룹
+    none: 특성 그룹 없음
   flash:
     update:
       success: 특성 그룹 업데이트됨
       fail: 특성 그룹을 업데이트할 수 없습니다.
       fields_not_ready: "이 특성 그룹은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
-    delete:
-      success: 특성 그룹 제거됨
-      fail: 이 특성 그룹을 삭제할 수 없음
+    mass_delete:
+      success: 삭제가 시작되었습니다. 작업이 완료되면 알림을 받게 됩니다. 그때까지 프로세스 트래커에서 진행률을 확인할 수 있습니다.
+      fail: 삭제를 실행하는 중에 오류가 발생했습니다.
   module:
     add_attribute_group:
       label: 그룹별 추가
@@ -265,8 +273,18 @@ pim_enrich.entity.attribute_group:
       confirm: 이 특성 그룹을 삭제하시겠습니까?
   grid:
     columns:
-      name: 특성 그룹 이름
-    no_search_result: 죄송합니다. 검색 결과가 없습니다.
+      attribute_count: 관련 특성 카운트
+  selected: '{0}0개 특성 그룹 선택함|{1}1개 특성 그룹 선택함|]1, Inf[{{ count }}개 특성 그룹 선택함'
+  mass_delete:
+    confirm: '{1}이 특성 그룹을 삭제하시겠습니까? |]1, Inf[이러한 {{count}}개 특성 그룹을 삭제하시겠습니까?'
+    confirmation_word: 삭제
+    empty_result_label: '특성 그룹 찾지 못함'
+    placeholder: '특성 그룹 선택'
+    open_label: '특성 그룹 목록'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: 특성 그룹 삭제
 pim_enrich.mass_edit.family:
   title: 패밀리 일괄 작업
   confirm: "{1}다음 정보로 1개 패밀리를 업데이트하려고 합니다. 확인해주십시오.|]1, Inf[다음 정보로 {{ itemsCount }}개 패밀리를 업데이트하려고 합니다. 확인해주십시오."
@@ -287,3 +305,12 @@ pim_enrich.mass_edit.family:
       label: 특성 요구 사항 설정
       description: 선택된 패밀리에 다음 특성 요구 사항이 적용됩니다.
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 패밀리</span>의 특성 요구 사항 설정|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 패밀리</span>의 특성 요구 사항 설정"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: 특성 그룹 삭제
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: 특성 그룹 삭제
+pim_notification:
+  types:
+    attribute_group_mass_delete: 삭제

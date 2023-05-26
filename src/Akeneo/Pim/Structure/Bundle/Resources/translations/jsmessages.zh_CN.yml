@@ -150,7 +150,6 @@ pim_enrich.entity.attribute:
       success: 属性已成功更新。
       fail: 属性无法更新。
       fields_not_ready: "该属性目前无法保存。以下字段未准备好： {{ fields }}"
-      cant_remove_attributes_used_as_label: 无法移除品类中用作标签的属性。
     delete:
       success: 属性已成功移除
       fail: 不能删除该属性
@@ -233,7 +232,7 @@ pim_enrich.entity.attribute:
       attribute_removal: 将从所有产品中移除该属性。
       product_count: '{0}0 个产品|{1}1 个产品|]1, Inf[{{ count }} 个产品'
       product_model_count: '{0}0 个产品模型|{1}1 个产品模型|]1, Inf[{{ count }} 个产品模型'
-      used: ']-Inf,1]此属性当前已设置了值。|]1, Inf[此属性当前已设置了值。'
+      used: ']-Inf,1]当前已设置了此属性的值。|]1, Inf[当前已设置了此属性的值。'
       helper:
         content: 如果您需要更改属性类型，使其具有区域或范围属性，同时保持对现有属性值的访问，
         link: 查看我们的“帮助中心”（获取更多信息）。
@@ -241,6 +240,9 @@ pim_enrich.entity.attribute:
       confirm_from_family: 确定要从品类中删除此属性吗？
       confirm_from_group: 确定要从该属性组中移除属性 {{ attribute }}？
       confirm_from_product: 确定要从产品中删除此属性？
+    mass_delete:
+      modal:
+        title: 属性
 pim_enrich.entity.attribute_group:
   label: 属性组
   uppercase_label: 属性组
@@ -259,9 +261,6 @@ pim_enrich.entity.attribute_group:
       success: 属性组已成功更新
       fail: 属性组无法更新
       fields_not_ready: "该属性组目前无法保存。以下字段未准备好： {{ fields }}"
-    delete:
-      success: 属性组已成功移除
-      fail: 不能删除该属性组
     mass_delete:
       success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
       fail: 启动删除时出错
@@ -278,8 +277,14 @@ pim_enrich.entity.attribute_group:
   selected: '{0}已选择 0 个属性组|{1}已选择 1 个属性组|]1, Inf[已选择 {{ count }} 个属性组'
   mass_delete:
     confirm: '{1}确定要删除此属性组吗？|]1, Inf[确定要删除 {{ count }} 个属性组吗？'
-    confirmation_phrase: '请输入“{{ confirmation_word }}”以确认：'
     confirmation_word: 删除
+    empty_result_label: '未找到属性组'
+    placeholder: '选择属性组'
+    open_label: '属性组列表'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: 删除属性组
 pim_enrich.mass_edit.family:
   title: 品类批量操作
   confirm: "{1}您将更新品类的以下信息，请确认。|]1, Inf[您将更新 {{ itemsCount }} 个品类的以下信息，请确认。"
@@ -300,3 +305,12 @@ pim_enrich.mass_edit.family:
       label: 设置属性要求
       description: 下列属性要求将应用于所选的品类中
       label_count: "{1}设置 <span class=\"AknFullPage-title--highlight\">1 个品类</span>的属性要求|]1, Inf[设置 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个品类</span>的属性要求"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: 删除属性组
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: 删除属性组
+pim_notification:
+  types:
+    attribute_group_mass_delete: 删除

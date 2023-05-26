@@ -10,3 +10,10 @@ akeneo.category:
         text_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens
         textarea_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens
         richtext_too_long: De waarde mag niet langer zijn dan {{ limit }} tekens
+    attribute:
+      limit:
+        title: U kunt niet meer dan 50 attributen toevoegen.
+        message: Voor categoriesjablonen geldt een beperking van 50 attributen per sjabloon.
+      code:
+        wrong_format: De attribuutcode mag alleen kleine letters, cijfers en liggende streepjes bevatten.
+        unique_in_the_template: De attribuutcode {{ attributeCode }} moet uniek zijn in het sjabloon

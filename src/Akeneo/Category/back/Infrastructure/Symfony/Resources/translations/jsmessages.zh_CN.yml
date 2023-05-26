@@ -1,9 +1,13 @@
+pim_title:
+  pim_category_template_edit: 编辑类别模板
 akeneo.category:
   tree_list:
     column:
       category_templates: 类别模板
   attributes: 属性
   edition_form:
+    error:
+      unhandled_attribute_type: 找不到属性类型"{{ type }}"的属性字段生成器
     template:
       title: 模板
       fetching_failed: 获取模板时出错。
@@ -13,9 +17,9 @@ akeneo.category:
     delete: 删除树
   template:
     create: 激活模板
-    edit: 查看模板
     notification_success: 模板已成功激活
     notification_error: 无法激活模板
+    not_found: 没有为此类别的激活模板
     attribute:
       description_title: 描述设置 
       type:
@@ -24,16 +28,49 @@ akeneo.category:
         richtext: 富文本
         image: 图像
     add_attribute:
+      add_button: 添加属性
       confirmation_modal:
+        section_title: 添加属性
+        title: 创建新的类别属性
+        head_helper: 类别属性被附加到了一个模板。无法在其他模板中访问它们。
+        tail_helper: 一旦创建属性，便无法更改每个渠道的值和每个区域的值。
+        link: 了解关于类别模板的更多信息。
+        create: 创建
         input:
           label: 标签
           code: 代码
           type:
+            label: 属性类型
+            empty: 没有可用的属性类型
             option_title:
               text: 文本
+              textarea: 文本区域
               image: 图像
+      success:
+        notification: 属性已成功创建
+      error:
+        failed: 添加模板属性失败
+        limit_reached:
+          title: 您不能添加超过 50 个属性
+          message: 类别模板仅限每个模板拥有 50 个属性。
+    deactivate:
+      deactivate_template: 停用模板
+      confirmation_modal:
+        title: 停用类别模板
+        message: 确定要停用名为 {{ template }} 的类别模板吗？
+        helper: 停用此模板将永久删除关联类别的属性和值。
+        deactivate: 停用
+      notification_success:
+        title: '{{ template }} 模板已停用'
+        message: '{{ template }} 已被停用。关联类别的内容已被删除。'
   template_list:
     columns:
       header: 标签
       code: 代码
       type: 类型
+  tag:
+    new: 新
+  discover_enriched_categories_information:
+    survey_link_label: 告诉我们您的想法
+    learn_more_link_label: 了解更多有关丰富的类别
+  other_actions: 其他操作

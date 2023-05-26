@@ -2,6 +2,7 @@ pim_notification:
   types:
     settings: Instellingen
     mass_delete: Verwijderen
+    attribute_mass_delete: Verwijderen
 flash:
   comment:
     create:
@@ -113,6 +114,8 @@ pim_enrich.entity.product:
       quantified:
         quantity: Aantal
         unlinked: Ontkoppeld
+      search:
+        placeholder: Zoeken op label, id of uuid
       no_data: Er zijn geen gekoppelde producten
       remove: Koppeling verwijderen
       edit: Bewerk product
@@ -496,6 +499,7 @@ pim_datagrid:
       label: Bijgewerkt op
     label_or_identifier:
       label: Label of identifier
+      label_with_uuid: Label, ID of UUID
     parent:
       label: Bovenliggende
     identifier:

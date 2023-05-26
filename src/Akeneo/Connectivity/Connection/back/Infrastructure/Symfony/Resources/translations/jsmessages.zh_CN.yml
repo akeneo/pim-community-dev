@@ -38,6 +38,9 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: 已连接的应用
   akeneo_connectivity_connection_connect_connected_apps_edit: 应用设置
   akeneo_connectivity_connection_connect_connected_apps_delete: 删除应用
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: 重新生成凭据
+  akeneo_connectivity_connection_connect_custom_apps_create: 创建自定义应用
+  akeneo_connectivity_connection_connect_custom_apps_delete: 删除自定义应用
   akeneo_connectivity_connection_connect_connected_apps_open: 打开应用
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: 编辑目录
 akeneo_connectivity.connection:
@@ -72,6 +75,7 @@ akeneo_connectivity.connection:
       unreachable: 无法访问 App Store，请稍后再试。
       scroll_to_top: 滚动到顶部
       custom_apps:
+        title: 我的自定义应用
         removed_user: 已移除用户
     connected_apps:
       list:
@@ -84,6 +88,7 @@ akeneo_connectivity.connection:
           at_least_one_is_not_listed_on_the_appstore: 您已连接的一些应用与您的 PIM 版本不兼容，或者在 Akeneo App Store 上已不存在。请联系我们以获取更多信息。
           pending_apps: 您的一些应用没有连接到 PIM。
         custom_apps:
+          title: 我的已连接自定义应用
           removed_user: 已移除用户
         helper:
           title: '[0,1] 您的 PIM 已与 {{ count }} 个应用连接。|[2,Inf] 您的 PIM 已与 {{ count }} 个应用连接。'
@@ -133,8 +138,14 @@ akeneo_connectivity.connection:
             regenerate_secret:
               flash_error: 抱歉，重新生成连接密钥时出错。
               confirm:
+                title: 确认重新生成
+                description: 重新生成密钥会影响您的自定义应用与 PIM 的连接。确定要继续吗？
                 regenerate_button: 重新生成
                 cancel_button: 取消 
+              new_credentials:
+                title: 新凭据
+                subtitle: 重新生成凭据
+                done_button: 完成
         error_monitoring:
           error: 哎呀，出错了!
           helper:
@@ -260,7 +271,10 @@ akeneo_connectivity.connection:
         scope:
           too_long: 该范围列表包含的字符不得超过 1000 个。
     custom_apps:
+      creation_limit_reached: 您已达到上限，最多只能有 20 个自定义应用。
+      create_button: 创建应用
       create_modal:
+        subtitle: 创建自定义应用
         app_information:
           title: 应用信息
           description: 如果您需要帮助，请查阅我们的文章
@@ -269,21 +283,39 @@ akeneo_connectivity.connection:
             name: 名称
             activate_url: 激活 URL
             callback_url: 回调 URL
+          field_placeholder:
+            name: 定义应用名称
+            activate_url: 填写激活 URL
+            callback_url: 填写回调 URL
         credentials:
           title: 凭据
           client_id: 客戶端 ID
           client_secret: 客户端密钥
         errors:
+          limit_reached: 您最多可以创建 20 个自定义应用。
+          name:
+            min_length: 应用的名称太短。其必须包含至少 3 个字符。
+            max_length: 应用的名称太长。其不得超过 255 个字符。
+            not_blank: 应用的名称为必填项。
           client_id:
+            max_length: 应用的客户端 ID 太长。其不得超过 36 个字符。
             not_blank: 客户端 ID 为必填项。
           activate_url:
+            max_length: 应用的激活 URL 太长。其不得超过 255 个字符。
             must_be_url: 激活 URL 必须为有效的 URL。
             not_blank: 激活 URL 为必填项。
           callback_url:
+            max_length: 应用的回调 URL 太长。其不得超过 255 个字符。
             must_be_url: 回调 URL 必须为有效的 URL。
             not_blank: 回调 URL 为必填项。
       delete_modal:
+        subtitle: 删除自定义应用
         title: 确认删除 
+        description: 您将要从该 PIM 中删除您的应用。
+        warning: 确认删除后，App Store 页面上的应用以及相关的连接应用都将被删除。
+        flash:
+          success: 自定义应用已成功删除。
+          error: 抱歉，删除自定义应用时出现错误。
   connections: 连接
   secondary_actions:
     title: 其他操作
@@ -587,4 +619,6 @@ pim_notification:
   connected_app_authorizations:
     button_label: 打开应用
   disabled_catalog:
+    button_label: 目录设置 
+  attribute_removed:
     button_label: 目录设置 

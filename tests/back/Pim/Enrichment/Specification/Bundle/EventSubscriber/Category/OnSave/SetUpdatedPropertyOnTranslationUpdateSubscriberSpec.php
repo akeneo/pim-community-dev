@@ -27,7 +27,11 @@ class SetUpdatedPropertyOnTranslationUpdateSubscriberSpec extends ObjectBehavior
     public function it_subscribes_to_pre_update_event()
     {
         $this->getSubscribedEvents()
-            ->shouldReturn([Events::preUpdate]);
+            ->shouldReturn([
+                Events::preUpdate,
+                Events::prePersist,
+                Events::preRemove,
+            ]);
     }
 
     public function it_only_handles_category_translation(ObjectManager $objectManager): void
@@ -47,5 +51,33 @@ class SetUpdatedPropertyOnTranslationUpdateSubscriberSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->preUpdate(new LifecycleEventArgs($translation, $objectManager->getWrappedObject()));
+    }
+
+    public function it_sets_the_updated_property_on_a_translation_persist(
+        ObjectManager $objectManager,
+        CategoryInterface $category
+    ): void {
+        $translation = new CategoryTranslation();
+        $translation->setForeignKey($category->getWrappedObject());
+
+        $category->setUpdated(Argument::any())
+            ->willReturn($category)
+            ->shouldBeCalled();
+
+        $this->prePersist(new LifecycleEventArgs($translation, $objectManager->getWrappedObject()));
+    }
+
+    public function it_sets_the_updated_property_on_a_translation_remove(
+        ObjectManager $objectManager,
+        CategoryInterface $category
+    ): void {
+        $translation = new CategoryTranslation();
+        $translation->setForeignKey($category->getWrappedObject());
+
+        $category->setUpdated(Argument::any())
+            ->willReturn($category)
+            ->shouldBeCalled();
+
+        $this->preRemove(new LifecycleEventArgs($translation, $objectManager->getWrappedObject()));
     }
 }
