@@ -43,7 +43,7 @@ class UserProvider implements UserProviderInterface
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         $user = $this->userRepository->findOneByIdentifier($identifier);
-        if (!$user || $user->isApiUser() || $user->isJobUser()) {
+        if (!$user || false === $user->isUiUser()) {
             throw new UserNotFoundException(sprintf('User with username "%s" does not exist.', $identifier));
         }
 
@@ -65,7 +65,7 @@ class UserProvider implements UserProviderInterface
         }
 
         $reloadedUser = $this->userRepository->find($user->getId());
-        if (null === $reloadedUser || $reloadedUser->isApiUser() || $reloadedUser->isJobUser()) {
+        if (null === $reloadedUser || false === $reloadedUser->isUiUser()) {
             throw new UserNotFoundException(sprintf('User with id %d not found', $user->getId()));
         }
 

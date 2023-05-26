@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -23,7 +22,6 @@ class UpdateAttributeController
     public function __construct(
         private readonly SecurityFacade $securityFacade,
         private readonly CommandMessageBus $categoryCommandBus,
-        private readonly NormalizerInterface $constraintViolationNormalizer,
     ) {
     }
 
@@ -41,20 +39,12 @@ class UpdateAttributeController
         try {
             $command = UpdateAttributeCommand::create(
                 attributeUuid: $attributeUuid,
-                isRichTextArea: $data['isRichTextArea'],
+                isRichTextArea: $data['isRichTextArea'] ?? null,
+                labels: $data['labels'] ?? null,
             );
             $this->categoryCommandBus->dispatch($command);
         } catch (ViolationsException $violationsException) {
-            $normalizedViolations = [];
-            foreach ($violationsException->violations() as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                    $violation,
-                    'internal_api',
-                    ['attribute' => $attributeUuid],
-                );
-            }
-
-            return new JsonResponse(['values' => $normalizedViolations], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($violationsException->normalize(), Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse(null, Response::HTTP_OK);

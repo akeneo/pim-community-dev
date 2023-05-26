@@ -17,7 +17,6 @@ akeneo.category:
     delete: Eliminar árbol
   template:
     create: Activar plantilla
-    edit: Ver plantilla
     notification_success: Plantilla activada correctamente
     notification_error: No se pudo activar la plantilla
     not_found: No hay ninguna plantilla activa para esta categoría
@@ -29,14 +28,31 @@ akeneo.category:
         richtext: Texto enriquecido
         image: Imagen
     add_attribute:
+      add_button: Añadir atributo
       confirmation_modal:
+        section_title: Añadir atributo
+        title: Crear un nuevo atributo de categoría
+        head_helper: Los atributos de categoría se adjuntan a una plantilla. No se pueden acceder en otras plantillas.
+        tail_helper: El valor por canal y el valor por configuración regional no pueden modificarse una vez creado el atributo.
+        link: Más información sobre las plantillas de categorías.
+        create: Crear
         input:
           label: Etiqueta
           code: Código
           type:
+            label: Tipo de atributo
+            empty: Ningún tipo de atributo disponible
             option_title:
               text: Texto
+              textarea: Área de texto
               image: Imagen
+      success:
+        notification: Atributo creado correctamente
+      error:
+        failed: Error al añadir el atributo de plantilla
+        limit_reached:
+          title: No pueden añadir más de 50 atributos
+          message: Las plantillas de categorías están limitadas a 50 atributos por plantilla.
     deactivate:
       deactivate_template: Desactivar plantilla
       confirmation_modal:
@@ -55,11 +71,6 @@ akeneo.category:
   tag:
     new: Nuevo
   discover_enriched_categories_information:
-    title: Descubra el acceso anticipado a las categorías enriquecidas
-    content:
-      activate_template: Activar el enriquecimiento de categorías mediante plantillas preconfiguradas
-      enrich_attribute_values: Enriquecer atributos de texto, área de texto e imagen en categorías
-      deactivate_template: La desactivación del enriquecimiento y la plantilla personalizada llegarán en breve
     survey_link_label: Díganos lo que piensa
     learn_more_link_label: Más información sobre las categorías enriquecidas
   other_actions: Otras acciones

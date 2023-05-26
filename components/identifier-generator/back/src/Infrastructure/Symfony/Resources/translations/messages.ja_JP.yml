@@ -1,0 +1,19 @@
+pim_catalog_identifier_generator:
+  acl:
+    view: '識別子ジェネレーターを表示'
+    manage: '識別子ジェネレーターを管理'
+  acl_group:
+    identifier_generator: '識別子ジェネレーター'
+  condition:
+    fields:
+      family: ファミリー
+      enabled: ステータス
+    field_groups:
+      system: システム
+  structure:
+    fields:
+      free_text: 自由形式テキスト
+      auto_number: 自動採番
+      family: ファミリー
+    field_groups:
+      system: システム

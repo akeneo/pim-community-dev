@@ -9,3 +9,10 @@ akeneo.category:
         text_too_long: La valeur ne doit pas dépasser {{ limit }} caractères
         textarea_too_long: La valeur ne doit pas dépasser {{ limit }} caractères
         richtext_too_long: La valeur ne doit pas dépasser {{ limit }} caractères
+    attribute:
+      limit:
+        title: Vous ne pouvez pas ajouter plus de 50 attributs
+        message: Les templates de catégories sont limités à 50 attributs par modèle.
+      code:
+        wrong_format: Le code de l'attribut ne doit contenir que des lettres, chiffres et tirets bas.
+        unique_in_the_template: Le code d'attribut {{ attributeCode }} doit être unique dans le template

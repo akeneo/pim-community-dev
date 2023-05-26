@@ -1,0 +1,25 @@
+validation:
+  create:
+    identifier_limit_reached: 'È stato raggiunto il limite di "{{limit}}" generatori di identificatori'
+  update:
+    identifier_generator_code_not_found: 'Il generatore di identificatori "{{code}}" non esiste o non sei autorizzato ad accedervi.'
+  identifier_generator:
+    attribute_does_not_exist: 'L''attributo "{{code}}" non esiste.'
+    attribute_should_have_type: 'Il codice attributo "{{ code }}" è di tipo "{{ type }}" e dovrebbe essere di tipo "{{ expected }}".'
+    free_text_string_field_required: 'Il testo libero deve contenere la chiave "string"'
+    enabled_value_field_required: 'Lo stato di abilitazione deve contenere la chiave "value"'
+    enabled_boolean_value: 'Questo valore deve essere booleano.'
+    auto_number_fields_required: 'Per il tipo "auto_number" sono obbligatori i campi "{{field}}"'
+    structure_auto_number_limit_reached: 'deve contenere solo {{limit}} numeri automatici'
+    conditions_limit_reached: 'deve contenere solo {{limit}} condizioni {{type}}'
+    unknown_operator: 'L''operatore {{ value }} deve essere uno dei seguenti: {{ choices }}.'
+    families_do_not_exist: 'Le seguenti famiglie sono state eliminate dal catalogo: {{ familyCodes }}. Puoi rimuoverle dalla tua selezione di prodotti.'
+    options_do_not_exist: 'Le seguenti opzioni attributo non esistono per l''attributo "{{ attributeCode }}": {{ optionCodes }}.'
+    unknown_scope: 'L''ambito "{{ scopeCode }}" non esiste.'
+    unknown_locale: 'L''impostazione locale "{{ localeCode }}" non esiste o non è attivata.'
+    inactive_locale: 'L''impostazione locale "{{ localeCode }}" non è attiva per il canale "{{ scopeCode }}".'
+    family_property_fields_required: 'Il campo "{{ field }}" è obbligatorio per il tipo "famiglia".'
+    simple_select_property_fields_required: 'Il campo "{{ field }}" è obbligatorio per il tipo "simple_select".'
+    process_unknown_operator: 'L''operatore {{ value }} deve essere uno dei seguenti: {{ choices }}.'
+    locale_required: 'Per l''attributo "{{ attributeCode }}" è necessaria un''impostazione locale.'
+    scope_required: 'Per l''attributo "{{ attributeCode }}" è necessario un canale.'

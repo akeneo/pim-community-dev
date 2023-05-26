@@ -49,6 +49,7 @@ define(['underscore', 'oro/translator', 'pim/form', 'pim/template/import/file-pa
     getStorageInfo: function () {
       const {configuration} = this.getFormData();
       const storageType = configuration.storage?.type ?? 'none';
+      const filePath = configuration.storage?.file_path ?? '';
 
       switch (storageType) {
         case 'sftp':
@@ -58,7 +59,7 @@ define(['underscore', 'oro/translator', 'pim/form', 'pim/template/import/file-pa
           return {
             badge: __(`pim_import_export.form.job_instance.storage_form.connection.${storageType}`),
             label: __(this.config.label),
-            path: configuration.storage.file_path,
+            path: filePath,
           };
         case 'local':
         case 'none':
@@ -66,7 +67,7 @@ define(['underscore', 'oro/translator', 'pim/form', 'pim/template/import/file-pa
           return {
             badge: null,
             label: __(this.config.label),
-            path: configuration.storage.file_path,
+            path: filePath,
           };
       }
     },

@@ -19,6 +19,7 @@ validation:
     unknown_locale: 'De "{{ localeCode }}" lokalisatie bestaat niet of is niet geactiveerd.'
     inactive_locale: 'De "{{ localeCode }}" locale is niet actief voor het "{{ scopeCode }}" kanaal.'
     family_property_fields_required: '"{{ field }}" veld is verplicht voor "familie" type.'
+    simple_select_property_fields_required: 'Veld "{{ field }}" veld is verplicht voor type "simple_select".'
     process_unknown_operator: 'Operator {{ value }} kan maar één van de volgende zijn: {{ choices }}.'
     locale_required: 'Een locale is vereist voor het "{{ attributeCode }}" attribuut.'
     scope_required: 'Een kanaal is vereist voor het "{{ attributeCode }}" attribuut.'

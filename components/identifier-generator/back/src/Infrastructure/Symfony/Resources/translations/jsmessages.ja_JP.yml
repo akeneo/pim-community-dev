@@ -1,0 +1,135 @@
+pim_title:
+  akeneo_identifier_generator_index: "識別子ジェネレーター"
+  akeneo_identifier_generator_edit: "識別子ジェネレーターを編集"
+pim_error:
+  unauthorized_list_attributes: "属性をリスト表示できません。権限の変更について、管理者にお問い合わせください。"
+  unauthorized_list_properties: "このプロパティをリスト表示する許可がありません。管理者にお問い合わせください。"
+  unauthorized_list_families: "ファミリーをリスト表示できません。権限の変更について、管理者にお問い合わせください。"
+  general: "このページを表示中にエラーが発生しました。管理者にお問い合わせください。"
+  unexpected: "予期しないエラーが発生しました。システム管理者に問い合わせてください。"
+  404: '404エラーが発生しました...'
+  identifier_generator_not_found: '識別子ジェネレーターが見つかりません'
+  selection_attribute_not_found: '商品の選択の属性がカタログから削除されました。商品選択からこのプロパティを削除してください。'
+pim_identifier_generator:
+  create:
+    form:
+      title: "新しい識別子ジェネレーターの作成"
+      select_identifier_attribute: "識別子の属性を選択してください"
+  tabs:
+    general: "一般"
+    product_selection: "商品の選択"
+    identifier_structure: "識別子の構造"
+  general:
+    title: "プロパティ全般"
+    label_translations_in_ui_locale: "UIロケールのラベル翻訳"
+    text_transformation:
+      label: 'テキスト変換'
+      no: 'テキスト変換なし'
+      lowercase: '小文字'
+      uppercase: '大文字'
+  flash:
+    create:
+      success: '識別子ジェネレーター "{{ code }}" は正常に作成されました'
+      error: '識別子ジェネレーターを作成できませんでした'
+    update:
+      success: '識別子ジェネレーター "{{ code }}" は正常に更新されました'
+      error: '識別子ジェネレーターを更新できませんでした'
+    delete:
+      success: '識別子ジェネレーター "{{ code }}" は正常に削除されました'
+      error: '識別子ジェネレーターを削除できませんでした'
+  list:
+    identifier: '識別子'
+    first_generator: '最初の識別子ジェネレーターを作成しましょう！'
+    read_only_list: 'この機能にアクセスするには管理者にお問い合わせください。'
+    helper:
+      title: '識別子の生成を自動化します。'
+      info: '識別子ジェネレーターが作成されると、作成するすべての新しい商品に識別子が自動的に割り当てられるようになります。'
+    check_help_center: '詳細についてはヘルプセンターをご確認ください。'
+    confirmation: 'このプロパティを本当に削除しますか？'
+  selection:
+    limit_reached: '条件の上限{{ count }}個に達しています'
+    helper:
+      title: '以下の場合は、商品の選択に条件を追加します。'
+      automate: '商品のターゲット選択に使用する識別子の作成を自動化する場合'
+    empty:
+      title: '商品の選択の作成'
+      text: '識別子が空になっているすべての商品に影響します。'
+      info: '特定の商品をターゲットする場合は、新しい条件を追加してください。'
+    settings:
+      enabled:
+        disabled: '無効'
+        placeholder: 'ステータスを選択'
+      family:
+        placeholder: '少なくとも1つのファミリーを選択してください'
+      select_option:
+        placeholder: '少なくとも1つのオプションを選択してください'
+  structure:
+    helper: '生成する商品識別子の構造を定義します。プロパティ設定のセットアップにヘルプが必要な場合は、{{link}}。'
+    helper_link: 'ヘルプセンターで詳細をご覧ください'
+    title: '識別子の構造'
+    add_element: '新しいプロパティを追加'
+    limit_reached: 'プロパティの上限{{ count }}個に達しています'
+    property_type:
+      sections:
+        system: 'システム'
+      free_text: '自由形式テキスト'
+      auto_number: '自動採番'
+      family: 'ファミリー'
+    settings:
+      free_text:
+        title: '自由形式テキストの設定'
+        string_label: 'テキストを定義してください'
+      auto_number:
+        title: '自動採番'
+        digitsMin_label: '最小桁数'
+        numberMin_label: '最小番号'
+      family:
+        title: 'ファミリー'
+      code_format:
+        type:
+          truncate: '最初の文字を使用する'
+          code: 'コード全体を使用する'
+          nomenclature: '独自の表現規則を使用する'
+      operator:
+        title: 'オペレータ'
+        placeholder: 'オペレータを選択'
+      simple_select:
+        title: '属性'
+      abbrev_type: 'このプロパティのフォーマットを定義する'
+      abbrev_type_empty_label: 'フォーマットを選択'
+      chars_number: '文字数'
+    empty:
+      title: '識別子の構造の作成'
+      text: '右上の「新規プロパティを追加」をクリックします'
+      link_text: '詳細についてはヘルプセンターをご確認ください。'
+    delimiters:
+      title: '区切り文字'
+      helper: '既定またはカスタムの区切り文字の追加方法については、{{link}}をご覧ください。'
+      helper_link: 'ヘルプセンター'
+      checkbox_label: '各プロパティ間で区切り文字を使用する'
+      input_label: '区切り文字を定義します'
+  deletion:
+    operations: '操作'
+    confirmation: 'この識別子ジェネレーターを本当に削除しますか？'
+    type: '"{{ code }}" と入力してください'
+  nomenclature:
+    edit: '表現規則を編集'
+    section_title: '{{ property }} の識別子の生成'
+    title: '表現規則を管理'
+    characters_number: '文字数'
+    operator_placeholder: 'オペレータを選択してください'
+    value_placeholder: '文字を選択してください'
+    nomenclature: '表現規則'
+    generate_if_empty: '表現規則を自動的に生成する'
+    display: '表示'
+    filters:
+      all: 'すべて'
+      error: 'エラー'
+      empty: '空'
+      filled: '入力済み'
+    empty:
+      title: '表現規則が見つかりません'
+    flash:
+      success: '表現規則は正常に保存されました'
+      error: '表現規則を保存できません'
+      warning: '表現規則は正常に保存されましたが、一部の値は生成されません。表現規則を編集して、エラーのある値を変更してください。'

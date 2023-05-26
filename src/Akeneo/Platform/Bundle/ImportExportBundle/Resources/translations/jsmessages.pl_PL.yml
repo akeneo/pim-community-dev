@@ -165,6 +165,7 @@ pim_import_export:
           sftp: SFTP
           amazon_s3: Amazon S3
           microsoft_azure: Microsoft Azure
+          google_cloud_storage: Magazyn Google Cloud
           none: Nie skonfigurowano pamięci
         file_path:
           label: Ścieżka do pliku
@@ -209,6 +210,12 @@ pim_import_export:
         container_name:
           label: Nazwa kontenera
           placeholder: Wprowadź nazwę kontenera
+        project_id:
+          label: ID projektu
+          placeholder: Wprowadź ID projektu
+        service_account:
+          label: Konto usługi
+          placeholder: Wprowadź konto usługi
       validation:
         storage:
           unavailable_type: 'Ta pamięć jest niedostępna, dostępne typy: {{ available_types }}.'
@@ -228,6 +235,8 @@ pim_import_export:
     6: Niepowodzenie
     7: Opuszczone
     8: Nieznany
+    9: Pausing
+    10: Paused
   job_status:
     COMPLETED: Zakończone
     STARTING: Rozpoczynanie

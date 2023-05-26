@@ -14,7 +14,6 @@ akeneo.category:
     delete: Supprimer l'arbre
   template:
     create: Activer le template
-    edit: Afficher le template
     notification_success: "Le template a été activé avec succès.\n"
     notification_error: Le template n’a pas pu être activé
     not_found: Il n'y a pas de template actif pour cette catégorie.
@@ -26,14 +25,31 @@ akeneo.category:
         richtext: Éditeur de texte enrichi
         image: Image
     add_attribute:
+      add_button: Ajouter un attribut
       confirmation_modal:
+        section_title: Ajouter un attribut
+        title: Créer un nouvel attribut de catégorie
+        head_helper: Les attributs de catégorie sont attachés à un template. Ils ne sont pas accessibles dans d'autres templates.
+        tail_helper: La valeur par canal et valeur par locale ne peuvent pas être modifiées une fois l'attribut créé.
+        link: En savoir plus sur les templates de catégories.
+        create: Créer
         input:
           label: Libellé
           code: Code
           type:
+            label: Type d'attribut
+            empty: Aucun type d'attribut disponible
             option_title:
               text: Texte
+              textarea: Zone de texte
               image: Image
+      success:
+        notification: Attribut créé avec succès
+      error:
+        failed: L'ajout de l'attribut du modèle a échoué
+        limit_reached:
+          title: Vous ne pouvez pas ajouter plus de 50 attributs
+          message: Les templates de catégories sont limités à 50 attributs par modèle.
     deactivate:
       deactivate_template: Désactiver le template
       confirmation_modal:
@@ -52,11 +68,6 @@ akeneo.category:
   tag:
     new: Nouveau
   discover_enriched_categories_information:
-    title: Découvrez les Catégories Enrichies en Accès Anticipé
-    content:
-      activate_template: Activez l'enrichissement des catégories grâce à des modèles préconfigurés
-      enrich_attribute_values: Enrichissez les attributs de type texte, zone de texte et image dans les catégories
-      deactivate_template: La désactivation de l'enrichissement et le modèle personnalisé seront bientôt disponibles
     survey_link_label: Dites-nous ce que vous pensez
     learn_more_link_label: En savoir plus sur les Catégories Enrichies
   other_actions: Autres actions

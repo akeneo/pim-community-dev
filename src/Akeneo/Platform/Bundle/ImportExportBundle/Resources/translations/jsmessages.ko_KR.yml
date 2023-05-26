@@ -165,6 +165,7 @@ pim_import_export:
           sftp: SFTP
           amazon_s3: Amazon S3
           microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
           none: 구성된 스토리지가 없습니다
         file_path:
           label: 파일 경로
@@ -209,6 +210,12 @@ pim_import_export:
         container_name:
           label: 컨테이너 이름
           placeholder: 컨테이너 이름 입력
+        project_id:
+          label: 프로젝트 ID
+          placeholder: 프로젝트 ID 입력
+        service_account:
+          label: 서비스 계정
+          placeholder: 서비스 계정 입력
       validation:
         storage:
           unavailable_type: 이 스토리지는 사용할 수 없습니다. {{ available_types }}만 사용 가능합니다.
@@ -228,6 +235,8 @@ pim_import_export:
     6: 실패
     7: 중단됨
     8: 알 수 없음
+    9: Pausing
+    10: Paused
   job_status:
     COMPLETED: 완료
     STARTING: 시작 중

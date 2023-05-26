@@ -87,6 +87,7 @@ pim_enrich.entity.attribute_option:
       add_option: Kliknij tutaj, aby dodać
       delete_confirmation_title_msg: Usunąć "{{ optionCode }}" z opcji?
       delete_confirmation_subtitle_msg: Czy na pewno chcesz usunąć tę opcję? Tego działania nie można cofnąć.
+      display_options_limit: Tutaj wyświetla się tylko pierwsze 500 opcji. Jeśli chcesz zobaczyć ich więcej, skorzystaj z funkcji wyszukiwania lub eksportu.
       search:
         placeholder: Szukaj na etykiecie lub kodzie
         no_result:
@@ -149,7 +150,6 @@ pim_enrich.entity.attribute:
       success: Atrybut pomyślnie zaktualizowany.
       fail: Nie można zaktualizować atrybutu.
       fields_not_ready: "Nie można teraz zapisać atrybutu. Następujące pola nie są gotowe: {{ fields }}"
-      cant_remove_attributes_used_as_label: Atrybuty używane jako etykiety w rodzinie nie mogą zostać usunięte.
     delete:
       success: Atrybut pomyślnie usunięty
       fail: Nie można usunąć tego atrybutu
@@ -229,9 +229,10 @@ pim_enrich.entity.attribute:
       select_locale: Wybierz wersję językową
     delete:
       confirm: Czy na pewno chcesz usunąć ten atrybut?
+      attribute_removal: Atrybut zostanie usunięty ze wszystkich produktów.
       product_count: '{0}0 produktów|{1}1 produkt|]1, Inf[{{ count }} produktów'
       product_model_count: '{0}0 modeli produktów|{1}1 model produktu|]1, Inf[{{ count }} modeli produktów'
-      used: ']-Inf,1]obecnie ma wartości określone dla tego atrybutu. Zostaną one usunięte.|]1, Inf[obecnie mają wartości określone dla tego atrybutu. Zostaną one usunięte.'
+      used: ']-Inf,1]obecnie ma wartości określone dla tego atrybutu.|]1, Inf[obecnie mają wartości określone dla tego atrybutu.'
       helper:
         content: Jeśli chcesz zmienić typ atrybutu, aby był tłumaczony lub zmienny, zachowując jednocześnie dostęp do istniejących wartości atrybutu,
         link: zajrzyj do naszego Centrum Pomocy (aby uzyskać więcej informacji).
@@ -239,6 +240,9 @@ pim_enrich.entity.attribute:
       confirm_from_family: Czy na pewno chcesz usunąć ten atrybut z rodziny?
       confirm_from_group: Czy na pewno chcesz usunąć atrybut {{ attribute }} z tej grupy atrybutów?
       confirm_from_product: Czy na pewno chcesz usunąć ten atrybut z produktu?
+    mass_delete:
+      modal:
+        title: Atrybuty
 pim_enrich.entity.attribute_group:
   label: grupa atrybutów
   uppercase_label: Grupa atrybutów
@@ -248,14 +252,18 @@ pim_enrich.entity.attribute_group:
     title: Trochę tu tłoczno, pokazujemy Ci {{ attributeCount }}/{{ totalAttributeCount }} atrybutów.
     subtitle: Aby odkryć wszystkie atrybuty tej grupy, kliknij poniżej!
     button: Zobacz wszystkie atrybuty
+  dropdown:
+    label: Wybierz
+    all: Wszystkie grupy atrybutów
+    none: Brak grup atrybutów
   flash:
     update:
       success: Grupa atrybutów pomyślnie zaktualizowana
       fail: Nie można zaktualizować grupy atrybutów
       fields_not_ready: "Nie można teraz zapisać grupy atrybutów. Następujące pola nie są gotowe: {{ fields }}"
-    delete:
-      success: Grupa atrybutów pomyślnie usunięta
-      fail: Nie można usunąć tej grupy atrybutów
+    mass_delete:
+      success: Usuwanie rozpoczęte. Kiedy się zakończy, otrzymasz powiadomienie. W międzyczasie możesz obserwować jego postępy w trackerze procesów.
+      fail: Podczas uruchamiania usuwania wystąpił błąd.
   module:
     add_attribute_group:
       label: Dodaj przez grupy
@@ -265,8 +273,18 @@ pim_enrich.entity.attribute_group:
       confirm: Czy na pewno chcesz usunąć tę grupę atrybutów?
   grid:
     columns:
-      name: Nazwa grup atrybutów
-    no_search_result: Przepraszamy, brak wyników dla tego wyszukiwania.
+      attribute_count: Liczba powiązanych atrybutów
+  selected: '{0}Nie wybrano grupy atrybutów|{1}Wybrano jedną grupę atrybutów|]1,Inf]Liczba wybranych grup atrybutów: {{ count }}'
+  mass_delete:
+    confirm: '{1}Czy na pewno chcesz usunąć tę grupę atrybutów?|]1, Inf[Czy na pewno chcesz usunąć następującą liczbę grup atrybutów: {{ count }}?'
+    confirmation_word: usuń
+    empty_result_label: 'Nie znaleziono grup atrybutów'
+    placeholder: 'Wybierz grupę atrybutów'
+    open_label: 'lista grup atrybutów'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Usuń grupy atrybutów
 pim_enrich.mass_edit.family:
   title: Działanie zbiorcze rodzin
   confirm: "{1} Zamierzasz zaktualizować rodzinę następującymi informacjami, proszę potwierdź.|{2,3,4} Zamierzasz zaktualizować {{ itemsCount }} rodzin/y następującymi informacjami, proszę potwierdź.|] 1, Inf [Zamierzasz zaktualizować {{ itemsCount }} rodzin/y następującymi informacjami, proszę potwierdź."
@@ -287,3 +305,12 @@ pim_enrich.mass_edit.family:
       label: Określ wymagania atrybutów
       description: Poniższe wymagania atrybutów zostaną zastosowane do wybranych rodzin
       label_count: "{1}Ustaw wymagania atrybutów <span class=\"AknFullPage-title--highlight\">1 rodziny</span>|] 1, Inf [Ustaw wymagania atrybutów <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} rodzin</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Usuń grupy atrybutów
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Usuń grupy atrybutów
+pim_notification:
+  types:
+    attribute_group_mass_delete: Usuwanie

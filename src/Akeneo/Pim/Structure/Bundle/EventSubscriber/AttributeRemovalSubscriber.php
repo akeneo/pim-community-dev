@@ -9,10 +9,11 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Symfony\Component\Console\Event\ConsoleTerminateEvent;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpKernel\Event\TerminateEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -25,12 +26,14 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
     private const BATCH_SIZE = 1000;
 
     private array $attributeCodesToClean = [];
+    private bool $terminateEventIsRegistered = false;
 
     public function __construct(
         private AttributeCodeBlacklister $attributeCodeBlacklister,
         private JobLauncherInterface $jobLauncher,
         private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         private TokenStorageInterface $tokenStorage,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -38,8 +41,6 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::POST_REMOVE => 'blacklistAttributeCodeAndLaunchJob',
-            TerminateEvent::class => 'flushEvents',
-            ConsoleTerminateEvent::class => 'flushEvents',
         ];
     }
 
@@ -50,17 +51,18 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $attributeCode = $subject->getCode();
+        $this->registerCleanAttributeJobOnTerminate();
 
+        $attributeCode = $subject->getCode();
         $this->attributeCodesToClean[] = $attributeCode;
         $this->attributeCodeBlacklister->blacklist([$attributeCode]);
 
         if (count($this->attributeCodesToClean) >= self::BATCH_SIZE) {
-            $this->flushEvents();
+            $this->launchCleanAttributeJob();
         }
     }
 
-    public function flushEvents(): void
+    public function launchCleanAttributeJob(): void
     {
         if (empty($this->attributeCodesToClean)) {
             return;
@@ -73,5 +75,19 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
 
         $this->attributeCodeBlacklister->registerJob($this->attributeCodesToClean, $jobExecution->getId());
         $this->attributeCodesToClean = [];
+    }
+
+
+    /**
+     * Little hack in order to register on KernelEvents::TERMINATE and ConsoleEvents::TERMINATE only when we are in a context of an attribute deletion
+     * We didn't want to instanciate this class and her service each time a command is executed
+     */
+    private function registerCleanAttributeJobOnTerminate()
+    {
+        if (!$this->terminateEventIsRegistered) {
+            $this->eventDispatcher->addListener(KernelEvents::TERMINATE, [$this, 'launchCleanAttributeJob']);
+            $this->eventDispatcher->addListener(ConsoleEvents::TERMINATE, [$this, 'launchCleanAttributeJob']);
+            $this->terminateEventIsRegistered = true;
+        }
     }
 }
