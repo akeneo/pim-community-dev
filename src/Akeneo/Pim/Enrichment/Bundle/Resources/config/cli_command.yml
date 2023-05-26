@@ -123,3 +123,11 @@ services:
         tags:
             - { name: 'console.command' }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\DetectDuplicateVariantProductsCommand:
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.enrichment.factory.write_value_collection'
+        tags:
+            - { name: 'console.command' }
+            - { name: 'akeneo.command.authenticated_as_admin_user' }
