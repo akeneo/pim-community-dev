@@ -39,3 +39,7 @@ services:
             - '%env(GOOGLE_CLOUD_PROJECT)%'
             - 'test_queue2'
             - 'consumer3'
+
+    Akeneo\Tool\Bundle\MessengerBundle\tests\config\MessageNormalizer:
+        tags:
+              - { name: akeneo_messenger.message.normalizer }
