@@ -96,7 +96,7 @@ check-requirements:
 
 .PHONY: database
 database:
-	$(PHP_RUN) bin/console doctrine:database:drop --force
+	$(PHP_RUN) bin/console doctrine:database:drop --force --if-exists
 	$(PHP_RUN) bin/console doctrine:database:create --if-not-exists
 	$(PHP_RUN) bin/console pim:installer:db ${O}
 

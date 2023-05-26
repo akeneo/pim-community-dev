@@ -131,6 +131,7 @@ pim_enrich:
       create: 创建属性组
       edit: 编辑属性组
       remove: 移除属性组
+      mass_delete: 批量移除属性组
       sort: 排序属性组
       add_attribute: 将属性添加到组
       remove_attribute: 从组中移除属性
@@ -451,6 +452,7 @@ pim_datagrid:
       label: 已更新
     label_or_identifier:
       label: 标签或标识符
+      label_with_uuid: 标签、标识符或 UUID
     parent:
       label: 父级
     identifier:
@@ -546,3 +548,4 @@ pim_login:
   footer:
     powered: 提供者
     powered_image_title: Logo Akeneo
+pim_system.acl_group.connect: 连接

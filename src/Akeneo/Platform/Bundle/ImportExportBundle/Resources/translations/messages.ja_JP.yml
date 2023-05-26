@@ -16,6 +16,8 @@ pim_import_export:
     6: 失敗
     7: 破棄された
     8: 不明
+    9: Pausing
+    10: Paused
   download_archive:
     archive: 生成したアーカイブをダウンロード | 生成したアーカイブをダウンロード
     output: 生成したファイルをダウンロード | 生成したファイルをダウンロード

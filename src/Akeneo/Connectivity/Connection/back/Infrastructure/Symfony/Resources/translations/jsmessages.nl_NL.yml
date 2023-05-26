@@ -620,3 +620,5 @@ pim_notification:
     button_label: App openen
   disabled_catalog:
     button_label: Catalogusinstellingen
+  attribute_removed:
+    button_label: Catalogusinstellingen

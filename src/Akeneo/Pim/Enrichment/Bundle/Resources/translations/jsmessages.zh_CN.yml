@@ -2,6 +2,7 @@ pim_notification:
   types:
     settings: 设置 
     mass_delete: 删除
+    attribute_mass_delete: 删除
 flash:
   comment:
     create:
@@ -21,6 +22,7 @@ pim_enrich.entity.product:
     update:
       success: 产品已成功更新。
       fail: 无法更新产品。
+      fail_session_expired: 无法更新产品。您的用户会话已过期。请重新登录。
       fields_not_ready: "该产品目前无法保存。以下字段未准备好： {{ fields }}"
       already_in_upload: 在区域"{{ locale }}"和范围"{{ scope }}"中，已有针对此属性的文件在上传
       file_upload: 上传文件时发生错误
@@ -112,6 +114,8 @@ pim_enrich.entity.product:
       quantified:
         quantity: 数量
         unlinked: 未链接
+      search:
+        placeholder: 按标签、标识符或 UUID 搜索
       no_data: 没有关联的产品。
       remove: 移除关联
       edit: 编辑产品
@@ -241,6 +245,9 @@ pim_enrich.entity.category:
     success: 树"{{ tree }}"已成功删除
     error: 无法删除树"{{ tree }}"
     confirmation: 确定要删除树 {{ name }} 吗？该树中的所有类别将被删除，所有类别中的产品将被删除。
+    confirmation_question: 确定要删除 {{ name }} 吗？
+    warning_categories_number: 关联的 {{ categoriesNumber }} 个类别将被删除，且产品也将从所有这些类别中被删除。
+    warning_products: 所有关联的产品将从 {{ name }} 删除
     products_limit_exceeded:
       title: 无法删除此树
       message: 树"{{ tree }}"包含的产品超过 {{ limit }} 个，因此无法删除。
@@ -248,6 +255,7 @@ pim_enrich.entity.category:
     success: 类别“{{ name }}”已成功删除
     error: 无法删除类别“{{ name }}”
     confirmation: 确定要删除类别 {{ name }} 吗？此类别中的产品将不会被删除。
+    confirmation_question: 确定要删除 {{ name }} 吗？
     products_limit_exceeded:
       title: 无法删除此类别
       message: 类别“{{ name }}”包含的产品超过 {{ limit }} 个，因此无法删除。
@@ -491,6 +499,7 @@ pim_datagrid:
       label: 更新于
     label_or_identifier:
       label: 标签或标识符
+      label_with_uuid: 标签、标识符或 UUID
     parent:
       label: 父级
     identifier:

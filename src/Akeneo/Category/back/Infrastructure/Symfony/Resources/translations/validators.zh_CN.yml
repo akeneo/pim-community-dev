@@ -5,7 +5,15 @@ akeneo.category:
         wrong_format: 类别代码仅可包含字母、数字和下划线
         line_feed: 类别代码不能包含换行字符
       duplicated_value_user_intents: 属性 {{ attributeCode }} 的值被多次更新
+      value_user_intents_on_deactivated_template: 没有激活的模板链接到您想要编辑的类别属性
       value:
         text_too_long: 此值不能超过 {{ limit }} 个字符
         textarea_too_long: 此值不能超过 {{ limit }} 个字符
         richtext_too_long: 此值不能超过 {{ limit }} 个字符
+    attribute:
+      limit:
+        title: 您不能添加超过 50 个属性
+        message: 类别模板仅限每个模板拥有 50 个属性。
+      code:
+        wrong_format: 属性代码只能包含小写字母、数字和下划线
+        unique_in_the_template: 属性代码 {{ attributeCode }} 在模板中必须是唯一的

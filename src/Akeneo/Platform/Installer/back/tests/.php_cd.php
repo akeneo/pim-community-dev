@@ -27,6 +27,7 @@ $rules = [
             'Akeneo\Platform\Installer\Domain',
             'Doctrine\DBAL\Connection',
             'Symfony\Component',
+            'Webmozart\Assert\Assert',
         ],
     )->in('Akeneo\Platform\Installer\Infrastructure'),
 ];

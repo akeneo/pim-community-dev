@@ -1,0 +1,135 @@
+pim_title:
+  akeneo_identifier_generator_index: "Generatore di identificatori"
+  akeneo_identifier_generator_edit: "Modifica generatore di identificatori"
+pim_error:
+  unauthorized_list_attributes: "Non puoi visualizzare l'elenco degli attributi. Contatta l'amministratore per modificare le tue autorizzazioni."
+  unauthorized_list_properties: "Non sei autorizzato a visualizzare l'elenco per questa proprietà. Contatta il tuo amministratore"
+  unauthorized_list_families: "Non puoi visualizzare l'elenco delle famiglie. Contatta l'amministratore per modificare le tue autorizzazioni."
+  general: "Si è verificato un errore nella visualizzazione di questa pagina. Contatta il tuo amministratore."
+  unexpected: "Errore imprevisto. Contatta l'amministratore di sistema."
+  404: 'Si è verificato un errore 404...'
+  identifier_generator_not_found: 'Generatore di identificatori non trovato'
+  selection_attribute_not_found: 'Un attributo della tua selezione di prodotti è stato eliminato dal catalogo. Elimina questa proprietà dalla tua selezione di prodotti.'
+pim_identifier_generator:
+  create:
+    form:
+      title: "Crea un nuovo generatore di identificatori"
+      select_identifier_attribute: "Seleziona l'attributo identificatore"
+  tabs:
+    general: "Generale"
+    product_selection: "Selezione prodotti"
+    identifier_structure: "Struttura identificatore"
+  general:
+    title: "Proprietà generali"
+    label_translations_in_ui_locale: "Traduzioni etichette in impostazione locale IU"
+    text_transformation:
+      label: 'Trasformazione testo'
+      no: 'Nessuna trasformazione del testo'
+      lowercase: 'Minuscolo'
+      uppercase: 'Maiuscolo'
+  flash:
+    create:
+      success: 'Il generatore di identificatori "{{ code }}" è stato creato correttamente'
+      error: 'Non è stato possibile creare il generatore di identificatori '
+    update:
+      success: 'Il generatore di identificatori "{{ code }}" è stato aggiornato correttamente'
+      error: 'Non è stato possibile aggiornare il generatore di identificatori'
+    delete:
+      success: 'Il generatore di identificatori "{{ code }}" è stato eliminato correttamente'
+      error: 'Non è stato possibile eliminare il generatore di identificatori'
+  list:
+    identifier: 'Identificatore'
+    first_generator: 'Crea il tuo primo generatore di identificatori!'
+    read_only_list: 'Per avere accesso a questa funzionalità contatta il tuo amministratore.'
+    helper:
+      title: 'Automatizza la generazione di identificatori.'
+      info: 'Una volta creato un generatore di identificatori, a ogni nuovo prodotto che crei verrà assegnato automaticamente un identificatore.'
+    check_help_center: 'Consulta il nostro Help Center per ulteriori informazioni.'
+    confirmation: 'Convermi di voler eliminare questa proprietà?'
+  selection:
+    limit_reached: 'Hai raggiunto il limite di {{ count }} condizioni'
+    helper:
+      title: 'Aggiungi condizioni alla tua selezione di prodotti, se vuoi:'
+      automate: 'automatizza la creazione di identificatori per una determinata selezione di prodotti'
+    empty:
+      title: 'Crea la tua selezione di prodotti'
+      text: 'Saranno interessati tutti i tuoi prodotti con identificatore vuoto.'
+      info: 'Se vuoi agire su specifici prodotti, aggiungi altre condizioni.'
+    settings:
+      enabled:
+        disabled: 'Disattivato'
+        placeholder: 'Scegli uno stato'
+      family:
+        placeholder: 'Seleziona almeno una famiglia'
+      select_option:
+        placeholder: 'Seleziona almeno un''opzione'
+  structure:
+    helper: 'Definisci la struttura degli identificatori di prodotti che vuoi generare. Se ti serve aiuto per configurare le impostazioni delle proprietà, {{link}}.'
+    helper_link: 'consulta il nostro Help Center per ulteriori informazioni.'
+    title: 'Struttura identificatore'
+    add_element: 'Aggiungi nuova proprietà'
+    limit_reached: 'Hai raggiunto il limite di {{ count }} proprietà'
+    property_type:
+      sections:
+        system: 'Sistema'
+      free_text: 'Testo libero'
+      auto_number: 'Numero automatico'
+      family: 'Famiglia'
+    settings:
+      free_text:
+        title: 'Impostazioni testo libero'
+        string_label: 'Definisci il testo'
+      auto_number:
+        title: 'Numero automatico'
+        digitsMin_label: 'Cifre min'
+        numberMin_label: 'Numero min'
+      family:
+        title: 'Famiglia'
+      code_format:
+        type:
+          truncate: 'Usa i primi caratteri'
+          code: 'Usa l''intero codice'
+          nomenclature: 'Usa la tua nomenclatura'
+      operator:
+        title: 'Operatore'
+        placeholder: 'Seleziona l''operatore'
+      simple_select:
+        title: 'Attributo'
+      abbrev_type: 'Definisci il formato di questa proprietà'
+      abbrev_type_empty_label: 'Seleziona il formato'
+      chars_number: 'Numero di caratteri'
+    empty:
+      title: 'Crea la struttura dell''identificatore'
+      text: 'Fai clic su "Aggiungi nuova proprietà" in alto a destra'
+      link_text: 'Consulta il nostro Help Center per ulteriori informazioni.'
+    delimiters:
+      title: 'Delimitatori'
+      helper: 'Scopri come aggiungere delimitatori predefiniti o personalizzati in {{link}}.'
+      helper_link: 'il nostro Help Center'
+      checkbox_label: 'Usa i delimitatori tra le diverse proprietà'
+      input_label: 'Definisci i tuoi delimitatori'
+  deletion:
+    operations: 'Operazioni'
+    confirmation: 'Confermi di voler eliminare questo generatore di identificatori?'
+    type: 'Digita "{{ code }}"'
+  nomenclature:
+    edit: 'Modifica nomenclatura'
+    section_title: 'Generazione identificatori per {{ property }}'
+    title: 'Gestisci nomenclatura'
+    characters_number: 'Numero di caratteri'
+    operator_placeholder: 'Scegli l''operatore'
+    value_placeholder: 'Scegli i caratteri'
+    nomenclature: 'Nomenclatura'
+    generate_if_empty: 'Genera nomenclatura automaticamente'
+    display: 'Visualizza'
+    filters:
+      all: 'Tutto'
+      error: 'Errore'
+      empty: 'Vuoto'
+      filled: 'Pieno'
+    empty:
+      title: 'Nessuna nomenclatura trovata'
+    flash:
+      success: 'La tua nomenclatura è stata salvata correttamente'
+      error: 'Impossibile salvare la nomenclatura'
+      warning: 'La nomenclatura è stata salvata correttamente, ma alcuni valori non verranno generati. Modifica la nomenclatura per modificare i valori in errore.'

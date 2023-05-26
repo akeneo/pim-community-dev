@@ -165,6 +165,7 @@ pim_import_export:
           sftp: SFTP
           amazon_s3: Amazon S3
           microsoft_azure: Microsoft Azure
+          google_cloud_storage: Google Cloud Storage
           none: ストレージが構成されていません
         file_path:
           label: ファイルパス
@@ -209,6 +210,12 @@ pim_import_export:
         container_name:
           label: コンテナ名
           placeholder: コンテナ名を入力してください
+        project_id:
+          label: プロジェクト ID
+          placeholder: プロジェクト ID を入力してください
+        service_account:
+          label: サービスアカウント
+          placeholder: サービスアカウントを入力してください
       validation:
         storage:
           unavailable_type: このストレージは使用できません。{{ available_types }}のみを使用できます。
@@ -228,6 +235,8 @@ pim_import_export:
     6: 失敗
     7: 破棄済
     8: 不明
+    9: Pausing
+    10: Paused
   job_status:
     COMPLETED: 完了
     STARTING: 開始中...

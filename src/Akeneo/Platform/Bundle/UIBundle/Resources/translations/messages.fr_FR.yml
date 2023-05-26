@@ -131,6 +131,7 @@ pim_enrich:
       create: Créer un groupe d'attributs
       edit: Modifier un groupe d'attributs
       remove: Supprimer un groupe d'attributs
+      mass_delete: Supprimer en masse les groupes d'attributs
       sort: Trier les groupes d'attributs
       add_attribute: Ajouter l'attribut à un groupe
       remove_attribute: Supprimer l'attribut d'un groupe
@@ -140,6 +141,7 @@ pim_enrich:
       create: Créer un attribut
       edit: Modifier un attribut
       remove: Supprimer un attribut
+      mass_delete: Supprimer en masse des attributs
       sort: Trier les attributs au sein d'un groupe d'attributs
       history: Afficher l'historique de l'attribut
     group:
@@ -212,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: Un attribut de type identifiant ne peut pas être supprimé
     used_as_conversion_unit: Cet attribut ne peut pas être supprimé car il est utilisé comme unité de conversion dans le(s) canal(aux) %channelCodes%.
+    cant_remove_attributes_used_as_label: Les attributs utilisés comme libellés dans une famille ne peuvent pas être supprimés.
+    cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation d'une famille.
   category:
     removed: Catégorie supprimée avec succès
   tree:
@@ -329,7 +333,7 @@ Choose a unit: Choisir une unité
 No matches found: Aucune correspondance trouvée
 Category tree: Arborescence
 Completeness: Complétude
-Attribute used as label: Attribut utilisé comme étiquette
+Attribute used as label: Attribut utilisé comme libellé
 Credentials: Certificats
 #Scopes
 Global: Général
@@ -451,6 +455,7 @@ pim_datagrid:
       label: Mis à jour
     label_or_identifier:
       label: Libellé ou identifiant
+      label_with_uuid: Libellé, identifiant ou UUID
     parent:
       label: Parent
     identifier:

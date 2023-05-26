@@ -33,6 +33,7 @@ class CreateUserValidatorSpec extends ObjectBehavior
     {
         $user->getId()->willReturn(null);
         $user->isJobUser()->willReturn(false);
+        $user->isUiUser()->willReturn(true);
         $user->getUserIdentifier()->willReturn('foobar');
         $this->validate($user, $constraint)->shouldReturn(null);
     }
@@ -45,6 +46,7 @@ class CreateUserValidatorSpec extends ObjectBehavior
     ) {
         $user->getId()->willReturn(null);
         $user->isJobUser()->willReturn(false);
+        $user->isUiUser()->willReturn(true);
         $user->getUserIdentifier()->willReturn('foo bar');
 
         $context->buildViolation('The username should not contain space character.')

@@ -2,6 +2,7 @@ pim_notification:
   types:
     settings: Configuración
     mass_delete: Eliminación
+    attribute_mass_delete: Eliminación
 flash:
   comment:
     create:
@@ -25,6 +26,7 @@ pim_enrich.entity.product:
       fields_not_ready: "El producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
       already_in_upload: Un fichero ya está siendo cargado por este atributo en el local «{{ locale }}» y objetivo «{{ scope }}»
       file_upload: Ha ocurrido un error durante la carga del fichero
+      identifier_warning: Su producto ha sido guardado pero no se ha podido generar su identificador.
     delete:
       success: Producto eliminado con éxito.
       fail: El producto no puede ser eliminado.

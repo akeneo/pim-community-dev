@@ -5,7 +5,15 @@ akeneo.category:
         wrong_format: Kod kategorii może zawierać tylko litery, cyfry i znaki podkreślenia.
         line_feed: Kod kategorii nie może zawierać znaków końca linii.
       duplicated_value_user_intents: Wartość atrybutu {{ attributeCode }} jest wielokrotnie aktualizowana.
+      value_user_intents_on_deactivated_template: Brak aktywnego szablonu powiązanego z atrybutami kategorii, które chcesz edytować.
       value:
         text_too_long: 'Wartość może mieć maksymalnie następującą liczbę znaków: {{ limit }}'
         textarea_too_long: 'Wartość może mieć maksymalnie następującą liczbę znaków: {{ limit }}'
         richtext_too_long: 'Wartość może mieć maksymalnie następującą liczbę znaków: {{ limit }}'
+    attribute:
+      limit:
+        title: Nie możesz dodać więcej niż 50 atrybutów
+        message: Szablony kategorii mogą zawierać maksymalnie 50 atrybutów.
+      code:
+        wrong_format: Kod atrybutu może składać się jedynie z małych liter, cyfr lub znaków podkreślenia.
+        unique_in_the_template: Kod atrybutu {{ attributeCode }} może być użyty w szablonie tylko raz.

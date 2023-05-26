@@ -77,7 +77,7 @@ pim_common:
   updated: Zaktualizowano
   view: Zobacz
   yes: "Tak"
-  uuid: uuid
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -131,6 +131,7 @@ pim_enrich:
       create: Tworzenie grupy atrybutów
       edit: Edycja grupy atrybutów
       remove: Usuwanie grupy atrybutów
+      mass_delete: Zbiorczo usuń grupy atrybutów
       sort: Sortowanie grup atrybutów
       add_attribute: Dodawanie atrybutów do grupy
       remove_attribute: Usuwanie atrybutu z grupy
@@ -451,6 +452,7 @@ pim_datagrid:
       label: Zaktualizowano
     label_or_identifier:
       label: Etykieta lub identyfikator
+      label_with_uuid: Etykieta, identyfikator lub UUID
     parent:
       label: Element nadrzędny
     identifier:
@@ -546,4 +548,4 @@ pim_login:
   footer:
     powered: Wspierane przez
     powered_image_title: logo Akeneo
-pim_system.acl_group.developer_mode: Tryb deweloperski
+pim_system.acl_group.connect: Połącz

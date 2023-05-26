@@ -1,0 +1,135 @@
+pim_title:
+  akeneo_identifier_generator_index: "Generator identyfikatorów"
+  akeneo_identifier_generator_edit: "Edytuj generator identyfikatorów"
+pim_error:
+  unauthorized_list_attributes: "Nie można utworzyć listy atrybutów. Skontaktuj się z administratorem w celu zmiany Twoich uprawnień."
+  unauthorized_list_properties: "Nie masz uprawnień do umieszczenia tej właściwości na liście. Skontaktuj się z administratorem."
+  unauthorized_list_families: "Nie można utworzyć listy rodzin. Skontaktuj się z administratorem w celu zmiany Twoich uprawnień."
+  general: "Podczas wyświetlania tej strony wystąpił błąd. Skontaktuj się z administratorem."
+  unexpected: "Wystąpił nieoczekiwany błąd. Skontaktuj się z administratorem."
+  404: 'Wystąpił błąd 404...'
+  identifier_generator_not_found: 'Nie znaleziono generatora identyfikatorów'
+  selection_attribute_not_found: 'Atrybut z wyboru produktów został usunięty z katalogu. Usuń tę właściwość z wyboru produktów.'
+pim_identifier_generator:
+  create:
+    form:
+      title: "Utwórz nowy generator identyfikatorów"
+      select_identifier_attribute: "Wybierz atrybut identyfikatora"
+  tabs:
+    general: "Ogólne"
+    product_selection: "Wybór produktów"
+    identifier_structure: "Struktura identyfikatorów"
+  general:
+    title: "Właściwości ogólne"
+    label_translations_in_ui_locale: "Tłumaczenia etykiet w wersji językowej UI"
+    text_transformation:
+      label: 'Transformacja tekstu'
+      no: 'Brak transformacji tekstu'
+      lowercase: 'Małe litery'
+      uppercase: 'Wielkie litery'
+  flash:
+    create:
+      success: 'Pomyślnie utworzono generator identyfikatorów „{{ code }}”'
+      error: 'Nie udało się utworzyć generatora identyfikatorów.'
+    update:
+      success: 'Pomyślnie zaktualizowano generator identyfikatorów „{{ code }}”'
+      error: 'Nie udało się zaktualizować generatora identyfikatorów.'
+    delete:
+      success: 'Pomyślnie usunięto generator identyfikatorów „{{ code }}”'
+      error: 'Nie udało się usunąć generatora identyfikatorów.'
+  list:
+    identifier: 'Identyfikator'
+    first_generator: 'Utwórz pierwszy generator identyfikatorów!'
+    read_only_list: 'Skontaktuj się z administratorem, aby uzyskać dostęp do tej funkcji.'
+    helper:
+      title: 'Zautomatyzuj generowanie identyfikatorów.'
+      info: 'Po utworzeniu generatora identyfikatorów do każdego nowego produktu, który utworzysz, zostanie automatycznie przypisany identyfikator.'
+    check_help_center: 'Więcej informacji znajdziesz na stronie pomocy.'
+    confirmation: 'Czy na pewno chcesz usunąć tę właściwość?'
+  selection:
+    limit_reached: 'Osiągnięto limit {{ count }} warunków'
+    helper:
+      title: 'Dodaj warunki do wyboru produktów, jeśli chcesz:'
+      automate: 'zautomatyzować tworzenie identyfikatorów docelowego wyboru produktów;'
+    empty:
+      title: 'Utwórz wybór produktów'
+      text: 'Będzie to miało wpływ na wszystkie Twoje produkty z pustym identyfikatorem.'
+      info: 'Jeśli chcesz uwzględnić tylko określone produkty, dodaj nowe warunki.'
+    settings:
+      enabled:
+        disabled: 'Wyłączono'
+        placeholder: 'Wybierz status'
+      family:
+        placeholder: 'Wybierz co najmniej jedną rodzinę'
+      select_option:
+        placeholder: 'Wybierz co najmniej jedną opcję'
+  structure:
+    helper: 'Zdefiniuj strukturę identyfikatorów produktów, które chcesz wygenerować. Jeśli potrzebujesz pomocy w konfiguracji ustawień właściwości, {{link}}.'
+    helper_link: 'wejdź na stronę pomocy, gdzie znajdziesz dodatkowe informacje.'
+    title: 'Struktura identyfikatorów'
+    add_element: 'Dodaj nową właściwość'
+    limit_reached: 'Osiągnięto limit {{ count }} właściwości'
+    property_type:
+      sections:
+        system: 'System'
+      free_text: 'Tekst dowolny'
+      auto_number: 'Numer automatyczny'
+      family: 'Rodzina'
+    settings:
+      free_text:
+        title: 'Ustawienia tekstu dowolnego'
+        string_label: 'Zdefiniuj tekst'
+      auto_number:
+        title: 'Numer automatyczny'
+        digitsMin_label: 'Minimalna liczba cyfr'
+        numberMin_label: 'Minimalna liczba'
+      family:
+        title: 'Rodzina'
+      code_format:
+        type:
+          truncate: 'Używaj pierwszych znaków'
+          code: 'Używaj całego kodu'
+          nomenclature: 'Korzystaj z własnej nomenklatury'
+      operator:
+        title: 'Operator'
+        placeholder: 'Wybierz operatora'
+      simple_select:
+        title: 'Atrybut'
+      abbrev_type: 'Zdefiniuj format tej właściwości'
+      abbrev_type_empty_label: 'Wybierz format'
+      chars_number: 'Liczba znaków'
+    empty:
+      title: 'Utwórz strukturę identyfikatorów'
+      text: 'Kliknij polecenie „Dodaj nową właściwość” w prawym górnym rogu'
+      link_text: 'Więcej informacji znajdziesz na stronie pomocy.'
+    delimiters:
+      title: 'Separatory'
+      helper: 'Dowiedz się, jak dodawać domyślne lub niestandardowe separatory, tutaj: {{link}}.'
+      helper_link: 'pomoc'
+      checkbox_label: 'Rozdzielaj poszczególne właściwości separatorami'
+      input_label: 'Zdefiniuj separatory'
+  deletion:
+    operations: 'Operacje'
+    confirmation: 'Czy na pewno chcesz usunąć ten generator identyfikatorów?'
+    type: 'Wpisz następujący kod „{{ code }}”'
+  nomenclature:
+    edit: 'Edytuj nomenklaturę'
+    section_title: 'Generowanie identyfikatorów właściwości {{ property }}'
+    title: 'Zarządzaj nomenklaturą'
+    characters_number: 'Liczba znaków'
+    operator_placeholder: 'Wybierz operatora'
+    value_placeholder: 'Wybierz znaki'
+    nomenclature: 'Nomenklatura'
+    generate_if_empty: 'Generuj nomenklaturę automatycznie'
+    display: 'Wyświetlanie'
+    filters:
+      all: 'Wszystkie'
+      error: 'Błąd'
+      empty: 'Puste'
+      filled: 'Wypełnione'
+    empty:
+      title: 'Nie znaleziono nomenklatur'
+    flash:
+      success: 'Nomenklatura zapisana pomyślnie'
+      error: 'Nie można zapisać nomenklatury.'
+      warning: 'Nomenklatura została zapisana pomyślnie, ale niektóre wartości nie zostaną wygenerowane. Edytuj nomenklaturę, aby zmodyfikować błędne wartości.'

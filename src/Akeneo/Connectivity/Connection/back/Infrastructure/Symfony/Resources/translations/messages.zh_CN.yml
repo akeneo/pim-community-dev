@@ -1,7 +1,10 @@
 akeneo_connectivity.connection:
   acl.manage_settings: 管理连接设置
   acl.manage_apps: 管理应用
+  acl.create_and_delete_custom_apps: 创建和删除自定义应用
   acl.open_apps: 打开应用
 pim_notification:
   connected_app_authorizations:
     message: '<strong>{{ app_name }}</strong> 应用需要授权更新。请打开应用以继续。'
+  disabled_catalog:
+    message: "您的 PIM 设置中的一个或多个修改影响了 {{ catalog_name }} 目录。请审查其设置，然后再次启用目录。"
