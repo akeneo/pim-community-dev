@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Tool\Integration\Batch\Query;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Query\SqlGetPausedJobExecutionIds;
 use Doctrine\DBAL\Connection;
@@ -11,7 +12,6 @@ use PHPUnit\Framework\Assert;
 
 class SqlGetPausedJobExecutionIdsIntegration extends TestCase
 {
-
     public function test_that_it_returns_empty_array()
     {
         $getPausedJobExecutionIds = $this->getQuery();
@@ -27,17 +27,12 @@ class SqlGetPausedJobExecutionIdsIntegration extends TestCase
         Assert::assertEquals($expected, $getPausedJobExecutionIds->all());
     }
 
-    private function getQuery(): SqlGetPausedJobExecutionIds
-    {
-        return $this->get('akeneo_batch.query.get_paused_job_execution_ids');
-    }
-
     private function createJobExecutions(): void
     {
         $insertJobInstanceQuery = <<<SQL
             INSERT INTO akeneo_batch_job_instance (id, code, job_name, status, connector, raw_parameters, type)
             VALUES 
-            (1, 'test', '', 0, '', '', '')
+            (1, 'a_job', '', 0, '', '', '')
 SQL;
 
         $this->getConnection()->executeQuery($insertJobInstanceQuery);
@@ -58,10 +53,12 @@ SQL;
         return $this->get('database_connection');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
+    private function getQuery(): SqlGetPausedJobExecutionIds
+    {
+        return $this->get('akeneo_batch.query.get_paused_job_execution_ids');
+    }
+
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }

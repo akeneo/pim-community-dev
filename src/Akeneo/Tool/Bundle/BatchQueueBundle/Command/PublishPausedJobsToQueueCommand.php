@@ -25,7 +25,7 @@ final class PublishPausedJobsToQueueCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->publishPausedJobsToQueue->publishPausedJobs();
+        $this->publishPausedJobsToQueue->publish();
 
         return Command::SUCCESS;
     }
