@@ -71,6 +71,7 @@ pim_enrich.entity.product:
       modified: Modificado
       old_value: Valor anterior
       new_value: Nuevo valor
+      limit: 'Solo se muestran las últimas {{ limit }} versiones.'
     meta:
       updated: Última actualización
       groups: Grupos
@@ -457,6 +458,7 @@ pim_datagrid:
     mass_delete: Eliminación masiva
     selected:
       family: "]-Inf, 1]{{ count }} familia seleccionada|]1, Inf[{{ count }} familias seleccionadas"
+      attribute: "]-Inf, 1]{{ count }} atributo seleccionado|]1, Inf[{{ count }} atributos seleccionados"
       product: "]-Inf, 1]{{ count }} resultado seleccionado|]1, Inf[{{ count }} resultados seleccionados"
   view_selector:
     view: Vistas

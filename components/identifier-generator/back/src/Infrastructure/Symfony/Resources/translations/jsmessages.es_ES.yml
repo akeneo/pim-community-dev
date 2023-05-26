@@ -45,12 +45,20 @@ pim_identifier_generator:
       title: 'Automatizar la generación de identificadores.'
       info: 'Una vez creado un generador de identificadores, se asignará automáticamente un identificador a cada nuevo producto que cree.'
     check_help_center: 'Consulte nuestro centro de ayuda para obtener más información.'
+    max_generator:
+      title: 'Ha alcanzado el límite de {{ count }} generadores de identificadores.'
     confirmation: '¿Seguro que quiere eliminar esta propiedad?'
+  operators:
+    'NOT IN CHILDREN': 'No en elementos secundarios'
+    'IN CHILDREN': 'En elementos secundarios'
+    UNCLASSIFIED: 'Sin clasificar'
+    CLASSIFIED: 'Clasificado'
   selection:
     limit_reached: 'Ha alcanzado el límite de {{ count }} condiciones'
     helper:
       title: 'Añada condiciones a su selección de productos, si desea:'
       automate: 'automatizar la creación de identificadores para una selección específica de productos'
+      multiple: 'disponen de múltiples estructuras de identificadores para diferentes selecciones de productos'
     empty:
       title: 'Cree su selección de productos'
       text: 'Todos sus productos con un identificador vacío se verán afectados.'
@@ -63,6 +71,8 @@ pim_identifier_generator:
         placeholder: 'Seleccione al menos una familia'
       select_option:
         placeholder: 'Seleccione al menos una opción'
+      categories:
+        tree: Árbol
   structure:
     helper: 'Defina la estructura de los identificadores de producto que desea generar. Si necesita ayuda para configurar las propiedades, {{link}}.'
     helper_link: 'consulte nuestro centro de ayuda para más información'
@@ -116,6 +126,7 @@ pim_identifier_generator:
     edit: 'Editar nomenclatura'
     section_title: 'Generando mis identificadores para {{ property }}'
     title: 'Gestionar la nomenclatura'
+    helper: 'Tenga en cuenta que sus nomenclaturas son compartidas por todos sus generadores de identificadores.'
     characters_number: 'Número de caracteres'
     operator_placeholder: 'Elija su operador'
     value_placeholder: 'Elija sus caracteres'
