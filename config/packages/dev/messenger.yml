@@ -42,14 +42,12 @@ framework:
                     auto_setup: false
                 serializer: akeneo_batch_queue.messenger.serializer
             paused_job:
-                dsn: 'gps:'
+                dsn: doctrine://default
                 options:
-                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
-                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_PAUSED_JOB)%'
-                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_PAUSED_JOB)%'
-                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
-                retry_strategy:
-                    max_retries: 0
+                    table_name: messenger_messages
+                    queue_name: paused_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
                 serializer: akeneo_batch_queue.messenger.serializer
 
         routing:
