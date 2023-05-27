@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: Produkt pomyślnie zaktualizowany.
       fail: Nie można zaktualizować produktu.
+      fail_session_expired: Nie można zaktualizować produktu. Sesja wygasła. Zaloguj się ponownie.
       fields_not_ready: "Nie można teraz zapisać produktu. Następujące pola nie są gotowe: {{ fields }}"
       already_in_upload: Plik jest aktualnie dodawany dla tego atrybutu w wersji językowej "{{ locale }}" i kanale "{{ scope }}"
       file_upload: Wystąpił błąd podczas przesyłania pliku

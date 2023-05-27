@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: 产品已成功更新。
       fail: 无法更新产品。
+      fail_session_expired: 无法更新产品。您的用户会话已过期。请重新登录。
       fields_not_ready: "该产品目前无法保存。以下字段未准备好： {{ fields }}"
       already_in_upload: 在区域"{{ locale }}"和范围"{{ scope }}"中，已有针对此属性的文件在上传
       file_upload: 上传文件时发生错误

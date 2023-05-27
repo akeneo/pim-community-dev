@@ -21,9 +21,11 @@ pim_enrich.entity.product:
     update:
       success: Producto actualizado con éxito.
       fail: El producto no puede ser actualizado.
+      fail_session_expired: No se puede actualizar el producto. Su sesión de usuario ha caducado. Conéctese de nuevo.
       fields_not_ready: "El producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
       already_in_upload: Un fichero ya está siendo cargado por este atributo en el local «{{ locale }}» y objetivo «{{ scope }}»
       file_upload: Ha ocurrido un error durante la carga del fichero
+      identifier_warning: Su producto ha sido guardado pero no se ha podido generar su identificador.
     delete:
       success: Producto eliminado con éxito.
       fail: El producto no puede ser eliminado.

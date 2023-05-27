@@ -379,6 +379,7 @@ pim_enrich.mass_edit.product:
       label: Siirrä kategorioihin
       label_count: "{0}Siirrä <span class=\"AknFullPage-title--highlight\">tuotetta</span> kategorioiden välillä|{1}Siirrä <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioiden välillä|]1, Inf[Siirrä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioiden välillä"
       description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
+      no_update: Ole hyvä ja valitse kategoria.
     remove_from_category:
       label: Poista kategorioista
       label_count: "{0}Poista <span class=\"AknFullPage-title--highlight\">tuotetta</span> kategorioista|{1}Poista <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioista|]1, Inf[Poista <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioista"

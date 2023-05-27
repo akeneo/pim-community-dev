@@ -275,6 +275,7 @@ pim_enrich.entity.fallback:
     generic_error: Wystąpił błąd
     update:
       fail: Błąd aktualizacji
+      fail_session_expired: Sesja użytkownika wygasła. Zaloguj się ponownie.
       success: Pomyślnie zaktualizowano
     delete:
       fail: Nie można usunąć tego elementu
