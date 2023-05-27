@@ -77,3 +77,6 @@ pim_enrich.entity.currency:
   plural_label: Valuutat
   page_title:
     index: "] -Inf, 1] {{ count }} valuutta|]1, Inf [{{ count }} valuuttaa"
+flash:
+  currency:
+    updated: Valuutta päivitetty onnistuneesti

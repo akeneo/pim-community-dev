@@ -88,7 +88,7 @@ pim_enrich.entity.attribute_option:
       delete_confirmation_title_msg: Supprimer "{{ optionCode }}" de vos options ?
       delete_confirmation_subtitle_msg: Êtes-vous sûr de vouloir supprimer cette option ? Vous ne pouvez pas annuler cette action.
       search:
-        placeholder: Chercher en utilisant le nom ou le code
+        placeholder: Rechercher en utilisant un libellé ou un code
         no_result:
           title: Il n'y a aucun résultat pour votre recherche.
 pim_enrich.entity.association_type:
