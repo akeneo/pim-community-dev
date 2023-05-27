@@ -275,6 +275,7 @@ pim_enrich.entity.fallback:
     generic_error: 发生错误
     update:
       fail: 更新失败
+      fail_session_expired: 您的用户会话已过期。请重新登录。
       success: 成功更新
     delete:
       fail: 无法删除此条目

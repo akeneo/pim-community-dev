@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: 제품이 업데이트되었습니다.
       fail: 제품을 업데이트할 수 없습니다.
+      fail_session_expired: 제품을 업데이트할 수 없습니다. 사용자 세션이 만료되었습니다. 다시 로그인하십시오.
       fields_not_ready: "이 제품은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
       already_in_upload: 이미 로케일 '{{ locale }}' 및 범위 '{{ scope }}'에서 이 특성에 대한 파일이 업로드되었습니다.
       file_upload: 파일을 업로드하는 중에 오류가 발생했습니다.

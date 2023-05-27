@@ -275,6 +275,7 @@ pim_enrich.entity.fallback:
     generic_error: 오류가 발생했습니다.
     update:
       fail: 업데이트 실패
+      fail_session_expired: 사용자 세션이 만료되었습니다. 다시 로그인하십시오.
       success: 업데이트 성공
     delete:
       fail: 이 항목을 삭제할 수 없음

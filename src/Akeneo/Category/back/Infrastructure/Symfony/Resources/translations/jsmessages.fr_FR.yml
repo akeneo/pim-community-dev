@@ -4,6 +4,8 @@ akeneo.category:
       category_templates: Templates de catégorie
   attributes: Attributs
   edition_form:
+    template:
+      title: Modèle
     unsaved_changes: Vous perdrez les modifications apportées à la catégorie si vous quittez la page.
   tree:
     create: Créer un arbre
@@ -11,6 +13,7 @@ akeneo.category:
   template:
     create: Activer le template
     edit: Afficher le template
+    delete: Supprimer le modèle
     notification_success: "Le template a été activé avec succès.\n"
     notification_error: Le template n’a pas pu être activé
     attribute:

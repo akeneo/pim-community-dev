@@ -275,6 +275,7 @@ pim_enrich.entity.fallback:
     generic_error: エラーが発生しました。
     update:
       fail: 更新に失敗しました
+      fail_session_expired: ユーザーセッションの期限が切れました。もう一度ログインしてください。
       success: 正常に更新されました
     delete:
       fail: このアイテムを削除できません

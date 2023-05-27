@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: Prodotto aggiornato correttamente.
       fail: Il prodotto non può essere aggiornato.
+      fail_session_expired: Il prodotto non può essere aggiornato. La tua sessione utente è scaduta. Effettua nuovamente il login.
       fields_not_ready: "Il prodotto non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}"
       already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
       file_upload: Si è verificato un errore durante il caricamento del file

@@ -275,6 +275,7 @@ pim_enrich.entity.fallback:
     generic_error: Ha ocurrido un error
     update:
       fail: Error al actualizar
+      fail_session_expired: Su sesión de usuario ha caducado. Inicie sesión de nuevo.
       success: Actualización exitosa
     delete:
       fail: No se puede eliminar este elemento

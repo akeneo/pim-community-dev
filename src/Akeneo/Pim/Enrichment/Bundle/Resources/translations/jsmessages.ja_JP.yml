@@ -21,6 +21,7 @@ pim_enrich.entity.product:
     update:
       success: 商品を正常に更新しました
       fail: 商品を更新できませんでした
+      fail_session_expired: 商品を更新できません。ユーザーセッションが期限切れになっています。もう一度ログインしてください。
       fields_not_ready: "この商品は現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
       already_in_upload: ファイルはすでに {{ locale }} ローケル と {{ scope }} スコープでこの属性のためにアップロードされています
       file_upload: ファイルをアップロード中にエラーが発生しました
