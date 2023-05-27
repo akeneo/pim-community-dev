@@ -10,7 +10,7 @@ measurements:
     text: Vous pouvez créer ici vos propres familles de mesure avec leur unités ou ajouter des unités aux familles de mesure existantes.
     link: Vous voulez en savoir plus ? C'est parti !
   search:
-    placeholder: Rechercher sur le libellé ou le code
+    placeholder: Rechercher en utilisant un libellé ou un code
   family:
     result_count: "{0}0 Familles de mesure |{1}1 Famille de mesure|]1, Inf[{{ itemsCount }} Familles de mesure"
     not_found: Famille de mesure introuvable
@@ -55,7 +55,7 @@ measurements:
       select: Sélectionnez votre opérateur
     convert_from_standard: Opération de conversion
     create_another: Créer une autre unité
-    will_be_read_only: Un attribut produit est lié à cette famille de mesure. Une fois que l'unité aura été créée, vous pourrez seulement modifier ses libellés traduits et son symbole.
+    will_be_read_only: Un attribut produit est lié à cette famille de mesures. Une fois que l'unité aura été créée, vous pourrez uniquement modifier les traductions de son libellé ainsi que le symbole associé.
   list:
     header:
       standard_unit: Unité standard
