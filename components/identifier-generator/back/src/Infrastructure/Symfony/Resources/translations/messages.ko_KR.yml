@@ -8,6 +8,7 @@ pim_catalog_identifier_generator:
     fields:
       family: 패밀리
       enabled: 상태
+      categories: 카테고리
     field_groups:
       system: 시스템
   structure:
