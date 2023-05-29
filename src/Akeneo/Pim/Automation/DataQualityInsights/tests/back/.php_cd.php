@@ -128,8 +128,10 @@ $rules = [
             'Symfony\Component\HttpKernel',
             'Symfony\Component\Security',
             'Symfony\Component\Serializer\Normalizer\NormalizerInterface',
+            'Symfony\Component\Serializer\Normalizer\DenormalizerInterface',
             'Symfony\Component\Validator\Constraints',
             'Symfony\Component\Form\FormFactoryInterface',
+            'Symfony\Component\Messenger\Handler\MessageHandlerInterface',
             'Webmozart\Assert\Assert',
             'Ramsey\Uuid\Uuid',
             'Ramsey\Uuid\UuidInterface',
@@ -139,7 +141,6 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
             'Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface',
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
-            'Akeneo\Tool\Component\Messenger',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];
