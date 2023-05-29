@@ -49,3 +49,15 @@ pim_enrich_attribute_form:
 job_execution.summary:
   deleted_attribute_groups: Gruppi di attributi eliminati
   skipped_attribute_groups: Gruppi di attributi saltati
+  moved_attributes: Attributi spostati
+  deleted_attributes: Attributi eliminati
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: L'eliminazione in blocco dei gruppi di attributi non è riuscita
+      warning: Eliminazione in blocco dei gruppi di attributi completata con alcuni avvisi
+      success: Eliminazione in blocco dei gruppi di attributi completata
+    attribute_mass_delete:
+      error: L'eliminazione in blocco degli attributi non è riuscita
+      warning: Eliminazione in blocco degli attributi completata con alcuni avvisi
+      success: Eliminazione in blocco degli attributi completata

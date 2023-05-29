@@ -8,3 +8,5 @@ pim_notification:
     message: '<strong>{{ app_name }}</strong> 앱을 사용하려면 권한 부여 업데이트가 필요합니다. 앱을 열어 진행해주십시오.'
   disabled_catalog:
     message: "PIM 설정에서 하나 이상의 수정 사항이 {{ catalog_name }} 카탈로그에 영향을 미쳤습니다. 해당 설정을 검토하고 카탈로그를 다시 활성화하십시오."
+  attribute_removed:
+    message: "PIM 설정에서 하나 이상의 수정 사항이 {{ catalog_name }} 카탈로그에 영향을 미쳤습니다. 관련 매핑을 검토하십시오."

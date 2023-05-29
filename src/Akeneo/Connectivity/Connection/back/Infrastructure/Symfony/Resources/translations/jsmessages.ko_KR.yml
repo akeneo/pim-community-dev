@@ -616,6 +616,7 @@ pim_notification:
   types:
     connected_app_authorizations: 연결된 앱 권한 부여
     disabled_catalog: 앱 카탈로그 비활성화됨
+    attribute_removed: 앱 카탈로그가 영향을 받음
   connected_app_authorizations:
     button_label: 앱 열기
   disabled_catalog:

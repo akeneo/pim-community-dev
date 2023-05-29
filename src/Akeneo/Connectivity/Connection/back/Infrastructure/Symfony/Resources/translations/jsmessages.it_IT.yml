@@ -616,6 +616,7 @@ pim_notification:
   types:
     connected_app_authorizations: Autorizzazioni app connesse
     disabled_catalog: Catalogo app disabilitato
+    attribute_removed: Catalogo app interessato
   connected_app_authorizations:
     button_label: Apri app
   disabled_catalog:
