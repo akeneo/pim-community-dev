@@ -115,6 +115,14 @@ services:
             - { name: 'akeneo.pim.zdd_migration' }
         public: true
 
+    Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\V20230525171223FillProductIdentifiersTableZddMigration:
+        arguments:
+            - '@database_connection'
+            - '@monolog.logger'
+        tags:
+            - { name: 'akeneo.pim.zdd_migration' }
+        public: true
+
     Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedProductsCommand:
         arguments:
             - '@Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetDeletedProductDocumentIds'
