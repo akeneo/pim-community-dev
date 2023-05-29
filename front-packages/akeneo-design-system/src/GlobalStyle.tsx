@@ -7,8 +7,4 @@ export const GlobalStyle = createGlobalStyle`
       unicode-range: U+1F1E6-1F1FF;
       src: url(${TwemojiCountryFlags}) format('woff2');
     }
-    
-    .windows-display-flags {
-      font-family: "Windows Flag Emoji";
-    }
 `;
