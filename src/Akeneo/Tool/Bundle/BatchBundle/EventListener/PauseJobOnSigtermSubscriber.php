@@ -40,11 +40,16 @@ class PauseJobOnSigtermSubscriber implements EventSubscriberInterface
         }
 
         pcntl_signal(\SIGTERM, function () use ($event) {
-            $this->logger->info('Received SIGTERM signal.', [
-                'job_execution_id' => $event->getJobExecution()->getId()
+            $jobExecution = $event->getJobExecution();
+            $this->logger->notice('Received SIGTERM signal.', [
+                'job_execution_id' => $jobExecution->getId()
             ]);
 
-            $this->updateJobExecutionStatus->updateByJobExecutionId($event->getJobExecution()->getId(), new BatchStatus(BatchStatus::PAUSING));
+            if (!$jobExecution->isRunning()) {
+                return;
+            }
+
+            $this->updateJobExecutionStatus->updateByJobExecutionId($jobExecution->getId(), new BatchStatus(BatchStatus::PAUSING));
         });
     }
 }
