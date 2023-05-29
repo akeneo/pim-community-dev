@@ -16,7 +16,7 @@
     "storybook:start": "yarn storybook:copy-public && NODE_OPTIONS=--openssl-legacy-provider yarn start-storybook -p 6006 -s ./public",
     "storybook:build": "yarn storybook:copy-public && NODE_OPTIONS=--openssl-legacy-provider yarn build-storybook -s ./public",
     "storybook:ci:start": "NODE_OPTIONS=--openssl-legacy-provider yarn start-storybook -p 6006 --ci",
-    "storybook:copy-public": "cp ./src/__image_snapshots__/*standard-correctly-1-snap.png ./public/ && cp ./static/fonts/twemoji/TwemojiCountryFlags.woff2 ./public/",
+    "storybook:copy-public": "cp ./src/__image_snapshots__/*standard-correctly-1-snap.png ./public/",
     "storybook:extract": "sb extract storybook-static stories.json"
   },
   "author": "akeneo",

@@ -2,7 +2,7 @@ import React, {forwardRef, Ref} from 'react';
 import styled from 'styled-components';
 import {getEmoji} from '../../shared';
 import {getFontSize} from '../../theme';
-import './Locale.css';
+import {GlobalStyle} from "../../GlobalStyle";
 
 const LocaleContainer = styled.span`
   display: inline-flex;
@@ -37,7 +37,8 @@ const Locale = forwardRef<HTMLSpanElement, LocaleProps>(
     return (
       <LocaleContainer ref={forwardedRef} {...rest}>
         <Emoji role="img" aria-label={countryCode}>
-            <span className={(/windows/i.test(navigator.userAgent)) ? 'windows-display-flags' : ''}>{getEmoji(countryCode)}</span>
+            <GlobalStyle />
+            <span style={{fontFamily: 'Windows Flag Emoji'}}>{getEmoji(countryCode)}</span>
         </Emoji>
         {languageLabel || languageCode}
       </LocaleContainer>
