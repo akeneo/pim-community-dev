@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
 use Akeneo\Tool\Component\Batch\Query\GetPausedJobExecutionIdsInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -15,6 +16,7 @@ final class PublishPausedJobsToQueue
     public function __construct(
         private readonly JobExecutionQueueInterface $jobExecutionQueue,
         private readonly GetPausedJobExecutionIdsInterface $getPausedJobExecutionIds,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -23,10 +25,12 @@ final class PublishPausedJobsToQueue
         $jobExecutionIds = $this->getPausedJobExecutionIds->all();
 
         foreach ($jobExecutionIds as $jobExecutionId) {
-            // Should we take care of the Tenant ID here ?
             $jobExecutionMessage = PausedJobExecutionMessage::createJobExecutionMessage($jobExecutionId, []);
-            // Try catch => Log => Alert Datadog
-            $this->jobExecutionQueue->publish($jobExecutionMessage);
+            try {
+                $this->jobExecutionQueue->publish($jobExecutionMessage);
+            } catch(\Exception) {
+                $this->logger->warning(sprintf('An error occurred trying to publish paused job execution id : %d', $jobExecutionId));
+            }
         }
     }
 }
