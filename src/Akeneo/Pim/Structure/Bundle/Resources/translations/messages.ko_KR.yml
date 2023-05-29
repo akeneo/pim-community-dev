@@ -55,3 +55,9 @@ pim_import_export:
   notification:
     attribute_group_mass_delete:
       error: 특성 그룹의 일괄 삭제가 실패했습니다.
+      warning: 특성 그룹의 일괄 삭제가 완료되었으며 경고가 있습니다.
+      success: 특성 그룹의 일괄 삭제가 완료되었습니다.
+    attribute_mass_delete:
+      error: 특성의 일괄 삭제가 실패했습니다.
+      warning: 특성의 일괄 삭제가 완료되었으며 경고가 있습니다.
+      success: 특성의 일괄 삭제가 완료되었습니다.

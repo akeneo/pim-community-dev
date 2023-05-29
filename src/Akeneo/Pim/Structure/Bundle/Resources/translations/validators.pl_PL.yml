@@ -4,3 +4,5 @@ pim_structure:
       cannot_be_quantified_and_two_way: Typ powiązania może być ilościowy lub dwukierunkowy
     available_locales:
       is_variant_axis_without_available_locales: Atrybut nie może stać się zależny od wersji językowej, jeżeli jest już używany jako oś w rodzinie wariantów.
+    attribute_groups:
+      max: Osiągnięto limit {{ max }} grup atrybutów

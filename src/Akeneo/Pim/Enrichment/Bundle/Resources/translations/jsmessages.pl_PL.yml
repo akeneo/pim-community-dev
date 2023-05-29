@@ -71,6 +71,7 @@ pim_enrich.entity.product:
       modified: Zmodyfikowany
       old_value: Poprzednia wartość
       new_value: Nowa wartość
+      limit: 'Wyświetlana jest tylko następująca liczba ostatnich wersji: {{ limit }}.'
     meta:
       updated: Modyfikowany
       groups: Grupy
@@ -457,6 +458,7 @@ pim_datagrid:
     mass_delete: Usuwanie zbiorcze
     selected:
       family: "]-Inf, 1]{{ count }} wybrana rodzina|]1, Inf[{{ count }} wybranych rodzin"
+      attribute: "{count, plural, =0 {# wybranych atrybutów} one {# wybrany atrybut} few {# wybrane atrybuty} many {# wybranych atrybutów} other {# wybranego atrybutu}}"
       product: "]-Inf, 1]{{ count }} wybrany wynik|]1, Inf[{{ count }} wybranych wyników"
   view_selector:
     view: Widoki

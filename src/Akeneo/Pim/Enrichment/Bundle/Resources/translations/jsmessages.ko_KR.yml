@@ -71,6 +71,7 @@ pim_enrich.entity.product:
       modified: 수정됨
       old_value: 이전 값
       new_value: 새 값
+      limit: '마지막 {{ limit }}개 버전만 표시됩니다.'
     meta:
       updated: 마지막 업데이트
       groups: 그룹
@@ -457,6 +458,7 @@ pim_datagrid:
     mass_delete: 대량 삭제
     selected:
       family: "]-Inf, 1]{{ count }}개 패밀리 선택|]1, Inf[{{ count }}개 패밀리 선택"
+      attribute: "]-Inf, 1]{{ count }}개 특성 선택됨|]1, Inf[{{ count }}개 특성 선택됨"
       product: "]-Inf, 1]{{ count }}개 결과 선택|]1, Inf[{{ count }}개 결과 선택"
   view_selector:
     view: 보기

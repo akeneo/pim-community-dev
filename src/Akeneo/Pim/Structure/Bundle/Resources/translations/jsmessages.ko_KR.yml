@@ -74,6 +74,8 @@ pim_enrich.entity.attribute_option:
       fail: 특성 옵션을 저장할 수 없음
     delete:
       fail: 특성 옵션 삭제 중에 오류 발생
+  page_title:
+    index: "]-Inf, 1]{{ count }}개 옵션|]1, Inf[{{ count }}개 옵션"
   module:
     edit:
       cancel_title: 수정 취소
@@ -243,11 +245,18 @@ pim_enrich.entity.attribute:
     mass_delete:
       modal:
         title: 특성
+        subtitle: '{1}{{ count }}개 특성 삭제 확인|]1, Inf[{{ count }}개 특성 삭제 확인'
+        label: '"{{ textToCheck }}"을(를) 입력하십시오'
+        confirm: 이러한 특성을 삭제하시겠습니까?
+      message_bar:
+        success: 삭제가 시작되었습니다. 작업이 완료되면 알림을 받게 됩니다. 그때까지 프로세스 트래커에서 진행률을 확인할 수 있습니다.
+        fail: 삭제를 실행하는 중에 오류가 발생했습니다.
 pim_enrich.entity.attribute_group:
   label: 특성 그룹
   uppercase_label: 특성 그룹
   plural_label: 특성 그룹
   result_count: '{0}0개 특성 그룹|{1}1개 특성 그룹|]1, Inf[{{ count }}개 특성 그룹'
+  limit_reached: '{{ max }}개의 특성 그룹 제한에 도달했습니다.'
   show_more_attribute:
     title: 여기는 약간 혼잡합니다. {{ attributeCount }}/{{ totalAttributeCount }}개 특성이 표시됩니다.
     subtitle: 이 그룹의 모든 특성을 알아보려면 아래를 클릭하면 됩니다!
@@ -261,6 +270,9 @@ pim_enrich.entity.attribute_group:
       success: 특성 그룹 업데이트됨
       fail: 특성 그룹을 업데이트할 수 없습니다.
       fields_not_ready: "이 특성 그룹은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
+    delete:
+      success: 삭제가 시작되었습니다. 작업이 완료되면 알림을 받게 됩니다. 그때까지 프로세스 트래커에서 진행률을 확인할 수 있습니다.
+      fail: 삭제를 실행하는 중에 오류가 발생했습니다.
     mass_delete:
       success: 삭제가 시작되었습니다. 작업이 완료되면 알림을 받게 됩니다. 그때까지 프로세스 트래커에서 진행률을 확인할 수 있습니다.
       fail: 삭제를 실행하는 중에 오류가 발생했습니다.
@@ -277,14 +289,27 @@ pim_enrich.entity.attribute_group:
   selected: '{0}0개 특성 그룹 선택함|{1}1개 특성 그룹 선택함|]1, Inf[{{ count }}개 특성 그룹 선택함'
   mass_delete:
     confirm: '{1}이 특성 그룹을 삭제하시겠습니까? |]1, Inf[이러한 {{count}}개 특성 그룹을 삭제하시겠습니까?'
+    confirmation_phrase: '"{{ confirmation_word }}"을(를) 입력하십시오'
     confirmation_word: 삭제
+    attribute_warning: '{1}이러한 특성 그룹을 삭제하면 {{ number_of_attribute}}개의 관련 특성이 영향을 받습니다. 이 관련 특성을 새 특성 그룹으로 이동해야 합니다.|]1, Inf[이러한 특성 그룹을 삭제하면 {{number_of_attribute}}개의 관련 특성이 영향을 받습니다. 이러한 관련 특성을 새 특성 그룹으로 이동해야 합니다.'
+    select_attribute_group: '{1}관련 특성을 이동할 특성 그룹을 선택하십시오:|]1, Inf[{{ number_of_attribute }}개의 관련 특성을 이동할 특성 그룹을 선택하십시오:'
     empty_result_label: '특성 그룹 찾지 못함'
     placeholder: '특성 그룹 선택'
     open_label: '특성 그룹 목록'
+  delete:
+    confirm: '이 특성 그룹을 삭제하시겠습니까'
+    attribute_warning: '이 특성 그룹을 삭제하면 {{ number_of_attribute }}개의 관련 특성에 영향을 미칩니다. 이 관련 특성을 새 특성 그룹으로 이동해야 합니다.'
+    select_attribute_group: '{1}관련 특성을 이동할 특성 그룹을 선택하십시오:|]1, Inf[{{ number_of_attribute }}개의 관련 특성을 이동할 특성 그룹을 선택하십시오:'
   batch_jobs:
     delete_attribute_groups:
       delete_attribute_groups:
         label: 특성 그룹 삭제
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: 특성 그룹의 일괄 삭제가 실패했습니다.
+      warning: 특성 그룹의 일괄 삭제가 완료되었으며 경고가 있습니다.
+      success: 특성 그룹의 일괄 삭제가 완료되었습니다.
 pim_enrich.mass_edit.family:
   title: 패밀리 일괄 작업
   confirm: "{1}다음 정보로 1개 패밀리를 업데이트하려고 합니다. 확인해주십시오.|]1, Inf[다음 정보로 {{ itemsCount }}개 패밀리를 업데이트하려고 합니다. 확인해주십시오."
@@ -308,6 +333,13 @@ pim_enrich.mass_edit.family:
 batch_jobs:
   default_steps:
     delete_attribute_groups: 특성 그룹 삭제
+    move_child_attributes: 하위 특성 이동
+  delete_attributes:
+    delete_attributes:
+      label: 특성 삭제
+job_execution:
+  summary:
+    deleted_attributes: 삭제된 특성
 akeneo_job_process_tracker:
   type_filter:
     attribute_group_mass_delete: 특성 그룹 삭제

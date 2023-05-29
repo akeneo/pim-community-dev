@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: 활성화됨
+        environment:
+          title: 환경 설정
+          fields:
+            sandbox_banner:
+              label: 샌드박스 알림 배너 표시
         loading_message:
           title: 사용자 지정된 로딩 메시지
           helper: 로딩 화면의 메시지를 사용자 지정하여 사용자에게 즐거움을 줄 수 있습니다.
@@ -194,6 +199,7 @@ pim_common:
   label: 레이블
   label_translations: 레이블 번역
   Label or identifier: 레이블 또는 식별자
+  code_or_label: 코드 또는 레이블
   less_than: 보다 작음
   loading: 로드 중...
   media_upload: 끌어다 놓아 업로드하거나 여기를 클릭
@@ -353,6 +359,10 @@ pim_menu:
     help:
       title: 도움말
       helper: Akeneo 헬프 센터
+      new: 신규
+      news: 새로운 기능은?
+      help_center: 헬프 센터
+      akademy_training: Akademy 훈련
   item:
     association_type: 연결 유형
     attribute_group: 특성 그룹
@@ -431,19 +441,33 @@ pim_system:
   reset_pim:
     modal:
       summary:
+        name: 요약
+        title: '경고: PIM 재설정은 되돌릴 수 없습니다.'
+        text: '다음을 제외한 모든 요소가 삭제됩니다:'
         users:
           name: 사용자
+          tooltip: 사용자는 PIM 내에서 협업하도록 허용한 사람입니다.
         user_groups:
           name: 사용자 그룹
+          tooltip: 사용자 그룹은 PIM 내에서 다양한 작업을 수행할 팀을 정의합니다.
         roles:
           name: 역할
+          tooltip: 역할은 사용자 및 사용자 그룹이 PIM 내에서 수행할 수 있는 액세스 및 작업을 정의합니다.
       confirm:
         name: 확인
         title: PIM 재설정 확인
         helper:
           emphasis: PIM을 재설정한 후에는 되돌릴 수 없습니다.
+          text: 재설정 버튼을 클릭하면 로그아웃되고 로그인 페이지로 돌아갑니다.
       confirmation_phrase: '"{{ confirmation_word }}"을(를) 입력하십시오'
       confirmation_word: 재설정
+    button:
+      label: 인스턴스 재설정
+      confirm: 재설정 및 로그아웃
+    error_notification: PIM 재설정 중에 오류가 발생했습니다. 시스템 관리자에게 문의하십시오.
+  sandbox:
+    helper:
+      text: 샌드박스 환경이므로, 변경 사항이 프로덕션에 영향을 미치지 않습니다.
 pim_datagrid:
   mass_action:
     default:
