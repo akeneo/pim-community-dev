@@ -36,10 +36,6 @@ services:
             - '@twig'
             - '@pim_notification.email.email_notifier'
 
-    security.user_checker:
-        class: Akeneo\UserManagement\Bundle\Provider\CustomUserChecker
-        abstract: false
-
     Akeneo\UserManagement\Application\RestoreAdminRolePermissions:
         arguments:
             - '@oro_security.acl.manager'

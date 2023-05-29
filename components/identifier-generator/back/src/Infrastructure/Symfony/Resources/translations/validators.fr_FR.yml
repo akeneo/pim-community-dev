@@ -1,6 +1,7 @@
 validation:
   create:
     identifier_limit_reached: 'La limite de "{{limit}}" générateurs d''identifiants a été atteinte. '
+    code_already_used: 'Ce code est déjà utilisé'
   update:
     identifier_generator_code_not_found: 'Le générateur d''identifiants "{{code}}" n''existe pas ou vous n''avez pas la permission d''y accéder.'
   identifier_generator:
@@ -20,6 +21,8 @@ validation:
     inactive_locale: 'La locale "{{ localeCode }}" n''est pas activée pour le canal "{{ channelCode }}"'
     family_property_fields_required: 'Le champ "{{ field }}" est requis pour le type "famille".'
     simple_select_property_fields_required: 'Le champ "{{ field }}" est requis pour le type "simple_select".'
+    reference_entity_property_fields_required: 'Le champ "{{ field }}" est requis pour le type "reference_entity".'
     process_unknown_operator: 'L''opérateur {{ value }} ne peut être que l''un des suivants : {{ choices }}.'
     locale_required: 'Une locale est requise pour l''attribut {{ attributeLabel }}'
     scope_required: 'Un canal est requis pour l''attribut {{ attributeLabel }}.'
+    categories_do_not_exist: 'Les catégories suivantes ont été supprimées de votre catalogue : {{ categoryCodes }}. Vous pouvez les supprimer de votre sélection de produits.'

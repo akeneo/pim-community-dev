@@ -51,7 +51,7 @@ final class UpdateUserCommandHandler
         /** @var UserInterface $user */
         $user = $this->repository->findOneBy(['id' => $identifier]);
 
-        if (null === $user || true === $user->isApiUser() || true === $user->isJobUser()) {
+        if (null === $user || false === $user->isUiUser()) {
             throw new UserNotFoundException($identifier);
         }
 

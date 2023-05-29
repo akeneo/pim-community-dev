@@ -1,6 +1,9 @@
 security:
     enable_authenticator_manager: true
     providers:
+        chain_provider_api:
+            chain:
+                providers: [ pim_user_api, pim_user ] #Retro-compatibility: user ui can log to Rest API
         chain_provider:
             chain:
                 providers: [pim_user]
@@ -43,7 +46,7 @@ security:
             fos_oauth:                      true
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
-            provider:                       pim_user_api
+            provider:                       chain_provider_api
 
         api_index:
             pattern:                        ^/api/rest/v1$
@@ -54,7 +57,7 @@ security:
             fos_oauth:                      true
             stateless:                      true
             access_denied_handler:          pim_api.security.access_denied_handler
-            provider:                       pim_user_api
+            provider:                       chain_provider_api
 
         main:
             pattern:                        ^/

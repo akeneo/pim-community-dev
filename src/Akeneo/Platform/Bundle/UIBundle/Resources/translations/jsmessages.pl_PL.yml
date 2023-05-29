@@ -261,6 +261,7 @@ pim_common:
   product_models: Modele produktu
   more: Więcej
   public_view: Widok publiczny
+  view: Zobacz
 error:
   exception: Wystąpił błąd {{ status_code }}...
   forbidden: Nie posiadasz uprawnień do przeglądania tej strony
@@ -275,6 +276,7 @@ pim_enrich.entity.fallback:
     generic_error: Wystąpił błąd
     update:
       fail: Błąd aktualizacji
+      fail_session_expired: Sesja użytkownika wygasła. Zaloguj się ponownie.
       success: Pomyślnie zaktualizowano
     delete:
       fail: Nie można usunąć tego elementu
@@ -341,6 +343,7 @@ pim_title:
   pim_settings_index: Ustawienia
   pim_system_index: System
 pim_menu:
+  tag.new: Nowy
   tab:
     activity: Aktywność
     imports: Importy
@@ -380,6 +383,7 @@ pim_menu:
       product: Ustawienia produktów
       catalog: Ustawienia katalogu
       collapsed_label: Nawigacja ustawień
+      automation: Automatyzacja
     product: Nawigacja produktu
     product_infos: Informacje o produkcie
   user:
@@ -395,6 +399,7 @@ pim_settings:
   settings_menu: Menu ustawień
   catalog_settings: Ustawienia katalogu
   product_settings: Ustawienia produktów
+  automation_settings: Automatyzacja
   count:
     category_trees: '{0}Liczba drzew: 0 |{1}Liczba drzew: 1 |]1, Inf[Liczba drzew: {{ count }}, '
     categories: '{0}liczba kategorii: 0|{1}liczba kategorii: 1|]1, Inf[liczba kategorii: {{ count }}'
@@ -409,6 +414,7 @@ pim_settings:
     group_types: '{0}Liczba typów grup: 0|{1}Liczba typów grup: 1|]1, Inf[Liczba typów grup: {{ count }}'
     groups: '{0}Liczba grup: 0|{1}Liczba grup: 1|]1, Inf[Liczba grup: {{ count }}'
     rules: '{0}Liczba włączonych reguł: 0|{1}Liczba włączonych reguł: 1|]1, Inf[Liczba włączonych reguł: {{ count }}'
+    identifier_generators: '{0}Liczba generatorów identyfikatorów: 0|{1}Liczba generatorów identyfikatorów: 1|]1, Inf[Liczba generatorów identyfikatorów: {{ count }}'
 pim_system:
   system_menu: Menu systemowe
   system_navigation: Nawigacja systemu
@@ -422,6 +428,15 @@ pim_system:
     enabled: SSO włączone
     disabled: SSO wyłączone
     title: Pojedyncze logowanie oparte na SAML
+  reset_pim:
+    modal:
+      summary:
+        users:
+          name: Użytkownicy
+        roles:
+          name: Role
+      confirm:
+        name: Potwierdź
 pim_datagrid:
   mass_action:
     default:

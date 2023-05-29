@@ -1,0 +1,143 @@
+pim_title:
+  akeneo_identifier_generator_index: "식별자 생성기"
+  akeneo_identifier_generator_edit: "식별자 생성기 편집"
+pim_error:
+  unauthorized_list_attributes: "특성을 나열할 수 없습니다. 관리자에게 문의하여 권한을 변경하십시오."
+  unauthorized_list_properties: "이 속성을 나열할 수 있는 권한이 없습니다. 관리자에게 문의하십시오."
+  unauthorized_list_families: "패밀리를 나열할 수 없습니다. 관리자에게 문의하여 권한을 변경하십시오."
+  general: "이 페이지를 표시하는 동안 오류가 발생했습니다. 관리자에게 문의하십시오."
+  unexpected: "예기치 않은 오류가 발생했습니다. 시스템 관리자에게 문의하십시오."
+  404: '404 오류가 발생했습니다...'
+  identifier_generator_not_found: '식별자 생성기를 찾을 수 없습니다.'
+  selection_attribute_not_found: '제품 선택의 특성이 카탈로그에서 삭제되었습니다. 제품 선택에서 이 속성을 삭제하십시오.'
+pim_identifier_generator:
+  create:
+    form:
+      title: "새로운 식별자 생성기 만들기"
+      select_identifier_attribute: "식별자 특성 선택"
+  tabs:
+    general: "일반"
+    product_selection: "제품 선택"
+    identifier_structure: "식별자 구조"
+  general:
+    title: "일반 속성"
+    label_translations_in_ui_locale: "UI 로케일의 레이블 번역"
+    text_transformation:
+      label: '텍스트 변환'
+      no: '텍스트 변환 없음'
+      lowercase: '소문자'
+      uppercase: '대문자'
+  flash:
+    create:
+      success: '식별자 생성기 "{{ code }}"이(가) 생성되었습니다.'
+      error: '식별자 생성기를 생성할 수 없습니다.'
+    update:
+      success: '식별자 생성기 "{{ code }}"이(가) 업데이트되었습니다.'
+      error: '식별자 생성기를 업데이트할 수 없습니다.'
+    delete:
+      success: '식별자 생성기 "{{ code }}"이(가) 삭제되었습니다.'
+      error: '식별자 생성기를 삭제할 수 없습니다.'
+  list:
+    identifier: '식별자'
+    first_generator: '첫 번째 식별자 생성기를 만드십시오!'
+    read_only_list: '이 기능에 액세스하려면 관리자에게 문의하십시오.'
+    helper:
+      title: '식별자 생성을 자동화하십시오.'
+      info: '식별자 생성기가 생성되면, 사용자가 생성하는 모든 새로운 제품에 식별자가 자동으로 할당됩니다.'
+    check_help_center: '자세한 내용은 헬프 센터를 확인하십시오.'
+    max_generator:
+      title: '{{ count }}개의 식별자 생성기 제한에 도달했습니다.'
+    confirmation: '이 속성을 삭제하시겠습니까?'
+  operators:
+    'NOT IN CHILDREN': '하위 항목에 없음'
+    'IN CHILDREN': '하위 항목에 있음'
+    UNCLASSIFIED: '미분류됨'
+    CLASSIFIED: '분류됨'
+  selection:
+    limit_reached: '{{ count }}개 조건 제한에 도달했습니다.'
+    helper:
+      title: '다음과 같이 하려는 경우 제품 선택에 조건을 추가하십시오.'
+      automate: '제품의 타겟팅 선택을 위한 식별자 생성 자동화'
+    empty:
+      title: '제품 선택 만들기'
+      text: '빈 식별자가 있는 모든 제품에 영향을 줍니다.'
+      info: '특정 제품을 타겟팅하려는 경우 새 조건을 추가하십시오.'
+    settings:
+      enabled:
+        disabled: '비활성화됨'
+        placeholder: '상태 선택'
+      family:
+        placeholder: '하나 이상의 패밀리를 선택하십시오.'
+      select_option:
+        placeholder: '하나 이상의 옵션을 선택하십시오.'
+  structure:
+    helper: '생성할 제품 식별자의 구조를 정의하십시오. 속성 설정을 지정하는 데 도움이 필요한 경우 {{link}}.'
+    helper_link: '자세한 내용은 헬프 센터를 확인하십시오'
+    title: '식별자 구조'
+    add_element: '새로운 속성 추가'
+    limit_reached: '{{ count }}개 속성 제한에 도달했습니다.'
+    property_type:
+      sections:
+        system: '시스템'
+      free_text: '자유 텍스트'
+      auto_number: '자동 번호'
+      family: '패밀리'
+    settings:
+      free_text:
+        title: '자유 텍스트 설정'
+        string_label: '텍스트 정의'
+      auto_number:
+        title: '자동 번호'
+        digitsMin_label: '최소 자릿수'
+        numberMin_label: '최소수'
+      family:
+        title: '패밀리'
+      code_format:
+        type:
+          truncate: '첫 번째 문자 사용'
+          code: '전체 코드 사용'
+          nomenclature: '고유한 명명법 사용'
+      operator:
+        title: '연산자'
+        placeholder: '연산자 선택'
+      simple_select:
+        title: '특성'
+      abbrev_type: '이 속성의 형식 정의'
+      abbrev_type_empty_label: '형식 선택'
+      chars_number: '문자 수'
+    empty:
+      title: '식별자 구조 만들기'
+      text: '오른쪽 상단의 "새로운 속성 추가" 클릭'
+      link_text: '자세한 내용은 헬프 센터를 확인하십시오.'
+    delimiters:
+      title: '구분자'
+      helper: '{{link}}에서 기본 구분 기호 또는 사용자 지정 구분 기호를 추가하는 방법에 대해 자세히 알아보십시오.'
+      helper_link: '헬프 센터'
+      checkbox_label: '각 속성 사이에 구분 기호 사용'
+      input_label: '구분 기호 정의'
+  deletion:
+    operations: '작업'
+    confirmation: '이 식별자 생성기를 삭제하시겠습니까?'
+    type: '"{{ code }}"을(를) 입력하십시오.'
+  nomenclature:
+    edit: '명명법 편집'
+    section_title: '{{ property }}에 대한 식별자 생성 중'
+    title: '명명법 관리'
+    helper: '명명법은 모든 식별자 생성기에서 공유됩니다.'
+    characters_number: '문자 수'
+    operator_placeholder: '연산자 선택'
+    value_placeholder: '문자 선택'
+    nomenclature: '명명법'
+    generate_if_empty: '자동으로 명명법 생성'
+    display: '표시'
+    filters:
+      all: '모두'
+      error: '오류'
+      empty: '비어 있음'
+      filled: '채워짐'
+    empty:
+      title: '명명법 찾지 못함'
+    flash:
+      success: '명명법이 저장되었습니다.'
+      error: '명명법을 저장할 수 없습니다.'
+      warning: '명명법이 저장되었지만 일부 값이 생성되지 않습니다. 명명법을 편집하여 오류가 있는 값을 수정하십시오.'

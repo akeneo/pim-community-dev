@@ -261,6 +261,7 @@ pim_common:
   product_models: 제품 모델
   more: 더보기 
   public_view: 공개 뷰
+  view: 보기
 error:
   exception: '{{ status_code }} 오류가 발생했습니다...'
   forbidden: 금지되었습니다. 이 페이지에 액세스할 권한이 없습니다.
@@ -275,6 +276,7 @@ pim_enrich.entity.fallback:
     generic_error: 오류가 발생했습니다.
     update:
       fail: 업데이트 실패
+      fail_session_expired: 사용자 세션이 만료되었습니다. 다시 로그인하십시오.
       success: 업데이트 성공
     delete:
       fail: 이 항목을 삭제할 수 없음
@@ -341,6 +343,7 @@ pim_title:
   pim_settings_index: 설정
   pim_system_index: 시스템
 pim_menu:
+  tag.new: 신규
   tab:
     activity: 활동
     imports: 가져오기
@@ -380,6 +383,7 @@ pim_menu:
       product: 제품 설정
       catalog: 카탈로그 설정
       collapsed_label: 설정 탐색
+      automation: 자동화
     product: 제품 탐색
     product_infos: 제품 정보
   user:
@@ -395,6 +399,7 @@ pim_settings:
   settings_menu: 설정 메뉴
   catalog_settings: 카탈로그 설정
   product_settings: 제품 설정
+  automation_settings: 자동화
   count:
     category_trees: '{0}0개의 트리 |{1}1개의 트리 |]1, Inf[{{ count }}개의 트리 '
     categories: '{0}및 0개의 카테고리가 있습니다|{1}및 1개의 카테고리가 있습니다|]1, Inf[및 {{ count }}개의 카테고리가 있습니다'
@@ -409,6 +414,7 @@ pim_settings:
     group_types: '{0}0개의 그룹 유형이 있습니다|{1}1개의 그룹 유형이 있습니다|]1, Inf[{{ count }}개의 그룹 유형이 있습니다'
     groups: '{0}0개의 그룹이 있습니다|{1}1개의 그룹이 있습니다|]1, Inf[{{ count }}개의 그룹이 있습니다'
     rules: '{0}0개의 규칙이 활성화되어 있습니다|{1}1개의 규칙이 활성화되어 있습니다|]1, Inf[{{ count }}개의 규칙이 활성화되어 있습니다'
+    identifier_generators: '{0}0개 식별자 생성기가 있습니다|{1}1개 식별자 생성기가 있습니다|]1, Inf[{{ count }}개 식별자 생성기가 있습니다'
 pim_system:
   system_menu: 시스템 메뉴
   system_navigation: 시스템 탐색
@@ -422,6 +428,22 @@ pim_system:
     enabled: SSO 활성화됨
     disabled: SSO 비활성화됨
     title: SAML 기반 Single Sign-On
+  reset_pim:
+    modal:
+      summary:
+        users:
+          name: 사용자
+        user_groups:
+          name: 사용자 그룹
+        roles:
+          name: 역할
+      confirm:
+        name: 확인
+        title: PIM 재설정 확인
+        helper:
+          emphasis: PIM을 재설정한 후에는 되돌릴 수 없습니다.
+      confirmation_phrase: '"{{ confirmation_word }}"을(를) 입력하십시오'
+      confirmation_word: 재설정
 pim_datagrid:
   mass_action:
     default:

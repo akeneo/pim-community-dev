@@ -7,3 +7,6 @@ services:
 
   Akeneo\Platform\Installer\Infrastructure\Query\FindTables:
     class: Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeFindTables
+
+  Akeneo\Platform\Installer\Infrastructure\UserConfigurationResetter\UserConfigurationResetter:
+    class: Akeneo\Platform\Installer\Test\Acceptance\FakeServices\FakeUserConfigurationResetter

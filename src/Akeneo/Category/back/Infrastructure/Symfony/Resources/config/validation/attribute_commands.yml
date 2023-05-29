@@ -15,3 +15,10 @@ Akeneo\Category\Application\Command\AddAttributeCommand:
                   max: 255
         locale:
             - NotBlank: ~
+
+Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand:
+  properties:
+    labels:
+      - All:
+        - Length:
+            max: 255

@@ -11,5 +11,5 @@ namespace Akeneo\Platform\Installer\Domain\Service;
 
 interface FixtureInstallerInterface
 {
-    public function install(): void;
+    public function installWithoutUsersUserGroupsAndUserRoles(): void;
 }

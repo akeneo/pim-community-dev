@@ -1,0 +1,135 @@
+pim_title:
+  akeneo_identifier_generator_index: "标识符生成器"
+  akeneo_identifier_generator_edit: "编辑标识符生成器"
+pim_error:
+  unauthorized_list_attributes: "您不能查看属性列表。请联系您的管理员更改您的权限。"
+  unauthorized_list_properties: "您没有查看属性值列表的权限。请与管理员联系。"
+  unauthorized_list_families: "您不能列出品类。请联系管理员以更改您的权限。"
+  general: "显示此页面时发生错误。请联系管理员。"
+  unexpected: "发生意外错误。请与系统管理员联系。"
+  404: '发生 404 错误...'
+  identifier_generator_not_found: '未找到标识符生成器'
+  selection_attribute_not_found: '已从目录中删除产品选择的一个属性。请从您的产品选择中删除此属性。'
+pim_identifier_generator:
+  create:
+    form:
+      title: "创建新的标识符生成器"
+      select_identifier_attribute: "选择您的标识符属性"
+  tabs:
+    general: "常规​​​​​"
+    product_selection: "产品选择"
+    identifier_structure: "标识符结构"
+  general:
+    title: "常规属性"
+    label_translations_in_ui_locale: "用户界面语言的标签翻译"
+    text_transformation:
+      label: '文本转换'
+      no: '无文本转换'
+      lowercase: '小写'
+      uppercase: '大写'
+  flash:
+    create:
+      success: '标识符生成器 "{{ code }}" 已成功创建'
+      error: '无法创建标识符生成器'
+    update:
+      success: '标识符生成器 "{{ code }}" 已成功更新'
+      error: '无法更新标识符生成器'
+    delete:
+      success: '标识符生成器 "{{ code }}" 已成功删除'
+      error: '无法删除标识符生成器'
+  list:
+    identifier: '标识符'
+    first_generator: '创建您的第一个标识符生成器！'
+    read_only_list: '请联系您的管理员以访问此功能。'
+    helper:
+      title: '自动生成标识符。'
+      info: '创建标识符生成器后，将自动为您创建的每个新产品分配标识符。'
+    check_help_center: '查看我们的“帮助中心”获取更多信息。'
+    confirmation: '确定要删除此属性吗？'
+  selection:
+    limit_reached: '您已达到条件的上限数目 {{ count }}'
+    helper:
+      title: '如果您希望实现下列功能，向您的产品选择中添加条件：'
+      automate: '自动为目标选择产品创建标识符'
+    empty:
+      title: '创建您的产品选择'
+      text: '所有具有空标识符的产品都将受到影响。'
+      info: '如果您想要选择特定的产品，请添加新的条件。'
+    settings:
+      enabled:
+        disabled: '已禁用'
+        placeholder: '选择状态'
+      family:
+        placeholder: '请选择至少一个品类'
+      select_option:
+        placeholder: '请选择至少一个选项'
+  structure:
+    helper: '定义您想要生成的产品标识符的结构。如果您需要设置属性方面的帮助，{{link}}。'
+    helper_link: '查看我们的“帮助中心”获取更多信息'
+    title: '标识符结构'
+    add_element: '添加新属性'
+    limit_reached: '您已达到属性的上限数目 {{ count }}'
+    property_type:
+      sections:
+        system: '系统'
+      free_text: '自由文本'
+      auto_number: '自动编号'
+      family: '品类'
+    settings:
+      free_text:
+        title: '自由文本设置 '
+        string_label: '定义您的文本'
+      auto_number:
+        title: '自动编号'
+        digitsMin_label: '最小数字'
+        numberMin_label: '最小数'
+      family:
+        title: '品类'
+      code_format:
+        type:
+          truncate: '使用第一串字符'
+          code: '使用整个代码'
+          nomenclature: '使用您自己的命名法'
+      operator:
+        title: '运算符'
+        placeholder: '选择运算符'
+      simple_select:
+        title: '属性'
+      abbrev_type: '定义此属性的格式'
+      abbrev_type_empty_label: '选择格式'
+      chars_number: '字符数'
+    empty:
+      title: '创建您的标识符结构'
+      text: '点击右上角的“添加新属性”'
+      link_text: '查看我们的“帮助中心”获取更多信息。'
+    delimiters:
+      title: '分隔符'
+      helper: '在 {{link}} 中了解有关如何添加默认或自定义分隔符的更多信息。'
+      helper_link: '我们的帮助中心'
+      checkbox_label: '在每个属性之间使用分隔符'
+      input_label: '定义您的分隔符'
+  deletion:
+    operations: '操作'
+    confirmation: '确定要删除此标识符生成器吗？'
+    type: '请输入 "{{ code }}"'
+  nomenclature:
+    edit: '编辑命名法'
+    section_title: '为 {{ property }} 生成标识符'
+    title: '管理命名法'
+    characters_number: '字符数'
+    operator_placeholder: '选择运算符'
+    value_placeholder: '选择字符'
+    nomenclature: '命名法'
+    generate_if_empty: '自动生成命名法'
+    display: '显示'
+    filters:
+      all: '所有'
+      error: '错误'
+      empty: '空'
+      filled: '已填充'
+    empty:
+      title: '未找到命名法'
+    flash:
+      success: '您的命名法已成功保存'
+      error: '您的命名法无法保存'
+      warning: '您的命名法已成功保存，但有些值无法生成。请编辑您的命名法以修改错误的值。'
