@@ -2,7 +2,6 @@ import React, {forwardRef, Ref} from 'react';
 import styled from 'styled-components';
 import {getEmoji} from '../../shared';
 import {getFontSize} from '../../theme';
-import TwemojiCountryFlags from '../../../static/fonts/twemoji/TwemojiCountryFlags.woff2';
 
 const LocaleContainer = styled.span`
   display: inline-flex;
@@ -27,14 +26,6 @@ type LocaleProps = {
   languageLabel?: string;
 };
 
-const Flag = styled.span`
-  @font-face {
-    font-family: 'Windows Flag Emoji';
-    unicode-range: U+1F1E6-1F1FF;
-    src: url(${TwemojiCountryFlags}) format('woff2');
-  }
-`;
-
 /**
  * Component to display a locale (country and language).
  */
@@ -45,7 +36,7 @@ const Locale = forwardRef<HTMLSpanElement, LocaleProps>(
     return (
       <LocaleContainer ref={forwardedRef} {...rest}>
         <Emoji role="img" aria-label={countryCode}>
-            <Flag style={{fontFamily: 'Windows Flag Emoji'}}>{getEmoji(countryCode)}</Flag>
+            <span style={{fontFamily: 'Windows Flag Emoji'}}>{getEmoji(countryCode)}</span>
         </Emoji>
         {languageLabel || languageCode}
       </LocaleContainer>
