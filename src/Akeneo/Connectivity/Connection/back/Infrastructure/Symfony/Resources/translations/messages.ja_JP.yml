@@ -1,10 +1,10 @@
 akeneo_connectivity.connection:
   acl.manage_settings: 接続設定を管理
   acl.manage_apps: アプリを管理
-  acl.manage_test_apps: テストアプリを管理
+  acl.create_and_delete_custom_apps: カスタムアプリの作成と削除
   acl.open_apps: アプリを開く
 pim_notification:
   connected_app_authorizations:
     message: '<strong>{{ app_name }}</strong> アプリには承認の更新が必要です。続行するにはアプリを開いてください。'
   disabled_catalog:
-    message: "PIMの設定での1つ以上の変更が {{ catalog_name }} カタログに影響を与えました。関連商品の選択を確認して、カタログを再度有効化してください。"
+    message: "PIMの設定の1つ以上の変更が{{ catalog_name }}カタログに影響しています。設定を確認してからもう一度カタログを有効化してください。"

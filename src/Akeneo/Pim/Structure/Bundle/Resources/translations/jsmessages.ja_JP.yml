@@ -87,6 +87,7 @@ pim_enrich.entity.attribute_option:
       add_option: ここをクリックして追加してください
       delete_confirmation_title_msg: オプションから「{{ optionCode }}」を削除しますか？
       delete_confirmation_subtitle_msg: 本当にこのオプションを削除しますか？このアクションは元に戻せません。
+      display_options_limit: ここには最初の500件のオプションしか表示されていません。他のオプションを表示するには、検索またはエクスポートを実行してください。
       search:
         placeholder: ラベルもしくはコードでの検索
         no_result:
@@ -149,7 +150,6 @@ pim_enrich.entity.attribute:
       success: 属性は正常に更新されました
       fail: 属性を更新できませんでした
       fields_not_ready: "この属性は現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
-      cant_remove_attributes_used_as_label: ファミリーでラベルとして使用されている属性は削除できません。
     delete:
       success: 属性を正常に削除しました
       fail: この属性は削除できません
@@ -229,9 +229,10 @@ pim_enrich.entity.attribute:
       select_locale: ロケールを選択
     delete:
       confirm: この属性を削除してもよろしいですか？
+      attribute_removal: この属性はすべての商品から削除されます。
       product_count: '{0}0 個の商品|{1}1 個の商品|]1, Inf[{{ count }} 個の商品'
       product_model_count: '{0}0 個の商品モデル|{1}1 個の商品モデル|]1, Inf[{{ count }} 個の商品モデル'
-      used: ']-Inf,1]現在この属性に値が設定されていますが、削除されます。|]1, Inf[現在この属性に値が設定されていますが、削除されます。'
+      used: ']-Inf,1]には現在、この属性の値が設定されています。|]1, Inf[には現在、この属性の値が設定されています。'
       helper:
         content: 既存の属性値へのアクセスを維持したまま、属性タイプを変更してローカライズ可または参照可にする必要がある場合は、
         link: 詳細についてはヘルプセンターをご確認ください。
@@ -239,6 +240,9 @@ pim_enrich.entity.attribute:
       confirm_from_family: この属性をファミリーから本当に削除しますか？
       confirm_from_group: 属性 {{ attribute }} をこの属性グループから本当に削除しますか。
       confirm_from_product: 商品からこの属性を本当に削除しますか？
+    mass_delete:
+      modal:
+        title: 属性
 pim_enrich.entity.attribute_group:
   label: 属性グループ
   uppercase_label: 属性グループ
@@ -248,14 +252,18 @@ pim_enrich.entity.attribute_group:
     title: 少し混雑しています。{{ attributeCount }}/{{ totalAttributeCount }} 個の属性を表示します。
     subtitle: このグループのすべての属性を確認するには、下をクリックしてください！
     button: すべての属性を表示
+  dropdown:
+    label: 選択
+    all: すべての属性グループ
+    none: 属性グループなし
   flash:
     update:
       success: 属性グループは正常に更新されました
       fail: 属性グループを更新できませんでした。
       fields_not_ready: "この属性グループは現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
-    delete:
-      success: 属性グループを正常に削除しました
-      fail: この属性グループは削除できません
+    mass_delete:
+      success: 削除が開始されました。ジョブが完了すると通知が届きます。それまで、プロセストラッカーで進捗を確認できます。
+      fail: 削除の開始中にエラーが発生しました
   module:
     add_attribute_group:
       label: グループによる追加
@@ -265,8 +273,18 @@ pim_enrich.entity.attribute_group:
       confirm: 本当にこの属性グループを削除しますか?
   grid:
     columns:
-      name: 属性グループ名
-    no_search_result: 検索結果はありません。
+      attribute_count: 関連する属性数
+  selected: '{0}属性グループは選択されていません|{1}1個の属性グループを選択済み|]1, Inf[{{ count }}個の属性グループを選択済み'
+  mass_delete:
+    confirm: '{1}この属性グループを本当に削除しますか？|]1, Inf[これら{{ count }}個の属性グループを本当に削除しますか？'
+    confirmation_word: 削除
+    empty_result_label: '属性グループが見つかりません'
+    placeholder: '属性グループを選択'
+    open_label: '属性グループリスト'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: 属性グループを削除
 pim_enrich.mass_edit.family:
   title: ファミリー一括操作
   confirm: "{1}次の情報を含むファミリー１件を更新しようとしています。ご確認ください|] 1, Inf[次の情報を含むファミリー{{ itemsCount }}券を変更しようとしています。ご確認ください。"
@@ -287,3 +305,12 @@ pim_enrich.mass_edit.family:
       label: 属性の要件を設定
       description: 以下の属性要件が選択したファミリーに適用されます
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">１件のファミリー</span>の属性要件を設定|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}件のファミリー</span>の属性要件を設定"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: 属性グループを削除
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: 属性グループを削除
+pim_notification:
+  types:
+    attribute_group_mass_delete: 削除

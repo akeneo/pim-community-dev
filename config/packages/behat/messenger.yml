@@ -65,6 +65,16 @@ framework:
                 retry_strategy:
                     max_retries: 0
                 serializer: akeneo_batch_queue.messenger.serializer
+            paused_job:
+                dsn: 'gps:'
+                options:
+                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
+                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_PAUSED_JOB)%'
+                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_PAUSED_JOB)%'
+                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
+                retry_strategy:
+                    max_retries: 0
+                serializer: akeneo_batch_queue.messenger.serializer
 
         routing:
             'Akeneo\Platform\Component\EventQueue\Event': business_event
@@ -74,3 +84,4 @@ framework:
             'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': import_export_job
             'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage': data_maintenance_job
             'Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessage': scheduled_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\PausedJobExecutionMessage': paused_job

@@ -2,6 +2,7 @@ pim_notification:
   types:
     settings: Preferències
     mass_delete: Supressió
+    attribute_mass_delete: Supressió
 flash:
   comment:
     create:

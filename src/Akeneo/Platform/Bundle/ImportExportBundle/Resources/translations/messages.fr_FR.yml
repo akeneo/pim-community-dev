@@ -16,6 +16,8 @@ pim_import_export:
     6: Echoué
     7: Abandonné
     8: Inconnu
+    9: En cours de mise en pause
+    10: En pause
   download_archive:
     archive: Télécharger l'archive générée|Télécharger les archives générées
     output: Télécharger le fichier généré|Télécharger les fichiers générés
@@ -144,9 +146,9 @@ job_execution.summary:
   read: lu(s)
   write: écrit(s)
   skip: ignoré(s)
-  create: créé(s)
-  update: mis à jour
-  update_products: produits mis à jour
+  create: Créé(s)
+  update: Mis à jour
+  update_products: Produits mis à jour
   skip_products: produits ignorés
   displayed: premiers avertissements affichés
   charset_validator:

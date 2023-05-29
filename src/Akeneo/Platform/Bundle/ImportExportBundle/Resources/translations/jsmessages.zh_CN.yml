@@ -235,6 +235,8 @@ pim_import_export:
     6: 失败
     7: 已放弃
     8: 未知
+    9: Pausing
+    10: Paused
   job_status:
     COMPLETED: 已完成
     STARTING: 正在启动

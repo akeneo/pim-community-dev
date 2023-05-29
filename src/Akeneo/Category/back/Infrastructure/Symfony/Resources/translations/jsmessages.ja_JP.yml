@@ -1,3 +1,5 @@
+pim_title:
+  pim_category_template_edit: カテゴリテンプレートを編集
 akeneo.category:
   tree_list:
     column:
@@ -5,7 +7,7 @@ akeneo.category:
   attributes: 属性
   edition_form:
     error:
-      unhandled_attribute_type: 属性タイプ "{{type}}" の属性フィールドビルダーが見つかりませんでした
+      unhandled_attribute_type: 属性タイプ "{{ type }}" の属性フィールドビルダーが見つかりませんでした
     template:
       title: テンプレート
       fetching_failed: テンプレートを取得中にエラーが発生しました
@@ -15,10 +17,9 @@ akeneo.category:
     delete: ツリーを削除
   template:
     create: テンプレートを有効化
-    edit: テンプレートを表示
-    delete: テンプレートを削除
     notification_success: テンプレートが正常に有効化されました
     notification_error: テンプレートを有効化できませんでした
+    not_found: このカテゴリのアクティブなテンプレートはありません。
     attribute:
       description_title: 説明の設定
       type:
@@ -26,8 +27,50 @@ akeneo.category:
         textarea: テキストエリア
         richtext: リッチテキスト
         image: 画像
+    add_attribute:
+      add_button: 属性を追加
+      confirmation_modal:
+        section_title: 属性の追加
+        title: カテゴリ属性の新規作成
+        head_helper: カテゴリ属性が1つのテンプレートに添付されています。他のテンプレートではアクセスできません。
+        tail_helper: 属性が作成されると、チャンネルあたりの値とロケールあたりの値は変更できません。
+        link: カテゴリテンプレートの詳細。
+        create: 作成
+        input:
+          label: ラベル
+          code: コード
+          type:
+            label: 属性タイプ
+            empty: 使用可能な属性タイプはありません
+            option_title:
+              text: テキスト
+              textarea: テキストエリア
+              image: 画像
+      success:
+        notification: 属性を作成しました
+      error:
+        failed: テンプレート属性の追加に失敗しました
+        limit_reached:
+          title: 50個を超える属性は追加できません
+          message: カテゴリテンプレートの属性は、テンプレートあたり50個に制限されています。
+    deactivate:
+      deactivate_template: テンプレートを無効化
+      confirmation_modal:
+        title: カテゴリテンプレートを無効化
+        message: '{{ template }}と言う名前のカテゴリテンプレートを本当に無効化しますか？'
+        helper: このテンプレートを無効化すると、関連するカテゴリの属性と値が永久に削除されます。
+        deactivate: 無効にする
+      notification_success:
+        title: '{{ template }}テンプレートが無効になりました'
+        message: '{{ template }}が無効になりました。関連するカテゴリのコンテンツが削除されました。'
   template_list:
     columns:
       header: ラベル
       code: コード
       type: タイプ
+  tag:
+    new: 新規
+  discover_enriched_categories_information:
+    survey_link_label: あなたのご意見をお聞かせください
+    learn_more_link_label: 充実されたカテゴリについて詳しく知る
+  other_actions: その他の操作

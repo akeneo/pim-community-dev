@@ -43,14 +43,11 @@ pim_identifier_generator:
       title: 'Automatitzar la generació d''identificadors.'
       info: 'Un cop creat un generador d''identificadors, s''assignarà automàticament un identificador a cada producte nou que creeu.'
     check_help_center: 'Consulteu el nostre centre d''ajuda per obtenir més informació.'
-    max_generator:
-      title: 'De moment només és possible crear un generador d''identificadors.'
     confirmation: 'Està segur que vol suprimir aquesta propietat?'
   selection:
     helper:
       title: 'Afegiu condicions a la vostra selecció de productes, si voleu:'
       automate: 'automatitzar la creació d''identificadors per a una selecció específica de productes'
-      multiple: 'tenen múltiples estructures d''identificadors per a una selecció diferent de productes (que es publicarà aviat)'
     empty:
       title: 'Creeu la vostra selecció de productes'
       text: 'Tots els vostres productes amb un identificador buit es veuran afectats.'

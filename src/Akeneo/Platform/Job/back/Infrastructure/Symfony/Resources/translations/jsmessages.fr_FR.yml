@@ -12,7 +12,11 @@ akeneo_job:
     ABANDONED: Abandonné
     UNKNOWN: Inconnu
     IN_PROGRESS: En cours
+    PAUSING: En cours de mise en pause
+    PAUSED: En pause
 akeneo_job_process_tracker:
+  tooltip:
+    paused: Cette tâche a été mise en pause en raison d'une maintenance interne sur votre instance. Elle sera reprise automatiquement une fois celle dernière terminée.
   last_operations:
     title: Dernières opérations
     view_all: Tout afficher
@@ -39,6 +43,7 @@ akeneo_job_process_tracker:
     export: Export
     mass_edit: Edition en masse
     mass_delete: Suppression massive de produits
+    attribute_mass_delete: Supprimer en masse des attributs
     compute_family_variant_structure_changes: Calcul des changements de structure de la variante de famille
     compute_completeness_of_products_family: Calcul de la complétude de la famille de produits
     clean_removed_attribute_job: Traitement des valeurs de l'attribut supprimé
@@ -58,6 +63,8 @@ akeneo_job_process_tracker:
     stopping: En cours d'arrêt
     unknown: Inconnu
     in_progress: En cours
+    pausing: En cours de mise en pause
+    paused: En pause
   automation_filter:
     all: Tous
     yes: Yes
