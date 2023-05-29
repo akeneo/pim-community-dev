@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\Twig;
+namespace Specification\Akeneo\Category\Infrastructure\Twig;
 
 use Akeneo\Category\Infrastructure\Component\Model\Category;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterRegistryInterface;
+use Akeneo\Category\Infrastructure\Component\CategoryItemsCounterInterface;
+use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterRegistry;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -12,7 +12,7 @@ use Twig\Extension\AbstractExtension;
 
 class CategoryExtensionSpec extends ObjectBehavior
 {
-    function let(CategoryItemsCounterRegistryInterface $registry)
+    function let(CategoryItemsCounterRegistry $registry)
     {
         $productsLimitForRemoval = 10;
         $this->beConstructedWith($registry, $productsLimitForRemoval);

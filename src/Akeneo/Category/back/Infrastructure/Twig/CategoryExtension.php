@@ -1,29 +1,30 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Twig;
+namespace Akeneo\Category\Infrastructure\Twig;
 
+use Akeneo\Category\Infrastructure\Component\CategoryItemsCounterInterface;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterRegistryInterface;
+use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterRegistry;
 use Doctrine\Common\Collections\Collection;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 /**
- * Twig extension to render category from twig templates
+ * Twig extension to render category from twig templates.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryExtension extends \Twig\Extension\AbstractExtension
+class CategoryExtension extends AbstractExtension
 {
-    /** @var CategoryItemsCounterRegistryInterface */
+    /** @var CategoryItemsCounterRegistry */
     protected $categoryItemsCounter;
 
     /** @var int */
     protected $itemsLimitRemoval;
 
-    public function __construct(CategoryItemsCounterRegistryInterface $categoryItemsCounter, $itemsLimitRemoval = null)
+    public function __construct(CategoryItemsCounterRegistry $categoryItemsCounter, $itemsLimitRemoval = null)
     {
         $this->categoryItemsCounter = $categoryItemsCounter;
         $this->itemsLimitRemoval = $itemsLimitRemoval;
@@ -44,14 +45,13 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * Format a list of categories
+     * Format a list of categories.
      *
-     * @param array             $categories
      * @param CategoryInterface $selectedCategory
      * @param CategoryInterface $parent
-     * @param bool              $withProductCount
-     * @param bool              $includeSub
-     * @param string            $relatedEntity
+     * @param bool $withProductCount
+     * @param bool $includeSub
+     * @param string $relatedEntity
      *
      * @return array
      */
@@ -61,7 +61,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         CategoryInterface $parent = null,
         $withProductCount = false,
         $includeSub = false,
-        $relatedEntity = 'product'
+        $relatedEntity = 'product',
     ) {
         $selectedIds = [$selectedCategory->getId()];
         $result = $this->formatCategoriesFromArray(
@@ -69,7 +69,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
             $selectedIds,
             $withProductCount,
             $includeSub,
-            $relatedEntity
+            $relatedEntity,
         );
 
         if ($parent !== null) {
@@ -79,7 +79,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
                 $withProductCount,
                 $includeSub,
                 $result,
-                $relatedEntity
+                $relatedEntity,
             );
         }
 
@@ -87,13 +87,12 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * List categories and children
+     * List categories and children.
      *
-     * @param array             $categories
      * @param CategoryInterface $parent
-     * @param bool              $withProductCount
-     * @param bool              $includeSub
-     * @param string            $relatedEntity
+     * @param bool $withProductCount
+     * @param bool $includeSub
+     * @param string $relatedEntity
      *
      * @return array
      */
@@ -102,7 +101,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         CategoryInterface $parent = null,
         $withProductCount = false,
         $includeSub = false,
-        $relatedEntity = 'product'
+        $relatedEntity = 'product',
     ) {
         $result = $this->formatCategories($categories, [], $withProductCount, $includeSub, $relatedEntity);
 
@@ -114,18 +113,16 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * List categories
+     * List categories.
      *
-     * @param array      $categories
-     * @param Collection $selectedCategories
-     * @param string     $relatedEntity
+     * @param string $relatedEntity
      *
      * @return array
      */
     public function listCategoriesResponse(
         array $categories,
         Collection $selectedCategories,
-        $relatedEntity = 'product'
+        $relatedEntity = 'product',
     ) {
         $selectedIds = [];
         foreach ($selectedCategories as $selectedCategory) {
@@ -136,15 +133,14 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * Check if specified category exceeds the products limit for removal
+     * Check if specified category exceeds the products limit for removal.
      *
-     * @param CategoryInterface $category
-     * @param bool              $includeSub
-     * @param string            $relatedEntity
-     *
-     * @throws \Exception
+     * @param bool $includeSub
+     * @param string $relatedEntity
      *
      * @return bool
+     *
+     * @throws \Exception
      */
     public function exceedsProductsLimitForRemoval(CategoryInterface $category, $includeSub, $relatedEntity = 'product')
     {
@@ -153,7 +149,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * Return the linked products limit for category removal
+     * Return the linked products limit for category removal.
      *
      * @return int
      */
@@ -163,12 +159,10 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * Format categories from an array
+     * Format categories from an array.
      *
-     * @param array  $categories
-     * @param array  $selectedIds
-     * @param bool   $withProductCount
-     * @param bool   $includeSub
+     * @param bool $withProductCount
+     * @param bool $includeSub
      * @param string $relatedEntity
      *
      * @return array
@@ -178,7 +172,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         array $selectedIds,
         $withProductCount = false,
         $includeSub = false,
-        $relatedEntity = 'product'
+        $relatedEntity = 'product',
     ) {
         $result = [];
         foreach ($categories as $category) {
@@ -187,7 +181,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
                 $selectedIds,
                 $withProductCount,
                 $includeSub,
-                $relatedEntity
+                $relatedEntity,
             );
         }
 
@@ -204,12 +198,10 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
      *     'data'     => string, // the category label + count if needed
      *     'state'    => string, // the css classes for category state
      *     'children' => array() // the same array for children
-     * )
+     * ).
      *
-     * @param array  $category
-     * @param array  $selectedIds
-     * @param bool   $withProductCount
-     * @param bool   $includeSub
+     * @param bool $withProductCount
+     * @param bool $includeSub
      * @param string $relatedEntity
      *
      * @return array
@@ -219,25 +211,25 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         array $selectedIds,
         $withProductCount = false,
         $includeSub = false,
-        $relatedEntity = 'product'
+        $relatedEntity = 'product',
     ) {
         $state = $this->defineCategoryStateFromArray($category, $selectedIds);
         $label = $this->getLabel($category['item'], $withProductCount, $includeSub, $relatedEntity);
 
         return [
-            'attr'     => [
-                'id'        => 'node_'. $category['item']->getId(),
-                'data-code' => $category['item']->getCode()
+            'attr' => [
+                'id' => 'node_'.$category['item']->getId(),
+                'data-code' => $category['item']->getCode(),
             ],
-            'data'     => $label,
-            'state'    => $state,
+            'data' => $label,
+            'state' => $state,
             'children' => $this->formatCategoriesFromArray(
                 $category['__children'],
                 $selectedIds,
                 $withProductCount,
                 $includeSub,
-                $relatedEntity
-            )
+                $relatedEntity,
+            ),
         ];
     }
 
@@ -250,14 +242,11 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
      *     ),
      *     'data'     => string, // the category label + count if needed
      *     'state'    => string, // the css classes for category state
-     * )
+     * ).
      *
-     * @param CategoryInterface $category
-     * @param array             $selectedIds
-     * @param bool              $withProductCount
-     * @param bool              $includeSub
-     * @param array             $children
-     * @param string            $relatedEntity
+     * @param bool $withProductCount
+     * @param bool $includeSub
+     * @param string $relatedEntity
      *
      * @return array
      */
@@ -267,18 +256,18 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         $withProductCount = false,
         $includeSub = false,
         array $children = [],
-        $relatedEntity = 'product'
+        $relatedEntity = 'product',
     ) {
         $state = $this->defineCategoryState($category, false, $selectedIds);
         $label = $this->getLabel($category, $withProductCount, $includeSub, $relatedEntity);
 
         $result = [
-            'attr'  => [
-                'id'        => 'node_'. $category->getId(),
-                'data-code' => $category->getCode()
+            'attr' => [
+                'id' => 'node_'.$category->getId(),
+                'data-code' => $category->getCode(),
             ],
-            'data'  => $label,
-            'state' => $state
+            'data' => $label,
+            'state' => $state,
         ];
 
         if (!empty($children)) {
@@ -289,12 +278,11 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * Format categories
+     * Format categories.
      *
-     * @param array  $categories
-     * @param array  $selectedIds
-     * @param bool   $withProductCount
-     * @param bool   $includeSub
+     * @param array $selectedIds
+     * @param bool $withProductCount
+     * @param bool $includeSub
      * @param string $relatedEntity
      *
      * @return array
@@ -304,7 +292,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         $selectedIds = [],
         $withProductCount = false,
         $includeSub = false,
-        $relatedEntity = 'product'
+        $relatedEntity = 'product',
     ) {
         $result = [];
         foreach ($categories as $category) {
@@ -315,10 +303,9 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * Format categories counting selected children
+     * Format categories counting selected children.
      *
-     * @param array  $categories
-     * @param array  $selectedIds
+     * @param array $selectedIds
      * @param string $relatedEntity
      *
      * @return array
@@ -334,10 +321,8 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * Format category and count selected children
+     * Format category and count selected children.
      *
-     * @param array  $category
-     * @param array  $selectedIds
      * @param string $relatedEntity
      *
      * @return array
@@ -354,7 +339,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         foreach ($children as $child) {
             $selectedChildren += $child['selectedChildrenCount'];
             if (preg_match('/checked/', $child['state'])) {
-                $selectedChildren++;
+                ++$selectedChildren;
             }
         }
         $result['selectedChildrenCount'] = $selectedChildren;
@@ -369,12 +354,11 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
 
     /**
      * Returns category label with|without children count
-     * including|excluding sub-categories
+     * including|excluding sub-categories.
      *
-     * @param CategoryInterface $category
-     * @param bool              $withCount
-     * @param bool              $includeSub
-     * @param string            $relatedEntity
+     * @param bool $withCount
+     * @param bool $includeSub
+     * @param string $relatedEntity
      *
      * @return string
      */
@@ -382,22 +366,21 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
         CategoryInterface $category,
         $withCount = false,
         $includeSub = false,
-        $relatedEntity = 'product'
+        $relatedEntity = 'product',
     ) {
         $label = $category->getLabel();
         if ($withCount) {
-            $label = $label .' ('. $this->countItems($category, $includeSub, $relatedEntity) .')';
+            $label = $label.' ('.$this->countItems($category, $includeSub, $relatedEntity).')';
         }
 
         return $label;
     }
 
     /**
-     * Count items for a category
+     * Count items for a category.
      *
-     * @param CategoryInterface $category
-     * @param bool              $includeSub
-     * @param string            $relatedEntity
+     * @param bool $includeSub
+     * @param string $relatedEntity
      *
      * @return int
      */
@@ -409,11 +392,9 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * Define the state of a category
+     * Define the state of a category.
      *
-     * @param CategoryInterface $category
-     * @param bool              $hasChild
-     * @param array             $selectedIds
+     * @param bool $hasChild
      *
      * @return string
      */
@@ -441,9 +422,8 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
      * array(
      *     'item'       => CategoryInterface,
      *     '__children' => array()
-     * )
+     * ).
      *
-     * @param array $category
      * @param array $selectedIds
      *
      * @return string
@@ -458,13 +438,13 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     }
 
     /**
-     * Get type of extension
+     * Get type of extension.
      *
      * @param string $type
      *
-     * @throws \Exception
-     *
      * @return CategoryItemsCounterInterface
+     *
+     * @throws \Exception
      */
     protected function getExtension($type)
     {
