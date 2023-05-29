@@ -33,6 +33,8 @@ final class EventQueuesAndConsumersIntegration extends TestCase
 
     protected function setUp(): void
     {
+        \putenv('APP_TENANT_ID=akeneo-pim-test');
+
         parent::setUp();
 
         $this->bus = $this->get('messenger.default_bus');

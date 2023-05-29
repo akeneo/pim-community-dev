@@ -1,5 +1,10 @@
 framework:
     messenger:
+        buses:
+            ucs_message.handle.bus:
+                default_middleware: false
+                middleware:
+                    - 'Akeneo\Tool\Bundle\MessengerBundle\Middleware\HandleUcsMessageMiddleware'
         transports:
             # Producers
             business_event:
