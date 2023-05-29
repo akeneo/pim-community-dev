@@ -3,4 +3,4 @@ declare module '*.svg' {
   export default src;
 }
 
-declare module '*.woff2';
+declare module '*.woff2'

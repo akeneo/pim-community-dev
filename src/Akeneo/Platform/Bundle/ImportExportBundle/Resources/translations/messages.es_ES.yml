@@ -16,8 +16,8 @@ pim_import_export:
     6: Fallido
     7: Abandonado
     8: Desconocido
-    9: Pausing
-    10: Paused
+    9: Pausando
+    10: Pausada
   download_archive:
     archive: descargar fichero generado|descargar ficheros generados
     output: descargar ficher generado |descargar ficheros generados

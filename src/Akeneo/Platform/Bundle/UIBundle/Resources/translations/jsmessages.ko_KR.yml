@@ -433,10 +433,17 @@ pim_system:
       summary:
         users:
           name: 사용자
+        user_groups:
+          name: 사용자 그룹
         roles:
           name: 역할
       confirm:
         name: 확인
+        title: PIM 재설정 확인
+        helper:
+          emphasis: PIM을 재설정한 후에는 되돌릴 수 없습니다.
+      confirmation_phrase: '"{{ confirmation_word }}"을(를) 입력하십시오'
+      confirmation_word: 재설정
 pim_datagrid:
   mass_action:
     default:

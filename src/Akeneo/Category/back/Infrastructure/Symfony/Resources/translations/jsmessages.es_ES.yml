@@ -10,13 +10,17 @@ akeneo.category:
       unhandled_attribute_type: No se pudo encontrar el constructor de campos de atributos para el tipo de atributo «{{ type }}»
     template:
       title: Plantilla
+      no_attribute_title: No hay ningún atributo en esta plantilla
+      no_attribute_instructions: La plantilla asociada a esta categoría está vacía, puede añadir atributos a esta plantilla desde la página del árbol de categorías.
       fetching_failed: Se ha producido un error al recuperar la plantilla
     unsaved_changes: Perderá los cambios en la categoría si abandona la página.
   tree:
     create: Crear árbol
     delete: Eliminar árbol
   template:
+    learn_more: Más información sobre las plantillas de categorías
     create: Activar plantilla
+    edit: Editar plantilla
     notification_success: Plantilla activada correctamente
     notification_error: No se pudo activar la plantilla
     not_found: No hay ninguna plantilla activa para esta categoría
@@ -27,8 +31,21 @@ akeneo.category:
         textarea: Área de texto
         richtext: Texto enriquecido
         image: Imagen
+      delete_button: Eliminar atributo
+      settings:
+        title: Ajustes
+        options:
+          title: Opciones
+          value_per_channel: Valor por canal
+          value_per_locale: Valor por configuración regional
+          rich_text: Editor de texto enriquecido
+        translations:
+          title: Traducciones de etiquetas
     add_attribute:
+      no_attribute_title: Cree su primer atributo
+      no_attribute_instructions: Defina el contenido que desea asociar a sus categorías añadiendo atributos de Texto, Área de texto o Imagen a esta plantilla.
       add_button: Añadir atributo
+      create_button: Crear atributo
       confirmation_modal:
         section_title: Añadir atributo
         title: Crear un nuevo atributo de categoría
@@ -53,6 +70,14 @@ akeneo.category:
         limit_reached:
           title: No pueden añadir más de 50 atributos
           message: Las plantillas de categorías están limitadas a 50 atributos por plantilla.
+    delete_attribute:
+      delete: Eliminar atributo de categoría
+      confirmation_modal:
+        title: Eliminar este atributo de categoría
+        message: '¿Seguro desea eliminar el atributo de categoría llamado {{ attribute }}?'
+        helper: La eliminación de este atributo borrará permanentemente el atributo y los valores de las categorías asociadas.
+      notification_success:
+        title: 'El atributo {{ attribute }} se ha eliminado correctamente'
     deactivate:
       deactivate_template: Desactivar plantilla
       confirmation_modal:
@@ -71,6 +96,11 @@ akeneo.category:
   tag:
     new: Nuevo
   discover_enriched_categories_information:
+    title: Descubra las categorías enriquecidas
+    content:
+      enrich_attribute_values: Enriquezca cualquier nivel de sus Árboles de categoría con atributos de Texto, Área de texto e Imagen
+      customizable_templates: Ofrezca la experiencia de producto que desee gracias a las plantillas personalizables
+      edit_attributes: 'Próximamente: actualice la configuración de cualquiera de esos atributos de categoría'
     survey_link_label: Díganos lo que piensa
     learn_more_link_label: Más información sobre las categorías enriquecidas
   other_actions: Otras acciones

@@ -45,7 +45,14 @@ pim_identifier_generator:
       title: '식별자 생성을 자동화하십시오.'
       info: '식별자 생성기가 생성되면, 사용자가 생성하는 모든 새로운 제품에 식별자가 자동으로 할당됩니다.'
     check_help_center: '자세한 내용은 헬프 센터를 확인하십시오.'
+    max_generator:
+      title: '{{ count }}개의 식별자 생성기 제한에 도달했습니다.'
     confirmation: '이 속성을 삭제하시겠습니까?'
+  operators:
+    'NOT IN CHILDREN': '하위 항목에 없음'
+    'IN CHILDREN': '하위 항목에 있음'
+    UNCLASSIFIED: '미분류됨'
+    CLASSIFIED: '분류됨'
   selection:
     limit_reached: '{{ count }}개 조건 제한에 도달했습니다.'
     helper:
@@ -116,6 +123,7 @@ pim_identifier_generator:
     edit: '명명법 편집'
     section_title: '{{ property }}에 대한 식별자 생성 중'
     title: '명명법 관리'
+    helper: '명명법은 모든 식별자 생성기에서 공유됩니다.'
     characters_number: '문자 수'
     operator_placeholder: '연산자 선택'
     value_placeholder: '문자 선택'
