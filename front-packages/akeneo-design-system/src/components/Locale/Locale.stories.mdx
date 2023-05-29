@@ -1,5 +1,5 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
-import {Locale} from './Locale.tsx'; import {GlobalStyle} from "../../GlobalStyle";
+import {Locale} from './Locale.tsx';
 
 <Meta title="Components/Locale" component={Locale} args={{code: 'en_US'}} />
 
@@ -28,7 +28,6 @@ Component to display a locale (country and language) in Akeneo products.
     {args => {
       return (
         <>
-          <GlobalStyle />
           <Locale code="en_US" languageLabel="English" />
           <Locale code="fr_FR" languageLabel="Français" />
           <Locale code="de_DE" />
