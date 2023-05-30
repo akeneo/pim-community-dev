@@ -9,7 +9,7 @@ services:
             - '@pim_connector.reader.file.csv_attribute'
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
-            - 100
+            - 10
             - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_attribute.export:

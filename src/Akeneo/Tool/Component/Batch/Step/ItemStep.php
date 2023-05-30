@@ -45,7 +45,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         protected ItemReaderInterface $reader,
         protected ItemProcessorInterface $processor,
         protected ItemWriterInterface $writer,
-        protected int $batchSize = 100,
+        protected int $batchSize = 10,
         private ?JobStopperInterface $jobStopper = null,
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository, $jobStopper);
@@ -91,13 +91,10 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         }
 
         while (true) {
+            sleep(2);
             try {
                 $readItem = $this->reader->read();
                 if (null === $readItem) {
-                    break;
-                }
-                if ($this->jobStopper->isPausing($stepExecution)) {
-                    $this->saveAndPause($stepExecution);
                     break;
                 }
             } catch (InvalidItemException $e) {
@@ -107,7 +104,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 continue;
             }
 
-            sleep(2);
             $batchCount++;
             $processedItem = $this->process($readItem);
             if (null !== $processedItem) {
@@ -123,6 +119,12 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 $this->updateProcessedItems($batchCount);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
+
+                if ($this->jobStopper->isPausing($stepExecution)) {
+                    $this->saveAndPause($stepExecution);
+                    break;
+                }
+
                 if (null !== $this->jobStopper && $this->jobStopper->isStopping($stepExecution)) {
                     $this->jobStopper->stop($stepExecution);
 
