@@ -2,24 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MessengerBundle\Handler;
+namespace Akeneo\Tool\Bundle\MessengerBundle\Process;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
-use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\Stamp\ReceivedStamp;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Handler for all messages in UCS infra.
- * It extracts the tenant id and the consumer name to launch the real treatment of the message in a tenant aware process.
- *
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class UcsEnvelopeMessageHandler
+class RunUcsMessageProcess
 {
     private const RUNNING_PROCESS_CHECK_INTERVAL_MICROSECONDS = 1000;
     private const LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS = 300;
@@ -30,21 +23,8 @@ final class UcsEnvelopeMessageHandler
     ) {
     }
 
-    public function __invoke(Envelope $envelope): void
+    public function __invoke(object $message, string $tenantId, string $consumerName, ?string $correlationId): void
     {
-        $message = $envelope->getMessage();
-        $correlationId = $envelope->last(CorrelationIdStamp::class)?->correlationId();
-
-        $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId();
-        if (null === $tenantId) {
-            throw new \LogicException('The envelope must have a tenant ID');
-        }
-
-        $consumerName = $envelope->last(ReceivedStamp::class)?->getTransportName();
-        if (null === $consumerName) {
-            throw new \LogicException('The envelope must have a consumer name from a ReceivedStamp');
-        }
-
         $context = [
             'tenant_id' => $tenantId,
             'correlation_id' => $correlationId,
