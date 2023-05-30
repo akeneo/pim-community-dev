@@ -7,7 +7,7 @@ services:
     arguments:
       - '%kernel.project_dir%'
 
-  akeneo.feature_flag.service.reset_pim:
+  akeneo.installer.reset_pim.feature:
     class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
     arguments:
       - '%env(bool:FLAG_RESET_PIM_ENABLED)%'
