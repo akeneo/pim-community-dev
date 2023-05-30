@@ -37,7 +37,13 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
     public function fromProductModelCodes(array $productModelCodes): iterable
     {
         $valuesAndProperties = $this->getValuesAndPropertiesFromProductModelCodes($productModelCodes);
-        $completeFilters = $this->getCompleteFilterFromProductModelCodes($productModelCodes);
+
+        if ($this->newCompletenessTableExists()) {
+            $completeFilters = $this->getCompletenesses($productModelCodes);
+        } else {
+            $completeFilters = $this->getCompleteFilterFromProductModelCodes($productModelCodes);
+        }
+
         $attributes = $this->getAttributesFromProductModelCodes($productModelCodes);
 
         $rowCodes = \array_map(
@@ -407,5 +413,77 @@ SQL;
         }
 
         return $rowsIndexedByProductModelCode;
+    }
+
+    private function newCompletenessTableExists(): bool
+    {
+        $TABLE_NAME = 'pim_catalog_product_completeness';
+
+        return $this->connection->executeQuery(
+            'SHOW TABLES LIKE :tableName',
+            [
+                'tableName' => $TABLE_NAME,
+            ]
+        )->rowCount() >= 1;
+    }
+
+    private function getCompletenesses(array $productModelCodes)
+    {
+        $sql = <<<SQL
+    WITH descendant_product_uuids as ( 
+    SELECT code, product.uuid
+        FROM pim_catalog_product product
+        INNER JOIN pim_catalog_product_model product_model on product_model.id = product_model_id
+        WHERE product_model.code in (:codes)
+    UNION ALL 
+    SELECT root_product_model.code, product.uuid
+        FROM pim_catalog_product product
+        INNER JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
+        INNER JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
+        WHERE root_product_model.code in (:codes)
+    )          
+    SELECT descendant_product_uuids.code, completeness
+    FROM pim_catalog_product_completeness completeness
+        JOIN descendant_product_uuids ON descendant_product_uuids.uuid = completeness.product_uuid
+    SQL;
+
+        $completenessByProductModelCode = $this->connection->fetchAllAssociative(
+            $sql,
+            [
+                'codes' => $productModelCodes,
+            ],
+            [
+                'codes' => Connection::PARAM_STR_ARRAY,
+            ]
+        );
+
+        $results = array_fill_keys(
+            $productModelCodes,
+            [
+                'all_complete' => [],
+                'all_incomplete' => [],
+            ]
+        );
+
+        foreach ($completenessByProductModelCode as $value) {
+            $code = $value['code'];
+            $completeness = \json_decode($value['completeness'], true);
+
+            foreach ($completeness as $channelCode => $completenessByLocale) {
+                foreach ($completenessByLocale as $localeCode => $value) {
+                    $results[$code]['all_complete'][$channelCode][$localeCode] ??= 1;
+                    $results[$code]['all_incomplete'][$channelCode][$localeCode] ??= 1;
+
+                    if ($value['missing'] > 0) {
+                        $results[$code]['all_complete'][$channelCode][$localeCode] = 0;
+                    }
+                    if ($value['missing'] === 0) {
+                        $results[$code]['all_incomplete'][$channelCode][$localeCode] = 0;
+                    }
+                }
+            }
+        }
+
+        return $results;
     }
 }
