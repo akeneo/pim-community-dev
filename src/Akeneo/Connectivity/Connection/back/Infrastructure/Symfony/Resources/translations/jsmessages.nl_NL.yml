@@ -616,6 +616,7 @@ pim_notification:
   types:
     connected_app_authorizations: Autorisaties voor verbonden apps
     disabled_catalog: Appcatalogus uitgeschakeld
+    attribute_removed: Appcatalogus beïnvloed
   connected_app_authorizations:
     button_label: App openen
   disabled_catalog:

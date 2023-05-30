@@ -1,6 +1,7 @@
 validation:
   create:
     identifier_limit_reached: '"{{limit}}" 識別子ジェネレーターの上限に達しました'
+    code_already_used: 'このコードはすでに使用されています'
   update:
     identifier_generator_code_not_found: '識別子ジェネレーター "{{code}}" が存在しないか、アクセス許可がありません。'
   identifier_generator:
@@ -20,6 +21,8 @@ validation:
     inactive_locale: '"{{ scopeCode }}" チャンネルの "{{ localeCode }}" ロケールは有効になっていません。'
     family_property_fields_required: '"family" タイプには "{{ field }}" フィールドが必要です。'
     simple_select_property_fields_required: '"simple_select" タイプには "{{ field }}" フィールドが必要です。'
+    reference_entity_property_fields_required: '"reference_entity" タイプには "{{ field }}" フィールドが必要です。'
     process_unknown_operator: 'オペレータ{{ value }}には次のいずれかしか使用できません: {{ choices }}。'
     locale_required: '"{{ attributeCode }}" 属性にはロケールが必要です。'
     scope_required: '"{{ attributeCode }}" 属性にはチャンネルが必要です。'
+    categories_do_not_exist: '次のカテゴリがカタログから削除されました: {{ categoryCodes }}。商品の選択からこれらを削除できます。'

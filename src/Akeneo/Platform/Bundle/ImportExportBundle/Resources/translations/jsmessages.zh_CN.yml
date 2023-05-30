@@ -188,6 +188,8 @@ pim_import_export:
           placeholder: 输入您的密码
         public_key:
           label: 公钥
+          button_title: 复制到剪切板
+          copy_notification_success: 公钥已复制到剪贴板
         login_type:
           label: 验证方法
           password: 登录和密码
@@ -235,8 +237,8 @@ pim_import_export:
     6: 失败
     7: 已放弃
     8: 未知
-    9: Pausing
-    10: Paused
+    9: 暂停中
+    10: 已暂停
   job_status:
     COMPLETED: 已完成
     STARTING: 正在启动
@@ -246,6 +248,8 @@ pim_import_export:
     FAILED: 失败
     ABANDONED: 已放弃
     UNKNOWN: 未知
+    PAUSING: 暂停中
+    PAUSED: 已暂停
   tracking:
     completed: "花费的时间：{{ duration }}"
     in_progress: "估计剩余时间：{{ duration }}"

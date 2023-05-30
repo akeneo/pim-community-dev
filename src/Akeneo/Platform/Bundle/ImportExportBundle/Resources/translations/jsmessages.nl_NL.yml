@@ -188,6 +188,8 @@ pim_import_export:
           placeholder: Voer het wachtwoord in
         public_key:
           label: Publieke sleutel
+          button_title: Kopiëren naar klembord
+          copy_notification_success: Openbare sleutel gekopieerd naar klembord
         login_type:
           label: Authenticatiemethode
           password: 'Inlognaam / wachtwoord:'
@@ -235,8 +237,8 @@ pim_import_export:
     6: Mislukt
     7: Afgebroken
     8: Onbekend
-    9: Pausing
-    10: Paused
+    9: Pauzeren
+    10: Gepauzeerd
   job_status:
     COMPLETED: Voltooid
     STARTING: Opstarten
@@ -246,6 +248,8 @@ pim_import_export:
     FAILED: Mislukt
     ABANDONED: Afgebroken
     UNKNOWN: Onbekend
+    PAUSING: Pauzeren
+    PAUSED: Gepauzeerd
   tracking:
     completed: "Gebruikte tijd: {{ duration }}"
     in_progress: "Geschatte resterende tijd: {{ duration }}"

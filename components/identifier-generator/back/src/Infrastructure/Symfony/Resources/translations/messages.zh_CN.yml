@@ -8,6 +8,7 @@ pim_catalog_identifier_generator:
     fields:
       family: 品类
       enabled: 状态
+      categories: 类别
     field_groups:
       system: 系统
   structure:

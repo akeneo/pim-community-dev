@@ -10,13 +10,17 @@ akeneo.category:
       unhandled_attribute_type: 属性タイプ "{{ type }}" の属性フィールドビルダーが見つかりませんでした
     template:
       title: テンプレート
+      no_attribute_title: このテンプレートには属性がありません
+      no_attribute_instructions: このカテゴリに関連付けられたテンプレートは空です。カテゴリツリーページからこのテンプレートに属性を追加できます。
       fetching_failed: テンプレートを取得中にエラーが発生しました
     unsaved_changes: このページから移動するとカテゴリに対する変更が失われます。
   tree:
     create: ツリーを作成
     delete: ツリーを削除
   template:
+    learn_more: カテゴリテンプレートの詳細
     create: テンプレートを有効化
+    edit: テンプレートを編集
     notification_success: テンプレートが正常に有効化されました
     notification_error: テンプレートを有効化できませんでした
     not_found: このカテゴリのアクティブなテンプレートはありません。
@@ -27,8 +31,21 @@ akeneo.category:
         textarea: テキストエリア
         richtext: リッチテキスト
         image: 画像
+      delete_button: 属性を削除
+      settings:
+        title: 設定
+        options:
+          title: オプション
+          value_per_channel: チャンネルごとの値
+          value_per_locale: ロケールごとの値
+          rich_text: リッチテキストエディタ
+        translations:
+          title: ラベルの翻訳
     add_attribute:
+      no_attribute_title: 最初の属性を作成する
+      no_attribute_instructions: このテンプレートにテキスト、テキストエリア、または画像の属性を追加して、カテゴリに関連付けるコンテンツを定義します。
       add_button: 属性を追加
+      create_button: 属性を作成
       confirmation_modal:
         section_title: 属性の追加
         title: カテゴリ属性の新規作成
@@ -53,6 +70,14 @@ akeneo.category:
         limit_reached:
           title: 50個を超える属性は追加できません
           message: カテゴリテンプレートの属性は、テンプレートあたり50個に制限されています。
+    delete_attribute:
+      delete: カテゴリ属性を削除
+      confirmation_modal:
+        title: このカテゴリ属性を削除する
+        message: 本当に {{ attribute }} という名前のカテゴリ属性を削除しますか？
+        helper: この属性を削除すると、関連するカテゴリの属性と値が完全に削除されます。
+      notification_success:
+        title: '{{ attribute }} 属性が削除されました'
     deactivate:
       deactivate_template: テンプレートを無効化
       confirmation_modal:
@@ -71,6 +96,11 @@ akeneo.category:
   tag:
     new: 新規
   discover_enriched_categories_information:
+    title: 充実化されたカテゴリを知る
+    content:
+      enrich_attribute_values: カテゴリツリーのレベルをテキスト、テキストエリア、および画像の属性で充実化
+      customizable_templates: カスタマイズ可能なテンプレートで求めている商品エクスペリエンスを提供
+      edit_attributes: '近日公開: それらのカテゴリ属性の設定を更新'
     survey_link_label: あなたのご意見をお聞かせください
     learn_more_link_label: 充実されたカテゴリについて詳しく知る
   other_actions: その他の操作

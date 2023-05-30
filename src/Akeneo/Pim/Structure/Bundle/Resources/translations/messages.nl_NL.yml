@@ -49,3 +49,15 @@ pim_enrich_attribute_form:
 job_execution.summary:
   deleted_attribute_groups: Verwijderde attribuutgroepen
   skipped_attribute_groups: Overgeslagen attribuutgroepen
+  moved_attributes: Verplaatste attributen
+  deleted_attributes: Verwijderde attributen
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: In bulk verwijderen van attribuutgroepen mislukt
+      warning: In bulk verwijderen van attribuutgroepen afgerond met enkele waarschuwingen
+      success: In bulk verwijderen van attribuutgroepen afgerond
+    attribute_mass_delete:
+      error: In bulk verwijderen van attributen mislukt
+      warning: In bulk verwijderen van attributen afgerond met enkele waarschuwingen
+      success: "In bulk verwijderen van attributen afgerond\n"

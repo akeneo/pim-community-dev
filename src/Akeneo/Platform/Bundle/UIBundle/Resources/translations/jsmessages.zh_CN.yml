@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: 已启用
+        environment:
+          title: 环境设置
+          fields:
+            sandbox_banner:
+              label: 显示沙盒警告横幅
         loading_message:
           title: 自定义加载消息
           helper: 为加载屏幕输入自定义消息来取悦用户。
@@ -194,6 +199,7 @@ pim_common:
   label: 标签
   label_translations: 标签翻译
   Label or identifier: 标签或标识符
+  code_or_label: 代码或标签
   less_than: 小于
   loading: 加载...
   media_upload: 拖放即可上传或点击这里
@@ -353,6 +359,10 @@ pim_menu:
     help:
       title: 帮助
       helper: Akeneo 帮助中心
+      new: 新
+      news: 更新日志
+      help_center: 帮助中心
+      akademy_training: Akademy 培训
   item:
     association_type: 关联类型
     attribute_group: 属性组
@@ -431,12 +441,33 @@ pim_system:
   reset_pim:
     modal:
       summary:
+        name: 摘要
+        title: '警告：重置您的 PIM 是不可逆的'
+        text: '这将导致删除以下元素之外的所有其他元素：'
         users:
           name: 用户
+          tooltip: 用户是指您允许在您的 PIM 范围内进行协作的人。
+        user_groups:
+          name: 用户组
+          tooltip: 用户组定义了将在您的 PIM 中执行不同操作的团队。
         roles:
           name: 角色
+          tooltip: 角色定义了用户和用户组对您的 PIM 的访问权限以及可在其中执行的操作。
       confirm:
         name: 确认
+        title: 确认重置您的 PIM
+        helper:
+          emphasis: 重置 PIM 卡操作无法撤消。
+          text: 点击重置按钮，您将被注销，系统将返回登录页面。
+      confirmation_phrase: 请输入 "{{ confirmation_word }}"
+      confirmation_word: 重置
+    button:
+      label: 重置实例
+      confirm: 重置并退出登录
+    error_notification: 重置 PIM 时发生错误，请联系系统管理员。
+  sandbox:
+    helper:
+      text: 这是沙盒环境；您的更改不会影响生产。
 pim_datagrid:
   mass_action:
     default:
