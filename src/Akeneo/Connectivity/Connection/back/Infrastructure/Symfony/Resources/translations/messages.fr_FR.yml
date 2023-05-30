@@ -8,3 +8,5 @@ pim_notification:
     message: 'L''App <strong>%app_name%</strong> nécessite une mise à jour d''autorisation. Veuillez ouvrir l''app pour continuer.'
   disabled_catalog:
     message: "Une ou plusieurs modifications dans les paramètres de votre PIM ont impacté le catalogue {{ catalog_name }} . Veuillez revoir ses paramètres, puis réactiver le catalogue."
+  attribute_removed:
+    message: "Une ou plusieurs modifications dans les paramètres de votre PIM ont eu un impact sur le catalogue {{ catalog_name }} . Veuillez vérifier le mapping associé."

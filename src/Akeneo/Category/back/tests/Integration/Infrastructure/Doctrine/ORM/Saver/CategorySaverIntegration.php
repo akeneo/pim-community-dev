@@ -1,12 +1,12 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
+namespace Akeneo\Test\Category\Integration\Infrastructure\Doctrine\ORM\Saver;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Normalizer\Standard\CategoryNormalizer;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
+use Akeneo\Category\Infrastructure\Doctrine\ORM\Saver\CategorySaver;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
@@ -211,6 +211,9 @@ class CategorySaverIntegration extends TestCase
         );
     }
 
+    /**
+     * @param array<mixed> $data
+     */
     private function createCategoryWithoutSaving(array $data = []): CategoryInterface
     {
         $category = $this->get('pim_catalog.factory.category')->create();
@@ -220,6 +223,9 @@ class CategorySaverIntegration extends TestCase
         return $category;
     }
 
+    /**
+     * @param array<mixed> $data
+     */
     private function updateCategory(CategoryInterface $category, array $data = []): CategoryInterface
     {
         $this->get('pim_catalog.updater.category')->update($category, $data);

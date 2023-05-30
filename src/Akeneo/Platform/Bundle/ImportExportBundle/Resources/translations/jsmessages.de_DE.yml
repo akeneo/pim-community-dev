@@ -235,6 +235,8 @@ pim_import_export:
     6: Fehlgeschlagen
     7: Abgebrochen
     8: Unbekannt
+    9: Pausing
+    10: Paused
   job_status:
     COMPLETED: Vollständig
     STARTING: Wird gestartet...

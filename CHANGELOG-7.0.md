@@ -1,5 +1,15 @@
 # 7.0.x
 
+# 7.0.17 (2023-05-24)
+
+# 7.0.16 (2023-05-24)
+
+## Bug fixes
+
+- PIM-11000: Fallback on filePath when storage type is undefined
+
+# 7.0.15 (2023-05-22)
+
 # 7.0.14 (2023-05-02)
 
 # 7.0.13 (2023-04-19)
@@ -35,6 +45,7 @@
 - PIM-1318 [Backport PIM-10785]: Fix case-insensitive patch product model
 - PIM-1318 [Backport PIM-10808]: Fix Error message on the family modification when an attribute is as required=0
 - PIM-1318 [Backport PIM-10802]: Fix wysiwyg-field add link event
+- PIM-10997: Update error message when trying to delete role with linked users or connections
 
 # 7.0.7 (2023-02-13)
 

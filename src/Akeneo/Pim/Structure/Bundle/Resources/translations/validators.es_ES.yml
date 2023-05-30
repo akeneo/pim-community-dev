@@ -4,3 +4,5 @@ pim_structure:
       cannot_be_quantified_and_two_way: El tipo de asociación puede ser cuantificado o bidireccional
     available_locales:
       is_variant_axis_without_available_locales: Un atributo no puede convertirse en una configuración regional específica si ya se utiliza como eje en una familia de variantes.
+    attribute_groups:
+      max: Ha alcanzado el límite de {{ max }} grupos de atributos

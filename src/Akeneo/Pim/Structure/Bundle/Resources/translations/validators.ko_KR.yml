@@ -4,3 +4,5 @@ pim_structure:
       cannot_be_quantified_and_two_way: 연결 유형은 수량 또는 양방향일 수 있습니다.
     available_locales:
       is_variant_axis_without_available_locales: 특성은 이미 변형 패밀리에서 축으로 사용되고 있는 경우, 로케일별로 달라질 수 없습니다.
+    attribute_groups:
+      max: '{{ max }}개의 특성 그룹 제한에 도달했습니다.'

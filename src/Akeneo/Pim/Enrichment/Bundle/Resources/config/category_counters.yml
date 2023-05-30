@@ -6,6 +6,3 @@ services:
             - '@pim_catalog.repository.category'
         tags:
             - { name: pim_enrich.doctrine.counter.category_item, type: product }
-
-    pim_enrich.doctrine.counter.category_registry:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterRegistry'

@@ -188,6 +188,8 @@ pim_import_export:
           placeholder: Inserisci la password
         public_key:
           label: Chiave pubblica
+          button_title: Copia negli appunti
+          copy_notification_success: Chiave pubblica copiata negli appunti
         login_type:
           label: Metodo di autenticazione
           password: Nome utente e password
@@ -235,6 +237,8 @@ pim_import_export:
     6: Fallito
     7: Abbandonato
     8: Sconosciuto
+    9: Attivazione della pausa
+    10: In pausa
   job_status:
     COMPLETED: Completato
     STARTING: In avvio
@@ -244,6 +248,8 @@ pim_import_export:
     FAILED: Fallito
     ABANDONED: Abbandonato
     UNKNOWN: Sconosciuto
+    PAUSING: Attivazione della pausa
+    PAUSED: In pausa
   tracking:
     completed: "Tempo speso: {{ duration }}"
     in_progress: "Tempo rimanente stimato: {{ duration }}"

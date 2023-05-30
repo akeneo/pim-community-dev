@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: Habilitado
+        environment:
+          title: Ajustes del entorno
+          fields:
+            sandbox_banner:
+              label: Mostrar banner de alerta de sandbox
         loading_message:
           title: Mensajes de carga personalizados
           helper: Entretenga a sus usuarios con mensajes personalizados para las pantallas de carga.
@@ -194,6 +199,7 @@ pim_common:
   label: Etiqueta
   label_translations: Traducciones de etiqueta
   Label or identifier: etiqueta o identificador
+  code_or_label: código o etiqueta
   less_than: menor que
   loading: Cargando...
   media_upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
@@ -353,6 +359,10 @@ pim_menu:
     help:
       title: Ayuda
       helper: Centro de ayuda de Akeneo
+      new: NUEVO
+      news: Novedades
+      help_center: Centro de ayuda
+      akademy_training: Formación en la Akademy
   item:
     association_type: Tipos de asociaciones
     attribute_group: Grupos de atributos
@@ -428,6 +438,36 @@ pim_system:
     enabled: SSO activado
     disabled: SSO desactivado
     title: Inicio de sesión único con SAML
+  reset_pim:
+    modal:
+      summary:
+        name: Resumen
+        title: 'Advertencia: Reiniciar su PIM es irreversible'
+        text: 'Esto hará que se eliminen todos los elementos excepto los siguientes:'
+        users:
+          name: Usuarios
+          tooltip: Los usuarios son las personas a las que permite colaborar dentro de su PIM.
+        user_groups:
+          name: Grupos de usuarios
+          tooltip: Los Grupos de usuarios definen equipos que realizarán diferentes acciones dentro de su PIM.
+        roles:
+          name: Roles
+          tooltip: Los roles definen los accesos y las acciones que los usuarios y los grupos de usuarios pueden realizar dentro de su PIM.
+      confirm:
+        name: Confirmación
+        title: Confirmar el restablecimiento de su PIM
+        helper:
+          emphasis: Una vez que restablezca su PIM, no hay vuelta atrás.
+          text: Al hacer clic en el botón de restablecer, se cerrará la sesión y se volverá a la página de inicio de sesión.
+      confirmation_phrase: Escriba «{{ confirmation_word }}»
+      confirmation_word: restablecer
+    button:
+      label: Restablecer instancia
+      confirm: Restablecer y cerrar sesión
+    error_notification: Se ha producido un error durante el restablecimiento del PIM, contacte con el administrador del sistema.
+  sandbox:
+    helper:
+      text: Este es un entorno sandbox; sus cambios no afectarán a su producción.
 pim_datagrid:
   mass_action:
     default:

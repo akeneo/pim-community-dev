@@ -1,0 +1,25 @@
+validation:
+  create:
+    identifier_limit_reached: '"{{limit}}" 識別子ジェネレーターの上限に達しました'
+  update:
+    identifier_generator_code_not_found: '識別子ジェネレーター "{{code}}" が存在しないか、アクセス許可がありません。'
+  identifier_generator:
+    attribute_does_not_exist: '"{{code}}" 属性は存在しません。'
+    attribute_should_have_type: '"{{code}}" 属性コードは "{{ type }}" タイプであり、タイプ "{{ expected }}" である必要があります。'
+    free_text_string_field_required: '自由形式テキストには "string" キーが含まれている必要があります'
+    enabled_value_field_required: '有効の場合、 "value" キーが含まれている必要があります'
+    enabled_boolean_value: 'この値はブール値である必要があります。'
+    auto_number_fields_required: '"auto_number" タイプの場合、"{{field}}" は必須です'
+    structure_auto_number_limit_reached: '自動採番は{{limit}}個しか含められません'
+    conditions_limit_reached: '{{type}}条件は{{limit}}個しか含められません'
+    unknown_operator: 'オペレータ{{ value }}には次のいずれかしか使用できません: {{ choices }}。'
+    families_do_not_exist: '次のファミリーがカタログから削除されました: {{ familyCodes }}。商品の選択からこれらを削除できます。'
+    options_do_not_exist: '属性 "{{ attributeCode }}" に次の属性オプションは存在しません: {{ optionCodes }}。'
+    unknown_scope: '"{{ scopeCode }}" スコープは存在しません。'
+    unknown_locale: '"{{ localeCode }}" ロケールは存在しないか、有効になっていません。'
+    inactive_locale: '"{{ scopeCode }}" チャンネルの "{{ localeCode }}" ロケールは有効になっていません。'
+    family_property_fields_required: '"family" タイプには "{{ field }}" フィールドが必要です。'
+    simple_select_property_fields_required: '"simple_select" タイプには "{{ field }}" フィールドが必要です。'
+    process_unknown_operator: 'オペレータ{{ value }}には次のいずれかしか使用できません: {{ choices }}。'
+    locale_required: '"{{ attributeCode }}" 属性にはロケールが必要です。'
+    scope_required: '"{{ attributeCode }}" 属性にはチャンネルが必要です。'

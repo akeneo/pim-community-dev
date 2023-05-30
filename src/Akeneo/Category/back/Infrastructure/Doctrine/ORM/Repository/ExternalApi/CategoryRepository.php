@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi;
+namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Validator\Constraints\Type;
@@ -25,7 +25,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
         protected EntityManager $entityManager,
         protected string $className,
         protected CategoryRepositoryInterface $categoryRepository,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
     ) {
         parent::__construct($entityManager, $entityManager->getClassMetadata($className));
     }
@@ -41,12 +41,11 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
     }
 
     /**
-     * Find resources with offset > $offset and filtered by $criteria
+     * Find resources with offset > $offset and filtered by $criteria.
      *
      * @param array{string: array{operator: string, value: mixed}[]} $searchFilters
-     * @param array $orders
-     * @param int   $limit
-     * @param int   $offset
+     * @param int $limit
+     * @param int $offset
      *
      * @return array
      */
@@ -111,7 +110,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                             $qb->andWhere($qb->expr()->lt('r.right', $parentCategory->getRight()));
                             $qb->andWhere($qb->expr()->eq('r.root', $parentCategory->getRoot()));
                         } elseif ('is_root' === $property) {
-                            if (true === (bool)$criterion['value']) {
+                            if (true === (bool) $criterion['value']) {
                                 $qb->andWhere($qb->expr()->isNull('r.parent'));
                             } else {
                                 $qb->andWhere($qb->expr()->isNotNull('r.parent'));
@@ -154,13 +153,13 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                     'value' => [
                         new Type([
                             'type' => 'array',
-                            'message' => 'In order to search on category codes you must send an array of category codes as value, {{ givenType }} given.'
+                            'message' => 'In order to search on category codes you must send an array of category codes as value, {{ givenType }} given.',
                         ]),
                         new Assert\All([
-                            new Assert\Type('string')
-                        ])
+                            new Assert\Type('string'),
+                        ]),
                     ],
-                ])
+                ]),
             ]),
             'parent' => new Assert\All([
                 new Assert\Collection([
@@ -171,10 +170,10 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                     'value' => [
                         new Assert\Type([
                             'type' => 'string',
-                            'message' => 'In order to search on category parent you must send a parent code category as value, {{ type }} given.'
+                            'message' => 'In order to search on category parent you must send a parent code category as value, {{ type }} given.',
                         ]),
                     ],
-                ])
+                ]),
             ]),
             'is_root' => new Assert\All([
                 new Assert\Collection([
@@ -185,10 +184,10 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                     'value' => [
                         new Assert\Type([
                             'type' => 'bool',
-                            'message' => 'In order to search on category is_root you must send a {{ type }} value, {{ value }} given.'
+                            'message' => 'In order to search on category is_root you must send a {{ type }} value, {{ value }} given.',
                         ]),
                     ],
-                ])
+                ]),
             ]),
             'updated' => new Assert\All([
                 new Assert\Collection([
@@ -198,9 +197,9 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                     ]),
                     'value' => new Assert\DateTime([
                         'format' => \DateTimeInterface::ATOM,
-                        'message' => 'This value is not in a valid ISO 8601 standard datetime format'
+                        'message' => 'This value is not in a valid ISO 8601 standard datetime format',
                     ]),
-                ])
+                ]),
             ]),
         ];
         $availableSearchFilters = array_keys($constraints);
@@ -208,11 +207,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
         $exceptionMessages = [];
         foreach ($searchFilters as $property => $searchFilter) {
             if (!in_array($property, $availableSearchFilters)) {
-                throw new \InvalidArgumentException(sprintf(
-                    'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
-                    implode(', ', $availableSearchFilters),
-                    $property
-                ));
+                throw new \InvalidArgumentException(sprintf('Available search filters are "%s" and you tried to search on unavailable filter "%s"', implode(', ', $availableSearchFilters), $property));
             }
             $violations = $this->validator->validate($searchFilter, $constraints[$property]);
             foreach ($violations as $violation) {

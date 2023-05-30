@@ -116,6 +116,8 @@ oro_config:
           fields:
             enabler:
               label: Attivato
+        environment:
+          title: Impostazioni ambiente
         loading_message:
           title: Messaggi di caricamento personalizzati
           helper: Intrattieni i tuoi utenti con messaggi personalizzati sulle schermate di caricamento.
@@ -194,6 +196,7 @@ pim_common:
   label: Etichetta
   label_translations: Traduzioni etichetta
   Label or identifier: etichetta o identificatore
+  code_or_label: Codice o etichetta
   less_than: Meno di
   loading: Caricamento in corso...
   media_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
@@ -261,6 +264,7 @@ pim_common:
   product_models: Modelli di prodotto
   more: Altro
   public_view: Visualizzazione pubblica
+  view: Visualizza
 error:
   exception: Si è verificato un errore {{ status_code}}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
@@ -275,6 +279,7 @@ pim_enrich.entity.fallback:
     generic_error: Si è verificato un errore
     update:
       fail: Aggiornamento non riuscito
+      fail_session_expired: La tua sessione utente è scaduta. Esegui nuovamente l'accesso.
       success: Aggiornato correttamente
     delete:
       fail: Non è possibile eliminare questo articolo
@@ -341,6 +346,7 @@ pim_title:
   pim_settings_index: Impostazioni
   pim_system_index: Sistema
 pim_menu:
+  tag.new: Nuovo
   tab:
     activity: Attività
     imports: Importazioni
@@ -350,6 +356,10 @@ pim_menu:
     help:
       title: Aiuto
       helper: Help Center Akeneo
+      new: NOVITÀ
+      news: Cosa c’è di nuovo?
+      help_center: Help Center
+      akademy_training: Formazione Akademy
   item:
     association_type: Tipi di associazione
     attribute_group: Gruppi di attributi
@@ -380,6 +390,7 @@ pim_menu:
       product: Impostazioni prodotti
       catalog: Impostazioni catalogo
       collapsed_label: Impostazioni
+      automation: Automazione
     product: Navigazione prodotti
     product_infos: Info prodotto
   user:
@@ -395,6 +406,7 @@ pim_settings:
   settings_menu: Menu Impostazioni
   catalog_settings: Impostazioni catalogo
   product_settings: Impostazioni prodotti
+  automation_settings: Automazione
   count:
     category_trees: '{0}Hai 0 alberi |{1}Hai 1 albero |]1, Inf[Hai {{ count }} alberi '
     categories: '{0}e 0 categorie|{1}e 1 categoria|]1, Inf[e {{ count }} categorie'
@@ -409,6 +421,7 @@ pim_settings:
     group_types: '{0}Hai 0 tipi di gruppo|{1}Hai 1 tipo di gruppo|]1, Inf[Hai {{ count }} tipi di gruppo'
     groups: '{0}Hai 0 gruppi|{1}Hai 1 gruppo|]1, Inf[Hai {{ count }} gruppi'
     rules: '{0}Hai 0 regole abilitate|{1}Hai 1 regola abilitata|]1, Inf[Hai {{ count }} regole abilitate'
+    identifier_generators: '{0}Hai 0 generatori di identificatori|{1}Hai 1 generatore di identificatori|]1, Inf[Hai {{ count }} generatori di identificatori'
 pim_system:
   system_menu: Menu di sistema
   system_navigation: Sistema
@@ -422,6 +435,36 @@ pim_system:
     enabled: SSO abilitato
     disabled: SSO disabilitato
     title: Single Sign-On basato su SAML
+  reset_pim:
+    modal:
+      summary:
+        name: Riepilogo
+        title: 'Attenzione: la reimpostazione del PIM è irreversibile'
+        text: 'Comporterà l''eliminazione di tutti gli elementi, a eccezione dei seguenti:'
+        users:
+          name: Utenti
+          tooltip: Gli utenti sono le persone cui consenti di collaborare all'interno del tuo PIM.
+        user_groups:
+          name: Gruppi di utenti
+          tooltip: I gruppi di utenti definiscono gruppi di lavoro che eseguiranno differenti azioni all'interno del PIM.
+        roles:
+          name: Ruoli
+          tooltip: I ruoli definiscono le autorizzazioni di accesso e le azioni che i gruppi posso o compiere all'interno del PIM.
+      confirm:
+        name: Conferma
+        title: Conferma la reimpostazione del tuo PIM
+        helper:
+          emphasis: Una volta reimpostato il PIM, non è possibile tornare indietro.
+          text: Facendo clic sul pulsante Reimposta, sarai disconnesso e riportato alla pagina di login.
+      confirmation_phrase: Digita "{{ confirmation_word }}"
+      confirmation_word: reimposta
+    button:
+      label: Reimposta istanza
+      confirm: Reimposta e disconnetti
+    error_notification: Si è verificato un errore durante la reimpostazione del PIM, contatta l'amministratore di sistema.
+  sandbox:
+    helper:
+      text: Questo è un ambiente di prova; i cambiamenti non avranno effetto su quello di lavoro.
 pim_datagrid:
   mass_action:
     default:

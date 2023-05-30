@@ -9,6 +9,7 @@ pim_error:
   unexpected: "Er is een onverwachte fout opgetreden. Neem contact op met uw beheerder."
   404: 'Er is een 404 fout opgetreden...'
   identifier_generator_not_found: 'Identifier generator niet gevonden'
+  selection_attribute_not_found: 'Een attribuut uit uw productselectie is verwijderd uit uw catalogus. Verwijder deze eigenschap uit uw productselectie.'
 pim_identifier_generator:
   create:
     form:
@@ -44,15 +45,12 @@ pim_identifier_generator:
       title: 'Automatiseer het genereren van identifiers. '
       info: 'Zodra een identifier generator is aangemaakt, wordt een id automatisch toegewezen aan elk nieuw product dat u aanmaakt en u zelf geen handmatige waarde invoert.'
     check_help_center: 'Kijk in ons helpcenter voor meer informatie.'
-    max_generator:
-      title: 'Het is momenteel mogelijk om één Identifier generator aan te maken.'
-      info: 'Binnenkort kunt u meerdere identifier generatoren configureren die overeenkomen met al inrichtingswensen. '
     confirmation: 'Weet u zeker dat u deze eigenschap wilt verwijderen?'
   selection:
+    limit_reached: 'U heeft de limiet van {{ count }} voorwaarden bereikt'
     helper:
       title: 'Voeg voorwaarden toe aan uw productselectie, als u wilt:'
       automate: 'automatiseer de creatie van identifiers voor een gerichte selectie van producten'
-      multiple: 'het beheren van meerdere identifier structuren voor verschillende selecties van producten (komt binnenkort)'
     empty:
       title: 'Definieer uw productselectie'
       text: 'Al uw producten met een lege identificatie zullen beïnvloed worden.'
@@ -70,6 +68,7 @@ pim_identifier_generator:
     helper_link: 'Kijk in ons helpcenter voor meer informatie.'
     title: 'Identifier opbouw.'
     add_element: 'Nieuwe eigenschap toevoegen'
+    limit_reached: 'U heeft de limiet van {{ count }} eigenschappen bereikt'
     property_type:
       sections:
         system: 'Systeem'
@@ -92,7 +91,13 @@ pim_identifier_generator:
           code: 'Gebruik de gehele code'
           nomenclature: 'Gebruik uw eigen nomenclatuur'
       operator:
+        title: 'Operator'
         placeholder: 'Selecteer de operator'
+      simple_select:
+        title: 'Attribuut'
+      abbrev_type: 'Definieer de indeling van deze eigenschap'
+      abbrev_type_empty_label: 'Selecteer de indeling'
+      chars_number: 'Aantal tekens'
     empty:
       title: 'Creëer uw identifier opbouw'
       text: 'Klik op "Voeg nieuwe eigenschap toe" rechtsboven'

@@ -17,7 +17,6 @@ akeneo.category:
     delete: Boomstructuur verwijderen
   template:
     create: Sjabloon activeren
-    edit: Sjabloon bekijken
     notification_success: Het sjabloon is geactiveerd
     notification_error: Het sjabloon kon niet geactiveerd worden
     not_found: Er is geen actieve sjabloon voor deze categorie
@@ -29,14 +28,31 @@ akeneo.category:
         richtext: Tekst met opmaak
         image: Afbeelding
     add_attribute:
+      add_button: Attribuut toevoegen
       confirmation_modal:
+        section_title: Attribuut toevoegen
+        title: Een nieuw categorieattribuut maken
+        head_helper: Categorieattributen worden gekoppeld aan één sjabloon. Ze zijn niet toegankelijk in andere sjablonen.
+        tail_helper: De waarde per kanaal en waarde per taal kunnen niet worden gewijzigd zodra het attribuut is gemaakt.
+        link: Meer informatie over categoriesjablonen.
+        create: Maken
         input:
           label: Label
           code: Code
           type:
+            label: Attribuuttype
+            empty: Geen attribuuttype beschikbaar
             option_title:
               text: Tekst
+              textarea: Tekstgebied
               image: Afbeelding
+      success:
+        notification: Het attribuut is gemaakt
+      error:
+        failed: Toevoegen van sjabloonattribuut mislukt
+        limit_reached:
+          title: U kunt niet meer dan 50 attributen toevoegen.
+          message: Voor categoriesjablonen geldt een beperking van 50 attributen per sjabloon.
     deactivate:
       deactivate_template: Template deactiveren
       confirmation_modal:
@@ -55,11 +71,6 @@ akeneo.category:
   tag:
     new: Nieuw
   discover_enriched_categories_information:
-    title: Ontdek Verrijkte Categorieën Vroegtijdige Toegang
-    content:
-      activate_template: Activeer categorieverrijking via vooraf geconfigureerde sjablonen
-      enrich_attribute_values: Verrijk teksten, tekstblokken en afbeeldingen in categorieën
-      deactivate_template: Deactivering en aanpassing van rijke categorieën volgen binnenkort.
     survey_link_label: Vertel ons wat u ervan vindt!
     learn_more_link_label: Meer informatie over verrijkte categorieën
   other_actions: Andere acties

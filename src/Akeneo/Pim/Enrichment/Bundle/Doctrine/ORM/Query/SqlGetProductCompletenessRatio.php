@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProductCompletenessRatio;
-use Doctrine\DBAL\Connection;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -14,34 +14,18 @@ use Ramsey\Uuid\UuidInterface;
  */
 class SqlGetProductCompletenessRatio implements GetProductCompletenessRatio
 {
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    public function __construct(
+        private readonly GetProductCompletenesses $getProductCompletenesses
+    ) {
     }
 
     public function forChannelCodeAndLocaleCode(UuidInterface $productUuid, string $channelCode, string $localeCode): ?int
     {
-        $sql = <<<SQL
-SELECT FLOOR(((completeness.required_count - completeness.missing_count) / completeness.required_count) * 100) AS ratio
-FROM pim_catalog_completeness completeness
-    INNER JOIN pim_catalog_channel channel on completeness.channel_id = channel.id
-    INNER JOIN pim_catalog_locale locale on completeness.locale_id = locale.id
-WHERE completeness.product_uuid = :productUuid
-AND channel.code = :channelCode
-AND locale.code = :localeCode
-SQL;
-        $ratio = $this->connection->executeQuery(
-            $sql,
-            [
-                'productUuid' => $productUuid->getBytes(),
-                'channelCode' => $channelCode,
-                'localeCode' => $localeCode,
-            ]
-        )->fetchOne();
+        $completenessCollection = $this->getProductCompletenesses->fromProductUuids([$productUuid], $channelCode, [$localeCode]);
+        if (!$completenessCollection) {
+            return null;
+        }
 
-        return false === $ratio ? null : (int) $ratio;
+        return $completenessCollection[$productUuid->toString()]?->getCompletenessForChannelAndLocale($channelCode, $localeCode)?->ratio();
     }
 }

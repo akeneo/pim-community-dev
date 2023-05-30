@@ -150,7 +150,6 @@ pim_enrich.entity.attribute:
       success: Attribut erfolgreich aktualisiert.
       fail: Das Attribut konnte nicht aktualisiert werden.
       fields_not_ready: "Dieses Attribut kann im Augenblick nicht gespeichert werden. Die folgenden Felder sind noch unvollständig {{ fields }}"
-      cant_remove_attributes_used_as_label: Attribute, die als Label in einer Familie verwendet werden, können nicht entfernt werden.
     delete:
       success: Attribut erfolgreich entfernt
       fail: Dieses Attribut kann nicht gelöscht werden
@@ -241,6 +240,9 @@ pim_enrich.entity.attribute:
       confirm_from_family: Sind Sie sicher, dass Sie dieses Attribut aus der Familie löschen möchten?
       confirm_from_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
       confirm_from_product: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
+    mass_delete:
+      modal:
+        title: Attribute
 pim_enrich.entity.attribute_group:
   label: Attributgruppe
   uppercase_label: Attributgruppe
@@ -255,9 +257,6 @@ pim_enrich.entity.attribute_group:
       success: Attributgruppe erfolgreich aktualisiert
       fail: Die Attributgruppe konnte nicht aktualisiert werden
       fields_not_ready: "Die Attributgruppe kann zur Zeit nicht gespeichert werden. Die folgenden Felder sind nicht vollständig ausgefüllt: {{ fields }}"
-    delete:
-      success: Attributgruppe erfolgreich entfernt
-      fail: Diese Attributgruppe kann nicht gelöscht werden.
   module:
     add_attribute_group:
       label: Nach Gruppen hinzufügen
