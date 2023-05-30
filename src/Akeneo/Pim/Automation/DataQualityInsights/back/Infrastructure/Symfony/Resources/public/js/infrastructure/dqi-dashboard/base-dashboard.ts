@@ -1,12 +1,12 @@
 import BaseView = require('pimui/js/view/base');
 
 import {
+  TimePeriod,
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
-} from '@akeneo-pim-community/data-quality-insights/src';
+} from '@akeneo-pim-community/data-quality-insights';
 import ReactDOM from 'react-dom';
-import {TimePeriod} from '@akeneo-pim-community/data-quality-insights';
 
 interface SectionConfig {
   align: string;

@@ -20,8 +20,8 @@ import {
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
   productEditFormStore,
+  unsetProductAction
 } from '@akeneo-pim-community/data-quality-insights/src';
-import {unsetProductAction} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer/ProductEditForm/productReducer';
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
 

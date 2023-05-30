@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import {AttributeGroupDQIActivation} from '@akeneo-pim-community/data-quality-insights/src';
+import {AttributeGroupDQIActivation} from '@akeneo-pim-community/data-quality-insights';
 
 const BaseView = require('pimui/js/view/base');
 

@@ -28,7 +28,8 @@ import {QualityScoreBar} from './application/component/QualityScoreBar';
 import {CONTAINER_ELEMENT_ID as DATA_QUALITY_INSIGHTS_PRODUCT_QUALITY_SCORE_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/QualityScorePortal';
 import {productEditFormStore} from './infrastructure/store';
 
-export {CriterionEvaluationResult, ProductEvaluation, TimePeriod} from './domain';
+export {unsetProductAction} from './infrastructure/reducer/ProductEditForm/productReducer';
+export {CriterionEvaluationResult, ProductEvaluation, QualityScoreValue, TimePeriod} from './domain';
 
 export {BackLinkButton} from './application';
 export * from './application/constant';
