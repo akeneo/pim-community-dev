@@ -32,7 +32,7 @@ class JobStopper
         return $this->getJobExecutionStatus->getByJobExecutionId($stepExecution->getJobExecution()->getId())->isPausing();
     }
 
-    public function pause(StepExecution $stepExecution, ?array $currentState): void
+    public function pause(StepExecution $stepExecution, array $currentState): void
     {
         $stepExecution->setCurrentState($currentState);
         $stepExecution->setStatus(new BatchStatus(BatchStatus::PAUSED));

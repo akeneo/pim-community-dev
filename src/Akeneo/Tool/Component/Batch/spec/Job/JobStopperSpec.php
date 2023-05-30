@@ -80,7 +80,6 @@ class JobStopperSpec extends ObjectBehavior
         $stepExecution->setCurrentState(["position" => 1])->shouldBeCalled();
 
         $this->pause($stepExecution, ["position" => 1]);
-
     }
 
 }

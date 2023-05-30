@@ -629,14 +629,14 @@ class StepExecution
         $this->isTrackable = $trackable;
     }
 
-    public function setCurrentState(?array $currentState): void
+    public function setCurrentState(array $currentState): void
     {
         $this->currentState = $currentState;
     }
 
-    public function getCurrentState(): ?array
+    public function getCurrentState(): array
     {
-        return $this->currentState;
+        return $this->currentState ?? [];
     }
 
     /**
