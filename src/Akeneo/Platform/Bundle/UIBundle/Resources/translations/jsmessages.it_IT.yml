@@ -116,6 +116,8 @@ oro_config:
           fields:
             enabler:
               label: Attivato
+        environment:
+          title: Impostazioni ambiente
         loading_message:
           title: Messaggi di caricamento personalizzati
           helper: Intrattieni i tuoi utenti con messaggi personalizzati sulle schermate di caricamento.
@@ -194,6 +196,7 @@ pim_common:
   label: Etichetta
   label_translations: Traduzioni etichetta
   Label or identifier: etichetta o identificatore
+  code_or_label: Codice o etichetta
   less_than: Meno di
   loading: Caricamento in corso...
   media_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
@@ -353,6 +356,10 @@ pim_menu:
     help:
       title: Aiuto
       helper: Help Center Akeneo
+      new: NOVITÀ
+      news: Cosa c’è di nuovo?
+      help_center: Help Center
+      akademy_training: Formazione Akademy
   item:
     association_type: Tipi di associazione
     attribute_group: Gruppi di attributi
@@ -431,12 +438,33 @@ pim_system:
   reset_pim:
     modal:
       summary:
+        name: Riepilogo
+        title: 'Attenzione: la reimpostazione del PIM è irreversibile'
+        text: 'Comporterà l''eliminazione di tutti gli elementi, a eccezione dei seguenti:'
         users:
           name: Utenti
+          tooltip: Gli utenti sono le persone cui consenti di collaborare all'interno del tuo PIM.
+        user_groups:
+          name: Gruppi di utenti
+          tooltip: I gruppi di utenti definiscono gruppi di lavoro che eseguiranno differenti azioni all'interno del PIM.
         roles:
           name: Ruoli
+          tooltip: I ruoli definiscono le autorizzazioni di accesso e le azioni che i gruppi posso o compiere all'interno del PIM.
       confirm:
         name: Conferma
+        title: Conferma la reimpostazione del tuo PIM
+        helper:
+          emphasis: Una volta reimpostato il PIM, non è possibile tornare indietro.
+          text: Facendo clic sul pulsante Reimposta, sarai disconnesso e riportato alla pagina di login.
+      confirmation_phrase: Digita "{{ confirmation_word }}"
+      confirmation_word: reimposta
+    button:
+      label: Reimposta istanza
+      confirm: Reimposta e disconnetti
+    error_notification: Si è verificato un errore durante la reimpostazione del PIM, contatta l'amministratore di sistema.
+  sandbox:
+    helper:
+      text: Questo è un ambiente di prova; i cambiamenti non avranno effetto su quello di lavoro.
 pim_datagrid:
   mass_action:
     default:

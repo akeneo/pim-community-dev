@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Completeness;
 
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -18,7 +20,18 @@ use Ramsey\Uuid\UuidInterface;
  */
 class GetProductCompletenessesIntegration extends TestCase
 {
-    public function test_that_it_returns_completenesseses_given_a_product_id()
+    private Connection $connection;
+
+    private ChannelExistsWithLocaleInterface $channelExistsWithLocale;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->connection = $this->get('database_connection');
+        $this->channelExistsWithLocale = $this->get('pim_channel.query.cache.channel_exists_with_locale');
+    }
+
+    public function test_that_it_returns_completenesseses_given_a_product_uuid(): void
     {
         $this->createProduct(
             'productA',
@@ -55,7 +68,7 @@ class GetProductCompletenessesIntegration extends TestCase
         $this->assertCompletenessContains($completenesses, 'tablet', 'en_US', 4, 2);
     }
 
-    public function test_it_returns_completenesses_of_several_product_id(): void
+    public function test_it_returns_completenesses_of_several_product_uuids(): void
     {
         $this->initProducts();
 
@@ -78,7 +91,7 @@ class GetProductCompletenessesIntegration extends TestCase
         $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'tablet', 'en_US', 4, 2);
     }
 
-    public function test_it_returns_completenesses_of_several_product_id_filtered_by_channel_and_locales(): void
+    public function test_it_returns_completenesses_of_several_product_uuids_filtered_by_channel_and_locales(): void
     {
         $this->initProducts();
         $idProdA = $this->getProductUuid('productA');
@@ -98,7 +111,7 @@ class GetProductCompletenessesIntegration extends TestCase
         $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'ecommerce_china', 'en_US', 1, 0);
     }
 
-    public function test_it_returns_completenesses_of_several_product_id_filtered_by_channel(): void
+    public function test_it_returns_completenesses_of_several_product_uuids_filtered_by_channel(): void
     {
         $this->initProducts();
         $idProdA = $this->getProductUuid('productA');
@@ -120,7 +133,7 @@ class GetProductCompletenessesIntegration extends TestCase
         $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'ecommerce_china', 'zh_CN', 1, 0);
     }
 
-    public function test_it_returns_completenesses_of_several_product_id_filtered_by_locale(): void
+    public function test_it_returns_completenesses_of_several_product_uuids_filtered_by_locale(): void
     {
         $this->initProducts();
         $idProdA = $this->getProductUuid('productA');
@@ -142,7 +155,7 @@ class GetProductCompletenessesIntegration extends TestCase
         $this->assertCompletenessContains($completenesses[$idProdA2->toString()], 'ecommerce_china', 'zh_CN', 1, 0);
     }
 
-    public function test_that_it_returns_an_empty_array_for_a_product_without_family()
+    public function test_that_it_returns_an_empty_array_for_a_product_without_family(): void
     {
         $this->createProduct(
             'product_without_family',
@@ -174,7 +187,44 @@ class GetProductCompletenessesIntegration extends TestCase
         Assert::assertSame(0, $completenesses->count());
     }
 
-    protected function getConfiguration()
+    public function test_it_filters_non_existing_channels(): void
+    {
+        $this->initProducts();
+
+        $this->removeChannel('ecommerce_china');
+
+        $idProd = $this->getProductUuid('productA');
+
+        $completenesses = $this
+            ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
+            ->fromProductUuids([$idProd], 'ecommerce_china', ['en_US']);
+
+        Assert::assertCount(1, $completenesses);
+
+        Assert::assertArrayHasKey($idProd->toString(), $completenesses);
+        Assert::assertCount(0, $completenesses[$idProd->toString()]);
+    }
+
+    public function test_it_filters_locales_not_bound_to_channels(): void
+    {
+        $this->initProducts();
+
+        $this->removeLocaleFromChannel('de_DE', 'tablet');
+
+        $idProd = $this->getProductUuid('productA');
+
+        $completenesses = $this
+            ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
+            ->fromProductUuids([$idProd], 'tablet');
+
+        Assert::assertCount(1, $completenesses);
+
+        Assert::assertArrayHasKey($idProd->toString(), $completenesses);
+        Assert::assertCount(2, $completenesses[$idProd->toString()]);
+        Assert::assertNull($completenesses[$idProd->toString()]->getCompletenessForChannelAndLocale('tablet', 'de_DE'));
+    }
+
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
@@ -269,5 +319,26 @@ class GetProductCompletenessesIntegration extends TestCase
                 $localeCode
             )
         );
+    }
+
+    private function removeLocaleFromChannel(string $localeCode, string $channelCode): void
+    {
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);
+        foreach($channel->getLocales() as $locale) {
+            if ($locale->getCode() === $localeCode) {
+                $channel->removeLocale($locale);
+            }
+        }
+        $this->get('pim_catalog.saver.channel')->save($channel);
+
+        $this->channelExistsWithLocale->clearCache();
+    }
+
+    private function removeChannel(string $channelCode): void
+    {
+        $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);
+        $this->get('pim_catalog.remover.channel')->remove($channel);
+
+        $this->channelExistsWithLocale->clearCache();
     }
 }

@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
+namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Saver;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -26,7 +27,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        LockFactory $lockFactory
+        LockFactory $lockFactory,
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
@@ -80,7 +81,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
 
             $this->eventDispatcher->dispatch(
                 new GenericEvent($object, array_merge($options, ['is_new' => $areObjectsNew[$i]])),
-                StorageEvents::PRE_SAVE
+                StorageEvents::PRE_SAVE,
             );
 
             $this->objectManager->persist($object);
@@ -91,7 +92,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
         foreach ($objects as $i => $object) {
             $this->eventDispatcher->dispatch(
                 new GenericEvent($object, array_merge($options, ['is_new' => $areObjectsNew[$i]])),
-                StorageEvents::POST_SAVE
+                StorageEvents::POST_SAVE,
             );
         }
 
@@ -101,13 +102,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
     protected function validateObject($object)
     {
         if (!$object instanceof CategoryInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "%s", "%s" provided.',
-                    CategoryInterface::class,
-                    ClassUtils::getClass($object)
-                )
-            );
+            throw new \InvalidArgumentException(sprintf('Expects a "%s", "%s" provided.', CategoryInterface::class, ClassUtils::getClass($object)));
         }
     }
 
@@ -137,7 +132,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
             try {
                 $acquired = $lock->acquire(true);
             } catch (LockConflictedException $ex) {
-                $errors++;
+                ++$errors;
                 continue;
             }
         }

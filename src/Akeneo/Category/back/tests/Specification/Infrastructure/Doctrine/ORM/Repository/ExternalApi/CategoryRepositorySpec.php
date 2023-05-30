@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi;
+namespace Specification\Akeneo\Category\Infrastructure\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ORM\EntityManager;

@@ -58,6 +58,7 @@ pim_identifier_generator:
     helper:
       title: '다음과 같이 하려는 경우 제품 선택에 조건을 추가하십시오.'
       automate: '제품의 타겟팅 선택을 위한 식별자 생성 자동화'
+      multiple: '제품의 서로 다른 선택을 위한 식별자의 다중 구조 유지'
     empty:
       title: '제품 선택 만들기'
       text: '빈 식별자가 있는 모든 제품에 영향을 줍니다.'
@@ -70,6 +71,8 @@ pim_identifier_generator:
         placeholder: '하나 이상의 패밀리를 선택하십시오.'
       select_option:
         placeholder: '하나 이상의 옵션을 선택하십시오.'
+      categories:
+        tree: 트리
   structure:
     helper: '생성할 제품 식별자의 구조를 정의하십시오. 속성 설정을 지정하는 데 도움이 필요한 경우 {{link}}.'
     helper_link: '자세한 내용은 헬프 센터를 확인하십시오'

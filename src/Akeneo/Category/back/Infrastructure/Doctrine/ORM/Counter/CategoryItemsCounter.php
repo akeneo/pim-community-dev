@@ -1,13 +1,14 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter;
+namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
 
+use Akeneo\Category\Infrastructure\Component\CategoryItemsCounterInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 
 /**
- * Count item in a category
+ * Count item in a category.
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -23,11 +24,11 @@ class CategoryItemsCounter implements CategoryItemsCounterInterface
 
     /**
      * @param ItemCategoryRepositoryInterface $itemRepository Item category repository
-     * @param CategoryRepositoryInterface     $categoryRepo   Category repository
+     * @param CategoryRepositoryInterface $categoryRepo Category repository
      */
     public function __construct(
         ItemCategoryRepositoryInterface $itemRepository,
-        CategoryRepositoryInterface $categoryRepo
+        CategoryRepositoryInterface $categoryRepo,
     ) {
         $this->itemRepository = $itemRepository;
         $this->categoryRepository = $categoryRepo;

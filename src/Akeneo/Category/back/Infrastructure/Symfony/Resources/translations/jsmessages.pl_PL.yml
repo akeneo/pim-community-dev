@@ -10,13 +10,17 @@ akeneo.category:
       unhandled_attribute_type: Nie znaleziono konstruktora pola atrybutu typu „{{ type }}”
     template:
       title: Szablon
+      no_attribute_title: W tym szablonie nie ma żadnego atrybutu
+      no_attribute_instructions: Szablon powiązany z tą kategorią jest pusty, możesz dodać do niego atrybuty ze strony drzewa kategorii.
       fetching_failed: Podczas pobierania szablonu wystąpił błąd.
     unsaved_changes: Jeśli opuścisz stronę, stracisz zmiany wprowadzone w kategorii.
   tree:
     create: Utwórz drzewo
     delete: Usuń drzewo
   template:
+    learn_more: Dowiedz się więcej o szablonie kategorii
     create: Aktywuj szablon
+    edit: Edytuj szablon
     notification_success: Szablon został aktywowany.
     notification_error: Nie można aktywować szablonu.
     not_found: Nie ma aktywnego szablonu dla tej kategorii.
@@ -27,7 +31,18 @@ akeneo.category:
         textarea: Obszar tekstowy
         richtext: Tekst sformatowany
         image: Obraz
+      delete_button: Usuń atrybut
+      settings:
+        title: Ustawienia
+        options:
+          title: Opcje
+          value_per_channel: Wartość dla kanału
+          value_per_locale: Wartość dla wersji językowej
+          rich_text: Edytor tekstu sformatowanego
+        translations:
+          title: Tłumaczenia etykiet
     add_attribute:
+      no_attribute_title: Utwórz swój pierwszy atrybut
       add_button: Dodaj atrybut
       confirmation_modal:
         section_title: Dodaj atrybut
