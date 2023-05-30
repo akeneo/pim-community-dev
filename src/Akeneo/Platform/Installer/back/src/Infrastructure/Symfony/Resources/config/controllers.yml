@@ -3,3 +3,4 @@ services:
     public: true
     arguments:
       - '@Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceHandler'
+      - '@oro_security.security_facade'
