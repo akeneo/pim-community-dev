@@ -17,7 +17,6 @@ class UpdateCategoryTemplateAttributesOrderSql implements UpdateCategoryTemplate
     public function __construct(
         private readonly Connection $connection,
     ) {
-
     }
 
     /**
@@ -30,11 +29,11 @@ class UpdateCategoryTemplateAttributesOrderSql implements UpdateCategoryTemplate
             ';',
             \array_fill(
                 0,
-               $attributeList->count(),
+                $attributeList->count(),
                 'UPDATE pim_catalog_category_attribute as pcca
                 SET pcca.attribute_order = ?
-                WHERE uuid = ? AND pcca.order <> :order'
-            )
+                WHERE uuid = ?',
+            ),
         );
 
         $statement = $this->connection->prepare(<<<SQL

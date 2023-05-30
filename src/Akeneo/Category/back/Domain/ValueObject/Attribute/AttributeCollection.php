@@ -100,25 +100,24 @@ class AttributeCollection implements \Countable
 
     /**
      * Sort attributes based on their order property, then build a new object with the re-indexed attributes.
-     * ex. attributes with order properties 1, 3, 7 will be re-indexed as follow: [1, 3, 7] => [1, 2, 3]
-     * @return self
+     * ex. attributes with order properties 1, 3, 7 will be re-indexed as follow: [1, 3, 7] => [1, 2, 3].
      */
-    public function rebuildWithIndexAttributes(): self
+    public function rebuildWithIndexedAttributes(): self
     {
         $attributeList = $this->attributes;
 
         usort(
             $attributeList,
-            function(Attribute $a, Attribute $b) {
+            function (Attribute $a, Attribute $b) {
                 return $a->getOrder()->intValue() - $b->getOrder()->intValue();
-            }
+            },
         );
-        $newAttributeList = [];
+        $reindexedAttributeList = [];
         array_walk(
             $attributeList,
-            function ($attribute, $index) use (&$newAttributeList) {
-                $newOrder = $index +1;
-                $newAttributeList[$newOrder] = Attribute::fromType(
+            function ($attribute, $index) use (&$reindexedAttributeList) {
+                $newOrder = $index + 1;
+                $reindexedAttributeList[$newOrder] = Attribute::fromType(
                     $attribute->getType(),
                     $attribute->getUuid(),
                     $attribute->getCode(),
@@ -128,11 +127,12 @@ class AttributeCollection implements \Countable
                     $attribute->isLocalizable(),
                     $attribute->getLabelCollection(),
                     $attribute->getTemplateUuid(),
-                    $attribute->getAdditionalProperties()
+                    $attribute->getAdditionalProperties(),
                 );
-            }
+            },
         );
-        return new self($newAttributeList);
+
+        return new self($reindexedAttributeList);
     }
 
     /**
@@ -144,9 +144,10 @@ class AttributeCollection implements \Countable
             $this->attributes,
             function (int $maxOrder, Attribute $attribute) {
                 $attributeOrder = $attribute->getOrder()->intValue();
+
                 return max($attributeOrder, $maxOrder);
             },
-            1
+            1,
         );
     }
 }

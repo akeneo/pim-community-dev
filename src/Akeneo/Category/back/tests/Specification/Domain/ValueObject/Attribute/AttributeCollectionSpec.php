@@ -9,6 +9,7 @@ use Akeneo\Category\Domain\Model\Attribute\AttributeText;
 use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
@@ -24,11 +25,11 @@ use PhpSpec\ObjectBehavior;
  */
 class AttributeCollectionSpec extends ObjectBehavior
 {
-    public function it_retrieve_an_attribute_from_identifier(): void
+    public function it_retrieves_an_attribute_from_identifier(): void
     {
-        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute();
-        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute();
-        $mainImageAttribute = $this->createMainImageImageAttribute();
+        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute(1);
+        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute(2);
+        $mainImageAttribute = $this->createMainImageImageAttribute(3);
 
         $this->beConstructedThrough(
             'fromArray',
@@ -40,11 +41,11 @@ class AttributeCollectionSpec extends ObjectBehavior
         $this->getAttributeByIdentifier('main_image|d049da25-5f74-43ba-b261-65ee2c9dc9f4')->shouldReturn($mainImageAttribute);
     }
 
-    public function it_retrieve_an_attribute_from_code(): void
+    public function it_retrieves_an_attribute_from_code(): void
     {
-        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute();
-        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute();
-        $mainImageAttribute = $this->createMainImageImageAttribute();
+        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute(1);
+        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute(2);
+        $mainImageAttribute = $this->createMainImageImageAttribute(3);
 
         $this->beConstructedThrough(
             'fromArray',
@@ -58,9 +59,9 @@ class AttributeCollectionSpec extends ObjectBehavior
 
     public function it_adds_a_new_attribute_to_its_attributes_list(): void
     {
-        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute();
-        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute();
-        $mainImageAttribute = $this->createMainImageImageAttribute();
+        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute(1);
+        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute(2);
+        $mainImageAttribute = $this->createMainImageImageAttribute(3);
 
         $this->beConstructedThrough(
             'fromArray',
@@ -87,8 +88,8 @@ class AttributeCollectionSpec extends ObjectBehavior
 
     public function it_counts_its_number_of_attributes(): void
     {
-        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute();
-        $mainImageAttribute = $this->createMainImageImageAttribute();
+        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute(2);
+        $mainImageAttribute = $this->createMainImageImageAttribute(3);
 
         $this->beConstructedThrough(
             'fromArray',
@@ -102,9 +103,9 @@ class AttributeCollectionSpec extends ObjectBehavior
 
     public function it_reindexes_its_attributes(): void
     {
-        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute();
-        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute();
-        $mainImageAttribute = $this->createMainImageImageAttribute();
+        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute(30);
+        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute(50);
+        $mainImageAttribute = $this->createMainImageImageAttribute(20);
 
         $attributeWithDuplicatedOrderIndex = AttributeText::create(
             AttributeUuid::fromString('d15245be-7d71-40e0-9638-d9f1b2bb3f5f'),
@@ -121,14 +122,15 @@ class AttributeCollectionSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'fromArray',
             [
-                // orders have values 30, 50, 30, 20
                 [$shortDescriptionAttribute, $longDescriptionAttribute, $attributeWithDuplicatedOrderIndex, $mainImageAttribute],
             ]
         );
 
-        $reindexedAttributeCollection = $this->rebuildWithIndexAttributes();
+        $reindexedAttributeCollection = $this->rebuildWithIndexedAttributes();
 
-        // expect main_image, short_description, long_description, duplicated_order
+        /**
+         * @var AttributeCollection $reindexedAttributeCollection
+         */
         $reindexedAttributeCollection->getAttributeByCode('main_image')->getOrder()->intValue()->shouldReturn(1);
         $reindexedAttributeCollection->getAttributeByCode('short_description')->getOrder()->intValue()->shouldReturn(2);
         $reindexedAttributeCollection->getAttributeByCode('duplicated_order')->getOrder()->intValue()->shouldReturn(3);
@@ -137,9 +139,9 @@ class AttributeCollectionSpec extends ObjectBehavior
 
     public function it_returns_the_potential_order_value_of_the_next_added_attribute(): void
     {
-        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute();
-        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute();
-        $mainImageAttribute = $this->createMainImageImageAttribute();
+        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute(1);
+        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute(27);
+        $mainImageAttribute = $this->createMainImageImageAttribute(50);
 
         $this->beConstructedThrough(
             'fromArray',
@@ -152,12 +154,12 @@ class AttributeCollectionSpec extends ObjectBehavior
         $this->calculateNextOrder()->shouldReturn(51);
     }
 
-    private function createShortDescriptionTextAttribute(): AttributeText
+    private function createShortDescriptionTextAttribute(int $order): AttributeText
     {
         return AttributeText::create(
             AttributeUuid::fromString('e30177ee-d8e8-46a4-9491-ea6c3579e727'),
             new AttributeCode('short_description'),
-            AttributeOrder::fromInteger(30),
+            AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(false),
             AttributeIsScopable::fromBoolean(false),
             AttributeIsLocalizable::fromBoolean(false),
@@ -167,12 +169,12 @@ class AttributeCollectionSpec extends ObjectBehavior
         );
     }
 
-    private function createLongDescriptionTextAttribute(): AttributeText
+    private function createLongDescriptionTextAttribute(int $order): AttributeText
     {
         return AttributeText::create(
             AttributeUuid::fromString('82afa0d1-cf51-48e0-a8d3-34444ddc1c09'),
             new AttributeCode('long_description'),
-            AttributeOrder::fromInteger(50),
+            AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
             AttributeIsScopable::fromBoolean(true),
             AttributeIsLocalizable::fromBoolean(false),
@@ -182,12 +184,12 @@ class AttributeCollectionSpec extends ObjectBehavior
         );
     }
 
-    private function createMainImageImageAttribute(): AttributeImage
+    private function createMainImageImageAttribute(int $order): AttributeImage
     {
         return AttributeImage::create(
             AttributeUuid::fromString('d049da25-5f74-43ba-b261-65ee2c9dc9f4'),
             new AttributeCode('main_image'),
-            AttributeOrder::fromInteger(20),
+            AttributeOrder::fromInteger($order),
             AttributeIsRequired::fromBoolean(true),
             AttributeIsScopable::fromBoolean(false),
             AttributeIsLocalizable::fromBoolean(false),

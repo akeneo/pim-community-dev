@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\EventSubscriber;
 
 use Akeneo\Category\Application\Query\GetAttribute;
-use Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder;
 use Akeneo\Category\Domain\Event\AttributeDeactivatedEvent;
+use Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -31,7 +31,7 @@ class ReorderTemplateAttributesOnAttributeDeactivatedSubscriber implements Event
     public function updateOrderOfTemplateAttributes(AttributeDeactivatedEvent $event): void
     {
         $attributeCollection = $this->getAttribute->byTemplateUuid($event->getTemplateUuid());
-        $reindexedAttributeCollection = $attributeCollection->rebuildWithIndexAttributes();
+        $reindexedAttributeCollection = $attributeCollection->rebuildWithIndexedAttributes();
         $this->updateCategoryTemplateAttributesOrder->fromAttributeCollection($reindexedAttributeCollection);
     }
 }
