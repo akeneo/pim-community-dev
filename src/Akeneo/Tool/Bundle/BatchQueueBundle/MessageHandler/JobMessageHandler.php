@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessageInterface;
 use Psr\Log\LoggerInterface;
@@ -20,7 +21,8 @@ final class JobMessageHandler implements MessageSubscriberInterface
 {
     public function __construct(
         private LoggerInterface $logger,
-        private string $projectDir
+        private string $projectDir,
+        private FeatureFlags $featureFlags,
     ) {
     }
 
@@ -85,6 +87,18 @@ final class JobMessageHandler implements MessageSubscriberInterface
             $process->setTimeout(null);
 
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
+
+            if ($this->featureFlags->isEnabled('pause_jobs')) {
+                $previousHandler = pcntl_signal_get_handler(\SIGTERM);
+
+                pcntl_signal(\SIGTERM, function () use ($process, $previousHandler) {
+                    $this->logger->notice('Received SIGTERM signal in job message handler and forwarding it to subprocess');
+                    $process->signal(\SIGTERM);
+                    if (is_callable($previousHandler)) {
+                        $previousHandler();
+                    }
+                });
+            }
 
             $process->run(function ($type, $buffer): void {
                 \fwrite(Process::ERR === $type ? \STDERR : \STDOUT, $buffer);
