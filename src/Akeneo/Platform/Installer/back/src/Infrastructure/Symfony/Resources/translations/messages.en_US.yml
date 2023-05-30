@@ -1,0 +1,3 @@
+pim_installer:
+  acl:
+    reset: Reset PIM instance

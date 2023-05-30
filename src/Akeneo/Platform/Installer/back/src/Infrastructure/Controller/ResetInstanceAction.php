@@ -12,18 +12,25 @@ namespace Akeneo\Platform\Installer\Infrastructure\Controller;
 use Akeneo\Platform\Installer\Application\PurgeInstance\PurgeInstanceCommand;
 use Akeneo\Platform\Installer\Application\PurgeInstance\PurgeInstanceHandler;
 use Akeneo\Platform\Installer\Domain\Service\FixtureInstallerInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ResetInstanceAction
 {
     public function __construct(
         private readonly PurgeInstanceHandler $purgeInstanceHandler,
         private readonly FixtureInstallerInterface $fixtureInstaller,
+        private readonly SecurityFacade $securityFacade,
     ) {
     }
 
     public function __invoke(): JsonResponse
     {
+        if (!$this->securityFacade->isGranted('pim_reset_instance')) {
+            throw new AccessDeniedException();
+        }
+
         $this->purgeInstanceHandler->handle(new PurgeInstanceCommand());
         /* To replace by the new handler/command */
         $this->fixtureInstaller->install();

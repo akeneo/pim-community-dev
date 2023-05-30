@@ -6,3 +6,9 @@ services:
   Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller:
     arguments:
       - '%kernel.project_dir%'
+
+  akeneo.feature_flag.service.reset_pim:
+    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+    arguments:
+      - '%env(bool:FLAG_RESET_PIM_ENABLED)%'
+    public: true

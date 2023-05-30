@@ -208,7 +208,6 @@ const webpackConfig = {
         include: [/(public\/bundles)/, /node_modules\/@akeneo/],
         exclude: [
           /* Exclude /node_modules/ except /@akeneo/ workspaces */
-          /node_modules\/(?!@akeneo)/,
           path.resolve(rootDir, 'vendor'),
           path.resolve(rootDir, 'tests'),
           path.resolve(__dirname, 'tests'),
@@ -228,7 +227,7 @@ const webpackConfig = {
   },
 
   watchOptions: {
-    ignored: /node_modules\/(?!@akeneo)|var\/cache|vendor/,
+    // ignored: /var\/cache|vendor/,
   },
 
   plugins: [
@@ -242,7 +241,6 @@ const webpackConfig = {
     // Ignore these directories when webpack watches for changes
     new webpack.WatchIgnorePlugin({
       paths: [
-        /node_modules\/(?!@akeneo)/,
         path.resolve(rootDir, './config'),
         path.resolve(rootDir, './tests'),
         path.resolve(rootDir, './var'),
