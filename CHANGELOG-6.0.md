@@ -1,5 +1,13 @@
 # 6.0.x
 
+# 6.0.85 (2023-05-23)
+
+## Bug fixes
+
+- PIM-10997: Update error message when trying to delete role with linked users or connections
+
+# 6.0.84 (2023-05-16)
+
 # 6.0.83 (2023-05-15)
 
 ## Bug fixes
