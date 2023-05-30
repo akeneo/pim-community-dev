@@ -45,7 +45,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         protected ItemReaderInterface $reader,
         protected ItemProcessorInterface $processor,
         protected ItemWriterInterface $writer,
-        protected int $batchSize = 10,
+        protected int $batchSize = 100,
         private ?JobStopperInterface $jobStopper = null,
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository, $jobStopper);
@@ -91,7 +91,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         }
 
         while (true) {
-            sleep(2);
             try {
                 $readItem = $this->reader->read();
                 if (null === $readItem) {
