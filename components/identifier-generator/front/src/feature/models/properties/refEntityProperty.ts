@@ -18,6 +18,9 @@ type RefEntityProperty = {
         operator: Operator | null;
         value: number | null;
       }
+    | {
+        type: AbbreviationType.NOMENCLATURE;
+      }
     | {type: null};
 };
 

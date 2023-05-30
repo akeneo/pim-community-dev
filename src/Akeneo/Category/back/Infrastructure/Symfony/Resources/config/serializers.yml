@@ -1,0 +1,23 @@
+parameters:
+    pim_catalog.normalizer.standard.category.class: Akeneo\Category\Infrastructure\Component\Normalizer\Standard\CategoryNormalizer
+    pim_serializer.normalizer.flat.category.class: Akeneo\Category\Infrastructure\Component\Normalizer\Versioning\CategoryNormalizer
+
+services:
+    pim_category.serializer:
+        class: Symfony\Component\Serializer\Serializer
+
+    pim_catalog.normalizer.standard.category:
+        class: '%pim_catalog.normalizer.standard.category.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.normalizer.standard.datetime'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.category:
+        class: '%pim_serializer.normalizer.flat.category.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.category'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }

@@ -50,13 +50,13 @@ final class UpdateSimpleSelectNomenclatureControllerEndToEnd extends ControllerE
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $nomenclatureDefinition = $this->getNomenclatureRepository()->get('a_simple_select_size');
-        Assert::assertSame($nomenclatureDefinition->operator(), '<=');
-        Assert::assertSame($nomenclatureDefinition->value(), 4);
-        Assert::assertSame($nomenclatureDefinition->generateIfEmpty(), true);
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['s'] ?? null, 'SMAL');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['xs'] ?? null, 'XSML');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['l'] ?? null, null);
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['unknown'] ?? null, null);
+        Assert::assertSame('<=', $nomenclatureDefinition->operator());
+        Assert::assertSame(4, $nomenclatureDefinition->value());
+        Assert::assertSame(true, $nomenclatureDefinition->generateIfEmpty());
+        Assert::assertSame('SMAL', ($nomenclatureDefinition->values() ?? [])['s'] ?? null);
+        Assert::assertSame('XSML', ($nomenclatureDefinition->values() ?? [])['xs'] ?? null);
+        Assert::assertSame(null, ($nomenclatureDefinition->values() ?? [])['l'] ?? null);
+        Assert::assertSame(null, ($nomenclatureDefinition->values() ?? [])['unknown'] ?? null);
 
         $this->callUpdateRoute(
             'akeneo_identifier_generator_nomenclature_rest_update',
@@ -76,9 +76,9 @@ final class UpdateSimpleSelectNomenclatureControllerEndToEnd extends ControllerE
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $nomenclatureDefinition = $this->getNomenclatureRepository()->get('a_simple_select_size');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['s'] ?? null, 'SMAL');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['xs'] ?? null, null);
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['l'] ?? null, 'LARG');
+        Assert::assertSame('SMAL', ($nomenclatureDefinition->values() ?? [])['s'] ?? null);
+        Assert::assertSame(null, ($nomenclatureDefinition->values() ?? [])['xs'] ?? null);
+        Assert::assertSame('LARG', ($nomenclatureDefinition->values() ?? [])['l'] ?? null);
     }
 
     /** @test */

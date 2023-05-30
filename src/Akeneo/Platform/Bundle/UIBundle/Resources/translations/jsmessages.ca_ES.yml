@@ -423,6 +423,15 @@ pim_system:
     enabled: Activat SSO
     disabled: Desactivat SSO
     title: SAML-basat en l'inici de sessió únic
+  reset_pim:
+    modal:
+      summary:
+        users:
+          name: Usuaris
+        roles:
+          name: Rols
+      confirm:
+        name: Confirmar
 pim_datagrid:
   mass_action:
     default:

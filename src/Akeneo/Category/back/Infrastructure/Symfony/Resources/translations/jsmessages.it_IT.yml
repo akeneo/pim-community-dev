@@ -1,21 +1,29 @@
+pim_title:
+  pim_category_template_edit: Modifica modello categoria
 akeneo.category:
   tree_list:
     column:
       category_templates: Modelli di categoria
   attributes: Atributi
   edition_form:
+    error:
+      unhandled_attribute_type: Impossibile trovare il generatore del campo attributo per il tipo di attributo "{{ type }}"
     template:
       title: Modello
+      no_attribute_title: In questo modello non ci sono attributi
+      no_attribute_instructions: Il modello associato a questa categoria è vuoto. Puoi aggiungere attributi a questo modello dalla pagina dell'albero delle categorie.
       fetching_failed: Si è verificato un errore durante il recupero del modello
     unsaved_changes: Se lasci la pagina, perderai le modifiche alla categoria.
   tree:
     create: Crea struttura
     delete: Elimina struttura
   template:
+    learn_more: Scopri di più sui modelli di categoria
     create: Attiva modello
-    edit: Visualizza modello
+    edit: Modifica modello
     notification_success: Modello attivato correttamente
     notification_error: Impossibile attivare il modello
+    not_found: Per questa categoria non c'è un modello attivo
     attribute:
       description_title: Impostazioni descrizione
       type:
@@ -23,17 +31,74 @@ akeneo.category:
         textarea: Area di testo
         richtext: Testo formattato
         image: Immagine
+      delete_button: Elimina attributo
+      settings:
+        title: Impostazioni
+        options:
+          title: Opzioni
+          value_per_channel: Valore per canale
+          rich_text: Editor di Testi Avanzato
+        translations:
+          title: Traduzioni etichette
     add_attribute:
+      no_attribute_title: Crea il tuo primo attributo
+      no_attribute_instructions: Definisci il contenuto che vuoi associare alle tue categorie aggiungendo Testo, Area di Testo o Attributi Immagine a questo modello.
+      add_button: Aggiungi attributo
+      create_button: Crea attributo
       confirmation_modal:
+        section_title: Aggiungi attributo
+        title: Crea un nuovo attributo di categoria
+        head_helper: Gli attributi di categoria sono associati a un unico modello. Non sono accessibili in altri modelli.
+        tail_helper: Valore per il canale e Valore per l'impostazione locale non possono essere modificati dopo la creazione dell'attributo.
+        link: Scopri di più sui modelli di categoria.
+        create: Crea
         input:
           label: Etichetta
           code: Codice
           type:
+            label: Tipo di attributo
+            empty: Nessun tipo di attributo disponibile
             option_title:
               text: Testo
+              textarea: Area di testo
               image: Immagine
+      success:
+        notification: Attributo creato correttamente
+      error:
+        failed: Aggiunta dell'attributo al modello non riuscita
+        limit_reached:
+          title: Non puoi aggiungere più di 50 attributi
+          message: I modelli di categoria hanno il limite di 50 attributi per modello.
+    delete_attribute:
+      delete: Elimina attributo categoria
+      confirmation_modal:
+        title: Elimina questo attributo di categoria
+        message: Confermi di voler eliminare l'attributo di categoria denominato {{ template }}?
+        helper: L'eliminazione di questo attributo eliminerà definitivamente l'attributo e i valori delle categorie associate.
+      notification_success:
+        title: 'Attributo {{ attribute }} eliminato correttamente'
+    deactivate:
+      deactivate_template: Disattiva modello
+      confirmation_modal:
+        title: Disattiva modello categoria
+        message: Confermi di voler disattivare il modello di categoria denominato {{ template }}?
+        helper: Disattivando questo modello si eliminano definitivamente gli attributi e i valori delle categorie associate.
+        deactivate: Disattiva
+      notification_success:
+        title: 'Modello {{ template }} disattivato'
+        message: '{{ template }} è stato disattivato. Il contenuto delle categorie associate è stato eliminato.'
   template_list:
     columns:
       header: Etichetta
       code: Codice
       type: Tipo
+  tag:
+    new: Nuovo
+  discover_enriched_categories_information:
+    title: Scopri le categorie arricchite
+    content:
+      enrich_attribute_values: Arricchisci qualsiasi livello degli alberi delle categorie con attributi Testo, Area di Testo e Immagine
+      customizable_templates: Offri l'esperienza di prodotto che desideri grazie a modelli personalizzabili
+    survey_link_label: Dicci cosa ne pensi
+    learn_more_link_label: Scopri di più sulle Categorie arricchite
+  other_actions: Altre azioni

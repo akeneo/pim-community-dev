@@ -112,7 +112,7 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
         $longDescription = $insertedAttributes->getAttributeByCode('long_description');
         $this->assertEquals((string) $longDescription->getType(), AttributeType::RICH_TEXT);
 
-        $longDescription->update(isRichRextArea: false);
+        $longDescription->update(isRichTextArea: false, labels: null);
         $this->categoryTemplateAttributeSaver->update($longDescription);
 
         $longDescription = $insertedAttributes->getAttributeByCode('long_description');
@@ -140,10 +140,43 @@ class SqlCategoryTemplateAttributeSaverIntegration extends CategoryTestCase
         $seoMetaDescription = $insertedAttributes->getAttributeByCode('seo_meta_description');
         $this->assertEquals((string) $seoMetaDescription->getType(), AttributeType::TEXTAREA);
 
-        $seoMetaDescription->update(isRichRextArea: true);
+        $seoMetaDescription->update(isRichTextArea: true, labels: null);
         $this->categoryTemplateAttributeSaver->update($seoMetaDescription);
 
         $seoMetaDescription = $insertedAttributes->getAttributeByCode('seo_meta_description');
         $this->assertEquals((string) $seoMetaDescription->getType(), AttributeType::RICH_TEXT);
+    }
+
+    public function testItAddsLabelsToAttribute(): void
+    {
+        /** @var Category $category */
+        $category = $this->getCategory->byCode('master');
+
+        $templateUuid = '02274dac-e99a-4e1d-8f9b-794d4c3ba330';
+        $templateModel = $this->givenTemplateWithAttributes($templateUuid, $category->getId());
+
+        $this->categoryTemplateSaver->insert($templateModel);
+        $this->categoryTreeTemplateSaver->insert($templateModel);
+
+        $this->get(CategoryTemplateAttributeSaver::class)->insert(
+            $templateModel->getUuid(),
+            $templateModel->getAttributeCollection()
+        );
+
+        $insertedAttributes = $this->getAttribute->byTemplateUuid($templateModel->getUuid());
+
+        $longDescriptionAttribute = $insertedAttributes->getAttributeByCode('long_description');
+        $this->assertEquals((string) $longDescriptionAttribute->getType(), AttributeType::RICH_TEXT);
+
+        $labels = [
+            'fr_FR' => 'Impression',
+            'en_US' => 'Print',
+        ];
+
+        $longDescriptionAttribute->update(isRichTextArea: null, labels: $labels);
+        $this->categoryTemplateAttributeSaver->update($longDescriptionAttribute);
+
+        $longDescriptionAttribute = $insertedAttributes->getAttributeByCode('long_description');
+        $this->assertEqualsCanonicalizing($longDescriptionAttribute->getLabelCollection()->getTranslations(), $labels);
     }
 }

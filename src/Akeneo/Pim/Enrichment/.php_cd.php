@@ -133,6 +133,7 @@ $rules = [
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\CategoryItemsCounterInterface',
         'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
         'Akeneo\Category\Domain\Model\Classification\CategoryTree',
         'Akeneo\Category\Domain\Query\GetCategoryInterface',

@@ -2,6 +2,7 @@ pim_notification:
   types:
     settings: Ustawienia
     mass_delete: Usuwanie
+    attribute_mass_delete: Usuwanie
 flash:
   comment:
     create:
@@ -21,6 +22,7 @@ pim_enrich.entity.product:
     update:
       success: Produkt pomyślnie zaktualizowany.
       fail: Nie można zaktualizować produktu.
+      fail_session_expired: Nie można zaktualizować produktu. Sesja wygasła. Zaloguj się ponownie.
       fields_not_ready: "Nie można teraz zapisać produktu. Następujące pola nie są gotowe: {{ fields }}"
       already_in_upload: Plik jest aktualnie dodawany dla tego atrybutu w wersji językowej "{{ locale }}" i kanale "{{ scope }}"
       file_upload: Wystąpił błąd podczas przesyłania pliku
@@ -69,6 +71,7 @@ pim_enrich.entity.product:
       modified: Zmodyfikowany
       old_value: Poprzednia wartość
       new_value: Nowa wartość
+      limit: 'Wyświetlana jest tylko następująca liczba ostatnich wersji: {{ limit }}.'
     meta:
       updated: Modyfikowany
       groups: Grupy
@@ -113,7 +116,7 @@ pim_enrich.entity.product:
         quantity: Ilość
         unlinked: Usunięto powiązanie
       search:
-        placeholder: Szukaj po etykiecie lub identyfikatorze
+        placeholder: Szukaj według etykiety, identyfikatora lub UUID
       no_data: Brak powiązanych produktów
       remove: Usuń powiązanie
       edit: Edytuj produkt
@@ -243,6 +246,9 @@ pim_enrich.entity.category:
     success: Usunięto drzewo "{{ tree }}"
     error: Nie można usunąć drzewa "{{ tree }}"
     confirmation: Czy na pewno chcesz usunąć drzewo {{ name }}? Wszystkie kategorie w tym drzewie zostaną usunięte razem z produktami.
+    confirmation_question: Czy na pewno chcesz usunąć drzewo kategorii {{ name }}?
+    warning_categories_number: 'Następująca liczba powiązanych kategorii zostanie usunięta: {{ categoriesNumber }}. Wszystkie znajdujące się w nich produkty zostaną usunięte.'
+    warning_products: Wszystkie powiązane produkty zostaną usunięte z drzewa kategorii {{ name }}
     products_limit_exceeded:
       title: Nie można usunąć drzewa
       message: Drzewo "{{ tree }}" zawiera więcej niż {{ limit }} produktów i dlatego nie można go usunąć.
@@ -250,6 +256,7 @@ pim_enrich.entity.category:
     success: Usunięto kategorię "{{ name }}"
     error: Nie można usunąć kategorii "{{ name }}"
     confirmation: Czy na pewno chcesz usunąć kategorię {{ name }}? Produkty z tej kategorii nie zostaną usunięte.
+    confirmation_question: Czy na pewno chcesz usunąć kategorię {{ name }}?
     products_limit_exceeded:
       title: Nie można usunąć kategorii
       message: Drzewo "{{ name }}" zawiera więcej niż {{ limit }} produktów i dlatego nie można go usunąć.
@@ -451,6 +458,7 @@ pim_datagrid:
     mass_delete: Usuwanie zbiorcze
     selected:
       family: "]-Inf, 1]{{ count }} wybrana rodzina|]1, Inf[{{ count }} wybranych rodzin"
+      attribute: "{count, plural, =0 {# wybranych atrybutów} one {# wybrany atrybut} few {# wybrane atrybuty} many {# wybranych atrybutów} other {# wybranego atrybutu}}"
       product: "]-Inf, 1]{{ count }} wybrany wynik|]1, Inf[{{ count }} wybranych wyników"
   view_selector:
     view: Widoki
@@ -493,6 +501,7 @@ pim_datagrid:
       label: Zaktualizowano
     label_or_identifier:
       label: Etykieta lub identyfikator
+      label_with_uuid: Etykieta, identyfikator lub UUID
     parent:
       label: Element nadrzędny
     identifier:

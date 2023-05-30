@@ -1,10 +1,12 @@
 import {Button, Checkbox, Field, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
-import {userContext, useTranslate} from '@akeneo-pim-community/shared';
+import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
+import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
+import {useState} from 'react';
 
 type Props = {
   attribute: Attribute;
@@ -15,12 +17,22 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
   const catalogLocales = useCatalogLocales();
+  const featureFlag = useFeatureFlags();
 
   const [
     isDeactivateTemplateAttributeModalOpen,
     openDeactivateTemplateAttributeModal,
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
+
+  const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
+
+  const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
+
+  const handleRichTextAreaChange = () => {
+    setIsRichTextArea(!isRichTextArea);
+    updateTemplateAttribute(!isRichTextArea);
+  };
 
   return (
     <SettingsContainer>
@@ -36,7 +48,11 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
       </SectionTitle>
       <OptionsContainer>
         {['textarea', 'richtext'].includes(attribute.type) && (
-          <OptionField checked={attribute.type === 'richtext'} readOnly={true}>
+          <OptionField
+            checked={isRichTextArea}
+            onChange={handleRichTextAreaChange}
+            readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
+          >
             {translate('akeneo.category.template.attribute.settings.options.rich_text')}
           </OptionField>
         )}
