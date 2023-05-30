@@ -199,11 +199,11 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
 
         $localesList = ['fr_FR', 'en_US'];
         foreach ($localesList as $locale) {
-           $localizedNormalizedError = array_values(array_filter($normalizedErrors, static function ($error) use ($locale) {
+            $localizedNormalizedError = array_values(array_filter($normalizedErrors, static function ($error) use ($locale) {
                 return $error['error']['property'] === $locale;
-           }));
-           $this->assertCount(1, $localizedNormalizedError);
-           $this->assertEquals('This value is too long. It should have 255 characters or less.', $localizedNormalizedError[0]['error']['message']);
+            }));
+            $this->assertCount(1, $localizedNormalizedError);
+            $this->assertEquals('This value is too long. It should have 255 characters or less.', $localizedNormalizedError[0]['error']['message']);
         }
     }
 
