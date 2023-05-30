@@ -41,6 +41,14 @@ framework:
                     redeliver_timeout: 86400
                     auto_setup: false
                 serializer: akeneo_batch_queue.messenger.serializer
+            paused_job:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: paused_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
+                serializer: akeneo_batch_queue.messenger.serializer
 
         routing:
             'Akeneo\Platform\Component\EventQueue\Event': webhook
@@ -50,3 +58,4 @@ framework:
             'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': import_export_job
             'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage': data_maintenance_job
             'Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessage': scheduled_job
+            'Akeneo\Tool\Component\BatchQueue\Queue\PausedJobExecutionMessage': paused_job

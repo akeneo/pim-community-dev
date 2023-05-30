@@ -131,6 +131,7 @@ pim_enrich:
       create: Crea un gruppo attributi
       edit: Modifica un gruppo attributi
       remove: Rimuovi un gruppo attributi
+      mass_delete: Rimuovi in blocco gruppi di attributi
       sort: Ordina attributi di gruppo
       add_attribute: Aggiungere l'attributo a un gruppo
       remove_attribute: Rimuovere l'attributo da un gruppo
@@ -140,6 +141,7 @@ pim_enrich:
       create: Creare un attributo
       edit: Modificare un attributo
       remove: Rimuovere un attributo
+      mass_delete: Elimina attributi in blocco
       sort: Ordinare gli attributi all'interno degli attributi di gruppo
       history: Visualizza lo storico dell'attributo
     group:
@@ -212,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: L'dentificatore attributo non può essere rimosso
     used_as_conversion_unit: Questo attributo non può essere rimosso perché è usato come unità di conversione nel canale(i) %channelCodes%.
+    cant_remove_attributes_used_as_label: Impossibile rimuovere gli attributi usati come etichette in una famiglia.
+    cant_remove_attribute_used_as_axis: Impossibile rimuovere questo attributo usato come asse variante in una famiglia variante
   category:
     removed: Categoria rimossa con successo
   tree:
@@ -451,6 +455,7 @@ pim_datagrid:
       label: Caricato
     label_or_identifier:
       label: Etichetta o identificatore
+      label_with_uuid: Etichetta, identificatore o UUID
     parent:
       label: Parente
     identifier:
@@ -546,3 +551,4 @@ pim_login:
   footer:
     powered: Con tecnologia
     powered_image_title: logo Akeneo
+pim_system.acl_group.connect: Connetti

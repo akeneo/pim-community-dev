@@ -95,7 +95,7 @@ define([
           }
 
           $('#container').empty();
-          var $view = $('<div class="view"></div>').appendTo($('#container'));
+          var $view = $('<div class="view-global"></div>').appendTo($('#container'));
 
           if (controller.feature && !FeatureFlags.isEnabled(controller.feature)) {
             this.hideLoadingMask();

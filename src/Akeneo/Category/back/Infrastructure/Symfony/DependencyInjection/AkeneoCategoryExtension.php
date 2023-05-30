@@ -33,8 +33,7 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('normalizers.yml');
         $loader->load('readers.yml');
         $loader->load('repositories.yml');
-        $loader->load('serializers_standard.yml');
-        $loader->load('serializers_versioning.yml');
+        $loader->load('serializers.yml');
         $loader->load('message_buses.yml');
         $loader->load('queries.yml');
         $loader->load('converters.yml');
@@ -57,5 +56,8 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('migration.yml');
         $loader->load('cleaners.yml');
         $loader->load('jobs.yml');
+        $loader->load('counters.yml');
+        $loader->load('savers.yml');
+        $loader->load('twig.yml');
     }
 }

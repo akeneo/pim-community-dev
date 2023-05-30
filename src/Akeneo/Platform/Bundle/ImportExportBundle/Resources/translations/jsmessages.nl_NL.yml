@@ -235,6 +235,8 @@ pim_import_export:
     6: Mislukt
     7: Afgebroken
     8: Onbekend
+    9: Pausing
+    10: Paused
   job_status:
     COMPLETED: Voltooid
     STARTING: Opstarten
