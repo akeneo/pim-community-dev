@@ -1,19 +1,14 @@
 import {Button, Checkbox, Field, Helper, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
-import {
-  LabelCollection,
-  useDebounceCallback,
-  useFeatureFlags,
-  userContext,
-  useTranslate,
-} from '@akeneo-pim-community/shared';
+import {LabelCollection, useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
-import {useState, useRef} from 'react';
+import {useState} from 'react';
 import {BadRequestError} from '../../tools/apiFetch';
+import {useDebounceCallback} from '../../tools/useDebounceCallback';
 
 type Props = {
   attribute: Attribute;
@@ -35,7 +30,6 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
   const catalogLocales = useCatalogLocales();
   const featureFlag = useFeatureFlags();
   const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
-  const editTranslationsTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const [
     isDeactivateTemplateAttributeModalOpen,
@@ -57,29 +51,26 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     setIsRichTextArea(!isRichTextArea);
     updateTemplateAttribute({isRichTextArea: !isRichTextArea});
   };
+  const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string) => {
+    updateTemplateAttribute({labels: {[locale]: value}})
+      .then(() => {
+        if (error[locale]) {
+          delete error[locale];
+          setError({...error});
+        }
+      })
+      .catch((error: BadRequestError<ApiResponseError>) => {
+        const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
+          accumulator[currentError.error.property] = [currentError.error.message];
 
+          return accumulator;
+        }, {});
+        setError(state => ({...state, ...errors}));
+      });
+  }, 300);
   const handleTranslationsChange = (locale: string, value: string) => {
-    if (editTranslationsTimerRef.current) {
-      clearTimeout(editTranslationsTimerRef.current);
-    }
     setTranslations({...translations, [locale]: value});
-    editTranslationsTimerRef.current = setTimeout(() => {
-      updateTemplateAttribute({labels: {[locale]: value}})
-        .then(() => {
-          if (error[locale]) {
-            delete error[locale];
-            setError({...error});
-          }
-        })
-        .catch((error: BadRequestError<ApiResponseError>) => {
-          const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
-            accumulator[currentError.error.property] = [currentError.error.message];
-
-            return accumulator;
-          }, {});
-          setError(state => ({...state, ...errors}));
-        });
-    }, 500);
+    debouncedUpdateTemplateAttribute(locale, value);
   };
 
   return (
