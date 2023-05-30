@@ -37,7 +37,7 @@ final class EventQueuesAndConsumersIntegration extends TestCase
 
         parent::setUp();
 
-        $this->bus = $this->get('messenger.default_bus');
+        $this->bus = $this->get('messenger.bus.default');
         $this->projectDir = $this->getParameter('kernel.project_dir');
         $this->handlerObserver = $this->get(HandlerObserver::class);
         $this->pubSubQueueStatuses = [
@@ -45,6 +45,11 @@ final class EventQueuesAndConsumersIntegration extends TestCase
             'consumer2' => $this->get('akeneo_integration_tests.pub_sub_queue_status.consumer2'),
             'consumer3' => $this->get('akeneo_integration_tests.pub_sub_queue_status.consumer3'),
         ];
+
+        foreach ($this->pubSubQueueStatuses as $pubSubQueueStatus) {
+            $pubSubQueueStatus->createTopicAndSubscription();
+        }
+
         $this->flushQueues();
     }
 
@@ -102,7 +107,7 @@ final class EventQueuesAndConsumersIntegration extends TestCase
             '--bus=ucs_message.handle.bus'
         ];
 
-        $process = new Process($command, null, ['APP_TENANT_ID' => 'pim_test']);
+        $process = new Process($command);
         $process->run();
         $process->wait();
 
