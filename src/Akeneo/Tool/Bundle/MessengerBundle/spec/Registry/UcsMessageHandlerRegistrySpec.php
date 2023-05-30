@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Bundle\MessengerBundle\Registry;
 
-use Akeneo\Tool\Component\Messenger\UcsMessageHandlerInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
