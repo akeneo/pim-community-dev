@@ -21,6 +21,7 @@ createModuleRegistry(Object.keys(aliases), rootDir);
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode', isStrict ? 'with typechecking' : '');
 
 const webpackConfig = {
+  cache: isProd ? false : {type: 'filesystem'},
   stats: {
     hash: false,
     modules: false,
@@ -61,6 +62,11 @@ const webpackConfig = {
     publicPath: '/dist/',
     filename: '[name].min.js',
     chunkFilename: '[name].bundle.js',
+  },
+  snapshot: {
+    managedPaths: [
+      /^(\/node_modules\/(?!@akeneo))/,
+    ],
   },
   devtool: 'source-map',
   resolve: {
@@ -228,7 +234,13 @@ const webpackConfig = {
   },
 
   watchOptions: {
-    ignored: /node_modules\/(?!@akeneo)|var\/cache|vendor/,
+    ignored: [
+      '/node_modules\/(?!@akeneo)/',
+      path.resolve(rootDir, './config'),
+      path.resolve(rootDir, './tests'),
+      path.resolve(rootDir, './var'),
+      path.resolve(rootDir, './vendor'),
+    ]
   },
 
   plugins: [
@@ -238,18 +250,6 @@ const webpackConfig = {
 
     // Map modules to variables for global use
     new webpack.ProvidePlugin({_: 'underscore', Backbone: 'backbone', $: 'jquery', jQuery: 'jquery'}),
-
-    // Ignore these directories when webpack watches for changes
-    new webpack.WatchIgnorePlugin({
-      paths: [
-        /node_modules\/(?!@akeneo)/,
-        path.resolve(rootDir, './config'),
-        path.resolve(rootDir, './tests'),
-        path.resolve(rootDir, './var'),
-        path.resolve(rootDir, './vendor'),
-      ]
-    }),
-
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': isProd ? JSON.stringify('production') : JSON.stringify('development'),
       'process.env.EDITION': JSON.stringify(process.env.EDITION),
