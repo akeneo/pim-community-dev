@@ -44,7 +44,16 @@ class UpdateAttributeController
             );
             $this->categoryCommandBus->dispatch($command);
         } catch (ViolationsException $violationsException) {
-            return new JsonResponse($violationsException->normalize(), Response::HTTP_BAD_REQUEST);
+            $normalizedViolations = $violationsException->normalize();
+            foreach ($normalizedViolations as &$violation) {
+                $locale = $violation['error']['property'];
+                $regex = "/\[(.*?)\]/";
+                if (preg_match($regex, $locale, $matches)) {
+                    $violation['error']['property'] = $matches[1];
+                }
+            }
+
+            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse(null, Response::HTTP_OK);
