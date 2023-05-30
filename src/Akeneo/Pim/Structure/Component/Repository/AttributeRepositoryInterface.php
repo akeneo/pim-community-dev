@@ -77,14 +77,24 @@ interface AttributeRepositoryInterface extends
 
     /**
      * Get the identifier attribute
-     * Only one identifier attribute can exist
      */
-    public function getIdentifier(): ?AttributeInterface;
+    public function getIdentifier(): AttributeInterface;
+
+    /**
+     * Get the main identifier attribute
+     * Only one main identifier attribute can exist
+     */
+    public function getMainIdentifier(): AttributeInterface;
 
     /**
      * Get the identifier code
      */
-    public function getIdentifierCode(): ?string;
+    public function getIdentifierCode(): string;
+
+    /**
+     * Get the main identifier code
+     */
+    public function getMainIdentifierCode(): string;
 
     /**
      * Get attribute type by code attributes
@@ -142,6 +152,4 @@ interface AttributeRepositoryInterface extends
      * @return array
      */
     public function findAvailableAxes($locale);
-
-    public function updateMainIdentifier(AttributeInterface $attribute): void;
 }

@@ -22,8 +22,6 @@ use Doctrine\ORM\QueryBuilder;
  */
 class AttributeRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface, AttributeRepositoryInterface
 {
-    protected ?string $identifierCode = null;
-
     /**
      * {@inheritdoc}
      */
@@ -244,43 +242,36 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getIdentifier(): ?AttributeInterface
+    public function getIdentifier(): AttributeInterface
     {
-        // TODO CPM-1053
-        if ($this->isCurrentDatabaseVersion()) {
-            $identifier = $this->findOneBy(['type' => AttributeTypes::IDENTIFIER, 'mainIdentifier' => true]);
-        } else {
-            $identifier = $this->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
-        }
-
-        return $identifier;
+        return $this->getMainIdentifier();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode(): ?string
+    public function getMainIdentifier(): AttributeInterface
     {
-        if (null === $this->identifierCode) {
-            $query = $this->createQueryBuilder('a')
-                ->select('a.code')
-                ->andWhere('a.type = :type')
-                ->setParameter('type', AttributeTypes::IDENTIFIER)
-                ->setMaxResults(1);
+        return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER, 'mainIdentifier' => true]) ??
+            throw new \RuntimeException('The PIM has no identifier attribute');
+    }
 
-            // TODO CPM-1053
-            if ($this->isCurrentDatabaseVersion()) {
-                $query->andWhere('a.mainIdentifier = TRUE');
-            }
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierCode(): string
+    {
+        return $this->getMainIdentifierCode();
+    }
 
-            $code = $query->getQuery()->getSingleResult(Query::HYDRATE_SINGLE_SCALAR);
-
-            $this->identifierCode = $code;
-        }
-
-        return $this->identifierCode;
+    /**
+     * {@inheritdoc}
+     */
+    public function getMainIdentifierCode(): string
+    {
+        return $this->getIdentifier()->getCode();
     }
 
     /**
@@ -377,35 +368,5 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
             ->setParameter(':family', $family->getId());
 
         return $qb->getQuery()->getResult();
-    }
-
-    public function updateMainIdentifier(AttributeInterface $attribute): void
-    {
-        $connection = $this->_em->getConnection();
-        $connection->executeStatement(
-            'UPDATE pim_catalog_attribute SET main_identifier = (code = :code)',
-            ['code' => $attribute->getCode()]
-        );
-    }
-
-    // TODO CPM-1053
-    private function isCurrentDatabaseVersion(): bool
-    {
-        $connection = $this->_em->getConnection();
-        $schema = $connection->getDatabase();
-        $sql = <<<SQL
-            SELECT count(*) FROM information_schema.COLUMNS
-            WHERE table_schema=:schema 
-              AND table_name=:tableName
-              AND column_name=:columnName;
-        SQL;
-
-        $result = $connection->fetchOne($sql, [
-            'schema' => $schema,
-            'tableName' => 'pim_catalog_attribute',
-            'columnName' => 'mainIdentifier'
-        ]);
-
-        return \intval($result) > 0;
     }
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber\Install;
 
-use Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifier;
-use Akeneo\Pim\Structure\Bundle\MainIdentifier\ChangeMainIdentifierHandler;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -21,10 +19,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class InitMainIdentifierSubscriber implements EventSubscriberInterface
 {
+    private ?bool $isMainIdentifierSet = null;
+
     public function __construct(
-        private readonly ChangeMainIdentifierHandler $handler,
-        private readonly Connection $connection,
-        private ?bool $mainIdentifierSet = null
+        private readonly Connection $connection
     ) {
     }
 
@@ -40,30 +38,41 @@ final class InitMainIdentifierSubscriber implements EventSubscriberInterface
 
     public function initMainIdentifier(GenericEvent $event): void
     {
-        if ($this->thereAlreadyIsAMainIdentifier()) {
-            return;
-        }
         $attribute = $event->getSubject();
-        if (!$attribute instanceof AttributeInterface || AttributeTypes::IDENTIFIER !== $attribute->getType()) {
+
+        if (!$attribute instanceof AttributeInterface || AttributeTypes::IDENTIFIER !== $attribute->getType() || $this->thereAlreadyIsAMainIdentifier()) {
             return;
         }
 
-        ($this->handler)(new ChangeMainIdentifier((string) $attribute->getCode()));
-        $this->mainIdentifierSet = true;
+        $this->connection->executeStatement(
+            <<<SQL
+            UPDATE pim_catalog_attribute
+            SET main_identifier = 1
+            WHERE attribute_type = :identifierType
+            LIMIT 1
+            SQL,
+            [
+                'identifierType' => AttributeTypes::IDENTIFIER
+            ]
+        );
+
+        $this->isMainIdentifierSet = true;
     }
 
     private function thereAlreadyIsAMainIdentifier(): bool
     {
-        if (null === $this->mainIdentifierSet) {
-            $this->mainIdentifierSet = (bool) $this->connection->fetchOne(
-                <<<SQL
-                SELECT EXISTS(
-                    SELECT * FROM pim_catalog_attribute WHERE main_identifier IS TRUE
+        if (null === $this->isMainIdentifierSet) {
+            $this->isMainIdentifierSet = \boolval(
+                $this->connection->fetchOne(
+                    <<<SQL
+                    SELECT EXISTS(
+                        SELECT * FROM pim_catalog_attribute WHERE main_identifier IS TRUE
+                    )
+                    SQL
                 )
-                SQL
             );
         }
 
-        return $this->mainIdentifierSet;
+        return $this->isMainIdentifierSet;
     }
 }

@@ -43,7 +43,11 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, SingleIdentifierAttribute::class);
         }
 
-        if (AttributeTypes::IDENTIFIER === $attribute->getType() && null !== $this->attributeRepository->getIdentifier()) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            if ([] === $this->attributeRepository->getAttributeCodesByType(AttributeTypes::IDENTIFIER)) {
+                return;
+            }
+
             $identifier = $this->attributeRepository->getIdentifier();
 
             if ($identifier->getId() !== $attribute->getId()) {

@@ -180,7 +180,15 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier(): ?AttributeInterface
+    public function getIdentifier(): AttributeInterface
+    {
+        return $this->getMainIdentifier();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMainIdentifier(): AttributeInterface
     {
         $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
             return  $attribute->getType() === AttributeTypes::IDENTIFIER && $attribute->isMainIdentifier();
@@ -188,12 +196,12 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
 
         if (false === $attribute) {
             $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
-                return  $attribute->getType() === AttributeTypes::IDENTIFIER && 'sku' === $attribute->getCode();
+                return  $attribute->getType() === AttributeTypes::IDENTIFIER;
             })->first();
         }
 
         if (!$attribute) {
-            return null;
+            throw new \RuntimeException('The PIM has no identifier attribute');
         }
 
         return $attribute;
@@ -202,11 +210,17 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode(): ?string
+    public function getIdentifierCode(): string
     {
-        $identifierAttribute = $this->getIdentifier();
+        return $this->getMainIdentifierCode();
+    }
 
-        return $identifierAttribute->getCode();
+    /**
+     * {@inheritdoc}
+     */
+    public function getMainIdentifierCode(): string
+    {
+        return $this->getMainIdentifier()->getCode();
     }
 
     /**
@@ -267,11 +281,6 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
      * {@inheritdoc}
      */
     public function findAvailableAxes($locale)
-    {
-        throw new NotImplementedException(__METHOD__);
-    }
-
-    public function updateMainIdentifier(AttributeInterface $attribute): void
     {
         throw new NotImplementedException(__METHOD__);
     }

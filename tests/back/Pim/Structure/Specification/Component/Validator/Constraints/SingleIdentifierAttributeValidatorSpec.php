@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\SingleIdentifierAttributeValidator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -48,6 +49,7 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getId()->willReturn(1);
 
+        $attributeRepository->getAttributeCodesByType(AttributeTypes::IDENTIFIER)->willReturn(['some_code']);
         $attributeRepository->getIdentifier()->willReturn($identifier);
 
         $identifier->getId()->willReturn(1);
@@ -70,6 +72,7 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_identifier');
         $attribute->getId()->willReturn(2);
 
+        $attributeRepository->getAttributeCodesByType(AttributeTypes::IDENTIFIER)->willReturn(['some_code']);
         $attributeRepository->getIdentifier()->willReturn($identifier);
 
         $identifier->getId()->willReturn(1);

@@ -112,6 +112,7 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
             ->setCode('sku');
 
         $this->save($identifier);
+        $this->save((new Attribute())->setCode('name'));
 
         $this->getIdentifier()->shouldReturn($identifier);
     }
