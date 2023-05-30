@@ -1,0 +1,7 @@
+services:
+    Akeneo\Category\Infrastructure\Twig\CategoryExtension:
+        arguments:
+            - '@pim_enrich.doctrine.counter.category_registry'
+            - '%max_products_category_removal%'
+        tags:
+            - { name: twig.extension }

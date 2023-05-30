@@ -49,3 +49,15 @@ pim_enrich_attribute_form:
 job_execution.summary:
   deleted_attribute_groups: Usunięte grupy atrybutów
   skipped_attribute_groups: Pominięte grupy atrybutów
+  moved_attributes: Przeniesione atrybuty
+  deleted_attributes: Usunięte atrybuty
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: Zbiorcze usuwanie grup atrybutów zakończyło się niepowodzeniem.
+      warning: Zbiorcze usuwanie grup atrybutów zakończone z ostrzeżeniami
+      success: Zbiorcze usuwanie grup atrybutów zakończone
+    attribute_mass_delete:
+      error: Zbiorcze usuwanie atrybutów nie powiodło się.
+      warning: Zbiorcze usuwanie atrybutów zakończone z ostrzeżeniami
+      success: Zbiorcze usuwanie atrybutów zakończone

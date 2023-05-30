@@ -20,7 +20,7 @@ services:
         class: 'Akeneo\Category\Infrastructure\Controller\InternalApi\CategoryController'
         arguments:
             - '@pim_catalog.repository.category'
-            - '@pim_enrich.twig.category_extension'
+            - '@Akeneo\Category\Infrastructure\Twig\CategoryExtension'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
             - '@Akeneo\Category\Application\Query\GetCategoryChildrenIds'
@@ -70,7 +70,7 @@ services:
         public: true
         arguments:
             - '@validator'
-            - '@category_serializer'
+            - '@pim_category.serializer'
             - '@Akeneo\Category\Application\Handler\StoreUploadedFile'
             - '%supported_category_image_mime_types%'
 

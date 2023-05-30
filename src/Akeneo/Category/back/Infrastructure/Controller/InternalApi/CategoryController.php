@@ -4,8 +4,8 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Application\Query\GetCategoryChildrenIds;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Twig\CategoryExtension;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
-use Akeneo\Pim\Enrichment\Bundle\Twig\CategoryExtension;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

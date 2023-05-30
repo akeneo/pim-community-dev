@@ -74,6 +74,8 @@ pim_enrich.entity.attribute_option:
       fail: Impossibile salvare l'opzione dell'attributo
     delete:
       fail: Errore durante la cancellazione dell'opzione attributo
+  page_title:
+    index: "]-Inf, 1]{{ count }} opzione|]1, Inf[{{ count }} opzioni"
   module:
     edit:
       cancel_title: Annulla la modifica
@@ -243,11 +245,18 @@ pim_enrich.entity.attribute:
     mass_delete:
       modal:
         title: Attributi
+        subtitle: '{1}Conferma l''eliminazione di {{ count }} attributo|]1, Inf[Conferma l''eliminazione di {{ count }} attributi'
+        label: Digita "{{ textToCheck }}"
+        confirm: Confermi di voler eliminare questi attributi?
+      message_bar:
+        success: L'eliminazione è iniziata. Al completamento dell'operazione riceverai una notifica. Nel frattempo, puoi visualizzare il suo avanzamento nel tracker di processo.
+        fail: Si è verificato un errore durante l'avvio dell'operazione di eliminazione
 pim_enrich.entity.attribute_group:
   label: Attributi di gruppo
   uppercase_label: Gruppo attributi
   plural_label: Gruppi di attributi
   result_count: '{0}0 gruppi di attributo|{1}1 gruppo di attributo|]1, Inf[{{ count }} gruppi di attributo'
+  limit_reached: Hai raggiunto il limite di {{ limit }} gruppi di attributi.
   show_more_attribute:
     title: Qui è un po' affollato, ti mostriamo {{ attributeCount }}/{{ totalAttributeCount }} attributi.
     subtitle: Per scoprire tutti gli attributi di questo gruppo, clicca semplicemente sotto!
@@ -261,6 +270,9 @@ pim_enrich.entity.attribute_group:
       success: Gruppo di attributi aggiornato con successo
       fail: Gruppo di attributi non può essere aggiornato
       fields_not_ready: "Il gruppo attributo non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
+    delete:
+      success: L'eliminazione è iniziata. Al completamento dell'operazione riceverai una notifica. Nel frattempo, puoi visualizzare il suo avanzamento nel tracker di processo.
+      fail: Si è verificato un errore durante l'avvio dell'operazione di eliminazione
     mass_delete:
       success: L'eliminazione è iniziata. Al completamento dell'operazione riceverai una notifica. Nel frattempo, puoi visualizzare il suo avanzamento nel tracker di processo.
       fail: Si è verificato un errore durante l'avvio dell'operazione di eliminazione
@@ -277,14 +289,27 @@ pim_enrich.entity.attribute_group:
   selected: '{0}0 gruppi di attributi selezionati|{1}1 gruppo di attributi selezionato|]1, Inf[{{ count }} gruppi di attributi selezionati'
   mass_delete:
     confirm: '{1}Confermi di voler eliminare questo gruppo di attributi?|]1, Inf[Confermi di voler eliminare questi {{ count }} gruppi di attributi?'
+    confirmation_phrase: 'Digita "{{ confirmation_word }}"'
     confirmation_word: elimina
+    attribute_warning: '{1}L''eliminazione di questi gruppi di attributi avrà effetto su {{ number_of_attribute }} attributo correlato. Dovrai spostare questo attributo correlato in un nuovo gruppo di attributi.|]1, Inf[L''eliminazione di questi gruppi di attributi avrà effetto su {{ number_of_attribute }} attributi correlati. Dovrai spostare questi attributi correlati in un nuovo gruppo.'
+    select_attribute_group: '{1}Seleziona il gruppo di attributi in cui spostare l''attributo correlato |]1, Inf[Seleziona il gruppo di attributi in cui spostare i {{ number_of_attribute }} attributi correlati:'
     empty_result_label: 'Nessun gruppo di attributi trovato'
     placeholder: 'Seleziona gruppo di attributi'
     open_label: 'elenco gruppi di attributi'
+  delete:
+    confirm: 'Confermi di voler eliminare questo gruppo di attributi?'
+    attribute_warning: 'L''eliminazione di questo gruppo di attributi avrà effetto su {{ number_of_attribute }} attributo correlato. Dovrai spostare questo attributo correlato in un nuovo gruppo di attributi.'
+    select_attribute_group: '{1}Seleziona il gruppo di attributi in cui spostare l''attributo correlato:|]1, Inf[Seleziona il gruppo di attributi in cui spostare i {{ number_of_attribute }} attributi correlati:'
   batch_jobs:
     delete_attribute_groups:
       delete_attribute_groups:
         label: Elimina gruppi di attributi
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: L'eliminazione in blocco dei gruppi di attributi non è riuscita
+      warning: Eliminazione in blocco dei gruppi di attributi completata con alcuni avvisi
+      success: Eliminazione in blocco dei gruppi di attributi completata
 pim_enrich.mass_edit.family:
   title: Azione di massa sulle famiglie
   confirm: "{1}Stai per aggiornare una famiglia con le seguenti informazioni, conferma.|]1, Inf[Stai per aggiornare {{ itemsCount }} famiglie con le seguenti informazioni, conferma."
@@ -308,6 +333,13 @@ pim_enrich.mass_edit.family:
 batch_jobs:
   default_steps:
     delete_attribute_groups: Elimina gruppi di attributi
+    move_child_attributes: Sposta attributi figli
+  delete_attributes:
+    delete_attributes:
+      label: Elimina attributi
+job_execution:
+  summary:
+    deleted_attributes: Attributi eliminati
 akeneo_job_process_tracker:
   type_filter:
     attribute_group_mass_delete: Elimina gruppi di attributi

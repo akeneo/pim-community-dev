@@ -50,13 +50,6 @@ services:
             - '@event_dispatcher'
             - '%pim_catalog.model.association_type.interface%'
 
-    pim_catalog.saver.category:
-        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '@akeneo.enrichment.lock.factory'
-
     pim_catalog.saver.group_options_resolver:
         class: '%pim_catalog.saver.group_options_resolver.class%'
 

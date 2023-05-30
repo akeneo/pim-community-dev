@@ -74,6 +74,8 @@ pim_enrich.entity.attribute_option:
       fail: Nie można zapisać opcji atrybutu
     delete:
       fail: Błąd podczas usuwania ustawienia atrybutu
+  page_title:
+    index: "{count, plural, =0 {# opcji} one {# opcja} few {# opcje} many {# opcji} other {# opcji}}"
   module:
     edit:
       cancel_title: Anuluj zmiany
@@ -243,11 +245,18 @@ pim_enrich.entity.attribute:
     mass_delete:
       modal:
         title: Atrybuty
+        subtitle: '{1}Potwierdź usunięcie {{ count }} atrybutu|]1, Inf[Potwierdź usunięcie {{ count }} atrybutów'
+        label: Wpisz następujący tekst „{{ textToCheck }}”
+        confirm: Czy na pewno chcesz usunąć te atrybuty?
+      message_bar:
+        success: Usuwanie rozpoczęte. Kiedy się zakończy, otrzymasz powiadomienie. W międzyczasie możesz obserwować jego postępy w trackerze procesów.
+        fail: Podczas uruchamiania usuwania wystąpił błąd.
 pim_enrich.entity.attribute_group:
   label: grupa atrybutów
   uppercase_label: Grupa atrybutów
   plural_label: Grupy Atrybutów
   result_count: '{0}0 grup atrybutów|{1}1 grupa atrybutów|]1, Inf[{{ count }} grup atrybutów'
+  limit_reached: Osiągnięto limit {{ max }} grup atrybutów.
   show_more_attribute:
     title: Trochę tu tłoczno, pokazujemy Ci {{ attributeCount }}/{{ totalAttributeCount }} atrybutów.
     subtitle: Aby odkryć wszystkie atrybuty tej grupy, kliknij poniżej!
@@ -261,6 +270,9 @@ pim_enrich.entity.attribute_group:
       success: Grupa atrybutów pomyślnie zaktualizowana
       fail: Nie można zaktualizować grupy atrybutów
       fields_not_ready: "Nie można teraz zapisać grupy atrybutów. Następujące pola nie są gotowe: {{ fields }}"
+    delete:
+      success: Usuwanie rozpoczęte. Kiedy się zakończy, otrzymasz powiadomienie. W międzyczasie możesz obserwować jego postępy w trackerze procesów.
+      fail: Podczas uruchamiania usuwania wystąpił błąd
     mass_delete:
       success: Usuwanie rozpoczęte. Kiedy się zakończy, otrzymasz powiadomienie. W międzyczasie możesz obserwować jego postępy w trackerze procesów.
       fail: Podczas uruchamiania usuwania wystąpił błąd.
@@ -277,14 +289,27 @@ pim_enrich.entity.attribute_group:
   selected: '{0}Nie wybrano grupy atrybutów|{1}Wybrano jedną grupę atrybutów|]1,Inf]Liczba wybranych grup atrybutów: {{ count }}'
   mass_delete:
     confirm: '{1}Czy na pewno chcesz usunąć tę grupę atrybutów?|]1, Inf[Czy na pewno chcesz usunąć następującą liczbę grup atrybutów: {{ count }}?'
+    confirmation_phrase: 'Wpisz „{{ confirmation_word }}”'
     confirmation_word: usuń
+    attribute_warning: '{1}Usunięcie tych grup atrybutów będzie mieć wpływ na {{ number_of_attribute }} powiązany atrybut. Będzie trzeba przenieść go do nowej grupy atrybutów.|]1, Inf[Usunięcie tych grup atrybutów będzie mieć wpływ na następującą liczbę powiązanych atrybutów: {{ number_of_attribute }}. Będzie trzeba przenieść je do nowej grupy atrybutów.'
+    select_attribute_group: '{1}Wybierz grupę atrybutów, do której chcesz przenieść ten powiązany atrybut|]1, Inf[Wybierz grupę atrybutów, do której chcesz przenieść następującą liczbę powiązanych atrybutów: {{ number_of_attribute }}'
     empty_result_label: 'Nie znaleziono grup atrybutów'
     placeholder: 'Wybierz grupę atrybutów'
     open_label: 'lista grup atrybutów'
+  delete:
+    confirm: 'Czy na pewno chcesz usunąć tę grupę atrybutów?'
+    attribute_warning: '{1}Usunięcie tej grupy atrybutów będzie mieć wpływ na {{ number_of_attribute }} powiązany atrybut. Będzie trzeba przenieść go do nowej grupy atrybutów.'
+    select_attribute_group: '{1}Wybierz grupę atrybutów, do której chcesz przenieść ten powiązany atrybut:|]1, Inf[Wybierz grupę atrybutów, do której chcesz przenieść następującą liczbę powiązanych atrybutów: {{ number_of_attribute }}:'
   batch_jobs:
     delete_attribute_groups:
       delete_attribute_groups:
         label: Usuń grupy atrybutów
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: Zbiorcze usuwanie grup atrybutów nie powiodło się.
+      warning: Zbiorcze usuwanie grup atrybutów zakończone z ostrzeżeniami
+      success: Zbiorcze usuwanie grup atrybutów zakończone
 pim_enrich.mass_edit.family:
   title: Działanie zbiorcze rodzin
   confirm: "{1} Zamierzasz zaktualizować rodzinę następującymi informacjami, proszę potwierdź.|{2,3,4} Zamierzasz zaktualizować {{ itemsCount }} rodzin/y następującymi informacjami, proszę potwierdź.|] 1, Inf [Zamierzasz zaktualizować {{ itemsCount }} rodzin/y następującymi informacjami, proszę potwierdź."
@@ -308,6 +333,13 @@ pim_enrich.mass_edit.family:
 batch_jobs:
   default_steps:
     delete_attribute_groups: Usuń grupy atrybutów
+    move_child_attributes: Przenieś atrybuty elementów podrzędnych
+  delete_attributes:
+    delete_attributes:
+      label: Usuń atrybuty
+job_execution:
+  summary:
+    deleted_attributes: Usunięte atrybuty
 akeneo_job_process_tracker:
   type_filter:
     attribute_group_mass_delete: Usuń grupy atrybutów
