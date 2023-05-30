@@ -116,6 +116,8 @@ final class UpdateUserCommandHandler
 
     private function isPasswordUpdating($data): bool
     {
-        return array_key_exists('current_password', $data) || array_key_exists('new_password', $data) || array_key_exists('new_password_repeat', $data);
+        return (isset($data['current_password']) && !empty($data['current_password'])) ||
+            (isset($data['new_password']) && !empty($data['new_password'])) ||
+            (isset($data['new_password_repeat']) && !empty($data['new_password_repeat']));
     }
 }

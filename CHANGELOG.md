@@ -82,6 +82,7 @@
 - PIM-11002: Fix bad context locale used in DQI dashboard families widget
 - PIM-10997: Update error message when trying to delete role with linked users or connections
 - PIM-11003: Fix scrolling on Product edit form attributes
+- PIM-11013 : Fix edit user profile without password changes
 
 ## Improvements
 
