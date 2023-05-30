@@ -97,4 +97,41 @@ class AttributeCollection implements \Countable
     {
         return count($this->attributes);
     }
+
+    /**
+     * Sort attributes based on their order property, then build a new object with the re-indexed attributes.
+     * ex. attributes with order properties 1, 3, 7 will be re-indexed as follow: [1, 3, 7] => [1, 2, 3]
+     * @return self
+     */
+    public function rebuildWithIndexAttributes(): self
+    {
+        $attributeList = $this->attributes;
+
+        usort(
+            $attributeList,
+            function(Attribute $a, Attribute $b) {
+                return $a->getOrder()->intValue() - $b->getOrder()->intValue();
+            }
+        );
+        $newAttributeList = [];
+        array_walk(
+            $attributeList,
+            function ($attribute, $index) use (&$newAttributeList) {
+                $newOrder = $index +1;
+                $newAttributeList[$newOrder] = Attribute::fromType(
+                    $attribute->getType(),
+                    $attribute->getUuid(),
+                    $attribute->getCode(),
+                    AttributeOrder::fromInteger($newOrder),
+                    $attribute->isRequired(),
+                    $attribute->isScopable(),
+                    $attribute->isLocalizable(),
+                    $attribute->getLabelCollection(),
+                    $attribute->getTemplateUuid(),
+                    $attribute->getAdditionalProperties()
+                );
+            }
+        );
+        return new self($newAttributeList);
+    }
 }
