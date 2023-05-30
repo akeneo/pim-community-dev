@@ -1,6 +1,7 @@
 validation:
   create:
     identifier_limit_reached: '已达到标识符生成器上限数目 "{{limit}}" '
+    code_already_used: '此代码已被使用'
   update:
     identifier_generator_code_not_found: '标识符生成器 "{{code}}" 不存在或您没有访问权限。'
   identifier_generator:
@@ -20,6 +21,8 @@ validation:
     inactive_locale: '区域 "{{ localeCode }}" 对于渠道 "{{ scopeCode }}" 未激活。'
     family_property_fields_required: '字段 "{{ field }}" 对于类型“品类”是必填项。'
     simple_select_property_fields_required: '字段 "{{ field }}" 对于类型 "simple_select" 是必填项。'
+    reference_entity_property_fields_required: '字段 "{{ field }}" 对于类型 "reference_entity" 是必填项。'
     process_unknown_operator: '运算符 {{ value }} 只能为下列其中一项：{{ choices }}。'
     locale_required: '属性 "{{ attributeCode }}" 需要区域设置。'
     scope_required: '属性 "{{ attributeCode }}" 需要渠道设置。'
+    categories_do_not_exist: '已从您的目录中删除下列类别：{{ categoryCodes }}。您可以将它们从您的产品选择中移除。'

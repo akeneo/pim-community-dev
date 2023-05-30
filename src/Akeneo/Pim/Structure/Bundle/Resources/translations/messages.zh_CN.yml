@@ -49,3 +49,15 @@ pim_enrich_attribute_form:
 job_execution.summary:
   deleted_attribute_groups: 已删除属性组
   skipped_attribute_groups: 已跳过属性组
+  moved_attributes: 已移动的属性
+  deleted_attributes: 已删除的属性
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: 批量删除属性组失败
+      warning: 批量删除属性组完成，但有一些警告
+      success: 批量删除属性组完成
+    attribute_mass_delete:
+      error: 批量删除属性失败
+      warning: 批量删除属性完成，但有一些警告
+      success: 批量删除属性完成

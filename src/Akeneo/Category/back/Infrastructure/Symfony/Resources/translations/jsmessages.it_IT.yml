@@ -37,12 +37,13 @@ akeneo.category:
         options:
           title: Opzioni
           value_per_channel: Valore per canale
+          value_per_locale: Valore per impostazione locale
           rich_text: Editor di Testi Avanzato
         translations:
           title: Traduzioni etichette
     add_attribute:
       no_attribute_title: Crea il tuo primo attributo
-      no_attribute_instructions: Definisci il contenuto che vuoi associare alle tue categorie aggiungendo Testo, Area di Testo o Attributi Immagine a questo modello.
+      no_attribute_instructions: Definisci il contenuto che vuoi associare alle tue categorie aggiungendo attributi Testo, Area di Testo o Immagine a questo modello.
       add_button: Aggiungi attributo
       create_button: Crea attributo
       confirmation_modal:
@@ -97,8 +98,9 @@ akeneo.category:
   discover_enriched_categories_information:
     title: Scopri le categorie arricchite
     content:
-      enrich_attribute_values: Arricchisci qualsiasi livello degli alberi delle categorie con attributi Testo, Area di Testo e Immagine
+      enrich_attribute_values: Arricchisci qualsiasi livello degli alberi di categorie con gli attributi Testo, Area di Testo e Immagine
       customizable_templates: Offri l'esperienza di prodotto che desideri grazie a modelli personalizzabili
+      edit_attributes: 'Prossimamente: aggiornamento delle impostazioni di questi attributi di categoria'
     survey_link_label: Dicci cosa ne pensi
     learn_more_link_label: Scopri di più sulle Categorie arricchite
   other_actions: Altre azioni

@@ -12,7 +12,11 @@ akeneo_job:
     ABANDONED: Afgebroken
     UNKNOWN: Onbekend
     IN_PROGRESS: In uitvoering
+    PAUSING: Pauzeren
+    PAUSED: Gepauzeerd
 akeneo_job_process_tracker:
+  tooltip:
+    paused: Deze taak is gepauzeerd vanwege intern onderhoud aan uw exemplaar. Hij wordt automatisch hervat wanneer het onderhoud is voltooid.
   last_operations:
     title: Laatste bewerkingen
     view_all: Alles weergeven
@@ -39,6 +43,7 @@ akeneo_job_process_tracker:
     export: Export
     mass_edit: Groepsgewijs bewerken
     mass_delete: Groepsgewijs producten verwijderen
+    attribute_mass_delete: Attributen in bulk verwijderen
     compute_family_variant_structure_changes: Wijzigingen in de structuur van familievariaties berekenen
     compute_completeness_of_products_family: Volledigheid van de productenfamilie berekenen
     clean_removed_attribute_job: Verwijderde attribuutwaarden opruimen
@@ -58,6 +63,8 @@ akeneo_job_process_tracker:
     stopping: Stoppend
     unknown: Onbekend
     in_progress: In uitvoering
+    pausing: Pauzeren
+    paused: Gepauzeerd
   automation_filter:
     all: Alle
     yes: Yes
