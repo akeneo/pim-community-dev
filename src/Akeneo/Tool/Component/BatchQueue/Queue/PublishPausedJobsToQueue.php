@@ -29,7 +29,7 @@ final class PublishPausedJobsToQueue
             try {
                 $this->jobExecutionQueue->publish($jobExecutionMessage);
             } catch(\Exception) {
-                $this->logger->warning(sprintf('An error occurred trying to publish paused job execution id : %d', $jobExecutionId));
+                $this->logger->error('An error occurred trying to publish paused job execution', ['job_execution_id' => $jobExecutionId]);
             }
         }
     }
