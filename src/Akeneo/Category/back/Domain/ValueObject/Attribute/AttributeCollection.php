@@ -134,4 +134,19 @@ class AttributeCollection implements \Countable
         );
         return new self($newAttributeList);
     }
+
+    /**
+     * Determines the order value that a new attribute would have if it was added to the attributes.
+     */
+    public function calculateNextOrder(): int
+    {
+        return 1 + array_reduce(
+            $this->attributes,
+            function (int $maxOrder, Attribute $attribute) {
+                $attributeOrder = $attribute->getOrder()->intValue();
+                return max($attributeOrder, $maxOrder);
+            },
+            1
+        );
+    }
 }

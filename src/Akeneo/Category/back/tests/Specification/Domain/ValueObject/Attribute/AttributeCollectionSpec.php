@@ -56,7 +56,7 @@ class AttributeCollectionSpec extends ObjectBehavior
         $this->getAttributeByCode('short_description')->shouldReturn($shortDescriptionAttribute);
     }
 
-    public function it_adds_a_new_attribute_to_its_attributes_list()
+    public function it_adds_a_new_attribute_to_its_attributes_list(): void
     {
         $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute();
         $longDescriptionAttribute = $this->createLongDescriptionTextAttribute();
@@ -85,7 +85,7 @@ class AttributeCollectionSpec extends ObjectBehavior
         $this->getAttributeByCode('new_attribute')->shouldReturn($newAttribute);
     }
 
-    public function it_counts_its_number_of_attributes()
+    public function it_counts_its_number_of_attributes(): void
     {
         $longDescriptionAttribute = $this->createLongDescriptionTextAttribute();
         $mainImageAttribute = $this->createMainImageImageAttribute();
@@ -100,7 +100,7 @@ class AttributeCollectionSpec extends ObjectBehavior
         $this->count()->shouldReturn(2);
     }
 
-    public function it_reindexes_its_attributes()
+    public function it_reindexes_its_attributes(): void
     {
         $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute();
         $longDescriptionAttribute = $this->createLongDescriptionTextAttribute();
@@ -133,6 +133,23 @@ class AttributeCollectionSpec extends ObjectBehavior
         $reindexedAttributeCollection->getAttributeByCode('short_description')->getOrder()->intValue()->shouldReturn(2);
         $reindexedAttributeCollection->getAttributeByCode('duplicated_order')->getOrder()->intValue()->shouldReturn(3);
         $reindexedAttributeCollection->getAttributeByCode('long_description')->getOrder()->intValue()->shouldReturn(4);
+    }
+
+    public function it_returns_the_potential_order_value_of_the_next_added_attribute(): void
+    {
+        $shortDescriptionAttribute = $this->createShortDescriptionTextAttribute();
+        $longDescriptionAttribute = $this->createLongDescriptionTextAttribute();
+        $mainImageAttribute = $this->createMainImageImageAttribute();
+
+        $this->beConstructedThrough(
+            'fromArray',
+            [
+                [$shortDescriptionAttribute, $longDescriptionAttribute, $mainImageAttribute],
+            ]
+        );
+
+        $this->count()->shouldReturn(3);
+        $this->calculateNextOrder()->shouldReturn(51);
     }
 
     private function createShortDescriptionTextAttribute(): AttributeText
