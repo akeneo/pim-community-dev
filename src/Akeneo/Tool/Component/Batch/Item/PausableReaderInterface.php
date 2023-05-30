@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\Batch\Item;
 
-interface PausableItemReaderInterface
+interface PausableReaderInterface
 {
     public function getState(): array;
 }

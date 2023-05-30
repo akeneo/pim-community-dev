@@ -12,6 +12,8 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
@@ -105,6 +107,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 continue;
             }
 
+            sleep(2);
             $batchCount++;
             $processedItem = $this->process($readItem);
             if (null !== $processedItem) {
@@ -146,8 +149,12 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
     private function saveAndPause(StepExecution $stepExecution): void
     {
-        if (!$this->reader instanceof PausableItemReaderInterface || !$this->writer instanceof PausableItemWriterInterface) {
-            return;
+        if (!$this->reader instanceof PausableReaderInterface) {
+            throw new \RuntimeException('The reader should implement PausableItemReaderInterface');
+        }
+
+        if (!$this->writer instanceof PausableWriterInterface) {
+            throw new \RuntimeException('The writer should implement PausableItemWriterInterface');
         }
 
         $stepState = [
