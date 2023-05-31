@@ -10,7 +10,7 @@ import {useCatalogActivatedLocales} from '../../hooks/useCatalogActivatedLocales
 interface Props {
   attributes: Attribute[];
   templateId: string;
-  onTabStatusChange: (tabCode: 'attributes'|'properties', inError: boolean) => void;
+  onTabStatusChange: (tabCode: 'attributes' | 'properties', inError: boolean) => void;
 }
 
 export const EditTemplateAttributesForm = ({attributes, templateId, onTabStatusChange}: Props) => {
@@ -22,16 +22,14 @@ export const EditTemplateAttributesForm = ({attributes, templateId, onTabStatusC
   const handleBadgesForFieldInError = (attributeUuid: string, inError: boolean) => {
     let updatedAttributeFormsInError = {...attributeFormsInError, [attributeUuid]: inError};
     let isAttributeTabInError = false;
-    Object.values(updatedAttributeFormsInError).forEach(
-        (inError) => {
-          if (inError) {
-            isAttributeTabInError = true;
-          }
-        }
-    );
+    Object.values(updatedAttributeFormsInError).forEach(inError => {
+      if (inError) {
+        isAttributeTabInError = true;
+      }
+    });
     onTabStatusChange('attributes', isAttributeTabInError);
     setAttributeFormsInError(updatedAttributeFormsInError);
-  }
+  };
   const handleAttributeSelection = (attribute: Attribute) => {
     setSelectedAttributeUuid(attribute.uuid);
   };
@@ -61,9 +59,9 @@ export const EditTemplateAttributesForm = ({attributes, templateId, onTabStatusC
         />
         {featureFlag.isEnabled('category_template_customization') && locales && (
           <AttributeSettings
-              attribute={getSelectedAttribute()}
-              activatedCatalogLocales={locales}
-              onChangeFormStatus={handleBadgesForFieldInError}
+            attribute={getSelectedAttribute()}
+            activatedCatalogLocales={locales}
+            onChangeFormStatus={handleBadgesForFieldInError}
           />
         )}
       </Attributes>

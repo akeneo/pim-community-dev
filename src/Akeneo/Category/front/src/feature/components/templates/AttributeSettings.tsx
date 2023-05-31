@@ -52,26 +52,29 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales, onChangeF
     setIsRichTextArea(!isRichTextArea);
     updateTemplateAttribute({isRichTextArea: !isRichTextArea});
   };
-  const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string, attributeUuid: string) => {
-    updateTemplateAttribute({labels: {[locale]: value}})
-      .then(() => {
-        if (error[locale]) {
-          delete error[locale];
-          let updatedError = {...error};
-          onChangeFormStatus(attributeUuid, Object.keys(updatedError).length !== 0);
-          setError(updatedError);
-        }
-      })
-      .catch((error: BadRequestError<ApiResponseError>) => {
-        const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
-          accumulator[currentError.error.property] = [currentError.error.message];
+  const debouncedUpdateTemplateAttribute = useDebounceCallback(
+    (locale: string, value: string, attributeUuid: string) => {
+      updateTemplateAttribute({labels: {[locale]: value}})
+        .then(() => {
+          if (error[locale]) {
+            delete error[locale];
+            let updatedError = {...error};
+            onChangeFormStatus(attributeUuid, Object.keys(updatedError).length !== 0);
+            setError(updatedError);
+          }
+        })
+        .catch((error: BadRequestError<ApiResponseError>) => {
+          const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
+            accumulator[currentError.error.property] = [currentError.error.message];
 
-          return accumulator;
-        }, {});
-        onChangeFormStatus(attributeUuid, true);
-        setError(state => ({...state, ...errors}));
-      });
-  }, 300);
+            return accumulator;
+          }, {});
+          onChangeFormStatus(attributeUuid, true);
+          setError(state => ({...state, ...errors}));
+        });
+    },
+    300
+  );
   const handleTranslationsChange = (locale: string, value: string) => {
     setTranslations({...translations, [locale]: value});
     debouncedUpdateTemplateAttribute(locale, value, attribute.uuid);

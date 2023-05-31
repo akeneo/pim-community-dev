@@ -11,10 +11,16 @@ type Props = {
   selectedAttribute: Attribute;
   templateId: string;
   onAttributeSelection: (attribute: Attribute) => void;
-  attributeFormsInError:{string?: boolean}
+  attributeFormsInError: {string?: boolean};
 };
 
-export const AttributeList = ({attributes, selectedAttribute, templateId, onAttributeSelection, attributeFormsInError}: Props) => {
+export const AttributeList = ({
+  attributes,
+  selectedAttribute,
+  templateId,
+  onAttributeSelection,
+  attributeFormsInError,
+}: Props) => {
   const translate = useTranslate();
   const catalogLocale = userContext.get('catalogLocale');
   const featureFlags = useFeatureFlags();
@@ -77,9 +83,9 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
                     }`
                   )}
                 </Table.Cell>
-                  <ErrorPillTableCell>
-                        {(attributeFormsInError[attribute.uuid] === true ?? false) && <Pill level={"danger"}/>}
-                  </ErrorPillTableCell>
+                <ErrorPillTableCell>
+                  {(attributeFormsInError[attribute.uuid] === true ?? false) && <Pill level={'danger'} />}
+                </ErrorPillTableCell>
               </Table.Row>
             ))}
           </Table.Body>
@@ -112,5 +118,5 @@ const ErrorPillTableCell = styled(Table.Cell)`
 `;
 
 const ErrorPillTableHeaderCell = styled(Table.HeaderCell)`
-width: 75px;
+  width: 75px;
 `;

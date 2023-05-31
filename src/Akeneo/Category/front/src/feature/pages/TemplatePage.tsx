@@ -101,9 +101,9 @@ const TemplatePage: FC = () => {
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
 
   const [tabInError, setTabInError] = useState({});
-  const handleBadgesForTabInError = (tabCode: 'attributes'|'properties', inError: boolean) => {
+  const handleBadgesForTabInError = (tabCode: 'attributes' | 'properties', inError: boolean) => {
     setTabInError(p => ({...p, [tabCode]: inError}));
-  }
+  };
 
   return (
     <>
@@ -141,7 +141,8 @@ const TemplatePage: FC = () => {
               handleSwitchTo(Tabs.ATTRIBUTE);
             }}
           >
-            {translate('akeneo.category.attributes')} {(tabInError['attributes'] === true ?? false) && <Pill level={"danger"}/>}
+            {translate('akeneo.category.attributes')}{' '}
+            {(tabInError['attributes'] === true ?? false) && <Pill level={'danger'} />}
           </TabBar.Tab>
           <TabBar.Tab
             isActive={isCurrent(Tabs.PROPERTY)}
@@ -149,12 +150,17 @@ const TemplatePage: FC = () => {
               handleSwitchTo(Tabs.PROPERTY);
             }}
           >
-            {translate('pim_common.properties')} {(tabInError['properties'] === true ?? false) && <Pill level={"danger"}/>}
+            {translate('pim_common.properties')}{' '}
+            {(tabInError['properties'] === true ?? false) && <Pill level={'danger'} />}
           </TabBar.Tab>
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
-          <EditTemplateAttributesForm attributes={templateEdited.attributes} templateId={templateEdited.uuid} onTabStatusChange={handleBadgesForTabInError} />
+          <EditTemplateAttributesForm
+            attributes={templateEdited.attributes}
+            templateId={templateEdited.uuid}
+            onTabStatusChange={handleBadgesForTabInError}
+          />
         )}
 
         {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (
