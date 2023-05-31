@@ -74,6 +74,8 @@ pim_enrich.entity.attribute_option:
       fail: Kan attribuut-optie niet opslaan
     delete:
       fail: Fout tijdens verwijderen van de attribuut-optie
+  page_title:
+    index: "]-Inf, 1]{{ count }} optie|]1, Inf[{{ count }} opties"
   module:
     edit:
       cancel_title: Wijziging annuleren
@@ -243,11 +245,18 @@ pim_enrich.entity.attribute:
     mass_delete:
       modal:
         title: Attributen
+        subtitle: '{1}}Bevestig de verwijdering van {{ count }} attribuut|]1, Inf[}Bevestig de verwijdering van {{ count }} attributen'
+        label: Typ "{{ textToCheck }}"
+        confirm: Weet u zeker dat u deze attributen wilt verwijderen?
+      message_bar:
+        success: Het verwijderen is gestart. U krijgt een melding zodra de taak is voltooid. In de tussentijd kunt u de voortgang van het proces volgen in de procestracker.
+        fail: Er is een fout opgetreden tijdens het starten van de verwijdering
 pim_enrich.entity.attribute_group:
   label: attribuutgroep
   uppercase_label: Attribuutgroep
   plural_label: Attribuutgroepen
   result_count: '{0}0 attribuutgroepen|{1}1 attribuutgroep|]1, Inf[{{ count }} attribuutgroepen'
+  limit_reached: U heeft de limiet van {{ max }} attribuutgroepen bereikt.
   show_more_attribute:
     title: Het is hier een beetje vol, we laten je {{ attributeCount }}/{{ totalAttributeCount }} attributen zien.
     subtitle: Om alle attributen van deze groep te ontdekken, klik hieronder!
@@ -261,6 +270,9 @@ pim_enrich.entity.attribute_group:
       success: Attribuutgroep succesvol bijgewerkt
       fail: De attribuut groep kon niet geüpdatet worden
       fields_not_ready: "De attribuutgroep kan niet worden opgeslagen. De volgende velden zijn niet klaar: {{ fields }}"
+    delete:
+      success: Het verwijderen is gestart. U krijgt een melding zodra de taak is voltooid. In de tussentijd kunt u de voortgang van het proces volgen in de procestracker.
+      fail: Er is een fout opgetreden tijdens het starten van de verwijdering
     mass_delete:
       success: Het verwijderen is gestart. U krijgt een melding zodra de taak is voltooid. In de tussentijd kunt u de voortgang van het proces volgen in de procestracker.
       fail: Er is een fout opgetreden tijdens het starten van de verwijdering
@@ -277,14 +289,27 @@ pim_enrich.entity.attribute_group:
   selected: '{0}0 attribuutgroepen geselecteerd|{1}1 attribuutgroep geselecteerd|]1, Inf[{{ count }} attribuutgroepen geselecteerd'
   mass_delete:
     confirm: '{1}Weet u zeker dat u deze attribuutgroep wilt verwijderen?|]1, Inf[Weet u zeker dat u deze {{ count }} attribuutgroepen wilt verwijderen?'
+    confirmation_phrase: 'Typ "{{ confirmation_word }}"'
     confirmation_word: verwijderen
+    attribute_warning: '{1}Het verwijderen van deze attribuutgroepen heeft invloed op {{ number_of_attribute }} gerelateerd attribuut. U moet dit gerelateerde attribuut verplaatsen naar een nieuwe attribuutgroep.|]1, Inf[Het verwijderen van deze attribuutgroepen heeft invloed op {{ number_of_attribute }} gerelateerde attributen. U moet deze gerelateerde attributen verplaatsen naar een nieuwe attribuutgroep.'
+    select_attribute_group: '{1}Selecteer de attribuutgroep waarnaar het gerelateerde attribuut wordt verplaatst|]1, Inf[Selecteer de attribuutgroep waarnaar de {{ number_of_attribute }} gerelateerde attributen worden verplaatst'
     empty_result_label: 'Geen attribuutgroep gevonden'
     placeholder: 'Attribuutgroep selecteren'
     open_label: 'lijst met attribuutgroepen'
+  delete:
+    confirm: 'Weet u zeker dat u deze attribuutgroep wilt verwijderen?'
+    attribute_warning: 'Het verwijderen van deze attribuutgroep heeft invloed op {{ number_of_attribute }} gerelateerd attribuut. U moet dit gerelateerde attribuut verplaatsen naar een nieuwe attribuutgroep.'
+    select_attribute_group: '{1}Selecteer de attribuutgroep waarnaar het gerelateerde attribuut wordt verplaatst:|]1, Inf[Selecteer de attribuutgroep waarnaar de {{ number_of_attribute }} gerelateerde attributen worden verplaatst:'
   batch_jobs:
     delete_attribute_groups:
       delete_attribute_groups:
         label: Attribuutgroepen verwijderen
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: In bulk verwijderen van attribuutgroepen mislukt
+      warning: In bulk verwijderen van attribuutgroepen afgerond met enkele waarschuwingen
+      success: In bulk verwijderen van attribuutgroepen afgerond
 pim_enrich.mass_edit.family:
   title: Gezamenlijke actie voor families
   confirm: "{1}U staat op het punt een familie te updaten met de volgende informatie, bevestig alstublieft.|]1, Inf[U staat op het punt om {{ itemsCount }} families te updaten met de volgende informatie, bevestig alstublieft."
@@ -308,6 +333,13 @@ pim_enrich.mass_edit.family:
 batch_jobs:
   default_steps:
     delete_attribute_groups: Attribuutgroepen verwijderen
+    move_child_attributes: Onderliggende attributen verplaatsen
+  delete_attributes:
+    delete_attributes:
+      label: Attributen verwijderen
+job_execution:
+  summary:
+    deleted_attributes: Verwijderde attributen
 akeneo_job_process_tracker:
   type_filter:
     attribute_group_mass_delete: Attribuutgroepen verwijderen

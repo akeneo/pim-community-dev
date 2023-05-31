@@ -74,6 +74,8 @@ pim_enrich.entity.attribute_option:
       fail: 无法保存属性选项
     delete:
       fail: 删除属性选项时出错
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个选项|]1, Inf[{{ count }} 个选项"
   module:
     edit:
       cancel_title: 取消修改
@@ -243,11 +245,18 @@ pim_enrich.entity.attribute:
     mass_delete:
       modal:
         title: 属性
+        subtitle: '{1}确认删除 {{ count }} 个属性|]1, Inf[确认删除 {{ count }} 个属性'
+        label: 请输入 "{{ textToCheck }}"
+        confirm: 确定要删除这些属性吗？
+      message_bar:
+        success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
+        fail: 启动删除时出错
 pim_enrich.entity.attribute_group:
   label: 属性组
   uppercase_label: 属性组
   plural_label: 属性组
   result_count: '{0}0 个属性组|{1}1 个属性组|]1, Inf[{{ count }} 个属性组'
+  limit_reached: 您已达到 {{ max }} 个属性组的限制。
   show_more_attribute:
     title: 这里比较拥挤，我们会显示 {{ attributeCount }}/{{ totalAttributeCount }} 个属性。
     subtitle: 要探索此组的所有属性，请点击下面！
@@ -261,6 +270,9 @@ pim_enrich.entity.attribute_group:
       success: 属性组已成功更新
       fail: 属性组无法更新
       fields_not_ready: "该属性组目前无法保存。以下字段未准备好： {{ fields }}"
+    delete:
+      success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
+      fail: 启动删除时出错
     mass_delete:
       success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
       fail: 启动删除时出错
@@ -277,14 +289,27 @@ pim_enrich.entity.attribute_group:
   selected: '{0}已选择 0 个属性组|{1}已选择 1 个属性组|]1, Inf[已选择 {{ count }} 个属性组'
   mass_delete:
     confirm: '{1}确定要删除此属性组吗？|]1, Inf[确定要删除 {{ count }} 个属性组吗？'
+    confirmation_phrase: '请输入 "{{ confirmation_word }}"'
     confirmation_word: 删除
+    attribute_warning: '{1}删除这些属性组会影响 {{ number_of_attribute }} 个相关的属性。您需要将此相关的属性移动到一个新的属性组。]1，Inf[删除这些属性组会影响 {{ number_of_attribute }} 个相关的属性。您需要将这些相关的属性移动到一个新的属性组。'
+    select_attribute_group: '{1}请选择要将相关的属性移动到其中的属性组：|]1，Inf[请选择要将 {{ number_of_attribute }} 个相关的属性移动到其中的属性组'
     empty_result_label: '未找到属性组'
     placeholder: '选择属性组'
     open_label: '属性组列表'
+  delete:
+    confirm: '确定要删除此属性组吗？'
+    attribute_warning: '删除此属性组将会影响 {{ number_of_attribute }} 个相关的属性。您需要将此相关的属性移动到一个新的属性组。'
+    select_attribute_group: '{1}请选择要将相关的属性移动到其中的属性组：|]1，Inf[请选择要将 {{ number_of_attribute }} 个相关的属性移动到其中的属性组：'
   batch_jobs:
     delete_attribute_groups:
       delete_attribute_groups:
         label: 删除属性组
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: 批量删除属性组失败
+      warning: 批量删除属性组完成，但有一些警告
+      success: 批量删除属性组完成
 pim_enrich.mass_edit.family:
   title: 品类批量操作
   confirm: "{1}您将更新品类的以下信息，请确认。|]1, Inf[您将更新 {{ itemsCount }} 个品类的以下信息，请确认。"
@@ -308,6 +333,13 @@ pim_enrich.mass_edit.family:
 batch_jobs:
   default_steps:
     delete_attribute_groups: 删除属性组
+    move_child_attributes: 移动子属性
+  delete_attributes:
+    delete_attributes:
+      label: 删除属性
+job_execution:
+  summary:
+    deleted_attributes: 已删除的属性
 akeneo_job_process_tracker:
   type_filter:
     attribute_group_mass_delete: 删除属性组

@@ -12,6 +12,8 @@ namespace Akeneo\Tool\Bundle\BatchBundle\EventListener;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -19,7 +21,8 @@ class PauseJobOnSigtermSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly FeatureFlags $featureFlags,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly SqlUpdateJobExecutionStatus $updateJobExecutionStatus,
     ) {
     }
 
@@ -37,9 +40,16 @@ class PauseJobOnSigtermSubscriber implements EventSubscriberInterface
         }
 
         pcntl_signal(\SIGTERM, function () use ($event) {
-            $this->logger->info('Received SIGTERM signal.', [
-                'job_execution_id' => $event->getJobExecution()->getId()
+            $jobExecution = $event->getJobExecution();
+            $this->logger->notice('Received SIGTERM signal.', [
+                'job_execution_id' => $jobExecution->getId()
             ]);
+
+            if (!$jobExecution->isRunning()) {
+                return;
+            }
+
+            $this->updateJobExecutionStatus->updateByJobExecutionId($jobExecution->getId(), new BatchStatus(BatchStatus::PAUSING));
         });
     }
 }

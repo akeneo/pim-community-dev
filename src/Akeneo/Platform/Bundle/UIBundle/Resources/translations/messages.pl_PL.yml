@@ -141,6 +141,7 @@ pim_enrich:
       create: Tworzenie atrybutu
       edit: Edycja atrybutu
       remove: Usuwanie atrybutu
+      mass_delete: Zbiorcze usuwanie atrybutów
       sort: Sortowanie atrybutów w grupach atrybutów
       history: Przeglądanie historii atrybutu
     group:
@@ -213,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: Nie można usunąć atrybutu identyfikującego
     used_as_conversion_unit: Ten atrybut nie może zostać usunięty, ponieważ jest używany jako jednostka konwersji na kanale %channelCodes%.
+    cant_remove_attributes_used_as_label: Nie można usunąć atrybutów używanych jako etykiety w rodzinie.
+    cant_remove_attribute_used_as_axis: Nie można usunąć tego atrybutu używanego jako oś wariantu w wariancie rodziny.
   category:
     removed: Kategoria pomyślnie usunięta
   tree:

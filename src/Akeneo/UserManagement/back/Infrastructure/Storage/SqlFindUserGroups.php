@@ -61,16 +61,16 @@ class SqlFindUserGroups implements FindUserGroups
         $sqlWherePart = empty($sqlWhereParts) ? '' : 'AND '.implode(' AND ', $sqlWhereParts);
 
         return <<<SQL
-            SELECT 
+            SELECT
                 oag.id,
-                oag.name, 
-                oag.type, 
+                oag.name,
+                oag.type,
                 oag.default_permissions
             FROM oro_access_group oag
             WHERE oag.type = 'default'
-            ${sqlWherePart}
+            $sqlWherePart
             ORDER BY oag.id
-            ${sqlLimitPart} 
+            $sqlLimitPart
         SQL;
     }
 }

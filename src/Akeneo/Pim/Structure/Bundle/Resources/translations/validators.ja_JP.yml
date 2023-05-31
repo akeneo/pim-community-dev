@@ -4,3 +4,5 @@ pim_structure:
       cannot_be_quantified_and_two_way: 関連タイプは数量または双方向のいずれかです
     available_locales:
       is_variant_axis_without_available_locales: バリエーションファミリーの軸としてすでに使用されている場合、属性はロケール固有にできません。
+    attribute_groups:
+      max: '{{ max }} 属性グループの上限に達しました'
