@@ -89,13 +89,13 @@ final class JobMessageHandler implements MessageSubscriberInterface
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
             if ($this->featureFlags->isEnabled('pause_jobs')) {
-                $previousHandler = pcntl_signal_get_handler(\SIGTERM);
+                $previousSigtermHandler = pcntl_signal_get_handler(\SIGTERM);
 
-                pcntl_signal(\SIGTERM, function () use ($process, $previousHandler) {
+                pcntl_signal(\SIGTERM, function () use ($process, $previousSigtermHandler) {
                     $this->logger->notice('Received SIGTERM signal in job message handler and forwarding it to subprocess');
                     $process->signal(\SIGTERM);
-                    if (is_callable($previousHandler)) {
-                        $previousHandler();
+                    if (is_callable($previousSigtermHandler)) {
+                        $previousSigtermHandler();
                     }
                 });
             }
