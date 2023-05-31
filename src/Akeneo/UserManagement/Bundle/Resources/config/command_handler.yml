@@ -9,5 +9,4 @@ services:
           - '@event_dispatcher'
           - '@session'
           - '@pim_user.repository.user'
-          - '@oro_security.security_facade'
           - '@security.token_storage'
