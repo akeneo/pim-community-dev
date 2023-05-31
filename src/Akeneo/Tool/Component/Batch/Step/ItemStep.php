@@ -119,15 +119,16 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
 
-                if ($this->jobStopper->isPausing($stepExecution)) {
-                    $this->saveAndPause($stepExecution);
-                    break;
-                }
+                if (null !== $this->jobStopper) {
+                    if ($this->jobStopper->isPausing($stepExecution)) {
+                        $this->saveAndPause($stepExecution);
+                        break;
+                    }
 
-                if (null !== $this->jobStopper && $this->jobStopper->isStopping($stepExecution)) {
-                    $this->jobStopper->stop($stepExecution);
-
-                    break;
+                    if ($this->jobStopper->isStopping($stepExecution)) {
+                        $this->jobStopper->stop($stepExecution);
+                        break;
+                    }
                 }
             }
         }
@@ -141,8 +142,14 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
         }
 
-        if (null !== $this->jobStopper && $this->jobStopper->isStopping($stepExecution)) {
-            $this->jobStopper->stop($stepExecution);
+        if (null !== $this->jobStopper) {
+            if ($this->jobStopper->isStopping($stepExecution)) {
+                $this->jobStopper->stop($stepExecution);
+            }
+
+            if ($this->jobStopper->isPausing($this->stepExecution)) {
+                return;
+            }
         }
 
         $this->flushStepElements();
@@ -158,12 +165,12 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             throw new \RuntimeException('The writer should implement PausableItemWriterInterface');
         }
 
-        $stepState = [
+        $currentState = [
             'reader' => $this->reader->getState(),
             'writer' => $this->writer->getState(),
         ];
 
-        $this->jobStopper->pause($stepExecution, $stepState);
+        $this->jobStopper->pause($stepExecution, $currentState);
     }
 
     protected function initializeStepElements(StepExecution $stepExecution)
@@ -181,10 +188,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
     public function flushStepElements()
     {
-        if ($this->jobStopper->isPausing($this->stepExecution)) {
-            return;
-        }
-
         foreach ($this->getStepElements() as $element) {
             if ($element instanceof FlushableInterface) {
                 $element->flush();
