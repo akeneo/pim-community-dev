@@ -9,12 +9,17 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
+use Akeneo\Tool\Component\Batch\Job\JobStopperInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
+use Akeneo\Tool\Component\Batch\spec\Item\FakeReader;
+use Akeneo\Tool\Component\Batch\spec\Item\FakeWriter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -28,7 +33,7 @@ class ItemStepSpec extends ObjectBehavior
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer,
-        JobStopper $jobStopper
+        JobStopperInterface $jobStopper
     ) {
         $this->beConstructedWith(
             'myname',
@@ -69,6 +74,7 @@ class ItemStepSpec extends ObjectBehavior
 
         $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalled();
         $jobStopper->isStopping($execution)->willReturn(false);
+        $jobStopper->isPausing($execution)->willReturn(false);
 
         // second batch
         $processor->process('r4')->shouldBeCalled()->willReturn('p4');
@@ -78,6 +84,7 @@ class ItemStepSpec extends ObjectBehavior
 
         $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalled();
         $jobStopper->isStopping($execution)->willReturn(false);
+        $jobStopper->isPausing($execution)->willReturn(false);
 
         $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
@@ -120,6 +127,7 @@ class ItemStepSpec extends ObjectBehavior
 
         $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalled();
         $jobStopper->isStopping($execution)->willReturn(false);
+        $jobStopper->isPausing($execution)->willReturn(false);
 
         // second batch
         $processor->process('r4')->shouldBeCalled()->willThrow(
@@ -167,6 +175,7 @@ class ItemStepSpec extends ObjectBehavior
         $execution->setStartTime(Argument::any())->shouldBeCalled();
         $execution->setStatus(Argument::any())->shouldBeCalled();
         $jobStopper->isStopping($execution)->willReturn(false);
+        $jobStopper->isPausing($execution)->willReturn(false);
 
         // first batch
         $reader->read()->willReturn('r1', 'r2', 'r3', 'r4', null);
@@ -188,6 +197,102 @@ class ItemStepSpec extends ObjectBehavior
         $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
         $repository->updateStepExecution($execution)->shouldBeCalledTimes(5);
+        $execution->isTerminateOnly()->willReturn(false);
+
+        $execution->upgradeStatus(Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_SUCCEEDED)->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_COMPLETED)->shouldBeCalled();
+        $execution->setEndTime(Argument::any())->shouldBeCalled();
+        $execution->setExitStatus(Argument::any())->shouldBeCalled();
+
+        $this->execute($execution);
+    }
+
+    function it_stop_if_asked(
+        ItemReaderInterface $reader,
+        ItemProcessorInterface $processor,
+        ItemWriterInterface $writer,
+        EventDispatcherInterface $dispatcher,
+        DoctrineJobRepository $repository,
+        StepExecution $execution,
+        BatchStatus $status,
+        JobStopper $jobStopper
+    ) {
+        $execution->getStatus()->willReturn($status);
+        $status->getValue()->willReturn(BatchStatus::STARTING);
+
+        $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
+        $execution->setStartTime(Argument::any())->shouldBeCalled();
+        $execution->setStatus(Argument::any())->shouldBeCalled();
+        $jobStopper->isStopping($execution)->willReturn(false);
+        $jobStopper->isPausing($execution)->willReturn(false);
+
+        // first batch
+        $reader->read()->willReturn('r1', 'r2', 'r3', 'r4', null);
+        $processor->process('r1')->shouldBeCalled()->willReturn('p1');
+        $processor->process('r2')->shouldBeCalled()->willReturn(null);
+        $processor->process('r3')->shouldBeCalled()->willReturn('p3');
+        $writer->write(['p1', 'p3'])->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalledOnce();
+        $execution->incrementProcessedItems(3)->shouldBeCalledOnce();
+
+        // second batch
+        $jobStopper->isStopping($execution)->willReturn(true);
+        $jobStopper->stop($execution)->shouldBeCalled();
+
+        $exitStatus = new ExitStatus(ExitStatus::STOPPED, "");
+        $execution->getExitStatus()->willReturn($exitStatus);
+
+        $repository->updateStepExecution($execution)->shouldBeCalledTimes(4);
+        $execution->isTerminateOnly()->willReturn(false);
+
+        $execution->upgradeStatus(Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_SUCCEEDED)->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_COMPLETED)->shouldBeCalled();
+        $execution->setEndTime(Argument::any())->shouldBeCalled();
+        $execution->setExitStatus(Argument::any())->shouldBeCalled();
+
+        $this->execute($execution);
+    }
+
+    function it_pause_if_asked(
+        FakeReader $reader,
+        ItemProcessorInterface $processor,
+        FakeWriter $writer,
+        EventDispatcherInterface $dispatcher,
+        DoctrineJobRepository $repository,
+        StepExecution $execution,
+        BatchStatus $status,
+        JobStopper $jobStopper
+    ) {
+        $execution->getStatus()->willReturn($status);
+        $status->getValue()->willReturn(BatchStatus::STARTING);
+
+        $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
+        $execution->setStartTime(Argument::any())->shouldBeCalled();
+        $execution->setStatus(Argument::any())->shouldBeCalled();
+        $jobStopper->isStopping($execution)->willReturn(false);
+        $jobStopper->isPausing($execution)->willReturn(false);
+
+        // first batch
+        $reader->read()->willReturn('r1', 'r2', 'r3', 'r4', null);
+        $processor->process('r1')->shouldBeCalled()->willReturn('p1');
+        $processor->process('r2')->shouldBeCalled()->willReturn(null);
+        $processor->process('r3')->shouldBeCalled()->willReturn('p3');
+        $writer->write(['p1', 'p3'])->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalledOnce();
+        $execution->incrementProcessedItems(3)->shouldBeCalledOnce();
+
+        // second batch
+        $jobStopper->isPausing($execution)->willReturn(true);
+        $reader->getState()->willReturn([]);
+        $writer->getState()->willReturn([]);
+        $jobStopper->pause($execution, ['reader' => [], 'writer' => []])->shouldBeCalled();
+
+        $exitStatus = new ExitStatus(ExitStatus::PAUSED, "");
+        $execution->getExitStatus()->willReturn($exitStatus);
+
+        $repository->updateStepExecution($execution)->shouldBeCalledTimes(4);
         $execution->isTerminateOnly()->willReturn(false);
 
         $execution->upgradeStatus(Argument::any())->shouldBeCalled();
