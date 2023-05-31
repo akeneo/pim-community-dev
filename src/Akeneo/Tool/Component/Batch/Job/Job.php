@@ -351,7 +351,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     {
         return array_values(array_filter(
             $jobExecution->getStepExecutions()->toArray(),
-            static fn(StepExecution $stepExecution) => $stepExecution->getStepName() === $step->getName(),
+            static fn (StepExecution $stepExecution) => $stepExecution->getStepName() === $step->getName(),
         ))[0] ?? null;
     }
 
