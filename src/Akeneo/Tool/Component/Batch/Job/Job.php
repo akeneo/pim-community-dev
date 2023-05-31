@@ -199,7 +199,13 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         $stepExecution = null;
 
         foreach ($this->steps as $step) {
-            $stepExecution = $this->handleStep($step, $jobExecution);
+            $stepExecution = $this->getCurrentStepExecution($jobExecution, $step);
+
+            if (!$this->isRunnable($stepExecution)) {
+                continue;
+            }
+
+            $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution);
             $this->jobRepository->updateStepExecution($stepExecution);
 
             if ($stepExecution->getStatus()->getValue() !== BatchStatus::COMPLETED) {
@@ -231,13 +237,15 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
      *
      * @throws JobInterruptedException
      */
-    protected function handleStep(StepInterface $step, JobExecution $jobExecution): StepExecution
+    protected function handleStep(StepInterface $step, JobExecution $jobExecution, ?StepExecution $stepExecution): StepExecution
     {
         if ($jobExecution->isStopping()) {
             throw new JobInterruptedException("JobExecution interrupted.");
         }
 
-        $stepExecution = $jobExecution->createStepExecution($step->getName());
+        if ($stepExecution === null) {
+            $stepExecution = $jobExecution->createStepExecution($step->getName());
+        }
 
         try {
             if ($step instanceof StoppableStepInterface) {
@@ -337,5 +345,18 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         if ($this->filesystem->exists($directory)) {
             $this->filesystem->remove($directory);
         }
+    }
+
+    private function getCurrentStepExecution(JobExecution $jobExecution, StepInterface $step): StepExecution | null
+    {
+        return array_values(array_filter(
+            $jobExecution->getStepExecutions()->toArray(),
+            static fn(StepExecution $stepExecution) => $stepExecution->getStepName() === $step->getName(),
+        ))[0] ?? null;
+    }
+
+    public function isRunnable(?StepExecution $stepExecution): bool
+    {
+        return null === $stepExecution || in_array($stepExecution->getStatus()->getValue(), [BatchStatus::STARTING, BatchStatus::PAUSED]);
     }
 }

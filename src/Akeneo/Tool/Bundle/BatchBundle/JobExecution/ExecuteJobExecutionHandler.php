@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\JobExecution;
 
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -43,7 +44,7 @@ class ExecuteJobExecutionHandler implements ExecuteJobExecutionHandlerInterface
 
     private function doExecute(JobExecution $jobExecution): void
     {
-        if (!$jobExecution->getStatus()->isStarting() && !$jobExecution->getStatus()->isStopping()) {
+        if (!$jobExecution->getStatus()->isStarting() && !$jobExecution->getStatus()->isStopping() && !$jobExecution->getStatus()->isPaused()) {
             throw new \RuntimeException(
                 sprintf('Job execution "%s" has invalid status: %s', $jobExecution->getId(), $jobExecution->getStatus())
             );

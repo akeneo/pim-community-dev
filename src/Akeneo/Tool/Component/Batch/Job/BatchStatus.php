@@ -115,6 +115,11 @@ class BatchStatus
         return self::PAUSING === $this->value;
     }
 
+    public function isPaused()
+    {
+        return self::PAUSED === $this->value;
+    }
+
     /**
      * Convenience method to decide if a status indicates execution was
      * unsuccessful.
