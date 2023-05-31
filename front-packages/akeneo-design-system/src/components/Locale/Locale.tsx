@@ -12,7 +12,7 @@ const LocaleContainer = styled.span`
 const Emoji = styled.span`
   font-size: ${getFontSize('bigger')};
   margin-right: 3px;
-  font-family: 'Windows Flag Emoji', ${getFontFamily('default')};
+  font-family: 'Flag Emoji', ${getFontFamily('default')};
 `;
 
 type LocaleProps = {
