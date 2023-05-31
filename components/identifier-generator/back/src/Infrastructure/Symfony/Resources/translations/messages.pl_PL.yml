@@ -8,6 +8,7 @@ pim_catalog_identifier_generator:
     fields:
       family: Rodzina
       enabled: Status
+      categories: Kategorie
     field_groups:
       system: System
   structure:

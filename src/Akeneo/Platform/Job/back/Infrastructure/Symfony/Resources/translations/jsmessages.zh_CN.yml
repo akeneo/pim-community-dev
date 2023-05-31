@@ -12,7 +12,11 @@ akeneo_job:
     ABANDONED: 已放弃
     UNKNOWN: 未知
     IN_PROGRESS: 进行中
+    PAUSING: 暂停中
+    PAUSED: 已暂停
 akeneo_job_process_tracker:
+  tooltip:
+    paused: 由于内部维护您的实例，此作业已暂停。完成操作后将自动恢复该作业。
   last_operations:
     title: 上次操作
     view_all: 查看全部
@@ -39,6 +43,7 @@ akeneo_job_process_tracker:
     export: 导出
     mass_edit: 批量编辑
     mass_delete: 批量删除产品
+    attribute_mass_delete: 批量删除属性
     compute_family_variant_structure_changes: 计算品类变型结构变化
     compute_completeness_of_products_family: 计算产品品类的完成度
     clean_removed_attribute_job: 清理已删除的属性值
@@ -58,6 +63,8 @@ akeneo_job_process_tracker:
     stopping: 正在停止
     unknown: 未知
     in_progress: 进行中
+    pausing: 暂停中
+    paused: 已暂停
   automation_filter:
     all: 所有
     yes: Yes

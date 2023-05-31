@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: Ingeschakeld
+        environment:
+          title: Omgevingsinstellingen
+          fields:
+            sandbox_banner:
+              label: Waarschuwingsbanner van sandbox weergeven
         loading_message:
           title: Aangepaste berichten tijdens laden
           helper: Laat uw gebruikers tijdens het laden van een scherm aangepaste berichten zien.
@@ -194,6 +199,7 @@ pim_common:
   label: Label
   label_translations: Labelvertalingen
   Label or identifier: label of identifier
+  code_or_label: code of label
   less_than: Minder dan
   loading: Laden...
   media_upload: Klik en sleep een bestand om te uploaden of klik hier
@@ -353,6 +359,10 @@ pim_menu:
     help:
       title: Help
       helper: Akeneo Help centrum
+      new: NIEUW
+      news: Wat is er nieuw?
+      help_center: Helpcentrum
+      akademy_training: Akademy-training
   item:
     association_type: Associatietypes
     attribute_group: Attribuutgroepen
@@ -431,12 +441,33 @@ pim_system:
   reset_pim:
     modal:
       summary:
+        name: Overzicht
+        title: 'Waarschuwing: het resetten van uw PIM is onomkeerbaar'
+        text: 'Alle elementen worden dan verwijderd behalve de volgende:'
         users:
           name: Gebruikers
+          tooltip: Gebruikers zijn de personen die u toestaat om samen te werken binnen uw PIM.
+        user_groups:
+          name: Gebruikersgroepen
+          tooltip: Met gebruikersgroepen worden de teams gedefinieerd die verschillende acties binnen uw PIM uitvoeren.
         roles:
           name: Rollen
+          tooltip: Met rollen worden de toegang van gebruikers en gebruikersgroepen en de acties die ze kunnen uitvoeren binnen uw PIM gedefinieerd.
       confirm:
         name: Bevestig
+        title: Bevestig het resetten van uw PIM
+        helper:
+          emphasis: Na het resetten van uw PIM kunt u niet meer terug.
+          text: Als u op de resetknop klikt, wordt u afgemeld en gaat u terug naar de inlogpagina.
+      confirmation_phrase: Typ "{{ confirmation_word }}"
+      confirmation_word: resetten
+    button:
+      label: Exemplaar resetten
+      confirm: Resetten en uitloggen
+    error_notification: Er is een fout opgetreden tijdens het resetten van de PIM. Neem contact op met de systeembeheerder.
+  sandbox:
+    helper:
+      text: Dit is een sandbox-omgeving; uw wijzigingen hebben geen invloed op uw productie.
 pim_datagrid:
   mass_action:
     default:

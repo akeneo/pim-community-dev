@@ -1,6 +1,7 @@
 validation:
   create:
     identifier_limit_reached: 'Limiet van "{{limit}}" identifier generators is bereikt'
+    code_already_used: 'Deze code is al in gebruik'
   update:
     identifier_generator_code_not_found: 'Identifier generator "{{code}}" bestaat niet of u hebt geen toestemming om het te openen.'
   identifier_generator:
@@ -20,6 +21,8 @@ validation:
     inactive_locale: 'De "{{ localeCode }}" locale is niet actief voor het "{{ scopeCode }}" kanaal.'
     family_property_fields_required: '"{{ field }}" veld is verplicht voor "familie" type.'
     simple_select_property_fields_required: 'Veld "{{ field }}" veld is verplicht voor type "simple_select".'
+    reference_entity_property_fields_required: 'Veld "{{ field }}" is verplicht voor type "reference_entity".'
     process_unknown_operator: 'Operator {{ value }} kan maar één van de volgende zijn: {{ choices }}.'
     locale_required: 'Een locale is vereist voor het "{{ attributeCode }}" attribuut.'
     scope_required: 'Een kanaal is vereist voor het "{{ attributeCode }}" attribuut.'
+    categories_do_not_exist: 'De volgende categorieën zijn verwijderd uit uw catalogus: {{ categoryCodes }}. U kunt ze verwijderen uit uw productselectie.'

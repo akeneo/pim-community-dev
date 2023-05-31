@@ -188,6 +188,8 @@ pim_import_export:
           placeholder: パスワードを入力
         public_key:
           label: 公開キー
+          button_title: クリップボードにコピー
+          copy_notification_success: 公開キーがクリップボードにコピーされました
         login_type:
           label: 認証方法
           password: ログインとパスワード
@@ -235,8 +237,8 @@ pim_import_export:
     6: 失敗
     7: 破棄済
     8: 不明
-    9: Pausing
-    10: Paused
+    9: 一時停止中
+    10: 一時停止
   job_status:
     COMPLETED: 完了
     STARTING: 開始中...
@@ -246,6 +248,8 @@ pim_import_export:
     FAILED: 失敗
     ABANDONED: 破棄済
     UNKNOWN: 不明
+    PAUSING: 一時停止中
+    PAUSED: 一時停止
   tracking:
     completed: "経過時間: {{ duration }}"
     in_progress: "推定残り時間: {{ duration }}"

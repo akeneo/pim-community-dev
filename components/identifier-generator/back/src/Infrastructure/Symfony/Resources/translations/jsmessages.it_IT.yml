@@ -45,12 +45,20 @@ pim_identifier_generator:
       title: 'Automatizza la generazione di identificatori.'
       info: 'Una volta creato un generatore di identificatori, a ogni nuovo prodotto che crei verrà assegnato automaticamente un identificatore.'
     check_help_center: 'Consulta il nostro Help Center per ulteriori informazioni.'
+    max_generator:
+      title: 'Hai raggiunto il limite di {{ count }} generatori di identificatori.'
     confirmation: 'Convermi di voler eliminare questa proprietà?'
+  operators:
+    'NOT IN CHILDREN': 'Non negli elementi figli'
+    'IN CHILDREN': 'Negli elementi figli'
+    UNCLASSIFIED: 'Non classificato'
+    CLASSIFIED: 'Classificato'
   selection:
     limit_reached: 'Hai raggiunto il limite di {{ count }} condizioni'
     helper:
       title: 'Aggiungi condizioni alla tua selezione di prodotti, se vuoi:'
       automate: 'automatizza la creazione di identificatori per una determinata selezione di prodotti'
+      multiple: 'più strutture di identificatori per differenti selezioni di prodotti (disponibile a breve)'
     empty:
       title: 'Crea la tua selezione di prodotti'
       text: 'Saranno interessati tutti i tuoi prodotti con identificatore vuoto.'
@@ -63,6 +71,8 @@ pim_identifier_generator:
         placeholder: 'Seleziona almeno una famiglia'
       select_option:
         placeholder: 'Seleziona almeno un''opzione'
+      categories:
+        tree: Albero
   structure:
     helper: 'Definisci la struttura degli identificatori di prodotti che vuoi generare. Se ti serve aiuto per configurare le impostazioni delle proprietà, {{link}}.'
     helper_link: 'consulta il nostro Help Center per ulteriori informazioni.'
@@ -116,6 +126,7 @@ pim_identifier_generator:
     edit: 'Modifica nomenclatura'
     section_title: 'Generazione identificatori per {{ property }}'
     title: 'Gestisci nomenclatura'
+    helper: 'Nota che le tue nomenclature sono condivise da tutti i tuoi generatori di identificatori.'
     characters_number: 'Numero di caratteri'
     operator_placeholder: 'Scegli l''operatore'
     value_placeholder: 'Scegli i caratteri'

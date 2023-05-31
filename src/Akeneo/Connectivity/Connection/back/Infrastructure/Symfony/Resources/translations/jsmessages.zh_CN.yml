@@ -616,6 +616,7 @@ pim_notification:
   types:
     connected_app_authorizations: 已连接的应用授权
     disabled_catalog: 应用目录已禁用
+    attribute_removed: 受影响的应用目录
   connected_app_authorizations:
     button_label: 打开应用
   disabled_catalog:

@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: Włączono
+        environment:
+          title: Ustawienia środowiska
+          fields:
+            sandbox_banner:
+              label: Wyświetlaj baner informujący o piaskownicy
         loading_message:
           title: Niestandardowe komunikaty dotyczące ładowania
           helper: Uprzyjemnij użytkownikom korzystanie z aplikacji niestandardowymi komunikatami na ekranach ładowania.
@@ -194,6 +199,7 @@ pim_common:
   label: Etykieta
   label_translations: Tłumaczenia etykiety
   Label or identifier: etykieta lub identyfikator
+  code_or_label: kod lub etykieta
   less_than: Mniej niż
   loading: Ładuję...
   media_upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
@@ -353,6 +359,10 @@ pim_menu:
     help:
       title: Pomoc
       helper: Centrum pomocy Akeneo
+      new: NOWOŚCI
+      news: Co nowego?
+      help_center: Centrum pomocy
+      akademy_training: Szkolenie Akademy
   item:
     association_type: Typy powiązań
     attribute_group: Grupy atrybutów
@@ -431,12 +441,33 @@ pim_system:
   reset_pim:
     modal:
       summary:
+        name: Podsumowanie
+        title: 'Ostrzeżenie: reset PIM jest nieodwracalny'
+        text: 'Spowoduje usunięcie wszystkich elementów oprócz tych wymienionych poniżej:'
         users:
           name: Użytkownicy
+          tooltip: Użytkownicy to osoby, którym pozwalasz współpracować w obrębie PIM.
+        user_groups:
+          name: Grupy użytkowników
+          tooltip: Grupy użytkowników służą do definiowania zespołów, które wykonują różne działania w obrębie PIM.
         roles:
           name: Role
+          tooltip: Role służą do definiowania dostępów oraz możliwych działań użytkowników i grup użytkowników w obrębie PIM.
       confirm:
         name: Potwierdź
+        title: Potwierdź reset PIM
+        helper:
+          emphasis: Zresetowania PIM nie będzie można cofnąć.
+          text: Po kliknięciu przycisku resetowania nastąpi wylogowanie i przeniesienie na stronę logowania.
+      confirmation_phrase: Wpisz „{{ confirmation_word }}”
+      confirmation_word: reset
+    button:
+      label: Zresetuj instancję
+      confirm: Zresetuj i wyloguj
+    error_notification: Podczas resetu PIM wystąpił błąd, skontaktuj się z administratorem systemu.
+  sandbox:
+    helper:
+      text: To środowisko piaskownicy; zmiany nie wpłyną na Twoje środowisko produkcyjne.
 pim_datagrid:
   mass_action:
     default:

@@ -3,3 +3,8 @@ services:
         class: Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlGetJobInstanceCode
         arguments:
             - '@database_connection'
+
+    akeneo_batch.query.get_paused_job_execution_ids:
+        class: Akeneo\Tool\Component\Batch\Query\SqlGetPausedJobExecutionIds
+        arguments:
+            - '@database_connection'

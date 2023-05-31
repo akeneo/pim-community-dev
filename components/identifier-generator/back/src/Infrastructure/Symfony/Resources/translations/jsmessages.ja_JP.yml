@@ -45,12 +45,20 @@ pim_identifier_generator:
       title: '識別子の生成を自動化します。'
       info: '識別子ジェネレーターが作成されると、作成するすべての新しい商品に識別子が自動的に割り当てられるようになります。'
     check_help_center: '詳細についてはヘルプセンターをご確認ください。'
+    max_generator:
+      title: '識別子ジェネレータの上限 {{ count }} 個に達しました。'
     confirmation: 'このプロパティを本当に削除しますか？'
+  operators:
+    'NOT IN CHILDREN': '下位に含まれない'
+    'IN CHILDREN': '下位に含まれる'
+    UNCLASSIFIED: '未分類'
+    CLASSIFIED: '分類済み'
   selection:
     limit_reached: '条件の上限{{ count }}個に達しています'
     helper:
       title: '以下の場合は、商品の選択に条件を追加します。'
       automate: '商品のターゲット選択に使用する識別子の作成を自動化する場合'
+      multiple: 'には商品の異なる選択に使用する識別の構造が複数あります'
     empty:
       title: '商品の選択の作成'
       text: '識別子が空になっているすべての商品に影響します。'
@@ -63,6 +71,8 @@ pim_identifier_generator:
         placeholder: '少なくとも1つのファミリーを選択してください'
       select_option:
         placeholder: '少なくとも1つのオプションを選択してください'
+      categories:
+        tree: ツリー
   structure:
     helper: '生成する商品識別子の構造を定義します。プロパティ設定のセットアップにヘルプが必要な場合は、{{link}}。'
     helper_link: 'ヘルプセンターで詳細をご覧ください'
@@ -116,6 +126,7 @@ pim_identifier_generator:
     edit: '表現規則を編集'
     section_title: '{{ property }} の識別子の生成'
     title: '表現規則を管理'
+    helper: '表現規則はすべての識別子ジェネレータで共有されることに注意してください。'
     characters_number: '文字数'
     operator_placeholder: 'オペレータを選択してください'
     value_placeholder: '文字を選択してください'

@@ -45,12 +45,20 @@ pim_identifier_generator:
       title: 'Zautomatyzuj generowanie identyfikatorów.'
       info: 'Po utworzeniu generatora identyfikatorów do każdego nowego produktu, który utworzysz, zostanie automatycznie przypisany identyfikator.'
     check_help_center: 'Więcej informacji znajdziesz na stronie pomocy.'
+    max_generator:
+      title: 'Osiągnięto limit {{ count }} generatorów identyfikatora.'
     confirmation: 'Czy na pewno chcesz usunąć tę właściwość?'
+  operators:
+    'NOT IN CHILDREN': 'Nie w elementach podrzędnych'
+    'IN CHILDREN': 'W elementach podrzędnych'
+    UNCLASSIFIED: 'Niesklasyfikowane'
+    CLASSIFIED: 'Sklasyfikowane'
   selection:
     limit_reached: 'Osiągnięto limit {{ count }} warunków'
     helper:
       title: 'Dodaj warunki do wyboru produktów, jeśli chcesz:'
       automate: 'zautomatyzować tworzenie identyfikatorów docelowego wyboru produktów;'
+      multiple: 'mieć wiele struktur identyfikatorów do różnych wyborów produktów.'
     empty:
       title: 'Utwórz wybór produktów'
       text: 'Będzie to miało wpływ na wszystkie Twoje produkty z pustym identyfikatorem.'
@@ -63,6 +71,8 @@ pim_identifier_generator:
         placeholder: 'Wybierz co najmniej jedną rodzinę'
       select_option:
         placeholder: 'Wybierz co najmniej jedną opcję'
+      categories:
+        tree: Drzewo
   structure:
     helper: 'Zdefiniuj strukturę identyfikatorów produktów, które chcesz wygenerować. Jeśli potrzebujesz pomocy w konfiguracji ustawień właściwości, {{link}}.'
     helper_link: 'wejdź na stronę pomocy, gdzie znajdziesz dodatkowe informacje.'
@@ -116,6 +126,7 @@ pim_identifier_generator:
     edit: 'Edytuj nomenklaturę'
     section_title: 'Generowanie identyfikatorów właściwości {{ property }}'
     title: 'Zarządzaj nomenklaturą'
+    helper: 'Pamiętaj, że nomenklatury są współdzielone przez wszystkie generatory identyfikatorów.'
     characters_number: 'Liczba znaków'
     operator_placeholder: 'Wybierz operatora'
     value_placeholder: 'Wybierz znaki'
