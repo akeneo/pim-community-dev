@@ -7,7 +7,7 @@ import {
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {Breadcrumb, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
+import {Breadcrumb, Pill, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
 import {DeactivateTemplateModal} from '../components/templates/DeactivateTemplateModal';
 import {cloneDeep, set} from 'lodash/fp';
 import {FC, useCallback, useEffect, useState} from 'react';
@@ -100,6 +100,11 @@ const TemplatePage: FC = () => {
 
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
 
+  const [tabInError, setTabInError] = useState({});
+  const handleBadgesForTabInError = (tabCode: 'attributes'|'properties', inError: boolean) => {
+    setTabInError(p => ({...p, [tabCode]: inError}));
+  }
+
   return (
     <>
       <PageHeader>
@@ -136,7 +141,7 @@ const TemplatePage: FC = () => {
               handleSwitchTo(Tabs.ATTRIBUTE);
             }}
           >
-            {translate('akeneo.category.attributes')}
+            {translate('akeneo.category.attributes')} {(tabInError['attributes'] === true ?? false) && <Pill level={"danger"}/>}
           </TabBar.Tab>
           <TabBar.Tab
             isActive={isCurrent(Tabs.PROPERTY)}
@@ -144,12 +149,12 @@ const TemplatePage: FC = () => {
               handleSwitchTo(Tabs.PROPERTY);
             }}
           >
-            {translate('pim_common.properties')}
+            {translate('pim_common.properties')} {(tabInError['properties'] === true ?? false) && <Pill level={"danger"}/>}
           </TabBar.Tab>
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
-          <EditTemplateAttributesForm attributes={templateEdited.attributes} templateId={templateEdited.uuid} />
+          <EditTemplateAttributesForm attributes={templateEdited.attributes} templateId={templateEdited.uuid} onTabStatusChange={handleBadgesForTabInError} />
         )}
 
         {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (

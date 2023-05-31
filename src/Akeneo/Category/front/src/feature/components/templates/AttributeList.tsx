@@ -1,4 +1,4 @@
-import {Button, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
+import {Button, Pill, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
 import {Attribute, CATEGORY_ATTRIBUTE_TYPE_AREA, CATEGORY_ATTRIBUTE_TYPE_RICHTEXT} from '../../models';
 import {getLabelFromAttribute} from '../attributes';
 import React, {useMemo} from 'react';
@@ -11,9 +11,10 @@ type Props = {
   selectedAttribute: Attribute;
   templateId: string;
   onAttributeSelection: (attribute: Attribute) => void;
+  attributeFormsInError:{string?: boolean}
 };
 
-export const AttributeList = ({attributes, selectedAttribute, templateId, onAttributeSelection}: Props) => {
+export const AttributeList = ({attributes, selectedAttribute, templateId, onAttributeSelection, attributeFormsInError}: Props) => {
   const translate = useTranslate();
   const catalogLocale = userContext.get('catalogLocale');
   const featureFlags = useFeatureFlags();
@@ -54,6 +55,7 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.header')}</Table.HeaderCell>
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.code')}</Table.HeaderCell>
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.type')}</Table.HeaderCell>
+            <ErrorPillTableHeaderCell />
           </Table.Header>
           <Table.Body>
             {sortedAttributes.map((attribute: Attribute) => (
@@ -75,6 +77,9 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
                     }`
                   )}
                 </Table.Cell>
+                  <ErrorPillTableCell>
+                        {(attributeFormsInError[attribute.uuid] === true ?? false) && <Pill level={"danger"}/>}
+                  </ErrorPillTableCell>
               </Table.Row>
             ))}
           </Table.Body>
@@ -98,4 +103,14 @@ const AddAttributeButton = styled(Button)`
 const ScrollablePanel = styled.div`
   overflow-y: scroll;
   height: calc(100% - 44px);
+`;
+
+const ErrorPillTableCell = styled(Table.Cell)`
+  display: flex;
+  justify-content: flex-end;
+  width: 75px;
+`;
+
+const ErrorPillTableHeaderCell = styled(Table.HeaderCell)`
+width: 75px;
 `;

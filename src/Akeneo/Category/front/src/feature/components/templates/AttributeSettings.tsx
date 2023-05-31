@@ -13,6 +13,7 @@ import {useDebounceCallback} from '../../tools/useDebounceCallback';
 type Props = {
   attribute: Attribute;
   activatedCatalogLocales: string[];
+  onChangeFormStatus: (attributeUuid: string, inError: boolean) => void;
 };
 
 type ResponseError = {
@@ -24,7 +25,7 @@ type ResponseError = {
 
 type ApiResponseError = ResponseError[];
 
-export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) => {
+export const AttributeSettings = ({attribute, activatedCatalogLocales, onChangeFormStatus}: Props) => {
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
   const catalogLocales = useCatalogLocales();
@@ -51,12 +52,14 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     setIsRichTextArea(!isRichTextArea);
     updateTemplateAttribute({isRichTextArea: !isRichTextArea});
   };
-  const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string) => {
+  const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string, attributeUuid: string) => {
     updateTemplateAttribute({labels: {[locale]: value}})
       .then(() => {
         if (error[locale]) {
           delete error[locale];
-          setError({...error});
+          let updatedError = {...error};
+          onChangeFormStatus(attributeUuid, Object.keys(updatedError).length !== 0);
+          setError(updatedError);
         }
       })
       .catch((error: BadRequestError<ApiResponseError>) => {
@@ -65,12 +68,13 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
 
           return accumulator;
         }, {});
+        onChangeFormStatus(attributeUuid, true);
         setError(state => ({...state, ...errors}));
       });
   }, 300);
   const handleTranslationsChange = (locale: string, value: string) => {
     setTranslations({...translations, [locale]: value});
-    debouncedUpdateTemplateAttribute(locale, value);
+    debouncedUpdateTemplateAttribute(locale, value, attribute.uuid);
   };
 
   return (
