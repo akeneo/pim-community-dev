@@ -14,7 +14,6 @@ use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 
 class FakeWriter implements ItemWriterInterface, PausableWriterInterface
 {
-
     public function write(array $items): void
     {
         return;
