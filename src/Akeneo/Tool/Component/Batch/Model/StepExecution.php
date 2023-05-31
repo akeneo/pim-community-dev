@@ -90,7 +90,7 @@ class StepExecution
     private $trackingData = self::TRACKING_DATA_DEFAULT;
 
     private bool $isTrackable;
-    private array $currentState;
+    private ?array $currentState;
 
     /**
      * Constructor with mandatory properties.
@@ -636,7 +636,7 @@ class StepExecution
 
     public function getCurrentState(): array
     {
-        return $this->currentState;
+        return $this->currentState ?? [];
     }
 
     /**

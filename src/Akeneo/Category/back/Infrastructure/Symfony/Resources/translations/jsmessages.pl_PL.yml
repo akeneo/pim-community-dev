@@ -43,7 +43,9 @@ akeneo.category:
           title: Tłumaczenia etykiet
     add_attribute:
       no_attribute_title: Utwórz swój pierwszy atrybut
+      no_attribute_instructions: Zdefiniuj zawartość, którą chcesz powiązać z kategoriami, dodając do tego szablonu atrybuty tekstu, obszaru tekstowego lub obrazu.
       add_button: Dodaj atrybut
+      create_button: Utwórz atrybut
       confirmation_modal:
         section_title: Dodaj atrybut
         title: Utwórz nowy atrybut kategorii
@@ -68,6 +70,14 @@ akeneo.category:
         limit_reached:
           title: Nie możesz dodać więcej niż 50 atrybutów
           message: Szablony kategorii mogą zawierać maksymalnie 50 atrybutów.
+    delete_attribute:
+      delete: Usuń atrybut kategorii
+      confirmation_modal:
+        title: Usuń ten atrybut kategorii
+        message: Czy na pewno chcesz usunąć atrybut kategorii o nazwie {{ attribute }}?
+        helper: Usunięcie tego atrybutu spowoduje trwałe usunięcie atrybutu i wartości powiązanych kategorii.
+      notification_success:
+        title: 'Atrybut {{ attribute }} usunięty pomyślnie'
     deactivate:
       deactivate_template: Dezaktywuj szablon
       confirmation_modal:
@@ -86,6 +96,11 @@ akeneo.category:
   tag:
     new: Nowy
   discover_enriched_categories_information:
+    title: Odkryj wzbogacone kategorie
+    content:
+      enrich_attribute_values: Wzbogać dowolny poziom drzewa kategorii atrybutami tekstu, obszaru tekstowego i obrazu
+      customizable_templates: Zapewnij klientom najlepsze odbiór produktu dzięki konfigurowalnym szablonom
+      edit_attributes: 'Już wkrótce: aktualizuj ustawienia dowolnego z tych atrybutów kategorii'
     survey_link_label: Podziel się z nami Twoją opinią
     learn_more_link_label: Dowiedz się więcej o wzbogaconych kategoriach
   other_actions: Inne działania

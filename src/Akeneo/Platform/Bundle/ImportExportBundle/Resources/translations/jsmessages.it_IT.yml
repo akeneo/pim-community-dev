@@ -237,7 +237,7 @@ pim_import_export:
     6: Fallito
     7: Abbandonato
     8: Sconosciuto
-    9: Attivazione della pausa
+    9: Sospensione in corso
     10: In pausa
   job_status:
     COMPLETED: Completato
@@ -248,7 +248,7 @@ pim_import_export:
     FAILED: Fallito
     ABANDONED: Abbandonato
     UNKNOWN: Sconosciuto
-    PAUSING: Attivazione della pausa
+    PAUSING: Sospensione in corso
     PAUSED: In pausa
   tracking:
     completed: "Tempo speso: {{ duration }}"

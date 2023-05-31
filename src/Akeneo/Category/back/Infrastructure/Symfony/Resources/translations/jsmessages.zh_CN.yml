@@ -10,13 +10,17 @@ akeneo.category:
       unhandled_attribute_type: 找不到属性类型"{{ type }}"的属性字段生成器
     template:
       title: 模板
+      no_attribute_title: 此模板中没有属性
+      no_attribute_instructions: 与此类别关联的模板为空，您可以从类别树页面将属性添加到此模板中。
       fetching_failed: 获取模板时出错。
     unsaved_changes: 如果离开此页面，将会丢失对类别的更改。
   tree:
     create: 创建树
     delete: 删除树
   template:
+    learn_more: 了解更多类别模板相关信息
     create: 激活模板
+    edit: 编辑模板
     notification_success: 模板已成功激活
     notification_error: 无法激活模板
     not_found: 没有为此类别的激活模板
@@ -27,8 +31,21 @@ akeneo.category:
         textarea: 文本区域
         richtext: 富文本
         image: 图像
+      delete_button: 删除属性
+      settings:
+        title: 设置 
+        options:
+          title: 选项
+          value_per_channel: 每个渠道的值
+          value_per_locale: 每项区域设置的值
+          rich_text: 富文本编辑器
+        translations:
+          title: 标签翻译
     add_attribute:
+      no_attribute_title: 创建您的第一个属性
+      no_attribute_instructions: 将文本、文本区域或图像属性添加到此模板，可定义您想要关联到类别的内容。
       add_button: 添加属性
+      create_button: 创建属性
       confirmation_modal:
         section_title: 添加属性
         title: 创建新的类别属性
@@ -53,6 +70,14 @@ akeneo.category:
         limit_reached:
           title: 您不能添加超过 50 个属性
           message: 类别模板仅限每个模板拥有 50 个属性。
+    delete_attribute:
+      delete: 删除类别属性
+      confirmation_modal:
+        title: 删除此类别属性
+        message: 确定要删除名为 {{ attribute }} 的类别属性吗？
+        helper: 删除此属性将永久删除关联类别的属性和值。
+      notification_success:
+        title: '{{ attribute }} 属性已成功删除'
     deactivate:
       deactivate_template: 停用模板
       confirmation_modal:
@@ -71,6 +96,11 @@ akeneo.category:
   tag:
     new: 新
   discover_enriched_categories_information:
+    title: 探索丰富的类别
+    content:
+      enrich_attribute_values: 通过文本、文本区域和图像属性丰富类别树的所有级别
+      customizable_templates: 自定义模板为您带来卓越的产品体验
+      edit_attributes: '即将推出：更新所有这些类别属性的设置'
     survey_link_label: 告诉我们您的想法
     learn_more_link_label: 了解更多有关丰富的类别
   other_actions: 其他操作

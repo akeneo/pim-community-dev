@@ -1,23 +1,35 @@
-import {Button, Checkbox, Field, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
+import {Button, Checkbox, Field, Helper, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
-import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
+import {LabelCollection, useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
 import {useState} from 'react';
+import {BadRequestError} from '../../tools/apiFetch';
+import {useDebounceCallback} from '../../tools/useDebounceCallback';
 
 type Props = {
   attribute: Attribute;
   activatedCatalogLocales: string[];
 };
 
+type ResponseError = {
+  error: {
+    property: string;
+    message: string;
+  };
+};
+
+type ApiResponseError = ResponseError[];
+
 export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) => {
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
   const catalogLocales = useCatalogLocales();
   const featureFlag = useFeatureFlags();
+  const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
 
   const [
     isDeactivateTemplateAttributeModalOpen,
@@ -25,13 +37,40 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
 
-  const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
+  const displayError = (errorMessages: string[], key: string) => {
+    return errorMessages.map(message => {
+      return <Helper level="error">{message}</Helper>;
+    });
+  };
 
-  const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
+  const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
+  const [translations, setTranslations] = useState<LabelCollection>(attribute.labels);
+  const [error, setError] = useState<{[locale: string]: string[]}>({});
 
   const handleRichTextAreaChange = () => {
     setIsRichTextArea(!isRichTextArea);
-    updateTemplateAttribute(!isRichTextArea);
+    updateTemplateAttribute({isRichTextArea: !isRichTextArea});
+  };
+  const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string) => {
+    updateTemplateAttribute({labels: {[locale]: value}})
+      .then(() => {
+        if (error[locale]) {
+          delete error[locale];
+          setError({...error});
+        }
+      })
+      .catch((error: BadRequestError<ApiResponseError>) => {
+        const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
+          accumulator[currentError.error.property] = [currentError.error.message];
+
+          return accumulator;
+        }, {});
+        setError(state => ({...state, ...errors}));
+      });
+  }, 300);
+  const handleTranslationsChange = (locale: string, value: string) => {
+    setTranslations({...translations, [locale]: value});
+    debouncedUpdateTemplateAttribute(locale, value);
   };
 
   return (
@@ -78,7 +117,15 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
             locale={activatedLocaleCode}
             key={activatedLocaleCode}
           >
-            <TextInput readOnly onChange={() => {}} value={attribute.labels[activatedLocaleCode] || ''}></TextInput>
+            <TextInput
+              readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
+              onChange={(newValue: string) => {
+                handleTranslationsChange(activatedLocaleCode, newValue);
+              }}
+              invalid={!!error[activatedLocaleCode]}
+              value={translations[activatedLocaleCode] || ''}
+            ></TextInput>
+            {error[activatedLocaleCode] && displayError(error[activatedLocaleCode], activatedLocaleCode)}
           </TranslationField>
         ))}
       </div>

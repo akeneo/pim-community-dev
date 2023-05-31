@@ -71,6 +71,7 @@ pim_enrich.entity.product:
       modified: 已修改
       old_value: 旧值
       new_value: 新值
+      limit: '仅显示最新的 {{ limit }} 个版本。'
     meta:
       updated: 上次更新
       groups: 分组
@@ -457,6 +458,7 @@ pim_datagrid:
     mass_delete: 批量删除
     selected:
       family: "]-Inf, 1]已选定 {{ count }} 个品类|]1, Inf[已选定 {{ count }} 个品类"
+      attribute: "]-Inf, 1]已选定 {{ count }} 个属性|]1, Inf[已选定 {{ count }} 个属性"
       product: "]-Inf, 1]已选定 {{ count }} 个结果|]1, Inf[已选定 {{ count }} 个结果"
   view_selector:
     view: 视图

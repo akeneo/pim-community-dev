@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: 有効
+        environment:
+          title: 環境設定
+          fields:
+            sandbox_banner:
+              label: サンドボックス警告バナーを表示する
         loading_message:
           title: カスタマイズされた読み込み中のメッセージ
           helper: 画面を読み込むためのカスタマイズされたメッセージでユーザーを楽しませます。
@@ -194,6 +199,7 @@ pim_common:
   label: ラベル
   label_translations: ラベルの翻訳
   Label or identifier: ラベルもしくは識別子
+  code_or_label: コードまたはラベル
   less_than: <
   loading: 読み込み中…
   media_upload: ドラッグ＆ドロップでアップロードするか、こちらをクリック
@@ -353,6 +359,10 @@ pim_menu:
     help:
       title: ヘルプ
       helper: Akeneoヘルプセンター
+      new: 新規
+      news: 新着情報
+      help_center: ヘルプセンター
+      akademy_training: Akademy トレーニング
   item:
     association_type: 関連タイプ
     attribute_group: 属性グループ
@@ -431,12 +441,33 @@ pim_system:
   reset_pim:
     modal:
       summary:
+        name: 概要
+        title: '警告: PIM のリセットは元に戻せません'
+        text: '以下を除くすべての要素が削除されます:'
         users:
           name: ユーザー
+          tooltip: ユーザーとは、PIM 内で共同作業できる人です。
+        user_groups:
+          name: ユーザーグループ
+          tooltip: ユーザーグループは、PIM 内で様々な操作を実行するチームを定義します。
         roles:
           name: 権限
+          tooltip: 権限は、PIM でユーザーとユーザーグループが実行できるアクセスと操作を定義します。
       confirm:
         name: 確認
+        title: PIM のリセットを確認する
+        helper:
+          emphasis: PIM を一度リセットすると、元に戻せません。
+          text: リセットボタンをクリックするとログアウトされ、ログインページに戻ります。
+      confirmation_phrase: '"{{ confirmation_word }}" と入力してください'
+      confirmation_word: リセット
+    button:
+      label: インスタンスをリセット
+      confirm: リセットしてログアウト
+    error_notification: PIM のリセット中にエラーが発生しました。システム管理者にお問い合わせください。
+  sandbox:
+    helper:
+      text: これはサンドボックス環境です。変更による本番環境への影響はありません。
 pim_datagrid:
   mass_action:
     default:

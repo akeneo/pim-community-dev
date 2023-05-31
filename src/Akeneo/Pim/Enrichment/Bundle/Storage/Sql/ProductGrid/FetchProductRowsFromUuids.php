@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
@@ -22,9 +22,9 @@ use Ramsey\Uuid\UuidInterface;
 final class FetchProductRowsFromUuids
 {
     public function __construct(
-        private Connection $connection,
-        private WriteValueCollectionFactory $valueCollectionFactory,
-        private AttributeRepositoryInterface $attributeRepository
+        private readonly Connection $connection,
+        private readonly WriteValueCollectionFactory $valueCollectionFactory,
+        private readonly GetProductCompletenesses $getProductCompletenesses,
     ) {
     }
 
@@ -261,38 +261,11 @@ SQL;
     /** @param array<UuidInterface> $uuids */
     private function getCompletenesses(array $uuids, string $channelCode, string $localeCode): array
     {
+        $completenessCollection = $this->getProductCompletenesses->fromProductUuids($uuids, $channelCode, [$localeCode]);
+
         $result = [];
         foreach ($uuids as $uuid) {
-            $result[$uuid->toString()]['completeness'] = null;
-        }
-
-        $sql = <<<SQL
-            SELECT 
-                BIN_TO_UUID(p.uuid) as uuid,
-                FLOOR(100 * (c.required_count - c.missing_count) / c.required_count) AS ratio
-            FROM
-                pim_catalog_product p
-                JOIN pim_catalog_completeness c ON c.product_uuid = p.uuid
-                JOIN pim_catalog_locale l ON l.id = c.locale_id
-                JOIN pim_catalog_channel ch ON ch.id = c.channel_id
-            WHERE 
-                uuid IN (:uuids)
-                AND l.code = :locale_code
-                AND ch.code = :channel_code
-SQL;
-
-        $rows = $this->connection->executeQuery(
-            $sql,
-            [
-                'uuids' => array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $uuids),
-                'locale_code' => $localeCode,
-                'channel_code' => $channelCode
-            ],
-            ['uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-        )->fetchAllAssociative();
-
-        foreach ($rows as $row) {
-            $result[$row['uuid']]['completeness'] = (int) $row['ratio'];
+            $result[$uuid->toString()]['completeness'] = $completenessCollection[$uuid->toString()]?->getCompletenessForChannelAndLocale($channelCode, $localeCode)?->ratio();
         }
 
         return $result;

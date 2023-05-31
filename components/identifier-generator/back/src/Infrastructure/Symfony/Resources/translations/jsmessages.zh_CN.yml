@@ -45,12 +45,20 @@ pim_identifier_generator:
       title: '自动生成标识符。'
       info: '创建标识符生成器后，将自动为您创建的每个新产品分配标识符。'
     check_help_center: '查看我们的“帮助中心”获取更多信息。'
+    max_generator:
+      title: '您已达到标识符生成器的上限数目 {{ count }}。'
     confirmation: '确定要删除此属性吗？'
+  operators:
+    'NOT IN CHILDREN': '不在子级中'
+    'IN CHILDREN': '在子级中'
+    UNCLASSIFIED: '未分类'
+    CLASSIFIED: '已分类'
   selection:
     limit_reached: '您已达到条件的上限数目 {{ count }}'
     helper:
       title: '如果您希望实现下列功能，向您的产品选择中添加条件：'
       automate: '自动为目标选择产品创建标识符'
+      multiple: '针对不同的产品选择拥有多个标识符结构'
     empty:
       title: '创建您的产品选择'
       text: '所有具有空标识符的产品都将受到影响。'
@@ -63,6 +71,8 @@ pim_identifier_generator:
         placeholder: '请选择至少一个品类'
       select_option:
         placeholder: '请选择至少一个选项'
+      categories:
+        tree: 树
   structure:
     helper: '定义您想要生成的产品标识符的结构。如果您需要设置属性方面的帮助，{{link}}。'
     helper_link: '查看我们的“帮助中心”获取更多信息'
@@ -116,6 +126,7 @@ pim_identifier_generator:
     edit: '编辑命名法'
     section_title: '为 {{ property }} 生成标识符'
     title: '管理命名法'
+    helper: '请注意，您的命名法将由您所有的标识符生成器共享。'
     characters_number: '字符数'
     operator_placeholder: '选择运算符'
     value_placeholder: '选择字符'

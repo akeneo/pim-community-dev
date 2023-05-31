@@ -8,3 +8,5 @@ pim_notification:
     message: '<strong>{{ app_name }}</strong> 应用需要授权更新。请打开应用以继续。'
   disabled_catalog:
     message: "您的 PIM 设置中的一个或多个修改影响了 {{ catalog_name }} 目录。请审查其设置，然后再次启用目录。"
+  attribute_removed:
+    message: "您的 PIM 设置中的一个或多个修改影响了 {{ catalog_name }} 目录。请查看相关的映射。"
