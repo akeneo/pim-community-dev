@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchBundle\JobExecution;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
@@ -22,10 +23,12 @@ use Doctrine\ORM\EntityManagerInterface;
 class ExecuteJobExecutionHandler implements ExecuteJobExecutionHandlerInterface
 {
     public function __construct(
-        private BatchLogHandler $batchLogHandler,
+        private BatchLogHandler        $batchLogHandler,
         private JobRepositoryInterface $jobRepository,
-        private JobRegistry $jobRegistry,
-    ) {
+        private JobRegistry            $jobRegistry,
+        private FeatureFlags           $featureFlags,
+    )
+    {
     }
 
     public function executeFromJobExecutionId(int $executionId): JobExecution
@@ -44,7 +47,7 @@ class ExecuteJobExecutionHandler implements ExecuteJobExecutionHandlerInterface
 
     private function doExecute(JobExecution $jobExecution): void
     {
-        if (!$jobExecution->getStatus()->isStarting() && !$jobExecution->getStatus()->isStopping() && !$jobExecution->getStatus()->isPaused()) {
+        if (!$this->canBeExecuted($jobExecution)) {
             throw new \RuntimeException(
                 sprintf('Job execution "%s" has invalid status: %s', $jobExecution->getId(), $jobExecution->getStatus())
             );
@@ -67,5 +70,12 @@ class ExecuteJobExecutionHandler implements ExecuteJobExecutionHandlerInterface
     private function getJobManager(): EntityManagerInterface
     {
         return $this->jobRepository->getJobManager();
+    }
+
+    private function canBeExecuted(JobExecution $jobExecution): bool
+    {
+        return $jobExecution->getStatus()->isStarting()
+            || $jobExecution->getStatus()->isStopping()
+            || ($jobExecution->getStatus()->isPaused() && $this->featureFlags->isEnabled('pause_jobs'));
     }
 }
