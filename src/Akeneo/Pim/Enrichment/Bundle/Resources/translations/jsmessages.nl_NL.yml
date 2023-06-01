@@ -71,6 +71,7 @@ pim_enrich.entity.product:
       modified: Gewijzigd
       old_value: Oude waarde
       new_value: Nieuwe waarde
+      limit: 'Alleen de laatste {{ limit }} versies worden weergegeven.'
     meta:
       updated: Laatst bijgewerkt
       groups: Groepen
@@ -457,6 +458,7 @@ pim_datagrid:
     mass_delete: Groepsgewijs verwijderen
     selected:
       family: "]-Inf, 1]{{ count }} familie geselecteerd|]1, Inf[{{ count }} families geselecteerd"
+      attribute: "]-Inf, 1]{{ count }} attribuut geselecteerd|]1, Inf[{{ count }} attributen geselecteerd"
       product: "]-Inf, 1]{{ count }} resultaat geselecteerd|]1, Inf[{{ count }} resultaten geselecteerd"
   view_selector:
     view: Weergaves

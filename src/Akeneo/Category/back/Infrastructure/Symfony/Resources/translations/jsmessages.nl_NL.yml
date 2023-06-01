@@ -10,13 +10,17 @@ akeneo.category:
       unhandled_attribute_type: Kon attribuut veldbouwer voor attribuut type "{{ type }} " niet vinden
     template:
       title: Sjabloon
+      no_attribute_title: Er is geen attribuut in dit sjabloon
+      no_attribute_instructions: Het aan deze categorie gekoppelde sjabloon is leeg. U kunt attributen aan dit sjabloon toevoegen via de pagina met de categorieboom.
       fetching_failed: Er is een fout opgetreden tijdens het ophalen van het sjabloon
     unsaved_changes: Als u deze pagina verlaat, worden de wijzigingen aan de categorie niet opgeslagen.
   tree:
     create: Boomstructuur maken
     delete: Boomstructuur verwijderen
   template:
+    learn_more: Meer informatie over het categoriesjabloon
     create: Sjabloon activeren
+    edit: Sjabloon bewerken
     notification_success: Het sjabloon is geactiveerd
     notification_error: Het sjabloon kon niet geactiveerd worden
     not_found: Er is geen actieve sjabloon voor deze categorie
@@ -27,8 +31,21 @@ akeneo.category:
         textarea: Tekstgebied
         richtext: Tekst met opmaak
         image: Afbeelding
+      delete_button: Attribuut verwijderen
+      settings:
+        title: Instellingen
+        options:
+          title: Opties
+          value_per_channel: Waarde per kanaal
+          value_per_locale: Waarde per taal
+          rich_text: Editor voor opgemaakte tekst
+        translations:
+          title: Labelvertalingen
     add_attribute:
+      no_attribute_title: Uw eerste attribuut aanmaken
+      no_attribute_instructions: Definieer de inhoud die u wilt koppelen aan uw categorieën door attributen voor tekst, tekstgebied of afbeelding toe te voegen aan dit sjabloon.
       add_button: Attribuut toevoegen
+      create_button: Attribuut aanmaken
       confirmation_modal:
         section_title: Attribuut toevoegen
         title: Een nieuw categorieattribuut maken
@@ -53,6 +70,14 @@ akeneo.category:
         limit_reached:
           title: U kunt niet meer dan 50 attributen toevoegen.
           message: Voor categoriesjablonen geldt een beperking van 50 attributen per sjabloon.
+    delete_attribute:
+      delete: Categorieattribuut verwijderen
+      confirmation_modal:
+        title: Dit categorieattribuut verwijderen
+        message: Weet u zeker dat u het categorieattribuut {{ attribute }} wilt verwijderen?
+        helper: Als u dit attribuut verwijdert, worden het attribuut en de waarden van de bijbehorende categorieën permanent verwijderd.
+      notification_success:
+        title: 'Attribuut {{ attribute }} is verwijderd'
     deactivate:
       deactivate_template: Template deactiveren
       confirmation_modal:
@@ -71,6 +96,11 @@ akeneo.category:
   tag:
     new: Nieuw
   discover_enriched_categories_information:
+    title: Verrijkte categorieën ontdekken
+    content:
+      enrich_attribute_values: Verrijk een niveau van uw categoriebomen met attributen voor tekst, tekstgebied en afbeelding
+      customizable_templates: Bied de gewenste productervaring aan dankzij de aanpasbare sjablonen
+      edit_attributes: 'Binnenkort beschikbaar: de instellingen van elk van deze categorie-attributen bijwerken'
     survey_link_label: Vertel ons wat u ervan vindt!
     learn_more_link_label: Meer informatie over verrijkte categorieën
   other_actions: Andere acties

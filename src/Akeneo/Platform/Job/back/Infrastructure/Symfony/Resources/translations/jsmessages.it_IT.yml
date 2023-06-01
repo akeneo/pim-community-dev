@@ -12,7 +12,7 @@ akeneo_job:
     ABANDONED: Abbandonato
     UNKNOWN: Sconosciuto
     IN_PROGRESS: In corso
-    PAUSING: Attivazione della pausa
+    PAUSING: Sospensione in corso
     PAUSED: In pausa
 akeneo_job_process_tracker:
   tooltip:
@@ -63,7 +63,7 @@ akeneo_job_process_tracker:
     stopping: In fase di interruzione
     unknown: Sconosciuto
     in_progress: In corso
-    pausing: Attivazione della pausa
+    pausing: Sospensione in corso
     paused: In pausa
   automation_filter:
     all: Tutto

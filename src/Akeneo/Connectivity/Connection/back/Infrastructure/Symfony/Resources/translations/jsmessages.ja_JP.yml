@@ -616,6 +616,7 @@ pim_notification:
   types:
     connected_app_authorizations: 接続済みアプリの承認
     disabled_catalog: アプリカタログは無効になっています
+    attribute_removed: アプリカタログに影響しました
   connected_app_authorizations:
     button_label: アプリを開く
   disabled_catalog:
