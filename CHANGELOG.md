@@ -83,6 +83,7 @@
 - PIM-10997: Update error message when trying to delete role with linked users or connections
 - PIM-11003: Fix scrolling on Product edit form attributes
 - PIM-10982 : Fix flag emoji rendering on windows
+- PIM-11013 : Fix edit user profile without password changes
 
 ## Improvements
 
