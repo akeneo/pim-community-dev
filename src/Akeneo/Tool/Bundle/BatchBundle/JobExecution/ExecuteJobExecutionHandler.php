@@ -23,10 +23,10 @@ use Doctrine\ORM\EntityManagerInterface;
 class ExecuteJobExecutionHandler implements ExecuteJobExecutionHandlerInterface
 {
     public function __construct(
-        private BatchLogHandler        $batchLogHandler,
+        private BatchLogHandler $batchLogHandler,
         private JobRepositoryInterface $jobRepository,
-        private JobRegistry            $jobRegistry,
-        private FeatureFlags           $featureFlags,
+        private JobRegistry $jobRegistry,
+        private FeatureFlags $featureFlags,
     ) {
     }
 
@@ -73,8 +73,10 @@ class ExecuteJobExecutionHandler implements ExecuteJobExecutionHandlerInterface
 
     private function canBeExecuted(JobExecution $jobExecution): bool
     {
-        return $jobExecution->getStatus()->isStarting()
-            || $jobExecution->getStatus()->isStopping()
-            || ($jobExecution->getStatus()->isPaused() && $this->featureFlags->isEnabled('pause_jobs'));
+        $status = $jobExecution->getStatus();
+
+        return $status->isStarting()
+            || $status->isStopping()
+            || ($this->featureFlags->isEnabled('pause_jobs') && $status->isPaused());
     }
 }

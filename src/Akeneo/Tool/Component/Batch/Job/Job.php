@@ -199,11 +199,10 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         $stepExecution = null;
 
         foreach ($this->steps as $step) {
-            $stepExecution = $this->getCurrentStepExecution($jobExecution, $step);
-
-            if (!$this->isRunnable($stepExecution)) {
-                continue;
-            }
+            /**
+             * TODO RAB-1428 / RAB-1428: Handle jobs with two or more steps
+             */
+            $stepExecution = $jobExecution->getStepExecutions()[0] ?? null;
 
             $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution);
             $this->jobRepository->updateStepExecution($stepExecution);
@@ -345,18 +344,5 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         if ($this->filesystem->exists($directory)) {
             $this->filesystem->remove($directory);
         }
-    }
-
-    private function getCurrentStepExecution(JobExecution $jobExecution, StepInterface $step): StepExecution | null
-    {
-        return array_values(array_filter(
-            $jobExecution->getStepExecutions()->toArray(),
-            static fn (StepExecution $stepExecution) => $stepExecution->getStepName() === $step->getName(),
-        ))[0] ?? null;
-    }
-
-    public function isRunnable(?StepExecution $stepExecution): bool
-    {
-        return null === $stepExecution || in_array($stepExecution->getStatus()->getValue(), [BatchStatus::STARTING, BatchStatus::PAUSED]);
     }
 }

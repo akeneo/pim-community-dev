@@ -93,7 +93,9 @@ final class JobMessageHandler implements MessageSubscriberInterface
 
                 pcntl_signal(\SIGTERM, function () use ($process, $previousSigtermHandler) {
                     $this->logger->notice('Received SIGTERM signal in job message handler and forwarding it to subprocess');
-                    $process->signal(\SIGTERM);
+                    if ($process->isRunning()) {
+                        $process->signal(\SIGTERM);
+                    }
                     if (is_callable($previousSigtermHandler)) {
                         $previousSigtermHandler();
                     }

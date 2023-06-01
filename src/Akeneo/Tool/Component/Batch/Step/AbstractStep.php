@@ -79,7 +79,6 @@ abstract class AbstractStep implements StepInterface
             $this->doExecute($stepExecution);
 
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
-            // TODO => to rework later
             $exitStatus->logicalAnd($stepExecution->getExitStatus() ?? $exitStatus);
 
             $this->jobRepository->updateStepExecution($stepExecution);

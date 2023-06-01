@@ -115,7 +115,7 @@ class BatchStatus
         return self::PAUSING === $this->value;
     }
 
-    public function isPaused()
+    public function isPaused(): bool
     {
         return self::PAUSED === $this->value;
     }
