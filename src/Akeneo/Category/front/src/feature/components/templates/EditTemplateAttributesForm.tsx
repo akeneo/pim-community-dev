@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Attribute} from '../../models';
 import {AttributeList} from './AttributeList';
 import {AttributeSettings} from './AttributeSettings';
-import {useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
+import {LabelCollection, useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
 import {NoTemplateAttribute} from './NoTemplateAttribute';
 import {useCatalogActivatedLocales} from '../../hooks/useCatalogActivatedLocales';
 
@@ -11,6 +11,8 @@ interface Props {
   attributes: Attribute[];
   templateId: string;
 }
+
+type Translations = {[attributeUuid: string]: LabelCollection};
 
 export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
   const featureFlag = useFeatureFlags();
@@ -22,6 +24,16 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
   };
   const getSelectedAttribute = () => {
     return attributes.find(attribute => attribute.uuid === selectedAttributeUuid) ?? attributes[0];
+  };
+
+  const [translations, setTranslations] = useState<Translations>({});
+  // const [errors, setErrors] = useState<{[locale: string]: string[]}>({});
+
+  const handleTranslationsChange = (locale: string, value: string) => {
+    setTranslations({
+      ...translations,
+      [getSelectedAttribute().uuid]: {...translations[getSelectedAttribute().uuid], [locale]: value},
+    });
   };
 
   if (attributes.length === 0) {
@@ -48,6 +60,8 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
             key={getSelectedAttribute().uuid}
             attribute={getSelectedAttribute()}
             activatedCatalogLocales={locales}
+            translationsFormData={translations[getSelectedAttribute().uuid]}
+            onTranslationsChange={handleTranslationsChange}
           />
         )}
       </Attributes>

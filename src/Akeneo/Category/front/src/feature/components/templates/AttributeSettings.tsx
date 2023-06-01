@@ -9,10 +9,13 @@ import {useCatalogLocales} from '../../hooks/useCatalogLocales';
 import {useState} from 'react';
 import {BadRequestError} from '../../tools/apiFetch';
 import {useDebounceCallback} from '../../tools/useDebounceCallback';
+import {useQueryClient} from 'react-query';
 
 type Props = {
   attribute: Attribute;
   activatedCatalogLocales: string[];
+  translationsFormData: LabelCollection;
+  onTranslationsChange: (locale: string, value: string) => void;
 };
 
 type ResponseError = {
@@ -24,7 +27,12 @@ type ResponseError = {
 
 type ApiResponseError = ResponseError[];
 
-export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) => {
+export const AttributeSettings = ({
+  attribute,
+  activatedCatalogLocales,
+  translationsFormData,
+  onTranslationsChange,
+}: Props) => {
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
   const catalogLocales = useCatalogLocales();
@@ -43,13 +51,14 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
     });
   };
 
-  const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
-  const [translations, setTranslations] = useState<LabelCollection>(attribute.labels);
+  // todo state lift up
   const [error, setError] = useState<{[locale: string]: string[]}>({});
 
-  const handleRichTextAreaChange = () => {
-    setIsRichTextArea(!isRichTextArea);
-    updateTemplateAttribute({isRichTextArea: !isRichTextArea});
+  const queryClient = useQueryClient();
+
+  const handleRichTextAreaChange = async () => {
+    await updateTemplateAttribute({isRichTextArea: !(attribute.type === 'richtext')});
+    await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
   };
   const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string) => {
     updateTemplateAttribute({labels: {[locale]: value}})
@@ -68,8 +77,8 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
         setError(state => ({...state, ...errors}));
       });
   }, 300);
-  const handleTranslationsChange = (locale: string, value: string) => {
-    setTranslations({...translations, [locale]: value});
+  const handleTranslationChange = (locale: string, value: string) => {
+    onTranslationsChange(locale, value);
     debouncedUpdateTemplateAttribute(locale, value);
   };
 
@@ -88,7 +97,7 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
       <OptionsContainer>
         {['textarea', 'richtext'].includes(attribute.type) && (
           <OptionField
-            checked={isRichTextArea}
+            checked={attribute.type === 'richtext'}
             onChange={handleRichTextAreaChange}
             readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
           >
@@ -108,26 +117,34 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
         </SectionTitle.Title>
       </SectionTitle>
       <div>
-        {activatedCatalogLocales.map((activatedLocaleCode, index) => (
-          <TranslationField
-            label={
-              catalogLocales?.find(catalogLocale => catalogLocale.code === activatedLocaleCode)?.label ||
-              activatedLocaleCode
-            }
-            locale={activatedLocaleCode}
-            key={activatedLocaleCode}
-          >
-            <TextInput
-              readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
-              onChange={(newValue: string) => {
-                handleTranslationsChange(activatedLocaleCode, newValue);
-              }}
-              invalid={!!error[activatedLocaleCode]}
-              value={translations[activatedLocaleCode] || ''}
-            ></TextInput>
-            {error[activatedLocaleCode] && displayError(error[activatedLocaleCode], activatedLocaleCode)}
-          </TranslationField>
-        ))}
+        {activatedCatalogLocales.map((activatedLocaleCode, index) => {
+          let fieldValue = '';
+          if (translationsFormData != undefined && translationsFormData[activatedLocaleCode] != undefined) {
+            fieldValue = translationsFormData[activatedLocaleCode];
+          } else if (attribute.labels[activatedLocaleCode] != undefined) {
+            fieldValue = attribute.labels[activatedLocaleCode];
+          }
+          return (
+            <TranslationField
+              label={
+                catalogLocales?.find(catalogLocale => catalogLocale.code === activatedLocaleCode)?.label ||
+                activatedLocaleCode
+              }
+              locale={activatedLocaleCode}
+              key={activatedLocaleCode}
+            >
+              <TextInput
+                readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
+                onChange={(newValue: string) => {
+                  handleTranslationChange(activatedLocaleCode, newValue);
+                }}
+                invalid={!!error[activatedLocaleCode]}
+                value={fieldValue}
+              ></TextInput>
+              {error[activatedLocaleCode] && displayError(error[activatedLocaleCode], activatedLocaleCode)}
+            </TranslationField>
+          );
+        })}
       </div>
       <Footer>
         <Button level="danger" ghost onClick={openDeactivateTemplateAttributeModal}>
