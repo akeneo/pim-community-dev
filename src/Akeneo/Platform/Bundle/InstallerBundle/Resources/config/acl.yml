@@ -1,0 +1,5 @@
+# Reset PIM
+pim_reset_instance:
+  type: action
+  label: pim_installer.acl.reset
+  feature: reset_pim
