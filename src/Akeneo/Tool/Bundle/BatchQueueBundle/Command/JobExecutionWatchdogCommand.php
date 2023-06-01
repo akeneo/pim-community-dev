@@ -185,6 +185,12 @@ final class JobExecutionWatchdogCommand extends Command
     private function executeProcess(Process $process, int $jobExecutionId): void
     {
         $this->executionManager->updateHealthCheck($jobExecutionId);
+
+        pcntl_signal(\SIGTERM, function () use ($process) {
+            $this->logger->notice('Received SIGTERM signal in watchdog command and forwarding it to subprocess');
+            $process->signal(\SIGTERM);
+        });
+
         $process->start();
 
         $nbIterationBeforeUpdatingHealthCheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
