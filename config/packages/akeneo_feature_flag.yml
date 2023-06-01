@@ -17,4 +17,3 @@ akeneo_feature_flag:
         category_update_template_attribute: 'akeneo.category.update.template.attribute'
         pause_jobs: 'akeneo.job.pause_jobs.feature'
         reset_pim: 'akeneo.installer.reset_pim.feature'
-        segment_integration: 'akeneo.feature_flag.service.only_free_trial_feature'

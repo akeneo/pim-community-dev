@@ -62,7 +62,6 @@ define([
           logoutLabel: __(this.config.logout),
           userAccountLabel: __(this.config.userAccount),
           freeTrialEnabled: FeatureFlags.isEnabled('free_trial'),
-          segmentIntegrationEnabled: FeatureFlags.isEnabled('segment_integration'),
         })
       );
 
