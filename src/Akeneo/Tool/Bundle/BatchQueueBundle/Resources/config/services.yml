@@ -122,6 +122,7 @@ services:
         arguments:
             - '@logger'
             - '%kernel.project_dir%'
+            - '@feature_flags'
         tags:
             - { name: messenger.message_handler }
             - { name: monolog.logger, channel: job_queue }
