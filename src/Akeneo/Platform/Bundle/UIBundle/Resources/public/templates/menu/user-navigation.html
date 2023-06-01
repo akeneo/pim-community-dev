@@ -13,7 +13,9 @@
         <div class="AknDropdown-menuTitle"><%- firstName %> <%- lastName %></div>
         <div class="AknDropdown-menuLink user-account"><%- userAccountLabel %></div>
         <div class="AknDropdown-menuLink logout"><%- logoutLabel %></div>
-        <div id="cookie-preferences-btn" class="AknDropdown-menuLink"></div>
+        <% if (segmentIntegrationEnabled) { %>
+            <div id="cookie-preferences-btn" class="AknDropdown-menuLink"></div>
+        <% } %>
     </div>
 </div>
 
