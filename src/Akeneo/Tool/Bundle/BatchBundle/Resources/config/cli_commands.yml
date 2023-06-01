@@ -36,9 +36,3 @@ services:
             - '@database_connection'
         tags:
             - { name: console.command }
-
-    Akeneo\Tool\Bundle\BatchBundle\Command\MigrateJobExecutionWarningCountCommand:
-        arguments:
-            - '@database_connection'
-        tags:
-            - { name: console.command }
