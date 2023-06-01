@@ -91,6 +91,7 @@ pim_user_management:
                 default_published_product_grid_view: Default published product grid view # EE Only
                 proposals_to_review_notification: When new proposal to review # EE Only
                 proposals_state_notifications: When proposal is accepted or rejected # EE Only
+                helper: The selected UI [{{ code }}] locale is currently not fully supported. You may encounter missing or incomplete text translations. Contributions are welcome on Crowdin to improve locale coverage.
             meta:
                 created: Created
                 updated: Updated
