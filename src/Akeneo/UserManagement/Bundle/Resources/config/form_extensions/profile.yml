@@ -397,8 +397,8 @@ extensions:
             isMultiple: false
             allowClear: false
 
-    pim-user-profile-form-user-interface-helper:
-        module: pim/user/form/user-interface-helper-view
+    pim-user-profile-form-unsupported-ui-locale-warning-view:
+        module: pim/user/form/unsupported-ui-locale-warning-view
         parent: pim-user-profile-form-interfaces-tab-content
         position: 20
         targetZone: content

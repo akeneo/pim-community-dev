@@ -71,4 +71,4 @@ config:
         pim/templates/user/form/fields/select-profile-container: pimuser/templates/form/fields/select-profile-container.html
         pim/user/form/user-profile-tab-content:           pimuser/js/form/user-profile-tab-content.ts
         pim/user/form/create-user-button:                 pimuser/js/form/create-user-button.ts
-        pim/user/form/user-interface-helper-view:         pimuser/js/form/user-interface-helper-view.tsx
+        pim/user/form/unsupported-ui-locale-warning-view: pimuser/js/form/unsupported-ui-locale-warning-view.tsx

@@ -3,7 +3,7 @@ import {Helper} from 'akeneo-design-system';
 import {useTranslate, userContext} from '@akeneo-pim-community/shared';
 import {useUiLocales} from '../hooks/useUiLocales';
 
-const UserInterfaceHelper: FC = () =>{
+const UnsupportedUiLocaleWarning: FC = () =>{
   const translate = useTranslate();
   const userDefaultLocaleCode = userContext.get('user_default_locale');
   const locales = useUiLocales();
@@ -18,4 +18,4 @@ const UserInterfaceHelper: FC = () =>{
   );
 };
 
-export {UserInterfaceHelper};
+export {UnsupportedUiLocaleWarning};
