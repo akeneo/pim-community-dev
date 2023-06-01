@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {Helper} from 'akeneo-design-system';
 import {useTranslate, userContext} from '@akeneo-pim-community/shared';
 import {useUiLocales} from '../hooks/useUiLocales';
