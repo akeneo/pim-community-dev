@@ -4,16 +4,18 @@ import {pimTheme} from 'akeneo-design-system';
 import {ReactView} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {UserInterfaceHelper} from "./user-interface-helper";
-
+import {QueryClient, QueryClientProvider} from "react-query";
 
 class UserInterfaceHelperView extends ReactView {
-
     reactElementToMount() {
+    const queryClient = new QueryClient();
     return (
       <DependenciesProvider>
-        <ThemeProvider theme={pimTheme}>
-            <UserInterfaceHelper />
-        </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={pimTheme}>
+                <UserInterfaceHelper />
+            </ThemeProvider>
+        </QueryClientProvider>
       </DependenciesProvider>
     );
   }
