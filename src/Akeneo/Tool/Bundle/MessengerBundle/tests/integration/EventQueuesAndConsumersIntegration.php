@@ -125,7 +125,7 @@ final class EventQueuesAndConsumersIntegration extends TestCase
             '-vvv',
             \sprintf('--time-limit=%d', 5),
             $consumerName,
-            '--bus=ucs_message.handle.bus'
+            '--bus=process_message.handle.bus'
         ];
 
         $process = new Process($command);

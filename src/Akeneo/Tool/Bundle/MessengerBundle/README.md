@@ -114,7 +114,7 @@ that is designed for long-running job.
 
 When sending a message in the queue, the tenant is automatically injected into the envelope/message.
 The consumer (the Symfony command `messenger:consume`) receive the messages of several tenants and pass them one bye one in a dedicated bus. 
-This bus has a single middleware (`HandleUcsMessageMiddleware`) that extracts the tenant from the message's envelope and launch the
+This bus has a single middleware (`HandleProcessMessageMiddleware`) that extracts the tenant from the message's envelope and launch the
 good process in a tenant aware process.
 
 ```mermaid
@@ -125,7 +125,7 @@ flowchart LR
     action -- Publish message in topic --> queue[(Multi-tenant queue)]
     Consumer1 -- Pull messages for subscription1 --> queue
     subgraph Tenant agnostic daemon
-        Consumer1 --> Middleware1[HandleUcsMessageMiddleware]
+        Consumer1 --> Middleware1[HandleProcessMessageMiddleware]
         Middleware1 -- Launch subprocess with tenant --> pmc1[ProcessMessageCommand]
         subgraph Tenant aware process
             pmc1 -- Launch the final handler --> Handler1
@@ -133,7 +133,7 @@ flowchart LR
     end
     Consumer2 -- Pull messages for subscription2 --> queue
     subgraph Tenant agnostic daemon
-        Consumer2 --> Middleware2[HandleUcsMessageMiddleware]
+        Consumer2 --> Middleware2[HandleProcessMessageMiddleware]
         Middleware2 -- Launch subprocess with tenant --> pmc2[ProcessMessageCommand]
         subgraph Tenant aware process
             pmc2 -- Launch the final handler --> Handler2
@@ -195,7 +195,7 @@ $this->bus->dispatch($message);
 Launch consumer:
 
 ```bash
-bin/console messenger:consume <consumer_name> --bus=ucs_message.handle.bus
+bin/console messenger:consume <consumer_name> --bus=process_message.handle.bus
 ```
 
 - [How to add a queue?](docs/how-to-add-a-queue.md)

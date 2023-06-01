@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Bundle\MessengerBundle\Middleware;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Middleware\HandleUcsMessageMiddleware;
-use Akeneo\Tool\Bundle\MessengerBundle\Process\RunUcsMessageProcess;
+use Akeneo\Tool\Bundle\MessengerBundle\Middleware\HandleProcessMessageMiddleware;
+use Akeneo\Tool\Bundle\MessengerBundle\Process\RunMessageProcess;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use PhpSpec\ObjectBehavior;
@@ -19,9 +19,9 @@ use Symfony\Component\Messenger\Stamp\ReceivedStamp;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class HandleUcsMessageMiddlewareSpec extends ObjectBehavior
+final class HandleProcessMessageMiddlewareSpec extends ObjectBehavior
 {
-    public function let(RunUcsMessageProcess $runUcsMessageProcess): void
+    public function let(RunMessageProcess $runUcsMessageProcess): void
     {
         $this->beConstructedWith($runUcsMessageProcess);
     }
@@ -29,11 +29,11 @@ final class HandleUcsMessageMiddlewareSpec extends ObjectBehavior
     public function it_is_a_middleware(): void
     {
         $this->shouldImplement(MiddlewareInterface::class);
-        $this->shouldHaveType(HandleUcsMessageMiddleware::class);
+        $this->shouldHaveType(HandleProcessMessageMiddleware::class);
     }
 
     public function it_handles_an_envelope_with_a_tenant_id(
-        RunUcsMessageProcess $runUcsMessageProcess,
+        RunMessageProcess $runUcsMessageProcess,
         StackInterface $stack,
     ): void {
         $message = new \stdClass();
@@ -50,7 +50,7 @@ final class HandleUcsMessageMiddlewareSpec extends ObjectBehavior
     }
 
     public function it_handles_an_envelope_without_tenant_and_correlation_ids(
-        RunUcsMessageProcess $runUcsMessageProcess,
+        RunMessageProcess $runUcsMessageProcess,
         StackInterface $stack,
     ): void {
         $message = new \stdClass();
@@ -65,7 +65,7 @@ final class HandleUcsMessageMiddlewareSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_there_is_no_consumer_name(
-        RunUcsMessageProcess $runUcsMessageProcess,
+        RunMessageProcess $runUcsMessageProcess,
         StackInterface $stack,
     ): void {
         $envelope = new Envelope(new \stdClass(), [
