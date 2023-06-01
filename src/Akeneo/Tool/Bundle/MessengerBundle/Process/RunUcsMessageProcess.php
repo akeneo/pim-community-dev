@@ -23,7 +23,7 @@ class RunUcsMessageProcess
     ) {
     }
 
-    public function __invoke(object $message, string $tenantId, string $consumerName, ?string $correlationId): void
+    public function __invoke(object $message, string $consumerName, ?string $tenantId, ?string $correlationId): void
     {
         $context = [
             'tenant_id' => $tenantId,
@@ -36,8 +36,11 @@ class RunUcsMessageProcess
 
         $env = [
             'SYMFONY_DOTENV_VARS' => false,
-            'APP_TENANT_ID' => $tenantId,
         ];
+
+        if (null !== $tenantId && '' !== $tenantId) {
+            $env['APP_TENANT_ID'] = $tenantId;
+        }
 
         try {
             $process = new Process([

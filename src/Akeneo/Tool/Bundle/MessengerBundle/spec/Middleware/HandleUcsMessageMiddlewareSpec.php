@@ -32,7 +32,7 @@ final class HandleUcsMessageMiddlewareSpec extends ObjectBehavior
         $this->shouldHaveType(HandleUcsMessageMiddleware::class);
     }
 
-    public function it_handles_an_envelope_and_stops_the_middleware_chain(
+    public function it_handles_an_envelope_with_a_tenant_id(
         RunUcsMessageProcess $runUcsMessageProcess,
         StackInterface $stack,
     ): void {
@@ -43,25 +43,25 @@ final class HandleUcsMessageMiddlewareSpec extends ObjectBehavior
             new CorrelationIdStamp('123456'),
         ]);
 
-        $runUcsMessageProcess->__invoke($message, 'pim-test', 'consumer1', '123456')->shouldBeCalledOnce();
+        $runUcsMessageProcess->__invoke($message, 'consumer1', 'pim-test', '123456')->shouldBeCalledOnce();
         $stack->next()->shouldNotBeCalled();
 
         $this->handle($envelope, $stack)->shouldReturn($envelope);
     }
 
-    public function it_throws_an_exception_if_there_is_no_tenant_id(
+    public function it_handles_an_envelope_without_tenant_and_correlation_ids(
         RunUcsMessageProcess $runUcsMessageProcess,
         StackInterface $stack,
     ): void {
-        $envelope = new Envelope(new \stdClass(), [
+        $message = new \stdClass();
+        $envelope = new Envelope($message, [
             new ReceivedStamp('consumer1'),
-            new CorrelationIdStamp('123456'),
         ]);
 
-        $runUcsMessageProcess->__invoke(Argument::cetera())->shouldNotBeCalled();
+        $runUcsMessageProcess->__invoke($message, 'consumer1', null, null)->shouldBeCalledOnce();
         $stack->next()->shouldNotBeCalled();
 
-        $this->shouldThrow(\LogicException::class)->during('handle', [$envelope, $stack]);
+        $this->handle($envelope, $stack)->shouldReturn($envelope);
     }
 
     public function it_throws_an_exception_if_there_is_no_consumer_name(

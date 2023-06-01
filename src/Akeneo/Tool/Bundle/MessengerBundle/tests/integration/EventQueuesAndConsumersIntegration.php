@@ -33,8 +33,6 @@ final class EventQueuesAndConsumersIntegration extends TestCase
 
     protected function setUp(): void
     {
-        \putenv('APP_TENANT_ID=akeneo-pim-test');
-
         parent::setUp();
 
         $this->bus = $this->get('messenger.bus.default');
@@ -62,8 +60,10 @@ final class EventQueuesAndConsumersIntegration extends TestCase
         $this->handlerObserver->reset();
     }
 
-    public function test_it_consumes_messages_with_the_right_handler(): void
+    public function test_it_consumes_messages_with_the_right_handler_for_a_tenant(): void
     {
+        \putenv('APP_TENANT_ID=akeneo-pim-test');
+
         $message1 = new Message1('hello');
         $this->bus->dispatch($message1);
 
@@ -94,6 +94,25 @@ final class EventQueuesAndConsumersIntegration extends TestCase
         Assert::assertFalse($this->pubSubQueueStatuses['consumer2']->hasMessageInQueue());
         Assert::assertFalse($this->pubSubQueueStatuses['consumer3']->hasMessageInQueue());
         Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($message2, Handler1ForMessage2::class));
+    }
+
+    public function test_it_consumes_messages_without_tenant(): void
+    {
+        \putenv('APP_TENANT_ID=');
+
+        $message1 = new Message1('hello without tenant');
+        $this->bus->dispatch($message1);
+
+        $this->launchConsumer('consumer1');
+
+        Assert::assertSame(1, $this->handlerObserver->getTotalNumberOfExecution());
+        Assert::assertSame(1, $this->handlerObserver->getHandlerNumberOfExecution(Handler1ForMessage1::class));
+        Assert::assertFalse($this->pubSubQueueStatuses['consumer1']->hasMessageInQueue());
+        Assert::assertTrue($this->pubSubQueueStatuses['consumer2']->hasMessageInQueue());
+        Assert::assertFalse($this->pubSubQueueStatuses['consumer3']->hasMessageInQueue());
+        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($message1, Handler1ForMessage1::class));
+        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($message1, Handler2ForMessage1::class));
+        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($message1, Handler1ForMessage2::class));
     }
 
     private function launchConsumer(string $consumerName): void

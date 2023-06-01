@@ -28,20 +28,16 @@ final class HandleUcsMessageMiddleware implements MiddlewareInterface
     {
         $message = $envelope->getMessage();
 
-        $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId();
-        if (null === $tenantId) {
-            throw new \LogicException('The envelope must have a tenant ID');
-        }
-
         $consumerName = $envelope->last(ReceivedStamp::class)?->getTransportName();
         if (null === $consumerName) {
             throw new \LogicException('The envelope must have a consumer name from a ReceivedStamp');
         }
 
+        $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId();
         $correlationId = $envelope->last(CorrelationIdStamp::class)?->correlationId();
 
         try {
-            ($this->runUcsMessageProcess)($message, $tenantId, $consumerName, $correlationId);
+            ($this->runUcsMessageProcess)($message, $consumerName, $tenantId, $correlationId);
         } catch (\Throwable $e) {
             throw new HandlerFailedException($envelope, [$e]);
         }
