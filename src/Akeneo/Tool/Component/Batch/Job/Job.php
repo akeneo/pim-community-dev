@@ -200,7 +200,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
 
         foreach ($this->steps as $index => $step) {
             /**
-             * TODO RAB-1428 / RAB-1428: Handle jobs with two or more steps already completed or paused
+             * TODO RAB-1438: Handle jobs with two or more steps already completed or paused
              */
             $stepExecution = $jobExecution->getStepExecutions()[$index] ?? null;
 
