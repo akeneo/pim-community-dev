@@ -1,4 +1,4 @@
-__# master
+# master
 
 ## Bug fixes
 
@@ -92,4 +92,4 @@ __# master
 
 ## New features
 
-## BC Breaks__
+## BC Breaks
