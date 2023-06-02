@@ -1,14 +1,22 @@
-import React, {PropsWithChildren} from 'react';
-import styled from 'styled-components';
+import React, {FC, PropsWithChildren} from 'react';
 
-const MainContent = styled.div`
-    min-height: calc(100vh - 126px);
-`;
+type Props = {
+    pageHeaderHeight?: number;
+};
 
-export const PageContent = ({children}: PropsWithChildren<{}>) => (
-    <div className='AknDefault-contentWithColumn'>
-        <div className='AknDefault-contentWithBottom'>
-            <MainContent className='AknDefault-mainContent'>{children}</MainContent>
+export const PageContent: FC<PropsWithChildren<Props>> = ({pageHeaderHeight, children}) => {
+    const headerHeight = pageHeaderHeight ?? 126;
+    const style = {
+        minHeight: 'calc(100vh - ' + String(headerHeight) + 'px)',
+    };
+
+    return (
+        <div className='AknDefault-contentWithColumn'>
+            <div className='AknDefault-contentWithBottom'>
+                <div className='AknDefault-mainContent' style={style}>
+                    {children}
+                </div>
+            </div>
         </div>
-    </div>
-);
+    );
+};
