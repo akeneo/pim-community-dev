@@ -18,7 +18,7 @@ export const EditTemplateAttributesForm = ({attributes, templateId, onTabStatusC
   const translate = useTranslate();
   const locales = useCatalogActivatedLocales();
   const [selectedAttributeUuid, setSelectedAttributeUuid] = useState<string | null>(null);
-  const [attributeFormsInError, setAttributeFormsInError] = useState<{string?: boolean}>({});
+  const [attributeFormsInError, setAttributeFormsInError] = useState<{[key: string]: boolean}>({});
   const handleBadgesForFieldInError = (attributeUuid: string, inError: boolean) => {
     let updatedAttributeFormsInError = {...attributeFormsInError, [attributeUuid]: inError};
     let isAttributeTabInError = false;

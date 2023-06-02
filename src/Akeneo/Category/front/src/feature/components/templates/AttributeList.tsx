@@ -11,7 +11,7 @@ type Props = {
   selectedAttribute: Attribute;
   templateId: string;
   onAttributeSelection: (attribute: Attribute) => void;
-  attributeFormsInError: {string?: boolean};
+  attributeFormsInError: {[key: string]: boolean};
 };
 
 export const AttributeList = ({
