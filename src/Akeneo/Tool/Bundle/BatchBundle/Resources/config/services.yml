@@ -137,6 +137,7 @@ services:
             - '@akeneo_batch.logger.batch_log_handler'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job.job_registry'
+            - '@feature_flags'
 
     Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface:
         class: Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler
