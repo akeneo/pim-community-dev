@@ -100,7 +100,22 @@ class JobSpec extends ObjectBehavior
 
         $jobExecution->getStatus()->willReturn($batchStatusPaused);
 
-        $this->initializePausedStep('step_1', $step1, $stepExecution1, $batchStatusCompleted, $exitStatus, $jobExecution);
+        $step1->getName()->willReturn('step_1');
+        $stepExecution1->getStepName()->willReturn('step_1');
+        $stepExecution1->getExitStatus()->willReturn($exitStatus);
+
+        $firstCall = true;
+        $stepExecution1->getStatus()->will(function () use (&$firstCall, $batchStatusPaused, $batchStatusCompleted) {
+            if ($firstCall) {
+                $firstCall = false;
+                return $batchStatusPaused;
+            }
+            return $batchStatusCompleted;
+        });
+
+        $jobExecution->createStepExecution('step_1')->shouldNotBeCalled();
+        $step1->execute($stepExecution1)->shouldBeCalled();
+
         $this->initializeNonExecutedStep('step_2', $step2, $stepExecution2, $batchStatusCompleted, $exitStatus, $jobExecution);
 
         $calls = 0;
@@ -142,7 +157,22 @@ class JobSpec extends ObjectBehavior
         $jobExecution->getStatus()->willReturn($batchStatusPaused);
 
         $newStep->getName()->willReturn('new_step');
-        $this->initializePausedStep('step_1', $step1, $stepExecution1, $batchStatusCompleted, $exitStatus, $jobExecution);
+
+        $step1->getName()->willReturn('step_1');
+        $stepExecution1->getStepName()->willReturn('step_1');
+        $stepExecution1->getExitStatus()->willReturn($exitStatus);
+
+        $firstCall = true;
+        $stepExecution1->getStatus()->will(function () use (&$firstCall, $batchStatusPaused, $batchStatusCompleted) {
+            if ($firstCall) {
+                $firstCall = false;
+                return $batchStatusPaused;
+            }
+            return $batchStatusCompleted;
+        });
+
+        $jobExecution->createStepExecution('step_1')->shouldNotBeCalled();
+        $step1->execute($stepExecution1)->shouldNotBeCalled();
 
         $jobExecution->getStepExecutions()->willReturn([$stepExecution1, $stepExecution2]);
 
@@ -202,22 +232,5 @@ class JobSpec extends ObjectBehavior
 
         $jobExecution->createStepExecution($stepName)->shouldBeCalled()->willReturn($stepExecution);
         $step->execute($stepExecution)->shouldBeCalled();
-    }
-
-    private function initializePausedStep(
-        string $stepName,
-        StepInterface $step,
-        StepExecution $stepExecution,
-        BatchStatus $batchStatus,
-        ExitStatus $exitStatus,
-        JobExecution $jobExecution,
-    ): void {
-        $step->getName()->willReturn($stepName);
-        $stepExecution->getStepName()->willReturn($stepName);
-        $stepExecution->getStatus()->willReturn($batchStatus);
-        $stepExecution->getExitStatus()->willReturn($exitStatus);
-
-        $jobExecution->createStepExecution($stepName)->shouldNotBeCalled();
-        $step->execute($stepExecution)->shouldNotBeCalled();
     }
 }
