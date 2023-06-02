@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Command;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Registry\UcsMessageHandlerRegistry;
+use Akeneo\Tool\Bundle\MessengerBundle\Registry\ProcessMessageHandlerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -27,7 +27,7 @@ final class ProcessMessageCommand extends Command
 
     public function __construct(
         private readonly SerializerInterface $serializer,
-        private readonly UcsMessageHandlerRegistry $ucsMessageHandlerRegistry,
+        private readonly ProcessMessageHandlerRegistry $ucsMessageHandlerRegistry,
         private readonly LoggerInterface $logger
     ) {
         parent::__construct();

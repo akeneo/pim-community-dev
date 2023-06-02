@@ -53,9 +53,8 @@ final class LaunchProductAndProductModelEvaluationsHandlerSpec extends ObjectBeh
         );
     }
 
-    public function it_is_a_traceable_message_handler(): void
+    public function it_is_a_launch_products_and_product_models_evaluation_handler(): void
     {
-        $this->shouldImplement(MessageHandlerInterface::class);
         $this->shouldHaveType(LaunchProductAndProductModelEvaluationsHandler::class);
     }
 

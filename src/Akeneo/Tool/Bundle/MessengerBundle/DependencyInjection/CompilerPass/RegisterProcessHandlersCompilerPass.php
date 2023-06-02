@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection\CompilerPass;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Config\MessengerConfigBuilder;
-use Akeneo\Tool\Bundle\MessengerBundle\Registry\UcsMessageHandlerRegistry;
+use Akeneo\Tool\Bundle\MessengerBundle\Registry\ProcessMessageHandlerRegistry;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -14,11 +14,11 @@ use Symfony\Component\DependencyInjection\Reference;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class RegisterUcsHandlersCompilerPass implements CompilerPassInterface
+final class RegisterProcessHandlersCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        $registryDefinition = $container->getDefinition(UcsMessageHandlerRegistry::class);
+        $registryDefinition = $container->getDefinition(ProcessMessageHandlerRegistry::class);
 
         $projectDir = $container->getParameter('kernel.project_dir');
         $env = $container->getParameter('kernel.environment');
