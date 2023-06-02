@@ -5,7 +5,7 @@ framework:
             messenger.bus.default:
                 middleware:
                     - Akeneo\Tool\Bundle\MessengerBundle\Middleware\UcsMiddleware
-            process_message.handle.bus:
+            pim_event.handle.bus:
                 default_middleware: false
                 middleware:
                     - 'Akeneo\Tool\Bundle\MessengerBundle\Middleware\HandleProcessMessageMiddleware'

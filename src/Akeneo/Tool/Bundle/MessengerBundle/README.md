@@ -195,7 +195,7 @@ $this->bus->dispatch($message);
 Launch consumer:
 
 ```bash
-bin/console messenger:consume <consumer_name> --bus=process_message.handle.bus
+bin/console messenger:consume <consumer_name> --bus=pim_event.handle.bus
 ```
 
 - [How to add a queue?](docs/how-to-add-a-queue.md)
