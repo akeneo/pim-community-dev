@@ -131,7 +131,6 @@ $rules = [
             'Symfony\Component\Serializer\Normalizer\DenormalizerInterface',
             'Symfony\Component\Validator\Constraints',
             'Symfony\Component\Form\FormFactoryInterface',
-            'Symfony\Component\Messenger\Handler\MessageHandlerInterface',
             'Webmozart\Assert\Assert',
             'Ramsey\Uuid\Uuid',
             'Ramsey\Uuid\UuidInterface',
