@@ -53,12 +53,9 @@ class ExitStatus
      */
     const STOPPED = "STOPPED";
 
-    const PAUSED = "PAUSED";
-
     /** @var int[] */
     protected static array $statusSeverity = [
         self::EXECUTING => 1,
-        self::PAUSED => 2,
         self::COMPLETED => 3,
         self::NOOP      => 4,
         self::STOPPED   => 5,

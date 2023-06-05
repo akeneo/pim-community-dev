@@ -81,7 +81,7 @@ abstract class AbstractStep implements StepInterface
         try {
             $this->doExecute($stepExecution);
 
-            $exitStatus = new ExitStatus(BatchStatus::PAUSED === $stepExecution->getStatus()->getValue() ? ExitStatus::PAUSED : ExitStatus::COMPLETED);
+            $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
             $exitStatus->logicalAnd($stepExecution->getExitStatus());
 
             $this->jobRepository->updateStepExecution($stepExecution);

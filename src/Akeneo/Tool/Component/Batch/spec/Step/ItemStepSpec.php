@@ -289,7 +289,7 @@ class ItemStepSpec extends ObjectBehavior
         $writer->getState()->willReturn([]);
         $jobStopper->pause($execution, ['reader' => [], 'writer' => []])->shouldBeCalled();
 
-        $exitStatus = new ExitStatus(ExitStatus::PAUSED, "");
+        $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);
 
         $repository->updateStepExecution($execution)->shouldBeCalledTimes(4);
