@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: Aktiviert
+        environment:
+          title: Umgebungseinstellungen
+          fields:
+            sandbox_banner:
+              label: Sandbox-Alarm-Banner anzeigen
         loading_message:
           title: Angepasste Lademeldungen
           helper: Unterhalten Sie Ihre Benutzer mit angepassten Ladebildschirm-Meldungen.
@@ -194,6 +199,7 @@ pim_common:
   label: Bezeichnung
   label_translations: Feldbezeichner-Übersetzungen
   Label or identifier: Label oder Identifikator
+  code_or_label: code oder label
   less_than: Weniger als
   loading: Lädt...
   media_upload: Upload per Drag & Drop oder hier klicken
@@ -353,6 +359,10 @@ pim_menu:
     help:
       title: Hilfe
       helper: Akeneo Help-Center
+      new: NEU
+      news: Was ist neu?
+      help_center: Hilfe-Zentrum
+      akademy_training: Akademie Ausbildung
   item:
     association_type: Verbindungstypen
     attribute_group: Attributgruppen
@@ -430,12 +440,32 @@ pim_system:
   reset_pim:
     modal:
       summary:
+        name: Zusammenfassung
+        title: 'Warnung: Das Zurücksetzen Ihres PIM kann nicht rückgängig gemacht werden'
+        text: 'Es wird zur Löschung aller Elemente führen, außer folgendes:'
         users:
           name: Benutzer
+          tooltip: Benutzer sind Personen, die Sie erlauben in Ihrem PIM zu arbeiten.
+        user_groups:
+          name: Benutzergruppen
+          tooltip: Benutzergruppen definieren Teams, die unterschiedliche Aktionen innerhalb Ihrer PIM durchführen.
         roles:
           name: Rollen
       confirm:
         name: Bestätigen
+        title: Bestätigen Sie das Zurücksetzen Ihres PIM
+        helper:
+          emphasis: Sobald Sie Ihre PIM zurückgesetzt haben, gibt es kein Zurück mehr.
+          text: Durch Anklicken des Reset-Buttons werden Sie abgemeldet und zur Login-Seite zurückgebracht.
+      confirmation_phrase: Bitte geben Sie "{{ confirmation_word }}" ein
+      confirmation_word: zurücksetzen
+    button:
+      label: Zurücksetzen der Instanz
+      confirm: Zurücksetzen und Ausloggen
+    error_notification: Beim PIM-Reset ist ein Fehler aufgetreten. Bitte kontaktieren Sie den Systemadministrator.
+  sandbox:
+    helper:
+      text: Dies ist eine Sandbox-Umgebung, Ihre Änderungen wird Ihre Produktionsumgebung nicht beeinflussen.
 pim_datagrid:
   mass_action:
     default:
