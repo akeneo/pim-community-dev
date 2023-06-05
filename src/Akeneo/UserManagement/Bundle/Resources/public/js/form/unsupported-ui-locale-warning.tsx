@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {Helper, Link} from 'akeneo-design-system';
 import {useTranslate, userContext} from '@akeneo-pim-community/shared';
 import {useUiLocales} from '../hooks/useUiLocales';
-import styled from 'styled-components';
 
 const UnsupportedUiLocaleWarning: FC = () => {
   const translate = useTranslate();
