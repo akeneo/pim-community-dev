@@ -14,20 +14,14 @@ const UnsupportedUiLocaleWarning: FC = () => {
       {!userLocalFound && (
         <Helper level="warning">
           <span>
-            {translate('pim_user_management.entity.user.properties.not_fully_supported_locale_start', {
+            {translate('pim_user_management.entity.user.properties.not_fully_supported_locale', {
               code: userDefaultLocaleCode,
             })}
-            &nbsp;
           </span>
+          &nbsp;
           <Link href="https://crowdin.com/project/akeneo" target="_blank">
             Crowdin
           </Link>
-          <span>
-            &nbsp;
-            {translate('pim_user_management.entity.user.properties.not_fully_supported_locale_end', {
-              code: userDefaultLocaleCode,
-            })}
-          </span>
         </Helper>
       )}
     </>
