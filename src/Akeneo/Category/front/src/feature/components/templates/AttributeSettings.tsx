@@ -6,7 +6,6 @@ import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeMod
 import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
-import {useState} from 'react';
 import {BadRequestError} from '../../tools/apiFetch';
 import {useDebounceCallback} from '../../tools/useDebounceCallback';
 import {useQueryClient} from 'react-query';
@@ -16,6 +15,8 @@ type Props = {
   activatedCatalogLocales: string[];
   translationsFormData: LabelCollection;
   onTranslationsChange: (locale: string, value: string) => void;
+  translationErrors: {[locale: string]: string[]} | {};
+  onTranslationErrorsChange: (locale: string, errors: string[]) => void;
 };
 
 type ResponseError = {
@@ -32,12 +33,16 @@ export const AttributeSettings = ({
   activatedCatalogLocales,
   translationsFormData,
   onTranslationsChange,
+  translationErrors,
+  onTranslationErrorsChange,
 }: Props) => {
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
   const catalogLocales = useCatalogLocales();
   const featureFlag = useFeatureFlags();
   const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
+  // console.log('connard')
+  // console.log(translationErrors)
 
   const [
     isDeactivateTemplateAttributeModalOpen,
@@ -46,13 +51,15 @@ export const AttributeSettings = ({
   ] = useBooleanState(false);
 
   const displayError = (errorMessages: string[], key: string) => {
+    // console.log(errorMessages);
     return errorMessages.map(message => {
-      return <Helper level="error">{message}</Helper>;
+      return (
+        <Helper level="error" key={key}>
+          {message}
+        </Helper>
+      );
     });
   };
-
-  // todo state lift up
-  const [error, setError] = useState<{[locale: string]: string[]}>({});
 
   const queryClient = useQueryClient();
 
@@ -63,18 +70,21 @@ export const AttributeSettings = ({
   const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string) => {
     updateTemplateAttribute({labels: {[locale]: value}})
       .then(() => {
-        if (error[locale]) {
-          delete error[locale];
-          setError({...error});
+        // console.log(translationErrors)
+        if (undefined !== translationErrors && translationErrors[locale]) {
+          delete translationErrors[locale];
+          onTranslationErrorsChange(locale, []);
         }
       })
       .catch((error: BadRequestError<ApiResponseError>) => {
+        // console.log(translationErrors)
         const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
           accumulator[currentError.error.property] = [currentError.error.message];
 
           return accumulator;
         }, {});
-        setError(state => ({...state, ...errors}));
+        console.log(errors);
+        onTranslationErrorsChange(locale, errors[locale]);
       });
   }, 300);
   const handleTranslationChange = (locale: string, value: string) => {
@@ -138,10 +148,12 @@ export const AttributeSettings = ({
                 onChange={(newValue: string) => {
                   handleTranslationChange(activatedLocaleCode, newValue);
                 }}
-                invalid={!!error[activatedLocaleCode]}
+                invalid={translationErrors !== undefined && !!translationErrors[activatedLocaleCode]}
                 value={fieldValue}
               ></TextInput>
-              {error[activatedLocaleCode] && displayError(error[activatedLocaleCode], activatedLocaleCode)}
+              {translationErrors !== undefined &&
+                translationErrors[activatedLocaleCode] &&
+                displayError(translationErrors[activatedLocaleCode], activatedLocaleCode)}
             </TranslationField>
           );
         })}
