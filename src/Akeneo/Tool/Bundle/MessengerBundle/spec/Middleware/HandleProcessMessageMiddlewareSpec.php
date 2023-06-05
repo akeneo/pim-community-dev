@@ -35,6 +35,7 @@ final class HandleProcessMessageMiddlewareSpec extends ObjectBehavior
     public function it_handles_an_envelope_with_a_tenant_id(
         RunMessageProcess $runUcsMessageProcess,
         StackInterface $stack,
+        MiddlewareInterface $stackMiddleware,
     ): void {
         $message = new \stdClass();
         $envelope = new Envelope($message, [
@@ -44,14 +45,16 @@ final class HandleProcessMessageMiddlewareSpec extends ObjectBehavior
         ]);
 
         $runUcsMessageProcess->__invoke($message, 'consumer1', 'pim-test', '123456')->shouldBeCalledOnce();
-        $stack->next()->shouldNotBeCalled();
+        $stack->next()->willReturn($stackMiddleware);
+        $stackMiddleware->handle($envelope, $stack)->willReturn($envelope);
 
-        $this->handle($envelope, $stack)->shouldReturn($envelope);
+        $this->handle($envelope, $stack);
     }
 
     public function it_handles_an_envelope_without_tenant_and_correlation_ids(
         RunMessageProcess $runUcsMessageProcess,
         StackInterface $stack,
+        MiddlewareInterface $stackMiddleware,
     ): void {
         $message = new \stdClass();
         $envelope = new Envelope($message, [
@@ -59,9 +62,10 @@ final class HandleProcessMessageMiddlewareSpec extends ObjectBehavior
         ]);
 
         $runUcsMessageProcess->__invoke($message, 'consumer1', null, null)->shouldBeCalledOnce();
-        $stack->next()->shouldNotBeCalled();
+        $stack->next()->willReturn($stackMiddleware);
+        $stackMiddleware->handle($envelope, $stack)->willReturn($envelope);
 
-        $this->handle($envelope, $stack)->shouldReturn($envelope);
+        $this->handle($envelope, $stack);
     }
 
     public function it_throws_an_exception_if_there_is_no_consumer_name(

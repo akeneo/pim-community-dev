@@ -42,6 +42,6 @@ final class HandleProcessMessageMiddleware implements MiddlewareInterface
             throw new HandlerFailedException($envelope, [$e]);
         }
 
-        return $envelope;
+        return $stack->next()->handle($envelope, $stack);
     }
 }
