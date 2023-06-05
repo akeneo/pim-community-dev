@@ -67,6 +67,9 @@ final class Version_8_0_20230412073849_set_main_attribute_column_Integration ext
 
     public function test_it_adds_a_main_identifier_if_not_exists(): void
     {
+        $this->connection->executeStatement(
+            'UPDATE pim_catalog_attribute SET main_identifier = FALSE;'
+        );
         Assert::assertFalse($this->aMainIdentifierExists());
         $this->reExecuteMigration(self::MIGRATION_NAME);
         Assert::assertTrue($this->aMainIdentifierExists());

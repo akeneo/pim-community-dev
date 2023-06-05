@@ -180,23 +180,47 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): AttributeInterface
     {
-        $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
-            return  $attribute->getType() === AttributeTypes::IDENTIFIER;
-        })->first();
-
-        return false !== $attribute ? $attribute : null;
+        return $this->getMainIdentifier();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode()
+    public function getMainIdentifier(): AttributeInterface
     {
-        $identifierAttribute = $this->getIdentifier();
+        $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
+            return  $attribute->getType() === AttributeTypes::IDENTIFIER && $attribute->isMainIdentifier();
+        })->first();
 
-        return null !== $identifierAttribute ? $identifierAttribute->getCode() : null;
+        if (false === $attribute) {
+            $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
+                return  $attribute->getType() === AttributeTypes::IDENTIFIER;
+            })->first();
+        }
+
+        if (!$attribute) {
+            throw new \RuntimeException('The PIM has no identifier attribute');
+        }
+
+        return $attribute;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierCode(): string
+    {
+        return $this->getMainIdentifierCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMainIdentifierCode(): string
+    {
+        return $this->getMainIdentifier()->getCode();
     }
 
     /**
