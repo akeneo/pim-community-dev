@@ -209,8 +209,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
 
     public function getState(): array
     {
-        return [
-            'position' => $this->yaml->key(),
-        ];
+        return null !== $this->yaml ? ['position' => $this->yaml->key()] : [];
     }
 }
