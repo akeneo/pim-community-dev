@@ -100,7 +100,7 @@ final class JobExecutionWatchdogCommand extends Command
             $jobConfiguration = $input->getOption('config') ? \json_decode($input->getOption('config'), true) : [];
             $jobExecution = $this->createJobExecutionHandler->createFromBatchCode($jobCode, $jobConfiguration, null);
             $jobExecutionId = $jobExecution->getId();
-            $this->logger->info(
+            $this->logger->notice(
                 'Created job execution "{job_execution_id}" for job "{job_code}" with configuration {configuration}',
                 [
                     'job_execution_id' => $jobExecutionId,
@@ -124,7 +124,7 @@ final class JobExecutionWatchdogCommand extends Command
             $process = new Process($processArguments);
             $process->setTimeout(null);
 
-            $this->logger->info(
+            $this->logger->notice(
                 'Launching job execution "{job_execution_id}" for job "{job_code}"',
                 [
                     'job_execution_id' => $jobExecutionId,
@@ -148,7 +148,7 @@ final class JobExecutionWatchdogCommand extends Command
         }
 
         $executionTimeInSec = time() - $startTime;
-        $this->logger->info(
+        $this->logger->notice(
             'Job execution "{job_execution_id}" is finished in {execution_time_in_sec} seconds.',
             [
                 'job_execution_id' => $jobExecutionId,
