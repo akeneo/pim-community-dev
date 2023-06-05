@@ -58,7 +58,7 @@ pim_identifier_generator:
     helper:
       title: 'Aggiungi condizioni alla tua selezione di prodotti, se vuoi:'
       automate: 'automatizza la creazione di identificatori per una determinata selezione di prodotti'
-      multiple: 'più strutture di identificatori per differenti selezioni di prodotti (disponibile a breve)'
+      multiple: 'avere più strutture di identificatori per differenti selezioni di prodotti (disponibile a breve)'
     empty:
       title: 'Crea la tua selezione di prodotti'
       text: 'Saranno interessati tutti i tuoi prodotti con identificatore vuoto.'
