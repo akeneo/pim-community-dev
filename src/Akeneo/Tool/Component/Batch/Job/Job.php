@@ -356,7 +356,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     {
         $stepExecution = $jobExecution->getStepExecutions()[$index] ?? null;
 
-        if(null === $stepExecution) {
+        if (null === $stepExecution) {
             return null;
         }
 
