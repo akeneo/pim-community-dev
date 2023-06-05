@@ -102,7 +102,7 @@ const TemplatePage: FC = () => {
 
   const [tabInError, setTabInError] = useState({});
   const handleBadgesForTabInError = (tabCode: 'attributes' | 'properties', inError: boolean) => {
-    setTabInError(p => ({...p, [tabCode]: inError}));
+    setTabInError(previousTabInError => ({...previousTabInError, [tabCode]: inError}));
   };
 
   return (
