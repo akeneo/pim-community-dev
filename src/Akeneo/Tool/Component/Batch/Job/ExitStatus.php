@@ -56,11 +56,11 @@ class ExitStatus
     /** @var int[] */
     protected static array $statusSeverity = [
         self::EXECUTING => 1,
-        self::COMPLETED => 3,
-        self::NOOP      => 4,
-        self::STOPPED   => 5,
-        self::FAILED    => 6,
-        self::UNKNOWN   => 7
+        self::COMPLETED => 2,
+        self::NOOP      => 3,
+        self::STOPPED   => 4,
+        self::FAILED    => 5,
+        self::UNKNOWN   => 6
     ];
 
     private string $exitCode;
