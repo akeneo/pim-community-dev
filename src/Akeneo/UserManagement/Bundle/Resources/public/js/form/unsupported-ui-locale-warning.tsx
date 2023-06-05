@@ -18,11 +18,10 @@ const UnsupportedUiLocaleWarning: FC = () => {
               code: userDefaultLocaleCode,
             })}
           </span>
-          <div>
-            <Link href="https://crowdin.com/project/akeneo" target="_blank">
-              {translate('pim_user_management.entity.user.properties.link_to_crowdin_label')}
-            </Link>
-          </div>
+          &nbsp;
+          <Link href="https://crowdin.com/" target="_blank">
+            {translate('pim_user_management.entity.user.properties.link_to_crowdin_label')}
+          </Link>
         </Helper>
       )}
     </>
