@@ -113,3 +113,8 @@ services:
     class: 'Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql'
     arguments:
       - '@database_connection'
+
+  Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder:
+    class: 'Akeneo\Category\Infrastructure\Storage\Sql\UpdateCategoryTemplateAttributesOrderSql'
+    arguments:
+      - '@database_connection'

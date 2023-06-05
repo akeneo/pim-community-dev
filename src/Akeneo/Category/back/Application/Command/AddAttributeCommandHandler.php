@@ -64,11 +64,7 @@ class AddAttributeCommandHandler
     {
         $attributes = $this->getAttribute->byTemplateUuid($templateUuid);
 
-        if ($attributes->count() === 0) {
-            AttributeOrder::fromInteger(1);
-        }
-
-        return AttributeOrder::fromInteger($attributes->count() + 1);
+        return AttributeOrder::fromInteger($attributes->calculateNextOrder());
     }
 
     private function getAttributeLabel(string $locale, ?string $label = null): LabelCollection
