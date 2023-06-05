@@ -33,6 +33,6 @@ final class LaunchProductAndProductModelEvaluationsMessageNormalizer implements 
 
     public function supportsNormalization($data, string $format = null)
     {
-        return LaunchProductAndProductModelEvaluationsMessage::class === \get_class($data);
+        return $data instanceof LaunchProductAndProductModelEvaluationsMessage;
     }
 }
