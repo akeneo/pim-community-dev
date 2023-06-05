@@ -23,7 +23,9 @@ akeneo.category:
         richtext: Text enriquit
         image: Imatge
     add_attribute:
+      add_button: Afegeix un atribut
       confirmation_modal:
+        section_title: Afegeix un atribut
         input:
           label: Etiqueta
           code: Codi
@@ -31,6 +33,9 @@ akeneo.category:
             option_title:
               text: Text
               image: Imatge
+      error:
+        limit_reached:
+          title: No podeu afegir més de 50 atributs
   template_list:
     columns:
       header: Etiqueta
@@ -41,3 +46,4 @@ akeneo.category:
   discover_enriched_categories_information:
     survey_link_label: Diguen's el que penses
     learn_more_link_label: Més informació sobre les categories enriquides
+  other_actions: Altres accions

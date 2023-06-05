@@ -8,3 +8,5 @@ pim_notification:
     message: 'Die <strong>{{ app_name }}</strong> App erfordert eine Autorisierungsaktualisierung. Bitte öffnen Sie die App, um fortzufahren.'
   disabled_catalog:
     message: "Eine oder mehrere Änderungen in den Einstellungen Ihrer PIM beeinträchtigten den {{ catalog_name }} -Katalog. Bitte überprüfen Sie die Einstellungen, dann aktivieren Sie den Katalog erneut."
+  attribute_removed:
+    message: "Eine oder mehrere Änderungen in den Einstellungen Ihrer PIM beeinflussten den {{ catalog_name }} -Katalog. Bitte überprüfen Sie die zugehörige Zuordnung."
