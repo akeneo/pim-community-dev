@@ -7,7 +7,7 @@ type Props = {
 export const PageContent: FC<PropsWithChildren<Props>> = ({pageHeaderHeight, children}) => {
     const headerHeight = pageHeaderHeight ?? 126;
     const style = {
-        minHeight: 'calc(100vh - ' + String(headerHeight) + 'px)',
+        minHeight: `calc(100vh - ${headerHeight}px)`,
     };
 
     return (
