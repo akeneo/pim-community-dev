@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File\Csv;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -21,7 +22,7 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface, TrackableItemReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface, PausableReaderInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
@@ -209,5 +210,12 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
             $filePath,
             array_merge($defaultOptions, $this->options)
         );
+    }
+
+    public function getState(): array
+    {
+        return [
+            'position' => $this->fileIterator->key(),
+        ];
     }
 }
