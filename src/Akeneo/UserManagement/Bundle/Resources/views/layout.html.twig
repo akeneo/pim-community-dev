@@ -16,6 +16,9 @@
 </head>
 <body class="{% block bodyClass %}{% endblock %}">
     <div id="page">
+        {% if feature_is_enabled('free_trial') %}
+            <div id="cookie-consent"></div>
+        {% endif %}
         <div id="top-page">
             {% block main %}
             <div class="AuthenticationWrapper">
