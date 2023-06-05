@@ -14,31 +14,25 @@ const UnsupportedUiLocaleWarning: FC = () => {
     <>
       {!userLocalFound && (
         <Helper level="warning">
-          <HelperTextStart>
+          <span>
             {translate('pim_user_management.entity.user.properties.not_fully_supported_locale_start', {
               code: userDefaultLocaleCode,
             })}
-          </HelperTextStart>
+            &nbsp;
+          </span>
           <Link href="https://crowdin.com/project/akeneo" target="_blank">
             Crowdin
           </Link>
-          <HelperTextEnd>
+          <span>
+            &nbsp;
             {translate('pim_user_management.entity.user.properties.not_fully_supported_locale_end', {
               code: userDefaultLocaleCode,
             })}
-          </HelperTextEnd>
+          </span>
         </Helper>
       )}
     </>
   );
 };
-
-const HelperTextStart = styled.span`
-  margin-right: 5px;
-`;
-
-const HelperTextEnd = styled.span`
-  margin-left: 5px;
-`;
 
 export {UnsupportedUiLocaleWarning};
