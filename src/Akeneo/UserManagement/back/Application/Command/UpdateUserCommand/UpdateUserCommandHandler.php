@@ -37,7 +37,6 @@ final class UpdateUserCommandHandler
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Session $session,
         private readonly ObjectRepository $repository,
-        private readonly SecurityFacade $securityFacade,
         private readonly TokenStorageInterface $tokenStorage,
     ) {
     }
@@ -59,20 +58,6 @@ final class UpdateUserCommandHandler
         $passwordViolations = new ConstraintViolationList();
 
         $data = $updateUserCommand->data;
-
-        $token = $this->tokenStorage->getToken();
-        $currentUser = null !== $token ? $token->getUser() : null;
-        if (null === $currentUser || $currentUser->getId() !== $user->getId()) {
-            if (!$this->securityFacade->isGranted('pim_user_role_edit')) {
-                unset($data['roles']);
-            }
-            if (!$this->securityFacade->isGranted('pim_user_group_edit')) {
-                unset($data['groups']);
-            }
-        } else {
-            unset($data['roles']);
-            unset($data['groups']);
-        }
 
         $previousUserName = $user->getUserIdentifier();
 
@@ -116,6 +101,8 @@ final class UpdateUserCommandHandler
 
     private function isPasswordUpdating($data): bool
     {
-        return array_key_exists('current_password', $data) || array_key_exists('new_password', $data) || array_key_exists('new_password_repeat', $data);
+        return (isset($data['current_password']) && !empty($data['current_password'])) ||
+            (isset($data['new_password']) && !empty($data['new_password'])) ||
+            (isset($data['new_password_repeat']) && !empty($data['new_password_repeat']));
     }
 }

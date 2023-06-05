@@ -28,6 +28,7 @@ $rules = [
             'Doctrine\DBAL\Connection',
             'Symfony\Component',
             'Webmozart\Assert\Assert',
+            'Oro\Bundle\SecurityBundle\SecurityFacade',
         ],
     )->in('Akeneo\Platform\Installer\Infrastructure'),
 ];

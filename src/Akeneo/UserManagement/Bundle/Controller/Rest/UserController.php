@@ -116,6 +116,13 @@ final class UserController
 
         $data = json_decode($request->getContent(), true);
 
+        if (!$this->securityFacade->isGranted('pim_user_role_edit')) {
+            unset($data['roles']);
+        }
+        if (!$this->securityFacade->isGranted('pim_user_group_edit')) {
+            unset($data['groups']);
+        }
+
         return $this->updateUser($identifier, $data);
     }
 
