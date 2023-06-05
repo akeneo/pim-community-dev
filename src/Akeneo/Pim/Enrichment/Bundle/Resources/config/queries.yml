@@ -498,3 +498,8 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Component\Product\Query\UpdateIdentifierValuesQuery:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlUpdateIdentifierValuesQuery'
+        arguments:
+            - '@database_connection'
