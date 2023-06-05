@@ -14,7 +14,7 @@ const UnsupportedUiLocaleWarning: FC = () => {
       {!userLocalFound && (
         <Helper level="warning">
           <span style={{marginRight: '5px'}}>{translate('pim_user_management.entity.user.properties.not_fully_supported_locale_start', {code: userDefaultLocaleCode})}</span>
-          <Link href="https://crowdin.com/project/akeneo">Crowdin</Link>
+          <Link href="https://crowdin.com/project/akeneo" target="_blank">Crowdin</Link>
           <span style={{marginLeft: '5px'}}>{translate('pim_user_management.entity.user.properties.not_fully_supported_locale_end', {code: userDefaultLocaleCode})}</span>
         </Helper>
       )}
