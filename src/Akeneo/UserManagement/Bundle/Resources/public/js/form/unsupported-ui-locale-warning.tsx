@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {Helper, Link} from 'akeneo-design-system';
 import {useTranslate, userContext} from '@akeneo-pim-community/shared';
 import {useUiLocales} from '../hooks/useUiLocales';
+import styled from 'styled-components';
 
 const UnsupportedUiLocaleWarning: FC = () => {
   const translate = useTranslate();
@@ -13,13 +14,31 @@ const UnsupportedUiLocaleWarning: FC = () => {
     <>
       {!userLocalFound && (
         <Helper level="warning">
-          <span style={{marginRight: '5px'}}>{translate('pim_user_management.entity.user.properties.not_fully_supported_locale_start', {code: userDefaultLocaleCode})}</span>
-          <Link href="https://crowdin.com/project/akeneo" target="_blank">Crowdin</Link>
-          <span style={{marginLeft: '5px'}}>{translate('pim_user_management.entity.user.properties.not_fully_supported_locale_end', {code: userDefaultLocaleCode})}</span>
+          <HelperTextStart>
+            {translate('pim_user_management.entity.user.properties.not_fully_supported_locale_start', {
+              code: userDefaultLocaleCode,
+            })}
+          </HelperTextStart>
+          <Link href="https://crowdin.com/project/akeneo" target="_blank">
+            Crowdin
+          </Link>
+          <HelperTextEnd>
+            {translate('pim_user_management.entity.user.properties.not_fully_supported_locale_end', {
+              code: userDefaultLocaleCode,
+            })}
+          </HelperTextEnd>
         </Helper>
       )}
     </>
   );
 };
+
+const HelperTextStart = styled.span`
+  margin-right: 5px;
+`;
+
+const HelperTextEnd = styled.span`
+  margin-left: 5px;
+`;
 
 export {UnsupportedUiLocaleWarning};
