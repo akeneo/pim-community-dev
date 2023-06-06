@@ -80,3 +80,33 @@ Feature: Import attributes
     And there should be the following attributes:
       | type                     | code         | label-en_US     | label-de_DE      | label-fr_FR    | group     | unique | useable_as_grid_filter | localizable | scopable | localizable | scopable | available_locales | sort_order |
       | pim_catalog_simpleselect | manufacturer | My awesome code | Meine große Code | Mon super code | marketing | 0      | 1                      | 0           | 0        | 0           | 0        | en_US,fr_FR       | 3          |
+
+  Scenario: Successfully import identifier attribute in CSV
+    Given the "footwear" catalog configuration
+    And the following CSV file to import:
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit;sort_order;decimals_allowed;negative_allowed;default_value
+      pim_catalog_identifier;sku;SKU;info;1;1;0;;;;;;;0;;;;;;;;;;;0;0;0;0;0;
+      """
+    When the attributes are imported via the job csv_footwear_attribute_import
+    Then there should be the following attributes:
+      | type                         | code         | label-en_US  | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | sort_order | default_value |
+      | pim_catalog_identifier       | sku          | SKU          | info      | 1      | 1                      | 0           | 0        |                    |               |                     | 1          |               |
+
+  @javascript
+  Scenario: Skip when try to set main identifier on import attribute in CSV
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit;sort_order;is_main_identifier
+      pim_catalog_identifier;sku;SKU;info;0;1;0;0;;;;0;1
+      """
+    And the following job "csv_footwear_attribute_import" configuration:
+      | storage | {"type": "local", "file_path": "%file to import%"} |
+    When I am on the "csv_footwear_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_attribute_import" job to finish
+    Then I should see the text "read lines 1"
+    Then I should see the text "skipped 1"
+    Then I should see the text "Property \"is_main_identifier\" does not exist."
