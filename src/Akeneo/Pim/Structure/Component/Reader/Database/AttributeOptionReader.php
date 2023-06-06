@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Structure\Component\Reader\Database;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 
@@ -18,7 +19,8 @@ use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 class AttributeOptionReader extends AbstractReader implements
     ItemReaderInterface,
     InitializableInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    PausableWriterInterface
 {
     /** @var AttributeOptionRepositoryInterface */
     protected $repository;
@@ -37,5 +39,10 @@ class AttributeOptionReader extends AbstractReader implements
     protected function getResults()
     {
         return new \ArrayIterator($this->repository->findBy([], ['attribute' => 'ASC', 'sortOrder' => 'ASC']));
+    }
+
+    public function getState(): array
+    {
+        return [];
     }
 }
