@@ -17,6 +17,9 @@
         <script type="text/javascript" src="{{asset('dist/main.min.js', 'frontend')}} "></script>
     </head>
     <body>
+        {% if feature_is_enabled('free_trial') %}
+            <div id="cookie-consent"></div>
+        {% endif %}
         <div class="app">
             <div class="AknDefault-progressContainer">
                 <h3>

@@ -428,10 +428,16 @@ extensions:
             isMultiple: false
             allowClear: false
 
+    pim-user-edit-form-unsupported-ui-locale-warning-view:
+        module: pim/user/form/unsupported-ui-locale-warning-view
+        parent: pim-user-edit-form-interfaces-tab-content
+        position: 20
+        targetZone: content
+
     pim-user-edit-form-timezone:
         module: pim/user/fields/timezone
         parent: pim-user-edit-form-interfaces-tab-content
-        position: 20
+        position: 30
         targetZone: content
         config:
             fieldName: timezone

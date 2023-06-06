@@ -12,6 +12,7 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
     function let(AttributeRepositoryInterface $attributeRepository)
     {
         $this->beConstructedWith($attributeRepository);
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
     }
 
     function it_normalizes_constraint_violation_with_scope_and_locale(

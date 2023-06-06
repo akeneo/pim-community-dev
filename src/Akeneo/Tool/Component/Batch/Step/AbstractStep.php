@@ -10,6 +10,8 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobInterruptedException;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
+use Akeneo\Tool\Component\Batch\Job\JobStopperInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\Event;
@@ -29,7 +31,8 @@ abstract class AbstractStep implements StepInterface
     public function __construct(
         protected string $name,
         protected EventDispatcherInterface $eventDispatcher,
-        protected JobRepositoryInterface $jobRepository
+        protected JobRepositoryInterface $jobRepository,
+        private ?JobStopperInterface $jobStopper = null,
     ) {
     }
 

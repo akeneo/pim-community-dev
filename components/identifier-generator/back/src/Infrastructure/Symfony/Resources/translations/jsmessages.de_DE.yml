@@ -1,0 +1,116 @@
+pim_error:
+  unauthorized_list_attributes: "Attribute können nicht aufgelistet werden. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern."
+  unauthorized_list_properties: "Sie haben nicht die Berechtigung, diese Eigenschaft aufzulisten. Bitte kontaktieren Sie Ihren Administrator."
+  unauthorized_list_families: "Attribute können nicht aufgelistet werden. Bitte kontaktieren Sie Ihren Administrator, um Ihre Rechte zu ändern."
+  general: "Während der Anzeige dieser Seite ist ein Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator."
+  unexpected: "Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator."
+  404: 'Es ist ein 404-Fehler aufgetreten...'
+  identifier_generator_not_found: 'Identifikator-Generator nicht gefunden'
+  selection_attribute_not_found: 'Ein Attribut aus Ihrer Produktauswahl wurde aus Ihrem Katalog gelöscht. Bitte löschen Sie diese Eigenschaft aus Ihrer Produktauswahl.'
+pim_identifier_generator:
+  create:
+    form:
+      title: "Neuen Identifikatorgenerator erstellen"
+  tabs:
+    general: "Allgemein"
+    product_selection: "Produktauswahl"
+    identifier_structure: "Identifikator-Struktur"
+  general:
+    title: "Allgemeine Eigenschaften"
+    label_translations_in_ui_locale: "Label-Übersetzungen in UI-Gebietsschema"
+    text_transformation:
+      label: 'Text-Transformation'
+      no: 'Keine Text-Transformation'
+      lowercase: 'Kleinbuchstaben'
+      uppercase: 'Großbuchstaben'
+  flash:
+    create:
+      success: 'Der Identifikatorgenerator "{{ code }}" wurde erfolgreich erstellt'
+      error: 'Der Identifikatorgenerator konnte nicht erstellt werden'
+    update:
+      success: 'Der Identifikatorgenerator "{{ code }}" wurde erfolgreich aktualisiert'
+      error: 'Der Identifikatorgenerator konnte nicht aktualisiert werden'
+    delete:
+      success: 'Der Identifikatorgenerator "{{ code }}" wurde erfolgreich gelöscht'
+      error: 'Der Identifikatorgenerator konnte nicht gelöscht werden'
+  list:
+    identifier: 'Identifikator'
+    read_only_list: 'Bitte kontaktieren Sie Ihren Administrator, um Zugriff auf diese Funktion zu haben.'
+    check_help_center: 'Weitere Informationen finden Sie in unserem Hilfe-Center.'
+    confirmation: 'Sind Sie sicher, dass Sie diese Eigenschaft löschen möchten?'
+  operators:
+    UNCLASSIFIED: 'Unklassifiziert'
+    CLASSIFIED: 'Klassifiziert'
+  selection:
+    limit_reached: 'Sie haben das Limit von {{ count }} Bedingungen erreicht'
+    helper:
+      title: 'Füge Bedingungen zu deiner Produktauswahl hinzu, wenn du möchtest:'
+    empty:
+      title: 'Produktauswahl erstellen'
+    settings:
+      enabled:
+        disabled: 'Deaktiviert'
+        placeholder: 'Wähle einen Status'
+      family:
+        placeholder: 'Bitte wählen Sie mindestens eine Familie aus'
+      select_option:
+        placeholder: 'Bitte wählen Sie mindestens eine Option'
+      categories:
+        tree: Baum
+  structure:
+    helper_link: 'schaue in unserem Hilfe-Center für weitere Informationen'
+    add_element: 'Neue Eigenschaft hinzufügen'
+    property_type:
+      sections:
+        system: 'System'
+      free_text: 'Freier Text'
+      auto_number: 'Auto-Nummerierung'
+      family: 'Produktfamilie'
+    settings:
+      free_text:
+        title: 'Freitexttexteinstellungen'
+        string_label: 'Definieren Sie Ihren Text'
+      auto_number:
+        title: 'Auto-Nummerierung'
+      family:
+        title: 'Produktfamilie'
+      code_format:
+        type:
+          nomenclature: 'Eigene Nomenklatur verwenden'
+      operator:
+        title: 'Operator'
+        placeholder: 'Operator auswählen'
+      simple_select:
+        title: 'Attribut'
+      abbrev_type: 'Format dieser Eigenschaft definieren'
+      abbrev_type_empty_label: 'Format auswählen'
+      chars_number: 'Anzahl der Zeichen'
+    empty:
+      link_text: 'Weitere Informationen finden Sie in unserem Hilfe-Center.'
+    delimiters:
+      title: 'Trennzeichen'
+      helper_link: 'unser Hilfe-Center'
+      checkbox_label: 'Trennzeichen zwischen jedem Objekt verwenden'
+      input_label: 'Definieren Sie Trennzeichen'
+  deletion:
+    operations: 'Operationen'
+    type: 'Bitte geben Sie "{{ code }}" ein'
+  nomenclature:
+    edit: 'Nomenklatur bearbeiten'
+    title: 'Nomenklatur verwalten'
+    characters_number: 'Anzahl der Zeichen'
+    operator_placeholder: 'Operator auswählen'
+    value_placeholder: 'Wähle Zeichenkette'
+    nomenclature: 'Nomenklatur'
+    generate_if_empty: 'Nomenklatur automatisch generieren'
+    display: 'Anzeige'
+    filters:
+      all: 'Alle'
+      error: 'Fehler'
+      empty: 'Leer'
+      filled: 'Ausgefüllt'
+    empty:
+      title: 'Keine Nomenklaturen gefunden'
+    flash:
+      success: 'Ihre Nomenklatur wurde erfolgreich gespeichert'
+      error: 'Ihre Nomenklatur kann nicht gespeichert werden'

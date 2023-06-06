@@ -56,9 +56,8 @@ pim_identifier_generator:
   selection:
     limit_reached: 'U heeft de limiet van {{ count }} voorwaarden bereikt'
     helper:
-      title: 'Voeg voorwaarden toe aan uw productselectie, als u wilt:'
-      automate: 'automatiseer de creatie van identifiers voor een gerichte selectie van producten'
-      multiple: 'hebben meerdere id-structuren voor verschillende productselecties'
+      title: 'Voeg voorwaarden toe aan uw productselectie, als u:'
+      automate: 'de creatie van identifiers wilt automatiseren voor een gerichte selectie van producten'
     empty:
       title: 'Definieer uw productselectie'
       text: 'Al uw producten met een lege identificatie zullen beïnvloed worden.'
@@ -126,7 +125,7 @@ pim_identifier_generator:
     edit: 'Nomenclatuur bewerken'
     section_title: 'Mijn identifiers genereren voor {{ property }}'
     title: 'Beheer nomenclatuur'
-    helper: 'Houd er rekening mee dat uw naamregisters worden gedeeld voor al uw id-generatoren.'
+    helper: 'Uw nomenclatuur zal worden gebruikt voor al uw id-generatoren.'
     characters_number: 'Aantal tekens'
     operator_placeholder: 'Kies uw operator'
     value_placeholder: 'Kies uw tekens'
