@@ -36,6 +36,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.attribute'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.csv_family:
         class: '%pim_connector.writer.file.csv.class%'
@@ -43,6 +44,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.family'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.csv_family_variant:
         class: '%pim_connector.writer.file.csv.class%'
@@ -50,6 +52,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.family_variant'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.family_variant.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.csv_attribute_group:
         class: '%pim_connector.writer.file.csv.class%'
@@ -57,6 +60,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.attribute_group'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.xlsx_family:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -104,6 +108,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.attribute_option'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.xlsx_attribute:
         class: '%pim_connector.writer.file.xlsx.class%'
