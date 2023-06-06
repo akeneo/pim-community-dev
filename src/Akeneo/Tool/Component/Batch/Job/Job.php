@@ -199,10 +199,11 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         $stepExecution = null;
 
         foreach ($this->steps as $index => $step) {
-            /**
-             * TODO RAB-1438: Handle jobs with two or more steps already completed or paused
-             */
-            $stepExecution = $jobExecution->getStepExecutions()[$index] ?? null;
+            $stepExecution = $this->getStepExecution($jobExecution, $index);
+
+            if (!$this->isRunnable($stepExecution)) {
+                continue;
+            }
 
             $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution);
             $this->jobRepository->updateStepExecution($stepExecution);
@@ -344,5 +345,25 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         if ($this->filesystem->exists($directory)) {
             $this->filesystem->remove($directory);
         }
+    }
+
+    private function isRunnable(?StepExecution $stepExecution): bool
+    {
+        return null === $stepExecution || in_array($stepExecution->getStatus()->getValue(), [BatchStatus::STARTING, BatchStatus::PAUSED]);
+    }
+
+    private function getStepExecution(JobExecution $jobExecution, int $index): ?StepExecution
+    {
+        $stepExecution = $jobExecution->getStepExecutions()[$index] ?? null;
+
+        if (null === $stepExecution) {
+            return null;
+        }
+
+        if ($stepExecution->getStepName() !== $this->steps[$index]->getName()) {
+            throw new \RuntimeException("Can't resume the job because steps configuration has changed during pause.");
+        }
+
+        return $stepExecution;
     }
 }
