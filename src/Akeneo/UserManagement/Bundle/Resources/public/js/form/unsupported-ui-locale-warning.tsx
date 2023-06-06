@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Helper} from 'akeneo-design-system';
+import {Helper, Link} from 'akeneo-design-system';
 import {useTranslate, userContext} from '@akeneo-pim-community/shared';
 import {useUiLocales} from '../hooks/useUiLocales';
 
@@ -13,7 +13,15 @@ const UnsupportedUiLocaleWarning: FC = () => {
     <>
       {!userLocalFound && (
         <Helper level="warning">
-          {translate('pim_user_management.entity.user.properties.helper', {code: userDefaultLocaleCode})}
+          <span>
+            {translate('pim_user_management.entity.user.properties.not_fully_supported_locale', {
+              code: userDefaultLocaleCode,
+            })}
+          </span>
+          &nbsp;
+          <Link href="https://crowdin.com/" target="_blank">
+            {translate('pim_user_management.entity.user.properties.link_to_crowdin_label')}
+          </Link>
         </Helper>
       )}
     </>
