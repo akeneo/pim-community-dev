@@ -71,6 +71,10 @@ abstract class AbstractStep implements StepInterface
     {
         $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION, $stepExecution);
 
+        if ($stepExecution->getStatus()->getValue() === BatchStatus::PAUSED) {
+            $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION_RESUME, $stepExecution);
+        }
+
         $stepExecution->setStartTime(new \DateTime());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
         $this->jobRepository->updateStepExecution($stepExecution);

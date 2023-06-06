@@ -68,13 +68,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
      */
     public function read()
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('storage')['file_path'];
-
-        if (null === $this->fileIterator) {
-            $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
-            $this->fileIterator->rewind();
-        }
+        $this->initFileIterator();
 
         $this->fileIterator->next();
 
@@ -93,7 +87,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         $countHeaders = count($headers);
         $countData = count($data);
 
-        $this->checkColumnNumber($countHeaders, $countData, $data, $filePath);
+        $this->checkColumnNumber($countHeaders, $countData, $data, $this->stepExecution->getJobParameters()->get('storage')['file_path']);
 
         if ($countHeaders > $countData) {
             $missingValuesCount = $countHeaders - $countData;
@@ -110,6 +104,17 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         }
 
         return $item;
+    }
+
+    private function initFileIterator(): void
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('storage')['file_path'];
+
+        if (null === $this->fileIterator) {
+            $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
+            $this->fileIterator->rewind();
+        }
     }
 
     /**
@@ -215,5 +220,15 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
     public function getState(): array
     {
         return null !== $this->fileIterator ? ['position' => $this->fileIterator->key()] : [];
+    }
+
+    public function rewindToState(int $key): void
+    {
+        $this->initFileIterator();
+
+        $this->fileIterator->current();
+        while ($this->fileIterator->key() < $key) {
+            $this->fileIterator->next();
+        }
     }
 }

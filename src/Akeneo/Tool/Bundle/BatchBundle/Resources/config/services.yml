@@ -48,6 +48,18 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\BackupImportFileOnPauseSubscriber:
+        arguments:
+            - '@oneup_flysystem.jobs_storage_filesystem'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\MountFileOnResumeSubscriber:
+        arguments:
+            - '@oneup_flysystem.jobs_storage_filesystem'
+        tags:
+            - { name: kernel.event_subscriber }
+
     akeneo_batch.mail_notifier:
         class: '%akeneo_batch.mail_notifier.class%'
         arguments:

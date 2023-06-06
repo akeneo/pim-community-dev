@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Component\Batch\Job;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepInterface;
@@ -203,6 +204,10 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
 
             if (!$this->isRunnable($stepExecution)) {
                 continue;
+            }
+
+            if (null !== $stepExecution && $stepExecution->getStatus()->getValue() === BatchStatus::PAUSED) {
+                $stepExecution->setExecutionContext(new ExecutionContext());
             }
 
             $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution);
