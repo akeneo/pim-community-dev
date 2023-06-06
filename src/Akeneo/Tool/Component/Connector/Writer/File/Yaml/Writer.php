@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Writer\File\Yaml;
 
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\RuntimeErrorException;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
@@ -17,7 +18,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements ItemWriterInterface, FlushableInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, FlushableInterface, PausableWriterInterface
 {
     const INLINE_ARRAY_LEVEL = 8;
     const INDENT_SPACES = 4;
@@ -139,5 +140,10 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
         foreach ($items as $item) {
             $this->stepExecution->incrementSummaryInfo('write');
         }
+    }
+
+    public function getState(): array
+    {
+        return [];
     }
 }
