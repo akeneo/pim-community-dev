@@ -13,6 +13,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.user_group'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.csv_user_role:
         class: '%pim_connector.writer.file.csv.class%'
@@ -28,6 +29,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.user_role'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_user.writer.file.user_role.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.csv_user:
         class: 'Akeneo\UserManagement\Component\Connector\Writer\File\CsvUserWriter'

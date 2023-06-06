@@ -42,6 +42,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
      * @param ArrayConverterInterface $arrayConverter
      * @param BufferFactory           $bufferFactory
      * @param FlatItemBufferFlusher   $flusher
+     * @param ?FilesystemOperator     $filesystemOperator
      */
     public function __construct(
         ArrayConverterInterface $arrayConverter,

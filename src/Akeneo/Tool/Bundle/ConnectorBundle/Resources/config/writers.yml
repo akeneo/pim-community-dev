@@ -139,6 +139,7 @@ services:
             - '@pim_connector.array_converter.invalid_data_item'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_invalid_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.xlsx_group:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -146,6 +147,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.group'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.xlsx_category:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -153,6 +155,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.category'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.xlsx_association_type:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -160,6 +163,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.association_type'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     pim_connector.writer.file.xlsx_group_type:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -167,6 +171,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.group_type'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@oneup_flysystem.jobs_storage_filesystem'
 
     # Column sorter
     pim_connector.writer.file.default.column_sorter:

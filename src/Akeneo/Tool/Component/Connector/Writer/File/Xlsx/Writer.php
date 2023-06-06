@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Component\Connector\Writer\File\Xlsx;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -13,6 +14,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use League\Flysystem\FilesystemOperator;
 
 /**
  * Write simple data into a XLSX file on the local filesystem
@@ -21,7 +23,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface, PausableWriterInterface
 {
     /** @var ArrayConverterInterface */
     protected $arrayConverter;
@@ -39,11 +41,13 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
      * @param ArrayConverterInterface $arrayConverter
      * @param BufferFactory           $bufferFactory
      * @param FlatItemBufferFlusher   $flusher
+     * @param ?FilesystemOperator     $filesystemOperator
      */
     public function __construct(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        private ?FilesystemOperator $filesystemOperator = null,
     ) {
         parent::__construct();
 
@@ -102,5 +106,20 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         foreach ($writtenFiles as $writtenFile) {
             $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($writtenFile, \basename($writtenFile));
         }
+    }
+
+    public function getState(): array
+    {
+        // We need to save the buffer file somewhere
+        if (null !== $this->filesystemOperator) {
+            $flatBufferFilePath = 'paused_job/step/' . $this->stepExecution->getId();
+            $this->filesystemOperator->write($flatBufferFilePath, file_get_contents($this->flatRowBuffer->getFilename()));
+
+            return [
+                'flat_buffer_file_path' => $flatBufferFilePath,
+            ];
+        }
+
+        return [];
     }
 }
