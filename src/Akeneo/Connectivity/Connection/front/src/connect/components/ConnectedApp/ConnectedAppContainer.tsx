@@ -220,17 +220,22 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     >
                         {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')}
                     </TabBar.Tab>
-                    {null !== providers && providers.length > 0 && isAtLeastGrantedToViewProducts && supportsPermissions && (
-                        <TabBar.Tab
-                            isActive={isCurrent(permissionsTabName)}
-                            onClick={() => {
-                                setActiveTab(permissionsTabName);
-                                switchTo(permissionsTabName);
-                            }}
-                        >
-                            {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')}
-                        </TabBar.Tab>
-                    )}
+                    {null !== providers &&
+                        providers.length > 0 &&
+                        isAtLeastGrantedToViewProducts &&
+                        supportsPermissions && (
+                            <TabBar.Tab
+                                isActive={isCurrent(permissionsTabName)}
+                                onClick={() => {
+                                    setActiveTab(permissionsTabName);
+                                    switchTo(permissionsTabName);
+                                }}
+                            >
+                                {translate(
+                                    'akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions'
+                                )}
+                            </TabBar.Tab>
+                        )}
                     {isAtLeastGrantedToViewCatalogs && (
                         <TabBar.Tab
                             isActive={isCurrent(catalogsTabName)}
