@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Structure\Component\Normalizer\ExternalApi;
 
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -13,20 +16,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var NormalizerInterface */
-    protected $stdNormalizer;
-
-    /** @var NormalizerInterface */
-    private $translationNormalizer;
-
-    /**
-     * @param NormalizerInterface $stdNormalizer
-     * @param NormalizerInterface $translationNormalizer
-     */
-    public function __construct(NormalizerInterface $stdNormalizer, NormalizerInterface $translationNormalizer)
-    {
-        $this->stdNormalizer = $stdNormalizer;
-        $this->translationNormalizer = $translationNormalizer;
+    public function __construct(
+        protected NormalizerInterface $stdNormalizer,
+        private NormalizerInterface $translationNormalizer
+    ) {
     }
 
     /**
@@ -42,9 +35,13 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
             null;
 
         foreach (['labels', 'guidelines', 'group_labels'] as $field) {
-            if (array_key_exists($field, $normalizedAttribute) && [] === $normalizedAttribute[$field]) {
+            if (\array_key_exists($field, $normalizedAttribute) && [] === $normalizedAttribute[$field]) {
                 $normalizedAttribute[$field] = (object)[];
             }
+        }
+
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            $normalizedAttribute['is_main_identifier'] = $attribute->isMainIdentifier();
         }
 
         return $normalizedAttribute;

@@ -10,25 +10,26 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslationNormalizer $transNormalizer, DateTimeNormalizer $dateTimeNormalizer, FeatureFlags $featureFlags)
+    public function let(TranslationNormalizer $transNormalizer, DateTimeNormalizer $dateTimeNormalizer, FeatureFlags $featureFlags): void
     {
         $this->beConstructedWith($transNormalizer, $dateTimeNormalizer, $featureFlags);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(AttributeNormalizer::class);
     }
 
-    function it_is_a_normalizer()
+    public function it_is_a_normalizer(): void
     {
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_standard_normalization(AttributeInterface $attribute)
+    public function it_supports_standard_normalization(AttributeInterface $attribute): void
     {
         $this->supportsNormalization($attribute, 'standard')->shouldBe(true);
         $this->supportsNormalization($attribute, 'json')->shouldBe(false);
@@ -36,12 +37,12 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'standard')->shouldBe(false);
     }
 
-    function it_normalizes_an_empty_attribute(
-        $transNormalizer,
+    public function it_normalizes_an_empty_attribute(
+        NormalizerInterface $transNormalizer,
         FeatureFlags $featureFlags,
         AttributeInterface $attribute,
         AttributeGroupInterface $attributeGroup
-    ) {
+    ): void {
         $featureFlags->isEnabled('read_only_product_attribute')->willThrow(new \InvalidArgumentException());
         $transNormalizer->normalize(Argument::cetera())->willReturn([]);
 
@@ -74,6 +75,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getProperty('auto_option_sorting')->willReturn(null);
         $attribute->getProperty('default_value')->willReturn(null);
         $attribute->getGuidelines()->willReturn(['en_US' => 'the guidelines', 'fr_FR' => 'les indications']);
+        $attribute->isMainIdentifier()->shouldNotBeCalled();
 
         $this->normalize($attribute)->shouldReturn(
             [
@@ -110,14 +112,13 @@ class AttributeNormalizerSpec extends ObjectBehavior
         );
     }
 
-
-    function it_normalizes_attribute(
-        $transNormalizer,
-        $dateTimeNormalizer,
+    public function it_normalizes_attribute(
+        NormalizerInterface $transNormalizer,
+        NormalizerInterface $dateTimeNormalizer,
         AttributeInterface $attribute,
         FeatureFlags $featureFlags,
         AttributeGroupInterface $attributeGroup
-    ) {
+    ): void {
         $featureFlags->isEnabled('read_only_product_attribute')->willReturn(true);
 
         $transNormalizer->normalize(Argument::cetera())->willReturn([]);
@@ -155,6 +156,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getProperty('default_value')->willReturn('default');
         $attribute->getProperty('is_read_only')->willReturn(true);
         $attribute->getGuidelines()->willReturn(['en_US' => 'the guidelines']);
+        $attribute->isMainIdentifier()->shouldNotBeCalled();
 
         $dateTimeNormalizer->normalize($dateMin)->willReturn('2015-05-23T15:55:50+01:00');
         $dateTimeNormalizer->normalize($dateMax)->willReturn('2015-06-23T15:55:50+01:00');
@@ -189,6 +191,83 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'labels'                 => [],
                 'guidelines'             => ['en_US' => 'the guidelines'],
                 'auto_option_sorting'    => true,
+                'default_value'          => 'default',
+                'is_read_only'           => true,
+            ]
+        );
+    }
+
+    public function it_normalizes_identifier_attribute(
+        NormalizerInterface $transNormalizer,
+        NormalizerInterface $dateTimeNormalizer,
+        AttributeInterface $attribute,
+        FeatureFlags $featureFlags
+    ): void {
+        $featureFlags->isEnabled('read_only_product_attribute')->willReturn(true);
+
+        $transNormalizer->normalize(Argument::cetera())->willReturn([]);
+
+        $attribute->getType()->willReturn('pim_catalog_identifier');
+        $attribute->getCode()->willReturn('my_identifier');
+        $attribute->isMainIdentifier()->shouldNotBeCalled();
+        $attribute->getGroup()->willReturn(null);
+        $attribute->isUnique()->willReturn(true);
+        $attribute->isUseableAsGridFilter()->willReturn(true);
+        $attribute->getAllowedExtensions()->willReturn(['csv', 'xml', 'standard']);
+        $attribute->getMetricFamily()->willReturn('Length');
+        $attribute->getDefaultMetricUnit()->willReturn('Centimenter');
+        $attribute->getReferenceDataName()->willReturn('color');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getAvailableLocaleCodes()->willReturn(['en_US', 'fr_FR']);
+        $attribute->getMaxCharacters()->willReturn(null);
+        $attribute->getValidationRule()->willReturn(null);
+        $attribute->getValidationRegexp()->willReturn(null);
+        $attribute->isWysiwygEnabled()->willReturn(false);
+        $attribute->getNumberMin()->willReturn(null);
+        $attribute->getNumberMax()->willReturn(null);
+        $attribute->isDecimalsAllowed()->willReturn(false);
+        $attribute->isNegativeAllowed()->willReturn(false);
+        $attribute->getDateMin()->willReturn(null);
+        $attribute->getDateMax()->willReturn(null);
+        $attribute->getMaxFileSize()->willReturn(null);
+        $attribute->getMinimumInputLength()->willReturn(null);
+        $attribute->getSortOrder()->willReturn(1);
+        $attribute->getProperty('auto_option_sorting')->willReturn(false);
+        $attribute->getProperty('default_value')->willReturn('default');
+        $attribute->getProperty('is_read_only')->willReturn(true);
+        $attribute->getGuidelines()->willReturn([]);
+
+        $this->normalize($attribute)->shouldReturn(
+            [
+                'code'                   => 'my_identifier',
+                'type'                   => 'pim_catalog_identifier',
+                'group'                  => null,
+                'unique'                 => true,
+                'useable_as_grid_filter' => true,
+                'allowed_extensions'     => ['csv', 'xml', 'standard'],
+                'metric_family'          => 'Length',
+                'default_metric_unit'    => 'Centimenter',
+                'reference_data_name'    => 'color',
+                'available_locales'      => ['en_US', 'fr_FR'],
+                'max_characters'         => null,
+                'validation_rule'        => null,
+                'validation_regexp'      => null,
+                'wysiwyg_enabled'        => false,
+                'number_min'             => null,
+                'number_max'             => null,
+                'decimals_allowed'       => false,
+                'negative_allowed'       => false,
+                'date_min'               => null,
+                'date_max'               => null,
+                'max_file_size'          => null,
+                'minimum_input_length'   => null,
+                'sort_order'             => 1,
+                'localizable'            => false,
+                'scopable'               => false,
+                'labels'                 => [],
+                'guidelines'             => [],
+                'auto_option_sorting'    => false,
                 'default_value'          => 'default',
                 'is_read_only'           => true,
             ]
