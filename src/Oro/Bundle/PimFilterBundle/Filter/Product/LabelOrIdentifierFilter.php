@@ -5,7 +5,7 @@ namespace Oro\Bundle\PimFilterBundle\Filter\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
+use Oro\Bundle\PimFilterBundle\Filter\ProductValue\StringFilter as OroStringFilter;
 
 /**
  * Filter on label and identifier

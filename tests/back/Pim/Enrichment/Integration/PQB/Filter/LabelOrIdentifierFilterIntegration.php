@@ -2,9 +2,13 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductAndProductModelQueryBuilderTestCase;
 use Ramsey\Uuid\Uuid;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Julien Sanchez <julien@gmail.com>
@@ -16,7 +20,7 @@ class LabelOrIdentifierFilterIntegration extends AbstractProductAndProductModelQ
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useFunctionalCatalog('catalog_modeling');
     }
@@ -25,12 +29,16 @@ class LabelOrIdentifierFilterIntegration extends AbstractProductAndProductModelQ
      * We search labels and identifiers both on products and product models and
      * check that we get both in the same result
      */
-    public function testSearch()
+    public function testSearchContains(): void
     {
-        $result = $this->executeFilter([['label_or_identifier', Operators::CONTAINS, 'hat', ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([
+            ['label_or_identifier', Operators::CONTAINS, 'hat', ['locale' => 'en_US', 'scope' => 'ecommerce']]
+        ]);
         $this->assert($result, ['model-braided-hat', '1111111240', 'braided-hat-m', 'braided-hat-xxxl']);
 
-        $result = $this->executeFilter([['label_or_identifier', Operators::CONTAINS, 'ha', ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+        $result = $this->executeFilter([
+            ['label_or_identifier', Operators::CONTAINS, 'ha', ['locale' => 'en_US', 'scope' => 'ecommerce']]
+        ]);
         $this->assert($result, [
             'model-braided-hat',
             'hades',
@@ -46,9 +54,29 @@ class LabelOrIdentifierFilterIntegration extends AbstractProductAndProductModelQ
             'hades_blue',
             'hades_red',
         ]);
+
+        $sampleProduct = $this->createProduct('sample', [new SetFamily('accessories')]);
+        $sampleBProduct = $this->createProduct('sampleB', [new SetFamily('accessories')]);
+        $sampleRedProduct = $this->createProduct('sample_red', [new SetFamily('accessories')]);
+
+        $result = $this->executeFilter([
+            ['label_or_identifier', Operators::CONTAINS, 'sample', ['locale' => 'en_US', 'scope' => 'ecommerce']]
+        ]);
+        $this->assert($result, [
+            'sample',
+            'sampleB',
+            'sample_red',
+        ]);
+
+        $result = $this->executeFilter([
+            ['label_or_identifier', Operators::CONTAINS, 'sample_', ['locale' => 'en_US', 'scope' => 'ecommerce']]
+        ]);
+        $this->assert($result, [
+            'sample_red',
+        ]);
     }
 
-    public function testSearchOnLabelAndCompleteness()
+    public function testSearchOnLabelAndCompleteness(): void
     {
         $result = $this->executeFilter([
             ['label_or_identifier', Operators::CONTAINS, 'hat', ['locale' => 'en_US', 'scope' => 'ecommerce']],
