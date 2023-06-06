@@ -361,7 +361,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         }
 
         if ($stepExecution->getStepName() !== $this->steps[$index]->getName()) {
-            throw new \RuntimeException('The job is corrupted');
+            throw new \RuntimeException("Can't resume the job because steps configuration has changed during pause.");
         }
 
         return $stepExecution;

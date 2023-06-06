@@ -45,7 +45,7 @@ class JobIntegration extends TestCase
         $steps = [
             $this->createStep('step_1', BatchStatus::COMPLETED),
             $this->createStep('step_2', BatchStatus::PAUSED),
-            $this->createStep('step_3'),
+            $this->createStep('step_3', null),
         ];
 
         $job = $this->createJob('a_starting_job_being_paused', $steps);
@@ -86,10 +86,10 @@ class JobIntegration extends TestCase
     public function test_it_fails_when_it_resumes_a_paused_job_and_a_new_step_has_been_added_to_the_job(): void
     {
         $steps = [
-            $this->createStep('step_0'),
-            $this->createStep('step_1'),
-            $this->createStep('step_2'),
-            $this->createStep('step_3'),
+            $this->createStep('step_0', null),
+            $this->createStep('step_1', null),
+            $this->createStep('step_2', null),
+            $this->createStep('step_3', null),
         ];
 
         $job = $this->createJob('a_paused_job', $steps);
@@ -105,14 +105,14 @@ class JobIntegration extends TestCase
 
         $this->assertCount(2, $jobExecution->getStepExecutions());
         $this->assertSame(BatchStatus::FAILED, $jobExecution->getStatus()->getValue());
-        $this->assertSame('The job is corrupted', $jobExecution->getFailureExceptions()[0]['message']);
+        $this->assertSame("Can't resume the job because steps configuration has changed during pause.", $jobExecution->getFailureExceptions()[0]['message']);
     }
 
     public function test_it_fails_when_it_resumes_a_paused_job_and_a_step_has_been_removed_to_the_job(): void
     {
         $steps = [
-            $this->createStep('step_2'),
-            $this->createStep('step_3'),
+            $this->createStep('step_2', null),
+            $this->createStep('step_3', null),
         ];
 
         $job = $this->createJob('a_paused_job', $steps);
@@ -128,7 +128,7 @@ class JobIntegration extends TestCase
 
         $this->assertCount(2, $jobExecution->getStepExecutions());
         $this->assertSame(BatchStatus::FAILED, $jobExecution->getStatus()->getValue());
-        $this->assertSame('The job is corrupted', $jobExecution->getFailureExceptions()[0]['message']);
+        $this->assertSame("Can't resume the job because steps configuration has changed during pause.", $jobExecution->getFailureExceptions()[0]['message']);
     }
 
     /**
@@ -163,7 +163,7 @@ class JobIntegration extends TestCase
         $jobExecution->setStatus($stepExecution->getStatus());
     }
 
-    private function createStep(string $name, ?int $executionStatus = null): StepInterface
+    private function createStep(string $name, ?int $executionStatus): StepInterface
     {
         return new class($name, $executionStatus) implements StepInterface {
             public function __construct(
