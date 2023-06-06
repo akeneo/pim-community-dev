@@ -41,8 +41,6 @@ export const AttributeSettings = ({
   const catalogLocales = useCatalogLocales();
   const featureFlag = useFeatureFlags();
   const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
-  // console.log('connard')
-  // console.log(translationErrors)
 
   const [
     isDeactivateTemplateAttributeModalOpen,
@@ -51,7 +49,6 @@ export const AttributeSettings = ({
   ] = useBooleanState(false);
 
   const displayError = (errorMessages: string[], key: string) => {
-    // console.log(errorMessages);
     return errorMessages.map(message => {
       return (
         <Helper level="error" key={key}>
@@ -70,20 +67,17 @@ export const AttributeSettings = ({
   const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string) => {
     updateTemplateAttribute({labels: {[locale]: value}})
       .then(() => {
-        // console.log(translationErrors)
         if (undefined !== translationErrors && translationErrors[locale]) {
           delete translationErrors[locale];
           onTranslationErrorsChange(locale, []);
         }
       })
       .catch((error: BadRequestError<ApiResponseError>) => {
-        // console.log(translationErrors)
         const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
           accumulator[currentError.error.property] = [currentError.error.message];
 
           return accumulator;
         }, {});
-        console.log(errors);
         onTranslationErrorsChange(locale, errors[locale]);
       });
   }, 300);

@@ -30,7 +30,6 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
 
   const [translations, setTranslations] = useState<Translations>({});
   const [translationErrorList, setTranslationErrorList] = useState<AttributeTranslationErrors>({});
-  console.log(translationErrorList);
 
   const handleTranslationsChange = (locale: string, value: string) => {
     setTranslations({
@@ -40,37 +39,19 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
   };
 
   const handleTranslationErrorsChange = (locale: string, errors: string[]) => {
-    // handle differently setTranslationErrorList in .catch and in .then (in .catch we do not take into account the previous errors)
     setTranslationErrorList(previousTranslationErrors => {
       const attributeUuid = getSelectedAttribute().uuid;
       const attributeErrors = previousTranslationErrors[attributeUuid] || {}; // Ensure the attribute's error object exists
-      const localeErrors = attributeErrors[locale] || []; // Ensure the locale's error array exists
-      const updatedLocaleErrors = [...localeErrors, ...errors];
+      const updatedLocaleErrors = [...errors];
       const updatedAttributeErrors = {...attributeErrors, [locale]: updatedLocaleErrors};
+
       if (updatedAttributeErrors[locale].length === 0) {
         delete updatedAttributeErrors[locale];
       }
-      // console.log(errors);
-      // console.log(attributeUuid);
-      // console.log(attributeErrors);
-      // console.log(localeErrors);
-      // console.log(updatedLocaleErrors);
-      // console.log(updatedAttributeErrors);
 
       return {...previousTranslationErrors, [attributeUuid]: updatedAttributeErrors};
     });
   };
-  // {
-  //   'attribute_uuid' : {
-  //   'en_US': [
-  //     'error message 1',
-  //     'error message 2',
-  //   ],
-  //     'fr_FR': [
-  //     'error message 3'
-  //   ]
-  // }
-  // }
 
   if (attributes.length === 0) {
     return (
@@ -82,8 +63,7 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
       />
     );
   }
-  // console.log('parent')
-  // console.log(translationErrorList)
+
   return (
     <FormContainer>
       <Attributes>
