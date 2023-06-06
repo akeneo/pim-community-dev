@@ -12,4 +12,6 @@ namespace Akeneo\Tool\Component\Batch\Item;
 interface PausableReaderInterface
 {
     public function getState(): array;
+
+    public function rewindToState(int $key): void;
 }
