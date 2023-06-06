@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 
@@ -18,7 +19,8 @@ use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 class GroupReader extends AbstractReader implements
     ItemReaderInterface,
     InitializableInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    PausableReaderInterface
 {
     /** @var GroupRepositoryInterface */
     protected $repository;
@@ -37,5 +39,10 @@ class GroupReader extends AbstractReader implements
     protected function getResults()
     {
         return new \ArrayIterator($this->repository->findAll());
+    }
+
+    public function getState(): array
+    {
+        return [];
     }
 }

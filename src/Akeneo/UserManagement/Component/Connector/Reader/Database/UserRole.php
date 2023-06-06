@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Component\Connector\Reader\Database;
 
+use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
 use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
@@ -13,7 +14,7 @@ use Doctrine\Persistence\ObjectRepository;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserRole extends AbstractReader
+class UserRole extends AbstractReader implements PausableReaderInterface
 {
     private ObjectRepository $userRoleRepository;
 
@@ -30,5 +31,10 @@ class UserRole extends AbstractReader
                 fn (RoleInterface $role): bool => User::ROLE_ANONYMOUS !== $role->getRole()
             )
         );
+    }
+
+    public function getState(): array
+    {
+        return [];
     }
 }

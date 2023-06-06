@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Component\Connector\Writer\File;
 
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
+
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CsvUserWriter extends AbstractUserWriter
+final class CsvUserWriter extends AbstractUserWriter implements PausableWriterInterface
 {
     protected function getWriterConfiguration(): array
     {
@@ -20,5 +22,10 @@ final class CsvUserWriter extends AbstractUserWriter
             'fieldEnclosure' => $parameters->get('enclosure'),
             'shouldAddBOM' => false,
         ];
+    }
+
+    public function getState(): array
+    {
+        return [];
     }
 }

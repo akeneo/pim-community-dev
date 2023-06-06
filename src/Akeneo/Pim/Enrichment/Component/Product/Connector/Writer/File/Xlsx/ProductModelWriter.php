@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\Xlsx;
 
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
 
 /**
@@ -13,7 +14,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelWriter extends AbstractItemMediaWriter
+class ProductModelWriter extends AbstractItemMediaWriter implements PausableWriterInterface
 {
     /**
      * {@inheritdoc}
@@ -29,5 +30,10 @@ class ProductModelWriter extends AbstractItemMediaWriter
     protected function getItemIdentifier(array $productModel): string
     {
         return $productModel['code'] ?? $productModel['identifier'];
+    }
+
+    public function getState(): array
+    {
+        return [];
     }
 }

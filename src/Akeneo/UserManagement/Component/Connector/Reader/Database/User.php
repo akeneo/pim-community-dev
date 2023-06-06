@@ -6,6 +6,7 @@ namespace Akeneo\UserManagement\Component\Connector\Reader\Database;
 
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 use Doctrine\Persistence\ObjectRepository;
@@ -17,7 +18,8 @@ use Doctrine\Persistence\ObjectRepository;
 class User extends AbstractReader implements
     ItemReaderInterface,
     InitializableInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    PausableReaderInterface
 {
     protected ObjectRepository $repository;
 
@@ -34,5 +36,10 @@ class User extends AbstractReader implements
         return new \ArrayIterator(
             $this->repository->findBy(['type' => \Akeneo\UserManagement\Component\Model\User::TYPE_USER])
         );
+    }
+
+    public function getState(): array
+    {
+        return [];
     }
 }
