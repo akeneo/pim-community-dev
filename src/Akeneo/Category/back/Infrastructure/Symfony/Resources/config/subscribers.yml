@@ -36,3 +36,10 @@ services:
             - '@Akeneo\Category\Infrastructure\Builder\CategoryVersionBuilder'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+    Akeneo\Category\Infrastructure\EventSubscriber\ReorderTemplateAttributesOnAttributeDeactivatedSubscriber:
+        arguments:
+            - '@Akeneo\Category\Application\Query\GetAttribute'
+            - '@Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder'
+        tags:
+            - { name: 'kernel.event_subscriber' }

@@ -261,6 +261,7 @@ pim_common:
   product_models: Models de producte
   more: Més
   public_view: Vista pública
+  view: Vista
 error:
   exception: S'ha produït un error de {{ status_code }}...
   forbidden: Prohibit. No té permís per accedir a aquesta pàgina
@@ -342,6 +343,7 @@ pim_title:
   pim_settings_index: Preferències
   pim_system_index: Sistema
 pim_menu:
+  tag.new: Nou
   tab:
     activity: Activitat
     imports: Importacions
@@ -381,6 +383,7 @@ pim_menu:
       product: Configuració de producte
       catalog: Configuració del catàleg
       collapsed_label: Navegació de configuració
+      automation: Automatització
     product: Navegació de producte
     product_infos: Informació del Producte
   user:
@@ -396,6 +399,7 @@ pim_settings:
   settings_menu: Menú de configuració
   catalog_settings: Configuració del catàleg
   product_settings: Configuració de producte
+  automation_settings: Automatització
   count:
     category_trees: '{0}Tens 0 arbres |{1}Tens 1 arbre |]1, Inf[Tens {{ count }} arbres'
     categories: '{0}i 0 categories|{1}i 1 categoria|]1, Inf[i {{ count }} categories'

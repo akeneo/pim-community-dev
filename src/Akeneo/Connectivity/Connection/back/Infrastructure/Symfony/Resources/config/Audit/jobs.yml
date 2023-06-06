@@ -9,7 +9,7 @@ services:
             - 'update_connectivity_audit_data'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@Akeneo\Tool\Bundle\VersioningBundle\Job\RefreshVersioning'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Job\UpdateAuditDataTasklet'
         public: false
 
     akeneo_connectivity_connection_audit.job.update_audit_data:
