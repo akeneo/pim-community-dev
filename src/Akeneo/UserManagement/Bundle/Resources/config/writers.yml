@@ -40,6 +40,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@pim_connector.writer.file.backuper'
 
     pim_connector.writer.file.xlsx_user:
         class: 'Akeneo\UserManagement\Component\Connector\Writer\File\XlsxUserWriter'
@@ -50,6 +51,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@pim_connector.writer.file.backuper'
 
     pim_user.writer.file.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'

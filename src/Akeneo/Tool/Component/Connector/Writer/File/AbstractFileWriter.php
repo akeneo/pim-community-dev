@@ -94,5 +94,4 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
     {
         return preg_replace('#[^A-Za-z0-9\.]#', '_', $value);
     }
-
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Component\Connector\Reader\Database;
 
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
 use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;

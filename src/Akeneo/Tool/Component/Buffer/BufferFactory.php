@@ -39,8 +39,8 @@ class BufferFactory
     /**
      * Create a buffer instance
      */
-    public function create(?string $filePath = null)
+    public function create()
     {
-        return new $this->className($filePath);
+        return new $this->className();
     }
 }

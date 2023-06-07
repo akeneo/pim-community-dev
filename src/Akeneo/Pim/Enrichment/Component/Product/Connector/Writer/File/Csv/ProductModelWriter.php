@@ -35,9 +35,4 @@ class ProductModelWriter extends AbstractItemMediaWriter
     {
         return $productModel['code'] ?? $productModel['identifier'];
     }
-
-    public function getState(): array
-    {
-        return [];
-    }
 }

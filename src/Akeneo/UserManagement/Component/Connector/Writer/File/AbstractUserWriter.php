@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
+use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -42,7 +43,8 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
         FlatItemBufferFlusher $flusher,
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
-        FileExporterPathGeneratorInterface $pathGenerator
+        FileExporterPathGeneratorInterface $pathGenerator,
+        private readonly ExportedFileBackuper $exportedFileBackuper,
     ) {
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
@@ -147,4 +149,14 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
     }
 
     abstract protected function getWriterConfiguration(): array;
+
+    public function getState(): array
+    {
+        return [
+            'flat_buffer_file_path' => $this->exportedFileBackuper->backup(
+                $this->stepExecution->getJobExecution(),
+                $this->flatRowBuffer->getFilename()
+            ),
+        ];
+    }
 }
