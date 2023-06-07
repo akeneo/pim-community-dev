@@ -22,6 +22,8 @@ use Doctrine\ORM\QueryBuilder;
  */
 class AttributeRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface, AttributeRepositoryInterface
 {
+    protected ?string $identifierCode = null;
+
     /**
      * {@inheritdoc}
      */
@@ -271,7 +273,11 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
      */
     public function getMainIdentifierCode(): string
     {
-        return $this->getIdentifier()->getCode();
+        if (null === $this->identifierCode) {
+            $this->identifierCode = $this->getIdentifier()->getCode();
+        }
+
+        return $this->identifierCode;
     }
 
     /**
