@@ -18,6 +18,8 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetId
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -50,6 +52,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly MatchIdentifierGeneratorHandler $matchIdentifierGeneratorHandler,
         private readonly LoggerInterface $logger,
+        private readonly AttributeRepositoryInterface $attributeRepository,
     ) {
     }
 
@@ -108,10 +111,13 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         $command = GenerateIdentifierCommand::fromIdentifierGenerator($identifierGenerator, $productProjection);
         $newIdentifier = ($this->generateIdentifierCommandHandler)($command);
 
-        // TODO: CPM-1106 Use real isMainIdentifier value
-        $value = IdentifierValue::value($identifierGenerator->target()->asString(), true, $newIdentifier);
+        $attributeCode = $identifierGenerator->target()->asString();
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        Assert::isInstanceOf($attribute, AttributeInterface::class);
+        $value = IdentifierValue::value($identifierGenerator->target()->asString(), $attribute->isMainIdentifier(), $newIdentifier);
+        Assert::isInstanceOf($value, IdentifierValue::class);
         $product->addValue($value);
-        $product->setIdentifier($newIdentifier);
+        $product->addValue(IdentifierValue::value($attributeCode, $attribute->isMainIdentifier(), $newIdentifier));
 
         $violations = $this->validator->validate($product, null, ['identifiers']);
         $violations->addAll($this->updatePropertyPath(
@@ -121,7 +127,6 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
 
         if (\count($violations) > 0) {
             $product->removeValue($value);
-            $product->setIdentifier(null);
 
             throw new UnableToSetIdentifierException(
                 $newIdentifier,

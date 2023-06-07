@@ -7,6 +7,7 @@ use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -245,14 +246,12 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
-        $mainIdentifier = \array_filter($this->values->getValues(), fn ($value) =>
-            $value instanceof IdentifierValue && $value->isMainIdentifier()
-        );
-        if (\count($mainIdentifier) === 0) {
-            return null;
-        }
+        /** @var IdentifierValueInterface | null $identifierValue */
+        $identifierValue = $this->values->filter(
+            static fn (ValueInterface $value): bool => $value instanceof IdentifierValueInterface && $value->isMainIdentifier()
+        )->first() ?: null;
 
-        return \array_values($mainIdentifier)[0]?->getData() ?? null;
+        return $identifierValue?->getData();
     }
 
     /**
@@ -331,10 +330,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getLabel($locale = null, $scope = null)
     {
-        // TODO CPM: Return the uuid as a fallback when the identifier is null
         $identifier = (string) $this->getIdentifier();
-        // TODO: useless uuid var?
-        $uuid = $this->uuid->toString();
 
         if (null === $this->family) {
             return $identifier;
