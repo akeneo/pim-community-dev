@@ -94,6 +94,9 @@ akeneo.category:
             saving: Saving
             editing: Editing
             errors: Errors not saved
+            error_notification:
+                title: Some values could not be saved.
+                content: Some of the values you entered seems to be invalid and could not be saved
 
     template_list:
         columns:

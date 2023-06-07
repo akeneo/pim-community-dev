@@ -1,6 +1,7 @@
 import React, {createContext, FC, useState} from 'react';
 
-// Status values represent each status priority. The higher the value, the higher the priority. The highest value is the displayed status.
+// Status values represent each status priority. The higher the value, the higher the priority.
+// The highest value is the displayed status.
 enum Status {
   SAVED = 0,
   ERRORS = 1,

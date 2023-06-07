@@ -2,6 +2,7 @@ import {CheckRoundIcon, DangerIcon, EditIcon, LoaderIcon} from 'akeneo-design-sy
 import {useSaveStatusContext} from '../../hooks/useSaveStatusContext';
 import {Status} from '../providers/SaveStatusProvider';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import styled from "styled-components";
 
 export const SaveStatusIndicator = () => {
   const saveStatus = useSaveStatusContext();
@@ -10,32 +11,48 @@ export const SaveStatusIndicator = () => {
   switch (saveStatus.globalStatus) {
     case Status.EDITING:
       return (
-        <div>
+        <IndicatorContainer>
           <EditIcon color="#a1a9b7" size={24} />
-          <p>{translate('akeneo.category.template.auto-save.editing')}</p>
-        </div>
+          <TextGrey>{translate('akeneo.category.template.auto-save.editing')}</TextGrey>
+        </IndicatorContainer>
       );
     case Status.SAVING:
       return (
-        <div>
+        <IndicatorContainer>
           <LoaderIcon color="#a1a9b7" size={24} />
-          <p>{translate('akeneo.category.template.auto-save.saving')}</p>
-        </div>
+          <TextGrey>{translate('akeneo.category.template.auto-save.saving')}</TextGrey>
+        </IndicatorContainer>
       );
     case Status.ERRORS:
       return (
-        <div>
+        <IndicatorContainer>
           <DangerIcon color="#f9b53f" size={24} />
-          <p>{translate('akeneo.category.template.auto-save.errors')}</p>
-        </div>
+          <TextBlack>{translate('akeneo.category.template.auto-save.errors')}</TextBlack>
+        </IndicatorContainer>
       );
     case Status.SAVED:
     default:
       return (
-        <div>
+        <IndicatorContainer>
           <CheckRoundIcon color="#67b373" size={24} />
-          <p>{translate('akeneo.category.template.auto-save.saved')}</p>
-        </div>
+          <TextBlack>{translate('akeneo.category.template.auto-save.saved')}</TextBlack>
+        </IndicatorContainer>
       );
   }
 };
+
+const IndicatorContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const TextBlack = styled.p`
+  margin-left: 10px;
+  color: #11324D;
+`;
+
+const TextGrey = styled.p`
+  margin-left: 10px;
+  color: #67768A;
+`;

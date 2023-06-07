@@ -1,6 +1,13 @@
 import {Button, Checkbox, Field, Helper, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
-import {LabelCollection, useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
+import {
+  LabelCollection,
+  NotificationLevel,
+  useFeatureFlags,
+  useNotify,
+  userContext,
+  useTranslate,
+} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
@@ -44,6 +51,7 @@ export const AttributeSettings = ({
   const featureFlag = useFeatureFlags();
   const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
   const saveStatusContext = useSaveStatusContext();
+  const notify = useNotify();
 
   const [
     isDeactivateTemplateAttributeModalOpen,
@@ -84,6 +92,11 @@ export const AttributeSettings = ({
           return accumulator;
         }, {});
         onTranslationErrorsChange(locale, errors[locale]);
+        notify(
+          NotificationLevel.ERROR,
+          translate('akeneo.category.template.auto-save.error_notification.title'),
+          translate('akeneo.category.template.auto-save.error_notification.content')
+        );
       });
   }, 300);
   const handleTranslationChange = (locale: string, value: string) => {

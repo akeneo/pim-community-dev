@@ -19,7 +19,6 @@ import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
 import {Template} from '../models';
 import styled from 'styled-components';
 import {SaveStatusProvider} from '../components/providers/SaveStatusProvider';
-import {useSaveStatusContext} from '../hooks/useSaveStatusContext';
 import {SaveStatusIndicator} from '../components/templates/SaveStatusIndicator';
 
 enum Tabs {
@@ -121,11 +120,9 @@ const TemplatePage: FC = () => {
             </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
-
         <PageHeader.Content>
           <SaveStatusIndicator />
         </PageHeader.Content>
-
         <PageHeader.UserActions>
           <PimView
             viewName="pim-menu-user-navigation"
