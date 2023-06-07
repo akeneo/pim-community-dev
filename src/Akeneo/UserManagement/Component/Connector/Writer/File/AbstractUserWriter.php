@@ -155,7 +155,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
         return [
             'flat_buffer_file_path' => $this->exportedFileBackuper->backup(
                 $this->stepExecution->getJobExecution(),
-                $this->flatRowBuffer->getFilename()
+                $this->flatRowBuffer->getFilePath()
             ),
         ];
     }

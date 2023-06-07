@@ -17,7 +17,7 @@ class JSONFileBuffer implements BufferInterface
     const FILE_PREFIX = 'akeneo_buffer_';
 
     /** @var string */
-    protected $filename;
+    protected $filePath;
 
     /** @var \SplFileObject */
     protected $file;
@@ -27,8 +27,8 @@ class JSONFileBuffer implements BufferInterface
      */
     public function __construct()
     {
-        $this->filename = tempnam(sys_get_temp_dir(), self::FILE_PREFIX);
-        $this->file = new \SplFileObject($this->filename, 'r+');
+        $this->filePath = tempnam(sys_get_temp_dir(), self::FILE_PREFIX);
+        $this->file = new \SplFileObject($this->filePath, 'r+');
 
         $this->file->setFlags(\SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
     }
@@ -39,8 +39,8 @@ class JSONFileBuffer implements BufferInterface
     public function __destruct()
     {
         unset($this->file);
-        if (is_file($this->filename)) {
-            unlink($this->filename);
+        if (is_file($this->filePath)) {
+            unlink($this->filePath);
         }
     }
 
@@ -100,8 +100,8 @@ class JSONFileBuffer implements BufferInterface
         $this->file->rewind();
     }
 
-    public function getFilename(): string
+    public function getFilePath(): string
     {
-        return $this->filename;
+        return $this->filePath;
     }
 }
