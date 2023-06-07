@@ -18,9 +18,9 @@ import {TemplateOtherActions} from '../components/templates/TemplateOtherActions
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
 import {Template} from '../models';
 import styled from 'styled-components';
-import {SaveStatusProvider} from "../components/providers/SaveStatusProvider";
-import {useSaveStatusContext} from "../hooks/useSaveStatusContext";
-import {SaveStatusIndicator} from "../components/templates/SaveStatusIndicator";
+import {SaveStatusProvider} from '../components/providers/SaveStatusProvider';
+import {useSaveStatusContext} from '../hooks/useSaveStatusContext';
+import {SaveStatusIndicator} from '../components/templates/SaveStatusIndicator';
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -123,7 +123,7 @@ const TemplatePage: FC = () => {
         </PageHeader.Breadcrumb>
 
         <PageHeader.Content>
-          <SaveStatusIndicator/>
+          <SaveStatusIndicator />
         </PageHeader.Content>
 
         <PageHeader.UserActions>
