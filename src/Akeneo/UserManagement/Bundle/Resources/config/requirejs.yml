@@ -52,7 +52,7 @@ config:
             url: pim_user_user_rest_delete
 
     paths:
-        pim/user/fields/channel:                            pimuser/js/fields/channel.ts
+        pim/user/fields/channel:                          pimuser/js/fields/channel.ts
         pim/user/fields/category-tree:                    pimuser/js/fields/category-tree.ts
         pim/user/fields/ui-locale:                        pimuser/js/fields/ui-locale.ts
         pim/user/fields/timezone:                         pimuser/js/fields/timezone.ts
@@ -61,7 +61,7 @@ config:
         pim/user/fields/default-product-grid-view:        pimuser/js/fields/default-product-grid-view.ts
         pim/user/fields/default-grid-views:               pimuser/js/fields/default-grid-views.ts
         pim/user/fields/product-grid-filters:             pimuser/js/fields/product-grid-filters.ts
-        pim/user/tools/timezone-formatter: pimuser/js/tools/timezone-formatter
+        pim/user/tools/timezone-formatter:                pimuser/js/tools/timezone-formatter
         pim/user-edit-form/delete:                        pimuser/js/form/delete
         pim/user-edit-form/edit-form:                     pimuser/js/form/edit-form
         pim/user-edit-form/duplicate:                     pimuser/js/form/duplicate-secondary-action.tsx
@@ -71,3 +71,4 @@ config:
         pim/templates/user/form/fields/select-profile-container: pimuser/templates/form/fields/select-profile-container.html
         pim/user/form/user-profile-tab-content:           pimuser/js/form/user-profile-tab-content.ts
         pim/user/form/create-user-button:                 pimuser/js/form/create-user-button.ts
+        pim/user/form/unsupported-ui-locale-warning-view: pimuser/js/form/unsupported-ui-locale-warning-view.tsx

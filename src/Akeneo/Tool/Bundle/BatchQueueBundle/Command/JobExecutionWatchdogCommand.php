@@ -100,6 +100,14 @@ final class JobExecutionWatchdogCommand extends Command
             $jobConfiguration = $input->getOption('config') ? \json_decode($input->getOption('config'), true) : [];
             $jobExecution = $this->createJobExecutionHandler->createFromBatchCode($jobCode, $jobConfiguration, null);
             $jobExecutionId = $jobExecution->getId();
+            $this->logger->notice(
+                'Created job execution "{job_execution_id}" for job "{job_code}" with configuration {configuration}',
+                [
+                    'job_execution_id' => $jobExecutionId,
+                    'job_code' => $jobCode,
+                    'configuration' => \json_encode($jobConfiguration),
+                ]
+            );
         }
 
         $console = sprintf('%s/bin/console', $this->projectDir);
@@ -116,9 +124,13 @@ final class JobExecutionWatchdogCommand extends Command
             $process = new Process($processArguments);
             $process->setTimeout(null);
 
-            $this->logger->notice('Launching job execution "{job_execution_id}".', [
-                'job_execution_id' => $jobExecutionId,
-            ]);
+            $this->logger->notice(
+                'Launching job execution "{job_execution_id}" for job "{job_code}"',
+                [
+                    'job_execution_id' => $jobExecutionId,
+                    'job_code' => $jobCode,
+                ]
+            );
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
             $this->executeProcess($process, $jobExecutionId);
@@ -136,10 +148,13 @@ final class JobExecutionWatchdogCommand extends Command
         }
 
         $executionTimeInSec = time() - $startTime;
-        $this->logger->notice('Job execution "{job_execution_id}" is finished in {execution_time_in_sec} seconds.', [
-            'job_execution_id' => $jobExecutionId,
-            'execution_time_in_sec' => $executionTimeInSec,
-        ]);
+        $this->logger->notice(
+            'Job execution "{job_execution_id}" is finished in {execution_time_in_sec} seconds.',
+            [
+                'job_execution_id' => $jobExecutionId,
+                'execution_time_in_sec' => $executionTimeInSec,
+            ]
+        );
 
         return Command::SUCCESS;
     }
@@ -185,6 +200,12 @@ final class JobExecutionWatchdogCommand extends Command
     private function executeProcess(Process $process, int $jobExecutionId): void
     {
         $this->executionManager->updateHealthCheck($jobExecutionId);
+
+        pcntl_signal(\SIGTERM, function () use ($process) {
+            $this->logger->notice('Received SIGTERM signal in watchdog command and forwarding it to subprocess');
+            $process->signal(\SIGTERM);
+        });
+
         $process->start();
 
         $nbIterationBeforeUpdatingHealthCheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
