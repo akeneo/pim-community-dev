@@ -4,11 +4,7 @@ import {CategoriesIndex, CategoriesTreePage, CategoryEditPage, TemplatePage} fro
 import {EditCategoryProvider} from './components';
 import {QueryClient, QueryClientProvider} from 'react-query';
 
-type Props = {
-  setCanLeavePage: (canLeavePage: boolean) => void;
-};
-
-const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
+const CategoriesApp: FC = () => {
   const queryClient = new QueryClient();
 
   return (
@@ -19,7 +15,7 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
             <CategoriesTreePage />
           </Route>
           <Route path="/:categoryId/edit">
-            <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
+            <EditCategoryProvider>
               <CategoryEditPage />
             </EditCategoryProvider>
           </Route>

@@ -8,6 +8,7 @@ import {CategoriesApp} from './feature';
 import {ConfigurationProvider, Page as ConfigurationPage} from './configuration';
 import {FakePIM} from './FakePIM';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import {CanLeavePageProvider} from './feature/components';
 
 ReactDOM.render(
   <StrictMode>
@@ -21,7 +22,9 @@ ReactDOM.render(
                   <ConfigurationPage />
                 </Route>
                 <Route path="/">
-                  <CategoriesApp setCanLeavePage={() => true} />
+                  <CanLeavePageProvider setCanLeavePage={() => true}>
+                    <CategoriesApp />
+                  </CanLeavePageProvider>
                 </Route>
               </Switch>
             </Router>

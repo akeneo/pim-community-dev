@@ -6,9 +6,12 @@ import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeMod
 import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
-import {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {BadRequestError} from '../../tools/apiFetch';
 import {useDebounceCallback} from '../../tools/useDebounceCallback';
+import {Prompt} from 'react-router-dom';
+import {useUnsavedChanges} from '../../hooks';
+import {CanLeavePageContext} from '../providers';
 
 type Props = {
   attribute: Attribute;
@@ -46,10 +49,22 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
   const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
   const [translations, setTranslations] = useState<LabelCollection>(attribute.labels);
   const [error, setError] = useState<{[locale: string]: string[]}>({});
+  const [isSaved, setSaved] = useUnsavedChanges(translate('pim_ui.flash.unsaved_changes'));
+  const {setCanLeavePage} = useContext(CanLeavePageContext);
+
+  const updateSavedStatuses = (saved: boolean) => {
+    if (Object.keys(error).length === 0) {
+      setSaved(saved);
+      setCanLeavePage(saved);
+    }
+  };
 
   const handleRichTextAreaChange = () => {
     setIsRichTextArea(!isRichTextArea);
-    updateTemplateAttribute({isRichTextArea: !isRichTextArea});
+    updateSavedStatuses(false);
+    updateTemplateAttribute({isRichTextArea: !isRichTextArea}).then(() => {
+      updateSavedStatuses(true);
+    });
   };
   const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string) => {
     updateTemplateAttribute({labels: {[locale]: value}})
@@ -58,23 +73,26 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
           delete error[locale];
           setError({...error});
         }
+        updateSavedStatuses(true);
       })
       .catch((error: BadRequestError<ApiResponseError>) => {
         const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
           accumulator[currentError.error.property] = [currentError.error.message];
-
           return accumulator;
         }, {});
+        updateSavedStatuses(false);
         setError(state => ({...state, ...errors}));
       });
   }, 300);
   const handleTranslationsChange = (locale: string, value: string) => {
     setTranslations({...translations, [locale]: value});
+    updateSavedStatuses(false);
     debouncedUpdateTemplateAttribute(locale, value);
   };
 
   return (
     <SettingsContainer>
+      <Prompt when={!isSaved} message={() => translate('pim_ui.flash.unsaved_changes')} />
       <SectionTitle sticky={0}>
         <SectionTitle.Title>
           {attributeLabel} {translate('akeneo.category.template.attribute.settings.title')}

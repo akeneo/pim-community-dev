@@ -4,6 +4,7 @@ import {pimTheme} from 'akeneo-design-system';
 import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {CategoriesApp} from "@akeneo-pim-community/category";
+import {CanLeavePageProvider} from "@akeneo-pim-community/category/lib/components";
 
 
 const __ = require('oro/translator');
@@ -23,7 +24,9 @@ class CategoriesSettings extends ReactController {
     return (
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <CategoriesApp setCanLeavePage={(canLeavePage: boolean) => this.setCanLeavePage(canLeavePage)} />
+          <CanLeavePageProvider setCanLeavePage={(canLeavePage: boolean) => this.setCanLeavePage(canLeavePage)}>
+            <CategoriesApp />
+          </CanLeavePageProvider>
         </ThemeProvider>
       </DependenciesProvider>
     );
