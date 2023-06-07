@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
@@ -48,7 +49,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setCode('my_attribute');
         $product->addValue(ScalarValue::value($attribute, 'a-product'));
-        $product->setIdentifier('a-product');
+        $product->addValue(IdentifierValue::value('sku', true,'a-product'));
         $this->beConstructedWith([$product->getIdentifier() => $product]);
 
         $this->findOneByIdentifier('a-product')->shouldReturn($product);
@@ -65,7 +66,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $attribute = new Attribute();
         $attribute->setCode('my_attribute');
         $product->addValue(ScalarValue::value($attribute, 'a-product'));
-        $product->setIdentifier('a-product');
+        $product->addValue(IdentifierValue::value('sku', true, 'a-product'));
 
         $this->save($product)->shouldReturn(null);
 
@@ -95,11 +96,12 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     function it_finds_all_products()
     {
         $product1 = new Product();
-        $product1->setIdentifier('product-1');
+        $product1->addValue(IdentifierValue::value('sku', true, 'product-1'));
+
         $this->save($product1);
 
         $product2 = new Product();
-        $product2->setIdentifier('product-2');
+        $product2->addValue(IdentifierValue::value('sku', true, 'product-2'));
         $this->save($product2);
 
         $this->findAll()->shouldReturn(['product-1' => $product1, 'product-2' => $product2]);
@@ -120,11 +122,12 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     function it_returns_all_products()
     {
         $product1 = new Product();
-        $product1->setIdentifier('a-product');
+        $product1->addValue(IdentifierValue::value('sku', true, 'a-product'));
+
         $this->save($product1);
 
         $product2 = new Product();
-        $product2->setIdentifier('a-second-product');
+        $product2->addValue(IdentifierValue::value('sku', true, 'a-second-product'));
         $this->save($product2);
 
         $products = $this->findAll();
@@ -138,7 +141,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     {
         foreach (['A', 'B', 'C'] as $identifier) {
             $product = new Product();
-            $product->setIdentifier($identifier);
+            $product->addValue(IdentifierValue::value('sku', true, $identifier));
             $this->save($product);
         }
 
@@ -152,11 +155,11 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     function it_finds_products_by_criteria()
     {
         $productA = new Product();
-        $productA->setIdentifier('A');
+        $productA->addValue(IdentifierValue::value('sku', true, 'A'));
         $this->save($productA);
 
         $productB = new Product();
-        $productB->setIdentifier('B');
+        $productB->addValue(IdentifierValue::value('sku', true, 'B'));
         $this->save($productB);
 
         $products = $this->findBy(['identifier' => 'A']);
@@ -168,11 +171,11 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     function it_finds_one_product_by_uuid()
     {
         $productA = new Product();
-        $productA->setIdentifier('A');
+        $productA->addValue(IdentifierValue::value('sku', true, 'A'));
         $this->save($productA);
 
         $productB = new Product();
-        $productB->setIdentifier('B');
+        $productB->addValue(IdentifierValue::value('sku', true, 'B'));
         $this->save($productB);
 
         $this->findOneBy(['uuid' => $productA->getUuid()])->shouldBe($productA);
@@ -183,10 +186,10 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     function it_gets_products_by_uuids()
     {
         $product1 = new Product();
-        $product1->setIdentifier('foo');
+        $product1->addValue(IdentifierValue::value('sku', true, 'foo'));
         $this->save($product1);
         $product2 = new Product();
-        $product2->setIdentifier('bar');
+        $product2->addValue(IdentifierValue::value('sku', true, 'bar'));
         $this->save($product2);
 
         $this->getItemsFromUuids(

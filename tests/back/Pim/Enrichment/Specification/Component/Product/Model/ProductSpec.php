@@ -149,7 +149,6 @@ class ProductSpec extends ObjectBehavior
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petit outil agricole authentique');
     }
@@ -173,7 +172,6 @@ class ProductSpec extends ObjectBehavior
 
         $this->setFamily($family);
         $this->setValues($values);
-        $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petite pelle');
     }
@@ -188,8 +186,9 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
 
         $this->setFamily(null);
-        $this->setValues(new WriteValueCollection());
-        $this->setIdentifier('shovel');
+        $this->setValues(new WriteValueCollection([
+            IdentifierValue::value('sku', true, 'shovel')
+        ]));
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -208,8 +207,9 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
 
         $this->setFamily($family);
-        $this->setValues(new WriteValueCollection());
-        $this->setIdentifier('shovel');
+        $this->setValues(new WriteValueCollection([
+            IdentifierValue::value('sku', true, 'shovel')
+        ]));
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
@@ -225,7 +225,9 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->isScopable()->willReturn(false);
 
         $this->setFamily($family);
-        $this->setIdentifier('shovel');
+        $this->setValues(new WriteValueCollection([
+            IdentifierValue::value('sku', true, 'shovel')
+        ]));
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
