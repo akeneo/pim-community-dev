@@ -10,6 +10,7 @@ import {BadRequestError} from '../../tools/apiFetch';
 import {useDebounceCallback} from '../../tools/useDebounceCallback';
 import {useQueryClient} from 'react-query';
 import {useSaveStatusContext} from '../../hooks/useSaveStatusContext';
+import {Status} from '../providers/SaveStatusProvider';
 
 type Props = {
   attribute: Attribute;
@@ -66,17 +67,17 @@ export const AttributeSettings = ({
     await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
   };
   const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string) => {
-    saveStatusContext.handleStatusListChange(attribute.uuid + '_' + locale, 'Saving'); //todo change
+    saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVING);
     updateTemplateAttribute({labels: {[locale]: value}})
       .then(() => {
         if (undefined !== translationErrors && translationErrors[locale]) {
           delete translationErrors[locale];
           onTranslationErrorsChange(locale, []);
         }
-        saveStatusContext.handleStatusListChange(attribute.uuid + '_' + locale, 'Saved (from then)'); //todo change
+        saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVED);
       })
       .catch((error: BadRequestError<ApiResponseError>) => {
-        saveStatusContext.handleStatusListChange(attribute.uuid + '_' + locale, 'Errors not saved'); //todo change
+        saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.ERRORS);
         const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
           accumulator[currentError.error.property] = [currentError.error.message];
 
@@ -88,6 +89,10 @@ export const AttributeSettings = ({
   const handleTranslationChange = (locale: string, value: string) => {
     onTranslationsChange(locale, value);
     debouncedUpdateTemplateAttribute(locale, value);
+  };
+
+  const buildStatusId = (attributeUuid: string, locale: string) => {
+    return attributeUuid + '_' + locale;
   };
 
   return (
@@ -144,7 +149,10 @@ export const AttributeSettings = ({
               <TextInput
                 readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
                 onChange={(newValue: string) => {
-                  saveStatusContext.handleStatusListChange(attribute.uuid + '_' + activatedLocaleCode, 'Editing'); //todo change
+                  saveStatusContext.handleStatusListChange(
+                    buildStatusId(attribute.uuid, activatedLocaleCode),
+                    Status.EDITING
+                  );
                   handleTranslationChange(activatedLocaleCode, newValue);
                 }}
                 invalid={translationErrors !== undefined && !!translationErrors[activatedLocaleCode]}

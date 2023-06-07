@@ -1,30 +1,41 @@
+import {CheckRoundIcon, DangerIcon, EditIcon, LoaderIcon} from 'akeneo-design-system';
 import {useSaveStatusContext} from '../../hooks/useSaveStatusContext';
+import {Status} from '../providers/SaveStatusProvider';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 export const SaveStatusIndicator = () => {
   const saveStatus = useSaveStatusContext();
-  console.log(saveStatus);
+  const translate = useTranslate();
 
-  // const priorityIsHigher = (status, higherStatus) => {
-  //   if (status.priority > higherStatus.priority) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  // let currentStatus = saveStatusContext.
-  // for (const [key, fieldStatus] of Object.entries(saveStatusContext)) {
-  //     // 1. editing
-  //     // 2. saving
-  //     // 3. error
-  //     // 4. saved
-  //
-  //     if (priorityIsHigher(fieldStatus, currentStatus) ) {
-  //       currentStatus = fieldStatus;
-  //     }
-  //
-  //     status = currentStatus.text;
-  //     logo = ...;
-  // }
-
-  return <div>My Status: {saveStatus}</div>;
+  switch (saveStatus.globalStatus) {
+    case Status.EDITING:
+      return (
+        <div>
+          <EditIcon color="#a1a9b7" size={24} />
+          <p>{translate('akeneo.category.template.auto-save.editing')}</p>
+        </div>
+      );
+    case Status.SAVING:
+      return (
+        <div>
+          <LoaderIcon color="#a1a9b7" size={24} />
+          <p>{translate('akeneo.category.template.auto-save.saving')}</p>
+        </div>
+      );
+    case Status.ERRORS:
+      return (
+        <div>
+          <DangerIcon color="#f9b53f" size={24} />
+          <p>{translate('akeneo.category.template.auto-save.errors')}</p>
+        </div>
+      );
+    case Status.SAVED:
+    default:
+      return (
+        <div>
+          <CheckRoundIcon color="#67b373" size={24} />
+          <p>{translate('akeneo.category.template.auto-save.saved')}</p>
+        </div>
+      );
+  }
 };
