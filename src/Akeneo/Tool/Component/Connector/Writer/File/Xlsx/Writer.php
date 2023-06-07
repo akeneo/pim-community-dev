@@ -12,7 +12,6 @@ use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
-use League\Flysystem\FilesystemOperator;
 
 /**
  * Write simple data into a XLSX file on the local filesystem

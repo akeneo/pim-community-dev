@@ -13,8 +13,8 @@ class ExportedFileBackuper
 
     public function __construct(
         private FilesystemOperator $filesystemOperator,
-    )
-    {}
+    ) {
+    }
 
     public function backup(JobExecution $jobExecution, string $filePath): string
     {
