@@ -23,4 +23,9 @@ class FakeReader implements ItemReaderInterface, PausableReaderInterface
     {
         return [];
     }
+
+    public function rewindToState(int $key): void
+    {
+        // TODO: Implement rewindToState() method.
+    }
 }
