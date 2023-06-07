@@ -68,13 +68,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
      */
     public function read()
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('storage')['file_path'];
-
-        if (null === $this->fileIterator) {
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
-            $this->fileIterator->rewind();
-        }
+        $this->initFileIterator();
 
         $this->fileIterator->next();
 
@@ -93,7 +87,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         $countHeaders = count($headers);
         $countData = count($data);
 
-        $this->checkColumnNumber($countHeaders, $countData, $data, $filePath);
+        $this->checkColumnNumber($countHeaders, $countData, $data, $this->stepExecution->getJobParameters()->get('storage')['file_path']);
 
         if ($countHeaders > $countData) {
             $dataMask = array_fill(0, $countHeaders, '');
@@ -117,6 +111,17 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         }
 
         return $item;
+    }
+
+    private function initFileIterator(): void
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('storage')['file_path'];
+
+        if (null === $this->fileIterator) {
+            $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
+            $this->fileIterator->rewind();
+        }
     }
 
     /**
@@ -208,6 +213,11 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
 
     public function rewindToState(int $key): void
     {
-        // TODO: Implement rewindToState() method.
+        $this->initFileIterator();
+
+        $this->fileIterator->current();
+        while ($this->fileIterator->key() < $key) {
+            $this->fileIterator->next();
+        }
     }
 }
