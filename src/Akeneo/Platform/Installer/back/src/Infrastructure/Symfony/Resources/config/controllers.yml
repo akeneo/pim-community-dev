@@ -4,3 +4,8 @@ services:
     arguments:
       - '@Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceHandler'
       - '@oro_security.security_facade'
+
+  Akeneo\Platform\Installer\Infrastructure\Controller\CheckInstanceCanBeResetAction:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface'
