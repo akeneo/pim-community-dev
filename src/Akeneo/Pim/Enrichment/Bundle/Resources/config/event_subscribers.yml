@@ -277,3 +277,7 @@ services:
           - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\Doctrine\DBAL\EventListener\SkipMultiValuedIndexDuringIntrospectionListener:
+        tags:
+            - { name: doctrine.event_listener, event: 'onSchemaIndexDefinition' }
