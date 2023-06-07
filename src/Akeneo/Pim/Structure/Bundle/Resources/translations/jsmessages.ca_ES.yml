@@ -250,6 +250,9 @@ pim_enrich.entity.attribute_group:
     title: Esta una mica encreuat per aquí. T'ho ensenyem {{ attributeCount }}/{{ totalAttributeCount }} atributs.
     subtitle: Per descobrir tots els atributs d'aquest grup, cliqueu a continuació!
     button: Mostrar tots els atributs
+  dropdown:
+    label: Seleccionar
+    all: Tots els Grups d'atributs
   flash:
     update:
       success: Grup d'atributs actualitzat correctament
@@ -262,6 +265,8 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} grup(s) seleccionat(s)'
     delete:
       confirm: Esteu segur que voleu suprimir aquest grup d'atributs?
+  mass_delete:
+    confirmation_word: eliminar
 pim_enrich.mass_edit.family:
   title: Acció en massa de família
   confirm: "{1}Esteu a punt d'actualitzar una família amb la informació següent, confirmeu-ho si us plau.|] 1, Inf [Esteu a punt d'actualitzar {{ itemsCount }} famílies amb la informació següent, confirmeu-ho si us plau."
@@ -282,3 +287,6 @@ pim_enrich.mass_edit.family:
       label: Establir els requeriments d'atributs
       description: Els següents requisits d'atributs s'aplicaran a les famílies seleccionades
       label_count: "{1}Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">1 família</span>|]1, Inf[Configurar els requeriments d'atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famílies</span>"
+pim_notification:
+  types:
+    attribute_group_mass_delete: Supressió

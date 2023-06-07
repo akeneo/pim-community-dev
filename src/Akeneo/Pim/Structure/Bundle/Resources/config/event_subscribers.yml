@@ -114,3 +114,9 @@ services:
     Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeGroupWithAttributeCannotBeRemovedSubscriber:
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\Install\InitMainIdentifierSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -101,3 +101,10 @@ pim_identifier_generator:
     operations: 'Operacions'
     confirmation: 'Esteu segur que voleu eliminar aquest generador d''identificador?'
     type: 'Si us plau, escriu "{{ code }}"'
+  nomenclature:
+    operator_placeholder: 'Tria el teu operador'
+    display: 'Mostra'
+    filters:
+      all: 'Tot'
+      error: 'Error'
+      empty: 'Buit'

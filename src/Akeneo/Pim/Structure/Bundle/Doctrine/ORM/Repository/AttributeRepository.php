@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -21,8 +22,7 @@ use Doctrine\ORM\QueryBuilder;
  */
 class AttributeRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface, AttributeRepositoryInterface
 {
-    /** @var string */
-    protected $identifierCode;
+    protected ?string $identifierCode = null;
 
     /**
      * {@inheritdoc}
@@ -244,27 +244,37 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): AttributeInterface
     {
-        return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
+        return $this->getMainIdentifier();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode()
+    public function getMainIdentifier(): AttributeInterface
+    {
+        return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER, 'mainIdentifier' => true]) ??
+            throw new \RuntimeException('The PIM has no identifier attribute');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierCode(): string
+    {
+        return $this->getMainIdentifierCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMainIdentifierCode(): string
     {
         if (null === $this->identifierCode) {
-            $code = $this->createQueryBuilder('a')
-                ->select('a.code')
-                ->andWhere('a.type = :type')
-                ->setParameter('type', AttributeTypes::IDENTIFIER)
-                ->setMaxResults(1)
-                ->getQuery()->getSingleResult(Query::HYDRATE_SINGLE_SCALAR);
-
-            $this->identifierCode = $code;
+            $this->identifierCode = $this->getIdentifier()->getCode();
         }
 
         return $this->identifierCode;

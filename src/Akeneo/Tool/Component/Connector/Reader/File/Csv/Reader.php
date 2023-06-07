@@ -214,8 +214,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
 
     public function getState(): array
     {
-        return [
-            'position' => $this->fileIterator->key(),
-        ];
+        return null !== $this->fileIterator ? ['position' => $this->fileIterator->key()] : [];
     }
 }

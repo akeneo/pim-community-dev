@@ -85,6 +85,7 @@
 - PIM-10982 : Fix flag emoji rendering on windows
 - PIM-11013 : Fix edit user profile without password changes
 - PIM-11012 : Add helper if selected UI language is not sufficiently supported
+- PIM-11023 : Fix product search containing underscores
 
 ## Improvements
 
