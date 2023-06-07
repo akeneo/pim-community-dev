@@ -19,8 +19,7 @@ use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 class AttributeOptionReader extends AbstractReader implements
     ItemReaderInterface,
     InitializableInterface,
-    StepExecutionAwareInterface,
-    PausableWriterInterface
+    StepExecutionAwareInterface
 {
     /** @var AttributeOptionRepositoryInterface */
     protected $repository;
@@ -39,10 +38,5 @@ class AttributeOptionReader extends AbstractReader implements
     protected function getResults()
     {
         return new \ArrayIterator($this->repository->findBy([], ['attribute' => 'ASC', 'sortOrder' => 'ASC']));
-    }
-
-    public function getState(): array
-    {
-        return [];
     }
 }

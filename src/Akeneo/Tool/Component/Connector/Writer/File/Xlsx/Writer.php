@@ -5,12 +5,10 @@ namespace Akeneo\Tool\Component\Connector\Writer\File\Xlsx;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
@@ -23,7 +21,7 @@ use League\Flysystem\FilesystemOperator;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface, PausableWriterInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface
 {
     /** @var ArrayConverterInterface */
     protected $arrayConverter;
@@ -37,17 +35,11 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     /** @var BufferFactory */
     protected $bufferFactory;
 
-    /**
-     * @param ArrayConverterInterface $arrayConverter
-     * @param BufferFactory           $bufferFactory
-     * @param FlatItemBufferFlusher   $flusher
-     * @param ?FilesystemOperator     $filesystemOperator
-     */
     public function __construct(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
-        private ?FilesystemOperator $filesystemOperator = null,
+        private readonly ExportedFileBackuper $exportedFileBackuper,
     ) {
         parent::__construct();
 
@@ -110,16 +102,11 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
 
     public function getState(): array
     {
-        // We need to save the buffer file somewhere
-        if (null !== $this->filesystemOperator) {
-            $flatBufferFilePath = 'paused_job/step/' . $this->stepExecution->getId();
-            $this->filesystemOperator->write($flatBufferFilePath, file_get_contents($this->flatRowBuffer->getFilename()));
-
-            return [
-                'flat_buffer_file_path' => $flatBufferFilePath,
-            ];
-        }
-
-        return [];
+        return [
+            'flat_buffer_file_path' => $this->exportedFileBackuper->backup(
+                $this->stepExecution->getJobExecution(),
+                $this->flatRowBuffer->getFilename()
+            ),
+        ];
     }
 }

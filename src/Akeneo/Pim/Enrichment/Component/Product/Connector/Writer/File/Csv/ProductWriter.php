@@ -8,11 +8,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHe
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
+use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
@@ -25,7 +25,7 @@ use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterface, InitializableInterface, PausableWriterInterface
+class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterface, InitializableInterface
 {
     protected GenerateFlatHeadersFromFamilyCodesInterface $generateHeadersFromFamilyCodes;
     protected GenerateFlatHeadersFromAttributeCodesInterface $generateHeadersFromAttributeCodes;
@@ -45,6 +45,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         array $mediaAttributeTypes,
+        ExportedFileBackuper $exportedFileBackuper,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
         parent::__construct(
@@ -57,6 +58,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
             $fileInfoRepository,
             $filesystemProvider,
             $mediaAttributeTypes,
+            $exportedFileBackuper,
             $jobParamFilePath
         );
 
@@ -168,10 +170,5 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
         }
 
         return $converterOptions;
-    }
-
-    public function getState(): array
-    {
-        return [];
     }
 }

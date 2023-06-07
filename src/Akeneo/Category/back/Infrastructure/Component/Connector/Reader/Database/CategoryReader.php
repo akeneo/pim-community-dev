@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryReader extends AbstractReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, PausableReaderInterface
+class CategoryReader extends AbstractReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
 {
     /** @var CategoryRepositoryInterface */
     protected $repository;
@@ -32,10 +32,5 @@ class CategoryReader extends AbstractReader implements ItemReaderInterface, Init
     protected function getResults()
     {
         return new \ArrayIterator($this->repository->getOrderedAndSortedByTreeCategories());
-    }
-
-    public function getState(): array
-    {
-        return [];
     }
 }

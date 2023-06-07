@@ -14,7 +14,7 @@ use Doctrine\Persistence\ObjectRepository;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserRole extends AbstractReader implements PausableReaderInterface
+class UserRole extends AbstractReader
 {
     private ObjectRepository $userRoleRepository;
 
@@ -31,10 +31,5 @@ class UserRole extends AbstractReader implements PausableReaderInterface
                 fn (RoleInterface $role): bool => User::ROLE_ANONYMOUS !== $role->getRole()
             )
         );
-    }
-
-    public function getState(): array
-    {
-        return [];
     }
 }

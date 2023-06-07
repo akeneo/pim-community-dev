@@ -19,8 +19,7 @@ use Akeneo\Tool\Component\Connector\Reader\Database\AbstractReader;
 class GroupReader extends AbstractReader implements
     ItemReaderInterface,
     InitializableInterface,
-    StepExecutionAwareInterface,
-    PausableReaderInterface
+    StepExecutionAwareInterface
 {
     /** @var GroupRepositoryInterface */
     protected $repository;
@@ -39,10 +38,5 @@ class GroupReader extends AbstractReader implements
     protected function getResults()
     {
         return new \ArrayIterator($this->repository->findAll());
-    }
-
-    public function getState(): array
-    {
-        return [];
     }
 }

@@ -18,8 +18,7 @@ use Doctrine\Persistence\ObjectRepository;
 class Reader extends AbstractReader implements
     ItemReaderInterface,
     InitializableInterface,
-    StepExecutionAwareInterface,
-    PausableReaderInterface
+    StepExecutionAwareInterface
 {
     /** @var ObjectRepository */
     protected $repository;

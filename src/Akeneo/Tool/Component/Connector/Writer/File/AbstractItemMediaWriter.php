@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -28,7 +29,8 @@ abstract class AbstractItemMediaWriter implements
     InitializableInterface,
     FlushableInterface,
     StepExecutionAwareInterface,
-    ArchivableWriterInterface
+    ArchivableWriterInterface,
+    PausableWriterInterface
 {
     protected const DEFAULT_FILE_PATH = 'file_path';
 
@@ -62,6 +64,7 @@ abstract class AbstractItemMediaWriter implements
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         array $mediaAttributeTypes,
+        private readonly ExportedFileBackuper $exportedFileBackuper,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
         $this->arrayConverter = $arrayConverter;
@@ -389,5 +392,16 @@ abstract class AbstractItemMediaWriter implements
             $fileInfo->getStorage(),
             $outputFilePath,
         );
+    }
+
+    public function getState(): array
+    {
+        return [
+            'flat_buffer_file_path' => $this->exportedFileBackuper->backup(
+                $this->stepExecution->getJobExecution(),
+                $this->flatRowBuffer->getFilename()
+            ),
+            'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->writtenFiles),
+        ];
     }
 }

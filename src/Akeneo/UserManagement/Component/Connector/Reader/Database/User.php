@@ -18,8 +18,7 @@ use Doctrine\Persistence\ObjectRepository;
 class User extends AbstractReader implements
     ItemReaderInterface,
     InitializableInterface,
-    StepExecutionAwareInterface,
-    PausableReaderInterface
+    StepExecutionAwareInterface
 {
     protected ObjectRepository $repository;
 
@@ -36,10 +35,5 @@ class User extends AbstractReader implements
         return new \ArrayIterator(
             $this->repository->findBy(['type' => \Akeneo\UserManagement\Component\Model\User::TYPE_USER])
         );
-    }
-
-    public function getState(): array
-    {
-        return [];
     }
 }

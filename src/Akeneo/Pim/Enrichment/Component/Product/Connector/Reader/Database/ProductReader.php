@@ -159,6 +159,8 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
 
     public function getState(): array
     {
-        return [];
+        return [
+            'position' => $this->products?->key(),
+        ];
     }
 }
