@@ -93,6 +93,8 @@
 - PIM-11016 : Improve the clean-removed-attributes command
 - PIM-11050 : On "locale" DIV, missing the indication of the country
 - PIM-10869: Image upload fields now only accept images
+- PIM-11063: Fix validation of generated identifiers
+- PIM-11018: Fix view on Connected App permissions if manage or not
 
 ## Improvements
 
