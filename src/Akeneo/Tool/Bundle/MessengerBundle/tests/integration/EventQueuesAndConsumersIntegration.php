@@ -43,7 +43,13 @@ final class EventQueuesAndConsumersIntegration extends TestCase
             'consumer2' => $this->get('akeneo_integration_tests.pub_sub_queue_status.consumer2'),
             'consumer3' => $this->get('akeneo_integration_tests.pub_sub_queue_status.consumer3'),
         ];
+
+        foreach ($this->pubSubQueueStatuses as $pubSubQueueStatus) {
+            $pubSubQueueStatus->createTopicAndSubscription();
+        }
+
         $this->flushQueues();
+        $this->handlerObserver->reset();
     }
 
     protected function tearDown(): void
@@ -51,6 +57,7 @@ final class EventQueuesAndConsumersIntegration extends TestCase
         parent::tearDown();
 
         $this->flushQueues();
+        $this->handlerObserver->reset();
     }
 
     public function test_it_consumes_the_right_handler(): void
