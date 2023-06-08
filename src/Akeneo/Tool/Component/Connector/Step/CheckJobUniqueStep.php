@@ -45,7 +45,7 @@ class CheckJobUniqueStep extends AbstractStep
         Assert::notEmpty($jobCode, 'The job code must not be empty');
 
         $lockIdentifier = sprintf('scheduled-job-%s', $jobCode);
-        $lock = $this->lockFactory->createLock($lockIdentifier, static::LOCK_TTL_IN_SECONDS);
+        $lock = $this->lockFactory->createLock($lockIdentifier, static::LOCK_TTL_IN_SECONDS, false);
 
         if (!$lock->acquire()) {
             $jobExecution = $stepExecution->getJobExecution();
