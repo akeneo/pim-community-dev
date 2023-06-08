@@ -2,7 +2,7 @@ services:
     Akeneo\Tool\Bundle\MessengerBundle\Command\ProcessMessageCommand:
         arguments:
             - '@akeneo_messenger.message.serializer'
-            - '@Akeneo\Tool\Bundle\MessengerBundle\Registry\TraceableMessageHandlerRegistry'
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Registry\ProcessMessageHandlerRegistry'
             - '@logger'
         tags:
             - { name: console.command }
