@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\tests\config;
 
-use Akeneo\Tool\Component\Messenger\NormalizableMessageInterface;
-use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
-use Akeneo\Tool\Component\Messenger\TraceableMessageTrait;
 use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class Message2 implements TraceableMessageInterface, NormalizableMessageInterface
+final class Message2
 {
-    use TraceableMessageTrait;
-
     public function __construct(public readonly int $number)
     {
     }

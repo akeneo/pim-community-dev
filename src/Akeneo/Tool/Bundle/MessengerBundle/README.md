@@ -113,8 +113,8 @@ that is designed for long-running job.
 ### How it works
 
 When sending a message in the queue, the tenant is automatically injected into the envelope/message.
-The consumer (the Symfony command `messenger:consume`) receive the messages of several tenants. A specific
-Symfony Messenger handler (`TraceableMessageBridgeHandler`) extract the tenant from the message and launch the
+The consumer (the Symfony command `messenger:consume`) receive the messages of several tenants and pass them one bye one in a dedicated bus. 
+This bus has a single middleware (`HandleProcessMessageMiddleware`) that extracts the tenant from the message's envelope and launch the
 good process in a tenant aware process.
 
 ```mermaid
@@ -125,20 +125,35 @@ flowchart LR
     action -- Publish message in topic --> queue[(Multi-tenant queue)]
     Consumer1 -- Pull messages for subscription1 --> queue
     subgraph Tenant agnostic daemon
-        Consumer1 --> traceableHandler1[TraceableMessageBridgeHandler]
-        traceableHandler1 -- Launch subprocess with tenant --> pmc1[ProcessMessageCommand]
+        Consumer1 --> Middleware1[HandleProcessMessageMiddleware]
+        Middleware1 -- Launch subprocess with tenant --> pmc1[ProcessMessageCommand]
         subgraph Tenant aware process
             pmc1 -- Launch the final handler --> Handler1
         end
     end
     Consumer2 -- Pull messages for subscription2 --> queue
     subgraph Tenant agnostic daemon
-        Consumer2 --> traceableHandler2[TraceableMessageBridgeHandler]
-        traceableHandler2 -- Launch subprocess with tenant --> pmc2[ProcessMessageCommand]
+        Consumer2 --> Middleware2[HandleProcessMessageMiddleware]
+        Middleware2 -- Launch subprocess with tenant --> pmc2[ProcessMessageCommand]
         subgraph Tenant aware process
             pmc2 -- Launch the final handler --> Handler2
         end
     end
+```
+
+### Configuration
+
+The easy configuration is done in the file `config/messages.yml`. For each message you just need to define a queue and all the consumers you need. 
+A consumer must have a name and a dedicated handler service. (This handle can be the same as for the classic configuration)
+
+Example:
+```yaml
+queues:
+    pim_enrichment_product_was_updated:
+        message_class:  Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated
+        consumers:
+            - name: dqi_product_was_updated_consumer
+              service_handler: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\ProductWasUpdatedHandler'
 ```
 
 ### Where my messages are sent?
@@ -154,6 +169,18 @@ but we can find more details in the `config/packages/*/messenger.php` files.
 | behat      | PubSub            |
 | prod       | doctrine / PubSub |
 
+### Prerequisites
+
+Each message/event must have a normalizer/de-normalizer declared with the tag `akeneo_messenger.message.normalizer`
+And that implement `Symfony\Component\Serializer\Normalizer\NormalizerInterface` and `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` 
+
+Example:
+```yaml
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsMessageNormalizer:
+        tags:
+            - { name: akeneo_messenger.message.normalizer }
+```
+
 ### More details
 
 - How to send/consume message
@@ -161,14 +188,14 @@ but we can find more details in the `config/packages/*/messenger.php` files.
 Send a message:
 
 ```php
-// Bus service 'messenger.default_bus'
+// Bus service 'messenger.bus.default'
 $this->bus->dispatch($message);
 ```
 
 Launch consumer:
 
 ```bash
-bin/console messenger:consume <consumer_name>
+bin/console messenger:consume <consumer_name> --bus=pim_event.handle.bus
 ```
 
 - [How to add a queue?](docs/how-to-add-a-queue.md)

@@ -35,7 +35,7 @@ final class EventQueuesAndConsumersIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->bus = $this->get('messenger.default_bus');
+        $this->bus = $this->get('messenger.bus.default');
         $this->projectDir = $this->getParameter('kernel.project_dir');
         $this->handlerObserver = $this->get(HandlerObserver::class);
         $this->pubSubQueueStatuses = [
@@ -60,9 +60,12 @@ final class EventQueuesAndConsumersIntegration extends TestCase
         $this->handlerObserver->reset();
     }
 
-    public function test_it_consumes_the_right_handler(): void
+    public function test_it_consumes_messages_with_the_right_handler_for_a_tenant(): void
     {
-        $this->bus->dispatch(new Message1('hello'));
+        \putenv('APP_TENANT_ID=akeneo-pim-test');
+
+        $message1 = new Message1('hello');
+        $this->bus->dispatch($message1);
 
         $this->launchConsumer('consumer1');
         Assert::assertSame(1, $this->handlerObserver->getTotalNumberOfExecution());
@@ -70,6 +73,9 @@ final class EventQueuesAndConsumersIntegration extends TestCase
         Assert::assertFalse($this->pubSubQueueStatuses['consumer1']->hasMessageInQueue());
         Assert::assertTrue($this->pubSubQueueStatuses['consumer2']->hasMessageInQueue());
         Assert::assertFalse($this->pubSubQueueStatuses['consumer3']->hasMessageInQueue());
+        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($message1, Handler1ForMessage1::class));
+        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($message1, Handler2ForMessage1::class));
+        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($message1, Handler1ForMessage2::class));
 
         $this->launchConsumer('consumer2');
         Assert::assertSame(1, $this->handlerObserver->getTotalNumberOfExecution());
@@ -77,35 +83,36 @@ final class EventQueuesAndConsumersIntegration extends TestCase
         Assert::assertFalse($this->pubSubQueueStatuses['consumer1']->hasMessageInQueue());
         Assert::assertFalse($this->pubSubQueueStatuses['consumer2']->hasMessageInQueue());
         Assert::assertFalse($this->pubSubQueueStatuses['consumer3']->hasMessageInQueue());
+        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($message1, Handler2ForMessage1::class));
 
-        $this->bus->dispatch(new Message2(10));
+        $message2 = new Message2(10);
+        $this->bus->dispatch($message2);
         $this->launchConsumer('consumer3');
         Assert::assertSame(1, $this->handlerObserver->getTotalNumberOfExecution());
         Assert::assertSame(1, $this->handlerObserver->getHandlerNumberOfExecution(Handler1ForMessage2::class));
         Assert::assertFalse($this->pubSubQueueStatuses['consumer1']->hasMessageInQueue());
         Assert::assertFalse($this->pubSubQueueStatuses['consumer2']->hasMessageInQueue());
         Assert::assertFalse($this->pubSubQueueStatuses['consumer3']->hasMessageInQueue());
+        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($message2, Handler1ForMessage2::class));
     }
 
-    public function test_it_keeps_correlation_id_all_along_the_chain(): void
+    public function test_it_consumes_messages_without_tenant(): void
     {
-        $message1 = new Message1('hello');
-        $correlationId1 = $message1->getCorrelationId();
+        \putenv('APP_TENANT_ID=');
+
+        $message1 = new Message1('hello without tenant');
         $this->bus->dispatch($message1);
 
         $this->launchConsumer('consumer1');
-        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($correlationId1, Handler1ForMessage1::class));
-        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($correlationId1, Handler2ForMessage1::class));
-        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($correlationId1, Handler1ForMessage2::class));
 
-        $this->launchConsumer('consumer2');
-        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($correlationId1, Handler2ForMessage1::class));
-
-        $message2 = new Message2(10);
-        $correlationId2 = $message2->getCorrelationId();
-        $this->bus->dispatch($message2);
-        $this->launchConsumer('consumer3');
-        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($correlationId2, Handler1ForMessage2::class));
+        Assert::assertSame(1, $this->handlerObserver->getTotalNumberOfExecution());
+        Assert::assertSame(1, $this->handlerObserver->getHandlerNumberOfExecution(Handler1ForMessage1::class));
+        Assert::assertFalse($this->pubSubQueueStatuses['consumer1']->hasMessageInQueue());
+        Assert::assertTrue($this->pubSubQueueStatuses['consumer2']->hasMessageInQueue());
+        Assert::assertFalse($this->pubSubQueueStatuses['consumer3']->hasMessageInQueue());
+        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($message1, Handler1ForMessage1::class));
+        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($message1, Handler2ForMessage1::class));
+        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($message1, Handler1ForMessage2::class));
     }
 
     private function launchConsumer(string $consumerName): void
@@ -118,6 +125,7 @@ final class EventQueuesAndConsumersIntegration extends TestCase
             '-vvv',
             \sprintf('--time-limit=%d', 5),
             $consumerName,
+            '--bus=pim_event.handle.bus'
         ];
 
         $process = new Process($command);
