@@ -9,8 +9,6 @@ import {useCatalogLocales} from '../../hooks/useCatalogLocales';
 import React, {useContext, useState} from 'react';
 import {BadRequestError} from '../../tools/apiFetch';
 import {useDebounceCallback} from '../../tools/useDebounceCallback';
-import {Prompt} from 'react-router-dom';
-import {useUnsavedChanges} from '../../hooks';
 import {CanLeavePageContext} from '../providers';
 
 type Props = {
@@ -49,17 +47,11 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
   const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
   const [translations, setTranslations] = useState<LabelCollection>(attribute.labels);
   const [error, setError] = useState<{[locale: string]: string[]}>({});
-  const [isSaved, setSaved, setUnsavedMessage] = useUnsavedChanges(
-    translate('akeneo.category.template.attribute.settings.unsaved_changes')
-  );
   const {setCanLeavePage, setLeavePageMessage} = useContext(CanLeavePageContext);
-
   const updateCanLeavePageStatuses = (saved: boolean) => {
     if (Object.keys(error).length === 0) {
-      setSaved(saved);
       setCanLeavePage(saved);
       setLeavePageMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
-      setUnsavedMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
     }
   };
 
@@ -85,12 +77,10 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
           return accumulator;
         }, {});
         setError(state => ({...state, ...errors}));
-        setSaved(false);
         setCanLeavePage(false);
-        setLeavePageMessage(translate('akeneo.category.template.attribute.settings.error_message'));
-        setUnsavedMessage(translate('akeneo.category.template.attribute.settings.error_message'));
+        setLeavePageMessage(`${translate('akeneo.category.template.attribute.settings.error_message')}\n${translate('akeneo.category.template.attribute.settings.unsaved_changes')}`);
       });
-  }, 300);
+  }, 3000);
   const handleTranslationsChange = (locale: string, value: string) => {
     setTranslations({...translations, [locale]: value});
     updateCanLeavePageStatuses(false);
@@ -99,10 +89,6 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
 
   return (
     <SettingsContainer>
-      <Prompt
-        when={!isSaved}
-        message={() => translate('akeneo.category.template.attribute.settings.unsaved_changes')}
-      />
       <SectionTitle sticky={0}>
         <SectionTitle.Title>
           {attributeLabel} {translate('akeneo.category.template.attribute.settings.title')}

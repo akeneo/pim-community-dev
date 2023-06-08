@@ -29,11 +29,8 @@ class CategoriesSettings extends ReactController {
     return (
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <CanLeavePageProvider
-              setCanLeavePage={(canLeavePage: boolean) => this.setCanLeavePage(canLeavePage)}
-              setLeavePageMessage={(leavePageMessage: string) => this.setLeavePageMessage(leavePageMessage)}>
-            <CategoriesApp />
-          </CanLeavePageProvider>
+          <CategoriesApp setCanLeavePage={(canLeavePage: boolean) => this.setCanLeavePage(canLeavePage)}
+                         setLeavePageMessage={(leavePageMessage: string) => this.setLeavePageMessage(leavePageMessage)} />
         </ThemeProvider>
       </DependenciesProvider>
     );

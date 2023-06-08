@@ -8,7 +8,6 @@ import {CategoriesApp} from './feature';
 import {ConfigurationProvider, Page as ConfigurationPage} from './configuration';
 import {FakePIM} from './FakePIM';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import {CanLeavePageProvider} from './feature/components';
 
 ReactDOM.render(
   <StrictMode>
@@ -22,12 +21,10 @@ ReactDOM.render(
                   <ConfigurationPage />
                 </Route>
                 <Route path="/">
-                  <CanLeavePageProvider
+                  <CategoriesApp
                     setCanLeavePage={() => true}
                     setLeavePageMessage={() => translate('akeneo.category.edition_form.unsaved_changes')}
-                  >
-                    <CategoriesApp />
-                  </CanLeavePageProvider>
+                  />
                 </Route>
               </Switch>
             </Router>
