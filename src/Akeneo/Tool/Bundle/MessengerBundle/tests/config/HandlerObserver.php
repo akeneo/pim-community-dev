@@ -18,6 +18,8 @@ use Doctrine\DBAL\Connection;
  */
 final class HandlerObserver
 {
+    private const PIM_CONF_CODE = 'messenger.handler_observer';
+
     private array $executedHandlers = [];
 
     public function __construct(private readonly Connection $connection)
@@ -66,6 +68,14 @@ final class HandlerObserver
         return \count($this->executedHandlers);
     }
 
+    public function reset(): void
+    {
+        $query = <<<SQL
+DELETE FROM pim_configuration WHERE code = :code
+SQL;
+        $this->connection->executeQuery($query, ['code' => self::PIM_CONF_CODE]);
+    }
+
     private function saveInDb(): void
     {
         $query = <<<SQL
@@ -73,7 +83,7 @@ INSERT INTO pim_configuration (`code`, `values`) VALUES (:code, :values)
 ON DUPLICATE KEY UPDATE `values` = :values
 SQL;
         $this->connection->executeQuery($query, [
-            'code' => 'messenger.handler_observer',
+            'code' => self::PIM_CONF_CODE,
             'values' => \json_encode($this->executedHandlers),
         ]);
     }
@@ -84,7 +94,7 @@ SQL;
 SELECT `values` FROM pim_configuration WHERE code = :code
 SQL;
         $values = $this->connection->executeQuery($query, [
-            'code' => 'messenger.handler_observer',
+            'code' => self::PIM_CONF_CODE,
         ])->fetchOne();
 
         if ($values) {
