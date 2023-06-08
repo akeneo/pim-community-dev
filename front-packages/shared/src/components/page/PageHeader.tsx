@@ -10,7 +10,7 @@ import {
   TitleProps,
   UserActions,
   Content,
-  AutoSaveStatus
+  AutoSaveStatus,
 } from './header';
 import {SandboxHelper} from './SandboxHelper';
 import {useFeatureFlags, useSystemConfiguration} from '../../hooks';
