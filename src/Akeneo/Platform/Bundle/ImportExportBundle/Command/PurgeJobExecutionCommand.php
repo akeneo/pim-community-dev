@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Command;
 use Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -78,17 +79,17 @@ class PurgeJobExecutionCommand extends Command
             $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanDays($days, $jobInstances, $status);
         }
 
-        $output->write("All jobs execution");
+        $output->write('All jobs execution');
         if (0 !== $days) {
-            $output->write(sprintf(" older than %d days", $days));
+            $output->write(sprintf(' older than %d days', $days));
         }
 
         if (null !== $status) {
-            $output->write(sprintf(" with status %s", $status->__toString()));
+            $output->write(sprintf(' with status %s', $status->__toString()));
         }
 
         if (!empty($jobInstances)) {
-            $output->write(sprintf(" with job instance code '%s'", implode(", ", $jobInstances)));
+            $output->write(sprintf(" with job instance code '%s'", implode(', ', $jobInstances)));
         }
 
         $output->writeln(' have been purged');
@@ -97,7 +98,7 @@ class PurgeJobExecutionCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function getDays(InputInterface $input, OutputInterface $output): int | false
+    private function getDays(InputInterface $input, OutputInterface $output): int|false
     {
         $days = $input->getOption('days');
         if (!is_numeric($days)) {
@@ -111,8 +112,10 @@ class PurgeJobExecutionCommand extends Command
         $days = (int) $days;
         if (0 === $days) {
             $confirmation = new ConfirmationQuestion('This will delete ALL job executions. Do you confirm? ', false);
-            if (!$this->getHelper('question')->ask($input, $output, $confirmation)) {
-                $output->writeln("Operation aborted");
+            /** @var QuestionHelper $questionHelper */
+            $questionHelper = $this->getHelper('question');
+            if (!$questionHelper->ask($input, $output, $confirmation)) {
+                $output->writeln('Operation aborted');
 
                 return false;
             }

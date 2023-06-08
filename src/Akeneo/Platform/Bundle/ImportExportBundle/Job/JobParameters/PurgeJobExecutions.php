@@ -26,7 +26,7 @@ class PurgeJobExecutions implements ConstraintCollectionProviderInterface, Defau
     {
         return [
             'days' => 90,
-            'status' => null
+            'status' => null,
         ];
     }
 
@@ -39,7 +39,7 @@ class PurgeJobExecutions implements ConstraintCollectionProviderInterface, Defau
             [
                 'fields' => [
                     'days' => new Type('int'),
-                    'status' => new Type('int')
+                    'status' => new Type('int'),
                 ],
             ]
         );
