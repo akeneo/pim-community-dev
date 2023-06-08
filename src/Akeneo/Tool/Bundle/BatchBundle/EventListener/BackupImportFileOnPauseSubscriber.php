@@ -19,7 +19,8 @@ final class BackupImportFileOnPauseSubscriber implements EventSubscriberInterfac
 {
     public function __construct(
         private readonly FilesystemOperator $filesystemOperator,
-    ) {}
+    ) {
+    }
     public static function getSubscribedEvents(): array
     {
         return [
