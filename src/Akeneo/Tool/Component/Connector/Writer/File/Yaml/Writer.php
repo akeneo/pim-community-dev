@@ -41,8 +41,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
         ArrayConverterInterface $arrayConverter,
         private readonly ExportedFileBackuper $exportedFileBackuper,
         $header = null,
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->arrayConverter = $arrayConverter;
