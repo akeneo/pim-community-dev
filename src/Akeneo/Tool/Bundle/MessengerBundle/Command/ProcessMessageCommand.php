@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Command;
 
-use Akeneo\Tool\Bundle\MessengerBundle\Registry\TraceableMessageHandlerRegistry;
-use Akeneo\Tool\Component\Messenger\CorrelationAwareInterface;
+use Akeneo\Tool\Bundle\MessengerBundle\Registry\ProcessMessageHandlerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,7 +27,7 @@ final class ProcessMessageCommand extends Command
 
     public function __construct(
         private readonly SerializerInterface $serializer,
-        private readonly TraceableMessageHandlerRegistry $traceableMessageHandlerRegistry,
+        private readonly ProcessMessageHandlerRegistry $ucsMessageHandlerRegistry,
         private readonly LoggerInterface $logger
     ) {
         parent::__construct();
@@ -40,6 +39,7 @@ final class ProcessMessageCommand extends Command
             ->addArgument('consumer_name', InputArgument::REQUIRED, 'consumer name')
             ->addArgument('message_class', InputArgument::REQUIRED, 'class of the message')
             ->addArgument('message', InputArgument::REQUIRED, 'message in json')
+            ->addArgument('correlation_id', InputArgument::OPTIONAL, 'Correlation ID of the message')
         ;
     }
 
@@ -52,15 +52,16 @@ final class ProcessMessageCommand extends Command
         );
 
         $consumerName = $input->getArgument('consumer_name');
-        $handler = $this->traceableMessageHandlerRegistry->getHandler($consumerName);
+        $handler = $this->ucsMessageHandlerRegistry->getHandler($consumerName);
 
         try {
             ($handler)($message);
         } catch (\Throwable $t) {
-            $context = ['trace' => $t->getTraceAsString()];
-            if ($message instanceof CorrelationAwareInterface) {
-                $context['correlation_id'] = $message->getCorrelationId();
-            }
+            $context = [
+                'trace' => $t->getTraceAsString(),
+                'message_class' => $input->getArgument('message_class'),
+                'correlation_id' => $input->getArgument('correlation_id')
+            ];
 
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), $context);
 

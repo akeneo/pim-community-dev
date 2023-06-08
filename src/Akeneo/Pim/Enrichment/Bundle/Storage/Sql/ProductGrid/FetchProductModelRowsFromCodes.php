@@ -17,23 +17,11 @@ use Doctrine\DBAL\Types\Types;
  */
 final class FetchProductModelRowsFromCodes
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var WriteValueCollectionFactory */
-    private $valueCollectionFactory;
-
-    /** @var ProductModelImagesFromCodes */
-    private $productModelImagesFromCodes;
-
     public function __construct(
-        Connection $connection,
-        WriteValueCollectionFactory $valueCollectionFactory,
-        ProductModelImagesFromCodes $productModelImagesFromCodes
+        private readonly Connection $connection,
+        private readonly WriteValueCollectionFactory $valueCollectionFactory,
+        private readonly ProductModelImagesFromCodes $productModelImagesFromCodes
     ) {
-        $this->connection = $connection;
-        $this->valueCollectionFactory = $valueCollectionFactory;
-        $this->productModelImagesFromCodes = $productModelImagesFromCodes;
     }
 
     /**
@@ -168,7 +156,21 @@ SQL;
             ];
         }
 
-        $sql = <<<SQL
+        if ($this->newCompletenessTableExists()) {
+            $completenessByProductModelCode = $this->getCompletenessesFor($codes);
+
+            foreach ($completenessByProductModelCode as $value) {
+                $code = $value['code'];
+                $completeness = \json_decode($value['completeness'], true);
+
+                $result[$code]['children_completeness']['total'] += 1;
+
+                if (0 === ($completeness[$channelCode][$localeCode]['missing'] ?? null)) {
+                    $result[$code]['children_completeness']['complete'] += 1;
+                }
+            }
+        } else {
+            $sql = <<<SQL
             SELECT
                 pm.code,
                 COUNT(p_child.id) AS nb_children,
@@ -204,28 +206,72 @@ SQL;
             GROUP BY
                 pm.code
 SQL;
-        $rows = $this->connection->executeQuery(
-            $sql,
-            [
-                'codes' => $codes,
-                'channel' => $channelCode,
-                'locale' => $localeCode,
-            ],
-            [
-                'codes' => Connection::PARAM_STR_ARRAY,
-                'channel' => \PDO::PARAM_STR,
-                'locale' => \PDO::PARAM_STR,
-            ]
-        )->fetchAllAssociative();
+            $rows = $this->connection->executeQuery(
+                $sql,
+                [
+                    'codes' => $codes,
+                    'channel' => $channelCode,
+                    'locale' => $localeCode,
+                ],
+                [
+                    'codes' => Connection::PARAM_STR_ARRAY,
+                    'channel' => \PDO::PARAM_STR,
+                    'locale' => \PDO::PARAM_STR,
+                ]
+            )->fetchAllAssociative();
 
-        foreach ($rows as $row) {
-            $result[$row['code']]['children_completeness'] = [
-                'total'    => (int) $row['nb_children'],
-                'complete' => (int) $row['nb_children_complete'],
-            ];
+            foreach ($rows as $row) {
+                $result[$row['code']]['children_completeness'] = [
+                    'total'    => (int) $row['nb_children'],
+                    'complete' => (int) $row['nb_children_complete'],
+                ];
+            }
         }
 
         return $result;
+    }
+
+    private function getCompletenessesFor(array $productModelCodes): array
+    {
+        $sql = <<<SQL
+WITH descendant_product_uuids as ( 
+    SELECT code, product.uuid
+    FROM pim_catalog_product product
+        INNER JOIN pim_catalog_product_model product_model ON product_model.id = product.product_model_id
+    WHERE product_model.code IN (:codes)
+    UNION ALL
+    SELECT root_product_model.code, product.uuid
+    FROM pim_catalog_product product
+        INNER JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
+        INNER JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
+    WHERE root_product_model.code IN (:codes)
+)          
+    SELECT descendant_product_uuids.code, completeness
+    FROM pim_catalog_product_completeness completeness
+        JOIN descendant_product_uuids ON descendant_product_uuids.uuid = completeness.product_uuid
+SQL;
+
+        return $this->connection->fetchAllAssociative(
+            $sql,
+            [
+                'codes' => $productModelCodes,
+            ],
+            [
+                'codes' => Connection::PARAM_STR_ARRAY,
+            ]
+        );
+    }
+
+    private function newCompletenessTableExists(): bool
+    {
+        $TABLE_NAME = 'pim_catalog_product_completeness';
+
+        return $this->connection->executeQuery(
+            'SHOW TABLES LIKE :tableName',
+            [
+                'tableName' => $TABLE_NAME,
+            ]
+        )->rowCount() >= 1;
     }
 
     private function getFamilyLabels(array $codes, string $localeCode): array
