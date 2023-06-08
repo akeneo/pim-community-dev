@@ -7,8 +7,6 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsMessage;
-use Akeneo\Tool\Component\Messenger\NormalizableMessageInterface;
-use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
@@ -26,16 +24,6 @@ final class LaunchProductAndProductModelEvaluationsMessageSpec extends ObjectBeh
             ProductModelIdCollection::fromStrings([]),
             []
         );
-    }
-
-    public function it_is_a_traceable_message(): void
-    {
-        $this->shouldImplement(TraceableMessageInterface::class);
-    }
-
-    public function it_is_a_normalizable_message(): void
-    {
-        $this->shouldImplement(NormalizableMessageInterface::class);
     }
 
     public function it_can_be_created_for_products_only(): void

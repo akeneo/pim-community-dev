@@ -23,6 +23,17 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductCompletenessRatio:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SwitchVariantProductCompletenessRatio:
+        decorates: pim_catalog.doctrine.query.find_variant_product_completeness
+        arguments:
+            - '@.inner'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductCompletenessRatio'
+            - '@database_connection'
+
     pim_catalog.doctrine.query.count_entity_with_family_variant:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family\CountEntityWithFamilyVariant'
         arguments:

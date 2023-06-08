@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Serialization;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
-use Akeneo\Tool\Component\Messenger\CorrelationAwareInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\MessageDecodingFailedException;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
@@ -70,11 +70,16 @@ class JsonSerializer implements SerializerInterface
 
         $tenantId = $encodedEnvelope['headers']['tenant_id'] ?? null;
         $correlationId = $encodedEnvelope['headers']['correlation_id'] ?? null;
-        if (null !== $correlationId && $message instanceof CorrelationAwareInterface) {
-            $message->setCorrelationId($correlationId);
+
+        $stamps = [];
+        if (null !== $tenantId) {
+            $stamps[] = new TenantIdStamp($tenantId);
+        }
+        if (null !== $correlationId) {
+            $stamps[] = new CorrelationIdStamp($correlationId);
         }
 
-        return null !== $tenantId ? new Envelope($message, [new TenantIdStamp($tenantId)]) : new Envelope($message);
+        return new Envelope($message, $stamps);
     }
 
     public function encode(Envelope $envelope): array
@@ -91,8 +96,10 @@ class JsonSerializer implements SerializerInterface
             $headers['tenant_id'] = $tenantId;
         }
 
-        if ($envelope->getMessage() instanceof CorrelationAwareInterface) {
-            $headers['correlation_id'] = $envelope->getMessage()->getCorrelationId();
+        /** @var CorrelationIdStamp|null $correlationIdStamp */
+        $correlationIdStamp = $envelope->last(CorrelationIdStamp::class);
+        if (null !== $correlationIdStamp) {
+            $headers['correlation_id'] = $correlationIdStamp->correlationId();
         }
 
         return [
