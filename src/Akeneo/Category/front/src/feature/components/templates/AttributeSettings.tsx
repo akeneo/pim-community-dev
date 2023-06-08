@@ -84,7 +84,7 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
           )}`
         );
       });
-  }, 3000);
+  }, 300);
   const handleTranslationsChange = (locale: string, value: string) => {
     setTranslations({...translations, [locale]: value});
     updateCanLeavePageStatuses(false);
