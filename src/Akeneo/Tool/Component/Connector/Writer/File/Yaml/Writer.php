@@ -150,7 +150,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
     public function getState(): array
     {
         return [
-            'flat_buffer_file_path' => $this->exportedFileBackuper->backup(
+            'current_file_path' => $this->exportedFileBackuper->backup(
                 $this->stepExecution->getJobExecution(),
                 $this->getPath()
             ),

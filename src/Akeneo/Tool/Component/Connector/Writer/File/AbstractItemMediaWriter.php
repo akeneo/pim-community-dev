@@ -397,7 +397,7 @@ abstract class AbstractItemMediaWriter implements
     public function getState(): array
     {
         return [
-            'flat_buffer_file_path' => $this->exportedFileBackuper->backup(
+            'current_buffer_file_path' => $this->exportedFileBackuper->backup(
                 $this->stepExecution->getJobExecution(),
                 $this->flatRowBuffer->getFilePath()
             ),

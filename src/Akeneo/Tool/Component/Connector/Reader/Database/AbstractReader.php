@@ -81,7 +81,7 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     public function getState(): array
     {
         return [
-            'position' => $this->results?->key(),
+            'last_position_read' => $this->results?->key(),
         ];
     }
 }

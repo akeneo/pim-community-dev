@@ -205,7 +205,7 @@ class FilteredProductModelReader implements
     public function getState(): array
     {
         return [
-            'position' => $this->productsAndProductModels?->key(),
+            'last_position_read' => $this->productsAndProductModels?->key(),
         ];
     }
 }

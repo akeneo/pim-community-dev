@@ -132,7 +132,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     public function getState(): array
     {
         return [
-            'position' => $this->families?->key(),
+            'last_position_read' => $this->families?->key(),
         ];
     }
 }
