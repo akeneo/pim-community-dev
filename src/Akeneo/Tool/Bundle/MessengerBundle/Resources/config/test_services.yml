@@ -21,21 +21,21 @@ services:
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
             - '%env(GOOGLE_CLOUD_PROJECT)%'
-            - 'test_queue1'
-            - 'consumer1'
+            - '%env(PUBSUB_TOPIC_TEST_QUEUE_1)%'
+            - '%env(PUBSUB_SUBSCRIPTION_TEST_CONSUMER_1)%'
 
     akeneo_integration_tests.pub_sub_queue_status.consumer2:
         class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
             - '%env(GOOGLE_CLOUD_PROJECT)%'
-            - 'test_queue1'
-            - 'consumer2'
+            - '%env(PUBSUB_TOPIC_TEST_QUEUE_1)%'
+            - '%env(PUBSUB_SUBSCRIPTION_TEST_CONSUMER_2)%'
 
     akeneo_integration_tests.pub_sub_queue_status.consumer3:
         class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
             - '%env(GOOGLE_CLOUD_PROJECT)%'
-            - 'test_queue2'
-            - 'consumer3'
+            - '%env(PUBSUB_TOPIC_TEST_QUEUE_2)%'
+            - '%env(PUBSUB_SUBSCRIPTION_TEST_CONSUMER_3)%'

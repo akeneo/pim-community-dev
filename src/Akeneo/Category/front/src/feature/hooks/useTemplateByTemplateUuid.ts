@@ -1,55 +1,33 @@
-import {useQuery} from 'react-query';
 import {Template} from '../models';
-import {FetchStatus, NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {useMemo} from 'react';
+import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {useHistory} from 'react-router';
+import {apiFetch} from '../tools/apiFetch';
+import {useQuery} from 'react-query';
+import {useCallback} from 'react';
 
-type Result = {
-  status: FetchStatus;
-  data: Template | undefined;
-  error: any;
-};
-
-const getFetchingStatus = (status: 'idle' | 'loading' | 'error' | 'success'): FetchStatus => {
-  if (status === 'loading') return 'fetching';
-  if (status === 'success') return 'fetched';
-  return status;
-};
-
-export const useTemplateByTemplateUuid = (uuid: string | null): Result => {
+export const useTemplateByTemplateUuid = (uuid: string | null) => {
   const router = useRouter();
   const translate = useTranslate();
   const notify = useNotify();
   const history = useHistory();
 
-  const url = useMemo(() => {
-    if (uuid === null || uuid === undefined) {
-      return null;
-    }
-    return router.generate('pim_category_template_rest_get_by_template_uuid', {
-      templateUuid: uuid,
-    });
-  }, [router, uuid]);
+  const url = router.generate('pim_category_template_rest_get_by_template_uuid', {
+    templateUuid: uuid,
+  });
 
-  const fetchTemplate = async () => {
-    if (url === null || uuid === null || uuid.length === 0) {
-      return {};
-    }
+  const fetchTemplate = useCallback(async () => {
+    return await apiFetch<Template>(url, {method: 'GET'});
+  }, [url]);
 
-    return fetch(url).then(response => {
-      if (!response.ok) {
-        history.push('/');
-        notify(NotificationLevel.ERROR, translate('akeneo.category.template.not_found'));
-      }
-
-      return response.json();
-    });
-  };
-
-  const response = useQuery<Template, any>(['template', uuid], fetchTemplate, {enabled: uuid !== null && url !== null});
-
+  const {data} = useQuery(['get-template', uuid], fetchTemplate, {
+    onError: () => {
+      history.push('/');
+      notify(NotificationLevel.ERROR, translate('akeneo.category.template.not_found'));
+    },
+  });
   return {
-    ...response,
-    status: getFetchingStatus(response.status),
+    status: 'fetched',
+    data: data,
+    error: null,
   };
 };

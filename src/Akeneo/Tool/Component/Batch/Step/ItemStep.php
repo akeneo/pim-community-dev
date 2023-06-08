@@ -12,9 +12,12 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
+use Akeneo\Tool\Component\Batch\Job\JobStopperInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
 use Psr\Log\LoggerAwareInterface;
@@ -32,31 +35,20 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 {
     use LoggerAwareTrait;
 
-    protected ?ItemReaderInterface $reader = null;
-    protected ?ItemProcessorInterface $processor = null;
-    protected ?ItemWriterInterface $writer = null;
-    protected int $batchSize;
     protected ?StepExecution $stepExecution = null;
     private bool $stoppable = false;
-    private ?JobStopper $jobStopper = null;
 
     public function __construct(
         string $name,
-        EventDispatcherInterface $eventDispatcher,
-        JobRepositoryInterface $jobRepository,
-        ItemReaderInterface $reader,
-        ItemProcessorInterface $processor,
-        ItemWriterInterface $writer,
-        int $batchSize = 100,
-        JobStopper $jobStopper = null
+        protected EventDispatcherInterface $eventDispatcher,
+        protected JobRepositoryInterface $jobRepository,
+        protected ItemReaderInterface $reader,
+        protected ItemProcessorInterface $processor,
+        protected ItemWriterInterface $writer,
+        protected int $batchSize = 100,
+        private ?JobStopperInterface $jobStopper = null,
     ) {
-        parent::__construct($name, $eventDispatcher, $jobRepository);
-
-        $this->reader = $reader;
-        $this->processor = $processor;
-        $this->writer = $writer;
-        $this->batchSize = $batchSize;
-        $this->jobStopper = $jobStopper;
+        parent::__construct($name, $eventDispatcher, $jobRepository, $jobStopper);
     }
 
     public function getReader(): ?ItemReaderInterface
@@ -126,10 +118,17 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 $this->updateProcessedItems($batchCount);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
-                if (null !== $this->jobStopper && $this->jobStopper->isStopping($stepExecution)) {
-                    $this->jobStopper->stop($stepExecution);
 
-                    break;
+                if (null !== $this->jobStopper) {
+                    if ($this->jobStopper->isPausing($stepExecution)) {
+                        $this->saveAndPause($stepExecution);
+                        break;
+                    }
+
+                    if ($this->jobStopper->isStopping($stepExecution)) {
+                        $this->jobStopper->stop($stepExecution);
+                        break;
+                    }
                 }
             }
         }
@@ -143,11 +142,35 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
         }
 
-        if (null !== $this->jobStopper && $this->jobStopper->isStopping($stepExecution)) {
-            $this->jobStopper->stop($stepExecution);
+        if (null !== $this->jobStopper) {
+            if ($this->jobStopper->isStopping($stepExecution)) {
+                $this->jobStopper->stop($stepExecution);
+            }
+
+            if ($this->jobStopper->isPausing($this->stepExecution)) {
+                return;
+            }
         }
 
         $this->flushStepElements();
+    }
+
+    private function saveAndPause(StepExecution $stepExecution): void
+    {
+        if (!$this->reader instanceof PausableReaderInterface) {
+            throw new \RuntimeException('The reader should implement PausableItemReaderInterface');
+        }
+
+        if (!$this->writer instanceof PausableWriterInterface) {
+            throw new \RuntimeException('The writer should implement PausableItemWriterInterface');
+        }
+
+        $currentState = [
+            'reader' => $this->reader->getState(),
+            'writer' => $this->writer->getState(),
+        ];
+
+        $this->jobStopper->pause($stepExecution, $currentState);
     }
 
     protected function initializeStepElements(StepExecution $stepExecution)

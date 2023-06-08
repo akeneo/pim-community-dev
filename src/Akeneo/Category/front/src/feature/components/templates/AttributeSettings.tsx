@@ -1,18 +1,31 @@
 import {Button, Checkbox, Field, Helper, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {Attribute} from '../../models';
-import {LabelCollection, useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
+import {
+  LabelCollection,
+  NotificationLevel,
+  useFeatureFlags,
+  useNotify,
+  userContext,
+  useTranslate,
+} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
 import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
-import {useState} from 'react';
 import {BadRequestError} from '../../tools/apiFetch';
 import {useDebounceCallback} from '../../tools/useDebounceCallback';
+import {useQueryClient} from 'react-query';
+import {useSaveStatusContext} from '../../hooks/useSaveStatusContext';
+import {Status} from '../providers/SaveStatusProvider';
 
 type Props = {
   attribute: Attribute;
   activatedCatalogLocales: string[];
+  translationsFormData: LabelCollection;
+  onTranslationsChange: (locale: string, value: string) => void;
+  translationErrors: {[locale: string]: string[]} | {};
+  onTranslationErrorsChange: (locale: string, errors: string[]) => void;
   onChangeFormStatus: (attributeUuid: string, inError: boolean) => void;
 };
 
@@ -25,59 +38,79 @@ type ResponseError = {
 
 type ApiResponseError = ResponseError[];
 
-export const AttributeSettings = ({attribute, activatedCatalogLocales, onChangeFormStatus}: Props) => {
+export const AttributeSettings = ({
+  attribute,
+  activatedCatalogLocales,
+  translationsFormData,
+  onTranslationsChange,
+  translationErrors,
+  onTranslationErrorsChange,
+  onChangeFormStatus,
+}: Props) => {
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
   const catalogLocales = useCatalogLocales();
   const featureFlag = useFeatureFlags();
   const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
+  const saveStatusContext = useSaveStatusContext();
+  const notify = useNotify();
 
   const [
     isDeactivateTemplateAttributeModalOpen,
     openDeactivateTemplateAttributeModal,
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
-
   const displayError = (errorMessages: string[], key: string) => {
     return errorMessages.map(message => {
-      return <Helper level="error">{message}</Helper>;
+      return (
+        <Helper level="error" key={key}>
+          {message}
+        </Helper>
+      );
     });
   };
 
-  const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
-  const [translations, setTranslations] = useState<LabelCollection>(attribute.labels);
-  const [error, setError] = useState<{[locale: string]: string[]}>({});
+  const queryClient = useQueryClient();
 
-  const handleRichTextAreaChange = () => {
-    setIsRichTextArea(!isRichTextArea);
-    updateTemplateAttribute({isRichTextArea: !isRichTextArea});
+  const handleRichTextAreaChange = async () => {
+    await updateTemplateAttribute({isRichTextArea: !(attribute.type === 'richtext')});
+    await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
   };
   const debouncedUpdateTemplateAttribute = useDebounceCallback(
-    (locale: string, value: string, attributeUuid: string) => {
-      updateTemplateAttribute({labels: {[locale]: value}})
-        .then(() => {
-          if (error[locale]) {
-            delete error[locale];
-            let updatedError = {...error};
-            onChangeFormStatus(attributeUuid, Object.keys(updatedError).length !== 0);
-            setError(updatedError);
-          }
-        })
-        .catch((error: BadRequestError<ApiResponseError>) => {
-          const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
-            accumulator[currentError.error.property] = [currentError.error.message];
+      (attributeUuid: string, locale: string, value: string) => {
+    saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVING);
+    updateTemplateAttribute({labels: {[locale]: value}})
+      .then(() => {
+        if (undefined !== translationErrors && translationErrors[locale]) {
+          delete translationErrors[locale];
+          onTranslationErrorsChange(locale, []);
+          onChangeFormStatus(attributeUuid, Object.keys(translationErrors).length !== 0);
+        }
+        saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVED);
+      })
+      .catch((error: BadRequestError<ApiResponseError>) => {
+        saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.ERRORS);
+        const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
+          accumulator[currentError.error.property] = [currentError.error.message];
 
-            return accumulator;
-          }, {});
-          onChangeFormStatus(attributeUuid, true);
-          setError(state => ({...state, ...errors}));
-        });
-    },
-    300
-  );
-  const handleTranslationsChange = (locale: string, value: string) => {
-    setTranslations({...translations, [locale]: value});
-    debouncedUpdateTemplateAttribute(locale, value, attribute.uuid);
+          return accumulator;
+        }, {});
+        onTranslationErrorsChange(locale, errors[locale]);
+        onChangeFormStatus(attributeUuid, true);
+        notify(
+          NotificationLevel.ERROR,
+          translate('akeneo.category.template.auto-save.error_notification.title'),
+          translate('akeneo.category.template.auto-save.error_notification.content')
+        );
+      });
+  }, 300);
+  const handleTranslationChange = (locale: string, value: string) => {
+    onTranslationsChange(locale, value);
+    debouncedUpdateTemplateAttribute(attribute.uuid, locale, value);
+  };
+
+  const buildStatusId = (attributeUuid: string, locale: string) => {
+    return attributeUuid + '_' + locale;
   };
 
   return (
@@ -95,7 +128,7 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales, onChangeF
       <OptionsContainer>
         {['textarea', 'richtext'].includes(attribute.type) && (
           <OptionField
-            checked={isRichTextArea}
+            checked={attribute.type === 'richtext'}
             onChange={handleRichTextAreaChange}
             readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
           >
@@ -115,26 +148,40 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales, onChangeF
         </SectionTitle.Title>
       </SectionTitle>
       <div>
-        {activatedCatalogLocales.map((activatedLocaleCode, index) => (
-          <TranslationField
-            label={
-              catalogLocales?.find(catalogLocale => catalogLocale.code === activatedLocaleCode)?.label ||
-              activatedLocaleCode
-            }
-            locale={activatedLocaleCode}
-            key={activatedLocaleCode}
-          >
-            <TextInput
-              readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
-              onChange={(newValue: string) => {
-                handleTranslationsChange(activatedLocaleCode, newValue);
-              }}
-              invalid={!!error[activatedLocaleCode]}
-              value={translations[activatedLocaleCode] || ''}
-            ></TextInput>
-            {error[activatedLocaleCode] && displayError(error[activatedLocaleCode], activatedLocaleCode)}
-          </TranslationField>
-        ))}
+        {activatedCatalogLocales.map((activatedLocaleCode, index) => {
+          let fieldValue = '';
+          if (translationsFormData != undefined && translationsFormData[activatedLocaleCode] != undefined) {
+            fieldValue = translationsFormData[activatedLocaleCode];
+          } else if (attribute.labels[activatedLocaleCode] != undefined) {
+            fieldValue = attribute.labels[activatedLocaleCode];
+          }
+          return (
+            <TranslationField
+              label={
+                catalogLocales?.find(catalogLocale => catalogLocale.code === activatedLocaleCode)?.label ||
+                activatedLocaleCode
+              }
+              locale={activatedLocaleCode}
+              key={activatedLocaleCode}
+            >
+              <TextInput
+                readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
+                onChange={(newValue: string) => {
+                  saveStatusContext.handleStatusListChange(
+                    buildStatusId(attribute.uuid, activatedLocaleCode),
+                    Status.EDITING
+                  );
+                  handleTranslationChange(activatedLocaleCode, newValue);
+                }}
+                invalid={translationErrors !== undefined && !!translationErrors[activatedLocaleCode]}
+                value={fieldValue}
+              ></TextInput>
+              {translationErrors !== undefined &&
+                translationErrors[activatedLocaleCode] &&
+                displayError(translationErrors[activatedLocaleCode], activatedLocaleCode)}
+            </TranslationField>
+          );
+        })}
       </div>
       <Footer>
         <Button level="danger" ghost onClick={openDeactivateTemplateAttributeModal}>

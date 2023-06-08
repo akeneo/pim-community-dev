@@ -16,8 +16,8 @@ pim_import_export:
     6: Fehlgeschlagen
     7: Abgebrochen
     8: Unbekannt
-    9: Pausing
-    10: Paused
+    9: Pausieren
+    10: Pausiert
   download_archive:
     archive: generiertes Archiv herunterladen|generierte Archive herunterladen
     output: generierte Datei herunterladen|generierte Dateien herunterladen

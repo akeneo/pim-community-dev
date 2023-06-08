@@ -108,7 +108,9 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         UniqueValuesSet $uniqueValuesSet,
         ProductInterface $product,
         WriteValueCollection $values,
-        ValueInterface $identifierValue
+        ValueInterface $identifierValue,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $mainIdentifierAttribute
     ) {
         $constraint = new UniqueProductEntity();
 
@@ -117,6 +119,10 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $values->isEmpty()->willReturn(false);
         $values->first()->willReturn($identifierValue);
         $uniqueValuesSet->addValue($identifierValue, $product)->willReturn(true);
+
+        $attributeRepository->getIdentifier()->willReturn($mainIdentifierAttribute);
+        $mainIdentifierAttribute->getCode()->willReturn('sku');
+        $values->getByCodes('sku')->willReturn($identifierValue);
 
         $product->getIdentifier()->willReturn('identifier');
         $findId->fromIdentifier('identifier')->willReturn(null);
@@ -128,13 +134,19 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
 
     function it_does_nothing_if_the_product_does_not_have_an_identifier(
         ProductInterface $product,
-        WriteValueCollection $values
+        WriteValueCollection $values,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $mainIdentifierAttribute
     ) {
         $constraint = new UniqueProductEntity();
 
         $product->getValues()->willReturn($values);
         $values->filter(Argument::any())->willReturn($values);
         $values->isEmpty()->willReturn(true);
+        $attributeRepository->getIdentifier()->willReturn($mainIdentifierAttribute);
+        $mainIdentifierAttribute->getCode()->willReturn('sku');
+        $values->getByCodes('sku')->willReturn(null);
+
         $this->validate($product, $constraint)->shouldReturn(null);
     }
 

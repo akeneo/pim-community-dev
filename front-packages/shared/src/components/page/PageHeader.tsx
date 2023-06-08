@@ -10,6 +10,7 @@ import {
   TitleProps,
   UserActions,
   Content,
+  AutoSaveStatus
 } from './header';
 import {SandboxHelper} from './SandboxHelper';
 import {useFeatureFlags, useSystemConfiguration} from '../../hooks';
@@ -24,6 +25,7 @@ const Header = styled.header<{top: number}>`
 
 const LineContainer = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
 `;
 
@@ -53,6 +55,7 @@ type PageHeaderProps = {
 type HeaderElements = {
   illustration: ReactElement | undefined;
   breadcrumb: ReactElement | undefined;
+  autoSaveStatus: ReactElement | undefined;
   title: ReactElement | undefined;
   state: ReactElement | undefined;
   actions: ReactElement | undefined;
@@ -64,6 +67,7 @@ const buildHeaderElements = (children: ReactNode | undefined, showPlaceholder?: 
   const headerElements: HeaderElements = {
     illustration: undefined,
     breadcrumb: undefined,
+    autoSaveStatus: undefined,
     title: undefined,
     state: undefined,
     actions: undefined,
@@ -100,6 +104,9 @@ const buildHeaderElements = (children: ReactNode | undefined, showPlaceholder?: 
       case Content:
         headerElements.content = child;
         break;
+      case AutoSaveStatus:
+        headerElements.autoSaveStatus = child;
+        break;
     }
   });
 
@@ -120,10 +127,11 @@ interface PageHeaderInterface extends FC<PageHeaderProps> {
   Title: FC<TitleProps>;
   State: FC;
   Content: FC;
+  AutoSaveStatus: FC;
 }
 
 const PageHeader: PageHeaderInterface = ({children, showPlaceholder}) => {
-  const {illustration, breadcrumb, title, state, actions, userActions, content} = buildHeaderElements(
+  const {illustration, breadcrumb, title, state, actions, userActions, content, autoSaveStatus} = buildHeaderElements(
     children,
     showPlaceholder
   );
@@ -141,6 +149,7 @@ const PageHeader: PageHeaderInterface = ({children, showPlaceholder}) => {
             <div>
               <LineContainer>
                 {breadcrumb}
+                {autoSaveStatus}
                 <ActionsContainer>
                   {userActions}
                   {actions}
@@ -166,5 +175,6 @@ PageHeader.UserActions = UserActions;
 PageHeader.Title = Title;
 PageHeader.State = State;
 PageHeader.Content = Content;
+PageHeader.AutoSaveStatus = AutoSaveStatus;
 
 export {PageHeader};

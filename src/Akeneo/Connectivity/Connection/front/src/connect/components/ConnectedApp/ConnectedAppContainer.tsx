@@ -207,7 +207,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 {connectedApp.name}
             </PageHeader>
 
-            <PageContent>
+            <PageContent pageHeaderHeight={202}>
                 <TabBar moreButtonTitle='More'>
                     <TabBar.Tab
                         isActive={isCurrent(settingsTabName)}

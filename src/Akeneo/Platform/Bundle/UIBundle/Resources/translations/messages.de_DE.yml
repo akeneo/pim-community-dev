@@ -131,6 +131,7 @@ pim_enrich:
       create: Eine Attributgruppe anlegen
       edit: Eine Attributgruppe bearbeiten
       remove: Eine Attributgruppe löschen
+      mass_delete: Attributgruppen entfernen
       sort: Attributgruppen sortieren
       add_attribute: Attribut zu einer Gruppe hinzufügen
       remove_attribute: Attribut aus einer Gruppe löschen
@@ -212,6 +213,8 @@ flash:
   attribute:
     identifier_not_removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
     used_as_conversion_unit: Dieses Attribut kann nicht entfernt werden, da es als Konvertierungseinheit im Kanal %channelCodes% verwendet wird.
+    cant_remove_attributes_used_as_label: Attribute, die als Label in einer Familie verwendet werden, können nicht entfernt werden.
+    cant_remove_attribute_used_as_axis: Dieses Attribut, das als Variantenachse in einer Variante der Produktfamilie verwendet wird, kann nicht entfernt werden
   category:
     removed: Kategorie erfolgreich entfernt
   tree:
@@ -451,6 +454,7 @@ pim_datagrid:
       label: Aktualisiert
     label_or_identifier:
       label: Label oder Identifikator
+      label_with_uuid: Label, Bezeichner oder UUID
     parent:
       label: Eltern
     identifier:
