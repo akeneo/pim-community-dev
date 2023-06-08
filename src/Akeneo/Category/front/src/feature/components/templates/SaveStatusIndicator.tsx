@@ -45,6 +45,7 @@ const IndicatorContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-right: 20px;
 `;
 
 const TextBlack = styled.p`
