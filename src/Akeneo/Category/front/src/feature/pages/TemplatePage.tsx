@@ -101,7 +101,6 @@ const TemplatePage: FC = () => {
   );
 
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
-  // const status = useSaveStatusContext();
 
   return (
     <SaveStatusProvider>
@@ -120,9 +119,9 @@ const TemplatePage: FC = () => {
             </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
-        <PageHeader.Content>
-          <SaveStatusIndicator />
-        </PageHeader.Content>
+        <PageHeader.AutoSaveStatus>
+          <SaveStatusIndicator/>
+        </PageHeader.AutoSaveStatus>
         <PageHeader.UserActions>
           <PimView
             viewName="pim-menu-user-navigation"

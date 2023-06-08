@@ -49,10 +49,12 @@ const IndicatorContainer = styled.div`
 
 const TextBlack = styled.p`
   margin-left: 10px;
+  margin-right: 10px;
   color: #11324D;
 `;
 
 const TextGrey = styled.p`
   margin-left: 10px;
+  margin-right: 10px;
   color: #67768A;
 `;
