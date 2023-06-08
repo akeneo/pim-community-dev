@@ -17,11 +17,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsHandler;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsMessage;
-use Akeneo\Tool\Component\Messenger\TraceableMessageHandlerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -53,9 +53,8 @@ final class LaunchProductAndProductModelEvaluationsHandlerSpec extends ObjectBeh
         );
     }
 
-    public function it_is_a_traceable_message_handler(): void
+    public function it_is_a_launch_products_and_product_models_evaluation_handler(): void
     {
-        $this->shouldImplement(TraceableMessageHandlerInterface::class);
         $this->shouldHaveType(LaunchProductAndProductModelEvaluationsHandler::class);
     }
 
