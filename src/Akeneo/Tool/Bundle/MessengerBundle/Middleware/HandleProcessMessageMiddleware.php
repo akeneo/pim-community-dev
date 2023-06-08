@@ -28,16 +28,16 @@ final class HandleProcessMessageMiddleware implements MiddlewareInterface
     {
         $message = $envelope->getMessage();
 
-        $consumerName = $envelope->last(ReceivedStamp::class)?->getTransportName();
-        if (null === $consumerName) {
-            throw new \LogicException('The envelope must have a consumer name from a ReceivedStamp');
+        $receivedStamp = $envelope->last(ReceivedStamp::class);
+        if (null === $receivedStamp) {
+            throw new \LogicException('The message can only be handled when received from transport');
         }
 
         $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId();
         $correlationId = $envelope->last(CorrelationIdStamp::class)?->correlationId();
 
         try {
-            ($this->runMessageProcess)($message, $consumerName, $tenantId, $correlationId);
+            ($this->runMessageProcess)($message, $receivedStamp->getTransportName(), $tenantId, $correlationId);
         } catch (\Throwable $e) {
             throw new HandlerFailedException($envelope, [$e]);
         }
