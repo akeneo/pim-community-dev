@@ -42,6 +42,8 @@ akeneo.category:
                     rich_text: Rich Text Editor
                 translations:
                     title: Label translations
+                error_message: There are invalid values on the page.
+                unsaved_changes: Those values will not be saved if you leave the page.
         add_attribute:
             no_attribute_title: Create your first attribute
             no_attribute_instructions: Define the content you want to associate to your categories by adding Text, Text Area or Image attributes to this template.

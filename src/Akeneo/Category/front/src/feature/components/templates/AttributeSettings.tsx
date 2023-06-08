@@ -49,13 +49,19 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
   const [isRichTextArea, setIsRichTextArea] = useState<boolean>(attribute.type === 'richtext');
   const [translations, setTranslations] = useState<LabelCollection>(attribute.labels);
   const [error, setError] = useState<{[locale: string]: string[]}>({});
-  const [isSaved, setSaved] = useUnsavedChanges(translate('pim_ui.flash.unsaved_changes'));
-  const {setCanLeavePage} = useContext(CanLeavePageContext);
+  const [isSaved, setSaved, setUnsavedMessage] = useUnsavedChanges(
+    translate('akeneo.category.template.attribute.settings.unsaved_changes')
+  );
+  const {setCanLeavePage, setLeavePageMessage} = useContext(CanLeavePageContext);
+
+  setLeavePageMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
 
   const updateSavedStatuses = (saved: boolean) => {
     if (Object.keys(error).length === 0) {
       setSaved(saved);
       setCanLeavePage(saved);
+      setLeavePageMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
+      setUnsavedMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
     }
   };
 
@@ -81,6 +87,8 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
           return accumulator;
         }, {});
         updateSavedStatuses(false);
+        setLeavePageMessage(translate('akeneo.category.template.attribute.settings.error_message'));
+        setUnsavedMessage(translate('akeneo.category.template.attribute.settings.error_message'));
         setError(state => ({...state, ...errors}));
       });
   }, 300);
@@ -92,7 +100,10 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
 
   return (
     <SettingsContainer>
-      <Prompt when={!isSaved} message={() => translate('pim_ui.flash.unsaved_changes')} />
+      <Prompt
+        when={!isSaved}
+        message={() => translate('akeneo.category.template.attribute.settings.unsaved_changes')}
+      />
       <SectionTitle sticky={0}>
         <SectionTitle.Title>
           {attributeLabel} {translate('akeneo.category.template.attribute.settings.title')}

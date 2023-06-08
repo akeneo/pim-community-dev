@@ -1,7 +1,8 @@
 import {useState, useCallback, useEffect, Dispatch} from 'react';
 
-const useUnsavedChanges = (beforeUnloadMessage: string): [boolean, Dispatch<boolean>] => {
+const useUnsavedChanges = (beforeUnloadMessage: string): [boolean, Dispatch<boolean>, Dispatch<string>] => {
   const [isSaved, setSaved] = useState<boolean>(true);
+  const [message, setMessage] = useState<string>(beforeUnloadMessage);
 
   const handleUnload = useCallback(
     (event: BeforeUnloadEvent) => {
@@ -10,11 +11,11 @@ const useUnsavedChanges = (beforeUnloadMessage: string): [boolean, Dispatch<bool
       }
 
       event.preventDefault();
-      event.returnValue = beforeUnloadMessage;
-
-      return beforeUnloadMessage;
+      event.returnValue = message;
+      console.log(message);
+      return message;
     },
-    [isSaved, beforeUnloadMessage]
+    [isSaved, message]
   );
 
   /* istanbul ignore next */
@@ -24,7 +25,7 @@ const useUnsavedChanges = (beforeUnloadMessage: string): [boolean, Dispatch<bool
     return () => window.removeEventListener('beforeunload', handleUnload);
   }, [handleUnload]);
 
-  return [isSaved, setSaved];
+  return [isSaved, setSaved, setMessage];
 };
 
 export {useUnsavedChanges};

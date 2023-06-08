@@ -13,6 +13,7 @@ const mediator = require('oro/mediator');
 
 class CategoriesSettings extends ReactController {
   private canLeavePage: boolean = true;
+  private leavePageMessage: string = __('akeneo.category.edition_form.unsaved_changes');
 
   private static container = document.createElement('div');
 
@@ -20,11 +21,17 @@ class CategoriesSettings extends ReactController {
     this.canLeavePage = canLeavePage;
   }
 
+  setLeavePageMessage(leavePageMessage: string) {
+    this.leavePageMessage = leavePageMessage;
+  }
+
   reactElementToMount() {
     return (
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <CanLeavePageProvider setCanLeavePage={(canLeavePage: boolean) => this.setCanLeavePage(canLeavePage)}>
+          <CanLeavePageProvider
+              setCanLeavePage={(canLeavePage: boolean) => this.setCanLeavePage(canLeavePage)}
+              setLeavePageMessage={(leavePageMessage: string) => this.setLeavePageMessage(leavePageMessage)}>
             <CategoriesApp />
           </CanLeavePageProvider>
         </ThemeProvider>
@@ -44,7 +51,8 @@ class CategoriesSettings extends ReactController {
   }
 
   canLeave() {
-    return this.canLeavePage || confirm(__('akeneo.category.edition_form.unsaved_changes'));
+    console.log(this.leavePageMessage);
+    return this.canLeavePage || confirm(this.leavePageMessage);
   }
 
   getContainerRef(): Element {
