@@ -205,21 +205,21 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         ];
 
         Assert::assertSame(
+            $expectedAllComplete,
             $this->getProductModelProjectionArray('sub_product_model_code')['all_complete'],
-            $expectedAllComplete
         );
         Assert::assertSame(
+            $expectedAllComplete,
             $this->getProductModelProjectionArray('root_product_model_code')['all_complete'],
-            $expectedAllComplete
         );
 
         Assert::assertSame(
+            $expectedAllIncomplete,
             $this->getProductModelProjectionArray('sub_product_model_code')['all_incomplete'],
-            $expectedAllIncomplete
         );
         Assert::assertSame(
+            $expectedAllIncomplete,
             $this->getProductModelProjectionArray('root_product_model_code')['all_incomplete'],
-            $expectedAllIncomplete
         );
     }
 
