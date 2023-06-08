@@ -78,7 +78,11 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
         }, {});
         setError(state => ({...state, ...errors}));
         setCanLeavePage(false);
-        setLeavePageMessage(`${translate('akeneo.category.template.attribute.settings.error_message')}\n${translate('akeneo.category.template.attribute.settings.unsaved_changes')}`);
+        setLeavePageMessage(
+          `${translate('akeneo.category.template.attribute.settings.error_message')}\n${translate(
+            'akeneo.category.template.attribute.settings.unsaved_changes'
+          )}`
+        );
       });
   }, 3000);
   const handleTranslationsChange = (locale: string, value: string) => {
