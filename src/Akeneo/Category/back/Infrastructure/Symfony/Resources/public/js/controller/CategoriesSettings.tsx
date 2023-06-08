@@ -51,7 +51,6 @@ class CategoriesSettings extends ReactController {
   }
 
   canLeave() {
-    console.log(this.leavePageMessage);
     return this.canLeavePage || confirm(this.leavePageMessage);
   }
 

@@ -19,7 +19,11 @@ type Props = {
 };
 
 const CanLeavePageProvider: FC<Props> = ({children, setCanLeavePage, setLeavePageMessage}) => {
-  return <CanLeavePageContext.Provider value={{setCanLeavePage, setLeavePageMessage}}>{children}</CanLeavePageContext.Provider>;
+  return (
+    <CanLeavePageContext.Provider value={{setCanLeavePage, setLeavePageMessage}}>
+      {children}
+    </CanLeavePageContext.Provider>
+  );
 };
 
 export {CanLeavePageProvider, CanLeavePageContext};

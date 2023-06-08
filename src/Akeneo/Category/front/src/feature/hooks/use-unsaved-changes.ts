@@ -12,7 +12,6 @@ const useUnsavedChanges = (beforeUnloadMessage: string): [boolean, Dispatch<bool
 
       event.preventDefault();
       event.returnValue = message;
-      console.log(message);
       return message;
     },
     [isSaved, message]

@@ -10,7 +10,6 @@ import {FakePIM} from './FakePIM';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {CanLeavePageProvider} from './feature/components';
 
-
 ReactDOM.render(
   <StrictMode>
     <ThemeProvider theme={pimTheme}>
@@ -24,8 +23,9 @@ ReactDOM.render(
                 </Route>
                 <Route path="/">
                   <CanLeavePageProvider
-                      setCanLeavePage={() => true}
-                      setLeavePageMessage={() => translate('akeneo.category.edition_form.unsaved_changes')}>
+                    setCanLeavePage={() => true}
+                    setLeavePageMessage={() => translate('akeneo.category.edition_form.unsaved_changes')}
+                  >
                     <CategoriesApp />
                   </CanLeavePageProvider>
                 </Route>

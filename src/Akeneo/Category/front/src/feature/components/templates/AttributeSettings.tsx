@@ -54,9 +54,7 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
   );
   const {setCanLeavePage, setLeavePageMessage} = useContext(CanLeavePageContext);
 
-  setLeavePageMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
-
-  const updateSavedStatuses = (saved: boolean) => {
+  const updateCanLeavePageStatuses = (saved: boolean) => {
     if (Object.keys(error).length === 0) {
       setSaved(saved);
       setCanLeavePage(saved);
@@ -67,9 +65,9 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
 
   const handleRichTextAreaChange = () => {
     setIsRichTextArea(!isRichTextArea);
-    updateSavedStatuses(false);
+    updateCanLeavePageStatuses(false);
     updateTemplateAttribute({isRichTextArea: !isRichTextArea}).then(() => {
-      updateSavedStatuses(true);
+      updateCanLeavePageStatuses(true);
     });
   };
   const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string) => {
@@ -79,22 +77,23 @@ export const AttributeSettings = ({attribute, activatedCatalogLocales}: Props) =
           delete error[locale];
           setError({...error});
         }
-        updateSavedStatuses(true);
+        updateCanLeavePageStatuses(true);
       })
       .catch((error: BadRequestError<ApiResponseError>) => {
         const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
           accumulator[currentError.error.property] = [currentError.error.message];
           return accumulator;
         }, {});
-        updateSavedStatuses(false);
+        setError(state => ({...state, ...errors}));
+        setSaved(false);
+        setCanLeavePage(false);
         setLeavePageMessage(translate('akeneo.category.template.attribute.settings.error_message'));
         setUnsavedMessage(translate('akeneo.category.template.attribute.settings.error_message'));
-        setError(state => ({...state, ...errors}));
       });
   }, 300);
   const handleTranslationsChange = (locale: string, value: string) => {
     setTranslations({...translations, [locale]: value});
-    updateSavedStatuses(false);
+    updateCanLeavePageStatuses(false);
     debouncedUpdateTemplateAttribute(locale, value);
   };
 
