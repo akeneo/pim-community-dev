@@ -2,7 +2,7 @@ import {CheckRoundIcon, DangerIcon, EditIcon, LoaderIcon} from 'akeneo-design-sy
 import {useSaveStatusContext} from '../../hooks/useSaveStatusContext';
 import {Status} from '../providers/SaveStatusProvider';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const SaveStatusIndicator = () => {
   const saveStatus = useSaveStatusContext();
@@ -51,11 +51,11 @@ const IndicatorContainer = styled.div`
 const TextBlack = styled.p`
   margin-left: 10px;
   margin-right: 10px;
-  color: #11324D;
+  color: #11324d;
 `;
 
 const TextGrey = styled.p`
   margin-left: 10px;
   margin-right: 10px;
-  color: #67768A;
+  color: #67768a;
 `;

@@ -2,6 +2,7 @@ import {
   getLabel,
   PageHeader,
   PimView,
+  useFeatureFlags,
   useRouter,
   useSessionStorageState,
   useTranslate,
@@ -38,6 +39,7 @@ const TemplatePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const userContext = useUserContext();
+  const featureFlag = useFeatureFlags();
 
   const catalogLocale = userContext.get('catalogLocale');
 
@@ -119,9 +121,11 @@ const TemplatePage: FC = () => {
             </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
-        <PageHeader.AutoSaveStatus>
-          <SaveStatusIndicator/>
-        </PageHeader.AutoSaveStatus>
+        {featureFlag.isEnabled('category_update_template_attribute') && (
+          <PageHeader.AutoSaveStatus>
+            <SaveStatusIndicator />
+          </PageHeader.AutoSaveStatus>
+        )}
         <PageHeader.UserActions>
           <PimView
             viewName="pim-menu-user-navigation"
