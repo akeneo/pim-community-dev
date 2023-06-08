@@ -13,7 +13,6 @@ interface Props {
 }
 
 type Translations = {[attributeUuid: string]: LabelCollection};
-
 type AttributeTranslationErrors = {[attributeUuid: string]: {[locale: string]: string[]}};
 
 export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {

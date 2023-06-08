@@ -138,7 +138,7 @@ const PageHeader: PageHeaderInterface = ({children, showPlaceholder}) => {
 
   const {isEnabled} = useFeatureFlags();
   const isSandboxBannerDisplayed = isEnabled('sandbox_banner') && useSystemConfiguration().get('sandbox_banner');
-  console.log('tata');
+
   return (
     <>
       <SandboxHelper />
