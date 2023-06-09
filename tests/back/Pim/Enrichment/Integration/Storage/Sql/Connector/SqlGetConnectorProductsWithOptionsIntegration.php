@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\NumberValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
@@ -154,7 +155,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 new ReadValueCollection([
                     new OptionValueWithLinkedData('a_simple_select','optionA', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionA', 'labels' => ['en_US' => 'Option A',],]),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                    ScalarValue::value('sku', 'apollon_A_false'),
+                    IdentifierValue::value('sku', false, 'apollon_A_false'),
                     ScalarValue::value('a_yes_no', false),
                     NumberValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
@@ -210,7 +211,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 new ReadValueCollection([
                     new OptionValueWithLinkedData('a_simple_select','optionB', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionB', 'labels' => ['en_US' => 'Option B',],]),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                    ScalarValue::value('sku', 'apollon_B_false'),
+                    IdentifierValue::value('sku', false, 'apollon_B_false'),
                     ScalarValue::value('a_yes_no', false),
                     NumberValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
@@ -406,7 +407,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             new ReadValueCollection([
                 new OptionValueWithLinkedData('a_simple_select','optionB', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionB', 'labels' => ['en_US' => 'Option B',],]),
                 PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                ScalarValue::value('sku', 'apollon_B_false'),
+                IdentifierValue::value('sku', false, 'apollon_B_false'),
                 ScalarValue::value('a_yes_no', false),
                 NumberValue::value('a_number_float', '12.5000'),
                 ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
@@ -472,7 +473,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 new ReadValueCollection([
                     new OptionValueWithLinkedData('a_simple_select','optionA', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionA', 'labels' => ['en_US' => 'Option A',],]),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                    ScalarValue::value('sku', 'apollon_A_false'),
+                    IdentifierValue::value('sku', false, 'apollon_A_false'),
                     ScalarValue::value('a_yes_no', false),
                     NumberValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
@@ -528,7 +529,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 new ReadValueCollection([
                     new OptionValueWithLinkedData('a_simple_select','optionB', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionB', 'labels' => ['en_US' => 'Option B',],]),
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                    ScalarValue::value('sku', 'apollon_B_false'),
+                    IdentifierValue::value('sku', false, 'apollon_B_false'),
                     ScalarValue::value('a_yes_no', false),
                     NumberValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
