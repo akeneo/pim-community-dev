@@ -11,7 +11,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -41,7 +40,6 @@ final class JobExecutionWatchdogCommand extends Command
         private readonly LoggerInterface $logger,
         private readonly string $projectDir,
         private readonly CreateJobExecutionHandlerInterface $createJobExecutionHandler,
-        protected readonly LockFactory $lockFactory,
     ) {
         parent::__construct();
     }
@@ -144,7 +142,6 @@ final class JobExecutionWatchdogCommand extends Command
             if ($this->executionManager->getExitStatus((int) $jobExecutionId)?->isRunning()) {
                 $this->executionManager->markAsFailed($jobExecutionId);
             }
-            $this->releaseJobLock((int) $jobExecutionId);
         }
 
         $executionTimeInSec = time() - $startTime;
@@ -231,16 +228,6 @@ final class JobExecutionWatchdogCommand extends Command
         $errors = $process->getIncrementalErrorOutput();
         if ($errors) {
             $this->logger->error($errors);
-        }
-    }
-
-    private function releaseJobLock(int $jobExecutionId): void
-    {
-        $jobCode = $this->executionManager->jobCodeFromJobExecutionId($jobExecutionId);
-        $lockIdentifier = sprintf('scheduled-job-%s', $jobCode);
-        $lock = $this->lockFactory->createLock($lockIdentifier);
-        if ($lock->isAcquired()) {
-            $lock->release();
         }
     }
 }

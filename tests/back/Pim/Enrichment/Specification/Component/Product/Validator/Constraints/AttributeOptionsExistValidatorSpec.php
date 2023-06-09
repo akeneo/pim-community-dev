@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptio
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\AttributeOptionsExistValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -62,7 +63,7 @@ class AttributeOptionsExistValidatorSpec extends ObjectBehavior
 
         $values = new WriteValueCollection(
             [
-                ScalarValue::value('sku', 'my_identifier'),
+                IdentifierValue::value('sku', true, 'my_identifier'),
                 ScalarValue::localizableValue('description', 'en_US', 'An awesome description'),
                 DateValue::value('release_date', new \DateTime()),
             ]

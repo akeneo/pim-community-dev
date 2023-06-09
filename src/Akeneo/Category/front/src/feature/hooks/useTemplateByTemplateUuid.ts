@@ -16,8 +16,11 @@ export const useTemplateByTemplateUuid = (uuid: string | null) => {
   });
 
   const fetchTemplate = useCallback(async () => {
+    if (uuid === null || uuid === undefined || uuid === '') {
+      return null;
+    }
     return await apiFetch<Template>(url, {method: 'GET'});
-  }, [url]);
+  }, [url, uuid]);
 
   const {data} = useQuery(['get-template', uuid], fetchTemplate, {
     onError: () => {

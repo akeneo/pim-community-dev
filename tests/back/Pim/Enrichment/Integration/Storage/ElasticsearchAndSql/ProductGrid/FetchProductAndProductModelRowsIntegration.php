@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\Prod
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\Configuration;
@@ -67,7 +68,7 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
                 $product2->getUuid()->toString(),
                 null,
                 new WriteValueCollection([
-                    ScalarValue::value('sku', 'baz'),
+                    IdentifierValue::value('sku', false, 'baz'),
                     MediaValue::localizableValue('a_localizable_image', $akeneoImage, 'en_US'),
                     MediaValue::scopableValue('a_scopable_image', $akeneoImage, 'ecommerce'),
                 ])
@@ -100,4 +101,3 @@ class FetchProductAndProductModelRowsIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 }
-

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Middleware;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use Akeneo\Tool\Component\Messenger\Tenant\TenantAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -42,6 +43,10 @@ class UcsMiddleware implements MiddlewareInterface
 
         if ($tenantId && $envelope->getMessage() instanceof TenantAwareInterface) {
             $envelope->getMessage()->setTenantId($tenantId);
+        }
+
+        if (null === $envelope->last(CorrelationIdStamp::class)) {
+            $envelope = $envelope->with(CorrelationIdStamp::generate());
         }
 
         return $stack->next()->handle($envelope, $stack);

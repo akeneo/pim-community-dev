@@ -27,15 +27,11 @@ final class VariantProductRatio implements VariantProductRatioInterface
 
     /**
      * @param ProductModelInterface $productModel
-     * @param string                $channel
-     * @param string                $locale
      *
      * @return CompleteVariantProducts
      */
     public function findComplete(
         ProductModelInterface $productModel,
-        string $channel = '',
-        string $locale = ''
     ): CompleteVariantProducts {
         $join = null;
 
@@ -45,7 +41,7 @@ final class VariantProductRatio implements VariantProductRatioInterface
             $join = $this->joinToProductWithOneLevel();
         }
 
-        return $this->fetchResults($join, $productModel, $channel, $locale);
+        return $this->fetchResults($join, $productModel);
     }
 
     /**
@@ -74,7 +70,7 @@ SQL;
 SQL;
     }
 
-    private function fetchResults(string $subquery, ProductModelInterface $productModel, string $channel = '', string $locale = ''): CompleteVariantProducts
+    private function fetchResults(string $subquery, ProductModelInterface $productModel): CompleteVariantProducts
     {
         //The distinct is the reason why the query is fast
         //It helps the MySQL Optimizer to choose the right path
@@ -98,35 +94,10 @@ SQL;
 SQL;
 
         $query = sprintf($query, $subquery);
-        $parameters = [];
-        $parameters[] = ['name' => 'root_product_model_id', 'value' => $productModel->getId()];
-
-        if (!empty($channel) && !empty($locale)) {
-            $query .= <<<SQL
-            WHERE locale.code = :locale AND channel.code = :channel
-SQL;
-            $parameters[] = ['name' => 'channel', 'value' => $channel];
-            $parameters[] = ['name' => 'locale', 'value' => $locale];
-        } else {
-            if (!empty($locale)) {
-                $query .= <<<SQL
-                    WHERE locale.code = :locale
-SQL;
-                $parameters[] = ['name' => 'locale', 'value' => $locale];
-            }
-            if (!empty($channel)) {
-                $query .= <<<SQL
-                    WHERE channel.code = :channel
-SQL;
-                $parameters[] = ['name' => 'channel', 'value' => $channel];
-            }
-        }
 
         $statement = $this->connection->prepare($query);
 
-        foreach ($parameters as $parameter) {
-            $statement->bindValue($parameter['name'], $parameter['value']);
-        }
+        $statement->bindValue('root_product_model_id', $productModel->getId());
 
         return new CompleteVariantProducts($statement->executeQuery()->fetchAllAssociative());
     }

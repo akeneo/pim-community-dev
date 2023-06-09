@@ -2,23 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\MessengerBundle\Handler;
+namespace Akeneo\Tool\Bundle\MessengerBundle\Process;
 
-use Akeneo\Tool\Component\Messenger\TraceableMessageInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Handler for all TraceableMessageInterface messages.
- * It extracts the tenant id in order to launch the real treatment of the message
- * in a tenant aware process.
- *
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class TraceableMessageBridgeHandler implements MessageHandlerInterface
+class RunMessageProcess
 {
     private const RUNNING_PROCESS_CHECK_INTERVAL_MICROSECONDS = 1000;
     private const LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS = 300;
@@ -26,45 +20,49 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly LoggerInterface $logger,
-        private readonly string $consumerName,
     ) {
     }
 
-    public function __invoke(TraceableMessageInterface $message): void
+    public function __invoke(object $message, string $consumerName, ?string $tenantId, ?string $correlationId): void
     {
-        $tenantId = $message->getTenantId();
-
-        $this->logger->debug('Message received', [
+        $context = [
             'tenant_id' => $tenantId,
-            'correlation_id' => $message->getCorrelationId(),
-        ]);
+            'correlation_id' => $correlationId,
+            'consumer_name' => $consumerName,
+            'message_class' => \get_class($message),
+        ];
+
+        $this->logger->debug('Message received', $context);
 
         $env = [
             'SYMFONY_DOTENV_VARS' => false,
         ];
-        if (null !== $tenantId) {
+
+        if (null !== $tenantId && '' !== $tenantId) {
             $env['APP_TENANT_ID'] = $tenantId;
-        };
+        }
 
         try {
             $process = new Process([
                 'php',
                 'bin/console',
                 'akeneo:process-message',
-                $this->consumerName,
+                $consumerName,
                 \get_class($message),
                 $this->serializer->serialize($message, 'json'),
+                $correlationId,
             ], null, $env);
 
-            $this->runProcess($process, $message);
+            $this->runProcess($process, $context);
         } catch (\Throwable $t) {
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()), [
+                ...$context,
                 'trace' => $t->getTraceAsString(),
             ]);
         }
     }
 
-    private function runProcess(Process $process, TraceableMessageInterface $message): void
+    private function runProcess(Process $process, array $context): void
     {
         $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
@@ -74,9 +72,7 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
         while ($process->isRunning()) {
             if (!$warningLogIsSent && self::LONG_RUNNING_PROCESS_THRESHOLD_IN_SECONDS <= time() - $startTime) {
                 $this->logger->warning('Message handler has a long running process', [
-                    'tenant_id' => $message->getTenantId(),
-                    'correlation_id' => $message->getCorrelationId(),
-                    'message_class' => \get_class($message),
+                    ...$context,
                     'command_line' => $process->getCommandLine(),
                 ]);
                 $warningLogIsSent = true;
@@ -85,8 +81,7 @@ final class TraceableMessageBridgeHandler implements MessageHandlerInterface
         }
 
         $this->logger->debug('Command akeneo:process-message executed', [
-            'tenant_id' => $message->getTenantId(),
-            'correlation_id' => $message->getCorrelationId(),
+            ...$context,
             'execution_time_in_sec' => time() - $startTime,
             'process_exit_code' => $process->getExitCode(),
             'process_output' => $process->getOutput(),
