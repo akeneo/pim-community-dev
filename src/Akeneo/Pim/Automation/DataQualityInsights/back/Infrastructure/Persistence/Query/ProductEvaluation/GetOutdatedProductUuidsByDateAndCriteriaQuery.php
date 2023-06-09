@@ -48,7 +48,6 @@ final class GetOutdatedProductUuidsByDateAndCriteriaQuery implements GetOutdated
             $queryTypes['criterion_codes'] = Connection::PARAM_STR_ARRAY;
         }
 
-        // It's simpler to fetch only products that are up-to-date, because a product may not have criteria evaluation yet in database (just after its creation)
         $query = <<<SQL
 SELECT DISTINCT BIN_TO_UUID(pcp.uuid) AS product_uuid
 FROM pim_catalog_product AS pcp 
