@@ -45,11 +45,8 @@ class PurgeVersioningCommandIntegration extends TestCase
         /** @var LockFactory $lockFactory */
         $lockFactory = $this->get('pim_framework.lock.factory');
         $lockIdentifier = 'scheduled-job-versioning_purge';
-        $lock = $lockFactory->createLock($lockIdentifier, 300);
+        $lock = $lockFactory->createLock($lockIdentifier, 300, false);
         $lock->acquire();
-
-        $expectedOriginalVersionsCount = 25;
-        $this->initializeVersions($expectedOriginalVersionsCount);
 
         $output = $this->runPurgeCommand();
         $result = $output->fetch();
@@ -64,6 +61,30 @@ class PurgeVersioningCommandIntegration extends TestCase
             'Start purging versions',
             $result
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_launch_purge_if_lock_expires(): void
+    {
+        $expectedOriginalVersionsCount = 25;
+        $this->initializeVersions($expectedOriginalVersionsCount);
+
+        $expectedDeletedVersionsCount = 18;
+
+        /** @var LockFactory $lockFactory */
+        $lockFactory = $this->get('pim_framework.lock.factory');
+        $lockIdentifier = 'scheduled-job-versioning_purge';
+        $lock = $lockFactory->createLock($lockIdentifier, 2, false);
+        $lock->acquire();
+
+        sleep(3);
+
+        $output = $this->runPurgeCommand();
+        $result = $output->fetch();
+
+        $this->assertPurgeResult($result, $expectedOriginalVersionsCount, $expectedDeletedVersionsCount, 0);
     }
 
     /**
