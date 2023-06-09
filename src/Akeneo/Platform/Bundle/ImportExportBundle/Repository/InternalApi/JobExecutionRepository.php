@@ -7,6 +7,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 
 /**
@@ -26,7 +27,7 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('e');
         $qb
@@ -52,7 +53,7 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
         return $qb;
     }
 
-    public function isOtherJobExecutionRunning(JobExecution $jobExecution)
+    public function isOtherJobExecutionRunning(JobExecution $jobExecution): bool
     {
         $sql = <<< SQL
         SELECT EXISTS(
