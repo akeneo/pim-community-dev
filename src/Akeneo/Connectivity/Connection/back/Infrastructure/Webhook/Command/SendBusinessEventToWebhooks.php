@@ -6,7 +6,11 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLoggerInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepositoryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventNormalizer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
@@ -25,10 +29,15 @@ class SendBusinessEventToWebhooks extends Command
     protected static $defaultDescription = 'Send business event to webhooks';
 
     public function __construct(
-        private BulkEventNormalizer $bulkEventNormalizer,
-        private SendBusinessEventToWebhooksHandler $commandHandler,
-        private EventDispatcherInterface $eventDispatcher,
-        private LoggerInterface $logger,
+        private readonly BulkEventNormalizer $bulkEventNormalizer,
+        private readonly SendBusinessEventToWebhooksHandler $commandHandler,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly LoggerInterface $logger,
+        private readonly GetDelayUntilNextRequest $getDelayUntilNextRequest,
+        private readonly int $webhookRequestsLimit,
+        private readonly ReachRequestLimitLogger $reachRequestLimitLogger,
+        private readonly LimitOfEventsApiRequestsReachedLoggerInterface $limitOfEventsApiRequestsReachedLogger,
+        private readonly EventsApiDebugRepositoryInterface $eventsApiDebugRepository
     ) {
         parent::__construct();
     }
@@ -51,6 +60,10 @@ class SendBusinessEventToWebhooks extends Command
     {
         $message = \json_decode($input->getArgument('message'), true, 512, JSON_THROW_ON_ERROR);
         $event = $this->bulkEventNormalizer->denormalize($message, BulkEvent::class);
+
+        if ($this->isWebhookLimitReached()) {
+            return Command::SUCCESS;
+        }
 
         // Errors are thrown when the database or ElasticSearch are off following a deployment
         // but the cron is still active and executing this command.
@@ -81,5 +94,26 @@ class SendBusinessEventToWebhooks extends Command
         }
 
         return Command::SUCCESS;
+    }
+
+    private function isWebhookLimitReached(): bool
+    {
+        $delayUntilNextRequest = $this->getDelayUntilNextRequest->execute(
+            new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
+            $this->webhookRequestsLimit
+        );
+
+        if ($delayUntilNextRequest > 0) {
+            $this->reachRequestLimitLogger->log(
+                $this->webhookRequestsLimit,
+                new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
+                $delayUntilNextRequest
+            );
+
+            $this->limitOfEventsApiRequestsReachedLogger->logLimitOfEventsApiRequestsReached();
+            $this->eventsApiDebugRepository->flush();
+        }
+
+        return $delayUntilNextRequest > 0;
     }
 }
