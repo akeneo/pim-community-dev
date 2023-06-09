@@ -212,7 +212,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         return null !== $this->yaml ? ['position' => $this->yaml->key()] : [];
     }
 
-    public function rewindToState(int $key): void
+    public function rewindToState(array $state): void
     {
         // TODO: Implement rewindToState() method.
     }

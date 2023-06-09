@@ -13,5 +13,5 @@ interface PausableReaderInterface
 {
     public function getState(): array;
 
-    public function rewindToState(int $key): void;
+    public function rewindToState(array $state): void;
 }
