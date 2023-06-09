@@ -21,7 +21,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class SendBusinessEventToWebhooks extends Command
 {
     private const MYSQL_IS_UNAVAILABLE_ERROR_CODE = 2002;
-
     protected static $defaultName = 'akeneo:connectivity:send-business-event';
     protected static $defaultDescription = 'Send business event to webhooks';
 
