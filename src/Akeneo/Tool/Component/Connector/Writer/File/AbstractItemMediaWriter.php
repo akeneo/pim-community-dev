@@ -399,7 +399,7 @@ abstract class AbstractItemMediaWriter implements
         return [
             'current_buffer_file_path' => $this->exportedFileBackuper->backup(
                 $this->stepExecution->getJobExecution(),
-                $this->flatRowBuffer->getFilePath()
+                $this->flatRowBuffer->getFilePath(),
             ),
             'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->writtenFiles),
         ];

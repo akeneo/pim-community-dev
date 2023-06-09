@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -31,6 +32,7 @@ class CsvUserWriterSpec extends ObjectBehavior
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         FileExporterPathGeneratorInterface $fileExporterPathGenerator,
+        ExportedFileBackuper $exportedFileBackuper,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,
@@ -43,7 +45,8 @@ class CsvUserWriterSpec extends ObjectBehavior
             $flusher,
             $fileInfoRepository,
             $filesystemProvider,
-            $fileExporterPathGenerator
+            $fileExporterPathGenerator,
+            $exportedFileBackuper,
         );
 
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/tmp/akeneo_batch1234/');

@@ -4,10 +4,8 @@ namespace AkeneoTest\Tool\Integration\Connector\Writer\File;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
 class ExportedFileBackuperIntegration extends TestCase
 {
@@ -23,7 +21,7 @@ class ExportedFileBackuperIntegration extends TestCase
             $jobInstance->getCode(),
             $jobExecution->getId(),
             'backup',
-            basename($filePath)
+            basename($filePath),
         );
 
         $backuper = $this->get('pim_connector.writer.file.backuper');

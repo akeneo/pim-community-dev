@@ -151,7 +151,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
         return [
             'current_file_path' => $this->exportedFileBackuper->backup(
                 $this->stepExecution->getJobExecution(),
-                $this->getPath()
+                $this->getPath(),
             ),
         ];
     }
