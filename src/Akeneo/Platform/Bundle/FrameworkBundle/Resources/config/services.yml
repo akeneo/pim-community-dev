@@ -14,7 +14,7 @@ services:
             - '%env(string:AKENEO_PIM_URL)%'
 
     pim_framework.lock.store:
-        class: Akeneo\Platform\Bundle\FrameworkBundle\Service\PimLockStore
+        class: Symfony\Component\Lock\Store\PdoStore
         arguments:
             - '@database_connection'
 

@@ -4,8 +4,6 @@ services:
             - '@logger'
             - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface'
             - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
-            - '@pim_enrich.repository.job_execution'
-            - '@pim_framework.lock.factory'
             - '%env(int:PIM_VERSIONING_RETENTION_IN_DAYS)%'
         tags:
             - { name: console.command }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi;
 
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
@@ -49,5 +50,23 @@ class JobExecutionRepository extends EntityRepository implements DatagridReposit
         $qb->groupBy('e.id');
 
         return $qb;
+    }
+
+    public function isOtherJobExecutionRunning(JobExecution $jobExecution)
+    {
+        $sql = <<< SQL
+        SELECT EXISTS(
+            SELECT 1 FROM akeneo_batch_job_execution
+            WHERE job_instance_id = ? AND STATUS IN (2, 3, 4) AND id <> ?
+        )
+        SQL;
+
+        return (bool) $this->getEntityManager()->getConnection()->executeQuery(
+            $sql,
+            [
+                $jobExecution->getJobInstance()->getId(),
+                $jobExecution->getId(),
+            ]
+        )->fetchOne();
     }
 }

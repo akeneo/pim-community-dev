@@ -2,11 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface;
 use Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface;
-use Akeneo\Tool\Component\Batch\Job\ExitStatus;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use InvalidArgumentException;
 use Monolog\Handler\StreamHandler;
 use Psr\Log\LoggerInterface;
@@ -17,7 +14,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Lock\LockFactory;
 
 /**
  * Purge version of entities
@@ -39,8 +35,6 @@ class PurgeCommand extends Command
         private readonly LoggerInterface $logger,
         private readonly ExecuteJobExecutionHandlerInterface $jobExecutionRunner,
         private readonly CreateJobExecutionHandlerInterface $jobExecutionFactory,
-        private readonly JobExecutionRepository $jobExecutionRepository,
-        private readonly LockFactory $lockFactory,
         private readonly ?int $versioningRetentionInDays
     ) {
         parent::__construct();
@@ -142,10 +136,7 @@ class PurgeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $noDebug = $input->getOption('no-debug');
-        if (!$noDebug) {
-            $this->logger->pushHandler(new StreamHandler('php://stdout'));
-        }
+        $this->logger->pushHandler(new StreamHandler('php://stdout'));
 
         $isForced = $input->getOption('force');
         $moreThanDays = null !== $input->getOption('more-than-days') ? (int)$input->getOption('more-than-days') : null;
@@ -196,16 +187,6 @@ class PurgeCommand extends Command
 
         $jobExecution = $this->jobExecutionFactory->createFromBatchCode(self::JOB_CODE, $batchConfig, null);
         $this->jobExecutionRunner->executeFromJobExecutionId($jobExecution->getId());
-
-        /** @var JobExecution $jobExecutionResult */
-        $jobExecutionResult = $this->jobExecutionRepository->find($jobExecution->getId());
-
-        $lockIdentifier = 'scheduled-job-versioning_purge';
-        $lock = $this->lockFactory->createLock($lockIdentifier, 3600, false);
-        if ($jobExecutionResult->getExitStatus()->getExitCode() === ExitStatus::COMPLETED) {
-            $lock->release();
-            $this->logger->info(sprintf('Lock %s released', $lockIdentifier));
-        }
 
         return Command::SUCCESS;
     }

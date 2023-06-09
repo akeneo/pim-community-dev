@@ -6,7 +6,6 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Command;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\Batch\Exception\InvalidJobException;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -43,7 +42,7 @@ class PurgeVersioningWatchdogIntegration extends TestCase
 
         $jobExecutionRawParameters = $this->getConnection()->executeQuery(
             'SELECT raw_parameters FROM akeneo_batch_job_execution WHERE id=id',
-            ['id'=> $jobExecutionId]
+            ['id' => $jobExecutionId]
         )->fetchOne();
 
         $jobExecutionRawParameters = \json_decode($jobExecutionRawParameters, true);
@@ -76,7 +75,7 @@ class PurgeVersioningWatchdogIntegration extends TestCase
 
         $jobExecutionRawParameters = $this->getConnection()->executeQuery(
             'SELECT raw_parameters FROM akeneo_batch_job_execution WHERE id=id',
-            ['id'=> $jobExecutionId]
+            ['id' => $jobExecutionId]
         )->fetchOne();
 
         $jobExecutionRawParameters = \json_decode($jobExecutionRawParameters, true);
