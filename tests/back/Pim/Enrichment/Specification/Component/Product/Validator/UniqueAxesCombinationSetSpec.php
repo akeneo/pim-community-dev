@@ -2,14 +2,14 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator;
 
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\AlreadyExistingAxisValueCombinationException;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
+use PhpSpec\ObjectBehavior;
 
 class UniqueAxesCombinationSetSpec extends ObjectBehavior
 {
@@ -39,7 +39,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
 
         $identifierAttribute = new Attribute();
         $identifierAttribute->setCode('sku');
-        $identifierA = ScalarValue::value('sku', 'product_a');
+        $identifierA = IdentifierValue::value('sku', true, 'product_a');
 
         $variantProductA = new Product();
         $variantProductA->addValue($identifierA);
@@ -47,7 +47,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $variantProductA->setFamilyVariant($familyVariant);
         $variantProductA->setParent($productModel);
 
-        $identifierB = ScalarValue::value('sku', 'product_b');
+        $identifierB = IdentifierValue::value('sku', true, 'product_b');
 
         $variantProductB = new Product();
         $variantProductB->addValue($identifierB);
@@ -109,7 +109,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
 
         $identifierAttribute = new Attribute();
         $identifierAttribute->setCode('sku');
-        $identifier = ScalarValue::value('sku', 'valid_variant_product');
+        $identifier = IdentifierValue::value('sku', true, 'valid_variant_product');
 
         $variantProduct = new Product();
         $variantProduct->addValue($identifier);
@@ -117,7 +117,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $variantProduct->setFamilyVariant($familyVariant);
         $variantProduct->setParent($productModel);
 
-        $invalidIdentifier = ScalarValue::value('sku', 'invalid_product');
+        $invalidIdentifier = IdentifierValue::value('sku', true, 'invalid_product');
 
         $invalidVariantProduct = new Product();
         $invalidVariantProduct->addValue($invalidIdentifier);
