@@ -77,33 +77,35 @@ export const AttributeSettings = ({
     await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
   };
   const debouncedUpdateTemplateAttribute = useDebounceCallback(
-      (attributeUuid: string, locale: string, value: string) => {
-    saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVING);
-    updateTemplateAttribute({labels: {[locale]: value}})
-      .then(() => {
-        if (undefined !== translationErrors && translationErrors[locale]) {
-          delete translationErrors[locale];
-          onTranslationErrorsChange(locale, []);
-          onChangeFormStatus(attributeUuid, Object.keys(translationErrors).length !== 0);
-        }
-        saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVED);
-      })
-      .catch((error: BadRequestError<ApiResponseError>) => {
-        saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.ERRORS);
-        const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
-          accumulator[currentError.error.property] = [currentError.error.message];
+    (attributeUuid: string, locale: string, value: string) => {
+      saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVING);
+      updateTemplateAttribute({labels: {[locale]: value}})
+        .then(() => {
+          if (undefined !== translationErrors && translationErrors[locale]) {
+            delete translationErrors[locale];
+            onTranslationErrorsChange(locale, []);
+            onChangeFormStatus(attributeUuid, Object.keys(translationErrors).length !== 0);
+          }
+          saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVED);
+        })
+        .catch((error: BadRequestError<ApiResponseError>) => {
+          saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.ERRORS);
+          const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
+            accumulator[currentError.error.property] = [currentError.error.message];
 
-          return accumulator;
-        }, {});
-        onTranslationErrorsChange(locale, errors[locale]);
-        onChangeFormStatus(attributeUuid, true);
-        notify(
-          NotificationLevel.ERROR,
-          translate('akeneo.category.template.auto-save.error_notification.title'),
-          translate('akeneo.category.template.auto-save.error_notification.content')
-        );
-      });
-  }, 300);
+            return accumulator;
+          }, {});
+          onTranslationErrorsChange(locale, errors[locale]);
+          onChangeFormStatus(attributeUuid, true);
+          notify(
+            NotificationLevel.ERROR,
+            translate('akeneo.category.template.auto-save.error_notification.title'),
+            translate('akeneo.category.template.auto-save.error_notification.content')
+          );
+        });
+    },
+    300
+  );
   const handleTranslationChange = (locale: string, value: string) => {
     onTranslationsChange(locale, value);
     debouncedUpdateTemplateAttribute(attribute.uuid, locale, value);
