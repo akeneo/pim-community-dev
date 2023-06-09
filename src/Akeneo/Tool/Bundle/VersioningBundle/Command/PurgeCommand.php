@@ -136,10 +136,7 @@ class PurgeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $noDebug = $input->getOption('no-debug');
-        if (!$noDebug) {
-            $this->logger->pushHandler(new StreamHandler('php://stdout'));
-        }
+        $this->logger->pushHandler(new StreamHandler('php://stdout'));
 
         $isForced = $input->getOption('force');
         $moreThanDays = null !== $input->getOption('more-than-days') ? (int)$input->getOption('more-than-days') : null;

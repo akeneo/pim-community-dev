@@ -88,7 +88,6 @@ services:
             - '@logger'
             - '%kernel.project_dir%'
             - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
-            - '@pim_framework.lock.factory'
         tags:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
