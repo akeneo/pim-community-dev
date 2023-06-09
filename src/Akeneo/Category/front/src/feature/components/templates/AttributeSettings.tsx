@@ -26,6 +26,7 @@ type Props = {
   onTranslationsChange: (locale: string, value: string) => void;
   translationErrors: {[locale: string]: string[]} | {};
   onTranslationErrorsChange: (locale: string, errors: string[]) => void;
+  onChangeFormStatus: (attributeUuid: string, inError: boolean) => void;
 };
 
 type ResponseError = {
@@ -44,6 +45,7 @@ export const AttributeSettings = ({
   onTranslationsChange,
   translationErrors,
   onTranslationErrorsChange,
+  onChangeFormStatus,
 }: Props) => {
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
@@ -74,34 +76,39 @@ export const AttributeSettings = ({
     await updateTemplateAttribute({isRichTextArea: !(attribute.type === 'richtext')});
     await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
   };
-  const debouncedUpdateTemplateAttribute = useDebounceCallback((locale: string, value: string) => {
-    saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVING);
-    updateTemplateAttribute({labels: {[locale]: value}})
-      .then(() => {
-        if (undefined !== translationErrors && translationErrors[locale]) {
-          delete translationErrors[locale];
-          onTranslationErrorsChange(locale, []);
-        }
-        saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVED);
-      })
-      .catch((error: BadRequestError<ApiResponseError>) => {
-        saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.ERRORS);
-        const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
-          accumulator[currentError.error.property] = [currentError.error.message];
+  const debouncedUpdateTemplateAttribute = useDebounceCallback(
+    (attributeUuid: string, locale: string, value: string) => {
+      saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVING);
+      updateTemplateAttribute({labels: {[locale]: value}})
+        .then(() => {
+          if (undefined !== translationErrors && translationErrors[locale]) {
+            delete translationErrors[locale];
+            onTranslationErrorsChange(locale, []);
+            onChangeFormStatus(attributeUuid, Object.keys(translationErrors).length !== 0);
+          }
+          saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVED);
+        })
+        .catch((error: BadRequestError<ApiResponseError>) => {
+          saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.ERRORS);
+          const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
+            accumulator[currentError.error.property] = [currentError.error.message];
 
-          return accumulator;
-        }, {});
-        onTranslationErrorsChange(locale, errors[locale]);
-        notify(
-          NotificationLevel.ERROR,
-          translate('akeneo.category.template.auto-save.error_notification.title'),
-          translate('akeneo.category.template.auto-save.error_notification.content')
-        );
-      });
-  }, 300);
+            return accumulator;
+          }, {});
+          onTranslationErrorsChange(locale, errors[locale]);
+          onChangeFormStatus(attributeUuid, true);
+          notify(
+            NotificationLevel.ERROR,
+            translate('akeneo.category.template.auto-save.error_notification.title'),
+            translate('akeneo.category.template.auto-save.error_notification.content')
+          );
+        });
+    },
+    300
+  );
   const handleTranslationChange = (locale: string, value: string) => {
     onTranslationsChange(locale, value);
-    debouncedUpdateTemplateAttribute(locale, value);
+    debouncedUpdateTemplateAttribute(attribute.uuid, locale, value);
   };
 
   const buildStatusId = (attributeUuid: string, locale: string) => {
