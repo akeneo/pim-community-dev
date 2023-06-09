@@ -2,6 +2,7 @@ import {
   getLabel,
   PageHeader,
   PimView,
+  useFeatureFlags,
   useRouter,
   useSessionStorageState,
   useTranslate,
@@ -18,6 +19,8 @@ import {TemplateOtherActions} from '../components/templates/TemplateOtherActions
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
 import {Template} from '../models';
 import styled from 'styled-components';
+import {SaveStatusProvider} from '../components/providers/SaveStatusProvider';
+import {SaveStatusIndicator} from '../components/templates/SaveStatusIndicator';
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -36,6 +39,7 @@ const TemplatePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const userContext = useUserContext();
+  const featureFlag = useFeatureFlags();
 
   const catalogLocale = userContext.get('catalogLocale');
 
@@ -101,7 +105,7 @@ const TemplatePage: FC = () => {
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
 
   return (
-    <>
+    <SaveStatusProvider>
       <PageHeader>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
@@ -117,6 +121,11 @@ const TemplatePage: FC = () => {
             </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
+        {featureFlag.isEnabled('category_update_template_attribute') && (
+          <PageHeader.AutoSaveStatus>
+            <SaveStatusIndicator />
+          </PageHeader.AutoSaveStatus>
+        )}
         <PageHeader.UserActions>
           <PimView
             viewName="pim-menu-user-navigation"
@@ -163,7 +172,7 @@ const TemplatePage: FC = () => {
           />
         )}
       </PageContent>
-    </>
+    </SaveStatusProvider>
   );
 };
 
