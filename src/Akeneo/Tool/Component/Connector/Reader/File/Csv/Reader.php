@@ -222,12 +222,12 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         return null !== $this->fileIterator ? ['position' => $this->fileIterator->key()] : [];
     }
 
-    public function rewindToState(int $key): void
+    public function rewindToState(array $state): void
     {
         $this->initFileIterator();
 
         $this->fileIterator->current();
-        while ($this->fileIterator->key() < $key) {
+        while ($this->fileIterator->key() < array_key_exists('position', $state) ? $state['position'] : 0) {
             $this->fileIterator->next();
         }
     }

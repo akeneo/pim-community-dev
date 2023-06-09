@@ -206,7 +206,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         return null !== $this->fileIterator ? ['position' => $this->fileIterator->key()] : [];
     }
 
-    public function rewindToState(int $key): void
+    public function rewindToState(array $state): void
     {
         // TODO: Implement rewindToState() method.
     }
