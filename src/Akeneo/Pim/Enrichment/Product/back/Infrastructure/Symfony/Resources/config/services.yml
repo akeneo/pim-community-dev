@@ -1,3 +1,8 @@
 services:
     Akeneo\Pim\Enrichment\Product\Domain\Clock:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\SystemClock
+
+    # TODO: move in a dedicated config file ?
+    Akeneo\Pim\Enrichment\Product\back\API\Event\ProductsWereUpdatedNormalizer:
+        tags:
+            - { name: akeneo_messenger.message.normalizer }
