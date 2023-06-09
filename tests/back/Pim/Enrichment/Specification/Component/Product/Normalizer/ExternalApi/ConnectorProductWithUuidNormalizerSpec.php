@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
@@ -220,7 +221,7 @@ class ConnectorProductWithUuidNormalizerSpec extends ObjectBehavior
     function it_normalize_a_single_connection_product(
         ProductValueNormalizer $productValueNormalizer
     ) {
-        $skuValue = ScalarValue::value('sku', 'identifier1');
+        $skuValue = IdentifierValue::value('sku', true, 'identifier1');
         $connector = new ConnectorProduct(
             Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
