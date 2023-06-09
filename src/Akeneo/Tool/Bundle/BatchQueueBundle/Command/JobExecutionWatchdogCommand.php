@@ -241,6 +241,22 @@ final class JobExecutionWatchdogCommand extends Command
         $lock = $this->lockFactory->createLock($lockIdentifier);
         if ($lock->isAcquired()) {
             $lock->release();
+
+            $this->logger->notice(
+                sprintf('Lock %s released', $lockIdentifier),
+                [
+                    'job_code' => $jobCode,
+                    'job_execution_id' => $jobExecutionId,
+                ]
+            );
+        } else {
+            $this->logger->notice(
+                sprintf('No lock found for %s', $lockIdentifier),
+                [
+                    'job_code' => $jobCode,
+                    'job_execution_id' => $jobExecutionId,
+                ]
+            );
         }
     }
 }

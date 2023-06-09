@@ -47,10 +47,10 @@ class CheckJobUniqueStep extends AbstractStep
         $lockIdentifier = sprintf('scheduled-job-%s', $jobCode);
         $lock = $this->lockFactory->createLock($lockIdentifier, static::LOCK_TTL_IN_SECONDS, false);
 
-        if (!$lock->acquire()) {
-            $jobExecution = $stepExecution->getJobExecution();
+        $jobExecution = $stepExecution->getJobExecution();
 
-            $this->logger->error(
+        if (!$lock->acquire()) {
+            $this->logger->warning(
                 'Cannot launch scheduled job because another execution is still running.',
                 [
                     'job_code' => $jobCode,
@@ -58,10 +58,18 @@ class CheckJobUniqueStep extends AbstractStep
                 ]
             );
 
-            $jobExecution = $this->jobExecutionRepository->find($stepExecution->getJobExecution()->getId());
+            $jobExecution = $this->jobExecutionRepository->find($jobExecution->getId());
             $this->executionManager->markAsFailed($jobExecution);
 
             throw new JobInterruptedException(sprintf('Another instance of job %s is already running.', $jobCode));
         }
+
+        $this->logger->notice(
+            sprintf('Lock %s acquired', $lockIdentifier),
+            [
+                'job_code' => $jobCode,
+                'job_execution_id' => $jobExecution->getId(),
+            ]
+        );
     }
 }
