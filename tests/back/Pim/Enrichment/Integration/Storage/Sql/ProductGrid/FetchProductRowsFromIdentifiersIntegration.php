@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FetchProductRowsFromIdentiersInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\Configuration;
@@ -118,7 +118,7 @@ class FetchProductRowsFromIdentifiersIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function getFetchProductRowsFromIdentifiers(): FetchProductRowsFromIdentifiers
+    private function getFetchProductRowsFromIdentifiers(): FetchProductRowsFromIdentiersInterface
     {
         return $this->get('akeneo.pim.enrichment.product.grid.query.fetch_product_rows_from_identifiers');
     }

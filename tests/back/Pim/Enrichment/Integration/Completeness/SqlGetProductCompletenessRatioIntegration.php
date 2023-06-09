@@ -69,6 +69,12 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
                 'productId' => $product->getId(),
             ]
         );
+        $this->get('database_connection')->executeUpdate(
+            'DELETE FROM pim_catalog_product_completeness WHERE product_id = :productId',
+            [
+                'productId' => $product->getId(),
+            ]
+        );
 
         Assert::assertNull(
             $this->getProductCompletenessRatio->forChannelCodeAndLocaleCode($product->getId(), 'ecommerce', 'en_US')

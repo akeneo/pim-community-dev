@@ -10,6 +10,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FetchProductModelRowsFromCodesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FetchProductRowsFromIdentiersInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
 
 /**
@@ -34,8 +36,8 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
     private $productAndProductsModelDocumentTypeFacetFactory;
 
     public function __construct(
-        Sql\ProductGrid\FetchProductRowsFromIdentifiers $fetchProductRowsFromIdentifiers,
-        Sql\ProductGrid\FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes,
+        FetchProductRowsFromIdentiersInterface $fetchProductRowsFromIdentifiers,
+        FetchProductModelRowsFromCodesInterface $fetchProductModelRowsFromCodes,
         Query\AddAdditionalProductPropertiesRegistry $addAdditionalProductProperties,
         Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelProperties,
         ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory

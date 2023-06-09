@@ -17,27 +17,7 @@ use PHPUnit\Framework\Assert;
  */
 class SaveProductCompletenessesIntegration extends TestCase
 {
-    public function test_that_it_does_not_clear_existing_completenesses_and_missing_attributes_if_provided_completenesses_are_empty()
-    {
-        $productId = $this->createProduct('a_great_product');
-        Assert::assertCount(6, $this->getCompletenessesFromDB($productId));
-
-        $this->executeSave(new ProductCompletenessWithMissingAttributeCodesCollection($productId, []));
-        Assert::assertCount(6, $this->getCompletenessesFromDB($productId));
-    }
-
-    public function test_that_it_clears_non_existing_locales_channels()
-    {
-        $this->createChannel('my_channel', ['locales' => ['en_US', 'fr_FR']]);
-        $productId = $this->createProduct('a_great_product');
-        Assert::assertCount(8, $this->getCompletenessesFromDB($productId));
-
-        $this->removeChannel('my_channel');
-        $this->executeSave(new ProductCompletenessWithMissingAttributeCodesCollection($productId, []));
-        Assert::assertCount(6, $this->getCompletenessesFromDB($productId));
-    }
-
-    public function test_that_it_saves_completenesses_given_a_product_id()
+    public function test_that_it_saves_a_product_completenesses(): void
     {
         $productId = $this->createProduct('a_great_product');
         $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productId, [
@@ -46,19 +26,21 @@ class SaveProductCompletenessesIntegration extends TestCase
         $this->executeSave($collection);
 
         $dbCompletenesses = $this->getCompletenessesFromDB($productId);
-        Assert::assertCount(6, $dbCompletenesses);
+        Assert::assertCount(1, $dbCompletenesses);
         Assert::assertEquals(
             [
-                'channel_code' => 'ecommerce',
-                'locale_code' => 'en_US',
-                'missing_count' => 0,
-                'required_count' => 5,
+                'ecommerce' => [
+                    'en_US' => [
+                        'missing' => 0,
+                        'required' => 5,
+                    ]
+                ]
             ],
-            $dbCompletenesses['ecommerce-en_US']
+            $dbCompletenesses,
         );
     }
 
-    public function test_that_it_saves_completenesses()
+    public function test_that_it_saves_completenesses(): void
     {
         $productId = $this->createProduct('a_great_product');
 
@@ -82,24 +64,23 @@ class SaveProductCompletenessesIntegration extends TestCase
         $this->executeSave($collection);
 
         $dbCompletenesses = $this->getCompletenessesFromDB($productId);
-        Assert::assertCount(6, $dbCompletenesses);
+        Assert::assertCount(2, $dbCompletenesses);
         Assert::assertEquals(
             [
-                'channel_code' => 'ecommerce',
-                'locale_code' => 'en_US',
-                'missing_count' => 1,
-                'required_count' => 5,
+                'ecommerce' => [
+                    'en_US' => [
+                        'missing' => 1,
+                        'required' => 5,
+                    ]
+                ],
+                'tablet' => [
+                    'fr_FR' => [
+                        'missing' => 6,
+                        'required' => 10,
+                    ]
+                ],
             ],
-            $dbCompletenesses['ecommerce-en_US']
-        );
-        Assert::assertEquals(
-            [
-                'channel_code' => 'tablet',
-                'locale_code' => 'fr_FR',
-                'missing_count' => 6,
-                'required_count' => 10,
-            ],
-            $dbCompletenesses['tablet-fr_FR']
+            $dbCompletenesses,
         );
     }
 
@@ -124,20 +105,13 @@ class SaveProductCompletenessesIntegration extends TestCase
     private function getCompletenessesFromDB(int $productId): array
     {
         $sql = <<<SQL
-SELECT channel.code as channel_code, locale.code as locale_code, completeness.missing_count, completeness.required_count
-FROM pim_catalog_completeness completeness
-    INNER JOIN pim_catalog_channel channel on channel.id = completeness.channel_id
-    INNER JOIN pim_catalog_locale locale on locale.id = completeness.locale_id
+SELECT completeness
+FROM pim_catalog_product_completeness completeness
 WHERE product_id = :productId
 SQL;
-        $results = [];
-        $rows = $this->get('database_connection')->executeQuery($sql, ['productId' => $productId])->fetchAll();
-        foreach ($rows as $row) {
-            $key = sprintf('%s-%s', $row['channel_code'], $row['locale_code']);
-            $results[$key] = $row;
-        }
+        $result = $this->get('database_connection')->executeQuery($sql, ['productId' => $productId])->fetchOne();
 
-        return $results;
+        return \json_decode($result, true);
     }
 
     private function createChannel(string $code, array $data = []): ChannelInterface
