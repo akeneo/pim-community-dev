@@ -1,0 +1,29 @@
+batch_jobs:
+  csv_locale_import:
+    import.label: Importação de localidade
+  xlsx_locale_import:
+    import.label: Importação de localidade
+pim_enrich.entity.channel:
+  label: canal
+  uppercase_label: Canal
+  flash:
+    update:
+      fail: Não é possível atualizar o canal.
+    create:
+      success: Canal criado com sucesso.
+      fail: Não é possível criar o canal.
+    delete:
+      success: Canal removido com sucesso
+      fail: Não é possível eliminar este canal
+  property:
+    category_tree: Árvore de categoria
+    do_not_convert: Não converter
+  module:
+    delete:
+      confirm: Tem certeza que deseja eliminar este canal?
+pim_enrich.entity.locale:
+  label: linguagem
+  uppercase_label: Local
+  plural_label: Linguagens
+pim_enrich.entity.currency:
+  plural_label: Moedas
