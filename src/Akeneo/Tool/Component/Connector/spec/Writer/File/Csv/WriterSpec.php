@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
+use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -25,9 +26,10 @@ class WriterSpec extends ObjectBehavior
     function let(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        ExportedFileBackuper $exportedFileBackuper,
     ) {
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher);
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $exportedFileBackuper);
     }
 
     function it_is_a_writer()
