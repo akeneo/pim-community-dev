@@ -118,4 +118,15 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
             'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->getWrittenFiles()),
         ];
     }
+
+    public function rewindToState(array $state): void
+    {
+        if (!isset($state['current_buffer_file_path'])) {
+            return;
+        }
+
+        $bufferPath = $this->exportedFileBackuper->restore($state['current_buffer_file_path']);
+
+        $this->flatRowBuffer = $this->bufferFactory->create($bufferPath);
+    }
 }

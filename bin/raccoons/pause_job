@@ -1,0 +1,73 @@
+#!/usr/bin/env php
+
+<?php
+
+use Doctrine\DBAL\Connection;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
+
+set_time_limit(0);
+
+if (false === in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+    echo 'Warning: The console should be invoked via the CLI version of PHP, not the '.\PHP_SAPI.' SAPI'.\PHP_EOL;
+}
+
+require dirname(__DIR__).'/../config/bootstrap.php';
+
+function getLastJobExecutionCurrentState(Connection $connection, string $jobInstanceCode): string
+{
+    $sql = <<<SQL
+WITH last_job_execution AS (
+    SELECT job_execution.id FROM akeneo_batch_job_execution job_execution
+    JOIN akeneo_batch_job_instance job_instance ON job_execution.job_instance_id = job_instance.id               
+    WHERE job_instance.code = :job_instance_code
+    ORDER BY job_execution.id DESC
+    LIMIT 1
+)
+SELECT JSON_OBJECTAGG(step_name, current_state) FROM akeneo_batch_step_execution step_execution
+JOIN last_job_execution job_execution ON step_execution.job_execution_id = job_execution.id
+SQL;
+
+    $rawCurrentState = $connection->executeQuery($sql, ['job_instance_code' => $jobInstanceCode])->fetchOne();
+
+    return $rawCurrentState;
+}
+
+$output = new ConsoleOutput();
+
+$jobInstanceCode = $argv[1] ?? null;
+if (null === $jobInstanceCode) {
+    $output->writeln('You have to pass a job instance code');
+    exit(-1);
+}
+
+$output->writeln('Boot kernel');
+$kernel = new Kernel(getenv('APP_ENV'), false);
+$kernel->boot();
+
+$output->writeln(sprintf('Launch batch command with %s', $jobInstanceCode));
+$batchCommandProcess = new Process(['bin/console', 'akeneo:batch:job', $jobInstanceCode]);
+$batchCommandProcess->start();
+
+$secondsToWait = $argv[2] ?? 5;
+$output->writeln(sprintf('Wait %d seconds', $secondsToWait));
+sleep($secondsToWait);
+
+if ($batchCommandProcess->isTerminated()) {
+    $output->writeln('Batch command has terminated before sending SIGTERM');
+    exit(0);
+}
+
+$output->writeln('Send SIGTERM to batch command');
+$batchCommandProcess->signal(\SIGTERM);
+
+$output->writeln('Wait 2 seconds');
+sleep(2);
+
+/** @var Connection $connection */
+$connection = $kernel->getContainer()->get('database_connection');
+$currentState = getLastJobExecutionCurrentState($connection, $jobInstanceCode);
+
+$output->writeln('Dumping job execution current state');
+$output->writeln($currentState, OutputInterface::OUTPUT_RAW);

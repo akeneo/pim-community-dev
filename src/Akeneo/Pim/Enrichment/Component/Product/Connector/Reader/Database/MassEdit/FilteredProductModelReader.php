@@ -208,4 +208,9 @@ class FilteredProductModelReader implements
             'last_position_read' => $this->productsAndProductModels?->key(),
         ];
     }
+
+    public function rewindToState(array $state): void
+    {
+        // TODO: Implement rewindToState() method.
+    }
 }

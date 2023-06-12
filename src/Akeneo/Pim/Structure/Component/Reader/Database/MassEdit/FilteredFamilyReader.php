@@ -135,4 +135,9 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
             'last_position_read' => $this->families?->key(),
         ];
     }
+
+    public function rewindToState(array $state): void
+    {
+        // TODO: Implement rewindToState() method.
+    }
 }

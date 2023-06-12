@@ -159,4 +159,8 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
             ),
         ];
     }
+
+    public function rewindToState(array $state): void
+    {
+    }
 }

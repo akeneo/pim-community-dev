@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableFileWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
@@ -90,11 +91,11 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             $stepExecution->setTotalItems($this->getCountFromTrackableItemReader());
         }
 
+        $this->batchSize = 1 ;
+
         while (true) {
+            sleep(2);
             try {
-                if ($this->reader instanceof PausableReaderInterface) {
-                    $this->reader->rewindToState($stepExecution->getCurrentState()['reader'] ?? []);
-                }
                 $readItem = $this->reader->read();
                 if (null === $readItem) {
                     break;
@@ -186,6 +187,12 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             }
             if ($element instanceof InitializableInterface) {
                 $element->initialize();
+            }
+            if ($element instanceof PausableReaderInterface) {
+                $element->rewindToState($stepExecution->getCurrentState()['reader'] ?? []);
+            }
+            if ($element instanceof PausableFileWriterInterface) {
+                $element->rewindToState($stepExecution->getCurrentState()['writer'] ?? []);
             }
         }
     }

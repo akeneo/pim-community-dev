@@ -155,4 +155,8 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
             ),
         ];
     }
+
+    public function rewindToState(array $state): void
+    {
+    }
 }

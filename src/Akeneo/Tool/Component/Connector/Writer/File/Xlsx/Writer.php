@@ -108,4 +108,8 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
             ),
         ];
     }
+
+    public function rewindToState(array $state): void
+    {
+    }
 }

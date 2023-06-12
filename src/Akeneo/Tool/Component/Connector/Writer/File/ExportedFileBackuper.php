@@ -24,6 +24,17 @@ class ExportedFileBackuper
         return $backupPath;
     }
 
+    public function restore(string $backupPath): string
+    {
+        $restorePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . basename($backupPath);
+
+        $backupContent = $this->filesystemOperator->read($backupPath);
+
+        file_put_contents($restorePath, $backupContent);
+
+        return $restorePath;
+    }
+
     private function getRelativeBackupPath(JobExecution $jobExecution, string $filePath): string
     {
         $jobInstance = $jobExecution->getJobInstance();
