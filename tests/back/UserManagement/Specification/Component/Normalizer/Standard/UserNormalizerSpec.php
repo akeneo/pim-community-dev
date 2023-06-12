@@ -5,7 +5,7 @@ namespace Specification\Akeneo\UserManagement\Component\Normalizer\Standard;
 use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;

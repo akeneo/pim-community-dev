@@ -17,7 +17,7 @@ services:
     pim_user.normalizer.user.standard:
         class: 'Akeneo\UserManagement\Component\Normalizer\Standard\UserNormalizer'
         arguments:
-            - '@pim_catalog.normalizer.standard.datetime'
+            - '@serializer.normalizer.datetime'
         tags:
             - { name: pim_standard_format_serializer.normalizer }
 

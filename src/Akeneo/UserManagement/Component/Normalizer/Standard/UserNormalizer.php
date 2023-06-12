@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Component\Normalizer\Standard;
 
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
