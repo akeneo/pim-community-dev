@@ -11,7 +11,6 @@ use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-
 class FindQueuedAndRunningJobExecution implements FindQueuedAndRunningJobExecutionInterface
 {
     private const QUEUED_AND_RUNNING_STATUS = ['STARTING', 'IN_PROGRESS'];
