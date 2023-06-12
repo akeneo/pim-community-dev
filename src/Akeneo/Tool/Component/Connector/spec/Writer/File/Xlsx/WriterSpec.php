@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File\Xlsx;
 
+use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -21,9 +22,10 @@ class WriterSpec extends ObjectBehavior
     function let(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        ExportedFileBackuper $exportedFileBackuper,
     ) {
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher);
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $exportedFileBackuper);
     }
 
     function it_is_initializable()
