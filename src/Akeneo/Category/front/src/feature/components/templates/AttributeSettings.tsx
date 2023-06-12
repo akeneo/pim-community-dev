@@ -123,7 +123,7 @@ export const AttributeSettings = ({
           );
         });
     },
-    3000
+    300
   );
   const handleTranslationChange = (locale: string, value: string) => {
     onTranslationsChange(locale, value);
