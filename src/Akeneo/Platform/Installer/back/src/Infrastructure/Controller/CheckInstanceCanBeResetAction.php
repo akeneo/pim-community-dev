@@ -9,28 +9,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Installer\Infrastructure\Controller;
 
-use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface;
-use Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionQuery;
+use Akeneo\Platform\Job\ServiceApi\JobExecution\FindQueuedAndRunningJobExecutionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckInstanceCanBeResetAction
 {
     public function __construct(
-        //TODO service api in Job
-        private readonly SearchJobExecutionInterface $searchJobExecution,
+        private readonly FindQueuedAndRunningJobExecutionInterface $findQueuedAndRunningJobExecution,
     ) {
     }
 
     public function __invoke(): JsonResponse
     {
-        $query = new SearchJobExecutionQuery();
-        $query->size = 1;
-        $query->status = ['STARTING', 'IN_PROGRESS'];
-
-        $queuedAndRunningJobExecutions = $this->searchJobExecution->search($query);
-
-        $status = empty($queuedAndRunningJobExecutions) ? Response::HTTP_NO_CONTENT : Response::HTTP_BAD_REQUEST;
+        $count = $this->findQueuedAndRunningJobExecution->count(1);
+        $status = 0 === $count ? Response::HTTP_NO_CONTENT : Response::HTTP_BAD_REQUEST;
 
         return new JsonResponse(null, $status);
     }

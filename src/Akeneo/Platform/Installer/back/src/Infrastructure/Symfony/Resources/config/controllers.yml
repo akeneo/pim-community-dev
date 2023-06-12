@@ -8,4 +8,4 @@ services:
   Akeneo\Platform\Installer\Infrastructure\Controller\CheckInstanceCanBeResetAction:
     public: true
     arguments:
-      - '@Akeneo\Platform\Job\Application\SearchJobExecution\SearchJobExecutionInterface'
+      - '@Akeneo\Platform\Job\ServiceApi\JobExecution\FindQueuedAndRunningJobExecutionInterface'
