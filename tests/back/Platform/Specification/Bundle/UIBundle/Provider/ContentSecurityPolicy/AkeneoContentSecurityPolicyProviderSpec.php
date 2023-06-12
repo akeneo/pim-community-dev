@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  */
 class AkeneoContentSecurityPolicyProviderSpec extends ObjectBehavior
 {
-    function it_returns_the_akeneo_policy(
+    public function it_returns_the_akeneo_policy(
         ScriptNonceGenerator $nonceGenerator,
     ) {
         $nonceGenerator->getGeneratedNonce()->shouldBeCalled()
@@ -51,6 +51,11 @@ class AkeneoContentSecurityPolicyProviderSpec extends ObjectBehavior
                 [
                     "'self'",
                     "updates.akeneo.com",
+                ],
+            'style-src' =>
+                [
+                    "'self'",
+                    "'unsafe-inline'",
                 ],
         ]);
     }
