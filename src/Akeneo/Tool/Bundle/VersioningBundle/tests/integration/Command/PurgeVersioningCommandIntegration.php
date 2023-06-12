@@ -244,6 +244,7 @@ class PurgeVersioningCommandIntegration extends TestCase
         $jobExecution = $repository->find($jobExecutionId);
 
         $jobExecution->setStatus($status);
+        $jobExecution->setHealthcheckTime(new \DateTime());
 
         $em = $this->get('doctrine.orm.entity_manager');
         $em->persist($jobExecution);
