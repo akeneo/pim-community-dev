@@ -83,32 +83,33 @@ final class LaunchProductAndProductModelEvaluationsHandlerIntegration extends Da
         $this->assertProductModelsAreEvaluated($message->productModelIds);
     }
 
-    public function test_it_does_not_trigger_error_when_product_does_not_exist_anymore(): void
+    public function test_it_does_not_trigger_error_when_product_or_product_model_does_not_exist_anymore(): void
     {
         $productToEvaluate1 = $this->createProduct('product_to_evaluate_1', ['family' => 'shoes']);
 
-        $productToEvaluateUuid1 = ProductUuid::fromUuid($productToEvaluate1->getUuid());
-        $productToEvaluateUuid2 = ProductUuid::fromUuid(Uuid::uuid4());
+        $productToEvaluateUuid = ProductUuid::fromUuid($productToEvaluate1->getUuid());
+        $productThatNotExist = ProductUuid::fromUuid(Uuid::uuid4());
 
-        $productModelToEvaluate1 = $this->createProductModel('product_model_to_evaluate_1', 'shoes_color');
+        $productModelToEvaluate = $this->createProductModel('product_model_to_evaluate_1', 'shoes_color');
 
-        $productModelToEvaluateId1 = new ProductModelId($productModelToEvaluate1->getId());
-        $productModelToEvaluateId2 = new ProductModelId(999999999);
+        $productModelToEvaluateId = new ProductModelId($productModelToEvaluate->getId());
+        // A non-existing id can be simply defined from the last created product-model
+        $productModelThatNotExistId = new ProductModelId($productModelToEvaluate->getId() + 42);
 
-        $this->assertProductsAreNotEvaluated(ProductUuidCollection::fromProductUuids([$productToEvaluateUuid1, $productToEvaluateUuid2]));
-        $this->assertProductModelsAreNotEvaluated(ProductModelIdCollection::fromProductModelIds([$productModelToEvaluateId1, $productModelToEvaluateId2]));
+        $this->assertProductsAreNotEvaluated(ProductUuidCollection::fromProductUuids([$productToEvaluateUuid, $productThatNotExist]));
+        $this->assertProductModelsAreNotEvaluated(ProductModelIdCollection::fromProductModelIds([$productModelToEvaluateId, $productModelThatNotExistId]));
 
         $message = new LaunchProductAndProductModelEvaluationsMessage(
             $this->clock->fromString('2023-03-16 14:46:32'),
-            ProductUuidCollection::fromProductUuids([$productToEvaluateUuid1, $productToEvaluateUuid2]),
-            ProductModelIdCollection::fromProductModelIds([$productModelToEvaluateId1, $productModelToEvaluateId2]),
+            ProductUuidCollection::fromProductUuids([$productToEvaluateUuid, $productThatNotExist]),
+            ProductModelIdCollection::fromProductModelIds([$productModelToEvaluateId, $productModelThatNotExistId]),
             []
         );
 
         ($this->get(LaunchProductAndProductModelEvaluationsHandler::class))($message);
 
-        $this->assertProductsAreEvaluated(ProductUuidCollection::fromProductUuid($productToEvaluateUuid1));
-        $this->assertProductModelsAreEvaluated(ProductModelIdCollection::fromProductModelIds([$productModelToEvaluateId1]));
+        $this->assertProductsAreEvaluated(ProductUuidCollection::fromProductUuid($productToEvaluateUuid));
+        $this->assertProductModelsAreEvaluated(ProductModelIdCollection::fromProductModelIds([$productModelToEvaluateId]));
     }
 
     private function assertProductsAreNotEvaluated(ProductUuidCollection $productUuids): void
