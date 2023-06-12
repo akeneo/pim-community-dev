@@ -13,11 +13,13 @@ import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeMod
 import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {getLabelFromAttribute} from '../attributes';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
+import React, {useContext} from 'react';
 import {BadRequestError} from '../../tools/apiFetch';
 import {useDebounceCallback} from '../../tools/useDebounceCallback';
 import {useQueryClient} from 'react-query';
 import {useSaveStatusContext} from '../../hooks/useSaveStatusContext';
 import {Status} from '../providers/SaveStatusProvider';
+import {CanLeavePageContext} from '../providers';
 
 type Props = {
   attribute: Attribute;
@@ -72,8 +74,18 @@ export const AttributeSettings = ({
 
   const queryClient = useQueryClient();
 
+  const {setCanLeavePage, setLeavePageMessage} = useContext(CanLeavePageContext);
+  const updateCanLeavePageStatuses = (saved: boolean) => {
+    if (saveStatusContext.globalStatus !== Status.ERRORS) {
+      setCanLeavePage(saved);
+      setLeavePageMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
+    }
+  };
+  
   const handleRichTextAreaChange = async () => {
+    updateCanLeavePageStatuses(false);
     await updateTemplateAttribute({isRichTextArea: !(attribute.type === 'richtext')});
+    updateCanLeavePageStatuses(true);
     await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
   };
   const debouncedUpdateTemplateAttribute = useDebounceCallback(
@@ -87,9 +99,16 @@ export const AttributeSettings = ({
             onChangeFormStatus(attributeUuid, Object.keys(translationErrors).length !== 0);
           }
           saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVED);
+          updateCanLeavePageStatuses(true);
         })
         .catch((error: BadRequestError<ApiResponseError>) => {
           saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.ERRORS);
+          setCanLeavePage(false);
+          setLeavePageMessage(
+              `${translate('akeneo.category.template.attribute.settings.error_message')}\n${translate(
+                  'akeneo.category.template.attribute.settings.unsaved_changes'
+              )}`
+          );
           const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
             accumulator[currentError.error.property] = [currentError.error.message];
 
@@ -108,6 +127,7 @@ export const AttributeSettings = ({
   );
   const handleTranslationChange = (locale: string, value: string) => {
     onTranslationsChange(locale, value);
+    updateCanLeavePageStatuses(false);
     debouncedUpdateTemplateAttribute(attribute.uuid, locale, value);
   };
 
