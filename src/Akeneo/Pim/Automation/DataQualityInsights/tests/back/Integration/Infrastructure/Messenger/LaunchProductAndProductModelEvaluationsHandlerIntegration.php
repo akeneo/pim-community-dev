@@ -15,6 +15,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchPro
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -80,6 +81,35 @@ final class LaunchProductAndProductModelEvaluationsHandlerIntegration extends Da
 
         $this->assertProductsAreEvaluated($message->productUuids);
         $this->assertProductModelsAreEvaluated($message->productModelIds);
+    }
+
+    public function test_it_does_not_trigger_error_when_product_or_product_model_does_not_exist_anymore(): void
+    {
+        $productToEvaluate1 = $this->createProduct('product_to_evaluate_1', ['family' => 'shoes']);
+
+        $productToEvaluateUuid = ProductUuid::fromUuid($productToEvaluate1->getUuid());
+        $productThatNotExist = ProductUuid::fromUuid(Uuid::uuid4());
+
+        $productModelToEvaluate = $this->createProductModel('product_model_to_evaluate_1', 'shoes_color');
+
+        $productModelToEvaluateId = new ProductModelId($productModelToEvaluate->getId());
+        // A non-existing id can be simply defined from the last created product-model
+        $productModelThatNotExistId = new ProductModelId($productModelToEvaluate->getId() + 42);
+
+        $this->assertProductsAreNotEvaluated(ProductUuidCollection::fromProductUuids([$productToEvaluateUuid, $productThatNotExist]));
+        $this->assertProductModelsAreNotEvaluated(ProductModelIdCollection::fromProductModelIds([$productModelToEvaluateId, $productModelThatNotExistId]));
+
+        $message = new LaunchProductAndProductModelEvaluationsMessage(
+            $this->clock->fromString('2023-03-16 14:46:32'),
+            ProductUuidCollection::fromProductUuids([$productToEvaluateUuid, $productThatNotExist]),
+            ProductModelIdCollection::fromProductModelIds([$productModelToEvaluateId, $productModelThatNotExistId]),
+            []
+        );
+
+        ($this->get(LaunchProductAndProductModelEvaluationsHandler::class))($message);
+
+        $this->assertProductsAreEvaluated(ProductUuidCollection::fromProductUuid($productToEvaluateUuid));
+        $this->assertProductModelsAreEvaluated(ProductModelIdCollection::fromProductModelIds([$productModelToEvaluateId]));
     }
 
     private function assertProductsAreNotEvaluated(ProductUuidCollection $productUuids): void

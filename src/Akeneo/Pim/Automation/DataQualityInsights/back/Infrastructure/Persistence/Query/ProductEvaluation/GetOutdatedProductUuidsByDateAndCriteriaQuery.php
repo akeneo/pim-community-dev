@@ -43,33 +43,20 @@ final class GetOutdatedProductUuidsByDateAndCriteriaQuery implements GetOutdated
 
         $criteriaSubQuery = '';
         if (!empty($criteria)) {
-            $criteriaSubQuery = 'AND criterion_code IN (:criterion_codes)';
+            $criteriaSubQuery = 'AND pdq.criterion_code IN (:criterion_codes)';
             $queryParameters['criterion_codes'] = $criteria;
             $queryTypes['criterion_codes'] = Connection::PARAM_STR_ARRAY;
         }
 
-        // It's simpler to fetch only products that are up-to-date, because a product may not have criteria evaluation yet in database (just after its creation)
         $query = <<<SQL
-SELECT BIN_TO_UUID(product_uuid) AS product_uuid, MIN(COALESCE(evaluated_at >= :evaluation_date, 0)) AS is_up_to_date
-FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_uuid IN (:product_uuids) 
-$criteriaSubQuery
-GROUP BY product_uuid
-HAVING is_up_to_date = 1
+SELECT DISTINCT BIN_TO_UUID(pcp.uuid) AS product_uuid
+FROM pim_catalog_product AS pcp 
+ LEFT JOIN pim_data_quality_insights_product_criteria_evaluation AS pdq ON pdq.product_uuid = pcp.uuid $criteriaSubQuery
+WHERE pcp.uuid IN (:product_uuids) AND (pdq.evaluated_at IS NULL OR  pdq.evaluated_at < :evaluation_date)
 SQL;
 
         $stmt = $this->dbConnection->executeQuery($query, $queryParameters, $queryTypes);
 
-        $upToDateProductUuids = [];
-        while ($row = $stmt->fetchAssociative()) {
-            $upToDateProductUuids[$row['product_uuid']] = true;
-        }
-
-        $outdatedProductUuids = \array_values(\array_filter(
-            $productUuids->toArray(),
-            fn ($productUuid) => !\array_key_exists((string) $productUuid, $upToDateProductUuids)
-        ));
-
-        return ProductUuidCollection::fromProductUuids($outdatedProductUuids);
+        return ProductUuidCollection::fromStrings($stmt->fetchFirstColumn());
     }
 }
