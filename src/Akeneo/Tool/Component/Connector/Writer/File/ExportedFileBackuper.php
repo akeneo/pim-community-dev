@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use League\Flysystem\FilesystemOperator;
+use League\Flysystem\FilesystemWriter;
 
 class ExportedFileBackuper
 {
     private const BACKUP_DIR = 'backup';
 
     public function __construct(
-        private FilesystemOperator $filesystemOperator,
+        private readonly FilesystemWriter $filesystemWriter,
     ) {
     }
 
     public function backup(JobExecution $jobExecution, string $filePath): string
     {
         $backupPath = $this->getRelativeBackupPath($jobExecution, $filePath);
-        $this->filesystemOperator->write($backupPath, file_get_contents($filePath));
+        $this->filesystemWriter->write($backupPath, file_get_contents($filePath));
 
         return $backupPath;
     }
