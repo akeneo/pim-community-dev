@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Component\Normalizer\Standard;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -17,6 +18,10 @@ use Webmozart\Assert\Assert;
  */
 class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
+    public function __construct(private readonly DateTimeNormalizer $dateTimeNormalizer)
+    {
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -56,6 +61,10 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             'default_product_grid_view' => $user->getDefaultGridView('product-grid') ?
                 $user->getDefaultGridView('product-grid')->getLabel() :
                 null,
+            'date_account_created' => $this->dateTimeNormalizer->normalize($user->getCreatedAt(), $format, $context),
+            'date_account_last_updated' => $this->dateTimeNormalizer->normalize($user->getUpdatedAt(), $format, $context),
+            'last_logged_in' => $this->dateTimeNormalizer->normalize($user->getLastLogin(), $format, $context),
+            'login_count' => $user->getLoginCount(),
         ];
     }
 
