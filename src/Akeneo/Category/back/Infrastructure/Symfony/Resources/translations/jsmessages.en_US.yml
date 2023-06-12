@@ -91,6 +91,14 @@ akeneo.category:
             notification_success:
                 title: '{{ template }} template deactivated'
                 message: '{{ template }} has been deactivated. The content of the associated categories has been deleted.'
+        auto-save:
+            saved: Saved
+            saving: Saving
+            editing: Editing
+            errors: Errors not saved
+            error_notification:
+                title: Some values could not be saved.
+                content: Some of the values you entered seems to be invalid and could not be saved
 
     template_list:
         columns:

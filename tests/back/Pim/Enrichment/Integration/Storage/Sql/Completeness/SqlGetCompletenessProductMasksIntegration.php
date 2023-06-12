@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\TestCase;
@@ -211,7 +212,7 @@ class SqlGetCompletenessProductMasksIntegration extends TestCase
     {
         $values = new WriteValueCollection(
             [
-                ScalarValue::value('sku', 'productA'),
+                IdentifierValue::value('sku', false, 'productA'),
                 ScalarValue::scopableLocalizableValue(
                     'a_localized_and_scopable_text_area',
                     'Lorem ipsum',

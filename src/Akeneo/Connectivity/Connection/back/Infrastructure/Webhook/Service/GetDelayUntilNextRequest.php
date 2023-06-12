@@ -32,7 +32,7 @@ class GetDelayUntilNextRequest
             $count += $currentEventsApiRequestCount['event_count'];
 
             if ($count >= $limit) {
-                $lastDateTime = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $currentEventsApiRequestCount['updated']);
+                $lastDateTime = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $currentEventsApiRequestCount['updated'], new \DateTimeZone('UTC'));
 
                 return 3600 - ($dateTime->getTimestamp() - $lastDateTime->getTimestamp());
             }

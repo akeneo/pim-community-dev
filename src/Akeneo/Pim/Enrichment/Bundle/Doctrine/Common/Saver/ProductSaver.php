@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\API\Query\UpdateIdentifierPrefixesQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\UpdateIdentifierValuesQuery;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -22,17 +23,18 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class ProductSaver implements SaverInterface, BulkSaverInterface
 {
     public function __construct(
-        private EntityManagerInterface $objectManager,
-        private EventDispatcherInterface $eventDispatcher,
-        private ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
-        private UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        private readonly EntityManagerInterface $objectManager,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        private readonly UpdateIdentifierPrefixesQuery $updateIdentifierPrefixesQuery,
+        private readonly UpdateIdentifierValuesQuery $updateIdentifierValues,
     ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function save($product, array $options = [])
+    public function save($product, array $options = []): void
     {
         $this->validateProduct($product);
         if (!$product->isDirty() && true !== ($options['force_save'] ?? false)) {
@@ -51,6 +53,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->persist($product);
         $this->objectManager->flush();
 
+        $this->updateIdentifierValues->forProducts([$product]);
         $this->updateIdentifierPrefixesQuery->updateFromProducts([$product]);
 
         $this->objectManager->getConnection()->commit();
@@ -63,7 +66,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $products, array $options = [])
+    public function saveAll(array $products, array $options = []): void
     {
         $products = array_unique($products, SORT_REGULAR);
         foreach ($products as $product) {
@@ -114,6 +117,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
+        $this->updateIdentifierValues->forProducts($products);
         $this->updateIdentifierPrefixesQuery->updateFromProducts($products);
 
         $this->objectManager->getConnection()->commit();
@@ -128,7 +132,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         }
     }
 
-    protected function validateProduct($product)
+    protected function validateProduct($product): void
     {
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException(

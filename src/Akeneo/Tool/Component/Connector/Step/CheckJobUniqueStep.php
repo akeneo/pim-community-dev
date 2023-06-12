@@ -10,7 +10,6 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\AbstractStep;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Lock\LockFactory;
 use Webmozart\Assert\Assert;
 
 /**
@@ -22,19 +21,13 @@ use Webmozart\Assert\Assert;
  */
 class CheckJobUniqueStep extends AbstractStep
 {
-    /**
-     * Default Lock TTL < 1 day = 23 hours. Can be overidden in child class
-     */
-    protected const LOCK_TTL_IN_SECONDS = 3600 * 23;
-
     public function __construct(
         protected string $name,
         protected EventDispatcherInterface $eventDispatcher,
         protected JobRepositoryInterface $jobRepository,
-        protected LockFactory $lockFactory,
-        private LoggerInterface $logger,
-        private JobExecutionManager $executionManager,
-        private JobExecutionRepository $jobExecutionRepository,
+        private readonly LoggerInterface $logger,
+        private readonly JobExecutionManager $executionManager,
+        private readonly JobExecutionRepository $jobExecutionRepository,
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
     }
@@ -44,13 +37,10 @@ class CheckJobUniqueStep extends AbstractStep
         $jobCode = $stepExecution->getJobExecution()->getJobInstance()->getCode();
         Assert::notEmpty($jobCode, 'The job code must not be empty');
 
-        $lockIdentifier = sprintf('scheduled-job-%s', $jobCode);
-        $lock = $this->lockFactory->createLock($lockIdentifier, static::LOCK_TTL_IN_SECONDS);
+        $jobExecution = $stepExecution->getJobExecution();
 
-        if (!$lock->acquire()) {
-            $jobExecution = $stepExecution->getJobExecution();
-
-            $this->logger->error(
+        if ($this->jobExecutionRepository->isOtherJobExecutionRunning($stepExecution->getJobExecution())) {
+            $this->logger->warning(
                 'Cannot launch scheduled job because another execution is still running.',
                 [
                     'job_code' => $jobCode,
@@ -58,7 +48,7 @@ class CheckJobUniqueStep extends AbstractStep
                 ]
             );
 
-            $jobExecution = $this->jobExecutionRepository->find($stepExecution->getJobExecution()->getId());
+            $jobExecution = $this->jobExecutionRepository->find($jobExecution->getId());
             $this->executionManager->markAsFailed($jobExecution);
 
             throw new JobInterruptedException(sprintf('Another instance of job %s is already running.', $jobCode));

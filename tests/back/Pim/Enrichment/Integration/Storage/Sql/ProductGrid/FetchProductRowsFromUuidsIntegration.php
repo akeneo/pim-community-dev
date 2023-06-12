@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductGrid;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromUuids;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -55,7 +56,7 @@ class FetchProductRowsFromUuidsIntegration extends TestCase
                 $product1->getUuid()->toString(),
                 'sub_product_model',
                 new WriteValueCollection([
-                    ScalarValue::value('sku', 'foo'),
+                    IdentifierValue::value('sku', false, 'foo'),
                     MediaValue::value('an_image', $akeneoImage)
                 ])
             ),
@@ -72,7 +73,7 @@ class FetchProductRowsFromUuidsIntegration extends TestCase
                 $product2->getUuid()->toString(),
                 null,
                 new WriteValueCollection([
-                    ScalarValue::value('sku', 'baz'),
+                    IdentifierValue::value('sku', false, 'baz'),
                     MediaValue::localizableValue('a_localizable_image', $akeneoImage, 'en_US'),
                     MediaValue::scopableValue('a_scopable_image', $akeneoImage, 'ecommerce'),
                 ])
@@ -201,4 +202,3 @@ class FetchProductRowsFromUuidsIntegration extends TestCase
         return \intval($id);
     }
 }
-
