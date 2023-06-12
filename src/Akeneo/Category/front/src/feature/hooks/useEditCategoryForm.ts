@@ -3,7 +3,7 @@ import {cloneDeep, set} from 'lodash/fp';
 import {Channel, Locale, NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {saveEditCategoryForm} from '../infrastructure';
 import {useCategory} from './useCategory';
-import {EditCategoryContext} from '../components';
+import {CanLeavePageContext, EditCategoryContext} from '../components';
 import {Attribute, buildCompositeKey, CategoryAttributeValueData, EnrichCategory, Template} from '../models';
 import {alterPermissionsConsistently, categoriesAreEqual, populateCategory} from '../helpers';
 import {useTemplateByTemplateUuid} from './useTemplateByTemplateUuid';
@@ -30,7 +30,8 @@ const useEditCategoryForm = (categoryId: number) => {
   const [applyPermissionsOnChildren, setApplyPermissionsOnChildren] = useState(true);
 
   const [historyVersion, setHistoryVersion] = useState<number>(0);
-  const {setCanLeavePage, channels, locales} = useContext(EditCategoryContext);
+  const {channels, locales} = useContext(EditCategoryContext);
+  const {setCanLeavePage} = useContext(CanLeavePageContext);
 
   const isModified =
     categoryStatus === 'fetched' && !!category && !!categoryEdited && !categoriesAreEqual(category, categoryEdited);

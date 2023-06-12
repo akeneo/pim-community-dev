@@ -7,7 +7,7 @@ import {buildTextFieldAttribute} from './buildTextFieldAttribute';
 import {AttributeFieldBuilder, AttributeInputValue, AttributeFieldProps} from './types';
 
 export const getLabelFromAttribute = (attribute: Attribute, locale: string): string =>
-    (attribute?.labels[locale]) ? attribute.labels[locale] : `[${attribute.code}]`;
+  attribute?.labels[locale] ? attribute.labels[locale] : `[${attribute.code}]`;
 
 const attributeFieldBuilders: {[attributeType: string]: AttributeFieldBuilder<AttributeInputValue>} = {
   text: buildTextFieldAttribute,

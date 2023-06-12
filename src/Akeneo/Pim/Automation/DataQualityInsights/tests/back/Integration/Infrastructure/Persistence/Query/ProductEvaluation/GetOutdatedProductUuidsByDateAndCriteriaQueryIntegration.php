@@ -82,13 +82,14 @@ final class GetOutdatedProductUuidsByDateAndCriteriaQueryIntegration extends Dat
             $upToDatedProductUuid2,
         ]), $evaluationDate, $criteria);
 
-        Assert::assertEquals([
-            $outdatedProductUuid1,
-            $outdatedProductUuid2,
-            $productWithoutEvaluationUuid,
-            $productWithoutEvaluationDateUuid,
-        ], $outdatedProductUuids->toArray());
+        Assert::assertEqualsCanonicalizing([
+            $outdatedProductUuid1->__toString(),
+            $outdatedProductUuid2->__toString(),
+            $productWithoutEvaluationUuid->__toString(),
+            $productWithoutEvaluationDateUuid->__toString(),
+        ], $outdatedProductUuids->toArrayString());
     }
+
 
     public function test_it_returns_outdated_product_uuids_for_any_criterion(): void
     {
@@ -114,7 +115,7 @@ final class GetOutdatedProductUuidsByDateAndCriteriaQueryIntegration extends Dat
             $upToDatedProductUuid,
         ]), $evaluationDate, []);
 
-        Assert::assertEquals([$outdatedProductUuid1, $outdatedProductUuid2], $outdatedProductUuids->toArray());
+        Assert::assertEquals([$outdatedProductUuid1->__toString(), $outdatedProductUuid2->__toString()], $outdatedProductUuids->toArrayString());
     }
 
     private function updateProductCriteriaEvaluationsAt(ProductUuid $productUuid, \DateTimeImmutable $evaluatedAt, array $criteria): void

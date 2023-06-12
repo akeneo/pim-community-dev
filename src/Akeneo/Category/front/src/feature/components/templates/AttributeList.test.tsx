@@ -33,6 +33,7 @@ test('It open the add attribute modal when clicking on add attribute button', as
         selectedAttribute={attributes[0]}
         templateId={'template_uuid'}
         onAttributeSelection={() => {}}
+        attributeFormsInError={{}}
       />
     </QueryClientProvider>
   );

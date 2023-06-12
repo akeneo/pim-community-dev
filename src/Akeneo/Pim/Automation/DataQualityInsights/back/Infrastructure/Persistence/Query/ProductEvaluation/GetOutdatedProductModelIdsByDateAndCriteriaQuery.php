@@ -48,28 +48,17 @@ final class GetOutdatedProductModelIdsByDateAndCriteriaQuery implements GetOutda
             $queryTypes['criterion_codes'] = Connection::PARAM_STR_ARRAY;
         }
 
-        // It's simpler to fetch only product-models that are up-to-date, because they may not have criteria evaluation yet in database (just after their creation)
         $query = <<<SQL
-SELECT product_id, MIN(COALESCE(evaluated_at >= :evaluation_date, 0)) AS is_up_to_date
-FROM pim_data_quality_insights_product_model_criteria_evaluation
-WHERE product_id IN (:product_model_ids) $criteriaSubQuery
-GROUP BY product_id
-HAVING is_up_to_date = 1
+SELECT DISTINCT pm.id
+FROM pim_catalog_product_model AS pm
+    LEFT JOIN pim_data_quality_insights_product_model_criteria_evaluation AS pme 
+        ON pme.product_id = pm.id $criteriaSubQuery
+WHERE pm.id IN (:product_model_ids)
+    AND (pme.evaluated_at IS NULL OR  pme.evaluated_at < :evaluation_date)
 SQL;
 
         $stmt = $this->dbConnection->executeQuery($query, $queryParameters, $queryTypes);
 
-        $upToDateProductModelIds = [];
-        while ($row = $stmt->fetchAssociative()) {
-            $upToDateProductModelIds[$row['product_id']] = true;
-        }
-
-        /** @var ProductModelId[] $outdatedProductModelIds */
-        $outdatedProductModelIds = \array_values(\array_filter(
-            $productModelIds->toArray(),
-            fn ($productModelId) => !\array_key_exists((string) $productModelId, $upToDateProductModelIds)
-        ));
-
-        return ProductModelIdCollection::fromProductModelIds($outdatedProductModelIds);
+        return ProductModelIdCollection::fromStrings($stmt->fetchFirstColumn());
     }
 }

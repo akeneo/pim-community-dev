@@ -23,6 +23,7 @@ final class AkeneoContentSecurityPolicyProvider implements ContentSecurityPolicy
             'frame-src' => ["*"],
             'font-src' => ["'self'", "data:"],
             'connect-src' => ["'self'", "updates.akeneo.com"],
+            'style-src' => ["'self'", "'unsafe-inline'"],
         ];
     }
 }
