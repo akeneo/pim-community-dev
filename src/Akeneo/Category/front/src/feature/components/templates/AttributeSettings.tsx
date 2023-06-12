@@ -76,7 +76,7 @@ export const AttributeSettings = ({
 
   const {setCanLeavePage, setLeavePageMessage} = useContext(CanLeavePageContext);
   const updateCanLeavePageStatuses = (saved: boolean) => {
-    if (Object.keys(error).length === 0) {
+    if (saveStatusContext.globalStatus !== Status.ERRORS) {
       setCanLeavePage(saved);
       setLeavePageMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
     }
@@ -123,10 +123,11 @@ export const AttributeSettings = ({
           );
         });
     },
-    300
+    3000
   );
   const handleTranslationChange = (locale: string, value: string) => {
     onTranslationsChange(locale, value);
+    updateCanLeavePageStatuses(false);
     debouncedUpdateTemplateAttribute(attribute.uuid, locale, value);
   };
 
