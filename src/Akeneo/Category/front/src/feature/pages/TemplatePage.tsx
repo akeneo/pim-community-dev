@@ -2,12 +2,13 @@ import {
   getLabel,
   PageHeader,
   PimView,
+  useFeatureFlags,
   useRouter,
   useSessionStorageState,
   useTranslate,
   useUserContext,
 } from '@akeneo-pim-community/shared';
-import {Breadcrumb, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
+import {Breadcrumb, Pill, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
 import {DeactivateTemplateModal} from '../components/templates/DeactivateTemplateModal';
 import {cloneDeep, set} from 'lodash/fp';
 import {FC, useCallback, useEffect, useState} from 'react';
@@ -18,6 +19,8 @@ import {TemplateOtherActions} from '../components/templates/TemplateOtherActions
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
 import {Template} from '../models';
 import styled from 'styled-components';
+import {SaveStatusProvider} from '../components/providers/SaveStatusProvider';
+import {SaveStatusIndicator} from '../components/templates/SaveStatusIndicator';
 
 enum Tabs {
   ATTRIBUTE = '#pim_enrich-category-tab-attribute',
@@ -36,6 +39,7 @@ const TemplatePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const userContext = useUserContext();
+  const featureFlag = useFeatureFlags();
 
   const catalogLocale = userContext.get('catalogLocale');
 
@@ -100,8 +104,13 @@ const TemplatePage: FC = () => {
 
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
 
+  const [tabInError, setTabInError] = useState({});
+  const handleBadgesForTabInError = (tabCode: 'attributes' | 'properties', inError: boolean) => {
+    setTabInError(previousTabInError => ({...previousTabInError, [tabCode]: inError}));
+  };
+
   return (
-    <>
+    <SaveStatusProvider>
       <PageHeader>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
@@ -117,6 +126,11 @@ const TemplatePage: FC = () => {
             </Breadcrumb.Step>
           </Breadcrumb>
         </PageHeader.Breadcrumb>
+        {featureFlag.isEnabled('category_update_template_attribute') && (
+          <PageHeader.AutoSaveStatus>
+            <SaveStatusIndicator />
+          </PageHeader.AutoSaveStatus>
+        )}
         <PageHeader.UserActions>
           <PimView
             viewName="pim-menu-user-navigation"
@@ -136,7 +150,8 @@ const TemplatePage: FC = () => {
               handleSwitchTo(Tabs.ATTRIBUTE);
             }}
           >
-            {translate('akeneo.category.attributes')}
+            {translate('akeneo.category.attributes')}{' '}
+            {(tabInError['attributes'] === true ?? false) && <Pill level={'danger'} />}
           </TabBar.Tab>
           <TabBar.Tab
             isActive={isCurrent(Tabs.PROPERTY)}
@@ -144,12 +159,17 @@ const TemplatePage: FC = () => {
               handleSwitchTo(Tabs.PROPERTY);
             }}
           >
-            {translate('pim_common.properties')}
+            {translate('pim_common.properties')}{' '}
+            {(tabInError['properties'] === true ?? false) && <Pill level={'danger'} />}
           </TabBar.Tab>
         </TabBar>
 
         {isCurrent(Tabs.ATTRIBUTE) && tree && templateEdited && (
-          <EditTemplateAttributesForm attributes={templateEdited.attributes} templateId={templateEdited.uuid} />
+          <EditTemplateAttributesForm
+            attributes={templateEdited.attributes}
+            templateId={templateEdited.uuid}
+            onTabStatusChange={handleBadgesForTabInError}
+          />
         )}
 
         {isCurrent(Tabs.PROPERTY) && tree && templateEdited && (
@@ -163,7 +183,7 @@ const TemplatePage: FC = () => {
           />
         )}
       </PageContent>
-    </>
+    </SaveStatusProvider>
   );
 };
 
