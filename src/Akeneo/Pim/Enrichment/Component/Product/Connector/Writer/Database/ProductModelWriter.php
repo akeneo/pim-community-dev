@@ -62,9 +62,4 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
     {
         $this->stepExecution = $stepExecution;
     }
-
-    public function getState(): array
-    {
-        return [];
-    }
 }

@@ -50,7 +50,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $state = []): void
+    public function initialize(): void
     {
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();

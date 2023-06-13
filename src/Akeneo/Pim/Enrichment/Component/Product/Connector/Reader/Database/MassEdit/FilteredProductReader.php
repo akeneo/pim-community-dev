@@ -68,7 +68,7 @@ class FilteredProductReader implements
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $state = []): void
+    public function initialize(): void
     {
         $this->firstRead = true;
 

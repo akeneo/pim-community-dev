@@ -94,9 +94,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
         while (true) {
             try {
-                if ($this->reader instanceof PausableReaderInterface && !empty($stepExecution->getCurrentState()['reader'])) {
-                    $this->reader->rewindToState($stepExecution->getCurrentState()['reader']['position']);
-                }
                 $readItem = $this->reader->read();
                 if (null === $readItem) {
                     break;
@@ -172,7 +169,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             $currentState[self::WRITER_KEY] = $this->writer->getState();
         }
 
-        $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION_PAUSED, $stepExecution);
         $this->jobStopper->pause($stepExecution, $currentState);
     }
 
@@ -183,9 +179,12 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             if ($element instanceof StepExecutionAwareInterface) {
                 $element->setStepExecution($stepExecution);
             }
+            if ($element instanceof StatefulInterface) {
+                $state = $stepExecution->getCurrentState()[$key] ?? [];
+                $element->setState($state);
+            }
             if ($element instanceof InitializableInterface) {
-                $state = $stepExecution->getCurrentState();
-                $element->initialize($state[$key] ?? []);
+                $element->initialize();
             }
         }
     }

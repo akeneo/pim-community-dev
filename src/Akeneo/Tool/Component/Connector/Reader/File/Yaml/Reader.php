@@ -27,6 +27,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
     protected bool $uploadAllowed = false;
     protected ?StepExecution $stepExecution = null;
     protected ?\ArrayIterator $yaml = null;
+    protected ?array $state = null;
 
     /**
      * @param ArrayConverterInterface $converter
@@ -169,10 +170,16 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $state = []): void
+    public function initialize(): void
     {
-        if (null !== $this->yaml) {
-            $this->yaml->rewind();
+        if (!$this->initYaml()) {
+            return;
+        }
+
+        $state = $this->state;
+
+        while ($this->yaml->key() < $state['position']) {
+            $this->yaml->next();
         }
     }
 
@@ -221,16 +228,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
         return null !== $this->yaml ? ['position' => $this->yaml->key()] : [];
     }
 
-    public function rewindToState(int $key): void
+    public function setState(array $state): void
     {
-        if (!$this->initYaml())
-        {
-            return;
-        }
-
-        $this->yaml->current();
-        while ($this->yaml->key() < $key) {
-            $this->yaml->next();
-        }
+        $this->state = $state;
     }
 }

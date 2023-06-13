@@ -38,7 +38,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $state = []): void
+    public function initialize(): void
     {
         $channel = $this->getConfiguredChannel();
         $filters = $this->getConfiguredFilters();
