@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Component\Normalizer\Standard;
 
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
