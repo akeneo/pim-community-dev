@@ -369,6 +369,8 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
             throw new \RuntimeException("Can't resume the job because steps configuration has changed during pause.");
         }
 
+        $stepExecution->setExecutionContext(new ExecutionContext());
+
         return $stepExecution;
     }
 }

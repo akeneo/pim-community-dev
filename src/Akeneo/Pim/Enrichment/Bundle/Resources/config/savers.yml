@@ -20,6 +20,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.synchronizer.product_unique_data'
             - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlUpdateIdentifierPrefixesQuery'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Query\UpdateIdentifierValuesQuery'
 
     pim_catalog.saver.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelSaver'

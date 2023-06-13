@@ -79,7 +79,7 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(array $state = []): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $realTimeVersioning = $jobParameters->get('realTimeVersioning');

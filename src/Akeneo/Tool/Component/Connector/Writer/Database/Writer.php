@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Component\Connector\Writer\Database;
 
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
@@ -16,7 +15,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer implements ItemWriterInterface, StepExecutionAwareInterface, PausableWriterInterface
+class Writer implements ItemWriterInterface, StepExecutionAwareInterface
 {
     /** @var StepExecution */
     protected $stepExecution;

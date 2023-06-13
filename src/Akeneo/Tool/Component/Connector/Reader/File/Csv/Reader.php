@@ -3,8 +3,9 @@
 namespace Akeneo\Tool\Component\Connector\Reader\File\Csv;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -22,7 +23,7 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface, TrackableItemReaderInterface, PausableReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface, InitializableInterface, StatefulInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
@@ -68,8 +69,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
      */
     public function read()
     {
-        $this->initFileIterator();
-
         $this->fileIterator->next();
 
         if ($this->fileIterator->valid() && null !== $this->stepExecution) {
@@ -104,17 +103,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         }
 
         return $item;
-    }
-
-    private function initFileIterator(): void
-    {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('storage')['file_path'];
-
-        if (null === $this->fileIterator) {
-            $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
-            $this->fileIterator->rewind();
-        }
     }
 
     /**
@@ -222,12 +210,18 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         return null !== $this->fileIterator ? ['position' => $this->fileIterator->key()] : [];
     }
 
-    public function rewindToState(int $key): void
+    public function initialize(array $state = []): void
     {
-        $this->initFileIterator();
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('storage')['file_path'];
 
-        $this->fileIterator->current();
-        while ($this->fileIterator->key() < $key) {
+        $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
+
+        if (!array_key_exists('position', $state)) {
+            return;
+        }
+
+        while ($this->fileIterator->key() < $state['position']) {
             $this->fileIterator->next();
         }
     }

@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -44,6 +45,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         array $mediaAttributeTypes,
+        JobFileBackuper $exportedFileBackuper,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
         parent::__construct(
@@ -56,6 +58,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
             $fileInfoRepository,
             $filesystemProvider,
             $mediaAttributeTypes,
+            $exportedFileBackuper,
             $jobParamFilePath
         );
 
@@ -66,7 +69,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
     /**
      * {@inheritdoc}
      */
-    public function initialize(): void
+    public function initialize(array $state = []): void
     {
         $this->familyCodes = [];
         $this->hasItems = false;

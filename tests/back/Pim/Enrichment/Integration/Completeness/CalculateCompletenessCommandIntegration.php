@@ -100,6 +100,7 @@ class CalculateCompletenessCommandIntegration extends TestCase
     private function purgeCompletenessAndResetIndex(): void
     {
         $this->get('database_connection')->executeUpdate('DELETE c.* from pim_catalog_completeness c');
+        $this->get('database_connection')->executeUpdate('DELETE c.* from pim_catalog_product_completeness c');
         $client = $this->get('akeneo_elasticsearch.client.product_and_product_model');
         $client->refreshIndex();
         $client->bulkDelete(

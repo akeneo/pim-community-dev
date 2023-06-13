@@ -148,7 +148,7 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(array $state = []): void
     {
         $this->cacheClearer->clear();
     }

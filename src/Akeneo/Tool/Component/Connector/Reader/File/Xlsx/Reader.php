@@ -4,7 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File\Xlsx;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface, TrackableItemReaderInterface, PausableReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface, StatefulInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
@@ -68,7 +68,13 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
      */
     public function read()
     {
-        $this->initFileIterator();
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('storage')['file_path'];
+
+        if (null === $this->fileIterator) {
+            $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
+            $this->fileIterator->rewind();
+        }
 
         $this->fileIterator->next();
 
@@ -87,7 +93,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         $countHeaders = count($headers);
         $countData = count($data);
 
-        $this->checkColumnNumber($countHeaders, $countData, $data, $this->stepExecution->getJobParameters()->get('storage')['file_path']);
+        $this->checkColumnNumber($countHeaders, $countData, $data, $filePath);
 
         if ($countHeaders > $countData) {
             $dataMask = array_fill(0, $countHeaders, '');
@@ -111,17 +117,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         }
 
         return $item;
-    }
-
-    private function initFileIterator(): void
-    {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('storage')['file_path'];
-
-        if (null === $this->fileIterator) {
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
-            $this->fileIterator->rewind();
-        }
     }
 
     /**
@@ -213,11 +208,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
 
     public function rewindToState(int $key): void
     {
-        $this->initFileIterator();
-
-        $this->fileIterator->current();
-        while ($this->fileIterator->key() < $key) {
-            $this->fileIterator->next();
-        }
+        // TODO: Implement rewindToState() method.
     }
 }

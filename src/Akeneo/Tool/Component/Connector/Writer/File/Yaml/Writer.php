@@ -6,6 +6,7 @@ use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\RuntimeErrorException;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Symfony\Component\Yaml\Yaml;
@@ -35,8 +36,11 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
      * @param ArrayConverterInterface $arrayConverter
      * @param string                  $header
      */
-    public function __construct(ArrayConverterInterface $arrayConverter, $header = null)
-    {
+    public function __construct(
+        ArrayConverterInterface $arrayConverter,
+        private readonly JobFileBackuper $exportedFileBackuper,
+        $header = null,
+    ) {
         parent::__construct();
 
         $this->arrayConverter = $arrayConverter;
@@ -139,5 +143,15 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
         foreach ($items as $item) {
             $this->stepExecution->incrementSummaryInfo('write');
         }
+    }
+
+    public function getState(): array
+    {
+        return [
+            'current_file_path' => $this->exportedFileBackuper->backup(
+                $this->stepExecution->getJobExecution(),
+                $this->getPath(),
+            ),
+        ];
     }
 }

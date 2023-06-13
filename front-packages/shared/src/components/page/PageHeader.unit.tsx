@@ -76,10 +76,16 @@ describe('PageHeader', () => {
     expect(queryByText('DUMMY_BREADCRUMB')).toBeInTheDocument();
   });
 
+  test('it shows autoSave status', () => {
+    const autoSaveStatus = <PageHeader.AutoSaveStatus>DUMMY_AUTOSAVESTATUS</PageHeader.AutoSaveStatus>;
+    const {queryByText} = renderWithContext(autoSaveStatus);
+    expect(queryByText('DUMMY_AUTOSAVESTATUS')).toBeInTheDocument();
+  });
+
   test('it shows state', () => {
-    const state = <PageHeader.State>DUMMY_BREADCRUMB</PageHeader.State>;
+    const state = <PageHeader.State>DUMMY_STATE</PageHeader.State>;
     const {queryByText} = renderWithContext(state);
-    expect(queryByText('DUMMY_BREADCRUMB')).toBeInTheDocument();
+    expect(queryByText('DUMMY_STATE')).toBeInTheDocument();
   });
 
   test('it shows content', () => {

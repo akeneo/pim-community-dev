@@ -67,7 +67,7 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
 
         $this->dbConnection->executeQuery(
             <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_uuid, evaluated_at, scores, scores_partial_criteria) 
+INSERT IGNORE INTO pim_data_quality_insights_product_score (product_uuid, evaluated_at, scores, scores_partial_criteria) 
 VALUES $insertValues AS product_score_values
 ON DUPLICATE KEY UPDATE 
     evaluated_at = product_score_values.evaluated_at, 

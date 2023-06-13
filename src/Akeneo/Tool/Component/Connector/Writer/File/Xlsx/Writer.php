@@ -5,11 +5,10 @@ namespace Akeneo\Tool\Component\Connector\Writer\File\Xlsx;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
@@ -35,15 +34,11 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     /** @var BufferFactory */
     protected $bufferFactory;
 
-    /**
-     * @param ArrayConverterInterface $arrayConverter
-     * @param BufferFactory           $bufferFactory
-     * @param FlatItemBufferFlusher   $flusher
-     */
     public function __construct(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher
+        FlatItemBufferFlusher $flusher,
+        private readonly JobFileBackuper $exportedFileBackuper,
     ) {
         parent::__construct();
 
@@ -55,7 +50,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     /**
      * {@inheritdoc}
      */
-    public function initialize(): void
+    public function initialize(array $state = []): void
     {
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();
@@ -102,5 +97,15 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         foreach ($writtenFiles as $writtenFile) {
             $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($writtenFile, \basename($writtenFile));
         }
+    }
+
+    public function getState(): array
+    {
+        return [
+            'current_buffer_file_path' => $this->exportedFileBackuper->backup(
+                $this->stepExecution->getJobExecution(),
+                $this->flatRowBuffer->getFilePath(),
+            ),
+        ];
     }
 }

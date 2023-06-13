@@ -34,7 +34,7 @@ class JobStopper implements JobStopperInterface
 
     public function pause(StepExecution $stepExecution, array $currentState): void
     {
-        $stepExecution->setCurrentState($currentState);
+        $stepExecution->setCurrentState([...$stepExecution->getCurrentState(), ...$currentState]);
         $stepExecution->setStatus(new BatchStatus(BatchStatus::PAUSED));
         $this->jobRepository->updateStepExecution($stepExecution);
     }
