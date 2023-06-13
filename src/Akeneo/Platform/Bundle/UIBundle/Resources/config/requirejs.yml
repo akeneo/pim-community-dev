@@ -962,6 +962,7 @@ config:
     pim/boolean-field:          pimui/js/product/field/boolean-field.tsx
     pim/date-field:             pimui/js/product/field/date-field
     pim/media-field:            pimui/js/product/field/media-field
+    pim/image-field:            pimui/js/product/field/image-field
     pim/metric-field:           pimui/js/product/field/metric-field
     pim/multi-select-field:     pimui/js/product/field/multi-select-field
     pim/number-field:           pimui/js/product/field/number-field
