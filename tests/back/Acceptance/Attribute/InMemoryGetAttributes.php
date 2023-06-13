@@ -45,7 +45,6 @@ class InMemoryGetAttributes implements GetAttributes
                     $attribute->isDecimalsAllowed(),
                     $attribute->getBackendType(),
                     $attribute->getAvailableLocaleCodes(),
-                    $attribute->isMainIdentifier(),
                 );
             }
         }
@@ -76,7 +75,6 @@ class InMemoryGetAttributes implements GetAttributes
                 $attribute->isDecimalsAllowed(),
                 $attribute->getBackendType(),
                 $attribute->getAvailableLocaleCodes(),
-                $attribute->isMainIdentifier(),
             );
         }
 

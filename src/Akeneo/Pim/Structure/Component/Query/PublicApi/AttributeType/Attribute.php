@@ -20,9 +20,9 @@ final class Attribute
         private ?bool $decimalsAllowed,
         private string $backendType,
         private array $availableLocaleCodes,
-        private readonly bool $mainIdentifier,
         private ?bool $useableAsGridFilter = null,
         private array $labels = [],
+        private readonly bool $mainIdentifier = false,
     ) {
     }
 

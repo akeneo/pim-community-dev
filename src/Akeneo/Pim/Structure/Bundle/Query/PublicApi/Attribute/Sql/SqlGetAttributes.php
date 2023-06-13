@@ -87,9 +87,9 @@ SQL;
                 boolval($rawAttribute['decimals_allowed']),
                 $rawAttribute['backend_type'],
                 json_decode($rawAttribute['available_locale_codes']),
-                boolval($rawAttribute['main_identifier']),
                 boolval($rawAttribute['useable_as_grid_filter']),
                 $translations,
+                boolval($rawAttribute['main_identifier']),
             );
         }
 
