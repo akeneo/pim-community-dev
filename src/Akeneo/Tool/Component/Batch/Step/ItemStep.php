@@ -186,13 +186,10 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                 $element->setStepExecution($stepExecution);
             }
             if ($element instanceof InitializableInterface) {
-                $element->initialize();
+                $element->initialize($stepExecution->getCurrentState()['writer'] ?? []);
             }
             if ($element instanceof PausableReaderInterface) {
                 $element->rewindToState($stepExecution->getCurrentState()['reader'] ?? []);
-            }
-            if ($element instanceof PausableFileWriterInterface) {
-                $element->rewindToState($stepExecution->getCurrentState()['writer'] ?? []);
             }
         }
     }

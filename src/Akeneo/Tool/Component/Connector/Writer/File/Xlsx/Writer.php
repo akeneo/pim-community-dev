@@ -50,10 +50,15 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     /**
      * {@inheritdoc}
      */
-    public function initialize(): void
+    public function initialize(array $state = []): void
     {
+        $bufferPath = null;
+        if (isset($state['current_buffer_file_path'])) {
+            $bufferPath = $this->exportedFileBackuper->restore($state['current_buffer_file_path']);
+        }
+
         if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
+            $this->flatRowBuffer = $this->bufferFactory->create($bufferPath);
         }
     }
 
@@ -107,9 +112,5 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
                 $this->flatRowBuffer->getFilePath(),
             ),
         ];
-    }
-
-    public function rewindToState(array $state): void
-    {
     }
 }

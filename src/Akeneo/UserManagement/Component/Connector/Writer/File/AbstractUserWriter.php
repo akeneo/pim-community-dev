@@ -59,10 +59,15 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    final public function initialize(): void
+    final public function initialize(array $state = []): void
     {
+        $bufferPath = null;
+        if (isset($state['current_buffer_file_path'])) {
+            $bufferPath = $this->exportedFileBackuper->restore($state['current_buffer_file_path']);
+        }
+
         if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
+            $this->flatRowBuffer = $this->bufferFactory->create($bufferPath);
         }
     }
 
