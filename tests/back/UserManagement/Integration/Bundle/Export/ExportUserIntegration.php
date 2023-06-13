@@ -53,11 +53,11 @@ final class ExportUserIntegration extends TestCase
     public function it_exports_users_in_csv(): void
     {
         $expectedCsv = <<<CSV
-username;email;avatar;catalog_default_locale;catalog_default_scope;date_account_created;date_account_last_updated;default_category_tree;default_product_grid_view;enabled;first_name;groups;last_logged_in;last_name;login_count;middle_name;name_prefix;name_suffix;phone;product_grid_filters;roles;timezone;user_default_locale
-admin;admin@example.com;;en_US;ecommerce;2023-06-13T08:09:41+02:00;2023-06-13T08:09:41+02:00;master;;1;John;"IT support";;Doe;0;;;;;;ROLE_ADMINISTRATOR;UTC;en_US
-julia;julia@example.com;;en_US;ecommerce;2023-06-13T08:09:41+02:00;2023-06-13T08:09:41+02:00;master;;1;Julia;Manager;;Stark;0;;;;;;ROLE_CATALOG_MANAGER;UTC;en_US
-mary;mary@example.com;;en_US;ecommerce;2023-06-13T08:09:41+02:00;2023-06-13T08:09:41+02:00;master;;1;Mary;Redactor;;Smith;0;;;;;;ROLE_USER;UTC;en_US
-kevin;kevin@example.com;;en_US;ecommerce;2023-06-13T08:09:41+02:00;2023-06-13T08:09:41+02:00;master;;1;Kevin;Redactor;;Michel;0;;;;;;ROLE_TRAINEE;UTC;en_US
+username;email;avatar;catalog_default_locale;catalog_default_scope;default_category_tree;default_product_grid_view;enabled;first_name;groups;last_name;middle_name;name_prefix;name_suffix;phone;product_grid_filters;roles;timezone;user_default_locale;date_account_created;date_account_last_updated;last_logged_in;login_count
+admin;admin@example.com;;en_US;ecommerce;master;;1;John;"IT support";Doe;;;;;;ROLE_ADMINISTRATOR;UTC;en_US;2023-06-13T17:36:37+02:00;2023-06-13T17:36:37+02:00;;0
+julia;julia@example.com;;en_US;ecommerce;master;;1;Julia;Manager;Stark;;;;;;ROLE_CATALOG_MANAGER;UTC;en_US;2023-06-13T17:36:37+02:00;2023-06-13T17:36:37+02:00;;0
+mary;mary@example.com;;en_US;ecommerce;master;;1;Mary;Redactor;Smith;;;;;;ROLE_USER;UTC;en_US;2023-06-13T17:36:37+02:00;2023-06-13T17:36:37+02:00;;0
+kevin;kevin@example.com;;en_US;ecommerce;master;;1;Kevin;Redactor;Michel;;;;;;ROLE_TRAINEE;UTC;en_US;2023-06-13T17:36:37+02:00;2023-06-13T17:36:37+02:00;;0
 
 CSV;
         $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, []);
