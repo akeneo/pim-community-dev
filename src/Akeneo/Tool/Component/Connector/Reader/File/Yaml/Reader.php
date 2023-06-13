@@ -83,12 +83,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
      */
     public function read()
     {
-        if (null === $this->yaml) {
-            $fileData = $this->getFileData();
-            if (null === $fileData) {
-                return null;
-            }
-            $this->yaml = new \ArrayIterator($fileData);
+        if (!$this->initYaml()) {
+            return null;
         }
 
         if ($data = $this->yaml->current()) {
@@ -110,6 +106,19 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
         $this->flush();
 
         return null;
+    }
+
+    private function initYaml(): bool
+    {
+        if (null === $this->yaml) {
+            $fileData = $this->getFileData();
+            if (null === $fileData) {
+                return false;
+            }
+            $this->yaml = new \ArrayIterator($fileData);
+        }
+
+        return true;
     }
 
     /**
@@ -210,5 +219,18 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
     public function getState(): array
     {
         return null !== $this->yaml ? ['position' => $this->yaml->key()] : [];
+    }
+
+    public function rewindToState(int $key): void
+    {
+        if (!$this->initYaml())
+        {
+            return;
+        }
+
+        $this->yaml->current();
+        while ($this->yaml->key() < $key) {
+            $this->yaml->next();
+        }
     }
 }
