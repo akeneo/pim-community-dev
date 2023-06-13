@@ -85,6 +85,7 @@
 - PIM-10982 : Fix flag emoji rendering on windows
 - PIM-11013 : Fix edit user profile without password changes
 - PIM-11012 : Add helper if selected UI language is not sufficiently supported
+- PIM-11024 : Add an error message when trying to modify the code of an option attribute [External API]
 - PIM-11023 : Fix product search containing underscores
 - PIM-11016 : Improve the clean-removed-attributes command
 
