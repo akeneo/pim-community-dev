@@ -7,7 +7,6 @@ parameters:
     pim_connector.job.export_type: export
 
 services:
-    # File backuper
     pim_connector.job.file_backuper:
         class: Akeneo\Tool\Component\Connector\Job\JobFileBackuper
         arguments:
