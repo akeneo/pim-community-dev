@@ -10,8 +10,8 @@ use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
-use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -44,7 +44,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         FileExporterPathGeneratorInterface $pathGenerator,
-        private readonly ExportedFileBackuper $exportedFileBackuper,
+        private readonly JobFileBackuper $exportedFileBackuper,
     ) {
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
@@ -59,7 +59,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    final public function initialize(): void
+    final public function initialize(array $state = []): void
     {
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();

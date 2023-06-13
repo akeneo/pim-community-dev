@@ -50,13 +50,13 @@ services:
 
     Akeneo\Tool\Bundle\BatchBundle\EventListener\BackupImportFileOnPauseSubscriber:
         arguments:
-            - '@oneup_flysystem.jobs_storage_filesystem'
+            - '@pim_connector.job.file_backuper'
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Tool\Bundle\BatchBundle\EventListener\MountFileOnResumeSubscriber:
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\RecoverImportFileOnResumeSubscriber:
         arguments:
-            - '@oneup_flysystem.jobs_storage_filesystem'
+            - '@pim_connector.job.file_backuper'
         tags:
             - { name: kernel.event_subscriber }
 

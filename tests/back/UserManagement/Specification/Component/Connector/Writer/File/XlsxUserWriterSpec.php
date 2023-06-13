@@ -10,8 +10,8 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -32,7 +32,7 @@ class XlsxUserWriterSpec extends ObjectBehavior
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         FileExporterPathGeneratorInterface $fileExporterPathGenerator,
-        ExportedFileBackuper $exportedFileBackuper,
+        JobFileBackuper $exportedFileBackuper,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,

@@ -11,24 +11,24 @@ namespace Akeneo\Tool\Bundle\BatchBundle\EventListener;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
-use Akeneo\Tool\Component\Connector\Job\JobFileLocation;
-use League\Flysystem\FilesystemOperator;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class BackupImportFileOnPauseSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly FilesystemOperator $filesystemOperator,
+        private readonly JobFileBackuper $jobFileBackuper,
     ) {
     }
+
     public static function getSubscribedEvents(): array
     {
         return [
-            EventInterface::BEFORE_STEP_EXECUTION_PAUSED => 'beforeStepExecutionPause'
+            EventInterface::BEFORE_STEP_EXECUTION_PAUSED => 'backupImportFile',
         ];
     }
 
-    public function beforeStepExecutionPause(StepExecutionEvent $event): void
+    public function backupImportFile(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
@@ -36,9 +36,7 @@ final class BackupImportFileOnPauseSubscriber implements EventSubscriberInterfac
             return;
         }
 
-        $fileToBackUp = new JobFileLocation($stepExecution->getJobParameters()->get('storage')['file_path'], true);
-
-        $backupFilePath = 'paused_job/step/' . $stepExecution->getId();
-        $this->filesystemOperator->write($backupFilePath, file_get_contents($fileToBackUp->path()));
+        $localFilePath = $stepExecution->getJobParameters()->get('storage')['file_path'];
+        $this->jobFileBackuper->backup($stepExecution->getJobExecution(), $localFilePath);
     }
 }

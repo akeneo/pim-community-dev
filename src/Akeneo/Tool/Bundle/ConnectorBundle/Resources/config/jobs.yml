@@ -5,3 +5,10 @@ parameters:
     pim_connector.step.item_step.class: Akeneo\Tool\Component\Batch\Step\ItemStep
     pim_connector.job.import_type: import
     pim_connector.job.export_type: export
+
+services:
+    # File backuper
+    pim_connector.job.file_backuper:
+        class: Akeneo\Tool\Component\Connector\Job\JobFileBackuper
+        arguments:
+            - '@oneup_flysystem.archivist_filesystem'

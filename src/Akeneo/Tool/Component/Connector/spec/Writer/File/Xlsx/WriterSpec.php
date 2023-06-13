@@ -2,20 +2,20 @@
 
 namespace spec\Akeneo\Tool\Component\Connector\Writer\File\Xlsx;
 
-use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
-use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
-use Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Akeneo\Tool\Component\Connector\Writer\File\Xlsx\Writer;
+use PhpSpec\ObjectBehavior;
 
 class WriterSpec extends ObjectBehavior
 {
@@ -23,7 +23,7 @@ class WriterSpec extends ObjectBehavior
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
-        ExportedFileBackuper $exportedFileBackuper,
+        JobFileBackuper $exportedFileBackuper,
     ) {
         $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $exportedFileBackuper);
     }
