@@ -53,6 +53,7 @@ SELECT attribute.code,
        attribute.decimals_allowed,
        attribute.backend_type,
        attribute.useable_as_grid_filter,
+       attribute.main_identifier,
        COALESCE(locale_codes, JSON_ARRAY()) AS available_locale_codes,
        translation.translations
 FROM pim_catalog_attribute attribute
@@ -86,6 +87,7 @@ SQL;
                 boolval($rawAttribute['decimals_allowed']),
                 $rawAttribute['backend_type'],
                 json_decode($rawAttribute['available_locale_codes']),
+                boolval($rawAttribute['main_identifier']),
                 boolval($rawAttribute['useable_as_grid_filter']),
                 $translations,
             );
