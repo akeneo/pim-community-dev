@@ -15,4 +15,6 @@ interface StatefulInterface
      * @return array<string, mixed>
      */
     public function getState(): array;
+
+    public function rewindToState(int $key): void;
 }
