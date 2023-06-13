@@ -50,7 +50,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         AttributeOptionValueInterface $attributeOptionValue
     ) {
-        $attributeOption->getId()->willReturn(null);
+        $attributeOption->getCode()->willReturn(null);
         $attributeOption->getAttribute()->willReturn(null);
 
         $attributeOption->setCode('mycode')->shouldBeCalled();
@@ -116,7 +116,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         $attributeRepository,
         AttributeOptionInterface $attributeOption
     ) {
-        $attributeOption->getId()->willReturn(null);
+        $attributeOption->getCode()->willReturn(null);
         $attributeOption->getAttribute()->willReturn(null);
 
         $attributeOption->setCode('mycode')->shouldBeCalled();

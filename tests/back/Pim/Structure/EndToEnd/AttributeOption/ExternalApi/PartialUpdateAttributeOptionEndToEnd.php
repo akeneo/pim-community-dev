@@ -426,7 +426,7 @@ JSON;
     	"message": "Validation failed.",
     	"errors": [{
     		"property": "code",
-    		"message": "This value is already used."
+    		"message": "This property cannot be changed."
     	},{
     		"property": "attribute",
     		"message": "This property cannot be changed."
