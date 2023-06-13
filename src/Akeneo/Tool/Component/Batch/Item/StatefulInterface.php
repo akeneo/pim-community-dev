@@ -12,9 +12,12 @@ namespace Akeneo\Tool\Component\Batch\Item;
 interface StatefulInterface
 {
     /**
+     * @param array<string, mixed> $state
+     */
+    public function setState(array $state): void;
+
+    /**
      * @return array<string, mixed>
      */
     public function getState(): array;
-
-    public function rewindToState(int $key): void;
 }

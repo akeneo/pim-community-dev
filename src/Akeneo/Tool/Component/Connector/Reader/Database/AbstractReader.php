@@ -27,6 +27,8 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     /** @var \ArrayIterator */
     protected $results;
 
+    protected array $state;
+
     /**
      * {@inheritdoc}
      */
@@ -52,7 +54,7 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $state = []): void
+    public function initialize(): void
     {
         $this->isExecuted = false;
     }
@@ -83,5 +85,10 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
         return [
             'last_position_read' => $this->results?->key(),
         ];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

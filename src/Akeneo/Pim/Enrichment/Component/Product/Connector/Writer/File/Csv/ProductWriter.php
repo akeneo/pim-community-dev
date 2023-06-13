@@ -69,7 +69,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $state = []): void
+    public function initialize(): void
     {
         $this->familyCodes = [];
         $this->hasItems = false;

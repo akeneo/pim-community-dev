@@ -206,10 +206,6 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
                 continue;
             }
 
-            if (null !== $stepExecution && $stepExecution->getStatus()->getValue() === BatchStatus::PAUSED) {
-                $stepExecution->setExecutionContext(new ExecutionContext());
-            }
-
             $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution);
             $this->jobRepository->updateStepExecution($stepExecution);
 
