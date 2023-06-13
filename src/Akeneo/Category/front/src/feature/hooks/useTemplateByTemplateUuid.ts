@@ -1,9 +1,8 @@
-import {Template} from '../models';
 import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {useHistory} from 'react-router';
-import {apiFetch} from '../tools/apiFetch';
 import {useQuery} from 'react-query';
-import {useCallback} from 'react';
+import {useHistory} from 'react-router';
+import {Template} from '../models';
+import {apiFetch} from '../tools/apiFetch';
 
 export const useTemplateByTemplateUuid = (uuid: string | null) => {
   const router = useRouter();
@@ -15,22 +14,10 @@ export const useTemplateByTemplateUuid = (uuid: string | null) => {
     templateUuid: uuid,
   });
 
-  const fetchTemplate = useCallback(async () => {
-    if (uuid === null || uuid === undefined || uuid === '') {
-      return null;
-    }
-    return await apiFetch<Template>(url, {method: 'GET'});
-  }, [url, uuid]);
-
-  const {data} = useQuery(['get-template', uuid], fetchTemplate, {
+  return useQuery(['get-template', uuid], () => apiFetch<Template>(url, {}), {
     onError: () => {
       history.push('/');
       notify(NotificationLevel.ERROR, translate('akeneo.category.template.not_found'));
     },
   });
-  return {
-    status: 'fetched',
-    data: data,
-    error: null,
-  };
 };

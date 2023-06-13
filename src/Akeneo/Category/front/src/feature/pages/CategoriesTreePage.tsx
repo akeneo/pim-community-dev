@@ -12,7 +12,7 @@ import {
   useSetPageTitle,
   useTranslate,
 } from '@akeneo-pim-community/shared';
-import {CategoryToDelete, useCategoryTree, useDeleteCategory} from '../hooks';
+import {CategoryToDelete, useCategoryTreeDeprecated, useDeleteCategory} from '../hooks';
 import {CategoryTree, DiscoverEnrichedCategoriesInformationHelper} from '../components';
 import {NewCategoryModal} from './NewCategoryModal';
 import {DeleteCategoryModal} from '../components/datagrids/DeleteCategoryModal';
@@ -43,7 +43,7 @@ const CategoriesTreePage: FC = () => {
     },
     'lastSelectedCategory'
   );
-  const {tree, loadingStatus, loadTree} = useCategoryTree(
+  const {tree, loadingStatus, loadTree} = useCategoryTreeDeprecated(
     parseInt(treeId),
     lastSelectedCategory.treeId === treeId ? lastSelectedCategory.categoryId : '-1'
   );

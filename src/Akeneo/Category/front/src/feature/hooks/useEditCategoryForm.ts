@@ -22,7 +22,7 @@ const useEditCategoryForm = (categoryId: number) => {
 
   const {load: loadCategory, category: fetchedCategory, status: categoryStatus} = useCategory(categoryId);
 
-  const {data: template, status: templateStatus} = useTemplateByTemplateUuid(fetchedCategory?.template_uuid ?? null);
+  const {data: template} = useTemplateByTemplateUuid(fetchedCategory?.template_uuid ?? null);
 
   const [category, setCategory] = useState<EnrichCategory | null>(null);
   const [categoryEdited, setCategoryEdited] = useState<EnrichCategory | null>(null);
@@ -146,7 +146,6 @@ const useEditCategoryForm = (categoryId: number) => {
 
   return {
     categoryFetchingStatus: categoryStatus,
-    templateFetchingStatus: templateStatus,
     category: categoryEdited,
     template,
     applyPermissionsOnChildren,
