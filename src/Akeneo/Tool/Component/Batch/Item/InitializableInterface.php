@@ -19,5 +19,5 @@ interface InitializableInterface
     /**
      * Custom logic on step initialization.
      */
-    public function initialize();
+    public function initialize(array $state = []): void;
 }

@@ -9,11 +9,13 @@ use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -28,7 +30,8 @@ abstract class AbstractItemMediaWriter implements
     InitializableInterface,
     FlushableInterface,
     StepExecutionAwareInterface,
-    ArchivableWriterInterface
+    ArchivableWriterInterface,
+    StatefulInterface
 {
     protected const DEFAULT_FILE_PATH = 'file_path';
 
@@ -62,6 +65,7 @@ abstract class AbstractItemMediaWriter implements
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         array $mediaAttributeTypes,
+        private readonly JobFileBackuper $exportedFileBackuper,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
         $this->arrayConverter = $arrayConverter;
@@ -81,7 +85,7 @@ abstract class AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    public function initialize(): void
+    public function initialize(array $state = []): void
     {
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();
@@ -389,5 +393,16 @@ abstract class AbstractItemMediaWriter implements
             $fileInfo->getStorage(),
             $outputFilePath,
         );
+    }
+
+    public function getState(): array
+    {
+        return [
+            'current_buffer_file_path' => $this->exportedFileBackuper->backup(
+                $this->stepExecution->getJobExecution(),
+                $this->flatRowBuffer->getFilePath(),
+            ),
+            'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->writtenFiles),
+        ];
     }
 }

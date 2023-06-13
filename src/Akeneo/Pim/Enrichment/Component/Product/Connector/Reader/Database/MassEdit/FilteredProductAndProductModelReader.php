@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -30,7 +31,8 @@ class FilteredProductAndProductModelReader implements
     ItemReaderInterface,
     InitializableInterface,
     StepExecutionAwareInterface,
-    TrackableItemReaderInterface
+    TrackableItemReaderInterface,
+    StatefulInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
@@ -74,7 +76,7 @@ class FilteredProductAndProductModelReader implements
     /**
      * {@inheritdoc}
      */
-    public function initialize(): void
+    public function initialize(array $state = []): void
     {
         $this->firstRead = true;
 
@@ -237,5 +239,12 @@ class FilteredProductAndProductModelReader implements
         }
 
         return $this->productsAndProductModels->count();
+    }
+
+    public function getState(): array
+    {
+        return [
+            'last_position_read' => $this->productsAndProductModels?->key(),
+        ];
     }
 }

@@ -2,7 +2,7 @@ import React, {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {MicroFrontendDependenciesProvider, Routes} from '@akeneo-pim-community/shared';
+import {MicroFrontendDependenciesProvider, Routes, translate} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
 import {CategoriesApp} from './feature';
 import {ConfigurationProvider, Page as ConfigurationPage} from './configuration';
@@ -21,7 +21,10 @@ ReactDOM.render(
                   <ConfigurationPage />
                 </Route>
                 <Route path="/">
-                  <CategoriesApp setCanLeavePage={() => true} />
+                  <CategoriesApp
+                    setCanLeavePage={() => true}
+                    setLeavePageMessage={() => translate('akeneo.category.edition_form.unsaved_changes')}
+                  />
                 </Route>
               </Switch>
             </Router>

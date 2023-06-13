@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\TextAreaValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\TextValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -35,6 +36,7 @@ class ReadValueCollectionFactorySpec extends ObjectBehavior
                 new IdentifierValueFactory(),
                 new TextAreaValueFactory(),
                 new TextValueFactory(),
+                new IdentifierValueFactory(),
             ]
         );
 
@@ -85,7 +87,7 @@ class ReadValueCollectionFactorySpec extends ObjectBehavior
         $actualValues->shouldReturnAnInstanceOf(ReadValueCollection::class);
         $actualValues->shouldBeLike(new ReadValueCollection(
             [
-                ScalarValue::value('sku', 'foo'),
+                IdentifierValue::value('sku', false, 'foo'),
                 ScalarValue::scopableLocalizableValue('description', 'a text area for ecommerce in English', 'ecommerce', 'en_US'),
                 ScalarValue::scopableLocalizableValue('description', 'a text area for tablets in English', 'tablet', 'en_US'),
                 ScalarValue::scopableLocalizableValue('description', 'une zone de texte pour les tablettes en français', 'tablet', 'fr_FR'),

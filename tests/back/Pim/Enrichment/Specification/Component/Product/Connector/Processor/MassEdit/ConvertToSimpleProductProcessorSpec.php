@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Proces
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\ConvertToSimpleProductProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -75,7 +76,7 @@ class ConvertToSimpleProductProcessorSpec extends ObjectBehavior
     ) {
         $product->isVariant()->willReturn(true);
 
-        $violation->getInvalidValue()->willReturn(ScalarValue::value('sku', 'invalid'));
+        $violation->getInvalidValue()->willReturn(IdentifierValue::value('sku', true, 'invalid'));
         $violation->getPropertyPath()->willReturn('values.sku');
         $violation->getMessage()->willReturn('Invalid SKU');
         $violations = new ConstraintViolationList([$violation->getWrappedObject()]);
