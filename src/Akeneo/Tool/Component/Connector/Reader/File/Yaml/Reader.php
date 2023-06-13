@@ -4,7 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File\Yaml;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface, TrackableItemReaderInterface, PausableReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface, StatefulInterface
 {
     protected bool $uploadAllowed = false;
     protected ?StepExecution $stepExecution = null;
@@ -160,7 +160,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(array $state = []): void
     {
         if (null !== $this->yaml) {
             $this->yaml->rewind();
@@ -210,10 +210,5 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
     public function getState(): array
     {
         return null !== $this->yaml ? ['position' => $this->yaml->key()] : [];
-    }
-
-    public function rewindToState(array $state): void
-    {
-        // TODO: Implement rewindToState() method.
     }
 }

@@ -145,7 +145,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(array $state = []): void
     {
         $this->cacheClearer->clear();
     }
