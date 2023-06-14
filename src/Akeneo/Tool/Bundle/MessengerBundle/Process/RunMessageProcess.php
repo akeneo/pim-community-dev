@@ -40,6 +40,9 @@ class RunMessageProcess
 
         if (null !== $tenantId && '' !== $tenantId) {
             $env['APP_TENANT_ID'] = $tenantId;
+        } else {
+            $this->logger->info('Not tenant ID => discard message');
+            return;
         }
 
         try {
