@@ -16,6 +16,7 @@ use Doctrine\DBAL\ParameterType;
  */
 final class SqlUpdateIdentifierValuesQuery implements UpdateIdentifierValuesQuery
 {
+    private ?bool $doesTableExist = null;
     public function __construct(private readonly Connection $connection)
     {
     }
@@ -25,7 +26,12 @@ final class SqlUpdateIdentifierValuesQuery implements UpdateIdentifierValuesQuer
      */
     public function forProducts(array $products): void
     {
+        if (!$this->tableExists('pim_catalog_product_identifiers')) {
+            return;
+        }
+
         $parameters = \implode(', ', \array_fill(0, \count($products), '(?, ?)'));
+
         $statement = $this->connection->prepare(
             \sprintf(
                 <<<SQL
@@ -54,5 +60,20 @@ final class SqlUpdateIdentifierValuesQuery implements UpdateIdentifierValuesQuer
         }
 
         $statement->executeStatement();
+    }
+
+    protected function tableExists(string $tableName): bool
+    {
+        // TODO: CPM-1053
+        if (null === $this->doesTableExist) {
+            $this->doesTableExist = $this->connection->executeQuery(
+                <<<SQL
+                SHOW TABLES LIKE :tableName
+                SQL,
+                ['tableName' => $tableName]
+            )->rowCount() >= 1;
+        }
+
+        return $this->doesTableExist;
     }
 }
