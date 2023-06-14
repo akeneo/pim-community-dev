@@ -5,7 +5,7 @@
         </label>
     </div>
     <div class="AknFieldContainer-inputContainer field-input">
-        <input type="text" class="AknTextField" value="<%- value %>" id="creation_<%- identifier %>" name="<%- identifier %>"/>
+        <input type="text" class="AknTextField" value="<%- value %>" id="creation_<%- identifier %>" name="<%- identifier %>"  <% if (typeof isReadOnly !== 'undefined' && isReadOnly) { %> disabled<% } %> />
     </div>
     <div class="AknFieldContainer-footer AknFieldContainer-validationErrors validation-errors">
         <% _.each(errors, function (error) { %>
