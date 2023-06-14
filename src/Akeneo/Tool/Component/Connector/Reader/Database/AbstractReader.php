@@ -4,7 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\Database;
 
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, TrackableItemReaderInterface, PausableReaderInterface
+abstract class AbstractReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, TrackableItemReaderInterface, StatefulInterface
 {
     /** @var bool Checks if all objects are sent to the processor */
     protected $isExecuted = false;
@@ -27,12 +27,13 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     /** @var \ArrayIterator */
     protected $results;
 
+    protected array $state;
+
     /**
      * {@inheritdoc}
      */
     public function read()
     {
-        $this->initializeReader();
         if (null !== $result = $this->results->current()) {
             $this->results->next();
             $this->stepExecution->incrementSummaryInfo('read');
@@ -54,7 +55,15 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
      */
     public function initialize()
     {
-        $this->isExecuted = false;
+        $this->initializeReader();
+
+        if (!isset($state['last_position_read'])) {
+            return;
+        }
+
+        while ($this->results->key() < $state['last_position_read']) {
+            $this->results->next();
+        }
     }
 
     public function totalItems(): int
@@ -83,16 +92,8 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
         ];
     }
 
-    public function rewindToState(array $state): void
+    public function setState(array $state): void
     {
-        if (!isset($state['last_position_read'])) {
-            return;
-        }
-
-        $this->initializeReader();
-        $this->results->current();
-        while ($this->results->key() < $state['last_position_read']) {
-            $this->results->next();
-        }
+        $this->state = $state;
     }
 }

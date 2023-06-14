@@ -206,10 +206,6 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
                 continue;
             }
 
-            if (null !== $stepExecution && $stepExecution->getStatus()->getValue() === BatchStatus::PAUSED) {
-                $stepExecution->setExecutionContext(new ExecutionContext());
-            }
-
             $stepExecution = $this->handleStep($step, $jobExecution, $stepExecution);
             $this->jobRepository->updateStepExecution($stepExecution);
 
@@ -368,6 +364,8 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         if ($stepExecution->getStepName() !== $this->steps[$index]->getName()) {
             throw new \RuntimeException("Can't resume the job because steps configuration has changed during pause.");
         }
+
+        $stepExecution->setExecutionContext(new ExecutionContext());
 
         return $stepExecution;
     }

@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Structure\Component\Reader\Database\MassEdit;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, TrackableItemReaderInterface, PausableReaderInterface
+class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, TrackableItemReaderInterface, StatefulInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -30,6 +30,8 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
 
     /** @var bool */
     private $firstRead = true;
+
+    protected ?array $state = null;
 
     /**
      * @param FamilyRepositoryInterface $familyRepository
@@ -136,8 +138,8 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
         ];
     }
 
-    public function rewindToState(array $state): void
+    public function setState(array $state): void
     {
-        // TODO: Implement rewindToState() method.
+        $this->state = $state;
     }
 }

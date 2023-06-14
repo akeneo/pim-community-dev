@@ -12,23 +12,24 @@ namespace Akeneo\Tool\Bundle\BatchBundle\EventListener;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
-use League\Flysystem\FilesystemOperator;
+use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
+use Akeneo\Tool\Component\Connector\Job\JobFileLocation;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class MountFileOnResumeSubscriber implements EventSubscriberInterface
+final class RecoverImportFileOnResumeSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly FilesystemOperator $filesystemOperator,
+        private readonly JobFileBackuper $jobFileBackuper,
     ) {
     }
     public static function getSubscribedEvents(): array
     {
         return [
-            EventInterface::BEFORE_STEP_EXECUTION_RESUME => 'beforeStepExecutionResume'
+            EventInterface::BEFORE_STEP_EXECUTION_RESUME => 'recoverImportFile'
         ];
     }
 
-    public function beforeStepExecutionResume(StepExecutionEvent $event): void
+    public function recoverImportFile(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
@@ -37,11 +38,15 @@ final class MountFileOnResumeSubscriber implements EventSubscriberInterface
         }
 
         $storage = $stepExecution->getJobParameters()->get('storage');
+        $localFilePath = sprintf(
+            '%s%s',
+            $stepExecution->getJobExecution()->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER),
+            basename($storage['file_path']),
+        );
 
-        $filePathToMount = $stepExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER) . basename($storage['file_path']);
-        $backupFilePath = 'paused_job/step/' . $stepExecution->getId();
-        file_put_contents($filePathToMount, $this->filesystemOperator->readStream($backupFilePath));
-        $storage['file_path'] = $filePathToMount;
+        $this->jobFileBackuper->recover($stepExecution->getJobExecution(), $localFilePath);
+
+        $storage['file_path'] = $localFilePath;
         $stepExecution->getJobParameters()->set('storage', $storage);
     }
 }

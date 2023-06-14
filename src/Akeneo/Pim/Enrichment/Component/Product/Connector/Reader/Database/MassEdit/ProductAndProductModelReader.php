@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -30,7 +30,7 @@ class ProductAndProductModelReader implements
     InitializableInterface,
     StepExecutionAwareInterface,
     TrackableItemReaderInterface,
-    PausableReaderInterface
+    StatefulInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
@@ -205,8 +205,8 @@ class ProductAndProductModelReader implements
         ];
     }
 
-    public function rewindToState(array $state): void
+    public function setState(array $state): void
     {
-        // TODO: Implement rewindToState() method.
+        $this->state = $state;
     }
 }

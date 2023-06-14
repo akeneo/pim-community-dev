@@ -12,12 +12,9 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableFileWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Job\JobStopperInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
@@ -36,6 +33,10 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 {
     use LoggerAwareTrait;
 
+    private const READER_KEY = 'reader';
+    private const WRITER_KEY = 'writer';
+    private const PROCESSOR_KEY = 'processor';
+
     protected ?StepExecution $stepExecution = null;
     private bool $stoppable = false;
 
@@ -49,7 +50,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         protected int $batchSize = 100,
         private ?JobStopperInterface $jobStopper = null,
     ) {
-        parent::__construct($name, $eventDispatcher, $jobRepository, $jobStopper);
+        parent::__construct($name, $eventDispatcher, $jobRepository);
     }
 
     public function getReader(): ?ItemReaderInterface
@@ -91,10 +92,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             $stepExecution->setTotalItems($this->getCountFromTrackableItemReader());
         }
 
-        $this->batchSize = 1 ;
-
         while (true) {
-            sleep(2);
             try {
                 $readItem = $this->reader->read();
                 if (null === $readItem) {
@@ -125,7 +123,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
                 if (null !== $this->jobStopper) {
                     if ($this->jobStopper->isPausing($stepExecution)) {
-                        $this->saveAndPause($stepExecution);
+                        $this->pause($stepExecution);
                         break;
                     }
 
@@ -159,37 +157,34 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         $this->flushStepElements();
     }
 
-    private function saveAndPause(StepExecution $stepExecution): void
+    private function pause(StepExecution $stepExecution): void
     {
-        if (!$this->reader instanceof PausableReaderInterface) {
-            throw new \RuntimeException('The reader should implement PausableItemReaderInterface');
+        $currentState = [];
+
+        if ($this->reader instanceof StatefulInterface) {
+            $currentState[self::READER_KEY] = $this->reader->getState();
         }
 
-        if (!$this->writer instanceof PausableWriterInterface) {
-            throw new \RuntimeException('The writer should implement PausableItemWriterInterface');
+        if ($this->writer instanceof StatefulInterface) {
+            $currentState[self::WRITER_KEY] = $this->writer->getState();
         }
 
-        $currentState = [
-            'reader' => $this->reader->getState(),
-            'writer' => $this->writer->getState(),
-        ];
-
-        $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION_PAUSED, $stepExecution);
         $this->jobStopper->pause($stepExecution, $currentState);
     }
 
     protected function initializeStepElements(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-        foreach ($this->getStepElements() as $element) {
+        foreach ($this->getStepElements() as $key => $element) {
             if ($element instanceof StepExecutionAwareInterface) {
                 $element->setStepExecution($stepExecution);
             }
-            if ($element instanceof InitializableInterface) {
-                $element->initialize($stepExecution->getCurrentState()['writer'] ?? []);
+            if ($element instanceof StatefulInterface) {
+                $state = $stepExecution->getCurrentState()[$key] ?? [];
+                $element->setState($state);
             }
-            if ($element instanceof PausableReaderInterface) {
-                $element->rewindToState($stepExecution->getCurrentState()['reader'] ?? []);
+            if ($element instanceof InitializableInterface) {
+                $element->initialize();
             }
         }
     }
@@ -272,9 +267,9 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
     protected function getStepElements(): array
     {
         return [
-            'reader'    => $this->reader,
-            'processor' => $this->processor,
-            'writer'    => $this->writer
+            self::READER_KEY => $this->reader,
+            self::PROCESSOR_KEY => $this->processor,
+            self::WRITER_KEY => $this->writer,
         ];
     }
 

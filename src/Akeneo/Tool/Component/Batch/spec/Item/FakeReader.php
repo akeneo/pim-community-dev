@@ -10,22 +10,12 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Component\Batch\spec\Item;
 
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 
-class FakeReader implements ItemReaderInterface, PausableReaderInterface
+class FakeReader implements ItemReaderInterface
 {
     public function read(): mixed
     {
         return null;
-    }
-
-    public function getState(): array
-    {
-        return [];
-    }
-
-    public function rewindToState(int $key): void
-    {
-        // TODO: Implement rewindToState() method.
     }
 }

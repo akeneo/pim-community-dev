@@ -10,17 +10,10 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Component\Batch\spec\Item;
 
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 
-class FakeWriter implements ItemWriterInterface, PausableWriterInterface
+class FakeWriter implements ItemWriterInterface
 {
     public function write(array $items): void
     {
-        return;
-    }
-
-    public function getState(): array
-    {
-        return [];
     }
 }

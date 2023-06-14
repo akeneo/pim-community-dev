@@ -5,7 +5,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.user_group'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.xlsx_user_group:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -13,7 +13,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.user_group'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.csv_user_role:
         class: '%pim_connector.writer.file.csv.class%'
@@ -21,7 +21,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.user_role'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_user.writer.file.user_role.flat_item_buffer_flusher'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.xlsx_user_role:
         class: '%pim_connector.writer.file.xlsx.class%'
@@ -29,7 +29,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.user_role'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_user.writer.file.user_role.flat_item_buffer_flusher'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.csv_user:
         class: 'Akeneo\UserManagement\Component\Connector\Writer\File\CsvUserWriter'
@@ -40,7 +40,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@pim_connector.writer.file.media_exporter_path_generator'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     pim_connector.writer.file.xlsx_user:
         class: 'Akeneo\UserManagement\Component\Connector\Writer\File\XlsxUserWriter'
@@ -51,7 +51,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@pim_connector.writer.file.media_exporter_path_generator'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     pim_user.writer.file.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
