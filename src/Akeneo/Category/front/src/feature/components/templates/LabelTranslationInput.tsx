@@ -1,4 +1,4 @@
-import {useFeatureFlags} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useFeatureFlags, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {Field, Helper, TextInput} from 'akeneo-design-system';
 import {useQueryClient} from 'react-query';
 import {useSaveStatus} from '../../hooks/useSaveStatus';
@@ -31,6 +31,8 @@ type Props = {
 
 export const LabelTranslationInput = ({attribute, localeCode, label}: Props) => {
   const featureFlag = useFeatureFlags();
+  const translate = useTranslate();
+  const notify = useNotify();
   const queryClient = useQueryClient();
 
   const {handleStatusListChange} = useSaveStatus();
@@ -51,6 +53,11 @@ export const LabelTranslationInput = ({attribute, localeCode, label}: Props) => 
             payload: {attributeUuid: attribute.uuid, localeCode, errors},
           });
           handleStatusListChange(saveStatusId, Status.ERRORS);
+          notify(
+            NotificationLevel.ERROR,
+            translate('akeneo.category.template.auto-save.error_notification.title'),
+            translate('akeneo.category.template.auto-save.error_notification.content')
+          );
         },
       }
     );
