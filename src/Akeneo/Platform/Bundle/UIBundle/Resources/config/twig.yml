@@ -42,7 +42,7 @@ services:
         arguments:
             - '@pim_enrich.view_element.registry'
             - '@twig'
-            - '%env(APP_DEBUG)%'
+            - '1'
         tags:
             - { name: twig.extension }
 
