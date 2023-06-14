@@ -7,7 +7,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 
-class ExportedFileBackuperIntegration extends TestCase
+class jobFileBackuperIntegration extends TestCase
 {
     public function test_it_backups_a_file(): void
     {

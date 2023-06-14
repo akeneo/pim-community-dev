@@ -212,6 +212,11 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
         return null !== $this->fileIterator ? ['position' => $this->fileIterator->key()] : [];
     }
 
+    public function setState(array $state): void
+    {
+        $this->state = $state;
+    }
+
     public function initialize(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
@@ -226,10 +231,5 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
         while ($this->fileIterator->key() < $this->state['position']) {
             $this->fileIterator->next();
         }
-    }
-
-    public function setState(array $state): void
-    {
-        $this->state = $state;
     }
 }

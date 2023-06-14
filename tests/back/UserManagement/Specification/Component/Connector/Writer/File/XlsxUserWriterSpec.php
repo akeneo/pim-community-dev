@@ -32,7 +32,7 @@ class XlsxUserWriterSpec extends ObjectBehavior
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         FileExporterPathGeneratorInterface $fileExporterPathGenerator,
-        JobFileBackuper $exportedFileBackuper,
+        JobFileBackuper $jobFileBackuper,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         ExecutionContext $executionContext,
@@ -46,7 +46,7 @@ class XlsxUserWriterSpec extends ObjectBehavior
             $fileInfoRepository,
             $filesystemProvider,
             $fileExporterPathGenerator,
-            $exportedFileBackuper,
+            $jobFileBackuper,
         );
 
         $executionContext->get(JobInterface::WORKING_DIRECTORY_PARAMETER)->willReturn('/tmp/akeneo_batch1234/');

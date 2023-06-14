@@ -54,6 +54,7 @@ class FilteredProductAndProductModelReader implements
 
     /** @var bool */
     private $firstRead = true;
+    protected ?array $state = null;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -246,5 +247,10 @@ class FilteredProductAndProductModelReader implements
         return [
             'last_position_read' => $this->productsAndProductModels?->key(),
         ];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

@@ -31,6 +31,8 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     /** @var bool */
     private $firstRead = true;
 
+    protected ?array $state = null;
+
     /**
      * @param FamilyRepositoryInterface $familyRepository
      */
@@ -134,5 +136,10 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
         return [
             'last_position_read' => $this->families?->key(),
         ];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

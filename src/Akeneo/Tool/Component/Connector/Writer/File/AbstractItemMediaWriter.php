@@ -54,6 +54,7 @@ abstract class AbstractItemMediaWriter implements
     /** @var WrittenFileInfo[] */
     protected array $writtenFiles = [];
     protected string $datetimeFormat = 'Y-m-d_H-i-s';
+    protected ?array $state = null;
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -65,7 +66,7 @@ abstract class AbstractItemMediaWriter implements
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         array $mediaAttributeTypes,
-        private readonly JobFileBackuper $exportedFileBackuper,
+        private readonly JobFileBackuper $jobFileBackuper,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
         $this->arrayConverter = $arrayConverter;
@@ -397,12 +398,17 @@ abstract class AbstractItemMediaWriter implements
 
     public function getState(): array
     {
+        $filePath = $this->flatRowBuffer->getFilePath();
+        $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
+
         return [
-            'current_buffer_file_path' => $this->exportedFileBackuper->backup(
-                $this->stepExecution->getJobExecution(),
-                $this->flatRowBuffer->getFilePath(),
-            ),
+            'current_buffer_file_name' => basename($filePath),
             'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->writtenFiles),
         ];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }
