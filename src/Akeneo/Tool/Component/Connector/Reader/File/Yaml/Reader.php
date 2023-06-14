@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Component\Connector\Reader\File\Yaml;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface, TrackableItemReaderInterface, StatefulInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface, InitializableInterface, StatefulInterface
 {
     protected bool $uploadAllowed = false;
     protected ?StepExecution $stepExecution = null;
