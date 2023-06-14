@@ -22,19 +22,13 @@ export const OptionRichTextEditorCheckbox = ({attribute}: Props) => {
   const mutation = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
   const [isSaving, setIsSaving] = useState(false);
 
-  const handleRichTextAreaChange = () => {
+  const handleRichTextAreaChange = async () => {
     setIsSaving(true);
     handleStatusListChange(saveStatusId, Status.SAVING);
-    mutation.mutate(
-      {isRichTextArea: !(attribute.type === 'richtext')},
-      {
-        onSuccess: async () => {
-          await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
-          setIsSaving(false);
-          handleStatusListChange(saveStatusId, Status.SAVED);
-        },
-      }
-    );
+    await mutation.mutateAsync({isRichTextArea: !(attribute.type === 'richtext')});
+    await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
+    handleStatusListChange(saveStatusId, Status.SAVED);
+    setIsSaving(false);
   };
 
   if (false === ['textarea', 'richtext'].includes(attribute.type)) {

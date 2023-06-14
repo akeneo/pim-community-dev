@@ -39,18 +39,11 @@ export const LabelTranslationInput = ({attribute, localeCode, label}: Props) => 
   const [, dispatch] = useTemplateForm();
 
   const mutation = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
-  const debouncedUpdateAttributeLabel = useDebounceCallback((value: string) => {
-    mutation.mutate(
+  const debouncedUpdateAttributeLabel = useDebounceCallback(async (value: string) => {
+    handleStatusListChange(saveStatusId, Status.SAVING);
+    await mutation.mutateAsync(
       {labels: {[localeCode]: value}},
       {
-        onSuccess: async () => {
-          await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
-          dispatch({
-            type: 'attribute_label_translation_saved',
-            payload: {attributeUuid: attribute.uuid, localeCode, value},
-          });
-          handleStatusListChange(saveStatusId, Status.SAVED);
-        },
         onError: error => {
           const errors = error.data.map(({error}) => error.message);
           dispatch({
@@ -61,7 +54,12 @@ export const LabelTranslationInput = ({attribute, localeCode, label}: Props) => 
         },
       }
     );
-    handleStatusListChange(saveStatusId, Status.SAVING);
+    await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
+    dispatch({
+      type: 'attribute_label_translation_saved',
+      payload: {attributeUuid: attribute.uuid, localeCode, value},
+    });
+    handleStatusListChange(saveStatusId, Status.SAVED);
   }, 300);
 
   const handleTranslationChange = async (value: string) => {
