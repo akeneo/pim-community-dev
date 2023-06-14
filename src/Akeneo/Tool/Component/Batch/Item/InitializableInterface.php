@@ -19,5 +19,5 @@ interface InitializableInterface
     /**
      * Custom logic on step initialization.
      */
-    public function initialize(): void;
+    public function initialize();
 }

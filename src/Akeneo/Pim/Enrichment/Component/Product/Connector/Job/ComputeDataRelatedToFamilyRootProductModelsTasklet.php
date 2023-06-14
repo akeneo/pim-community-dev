@@ -149,7 +149,7 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
     /**
      * {@inheritdoc}
      */
-    public function initialize(): void
+    public function initialize()
     {
         $this->cacheClearer->clear();
     }
