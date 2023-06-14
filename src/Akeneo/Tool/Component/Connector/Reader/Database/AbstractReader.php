@@ -54,7 +54,7 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     /**
      * {@inheritdoc}
      */
-    public function initialize(): void
+    public function initialize()
     {
         $this->isExecuted = false;
     }

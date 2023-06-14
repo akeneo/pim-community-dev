@@ -81,7 +81,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
         $this->stepExecution = $stepExecution;
     }
 
-    public function initialize(): void
+    public function initialize()
     {
         $filters = $this->getConfiguredFilters();
         $this->families = $this->getFamilies($filters);

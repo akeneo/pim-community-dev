@@ -107,7 +107,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
 
         return [
-            'current_buffer_file_name' => basename($filePath),
+            'current_buffer_file_path' => $filePath,
         ];
     }
 

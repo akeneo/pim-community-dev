@@ -157,7 +157,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
         $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
 
         return [
-            'current_buffer_file_name' => basename($filePath),
+            'current_buffer_file_path' => $filePath,
         ];
     }
 

@@ -402,7 +402,7 @@ abstract class AbstractItemMediaWriter implements
         $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
 
         return [
-            'current_buffer_file_name' => basename($filePath),
+            'current_buffer_file_path' => $filePath,
             'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->writtenFiles),
         ];
     }
