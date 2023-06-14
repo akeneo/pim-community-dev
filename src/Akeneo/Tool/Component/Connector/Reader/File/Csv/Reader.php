@@ -40,7 +40,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
     /** @var array */
     protected $options;
 
-    protected ?array $state = null;
+    protected array $state = [];
 
     /**
      * @param FileIteratorFactory     $fileIteratorFactory

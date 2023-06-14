@@ -54,7 +54,7 @@ abstract class AbstractItemMediaWriter implements
     /** @var WrittenFileInfo[] */
     protected array $writtenFiles = [];
     protected string $datetimeFormat = 'Y-m-d_H-i-s';
-    protected ?array $state = null;
+    protected array $state = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,

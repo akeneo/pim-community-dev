@@ -28,7 +28,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
     protected bool $uploadAllowed = false;
     protected ?StepExecution $stepExecution = null;
     protected ?\ArrayIterator $yaml = null;
-    protected ?array $state = null;
+    protected array $state = [];
 
     /**
      * @param ArrayConverterInterface $converter

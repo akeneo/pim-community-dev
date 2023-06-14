@@ -36,7 +36,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
     private FileInfoRepositoryInterface $fileInfoRepository;
     private FilesystemProvider $filesystemProvider;
     private FileExporterPathGeneratorInterface $pathGenerator;
-    protected ?array $state = null;
+    private array $state = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,

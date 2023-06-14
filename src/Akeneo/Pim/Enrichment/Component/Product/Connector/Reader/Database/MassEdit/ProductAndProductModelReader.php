@@ -50,6 +50,8 @@ class ProductAndProductModelReader implements
     /** @var bool */
     private $firstRead = true;
 
+    private array $state = [];
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository

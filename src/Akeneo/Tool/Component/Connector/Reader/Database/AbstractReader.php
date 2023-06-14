@@ -27,7 +27,7 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     /** @var \ArrayIterator */
     protected $results;
 
-    protected array $state;
+    protected array $state = [];
 
     /**
      * {@inheritdoc}

@@ -54,7 +54,8 @@ class FilteredProductAndProductModelReader implements
 
     /** @var bool */
     private $firstRead = true;
-    protected ?array $state = null;
+
+    private array $state = [];
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
