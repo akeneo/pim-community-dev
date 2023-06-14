@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Component\Connector\Reader\File\Xlsx;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
@@ -22,7 +23,7 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface, TrackableItemReaderInterface, StatefulInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface, StatefulInterface, InitializableInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
@@ -39,7 +40,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
     /** @var array */
     protected $options;
 
-    protected $state;
+    protected array $state = [];
 
     /**
      * @param FileIteratorFactory     $fileIteratorFactory
@@ -70,14 +71,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
      */
     public function read()
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('storage')['file_path'];
-
-        if (null === $this->fileIterator) {
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
-            $this->fileIterator->rewind();
-        }
-
         $this->fileIterator->next();
 
         if ($this->fileIterator->valid() && null !== $this->stepExecution) {
@@ -211,5 +204,21 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
     public function setState(array $state): void
     {
         $this->state = $state;
+    }
+
+    public function initialize(): void
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('storage')['file_path'];
+
+        $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
+
+        if (!array_key_exists('position', $this->state)) {
+            return;
+        }
+
+        while ($this->fileIterator->key() < $this->state['position']) {
+            $this->fileIterator->next();
+        }
     }
 }

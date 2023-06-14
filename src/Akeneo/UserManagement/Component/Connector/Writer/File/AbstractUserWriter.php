@@ -36,7 +36,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
     private FileInfoRepositoryInterface $fileInfoRepository;
     private FilesystemProvider $filesystemProvider;
     private FileExporterPathGeneratorInterface $pathGenerator;
-    protected ?array $state = null;
+    protected array $state = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -162,11 +162,15 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
 
     public function getState(): array
     {
+        if (null === $this->flatRowBuffer) {
+            return [];
+        }
+
         $filePath = $this->flatRowBuffer->getFilePath();
         $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
 
         return [
-            'current_buffer_file_path' => $filePath,
+            'buffer_file_path' => $filePath,
         ];
     }
 

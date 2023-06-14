@@ -54,7 +54,7 @@ abstract class AbstractItemMediaWriter implements
     /** @var WrittenFileInfo[] */
     protected array $writtenFiles = [];
     protected string $datetimeFormat = 'Y-m-d_H-i-s';
-    protected ?array $state = null;
+    protected array $state = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -88,9 +88,14 @@ abstract class AbstractItemMediaWriter implements
      */
     public function initialize(): void
     {
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create();
+        $bufferFilePath = $this->state['buffer_file_path'] ?? null;
+
+        if ($bufferFilePath) {
+            $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
         }
+
+        $this->writtenFiles = $this->state['written_files'] ?? [];
+        $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
 
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
@@ -398,6 +403,10 @@ abstract class AbstractItemMediaWriter implements
 
     public function getState(): array
     {
+        if (null === $this->flatRowBuffer) {
+            return [];
+        }
+
         $filePath = $this->flatRowBuffer->getFilePath();
         $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
 

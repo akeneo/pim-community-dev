@@ -69,9 +69,4 @@ class Writer implements ItemWriterInterface, StepExecutionAwareInterface
             }
         }
     }
-
-    public function getState(): array
-    {
-        return [];
-    }
 }

@@ -27,7 +27,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     protected ?StepExecution $stepExecution = null;
     protected ?CursorInterface $products = null;
     protected bool $firstRead = true;
-    protected ?array $state = null;
+    protected array $state = [];
 
     public function __construct(
         protected ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -160,9 +160,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
 
     public function getState(): array
     {
-        return [
-            'last_position_read' => $this->products?->key(),
-        ];
+        return null !== $this->products ? ['position' =>  $this->products->key()]: [];
     }
 
     public function setState(array $state): void

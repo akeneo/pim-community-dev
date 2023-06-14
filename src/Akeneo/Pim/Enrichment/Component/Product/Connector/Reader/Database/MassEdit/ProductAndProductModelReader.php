@@ -50,6 +50,8 @@ class ProductAndProductModelReader implements
     /** @var bool */
     private $firstRead = true;
 
+    protected array $state = [];
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
@@ -200,9 +202,7 @@ class ProductAndProductModelReader implements
 
     public function getState(): array
     {
-        return [
-            'last_position_read' => $this->productsAndProductModels?->key(),
-        ];
+        return null !== $this->productsAndProductModels ? ['position' =>  $this->productsAndProductModels->key()]: [];
     }
 
     public function setState(array $state): void

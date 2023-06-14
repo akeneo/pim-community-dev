@@ -34,7 +34,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     /** @var BufferFactory */
     protected $bufferFactory;
 
-    protected ?array $state = null;
+    protected array $state = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -52,16 +52,16 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $state = []): void
+    public function initialize(): void
     {
-        $bufferPath = null;
-        if (isset($state['current_buffer_file_path'])) {
-            $bufferPath = $this->exportedFileBackuper->restore($state['current_buffer_file_path']);
+        $bufferFilePath = $this->state['buffer_file_path'] ?? null;
+
+        if ($bufferFilePath) {
+            $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
         }
 
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create($bufferPath);
-        }
+        $this->writtenFiles = $this->state['written_files'] ?? [];
+        $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
     }
 
     /**
@@ -108,11 +108,16 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
 
     public function getState(): array
     {
+        if (null === $this->flatRowBuffer) {
+            return [];
+        }
+
         $filePath = $this->flatRowBuffer->getFilePath();
         $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
 
         return [
-            'current_buffer_file_path' => $filePath,
+            'buffer_file_path' => $filePath,
+            'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->getWrittenFiles()),
         ];
     }
 
