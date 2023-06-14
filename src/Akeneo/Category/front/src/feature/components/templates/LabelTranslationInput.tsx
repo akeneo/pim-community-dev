@@ -40,37 +40,37 @@ export const LabelTranslationInput = ({attribute, localeCode, label}: Props) => 
 
   const mutation = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
   const debouncedUpdateAttributeLabel = useDebounceCallback((value: string) => {
-    handleStatusListChange(saveStatusId, Status.SAVING);
     mutation.mutate(
       {labels: {[localeCode]: value}},
       {
         onSuccess: async () => {
-          handleStatusListChange(saveStatusId, Status.SAVED);
           await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
           dispatch({
             type: 'attribute_label_translation_saved',
             payload: {attributeUuid: attribute.uuid, localeCode, value},
           });
+          handleStatusListChange(saveStatusId, Status.SAVED);
         },
         onError: error => {
-          handleStatusListChange(saveStatusId, Status.ERRORS);
           const errors = error.data.map(({error}) => error.message);
           dispatch({
             type: 'save_attribute_label_translation_failed',
             payload: {attributeUuid: attribute.uuid, localeCode, errors},
           });
+          handleStatusListChange(saveStatusId, Status.ERRORS);
         },
       }
     );
+    handleStatusListChange(saveStatusId, Status.SAVING);
   }, 300);
 
   const handleTranslationChange = async (value: string) => {
-    handleStatusListChange(saveStatusId, Status.EDITING);
     dispatch({
       type: 'attribute_label_translation_changed',
       payload: {attributeUuid: attribute.uuid, localeCode, value},
     });
     debouncedUpdateAttributeLabel(value);
+    handleStatusListChange(saveStatusId, Status.EDITING);
   };
 
   const translationFormData = useTranslationFormData(attribute, localeCode);

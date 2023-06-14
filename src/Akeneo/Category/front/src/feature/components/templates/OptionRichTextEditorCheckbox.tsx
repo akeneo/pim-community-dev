@@ -5,6 +5,7 @@ import {useQueryClient} from 'react-query';
 import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {Attribute} from '../../models';
 import {Status} from '../providers/SaveStatusProvider';
+import {useState} from 'react';
 
 type Props = {
   attribute: Attribute;
@@ -19,15 +20,18 @@ export const OptionRichTextEditorCheckbox = ({attribute}: Props) => {
   const saveStatusId = attribute.uuid + '_option_richtext';
 
   const mutation = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleRichTextAreaChange = () => {
+    setIsSaving(true);
     handleStatusListChange(saveStatusId, Status.SAVING);
     mutation.mutate(
       {isRichTextArea: !(attribute.type === 'richtext')},
       {
-        onSuccess: () => {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
+          setIsSaving(false);
           handleStatusListChange(saveStatusId, Status.SAVED);
-          queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
         },
       }
     );
@@ -41,7 +45,7 @@ export const OptionRichTextEditorCheckbox = ({attribute}: Props) => {
     <Checkbox
       checked={attribute.type === 'richtext'}
       onChange={handleRichTextAreaChange}
-      readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
+      readOnly={isSaving || !featureFlag.isEnabled('category_update_template_attribute')}
     >
       {translate('akeneo.category.template.attribute.settings.options.rich_text')}
     </Checkbox>
