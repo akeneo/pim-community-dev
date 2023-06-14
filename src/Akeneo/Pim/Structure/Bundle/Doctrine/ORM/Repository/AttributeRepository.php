@@ -7,6 +7,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
@@ -374,5 +375,10 @@ class AttributeRepository extends EntityRepository implements IdentifiableObject
             ->setParameter(':family', $family->getId());
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function updateMainIdentifier(AttributeInterface $attribute): void
+    {
+        throw new NotImplementedException(__METHOD__);
     }
 }
