@@ -30,6 +30,7 @@ final class ExportUserIntegration extends TestCase
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $this->userRepository = $this->get('pim_user.repository.user');
         $this->dateTimeNormalizer = $this->get('pim_user.normalizer.date_time');
+
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
             [
                 'code' => self::CSV_EXPORT_JOB_CODE,
@@ -75,12 +76,11 @@ final class ExportUserIntegration extends TestCase
         $expectedCsv .= "julia;julia@example.com;;en_US;ecommerce;master;;1;Julia;Manager;Stark;;;;;;ROLE_CATALOG_MANAGER;UTC;en_US;{$this->dateTimeNormalizer->normalize($julia->getCreatedAt())};{$this->dateTimeNormalizer->normalize($julia->getUpdatedAt())};;0\n";
         $expectedCsv .= "mary;mary@example.com;;en_US;ecommerce;master;;1;Mary;Redactor;Smith;;;;;;ROLE_USER;UTC;en_US;{$this->dateTimeNormalizer->normalize($mary->getCreatedAt())};{$this->dateTimeNormalizer->normalize($mary->getUpdatedAt())};;0\n";
         $expectedCsv .= "kevin;kevin@example.com;;en_US;ecommerce;master;;1;Kevin;Redactor;Michel;;;;;;ROLE_TRAINEE;UTC;en_US;{$this->dateTimeNormalizer->normalize($kevin->getCreatedAt())};{$this->dateTimeNormalizer->normalize($kevin->getUpdatedAt())};;0\n";
-
-        $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, []);
-
         $expectedCsv .= <<<CSV
 
         CSV;
+
+        $csv = $this->jobLauncher->launchExport(self::CSV_EXPORT_JOB_CODE, null, []);
 
         self::assertSame($expectedCsv, $csv);
     }
