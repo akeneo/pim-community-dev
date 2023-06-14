@@ -90,7 +90,7 @@ const useEditCategoryForm = (categoryId: number) => {
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
 
       // force to fetch attribute list from template to hide potentially deleted attributes
-      await queryClient.invalidateQueries(['template', fetchedCategory?.template_uuid]);
+      await queryClient.invalidateQueries(['get-template', fetchedCategory?.template_uuid]);
     } else {
       notify(NotificationLevel.ERROR, response.error.message);
       if (response.error.code && response.error.code === DEACTIVATED_TEMPLATE) {
