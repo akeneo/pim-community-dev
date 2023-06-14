@@ -220,7 +220,7 @@ extensions:
             label: pim_user_management.entity.user.properties.phone
 
     pim-user-edit-form-avatar:
-        module: pim/form/common/fields/media
+        module: pim/form/common/fields/image-media
         parent: pim-user-edit-form-general-tab-content
         position: 100
         targetZone: content

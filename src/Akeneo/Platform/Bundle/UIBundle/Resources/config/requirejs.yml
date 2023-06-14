@@ -948,6 +948,7 @@ config:
     pim/form/common/fields/password:                pimui/js/form/common/fields/password.ts
     pim/form/common/fields/number:                  pimui/js/form/common/fields/number.ts
     pim/form/common/fields/media:                   pimui/js/form/common/fields/media.ts
+    pim/form/common/fields/image-media:             pimui/js/form/common/fields/image-media.ts
     pim/form/common/fields/available-locales:       pimui/js/form/common/fields/available-locales.ts
 
     # Values fields
