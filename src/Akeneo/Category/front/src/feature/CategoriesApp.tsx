@@ -1,8 +1,9 @@
-import React, {FC} from 'react';
-import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import {CategoriesIndex, CategoriesTreePage, CategoryEditPage, TemplatePage} from './pages';
-import {CanLeavePageProvider, EditCategoryProvider} from './components';
+import {FC} from 'react';
 import {QueryClient, QueryClientProvider} from 'react-query';
+import {Route, HashRouter as Router, Switch} from 'react-router-dom';
+import {CanLeavePageProvider, EditCategoryProvider} from './components';
+import {TemplateFormProvider} from './components/providers/TemplateFormProvider';
+import {CategoriesIndex, CategoriesTreePage, CategoryEditPage, TemplatePage} from './pages';
 
 type Props = {
   setCanLeavePage: (canLeavePage: boolean) => void;
@@ -26,7 +27,9 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage, setLeavePageMessage}) => {
               </EditCategoryProvider>
             </Route>
             <Route path="/:treeId/template/:templateId">
-              <TemplatePage />
+              <TemplateFormProvider>
+                <TemplatePage />
+              </TemplateFormProvider>
             </Route>
             <Route path="/">
               <CategoriesIndex />

@@ -1,4 +1,4 @@
-import React, {createContext, FC, useState} from 'react';
+import React, {createContext, useState} from 'react';
 
 // Status values represent each status priority. The higher the value, the higher the priority.
 // The highest value is the displayed status.
@@ -14,10 +14,7 @@ type SaveStatusState = {
   handleStatusListChange: (id: string, status: Status) => void;
 };
 
-const SaveStatusContext = createContext<SaveStatusState>({
-  globalStatus: Status.SAVED,
-  handleStatusListChange: () => {},
-});
+const SaveStatusContext = createContext<SaveStatusState | null>(null);
 
 const resolveGlobalStatus = (statusList: {[id: string]: number}): number => {
   let globalStatus = Status.SAVED;
@@ -30,23 +27,39 @@ const resolveGlobalStatus = (statusList: {[id: string]: number}): number => {
   return globalStatus;
 };
 
-const SaveStatusProvider: FC = ({children}) => {
-  const [statusList, setStatusList] = useState<{[id: string]: number}>({});
-  const globalStatus = resolveGlobalStatus(statusList);
+type Props = {
+  children: React.ReactNode;
+  onSaveStatusChange?: (status: Status) => void;
+};
+
+const SaveStatusProvider = ({children, onSaveStatusChange}: Props) => {
+  const [, setStatusList] = useState<{[id: string]: number}>({});
+  const [globalStatus, setGlobalStatus] = useState(Status.SAVED);
 
   const handleStatusListChange = (id: string, status: Status) => {
-    if (Object.values(Status).includes(status as Status)) {
-      setStatusList(previousStatus => ({
-        ...previousStatus,
+    setStatusList(previousStatusList => {
+      const statusList = {
+        ...previousStatusList,
         [id]: status,
-      }));
-    }
+      };
+
+      setGlobalStatus(previousGlobalStatus => {
+        const globalStatus = resolveGlobalStatus(statusList);
+        if (previousGlobalStatus !== globalStatus) {
+          console.debug('Save status:', Status[globalStatus], statusList);
+          if (onSaveStatusChange) {
+            onSaveStatusChange(globalStatus);
+          }
+        }
+        return globalStatus;
+      });
+
+      return statusList;
+    });
   };
 
   return (
-    <SaveStatusContext.Provider value={{globalStatus: globalStatus, handleStatusListChange: handleStatusListChange}}>
-      {children}
-    </SaveStatusContext.Provider>
+    <SaveStatusContext.Provider value={{globalStatus, handleStatusListChange}}>{children}</SaveStatusContext.Provider>
   );
 };
 

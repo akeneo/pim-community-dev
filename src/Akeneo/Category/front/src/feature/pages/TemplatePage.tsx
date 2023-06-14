@@ -9,10 +9,12 @@ import {
   useUserContext,
 } from '@akeneo-pim-community/shared';
 import {Breadcrumb, Pill, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
-import {FC, useState} from 'react';
+import {FC, useContext} from 'react';
 import {useParams} from 'react-router';
 import styled from 'styled-components';
-import {SaveStatusProvider} from '../components/providers/SaveStatusProvider';
+import {CanLeavePageContext} from '../components';
+import {SaveStatusProvider, Status} from '../components/providers/SaveStatusProvider';
+import {useTemplateForm} from '../components/providers/TemplateFormProvider';
 import {DeactivateTemplateModal} from '../components/templates/DeactivateTemplateModal';
 import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm';
 import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm';
@@ -25,6 +27,17 @@ enum Tabs {
   PROPERTY = '#pim_enrich-category-tab-property',
 }
 
+const useTabInError = () => {
+  const [state] = useTemplateForm();
+
+  return {
+    [Tabs.ATTRIBUTE]: Object.values(state.attributes).some(translations =>
+      Object.values(translations || {}).some(({errors}) => errors.length > 0)
+    ),
+    [Tabs.PROPERTY]: false,
+  };
+};
+
 type Params = {
   treeId: string;
   templateId: string;
@@ -36,6 +49,16 @@ const TemplatePage: FC = () => {
   const userContext = useUserContext();
   const featureFlag = useFeatureFlags();
 
+  const {setCanLeavePage, setLeavePageMessage} = useContext(CanLeavePageContext);
+  const handleSaveStatusChange = (status: Status) => {
+    if (status === Status.SAVED) {
+      setCanLeavePage(true);
+    } else {
+      setCanLeavePage(false);
+      setLeavePageMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
+    }
+  };
+
   const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.ATTRIBUTE, 'pim_category_template_activeTab');
   const [isCurrent, switchTo] = useTabBar(activeTab);
 
@@ -44,10 +67,7 @@ const TemplatePage: FC = () => {
     switchTo(tab);
   };
 
-  const [tabInError, setTabInError] = useState({});
-  const handleBadgesForTabInError = (tabCode: 'attributes' | 'properties', inError: boolean) => {
-    setTabInError(previousTabInError => ({...previousTabInError, [tabCode]: inError}));
-  };
+  const tabInError = useTabInError();
 
   const {treeId, templateId} = useParams<Params>();
   const {data: tree} = useCategoryTree(treeId);
@@ -59,7 +79,7 @@ const TemplatePage: FC = () => {
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
 
   return (
-    <SaveStatusProvider>
+    <SaveStatusProvider onSaveStatusChange={handleSaveStatusChange}>
       <PageHeader>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
@@ -98,21 +118,17 @@ const TemplatePage: FC = () => {
       <PageContent>
         <TabBar moreButtonTitle={'More'} sticky={0}>
           <TabBar.Tab isActive={isCurrent(Tabs.ATTRIBUTE)} onClick={() => handleSwitchTo(Tabs.ATTRIBUTE)}>
-            {translate('akeneo.category.attributes')} {tabInError['attributes'] && <Pill level={'danger'} />}
+            {translate('akeneo.category.attributes')} {tabInError[Tabs.ATTRIBUTE] && <Pill level={'danger'} />}
           </TabBar.Tab>
           <TabBar.Tab isActive={isCurrent(Tabs.PROPERTY)} onClick={() => handleSwitchTo(Tabs.PROPERTY)}>
-            {translate('pim_common.properties')} {tabInError['properties'] && <Pill level={'danger'} />}
+            {translate('pim_common.properties')} {tabInError[Tabs.PROPERTY] && <Pill level={'danger'} />}
           </TabBar.Tab>
         </TabBar>
 
         {template && (
           <>
             {isCurrent(Tabs.ATTRIBUTE) && (
-              <EditTemplateAttributesForm
-                attributes={template.attributes}
-                templateId={template.uuid}
-                onTabStatusChange={handleBadgesForTabInError}
-              />
+              <EditTemplateAttributesForm attributes={template.attributes} templateId={template.uuid} />
             )}
 
             {isCurrent(Tabs.PROPERTY) && <EditTemplatePropertiesForm template={template} />}

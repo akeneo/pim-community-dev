@@ -1,29 +1,32 @@
+import {useFeatureFlags, useTranslate, userContext} from '@akeneo-pim-community/shared';
 import {Button, Pill, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
+import {useMemo} from 'react';
+import styled from 'styled-components';
 import {Attribute, CATEGORY_ATTRIBUTE_TYPE_AREA, CATEGORY_ATTRIBUTE_TYPE_RICHTEXT} from '../../models';
 import {getLabelFromAttribute} from '../attributes';
-import React, {useMemo} from 'react';
-import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
+import {useTemplateForm} from '../providers/TemplateFormProvider';
 import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
+
+const useAttributeFormHasErrors = () => {
+  const [state] = useTemplateForm();
+
+  return (attributeUuid: string) => {
+    return Object.values(state.attributes[attributeUuid] || {}).some(({errors}) => errors.length > 0);
+  };
+};
 
 type Props = {
   attributes: Attribute[];
   selectedAttribute: Attribute;
   templateId: string;
   onAttributeSelection: (attribute: Attribute) => void;
-  attributeFormsInError: {[key: string]: boolean};
 };
 
-export const AttributeList = ({
-  attributes,
-  selectedAttribute,
-  templateId,
-  onAttributeSelection,
-  attributeFormsInError,
-}: Props) => {
+export const AttributeList = ({attributes, selectedAttribute, templateId, onAttributeSelection}: Props) => {
   const translate = useTranslate();
   const catalogLocale = userContext.get('catalogLocale');
   const featureFlags = useFeatureFlags();
+  const attributeFormHasErrors = useAttributeFormHasErrors();
 
   const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
     useBooleanState(false);
@@ -84,7 +87,7 @@ export const AttributeList = ({
                   )}
                 </Table.Cell>
                 <ErrorPillTableCell>
-                  {(attributeFormsInError[attribute.uuid] === true ?? false) && <Pill level={'danger'} />}
+                  {attributeFormHasErrors(attribute.uuid) && <Pill level={'danger'} />}
                 </ErrorPillTableCell>
               </Table.Row>
             ))}
