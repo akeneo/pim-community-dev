@@ -71,6 +71,7 @@ pim_enrich.entity.product:
       modified: Modificat
       old_value: Valor antic
       new_value: Nou valor
+      limit: 'Només es mostra l''última {{ limit }} versió.'
     meta:
       updated: Darrera actualització
       groups: Grups
@@ -114,6 +115,8 @@ pim_enrich.entity.product:
       quantified:
         quantity: 'Quantitat:'
         unlinked: Desvinculat
+      search:
+        placeholder: Cerca per etiqueta, identificador o uuid
       no_data: No hi ha productes associats.
       remove: Treure associació
       edit: Editar producte
@@ -455,6 +458,7 @@ pim_datagrid:
     mass_delete: Esborrat massiu
     selected:
       family: "]-Inf, 1]{{ count }} família seleccionada|]1, Inf[{{ count }} famílies seleccionades"
+      attribute: "]-Inf, 1]{{ count }} atribut seleccionat|]1, Inf[{{ count }} atributs seleccionats"
       product: "]-Inf, 1]{{ count }} resultat seleccionat|]1, Inf[{{ count }} resultats seleccionats"
   view_selector:
     view: Vistes
@@ -497,6 +501,7 @@ pim_datagrid:
       label: Actualitzat el
     label_or_identifier:
       label: Etiqueta o identificador
+      label_with_uuid: Etiqueta, identificador o UUID
     parent:
       label: Pare
     identifier:

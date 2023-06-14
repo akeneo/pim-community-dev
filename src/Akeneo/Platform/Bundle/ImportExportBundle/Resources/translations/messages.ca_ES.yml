@@ -16,8 +16,8 @@ pim_import_export:
     6: Fallit
     7: Abandonat
     8: Desconegut
-    9: Pausing
-    10: Paused
+    9: Aturant
+    10: Aturat
   download_archive:
     archive: descarregar l'arxiu generat | descarregar els arxius generats
     output: descarregar fitxer generat|descarregar fitxers generats
