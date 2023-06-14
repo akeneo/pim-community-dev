@@ -42,6 +42,11 @@ final class WrittenFileInfo
         return new self($localFilepath, self::LOCAL_FILESYSTEM, $outputFilepath);
     }
 
+    public static function fromNormalized(array $normalizedWrittenFileInfo): self
+    {
+        return new self($normalizedWrittenFileInfo['source_key'], $normalizedWrittenFileInfo['source_storage'], $normalizedWrittenFileInfo['output_filepath']);
+    }
+
     public function sourceKey(): string
     {
         return $this->sourceKey;

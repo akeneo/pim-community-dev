@@ -94,7 +94,10 @@ abstract class AbstractItemMediaWriter implements
             $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
         }
 
-        $this->writtenFiles = $this->state['written_files'] ?? [];
+        $this->writtenFiles = array_key_exists('written_files', $this->state) ?
+            array_map(static fn (array $normalized) => WrittenFileInfo::fromNormalized($normalized), $this->state['written_files'])
+            : [];
+
         $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
 
         $exportDirectory = dirname($this->getPath());
@@ -411,7 +414,7 @@ abstract class AbstractItemMediaWriter implements
         $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
 
         return [
-            'current_buffer_file_path' => $filePath,
+            'buffer_file_path' => $filePath,
             'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->writtenFiles),
         ];
     }

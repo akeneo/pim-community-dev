@@ -45,8 +45,16 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         $filters = $this->getConfiguredFilters();
 
         $this->products = $this->getProductsCursor($filters, $channel);
-        $this->products->rewind();
-        $this->firstRead = true;
+
+        if (!array_key_exists('position', $this->state)) {
+            $this->products->rewind();
+            return;
+        }
+
+        while ($this->products->key() < $this->state['position']) {
+            $this->products->next();
+        }
+        $this->firstRead = false;
     }
 
     /**
