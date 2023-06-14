@@ -32,7 +32,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
     /** @var bool */
     protected $isFirstWriting;
 
-    protected ?array $state = null;
+    protected array $state = [];
 
     /**
      * @param ArrayConverterInterface $arrayConverter

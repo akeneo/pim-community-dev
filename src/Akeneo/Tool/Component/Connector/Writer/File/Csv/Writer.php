@@ -37,7 +37,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     /** @var array */
     protected $headers = [];
 
-    protected ?array $state = null;
+    protected array $state = [];
 
     public function __construct(
         ArrayConverterInterface $arrayConverter,
