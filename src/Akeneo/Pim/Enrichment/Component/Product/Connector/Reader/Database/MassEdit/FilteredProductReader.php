@@ -50,6 +50,8 @@ class FilteredProductReader implements
     /** @var bool */
     private $firstRead = true;
 
+    protected ?array $state = null;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
@@ -210,5 +212,10 @@ class FilteredProductReader implements
         return [
             'last_position_read' => $this->products?->key(),
         ];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

@@ -45,7 +45,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         array $mediaAttributeTypes,
-        JobFileBackuper $exportedFileBackuper,
+        JobFileBackuper $jobFileBackuper,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
         parent::__construct(
@@ -58,7 +58,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
             $fileInfoRepository,
             $filesystemProvider,
             $mediaAttributeTypes,
-            $exportedFileBackuper,
+            $jobFileBackuper,
             $jobParamFilePath
         );
 

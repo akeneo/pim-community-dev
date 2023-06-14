@@ -32,13 +32,15 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
     /** @var bool */
     protected $isFirstWriting;
 
+    protected ?array $state = null;
+
     /**
      * @param ArrayConverterInterface $arrayConverter
      * @param string                  $header
      */
     public function __construct(
         ArrayConverterInterface $arrayConverter,
-        private readonly JobFileBackuper $exportedFileBackuper,
+        private readonly JobFileBackuper $jobFileBackuper,
         $header = null,
     ) {
         parent::__construct();
@@ -147,11 +149,15 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
 
     public function getState(): array
     {
+        $filePath = $this->getPath();
+        $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
+
         return [
-            'current_file_path' => $this->exportedFileBackuper->backup(
-                $this->stepExecution->getJobExecution(),
-                $this->getPath(),
-            ),
+            'current_file_name' => basename($filePath),
         ];
+    }
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

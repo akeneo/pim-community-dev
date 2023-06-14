@@ -176,9 +176,11 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
             return;
         }
 
-        $state = $this->state;
+        if (empty($this->state)) {
+            return;
+        }
 
-        while ($this->yaml->key() < $state['position']) {
+        while ($this->yaml->key() < $this->state['position']) {
             $this->yaml->next();
         }
     }

@@ -34,11 +34,13 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     /** @var BufferFactory */
     protected $bufferFactory;
 
+    protected ?array $state = null;
+
     public function __construct(
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
-        private readonly JobFileBackuper $exportedFileBackuper,
+        private readonly JobFileBackuper $jobFileBackuper,
     ) {
         parent::__construct();
 
@@ -101,11 +103,16 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
 
     public function getState(): array
     {
+        $filePath = $this->flatRowBuffer->getFilePath();
+        $this->jobFileBackuper->backup($this->stepExecution->getJobExecution(), $filePath);
+
         return [
-            'current_buffer_file_path' => $this->exportedFileBackuper->backup(
-                $this->stepExecution->getJobExecution(),
-                $this->flatRowBuffer->getFilePath(),
-            ),
+            'current_buffer_file_name' => basename($filePath),
         ];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

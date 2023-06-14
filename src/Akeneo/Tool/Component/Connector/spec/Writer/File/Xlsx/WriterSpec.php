@@ -23,9 +23,9 @@ class WriterSpec extends ObjectBehavior
         ArrayConverterInterface $arrayConverter,
         BufferFactory $bufferFactory,
         FlatItemBufferFlusher $flusher,
-        JobFileBackuper $exportedFileBackuper,
+        JobFileBackuper $jobFileBackuper,
     ) {
-        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $exportedFileBackuper);
+        $this->beConstructedWith($arrayConverter, $bufferFactory, $flusher, $jobFileBackuper);
     }
 
     function it_is_initializable()

@@ -47,7 +47,7 @@ class ProductWriterSpec extends ObjectBehavior
         FlatTranslatorInterface $flatTranslator,
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
-        JobFileBackuper $exportedFileBackuper,
+        JobFileBackuper $jobFileBackuper,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution
     ) {
@@ -69,7 +69,7 @@ class ProductWriterSpec extends ObjectBehavior
             $fileInfoRepository,
             $filesystemProvider,
             ['pim_catalog_file', 'pim_catalog_image'],
-            $exportedFileBackuper,
+            $jobFileBackuper,
         );
 
         $stepExecution->getStartTime()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2021-03-24 16:00:00'));

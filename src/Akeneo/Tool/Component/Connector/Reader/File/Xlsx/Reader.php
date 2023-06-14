@@ -39,6 +39,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
     /** @var array */
     protected $options;
 
+    protected $state;
+
     /**
      * @param FileIteratorFactory     $fileIteratorFactory
      * @param ArrayConverterInterface $converter
@@ -204,5 +206,10 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, State
     public function getState(): array
     {
         return null !== $this->fileIterator ? ['position' => $this->fileIterator->key()] : [];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }
