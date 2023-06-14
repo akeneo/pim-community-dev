@@ -13,7 +13,6 @@ use Akeneo\UserManagement\Component\Normalizer\Standard\UserNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
