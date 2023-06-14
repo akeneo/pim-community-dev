@@ -18,6 +18,7 @@ require('jquery.slimbox');
  */
 class MediaField extends BaseField {
   readonly template = _.template(template);
+  readonly uploadRouteName = 'pim_enrich_media_rest_post';
 
   constructor(config: any) {
     super(config);
@@ -76,7 +77,7 @@ class MediaField extends BaseField {
     formData.append('file', input.files[0]);
 
     $.ajax({
-      url: Routing.generate('pim_enrich_media_rest_post'),
+      url: Routing.generate(this.uploadRouteName),
       type: 'POST',
       data: formData,
       contentType: false,
