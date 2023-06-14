@@ -31,7 +31,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     /** @var bool */
     private $firstRead = true;
 
-    protected array $state = [];
+    private array $state = [];
 
     /**
      * @param FamilyRepositoryInterface $familyRepository
