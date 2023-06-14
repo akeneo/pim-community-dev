@@ -1,11 +1,11 @@
 import {useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
 import {Checkbox} from 'akeneo-design-system';
-import {useSaveStatus} from 'feature/hooks/useSaveStatus';
+import {useState} from 'react';
 import {useQueryClient} from 'react-query';
+import {useSaveStatus} from '../../hooks/useSaveStatus';
 import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
 import {Attribute} from '../../models';
 import {Status} from '../providers/SaveStatusProvider';
-import {useState} from 'react';
 
 type Props = {
   attribute: Attribute;

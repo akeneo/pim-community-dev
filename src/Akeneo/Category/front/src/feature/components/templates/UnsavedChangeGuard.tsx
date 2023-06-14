@@ -1,7 +1,7 @@
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useSaveStatus} from 'feature/hooks/useSaveStatus';
 import {useContext, useEffect} from 'react';
 import {Prompt} from 'react-router';
+import {useSaveStatus} from '../../hooks/useSaveStatus';
 import {CanLeavePageContext} from '../providers';
 import {Status} from '../providers/SaveStatusProvider';
 
