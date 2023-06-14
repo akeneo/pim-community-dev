@@ -136,10 +136,6 @@ class Processor extends AbstractProcessor implements ItemProcessorInterface, Ste
      */
     protected function saveProcessedItemInStepExecutionContext(string $itemIdentifier, mixed $processedItem): void
     {
-        if (null === $this->stepExecution->getExecutionContext()) {
-            $this->stepExecution->setExecutionContext(new ExecutionContext());
-        }
-
         $executionContext = $this->stepExecution->getExecutionContext();
         $processedItemsBatch = $executionContext->get('processed_items_batch') ?? [];
         $processedItemsBatch[$itemIdentifier] = $processedItem;
