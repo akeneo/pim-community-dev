@@ -489,7 +489,7 @@ pim_system:
       label: Reset instance
       confirm: Reset and log out
     error_notification: An error occurred during instance reset, please contact your system administrator.
-    jobs_running: You cannot reset your instance at the moment as some jobs are still queued or running.
+    jobs_running: You cannot reset your instance at the moment, as some processes are still queued or running.
   sandbox:
     helper:
       text: This is a sandbox environment; your changes will not impact your production.
