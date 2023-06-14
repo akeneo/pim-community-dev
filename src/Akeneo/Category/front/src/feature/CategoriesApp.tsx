@@ -2,6 +2,8 @@ import {FC} from 'react';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {Route, HashRouter as Router, Switch} from 'react-router-dom';
 import {CanLeavePageProvider, EditCategoryProvider} from './components';
+import {UnsavedChangesGuard} from './components/UnsavedChangeGuard';
+import {SaveStatusProvider} from './components/providers/SaveStatusProvider';
 import {TemplateFormProvider} from './components/providers/TemplateFormProvider';
 import {CategoriesIndex, CategoriesTreePage, CategoryEditPage, TemplatePage} from './pages';
 
@@ -27,9 +29,12 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage, setLeavePageMessage}) => {
               </EditCategoryProvider>
             </Route>
             <Route path="/:treeId/template/:templateId">
-              <TemplateFormProvider>
-                <TemplatePage />
-              </TemplateFormProvider>
+              <SaveStatusProvider>
+                <UnsavedChangesGuard />
+                <TemplateFormProvider>
+                  <TemplatePage />
+                </TemplateFormProvider>
+              </SaveStatusProvider>
             </Route>
             <Route path="/">
               <CategoriesIndex />

@@ -29,10 +29,9 @@ const resolveGlobalStatus = (statusList: {[id: string]: number}): number => {
 
 type Props = {
   children: React.ReactNode;
-  onSaveStatusChange?: (status: Status) => void;
 };
 
-const SaveStatusProvider = ({children, onSaveStatusChange}: Props) => {
+const SaveStatusProvider = ({children}: Props) => {
   const [, setStatusList] = useState<{[id: string]: number}>({});
   const [globalStatus, setGlobalStatus] = useState(Status.SAVED);
 
@@ -47,9 +46,6 @@ const SaveStatusProvider = ({children, onSaveStatusChange}: Props) => {
         const globalStatus = resolveGlobalStatus(statusList);
         if (previousGlobalStatus !== globalStatus) {
           console.debug('Save status:', Status[globalStatus], statusList);
-          if (onSaveStatusChange) {
-            onSaveStatusChange(globalStatus);
-          }
         }
         return globalStatus;
       });

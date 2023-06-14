@@ -9,11 +9,9 @@ import {
   useUserContext,
 } from '@akeneo-pim-community/shared';
 import {Breadcrumb, Pill, SkeletonPlaceholder, TabBar, useBooleanState, useTabBar} from 'akeneo-design-system';
-import {FC, useContext} from 'react';
+import {FC} from 'react';
 import {useParams} from 'react-router';
 import styled from 'styled-components';
-import {CanLeavePageContext} from '../components';
-import {SaveStatusProvider, Status} from '../components/providers/SaveStatusProvider';
 import {useTemplateForm} from '../components/providers/TemplateFormProvider';
 import {DeactivateTemplateModal} from '../components/templates/DeactivateTemplateModal';
 import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm';
@@ -49,16 +47,6 @@ const TemplatePage: FC = () => {
   const userContext = useUserContext();
   const featureFlag = useFeatureFlags();
 
-  const {setCanLeavePage, setLeavePageMessage} = useContext(CanLeavePageContext);
-  const handleSaveStatusChange = (status: Status) => {
-    if (status === Status.SAVED) {
-      setCanLeavePage(true);
-    } else {
-      setCanLeavePage(false);
-      setLeavePageMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
-    }
-  };
-
   const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.ATTRIBUTE, 'pim_category_template_activeTab');
   const [isCurrent, switchTo] = useTabBar(activeTab);
 
@@ -79,7 +67,7 @@ const TemplatePage: FC = () => {
   const [isDeactivateTemplateModelOpen, openDeactivateTemplateModal, closeDeactivateTemplateModal] = useBooleanState();
 
   return (
-    <SaveStatusProvider onSaveStatusChange={handleSaveStatusChange}>
+    <>
       <PageHeader>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
@@ -142,7 +130,7 @@ const TemplatePage: FC = () => {
           </>
         )}
       </PageContent>
-    </SaveStatusProvider>
+    </>
   );
 };
 
