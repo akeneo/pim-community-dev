@@ -161,12 +161,10 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
     {
         $currentState = [];
 
-        if ($this->reader instanceof StatefulInterface) {
-            $currentState[self::READER_KEY] = $this->reader->getState();
-        }
-
-        if ($this->writer instanceof StatefulInterface) {
-            $currentState[self::WRITER_KEY] = $this->writer->getState();
+        foreach ($this->getStepElements() as $key => $element) {
+            if ($element instanceof StatefulInterface) {
+                $currentState[$key] = $element->getState();
+            }
         }
 
         $this->jobStopper->pause($stepExecution, $currentState);
