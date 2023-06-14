@@ -212,6 +212,7 @@ flash:
   attribute:
     identifier_not_removable: L'atribut identificador no es pot suprimir
     used_as_conversion_unit: Aquest atribut no es pot eliminar perquè s'utilitza com a unitat de conversió al canal(s) %channelCodes%.
+    cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
   category:
     removed: Categoria suprimida correctament
   tree:
@@ -451,6 +452,7 @@ pim_datagrid:
       label: Actualitzat
     label_or_identifier:
       label: Etiqueta o identificador
+      label_with_uuid: Etiqueta, identificador o UUID
     parent:
       label: Pare
     identifier:

@@ -42,3 +42,18 @@ pim_enrich_attribute_form:
   locale_specific: Configuració regional específica
   group: Grup d'atributs
   useableAsGridFilter: Utilitzable en quadrícula
+job_execution.summary:
+  deleted_attribute_groups: Eliminar grups d'atributs
+  skipped_attribute_groups: S'han omès grups d'atributs
+  moved_attributes: Atributs moguts
+  deleted_attributes: Atributs eliminats
+pim_import_export:
+  notification:
+    attribute_group_mass_delete:
+      error: S'ha produït un error en la supressió massiva dels grups d'atributs
+      warning: La supressió massiva dels grups d'atributs ha acabat amb alguns advertiments
+      success: S'ha acabat la supressió massiva dels grups d'atributs
+    attribute_mass_delete:
+      error: S'ha produït un error en la supressió massiva d'atributs
+      warning: La supressió massiva d'atributs ha acabat amb alguns advertiments
+      success: S'ha acabat la supressió massiva dels atributs

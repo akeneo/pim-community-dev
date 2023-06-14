@@ -116,6 +116,8 @@ oro_config:
           fields:
             enabler:
               label: Activat
+        environment:
+          title: Configuració de l'entorn
         loading_message:
           title: Missatges de càrrega personalitzats
           helper: Entreteniu els vostres usuaris amb missatges personalitzats per a les pantalles de càrrega.
@@ -194,6 +196,7 @@ pim_common:
   label: Etiqueta
   label_translations: Traduccions d'etiquetes
   Label or identifier: etiqueta o identificador
+  code_or_label: codi o etiqueta
   less_than: Menys de
   loading: Carregant...
   media_upload: Arrossegar i deixar per carrgar o feu clic aquí
@@ -353,6 +356,10 @@ pim_menu:
     help:
       title: Ajuda
       helper: Centre d'ajuda d'Akeneo
+      new: NOU
+      news: Què hi ha de nou?
+      help_center: Centre d'Ajuda
+      akademy_training: Formació de l'Akademy
   item:
     association_type: Tipus d'associació
     attribute_group: Grups d'atribut
@@ -430,12 +437,24 @@ pim_system:
   reset_pim:
     modal:
       summary:
+        name: Resum
         users:
           name: Usuaris
+        user_groups:
+          name: Grup d'usuaris
         roles:
           name: Rols
       confirm:
         name: Confirmar
+        title: Confirma el reinici del PIM
+        helper:
+          emphasis: Si reinicies el PIM, no podràs tornar enrere.
+      confirmation_phrase: Si us plau, escriu "{{ confirmation_word }}"
+      confirmation_word: reiniciar
+    button:
+      label: Restableix la instància
+      confirm: Reinicieu i tanqueu la sessió
+    error_notification: S'ha produït un error durant el restabliment del PIM; poseu-vos en contacte amb l'administrador del sistema.
 pim_datagrid:
   mass_action:
     default:
