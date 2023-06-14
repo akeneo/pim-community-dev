@@ -154,7 +154,6 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
 
         return [
             'file_path' => $filePath,
-            'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->getWrittenFiles()),
         ];
     }
     public function setState(array $state): void

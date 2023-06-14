@@ -60,7 +60,6 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
             $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
         }
 
-        $this->writtenFiles = $this->state['written_files'] ?? [];
         $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
     }
 
@@ -117,7 +116,6 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
 
         return [
             'buffer_file_path' => $filePath,
-            'written_files' => array_map(static fn (WrittenFileInfo $fileInfo) => $fileInfo->normalize(), $this->getWrittenFiles()),
         ];
     }
 

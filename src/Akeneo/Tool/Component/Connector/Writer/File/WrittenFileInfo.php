@@ -42,11 +42,6 @@ final class WrittenFileInfo
         return new self($localFilepath, self::LOCAL_FILESYSTEM, $outputFilepath);
     }
 
-    public static function fromNormalized(array $normalizedWrittenFileInfo): self
-    {
-        return new self($normalizedWrittenFileInfo['source_key'], $normalizedWrittenFileInfo['source_storage'], $normalizedWrittenFileInfo['output_filepath']);
-    }
-
     public function sourceKey(): string
     {
         return $this->sourceKey;
@@ -65,14 +60,5 @@ final class WrittenFileInfo
     public function isLocalFile(): bool
     {
         return self::LOCAL_FILESYSTEM === $this->sourceStorage;
-    }
-
-    public function normalize(): array
-    {
-        return [
-            'source_key' => $this->sourceKey,
-            'source_storage' => $this->sourceStorage,
-            'output_filepath' => $this->outputFilepath,
-        ];
     }
 }
