@@ -19,7 +19,7 @@ use Symfony\Component\Messenger\Middleware\StackInterface;
 class UcsMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly ?string $pimTenantId,
+        private ?string $pimTenantId,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -50,5 +50,10 @@ class UcsMiddleware implements MiddlewareInterface
         }
 
         return $stack->next()->handle($envelope, $stack);
+    }
+
+    public function setTenantId(string $tenantId): void
+    {
+        $this->pimTenantId = $tenantId;
     }
 }
