@@ -2,9 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Job;
 
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -13,14 +17,11 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use PhpSpec\Wrapper\Collaborator;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
@@ -32,10 +33,46 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
         BulkSaverInterface $productModelSaver,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
         EventDispatcherInterface $eventDispatcher,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        StepExecution $stepExecution,
+        ProductQueryBuilderInterface $rootProductModelPqb,
+        CursorInterface $rootProductModels,
+        ProductQueryBuilderInterface $subProductModelPqb,
+        CursorInterface $subProductModels,
+        ProductQueryBuilderInterface $variantProductPqb,
+        CursorInterface $variantProducts,
+        FamilyVariantInterface $familyVariant,
     ) {
         $eventDispatcher->dispatch(Argument::type(StepExecutionEvent::class),Argument::type('string'))
             ->willReturn(Argument::type('object'));
+        $familyVariantRepository->findOneByIdentifier('family_code')->willReturn($familyVariant);
+
+        $productQueryBuilderFactory->create([
+            'filters' => [
+                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductModelInterface::class],
+                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
+                ['field' => 'parent', 'operator' => Operators::IS_EMPTY, 'value' => null]
+            ]
+        ])->willReturn($rootProductModelPqb);
+        $rootProductModelPqb->execute()->willReturn($rootProductModels);
+
+        $productQueryBuilderFactory->create([
+            'filters' => [
+                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductModelInterface::class],
+                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
+                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+            ]
+        ])->willReturn($subProductModelPqb);
+        $subProductModelPqb->execute()->willReturn($subProductModels);
+
+        $productQueryBuilderFactory->create([
+            'filters' => [
+                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductInterface::class],
+                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
+                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+            ]
+        ])->willReturn($variantProductPqb);
+        $variantProductPqb->execute()->willReturn($variantProducts);
 
         $this->beConstructedWith(
             $familyVariantRepository,
@@ -47,437 +84,142 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             $eventDispatcher,
             10
         );
+
+        $stepExecution->getJobParameters()->willReturn(new JobParameters(['family_variant_codes' => ['family_code']]));
+        $this->setStepExecution($stepExecution);
     }
 
     function it_executes_the_family_variant_structure_computation_on_1_level(
-        $familyVariantRepository,
-        $productSaver,
-        $productModelSaver,
-        $keepOnlyValuesForVariation,
-        $validator,
-        $productQueryBuilderFactory,
-        $eventDispatcher,
+        BulkSaverInterface $productSaver,
+        BulkSaverInterface $productModelSaver,
+        KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
+        ValidatorInterface $validator,
         StepExecution $stepExecution,
-        JobParameters $jobParameters,
         FamilyVariantInterface $familyVariant,
+        CursorInterface $variantProducts,
+        CursorInterface $rootProductModels,
+        EventDispatcherInterface $eventDispatcher,
         ProductInterface $variantProduct,
         ProductModelInterface $rootProductModel,
-        ConstraintViolationListInterface $variantProductViolations,
-        ConstraintViolationListInterface $rootProductModelViolations,
-        ProductQueryBuilderInterface $pqbVariantProduct,
-        CursorInterface $variantProducts,
-        ProductQueryBuilderInterface $pqbRootProductModel,
-        CursorInterface $rootProductModels
     ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('family_variant_codes')->willReturn(['family_code']);
-
-        $familyVariantRepository->findOneByIdentifier('family_code')->willReturn($familyVariant);
         $familyVariant->getNumberOfLevel()->willReturn(1);
 
-        // Process the variant products
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqbVariantProduct);
-        $pqbVariantProduct->execute()->willReturn($variantProducts);
-        $variantProducts->rewind()->shouldBeCalled();
-        $variantProducts->valid()->willReturn(true, false);
-        $variantProducts->current()->willReturn($variantProduct);
-        $variantProducts->next()->shouldBeCalledTimes(1);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct])
-            ->shouldBeCalled();
-        $validator->validate($variantProduct)->willReturn($variantProductViolations);
-        $variantProductViolations->count()->willReturn(0);
+        $this->cursorWillYield($variantProducts, [$variantProduct]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct])->shouldBeCalled();
+        $validator->validate($variantProduct)->shouldBeCalled()->willReturn(new ConstraintViolationList());
         $productSaver->saveAll([$variantProduct])->shouldBeCalled();
 
-        // Process the root product models
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductModelInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqbRootProductModel);
-        $pqbRootProductModel->execute()->willReturn($rootProductModels);
-        $rootProductModels->rewind()->shouldBeCalled();
-        $rootProductModels->valid()->willReturn(true, false);
-        $rootProductModels->current()->willReturn($rootProductModel);
-        $rootProductModels->next()->shouldBeCalledTimes(1);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel])
-            ->shouldBeCalled();
-        $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
-        $rootProductModelViolations->count()->willReturn(0);
+        $this->cursorWillYield($rootProductModels, [$rootProductModel]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel])->shouldBeCalled();
+        $validator->validate($rootProductModel)->shouldBeCalled()->willReturn(new ConstraintViolationList());
         $productModelSaver->saveAll([$rootProductModel])->shouldBeCalled();
+
+        $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalledTimes(2);
+
         $eventDispatcher
             ->dispatch(Argument::type(StepExecutionEvent::class), EventInterface::ITEM_STEP_AFTER_BATCH)
             ->shouldBeCalledTimes(2);
 
-        $this->setStepExecution($stepExecution);
         $this->execute();
     }
 
     function it_executes_the_family_variant_structure_computation_on_2_levels(
-        $familyVariantRepository,
-        $productSaver,
-        $productModelSaver,
-        $keepOnlyValuesForVariation,
-        $validator,
-        $productQueryBuilderFactory,
-        $eventDispatcher,
+        BulkSaverInterface $productSaver,
+        BulkSaverInterface $productModelSaver,
+        KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
+        ValidatorInterface $validator,
         StepExecution $stepExecution,
-        JobParameters $jobParameters,
         FamilyVariantInterface $familyVariant,
-        ProductInterface $variantProduct1,
-        ProductInterface $variantProduct2,
+        CursorInterface $variantProducts,
+        CursorInterface $subProductModels,
+        CursorInterface $rootProductModels,
+        EventDispatcherInterface $eventDispatcher,
+        ProductInterface $variantProduct,
         ProductModelInterface $subProductModel,
         ProductModelInterface $rootProductModel,
-        ConstraintViolationListInterface $variantProductViolations1,
-        ConstraintViolationListInterface $variantProductViolations2,
-        ConstraintViolationListInterface $subProductModelViolations,
-        ConstraintViolationListInterface $rootProductModelViolations,
-        ProductQueryBuilderInterface $pqbVariantProduct,
-        CursorInterface $variantProducts,
-        ProductQueryBuilderInterface $pqbSubProductModel,
-        CursorInterface $subProductModels,
-        ProductQueryBuilderInterface $pqbRootProductModel,
-        CursorInterface $rootProductModels
     ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('family_variant_codes')->willReturn(['family_code']);
-
-        $familyVariantRepository->findOneByIdentifier('family_code')->willReturn($familyVariant);
         $familyVariant->getNumberOfLevel()->willReturn(2);
-        $familyVariant->getCode()->willReturn('family_code');
 
-        // Process the variant products
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqbVariantProduct);
-        $pqbVariantProduct->execute()->willReturn($variantProducts);
-        $variantProducts->rewind()->shouldBeCalled();
-        $variantProducts->valid()->willReturn(true, true, false);
-        $variantProducts->current()->willReturn($variantProduct1, $variantProduct2);
-        $variantProducts->next()->shouldBeCalledTimes(2);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct1])
-            ->shouldBeCalled();
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct2])
-            ->shouldBeCalled();
-        $validator->validate($variantProduct1)->willReturn($variantProductViolations1);
-        $validator->validate($variantProduct2)->willReturn($variantProductViolations2);
-        $variantProductViolations1->count()->willReturn(0);
-        $variantProductViolations2->count()->willReturn(0);
-        $productSaver->saveAll([$variantProduct1, $variantProduct2])->shouldBeCalled();
+        $this->cursorWillYield($variantProducts, [$variantProduct]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct])->shouldBeCalled();
+        $validator->validate($variantProduct)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $productSaver->saveAll([$variantProduct])->shouldBeCalled();
 
-        // Process the sub product models
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductModelInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqbSubProductModel);
-        $pqbSubProductModel->execute()->willReturn($subProductModels);
-        $subProductModels->rewind()->shouldBeCalled();
-        $subProductModels->valid()->willReturn(true, false);
-        $subProductModels->current()->willReturn($subProductModel);
-        $subProductModels->next()->shouldBeCalledTimes(1);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$subProductModel])
-            ->shouldBeCalled();
-        $validator->validate($subProductModel)->willReturn($subProductModelViolations);
-        $subProductModelViolations->count()->willReturn(0);
+        $this->cursorWillYield($subProductModels, [$subProductModel]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$subProductModel])->shouldBeCalled();
+        $validator->validate($subProductModel)->shouldBeCalled()->willReturn(new ConstraintViolationList());
         $productModelSaver->saveAll([$subProductModel])->shouldBeCalled();
 
-        // Process the root product models
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductModelInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqbRootProductModel);
-        $pqbRootProductModel->execute()->willReturn($rootProductModels);
-        $rootProductModels->rewind()->shouldBeCalled();
-        $rootProductModels->valid()->willReturn(true, false);
-        $rootProductModels->current()->willReturn($rootProductModel);
-        $rootProductModels->next()->shouldBeCalledTimes(1);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel])
-            ->shouldBeCalled();
-        $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
-        $rootProductModelViolations->count()->willReturn(0);
+        $this->cursorWillYield($rootProductModels, [$rootProductModel]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel])->shouldBeCalled();
+        $validator->validate($rootProductModel)->shouldBeCalled()->willReturn(new ConstraintViolationList());
         $productModelSaver->saveAll([$rootProductModel])->shouldBeCalled();
+
+
+        $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalledTimes(3);
+
         $eventDispatcher
             ->dispatch(Argument::type(StepExecutionEvent::class), EventInterface::ITEM_STEP_AFTER_BATCH)
             ->shouldBeCalledTimes(3);
 
-        $this->setStepExecution($stepExecution);
         $this->execute();
     }
 
-    function it_throws_an_exception_if_there_is_a_validation_error_on_product(
-        $familyVariantRepository,
-        $productSaver,
-        $keepOnlyValuesForVariation,
-        $validator,
-        $productQueryBuilderFactory,
-        ProductQueryBuilderInterface $pqb,
+    function it_skips_invalid_products_and_models_and_saves_the_rest(
+        BulkSaverInterface $productSaver,
+        BulkSaverInterface $productModelSaver,
+        KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
+        ValidatorInterface $validator,
+        StepExecution $stepExecution,
+        FamilyVariantInterface $familyVariant,
         CursorInterface $variantProducts,
-        StepExecution $stepExecution,
-        JobParameters $jobParameters,
-        FamilyVariantInterface $familyVariant,
-        ProductInterface $variantProduct,
-        ConstraintViolationListInterface $variantProductViolations
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('family_variant_codes')->willReturn(['family_code']);
-
-        $familyVariantRepository->findOneByIdentifier('family_code')->willReturn($familyVariant);
-        $familyVariant->getNumberOfLevel()->willReturn(1);
-        $familyVariant->getCode()->willReturn('family_code');
-
-        // Process the variant products
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqb);
-        $pqb->execute()->willReturn($variantProducts);
-        $variantProducts->rewind()->shouldBeCalled();
-        $variantProducts->valid()->willReturn(true, false);
-        $variantProducts->current()->willReturn($variantProduct);
-        $variantProducts->next()->shouldBeCalledTimes(1);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct])
-            ->shouldBeCalled();
-        $validator->validate($variantProduct)->willReturn($variantProductViolations);
-        $variantProductViolations->count()->willReturn(1);
-        $variantProductViolations->rewind()->shouldBeCalled();
-        $variantProductViolations->valid()->shouldBeCalled();
-        $productSaver->saveAll([$variantProduct])->shouldNotBeCalled();
-
-        $this->setStepExecution($stepExecution);
-        $this->shouldThrow(\LogicException::class)->during('execute');
-    }
-
-    function it_throws_an_exception_if_there_is_a_validation_error_on_product_model(
-        $familyVariantRepository,
-        $productSaver,
-        $productModelSaver,
-        $keepOnlyValuesForVariation,
-        $validator,
-        $productQueryBuilderFactory,
-        StepExecution $stepExecution,
-        JobParameters $jobParameters,
-        FamilyVariantInterface $familyVariant,
-        ProductInterface $variantProduct,
-        ProductModelInterface $rootProductModel,
-        ConstraintViolationListInterface $variantProductViolations,
-        ConstraintViolationListInterface $rootProductModelViolations,
-        ProductQueryBuilderInterface $pqbVariantProduct,
-        CursorInterface $variantProducts,
-        ProductQueryBuilderInterface $pqbRootProductModel,
-        CursorInterface $rootProductModels
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('family_variant_codes')->willReturn(['family_code']);
-
-        $familyVariantRepository->findOneByIdentifier('family_code')->willReturn($familyVariant);
-        $familyVariant->getNumberOfLevel()->willReturn(1);
-        $familyVariant->getCode()->willReturn('family_code');
-
-        // Process the variant products
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqbVariantProduct);
-        $pqbVariantProduct->execute()->willReturn($variantProducts);
-        $variantProducts->rewind()->shouldBeCalled();
-        $variantProducts->valid()->willReturn(true, false);
-        $variantProducts->current()->willReturn($variantProduct);
-        $variantProducts->next()->shouldBeCalledTimes(1);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct])
-            ->shouldBeCalled();
-        $validator->validate($variantProduct)->willReturn($variantProductViolations);
-        $variantProductViolations->count()->willReturn(0);
-        $productSaver->saveAll([$variantProduct])->shouldBeCalled();
-
-        // Process the root product models
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductModelInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqbRootProductModel);
-        $pqbRootProductModel->execute()->willReturn($rootProductModels);
-        $rootProductModels->rewind()->shouldBeCalled();
-        $rootProductModels->valid()->willReturn(true, false);
-        $rootProductModels->current()->willReturn($rootProductModel);
-        $rootProductModels->next()->shouldBeCalledTimes(1);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel])
-            ->shouldBeCalled();
-        $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
-        $rootProductModelViolations->count()->willReturn(1);
-        $rootProductModelViolations->rewind()->shouldBeCalled();
-        $rootProductModelViolations->valid()->shouldBeCalled();
-        $productModelSaver->saveAll([$rootProductModel])->shouldNotBeCalled();
-
-        $this->setStepExecution($stepExecution);
-        $this->shouldThrow(\LogicException::class)->during('execute');
-    }
-
-    function it_saves_multiple_products_and_product_models(
-        $familyVariantRepository,
-        $productSaver,
-        $productModelSaver,
-        $keepOnlyValuesForVariation,
-        $validator,
-        $productQueryBuilderFactory,
-        $eventDispatcher,
-        StepExecution $stepExecution,
-        JobParameters $jobParameters,
-        FamilyVariantInterface $familyVariant,
+        CursorInterface $rootProductModels,
+        EventDispatcherInterface $eventDispatcher,
         ProductInterface $variantProduct1,
         ProductInterface $variantProduct2,
         ProductInterface $variantProduct3,
-        ProductInterface $variantProduct4,
-        ProductInterface $variantProduct5,
-        ProductModelInterface $subProductModel,
-        ProductModelInterface $rootProductModel,
-        ProductModelInterface $rootProductModel2,
-        ProductModelInterface $rootProductModel3,
-        ProductModelInterface $rootProductModel4,
-        ProductModelInterface $rootProductModel5,
-        ConstraintViolationListInterface $variantProductViolations,
-        ConstraintViolationListInterface $subProductModelViolations,
-        ConstraintViolationListInterface $rootProductModelViolations,
-        ProductQueryBuilderInterface $pqbVariantProduct,
-        CursorInterface $variantProducts,
-        ProductQueryBuilderInterface $pqbSubProductModel,
-        CursorInterface $subProductModels,
-        ProductQueryBuilderInterface $pqbRootProductModel,
-        CursorInterface $rootProductModels
+        ProductModelInterface $productModel1,
+        ProductModelInterface $productModel2,
+        ConstraintViolationInterface $productViolation,
+        ConstraintViolationInterface $productModelViolation,
     ) {
-        $this->beConstructedWith(
-            $familyVariantRepository,
-            $productQueryBuilderFactory,
-            $productSaver,
-            $productModelSaver,
-            $keepOnlyValuesForVariation,
-            $validator,
-            $eventDispatcher,
-            2
-        );
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('family_variant_codes')->willReturn(['family_code']);
+        $familyVariant->getNumberOfLevel()->willReturn(1);
 
-        $familyVariantRepository->findOneByIdentifier('family_code')->willReturn($familyVariant);
-        $familyVariant->getNumberOfLevel()->willReturn(2);
-        $familyVariant->getCode()->willReturn('family_code');
-
-        // Process the variant products
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqbVariantProduct);
-        $pqbVariantProduct->execute()->willReturn($variantProducts);
-        $variantProducts->rewind()->shouldBeCalled();
-        $variantProducts->valid()->willReturn(true, true, true, true, true, false);
-        $variantProducts->current()->willReturn(
-            $variantProduct1,
-            $variantProduct2,
-            $variantProduct3,
-            $variantProduct4,
-            $variantProduct5
-        );
-        $variantProducts->next()->shouldBeCalledTimes(5);
+        $this->cursorWillYield($variantProducts, [$variantProduct1, $variantProduct2, $variantProduct3]);
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct1])->shouldBeCalled();
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct2])->shouldBeCalled();
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct3])->shouldBeCalled();
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct4])->shouldBeCalled();
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct5])->shouldBeCalled();
-        $validator->validate($variantProduct1)->willReturn($variantProductViolations);
-        $validator->validate($variantProduct2)->willReturn($variantProductViolations);
-        $validator->validate($variantProduct3)->willReturn($variantProductViolations);
-        $validator->validate($variantProduct4)->willReturn($variantProductViolations);
-        $validator->validate($variantProduct5)->willReturn($variantProductViolations);
-        $variantProductViolations->count()->willReturn(0);
-        $productSaver->saveAll([$variantProduct1, $variantProduct2])->shouldBeCalled();
-        $productSaver->saveAll([$variantProduct3, $variantProduct4])->shouldBeCalled();
-        $productSaver->saveAll([$variantProduct5])->shouldBeCalled();
+        $validator->validate($variantProduct1)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $validator->validate($variantProduct2)->shouldBeCalled()->willReturn(new ConstraintViolationList([$productViolation->getWrappedObject()]));
+        $validator->validate($variantProduct3)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $productSaver->saveAll([$variantProduct1, $variantProduct3])->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalled();
 
-        // Process the sub product models
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductModelInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqbSubProductModel);
-        $pqbSubProductModel->execute()->willReturn($subProductModels);
-        $subProductModels->rewind()->shouldBeCalled();
-        $subProductModels->valid()->willReturn(true, false);
-        $subProductModels->current()->willReturn($subProductModel);
-        $subProductModels->next()->shouldBeCalledTimes(1);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$subProductModel])
-            ->shouldBeCalled();
-        $validator->validate($subProductModel)->willReturn($subProductModelViolations);
-        $subProductModelViolations->count()->willReturn(0);
-        $productModelSaver->saveAll([$subProductModel])->shouldBeCalled();
+        $this->cursorWillYield($rootProductModels, [$productModel1, $productModel2]);
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel1])->shouldBeCalled();
+        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel2])->shouldBeCalled();
+        $validator->validate($productModel1)->shouldBeCalled()->willReturn(new ConstraintViolationList([$productModelViolation->getWrappedObject()]));
+        $validator->validate($productModel2)->shouldBeCalled()->willReturn(new ConstraintViolationList());
+        $productModelSaver->saveAll([$productModel2])->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
 
-        // Process the root product models
-        $productQueryBuilderFactory->create([
-            'filters' => [
-                ['field' => 'entity_type', 'operator' => Operators::EQUALS, 'value' => ProductModelInterface::class],
-                ['field' => 'family_variant', 'operator' => Operators::IN_LIST, 'value' => ['family_code']],
-                ['field' => 'parent', 'operator' => Operators::IS_EMPTY, 'value' => null]
-            ]
-        ])->willReturn($pqbRootProductModel);
-        $pqbRootProductModel->execute()->willReturn($rootProductModels);
-        $rootProductModels->rewind()->shouldBeCalled();
-        $rootProductModels->valid()->willReturn(true, true, true, true, true, false);
-        $rootProductModels->current()->willReturn(
-            $rootProductModel,
-            $rootProductModel2,
-            $rootProductModel3,
-            $rootProductModel4,
-            $rootProductModel5
-        );
-        $rootProductModels->next()->shouldBeCalledTimes(5);
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel])->shouldBeCalled();
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel2])->shouldBeCalled();
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel3])->shouldBeCalled();
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel4])->shouldBeCalled();
-        $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$rootProductModel5])->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
+        $stepExecution->addWarning(Argument::cetera())->shouldBeCalledTimes(2);
 
-        $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
-        $validator->validate($rootProductModel2)->willReturn($rootProductModelViolations);
-        $validator->validate($rootProductModel3)->willReturn($rootProductModelViolations);
-        $validator->validate($rootProductModel4)->willReturn($rootProductModelViolations);
-        $validator->validate($rootProductModel5)->willReturn($rootProductModelViolations);
-        $rootProductModelViolations->count()->willReturn(0);
-        $productModelSaver->saveAll([$rootProductModel, $rootProductModel2])->shouldBeCalled();
-        $productModelSaver->saveAll([$rootProductModel3, $rootProductModel4])->shouldBeCalled();
-        $productModelSaver->saveAll([$rootProductModel5])->shouldBeCalled();
         $eventDispatcher
             ->dispatch(Argument::type(StepExecutionEvent::class), EventInterface::ITEM_STEP_AFTER_BATCH)
-            ->shouldBeCalledTimes(7);
+            ->shouldBeCalledTimes(2);
 
-        $this->setStepExecution($stepExecution);
         $this->execute();
+    }
+
+    private function cursorWillYield(Collaborator $cursor, array $yield): void
+    {
+        $cursor->rewind()->shouldBeCalledOnce();
+        $valid = \array_fill(0, \count($yield), true);
+        $valid[] = false;
+        $cursor->valid()->shouldBeCalledTimes(count($valid))->willReturn(...$valid);
+        $cursor->next()->shouldBeCalledTimes(count($yield));
+        $cursor->current()->shouldBeCalledTimes(count($yield))->willReturn(...$yield);
     }
 }

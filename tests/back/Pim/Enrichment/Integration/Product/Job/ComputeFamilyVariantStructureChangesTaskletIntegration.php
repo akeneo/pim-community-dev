@@ -47,7 +47,7 @@ final class ComputeFamilyVariantStructureChangesTaskletIntegration extends TestC
     /**
      * @test
      */
-    public function it_compute_product_values_when_family_variant_structure_changes()
+    public function it_computes_product_values_when_family_variant_structure_changes(): void
     {
         $rootProductModel = $this->createRootProductModel('familyVariantA1');
         $subProductModel = $this->createSubProductModel();

@@ -1,6 +1,7 @@
 validation:
   create:
     identifier_limit_reached: 'S''ha arribat al límit de generadors d''identificadors "{{limit}}"'
+    code_already_used: 'Aquest codi ja s''utilitza.'
   update:
     identifier_generator_code_not_found: 'El generador d''identificadors "{{code}}" no existeix o no teniu permís per accedir-hi.'
   identifier_generator:
