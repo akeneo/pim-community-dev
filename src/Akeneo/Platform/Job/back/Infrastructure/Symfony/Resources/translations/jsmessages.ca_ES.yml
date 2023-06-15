@@ -12,7 +12,11 @@ akeneo_job:
     ABANDONED: Abandonat
     UNKNOWN: Desconegut
     IN_PROGRESS: En procés
+    PAUSING: Aturant
+    PAUSED: Aturat
 akeneo_job_process_tracker:
+  tooltip:
+    paused: Aquesta tasca s'ha posat en pausa a causa del manteniment intern de la vostra instància. Es reprendrà automàticament quan s'hagi acabat.
   last_operations:
     title: Últimes operacions
     view_all: Veure tots
@@ -39,6 +43,7 @@ akeneo_job_process_tracker:
     export: Exportar
     mass_edit: Edició massiva
     mass_delete: Esborrat massiu de productes
+    attribute_mass_delete: Supressió massiva d'atributs
     compute_family_variant_structure_changes: Calcular els canvis d'estructura de la variant familiar
     compute_completeness_of_products_family: Calcular la completesa de la família de productes
     clean_removed_attribute_job: Netejant els valors dels atributs eliminats
@@ -58,6 +63,8 @@ akeneo_job_process_tracker:
     stopping: Aturant
     unknown: Desconegut
     in_progress: En procés
+    pausing: Aturant
+    paused: Aturat
   automation_filter:
     all: Tot
     yes: Yes
