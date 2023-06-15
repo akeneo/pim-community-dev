@@ -15,6 +15,7 @@ export const useTemplateByTemplateUuid = (uuid: string | null) => {
   });
 
   return useQuery(['get-template', uuid], () => apiFetch<Template>(url, {}), {
+    enabled: null !== uuid,
     onError: () => {
       history.push('/');
       notify(NotificationLevel.ERROR, translate('akeneo.category.template.not_found'));
