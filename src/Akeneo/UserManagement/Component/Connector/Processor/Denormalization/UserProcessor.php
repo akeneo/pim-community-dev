@@ -51,7 +51,7 @@ class UserProcessor extends Processor
             $this->skipItemWithMessage($item, 'Passwords cannot be imported via flat files');
         }
         $ignoredFieldsPresent = array_intersect(array_keys($item), $this->ignoredFields);
-        if($ignoredFieldsPresent) {
+        if ($ignoredFieldsPresent) {
             $ignoreFieldsString = implode(', ', $ignoredFieldsPresent);
             $warning = new Warning(
                 $this->stepExecution,
