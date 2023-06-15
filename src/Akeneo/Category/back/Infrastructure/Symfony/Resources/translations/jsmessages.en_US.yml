@@ -114,7 +114,6 @@ akeneo.category:
         content:
             enrich_attribute_values: Enrich any level of your Category Trees with Text, Text Area, and Image attributes
             customizable_templates: Offer the Product Experience you wish thanks to customizable templates
-            edit_attributes: 'Coming soon: update the settings of any of those category attributes'
         survey_link_label: Tell us what you think
         learn_more_link_label: Learn more about Enriched Categories
 
