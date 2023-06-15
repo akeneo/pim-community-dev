@@ -336,7 +336,7 @@ describe('useEditCategoryForm', () => {
     expect(result.current.category).toStrictEqual(modifiedCategory);
   });
 
-  test.skip('it saves a category and refreshes the category data on fail', async () => {
+  test('it saves a category and refreshes the category data on fail', async () => {
     mockedSaveEditCategoryForm.mockResolvedValue({
       success: false,
       error: {
