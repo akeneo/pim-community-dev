@@ -190,6 +190,11 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
     private function extractFamilyCodes(): array
     {
         $familyCodes = [];
+
+        if ($this->familyReader instanceof InitializableInterface) {
+            $this->familyReader->initialize();
+        }
+
         while (true) {
             try {
                 $familyItem = $this->familyReader->read();
