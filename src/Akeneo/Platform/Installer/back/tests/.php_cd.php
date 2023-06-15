@@ -25,6 +25,7 @@ $rules = [
         [
             'Akeneo\Platform\Installer\Application',
             'Akeneo\Platform\Installer\Domain',
+            'Akeneo\Platform\Job\ServiceApi',
             'Doctrine\DBAL\Connection',
             'Symfony\Component',
             'Webmozart\Assert\Assert',
