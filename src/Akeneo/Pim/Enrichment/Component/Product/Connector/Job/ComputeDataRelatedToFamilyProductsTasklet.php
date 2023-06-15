@@ -182,6 +182,11 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     private function extractFamilyCodes(): array
     {
         $familyCodes = [];
+
+        if ($this->familyReader instanceof InitializableInterface) {
+            $this->familyReader->initialize();
+        }
+
         while (true) {
             try {
                 $familyItem = $this->familyReader->read();

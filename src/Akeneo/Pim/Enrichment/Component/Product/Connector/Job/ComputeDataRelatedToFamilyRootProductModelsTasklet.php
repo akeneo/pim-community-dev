@@ -185,6 +185,10 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
     {
         $familyCodes = [];
 
+        if ($this->familyReader instanceof InitializableInterface) {
+            $this->familyReader->initialize();
+        }
+
         while (true) {
             try {
                 $familyItem = $this->familyReader->read();
