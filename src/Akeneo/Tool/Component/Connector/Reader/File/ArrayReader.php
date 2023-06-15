@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Component\Connector\Reader\File;
 
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
@@ -23,7 +25,7 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ArrayReader implements FileReaderInterface
+class ArrayReader implements FileReaderInterface, InitializableInterface, StatefulInterface
 {
     /** @var FileReaderInterface */
     protected $reader;
@@ -83,5 +85,20 @@ class ArrayReader implements FileReaderInterface
     public function flush()
     {
         $this->reader->flush();
+    }
+
+    public function initialize(): void
+    {
+        $this->reader->initialize();
+    }
+
+    public function setState(array $state): void
+    {
+        $this->reader->setState($state);
+    }
+
+    public function getState(): array
+    {
+        return $this->reader->getState();
     }
 }
