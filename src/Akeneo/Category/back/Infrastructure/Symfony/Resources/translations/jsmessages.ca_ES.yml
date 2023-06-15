@@ -1,3 +1,5 @@
+pim_title:
+  pim_category_template_edit: Edita la plantilla de categoria
 akeneo.category:
   tree_list:
     column:
@@ -6,15 +8,20 @@ akeneo.category:
   edition_form:
     template:
       title: Plantilla
+      no_attribute_title: No hi ha cap atribut en aquesta plantilla
+      no_attribute_instructions: La plantilla associada a aquesta categoria està buida, podeu afegir-hi atributs des de la pàgina de l'arbre de categories.
       fetching_failed: S'ha produït un error en obtenir la plantilla
     unsaved_changes: Perdreu els canvis a la categoria si abandoneu la pàgina.
   tree:
     create: Crear arbre
     delete: Esborra l'arbre
   template:
+    learn_more: Més informació sobre les plantilles de categories
     create: Activa la plantilla
+    edit: Editar plantilla
     notification_success: La plantilla s'ha activat correctament
     notification_error: No s'ha pogut activar la plantilla
+    not_found: No hi ha cap plantilla activa per a aquesta categoria
     attribute:
       description_title: Descripció Configuració
       type:
@@ -22,20 +29,48 @@ akeneo.category:
         textarea: Àrea de Text
         richtext: Text enriquit
         image: Imatge
+      delete_button: Suprimeix atribut
+      settings:
+        title: Configuració
+        options:
+          title: Opcions
+          value_per_channel: Valor per Canal
+          value_per_locale: Valor per local
+          rich_text: Editor de text enriquit
+        translations:
+          title: Traduccions d'etiquetes
+        error_message: Hi ha valors no vàlids a la pàgina.
+        unsaved_changes: Aquests valors no es desaran si sortiu de la pàgina.
     add_attribute:
+      no_attribute_title: Crea el teu primer atribut
       add_button: Afegeix un atribut
+      create_button: Crear atribut
       confirmation_modal:
         section_title: Afegeix un atribut
+        title: Crea una nova categoria d'atribut
+        link: Més informació sobre les plantilles de categories.
+        create: Crear
         input:
           label: Etiqueta
           code: Codi
           type:
+            label: Tipus d'atribut
             option_title:
               text: Text
+              textarea: Àrea de text
               image: Imatge
+      success:
+        notification: Atribut creat correctament
       error:
         limit_reached:
           title: No podeu afegir més de 50 atributs
+    delete_attribute:
+      confirmation_modal:
+        title: Elimina aquest atribut de categoria
+    auto-save:
+      saved: Desat
+      saving: Desant
+      editing: Editant
   template_list:
     columns:
       header: Etiqueta
