@@ -177,7 +177,9 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
             return;
         }
 
-        if (empty($this->state)) {
+        $this->yaml->rewind();
+
+        if (!array_key_exists('position', $this->state)) {
             return;
         }
 
