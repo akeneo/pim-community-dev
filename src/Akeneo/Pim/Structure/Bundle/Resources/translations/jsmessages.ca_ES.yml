@@ -234,6 +234,7 @@ pim_enrich.entity.attribute:
       attribute_removal: L'atribut no es pot suprimir de tots productes.
       product_count: '{0}0 productes|{1}1 producte|]1, Inf[{{ count }} productes'
       product_model_count: '{0}0 models de producte|{1}1 model de producte|]1, Inf[{{ count }} models de producte'
+      used: ']-Inf,1]actualment té valors establerts per a aquest atribut.|]1, Inf[actualment tenen valors establerts per a aquest atribut.'
       helper:
         content: Si necessita canviar el seu tipus d'atribut per fer-lo localitzable o definible, mantenint l'accés als seus valors d'atributs existents,
         link: consulteu el nostre Centre d'ajuda (per a més informació).
@@ -244,9 +245,11 @@ pim_enrich.entity.attribute:
     mass_delete:
       modal:
         title: Atributs
+        subtitle: '{1}Confirmar la supressió de {{ count }} atribut|]1, Inf[Confirmar la supressió de {{ count }} atributs'
         label: Si us plau, escriviu "{{ textToCheck }}"
         confirm: Esteu segur que voleu suprimir aquests atributs?
       message_bar:
+        success: S'ha iniciat l'eliminació. Rebràs una notificació un cop finalitzada la feina. Mentrestant, podeu vigilar el seu progrés al rastrejador de processos.
         fail: S'ha produït un error durant l'inici de la supressió
 pim_enrich.entity.attribute_group:
   label: grup d'atributs
@@ -268,6 +271,7 @@ pim_enrich.entity.attribute_group:
       fail: El grup d'atributs no s'ha pogut actualitzar
       fields_not_ready: "Ara no es pot guardar el grup d'atributs. Els següents camps no estan preparats: {{ fields }}"
     delete:
+      success: S'ha iniciat l'eliminació. Rebràs una notificació un cop finalitzada la feina. Mentrestant, podeu vigilar el seu progrés al rastrejador de processos.
       fail: S'ha produït un error durant l'inici de la supressió
     mass_delete:
       success: S'ha iniciat l'eliminació. Rebràs una notificació un cop finalitzada la feina. Mentrestant, podeu vigilar el seu progrés al rastrejador de processos.
@@ -284,13 +288,18 @@ pim_enrich.entity.attribute_group:
       attribute_count: Número d'atributs relacionats
   selected: '{0}0 grup d''atributs seleccionat|{1}1 grup d''atributs seleccionat|]1, Inf[{{ count }} grups d''atributs seleccionats'
   mass_delete:
+    confirm: '{1}Esteu segur que voleu suprimir aquest grup d''atributs?|]1, Inf[Esteu segur que voleu suprimir aquests {{ count }} grups d''atributs?'
     confirmation_phrase: 'Si us plau, escriu "{{ confirmation_word }}"'
     confirmation_word: eliminar
+    attribute_warning: '{1}La supressió d''aquests grups d''atributs afectarà l''atribut relacionat {{ number_of_attribute }}. Haureu de moure aquest atribut relacionat a un nou grup d''atributs.|]1, Inf[La supressió d''aquests grups d''atributs afectarà els atributs relacionats {{ number_of_attribute }}. Haureu de moure aquests atributs relacionats a un grup d''atributs nou.'
+    select_attribute_group: '{1}Seleccioneu el grup d''atributs al qual moure l''atribut relacionat|]1, Inf[Seleccioneu el grup d''atributs al qual moure els atributs relacionats {{ number_of_attribute }}'
     empty_result_label: 'No s''ha trobat grup d''atributs'
     placeholder: 'Selecciona grups d''atributs'
     open_label: 'Llista de grups d''atribut'
   delete:
     confirm: 'Esteu segur que voleu suprimir aquest grup d''atributs'
+    attribute_warning: 'La supressió d''aquest grup d''atributs afectarà l''atribut relacionat {{ number_of_attribute }}. Haureu de moure aquest atribut relacionat a un grup d''atributs nou.'
+    select_attribute_group: '{1}Seleccioneu el grup d''atributs per moure l''atribut relacionat a:|]1, Inf[Seleccioneu el grup d''atributs per moure els atributs relacionats {{ number_of_attribute }} a:'
   batch_jobs:
     delete_attribute_groups:
       delete_attribute_groups:
@@ -324,6 +333,7 @@ pim_enrich.mass_edit.family:
 batch_jobs:
   default_steps:
     delete_attribute_groups: Eliminar grups d'atributs
+    move_child_attributes: Moure els atributs fills
   delete_attributes:
     delete_attributes:
       label: Eliminar atributs

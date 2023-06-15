@@ -82,6 +82,7 @@ pim_user_management:
         default_published_product_grid_view: Vista de graella de productes publicats per defecte #EE Only
         proposals_to_review_notification: Quan hi hagi una nova proposta per revisar #EE Only
         proposals_state_notifications: Quan la proposta sigui acceptada o rebutjada #EE Only
+        not_fully_supported_locale: 'La configuració regional de la IU seleccionada [{{ code }}] actualment no és totalment compatible. És possible que trobeu traduccions de text que falten o estan incompletes. Ajudeu a millorar la cobertura local:'
         link_to_crowdin_label: contribuir a Crowdin.
       meta:
         created: Creat
