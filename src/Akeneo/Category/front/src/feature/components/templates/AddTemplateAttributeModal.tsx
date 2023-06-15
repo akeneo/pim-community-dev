@@ -4,13 +4,13 @@ import {useQueryClient} from 'react-query';
 import {useCreateAttribute} from '../../hooks/useCreateAttribute';
 import {userContext} from '@akeneo-pim-community/shared/lib/dependencies/user-context';
 import {
-  AttributesIllustration,
   Button,
   Checkbox,
   Field,
   Helper,
   Link,
   Modal,
+  ProductCategoryIllustration,
   SelectInput,
   TextInput,
 } from 'akeneo-design-system';
@@ -97,7 +97,7 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
   };
 
   return (
-    <Modal illustration={<AttributesIllustration />} onClose={onClose} closeTitle={translate('pim_common.close')}>
+    <Modal illustration={<ProductCategoryIllustration />} onClose={onClose} closeTitle={translate('pim_common.close')}>
       <Modal.SectionTitle color="brand">
         {translate('akeneo.category.template.add_attribute.confirmation_modal.section_title')}
       </Modal.SectionTitle>
