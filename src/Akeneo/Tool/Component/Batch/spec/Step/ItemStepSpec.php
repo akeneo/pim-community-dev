@@ -9,20 +9,14 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Job\JobStopperInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
-use Akeneo\Tool\Component\Batch\spec\Item\FakeReader;
-use Akeneo\Tool\Component\Batch\spec\Item\FakeWriter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ItemStepSpec extends ObjectBehavior
@@ -256,9 +250,9 @@ class ItemStepSpec extends ObjectBehavior
     }
 
     function it_pause_if_asked(
-        FakeReader $reader,
+        ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
-        FakeWriter $writer,
+        ItemWriterInterface $writer,
         EventDispatcherInterface $dispatcher,
         DoctrineJobRepository $repository,
         StepExecution $execution,
