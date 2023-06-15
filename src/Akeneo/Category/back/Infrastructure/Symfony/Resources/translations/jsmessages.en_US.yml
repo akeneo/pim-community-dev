@@ -82,15 +82,15 @@ akeneo.category:
             notification_success:
                 title: '{{ attribute }} attribute successfully deleted'
         deactivate:
-            deactivate_template: Deactivate template
+            deactivate_template: Delete template
             confirmation_modal:
-                title: Deactivate category template
-                message: Are you sure you want to deactivate the category template named {{ template }}?
-                helper: Deactivating this template will permanently delete the attributes and values of the associated categories.
-                deactivate: Deactivate
+                title: Delete category template
+                message: Are you sure you want to delete the category template named {{ template }}?
+                helper: Deleting this template will permanently delete the attributes and values of the associated categories.
+                deactivate: Delete
             notification_success:
-                title: '{{ template }} template deactivated'
-                message: '{{ template }} has been deactivated. The content of the associated categories has been deleted.'
+                title: '{{ template }} template deleted'
+                message: '{{ template }} has been deleted. The content of the associated categories has been deleted.'
         auto-save:
             saved: Saved
             saving: Saving
