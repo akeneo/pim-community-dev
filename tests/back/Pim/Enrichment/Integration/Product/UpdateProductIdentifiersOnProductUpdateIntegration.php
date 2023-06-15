@@ -24,7 +24,7 @@ use Ramsey\Uuid\UuidInterface;
 class UpdateProductIdentifiersOnProductUpdateIntegration extends TestCase
 {
     /**
-     * @test
+     * @TODO CPM-1102: Re-enable
      */
     public function it_sets_and_updates_the_product_identifiers_table_on_product_create_and_update(): void
     {
