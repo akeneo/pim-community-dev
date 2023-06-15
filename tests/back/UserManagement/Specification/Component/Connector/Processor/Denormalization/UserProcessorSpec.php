@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
@@ -45,7 +46,7 @@ class UserProcessorSpec extends ObjectBehavior
             $gridViewRepository,
             $fileStorer,
             $jobRepository,
-            [],
+            ['ignoredField1', 'ignoredField2'],
         );
         $stepExecution->getExecutionContext()->willReturn(new ExecutionContext());
         $this->setStepExecution($stepExecution);
@@ -98,6 +99,50 @@ class UserProcessorSpec extends ObjectBehavior
         $validator->validate($user)->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
 
         $this->process($item)->shouldReturn($user);
+    }
+
+    function it_ignores_fields(
+        IdentifiableObjectRepositoryInterface $repository,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
+        JobRepositoryInterface $jobRepository,
+        StepExecution $stepExecution,
+        UserInterface $admin,
+    )
+    {
+        $repository->getIdentifierProperties()->willReturn(['username']);
+        $admin->getId()->willReturn(44);
+        $repository->findOneByIdentifier('admin')->willReturn($admin);
+
+        $itemBase = [
+            'username' => 'admin',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ];
+
+        $item = [...$itemBase];
+        $item['ignoredField1'] = 'value1';
+        $item['ignoredField2'] = 'value2';
+
+        $warning = new Warning(
+            $stepExecution->getWrappedObject(),
+            "The field(s) [ %ignoredFields% ] has been ignored",
+            ['%ignoredFields%' => 'ignoredField1, ignoredField2'],
+            $item
+        );
+        $jobRepository->addWarning($warning)->shouldBeCalled();
+
+        $updater->update(
+            $admin,
+            $itemBase,
+        )->shouldBeCalled();
+        $validator->validate($admin)->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
+
+        $this->process(
+            $itemBase
+        )->shouldReturn($admin);
+
+        $this->process($item)->shouldReturn($admin);
     }
 
     function it_sets_the_product_grid_view(
