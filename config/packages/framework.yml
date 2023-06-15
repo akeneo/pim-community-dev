@@ -3,7 +3,7 @@ framework:
         fallback: en_US
     secret: '%env(APP_SECRET)%'
     router:
-        strict_requirements: '1'
+        strict_requirements: '%env(APP_DEBUG)%'
     form: true
     csrf_protection: true
     validation:

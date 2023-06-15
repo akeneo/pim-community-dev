@@ -1,6 +1,6 @@
 parameters:
     env(FLAG_CONNECT_APP_WITH_PERMISSIONS_ENABLED): 0
-    env(FLAG_APP_DEVELOPER_MODE_ENABLED): 1
+    env(FLAG_APP_DEVELOPER_MODE_ENABLED): 0
 
 services:
     akeneo_connectivity.connection.connect_app_with_permissions.feature:
@@ -12,5 +12,5 @@ services:
     akeneo_connectivity.connection.app_developer_mode.feature:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
         arguments:
-            - '1'
+            - '%env(bool:FLAG_APP_DEVELOPER_MODE_ENABLED)%'
         public: true
