@@ -5,7 +5,7 @@ import {useEditCategoryForm} from './useEditCategoryForm';
 import {saveEditCategoryForm} from '../infrastructure';
 import {EnrichCategory} from '../models';
 import {categoriesAreEqual, permissionsAreEqual} from '../helpers';
-import {categoryRenderHookWithProviders} from '../../tests/CategoryRenderHook';
+import {renderHookWithCategoryProviders} from '../../tests/CategoryRenderHook';
 import {CategoryPermissions} from '../models/CategoryPermission';
 import {UserGroup} from './useFetchUserGroups';
 
@@ -120,7 +120,7 @@ describe('useEditCategoryForm', () => {
   let categoryResult = mockedUseCategoryResult();
 
   const renderUseEditCategoryForm = (categoryId: number) => {
-    return categoryRenderHookWithProviders(() => useEditCategoryForm(categoryId));
+    return renderHookWithCategoryProviders(() => useEditCategoryForm(categoryId));
   };
 
   beforeEach(() => {

@@ -19,14 +19,13 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "outDir": "lib",
-    "rootDir": "src/feature",
+    "rootDir": "src",
     "skipLibCheck": true,
     "sourceMap": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
-    "suppressImplicitAnyIndexErrors": true,
     "removeComments": true,
     "target": "es5",
     "baseUrl": "./src",
@@ -43,6 +42,6 @@
     "isolatedModules": true
   },
   "include": [
-    "src/feature"
+    "src"
   ]
 }
