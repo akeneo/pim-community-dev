@@ -9,3 +9,6 @@ akeneo.category:
         text_too_long: El valor no pot tenir més de {{ limit }} caràcters
         textarea_too_long: El valor no pot tenir més de {{ limit }} caràcters
         richtext_too_long: El valor no pot tenir més de {{ limit }} caràcters
+    attribute:
+      limit:
+        title: No podeu afegir més de 50 atributs
