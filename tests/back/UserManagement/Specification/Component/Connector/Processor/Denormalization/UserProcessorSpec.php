@@ -5,6 +5,7 @@ namespace Specification\Akeneo\UserManagement\Component\Connector\Processor\Deno
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -32,7 +33,8 @@ class UserProcessorSpec extends ObjectBehavior
         ObjectDetacherInterface $objectDetacher,
         DatagridViewRepositoryInterface $gridViewRepository,
         FileStorerInterface $fileStorer,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        JobRepositoryInterface $jobRepository,
     ) {
         $this->beConstructedWith(
             $repository,
@@ -41,7 +43,9 @@ class UserProcessorSpec extends ObjectBehavior
             $validator,
             $objectDetacher,
             $gridViewRepository,
-            $fileStorer
+            $fileStorer,
+            $jobRepository,
+            [],
         );
         $stepExecution->getExecutionContext()->willReturn(new ExecutionContext());
         $this->setStepExecution($stepExecution);

@@ -25,9 +25,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UserProcessor extends Processor
 {
-    private DatagridViewRepositoryInterface $gridViewRepository;
-    private FileStorerInterface $fileStorer;
-
     /**
      * @param array<string> $ignoredFields
      */
@@ -37,14 +34,12 @@ class UserProcessor extends Processor
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
-        DatagridViewRepositoryInterface $gridViewRepository,
-        FileStorerInterface $fileStorer,
-        protected JobRepositoryInterface $jobRepository,
+        private readonly DatagridViewRepositoryInterface $gridViewRepository,
+        private readonly FileStorerInterface $fileStorer,
+        private readonly JobRepositoryInterface $jobRepository,
         private readonly array $ignoredFields,
     ) {
         parent::__construct($repository, $factory, $updater, $validator, $objectDetacher);
-        $this->gridViewRepository = $gridViewRepository;
-        $this->fileStorer = $fileStorer;
     }
 
     /**
