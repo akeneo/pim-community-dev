@@ -108,6 +108,10 @@ final class JobExecutionWatchdogCommand extends Command
             );
         }
 
+        if (null === $jobCode) {
+            $jobCode = $this->executionManager->jobCodeFromJobExecutionId($jobExecutionId);
+        }
+
         $console = sprintf('%s/bin/console', $this->projectDir);
         $pathFinder = new PhpExecutableFinder();
         $startTime = time();
