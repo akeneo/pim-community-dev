@@ -44,6 +44,8 @@ class ReaderSpec extends ObjectBehavior
         $fileIterator->next()->shouldBeCalled();
         $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
+        $this->initialize();
+
         /** Expect 2 items, even there is 3 lines because the first one (the header) is ignored */
         $this->totalItems()->shouldReturn(2);
     }
