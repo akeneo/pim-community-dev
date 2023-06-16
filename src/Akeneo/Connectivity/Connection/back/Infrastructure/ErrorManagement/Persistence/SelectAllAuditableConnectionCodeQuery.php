@@ -13,11 +13,8 @@ use Doctrine\DBAL\Connection as DbalConnection;
  */
 class SelectAllAuditableConnectionCodeQuery
 {
-    private DbalConnection $dbalConnection;
-
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(private DbalConnection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     public function execute(): array

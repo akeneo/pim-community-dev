@@ -15,11 +15,8 @@ use Doctrine\DBAL\Types\Types;
  */
 class DbalErrorCountRepository implements ErrorCountRepositoryInterface
 {
-    private DbalConnection $dbalConnection;
-
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(private DbalConnection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     public function upsert(HourlyErrorCount $hourlyErrorCount): void
@@ -30,7 +27,7 @@ VALUES(:connection_code, :error_datetime, :error_count, :error_type)
 ON DUPLICATE KEY UPDATE error_count = error_count + :error_count
 SQL;
 
-        $this->dbalConnection->executeUpdate(
+        $this->dbalConnection->executeStatement(
             $upsertQuery,
             [
                 'connection_code' => (string) $hourlyErrorCount->connectionCode(),

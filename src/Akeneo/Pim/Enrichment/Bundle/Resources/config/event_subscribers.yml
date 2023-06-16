@@ -128,12 +128,26 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
+    pim_catalog.event_subscriber.init_product_completeness_db_schema:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitProductCompletenessDbSchemaSubscriber'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
     pim_catalog.event_subscriber.init_lock_db_schema:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitLockDbSchemaSubscriber'
         arguments:
             - '@database_connection'
         tags:
             - { name: 'kernel.event_subscriber' }
+
+#   TODO CPM-1102: Re-enable when table can be created again
+#    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\CreateIdentifiersTableSubscriber:
+#        arguments:
+#            - '@database_connection'
+#        tags:
+#            - { name: 'kernel.event_subscriber' }
 
     pim_catalog.event_subscriber.attribute_option_set_sort_order:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption\SetAttributeOptionSortOrderSubscriber'
@@ -264,3 +278,7 @@ services:
           - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\Doctrine\DBAL\EventListener\SkipMultiValuedIndexDuringIntrospectionListener:
+        tags:
+            - { name: doctrine.event_listener, event: 'onSchemaIndexDefinition' }

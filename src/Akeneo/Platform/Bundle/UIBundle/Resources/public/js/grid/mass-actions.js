@@ -87,7 +87,7 @@ define([
         this.count = Math.max(this.count - 1, 0);
       }
 
-      analytics.track('grid:item:number-selected', {
+      analytics.appcuesTrack('grid:item:number-selected', {
         inputName: this.collection.inputName,
         count: this.count,
       });
@@ -102,7 +102,7 @@ define([
       this.count = this.collection.state.totalRecords;
       this.collection.trigger('backgrid:selectAll');
 
-      analytics.track('grid:item:all-selected', {
+      analytics.appcuesTrack('grid:item:all-selected', {
         inputName: this.collection.inputName,
       });
 

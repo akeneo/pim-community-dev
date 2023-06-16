@@ -3,6 +3,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategorySql
     arguments:
       - '@database_connection'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter'
 
   Akeneo\Category\Domain\Query\GetCategoryByIds:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryByIdsSql
@@ -13,6 +15,8 @@ services:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoriesSql
     arguments:
       - '@database_connection'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes'
+      - '@Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\DeactivatedTemplateAttributesInValueCollectionFilter'
 
   Akeneo\Category\Domain\Query\GetCategoryTreesInterface:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreesSql
@@ -24,11 +28,6 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory:
-    class: Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory
-    arguments:
-      - '@database_connection'
-
   Akeneo\Category\Application\Query\CheckTemplate:
     class: Akeneo\Category\Infrastructure\Storage\Sql\CheckTemplateSql
     arguments:
@@ -36,10 +35,6 @@ services:
 
   Akeneo\Category\Application\Query\GetAttribute:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateAttributeSql
-    arguments:
-      - '@database_connection'
-
-  Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory:
     arguments:
       - '@database_connection'
 
@@ -63,8 +58,8 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuid:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteCategoryTreeTemplateByCategoryIdAndTemplateUuidSql
+  Akeneo\Category\Domain\Query\GetCategoryTreeTemplates:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTreeTemplatesSql
     arguments:
       - '@database_connection'
 
@@ -75,11 +70,6 @@ services:
 
   Akeneo\Category\Application\Query\IsTemplateDeactivated:
     class: Akeneo\Category\Infrastructure\Storage\Sql\IsTemplateDeactivatedSql
-    arguments:
-      - '@database_connection'
-
-  Akeneo\Category\Application\Query\DeleteTemplateAndAttributes:
-    class: Akeneo\Category\Infrastructure\Storage\Sql\DeleteTemplateAndAttributesSql
     arguments:
       - '@database_connection'
 
@@ -111,5 +101,20 @@ services:
 
   Akeneo\Category\Domain\Query\UpdateCategoryUpdatedDate:
     class: Akeneo\Category\Infrastructure\Storage\Sql\Update\UpdateCategoryUpdatedDateSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\GetDeactivatedTemplateAttributes\GetDeactivatedTemplateAttributes:
+    class: Akeneo\Category\Infrastructure\Storage\Sql\GetDeactivatedTemplateAttributesSql
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\PurgeOrphanCategories:
+    class: 'Akeneo\Category\Infrastructure\Storage\Sql\PurgeOrphanCategoriesSql'
+    arguments:
+      - '@database_connection'
+
+  Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder:
+    class: 'Akeneo\Category\Infrastructure\Storage\Sql\UpdateCategoryTemplateAttributesOrderSql'
     arguments:
       - '@database_connection'

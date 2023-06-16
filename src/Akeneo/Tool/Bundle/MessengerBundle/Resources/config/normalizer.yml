@@ -6,7 +6,3 @@ services:
 
     akeneo_messenger.message.serializer:
         class: Symfony\Component\Serializer\Serializer
-
-    Akeneo\Tool\Bundle\MessengerBundle\Normalizer\NormalizableMessageNormalizer:
-        tags:
-            - { name: akeneo_messenger.message.normalizer, priority: 0 }

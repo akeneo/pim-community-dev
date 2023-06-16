@@ -89,7 +89,7 @@ define([
             .concat(family.attributes.map(attribute => attribute.code))
             .filter((code, index, codes) => codes.indexOf(code) === index);
 
-          analytics.track('family:variant:attribute-set', {
+          analytics.appcuesTrack('family:variant:attribute-set', {
             codes: axesAttributeCodes,
           });
 
@@ -296,7 +296,7 @@ define([
             }
           });
 
-          analytics.track('family:variant:attribute-remove', {
+          analytics.appcuesTrack('family:variant:attribute-remove', {
             codes: removedAttributes,
           });
 

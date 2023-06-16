@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Helper;
 
+use Akeneo\Category\Application\Query\DeactivateTemplate;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryBase;
 use Akeneo\Category\Application\Storage\Save\Query\UpsertCategoryTranslations;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
@@ -37,7 +38,6 @@ use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\PermissionCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Exception;
@@ -130,11 +130,15 @@ class CategoryTestCase extends TestCase
         ?int $categoryTreeId = null,
         ?array $templateAttributes = null,
     ): Template {
-        $getTemplate = new GetTemplateInMemory();
         $generatedTemplateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 
-        /** @var Template $defaultTemplate */
-        $defaultTemplate = $getTemplate->byUuid($generatedTemplateUuid);
+        $defaultTemplate = new Template(
+            uuid: $generatedTemplateUuid,
+            code: new TemplateCode('default_template'),
+            labelCollection: LabelCollection::fromArray(['en_US' => 'Default template']),
+            categoryTreeId: new CategoryId(1),
+            attributeCollection: null,
+        );
 
         if ($templateUuid === null) {
             $templateUuid = $defaultTemplate->getUuid();
@@ -475,8 +479,16 @@ SQL;
 
     protected function deactivateTemplate(string $uuid): void
     {
+        /** @var DeactivateTemplate */
+        $deactivateTemplate = $this->get(DeactivateTemplate::class);
+
+        $deactivateTemplate->execute(TemplateUuid::fromString($uuid));
+    }
+
+    protected function deactivateAttribute(string $uuid): void
+    {
         $query = <<<SQL
-            UPDATE pim_catalog_category_template SET is_deactivated = 1 WHERE uuid = :uuid;
+            UPDATE pim_catalog_category_attribute SET is_deactivated = 1 WHERE uuid = :uuid;
         SQL;
 
         $this->get('database_connection')->executeQuery($query, [

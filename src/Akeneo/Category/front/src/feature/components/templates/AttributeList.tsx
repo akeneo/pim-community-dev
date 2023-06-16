@@ -1,10 +1,19 @@
-import {Button, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
-import {Attribute} from '../../models';
-import {getLabelFromAttribute} from '../attributes';
-import React, {useCallback, useMemo, useState} from 'react';
-import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
+import {useFeatureFlags, useTranslate, userContext} from '@akeneo-pim-community/shared';
+import {Button, Pill, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
+import {useMemo} from 'react';
 import styled from 'styled-components';
+import {Attribute, CATEGORY_ATTRIBUTE_TYPE_AREA, CATEGORY_ATTRIBUTE_TYPE_RICHTEXT} from '../../models';
+import {getLabelFromAttribute} from '../attributes';
+import {useTemplateForm} from '../providers/TemplateFormProvider';
 import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
+
+const useAttributeFormHasErrors = () => {
+  const [state] = useTemplateForm();
+
+  return (attributeUuid: string) => {
+    return Object.values(state.attributes[attributeUuid] || {}).some(({errors}) => errors.length > 0);
+  };
+};
 
 type Props = {
   attributes: Attribute[];
@@ -17,6 +26,7 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
   const translate = useTranslate();
   const catalogLocale = userContext.get('catalogLocale');
   const featureFlags = useFeatureFlags();
+  const attributeFormHasErrors = useAttributeFormHasErrors();
 
   const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
     useBooleanState(false);
@@ -25,14 +35,18 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
     onAttributeSelection(attribute);
   };
 
-  const sortedAttributes = useMemo(() => attributes.sort((attribute1: Attribute, attribute2: Attribute): number => {
-    if (attribute1.order >= attribute2.order) {
-      return 1;
-    } else if (attribute1.order < attribute2.order) {
-      return -1;
-    }
-    return 0;
-  }), [attributes]);
+  const sortedAttributes = useMemo(
+    () =>
+      attributes.sort((attribute1: Attribute, attribute2: Attribute): number => {
+        if (attribute1.order >= attribute2.order) {
+          return 1;
+        } else if (attribute1.order < attribute2.order) {
+          return -1;
+        }
+        return 0;
+      }),
+    [attributes]
+  );
 
   return (
     <AttributeListContainer>
@@ -50,6 +64,7 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.header')}</Table.HeaderCell>
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.code')}</Table.HeaderCell>
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.type')}</Table.HeaderCell>
+            <ErrorPillTableHeaderCell />
           </Table.Header>
           <Table.Body>
             {sortedAttributes.map((attribute: Attribute) => (
@@ -62,7 +77,18 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
               >
                 <Table.Cell rowTitle>{getLabelFromAttribute(attribute, catalogLocale)}</Table.Cell>
                 <Table.Cell>{attribute.code}</Table.Cell>
-                <Table.Cell>{translate(`akeneo.category.template.attribute.type.${attribute.type}`)}</Table.Cell>
+                <Table.Cell>
+                  {translate(
+                    `akeneo.category.template.attribute.type.${
+                      attribute.type !== CATEGORY_ATTRIBUTE_TYPE_RICHTEXT
+                        ? attribute.type
+                        : CATEGORY_ATTRIBUTE_TYPE_AREA
+                    }`
+                  )}
+                </Table.Cell>
+                <ErrorPillTableCell>
+                  {attributeFormHasErrors(attribute.uuid) && <Pill level={'danger'} />}
+                </ErrorPillTableCell>
               </Table.Row>
             ))}
           </Table.Body>
@@ -86,4 +112,14 @@ const AddAttributeButton = styled(Button)`
 const ScrollablePanel = styled.div`
   overflow-y: scroll;
   height: calc(100% - 44px);
+`;
+
+const ErrorPillTableCell = styled(Table.Cell)`
+  display: flex;
+  justify-content: flex-end;
+  width: 75px;
+`;
+
+const ErrorPillTableHeaderCell = styled(Table.HeaderCell)`
+  width: 75px;
 `;

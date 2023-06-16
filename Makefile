@@ -1,8 +1,8 @@
 DOCKER_COMPOSE = docker-compose
-NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
-YARN_RUN = $(NODE_RUN) yarn
-PHP_RUN = $(DOCKER_COMPOSE) run --rm php php
-PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data httpd php
+NODE_RUN ?= $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
+YARN_RUN ?= $(NODE_RUN) yarn
+PHP_RUN ?= $(DOCKER_COMPOSE) run --rm php php
+PHP_EXEC ?= $(DOCKER_COMPOSE) exec -u www-data httpd php
 
 .DEFAULT_GOAL := help
 
@@ -16,7 +16,6 @@ help:
 
 ## Include all *.mk files
 include make-file/*.mk
-include components/*/Makefile
 
 ##
 ## Front
@@ -97,7 +96,7 @@ check-requirements:
 
 .PHONY: database
 database:
-	$(PHP_RUN) bin/console doctrine:database:drop --force
+	$(PHP_RUN) bin/console doctrine:database:drop --force --if-exists
 	$(PHP_RUN) bin/console doctrine:database:create --if-not-exists
 	$(PHP_RUN) bin/console pim:installer:db ${O}
 

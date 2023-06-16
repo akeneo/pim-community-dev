@@ -13,26 +13,16 @@ use Psr\Http\Message\ResponseInterface;
  */
 class EventSubscriptionSendApiEventRequestLog
 {
-    private WebhookRequest $webhookRequest;
-    /** @var array<string, int|string> */
-    private array $headers;
     private string $message = '';
     private bool $success;
-    private float $startTime;
     private ?float $endTime = null;
     private ?ResponseInterface $response = null;
 
     /**
      * @param array<string, int|string> $headers
      */
-    public function __construct(
-        WebhookRequest $webhookRequest,
-        array $headers,
-        float $startTime
-    ) {
-        $this->webhookRequest = $webhookRequest;
-        $this->headers = $headers;
-        $this->startTime = $startTime;
+    public function __construct(private WebhookRequest $webhookRequest, private array $headers, private float $startTime)
+    {
     }
 
     public function getWebhookRequest(): WebhookRequest

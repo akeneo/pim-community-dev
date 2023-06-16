@@ -1,10 +1,49 @@
 # 6.0.x
 
+# 6.0.87 (2023-06-14)
+
+# 6.0.86 (2023-05-29)
+
+# 6.0.85 (2023-05-23)
+
+## Bug fixes
+
+- PIM-10997: Update error message when trying to delete role with linked users or connections
+
+# 6.0.84 (2023-05-16)
+
+# 6.0.83 (2023-05-15)
+
+## Bug fixes
+
+- PIM-10928: Fix pim:update:check-requirements can create indexes which are unreachable from the PIM
+- [Backport PIM-10820] PIM-10981: Export product attribute options with the right case
+
+# 6.0.82 (2023-04-24)
+
+## Bug fixes
+
+- [Backport PIM-10877] PIM-10954: Fix sequential edit when grid is sorted by quality score
+
+# 6.0.81 (2023-04-18)
+
+## Bug fixes
+
+- [Backport PIM-10887] PIM-10937: Prevent channel creation on validation error during import
+
+# 6.0.80 (2023-04-11)
+
+## Bug fixes
+
+- PIM-10922: Update dompdf library
+
+# 6.0.79 (2023-04-04)
+
 # 6.0.78 (2023-03-29)
 
 ## Bug fixes
 
-- PIM-10913: Fix attribute creation form when a label contains a question mark 
+- PIM-10913: Fix attribute creation form when a label contains a question mark
 
 # 6.0.77 (2023-03-24)
 
@@ -225,7 +264,7 @@
 - PIM-10449: Remove old table related to old queue system
 - PIM-10451: Add migration to add an index on start_time on the job_execution table
 - MW-373: Prepare the marketplace migration to another subdomain
-- PIM-10452, PIM-10454, PIM-10455, PIM-10456 : Fix migration to set some fields to NOT NULL on job & step execution tables 
+- PIM-10452, PIM-10454, PIM-10455, PIM-10456 : Fix migration to set some fields to NOT NULL on job & step execution tables
 - PIM-10453: Add migration to add an index on updated on pim_catalog_category table
 
 # 6.0.28 (2022-05-13)

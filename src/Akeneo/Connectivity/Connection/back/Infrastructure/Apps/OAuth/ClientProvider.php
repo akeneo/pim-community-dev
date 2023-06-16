@@ -15,11 +15,8 @@ use OAuth2\OAuth2;
  */
 class ClientProvider implements ClientProviderInterface
 {
-    private ClientManagerInterface $clientManager;
-
-    public function __construct(ClientManagerInterface $clientManager)
+    public function __construct(private ClientManagerInterface $clientManager)
     {
-        $this->clientManager = $clientManager;
     }
 
     public function findOrCreateClient(App $app): Client

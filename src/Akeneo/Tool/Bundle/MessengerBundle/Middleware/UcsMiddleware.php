@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Middleware;
 
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\CorrelationIdStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use Akeneo\Tool\Component\Messenger\Tenant\TenantAwareInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
@@ -16,29 +18,35 @@ use Symfony\Component\Messenger\Middleware\StackInterface;
  */
 class UcsMiddleware implements MiddlewareInterface
 {
-    public function __construct(private ?string $pimTenantId)
-    {
+    public function __construct(
+        private readonly ?string $pimTenantId,
+        private readonly LoggerInterface $logger,
+    ) {
     }
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        // No tenant ID in the env, but existing in the received message
-        // We are in a daemon long-running process
-        if (null === $this->pimTenantId && null !== $envelope->last(TenantIdStamp::class)) {
-            /** @var TenantIdStamp $stamp */
-            $stamp = $envelope->last(TenantIdStamp::class);
-            $this->pimTenantId = $stamp->pimTenantId();
+        // We always try to use the tenantid from the stamp, if there is any, in case of long-running process.
+        // If there is none, we fallback on the tenantid coming from the env variables.
+        $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId() ?: $this->pimTenantId;
+
+        if (empty($tenantId)) {
+            $this->logger->warning(sprintf(
+                'A message of type "%s" is consumed without a tenant id available',
+                get_class($envelope->getMessage()),
+            ));
         }
 
-        // Tenant ID exists in this env
-        // We are in a contextualized process
-        if ($this->pimTenantId && null === $envelope->last(TenantIdStamp::class)) {
-            $envelope = $envelope->with(new TenantIdStamp($this->pimTenantId));
+        if ($tenantId && null === $envelope->last(TenantIdStamp::class)) {
+            $envelope = $envelope->with(new TenantIdStamp($tenantId));
         }
 
-        // Enrich the message with the tenant ID
-        if ($this->pimTenantId && $envelope->getMessage() instanceof TenantAwareInterface) {
-            $envelope->getMessage()->setTenantId($this->pimTenantId);
+        if ($tenantId && $envelope->getMessage() instanceof TenantAwareInterface) {
+            $envelope->getMessage()->setTenantId($tenantId);
+        }
+
+        if (null === $envelope->last(CorrelationIdStamp::class)) {
+            $envelope = $envelope->with(CorrelationIdStamp::generate());
         }
 
         return $stack->next()->handle($envelope, $stack);

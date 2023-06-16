@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class InstallSubscriber implements EventSubscriberInterface
 {
-    const ICECAT_DEMO_DEV = 'icecat_demo_dev';
+    public const ICECAT_DEMO_DEV = 'icecat_demo_dev';
 
     public function __construct(
         private DbalConnection $dbalConnection,

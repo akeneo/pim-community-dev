@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,11 +19,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VersioningController
 {
+    private const MAX_VERSION_COUNT = 200;
+
     public function __construct(
         private readonly VersionRepositoryInterface $versionRepository,
         private readonly FQCNResolver $FQCNResolver,
         private readonly NormalizerInterface $normalizer,
-        private readonly UserContext $userContext
     ) {
     }
 
@@ -47,7 +47,7 @@ class VersioningController
 
         return new JsonResponse(
             $this->normalizer->normalize(
-                $this->versionRepository->getLogEntries($this->FQCNResolver->getFQCN($entityType), $entityId, $entityUuid),
+                $this->versionRepository->getLogEntries($this->FQCNResolver->getFQCN($entityType), $entityId, $entityUuid, self::MAX_VERSION_COUNT),
                 'internal_api'
             )
         );

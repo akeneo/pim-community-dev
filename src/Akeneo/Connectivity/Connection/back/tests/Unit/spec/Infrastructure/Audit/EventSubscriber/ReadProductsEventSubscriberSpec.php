@@ -37,7 +37,7 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(ReadProductsEventSubscriber::class);
         $this->shouldImplement(EventSubscriberInterface::class);

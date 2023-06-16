@@ -33,8 +33,8 @@ namespace Akeneo\Platform\Bundle\FeatureFlagBundle;
 
 interface FeatureFlag
 {
-    public function isEnabled(): bool
-}    
+    public function isEnabled(?string $feature = null): bool
+}
 ```
 
 ### Examples
@@ -65,12 +65,12 @@ class EnvVarFeatureFlag implements FeatureFlag
         $this->isEnabled = $isEnabled;
     }
 
-    public function isEnabled(): bool
+    public function isEnabled(?string $feature = null): bool
     {
         return $this->isEnabled;
     }
 }
-``` 
+```
 
 Another example. Imagine now you want to allow Akeneo people working at Nantes to access a beta `foo` feature. All you have to do is declare in your code a service that implements `Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag`.
 
@@ -80,7 +80,7 @@ services:
         class: 'Akeneo\My\Own\Namespace\FooFeatureFlag'
         arguments:
             - '@request_stack'
-``` 
+```
 
 ```php
 namespace Akeneo\My\Own\Namespace;
@@ -96,10 +96,10 @@ class FooFeatureFlag implements FeatureFlag
     {
         $this->requestStack = $requestStack;
     }
-    
-    public function isEnabled(): bool
+
+    public function isEnabled(?string $feature = null): bool
     {
-        return $this->requestStack->getCurrentRequest()->getClientIp() === $this->$akeneoIpAddress; 
+        return $this->requestStack->getCurrentRequest()->getClientIp() === $this->$akeneoIpAddress;
     }
 }
 ```
@@ -184,7 +184,7 @@ config:
         akeneo_connectivity_connection_settings_index:
           module: pim/controller/connectivity/connection/settings
           feature: myCoolFeature
-``` 
+```
 
 You can easily show or hide a part of HTML code in a Twig template
 

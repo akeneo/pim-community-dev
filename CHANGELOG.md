@@ -2,6 +2,10 @@
 
 ## Bug fixes
 
+- PIM-10966: Fix error when toggling between tabs on an export profile editing page
+- PIM-10972: Fix shifting data during import
+- PIM-10950: Fix wrongly removed code filter on attribute page
+- PIM-10960: Fix no violation raised when importing variant with already existing siblings
 - PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
 - PIM-10779: Fix lowercase on get attribute group code for dqi activation
 - PIM-10791: Fix product and product model completeness compute on attribute removal
@@ -27,7 +31,7 @@
 - PIM-10829: Fix case-sensitive locale on translatable business objects
 - PIM-10840: Fix attribute update date on attribute options change above 10000 options
 - PIM-10793: Add a command to delete expired tokens
-- PIM-10840: Fix attribute update date on attribute options change above 10000 options 
+- PIM-10840: Fix attribute update date on attribute options change above 10000 options
 - PIM-10868: Fix checkboxes on category trees
 - PIM-10832: Fix compute completeness job after removing an attribute from a family
 - PIM-10820: Partially revert [PIM-10350] to fix case sensitivity on options import
@@ -45,12 +49,46 @@
 - PIM-10925: The search by code is missing on the attribute page
 - PIM-10906: Use user timezone to display dates in history grid
 - PIM-10915: Fix attribute with numeric code throw 500 error on product history
-- PIM-10889: Update Category updated date after setting a labels and show category filtered by updated date on API REST 
+- PIM-10889: Update Category updated date after setting a labels and show category filtered by updated date on API REST
 - PIM-10919: Fix Cleaning Products with removed attributes using identifiers instead of uuids
 - PIM-10911: Add user-agent when sending an event
 - PIM-10885: Use React shared component for locale selector in product form locale switcher
+- PIM-10941: Fix unitary attribute group deletion
 - PIM-10916: Fix external categories endpoint with_position always return 1
 - PIM-10887: Prevent channel creation on validation error during import
+- PIM-10929: Add limit on get product history
+- PIM-10940 : Add command to remove orphan categories
+- PIM-10936: Fix an issue where completeness could not be saved after migrating to UUIDs
+- PIM-10938: Fix getNextObject when use clicks on variant during sequential edit
+- PIM-10948: Fix number value comparison
+- PIM-10955: Temporary rollback of PIM-10916 causing performance issue on categories API
+- PIM-10959: Fix API response when trying to associate a product model to itself in a 2-way association
+- PIM-10951: Fix grid search with special characters
+- PIM-10916: Fix with_position results on get categories Rest API endpoint
+- PIM-10961: Use React component for product grid locale switcher
+- PIM-10909: Refactor command to remove non-existing products and models from ES index
+- PIM-10932: Fix data in NumberValueFactory if data contains a white space
+- PIM-10814: Wysiwyg now supports languages that use right-to-left (rtl) scripts
+- PIM-10956: Fix deletion of category with enriched category template
+- PIM-10914: Add title and ellipsis for long labels on attribute select
+- PIM-10967: Fix inconsistency on DQI completeness recommendation
+- PIM-10639: Prevent users to change his password without providing its current password
+- PIM-10958: Fix attribute option position after clicking on "done"
+- PIM-10976: Fix variant product counter on Product Model Edit Form for variant products without identifier
+- PIM-10983: Error HTTP 500 when adding a custom app
+- PIM-10980: Fix pagination update when applying filters on product association grid
+- PIM-10977 : Prevent api users to log in to the PIM via the UI
+- PIM-11001: Fix code filter on attributes grid with special character
+- PIM-11002: Fix bad context locale used in DQI dashboard families widget
+- PIM-10997: Update error message when trying to delete role with linked users or connections
+- PIM-11003: Fix scrolling on Product edit form attributes
+- PIM-10982 : Fix flag emoji rendering on windows
+- PIM-11013 : Fix edit user profile without password changes
+- PIM-11012 : Add helper if selected UI language is not sufficiently supported
+- PIM-11024 : Add an error message when trying to modify the code of an option attribute [External API]
+- PIM-11040 : Sku is disabled according to the rights
+- PIM-11023 : Fix product search containing underscores
+- PIM-11016 : Improve the clean-removed-attributes command
 
 ## Improvements
 

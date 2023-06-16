@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Application\Query\GetCategoriesInterface;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
-use Akeneo\Category\Application\Query\ExternalApiSqlParameters;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface as CategoryDoctrine;
 use Akeneo\Category\ServiceApi\ExternalApiCategory;
@@ -181,9 +181,9 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
     public function testGetCategoryByCodesWithPosition(): void
     {
         $parameters = new ExternalApiSqlParameters(
-            sqlWhere: '1=1',
+            sqlWhere: 'category.code IN (:category_codes)',
             params: [
-                'category_codes' => [],
+                'category_codes' => ['sandals', 'slippers', 'pants'],
                 'with_enriched_attributes' => true,
                 'with_position' => true,
             ],
@@ -195,7 +195,7 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
             limitAndOffset: 'LIMIT 10',
         );
         $retrievedCategories = $this->get(GetCategoriesInterface::class)->execute($parameters);
-        $this->assertIsArray($retrievedCategories);
+        $this->assertCount(3, $retrievedCategories);
 
         /**
          * Categories are organized like this in DB:
@@ -211,17 +211,14 @@ class GetCategoriesSqlIntegration extends CategoryTestCase
          */
         foreach ($retrievedCategories as $category) {
             switch ($category->getCode()) {
-                case 'shoes':
-                case 'boots':
-                case 'socks':
-                case 'pants':
-                    $this->assertPositionIs(1, $category);
-                    break;
                 case 'sandals':
                     $this->assertPositionIs(2, $category);
                     break;
                 case 'slippers':
                     $this->assertPositionIs(3, $category);
+                    break;
+                case 'pants':
+                    $this->assertPositionIs(1, $category);
                     break;
                 default:
                     break;

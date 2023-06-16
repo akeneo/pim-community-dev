@@ -107,7 +107,7 @@ services:
             - '@event_dispatcher'
             - '@pim_api.checker.duplicate_value'
             - '@oro_security.security_facade'
-            - '@validator'
+            - '@pim_catalog.validator.product'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.saver.product'
@@ -124,7 +124,7 @@ services:
             - '@event_dispatcher'
             - '@pim_api.checker.duplicate_value'
             - '@oro_security.security_facade'
-            - '@validator'
+            - '@pim_catalog.validator.product'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.saver.product'
@@ -230,6 +230,7 @@ services:
             - '@validator'
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_enrich.resolver.locale'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.product_model_category:
         public: true
@@ -340,7 +341,6 @@ services:
             - '@pim_versioning.repository.version'
             - '@pim_catalog.resolver.fqcn'
             - '@pim_internal_api_serializer'
-            - '@pim_user.context.user'
 
     pim_enrich.controller.rest.count_impacted_items_by_attribute_deletion:
         public: true
@@ -355,7 +355,6 @@ services:
         arguments:
             - '@pim_user.context.user'
             - '@pim_catalog.saver.category'
-            - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
@@ -368,7 +367,7 @@ services:
             - '@Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizer'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
             - '@Akeneo\Category\Domain\Query\GetCategoryTreesInterface'
-            - '@feature_flags'
+            - '@category.command.message_bus'
             - { related_entity: product, form_type: 'Akeneo\Category\Infrastructure\Symfony\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]

@@ -67,7 +67,7 @@ class GetCustomAppSecretActionEndToEnd extends WebTestCase
             ]
         );
         $response = $this->client->getResponse();
-        $result = \json_decode($response->getContent(), true);
+        $result = \json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertEquals($secretObfuscated, $result);

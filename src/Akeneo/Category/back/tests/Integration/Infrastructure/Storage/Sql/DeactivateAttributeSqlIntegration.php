@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
 use Akeneo\Category\Application\ActivateTemplate;
-use Akeneo\Category\Application\Query\DeactivateTemplate;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Query\DeactivateAttribute;
-use Akeneo\Category\Domain\Query\DeleteTemplateAttribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Code;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)

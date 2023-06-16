@@ -99,7 +99,7 @@ class CreateAccessToken implements CreateAccessTokenInterface
     {
         /** @var UserInterface|mixed */
         $pimUser = $authCode->getData();
-        if (false === $pimUser instanceof UserInterface) {
+        if (!$pimUser instanceof UserInterface) {
             throw new \LogicException();
         }
 

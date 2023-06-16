@@ -1,0 +1,13 @@
+akeneo_installer_reset_instance:
+  path: /rest/reset-instance
+  defaults:
+    _controller: Akeneo\Platform\Installer\Infrastructure\Controller\ResetInstanceAction
+    _feature: reset_pim
+  methods: [ POST ]
+
+akeneo_installer_check_reset_instance:
+  path: /rest/check-reset-instance
+  defaults:
+    _controller: Akeneo\Platform\Installer\Infrastructure\Controller\CheckInstanceCanBeResetAction
+    _feature: reset_pim
+  methods: [ GET ]

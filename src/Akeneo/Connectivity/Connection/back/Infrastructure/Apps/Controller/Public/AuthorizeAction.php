@@ -103,7 +103,7 @@ final class AuthorizeAction
         $originalScopes = $this->getConnectedAppScopesQuery->execute($clientId);
         $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
 
-        $hasNewScopes = false === empty($this->scopeListComparator->diff(
+        $hasNewScopes = !empty($this->scopeListComparator->diff(
             $requestedScopes,
             $originalScopes
         ));

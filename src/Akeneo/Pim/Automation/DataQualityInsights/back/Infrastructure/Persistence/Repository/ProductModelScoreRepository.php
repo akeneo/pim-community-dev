@@ -42,7 +42,7 @@ class ProductModelScoreRepository implements ProductModelScoreRepositoryInterfac
             $scoresPartialCriteria = sprintf('scores_partial_criteria_%d', $index);
 
             $queries .= <<<SQL
-INSERT INTO pim_data_quality_insights_product_model_score (product_model_id, evaluated_at, scores, scores_partial_criteria)
+INSERT IGNORE INTO pim_data_quality_insights_product_model_score (product_model_id, evaluated_at, scores, scores_partial_criteria)
 VALUES (:$productModelId, :$evaluatedAt, :$scores, :$scoresPartialCriteria)
 ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores, scores_partial_criteria = :$scoresPartialCriteria;
 SQL;

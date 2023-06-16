@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: 有効
+        environment:
+          title: 環境設定
+          fields:
+            sandbox_banner:
+              label: サンドボックス警告バナーを表示する
         loading_message:
           title: カスタマイズされた読み込み中のメッセージ
           helper: 画面を読み込むためのカスタマイズされたメッセージでユーザーを楽しませます。
@@ -194,6 +199,7 @@ pim_common:
   label: ラベル
   label_translations: ラベルの翻訳
   Label or identifier: ラベルもしくは識別子
+  code_or_label: コードまたはラベル
   less_than: <
   loading: 読み込み中…
   media_upload: ドラッグ＆ドロップでアップロードするか、こちらをクリック
@@ -261,6 +267,7 @@ pim_common:
   product_models: 商品モデル
   more: 詳細
   public_view: パブリックビュー
+  view: 表示
 error:
   exception: '{{ status_code }}エラーが発生しました...'
   forbidden: このページにアクセスすることはできません
@@ -275,6 +282,7 @@ pim_enrich.entity.fallback:
     generic_error: エラーが発生しました。
     update:
       fail: 更新に失敗しました
+      fail_session_expired: ユーザーセッションの期限が切れました。もう一度ログインしてください。
       success: 正常に更新されました
     delete:
       fail: このアイテムを削除できません
@@ -341,6 +349,7 @@ pim_title:
   pim_settings_index: 設定
   pim_system_index: システム
 pim_menu:
+  tag.new: 新規
   tab:
     activity: アクティビティ
     imports: インポート
@@ -350,6 +359,10 @@ pim_menu:
     help:
       title: ヘルプ
       helper: Akeneoヘルプセンター
+      new: 新規
+      news: 新着情報
+      help_center: ヘルプセンター
+      akademy_training: Akademy トレーニング
   item:
     association_type: 関連タイプ
     attribute_group: 属性グループ
@@ -380,6 +393,7 @@ pim_menu:
       product: 商品設定
       catalog: カタログ設定
       collapsed_label: 設定ナビゲーション
+      automation: 自動化
     product: 商品ナビゲーション
     product_infos: 商品情報
   user:
@@ -395,6 +409,7 @@ pim_settings:
   settings_menu: 設定メニュー
   catalog_settings: カタログ設定
   product_settings: 商品設定
+  automation_settings: 自動化
   count:
     category_trees: '{0}0 個のツリーがあります |{1}1 個のツリーがあります |]1, Inf[{{ count }} 個のツリーがあります'
     categories: '{0}と 0 個のカテゴリ|{1}と 1 個のカテゴリ|]1, Inf[と {{ count }} 個のカテゴリ'
@@ -409,6 +424,7 @@ pim_settings:
     group_types: '{0}0 個のグループタイプがあります|{1}1 個のグループタイプがあります|]1, Inf[{{ count }} 個のグループタイプがあります'
     groups: '{0}0 個のグループがあります|{1}1 個のグループがあります|]1, Inf[{{ count }} 個のグループがあります'
     rules: '{0}0 項目の有効なルールがあります|{1}1 項目の有効なルールがあります|]1, Inf[{{ count }} 項目の有効なルールがあります'
+    identifier_generators: '{0}識別子ジェネレーターがありません|{1}1個の識別子ジェネレーターがあります|]1, Inf[{{ count }}個の識別子ジェネレーターがあります'
 pim_system:
   system_menu: システムメニュー
   system_navigation: システムナビゲーション
@@ -422,6 +438,36 @@ pim_system:
     enabled: SSO有効
     disabled: SSO無効
     title: SAMLベースのシングルサインオン
+  reset_pim:
+    modal:
+      summary:
+        name: 概要
+        title: '警告: PIM のリセットは元に戻せません'
+        text: '以下を除くすべての要素が削除されます:'
+        users:
+          name: ユーザー
+          tooltip: ユーザーとは、PIM 内で共同作業できる人です。
+        user_groups:
+          name: ユーザーグループ
+          tooltip: ユーザーグループは、PIM 内で様々な操作を実行するチームを定義します。
+        roles:
+          name: 権限
+          tooltip: 権限は、PIM でユーザーとユーザーグループが実行できるアクセスと操作を定義します。
+      confirm:
+        name: 確認
+        title: PIM のリセットを確認する
+        helper:
+          emphasis: PIM を一度リセットすると、元に戻せません。
+          text: リセットボタンをクリックするとログアウトされ、ログインページに戻ります。
+      confirmation_phrase: '"{{ confirmation_word }}" と入力してください'
+      confirmation_word: リセット
+    button:
+      label: インスタンスをリセット
+      confirm: リセットしてログアウト
+    error_notification: PIM のリセット中にエラーが発生しました。システム管理者にお問い合わせください。
+  sandbox:
+    helper:
+      text: これはサンドボックス環境です。変更による本番環境への影響はありません。
 pim_datagrid:
   mass_action:
     default:

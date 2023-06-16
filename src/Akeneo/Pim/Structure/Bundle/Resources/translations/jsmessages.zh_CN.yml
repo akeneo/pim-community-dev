@@ -74,6 +74,8 @@ pim_enrich.entity.attribute_option:
       fail: 无法保存属性选项
     delete:
       fail: 删除属性选项时出错
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个选项|]1, Inf[{{ count }} 个选项"
   module:
     edit:
       cancel_title: 取消修改
@@ -150,7 +152,6 @@ pim_enrich.entity.attribute:
       success: 属性已成功更新。
       fail: 属性无法更新。
       fields_not_ready: "该属性目前无法保存。以下字段未准备好： {{ fields }}"
-      cant_remove_attributes_used_as_label: 无法移除品类中用作标签的属性。
     delete:
       success: 属性已成功移除
       fail: 不能删除该属性
@@ -233,7 +234,7 @@ pim_enrich.entity.attribute:
       attribute_removal: 将从所有产品中移除该属性。
       product_count: '{0}0 个产品|{1}1 个产品|]1, Inf[{{ count }} 个产品'
       product_model_count: '{0}0 个产品模型|{1}1 个产品模型|]1, Inf[{{ count }} 个产品模型'
-      used: ']-Inf,1]此属性当前已设置了值。|]1, Inf[此属性当前已设置了值。'
+      used: ']-Inf,1]当前已设置了此属性的值。|]1, Inf[当前已设置了此属性的值。'
       helper:
         content: 如果您需要更改属性类型，使其具有区域或范围属性，同时保持对现有属性值的访问，
         link: 查看我们的“帮助中心”（获取更多信息）。
@@ -241,11 +242,21 @@ pim_enrich.entity.attribute:
       confirm_from_family: 确定要从品类中删除此属性吗？
       confirm_from_group: 确定要从该属性组中移除属性 {{ attribute }}？
       confirm_from_product: 确定要从产品中删除此属性？
+    mass_delete:
+      modal:
+        title: 属性
+        subtitle: '{1}确认删除 {{ count }} 个属性|]1, Inf[确认删除 {{ count }} 个属性'
+        label: 请输入 "{{ textToCheck }}"
+        confirm: 确定要删除这些属性吗？
+      message_bar:
+        success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
+        fail: 启动删除时出错
 pim_enrich.entity.attribute_group:
   label: 属性组
   uppercase_label: 属性组
   plural_label: 属性组
   result_count: '{0}0 个属性组|{1}1 个属性组|]1, Inf[{{ count }} 个属性组'
+  limit_reached: 您已达到 {{ max }} 个属性组的限制。
   show_more_attribute:
     title: 这里比较拥挤，我们会显示 {{ attributeCount }}/{{ totalAttributeCount }} 个属性。
     subtitle: 要探索此组的所有属性，请点击下面！
@@ -260,8 +271,8 @@ pim_enrich.entity.attribute_group:
       fail: 属性组无法更新
       fields_not_ready: "该属性组目前无法保存。以下字段未准备好： {{ fields }}"
     delete:
-      success: 属性组已成功移除
-      fail: 不能删除该属性组
+      success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
+      fail: 启动删除时出错
     mass_delete:
       success: 已开始执行删除。作业完成后，您将收到通知。同时，您可以随时在进程跟踪器上关注进度。
       fail: 启动删除时出错
@@ -278,8 +289,27 @@ pim_enrich.entity.attribute_group:
   selected: '{0}已选择 0 个属性组|{1}已选择 1 个属性组|]1, Inf[已选择 {{ count }} 个属性组'
   mass_delete:
     confirm: '{1}确定要删除此属性组吗？|]1, Inf[确定要删除 {{ count }} 个属性组吗？'
-    confirmation_phrase: '请输入“{{ confirmation_word }}”以确认：'
+    confirmation_phrase: '请输入 "{{ confirmation_word }}"'
     confirmation_word: 删除
+    attribute_warning: '{1}删除这些属性组会影响 {{ number_of_attribute }} 个相关的属性。您需要将此相关的属性移动到一个新的属性组。]1，Inf[删除这些属性组会影响 {{ number_of_attribute }} 个相关的属性。您需要将这些相关的属性移动到一个新的属性组。'
+    select_attribute_group: '{1}请选择要将相关的属性移动到其中的属性组：|]1，Inf[请选择要将 {{ number_of_attribute }} 个相关的属性移动到其中的属性组'
+    empty_result_label: '未找到属性组'
+    placeholder: '选择属性组'
+    open_label: '属性组列表'
+  delete:
+    confirm: '确定要删除此属性组吗？'
+    attribute_warning: '删除此属性组将会影响 {{ number_of_attribute }} 个相关的属性。您需要将此相关的属性移动到一个新的属性组。'
+    select_attribute_group: '{1}请选择要将相关的属性移动到其中的属性组：|]1，Inf[请选择要将 {{ number_of_attribute }} 个相关的属性移动到其中的属性组：'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: 删除属性组
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: 批量删除属性组失败
+      warning: 批量删除属性组完成，但有一些警告
+      success: 批量删除属性组完成
 pim_enrich.mass_edit.family:
   title: 品类批量操作
   confirm: "{1}您将更新品类的以下信息，请确认。|]1, Inf[您将更新 {{ itemsCount }} 个品类的以下信息，请确认。"
@@ -300,3 +330,19 @@ pim_enrich.mass_edit.family:
       label: 设置属性要求
       description: 下列属性要求将应用于所选的品类中
       label_count: "{1}设置 <span class=\"AknFullPage-title--highlight\">1 个品类</span>的属性要求|]1, Inf[设置 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个品类</span>的属性要求"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: 删除属性组
+    move_child_attributes: 移动子属性
+  delete_attributes:
+    delete_attributes:
+      label: 删除属性
+job_execution:
+  summary:
+    deleted_attributes: 已删除的属性
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: 删除属性组
+pim_notification:
+  types:
+    attribute_group_mass_delete: 删除

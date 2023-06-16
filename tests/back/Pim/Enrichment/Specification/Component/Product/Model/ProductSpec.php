@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
@@ -141,7 +142,7 @@ class ProductSpec extends ObjectBehavior
 
         $values = new WriteValueCollection(
             [
-                ScalarValue::value('sku', 'shovel'),
+                IdentifierValue::value('sku', true, 'shovel'),
                 ScalarValue::localizableValue('name', 'Petit outil agricole authentique', 'fr_FR'),
             ]
         );
@@ -165,7 +166,7 @@ class ProductSpec extends ObjectBehavior
 
         $values = new WriteValueCollection(
             [
-                ScalarValue::value('sku', 'shovel'),
+                IdentifierValue::value('sku', true, 'shovel'),
                 ScalarValue::scopableLocalizableValue('name', 'Petite pelle', 'mobile', 'fr_FR'),
             ]
         );

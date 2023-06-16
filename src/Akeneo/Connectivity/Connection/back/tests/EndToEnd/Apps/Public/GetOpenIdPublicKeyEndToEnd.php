@@ -65,7 +65,7 @@ class GetOpenIdPublicKeyEndToEnd extends WebTestCase
         $result = $this->client->getResponse()->getContent();
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        $result = \json_decode($result, true);
+        $result = \json_decode($result, true, 512, JSON_THROW_ON_ERROR);
 
         $publicKey = \openssl_pkey_get_public($result['public_key']);
         Assert::assertNotFalse($publicKey);
@@ -85,7 +85,7 @@ class GetOpenIdPublicKeyEndToEnd extends WebTestCase
         $result = $this->client->getResponse()->getContent();
 
         Assert::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals(OpenIdKeysNotFoundException::MESSAGE, \json_decode($result, true));
+        Assert::assertEquals(OpenIdKeysNotFoundException::MESSAGE, \json_decode($result, true, 512, JSON_THROW_ON_ERROR));
     }
 
     private function resetPimConfiguration(): void

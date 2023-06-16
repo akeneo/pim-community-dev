@@ -15,17 +15,17 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ConstraintViolationListExceptionSpec extends ObjectBehavior
 {
-    public function let(ConstraintViolationListInterface $constraintViolationList)
+    public function let(ConstraintViolationListInterface $constraintViolationList): void
     {
         $this->beConstructedWith($constraintViolationList);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ConstraintViolationListException::class);
     }
 
-    public function it_returns_the_constraint_violation_list($constraintViolationList)
+    public function it_returns_the_constraint_violation_list($constraintViolationList): void
     {
         $this->getConstraintViolationList()->shouldReturn($constraintViolationList);
     }

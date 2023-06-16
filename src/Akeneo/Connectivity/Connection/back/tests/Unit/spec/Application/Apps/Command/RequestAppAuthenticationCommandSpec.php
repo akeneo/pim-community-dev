@@ -23,7 +23,7 @@ class RequestAppAuthenticationCommandSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_a_request_app_authentication_command()
+    public function it_is_a_request_app_authentication_command(): void
     {
         $this->shouldHaveType(RequestAppAuthenticationCommand::class);
     }

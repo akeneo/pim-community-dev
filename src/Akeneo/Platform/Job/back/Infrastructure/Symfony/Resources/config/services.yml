@@ -21,3 +21,8 @@ services:
         class: Akeneo\Platform\Job\Infrastructure\Routing\GenerateJobExecutionUrl
         arguments:
             - '@router'
+
+    akeneo.job.pause_jobs.feature:
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag'
+        arguments:
+            - '%env(bool:FLAG_PAUSE_JOBS_ENABLED)%'

@@ -7,25 +7,25 @@ use PhpSpec\ObjectBehavior;
 
 class EncrypterSpec extends ObjectBehavior
 {
-    public function it_encrypts_a_key()
+    public function it_encrypts_a_key(): void
     {
         $this->beConstructedWith('AES-256-OFB', 'key', 'key');
         $this->encrypt('666')->shouldReturn('q5r5');
     }
 
-    public function it_decrypts_a_key()
+    public function it_decrypts_a_key(): void
     {
         $this->beConstructedWith('AES-256-OFB', 'key', 'key');
         $this->decrypt('q5r5')->shouldReturn('666');
     }
 
-    public function it_encrypt_with_an_initializatuon_vector_length_inferior_to_sixteen()
+    public function it_encrypt_with_an_initializatuon_vector_length_inferior_to_sixteen(): void
     {
         $this->beConstructedWith('AES-256-OFB', 'key', 'key');
         $this->decrypt('q5r5')->shouldReturn('666');
     }
 
-    public function it_encrypt_with_an_initializatuon_vector_length_truncated_to_sixteen_characters()
+    public function it_encrypt_with_an_initializatuon_vector_length_truncated_to_sixteen_characters(): void
     {
         $this->beConstructedWith('AES-256-OFB', 'key', '0000000000000key1');
         $this->decrypt('q5r5')->shouldReturn('666');

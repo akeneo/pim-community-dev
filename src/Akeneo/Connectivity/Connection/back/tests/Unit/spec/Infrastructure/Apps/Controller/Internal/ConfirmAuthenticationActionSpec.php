@@ -71,7 +71,7 @@ class ConfirmAuthenticationActionSpec extends ObjectBehavior
     public function it_throws_not_found_exception_with_feature_flag_disabled(
         FeatureFlag $marketplaceActivateFeatureFlag,
         Request $request
-    ) {
+    ): void {
         $clientId = 'a_client_id';
 
         $marketplaceActivateFeatureFlag->isEnabled()->willReturn(false);

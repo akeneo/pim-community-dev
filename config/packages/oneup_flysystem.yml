@@ -15,6 +15,3 @@ oneup_flysystem:
         local_storage:
             adapter: local_storage_adapter
             mount: localFilesystem
-        catalogs_mapping:
-            adapter: catalogs_mapping_adapter
-            mount: catalogsMapping

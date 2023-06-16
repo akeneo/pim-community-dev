@@ -13,12 +13,12 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class FlowTypeMustBeValidSpec extends ObjectBehavior
 {
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(FlowTypeMustBeValid::class);
     }
 
-    public function it_does_not_build_violation_on_valid_flow_type(ExecutionContextInterface $context)
+    public function it_does_not_build_violation_on_valid_flow_type(ExecutionContextInterface $context): void
     {
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
@@ -28,7 +28,7 @@ class FlowTypeMustBeValidSpec extends ObjectBehavior
     public function it_adds_a_violation_when_the_flow_type_is_invalid(
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $builder
-    ) {
+    ): void {
         $context->buildViolation('akeneo_connectivity.connection.connection.constraint.flow_type.invalid')->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();
 

@@ -52,4 +52,21 @@ class StringFilterSpec extends ObjectBehavior
 
         $this->apply($ds, ['type' => 'empty', 'value' => ''])->shouldReturn(true);
     }
+
+    function it_escapes_special_characters(
+        FilterDatasourceAdapterInterface $ds,
+        ExpressionBuilderInterface $builder)
+    {
+        $this->init('code', ['data_name' => 'a.code']);
+        $ds->generateParameterName('code')->willReturn('code1877008211');
+        $comparisonExpr = new Expr\Comparison('a.code', 'LIKE', ':code1877008211');
+
+        $builder->comparison('a.code', 'LIKE', 'code1877008211', true)->willReturn($comparisonExpr);
+        $ds->expr()->willReturn($builder);
+
+        $ds->addRestriction($comparisonExpr, 'AND', false)->shouldBeCalled();
+        $ds->setParameter('code1877008211', '%fabric\_%')->shouldBeCalled();
+
+        $this->apply($ds, ['type' => 1, 'value' => 'fabric_'])->shouldReturn(true);
+    }
 }

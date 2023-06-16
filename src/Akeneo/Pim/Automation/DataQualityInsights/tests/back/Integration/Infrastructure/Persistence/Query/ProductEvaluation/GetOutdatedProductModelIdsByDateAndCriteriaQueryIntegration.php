@@ -95,12 +95,12 @@ final class GetOutdatedProductModelIdsByDateAndCriteriaQueryIntegration extends 
             $upToDateProductModelId2,
         ]), $evaluationDate, $criteria);
 
-        Assert::assertEquals(ProductModelIdCollection::fromProductModelIds([
+        Assert::assertEqualsCanonicalizing(ProductModelIdCollection::fromProductModelIds([
             $outdatedProductModelId1,
             $outdatedProductModelId2,
             $productModelWithoutEvaluationId,
             $productModelWithoutEvaluationDateId,
-        ]), $outdatedProductModels);
+        ])->toArrayString(), $outdatedProductModels->toArrayString());
     }
 
     public function test_it_returns_outdated_product_model_ids_for_any_criterion(): void
@@ -127,10 +127,10 @@ final class GetOutdatedProductModelIdsByDateAndCriteriaQueryIntegration extends 
             $upToDateProductModelId,
         ]), $evaluationDate, []);
 
-        Assert::assertEquals(ProductModelIdCollection::fromProductModelIds([
+        Assert::assertEqualsCanonicalizing(ProductModelIdCollection::fromProductModelIds([
             $outdatedProductModelId1,
             $outdatedProductModelId2,
-        ]), $outdatedProductModels);
+        ])->toArrayString(), $outdatedProductModels->toArrayString());
     }
 
     private function updateProductModelCriteriaEvaluationsAt(ProductModelId $productModelId, \DateTimeImmutable $evaluatedAt, array $criteria): void

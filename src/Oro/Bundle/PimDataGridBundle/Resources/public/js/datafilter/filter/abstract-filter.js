@@ -260,10 +260,6 @@ define(['jquery', 'underscore', 'backbone', 'oro/app'], function ($, _, Backbone
      * @protected
      */
     _formatDisplayValue: function (value) {
-      if (value.value !== undefined && typeof value.value === 'string') {
-        value.value = value.value.replace('\\', '');
-      }
-
       return value;
     },
 

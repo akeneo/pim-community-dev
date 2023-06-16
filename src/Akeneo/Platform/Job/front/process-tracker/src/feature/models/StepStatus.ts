@@ -6,6 +6,8 @@ type StepStatus =
   | 'STARTING'
   | 'STOPPED'
   | 'STOPPING'
-  | 'UNKNOWN';
+  | 'UNKNOWN'
+  | 'PAUSED'
+  | 'PAUSING';
 
 export type {StepStatus};

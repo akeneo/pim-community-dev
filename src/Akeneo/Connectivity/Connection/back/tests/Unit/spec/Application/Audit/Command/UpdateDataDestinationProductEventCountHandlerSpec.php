@@ -19,17 +19,17 @@ use PhpSpec\ObjectBehavior;
  */
 class UpdateDataDestinationProductEventCountHandlerSpec extends ObjectBehavior
 {
-    public function let(UpsertEventCountQueryInterface $upsertEventCountQuery)
+    public function let(UpsertEventCountQueryInterface $upsertEventCountQuery): void
     {
         $this->beConstructedWith($upsertEventCountQuery);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(UpdateDataDestinationProductEventCountHandler::class);
     }
 
-    public function it_saves_data_destination_product_event_count(UpsertEventCountQueryInterface $upsertEventCountQuery)
+    public function it_saves_data_destination_product_event_count(UpsertEventCountQueryInterface $upsertEventCountQuery): void
     {
         $command = new UpdateDataDestinationProductEventCountCommand(
             'ecommerce',

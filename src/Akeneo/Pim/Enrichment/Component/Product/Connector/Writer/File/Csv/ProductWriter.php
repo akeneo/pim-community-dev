@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractItemMediaWriter;
+use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
@@ -44,6 +45,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
         array $mediaAttributeTypes,
+        ExportedFileBackuper $exportedFileBackuper,
         string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
         parent::__construct(
@@ -56,6 +58,7 @@ class ProductWriter extends AbstractItemMediaWriter implements ItemWriterInterfa
             $fileInfoRepository,
             $filesystemProvider,
             $mediaAttributeTypes,
+            $exportedFileBackuper,
             $jobParamFilePath
         );
 

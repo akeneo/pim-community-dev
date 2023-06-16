@@ -123,21 +123,21 @@ $rules = [
         'ArPHP\I18N\Arabic',
 
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode',
-        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         'Akeneo\Platform\Bundle\FrameworkBundle\Service\ResilientDeadlockConnection',
 
         // Category Bounded Context
         'Akeneo\Category\Api', // legit
+        'Akeneo\Category\Application\Command\DeleteCategoryCommand\DeleteCategoryCommand',
         'Akeneo\Category\Infrastructure\Component\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Model\Category',
         'Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface',
         'Akeneo\Category\Infrastructure\Component\Classification\Repository\ItemCategoryRepositoryInterface',
+        'Akeneo\Category\Infrastructure\Component\CategoryItemsCounterInterface',
         'Akeneo\Category\Infrastructure\Symfony\Form\CategoryFormViewNormalizerInterface',
         'Akeneo\Category\Domain\Model\Classification\CategoryTree',
         'Akeneo\Category\Domain\Query\GetCategoryInterface',
         'Akeneo\Category\Domain\Query\GetCategoryTreesInterface',
-        'Akeneo\Category\Domain\ValueObject\Template\TemplateUuid',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',

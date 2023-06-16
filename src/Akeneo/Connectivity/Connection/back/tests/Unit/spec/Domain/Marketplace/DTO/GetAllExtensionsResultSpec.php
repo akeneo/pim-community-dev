@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  */
 class GetAllExtensionsResultSpec extends ObjectBehavior
 {
-    public function let(Extension $extension)
+    public function let(Extension $extension): void
     {
         $this->beConstructedThrough('create', [12, [$extension]]);
     }
@@ -43,7 +43,7 @@ class GetAllExtensionsResultSpec extends ObjectBehavior
     public function it_adds_analytics(
         Extension $extension,
         Extension $extensionWithAnalytics
-    ) {
+    ): void {
         $queryParameters = [
             'utm_campaign' => 'foobar',
         ];

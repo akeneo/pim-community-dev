@@ -71,6 +71,10 @@ Akeneo\Tool\Component\Batch\Model\StepExecution:
             column: is_trackable
             options:
                 default: false
+        currentState:
+            type: json
+            column: current_state
+            nullable: true
     oneToMany:
         warnings:
             targetEntity: Akeneo\Tool\Component\Batch\Model\Warning

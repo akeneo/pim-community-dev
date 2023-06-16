@@ -105,4 +105,19 @@ final class PubSubQueueStatus
 
         return $topic->subscription($this->subscriptionName);
     }
+
+    public function createTopicAndSubscription(): void
+    {
+        $pubSubClient = $this->pubSubClientFactory->createPubSubClient(['projectId' => $this->projectId]);
+        $topic = $pubSubClient->topic($this->topicName);
+
+        if (!$topic->exists()) {
+            $topic->create();
+        }
+
+        $subscription = $topic->subscription($this->subscriptionName);
+        if (!$subscription->exists()) {
+            $subscription->create();
+        }
+    }
 }

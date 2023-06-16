@@ -114,7 +114,7 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
      */
     protected function setData(AttributeOptionInterface $attributeOption, $field, $data)
     {
-        if ('code' === $field && $attributeOption->getId() === null) {
+        if ('code' === $field && 0 !== \strcasecmp($attributeOption->getCode() ?? '', $data)) {
             $attributeOption->setCode($data);
         }
 

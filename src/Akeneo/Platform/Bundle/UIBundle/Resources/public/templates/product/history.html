@@ -11,6 +11,15 @@
             </tr>
         </thead>
         <tbody>
+            <% if (versions.length >= limit) { %>
+            <tr>
+                <td colspan="6">
+                    <div class="AknMessageBox AknMessageBox--withIcon">
+                        <%- _.__('pim_enrich.entity.product.module.history.limit', {limit}) %>
+                    </div>
+                </td>
+            </tr>
+            <% } %>
             <% _.each(versions, function(version) { %>
                 <tr data-version="<%- version.version %>" data-version-id="<%- version.id %>" class="AknGrid-bodyRow entity-version <%- expandedVersions.find(item => item == version.version) ? 'AknGrid-bodyRow--expanded' : '' %>">
                     <td class="AknGrid-bodyCell AknGrid-bodyCell--clickable">

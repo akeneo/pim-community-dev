@@ -2,6 +2,7 @@ pim_notification:
   types:
     settings: Einstellungen
     mass_delete: Löschung
+    attribute_mass_delete: Löschung
 flash:
   comment:
     create:
@@ -70,6 +71,7 @@ pim_enrich.entity.product:
       modified: Bearbeitet
       old_value: Alter Wert
       new_value: Neuer Wert
+      limit: 'Nur die letzten {{ limit }} Versionen werden angezeigt.'
     meta:
       updated: Letzte Aktualisierung
       groups: Gruppen
@@ -113,6 +115,8 @@ pim_enrich.entity.product:
       quantified:
         quantity: Quantität
         unlinked: Nicht verknüpft
+      search:
+        placeholder: Suche nach Label, Bezeichner oder UUID
       no_data: Es gibt keine verbundenen Produkte
       remove: Verbindung entfernen
       edit: Produkt bearbeiten
@@ -454,6 +458,7 @@ pim_datagrid:
     mass_delete: Mehrauswahl löschen
     selected:
       family: "]-Inf, 1]{{ count }} Familie ausgewählt|]1, Inf[{{ count }} Familien ausgewählt"
+      attribute: "]-Inf, 1]{{ count }} Attribut ausgewählt|]1, Inf[{{ count }} Attribute ausgewählt"
       product: "]-Inf, 1]{{ count }} Ergebnis ausgewählt|]1, Inf[{{ count }} Ergebnisse ausgewählt"
   view_selector:
     view: Ansichten
@@ -496,6 +501,7 @@ pim_datagrid:
       label: Aktualisiert am
     label_or_identifier:
       label: Label oder Identifikator
+      label_with_uuid: Label, Bezeichner oder UUID
     parent:
       label: Eltern
     identifier:

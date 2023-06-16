@@ -19,18 +19,11 @@ final class AppRoleWithScopesFactory implements AppRoleWithScopesFactoryInterfac
 {
     private const APP_ROLE_TYPE = 'app';
 
-    private ScopeMapperRegistry $scopeMapperRegistry;
-    private SimpleFactoryInterface $roleFactory;
-    private RoleWithPermissionsSaver $roleWithPermissionsSaver;
-
     public function __construct(
-        ScopeMapperRegistry $scopeMapperRegistry,
-        SimpleFactoryInterface $roleFactory,
-        RoleWithPermissionsSaver $roleWithPermissionsSaver
+        private ScopeMapperRegistry $scopeMapperRegistry,
+        private SimpleFactoryInterface $roleFactory,
+        private RoleWithPermissionsSaver $roleWithPermissionsSaver
     ) {
-        $this->scopeMapperRegistry = $scopeMapperRegistry;
-        $this->roleFactory = $roleFactory;
-        $this->roleWithPermissionsSaver = $roleWithPermissionsSaver;
     }
 
     public function createRole(string $label, array $scopes): RoleInterface

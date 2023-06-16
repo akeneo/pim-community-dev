@@ -28,7 +28,6 @@ use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -52,11 +51,15 @@ abstract class ApiCategoryTestCase extends ApiTestCase
         ?int $categoryTreeId = null,
         ?array $templateAttributes = null,
     ): Template {
-        $getTemplate = new GetTemplateInMemory();
         $generatedTemplateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 
-        /** @var Template $defaultTemplate */
-        $defaultTemplate = $getTemplate->byUuid($generatedTemplateUuid);
+        $defaultTemplate = new Template(
+            uuid: $generatedTemplateUuid,
+            code: new TemplateCode('default_template'),
+            labelCollection: LabelCollection::fromArray(['en_US' => 'Default template']),
+            categoryTreeId: new CategoryId(1),
+            attributeCollection: null,
+        );
 
         if ($templateUuid === null) {
             $templateUuid = $defaultTemplate->getUuid();
@@ -177,6 +180,17 @@ SQL;
         $query = <<<SQL
 UPDATE pim_catalog_category_template SET is_deactivated = 1 WHERE uuid = :uuid;
 SQL;
+
+        $this->get('database_connection')->executeQuery($query, [
+            'uuid' => Uuid::fromString($uuid)->getBytes(),
+        ]);
+    }
+
+    protected function deactivateAttribute(string $uuid): void
+    {
+        $query = <<<SQL
+            UPDATE pim_catalog_category_attribute SET is_deactivated = 1 WHERE uuid = :uuid;
+        SQL;
 
         $this->get('database_connection')->executeQuery($query, [
             'uuid' => Uuid::fromString($uuid)->getBytes(),

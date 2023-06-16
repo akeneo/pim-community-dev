@@ -141,6 +141,7 @@ pim_enrich:
       create: Crear un atributo
       edit: Editar un atributo
       remove: Eliminar un atributo
+      mass_delete: Eliminar atributos en masa
       sort: Ordenar atributos dentro del grupo de atributos
       history: Ver historial del atributo
     group:
@@ -213,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: El identificador de atributo no puede ser eliminado
     used_as_conversion_unit: Este atributo no puede eliminarse porque se utiliza como unidad de conversión en el(los) canal(es) %channelCodes%.
+    cant_remove_attributes_used_as_label: Los atributos usados como etiquetas en una familia no se pueden eliminar.
+    cant_remove_attribute_used_as_axis: No se puede quitar este atributo utilizado como eje variante en una variante familiar
   category:
     removed: Categoría eliminada correctamente
   tree:

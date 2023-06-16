@@ -20,6 +20,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.synchronizer.product_unique_data'
             - '@Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Query\SqlUpdateIdentifierPrefixesQuery'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Query\UpdateIdentifierValuesQuery'
 
     pim_catalog.saver.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelSaver'
@@ -49,13 +50,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pim_catalog.model.association_type.interface%'
-
-    pim_catalog.saver.category:
-        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '@akeneo.enrichment.lock.factory'
 
     pim_catalog.saver.group_options_resolver:
         class: '%pim_catalog.saver.group_options_resolver.class%'

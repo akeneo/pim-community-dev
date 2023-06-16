@@ -21,43 +21,22 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class ConnectedAppLoader
 {
-    private DbalConnection $dbalConnection;
-    private UserRoleLoader $userRoleLoader;
-    private OAuthStorage $OAuthStorage;
-    private ClientProviderInterface $clientProvider;
-    private CreateUserGroupInterface $createUserGroup;
-    private CreateUserInterface $createUser;
-    private CreateConnectionInterface $createConnection;
-    private CreateConnectedAppInterface $createApp;
-    private UserRepositoryInterface $userRepository;
-    private UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer;
-
     public function __construct(
-        DbalConnection $dbalConnection,
-        UserRoleLoader $userRoleLoader,
-        OAuthStorage $OAuthStorage,
-        ClientProviderInterface $clientProvider,
-        CreateUserGroupInterface $createUserGroup,
-        CreateUserInterface $createUser,
-        CreateConnectionInterface $createConnection,
-        CreateConnectedAppInterface $createApp,
-        UserRepositoryInterface $userRepository,
-        UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer
+        private DbalConnection $dbalConnection,
+        private UserRoleLoader $userRoleLoader,
+        private OAuthStorage $OAuthStorage,
+        private ClientProviderInterface $clientProvider,
+        private CreateUserGroupInterface $createUserGroup,
+        private CreateUserInterface $createUser,
+        private CreateConnectionInterface $createConnection,
+        private CreateConnectedAppInterface $createApp,
+        private UserRepositoryInterface $userRepository,
+        private UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer
     ) {
-        $this->dbalConnection = $dbalConnection;
-        $this->userRoleLoader = $userRoleLoader;
-        $this->OAuthStorage = $OAuthStorage;
-        $this->clientProvider = $clientProvider;
-        $this->createUserGroup = $createUserGroup;
-        $this->createUser = $createUser;
-        $this->createConnection = $createConnection;
-        $this->createApp = $createApp;
-        $this->userRepository = $userRepository;
-        $this->unitOfWorkAndRepositoriesClearer = $unitOfWorkAndRepositoriesClearer;
     }
 
     /**
@@ -81,7 +60,7 @@ INSERT INTO akeneo_connectivity_connected_app(id, name, logo, author, partner, c
 VALUES (:id, :name, :logo, :author, :partner, :categories, :certified, :connection_code, :scopes, :user_group_name)
 SQL;
 
-        return $this->dbalConnection->executeUpdate(
+        return $this->dbalConnection->executeStatement(
             $query,
             [
                 'id' => $id,

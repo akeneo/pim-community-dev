@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\EventListener;
 
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
+use Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessageInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -38,7 +39,7 @@ final class AckMessageEventListener implements EventSubscriberInterface
     public function ackMessage(WorkerMessageReceivedEvent $event): void
     {
         $envelope = $event->getEnvelope();
-        if (!$envelope->getMessage() instanceof JobExecutionMessageInterface) {
+        if (!$envelope->getMessage() instanceof JobExecutionMessageInterface && !$envelope->getMessage() instanceof ScheduledJobMessageInterface) {
             return;
         }
 

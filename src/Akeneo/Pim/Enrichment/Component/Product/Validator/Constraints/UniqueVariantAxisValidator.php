@@ -25,23 +25,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class UniqueVariantAxisValidator extends ConstraintValidator
 {
-    /** @var EntityWithFamilyVariantAttributesProvider */
-    private $axesProvider;
-
-    /** @var UniqueAxesCombinationSet */
-    private $uniqueAxesCombinationSet;
-
-    /** @var GetValuesOfSiblings */
-    private $getValuesOfSiblings;
-
     public function __construct(
-        EntityWithFamilyVariantAttributesProvider $axesProvider,
-        UniqueAxesCombinationSet $uniqueAxesCombinationSet,
-        GetValuesOfSiblings $getValuesOfSiblings
+        private readonly EntityWithFamilyVariantAttributesProvider $axesProvider,
+        private readonly UniqueAxesCombinationSet $uniqueAxesCombinationSet,
+        private readonly GetValuesOfSiblings $getValuesOfSiblings
     ) {
-        $this->axesProvider = $axesProvider;
-        $this->uniqueAxesCombinationSet = $uniqueAxesCombinationSet;
-        $this->getValuesOfSiblings = $getValuesOfSiblings;
     }
 
     /**
@@ -72,6 +60,9 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         }
 
         $this->validateValueIsNotAlreadyInDatabase($entity, $axes);
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
         $this->validateValueWasNotAlreadyValidated($entity, $axes);
     }
 
@@ -103,17 +94,17 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         $siblingsCombinations = [];
         foreach ($siblingValues as $siblingIdentifier => $values) {
             $siblingsCombinations[$siblingIdentifier] = $this->getCombinationOfAxisValues($values, $axes);
-        }
 
-        if (in_array($ownCombination, $siblingsCombinations, true)) {
-            $alreadyInDatabaseSiblingIdentifier = array_search($ownCombination, $siblingsCombinations);
+            if (\mb_strtolower($ownCombination) === \mb_strtolower($this->getCombinationOfAxisValues($values, $axes))) {
+                $this->addViolation(
+                    $axes,
+                    $ownCombination,
+                    $entity,
+                    $siblingIdentifier
+                );
 
-            $this->addViolation(
-                $axes,
-                $ownCombination,
-                $entity,
-                $alreadyInDatabaseSiblingIdentifier
-            );
+                return;
+            }
         }
     }
 
@@ -200,15 +191,17 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $axes
         ));
 
+        $identifierOrUuid = $entityWithFamilyVariant->getIdentifier();
         $message = UniqueVariantAxis::DUPLICATE_VALUE_IN_PRODUCT_MODEL;
         if ($entityWithFamilyVariant instanceof ProductInterface) {
             $message = UniqueVariantAxis::DUPLICATE_VALUE_IN_VARIANT_PRODUCT;
+            $identifierOrUuid = $identifierOrUuid ?? $entityWithFamilyVariant->getUuid()->toString();
         }
 
         $this->context->buildViolation($message, [
             '%values%' => $combination,
             '%attributes%' => $axesCodes,
-            '%validated_entity%' => $entityWithFamilyVariant->getIdentifier(),
+            '%validated_entity%' => $identifierOrUuid,
             '%sibling_with_same_value%' => $siblingIdentifier,
         ])->atPath('attribute')->addViolation();
     }

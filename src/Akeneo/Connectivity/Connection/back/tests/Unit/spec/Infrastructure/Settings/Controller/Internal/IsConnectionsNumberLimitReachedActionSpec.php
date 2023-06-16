@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class IsConnectionsNumberLimitReachedActionSpec extends ObjectBehavior
 {
-    public function let(IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery)
+    public function let(IsConnectionsNumberLimitReachedQueryInterface $isConnectionsNumberLimitReachedQuery): void
     {
         $this->beConstructedWith($isConnectionsNumberLimitReachedQuery);
     }

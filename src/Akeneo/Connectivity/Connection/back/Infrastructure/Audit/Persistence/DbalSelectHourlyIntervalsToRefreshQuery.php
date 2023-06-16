@@ -18,11 +18,8 @@ use Doctrine\DBAL\FetchMode;
  */
 class DbalSelectHourlyIntervalsToRefreshQuery
 {
-    private Connection $dbalConnection;
-
-    public function __construct(Connection $dbalConnection)
+    public function __construct(private Connection $dbalConnection)
     {
-        $this->dbalConnection = $dbalConnection;
     }
 
     /**
@@ -36,7 +33,7 @@ WHERE updated < DATE_ADD(event_datetime, INTERVAL 1 HOUR) ORDER BY event_datetim
 SQL;
         $dateTimes = $this->dbalConnection->executeQuery($selectSQL)->fetchFirstColumn();
 
-        return \array_map(fn (string $dateTime) => HourlyInterval::createFromDateTime(
+        return \array_map(fn (string $dateTime): \Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval => HourlyInterval::createFromDateTime(
             \DateTimeImmutable::createFromFormat(
                 $this->dbalConnection->getDatabasePlatform()->getDateTimeFormatString(),
                 $dateTime,

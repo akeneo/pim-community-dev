@@ -199,7 +199,7 @@ const Criterion: FC<CriterionProps> = ({
       <div className={`CriterionMessage ${!isSimpleProduct(product) ? 'CriterionMessage--Variant' : ''}`}>
         {icon}
         <Title criterion={criterion} />
-        {recommendation}
+        <div>{recommendation}</div>
       </div>
     </li>
   );

@@ -90,10 +90,10 @@ SQL
         );
 
         // Add primary key to speed up the lookup during inserts
-        $this->logger->notice(sprintf('Will set the primary key'), $logContext->toArray());
+        $this->logger->notice(sprintf('Will set the primary key and autoincrement on id'), $logContext->toArray());
         $this->connection->executeQuery(
             <<<SQL
-ALTER TABLE pim_catalog_completeness_temp ADD PRIMARY KEY (id)
+ALTER TABLE pim_catalog_completeness_temp MODIFY COLUMN id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY
 SQL
         );
 

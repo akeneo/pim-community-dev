@@ -20,7 +20,7 @@ interface VersionRepositoryInterface
      *
      * @return Version[]|null
      */
-    public function getLogEntries(string $resourceName, ?string $resourceId, ?UuidInterface $resourceUuid);
+    public function getLogEntries(string $resourceName, ?string $resourceId, ?UuidInterface $resourceUuid, ?int $limit = null);
 
     /**
      * Returns oldest (first) version for a resource

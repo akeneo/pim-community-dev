@@ -25,13 +25,13 @@ final class SearchEventSubscriptionLogsAction
 
     public function __invoke(Request $request): Response
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+        if (!$this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
         $connectionCode = $request->query->get('connection_code');
         $searchAfter = $request->query->get('search_after');
-        $filters = \json_decode($request->query->get('filters', ''), true) ?: [];
+        $filters = \json_decode($request->query->get('filters', '[]'), true, 512, JSON_THROW_ON_ERROR) ?: [];
 
         $logs = $this->searchEventSubscriptionDebugLogsQuery->execute($connectionCode, $searchAfter, $filters);
 

@@ -437,7 +437,7 @@ class AuthorizeActionSpec extends ObjectBehavior
         GetAppQueryInterface $getAppQuery,
         SecurityFacade $security,
         ClientProviderInterface $clientProvider,
-    ) {
+    ): void {
         $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
 
         $request->query = new InputBag(['client_id' => $clientId]);

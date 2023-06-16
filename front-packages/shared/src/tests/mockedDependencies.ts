@@ -1,3 +1,4 @@
+import {DependenciesContextProps} from '../DependenciesContext';
 import {NotificationLevel, View} from '../DependenciesProvider.type';
 
 const view: View = {
@@ -7,7 +8,7 @@ const view: View = {
   setData: () => {},
 };
 
-const mockedDependencies = {
+const mockedDependencies: DependenciesContextProps = {
   router: {
     generate: (route: string) => route,
     redirect: (url: string) => url,
@@ -17,9 +18,7 @@ const mockedDependencies = {
   viewBuilder: {
     build: (_viewName: string) => Promise.resolve(view),
   },
-  notify: (level: NotificationLevel, message: string): string => {
-    return `${level} ${message}`;
-  },
+  notify: (level: NotificationLevel, message: string): string => `${level} ${message}`,
   user: {
     get: (data: string) => {
       switch (data) {
@@ -48,6 +47,12 @@ const mockedDependencies = {
   },
   analytics: {
     track: (event: string) => event,
+    appcuesTrack: (event: string) => event,
+  },
+  systemConfiguration: {
+    initialize: () => Promise.resolve(),
+    refresh: () => Promise.resolve(),
+    get: (key: string) => key,
   },
 };
 

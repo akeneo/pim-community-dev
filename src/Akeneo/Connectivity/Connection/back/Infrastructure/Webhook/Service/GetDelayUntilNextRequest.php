@@ -13,12 +13,8 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectEvents
  */
 class GetDelayUntilNextRequest
 {
-    private SelectEventsApiRequestCountWithinLastHourQueryInterface $selectEventsApiRequestCountWithinLastHourQuery;
-
-    public function __construct(
-        SelectEventsApiRequestCountWithinLastHourQueryInterface $selectEventsApiRequestCountWithinLastHourQuery
-    ) {
-        $this->selectEventsApiRequestCountWithinLastHourQuery = $selectEventsApiRequestCountWithinLastHourQuery;
+    public function __construct(private SelectEventsApiRequestCountWithinLastHourQueryInterface $selectEventsApiRequestCountWithinLastHourQuery)
+    {
     }
 
     /**
@@ -36,7 +32,7 @@ class GetDelayUntilNextRequest
             $count += $currentEventsApiRequestCount['event_count'];
 
             if ($count >= $limit) {
-                $lastDateTime = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $currentEventsApiRequestCount['updated']);
+                $lastDateTime = \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $currentEventsApiRequestCount['updated'], new \DateTimeZone('UTC'));
 
                 return 3600 - ($dateTime->getTimestamp() - $lastDateTime->getTimestamp());
             }

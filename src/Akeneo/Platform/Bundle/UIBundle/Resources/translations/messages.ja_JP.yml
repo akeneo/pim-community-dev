@@ -77,7 +77,7 @@ pim_common:
   updated: '更新:'
   view: ビュー
   yes: "はい"
-  uuid: uuid
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -131,6 +131,7 @@ pim_enrich:
       create: 属性グループを作成
       edit: 属性グループを編集
       remove: 属性グループを削除
+      mass_delete: 属性グループを一括削除
       sort: 属性グループをソート
       add_attribute: 属性をグループに追加
       remove_attribute: グループから属性を削除
@@ -140,6 +141,7 @@ pim_enrich:
       create: 属性を作成
       edit: 属性を編集
       remove: 属性を削除
+      mass_delete: 属性を一括削除する
       sort: 属性グループ内で属性をソート
       history: 属性の履歴を表示
     group:
@@ -212,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: 識別子の属性は削除できません
     used_as_conversion_unit: この属性はチャンネル%channelCodes%の変換ユニットで使用中のため削除できません
+    cant_remove_attributes_used_as_label: ファミリーでラベルとして使用されている属性は削除できません。
+    cant_remove_attribute_used_as_axis: ファミリーバリエーションでバリエーション軸として使用中のこの属性を削除できません
   category:
     removed: カテゴリを正常に削除しました
   tree:
@@ -451,6 +455,7 @@ pim_datagrid:
       label: '更新:'
     label_or_identifier:
       label: ラベルもしくは識別子
+      label_with_uuid: ラベル、識別子、UUID
     parent:
       label: 親
     identifier:
@@ -546,4 +551,4 @@ pim_login:
   footer:
     powered: '提供:'
     powered_image_title: ロゴ Akeneo
-pim_system.acl_group.developer_mode: 開発者モード
+pim_system.acl_group.connect: 接続

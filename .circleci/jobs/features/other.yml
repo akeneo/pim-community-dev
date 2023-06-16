@@ -58,7 +58,7 @@ jobs:
                   name: Start containers
                   command: |
                       docker load -i php-pim-image.tar
-                      APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator' make up
+                      APP_ENV=test C='httpd mysql elasticsearch object-storage pubsub-emulator gcs-emulator' make up
                       docker/wait_docker_up.sh
             - run:
                   name: Install database

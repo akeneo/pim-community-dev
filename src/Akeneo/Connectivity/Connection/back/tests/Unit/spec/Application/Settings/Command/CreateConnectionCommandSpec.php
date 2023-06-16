@@ -15,37 +15,37 @@ use PhpSpec\ObjectBehavior;
  */
 class CreateConnectionCommandSpec extends ObjectBehavior
 {
-    public function let()
+    public function let(): void
     {
         $this->beConstructedWith('Magento', 'Magento Connector', FlowType::DATA_DESTINATION, true, 'connection_type');
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(CreateConnectionCommand::class);
     }
 
-    public function it_returns_the_code()
+    public function it_returns_the_code(): void
     {
         $this->code()->shouldReturn('Magento');
     }
 
-    public function it_returns_the_label()
+    public function it_returns_the_label(): void
     {
         $this->label()->shouldReturn('Magento Connector');
     }
 
-    public function it_returns_the_flow_type()
+    public function it_returns_the_flow_type(): void
     {
         $this->flowType()->shouldReturn(FlowType::DATA_DESTINATION);
     }
 
-    public function it_returns_the_auditable()
+    public function it_returns_the_auditable(): void
     {
         $this->auditable()->shouldReturn(true);
     }
 
-    public function it_returns_the_type()
+    public function it_returns_the_type(): void
     {
         $this->type()->shouldReturn('connection_type');
     }

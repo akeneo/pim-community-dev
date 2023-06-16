@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import {useTranslate} from '@akeneo-pim-community/shared';
+import {useState} from 'react';
 import styled from 'styled-components';
 import {Attribute} from '../../models';
 import {AttributeList} from './AttributeList';
 import {AttributeSettings} from './AttributeSettings';
-import {useFeatureFlags} from "@akeneo-pim-community/shared";
+import {NoTemplateAttribute} from './NoTemplateAttribute';
 
 interface Props {
   attributes: Attribute[];
@@ -11,11 +12,25 @@ interface Props {
 }
 
 export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
-  const featureFlag = useFeatureFlags();
-  const [selectedAttribute, setSelectedAttribute] = useState<Attribute>(attributes[0]);
+  const translate = useTranslate();
+
+  const [selectedAttributeUuid, setSelectedAttributeUuid] = useState<string | null>(null);
   const handleAttributeSelection = (attribute: Attribute) => {
-    setSelectedAttribute(attribute);
+    setSelectedAttributeUuid(attribute.uuid);
   };
+
+  if (attributes.length === 0) {
+    return (
+      <NoTemplateAttribute
+        templateId={templateId}
+        title={translate('akeneo.category.template.add_attribute.no_attribute_title')}
+        instructions={translate('akeneo.category.template.add_attribute.no_attribute_instructions')}
+        createButton={true}
+      />
+    );
+  }
+
+  const selectedAttribute = attributes.find(attribute => attribute.uuid === selectedAttributeUuid) || attributes[0];
 
   return (
     <FormContainer>
@@ -25,10 +40,8 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
           selectedAttribute={selectedAttribute}
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
-        ></AttributeList>
-        {featureFlag.isEnabled('category_template_customization') &&
-          <AttributeSettings attribute={selectedAttribute}></AttributeSettings>
-        }
+        />
+        <AttributeSettings key={selectedAttribute.uuid} attribute={selectedAttribute} />
       </Attributes>
     </FormContainer>
   );

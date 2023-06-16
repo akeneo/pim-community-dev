@@ -15,10 +15,13 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\AbstractValue;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ *
+ * @phpstan-import-type LocalizedLabels from LabelCollection
  */
 abstract class Attribute
 {
@@ -179,5 +182,25 @@ abstract class Attribute
             ) : null;
 
         return Attribute::fromType($type, $id, $code, $order, $isRequired, $isScopable, $isLocalizable, $labelCollection, $templateUuid, $additionalProperties);
+    }
+
+    /**
+     * @param LocalizedLabels $labels
+     */
+    public function update(?bool $isRichTextArea, ?array $labels): void
+    {
+        if ($isRichTextArea !== null) {
+            $validTypes = [AttributeType::TEXTAREA, AttributeType::RICH_TEXT];
+            Assert::inArray((string) $this->getType(), $validTypes);
+            $this->type = new AttributeType(($isRichTextArea) ? AttributeType::RICH_TEXT : AttributeType::TEXTAREA);
+        }
+
+        if ($labels !== null) {
+            $labels = LabelCollection::fromArray($labels);
+
+            foreach ($labels->getIterator() as $local => $label) {
+                $this->labelCollection->setTranslation($local, $label);
+            }
+        }
     }
 }

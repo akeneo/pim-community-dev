@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\VersioningBundle\tests\integration\Command;
 
 use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -29,7 +32,7 @@ class PurgeVersioningCommandIntegration extends TestCase
         $expectedOriginalVersionsCount = 25;
         $this->initializeVersions($expectedOriginalVersionsCount);
 
-        $output = $this->runPurgeCommand();
+        $output = $this->runPurgeCommand(['--more-than-days' => 0]);
         $result = $output->fetch();
 
         $expectedDeletedVersionsCount = 18;
@@ -40,21 +43,24 @@ class PurgeVersioningCommandIntegration extends TestCase
     /**
      * @test
      */
-    public function it_does_not_launch_purge_if_lock_exists(): void
+    public function it_does_not_launch_purge_if_another_one_is_running(): void
     {
-        /** @var LockFactory $lockFactory */
-        $lockFactory = $this->get('pim_framework.lock.factory');
-        $lockIdentifier = 'scheduled-job-versioning_purge';
-        $lock = $lockFactory->createLock($lockIdentifier, 300);
-        $lock->acquire();
-
         $expectedOriginalVersionsCount = 25;
         $this->initializeVersions($expectedOriginalVersionsCount);
 
-        $output = $this->runPurgeCommand();
-        $result = $output->fetch();
+        // run the first command
+        $output = $this->runPurgeCommand(['--more-than-days' => 0]);
 
-        $lock->release();
+        $pattern = '/Step execution starting: id=(\d+), name=\[versioning_purge\]/';
+        preg_match($pattern, $output->fetch(), $matches);
+        $firstExecutionId = (int)$matches[1];
+        var_dump($firstExecutionId);
+
+        // Set this execution at status 'STARTED'
+        $this->setExecutionStatus($firstExecutionId, new BatchStatus(BatchStatus::STARTED));
+
+        $output = $this->runPurgeCommand(['--more-than-days' => 0]);
+        $result = $output->fetch();
 
         Assert::assertStringContainsString(
             '[app] Cannot launch scheduled job because another execution is still running.',
@@ -69,17 +75,33 @@ class PurgeVersioningCommandIntegration extends TestCase
     /**
      * @test
      */
-    public function it_purges_versions_older_than_5_days(): void
+    public function it_purges_versions_with_command_parameter(): void
     {
         $expectedOriginalVersionsCount = 25;
         $this->initializeVersions($expectedOriginalVersionsCount);
 
-        $output = $this->runPurgeCommand(['--more-than-days' => 5,]);
+        $output = $this->runPurgeCommand(['--more-than-days' => 5]);
         $result = $output->fetch();
 
         $expectedDeletedVersionsCount = 10;
 
         $this->assertPurgeResult($result, $expectedOriginalVersionsCount, $expectedDeletedVersionsCount, 5);
+    }
+
+    /**
+     * @test
+     */
+    public function it_purges_versions_with_default_parameter(): void
+    {
+        $expectedOriginalVersionsCount = 25;
+        $this->initializeVersions($expectedOriginalVersionsCount);
+
+        $output = $this->runPurgeCommand();
+        $result = $output->fetch();
+
+        $expectedDeletedVersionsCount = 0;
+
+        $this->assertPurgeResult($result, $expectedOriginalVersionsCount, $expectedDeletedVersionsCount, 90);
     }
 
     private function initializeVersions(int $expectedOriginalVersionsCount): void
@@ -120,10 +142,17 @@ class PurgeVersioningCommandIntegration extends TestCase
             sprintf('Versions count = %d', $expectedOriginalVersionsCount),
             $commandOutput
         );
-        Assert::assertStringContainsString(
-            sprintf('Successfully deleted %s versions', $expectedDeletedVersionsCount),
-            $commandOutput
-        );
+        if ($expectedDeletedVersionsCount > 0) {
+            Assert::assertStringContainsString(
+                sprintf('Successfully deleted %s versions', $expectedDeletedVersionsCount),
+                $commandOutput
+            );
+        } else {
+            Assert::assertStringContainsString(
+                'There are no versions to purge.',
+                $commandOutput
+            );
+        }
 
         $expectedRemainingVersionsCount = $expectedOriginalVersionsCount - $expectedDeletedVersionsCount;
         $versionsCount = $this->countVersions();
@@ -201,8 +230,29 @@ class PurgeVersioningCommandIntegration extends TestCase
         return $version->getId();
     }
 
+    private function setExecutionStatus($stepExecutionId, BatchStatus $status): void
+    {
+        /** @var Connection $connection */
+        $connection = $this->get('database_connection');
+        $jobExecutionId = $connection->executeQuery(
+            sprintf('SELECT job_execution_id FROM akeneo_batch_step_execution WHERE id=%d', $stepExecutionId)
+        )->fetchOne();
+
+        /** @var JobExecutionRepository $repository */
+        $repository = $this->get('pim_enrich.repository.job_execution');
+        /** @var JobExecution $jobExecution */
+        $jobExecution = $repository->find($jobExecutionId);
+
+        $jobExecution->setStatus($status);
+        $jobExecution->setHealthcheckTime(new \DateTime());
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->persist($jobExecution);
+        $em->flush();
+    }
+
     /**
-     * Launchthe purge command in verbose mode to test output
+     * Launch the purge command in verbose mode to test output
      */
     private function runPurgeCommand(array $arrayInput = []): BufferedOutput
     {
@@ -212,7 +262,7 @@ class PurgeVersioningCommandIntegration extends TestCase
         $defaultArrayInput = [
             'command' => 'pim:versioning:purge',
             'entity' => Family::class,
-            '--more-than-days' => 0,
+            '--more-than-days' => null,
             '--force' => null,
             '-vv',
         ];

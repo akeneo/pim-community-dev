@@ -16,6 +16,8 @@ pim_import_export:
     6: Mislukt
     7: Afgebroken
     8: Onbekend
+    9: Pauzeren
+    10: Gepauzeerd
   download_archive:
     archive: download gegenereerd archief | download gegenereerde archieven
     output: download gegenereerd bestand | download gegenereerde bestanden

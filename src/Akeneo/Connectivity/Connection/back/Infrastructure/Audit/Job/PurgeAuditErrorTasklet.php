@@ -22,11 +22,11 @@ class PurgeAuditErrorTasklet implements TaskletInterface
     {
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
     }
 
-    public function execute()
+    public function execute(): void
     {
         $before = new \DateTimeImmutable('now - 10 days', new \DateTimeZone('UTC'));
         $before = $before->setTime((int) $before->format('H'), 0, 0);

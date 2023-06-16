@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {pimTheme} from 'akeneo-design-system';
-import {DependenciesContext, useSecurity} from '@akeneo-pim-community/shared';
+import {DefaultProviders, useSecurity} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
 import {render, RenderOptions, RenderResult} from '@testing-library/react';
 import {IdentifierGeneratorAclContextProvider, IdentifierGeneratorContextProvider} from '../context';
@@ -20,15 +20,13 @@ const AllTheProviders: FC<{children: React.ReactNode}> = ({children}) => {
 
   return (
     <ThemeProvider theme={pimTheme}>
-      <DependenciesContext.Provider
-        value={{translate: k => k, security: {isGranted: () => true}, featureFlags: {isEnabled: () => true}}}
-      >
+      <DefaultProviders>
         <QueryClientProvider client={queryClient}>
           <IdentifierGeneratorContextProvider>
             <IdentifierGeneratorAclContextProvider>{children}</IdentifierGeneratorAclContextProvider>
           </IdentifierGeneratorContextProvider>
         </QueryClientProvider>
-      </DependenciesContext.Provider>
+      </DefaultProviders>
     </ThemeProvider>
   );
 };

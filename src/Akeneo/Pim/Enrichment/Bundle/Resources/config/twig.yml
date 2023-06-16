@@ -1,12 +1,4 @@
 services:
-    pim_enrich.twig.category_extension:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Twig\CategoryExtension'
-        arguments:
-            - '@pim_enrich.doctrine.counter.category_registry'
-            - '%max_products_category_removal%'
-        tags:
-            - { name: twig.extension }
-
     Akeneo\Pim\Enrichment\Bundle\Twig\AttributeExtension:
         class: 'Akeneo\Pim\Enrichment\Bundle\Twig\AttributeExtension'
         tags:

@@ -32,7 +32,7 @@ class DbalSelectConnectionsQuery implements SelectConnectionsQueryInterface
 SELECT code, label, flow_type, image, auditable, type
 FROM akeneo_connectivity_connection
 SQL;
-        if (!empty($types)) {
+        if ($types !== []) {
             $selectSQL .= <<<SQL
  WHERE type IN (:types)
 SQL;

@@ -81,6 +81,7 @@ define([
                 expandedVersions: this.expandedVersions,
                 expanded: true,
                 hasAction: this.actions,
+                limit: 200,
               })
             );
 

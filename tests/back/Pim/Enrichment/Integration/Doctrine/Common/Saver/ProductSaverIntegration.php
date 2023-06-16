@@ -6,16 +6,21 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use Doctrine\DBAL\Statement;
+use Doctrine\DBAL\ParameterType;
+use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Integration tests to verify a product is well saved in database.
  */
 class ProductSaverIntegration extends TestCase
 {
-    public function test_it_saves_a_variant_product()
+    public function test_it_saves_a_variant_product(): void
     {
         $productModel = $this->createProductModel('just-a-product-model', 'familyVariantA1');
         $this->updateProductModel($productModel, $this->getStandardValuesWithDifferentFewAttributes());
@@ -26,8 +31,11 @@ class ProductSaverIntegration extends TestCase
         $this->updateProduct($product, $standardValues);
         $this->saveProduct($product);
 
-        $stmt = $this->createStatement('SELECT raw_values FROM pim_catalog_product WHERE identifier = "just-a-variant-product-with-a-few-values"');
-        $jsonRawValues = $stmt->fetchOne();
+        $jsonRawValues = $this->get('database_connection')->fetchOne(
+            <<<SQL
+            SELECT raw_values FROM pim_catalog_product WHERE identifier = 'just-a-variant-product-with-a-few-values'
+            SQL
+        );
         $rawValues = json_decode($jsonRawValues, true);
         NormalizedProductCleaner::cleanOnlyValues($rawValues);
 
@@ -37,10 +45,37 @@ class ProductSaverIntegration extends TestCase
         $this->assertSame($expectedRawValues, $rawValues);
     }
 
+//    TODO CPM-1102: Re-enable when identifiers are added back
+//    public function test_it_stores_product_identifier_values(): void
+//    {
+//        $this->createIdentifierAttribute('ean');
+//
+//        $product = new Product();
+//        $sku = IdentifierValue::value('sku', true, 'sku-product-1');
+//        $ean = IdentifierValue::value('ean', false, '0123456789');
+//        $product->addValue($sku);
+//        $product->addValue($ean);
+//        $this->saveProduct($product);
+//        Assert::assertEqualsCanonicalizing(
+//            ['sku#sku-product-1', 'ean#0123456789'],
+//            $this->getIdentifierValues($product->getUuid())
+//        );
+//
+//        $product->removeValue($sku);
+//        $otherProduct = new Product();
+//        $this->get('pim_catalog.saver.product')->saveAll([$product, $otherProduct]);
+//
+//        Assert::assertEqualsCanonicalizing(
+//            ['ean#0123456789'],
+//            $this->getIdentifierValues($product->getUuid())
+//        );
+//        Assert::assertSame([], $this->getIdentifierValues($otherProduct->getUuid()));
+//    }
+
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
@@ -117,16 +152,6 @@ class ProductSaverIntegration extends TestCase
     private function saveProductModel(ProductModelInterface $productModel)
     {
         $this->get('pim_catalog.saver.product_model')->save($productModel);
-    }
-
-    /**
-     * @param string $sql
-     *
-     * @return Statement
-     */
-    private function createStatement(string $sql)
-    {
-        return $this->get('doctrine.orm.entity_manager')->getConnection()->query($sql);
     }
 
     /**
@@ -303,7 +328,7 @@ class ProductSaverIntegration extends TestCase
     /**
      * @return array
      */
-    private function getStandardValuesWithFewAttributes()
+    private function getStandardValuesWithFewAttributes(): array
     {
         return [
             'values' => [
@@ -362,7 +387,7 @@ class ProductSaverIntegration extends TestCase
     /**
      * @return array
      */
-    private function getStorageValuesWithFewAttributes()
+    private function getStorageValuesWithFewAttributes(): array
     {
         return [
             'a_number_integer' => [
@@ -394,5 +419,36 @@ class ProductSaverIntegration extends TestCase
                 ],
             ],
         ];
+    }
+
+    private function createIdentifierAttribute(string $attributeCode): void
+    {
+        $attribute = $this->get('pim_catalog.factory.attribute')->createAttribute(AttributeTypes::IDENTIFIER);
+        $this->get('pim_catalog.updater.attribute')->update($attribute, [
+            'code' => $attributeCode,
+            'group' => 'other',
+            'scopable' => false,
+            'localizable' => false,
+        ]);
+        // TODO CPM-1066: uncomment validation
+//        Assert::assertCount(
+//            0,
+//            $this->get('validator')->validate($attribute)
+//        );
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+    }
+
+    private function getIdentifierValues(UuidInterface $uuid): array
+    {
+        $identifiersFromDb = $this->get('database_connection')->fetchOne(
+            <<<SQL
+            SELECT identifiers FROM pim_catalog_product_identifiers
+            WHERE product_uuid = :uuid
+            SQL,
+            ['uuid' => $uuid->getBytes()],
+            ['uuid' => ParameterType::BINARY]
+        );
+
+        return \json_decode($identifiersFromDb, true);
     }
 }

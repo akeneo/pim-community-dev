@@ -8,7 +8,6 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\MessengerBundle\Command\ProcessMessageCommand;
 use Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler1ForMessage1;
-use Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler2ForMessage1;
 use Akeneo\Tool\Bundle\MessengerBundle\tests\config\HandlerObserver;
 use Akeneo\Tool\Bundle\MessengerBundle\tests\config\Message1;
 use PHPUnit\Framework\Assert;
@@ -42,7 +41,6 @@ final class ProcessMessageCommandIntegration extends TestCase
         Assert::assertSame(0, $this->handlerObserver->getTotalNumberOfExecution());
 
         $message = new Message1('test');
-        $correlationId = $message->getCorrelationId();
 
         $commandTester = new CommandTester($this->command);
         $statusCode = $commandTester->execute([
@@ -53,8 +51,6 @@ final class ProcessMessageCommandIntegration extends TestCase
 
         Assert::assertSame(Command::SUCCESS, $statusCode);
         Assert::assertSame(1, $this->handlerObserver->getTotalNumberOfExecution());
-        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($correlationId, Handler2ForMessage1::class));
-        Assert::assertFalse($this->handlerObserver->messageIsHandledByHandler($correlationId, Handler1ForMessage1::class));
 
         $commandTester = new CommandTester($this->command);
         $statusCode = $commandTester->execute([
@@ -62,7 +58,9 @@ final class ProcessMessageCommandIntegration extends TestCase
             'message_class' => Message1::class,
             'message' => $this->serializer->serialize($message, 'json'),
         ]);
-        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($correlationId, Handler1ForMessage1::class));
+
+        Assert::assertSame(Command::SUCCESS, $statusCode);
+        Assert::assertTrue($this->handlerObserver->messageIsHandledByHandler($message, Handler1ForMessage1::class));
     }
 
     protected function getConfiguration(): Configuration

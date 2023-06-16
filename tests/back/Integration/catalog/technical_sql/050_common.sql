@@ -47,11 +47,11 @@ INSERT INTO `akeneo_file_storage_file_info` VALUES (35,'8/b/5/c/8b5cf9bfd2e7e472
 /*!40000 ALTER TABLE `pim_catalog_association_type` DISABLE KEYS */;
 DELETE FROM `pim_catalog_association_type`;
 INSERT INTO `pim_catalog_association_type` (`id`, `code`, `created`, `updated`, `is_quantified`) VALUES
-(865, 'X_SELL', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
-(866, 'UPSELL', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
-(867, 'SUBSTITUTION', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
-(868, 'PACK', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
-(869, 'PRODUCT_SET', '2016-10-04 16:14:44', '2016-10-04 16:14:44', true);
+																									 (865, 'X_SELL', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
+																									 (866, 'UPSELL', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
+																									 (867, 'SUBSTITUTION', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
+																									 (868, 'PACK', '2016-10-04 16:14:44', '2016-10-04 16:14:44', false),
+																									 (869, 'PRODUCT_SET', '2016-10-04 16:14:44', '2016-10-04 16:14:44', true);
 /*!40000 ALTER TABLE `pim_catalog_association_type` ENABLE KEYS */;
 
 
@@ -71,32 +71,32 @@ INSERT INTO `pim_catalog_attribute_group` VALUES (593,'other',100,'2016-08-04 14
 --
 DELETE FROM `pim_catalog_attribute`;
 /*!40000 ALTER TABLE `pim_catalog_attribute` DISABLE KEYS */;
-INSERT INTO `pim_catalog_attribute` VALUES
-(2523,594,0,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,1,1,0,0,'sku','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_identifier','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{"en_US":"this is the sku"}'),
-(2524,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_date','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_date','date','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{"en_US":"date guidelines"}'),
-(2525,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_file','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_file','media','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2526,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'an_image','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_image','media','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2527,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,0,NULL,NULL,'Power','KILOWATT',NULL,'',NULL,0,0,0,0,'a_metric','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2528,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_multi_select','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_multiselect','options','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2529,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,0,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_number_float','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2530,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_number_float_negative','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2531,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_number_integer','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2532,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_price','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_price_collection','prices','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2533,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_ref_data_multi_select','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_reference_data_multiselect','reference_data_options','a:1:{s:19:\"reference_data_name\";s:7:\"fabrics\";}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2534,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_ref_data_simple_select','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_reference_data_simpleselect','reference_data_option','a:1:{s:19:\"reference_data_name\";s:5:\"color\";}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2535,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_simple_select','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_simpleselect','option','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}'),
-(2536,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_text','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_text','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}'),
-(2537,594,0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_text_area','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_textarea','textarea','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}'),
-(2538,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_yes_no','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_boolean','boolean','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}'),
-(2539,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,1,0,'a_localizable_image','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_image','media','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}'),
-(2540,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,1,'a_scopable_price','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_price_collection','prices','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}'),
-(2541,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,1,1,'a_localized_and_scopable_text_area','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_textarea','textarea','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}'),
-(2542,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,'Length','METER',NULL,'',NULL,0,0,0,0,'a_metric_without_decimal','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34', '{}'),
-(2543,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,1,NULL,NULL,'Temperature','CELSIUS',NULL,'',NULL,0,0,0,0,'a_metric_without_decimal_negative','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34', '{}'),
-(2544,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,1,NULL,NULL,'Temperature','CELSIUS',NULL,'',NULL,0,0,0,0,'a_metric_negative','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34', '{}'),
-(2545,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_price_without_decimal','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_price_collection','prices','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34', '{}'),
-(2546,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_number_integer_negative','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}'),
-(2547,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'123','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_text','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}');
+INSERT INTO `pim_catalog_attribute` (id, group_id, sort_order, useable_as_grid_filter, max_characters, validation_rule, validation_regexp, wysiwyg_enabled, number_min, number_max, decimals_allowed, negative_allowed, date_min, date_max, metric_family, default_metric_unit, max_file_size, allowed_extensions, minimumInputLength, is_required, is_unique, is_localizable, is_scopable, code, entity_type, attribute_type, backend_type, properties, created, updated, guidelines, main_identifier) VALUES
+																																																																																																																											(2523,594,0,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,1,1,0,0,'sku','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_identifier','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{"en_US":"this is the sku"}', 1),
+																																																																																																																											(2524,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_date','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_date','date','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{"en_US":"date guidelines"}', 0),
+																																																																																																																											(2525,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_file','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_file','media','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2526,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'an_image','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_image','media','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2527,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,0,NULL,NULL,'Power','KILOWATT',NULL,'',NULL,0,0,0,0,'a_metric','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2528,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_multi_select','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_multiselect','options','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2529,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,0,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_number_float','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2530,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_number_float_negative','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2531,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_number_integer','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2532,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_price','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_price_collection','prices','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2533,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_ref_data_multi_select','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_reference_data_multiselect','reference_data_options','a:1:{s:19:\"reference_data_name\";s:7:\"fabrics\";}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2534,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_ref_data_simple_select','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_reference_data_simpleselect','reference_data_option','a:1:{s:19:\"reference_data_name\";s:5:\"color\";}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2535,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_simple_select','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_simpleselect','option','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}', 0),
+																																																																																																																											(2536,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_text','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_text','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}', 0),
+																																																																																																																											(2537,594,0,0,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_text_area','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_textarea','textarea','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}', 0),
+																																																																																																																											(2538,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_yes_no','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_boolean','boolean','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}', 0),
+																																																																																																																											(2539,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,1,0,'a_localizable_image','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_image','media','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}', 0),
+																																																																																																																											(2540,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,1,'a_scopable_price','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_price_collection','prices','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}', 0),
+																																																																																																																											(2541,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,1,1,'a_localized_and_scopable_text_area','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_textarea','textarea','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}', 0),
+																																																																																																																											(2542,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,0,NULL,NULL,'Length','METER',NULL,'',NULL,0,0,0,0,'a_metric_without_decimal','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34', '{}', 0),
+																																																																																																																											(2543,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,1,NULL,NULL,'Temperature','CELSIUS',NULL,'',NULL,0,0,0,0,'a_metric_without_decimal_negative','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34', '{}', 0),
+																																																																																																																											(2544,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,1,1,NULL,NULL,'Temperature','CELSIUS',NULL,'',NULL,0,0,0,0,'a_metric_negative','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_metric','metric','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34', '{}', 0),
+																																																																																																																											(2545,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_price_without_decimal','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_price_collection','prices','a:1:{s:19:"reference_data_name";N;}','2016-10-05 13:52:34','2016-10-05 13:52:34', '{}', 0),
+																																																																																																																											(2546,595,0,0,NULL,NULL,NULL,NULL,NULL,NULL,0,1,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'a_number_integer_negative','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_number','decimal','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:49','2016-08-04 14:28:49', '{}', 0),
+																																																																																																																											(2547,594,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,0,0,0,0,'123','Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\Product','pim_catalog_text','text','a:1:{s:19:\"reference_data_name\";N;}','2016-08-04 14:28:50','2016-08-04 14:28:50', '{}', 0);
 /*!40000 ALTER TABLE `pim_catalog_attribute` ENABLE KEYS */;
 
 
@@ -134,11 +134,11 @@ INSERT INTO `pim_catalog_attribute_translation` VALUES (3521,2523,'SKU','en_US')
 /*!40000 ALTER TABLE `pim_catalog_category` DISABLE KEYS */;
 DELETE FROM `pim_catalog_category`;
 INSERT INTO `pim_catalog_category` (`id`, `parent_id`, `code`, `created`, `updated`, `root`, `lvl`, `lft`, `rgt`) VALUES
-(895,NULL,'master','2016-08-04 14:28:49','2016-08-04 14:28:49',895,0,1,10),
-(896,895,'categoryA','2016-08-04 14:28:49','2016-08-04 14:28:49',895,1,2,7),
-(897,896,'categoryA1','2016-08-04 14:28:49','2016-08-04 14:28:49',895,2,3,4),
-(898,896,'categoryA2','2016-08-04 14:28:49','2016-08-04 14:28:49',895,2,5,6),
-(899,895,'categoryB','2016-08-04 14:28:49','2016-08-04 14:28:49',895,1,8,9);
+																													  (895,NULL,'master','2016-08-04 14:28:49','2016-08-04 14:28:49',895,0,1,10),
+																													  (896,895,'categoryA','2016-08-04 14:28:49','2016-08-04 14:28:49',895,1,2,7),
+																													  (897,896,'categoryA1','2016-08-04 14:28:49','2016-08-04 14:28:49',895,2,3,4),
+																													  (898,896,'categoryA2','2016-08-04 14:28:49','2016-08-04 14:28:49',895,2,5,6),
+																													  (899,895,'categoryB','2016-08-04 14:28:49','2016-08-04 14:28:49',895,1,8,9);
 /*!40000 ALTER TABLE `pim_catalog_category` ENABLE KEYS */;
 
 
@@ -184,8 +184,8 @@ INSERT INTO `pim_catalog_channel_locale` VALUES (209,21058),(210,21039),(210,210
 /*!40000 ALTER TABLE `pim_catalog_family` DISABLE KEYS */;
 DELETE FROM `pim_catalog_family`;
 INSERT INTO `pim_catalog_family` VALUES
-(466,2523,NULL,'familyA','2016-08-04 14:28:50','2016-08-04 14:28:50'),
-(467,2523,NULL,'familyB','2016-08-04 14:28:50','2016-08-04 14:28:50');
+									 (466,2523,NULL,'familyA','2016-08-04 14:28:50','2016-08-04 14:28:50'),
+									 (467,2523,NULL,'familyB','2016-08-04 14:28:50','2016-08-04 14:28:50');
 /*!40000 ALTER TABLE `pim_catalog_family` ENABLE KEYS */;
 
 
@@ -214,9 +214,9 @@ INSERT INTO `pim_catalog_family_attribute` VALUES (466,2523),(466,2524),(466,252
 /*!40000 ALTER TABLE `pim_catalog_family_variant` DISABLE KEYS */;
 DELETE FROM `pim_catalog_family_variant`;
 INSERT INTO `pim_catalog_family_variant` (`id`, `family_id`, `code`) VALUES
-(25,	466,	'familyVariantA1'),
-(26,	466,	'familyVariantA2'),
-(27,	466,	'familyVariantB1');
+																		 (25,	466,	'familyVariantA1'),
+																		 (26,	466,	'familyVariantA2'),
+																		 (27,	466,	'familyVariantB1');
 /*!40000 ALTER TABLE `pim_catalog_family_variant` DISABLE KEYS */;
 
 --

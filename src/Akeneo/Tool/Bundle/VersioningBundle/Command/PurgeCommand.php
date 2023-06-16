@@ -32,9 +32,10 @@ class PurgeCommand extends Command
     const DEFAULT_MORE_THAN_DAYS = 90;
 
     public function __construct(
-        private LoggerInterface $logger,
-        private ExecuteJobExecutionHandlerInterface $jobExecutionRunner,
-        private CreateJobExecutionHandlerInterface $jobExecutionFactory,
+        private readonly LoggerInterface $logger,
+        private readonly ExecuteJobExecutionHandlerInterface $jobExecutionRunner,
+        private readonly CreateJobExecutionHandlerInterface $jobExecutionFactory,
+        private readonly ?int $versioningRetentionInDays
     ) {
         parent::__construct();
     }
@@ -135,17 +136,17 @@ class PurgeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $noDebug = $input->getOption('no-debug');
-        if (!$noDebug) {
-            $this->logger->pushHandler(new StreamHandler('php://stdout'));
-        }
+        $this->logger->pushHandler(new StreamHandler('php://stdout'));
 
         $isForced = $input->getOption('force');
         $moreThanDays = null !== $input->getOption('more-than-days') ? (int)$input->getOption('more-than-days') : null;
         $lessThanDays = null !== $input->getOption('less-than-days') ? (int)$input->getOption('less-than-days') : null;
 
         if (null === $moreThanDays && null === $lessThanDays) {
-            $moreThanDays = self::DEFAULT_MORE_THAN_DAYS;
+            $moreThanDays = $this->versioningRetentionInDays;
+            if (null === $moreThanDays) {
+                $moreThanDays = self::DEFAULT_MORE_THAN_DAYS;
+            }
         }
 
         $resourceName = $input->hasArgument('entity') ? $input->getArgument('entity') : null;

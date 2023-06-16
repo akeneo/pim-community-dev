@@ -1,3 +1,5 @@
+pim_title:
+  pim_category_template_edit: 카테고리 템플릿 편집
 akeneo.category:
   tree_list:
     column:
@@ -5,20 +7,23 @@ akeneo.category:
   attributes: 특성
   edition_form:
     error:
-      unhandled_attribute_type: 특성 유형 "{{type}}"에 대한 특성 필드 빌더를 찾을 수 없습니다.
+      unhandled_attribute_type: 특성 유형 "{{ type }}"에 대한 특성 필드 빌더를 찾을 수 없습니다.
     template:
       title: 템플릿
+      no_attribute_title: 이 템플릿에는 특성이 없습니다.
+      no_attribute_instructions: 이 카테고리에 연결된 템플릿이 비어 있습니다. 카테고리 트리 페이지에서 이 템플릿에 특성을 추가할 수 있습니다.
       fetching_failed: 템플릿을 가져오는 동안 오류가 발생했습니다.
     unsaved_changes: 이 페이지를 나가면 카테고리에 대한 변경 사항이 손실됩니다.
   tree:
     create: 트리 만들기
     delete: 트리 삭제
   template:
+    learn_more: 카테고리 템플릿에 대해 자세히 알아보십시오.
     create: 템플릿 활성화
-    edit: 템플릿 보기
-    delete: 템플릿 삭제
+    edit: 템플릿 편집
     notification_success: 템플릿이 활성화되었습니다.
     notification_error: 템플릿을 활성화할 수 없습니다.
+    not_found: 이 카테고리에 대한 활성 템플릿이 없습니다.
     attribute:
       description_title: 설명 설정
       type:
@@ -26,8 +31,76 @@ akeneo.category:
         textarea: 텍스트 영역
         richtext: 서식 있는 텍스트
         image: 이미지
+      delete_button: 특성 삭제
+      settings:
+        title: 설정
+        options:
+          title: 옵션
+          value_per_channel: 채널별 값
+          value_per_locale: 로케일별 값
+          rich_text: 서식 있는 텍스트 편집기
+        translations:
+          title: 레이블 번역
+    add_attribute:
+      no_attribute_title: 첫 특성 만들기
+      no_attribute_instructions: 이 템플릿에 텍스트, 텍스트 영역 또는 이미지 특성을 추가하여 카테고리에 연결할 콘텐츠를 정의하십시오.
+      add_button: 특성 추가
+      create_button: 특성 만들기
+      confirmation_modal:
+        section_title: 특성 추가
+        title: 새 카테고리 특성 만들기
+        head_helper: 카테고리 특성이 하나의 템플릿에 첨부됩니다. 다른 템플릿에서는 카테고리 특성에 액세스할 수 없습니다.
+        tail_helper: 특성이 생성되면 채널당 값과 로케일당 값을 변경할 수 없습니다.
+        link: 카테고리 템플릿에 대해 자세히 알아보십시오.
+        create: 만들기
+        input:
+          label: 레이블
+          code: 코드
+          type:
+            label: 특성 유형
+            empty: 특성 유형을 사용할 수 없음
+            option_title:
+              text: 텍스트
+              textarea: 텍스트 영역
+              image: 이미지
+      success:
+        notification: 특성 생성됨
+      error:
+        failed: 템플릿 특성 추가 실패
+        limit_reached:
+          title: 50개 넘게 특성을 추가할 수 없습니다.
+          message: 카테고리 템플릿의 특성은 템플릿당 50개로 제한됩니다.
+    delete_attribute:
+      delete: 카테고리 특성 삭제
+      confirmation_modal:
+        title: 이 카테고리 특성 삭제
+        message: 이름이 {{ attribute }}인 카테고리 특성을 삭제하시겠습니까?
+        helper: 이 특성을 삭제하면 연결된 카테고리의 특성과 값이 영구적으로 삭제됩니다.
+      notification_success:
+        title: '{{ attribute }} 특성 삭제됨'
+    deactivate:
+      deactivate_template: 템플릿 비활성화
+      confirmation_modal:
+        title: 카테고리 템플릿 비활성화
+        message: 이름이 {{ template }}인 카테고리 템플릿을 비활성화하시겠습니까?
+        helper: 이 템플릿을 비활성화하면 연결된 카테고리의 특성과 값이 영구적으로 삭제됩니다.
+        deactivate: 비활성화
+      notification_success:
+        title: '{{ template }} 템플릿 비활성화됨'
+        message: '{{ template }} 템플릿이 비활성화되었습니다. 연결된 카테고리의 콘텐츠가 삭제되었습니다.'
   template_list:
     columns:
       header: 레이블
       code: 코드
       type: 유형
+  tag:
+    new: 신규
+  discover_enriched_categories_information:
+    title: 보강된 카테고리 알아보기
+    content:
+      enrich_attribute_values: 텍스트, 텍스트 영역 및 이미지 특성을 사용하여 카테고리 트리의 레벨 보강
+      customizable_templates: 사용자 지정 가능한 템플릿 덕분에 사용자가 원하는 제품 환경 제공
+      edit_attributes: '곧 출시 예정: 해당 카테고리 특성의 설정 업데이트'
+    survey_link_label: 여러분의 의견을 들려주시기 바랍니다.
+    learn_more_link_label: 보강된 카테고리에 대해 자세히 알아보기
+  other_actions: 기타 작업

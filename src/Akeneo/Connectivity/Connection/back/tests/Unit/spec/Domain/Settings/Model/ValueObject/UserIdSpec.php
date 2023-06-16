@@ -15,13 +15,13 @@ class UserIdSpec extends ObjectBehavior
         $this->shouldHaveType(UserId::class);
     }
 
-    public function it_provides_a_user_id()
+    public function it_provides_a_user_id(): void
     {
         $this->beConstructedWith(42);
         $this->id()->shouldReturn(42);
     }
 
-    public function it_validates_itself()
+    public function it_validates_itself(): void
     {
         $this
             ->shouldThrow(

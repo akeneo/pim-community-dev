@@ -29,7 +29,6 @@ services:
       - '@Akeneo\Category\Domain\Query\GetEnrichedValuesByTemplateUuid'
       - '@Akeneo\Category\Application\Enrichment\CategoryAttributeValuesCleaner'
       - '@Akeneo\Category\Application\Query\GetAttribute'
-      - '@Akeneo\Category\Application\Query\DeleteTemplateAndAttributes'
       - '@Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand' }
@@ -49,6 +48,13 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeactivateAttributeCommand' }
 
+  Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand' }
 
   Akeneo\Category\Application\Handler\StoreUploadedFile:
     arguments:
@@ -69,3 +75,12 @@ services:
       - '@Akeneo\Category\Domain\Query\DeleteTemplateAttribute'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryTemplateAttributeAndEnrichedValues\CleanCategoryTemplateAttributeAndEnrichedValuesCommand' }
+
+  Akeneo\Category\Application\Command\DeleteCategoryCommand\DeleteCategoryCommandHandler:
+    arguments:
+      - '@pim_catalog.repository.category'
+      - '@pim_catalog.remover.category'
+      - '@Akeneo\Category\Domain\Query\GetCategoryTreeTemplates'
+      - '@Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeleteCategoryCommand\DeleteCategoryCommand' }

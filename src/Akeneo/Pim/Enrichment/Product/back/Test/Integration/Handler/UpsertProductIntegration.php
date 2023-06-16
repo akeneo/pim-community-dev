@@ -140,8 +140,17 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_updates_a_product_with_a_number_value(): void
     {
-        $this->updateProduct(new SetNumberValue('a_number_integer', null, null, '10'));
-        $this->assertProductHasCorrectValueByAttributeCode('a_number_integer', '10');
+        $this->createProduct(
+            'identifier',
+            'familyA',
+            [
+                new SetNumberValue('a_number_float', null, null, '3.14')
+            ]
+        );
+        $this->assertProductHasCorrectValueByAttributeCode('a_number_float', '3.14');
+
+        $this->updateProduct(new SetNumberValue('a_number_float', null, null, '3.1415927'));
+        $this->assertProductHasCorrectValueByAttributeCode('a_number_float', '3.1415927');
     }
 
     /** @test */

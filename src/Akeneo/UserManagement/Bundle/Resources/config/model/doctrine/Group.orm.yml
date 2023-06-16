@@ -13,7 +13,7 @@ Akeneo\UserManagement\Component\Model\Group:
             type: string
             unique: true
             nullable: false
-            lenght: 30
+            length: 255
         defaultPermissions:
             column: default_permissions
             type: json

@@ -6,6 +6,7 @@ services:
         public: true
         class: 'Akeneo\Category\Infrastructure\Controller\ExternalApi\CategoryController'
         arguments:
+            - '@oro_security.security_facade'
             - '@pim_api.repository.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.updater.category'
@@ -19,7 +20,7 @@ services:
         class: 'Akeneo\Category\Infrastructure\Controller\InternalApi\CategoryController'
         arguments:
             - '@pim_catalog.repository.category'
-            - '@pim_enrich.twig.category_extension'
+            - '@Akeneo\Category\Infrastructure\Twig\CategoryExtension'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
             - '@Akeneo\Category\Application\Query\GetCategoryChildrenIds'
@@ -37,6 +38,12 @@ services:
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
             - '@Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry'
 
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateAttributeController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+
     Akeneo\Category\Infrastructure\Controller\InternalApi\GetCategoryController:
         public: true
         arguments:
@@ -50,8 +57,6 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Query\GetTemplate'
             - '@Akeneo\Category\Application\Query\GetAttribute'
-            - '@Akeneo\Category\Infrastructure\Storage\InMemory\GetTemplateInMemory'
-            - '@Akeneo\Category\Infrastructure\Storage\InMemory\GetAttributeInMemory'
 
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController:
@@ -65,7 +70,7 @@ services:
         public: true
         arguments:
             - '@validator'
-            - '@category_serializer'
+            - '@pim_category.serializer'
             - '@Akeneo\Category\Application\Handler\StoreUploadedFile'
             - '%supported_category_image_mime_types%'
 
@@ -90,6 +95,7 @@ services:
     Akeneo\Category\Infrastructure\Controller\ExternalApi\ListCategoriesController:
         public: true
         arguments:
+            - '@oro_security.security_facade'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@Akeneo\Category\Application\Query\GetCategoriesParametersBuilder'
@@ -99,6 +105,7 @@ services:
     Akeneo\Category\Infrastructure\Controller\ExternalApi\GetCategoryController:
         public: true
         arguments:
+            - '@oro_security.security_facade'
             - '@Akeneo\Category\Application\Query\GetCategoriesParametersBuilder'
             - '@Akeneo\Category\Application\Query\GetCategoriesInterface'
 
@@ -106,6 +113,7 @@ services:
     Akeneo\Category\Infrastructure\Controller\ExternalApi\DownloadCategoryMediaFileController:
         public: true
         arguments:
+            - '@oro_security.security_facade'
             - '@pim_api.repository.media_file'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'

@@ -1,15 +1,4 @@
 services:
-    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers\EventsApiRequestsLimitEventSubscriber:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest'
-            - '%webhook_requests_limit%'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep'
-            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger'
-            - '@Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
-        tags:
-            - { name: kernel.event_subscriber }
-
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventSubscribers\EventsApiRequestsLimitIncrementSubscriber:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalUpdateEventsApiRequestCountQuery'

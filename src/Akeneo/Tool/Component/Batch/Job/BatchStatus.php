@@ -45,6 +45,8 @@ class BatchStatus
     const FAILED = 6;
     const ABANDONED = 7;
     const UNKNOWN = 8;
+    const PAUSING = 9;
+    const PAUSED = 10;
 
     protected static array $statusLabels = [
         self::COMPLETED => 'COMPLETED',
@@ -54,7 +56,9 @@ class BatchStatus
         self::STOPPED   => 'STOPPED',
         self::FAILED    => 'FAILED',
         self::ABANDONED => 'ABANDONED',
-        self::UNKNOWN   => 'UNKNOWN'
+        self::UNKNOWN   => 'UNKNOWN',
+        self::PAUSING   => 'PAUSING',
+        self::PAUSED    => 'PAUSED',
     ];
 
     /**
@@ -104,6 +108,16 @@ class BatchStatus
     public function isStopping(): bool
     {
         return $this->value === self::STOPPING;
+    }
+
+    public function isPausing(): bool
+    {
+        return self::PAUSING === $this->value;
+    }
+
+    public function isPaused(): bool
+    {
+        return self::PAUSED === $this->value;
     }
 
     /**

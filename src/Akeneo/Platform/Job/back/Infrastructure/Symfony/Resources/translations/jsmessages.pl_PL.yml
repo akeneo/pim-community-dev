@@ -12,7 +12,11 @@ akeneo_job:
     ABANDONED: Opuszczone
     UNKNOWN: Nieznany
     IN_PROGRESS: W toku
+    PAUSING: Wstrzymywanie
+    PAUSED: Wstrzymano
 akeneo_job_process_tracker:
+  tooltip:
+    paused: To zadanie zostało wstrzymane z powodu wewnętrznej konserwacji Twojej instancji. Zostanie wznowione automatycznie po jej ukończeniu.
   last_operations:
     title: Ostatnie operacje
     view_all: Zobacz wszystko
@@ -39,6 +43,7 @@ akeneo_job_process_tracker:
     export: Eksport
     mass_edit: Edycja masowa
     mass_delete: Masowe usuwanie produktów
+    attribute_mass_delete: Zbiorcze usuwanie atrybutów
     compute_family_variant_structure_changes: Oblicz zmiany w strukturze wariantu rodziny
     compute_completeness_of_products_family: Oblicz kompletność rodziny produktów
     clean_removed_attribute_job: Czyszczenie usuniętych wartości atrybutów
@@ -58,6 +63,8 @@ akeneo_job_process_tracker:
     stopping: Zatrzymywanie
     unknown: Nieznany
     in_progress: W toku
+    pausing: Wstrzymywanie
+    paused: Wstrzymano
   automation_filter:
     all: Wszystkie
     yes: Yes

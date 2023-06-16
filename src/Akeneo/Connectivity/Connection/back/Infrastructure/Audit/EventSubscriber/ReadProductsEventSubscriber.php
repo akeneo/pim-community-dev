@@ -54,7 +54,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (false === $connection->auditable()) {
+        if (!$connection->auditable()) {
             return;
         }
 
@@ -83,7 +83,7 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
             return $this->connectionRepository->findOneByCode($connectionCode);
         }
 
-        if (false === $this->connectionContext->areCredentialsValidCombination()) {
+        if (!$this->connectionContext->areCredentialsValidCombination()) {
             return null;
         }
 

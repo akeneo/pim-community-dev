@@ -18,11 +18,28 @@ class SetUpdatedPropertyOnTranslationUpdateSubscriber implements EventSubscriber
     public function getSubscribedEvents(): array
     {
         return [
-            Events::preUpdate
+            Events::preUpdate,
+            Events::prePersist,
+            Events::preRemove,
         ];
     }
 
     public function preUpdate(LifecycleEventArgs $args): void
+    {
+        $this->updateCategoryUpdatedDate($args);
+    }
+
+    public function prePersist(LifecycleEventArgs $args): void
+    {
+        $this->updateCategoryUpdatedDate($args);
+    }
+
+    public function preRemove(LifecycleEventArgs $args): void
+    {
+        $this->updateCategoryUpdatedDate($args);
+    }
+
+    private function updateCategoryUpdatedDate(LifecycleEventArgs $args)
     {
         /** @var CategoryTranslation */
         $entity = $args->getObject();

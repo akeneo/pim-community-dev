@@ -1,10 +1,13 @@
-import {Button, SectionTitle, useBooleanState} from 'akeneo-design-system';
-import {Attribute} from '../../models';
-import React from 'react';
-import {userContext, useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, userContext} from '@akeneo-pim-community/shared';
+import {Button, Checkbox, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
+import {useCatalogActivatedLocales} from '../../hooks/useCatalogActivatedLocales';
+import {useCatalogLocales} from '../../hooks/useCatalogLocales';
+import {Attribute} from '../../models';
 import {getLabelFromAttribute} from '../attributes';
+import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
+import {LabelTranslationInput} from './LabelTranslationInput';
+import {OptionRichTextEditorCheckbox} from './OptionRichTextEditorCheckbox';
 
 type Props = {
   attribute: Attribute;
@@ -12,7 +15,11 @@ type Props = {
 
 export const AttributeSettings = ({attribute}: Props) => {
   const translate = useTranslate();
-  const label = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
+  const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
+
+  const activatedCatalogLocales = useCatalogActivatedLocales();
+  const catalogLocales = useCatalogLocales();
+
   const [
     isDeactivateTemplateAttributeModalOpen,
     openDeactivateTemplateAttributeModal,
@@ -23,9 +30,41 @@ export const AttributeSettings = ({attribute}: Props) => {
     <SettingsContainer>
       <SectionTitle sticky={0}>
         <SectionTitle.Title>
-          {label} {translate('akeneo.category.template.attribute.settings.title')}
+          {attributeLabel} {translate('akeneo.category.template.attribute.settings.title')}
         </SectionTitle.Title>
       </SectionTitle>
+
+      <SectionTitle>
+        <SectionTitle.Title level="secondary">
+          {translate('akeneo.category.template.attribute.settings.options.title')}
+        </SectionTitle.Title>
+      </SectionTitle>
+      <FieldContainer>
+        <OptionRichTextEditorCheckbox attribute={attribute} />
+        <Checkbox checked={attribute.is_localizable} readOnly={true}>
+          {translate('akeneo.category.template.attribute.settings.options.value_per_locale')}
+        </Checkbox>
+        <Checkbox checked={attribute.is_scopable} readOnly={true}>
+          {translate('akeneo.category.template.attribute.settings.options.value_per_channel')}
+        </Checkbox>
+      </FieldContainer>
+
+      <SectionTitle>
+        <SectionTitle.Title level="secondary">
+          {translate('akeneo.category.template.attribute.settings.translations.title')}
+        </SectionTitle.Title>
+      </SectionTitle>
+      <FieldContainer>
+        {activatedCatalogLocales?.map(localeCode => (
+          <LabelTranslationInput
+            key={localeCode}
+            attribute={attribute}
+            localeCode={localeCode}
+            label={catalogLocales?.find(catalogLocale => catalogLocale.code === localeCode)?.label || localeCode}
+          />
+        ))}
+      </FieldContainer>
+
       <Footer>
         <Button level="danger" ghost onClick={openDeactivateTemplateAttributeModal}>
           {translate('akeneo.category.template.attribute.delete_button')}
@@ -33,7 +72,7 @@ export const AttributeSettings = ({attribute}: Props) => {
         {isDeactivateTemplateAttributeModalOpen && (
           <DeactivateTemplateAttributeModal
             templateUuid={attribute.template_uuid}
-            attribute={{uuid: attribute.uuid, label: label}}
+            attribute={{uuid: attribute.uuid, label: attributeLabel}}
             onClose={closeDeactivateTemplateAttributeModal}
           />
         )}
@@ -50,11 +89,18 @@ const SettingsContainer = styled.div`
   overflow-y: auto;
 `;
 
+const FieldContainer = styled.div`
+  margin-bottom: 15px;
+  & > * {
+    margin: 10px 0 0 0;
+  }
+`;
+
 const Footer = styled.div`
   display: flex;
   flex-direction: row-reverse;
   padding: 5px 0 5px;
-  margin-top: 2px;
+  margin-top: 5px;
   position: sticky;
   bottom: 0;
   background-color: #ffffff;

@@ -16,6 +16,8 @@ pim_import_export:
     6: 失败
     7: 已放弃
     8: 未知
+    9: 暂停中
+    10: 已暂停
   download_archive:
     archive: 下载生成的存档文件 | 下载生成的存档文件
     output: 下载生成的文件 | 下载生成的文件

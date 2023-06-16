@@ -57,7 +57,7 @@ define([
       this.getParent().setCurrentOperation(code);
       this.render();
 
-      analytics.track('grid:mass-edit:item-chosen', {
+      analytics.appcuesTrack('grid:mass-edit:item-chosen', {
         code: code,
       });
     },

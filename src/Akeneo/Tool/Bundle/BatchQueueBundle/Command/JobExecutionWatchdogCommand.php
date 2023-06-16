@@ -11,7 +11,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -37,16 +36,15 @@ final class JobExecutionWatchdogCommand extends Command
     private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
     public function __construct(
-        private JobExecutionManager $executionManager,
-        private LoggerInterface $logger,
-        private string $projectDir,
-        private CreateJobExecutionHandlerInterface $createJobExecutionHandler,
-        protected LockFactory $lockFactory,
+        private readonly JobExecutionManager $executionManager,
+        private readonly LoggerInterface $logger,
+        private readonly string $projectDir,
+        private readonly CreateJobExecutionHandlerInterface $createJobExecutionHandler,
     ) {
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setHidden(true)
@@ -61,6 +59,12 @@ final class JobExecutionWatchdogCommand extends Command
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Job code to launch when no execution id provided'
+            )
+            ->addOption(
+                'config',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Job configuration overriding default config'
             )
             ->addOption(
                 'username',
@@ -91,8 +95,21 @@ final class JobExecutionWatchdogCommand extends Command
             throw new \InvalidArgumentException('You must specify job_execution_id or job_code');
         }
         if (null === $jobExecutionId) {
-            $jobExecution = $this->createJobExecutionHandler->createFromBatchCode($jobCode, [], null);
+            $jobConfiguration = $input->getOption('config') ? \json_decode($input->getOption('config'), true) : [];
+            $jobExecution = $this->createJobExecutionHandler->createFromBatchCode($jobCode, $jobConfiguration, null);
             $jobExecutionId = $jobExecution->getId();
+            $this->logger->notice(
+                'Created job execution "{job_execution_id}" for job "{job_code}" with configuration {configuration}',
+                [
+                    'job_execution_id' => $jobExecutionId,
+                    'job_code' => $jobCode,
+                    'configuration' => \json_encode($jobConfiguration),
+                ]
+            );
+        }
+
+        if (null === $jobCode) {
+            $jobCode = $this->executionManager->jobCodeFromJobExecutionId($jobExecutionId);
         }
 
         $console = sprintf('%s/bin/console', $this->projectDir);
@@ -102,15 +119,20 @@ final class JobExecutionWatchdogCommand extends Command
             $processArguments = $this->buildBatchCommand(
                 $console,
                 $pathFinder->find(),
+                $jobCode,
                 $jobExecutionId,
-                $input->getOptions()
+                $input->getOptions() ?? [],
             );
             $process = new Process($processArguments);
             $process->setTimeout(null);
 
-            $this->logger->notice('Launching job execution "{job_execution_id}".', [
-                'job_execution_id' => $jobExecutionId,
-            ]);
+            $this->logger->notice(
+                'Launching job execution "{job_execution_id}" for job "{job_code}"',
+                [
+                    'job_execution_id' => $jobExecutionId,
+                    'job_code' => $jobCode,
+                ]
+            );
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
             $this->executeProcess($process, $jobExecutionId);
@@ -124,14 +146,16 @@ final class JobExecutionWatchdogCommand extends Command
             if ($this->executionManager->getExitStatus((int) $jobExecutionId)?->isRunning()) {
                 $this->executionManager->markAsFailed($jobExecutionId);
             }
-            $this->releaseJobLock((int) $jobExecutionId);
         }
 
         $executionTimeInSec = time() - $startTime;
-        $this->logger->notice('Job execution "{job_execution_id}" is finished in {execution_time_in_sec} seconds.', [
-            'job_execution_id' => $jobExecutionId,
-            'execution_time_in_sec' => $executionTimeInSec,
-        ]);
+        $this->logger->notice(
+            'Job execution "{job_execution_id}" is finished in {execution_time_in_sec} seconds.',
+            [
+                'job_execution_id' => $jobExecutionId,
+                'execution_time_in_sec' => $executionTimeInSec,
+            ]
+        );
 
         return Command::SUCCESS;
     }
@@ -139,20 +163,21 @@ final class JobExecutionWatchdogCommand extends Command
     private function buildBatchCommand(
         string $console,
         string $phpPath,
+        ?string $jobCode,
         int $jobExecutionId,
-        array $watchdogOptions
+        array $batchCommandOptions
     ): array {
         $processArguments = [
             $phpPath,
             $console,
             'akeneo:batch:job',
-            'dummy_code',
+            $jobCode,
             $jobExecutionId,
             '--quiet',
         ];
 
-        foreach ($watchdogOptions as $optionName => $optionValue) {
-            if ('job_execution_id' === $optionName || 'job_code' === $optionName) {
+        foreach ($batchCommandOptions as $optionName => $optionValue) {
+            if (in_array($optionName, ['job_execution_id', 'job_code', 'config'])) {
                 continue;
             }
             switch (true) {
@@ -176,6 +201,12 @@ final class JobExecutionWatchdogCommand extends Command
     private function executeProcess(Process $process, int $jobExecutionId): void
     {
         $this->executionManager->updateHealthCheck($jobExecutionId);
+
+        pcntl_signal(\SIGTERM, function () use ($process) {
+            $this->logger->notice('Received SIGTERM signal in watchdog command and forwarding it to subprocess');
+            $process->signal(\SIGTERM);
+        });
+
         $process->start();
 
         $nbIterationBeforeUpdatingHealthCheck = self::HEALTH_CHECK_INTERVAL * 1000000 / self::RUNNING_PROCESS_CHECK_INTERVAL;
@@ -201,16 +232,6 @@ final class JobExecutionWatchdogCommand extends Command
         $errors = $process->getIncrementalErrorOutput();
         if ($errors) {
             $this->logger->error($errors);
-        }
-    }
-
-    private function releaseJobLock(int $jobExecutionId): void
-    {
-        $jobCode = $this->executionManager->jobCodeFromJobExecutionId($jobExecutionId);
-        $lockIdentifier = sprintf('scheduled-job-%s', $jobCode);
-        $lock = $this->lockFactory->createLock($lockIdentifier);
-        if ($lock->isAcquired()) {
-            $lock->release();
         }
     }
 }

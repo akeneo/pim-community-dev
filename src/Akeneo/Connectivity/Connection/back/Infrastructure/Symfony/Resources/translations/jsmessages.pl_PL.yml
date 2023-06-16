@@ -38,8 +38,9 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: Połączone aplikacje
   akeneo_connectivity_connection_connect_connected_apps_edit: Ustawienia aplikacji
   akeneo_connectivity_connection_connect_connected_apps_delete: Usuń aplikację
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Utwórz aplikację testową
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Usuń aplikację testową
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: Ponownie wygeneruj poświadczenia
+  akeneo_connectivity_connection_connect_custom_apps_create: Utwórz aplikację niestandardową
+  akeneo_connectivity_connection_connect_custom_apps_delete: Usuń aplikację niestandardową
   akeneo_connectivity_connection_connect_connected_apps_open: Otwórz aplikację
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: Edytuj katalog
 akeneo_connectivity.connection:
@@ -73,51 +74,9 @@ akeneo_connectivity.connection:
         empty: Brak aplikacji kompatybilnych z twoją wersją
       unreachable: Nie możemy nawiązać połączenia ze sklepem z aplikacjami. Spróbuj ponownie później.
       scroll_to_top: Przewiń do początku
-      test_apps:
-        title: Moje aplikacje testowe
+      custom_apps:
+        title: Moje aplikacje niestandardowe
         removed_user: Użytkownik usunięty
-        create_a_test_app: Utwórz aplikację testową
-        modal:
-          subtitle: Utwórz aplikację testową
-          app_information:
-            title: Informacje o aplikacji
-            description: Jeśli potrzebujesz pomocy, zapoznaj się z naszym artykułem.
-            link: Jak przetestować aplikację przed jej publikacją?
-            fields:
-              name: Nazwa
-              activate_url: Adres URL aktywacji
-              callback_url: Adres URL wywołania zwrotnego
-          credentials:
-            title: Dane uwierzytelniające
-            warning: Pamiętaj o zapisaniu tych poświadczeń, ponieważ wyświetlamy je tu tylko raz.
-            client_id: Identyfikator klienta
-            client_secret: Sekret klienta
-        errors:
-          page_not_found: Nie znaleziono strony
-          creation:
-            name:
-              min_length: Nazwa aplikacji testowej jest za krótka. Musi składać się z co najmniej 3 znaków.
-              max_length: Nazwa aplikacji testowej jest za długa. Może składać się z maksymalnie 255 znaków.
-              not_blank: Nazwa aplikacji testowej jest wymagana.
-            client_id:
-              max_length: Identyfikator klienta jest za długi. Może składać się z maksymalnie 36 znaków.
-              not_blank: Identyfikator klienta jest wymagany.
-            activate_url:
-              max_length: Adres URL aktywacji jest za długi. Może składać się z maksymalnie 255 znaków.
-              must_be_url: Adres URL aktywacji musi być prawidłowym adresem URL.
-              not_blank: Adres URL aktywacji jest wymagany.
-            callback_url:
-              max_length: Adres URL wywołania zwrotnego jest za długi. Może składać się z maksymalnie 255 znaków.
-              must_be_url: Adres URL wywołania zwrotnego musi być prawidłowym adresem URL.
-              not_blank: Adres URL wywołania zwrotnego jest wymagany.
-        delete:
-          subtitle: Aplikacje
-          title: Potwierdź usunięcie
-          description: Za chwilę usuniesz aplikację testową z tego PIM.
-          warning: Potwierdzenie spowoduje usunięcie aplikacji testowej ze strony sklepu z aplikacjami i połączonej z nią aplikacji.
-          flash:
-            success: Aplikacja testowa została usunięta z powodzeniem.
-            error: Przepraszamy, w czasie usuwania aplikacji testowej wystąpił błąd.
     connected_apps:
       list:
         apps:
@@ -128,8 +87,8 @@ akeneo_connectivity.connection:
           marketplace_link_anchor: Sklep z aplikacjami
           at_least_one_is_not_listed_on_the_appstore: Niektóre z połączonych aplikacji nie są kompatybilne z Twoją wersją PIM lub nie istnieją już w sklepie aplikacji Akeneo. Skontaktuj się z nami, aby uzyskać więcej informacji.
           pending_apps: Niektóre z Twoich aplikacji nie są połączone z PIM.
-        test_apps:
-          title: Moje aplikacje testowe
+        custom_apps:
+          title: Moje połączone aplikacje niestandardowe
           removed_user: Użytkownik usunięty
         helper:
           title: '[0,1] Twój PIM jest połączony z {{ count }} aplikacją.|[2,Inf] Twój PIM jest połączony z {{ count }} aplikacjami.'
@@ -171,6 +130,22 @@ akeneo_connectivity.connection:
             information_link_anchor: Artykuł w Centrum Pomocy
             openid_only: Ta aplikacja korzysta z uwierzytelnienia aplikacji Akeneo bez użycia Twoich danych osobowych.
           pending: Ta aplikacja nie jest połączona z Twoim PIM. Otwarcie aplikacji powinno rozwiązać problem z połączeniem. Jeżeli problem nadal występuje, skontaktuj się z pomocą techniczną aplikacji.
+          credentials:
+            title: Dane uwierzytelniające
+            client_id: Identyfikator klienta
+            client_secret: Sekret klienta
+            regenerate_button: Wygeneruj ponownie
+            regenerate_secret:
+              flash_error: Przepraszamy, wystąpił błąd podczas regeneracji hasła połączenia.
+              confirm:
+                title: Potwierdź ponowne generowanie
+                description: Ponowne wygenerowanie sekretu będzie miało wpływ na powiązanie aplikacji niestandardowych z PIM. Czy na pewno chcesz kontynuować?
+                regenerate_button: Wygeneruj ponownie
+                cancel_button: Anuluj
+              new_credentials:
+                title: Nowe poświadczenia
+                subtitle: Ponownie wygeneruj poświadczenia
+                done_button: Gotowe
         error_monitoring:
           error: Ups, coś poszło nie tak!
           helper:
@@ -295,6 +270,52 @@ akeneo_connectivity.connection:
           must_be_url: Atrybut redirect_uri nie jest prawidłowym adresem URL.
         scope:
           too_long: Lista zakresu może zawierać maksymalnie 1000 znaków.
+    custom_apps:
+      creation_limit_reached: Osiągnięto limit 20 aplikacji niestandardowych.
+      create_button: Utwórz aplikację
+      create_modal:
+        subtitle: Utwórz aplikację niestandardową
+        app_information:
+          title: Informacje o aplikacji
+          description: Jeśli potrzebujesz pomocy, zapoznaj się z naszym artykułem.
+          link: Jak przetestować aplikację przed jej publikacją?
+          fields:
+            name: Nazwa
+            activate_url: Adres URL aktywacji
+            callback_url: Adres URL wywołania zwrotnego
+          field_placeholder:
+            name: Zdefiniuj nazwę aplikacji
+            activate_url: Uzupełnij adres URL aktywacji
+            callback_url: Uzupełnij adres URL wywołania zwrotnego
+        credentials:
+          title: Dane uwierzytelniające
+          client_id: Identyfikator klienta
+          client_secret: Sekret klienta
+        errors:
+          limit_reached: Możesz utworzyć maksymalnie 20 aplikacji niestandardowych.
+          name:
+            min_length: Nazwa aplikacji jest za krótka. Musi składać się z co najmniej 3 znaków.
+            max_length: Nazwa aplikacji jest za długa. Może składać się z maksymalnie 255 znaków.
+            not_blank: Nazwa aplikacji jest wymagana.
+          client_id:
+            max_length: ID klienta aplikacji jest za długie. Może składać się z maksymalnie 36 znaków.
+            not_blank: Identyfikator klienta jest wymagany.
+          activate_url:
+            max_length: Adres URL aktywacji aplikacji jest za długi. Może składać się z maksymalnie 255 znaków.
+            must_be_url: Adres URL aktywacji musi być prawidłowym adresem URL.
+            not_blank: Adres URL aktywacji jest wymagany.
+          callback_url:
+            max_length: Adres URL wywołania zwrotnego aplikacji jest za długi. Może składać się z maksymalnie 255 znaków.
+            must_be_url: Adres URL wywołania zwrotnego musi być prawidłowym adresem URL.
+            not_blank: Adres URL wywołania zwrotnego jest wymagany.
+      delete_modal:
+        subtitle: Usuń aplikację niestandardową
+        title: Potwierdź usunięcie
+        description: Za chwilę usuniesz aplikację z tego PIM.
+        warning: Potwierdzenie spowoduje usunięcie aplikacji ze strony sklepu z aplikacjami i połączonej z nią aplikacji.
+        flash:
+          success: Pomyślnie usunięto aplikację niestandardową.
+          error: Przepraszamy, podczas usuwania aplikacji niestandardowej wystąpił błąd.
   connections: Połączenia
   secondary_actions:
     title: Inne działania
@@ -595,7 +616,10 @@ pim_notification:
   types:
     connected_app_authorizations: Autoryzacje połączonych aplikacji
     disabled_catalog: Katalog aplikacji wyłączony
+    attribute_removed: Odnotowano wpływ na katalog aplikacji
   connected_app_authorizations:
     button_label: Otwórz aplikację
   disabled_catalog:
+    button_label: Ustawienia katalogu
+  attribute_removed:
     button_label: Ustawienia katalogu

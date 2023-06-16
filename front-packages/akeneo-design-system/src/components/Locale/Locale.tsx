@@ -1,7 +1,7 @@
 import React, {forwardRef, Ref} from 'react';
 import styled from 'styled-components';
 import {getEmoji} from '../../shared';
-import {getFontSize} from '../../theme';
+import {getFontFamily, getFontSize} from '../../theme';
 
 const LocaleContainer = styled.span`
   display: inline-flex;
@@ -12,6 +12,7 @@ const LocaleContainer = styled.span`
 const Emoji = styled.span`
   font-size: ${getFontSize('bigger')};
   margin-right: 3px;
+  font-family: 'Flag Emoji', ${getFontFamily('default')};
 `;
 
 type LocaleProps = {

@@ -8,13 +8,10 @@ namespace Akeneo\Connectivity\Connection\Domain\ValueObject;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Url
+class Url implements \Stringable
 {
-    private string $url;
-
-    public function __construct(string $url)
+    public function __construct(private string $url)
     {
-        $this->url = $url;
     }
 
     public function __toString(): string

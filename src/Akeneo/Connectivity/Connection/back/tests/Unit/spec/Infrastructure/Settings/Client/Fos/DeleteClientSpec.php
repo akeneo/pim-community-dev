@@ -24,13 +24,13 @@ class DeleteClientSpec extends ObjectBehavior
         $this->beConstructedWith($clientManager);
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(DeleteClient::class);
         $this->shouldImplement(DeleteClientInterface::class);
     }
 
-    public function it_deletes_a_client($clientManager)
+    public function it_deletes_a_client($clientManager): void
     {
         $client = new Client();
         $clientId = new ClientId(1);
@@ -42,7 +42,7 @@ class DeleteClientSpec extends ObjectBehavior
         $this->execute($clientId);
     }
 
-    public function it_throws_an_exception_if_client_not_found($clientManager)
+    public function it_throws_an_exception_if_client_not_found($clientManager): void
     {
         $clientId = new ClientId(1);
 

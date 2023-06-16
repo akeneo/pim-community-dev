@@ -61,8 +61,13 @@ class CompleteEvaluationWithImprovableAttributes
         $evaluationResultData = $criterionEvaluation->getResult()->getData();
         $evaluationResultData['attributes_with_rates'] = $this->getAttributesWithRates($completenessResult);
 
+        /**
+         * In some cases the rates of the persisted result are different from the one just calculated (See PIM-10967)
+         * It can happen when the required attributes list of a family has been changed, but the impacted products have not been re-evaluated yet
+         * So we also need to replace the rates to be always accurate with the list of improvable attributes
+         */
         $completedCriterionEvaluationResult = new Read\CriterionEvaluationResult(
-            $criterionEvaluation->getResult()->getRates(),
+            $completenessResult->getRates(),
             $criterionEvaluation->getResult()->getStatus(),
             $evaluationResultData
         );
