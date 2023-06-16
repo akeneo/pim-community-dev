@@ -9,6 +9,10 @@ pim_enrich:
   family:
     info:
       cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
+  attribute_group:
+    remove:
+      attribute_group_with_attribute_cannot_be_removed: El grup d'atributs que conté atributs no es pot eliminar. Si us plau, traieu els seus atributs abans de suprimir-lo.
+      attribute_group_other_cannot_be_removed: El grup d'atributs "altre" no es pot eliminar.
   #Group type
   group_type:
     tab:

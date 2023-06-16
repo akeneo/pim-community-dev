@@ -53,7 +53,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->persist($product);
         $this->objectManager->flush();
 
-        $this->updateIdentifierValues->forProducts([$product]);
         $this->updateIdentifierPrefixesQuery->updateFromProducts([$product]);
 
         $this->objectManager->getConnection()->commit();
@@ -117,7 +116,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $this->updateIdentifierValues->forProducts($products);
         $this->updateIdentifierPrefixesQuery->updateFromProducts($products);
 
         $this->objectManager->getConnection()->commit();

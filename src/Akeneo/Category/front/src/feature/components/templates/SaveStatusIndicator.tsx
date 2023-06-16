@@ -1,11 +1,11 @@
-import {CheckRoundIcon, DangerIcon, EditIcon, LoaderIcon} from 'akeneo-design-system';
-import {useSaveStatusContext} from '../../hooks/useSaveStatusContext';
-import {Status} from '../providers/SaveStatusProvider';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {CheckRoundIcon, DangerIcon, EditIcon, LoaderIcon} from 'akeneo-design-system';
 import styled from 'styled-components';
+import {useSaveStatus} from '../../hooks/useSaveStatus';
+import {Status} from '../providers/SaveStatusProvider';
 
 export const SaveStatusIndicator = () => {
-  const saveStatus = useSaveStatusContext();
+  const saveStatus = useSaveStatus();
   const translate = useTranslate();
 
   switch (saveStatus.globalStatus) {

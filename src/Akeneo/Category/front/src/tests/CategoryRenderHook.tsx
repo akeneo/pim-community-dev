@@ -4,6 +4,7 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {renderHook} from '@testing-library/react-hooks';
 import {mockedDependencies, DependenciesContext} from '@akeneo-pim-community/shared';
+import {MemoryRouter as Router} from 'react-router';
 
 const categoryReactQueryProviders: FC = ({children}) => {
   const queryClient = new QueryClient({
@@ -20,7 +21,9 @@ const categoryReactQueryProviders: FC = ({children}) => {
   return (
     <QueryClientProvider client={queryClient}>
       <DependenciesContext.Provider value={mockedDependencies}>
-        <ThemeProvider theme={pimTheme}>{children}</ThemeProvider>
+        <ThemeProvider theme={pimTheme}>
+          <Router>{children}</Router>
+        </ThemeProvider>
       </DependenciesContext.Provider>
     </QueryClientProvider>
   );
