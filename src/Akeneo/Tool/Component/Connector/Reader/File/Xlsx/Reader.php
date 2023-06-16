@@ -74,11 +74,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('storage')['file_path'];
 
-        if (null === $this->fileIterator) {
-            $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
-            $this->fileIterator->rewind();
-        }
-
         $this->fileIterator->next();
 
         if ($this->fileIterator->valid() && null !== $this->stepExecution) {
@@ -204,14 +199,6 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
         }
     }
 
-    private function createFileIterator(string $filePath): FileIteratorInterface
-    {
-        return $this->fileIteratorFactory->create(
-            $filePath,
-            $this->options
-        );
-    }
-
     public function getState(): array
     {
         return null !== $this->fileIterator ? ['position' => $this->fileIterator->key()] : [];
@@ -227,7 +214,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('storage')['file_path'];
 
-        $this->fileIterator = $this->createFileIterator($filePath);
+        $this->fileIterator = $this->fileIteratorFactory->create($filePath, $this->options);
 
         if (!array_key_exists('position', $this->state)) {
             return;
