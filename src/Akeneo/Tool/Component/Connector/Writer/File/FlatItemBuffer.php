@@ -17,9 +17,6 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
     /** @var array */
     protected $headers = [];
 
-    /** @var int */
-    protected $count = 0;
-
     /**
      * {@inheritdoc}
      */
@@ -31,7 +28,6 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
             }
 
             parent::write($item, $options);
-            $this->count++;
         }
     }
 
@@ -40,7 +36,9 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
      */
     public function count(): int
     {
-        return $this->count;
+        // CONFIDENT
+        $this->file->seek(PHP_INT_MAX);
+        return $this->file->key();
     }
 
     /**
