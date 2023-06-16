@@ -25,20 +25,23 @@ export const EditTemplatePropertiesForm = ({template}: Props) => {
         </Field>
       </FieldContainer>
 
-      {uiLocales && (
-        <>
-          <SectionTitle>
-            <SectionTitle.Title>
-              {translate('akeneo.category.template.properties.label_translations_in_ui_locales')}
-            </SectionTitle.Title>
-          </SectionTitle>
-          <FieldContainer>
-            {uiLocales.map(locale => (
-              <TemplateLabelTranslationInput key={locale.code} locale={locale} template={template} />
-            ))}
-          </FieldContainer>
-        </>
-      )}
+      {
+        uiLocales && (
+            <>
+              <SectionTitle>
+                <SectionTitle.Title>
+                  {translate('akeneo.category.template.properties.label_translations_in_ui_locales')}
+                </SectionTitle.Title>
+              </SectionTitle>
+              <FieldContainer>
+                {uiLocales.map(locale => (
+                  <TemplateLabelTranslationInput key={locale.code} locale={locale} template={template} />
+                ))}
+              </FieldContainer>
+            </>
+          ) &&
+          null /* remove to display section */
+      }
     </>
   );
 };

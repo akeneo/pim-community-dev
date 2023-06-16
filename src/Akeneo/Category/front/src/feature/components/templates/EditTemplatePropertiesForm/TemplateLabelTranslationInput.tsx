@@ -91,7 +91,7 @@ export const TemplateLabelTranslationInput = ({template, locale}: Props) => {
 
   return (
     <Field key={locale.code} locale={locale.code} label={locale.label}>
-      <TextInput value={formData.value} onChange={handleChange} readOnly={true} />
+      <TextInput value={formData.value} onChange={handleChange} />
       {formData.errors.map(message => (
         <Helper level="error" key={message}>
           {message}

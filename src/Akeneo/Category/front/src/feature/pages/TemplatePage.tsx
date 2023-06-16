@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import {useTemplateForm} from '../components/providers/TemplateFormProvider';
 import {DeactivateTemplateModal} from '../components/templates/DeactivateTemplateModal';
 import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm/EditTemplateAttributesForm';
-import {EditTemplatePropertiesForm} from '../components/templates/EditTemplateProperties/EditTemplatePropertiesForm';
+import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm/EditTemplatePropertiesForm';
 import {SaveStatusIndicator} from '../components/templates/SaveStatusIndicator';
 import {TemplateOtherActions} from '../components/templates/TemplateOtherActions';
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
