@@ -148,6 +148,10 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     public function initialize()
     {
         $this->cacheClearer->clear();
+
+        if ($this->familyReader instanceof InitializableInterface) {
+            $this->familyReader->initialize();
+        }
     }
 
     private function isValid(EntityWithFamilyVariantInterface $entityWithFamilyVariant): bool
@@ -182,10 +186,6 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     private function extractFamilyCodes(): array
     {
         $familyCodes = [];
-
-        if ($this->familyReader instanceof InitializableInterface) {
-            $this->familyReader->initialize();
-        }
 
         while (true) {
             try {
