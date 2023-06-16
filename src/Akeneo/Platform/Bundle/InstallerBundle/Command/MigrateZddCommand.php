@@ -85,6 +85,7 @@ final class MigrateZddCommand extends Command
                     $this->markAsMigrated($zddMigration);
                     $migrationCount++;
                 } catch (UcsOnlyMigrationException $e) {
+                    // @todo: Catch to remove when all flexibility clients will be migrated to the UCS platform (see JEL-359)
                     $this->logger->notice(sprintf('The migration %s will be done on UCS platform', $zddMigration->getName()));
                 } catch (\Throwable $e) {
                     $this->logger->error(
