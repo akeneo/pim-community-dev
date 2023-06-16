@@ -21,7 +21,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class PurgeJobExecutionCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:purge-job-execution';
-    protected static $defaultDescription = 'Purge jobs execution older than number of days you want except the last one.
+    protected static $defaultDescription = 'Purge all jobs execution before a given date.
              If the value is equals to 0, it will delete everything. By default 90 days, minimum is 0 day';
 
     private const DEFAULT_NUMBER_OF_DAYS = 90;
