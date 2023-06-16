@@ -1,0 +1,6 @@
+akeneo_data_quality_insights:
+  dqi_dashboard:
+    key_indicators:
+      products: '{1}1 produto|]1, 200[{{ count }} produtos|[200, Inf[mais de {{ count }} produtos'
+  quality_score:
+    title: "Qualidade da pontuação:"
