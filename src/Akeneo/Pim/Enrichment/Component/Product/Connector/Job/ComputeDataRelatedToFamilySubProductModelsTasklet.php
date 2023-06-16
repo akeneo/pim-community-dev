@@ -151,6 +151,10 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
     public function initialize()
     {
         $this->cacheClearer->clear();
+
+        if ($this->familyReader instanceof InitializableInterface) {
+            $this->familyReader->initialize();
+        }
     }
 
     private function countSubProductModels(array $familyCodes): int
@@ -190,10 +194,6 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
     private function extractFamilyCodes(): array
     {
         $familyCodes = [];
-
-        if ($this->familyReader instanceof InitializableInterface) {
-            $this->familyReader->initialize();
-        }
 
         while (true) {
             try {

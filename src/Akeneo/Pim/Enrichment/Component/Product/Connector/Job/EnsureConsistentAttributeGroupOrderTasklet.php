@@ -79,12 +79,12 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
      */
     public function execute()
     {
-        if ($this->attributeGroupReader instanceof TrackableItemReaderInterface) {
-            $this->stepExecution->setTotalItems($this->attributeGroupReader->totalItems());
-        }
-
         if ($this->attributeGroupReader instanceof InitializableInterface) {
             $this->attributeGroupReader->initialize();
+        }
+
+        if ($this->attributeGroupReader instanceof TrackableItemReaderInterface) {
+            $this->stepExecution->setTotalItems($this->attributeGroupReader->totalItems());
         }
 
         while (true) {

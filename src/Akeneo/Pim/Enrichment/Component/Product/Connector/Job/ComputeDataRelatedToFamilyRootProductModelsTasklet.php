@@ -152,6 +152,10 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
     public function initialize()
     {
         $this->cacheClearer->clear();
+
+        if ($this->familyReader instanceof InitializableInterface) {
+            $this->familyReader->initialize();
+        }
     }
 
     /**
@@ -184,10 +188,6 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
     private function extractFamilyCodes(): array
     {
         $familyCodes = [];
-
-        if ($this->familyReader instanceof InitializableInterface) {
-            $this->familyReader->initialize();
-        }
 
         while (true) {
             try {
