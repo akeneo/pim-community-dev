@@ -6,6 +6,8 @@ akeneo.category:
       category_templates: Plantilles de categoria
   attributes: Atributs
   edition_form:
+    error:
+      unhandled_attribute_type: No s'ha pogut trobar el creador de camps d'atributs per al tipus d'atribut "{{ type }}"
     template:
       title: Plantilla
       no_attribute_title: No hi ha cap atribut en aquesta plantilla
@@ -43,11 +45,14 @@ akeneo.category:
         unsaved_changes: Aquests valors no es desaran si sortiu de la pàgina.
     add_attribute:
       no_attribute_title: Crea el teu primer atribut
+      no_attribute_instructions: Definiu el contingut que voleu associar a les vostres categories afegint atributs de text, àrea de text o imatge a aquesta plantilla.
       add_button: Afegeix un atribut
       create_button: Crear atribut
       confirmation_modal:
         section_title: Afegeix un atribut
         title: Crea una nova categoria d'atribut
+        head_helper: Els atributs de categoria s'adjunten a una plantilla. No s'hi pot accedir en altres plantilles.
+        tail_helper: El valor per canal i el valor per configuració regional no es poden canviar un cop creat l'atribut.
         link: Més informació sobre les plantilles de categories.
         create: Crear
         input:
@@ -55,6 +60,7 @@ akeneo.category:
           code: Codi
           type:
             label: Tipus d'atribut
+            empty: No hi ha cap tipus d'atribut disponible
             option_title:
               text: Text
               textarea: Àrea de text
@@ -62,15 +68,36 @@ akeneo.category:
       success:
         notification: Atribut creat correctament
       error:
+        failed: No s'ha pogut afegir l'atribut de la plantilla
         limit_reached:
           title: No podeu afegir més de 50 atributs
+          message: Les plantilles de categoria estan limitades a 50 atributs per plantilla.
     delete_attribute:
+      delete: Eliminar l'atribut de categoria
       confirmation_modal:
         title: Elimina aquest atribut de categoria
+        message: Esteu segur que voleu suprimir l'atribut de categoria anomenat {{ attribute }}?
+        helper: Si suprimiu aquest atribut, se suprimiran permanentment l'atribut i els valors de les categories associades.
+      notification_success:
+        title: 'L''atribut {{ attribute }} s''ha eliminat correctament'
+    deactivate:
+      deactivate_template: Desactiva la plantilla
+      confirmation_modal:
+        title: Desactiva la plantilla de categoria
+        message: Esteu segur que voleu desactivar la plantilla de categoria anomenada {{ template }}?
+        helper: En desactivar aquesta plantilla, se suprimiran permanentment els atributs i els valors de les categories associades.
+        deactivate: Desactiva
+      notification_success:
+        title: 'Plantilla {{ template }} desactivada'
+        message: '{{ template }} s''ha desactivat. S''ha suprimit el contingut de les categories associades.'
     auto-save:
       saved: Desat
       saving: Desant
       editing: Editant
+      errors: Errors no desats
+      error_notification:
+        title: Alguns valors no s'han pogut desar.
+        content: Alguns dels valors que heu introduït sembla que no són vàlids i no s'han pogut desar
   template_list:
     columns:
       header: Etiqueta
@@ -79,6 +106,11 @@ akeneo.category:
   tag:
     new: Nou
   discover_enriched_categories_information:
+    title: Descobriu les categories enriquides
+    content:
+      enrich_attribute_values: Enriquiu qualsevol nivell dels vostres arbres de categories amb atributs de text, àrea de text i imatge
+      customizable_templates: Oferiu l'experiència de producte que desitgeu gràcies a plantilles personalitzables
+      edit_attributes: 'Properament: actualitzeu la configuració de qualsevol d''aquests atributs de categoria'
     survey_link_label: Diguen's el que penses
     learn_more_link_label: Més informació sobre les categories enriquides
   other_actions: Altres accions

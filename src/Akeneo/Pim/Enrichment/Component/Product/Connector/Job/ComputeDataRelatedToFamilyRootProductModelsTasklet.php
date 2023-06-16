@@ -152,6 +152,10 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
     public function initialize()
     {
         $this->cacheClearer->clear();
+
+        if ($this->familyReader instanceof InitializableInterface) {
+            $this->familyReader->initialize();
+        }
     }
 
     /**

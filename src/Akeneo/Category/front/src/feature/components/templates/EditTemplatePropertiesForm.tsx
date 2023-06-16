@@ -1,13 +1,12 @@
-import React, {ReactNode, useCallback, useContext, useMemo} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Template} from '../../models';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
+import {ReactNode, useCallback, useContext} from 'react';
 import styled from 'styled-components';
+import {Template} from '../../models';
 import {EditCategoryContext} from '../providers';
 
 type Props = {
   template: Template;
-  onChangeLabel: (locale: string, label: string) => void;
 };
 
 const FormContainer = styled.div`
@@ -16,7 +15,7 @@ const FormContainer = styled.div`
   }
 `;
 
-const EditTemplatePropertiesForm = ({template, onChangeLabel}: Props) => {
+const EditTemplatePropertiesForm = ({template}: Props) => {
   const translate = useTranslate();
   const {locales, localesFetchFailed} = useContext(EditCategoryContext);
 
@@ -26,11 +25,6 @@ const EditTemplatePropertiesForm = ({template, onChangeLabel}: Props) => {
       return locales[code].label;
     },
     [locales, localesFetchFailed]
-  );
-
-  const handleChange = useMemo(
-    () => (locale: string) => (label: string) => onChangeLabel(locale, label),
-    [onChangeLabel]
   );
 
   if (localesFetchFailed) {
@@ -60,7 +54,6 @@ const EditTemplatePropertiesForm = ({template, onChangeLabel}: Props) => {
         <TextInput
           // readOnly={!isGranted('pim_enrich_product_category_template')}
           readOnly={true}
-          onChange={handleChange(localeCode)}
           value={value}
         />
       </Field>

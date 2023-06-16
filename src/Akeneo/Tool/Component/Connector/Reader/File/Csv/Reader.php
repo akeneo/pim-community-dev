@@ -59,11 +59,10 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
 
     public function totalItems(): int
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $filePath = $jobParameters->get('storage')['file_path'];
-        $iterator = $this->createFileIterator($jobParameters, $filePath);
+        $totalItems = max(iterator_count($this->fileIterator) - 1, 0);
+        $this->fileIterator->rewind();
 
-        return max(iterator_count($iterator) - 1, 0);
+        return $totalItems;
     }
 
     /**

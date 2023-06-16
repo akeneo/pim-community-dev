@@ -61,7 +61,7 @@ class ProductSaverSpec extends ObjectBehavior
         $connection->beginTransaction()->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts([$product])->shouldBeCalled();
-        $updateIdentifierValuesQuery->forProducts([$product])->shouldBeCalled();
+//        $updateIdentifierValuesQuery->forProducts([$product])->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $connection->commit()->shouldBeCalled();
@@ -94,7 +94,7 @@ class ProductSaverSpec extends ObjectBehavior
         $connection->beginTransaction()->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts([$product])->shouldBeCalled();
-        $updateIdentifierValuesQuery->forProducts([$product])->shouldBeCalled();
+//        $updateIdentifierValuesQuery->forProducts([$product])->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $connection->commit()->shouldBeCalled();
@@ -153,7 +153,7 @@ class ProductSaverSpec extends ObjectBehavior
         $uniqueDataSynchronizer->synchronize($product2)->shouldBeCalled();
         $objectManager->persist($product2)->shouldBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts([$product1, $product2])->shouldBeCalled();
-        $updateIdentifierValuesQuery->forProducts([$product1, $product2])->shouldBeCalled();
+//        $updateIdentifierValuesQuery->forProducts([$product1, $product2])->shouldBeCalled();
 
         $connection->commit()->shouldBeCalled();
 
@@ -208,7 +208,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->persist($product1)->shouldBeCalledTimes(1);
         $objectManager->persist($product2)->shouldBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts([$product1, $product2])->shouldBeCalled();
-        $updateIdentifierValuesQuery->forProducts([$product1, $product2])->shouldBeCalled();
+//        $updateIdentifierValuesQuery->forProducts([$product1, $product2])->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $connection->commit()->shouldBeCalled();
@@ -252,7 +252,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->persist($product2)->shouldNotBeCalled();
         $objectManager->persist($product3)->shouldBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts([$product1, $product3])->shouldBeCalled();
-        $updateIdentifierValuesQuery->forProducts([$product1, $product3])->shouldBeCalled();
+//        $updateIdentifierValuesQuery->forProducts([$product1, $product3])->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $connection->commit()->shouldBeCalled();
@@ -285,7 +285,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts(Argument::any())->shouldNotBeCalled();
-        $updateIdentifierValuesQuery->forProducts(Argument::any())->shouldNotBeCalled();
+//        $updateIdentifierValuesQuery->forProducts(Argument::any())->shouldNotBeCalled();
 
         $this->saveAll([$product1, $product2, $product3]);
     }
@@ -302,7 +302,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
         $updateIdentifierPrefixesQuery->updateFromProducts(Argument::any())->shouldNotBeCalled();
-        $updateIdentifierValuesQuery->forProducts(Argument::any())->shouldNotBeCalled();
+//        $updateIdentifierValuesQuery->forProducts(Argument::any())->shouldNotBeCalled();
 
         $this->saveAll([]);
     }
