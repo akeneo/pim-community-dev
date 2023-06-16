@@ -45,31 +45,32 @@ class ProductSaverIntegration extends TestCase
         $this->assertSame($expectedRawValues, $rawValues);
     }
 
-    public function test_it_stores_product_identifier_values(): void
-    {
-        $this->createIdentifierAttribute('ean');
-
-        $product = new Product();
-        $sku = IdentifierValue::value('sku', true, 'sku-product-1');
-        $ean = IdentifierValue::value('ean', false, '0123456789');
-        $product->addValue($sku);
-        $product->addValue($ean);
-        $this->saveProduct($product);
-        Assert::assertEqualsCanonicalizing(
-            ['sku#sku-product-1', 'ean#0123456789'],
-            $this->getIdentifierValues($product->getUuid())
-        );
-
-        $product->removeValue($sku);
-        $otherProduct = new Product();
-        $this->get('pim_catalog.saver.product')->saveAll([$product, $otherProduct]);
-
-        Assert::assertEqualsCanonicalizing(
-            ['ean#0123456789'],
-            $this->getIdentifierValues($product->getUuid())
-        );
-        Assert::assertSame([], $this->getIdentifierValues($otherProduct->getUuid()));
-    }
+//    TODO CPM-1102: Re-enable when identifiers are added back
+//    public function test_it_stores_product_identifier_values(): void
+//    {
+//        $this->createIdentifierAttribute('ean');
+//
+//        $product = new Product();
+//        $sku = IdentifierValue::value('sku', true, 'sku-product-1');
+//        $ean = IdentifierValue::value('ean', false, '0123456789');
+//        $product->addValue($sku);
+//        $product->addValue($ean);
+//        $this->saveProduct($product);
+//        Assert::assertEqualsCanonicalizing(
+//            ['sku#sku-product-1', 'ean#0123456789'],
+//            $this->getIdentifierValues($product->getUuid())
+//        );
+//
+//        $product->removeValue($sku);
+//        $otherProduct = new Product();
+//        $this->get('pim_catalog.saver.product')->saveAll([$product, $otherProduct]);
+//
+//        Assert::assertEqualsCanonicalizing(
+//            ['ean#0123456789'],
+//            $this->getIdentifierValues($product->getUuid())
+//        );
+//        Assert::assertSame([], $this->getIdentifierValues($otherProduct->getUuid()));
+//    }
 
     /**
      * {@inheritdoc}

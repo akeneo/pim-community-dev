@@ -1,8 +1,10 @@
 pim_api:
   acl:
     attribute:
+      edit: Experimente os atributos Criar e também atualizar
       list: Listar atributos
     attribute_group:
+      edit: Tente criar e atualizar grupos de atributos
       list: Listar grupos de atributos
     category:
       list: Listar categorias

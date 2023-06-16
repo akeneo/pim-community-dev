@@ -1,139 +1,30 @@
-import {Button, Checkbox, Field, Helper, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
-import {Attribute} from '../../models';
-import {
-  LabelCollection,
-  NotificationLevel,
-  useFeatureFlags,
-  useNotify,
-  userContext,
-  useTranslate,
-} from '@akeneo-pim-community/shared';
+import {useTranslate, userContext} from '@akeneo-pim-community/shared';
+import {Button, Checkbox, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
-import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
-import {getLabelFromAttribute} from '../attributes';
+import {useCatalogActivatedLocales} from '../../hooks/useCatalogActivatedLocales';
 import {useCatalogLocales} from '../../hooks/useCatalogLocales';
-import React, {useContext} from 'react';
-import {BadRequestError} from '../../tools/apiFetch';
-import {useDebounceCallback} from '../../tools/useDebounceCallback';
-import {useQueryClient} from 'react-query';
-import {useSaveStatusContext} from '../../hooks/useSaveStatusContext';
-import {Status} from '../providers/SaveStatusProvider';
-import {CanLeavePageContext} from '../providers';
+import {Attribute} from '../../models';
+import {getLabelFromAttribute} from '../attributes';
+import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
+import {LabelTranslationInput} from './LabelTranslationInput';
+import {OptionRichTextEditorCheckbox} from './OptionRichTextEditorCheckbox';
 
 type Props = {
   attribute: Attribute;
-  activatedCatalogLocales: string[];
-  translationsFormData: LabelCollection;
-  onTranslationsChange: (locale: string, value: string) => void;
-  translationErrors: {[locale: string]: string[]} | {};
-  onTranslationErrorsChange: (locale: string, errors: string[]) => void;
-  onChangeFormStatus: (attributeUuid: string, inError: boolean) => void;
 };
 
-type ResponseError = {
-  error: {
-    property: string;
-    message: string;
-  };
-};
-
-type ApiResponseError = ResponseError[];
-
-export const AttributeSettings = ({
-  attribute,
-  activatedCatalogLocales,
-  translationsFormData,
-  onTranslationsChange,
-  translationErrors,
-  onTranslationErrorsChange,
-  onChangeFormStatus,
-}: Props) => {
+export const AttributeSettings = ({attribute}: Props) => {
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
+
+  const activatedCatalogLocales = useCatalogActivatedLocales();
   const catalogLocales = useCatalogLocales();
-  const featureFlag = useFeatureFlags();
-  const updateTemplateAttribute = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
-  const saveStatusContext = useSaveStatusContext();
-  const notify = useNotify();
 
   const [
     isDeactivateTemplateAttributeModalOpen,
     openDeactivateTemplateAttributeModal,
     closeDeactivateTemplateAttributeModal,
   ] = useBooleanState(false);
-  const displayError = (errorMessages: string[], key: string) => {
-    return errorMessages.map(message => {
-      return (
-        <Helper level="error" key={key}>
-          {message}
-        </Helper>
-      );
-    });
-  };
-
-  const queryClient = useQueryClient();
-
-  const {setCanLeavePage, setLeavePageMessage} = useContext(CanLeavePageContext);
-  const updateCanLeavePageStatuses = (saved: boolean) => {
-    if (saveStatusContext.globalStatus !== Status.ERRORS) {
-      setCanLeavePage(saved);
-      setLeavePageMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
-    }
-  };
-  
-  const handleRichTextAreaChange = async () => {
-    updateCanLeavePageStatuses(false);
-    await updateTemplateAttribute({isRichTextArea: !(attribute.type === 'richtext')});
-    updateCanLeavePageStatuses(true);
-    await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
-  };
-  const debouncedUpdateTemplateAttribute = useDebounceCallback(
-    (attributeUuid: string, locale: string, value: string) => {
-      saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVING);
-      updateTemplateAttribute({labels: {[locale]: value}})
-        .then(() => {
-          if (undefined !== translationErrors && translationErrors[locale]) {
-            delete translationErrors[locale];
-            onTranslationErrorsChange(locale, []);
-            onChangeFormStatus(attributeUuid, Object.keys(translationErrors).length !== 0);
-          }
-          saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.SAVED);
-          updateCanLeavePageStatuses(true);
-        })
-        .catch((error: BadRequestError<ApiResponseError>) => {
-          saveStatusContext.handleStatusListChange(buildStatusId(attribute.uuid, locale), Status.ERRORS);
-          setCanLeavePage(false);
-          setLeavePageMessage(
-              `${translate('akeneo.category.template.attribute.settings.error_message')}\n${translate(
-                  'akeneo.category.template.attribute.settings.unsaved_changes'
-              )}`
-          );
-          const errors = error.data.reduce((accumulator: {[key: string]: string[]}, currentError: ResponseError) => {
-            accumulator[currentError.error.property] = [currentError.error.message];
-
-            return accumulator;
-          }, {});
-          onTranslationErrorsChange(locale, errors[locale]);
-          onChangeFormStatus(attributeUuid, true);
-          notify(
-            NotificationLevel.ERROR,
-            translate('akeneo.category.template.auto-save.error_notification.title'),
-            translate('akeneo.category.template.auto-save.error_notification.content')
-          );
-        });
-    },
-    300
-  );
-  const handleTranslationChange = (locale: string, value: string) => {
-    onTranslationsChange(locale, value);
-    updateCanLeavePageStatuses(false);
-    debouncedUpdateTemplateAttribute(attribute.uuid, locale, value);
-  };
-
-  const buildStatusId = (attributeUuid: string, locale: string) => {
-    return attributeUuid + '_' + locale;
-  };
 
   return (
     <SettingsContainer>
@@ -142,69 +33,38 @@ export const AttributeSettings = ({
           {attributeLabel} {translate('akeneo.category.template.attribute.settings.title')}
         </SectionTitle.Title>
       </SectionTitle>
+
       <SectionTitle>
         <SectionTitle.Title level="secondary">
           {translate('akeneo.category.template.attribute.settings.options.title')}
         </SectionTitle.Title>
       </SectionTitle>
-      <OptionsContainer>
-        {['textarea', 'richtext'].includes(attribute.type) && (
-          <OptionField
-            checked={attribute.type === 'richtext'}
-            onChange={handleRichTextAreaChange}
-            readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
-          >
-            {translate('akeneo.category.template.attribute.settings.options.rich_text')}
-          </OptionField>
-        )}
-        <OptionField checked={attribute.is_localizable} readOnly={true}>
+      <FieldContainer>
+        <OptionRichTextEditorCheckbox attribute={attribute} />
+        <Checkbox checked={attribute.is_localizable} readOnly={true}>
           {translate('akeneo.category.template.attribute.settings.options.value_per_locale')}
-        </OptionField>
-        <OptionField checked={attribute.is_scopable} readOnly={true}>
+        </Checkbox>
+        <Checkbox checked={attribute.is_scopable} readOnly={true}>
           {translate('akeneo.category.template.attribute.settings.options.value_per_channel')}
-        </OptionField>
-      </OptionsContainer>
+        </Checkbox>
+      </FieldContainer>
+
       <SectionTitle>
         <SectionTitle.Title level="secondary">
           {translate('akeneo.category.template.attribute.settings.translations.title')}
         </SectionTitle.Title>
       </SectionTitle>
-      <div>
-        {activatedCatalogLocales.map((activatedLocaleCode, index) => {
-          let fieldValue = '';
-          if (translationsFormData != undefined && translationsFormData[activatedLocaleCode] != undefined) {
-            fieldValue = translationsFormData[activatedLocaleCode];
-          } else if (attribute.labels[activatedLocaleCode] != undefined) {
-            fieldValue = attribute.labels[activatedLocaleCode];
-          }
-          return (
-            <TranslationField
-              label={
-                catalogLocales?.find(catalogLocale => catalogLocale.code === activatedLocaleCode)?.label ||
-                activatedLocaleCode
-              }
-              locale={activatedLocaleCode}
-              key={activatedLocaleCode}
-            >
-              <TextInput
-                readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
-                onChange={(newValue: string) => {
-                  saveStatusContext.handleStatusListChange(
-                    buildStatusId(attribute.uuid, activatedLocaleCode),
-                    Status.EDITING
-                  );
-                  handleTranslationChange(activatedLocaleCode, newValue);
-                }}
-                invalid={translationErrors !== undefined && !!translationErrors[activatedLocaleCode]}
-                value={fieldValue}
-              ></TextInput>
-              {translationErrors !== undefined &&
-                translationErrors[activatedLocaleCode] &&
-                displayError(translationErrors[activatedLocaleCode], activatedLocaleCode)}
-            </TranslationField>
-          );
-        })}
-      </div>
+      <FieldContainer>
+        {activatedCatalogLocales?.map(localeCode => (
+          <LabelTranslationInput
+            key={localeCode}
+            attribute={attribute}
+            localeCode={localeCode}
+            label={catalogLocales?.find(catalogLocale => catalogLocale.code === localeCode)?.label || localeCode}
+          />
+        ))}
+      </FieldContainer>
+
       <Footer>
         <Button level="danger" ghost onClick={openDeactivateTemplateAttributeModal}>
           {translate('akeneo.category.template.attribute.delete_button')}
@@ -229,16 +89,11 @@ const SettingsContainer = styled.div`
   overflow-y: auto;
 `;
 
-const OptionsContainer = styled.div`
+const FieldContainer = styled.div`
   margin-bottom: 15px;
-`;
-
-const OptionField = styled(Checkbox)`
-  margin: 10px 0 0 0;
-`;
-
-const TranslationField = styled(Field)`
-  margin: 20px 0 0 0;
+  & > * {
+    margin: 10px 0 0 0;
+  }
 `;
 
 const Footer = styled.div`

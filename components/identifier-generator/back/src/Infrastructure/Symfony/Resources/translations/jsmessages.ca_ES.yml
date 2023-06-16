@@ -9,6 +9,7 @@ pim_error:
   unexpected: "Error inesperat. Contacti amb el seu administrador de sistemes."
   404: 'Error 404...'
   identifier_generator_not_found: 'No s''ha trobat el generador d''identificadors'
+  selection_attribute_not_found: 'S''ha suprimit un atribut de la selecció de productes del vostre catàleg. Si us plau, elimineu aquesta propietat de la vostra selecció de productes.'
 pim_identifier_generator:
   create:
     form:
@@ -39,15 +40,25 @@ pim_identifier_generator:
   list:
     identifier: 'Identificador'
     first_generator: 'Crea el teu primer generador d''identificador!'
+    read_only_list: 'Poseu-vos en contacte amb el vostre administrador per tenir accés a aquesta funció.'
     helper:
       title: 'Automatitzar la generació d''identificadors.'
       info: 'Un cop creat un generador d''identificadors, s''assignarà automàticament un identificador a cada producte nou que creeu.'
     check_help_center: 'Consulteu el nostre centre d''ajuda per obtenir més informació.'
+    max_generator:
+      title: 'Heu arribat al límit de {{ count }} generadors d''identificadors.'
     confirmation: 'Està segur que vol suprimir aquesta propietat?'
+  operators:
+    'NOT IN CHILDREN': 'No als fills'
+    'IN CHILDREN': 'Als fills'
+    UNCLASSIFIED: 'Sense classificar'
+    CLASSIFIED: 'Classificat'
   selection:
+    limit_reached: 'Heu assolit el límit de {{ count }} condicions'
     helper:
       title: 'Afegiu condicions a la vostra selecció de productes, si voleu:'
       automate: 'automatitzar la creació d''identificadors per a una selecció específica de productes'
+      multiple: 'tenen múltiples estructures d''identificadors per a diferents selecció de productes'
     empty:
       title: 'Creeu la vostra selecció de productes'
       text: 'Tots els vostres productes amb un identificador buit es veuran afectats.'
@@ -60,11 +71,14 @@ pim_identifier_generator:
         placeholder: 'Seleccioneu almenys una família'
       select_option:
         placeholder: 'Seleccioneu almenys una opció'
+      categories:
+        tree: Arbre
   structure:
     helper: 'Definiu l''estructura dels identificadors de producte que voleu generar. Si necessiteu ajuda per configurar la configuració de la propietat, {{link}}.'
     helper_link: 'consulteu el nostre centre d''ajuda per obtenir més informació'
     title: 'Estructura d''identificació'
     add_element: 'Afegeix una nova propietat'
+    limit_reached: 'Heu assolit el límit de {{ count }} propietats'
     property_type:
       sections:
         system: 'Sistema'
@@ -85,8 +99,15 @@ pim_identifier_generator:
         type:
           truncate: 'Utilitza els primers caràcters'
           code: 'Utilitzeu tot el codi'
+          nomenclature: 'Utilitza la teva pròpia nomenclatura'
       operator:
+        title: 'Operador'
         placeholder: 'Selecciona l''operador'
+      simple_select:
+        title: 'Atribut'
+      abbrev_type: 'Definiu el format d''aquesta propietat'
+      abbrev_type_empty_label: 'Seleccioneu el format'
+      chars_number: 'Nombre de caràcters'
     empty:
       title: 'Creeu la vostra estructura d''identificador'
       text: 'Feu clic a "Afegeix una nova propietat" a la part superior dreta'
@@ -102,9 +123,24 @@ pim_identifier_generator:
     confirmation: 'Esteu segur que voleu eliminar aquest generador d''identificador?'
     type: 'Si us plau, escriu "{{ code }}"'
   nomenclature:
+    edit: 'Edita la nomenclatura'
+    section_title: 'Generant identificadors per a {{ property }}'
+    title: 'Gestiona la nomenclatura'
+    helper: 'Tots els vostres generadors d''identificadors comparteixen les vostres nomenclatures.'
+    characters_number: 'Nombre de caràcters'
     operator_placeholder: 'Tria el teu operador'
+    value_placeholder: 'Tria els teus caràcters'
+    nomenclature: 'Nomenclatura'
+    generate_if_empty: 'Genera nomenclatura automàticament'
     display: 'Mostra'
     filters:
       all: 'Tot'
       error: 'Error'
       empty: 'Buit'
+      filled: 'Emplenat'
+    empty:
+      title: 'No s''han trobat nomenclatures'
+    flash:
+      success: 'La nomenclatura s''ha desat correctament'
+      error: 'La nomenclatura no s''ha desat'
+      warning: 'La vostra nomenclatura s''ha desat correctament, però alguns valors no es generaran. Editeu la vostra nomenclatura per modificar els valors per error.'

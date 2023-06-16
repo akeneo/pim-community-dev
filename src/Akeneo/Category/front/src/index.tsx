@@ -1,13 +1,13 @@
+import {MicroFrontendDependenciesProvider, Routes} from '@akeneo-pim-community/shared';
+import {pimTheme} from 'akeneo-design-system';
 import React, {StrictMode} from 'react';
 import ReactDOM from 'react-dom';
+import {Route, HashRouter as Router, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
-import {pimTheme} from 'akeneo-design-system';
-import {MicroFrontendDependenciesProvider, Routes, translate} from '@akeneo-pim-community/shared';
-import {routes} from './routes.json';
-import {CategoriesApp} from './feature';
-import {ConfigurationProvider, Page as ConfigurationPage} from './configuration';
 import {FakePIM} from './FakePIM';
-import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import {Page as ConfigurationPage, ConfigurationProvider} from './configuration';
+import {CategoriesApp} from './feature';
+import {routes} from './routes.json';
 
 ReactDOM.render(
   <StrictMode>
@@ -22,8 +22,8 @@ ReactDOM.render(
                 </Route>
                 <Route path="/">
                   <CategoriesApp
-                    setCanLeavePage={() => true}
-                    setLeavePageMessage={() => translate('akeneo.category.edition_form.unsaved_changes')}
+                    setCanLeavePage={canLeavePage => console.debug('Can leave page:', canLeavePage)}
+                    setLeavePageMessage={leavePageMessage => console.debug('Leave page message:', leavePageMessage)}
                   />
                 </Route>
               </Switch>

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\Processor;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -23,21 +25,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UserProcessor extends Processor
 {
-    private DatagridViewRepositoryInterface $gridViewRepository;
-    private FileStorerInterface $fileStorer;
-
+    /**
+     * @param array<string> $ignoredFields
+     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
-        DatagridViewRepositoryInterface $gridViewRepository,
-        FileStorerInterface $fileStorer
+        private readonly DatagridViewRepositoryInterface $gridViewRepository,
+        private readonly FileStorerInterface $fileStorer,
+        private readonly JobRepositoryInterface $jobRepository,
+        private readonly array $ignoredFields,
     ) {
         parent::__construct($repository, $factory, $updater, $validator, $objectDetacher);
-        $this->gridViewRepository = $gridViewRepository;
-        $this->fileStorer = $fileStorer;
     }
 
     /**
@@ -48,6 +50,19 @@ class UserProcessor extends Processor
         if ($item['password'] ?? null) {
             $this->skipItemWithMessage($item, 'Passwords cannot be imported via flat files');
         }
+        $ignoredFieldsPresent = array_intersect(array_keys($item), $this->ignoredFields);
+        if ($ignoredFieldsPresent) {
+            $ignoreFieldsString = implode(', ', $ignoredFieldsPresent);
+            $warning = new Warning(
+                $this->stepExecution,
+                "The field(s) [ %ignoredFields% ] has been ignored",
+                [ '%ignoredFields%' => $ignoreFieldsString ],
+                $item
+            );
+            $this->jobRepository->addWarning($warning);
+        }
+
+        $item = array_diff_key($item, array_flip($this->ignoredFields));
 
         if (isset($item['avatar']['filePath'])) {
             try {

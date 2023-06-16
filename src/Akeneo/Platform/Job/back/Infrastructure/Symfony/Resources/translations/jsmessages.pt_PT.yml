@@ -1,0 +1,4 @@
+akeneo_job_process_tracker:
+  automation_filter:
+    yes: Yes
+    no: No
