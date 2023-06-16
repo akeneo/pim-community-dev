@@ -1,11 +1,10 @@
-import React from 'react';
-import {act, screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared/lib/tests';
-import {QueryClient, QueryClientProvider} from 'react-query';
+import { renderWithProviders } from '@akeneo-pim-community/shared/lib/tests';
+import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Attribute, CategoryAttributeType} from '../../../models';
-import {AttributeList} from './AttributeList';
-import {TemplateFormProvider} from '../../providers/TemplateFormProvider';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { Attribute } from '../../../models';
+import { TemplateFormProvider } from '../../providers/TemplateFormProvider';
+import { AttributeList } from './AttributeList';
 
 const queryClient = new QueryClient();
 

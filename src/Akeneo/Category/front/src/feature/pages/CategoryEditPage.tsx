@@ -184,7 +184,7 @@ const CategoryEditPage: FC = () => {
     );
   }
   const templateHasAttribute = () => {
-    return template?.attributes.length != 0;
+    return template?.attributes.length !== 0;
   };
 
   return (
