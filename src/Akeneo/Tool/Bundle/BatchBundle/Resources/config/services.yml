@@ -40,6 +40,14 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener, lazy: true }
 
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\PauseJobOnSigtermSubscriber:
+        arguments:
+            - '@feature_flags'
+            - '@logger'
+            - '@akeneo_batch.query.update_job_execution_status'
+        tags:
+            - { name: kernel.event_subscriber }
+
     akeneo_batch.mail_notifier:
         class: '%akeneo_batch.mail_notifier.class%'
         arguments:
@@ -129,6 +137,7 @@ services:
             - '@akeneo_batch.logger.batch_log_handler'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job.job_registry'
+            - '@feature_flags'
 
     Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface:
         class: Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandler

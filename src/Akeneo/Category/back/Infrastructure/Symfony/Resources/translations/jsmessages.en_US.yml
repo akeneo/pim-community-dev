@@ -42,6 +42,8 @@ akeneo.category:
                     rich_text: Rich Text Editor
                 translations:
                     title: Label translations
+                error_message: There are invalid values on the page.
+                unsaved_changes: Those values will not be saved if you leave the page.
         add_attribute:
             no_attribute_title: Create your first attribute
             no_attribute_instructions: Define the content you want to associate to your categories by adding Text, Text Area or Image attributes to this template.
@@ -80,15 +82,23 @@ akeneo.category:
             notification_success:
                 title: '{{ attribute }} attribute successfully deleted'
         deactivate:
-            deactivate_template: Deactivate template
+            deactivate_template: Delete template
             confirmation_modal:
-                title: Deactivate category template
-                message: Are you sure you want to deactivate the category template named {{ template }}?
-                helper: Deactivating this template will permanently delete the attributes and values of the associated categories.
-                deactivate: Deactivate
+                title: Delete category template
+                message: Are you sure you want to delete the category template named {{ template }}?
+                helper: Deleting this template will permanently delete the attributes and values of the associated categories.
+                deactivate: Delete
             notification_success:
-                title: '{{ template }} template deactivated'
-                message: '{{ template }} has been deactivated. The content of the associated categories has been deleted.'
+                title: '{{ template }} template deleted'
+                message: '{{ template }} has been deleted. The content of the associated categories has been deleted.'
+        auto-save:
+            saved: Saved
+            saving: Saving
+            editing: Editing
+            errors: Errors not saved
+            error_notification:
+                title: Some values could not be saved.
+                content: Some of the values you entered seems to be invalid and could not be saved
 
     template_list:
         columns:
@@ -104,7 +114,6 @@ akeneo.category:
         content:
             enrich_attribute_values: Enrich any level of your Category Trees with Text, Text Area, and Image attributes
             customizable_templates: Offer the Product Experience you wish thanks to customizable templates
-            edit_attributes: 'Coming soon: update the settings of any of those category attributes'
         survey_link_label: Tell us what you think
         learn_more_link_label: Learn more about Enriched Categories
 

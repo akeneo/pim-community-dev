@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import {useTranslate} from '@akeneo-pim-community/shared';
+import {useState} from 'react';
 import styled from 'styled-components';
 import {Attribute} from '../../models';
 import {AttributeList} from './AttributeList';
 import {AttributeSettings} from './AttributeSettings';
-import {useTranslate} from '@akeneo-pim-community/shared';
 import {NoTemplateAttribute} from './NoTemplateAttribute';
-import {useCatalogActivatedLocales} from '../../hooks/useCatalogActivatedLocales';
 
 interface Props {
   attributes: Attribute[];
@@ -14,13 +13,10 @@ interface Props {
 
 export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
   const translate = useTranslate();
+
   const [selectedAttributeUuid, setSelectedAttributeUuid] = useState<string | null>(null);
-  const locales = useCatalogActivatedLocales();
   const handleAttributeSelection = (attribute: Attribute) => {
     setSelectedAttributeUuid(attribute.uuid);
-  };
-  const getSelectedAttribute = () => {
-    return attributes.find(attribute => attribute.uuid === selectedAttributeUuid) ?? attributes[0];
   };
 
   if (attributes.length === 0) {
@@ -33,16 +29,19 @@ export const EditTemplateAttributesForm = ({attributes, templateId}: Props) => {
       />
     );
   }
+
+  const selectedAttribute = attributes.find(attribute => attribute.uuid === selectedAttributeUuid) || attributes[0];
+
   return (
     <FormContainer>
       <Attributes>
         <AttributeList
           attributes={attributes}
-          selectedAttribute={getSelectedAttribute()}
+          selectedAttribute={selectedAttribute}
           templateId={templateId}
           onAttributeSelection={handleAttributeSelection}
         />
-        {locales && <AttributeSettings attribute={getSelectedAttribute()} activatedCatalogLocales={locales} />}
+        <AttributeSettings key={selectedAttribute.uuid} attribute={selectedAttribute} />
       </Attributes>
     </FormContainer>
   );

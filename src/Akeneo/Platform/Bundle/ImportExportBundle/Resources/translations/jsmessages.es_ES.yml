@@ -188,6 +188,8 @@ pim_import_export:
           placeholder: Introduzca su contraseña
         public_key:
           label: Clave pública
+          button_title: Copiar en el portapapeles
+          copy_notification_success: Clave pública copiada al portapapeles
         login_type:
           label: Método de autenticación
           password: Usuario y contraseña
@@ -235,6 +237,8 @@ pim_import_export:
     6: Fallido
     7: Abandonado
     8: Desconocido
+    9: Pausando
+    10: Pausada
   job_status:
     COMPLETED: Finalizado
     STARTING: Iniciando
@@ -244,6 +248,8 @@ pim_import_export:
     FAILED: Fallido
     ABANDONED: Abandonado
     UNKNOWN: Desconocido
+    PAUSING: Pausando
+    PAUSED: Pausada
   tracking:
     completed: "Tiempo empleado: {{ duration }}"
     in_progress: "Tiempo restante estimado: {{ duration }}"

@@ -38,8 +38,9 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps: 接続済みのアプリ
   akeneo_connectivity_connection_connect_connected_apps_edit: アプリの設定
   akeneo_connectivity_connection_connect_connected_apps_delete: アプリの削除
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: テストアプリを作成
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: テストアプリを削除
+  akeneo_connectivity_connection_connect_connected_apps_regenerate_secret: 認証情報を再生成
+  akeneo_connectivity_connection_connect_custom_apps_create: カスタムアプリの作成
+  akeneo_connectivity_connection_connect_custom_apps_delete: カスタムアプリの削除
   akeneo_connectivity_connection_connect_connected_apps_open: アプリを開く
   akeneo_connectivity_connection_connect_connected_apps_catalogs_edit: カタログの編集
 akeneo_connectivity.connection:
@@ -73,51 +74,9 @@ akeneo_connectivity.connection:
         empty: お使いのバージョンと互換性のあるアプリがありません
       unreachable: App Store に接続できません。後でもう一度確認してください。
       scroll_to_top: 上までスクロール
-      test_apps:
-        title: マイテストアプリ
+      custom_apps:
+        title: 自分のカスタムアプリ
         removed_user: 削除済みのユーザー
-        create_a_test_app: テストアプリを作成
-        modal:
-          subtitle: テストアプリを作成
-          app_information:
-            title: アプリ情報
-            description: ヘルプが必要な場合は、記事をご確認ください
-            link: アプリを公開する前にテストする方法
-            fields:
-              name: 名前
-              activate_url: 有効化URL
-              callback_url: コールバックURL
-          credentials:
-            title: 認証情報
-            warning: これらの資格情報はここで一度だけ表示されるため、どこかに保存するようにしてください。
-            client_id: クライアントID
-            client_secret: クライアントシークレット
-        errors:
-          page_not_found: ページが見つかりません
-          creation:
-            name:
-              min_length: テストアプリの名前が長すぎます。3文字以上である必要があります。
-              max_length: テストアプリの名前が長すぎます。255文字以下である必要があります。
-              not_blank: テストアプリの名前は必須です。
-            client_id:
-              max_length: テストアプリのクライアントIDが長すぎます。36文字以下である必要があります。
-              not_blank: クライアントIDは必須です。
-            activate_url:
-              max_length: テストアプリの有効化URLが長すぎます。255文字以下である必要があります。
-              must_be_url: 有効化URLは有効なURLである必要があります。
-              not_blank: 有効化URLは必須です。
-            callback_url:
-              max_length: テストアプリのコールバックURLが長すぎます。255文字以下である必要があります。
-              must_be_url: コールバックURLは有効なURLである必要があります。
-              not_blank: コールバックURLは必須です。
-        delete:
-          subtitle: アプリ
-          title: 削除を確認
-          description: このPIMからテストアプリを削除しようとしています。
-          warning: 削除を確認すると、App Store ページのテストアプリと関連する接続済みのアプリが削除されます。
-          flash:
-            success: テストアプリが正常に削除されました。
-            error: 申し訳ございません、テストアプリを削除中にエラーが発生しました。
     connected_apps:
       list:
         apps:
@@ -128,8 +87,8 @@ akeneo_connectivity.connection:
           marketplace_link_anchor: App Store
           at_least_one_is_not_listed_on_the_appstore: 一部の接続済みのアプリにご使用の PIM バージョンと互換性がないか、Akeneo App Store に存在しないものがあります。詳しくは、お問い合わせください。
           pending_apps: 一部のアプリが PIM に接続されていません。
-        test_apps:
-          title: マイテストアプリ
+        custom_apps:
+          title: 自分の接続済みのカスタムアプリ
           removed_user: 削除済みのユーザー
         helper:
           title: '[0,1] PIMは {{ count }} 個のアプリに接続されています。|[2,Inf] PIMは {{ count }} 個のアプリに接続されています。'
@@ -171,6 +130,22 @@ akeneo_connectivity.connection:
             information_link_anchor: ヘルプセンターの記事
             openid_only: このアプリは Akeneo App 認証を使用し、個人データは使用しません。
           pending: このアプリは PIM に接続されていません。アプリを開くと接続問題は解決されるはずです。解決しない場合は、アプリのサポートにお問い合わせください。
+          credentials:
+            title: 認証情報
+            client_id: クライアントID
+            client_secret: クライアントシークレット
+            regenerate_button: 再生成
+            regenerate_secret:
+              flash_error: 申し訳ございません、接続の非公開を再生成中にエラーが発生しました。
+              confirm:
+                title: 再生成を確認
+                description: シークレットを再生成すると、PIMとのカスタムアプリ接続に影響します。本当に続行しますか？
+                regenerate_button: 再生成
+                cancel_button: キャンセル
+              new_credentials:
+                title: 新しい認証情報
+                subtitle: 認証情報を再生成
+                done_button: 完了
         error_monitoring:
           error: エラーが発生しました！
           helper:
@@ -295,6 +270,52 @@ akeneo_connectivity.connection:
           must_be_url: redirect_uriは有効なURLではありません。
         scope:
           too_long: スコープリストに1000文字以上を含めることはできません。
+    custom_apps:
+      creation_limit_reached: カスタムアプリ20個の制限に達しました。
+      create_button: アプリを作成
+      create_modal:
+        subtitle: カスタムアプリの作成
+        app_information:
+          title: アプリ情報
+          description: ヘルプが必要な場合は、記事をご確認ください
+          link: アプリを公開する前にテストする方法
+          fields:
+            name: 名前
+            activate_url: 有効化URL
+            callback_url: コールバックURL
+          field_placeholder:
+            name: アプリ名を定義
+            activate_url: 有効化URLを入力
+            callback_url: コールバックURLを入力
+        credentials:
+          title: 認証情報
+          client_id: クライアントID
+          client_secret: クライアントシークレット
+        errors:
+          limit_reached: カスタムアプリは20個まで作成できます。
+          name:
+            min_length: アプリの名前が短すぎます。3文字以上である必要があります。
+            max_length: アプリの名前が長すぎます。255文字以下である必要があります。
+            not_blank: アプリの名前は必須です。
+          client_id:
+            max_length: アプリのクライアントIDが長すぎます。36文字以下である必要があります。
+            not_blank: クライアントIDは必須です。
+          activate_url:
+            max_length: アプリの有効化URLが長すぎます。255文字以下である必要があります。
+            must_be_url: 有効化URLは有効なURLである必要があります。
+            not_blank: 有効化URLは必須です。
+          callback_url:
+            max_length: アプリのコールバックURLが長すぎます。255文字以下である必要があります。
+            must_be_url: コールバックURLは有効なURLである必要があります。
+            not_blank: コールバックURLは必須です。
+      delete_modal:
+        subtitle: カスタムアプリの削除
+        title: 削除を確認
+        description: このPIMからアプリを削除しようとしています。
+        warning: 削除を確定すると、App Storeページのアプリと関連する接続済みのアプリが削除されます。
+        flash:
+          success: カスタムアプリは正常に削除されました。
+          error: 申し訳ございません、カスタムアプリを削除中にエラーが発生しました。
   connections: 接続
   secondary_actions:
     title: その他の操作
@@ -595,7 +616,10 @@ pim_notification:
   types:
     connected_app_authorizations: 接続済みアプリの承認
     disabled_catalog: アプリカタログは無効になっています
+    attribute_removed: アプリカタログに影響しました
   connected_app_authorizations:
     button_label: アプリを開く
   disabled_catalog:
+    button_label: カタログ設定
+  attribute_removed:
     button_label: カタログ設定

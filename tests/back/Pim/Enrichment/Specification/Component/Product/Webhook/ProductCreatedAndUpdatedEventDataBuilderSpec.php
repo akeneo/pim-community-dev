@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductV
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
@@ -98,9 +99,11 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     }
 
     public function it_builds_a_bulk_event_of_product_created_and_updated_event(
-        GetConnectorProducts $getConnectorProductsQuery
+        GetConnectorProducts $getConnectorProductsQuery,
+        AttributeRepositoryInterface $attributeRepository
     ): void {
         $context = new Context('ecommerce_0000', 10, false);
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
 
         $blueJeanUuid = Uuid::uuid4();
         $blueJeanEvent = new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
@@ -162,10 +165,12 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         Assert::assertEquals($expectedCollection, $collection);
     }
 
-    public function it_builds_a_bulk_event_of_product_created_and_updated_event_if_a_product_as_been_removed(
-        GetConnectorProducts $getConnectorProductsQuery
+    public function it_builds_a_bulk_event_of_product_created_and_updated_event_if_a_product_has_been_removed(
+        GetConnectorProducts $getConnectorProductsQuery,
+        AttributeRepositoryInterface $attributeRepository
     ): void {
         $context = new Context('ecommerce_0000', 10, false);
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
 
         $blueJeanUuid = Uuid::uuid4();
         $productList = new ConnectorProductList(1, [

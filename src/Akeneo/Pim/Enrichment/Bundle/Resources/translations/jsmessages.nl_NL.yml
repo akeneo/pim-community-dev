@@ -2,6 +2,7 @@ pim_notification:
   types:
     settings: Instellingen
     mass_delete: Verwijderen
+    attribute_mass_delete: Verwijderen
 flash:
   comment:
     create:
@@ -70,6 +71,7 @@ pim_enrich.entity.product:
       modified: Gewijzigd
       old_value: Oude waarde
       new_value: Nieuwe waarde
+      limit: 'Alleen de laatste {{ limit }} versies worden weergegeven.'
     meta:
       updated: Laatst bijgewerkt
       groups: Groepen
@@ -113,6 +115,8 @@ pim_enrich.entity.product:
       quantified:
         quantity: Aantal
         unlinked: Ontkoppeld
+      search:
+        placeholder: Zoeken op label, id of uuid
       no_data: Er zijn geen gekoppelde producten
       remove: Koppeling verwijderen
       edit: Bewerk product
@@ -454,6 +458,7 @@ pim_datagrid:
     mass_delete: Groepsgewijs verwijderen
     selected:
       family: "]-Inf, 1]{{ count }} familie geselecteerd|]1, Inf[{{ count }} families geselecteerd"
+      attribute: "]-Inf, 1]{{ count }} attribuut geselecteerd|]1, Inf[{{ count }} attributen geselecteerd"
       product: "]-Inf, 1]{{ count }} resultaat geselecteerd|]1, Inf[{{ count }} resultaten geselecteerd"
   view_selector:
     view: Weergaves
@@ -496,6 +501,7 @@ pim_datagrid:
       label: Bijgewerkt op
     label_or_identifier:
       label: Label of identifier
+      label_with_uuid: Label, ID of UUID
     parent:
       label: Bovenliggende
     identifier:

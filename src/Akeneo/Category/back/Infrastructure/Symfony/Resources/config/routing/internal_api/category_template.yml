@@ -24,6 +24,13 @@ pim_category_template_rest_add_attribute:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\AddAttributeController
     methods: [POST]
 
+pim_category_template_rest_update_attribute:
+    path: /rest/{templateUuid}/attribute/{attributeUuid}
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateAttributeController
+        _feature: category_update_template_attribute
+    methods: [POST]
+
 pim_category_template_rest_delete_attribute:
     path: /rest/{templateUuid}/attribute/{attributeUuid}
     defaults:

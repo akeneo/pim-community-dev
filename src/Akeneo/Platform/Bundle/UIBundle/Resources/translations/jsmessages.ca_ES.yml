@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: Activat
+        environment:
+          title: Configuració de l'entorn
+          fields:
+            sandbox_banner:
+              label: Mostra el bàner d'alerta de sandbox
         loading_message:
           title: Missatges de càrrega personalitzats
           helper: Entreteniu els vostres usuaris amb missatges personalitzats per a les pantalles de càrrega.
@@ -194,6 +199,7 @@ pim_common:
   label: Etiqueta
   label_translations: Traduccions d'etiquetes
   Label or identifier: etiqueta o identificador
+  code_or_label: codi o etiqueta
   less_than: Menys de
   loading: Carregant...
   media_upload: Arrossegar i deixar per carrgar o feu clic aquí
@@ -261,6 +267,7 @@ pim_common:
   product_models: Models de producte
   more: Més
   public_view: Vista pública
+  view: Vista
 error:
   exception: S'ha produït un error de {{ status_code }}...
   forbidden: Prohibit. No té permís per accedir a aquesta pàgina
@@ -342,6 +349,7 @@ pim_title:
   pim_settings_index: Preferències
   pim_system_index: Sistema
 pim_menu:
+  tag.new: Nou
   tab:
     activity: Activitat
     imports: Importacions
@@ -351,6 +359,10 @@ pim_menu:
     help:
       title: Ajuda
       helper: Centre d'ajuda d'Akeneo
+      new: NOU
+      news: Què hi ha de nou?
+      help_center: Centre d'Ajuda
+      akademy_training: Formació de l'Akademy
   item:
     association_type: Tipus d'associació
     attribute_group: Grups d'atribut
@@ -381,6 +393,7 @@ pim_menu:
       product: Configuració de producte
       catalog: Configuració del catàleg
       collapsed_label: Navegació de configuració
+      automation: Automatització
     product: Navegació de producte
     product_infos: Informació del Producte
   user:
@@ -396,6 +409,7 @@ pim_settings:
   settings_menu: Menú de configuració
   catalog_settings: Configuració del catàleg
   product_settings: Configuració de producte
+  automation_settings: Automatització
   count:
     category_trees: '{0}Tens 0 arbres |{1}Tens 1 arbre |]1, Inf[Tens {{ count }} arbres'
     categories: '{0}i 0 categories|{1}i 1 categoria|]1, Inf[i {{ count }} categories'
@@ -410,6 +424,7 @@ pim_settings:
     group_types: '{0}Tens 0 tipus de grup|{1}Tens 1 tipus de grup|]1, Inf[Teniu {{ count }} tipus de grup'
     groups: '{0}Tens 0 grups|{1}Tens 1 grup|]1, Inf[Tens {{ count }} grups'
     rules: '{0}Tens 0 regles activades|{1}Teniu 1 regla activada|]1, Inf[Teniu {{ count }} regles activades'
+    identifier_generators: '{0}Tens 0 generador d''identificadors|{1}Tens 1 generador d''identificadors|]1, Inf[Teniu {{ count }} generadors d''identificadors'
 pim_system:
   system_menu: Menú del sistema
   system_navigation: Sistema de navegació
@@ -423,6 +438,36 @@ pim_system:
     enabled: Activat SSO
     disabled: Desactivat SSO
     title: SAML-basat en l'inici de sessió únic
+  reset_pim:
+    modal:
+      summary:
+        name: Resum
+        title: 'Avís: el reinici del vostre PIM és irreversible'
+        text: 'Això comportarà la supressió de tots els elements excepte els següents:'
+        users:
+          name: Usuaris
+          tooltip: Els usuaris són persones que permeteu col·laborar dins del vostre PIM.
+        user_groups:
+          name: Grup d'usuaris
+          tooltip: Els grups d'usuaris defineixen equips que realitzaran diferents accions dins del vostre PIM.
+        roles:
+          name: Rols
+          tooltip: Els rols defineixen els accessos i les accions que els usuaris i els grups d'usuaris poden dur a terme dins del vostre PIM.
+      confirm:
+        name: Confirmar
+        title: Confirma el reinici del PIM
+        helper:
+          emphasis: Si reinicies el PIM, no podràs tornar enrere.
+          text: En fer clic al botó de restabliment, se us tancarà la sessió i tornareu a la pàgina d'inici de sessió.
+      confirmation_phrase: Si us plau, escriu "{{ confirmation_word }}"
+      confirmation_word: reiniciar
+    button:
+      label: Restableix la instància
+      confirm: Reinicieu i tanqueu la sessió
+    error_notification: S'ha produït un error durant el restabliment del PIM; poseu-vos en contacte amb l'administrador del sistema.
+  sandbox:
+    helper:
+      text: Aquest és un entorn sandbox; els vostres canvis no afectaran la vostra producció.
 pim_datagrid:
   mass_action:
     default:

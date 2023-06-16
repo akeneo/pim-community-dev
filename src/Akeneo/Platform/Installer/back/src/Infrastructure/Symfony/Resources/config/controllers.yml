@@ -2,5 +2,10 @@ services:
   Akeneo\Platform\Installer\Infrastructure\Controller\ResetInstanceAction:
     public: true
     arguments:
-      - '@Akeneo\Platform\Installer\Application\PurgeInstance\PurgeInstanceHandler'
-      - '@Akeneo\Platform\Installer\Infrastructure\FixtureInstaller\MinimalFixtureInstaller'
+      - '@Akeneo\Platform\Installer\Application\ResetInstance\ResetInstanceHandler'
+      - '@oro_security.security_facade'
+
+  Akeneo\Platform\Installer\Infrastructure\Controller\CheckInstanceCanBeResetAction:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\Job\ServiceApi\JobExecution\FindQueuedAndRunningJobExecutionInterface'

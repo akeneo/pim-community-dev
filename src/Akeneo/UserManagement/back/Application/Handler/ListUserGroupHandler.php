@@ -25,7 +25,6 @@ class ListUserGroupHandler implements ListUserGroupInterface
      * @return UserGroup[]     */
     public function fromQuery(UserGroupQuery $query): array
     {
-        // @todo implement optional arguments in $query to allow research and pagination
         $result = ($this->findUserGroups)(
             $query->getSearchName(),
             $query->getSearchAfterId(),

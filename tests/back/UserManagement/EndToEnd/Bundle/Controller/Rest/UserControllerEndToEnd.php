@@ -254,21 +254,54 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         );
 
         $expectedContent = [
-            [
-                'path' => "current_password",
-                'message'=> "Wrong password",
-                'global' => false
+            'code'=> $user->getUserIdentifier(),
+            'enabled' => true,
+            'username'=> $user->getUserIdentifier(),
+            'email' => 'Julien@example.com',
+            'name_prefix'=> null,
+            'first_name' => $user->getFirstName(),
+            'middle_name'=> null,
+            'last_name' => $user->getLastName(),
+            'name_suffix'=> null,
+            'phone' => null,
+            'image'=> null,
+            'last_login' => null,
+            'login_count'=> 0,
+            'catalog_default_locale' => "en_US",
+            'user_default_locale'=> "fr_FR",
+            'catalog_default_scope' => "ecommerce",
+            'default_category_tree'=> $user->getDefaultTree()->getCode(),
+            'email_notifications' => false,
+            'timezone'=> "Africa/Djibouti",
+            'groups' => ["Redactor", "All"],
+            'visible_group_ids'=> [3],
+            'roles' => ['ROLE_USER', 'ROLE_CATALOG_MANAGER'],
+            'product_grid_filters'=> [],
+            'profile' => null,
+            'avatar'=> [
+                'filePath' => null,
+                'originalFilename'=> null
             ],
-            [
-                'path'=> "new_password",
-                'message' => "Password must contain at least 8 characters",
-                'global'=> false
-            ]
+            'meta' => [
+                'id'=> $user->getId(),
+                'created' => $user->getCreatedAt()->getTimestamp(),
+                'updated'=> $user->getUpdatedAt()->getTimestamp(),
+                'form' => "pim-user-edit-form",
+                'image'=> [
+                    'filePath' => null
+                ],
+            ],
+            'properties'=> []
         ];
 
-        $response = $this->client->getResponse();
-        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString(json_encode($expectedContent), $response->getContent());
+        $responseJson = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $responseJson->getStatusCode());
+        $response = json_decode($responseJson->getContent(), true);
+        $this->assertEquals($expectedContent['code'], $response['code']);
+        $this->assertEquals($expectedContent['email'], $response['email']);
+        $this->assertEquals($expectedContent['username'], $response['username']);
+        $this->assertEquals($expectedContent['first_name'], $response['first_name']);
+        $this->assertEquals($expectedContent['last_name'], $response['last_name']);
     }
 
     public function testItTryToForcePasswordUpdateFailed(): void

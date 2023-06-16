@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: Włączono
+        environment:
+          title: Ustawienia środowiska
+          fields:
+            sandbox_banner:
+              label: Wyświetlaj baner informujący o piaskownicy
         loading_message:
           title: Niestandardowe komunikaty dotyczące ładowania
           helper: Uprzyjemnij użytkownikom korzystanie z aplikacji niestandardowymi komunikatami na ekranach ładowania.
@@ -194,6 +199,7 @@ pim_common:
   label: Etykieta
   label_translations: Tłumaczenia etykiety
   Label or identifier: etykieta lub identyfikator
+  code_or_label: kod lub etykieta
   less_than: Mniej niż
   loading: Ładuję...
   media_upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
@@ -261,6 +267,7 @@ pim_common:
   product_models: Modele produktu
   more: Więcej
   public_view: Widok publiczny
+  view: Zobacz
 error:
   exception: Wystąpił błąd {{ status_code }}...
   forbidden: Nie posiadasz uprawnień do przeglądania tej strony
@@ -275,6 +282,7 @@ pim_enrich.entity.fallback:
     generic_error: Wystąpił błąd
     update:
       fail: Błąd aktualizacji
+      fail_session_expired: Sesja użytkownika wygasła. Zaloguj się ponownie.
       success: Pomyślnie zaktualizowano
     delete:
       fail: Nie można usunąć tego elementu
@@ -341,6 +349,7 @@ pim_title:
   pim_settings_index: Ustawienia
   pim_system_index: System
 pim_menu:
+  tag.new: Nowy
   tab:
     activity: Aktywność
     imports: Importy
@@ -350,6 +359,10 @@ pim_menu:
     help:
       title: Pomoc
       helper: Centrum pomocy Akeneo
+      new: NOWOŚCI
+      news: Co nowego?
+      help_center: Centrum pomocy
+      akademy_training: Szkolenie Akademy
   item:
     association_type: Typy powiązań
     attribute_group: Grupy atrybutów
@@ -380,6 +393,7 @@ pim_menu:
       product: Ustawienia produktów
       catalog: Ustawienia katalogu
       collapsed_label: Nawigacja ustawień
+      automation: Automatyzacja
     product: Nawigacja produktu
     product_infos: Informacje o produkcie
   user:
@@ -395,6 +409,7 @@ pim_settings:
   settings_menu: Menu ustawień
   catalog_settings: Ustawienia katalogu
   product_settings: Ustawienia produktów
+  automation_settings: Automatyzacja
   count:
     category_trees: '{0}Liczba drzew: 0 |{1}Liczba drzew: 1 |]1, Inf[Liczba drzew: {{ count }}, '
     categories: '{0}liczba kategorii: 0|{1}liczba kategorii: 1|]1, Inf[liczba kategorii: {{ count }}'
@@ -409,6 +424,7 @@ pim_settings:
     group_types: '{0}Liczba typów grup: 0|{1}Liczba typów grup: 1|]1, Inf[Liczba typów grup: {{ count }}'
     groups: '{0}Liczba grup: 0|{1}Liczba grup: 1|]1, Inf[Liczba grup: {{ count }}'
     rules: '{0}Liczba włączonych reguł: 0|{1}Liczba włączonych reguł: 1|]1, Inf[Liczba włączonych reguł: {{ count }}'
+    identifier_generators: '{0}Liczba generatorów identyfikatorów: 0|{1}Liczba generatorów identyfikatorów: 1|]1, Inf[Liczba generatorów identyfikatorów: {{ count }}'
 pim_system:
   system_menu: Menu systemowe
   system_navigation: Nawigacja systemu
@@ -422,6 +438,36 @@ pim_system:
     enabled: SSO włączone
     disabled: SSO wyłączone
     title: Pojedyncze logowanie oparte na SAML
+  reset_pim:
+    modal:
+      summary:
+        name: Podsumowanie
+        title: 'Ostrzeżenie: reset PIM jest nieodwracalny'
+        text: 'Spowoduje usunięcie wszystkich elementów oprócz tych wymienionych poniżej:'
+        users:
+          name: Użytkownicy
+          tooltip: Użytkownicy to osoby, którym pozwalasz współpracować w obrębie PIM.
+        user_groups:
+          name: Grupy użytkowników
+          tooltip: Grupy użytkowników służą do definiowania zespołów, które wykonują różne działania w obrębie PIM.
+        roles:
+          name: Role
+          tooltip: Role służą do definiowania dostępów oraz możliwych działań użytkowników i grup użytkowników w obrębie PIM.
+      confirm:
+        name: Potwierdź
+        title: Potwierdź reset PIM
+        helper:
+          emphasis: Zresetowania PIM nie będzie można cofnąć.
+          text: Po kliknięciu przycisku resetowania nastąpi wylogowanie i przeniesienie na stronę logowania.
+      confirmation_phrase: Wpisz „{{ confirmation_word }}”
+      confirmation_word: reset
+    button:
+      label: Zresetuj instancję
+      confirm: Zresetuj i wyloguj
+    error_notification: Podczas resetu PIM wystąpił błąd, skontaktuj się z administratorem systemu.
+  sandbox:
+    helper:
+      text: To środowisko piaskownicy; zmiany nie wpłyną na Twoje środowisko produkcyjne.
 pim_datagrid:
   mass_action:
     default:

@@ -16,6 +16,8 @@ pim_import_export:
     6: Fallito
     7: Abbandonato
     8: Sconosciuto
+    9: Sospensione in corso
+    10: In pausa
   download_archive:
     archive: scarica l'archivio generato |scarica gli archivi generati
     output: scarica il file generato |scarica i files generati

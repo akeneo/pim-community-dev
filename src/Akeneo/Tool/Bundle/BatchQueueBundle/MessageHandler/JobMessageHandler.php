@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\ScheduledJobMessageInterface;
 use Psr\Log\LoggerInterface;
@@ -19,8 +20,9 @@ use Symfony\Component\Process\Process;
 final class JobMessageHandler implements MessageSubscriberInterface
 {
     public function __construct(
-        private LoggerInterface $logger,
-        private string $projectDir
+        private readonly LoggerInterface $logger,
+        private readonly string $projectDir,
+        private readonly FeatureFlags $featureFlags,
     ) {
     }
 
@@ -35,10 +37,11 @@ final class JobMessageHandler implements MessageSubscriberInterface
         ];
     }
 
-    public function handleJobExecution(JobExecutionMessageInterface $jobExecutionMessage)
+    public function handleJobExecution(JobExecutionMessageInterface $jobExecutionMessage): void
     {
         $this->logger->notice('Launching job watchdog for ID "{job_execution_id}".', [
             'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
+            'tenant_id' => $jobExecutionMessage->getTenantId(),
         ]);
 
         $executionTimeInSec = $this->launchWatchdog($jobExecutionMessage);
@@ -46,21 +49,27 @@ final class JobMessageHandler implements MessageSubscriberInterface
         $this->logger->notice('Watchdog for "{job_execution_id}" finished in {execution_time_in_sec} seconds.', [
             'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
             'execution_time_in_sec' => $executionTimeInSec,
+            'tenant_id' => $jobExecutionMessage->getTenantId(),
         ]);
     }
 
-    public function handleScheduledJob(ScheduledJobMessageInterface $scheduledJobMessage)
+    public function handleScheduledJob(ScheduledJobMessageInterface $scheduledJobMessage): void
     {
         $this->logger->notice('Launching scheduled job "{code}".', [
             'code' => $scheduledJobMessage->getJobCode(),
+            'tenant_id' => $scheduledJobMessage->getTenantId(),
         ]);
 
         $executionTimeInSec = $this->launchWatchdog($scheduledJobMessage);
 
-        $this->logger->notice('Scheduled job "{code}" finished in {execution_time_in_sec} seconds.', [
-            'code' => $scheduledJobMessage->getJobCode(),
-            'execution_time_in_sec' => $executionTimeInSec,
-        ]);
+        $this->logger->notice(
+            'Scheduled job "{code}" finished in {execution_time_in_sec} seconds.',
+            [
+                'code' => $scheduledJobMessage->getJobCode(),
+                'tenant_id' => $scheduledJobMessage->getTenantId(),
+                'execution_time_in_sec' => $executionTimeInSec,
+            ]
+        );
     }
 
     private function launchWatchdog(JobExecutionMessageInterface|ScheduledJobMessageInterface $jobMessage): int
@@ -84,17 +93,43 @@ final class JobMessageHandler implements MessageSubscriberInterface
             $process = new Process($arguments, null, $env);
             $process->setTimeout(null);
 
-            $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
+            $this->logger->debug(
+                sprintf('Command line: "%s"', $process->getCommandLine()),
+                [
+                    'tenant_id' => $jobMessage->getTenantId(),
+                ]
+            );
+
+            $previousSigtermHandler = pcntl_signal_get_handler(\SIGTERM);
+
+            if ($this->featureFlags->isEnabled('pause_jobs')) {
+                pcntl_signal(\SIGTERM, function () use ($process, $previousSigtermHandler) {
+                    $this->logger->notice(
+                        'Received SIGTERM signal in job message handler and forwarding it to subprocess'
+                    );
+                    $process->signal(\SIGTERM);
+                    if (is_callable($previousSigtermHandler)) {
+                        $previousSigtermHandler();
+                    }
+                });
+            }
 
             $process->run(function ($type, $buffer): void {
                 \fwrite(Process::ERR === $type ? \STDERR : \STDOUT, $buffer);
             });
+
+            pcntl_signal(\SIGTERM, $previousSigtermHandler);
         } catch (\Throwable $t) {
-            $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()));
+            $this->logger->error(
+                sprintf('An error occurred: %s', $t->getMessage()),
+                [
+                    'tenant_id' => $jobMessage->getTenantId(),
+                ]
+            );
             $this->logger->error($t->getTraceAsString());
         }
 
-        return $executionTimeInSec = time() - $startTime;
+        return time() - $startTime;
     }
 
     /**

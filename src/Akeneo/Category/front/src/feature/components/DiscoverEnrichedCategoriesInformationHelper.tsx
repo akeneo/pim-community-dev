@@ -45,7 +45,6 @@ const DiscoverEnrichedCategoriesInformationHelper: FC = () => {
           <Item>
             {translate('akeneo.category.discover_enriched_categories_information.content.customizable_templates')}
           </Item>
-          <Item>{translate('akeneo.category.discover_enriched_categories_information.content.edit_attributes')}</Item>
         </List>
         <Footer>
           <Link href="https://help.akeneo.com/pim/serenity/articles/enrich-your-category.html" target="_blank">

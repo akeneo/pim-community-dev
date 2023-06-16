@@ -5,6 +5,7 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import userEvent from '@testing-library/user-event';
 import {Attribute, CategoryAttributeType} from '../../models';
 import {AttributeList} from './AttributeList';
+import {TemplateFormProvider} from '../providers/TemplateFormProvider';
 
 const queryClient = new QueryClient();
 
@@ -28,12 +29,14 @@ test('It open the add attribute modal when clicking on add attribute button', as
 
   renderWithProviders(
     <QueryClientProvider client={queryClient}>
-      <AttributeList
-        attributes={attributes}
-        selectedAttribute={attributes[0]}
-        templateId={'template_uuid'}
-        onAttributeSelection={() => {}}
-      />
+      <TemplateFormProvider>
+        <AttributeList
+          attributes={attributes}
+          selectedAttribute={attributes[0]}
+          templateId={'template_uuid'}
+          onAttributeSelection={() => {}}
+        />
+      </TemplateFormProvider>
     </QueryClientProvider>
   );
 

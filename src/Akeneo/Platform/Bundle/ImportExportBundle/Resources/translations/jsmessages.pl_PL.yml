@@ -165,6 +165,7 @@ pim_import_export:
           sftp: SFTP
           amazon_s3: Amazon S3
           microsoft_azure: Microsoft Azure
+          google_cloud_storage: Magazyn Google Cloud
           none: Nie skonfigurowano pamięci
         file_path:
           label: Ścieżka do pliku
@@ -187,6 +188,8 @@ pim_import_export:
           placeholder: Wprowadź hasło
         public_key:
           label: Klucz publiczny
+          button_title: Kopiuj do schowka
+          copy_notification_success: Klucz publiczny skopiowany do schowka
         login_type:
           label: Metoda uwierzytelniania
           password: Login i hasło
@@ -209,6 +212,12 @@ pim_import_export:
         container_name:
           label: Nazwa kontenera
           placeholder: Wprowadź nazwę kontenera
+        project_id:
+          label: ID projektu
+          placeholder: Wprowadź ID projektu
+        service_account:
+          label: Konto usługi
+          placeholder: Wprowadź konto usługi
       validation:
         storage:
           unavailable_type: 'Ta pamięć jest niedostępna, dostępne typy: {{ available_types }}.'
@@ -228,6 +237,8 @@ pim_import_export:
     6: Niepowodzenie
     7: Opuszczone
     8: Nieznany
+    9: Wstrzymywanie
+    10: Wstrzymano
   job_status:
     COMPLETED: Zakończone
     STARTING: Rozpoczynanie
@@ -237,6 +248,8 @@ pim_import_export:
     FAILED: Niepowodzenie
     ABANDONED: Opuszczone
     UNKNOWN: Nieznany
+    PAUSING: Wstrzymywanie
+    PAUSED: Wstrzymano
   tracking:
     completed: "Spędzony czas: {{ duration }}"
     in_progress: "Pozostały szacowany czas: {{ duration }}"

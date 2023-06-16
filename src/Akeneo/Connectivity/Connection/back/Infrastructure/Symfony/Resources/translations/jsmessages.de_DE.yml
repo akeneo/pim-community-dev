@@ -284,6 +284,8 @@ akeneo_connectivity.connection:
             callback_url: Callback-URL
           field_placeholder:
             name: App-Name definieren
+            activate_url: Aktivierungs-URL ausfüllen
+            callback_url: Rückruf-URL ausfüllen
         credentials:
           title: Anmeldeinformationen
           client_id: Client-ID
@@ -309,6 +311,7 @@ akeneo_connectivity.connection:
         subtitle: Eigene App löschen
         title: Löschen bestätigen
         description: Sie sind dabei, Ihre App von diesem PIM zu löschen.
+        warning: Durch die Bestätigung des Löschens löschen Sie die App von der App Store Seite und der damit verbundenen App.
         flash:
           success: Eigene App erfolgreich gelöscht.
           error: Beim Löschen der eigenen App ist ein Fehler aufgetreten.
@@ -612,7 +615,10 @@ pim_notification:
   types:
     connected_app_authorizations: Verbundene App-Autorisierungen
     disabled_catalog: App-Katalog deaktiviert
+    attribute_removed: App-Katalog beeinträchtigt
   connected_app_authorizations:
     button_label: App öffnen
   disabled_catalog:
+    button_label: Katalogeinstellungen
+  attribute_removed:
     button_label: Katalogeinstellungen

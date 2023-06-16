@@ -77,7 +77,7 @@ pim_common:
   updated: 업데이트됨
   view: 보기
   yes: "예"
-  uuid: uuid
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -131,6 +131,7 @@ pim_enrich:
       create: 특성 그룹 만들기
       edit: 특성 그룹 편집
       remove: 특성 그룹 제거
+      mass_delete: 특성 그룹 일괄 제거
       sort: 특성 그룹 정렬
       add_attribute: 그룹에 특성 추가
       remove_attribute: 그룹에서 특성 제거
@@ -140,6 +141,7 @@ pim_enrich:
       create: 특성 만들기
       edit: 특성 편집
       remove: 특성 제거
+      mass_delete: 특성 일괄 삭제
       sort: 특성 그룹 내 특성 정렬
       history: 특성 기록 보기
     group:
@@ -212,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: 식별자 특성을 제거할 수 없습니다.
     used_as_conversion_unit: 이 특성은 채널 %channelCodes%에서 변환 단위로 사용되므로 제거할 수 없습니다.
+    cant_remove_attributes_used_as_label: 패밀리에서 레이블로 사용된 특성은 제거할 수 없습니다.
+    cant_remove_attribute_used_as_axis: 패밀리 변형에서 변형 축으로 사용되는 이 특성을 제거할 수 없음
   category:
     removed: 카테고리 제거됨
   tree:
@@ -451,6 +455,7 @@ pim_datagrid:
       label: 업데이트됨
     label_or_identifier:
       label: 레이블 또는 식별자
+      label_with_uuid: 레이블, 식별자 또는 UUID
     parent:
       label: 상위
     identifier:
@@ -546,4 +551,4 @@ pim_login:
   footer:
     powered: '제공자:'
     powered_image_title: logo Akeneo
-pim_system.acl_group.developer_mode: 개발자 모드
+pim_system.acl_group.connect: 연결

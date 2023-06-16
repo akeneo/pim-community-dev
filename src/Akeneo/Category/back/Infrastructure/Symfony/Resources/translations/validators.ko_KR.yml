@@ -5,7 +5,15 @@ akeneo.category:
         wrong_format: 카테고리 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.
         line_feed: 카테고리 코드에는 줄 바꿈 문자가 포함될 수 없습니다.
       duplicated_value_user_intents: '{{ attributeCode }} 특성의 값이 여러 번 업데이트되고 있습니다.'
+      value_user_intents_on_deactivated_template: 편집하려는 카테고리 특성에 연결된 활성화된 템플릿이 없습니다.
       value:
         text_too_long: 이 값은 {{ limit }}자를 넘을 수 없습니다.
         textarea_too_long: 이 값은 {{ limit }}자를 넘을 수 없습니다.
         richtext_too_long: 이 값은 {{ limit }}자를 넘을 수 없습니다.
+    attribute:
+      limit:
+        title: 50개 넘게 특성을 추가할 수 없습니다.
+        message: 카테고리 템플릿의 특성은 템플릿당 50개로 제한됩니다.
+      code:
+        wrong_format: 특성 코드는 소문자, 숫자 및 밑줄만 포함할 수 있습니다.
+        unique_in_the_template: 특성 코드 {{ attributeCode }}은(는) 템플릿에서 고유해야 합니다.

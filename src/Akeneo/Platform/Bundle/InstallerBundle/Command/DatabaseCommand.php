@@ -34,9 +34,6 @@ class DatabaseCommand extends Command
     protected static $defaultName = 'pim:installer:db';
     protected static $defaultDescription = 'Prepare database and load fixtures';
 
-    const LOAD_ALL = 'all';
-    const LOAD_BASE = 'base';
-
     protected ?CommandExecutor $commandExecutor;
 
     public function __construct(
@@ -58,11 +55,11 @@ class DatabaseCommand extends Command
     {
         $this
             ->addOption(
-                'fixtures',
+                'fixtures-to-skip',
                 null,
-                InputOption::VALUE_REQUIRED,
-                'Determines fixtures to load (can be just OroPlatform or all)',
-                self::LOAD_ALL
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Determines fixtures to not load',
+                []
             )
             ->addOption(
                 'withoutIndexes',
@@ -177,15 +174,16 @@ class DatabaseCommand extends Command
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output): DatabaseCommand
     {
         $catalog = $input->getOption('catalog');
-        if ($input->getOption('env') === 'behat') {
-            $input->setOption('fixtures', self::LOAD_BASE);
-        }
 
         $this->logger->info(sprintf('Load jobs for fixtures. (data set: %s)', $catalog));
         $this->fixtureJobLoader->loadJobInstances($input->getOption('catalog'));
 
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
+            if (in_array($jobInstance->getCode(), $input->getOption('fixtures-to-skip'))) {
+                continue;
+            }
+
             $params = [
                 'code' => $jobInstance->getCode(),
                 '--no-debug' => true,

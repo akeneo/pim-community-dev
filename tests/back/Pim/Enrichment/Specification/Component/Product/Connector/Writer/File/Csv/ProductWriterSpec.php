@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
 use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
@@ -50,6 +51,7 @@ class ProductWriterSpec extends ObjectBehavior
         FlatTranslatorInterface $flatTranslator,
         FileInfoRepositoryInterface $fileInfoRepository,
         FilesystemProvider $filesystemProvider,
+        ExportedFileBackuper $exportedFileBackuper,
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution
     ) {
@@ -70,7 +72,8 @@ class ProductWriterSpec extends ObjectBehavior
             $flatTranslator,
             $fileInfoRepository,
             $filesystemProvider,
-            ['pim_catalog_file', 'pim_catalog_image']
+            ['pim_catalog_file', 'pim_catalog_image'],
+            $exportedFileBackuper,
         );
 
         $stepExecution->getStartTime()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2021-03-24 16:00:00'));

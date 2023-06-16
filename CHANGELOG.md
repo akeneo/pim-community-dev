@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10966: Fix error when toggling between tabs on an export profile editing page
 - PIM-10972: Fix shifting data during import
 - PIM-10950: Fix wrongly removed code filter on attribute page
 - PIM-10960: Fix no violation raised when importing variant with already existing siblings
@@ -77,6 +78,17 @@
 - PIM-10983: Error HTTP 500 when adding a custom app
 - PIM-10980: Fix pagination update when applying filters on product association grid
 - PIM-10977 : Prevent api users to log in to the PIM via the UI
+- PIM-11001: Fix code filter on attributes grid with special character
+- PIM-11002: Fix bad context locale used in DQI dashboard families widget
+- PIM-10997: Update error message when trying to delete role with linked users or connections
+- PIM-11003: Fix scrolling on Product edit form attributes
+- PIM-10982 : Fix flag emoji rendering on windows
+- PIM-11013 : Fix edit user profile without password changes
+- PIM-11012 : Add helper if selected UI language is not sufficiently supported
+- PIM-11024 : Add an error message when trying to modify the code of an option attribute [External API]
+- PIM-11040 : Sku is disabled according to the rights
+- PIM-11023 : Fix product search containing underscores
+- PIM-11016 : Improve the clean-removed-attributes command
 
 ## Improvements
 

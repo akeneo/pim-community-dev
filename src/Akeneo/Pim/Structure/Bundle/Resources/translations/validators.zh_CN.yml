@@ -4,3 +4,5 @@ pim_structure:
       cannot_be_quantified_and_two_way: 关联类型可以是量化或双向的
     available_locales:
       is_variant_axis_without_available_locales: 如果属性已在某个变型品类中用作轴，则不能成为特定区域的属性。
+    attribute_groups:
+      max: 您已达到 {{ max }} 个属性组的限制

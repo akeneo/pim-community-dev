@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
@@ -72,7 +73,7 @@ class RemoveParentSpec extends ObjectBehavior
     ) {
         $allValues = new WriteValueCollection(
             [
-                ScalarValue::value('sku', 'tshirt'),
+                IdentifierValue::value('sku', true, 'tshirt'),
                 ScalarValue::localizableValue('name', 'My great red t-shirt', 'en_US'),
                 OptionValue::value('color', 'red'),
             ]

@@ -16,7 +16,7 @@ class RemoveRoleIntegration extends TestCase
     public function testUnableToRemoveARoleIfUsersWillNoLongerHaveRole()
     {
         $this->expectException(ForbiddenToRemoveRoleException::class);
-        $this->expectExceptionMessage('You can not delete this role, otherwise some users will no longer have a role.');
+        $this->expectExceptionMessage('You can not delete this role because it is used by either users or connections.');
 
         $adminRole = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
         $this->get('pim_user.remover.role')->remove($adminRole);

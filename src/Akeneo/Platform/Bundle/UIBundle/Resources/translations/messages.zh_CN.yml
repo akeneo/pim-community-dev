@@ -131,6 +131,7 @@ pim_enrich:
       create: 创建属性组
       edit: 编辑属性组
       remove: 移除属性组
+      mass_delete: 批量移除属性组
       sort: 排序属性组
       add_attribute: 将属性添加到组
       remove_attribute: 从组中移除属性
@@ -140,6 +141,7 @@ pim_enrich:
       create: 创建属性
       edit: 编辑属性
       remove: 移除属性
+      mass_delete: 批量删除属性
       sort: 在属性组内对属性排序
       history: 查看属性历史记录
     group:
@@ -212,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: 标识符属性无法移除
     used_as_conversion_unit: 此属性不能移除，因为其在渠道 %channelCodes% 中用作转换单位。
+    cant_remove_attributes_used_as_label: 无法移除产品类中用作标签的属性。
+    cant_remove_attribute_used_as_axis: 无法移除此属性，其被用作品类变型中的变量轴
   category:
     removed: 类别已成功移除
   tree:
@@ -451,6 +455,7 @@ pim_datagrid:
       label: 已更新
     label_or_identifier:
       label: 标签或标识符
+      label_with_uuid: 标签、标识符或 UUID
     parent:
       label: 父级
     identifier:
@@ -546,3 +551,4 @@ pim_login:
   footer:
     powered: 提供者
     powered_image_title: Logo Akeneo
+pim_system.acl_group.connect: 连接

@@ -1,3 +1,5 @@
+pim_title:
+  pim_category_template_edit: Edytuj szablon kategorii
 akeneo.category:
   tree_list:
     column:
@@ -5,20 +7,23 @@ akeneo.category:
   attributes: Atrybuty
   edition_form:
     error:
-      unhandled_attribute_type: Nie znaleziono konstruktora pola atrybutu typu „{{type}}”
+      unhandled_attribute_type: Nie znaleziono konstruktora pola atrybutu typu „{{ type }}”
     template:
       title: Szablon
+      no_attribute_title: W tym szablonie nie ma żadnego atrybutu
+      no_attribute_instructions: Szablon powiązany z tą kategorią jest pusty, możesz dodać do niego atrybuty ze strony drzewa kategorii.
       fetching_failed: Podczas pobierania szablonu wystąpił błąd.
     unsaved_changes: Jeśli opuścisz stronę, stracisz zmiany wprowadzone w kategorii.
   tree:
     create: Utwórz drzewo
     delete: Usuń drzewo
   template:
+    learn_more: Dowiedz się więcej o szablonie kategorii
     create: Aktywuj szablon
-    edit: Wyświetl szablon
-    delete: Usuń szablon
+    edit: Edytuj szablon
     notification_success: Szablon został aktywowany.
     notification_error: Nie można aktywować szablonu.
+    not_found: Nie ma aktywnego szablonu dla tej kategorii.
     attribute:
       description_title: Ustawienia opisu
       type:
@@ -26,8 +31,76 @@ akeneo.category:
         textarea: Obszar tekstowy
         richtext: Tekst sformatowany
         image: Obraz
+      delete_button: Usuń atrybut
+      settings:
+        title: Ustawienia
+        options:
+          title: Opcje
+          value_per_channel: Wartość dla kanału
+          value_per_locale: Wartość dla wersji językowej
+          rich_text: Edytor tekstu sformatowanego
+        translations:
+          title: Tłumaczenia etykiet
+    add_attribute:
+      no_attribute_title: Utwórz swój pierwszy atrybut
+      no_attribute_instructions: Zdefiniuj zawartość, którą chcesz powiązać z kategoriami, dodając do tego szablonu atrybuty tekstu, obszaru tekstowego lub obrazu.
+      add_button: Dodaj atrybut
+      create_button: Utwórz atrybut
+      confirmation_modal:
+        section_title: Dodaj atrybut
+        title: Utwórz nowy atrybut kategorii
+        head_helper: Atrybuty kategorii są przypisane do jednego szablonu. Nie można uzyskać do nich dostępu w innych szablonach.
+        tail_helper: Wartości dla kanału i wartości dla wersji językowej nie można zmienić po utworzeniu atrybutu.
+        link: Dowiedz się więcej o szablonach kategorii.
+        create: Utwórz
+        input:
+          label: Etykieta
+          code: Kod
+          type:
+            label: Typ atrybutu
+            empty: Brak dostępnego typu atrybutu
+            option_title:
+              text: Tekst
+              textarea: Obszar tekstowy
+              image: Obraz
+      success:
+        notification: Utworzono atrybut
+      error:
+        failed: Dodawanie atrybutu szablonu nie powiodło się.
+        limit_reached:
+          title: Nie możesz dodać więcej niż 50 atrybutów
+          message: Szablony kategorii mogą zawierać maksymalnie 50 atrybutów.
+    delete_attribute:
+      delete: Usuń atrybut kategorii
+      confirmation_modal:
+        title: Usuń ten atrybut kategorii
+        message: Czy na pewno chcesz usunąć atrybut kategorii o nazwie {{ attribute }}?
+        helper: Usunięcie tego atrybutu spowoduje trwałe usunięcie atrybutu i wartości powiązanych kategorii.
+      notification_success:
+        title: 'Atrybut {{ attribute }} usunięty pomyślnie'
+    deactivate:
+      deactivate_template: Dezaktywuj szablon
+      confirmation_modal:
+        title: Dezaktywuj szablon kategorii
+        message: Czy na pewno chcesz dezaktywować szablon kategorii o nazwie {{ template }}?
+        helper: Dezaktywacja tego szablonu spowoduje trwałe usunięcie atrybutów i wartości powiązanych kategorii.
+        deactivate: Dezaktywuj
+      notification_success:
+        title: 'Zdezaktywowano szablon {{ template }}'
+        message: 'Szablon {{ template }} został zdezaktywowany. Zawartość powiązanych kategorii została usunięta.'
   template_list:
     columns:
       header: Etykieta
       code: Kod
       type: Typ
+  tag:
+    new: Nowy
+  discover_enriched_categories_information:
+    title: Odkryj wzbogacone kategorie
+    content:
+      enrich_attribute_values: Wzbogać dowolny poziom drzewa kategorii atrybutami tekstu, obszaru tekstowego i obrazu
+      customizable_templates: Zapewnij klientom najlepsze odbiór produktu dzięki konfigurowalnym szablonom
+      edit_attributes: 'Już wkrótce: aktualizuj ustawienia dowolnego z tych atrybutów kategorii'
+    survey_link_label: Podziel się z nami Twoją opinią
+    learn_more_link_label: Dowiedz się więcej o wzbogaconych kategoriach
+  other_actions: Inne działania

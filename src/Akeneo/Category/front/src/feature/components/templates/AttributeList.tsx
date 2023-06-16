@@ -1,10 +1,19 @@
-import {Button, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
+import {useTranslate, userContext} from '@akeneo-pim-community/shared';
+import {Button, Pill, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
+import {useMemo} from 'react';
+import styled from 'styled-components';
 import {Attribute, CATEGORY_ATTRIBUTE_TYPE_AREA, CATEGORY_ATTRIBUTE_TYPE_RICHTEXT} from '../../models';
 import {getLabelFromAttribute} from '../attributes';
-import React, {useMemo} from 'react';
-import {useFeatureFlags, userContext, useTranslate} from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
+import {useTemplateForm} from '../providers/TemplateFormProvider';
 import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
+
+const useAttributeFormHasErrors = () => {
+  const [state] = useTemplateForm();
+
+  return (attributeUuid: string) => {
+    return Object.values(state.attributes[attributeUuid] || {}).some(({errors}) => errors.length > 0);
+  };
+};
 
 type Props = {
   attributes: Attribute[];
@@ -16,7 +25,7 @@ type Props = {
 export const AttributeList = ({attributes, selectedAttribute, templateId, onAttributeSelection}: Props) => {
   const translate = useTranslate();
   const catalogLocale = userContext.get('catalogLocale');
-  const featureFlags = useFeatureFlags();
+  const attributeFormHasErrors = useAttributeFormHasErrors();
 
   const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
     useBooleanState(false);
@@ -42,9 +51,9 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
     <AttributeListContainer>
       <SectionTitle sticky={0}>
         <SectionTitle.Title>{translate('akeneo.category.attributes')}</SectionTitle.Title>
-        <AddAttributeButton ghost size="small" level="tertiary" onClick={openAddTemplateAttributeModal}>
-          {translate('akeneo.category.template.add_attribute.add_button')}
-        </AddAttributeButton>
+          <AddAttributeButton ghost size="small" level="tertiary" onClick={openAddTemplateAttributeModal}>
+            {translate('akeneo.category.template.add_attribute.add_button')}
+          </AddAttributeButton>
       </SectionTitle>
       <ScrollablePanel>
         <Table>
@@ -52,6 +61,7 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.header')}</Table.HeaderCell>
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.code')}</Table.HeaderCell>
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.type')}</Table.HeaderCell>
+            <ErrorPillTableHeaderCell />
           </Table.Header>
           <Table.Body>
             {sortedAttributes.map((attribute: Attribute) => (
@@ -73,6 +83,9 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
                     }`
                   )}
                 </Table.Cell>
+                <ErrorPillTableCell>
+                  {attributeFormHasErrors(attribute.uuid) && <Pill level={'danger'} />}
+                </ErrorPillTableCell>
               </Table.Row>
             ))}
           </Table.Body>
@@ -96,4 +109,14 @@ const AddAttributeButton = styled(Button)`
 const ScrollablePanel = styled.div`
   overflow-y: scroll;
   height: calc(100% - 44px);
+`;
+
+const ErrorPillTableCell = styled(Table.Cell)`
+  display: flex;
+  justify-content: flex-end;
+  width: 75px;
+`;
+
+const ErrorPillTableHeaderCell = styled(Table.HeaderCell)`
+  width: 75px;
 `;

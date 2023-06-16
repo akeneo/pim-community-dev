@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -21,7 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, TrackableItemReaderInterface
+class ProductReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, TrackableItemReaderInterface, PausableReaderInterface
 {
     protected ?StepExecution $stepExecution = null;
     protected ?CursorInterface $products = null;
@@ -154,5 +155,12 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         }
 
         return $this->products->count();
+    }
+
+    public function getState(): array
+    {
+        return [
+            'last_position_read' => $this->products?->key(),
+        ];
     }
 }

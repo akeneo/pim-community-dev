@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Command;
 
-use Akeneo\Category\Api\Command\Exceptions\ViolationsException;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
+use Akeneo\Category\Domain\Exceptions\ViolationsException;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
@@ -64,11 +64,7 @@ class AddAttributeCommandHandler
     {
         $attributes = $this->getAttribute->byTemplateUuid($templateUuid);
 
-        if ($attributes->count() === 0) {
-            AttributeOrder::fromInteger(1);
-        }
-
-        return AttributeOrder::fromInteger($attributes->count() + 1);
+        return AttributeOrder::fromInteger($attributes->calculateNextOrder());
     }
 
     private function getAttributeLabel(string $locale, ?string $label = null): LabelCollection

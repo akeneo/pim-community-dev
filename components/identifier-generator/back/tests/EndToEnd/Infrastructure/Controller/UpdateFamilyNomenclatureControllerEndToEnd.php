@@ -50,12 +50,12 @@ final class UpdateFamilyNomenclatureControllerEndToEnd extends ControllerEndToEn
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $nomenclatureDefinition = $this->getNomenclatureRepository()->get();
-        Assert::assertSame($nomenclatureDefinition->operator(), '<=');
-        Assert::assertSame($nomenclatureDefinition->value(), 4);
-        Assert::assertSame($nomenclatureDefinition->generateIfEmpty(), true);
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA1'] ?? null, 'FAM1');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA2'] ?? null, 'FAM2');
-        Assert::assertSame(($nomenclatureDefinition->values() ?? [])['familyA3'] ?? null, null);
+        Assert::assertSame('<=', $nomenclatureDefinition->operator());
+        Assert::assertSame(4, $nomenclatureDefinition->value());
+        Assert::assertSame(true, $nomenclatureDefinition->generateIfEmpty());
+        Assert::assertSame('FAM1', ($nomenclatureDefinition->values() ?? [])['familyA1'] ?? null);
+        Assert::assertSame('FAM2', ($nomenclatureDefinition->values() ?? [])['familyA2'] ?? null);
+        Assert::assertSame(null, ($nomenclatureDefinition->values() ?? [])['familyA3'] ?? null);
     }
 
     /** @test */

@@ -4,9 +4,11 @@ namespace Akeneo\Tool\Component\Connector\Writer\File\Yaml;
 
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\RuntimeErrorException;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
+use Akeneo\Tool\Component\Connector\Writer\File\ExportedFileBackuper;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
@@ -17,7 +19,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Writer extends AbstractFileWriter implements ItemWriterInterface, FlushableInterface
+class Writer extends AbstractFileWriter implements ItemWriterInterface, FlushableInterface, PausableWriterInterface
 {
     const INLINE_ARRAY_LEVEL = 8;
     const INDENT_SPACES = 4;
@@ -35,8 +37,11 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
      * @param ArrayConverterInterface $arrayConverter
      * @param string                  $header
      */
-    public function __construct(ArrayConverterInterface $arrayConverter, $header = null)
-    {
+    public function __construct(
+        ArrayConverterInterface $arrayConverter,
+        private readonly ExportedFileBackuper $exportedFileBackuper,
+        $header = null,
+    ) {
         parent::__construct();
 
         $this->arrayConverter = $arrayConverter;
@@ -139,5 +144,15 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Flushabl
         foreach ($items as $item) {
             $this->stepExecution->incrementSummaryInfo('write');
         }
+    }
+
+    public function getState(): array
+    {
+        return [
+            'current_file_path' => $this->exportedFileBackuper->backup(
+                $this->stepExecution->getJobExecution(),
+                $this->getPath(),
+            ),
+        ];
     }
 }

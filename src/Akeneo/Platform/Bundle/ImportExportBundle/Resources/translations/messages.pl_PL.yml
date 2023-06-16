@@ -16,6 +16,8 @@ pim_import_export:
     6: Niepowodzenie
     7: Opuszczone
     8: Nieznany
+    9: Wstrzymywanie
+    10: Wstrzymano
   download_archive:
     archive: pobierz utworzone archiwum|pobierz utworzone archiwa
     output: pobierz utworzony plik|pobierz utworzone pliki

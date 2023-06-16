@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -17,7 +18,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface
+class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface, PausableWriterInterface
 {
     /** @var VersionManager */
     protected $versionManager;
@@ -80,5 +81,10 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
         }
+    }
+
+    public function getState(): array
+    {
+        return [];
     }
 }

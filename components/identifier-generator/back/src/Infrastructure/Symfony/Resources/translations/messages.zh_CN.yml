@@ -1,0 +1,20 @@
+pim_catalog_identifier_generator:
+  acl:
+    view: '查看标识符生成器'
+    manage: '管理标识符生成器'
+  acl_group:
+    identifier_generator: '标识符生成器'
+  condition:
+    fields:
+      family: 品类
+      enabled: 状态
+      categories: 类别
+    field_groups:
+      system: 系统
+  structure:
+    fields:
+      free_text: 自由文本
+      auto_number: 自动编号
+      family: 品类
+    field_groups:
+      system: 系统

@@ -77,7 +77,7 @@ pim_common:
   updated: Zaktualizowano
   view: Zobacz
   yes: "Tak"
-  uuid: uuid
+  uuid: UUID
 pim_enrich:
   #ACLs
   acl:
@@ -131,6 +131,7 @@ pim_enrich:
       create: Tworzenie grupy atrybutów
       edit: Edycja grupy atrybutów
       remove: Usuwanie grupy atrybutów
+      mass_delete: Zbiorczo usuń grupy atrybutów
       sort: Sortowanie grup atrybutów
       add_attribute: Dodawanie atrybutów do grupy
       remove_attribute: Usuwanie atrybutu z grupy
@@ -140,6 +141,7 @@ pim_enrich:
       create: Tworzenie atrybutu
       edit: Edycja atrybutu
       remove: Usuwanie atrybutu
+      mass_delete: Zbiorcze usuwanie atrybutów
       sort: Sortowanie atrybutów w grupach atrybutów
       history: Przeglądanie historii atrybutu
     group:
@@ -212,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: Nie można usunąć atrybutu identyfikującego
     used_as_conversion_unit: Ten atrybut nie może zostać usunięty, ponieważ jest używany jako jednostka konwersji na kanale %channelCodes%.
+    cant_remove_attributes_used_as_label: Nie można usunąć atrybutów używanych jako etykiety w rodzinie.
+    cant_remove_attribute_used_as_axis: Nie można usunąć tego atrybutu używanego jako oś wariantu w wariancie rodziny.
   category:
     removed: Kategoria pomyślnie usunięta
   tree:
@@ -451,6 +455,7 @@ pim_datagrid:
       label: Zaktualizowano
     label_or_identifier:
       label: Etykieta lub identyfikator
+      label_with_uuid: Etykieta, identyfikator lub UUID
     parent:
       label: Element nadrzędny
     identifier:
@@ -546,4 +551,4 @@ pim_login:
   footer:
     powered: Wspierane przez
     powered_image_title: logo Akeneo
-pim_system.acl_group.developer_mode: Tryb deweloperski
+pim_system.acl_group.connect: Połącz

@@ -188,6 +188,8 @@ pim_import_export:
           placeholder: Saisissez votre mot de passe
         public_key:
           label: Clé publique
+          button_title: Copier dans le presse-papiers
+          copy_notification_success: Clé publique copiée dans le presse-papiers
         login_type:
           label: Méthode d'authentification
           password: Identifiant et mot de passe
@@ -235,6 +237,8 @@ pim_import_export:
     6: Echoué
     7: Abandonné
     8: Inconnu
+    9: En cours de mise en pause
+    10: En pause
   job_status:
     COMPLETED: Terminé
     STARTING: Démarrage
@@ -244,6 +248,8 @@ pim_import_export:
     FAILED: Echoué
     ABANDONED: Abandonné
     UNKNOWN: Inconnu
+    PAUSING: En cours de mise en pause
+    PAUSED: En pause
   tracking:
     completed: "Temps écoulé : {{ duration }}"
     in_progress: "Temps restant estimé : {{ duration }}"

@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -16,7 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionAwareInterface, ArchivableWriterInterface
+abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionAwareInterface, ArchivableWriterInterface, PausableWriterInterface
 {
     /** @var StepExecution */
     protected $stepExecution;

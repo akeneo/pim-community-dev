@@ -116,6 +116,11 @@ oro_config:
           fields:
             enabler:
               label: 已启用
+        environment:
+          title: 环境设置
+          fields:
+            sandbox_banner:
+              label: 显示沙盒警告横幅
         loading_message:
           title: 自定义加载消息
           helper: 为加载屏幕输入自定义消息来取悦用户。
@@ -194,6 +199,7 @@ pim_common:
   label: 标签
   label_translations: 标签翻译
   Label or identifier: 标签或标识符
+  code_or_label: 代码或标签
   less_than: 小于
   loading: 加载...
   media_upload: 拖放即可上传或点击这里
@@ -261,6 +267,7 @@ pim_common:
   product_models: 产品模型
   more: 更多
   public_view: 公共视图
+  view: 查看
 error:
   exception: 发生错误 {{ status_code }}… 
   forbidden: 您无权访问此页面
@@ -275,6 +282,7 @@ pim_enrich.entity.fallback:
     generic_error: 发生错误
     update:
       fail: 更新失败
+      fail_session_expired: 您的用户会话已过期。请重新登录。
       success: 成功更新
     delete:
       fail: 无法删除此条目
@@ -341,6 +349,7 @@ pim_title:
   pim_settings_index: 设置 
   pim_system_index: 系统
 pim_menu:
+  tag.new: 新
   tab:
     activity: 活动
     imports: 导入
@@ -350,6 +359,10 @@ pim_menu:
     help:
       title: 帮助
       helper: Akeneo 帮助中心
+      new: 新
+      news: 更新日志
+      help_center: 帮助中心
+      akademy_training: Akademy 培训
   item:
     association_type: 关联类型
     attribute_group: 属性组
@@ -380,6 +393,7 @@ pim_menu:
       product: 产品设置
       catalog: 目录设置 
       collapsed_label: 设置导航
+      automation: 自动化
     product: 产品导航
     product_infos: 产品信息
   user:
@@ -395,6 +409,7 @@ pim_settings:
   settings_menu: 设置菜单
   catalog_settings: 目录设置 
   product_settings: 产品设置
+  automation_settings: 自动化
   count:
     category_trees: '{0}您有 0 个树 |{1}您有 1 个树 |]1，Inf[您有 {{ count }} 个树'
     categories: '{0}和 0 个类别 |{1}和 1 个类别 |]1, Inf[和 {{ count }} 个类别'
@@ -409,6 +424,7 @@ pim_settings:
     group_types: '{0}您有 0 个分组类型 |{1}您有 1 个分组类型 |]1，Inf[您有 {{ count }} 个分组类型'
     groups: '{0}您有 0 个组 |{1}您有 1 个组 |]1，Inf[您有 {{ count }} 个组'
     rules: '{0}您有 0 个已启用规则|{1}您有 1 个已启用规则|]1, Inf[您有 {{ count }} 个已启用规则'
+    identifier_generators: '{0}您有 0 个标识符生成器 |{1}您有 1 个标识符生成器 |]1，Inf[您有 {{ count }} 个标识符生成器'
 pim_system:
   system_menu: 系统菜单
   system_navigation: 系统导航
@@ -422,6 +438,36 @@ pim_system:
     enabled: SSO 已启用
     disabled: SSO 已禁用
     title: 基于 SAML 的单点登录
+  reset_pim:
+    modal:
+      summary:
+        name: 摘要
+        title: '警告：重置您的 PIM 是不可逆的'
+        text: '这将导致删除以下元素之外的所有其他元素：'
+        users:
+          name: 用户
+          tooltip: 用户是指您允许在您的 PIM 范围内进行协作的人。
+        user_groups:
+          name: 用户组
+          tooltip: 用户组定义了将在您的 PIM 中执行不同操作的团队。
+        roles:
+          name: 角色
+          tooltip: 角色定义了用户和用户组对您的 PIM 的访问权限以及可在其中执行的操作。
+      confirm:
+        name: 确认
+        title: 确认重置您的 PIM
+        helper:
+          emphasis: 重置 PIM 卡操作无法撤消。
+          text: 点击重置按钮，您将被注销，系统将返回登录页面。
+      confirmation_phrase: 请输入 "{{ confirmation_word }}"
+      confirmation_word: 重置
+    button:
+      label: 重置实例
+      confirm: 重置并退出登录
+    error_notification: 重置 PIM 时发生错误，请联系系统管理员。
+  sandbox:
+    helper:
+      text: 这是沙盒环境；您的更改不会影响生产。
 pim_datagrid:
   mass_action:
     default:

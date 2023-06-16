@@ -68,6 +68,8 @@ const SystemIndex = () => {
 
   const canAccessUsersNavigation = canAccessUsers || canAccessUserGroups || canAccessRoles;
 
+  const canResetPim = isEnabled('reset_pim') && isGranted('pim_reset_instance');
+
   const countEntities = useCountEntities();
 
   useEffect(() => {
@@ -117,7 +119,7 @@ const SystemIndex = () => {
           <>
             <SectionTitle>
               <SectionTitle.Title>{translate('pim_system.system_navigation')}</SectionTitle.Title>
-              {isEnabled('reset_pim') && (
+              {canResetPim && (
                 <>
                   <SectionTitle.Spacer />
                   <ResetButton />

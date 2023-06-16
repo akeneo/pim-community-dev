@@ -1,6 +1,6 @@
 parameters:
   env(FLAG_ENRICHED_CATEGORY_ENABLED): 'false'
-  env(FLAG_ENRICHED_CATEGORY_UPDATE_TEMPLATE_ATTRIBUTE): 'false'
+  env(FLAG_ENRICHED_CATEGORY_UPDATE_TEMPLATE_ATTRIBUTE): 'true'
 
 services:
   akeneo.category.enriched.feature:

@@ -30,6 +30,7 @@ services:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'
+            - '@event_dispatcher'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -111,5 +112,11 @@ services:
             - { name: kernel.event_subscriber }
 
     Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeGroupWithAttributeCannotBeRemovedSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\Install\InitMainIdentifierSubscriber:
+        arguments:
+            - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }

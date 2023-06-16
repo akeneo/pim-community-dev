@@ -2,6 +2,7 @@ pim_notification:
   types:
     settings: 設定
     mass_delete: 削除
+    attribute_mass_delete: 削除
 flash:
   comment:
     create:
@@ -21,6 +22,7 @@ pim_enrich.entity.product:
     update:
       success: 商品を正常に更新しました
       fail: 商品を更新できませんでした
+      fail_session_expired: 商品を更新できません。ユーザーセッションが期限切れになっています。もう一度ログインしてください。
       fields_not_ready: "この商品は現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
       already_in_upload: ファイルはすでに {{ locale }} ローケル と {{ scope }} スコープでこの属性のためにアップロードされています
       file_upload: ファイルをアップロード中にエラーが発生しました
@@ -69,6 +71,7 @@ pim_enrich.entity.product:
       modified: 修正
       old_value: 以前の値
       new_value: 現在の値
+      limit: '最新の {{ limit }} バージョンのみが表示されています。'
     meta:
       updated: 最終更新
       groups: グループ
@@ -113,7 +116,7 @@ pim_enrich.entity.product:
         quantity: 数量
         unlinked: リンク解除済み
       search:
-        placeholder: ラベルまたは識別子で検索
+        placeholder: ラベル、識別子、またはUUIDで検索
       no_data: 関連商品はありません
       remove: 関連付けを削除
       edit: 製品の編集
@@ -243,6 +246,9 @@ pim_enrich.entity.category:
     success: ツリー "{{ tree }}" は正常に削除されました
     error: ツリー "{{ tree }}" を削除できませんでした
     confirmation: '{{ name }} ツリーを本当に削除しますか？そのツリーのすべてのカテゴリが削除され、それらのカテゴリの商品が削除されます。'
+    confirmation_question: '{{ name }}を本当に削除しますか？'
+    warning_categories_number: 関連付けられた{{ categoriesNumber }}カテゴリは削除され、商品はこれらすべてのカテゴリから削除されます。
+    warning_products: すべての関連付けられた商品は{{ name }}から削除されます
     products_limit_exceeded:
       title: このツリーを削除することはできません
       message: ツリー "{{ tree }}" には {{ limit }} 個を超える商品が含まれているため、削除できません。
@@ -250,6 +256,7 @@ pim_enrich.entity.category:
     success: カテゴリ "{{ name }}" は正常に削除されました
     error: カテゴリ "{{ name }}" を削除できませんでした
     confirmation: カテゴリ {{ name }} を本当に削除しますか？このカテゴリの商品は削除されません。
+    confirmation_question: '{{ name }}を本当に削除しますか？'
     products_limit_exceeded:
       title: このカテゴリを削除することはできません
       message: '"{{ name }}" カテゴリには {{ limit }} 個を超える商品が含まれているため、削除できません。'
@@ -451,6 +458,7 @@ pim_datagrid:
     mass_delete: 一括削除
     selected:
       family: "]-Inf, 1]{{ count }} 個のファミリーを選択済み|]1, Inf[{{ count }} 個のファミリーを選択済み"
+      attribute: "]-Inf, 1]{{ count }} 個の属性を選択済み|]1, Inf[{{ count }} 個の属性を選択済み"
       product: "]-Inf, 1]{{ count }} 個の結果を選択済み|]1, Inf[{{ count }} 個の結果を選択済み"
   view_selector:
     view: 表示
@@ -493,6 +501,7 @@ pim_datagrid:
       label: 更新日
     label_or_identifier:
       label: ラベルもしくは識別子
+      label_with_uuid: ラベル、識別子、UUID
     parent:
       label: 親
     identifier:

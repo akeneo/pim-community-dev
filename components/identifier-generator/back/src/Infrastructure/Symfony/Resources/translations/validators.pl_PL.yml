@@ -1,0 +1,28 @@
+validation:
+  create:
+    identifier_limit_reached: 'Osiągnięto limit „{{limit}}” generatorów identyfikatorów'
+    code_already_used: 'Ten kod jest już używany.'
+  update:
+    identifier_generator_code_not_found: 'Generator identyfikatorów „{{code}}” nie istnieje lub nie masz uprawnień, aby uzyskać do niego dostęp.'
+  identifier_generator:
+    attribute_does_not_exist: 'Atrybut „{{code}}” nie istnieje.'
+    attribute_should_have_type: 'Kod atrybutu „{{ code }}” ma typ „{{ type }}”, a powinien mieć typ „{{ expected }}”.'
+    free_text_string_field_required: 'Tekst dowolny powinien zawierać klucz „string”.'
+    enabled_value_field_required: 'Klucz „value” jest wymagany w przypadku włączonych produktów.'
+    enabled_boolean_value: 'Ta wartość powinna być wartością logiczną.'
+    auto_number_fields_required: 'Pola „{{ field }}” są wymagane dla typu „auto_number”.'
+    structure_auto_number_limit_reached: 'może zawierać maksymalnie następującą liczbę numerów automatycznych: {{limit}}'
+    conditions_limit_reached: 'może zawierać maksymalnie następującą liczbę warunków typu {{type}}: {{limit}}'
+    unknown_operator: 'Możesz wybrać tylko jedną z następujących wartości {{ value }} operatora: {{ choices }}.'
+    families_do_not_exist: 'Następujące rodziny zostały usunięte z katalogu: {{ familyCodes }}. Możesz usunąć je z wyboru produktów.'
+    options_do_not_exist: 'Dla atrybutu „{{ attributeCode }}” nie istnieją następujące opcje atrybutów: {{ optionCodes }}.'
+    unknown_scope: 'Zakres „{{ scopeCode }}” nie istnieje.'
+    unknown_locale: 'Wersja językowa „{{ localeCode }}” nie istnieje lub nie jest aktywna.'
+    inactive_locale: 'Wersja językowa „{{ localeCode }}” nie jest aktywna w kanale „{{ scopeCode }}”.'
+    family_property_fields_required: 'W przypadku typu „rodzina” pole „{{ field }}” jest wymagane.'
+    simple_select_property_fields_required: 'W przypadku typu „simple_select” pole „{{ field }}” jest wymagane.'
+    reference_entity_property_fields_required: 'W przypadku typu „reference_entity” wymagane jest pole „{{ field }}”.'
+    process_unknown_operator: 'Możesz wybrać tylko jedną z następujących wartości {{ value }} operatora: {{ choices }}.'
+    locale_required: 'W przypadku atrybutu „{{ attributeCode }}” wymagana jest wersja językowa.'
+    scope_required: 'W przypadku atrybutu „{{ attributeCode }}” wymagany jest kanał.'
+    categories_do_not_exist: 'Następujące kategorie zostały usunięte z katalogu: {{ categoryCodes }}. Możesz usunąć je z wyboru produktów.'

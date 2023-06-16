@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -50,7 +51,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_list_of_products(
         ProductValueNormalizer $productValueNormalizer
     ) {
-        $identifier1 = ScalarValue::value('sku', 'identifier_1');
+        $identifier1 = IdentifierValue::value('sku', true, 'identifier_1');
         $value1 = ScalarValue::value('another_attribute', 'value_1');
         $connector1 = new ConnectorProduct(
             Uuid::fromString(self::PRODUCT_UUIDS['identifier_1']),
@@ -111,7 +112,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             )
         );
 
-        $identifier2 = ScalarValue::value('sku', 'identifier_2');
+        $identifier2 = IdentifierValue::value('sku', true, 'identifier_2');
         $value2 = ScalarValue::value('another_attribute', 'value_2');
         $connector2 = new ConnectorProduct(
             Uuid::fromString(self::PRODUCT_UUIDS['identifier_2']),
@@ -131,7 +132,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             null
         );
 
-        $identifier3 = ScalarValue::value('sku', 'identifier_3');
+        $identifier3 = IdentifierValue::value('sku', true, 'identifier_3');
         $value3 = ScalarValue::value('another_attribute', 'value_3');
         $connector3 = new ConnectorProduct(
             Uuid::fromString(self::PRODUCT_UUIDS['identifier_3']),
@@ -255,7 +256,7 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_single_connector_product(
         ProductValueNormalizer $productValueNormalizer
     ) {
-        $identifier = ScalarValue::value('sku', 'identifier_1');
+        $identifier = IdentifierValue::value('sku', true, 'identifier_1');
         $value = ScalarValue::value('another_attribute', 'value');
         $connector = new ConnectorProduct(
             Uuid::fromString(self::PRODUCT_UUIDS['identifier_1']),

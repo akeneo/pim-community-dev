@@ -16,7 +16,7 @@ $rules = [
         'Akeneo\Category\Domain',
 
         // TBD
-        'Akeneo\Category\Api\Command\Exceptions\ViolationsException',
+        'Akeneo\Category\Domain\Exceptions\ViolationsException',
         'Akeneo\Category\Api\Command\UpsertCategoryCommand',
         'Akeneo\Category\Api\Command\UserIntents\SetImage',
         'Akeneo\Category\Api\Command\UserIntents\SetLabel',
@@ -68,6 +68,8 @@ $rules = [
         // Vendors
         'Webmozart\Assert',
         'Ramsey\Uuid',
+        'Symfony\Component\Validator\ConstraintViolation',
+        'Symfony\Component\Validator\ConstraintViolationList',
     ])->in('Akeneo\Category\Domain'),
 
     $builder->only([
@@ -95,7 +97,6 @@ $rules = [
         'Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver',
         // Other Domains Bundles /!\
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
-        'Akeneo\Pim\Enrichment\Bundle\Twig\CategoryExtension',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer',
         'Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository',
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
@@ -127,6 +128,7 @@ $rules = [
         'Symfony\Component\Form',
         'Symfony\Component\HttpFoundation',
         'Symfony\Component\HttpKernel',
+        'Symfony\Component\Lock',
         'Symfony\Component\Mime',
         'Symfony\Component\PropertyAccess',
         'Symfony\Component\Routing',
@@ -143,6 +145,7 @@ $rules = [
         'League\Flysystem',
         'Psr\Log',
         'Ramsey\Uuid',
+        'Twig',
         'Webmozart\Assert',
         // Vendors Bundle /!\
         'Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass',
@@ -151,7 +154,6 @@ $rules = [
     $builder->only([
         // Vendors
         'Symfony\Component\Messenger',
-        'Symfony\Component\Validator',
         'Webmozart\Assert',
     ])->in('Akeneo\Category\Api'),
 

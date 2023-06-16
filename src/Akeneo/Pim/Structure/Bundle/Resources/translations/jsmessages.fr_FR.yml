@@ -74,6 +74,8 @@ pim_enrich.entity.attribute_option:
       fail: Impossible d'enregistrer l'option de l'attribut
     delete:
       fail: Erreur lors de la suppression de l'option de l'attribut
+  page_title:
+    index: "]-Inf, 1]{{ count }} option|]1, Inf[{{ count }} options"
   module:
     edit:
       cancel_title: Annuler les modifications
@@ -89,7 +91,7 @@ pim_enrich.entity.attribute_option:
       delete_confirmation_subtitle_msg: Êtes-vous sûr de vouloir supprimer cette option ? Vous ne pouvez pas annuler cette action.
       display_options_limit: Seules les 500 premières options sont affichées ici. Si vous voulez voir plus d'options, effectuez une recherche ou un export.
       search:
-        placeholder: Chercher en utilisant le nom ou le code
+        placeholder: Rechercher en utilisant un libellé ou un code
         no_result:
           title: Il n'y a aucun résultat pour votre recherche.
 pim_enrich.entity.association_type:
@@ -150,7 +152,6 @@ pim_enrich.entity.attribute:
       success: Attribut mis à jour avec succès.
       fail: L'attribut n'a pas pu être mis à jour.
       fields_not_ready: "L'attribut ne peut actuellement pas être sauvegardé. Les champs suivants ne sont pas prêts : {{ fields }}"
-      cant_remove_attributes_used_as_label: Les attributs utilisés comme libellés dans une famille ne peuvent pas être supprimés.
     delete:
       success: L'attribut a bien été supprimé
       fail: Impossible de supprimer cet attribut
@@ -230,8 +231,10 @@ pim_enrich.entity.attribute:
       select_locale: Sélectionnez une locale
     delete:
       confirm: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
+      attribute_removal: L'attribut sera supprimé de tous les produits qui pourraient l'utiliser.
       product_count: '{0}0 produits|{1}1 produit|]1, Inf[{{ count }} produits'
       product_model_count: '{0}0 modèles de produit|{1}1 modèle de produit|]1, Inf[{{ count }} modèles de produit'
+      used: ']-Inf,1]a actuellement des valeurs définies pour cet attribut.|]1, Inf[ont actuellement des valeurs définies pour cet attribut.'
       helper:
         content: Si vous souhaitez modifier votre type d'attribut, pour le rendre localisable ou scopable, tout en gardant vos valeurs existantes pour cet attribut, 
         link: Consultez notre Help Center pour plus d'informations.
@@ -239,23 +242,40 @@ pim_enrich.entity.attribute:
       confirm_from_family: Êtes-vous sûr(e) de vouloir supprimer cet attribut de la famille ?
       confirm_from_group: Êtes vous sûr(e) de vouloir retirer l'attribut {{ attribute }} de ce groupe d'attributs ?
       confirm_from_product: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
+    mass_delete:
+      modal:
+        title: Attributs
+        subtitle: '{1}Confirmer la suppression d''{{ count }} attribut|]1, Inf[Confirmer la suppression de {{ count }} attributs'
+        label: Veuillez retaper le texte suivant "{{ textToCheck }}"
+        confirm: Êtes-vous sûr(e) de vouloir supprimer ces attributs ?
+      message_bar:
+        success: La suppression a commencé. Vous recevrez une notification une fois la tâche terminée. En attendant, vous pouvez garder un œil sur son évolution depuis le traqueur de processus.
+        fail: Une erreur s'est produite lors du lancement de l'opération de suppression en masse.
 pim_enrich.entity.attribute_group:
   label: groupe d'attributs
   uppercase_label: Groupe d'attributs
   plural_label: Groupes d'attributs
   result_count: '{0}0 groupe d''attributs |{1}1 groupe d''attributs|]1, Inf[{{ count }} groupes d''attributs'
+  limit_reached: Vous avez atteint la limite de {{ max }} groupes d'attributs.
   show_more_attribute:
     title: C'est un peu bondé ici, nous vous montrons les attributs {{ attributeCount }}/{{ totalAttributeCount }}.
     subtitle: Pour découvrir tous les attributs de ce groupe, cliquez ci-dessous !
     button: Voir tous les attributs
+  dropdown:
+    label: Sélectionner
+    all: Tous les groupes d'attributs
+    none: Aucun groupe d'attribut
   flash:
     update:
       success: Groupe d'attributs mis à jour avec succès
       fail: Le groupe d'attributs n'a pas pu être mis à jour.
       fields_not_ready: "Le groupe d''attributs ne peut actuellement pas être sauvegardé. Les champs suivants ne sont pas prêts : {{ fields }}"
     delete:
-      success: Groupe d'attributs supprimé avec succès
-      fail: Impossible de supprimer ce groupe d'attributs
+      success: La suppression a commencé. Vous recevrez une notification une fois la tâche terminée. En attendant, vous pouvez garder un œil sur son évolution depuis le traqueur de processus.
+      fail: Une erreur s'est produite lors du lancement de l'opération de suppression.
+    mass_delete:
+      success: La suppression a commencé. Vous recevrez une notification une fois la tâche terminée. En attendant, vous pouvez garder un œil sur son évolution depuis le traqueur de processus.
+      fail: Une erreur s'est produite lors du lancement de l'opération de suppression en masse.
   module:
     add_attribute_group:
       label: Ajouter par groupes
@@ -263,6 +283,33 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
     delete:
       confirm: Êtes-vous sûr(e) de vouloir supprimer ce groupe d'attributs ?
+  grid:
+    columns:
+      attribute_count: Nombre d'attributs liés
+  selected: '{0}Aucun groupe d''attributs sélectionnés|{1}1 groupe d''attributs sélectionné|]1, Inf[{{ count }} groupes d''attributs sélectionnés'
+  mass_delete:
+    confirm: '{1}Êtes-vous sûr de vouloir supprimer ce groupe d''attributs ?|]1, Inf[Êtes-vous sûr de vouloir supprimer ces {{ count }} groupes d''attributs ?'
+    confirmation_phrase: 'Veuillez retaper le texte suivant "{{ confirmation_word }}"'
+    confirmation_word: supprimer
+    attribute_warning: '{1}La suppression de ces groupes d''attributs aura un impact sur {{ number_of_attribute }} attribut lié. Vous devrez déplacer cet attribut vers un nouveau groupe d''attributs. ]1, Inf[Supprimer ces groupes d''attributs aura un impact sur {{ number_of_attribute }} attributs liés. Vous devrez déplacer ces attributs dans un nouveau groupe d''attributs.'
+    select_attribute_group: '{1}Veuillez sélectionner le groupe d''attributs vers lequel vous souhaitez déplacer l''attribut lié :|]1, Inf[Veuillez sélectionner le groupe d''attributs vers lequel vous souhaitez déplacer les {{ number_of_attribute }} attributs liés :'
+    empty_result_label: 'Aucun groupe d''attributs trouvé'
+    placeholder: 'Sélectionner un groupe d''attributs'
+    open_label: 'liste des groupes d’attributs'
+  delete:
+    confirm: 'Êtes-vous sûr(e) de vouloir supprimer ce groupe d''attributs ?'
+    attribute_warning: 'La suppression de ce groupe d''attributs aura un impact sur {{ number_of_attribute }} attributs lié(s). Vous devrez déplacer cet/ces attribut(s) lié(s) vers un nouveau groupe d''attributs.'
+    select_attribute_group: '{1}Veuillez sélectionner le groupe d''attributs vers lequel vous souhaitez déplacer l''attribut lié :|]1, Inf[Veuillez sélectionner le groupe d''attributs vers lequel vous souhaitez déplacer les {{ number_of_attribute }} attributs liés :'
+  batch_jobs:
+    delete_attribute_groups:
+      delete_attribute_groups:
+        label: Supprimer des groupes d'attributs
+pim_import_export:
+  notification:
+    mass_delete_attribute_groups:
+      error: La suppression en masse des groupes d'attributs a échoué
+      warning: La suppression en masse des groupes d'attributs s'est terminée avec quelques avertissements
+      success: La suppression en masse des groupes d'attributs s'est terminée
 pim_enrich.mass_edit.family:
   title: Action de masse sur les familles
   confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|]1, Inf[Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
@@ -283,3 +330,19 @@ pim_enrich.mass_edit.family:
       label: Configurer les exigences d'attributs
       description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
       label_count: "{1}Modifier les exigences d'attributs d'<span class=\"AknFullPage-title--highlight\">1 famille</span>|]1, Inf[Modifier les exigences d'attributes de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familles</span>"
+batch_jobs:
+  default_steps:
+    delete_attribute_groups: Supprimer les groupes d'attributs
+    move_child_attributes: Déplacer les attributs liés
+  delete_attributes:
+    delete_attributes:
+      label: Supprimer les attributs
+job_execution:
+  summary:
+    deleted_attributes: Attributs supprimés
+akeneo_job_process_tracker:
+  type_filter:
+    attribute_group_mass_delete: Supprimer les groupes d'attributs
+pim_notification:
+  types:
+    attribute_group_mass_delete: Suppression

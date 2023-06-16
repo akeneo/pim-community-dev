@@ -16,6 +16,7 @@ type Attribute = {
   localizable: boolean;
   scopable: boolean;
   type: string;
+  reference_data_name?: string;
 };
 
 export type {Attribute, AttributeType, AttributeCode};

@@ -12,7 +12,11 @@ akeneo_job:
     ABANDONED: 破棄
     UNKNOWN: 不明
     IN_PROGRESS: 実行中
+    PAUSING: 一時停止中
+    PAUSED: 一時停止
 akeneo_job_process_tracker:
+  tooltip:
+    paused: このジョブはインスタンスの内部メンテナンスのため一時停止されています。メンテナンスが終了すると自動的に再開します。
   last_operations:
     title: 最後の操作
     view_all: すべて表示
@@ -39,6 +43,7 @@ akeneo_job_process_tracker:
     export: エクスポート
     mass_edit: 一括編集
     mass_delete: 商品を一括削除
+    attribute_mass_delete: 属性の一括削除
     compute_family_variant_structure_changes: ファミリーバリエーション構造の変化を計算
     compute_completeness_of_products_family: 商品ファミリーの完全性を計算
     clean_removed_attribute_job: 削除された属性値を消去中
@@ -58,6 +63,8 @@ akeneo_job_process_tracker:
     stopping: 停止中
     unknown: 不明
     in_progress: 実行中
+    pausing: 一時停止中
+    paused: 一時停止
   automation_filter:
     all: すべて
     yes: Yes

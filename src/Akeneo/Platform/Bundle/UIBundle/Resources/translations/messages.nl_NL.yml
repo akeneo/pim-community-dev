@@ -131,6 +131,7 @@ pim_enrich:
       create: Attribuutgroep aanmaken
       edit: Attribuutgroep wijzigen
       remove: Attribuutgroep verwijderen
+      mass_delete: Attribuutgroepen in bulk verwijderen
       sort: Attribuutgroepen sorteren
       add_attribute: Attribuut toevoegen aan een groep
       remove_attribute: Attribuut verwijderen van een groep
@@ -140,6 +141,7 @@ pim_enrich:
       create: Attribuut aanmaken
       edit: Attribuut bewerken
       remove: Attribuut verwijderen
+      mass_delete: Attributen in bulk verwijderen
       sort: Sorteer attributen binnen attribuutgroepen
       history: Bekijk attribuutgeschiedenis
     group:
@@ -212,6 +214,8 @@ flash:
   attribute:
     identifier_not_removable: Id-attribuut kan niet worden verwijderd
     used_as_conversion_unit: Dit attribuut kan niet worden verwijderd omdat het wordt gebruikt als conversie eenheid in het kanaal(en) %channelCodes%.
+    cant_remove_attributes_used_as_label: Attributen die worden gebruikt als labels in een familie kunnen niet worden verwijderd.
+    cant_remove_attribute_used_as_axis: Kan dit attribuut niet verwijderen. Het wordt gebruikt als variantas in een familievariant
   category:
     removed: Categorie succesvol verwijderd
   tree:
@@ -451,6 +455,7 @@ pim_datagrid:
       label: Bijgewerkt
     label_or_identifier:
       label: Label of identifier
+      label_with_uuid: Label, ID of UUID
     parent:
       label: Bovenliggende
     identifier:

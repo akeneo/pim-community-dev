@@ -123,14 +123,6 @@ services:
         tags:
             - { name: 'pim_repository' }
 
-    pim_api.repository.category:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi\CategoryRepository'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.category.class%'
-            - '@pim_catalog.repository.category'
-            - '@validator'
-
     pim_enrich.repository.category:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\CategoryRepository'

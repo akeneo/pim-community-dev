@@ -34,7 +34,7 @@ class RemoveRoleSubscriber implements EventSubscriberInterface
         }
 
         if (0 < $this->getUserCount->forUsersHavingOnlyRole($role->getRole())) {
-            throw new ForbiddenToRemoveRoleException('You can not delete this role, otherwise some users will no longer have a role.');
+            throw new ForbiddenToRemoveRoleException('You can not delete this role because it is used by either users or connections.');
         }
     }
 
