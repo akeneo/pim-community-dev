@@ -22,7 +22,7 @@ const useEditCategoryForm = (categoryId: number) => {
 
   const {load: loadCategory, category: fetchedCategory, status: categoryStatus} = useCategory(categoryId);
 
-  const {data: template, status: templateStatus} = useTemplateByTemplateUuid(fetchedCategory?.template_uuid ?? null);
+  const {data: template} = useTemplateByTemplateUuid(fetchedCategory?.template_uuid ?? null);
 
   const [category, setCategory] = useState<EnrichCategory | null>(null);
   const [categoryEdited, setCategoryEdited] = useState<EnrichCategory | null>(null);
@@ -90,7 +90,7 @@ const useEditCategoryForm = (categoryId: number) => {
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
 
       // force to fetch attribute list from template to hide potentially deleted attributes
-      await queryClient.invalidateQueries(['template', fetchedCategory?.template_uuid]);
+      await queryClient.invalidateQueries(['get-template', fetchedCategory?.template_uuid]);
     } else {
       notify(NotificationLevel.ERROR, response.error.message);
       if (response.error.code && response.error.code === DEACTIVATED_TEMPLATE) {
@@ -146,7 +146,6 @@ const useEditCategoryForm = (categoryId: number) => {
 
   return {
     categoryFetchingStatus: categoryStatus,
-    templateFetchingStatus: templateStatus,
     category: categoryEdited,
     template,
     applyPermissionsOnChildren,
