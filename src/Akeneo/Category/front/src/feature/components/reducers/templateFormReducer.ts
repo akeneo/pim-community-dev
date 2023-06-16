@@ -72,13 +72,11 @@ export const templateFormReducer = (previousState: TemplateFormState, action: Te
   if (action.type === 'attribute_label_translation_changed') {
     const {attributeUuid, localeCode, value} = action.payload;
     state.attributes[attributeUuid] = state.attributes[attributeUuid] || {labels: {}};
-    state.attributes[attributeUuid].labels = {
-      ...state.attributes[attributeUuid].labels,
-      [localeCode]: {
-        value,
-        errors: [],
-      },
-    }
+    state.attributes[attributeUuid].labels[localeCode] = state.attributes[attributeUuid].labels[localeCode] || {};
+    state.attributes[attributeUuid].labels[localeCode] = {
+      value,
+      errors: [],
+    };
   }
 
   if (action.type === 'attribute_label_translation_saved') {
