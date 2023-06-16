@@ -2,16 +2,16 @@ import {useFeatureFlags, useTranslate, userContext} from '@akeneo-pim-community/
 import {Button, Pill, SectionTitle, Table, useBooleanState} from 'akeneo-design-system';
 import {useMemo} from 'react';
 import styled from 'styled-components';
-import {Attribute, CATEGORY_ATTRIBUTE_TYPE_AREA, CATEGORY_ATTRIBUTE_TYPE_RICHTEXT} from '../../models';
-import {getLabelFromAttribute} from '../attributes';
-import {useTemplateForm} from '../providers/TemplateFormProvider';
-import {AddTemplateAttributeModal} from './AddTemplateAttributeModal';
+import {Attribute, CATEGORY_ATTRIBUTE_TYPE_AREA, CATEGORY_ATTRIBUTE_TYPE_RICHTEXT} from '../../../models';
+import {getLabelFromAttribute} from '../../attributes';
+import {useTemplateForm} from '../../providers/TemplateFormProvider';
+import {AddTemplateAttributeModal} from '../AddTemplateAttributeModal';
 
 const useAttributeFormHasErrors = () => {
   const [state] = useTemplateForm();
 
   return (attributeUuid: string) => {
-    return Object.values(state.attributes[attributeUuid] || {}).some(({errors}) => errors.length > 0);
+    return Object.values(state.attributes?.[attributeUuid]?.labels || {}).some(({errors}) => errors.length > 0);
   };
 };
 

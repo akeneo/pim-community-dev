@@ -2,11 +2,11 @@ import {FC} from 'react';
 import {renderHook, act} from '@testing-library/react-hooks';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {BackendCategoryTree, CategoryTreeModel} from 'feature/models';
-import {CategoryTreeProvider} from 'feature/components';
+import {BackendCategoryTree, CategoryTreeModel} from '../models';
+import {CategoryTreeProvider} from '../components';
 import {useCategoryTreeNode} from './useCategoryTreeNode';
-import {aBackendCategoryTree, aCategoryTree} from 'tests/provideCategoryHelper';
-import {moveCategory} from 'feature/infrastructure';
+import {aBackendCategoryTree, aCategoryTree} from '../../tests/provideCategoryHelper';
+import {moveCategory} from '../infrastructure';
 import {DependenciesContext, mockedDependencies} from '@akeneo-pim-community/shared';
 
 jest.mock('../infrastructure');

@@ -1,13 +1,13 @@
 import {useTranslate, userContext} from '@akeneo-pim-community/shared';
 import {Button, Checkbox, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {useCatalogActivatedLocales} from '../../hooks/useCatalogActivatedLocales';
-import {useCatalogLocales} from '../../hooks/useCatalogLocales';
-import {Attribute} from '../../models';
-import {getLabelFromAttribute} from '../attributes';
-import {DeactivateTemplateAttributeModal} from './DeactivateTemplateAttributeModal';
-import {LabelTranslationInput} from './LabelTranslationInput';
-import {OptionRichTextEditorCheckbox} from './OptionRichTextEditorCheckbox';
+import {useCatalogActivatedLocales} from '../../../hooks/useCatalogActivatedLocales';
+import {useCatalogLocales} from '../../../hooks/useCatalogLocales';
+import {Attribute} from '../../../models';
+import {getLabelFromAttribute} from '../../attributes';
+import {DeactivateTemplateAttributeModal} from '../DeactivateTemplateAttributeModal';
+import {AttributeLabelTranslationInput} from './AttributeLabelTranslationInput';
+import {AttributeOptionRichTextCheckbox} from './AttributeOptionRichTextCheckbox';
 
 type Props = {
   attribute: Attribute;
@@ -40,7 +40,7 @@ export const AttributeSettings = ({attribute}: Props) => {
         </SectionTitle.Title>
       </SectionTitle>
       <FieldContainer>
-        <OptionRichTextEditorCheckbox attribute={attribute} />
+        <AttributeOptionRichTextCheckbox attribute={attribute} />
         <Checkbox checked={attribute.is_localizable} readOnly={true}>
           {translate('akeneo.category.template.attribute.settings.options.value_per_locale')}
         </Checkbox>
@@ -56,7 +56,7 @@ export const AttributeSettings = ({attribute}: Props) => {
       </SectionTitle>
       <FieldContainer>
         {activatedCatalogLocales?.map(localeCode => (
-          <LabelTranslationInput
+          <AttributeLabelTranslationInput
             key={localeCode}
             attribute={attribute}
             localeCode={localeCode}

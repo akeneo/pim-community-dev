@@ -1,18 +1,17 @@
-import {useFeatureFlags, useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {Checkbox} from 'akeneo-design-system';
 import {useState} from 'react';
 import {useQueryClient} from 'react-query';
-import {useSaveStatus} from '../../hooks/useSaveStatus';
-import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
-import {Attribute} from '../../models';
-import {Status} from '../providers/SaveStatusProvider';
+import {useSaveStatus} from '../../../hooks/useSaveStatus';
+import {useUpdateTemplateAttribute} from '../../../hooks/useUpdateTemplateAttribute';
+import {Attribute} from '../../../models';
+import {Status} from '../../providers/SaveStatusProvider';
 
 type Props = {
   attribute: Attribute;
 };
 
-export const OptionRichTextEditorCheckbox = ({attribute}: Props) => {
-  const featureFlag = useFeatureFlags();
+export const AttributeOptionRichTextCheckbox = ({attribute}: Props) => {
   const translate = useTranslate();
   const queryClient = useQueryClient();
 
@@ -36,11 +35,7 @@ export const OptionRichTextEditorCheckbox = ({attribute}: Props) => {
   }
 
   return (
-    <Checkbox
-      checked={attribute.type === 'richtext'}
-      onChange={handleRichTextAreaChange}
-      readOnly={isSaving || !featureFlag.isEnabled('category_update_template_attribute')}
-    >
+    <Checkbox checked={attribute.type === 'richtext'} onChange={handleRichTextAreaChange} readOnly={isSaving}>
       {translate('akeneo.category.template.attribute.settings.options.rich_text')}
     </Checkbox>
   );
