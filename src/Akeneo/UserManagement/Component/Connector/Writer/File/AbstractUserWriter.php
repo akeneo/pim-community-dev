@@ -62,18 +62,13 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
      */
     final public function initialize(): void
     {
-        $bufferPath = null;
-        if (isset($this->state['buffer_file_path'])) {
-            $this->jobFileBackuper->recover(
-                $this->stepExecution->getJobExecution(),
-                $this->state['buffer_file_path']
-            );
-            $bufferPath = $this->state['buffer_file_path'];
+        $bufferFilePath = $this->state['buffer_file_path'] ?? null;
+
+        if ($bufferFilePath) {
+            $this->jobFileBackuper->recover($this->stepExecution->getJobExecution(), $bufferFilePath);
         }
 
-        if (null === $this->flatRowBuffer) {
-            $this->flatRowBuffer = $this->bufferFactory->create($bufferPath);
-        }
+        $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
     }
 
     /**
