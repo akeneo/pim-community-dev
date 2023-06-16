@@ -1,4 +1,5 @@
 src/Akeneo/Connectivity/**/*
+src/Akeneo/Category/**/*
 src/Akeneo/Platform/Bundle/UIBundle/Resources/public/lib/**/*
 src/Akeneo/Platform/Job/front/process-tracker/coverage/**/*
 src/Akeneo/Platform/Job/front/process-tracker/lib/**/*
