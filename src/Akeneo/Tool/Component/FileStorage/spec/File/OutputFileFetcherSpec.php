@@ -7,8 +7,8 @@ use League\Flysystem\FilesystemReader;
 use League\Flysystem\UnableToReadFile;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Exception\Prediction\FailedPredictionException;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class OutputFileFetcherSpec extends ObjectBehavior
 {

@@ -5,9 +5,9 @@ namespace Akeneo\Tool\Component\FileStorage\File;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use League\Flysystem\FilesystemReader;
 use League\Flysystem\UnableToReadFile;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
  * Fetch the raw file of a file stored in a virtual filesystem into the local filesystem.
