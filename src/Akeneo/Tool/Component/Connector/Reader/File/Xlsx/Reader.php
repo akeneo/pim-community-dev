@@ -62,6 +62,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
     {
         $totalItems = max(iterator_count($this->fileIterator) - 1, 0);
         $this->fileIterator->rewind();
+
         return $totalItems;
     }
 
