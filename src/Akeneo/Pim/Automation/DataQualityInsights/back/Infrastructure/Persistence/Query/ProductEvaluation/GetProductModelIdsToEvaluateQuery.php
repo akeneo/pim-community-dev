@@ -28,13 +28,15 @@ final class GetProductModelIdsToEvaluateQuery implements GetEntityIdsToEvaluateQ
     /**
      * @return \Generator<int, ProductModelIdCollection>
      */
-    public function execute(int $limit, int $bulkSize): \Generator
+    public function execute(?int $limit = null, int $bulkSize = GetEntityIdsToEvaluateQueryInterface::BULK_SIZE): \Generator
     {
+        $limitSql = null === $limit ? '' : sprintf('LIMIT %d', $limit);
+
         $sql = <<<SQL
 SELECT DISTINCT product_id
 FROM pim_data_quality_insights_product_model_criteria_evaluation
 WHERE status = :status
-LIMIT $limit
+$limitSql
 SQL;
 
         $stmt = $this->db->executeQuery($sql, ['status' => CriterionEvaluationStatus::PENDING], ['status' => \PDO::PARAM_STR]);
