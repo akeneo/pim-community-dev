@@ -461,7 +461,6 @@ pim_system:
     button:
       label: Réinitialiser cet environnement
       confirm: Réinitialiser et se déconnecter
-    error_notification: Une erreur s'est produite lors de la réinitialisation de cet environnement, veuillez contacter votre administrateur système.
   sandbox:
     helper:
       text: 'Cet environnement est un bac à sable : les changements que vous y ferez n''affecteront pas votre environnement de production.'

@@ -464,7 +464,6 @@ pim_system:
     button:
       label: Exemplaar resetten
       confirm: Resetten en uitloggen
-    error_notification: Er is een fout opgetreden tijdens het resetten van de PIM. Neem contact op met de systeembeheerder.
   sandbox:
     helper:
       text: Dit is een sandbox-omgeving; uw wijzigingen hebben geen invloed op uw productie.

@@ -1,0 +1,180 @@
+akeneo_catalogs:
+  common:
+    select:
+      open: Obre
+      remove: Suprimeix
+      no_matches: No hi ha resultats
+  catalog_list:
+    catalogs_name: Nom del catàleg
+    status: Estat
+    enabled: activat
+    disabled: deshabilitat
+    empty: No hi ha catàleg
+    more_information: Consulteu el nostre Centre d'ajuda per obtenir més informació.
+  catalog_edit:
+    tabs:
+      settings: Configuració del catàleg
+      product_selection: Selecció de producte
+      more: Més
+      product_value_filters: Filtreu els valors
+      product_mapping: Mapatge
+  catalog_status_widget:
+    fields:
+      enable_catalog: Activa el catàleg
+    helper: Per defecte, els nous catàlegs estan desactivats. Activeu el catàleg per permetre que l'aplicació recuperi les dades del vostre producte.
+    inputs:
+      yes: Yes
+      no: No
+  product_value_filters:
+    action:
+      open: Obre
+      remove: Eliminar
+    filters:
+      channel:
+        label: Canal
+        no_matches: No s’han trobat coincidències
+        placeholder: Seleccioneu un canal
+      locale:
+        label: Configuració Regional
+        no_matches: No s’han trobat coincidències
+        placeholder: Seleccioneu un local
+      currency:
+        label: Moneda
+        no_matches: No s’han trobat coincidències
+        placeholder: Seleccioneu una moneda
+  product_selection:
+    empty: Afegiu criteris de selecció per crear la vostra selecció de productes
+    count:
+      products: '{0} Sense productes|{1} 1 producte|[2,Inf[ {{ count }} productes'
+      error: Impossible calcular el nombre de productes
+    more_information: Consulteu el nostre Centre d'ajuda per obtenir més informació.
+    add_criteria:
+      label: afegir criteris de selecció
+      search: Criteri de cerca
+      no_results: no s’han trobat coincidències
+      section_system: sistema
+      section_attributes: atributs
+    action:
+      open: Obre
+      remove: Eliminar
+    locale:
+      label: Configuració Regional
+      empty: No s'ha trobat cap localització
+    channel:
+      label: Canal
+      empty: No s'ha trobat cap canal
+    criteria:
+      unknown: Aquest atribut s'ha suprimit.
+      max_reached: Heu arribat al límit de {{ maxCount }} criteris de selecció.
+      status:
+        label: Estat
+        enabled: Habilitat
+        disabled: Deshabilitat
+      family:
+        label: Família
+        no_matches: No s’han trobat coincidències
+        placeholder: Seleccioneu una família
+      completeness:
+        label: Integritat
+      attribute_option:
+        no_matches: No s’han trobat coincidències
+        placeholder: Tria una opció
+      category:
+        label: Categoria
+        remove: Suprimeix la categoria
+        category_tree: Arbre de categories
+      measurement:
+        search: Unitat
+        no_results: No s’han trobat coincidències
+      boolean:
+        yes: Yes
+        no: No
+    operators:
+      "STARTS WITH": comença amb
+      "ENDS WITH": acaba amb
+      "CONTAINS": conté
+      "DOES NOT CONTAIN": no conté
+      "EMPTY": està buit
+      "NOT EMPTY": no és buit
+      "IN": en
+      "NOT IN": no en
+      "IN CHILDREN": als fills
+      "NOT IN CHILDREN": no als fills
+      "UNCLASSIFIED": està sense classificar
+      "IN OR UNCLASSIFIED": està sense classificar o en
+      "BETWEEN": entre
+      "NOT BETWEEN": no entre
+      "=": és igual a
+      "!=": no és igual
+      ">": més gran que
+      ">=": és igual o superior a
+      "<": menys que
+      "<=": és igual o menor que
+  product_mapping:
+    target:
+      title: Llista de objectius
+      filter:
+        label: Filtre
+        option:
+          all: Tot
+      table:
+        target: Objectiu del catàleg
+        source: Font del Pim
+        placeholder: Definir una font de contingut
+      placeholder:
+        illustration_title: No hi ha cap objectiu de catàleg disponible
+    source:
+      title: Seleccionar font
+      parameters:
+        placeholder: Selecciona un atribut
+        title: Paràmetres font
+        channel:
+          placeholder: Seleccioneu un canal
+        locale:
+          placeholder: Seleccioneu un local
+        label_locale:
+          label: Traducció de valors
+          placeholder: Selecciona una traducció
+          helper: Seleccioneu l'idioma en què s'ha d'enviar el valor.
+        currency:
+          label: Moneda
+          placeholder: Seleccioneu una moneda
+          helper: Seleccioneu la moneda en què s'ha d'enviar el valor.
+        default_value:
+          label: El valor per defecte quan està buit
+          placeholder: Defineix el valor per defecte
+        no_parameters_message: No hi ha paràmetres per a aquesta font.
+        unit:
+          label: Unitat
+          placeholder: Selecciona una unitat
+          helper: Seleccioneu la unitat a la qual s'ha d'enviar el valor.
+      select_source:
+        label: Font del Pim
+        search: Criteri de cerca
+        no_results: No s’han trobat coincidències
+        section_system: Sistema
+        section_attributes: Atributs
+      placeholder:
+        title: Seleccionar font
+        illustration_title: Feu clic a un objectiu al tauler dret per configurar el mapa de catàleg.
+        subtitle: Aleshores podreu fer coincidir un atribut PIM amb l'objectiu seleccionat.
+        link: Consulteu el nostre Centre d'ajuda per obtenir més informació.
+      uuid_placeholder:
+        illustration_title: L'UUID és un identificador tècnic del producte.
+        subtitle: Totes les aplicacions l'han de requerir com a objectiu. No teniu res a configurar per a aquest objectiu, ja que el mapem automàticament amb l'UUID del producte Akeneo.
+        link: Més informació sobre UUID.
+      requirements:
+        title: Requeriments de l'aplicació
+        help: Ajuda
+        constraints:
+          minLength: '{0,1} Aquest objectiu ha de tenir com a mínim {{ value }} caràcters.|[2,Inf[ Aquest objectiu ha de tenir almenys {{ value }} caràcters.'
+          maxLength: '{0,1} Aquest objectiu no ha de superar {{ value }} caràcters.|[2,Inf[ Aquest objectiu no ha de superar {{ value }} caràcters.'
+          pattern: '[0,Inf[ Patró: aquest objectiu ha de coincidir amb l''expressió regular següent: "{{ value }}".'
+          minimum: '[0,Inf[ Aquest objectiu ha de ser superior o igual a {{ value }}.'
+          maximum: '[0,Inf[ Aquest objectiu ha de ser inferior o igual a {{ value }}.'
+          enum: '[0,Inf[ Enum: aquest objectiu només accepta els valors següents: {{ value }}.'
+      system_attributes:
+        categories:
+          label: Categories
+        family:
+          label: Família

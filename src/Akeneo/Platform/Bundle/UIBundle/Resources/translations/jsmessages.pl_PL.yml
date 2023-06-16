@@ -464,7 +464,6 @@ pim_system:
     button:
       label: Zresetuj instancję
       confirm: Zresetuj i wyloguj
-    error_notification: Podczas resetu PIM wystąpił błąd, skontaktuj się z administratorem systemu.
   sandbox:
     helper:
       text: To środowisko piaskownicy; zmiany nie wpłyną na Twoje środowisko produkcyjne.

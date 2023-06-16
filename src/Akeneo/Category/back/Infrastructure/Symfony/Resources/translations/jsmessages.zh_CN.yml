@@ -79,15 +79,7 @@ akeneo.category:
       notification_success:
         title: '{{ attribute }} 属性已成功删除'
     deactivate:
-      deactivate_template: 停用模板
-      confirmation_modal:
-        title: 停用类别模板
-        message: 确定要停用名为 {{ template }} 的类别模板吗？
-        helper: 停用此模板将永久删除关联类别的属性和值。
-        deactivate: 停用
-      notification_success:
-        title: '{{ template }} 模板已停用'
-        message: '{{ template }} 已被停用。关联类别的内容已被删除。'
+      deactivate_template: 删除模板
   template_list:
     columns:
       header: 标签
@@ -100,7 +92,6 @@ akeneo.category:
     content:
       enrich_attribute_values: 通过文本、文本区域和图像属性丰富类别树的所有级别
       customizable_templates: 自定义模板为您带来卓越的产品体验
-      edit_attributes: '即将推出：更新所有这些类别属性的设置'
     survey_link_label: 告诉我们您的想法
     learn_more_link_label: 了解更多有关丰富的类别
   other_actions: 其他操作
