@@ -63,7 +63,7 @@ services:
         class: '%pim_connector.writer.file.default.column_sorter.class%'
         arguments:
             - '@pim_connector.array_converter.field_splitter'
-            - [ 'username', 'email' ]
+            - [ 'username', 'email', 'avatar', 'catalog_default_locale', 'catalog_default_scope', 'default_category_tree', 'default_product_grid_view', 'enabled', 'first_name', 'groups', 'last_name', 'middle_name', 'name_prefix', 'name_suffix', 'phone', 'product_grid_filters', 'proposals_state_notifications', 'proposals_to_review_notification', 'proposals_state_notifications', 'proposals_to_review_notification', 'roles', 'timezone', 'user_default_locale' ]
 
     pim_user.writer.file.user_role.flat_item_buffer_flusher:
         class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'

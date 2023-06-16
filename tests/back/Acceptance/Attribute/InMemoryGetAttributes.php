@@ -44,7 +44,7 @@ class InMemoryGetAttributes implements GetAttributes
                     $attribute->getDefaultMetricUnit(),
                     $attribute->isDecimalsAllowed(),
                     $attribute->getBackendType(),
-                    $attribute->getAvailableLocaleCodes()
+                    $attribute->getAvailableLocaleCodes(),
                 );
             }
         }
@@ -62,6 +62,7 @@ class InMemoryGetAttributes implements GetAttributes
         $rawAttributes = $this->attributeRepository->findBy(['type' => $attributeType]);
         $attributes = [];
 
+        /** @var $attribute AttributeInterface*/
         foreach ($rawAttributes as $attribute) {
             $attributes[$attribute->getCode()] = new Attribute(
                 $attribute->getCode(),
@@ -73,7 +74,7 @@ class InMemoryGetAttributes implements GetAttributes
                 $attribute->getDefaultMetricUnit(),
                 $attribute->isDecimalsAllowed(),
                 $attribute->getBackendType(),
-                $attribute->getAvailableLocaleCodes()
+                $attribute->getAvailableLocaleCodes(),
             );
         }
 

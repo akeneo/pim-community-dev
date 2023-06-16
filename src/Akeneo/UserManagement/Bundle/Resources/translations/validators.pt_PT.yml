@@ -1,0 +1,2 @@
+pim_user:
+  reserved_prefix_username: "O prefixo do nome de usuário '{{ prefix }}' está reservado"

@@ -16,6 +16,13 @@ services:
 
     pim_user.normalizer.user.standard:
         class: 'Akeneo\UserManagement\Component\Normalizer\Standard\UserNormalizer'
+        arguments:
+            - '@pim_user.normalizer.date_time'
+        tags:
+            - { name: pim_standard_format_serializer.normalizer }
+
+    pim_user.normalizer.date_time:
+        class: Akeneo\UserManagement\Component\Normalizer\DateTimeNormalizer
         tags:
             - { name: pim_standard_format_serializer.normalizer }
 

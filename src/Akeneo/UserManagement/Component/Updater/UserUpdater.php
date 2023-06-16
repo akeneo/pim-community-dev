@@ -32,74 +32,22 @@ use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
  */
 class UserUpdater implements ObjectUpdaterInterface
 {
-    /** @var UserManager */
-    protected $userManager;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $categoryRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $roleRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $groupRepository;
-
-    /** @var ObjectRepository */
-    protected $gridViewRepository;
-
-    /** @var FileInfoRepositoryInterface */
-    protected $fileInfoRepository;
-
-    /** @var FileStorerInterface */
-    protected $fileStorer;
-
-    /** @var string */
-    protected $fileStorageFolder;
-
     /** @var string[] */
     private $properties;
 
-    /**
-     * @param UserManager                           $userManager
-     * @param IdentifiableObjectRepositoryInterface $categoryRepository
-     * @param IdentifiableObjectRepositoryInterface $localeRepository
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param IdentifiableObjectRepositoryInterface $roleRepository
-     * @param GroupRepositoryInterface              $groupRepository
-     * @param ObjectRepository                      $gridViewRepository
-     * @param FileInfoRepositoryInterface           $fileInfoRepository
-     * @param FileStorerInterface                   $fileStorer
-     * @param string                                $fileStorageFolder
-     */
     public function __construct(
-        UserManager $userManager,
-        IdentifiableObjectRepositoryInterface $categoryRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $roleRepository,
-        GroupRepositoryInterface $groupRepository,
-        ObjectRepository $gridViewRepository,
-        FileInfoRepositoryInterface $fileInfoRepository,
-        FileStorerInterface $fileStorer,
-        string $fileStorageFolder,
+        private readonly UserManager $userManager,
+        private readonly IdentifiableObjectRepositoryInterface $categoryRepository,
+        private readonly IdentifiableObjectRepositoryInterface $localeRepository,
+        private readonly IdentifiableObjectRepositoryInterface $channelRepository,
+        private readonly IdentifiableObjectRepositoryInterface $roleRepository,
+        private readonly GroupRepositoryInterface $groupRepository,
+        private readonly ObjectRepository $gridViewRepository,
+        private readonly FileInfoRepositoryInterface $fileInfoRepository,
+        private readonly FileStorerInterface $fileStorer,
+        private readonly string $fileStorageFolder,
         string ...$properties
     ) {
-        $this->userManager = $userManager;
-        $this->categoryRepository = $categoryRepository;
-        $this->localeRepository = $localeRepository;
-        $this->channelRepository = $channelRepository;
-        $this->roleRepository = $roleRepository;
-        $this->groupRepository = $groupRepository;
-        $this->gridViewRepository = $gridViewRepository;
-        $this->fileInfoRepository = $fileInfoRepository;
-        $this->fileStorer = $fileStorer;
-        $this->fileStorageFolder = $fileStorageFolder;
         $this->properties = $properties;
     }
 

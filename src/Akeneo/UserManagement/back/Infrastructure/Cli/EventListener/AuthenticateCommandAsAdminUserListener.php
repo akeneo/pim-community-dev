@@ -2,14 +2,9 @@
 
 namespace Akeneo\UserManagement\Infrastructure\Cli\EventListener;
 
-use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\UserManagement\Bundle\Security\SystemUserToken;
-use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Infrastructure\Cli\AuthenticateAdminUser;
 use Akeneo\UserManagement\Infrastructure\Cli\Registry\AuthenticatedAsAdminCommandRegistry;
-use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Create a user system for the commands that need to be authenticated as admin user before executing
@@ -22,10 +17,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class AuthenticateCommandAsAdminUserListener
 {
     public function __construct(
-        private readonly TokenStorageInterface $tokenStorage,
-        private readonly ObjectRepository $groupRepository,
-        private readonly ObjectRepository $roleRepository,
-        private readonly SimpleFactoryInterface $userFactory,
+        private readonly AuthenticateAdminUser $authenticateAdminUser,
         private readonly AuthenticatedAsAdminCommandRegistry $commandRegistry,
     ) {
     }
@@ -39,25 +31,6 @@ class AuthenticateCommandAsAdminUserListener
             return;
         }
 
-        try {
-            $user = $this->userFactory->create();
-            $user->setUsername(UserInterface::SYSTEM_USER_NAME);
-
-            $groups = $this->groupRepository->findAll();
-            foreach ($groups as $group) {
-                $user->addGroup($group);
-            }
-
-            $roles = $this->roleRepository->findAll();
-            foreach ($roles as $role) {
-                $user->addRole($role);
-            }
-
-            $token = new SystemUserToken($user);
-            $this->tokenStorage->setToken($token);
-        } catch (DBALException $e) {
-            // do nothing.
-            // An exception can happen if db does not exist yet for instance
-        }
+        ($this->authenticateAdminUser)();
     }
 }
