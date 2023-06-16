@@ -1,0 +1,62 @@
+akeneo_catalogs:
+  validation:
+    max_number_of_catalogs_per_user_message: Puoi creare fino a 15 cataloghi
+    product_selection:
+      criteria:
+        channel:
+          not_empty: 'Questo canale deve essere vuoto.'
+          empty: 'Questo canale non può essere vuoto.'
+          unknown: 'Questo canale è stato disattivato. Controlla le impostazioni del canale o rimuovi questo criterio.'
+        locale:
+          not_empty: 'Questa impostazione locale deve essere vuota.'
+          empty: 'Questa impostazione locale non può essere vuota.'
+          unknown: 'Questa impostazione locale non esiste.'
+          disabled: 'Questa impostazione locale è disattivata per questo canale. Controlla le impostazioni del canale o rimuovi questo criterio.'
+        value:
+          not_empty: 'Questo valore deve essere vuoto.'
+          empty: 'Questo valore non può essere vuoto.'
+        family:
+          unknown: 'Almeno una delle famiglie selezionate non esiste.'
+        completeness:
+          value: 'Il valore di Completamento deve essere copreso tra 0 e 100 per cento.'
+        attribute_option:
+          unknown: 'Almeno una delle opzioni selezionate non esiste.'
+        category:
+          value: 'Le seguenti categorie non esistono più: {{ codes }}. Rimuovile dal valore del criterio.'
+        date:
+          between_is_empty: 'Questi valori non possono essere vuoti.'
+        measurement:
+          unit:
+            not_exist: 'L''unità del campo "{{ field }}" non esiste.'
+            not_empty: 'L''unità di misura non può essere vuota.'
+    product_value_filters:
+      channel:
+        unknown: 'Il canale "{{ channel_name }}" è stato disattivato. Controlla le impostazioni del canale o rimuovi questo filtro.'
+      currencies:
+        unknown: 'La valuta "{{ currency_name }}" è stata disattivata. Controlla le impostazioni della valuta o rimuovi questo filtro.'
+      locale:
+        unknown: 'L''impostazione locale "{{ locale_name }}" è stata disattivata. Controlla le impostazioni locali o rimuovi questo filtro.'
+    product_mapping:
+      schema:
+        missing_targets: 'La mappatura è incompleta, mancano le seguenti destinazioni: {{ targets }}.'
+        additional_targets: "La mappatura non è corretta, le destinazioni seguenti non esistono: {{ targets }}."
+        incorrect_type: 'Il tipo di origine scelto non soddisfa i requisiti: era atteso {{ expected_type }}.'
+      source:
+        invalid: 'Questo attributo è stato eliminato.'
+        unknown: 'Origine sconosciuta'
+        channel:
+          not_empty: 'Questo canale deve essere vuoto.'
+          empty: 'Questo canale non può essere vuoto.'
+          unknown: 'Questo canale è stato eliminato. Controlla le impostazioni del canale o aggiorna questa valore.'
+        locale:
+          not_empty: 'Questa impostazione locale deve essere vuota.'
+          empty: 'Questa impostazione locale non può essere vuota.'
+          unknown: 'Questa impostazione locale è disattivata o non esiste più. Controlla la configurazione dei canali e delle impostazioni locali.'
+          disabled: 'Questa impostazione locale è disattivata. Controlla la configurazione dei canali e delle impostazioni locali.'
+        required: 'L''origine è obbligatoria.'
+        currency:
+          disabled: 'Questa valuta non è attivata. Controlla le impostazioni dei canali e delle valute oppure aggiorna questo valore.'
+        measurement:
+          unit:
+            not_exist: 'L''unità del campo "{{ field }}" non esiste.'
+            not_empty: 'L''unità di misura non può essere vuota.'

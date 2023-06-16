@@ -462,7 +462,6 @@ pim_system:
     button:
       label: Zurücksetzen der Instanz
       confirm: Zurücksetzen und Ausloggen
-    error_notification: Beim PIM-Reset ist ein Fehler aufgetreten. Bitte kontaktieren Sie den Systemadministrator.
   sandbox:
     helper:
       text: Dies ist eine Sandbox-Umgebung, Ihre Änderungen wird Ihre Produktionsumgebung nicht beeinflussen.
