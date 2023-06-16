@@ -7,6 +7,7 @@ use League\Flysystem\FilesystemReader;
 use League\Flysystem\UnableToReadFile;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
  * Fetch the raw file of a file stored in a virtual filesystem into the local filesystem.
@@ -29,7 +30,7 @@ class OutputFileFetcher implements FileFetcherInterface
         }
 
         if (!$filesystem->fileExists($fileKey)) {
-            throw new \LogicException(sprintf('The file "%s" is not present on the filesystem.', $fileKey));
+            throw new FileNotFoundException($fileKey);
         }
 
         try {

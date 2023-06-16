@@ -91,7 +91,7 @@ class OutputFileFetcherSpec extends ObjectBehavior
         $filesystem->fileExists('path/to/file.txt')->willReturn(false);
 
         $this->shouldThrow(
-            new \LogicException('The file "path/to/file.txt" is not present on the filesystem.')
+            new FileNotFoundException("path/to/file.txt")
         )->during('fetch', [$filesystem, 'path/to/file.txt', [
             'filePath' => 'locale/path/filename.txt'
         ]]);
