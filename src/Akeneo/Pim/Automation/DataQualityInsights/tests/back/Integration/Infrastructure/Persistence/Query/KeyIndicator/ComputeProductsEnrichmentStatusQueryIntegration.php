@@ -67,7 +67,7 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
 
         $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection([$productUuid]);
 
-        ($this->get(EvaluateProducts::class))($productUuidCollection);
+        $this->get(EvaluateProducts::class)->forPendingCriteria($productUuidCollection);
 
         $expectedEnrichmentStatus = [$productUuid => [
             'ecommerce' => [
@@ -94,7 +94,7 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
         ])->getUuid()->toString();
 
         $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection([$productUuid]);
-        ($this->get(EvaluateProducts::class))($productIdCollection);
+        $this->get(EvaluateProducts::class)->forPendingCriteria($productIdCollection);
 
         $expectedEnrichmentStatus = [$productUuid => [
             'ecommerce' => [

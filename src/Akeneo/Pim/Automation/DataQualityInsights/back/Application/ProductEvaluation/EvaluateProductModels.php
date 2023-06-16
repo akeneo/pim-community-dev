@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluatio
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Event\ProductModelsEvaluated;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -19,13 +18,18 @@ class EvaluateProductModels
 {
     public function __construct(
         private EvaluatePendingCriteria $evaluatePendingProductModelCriteria,
+        private EvaluateCriteria $evaluateCriteria,
         private ConsolidateProductModelScores $consolidateProductModelScores,
         private EventDispatcherInterface $eventDispatcher,
         private LoggerInterface $logger
     ) {
     }
 
-    public function __invoke(ProductModelIdCollection $productModelIdCollection): void
+    /**
+     * Pending criteria are fetched from the database (legacy). New way to evaluate products is by events.
+     * Use forCriteria instead.
+     */
+    public function forPendingCriteria(ProductModelIdCollection $productModelIdCollection): void
     {
         $startTime = time();
         $this->logger->debug('Start product model evaluate criteria...');
@@ -43,5 +47,12 @@ class EvaluateProductModels
             'consolidation_time_in_sec' => $afterConsolidationTime - $afterEvaluationTime,
             'dispatch_time_in_sec' => $afterDispatchTime - $afterConsolidationTime,
         ]);
+    }
+
+    public function forCriteria(ProductModelIdCollection $productModelIdCollection, array $productCriterionCodes): void
+    {
+        $this->evaluateCriteria->forEntityIds($productModelIdCollection, $productCriterionCodes);
+        $this->consolidateProductModelScores->consolidate($productModelIdCollection);
+        $this->eventDispatcher->dispatch(new ProductModelsEvaluated($productModelIdCollection));
     }
 }

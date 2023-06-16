@@ -50,21 +50,35 @@ SQL;
 
     public function updateCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
+        // This query is an upsert, this allows to not create the evaluations before.
         $queryFormat = <<<SQL
-UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p
-SET e.evaluated_at = :%s, e.status = :%s, e.result = :%s
-WHERE p.uuid = :%s AND p.uuid = e.product_uuid AND criterion_code = :%s;
+INSERT INTO pim_data_quality_insights_product_criteria_evaluation (product_uuid, criterion_code, evaluated_at, status, result)
+SELECT
+    uuid,
+    :criterionCode_{index},
+    :evaluatedAt_{index},
+    :status_{index},
+    :result_{index}
+FROM pim_catalog_product
+WHERE uuid = :productId_{index}
+ON DUPLICATE KEY UPDATE evaluated_at = VALUES(evaluated_at), status = VALUES(status), result = VALUES(result);
 SQL;
         $this->updateFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
     }
 
     public function updateCriterionEvaluationsForProductModels(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
-        // Note: the name of the column is still product_id even if we manipulate product_model ids.
         $queryFormat = <<<SQL
-UPDATE pim_data_quality_insights_product_model_criteria_evaluation
-SET evaluated_at = :%s, status = :%s, result = :%s
-WHERE product_id = :%s AND criterion_code = :%s;
+INSERT INTO pim_data_quality_insights_product_model_criteria_evaluation (product_id, criterion_code, evaluated_at, status, result)
+SELECT
+    id,
+    :criterionCode_{index},
+    :evaluatedAt_{index},
+    :status_{index},
+    :result_{index}
+FROM pim_catalog_product_model
+WHERE id = :productId_{index}
+ON DUPLICATE KEY UPDATE evaluated_at = VALUES(evaluated_at), status = VALUES(status), result = VALUES(result);
 SQL;
         $this->updateFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
     }
@@ -159,26 +173,20 @@ SQL;
 
         /** @var Write\CriterionEvaluation $criterionEvaluation */
         foreach ($criteriaEvaluations as $index => $criterionEvaluation) {
-            $productId = sprintf('productId_%d', $index);
-            $criterionCode = sprintf('criterionCode_%d', $index);
-            $evaluatedAt = sprintf('evaluatedAt_%d', $index);
-            $status = sprintf('status_%d', $index);
-            $result = sprintf('result_%d', $index);
+            $queries[] = \strtr($sqlQueryFormat, ['{index}' => $index]);
 
-            $queries[] = sprintf($sqlQueryFormat, $evaluatedAt, $status, $result, $productId, $criterionCode);
-
-            $queryParametersValues[$criterionCode] = (string)$criterionEvaluation->getCriterionCode();
-            $queryParametersValues[$evaluatedAt] = $this->formatDate($criterionEvaluation->getEvaluatedAt());
-            $queryParametersValues[$status] = $criterionEvaluation->getStatus();
-            $queryParametersValues[$result] = $this->formatCriterionEvaluationResult($criterionEvaluation->getResult());
+            $queryParametersValues['criterionCode_' . $index] = (string)$criterionEvaluation->getCriterionCode();
+            $queryParametersValues['evaluatedAt_' . $index] = $this->formatDate($criterionEvaluation->getEvaluatedAt());
+            $queryParametersValues['status_' . $index] = $criterionEvaluation->getStatus();
+            $queryParametersValues['result_' . $index] = $this->formatCriterionEvaluationResult($criterionEvaluation->getResult());
 
             $entityId = $criterionEvaluation->getEntityId();
             if ($entityId instanceof ProductUuid) {
-                $queryParametersValues[$productId] = $entityId->toBytes();
-                $queryParametersTypes[$productId] = \PDO::PARAM_STR;
+                $queryParametersValues['productId_' . $index] = $entityId->toBytes();
+                $queryParametersTypes['productId_' . $index] = \PDO::PARAM_STR;
             } elseif ($entityId instanceof ProductModelId) {
-                $queryParametersValues[$productId] = $entityId->toInt();
-                $queryParametersTypes[$productId] = \PDO::PARAM_INT;
+                $queryParametersValues['productId_' . $index] = $entityId->toInt();
+                $queryParametersTypes['productId_' . $index] = \PDO::PARAM_INT;
             }
         }
 

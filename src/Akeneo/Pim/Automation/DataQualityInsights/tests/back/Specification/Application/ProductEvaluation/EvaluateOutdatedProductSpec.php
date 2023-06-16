@@ -37,7 +37,7 @@ final class EvaluateOutdatedProductSpec extends ObjectBehavior
 
         $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(false);
         $uuidFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn($collection);
-        $evaluateProducts->__invoke($collection)->shouldBeCalled();
+        $evaluateProducts->forPendingCriteria($collection)->shouldBeCalled();
 
         $this->__invoke($productUuid);
     }
@@ -52,7 +52,7 @@ final class EvaluateOutdatedProductSpec extends ObjectBehavior
 
         $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(true);
         $uuidFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn($collection);
-        $evaluateProducts->__invoke($collection)->shouldNotBeCalled();
+        $evaluateProducts->forPendingCriteria($collection)->shouldNotBeCalled();
 
         $this->__invoke($productUuid);
     }

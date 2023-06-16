@@ -35,7 +35,7 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
 
         $hasUpToDateEvaluationQuery->forEntityId($productModelId)->willReturn(false);
         $idFactory->createCollection(['42'])->willReturn($collection);
-        $evaluateProductModels->__invoke($collection)->shouldBeCalled();
+        $evaluateProductModels->forPendingCriteria($collection)->shouldBeCalled();
 
         $this->__invoke($productModelId);
     }
@@ -50,7 +50,7 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
 
         $hasUpToDateEvaluationQuery->forEntityId($productModelId)->willReturn(true);
         $idFactory->createCollection(['42'])->willReturn($collection);
-        $evaluateProductModels->__invoke($collection)->shouldNotBeCalled();
+        $evaluateProductModels->forPendingCriteria($collection)->shouldNotBeCalled();
 
         $this->__invoke($productModelId);
     }

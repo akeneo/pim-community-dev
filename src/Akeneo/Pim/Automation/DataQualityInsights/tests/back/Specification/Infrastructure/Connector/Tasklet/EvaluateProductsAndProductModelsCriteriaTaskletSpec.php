@@ -42,13 +42,13 @@ class EvaluateProductsAndProductModelsCriteriaTaskletSpec extends ObjectBehavior
             'df470d52-7723-4890-85a0-e79be625e2ed'
         ])];
         $getProductUuidsToEvaluateQuery->execute(1000, 2)->willReturn(new \ArrayIterator($productUuids));
-        $evaluateProducts->__invoke($productUuids[0])->shouldBeCalled();
-        $evaluateProducts->__invoke($productUuids[1])->shouldBeCalled();
+        $evaluateProducts->forPendingCriteria($productUuids[0])->shouldBeCalled();
+        $evaluateProducts->forPendingCriteria($productUuids[1])->shouldBeCalled();
 
         $productModelIds = [ProductModelIdCollection::fromStrings(['4', '5']), ProductModelIdCollection::fromStrings(['6', '7'])];
         $getProductModelsIdsToEvaluateQuery->execute(1000, 2)->willReturn(new \ArrayIterator($productModelIds));
-        $evaluateProductModels->__invoke($productModelIds[0])->shouldBeCalled();
-        $evaluateProductModels->__invoke($productModelIds[1])->shouldBeCalled();
+        $evaluateProductModels->forPendingCriteria($productModelIds[0])->shouldBeCalled();
+        $evaluateProductModels->forPendingCriteria($productModelIds[1])->shouldBeCalled();
 
         $this->execute();
 

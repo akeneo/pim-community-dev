@@ -461,7 +461,7 @@ JSON;
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
+        $this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts')->forPendingCriteria(
             $this->get(ProductUuidFactory::class)->createCollection([
                 (string) $product1->getUuid(),
                 (string) $product2->getUuid(),

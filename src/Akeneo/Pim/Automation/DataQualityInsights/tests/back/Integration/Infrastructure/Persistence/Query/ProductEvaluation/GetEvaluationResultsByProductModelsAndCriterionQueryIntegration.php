@@ -72,7 +72,7 @@ final class GetEvaluationResultsByProductModelsAndCriterionQueryIntegration exte
         ])->getId();
 
         $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([(string)$productModelId]);
-        ($this->get(EvaluateProductModels::class))($productModelIdCollection);
+        $this->get(EvaluateProductModels::class)->forPendingCriteria($productModelIdCollection);
 
         return $productModelId;
     }

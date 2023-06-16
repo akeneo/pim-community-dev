@@ -60,7 +60,7 @@ final class GetEvaluationResultsByProductsAndCriterionQueryIntegration extends D
         ])->getUuid();
 
         $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection([(string)$productUuid]);
-        ($this->get(EvaluateProducts::class))($productIdCollection);
+        $this->get(EvaluateProducts::class)->forPendingCriteria($productIdCollection);
 
         return $productUuid;
     }

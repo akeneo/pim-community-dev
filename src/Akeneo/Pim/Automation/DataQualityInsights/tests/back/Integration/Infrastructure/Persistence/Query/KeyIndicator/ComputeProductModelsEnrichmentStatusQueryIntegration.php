@@ -95,7 +95,7 @@ final class ComputeProductModelsEnrichmentStatusQueryIntegration extends DataQua
         ];
 
         $productModelIds = $this->get(ProductModelIdFactory::class)->createCollection([(string)$productModelId, (string)$subProductModelId]);
-        ($this->get(EvaluateProductModels::class))($productModelIds);
+        $this->get(EvaluateProductModels::class)->forPendingCriteria ($productModelIds);
 
         $productModelsEnrichmentStatus = $this->get('akeneo.pim.automation.data_quality_insights.query.compute_product_models_enrichment_status_query')
             ->compute($productModelIds);

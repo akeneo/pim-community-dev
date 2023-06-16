@@ -1,10 +1,6 @@
 services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsHandler:
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.product_criteria_by_feature_registry'
-            - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_by_feature_registry'
-            - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
-            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetOutdatedProductUuidsByDateAndCriteriaQueryInterface'

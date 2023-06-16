@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
@@ -520,7 +521,7 @@ JSON;
 
         $this->getEsIndex()->refreshIndex();
 
-        ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
+        $this->get(EvaluateProducts::class)->forPendingCriteria(
             $this->get(ProductUuidFactory::class)->createCollection([
                 (string) $product1->getUuid(),
                 (string) $product2->getUuid(),

@@ -31,7 +31,7 @@ class EvaluateOutdatedProductModel
             $collection = $this->factory->createCollection([(string) $productModelId]);
             Assert::isInstanceOf($collection, ProductModelIdCollection::class);
 
-            ($this->evaluateProductModels)($collection);
+            $this->evaluateProductModels->forPendingCriteria($collection);
         }
     }
 }

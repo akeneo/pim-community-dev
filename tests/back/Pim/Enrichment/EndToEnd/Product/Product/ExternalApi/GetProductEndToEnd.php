@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
@@ -265,7 +266,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
             new SetFamily('familyA')
         ]);
 
-        ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
+        $this->get(EvaluateProducts::class)->forPendingCriteria(
             ProductUuidCollection::fromString($product->getUuid()->toString())
         );
 

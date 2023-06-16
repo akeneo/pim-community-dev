@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaByFeatureRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetOutdatedProductModelIdsByDateAndCriteriaQueryInterface;
@@ -21,7 +19,6 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -30,10 +27,6 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 final class LaunchProductAndProductModelEvaluationsHandlerSpec extends ObjectBehavior
 {
     public function let(
-        CriteriaByFeatureRegistry $productCriteriaRegistry,
-        CriteriaByFeatureRegistry $productModelCriteriaRegistry,
-        CreateCriteriaEvaluations $createProductCriteriaEvaluations,
-        CreateCriteriaEvaluations $createProductModelCriteriaEvaluations,
         EvaluateProducts $evaluateProducts,
         EvaluateProductModels $evaluateProductModels,
         GetOutdatedProductUuidsByDateAndCriteriaQueryInterface $getOutdatedProductUuids,
@@ -41,15 +34,11 @@ final class LaunchProductAndProductModelEvaluationsHandlerSpec extends ObjectBeh
         LoggerInterface $logger
     ): void {
         $this->beConstructedWith(
-            $productCriteriaRegistry,
-            $productModelCriteriaRegistry,
-            $createProductCriteriaEvaluations,
-            $createProductModelCriteriaEvaluations,
             $evaluateProducts,
             $evaluateProductModels,
             $getOutdatedProductUuids,
             $getOutdatedProductModelIds,
-            $logger,
+            $logger
         );
     }
 
@@ -59,24 +48,15 @@ final class LaunchProductAndProductModelEvaluationsHandlerSpec extends ObjectBeh
     }
 
     public function it_launches_products_and_product_models_evaluations_for_all_criteria_only_for_outdated_products_and_product_models(
-        CriteriaByFeatureRegistry $productCriteriaRegistry,
-        CriteriaByFeatureRegistry $productModelCriteriaRegistry,
-        CreateCriteriaEvaluations $createProductCriteriaEvaluations,
-        CreateCriteriaEvaluations $createProductModelCriteriaEvaluations,
         EvaluateProducts $evaluateProducts,
         EvaluateProductModels $evaluateProductModels,
         GetOutdatedProductUuidsByDateAndCriteriaQueryInterface $getOutdatedProductUuids,
         GetOutdatedProductModelIdsByDateAndCriteriaQueryInterface $getOutdatedProductModelIds,
     ): void {
         $completenessCriterionCode = new CriterionCode('enrichment_completeness');
-        $imageCriterionCode = new CriterionCode('enrichment_image');
         $spellcheckCriterionCode = new CriterionCode('consistency_spellcheck');
 
-        $productCriteria = [$completenessCriterionCode, $imageCriterionCode, $spellcheckCriterionCode];
-        $productCriteriaRegistry->getAllCriterionCodes()->willReturn($productCriteria);
-
         $productModelCriteria = [$completenessCriterionCode, $spellcheckCriterionCode];
-        $productModelCriteriaRegistry->getAllCriterionCodes()->willReturn($productModelCriteria);
 
         $productUuid1 = ProductUuid::fromUuid(Uuid::uuid4());
         $productUuid2 = ProductUuid::fromUuid(Uuid::uuid4());
@@ -99,20 +79,13 @@ final class LaunchProductAndProductModelEvaluationsHandlerSpec extends ObjectBeh
         $getOutdatedProductUuids->__invoke($productUuids, $message->datetime, [])->willReturn($outDatedProductUuids);
         $getOutdatedProductModelIds->__invoke($productModelIds, $message->datetime, [])->willReturn($outDatedProductModelIds);
 
-        $createProductCriteriaEvaluations->create($productCriteria, $outDatedProductUuids)->shouldBeCalledOnce();
-        $evaluateProducts->__invoke($outDatedProductUuids)->shouldBeCalledOnce();
-
-        $createProductModelCriteriaEvaluations->create($productModelCriteria, $outDatedProductModelIds)->shouldBeCalledOnce();
-        $evaluateProductModels->__invoke($outDatedProductModelIds)->shouldBeCalledOnce();
+        $evaluateProducts->forCriteria($outDatedProductUuids, [])->shouldBeCalledOnce();
+        $evaluateProductModels->forCriteria($outDatedProductModelIds, [])->shouldBeCalledOnce();
 
         $this->__invoke($message);
     }
 
     public function it_launches_products_and_product_models_evaluations_for_only_given_criteria(
-        CriteriaByFeatureRegistry $productCriteriaRegistry,
-        CriteriaByFeatureRegistry $productModelCriteriaRegistry,
-        CreateCriteriaEvaluations $createProductCriteriaEvaluations,
-        CreateCriteriaEvaluations $createProductModelCriteriaEvaluations,
         EvaluateProducts $evaluateProducts,
         EvaluateProductModels $evaluateProductModels,
         GetOutdatedProductUuidsByDateAndCriteriaQueryInterface $getOutdatedProductUuids,
@@ -122,9 +95,6 @@ final class LaunchProductAndProductModelEvaluationsHandlerSpec extends ObjectBeh
             new CriterionCode('enrichment_completeness'),
             new CriterionCode('enrichment_image'),
         ];
-
-        $productCriteriaRegistry->getAllCriterionCodes()->shouldNotBeCalled();
-        $productModelCriteriaRegistry->getAllCriterionCodes()->shouldNotBeCalled();
 
         $productUuid1 = ProductUuid::fromUuid(Uuid::uuid4());
         $productUuid2 = ProductUuid::fromUuid(Uuid::uuid4());
@@ -144,28 +114,18 @@ final class LaunchProductAndProductModelEvaluationsHandlerSpec extends ObjectBeh
         $getOutdatedProductUuids->__invoke($productUuids, $message->datetime, $message->criteriaToEvaluate)->willReturn($productUuids);
         $getOutdatedProductModelIds->__invoke($productModelIds, $message->datetime, $message->criteriaToEvaluate)->willReturn($productModelIds);
 
-        $createProductCriteriaEvaluations->create($criteriaToEvaluate, $productUuids)->shouldBeCalledOnce();
-        $evaluateProducts->__invoke($productUuids)->shouldBeCalledOnce();
-
-        $createProductModelCriteriaEvaluations->create($criteriaToEvaluate, $productModelIds)->shouldBeCalledOnce();
-        $evaluateProductModels->__invoke($productModelIds)->shouldBeCalledOnce();
+        $evaluateProducts->forCriteria($productUuids, $criteriaToEvaluate)->shouldBeCalledOnce();
+        $evaluateProductModels->forCriteria($productModelIds, $criteriaToEvaluate)->shouldBeCalledOnce();
 
         $this->__invoke($message);
     }
 
     public function it_does_not_launch_evaluations_if_there_are_no_outdated_products_and_product_models(
-        CriteriaByFeatureRegistry $productCriteriaRegistry,
-        CriteriaByFeatureRegistry $productModelCriteriaRegistry,
-        CreateCriteriaEvaluations $createProductCriteriaEvaluations,
-        CreateCriteriaEvaluations $createProductModelCriteriaEvaluations,
         EvaluateProducts $evaluateProducts,
         EvaluateProductModels $evaluateProductModels,
         GetOutdatedProductUuidsByDateAndCriteriaQueryInterface $getOutdatedProductUuids,
         GetOutdatedProductModelIdsByDateAndCriteriaQueryInterface $getOutdatedProductModelIds,
     ): void {
-        $productCriteriaRegistry->getAllCriterionCodes()->shouldNotBeCalled();
-        $productModelCriteriaRegistry->getAllCriterionCodes()->shouldNotBeCalled();
-
         $productUuid1 = ProductUuid::fromUuid(Uuid::uuid4());
         $productUuid2 = ProductUuid::fromUuid(Uuid::uuid4());
         $productUuids = ProductUuidCollection::fromProductUuids([$productUuid1, $productUuid2]);
@@ -186,11 +146,8 @@ final class LaunchProductAndProductModelEvaluationsHandlerSpec extends ObjectBeh
         $getOutdatedProductModelIds->__invoke($productModelIds, $message->datetime, $message->criteriaToEvaluate)
             ->willReturn(ProductModelIdCollection::fromProductModelIds([]));
 
-        $createProductCriteriaEvaluations->create(Argument::cetera())->shouldNotBeCalled();
-        $evaluateProducts->__invoke(Argument::any())->shouldNotBeCalled();
-
-        $createProductModelCriteriaEvaluations->create(Argument::cetera())->shouldNotBeCalled();
-        $evaluateProductModels->__invoke(Argument::any())->shouldNotBeCalled();
+        $evaluateProducts->forCriteria(Argument::any())->shouldNotBeCalled();
+        $evaluateProductModels->forCriteria(Argument::any())->shouldNotBeCalled();
 
         $this->__invoke($message);
     }
