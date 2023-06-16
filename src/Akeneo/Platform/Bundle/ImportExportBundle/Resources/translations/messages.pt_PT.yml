@@ -1,20 +1,14 @@
+#Entities
 Job: Tarefa
 Connector: Conector
 pim_import_export:
   job: Tarefa
   connector: Conector
+  ## Job status
   status:
     0: Pronto
-  batch_status:
-    1: Completed
-    2: Starting
-    3: Started
-    4: Stopping
-    5: Stopped
-    6: Failed
-    7: Abandoned
-    8: Unknown
   download_archive:
+    archive: transferir ficheiro gerado | transferir ficheiros gerados
     output: transferir ficheiro gerado | transferir ficheiros gerados
     input: transferir ficheiro lido| transferir ficheiros lidos
     invalid_xlsx: transferir dados inválidos
@@ -34,22 +28,21 @@ pim_import_export:
       property.title: Propriedades gerais
       history.title: Histórico
       job_content.title: Conteúdo
+#Page titles:
 pim_title.export_profile.index: Gestão de perfis de exportação
-pim_title.export_profile.edit: Exportar perfis %job.label% | Editar
-pim_title.export_profile.show: Exportar perfis %job.label% | Mostrar
 pim_title.export_execution.index: Histórico de exportações realizadas
 pim_title.export_execution.show: Execução de exportações | Detalhes
 pim_title.import_profile.index: Gestão de perfis de importação
-pim_title.import_profile.edit: Importar perfis %job.label% | Editar
-pim_title.import_profile.show: Importar perfis %job.label% | Mostrar
 pim_title.import_execution.index: Histórico importações realizadas
 pim_title.import_execution.show: Execução de importações | Detalhes
+#Entity and page header titles
 export profile:
   title: Perfil de exportação
   edit: Editar perfil de exportação
 import profile:
   title: Perfil de importação
   edit: Editar perfil de importação
+#ACLs
 pim_importexport:
   acl:
     export_profile:
@@ -81,17 +74,20 @@ pim_importexport:
   acl_group:
     export: Perfis de exportação
     import: Perfis de importação
+#Buttons
 btn:
   create:
-    export profile: Criar perfil de exportação
-    import profile: Criar perfil de importação
+    export profile: criar perfil de exportação
+    import profile: criar perfil de importação
 Upload and import now: Enviar e importar agora
 import now: Importar agora
 export now: Exportar agora
+#Confirmation messages
 confirmation:
   remove:
     export profile: Tem certeza que deseja eliminar o perfil de exportação %name%?
     import profile: Tem certeza que deseja eliminar o perfil de importação %name%?
+#Flash messages
 flash:
   export:
     created: A exportação foi criada com sucesso
@@ -103,15 +99,18 @@ flash:
     removed: A importação foi removida
     updated: A exportação foi atualizada com sucesso
     running: A importação está a ser executada
+#Tabs
 General properties: Propriedades gerais
 History: Histórico
 pane.accordion:
   properties: Propriedades
   global_settings: Definições Gerais
   filters: Filtros
+#Popin titles
 popin.create:
   export_profile.title: Criar um novo perfil de exportação
   import_profile.title: Criar um novo perfil de importação
+#Job execution
 'Display item': Mostrar item
 'Hide item': Esconder Item
 'Collecting data about job execution...': A recolher dados sobre a execução da tarefa...
