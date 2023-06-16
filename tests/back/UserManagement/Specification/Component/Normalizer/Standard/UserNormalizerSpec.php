@@ -8,6 +8,7 @@ use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Normalizer\DateTimeNormalizer;
 use Akeneo\UserManagement\Component\Normalizer\Standard\UserNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
@@ -17,6 +18,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class UserNormalizerSpec extends ObjectBehavior
 {
+    function let(DateTimeNormalizer $dateTimeNormalizer)
+    {
+        $this->beConstructedWith($dateTimeNormalizer);
+    }
+
     function it_is_a_normalizer()
     {
         $this->shouldImplement(NormalizerInterface::class);
@@ -37,7 +43,7 @@ class UserNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($user, 'array')->shouldBe(true);
     }
 
-    function it_normalizes_a_user(UserInterface $user, FileInfoInterface $avatar, DatagridView $productGridView)
+    function it_normalizes_a_user(UserInterface $user, FileInfoInterface $avatar, DatagridView $productGridView, DateTimeNormalizer $dateTimeNormalizer)
     {
         $role = new Role();
         $role->setRole('ROLE_ADMIN');
@@ -70,6 +76,16 @@ class UserNormalizerSpec extends ObjectBehavior
         $user->getProductGridFilters()->willReturn(['family', 'name']);
         $productGridView->getLabel()->willReturn('Incomplete accessories ecommerce');
         $user->getDefaultGridView('product-grid')->willReturn($productGridView);
+        $createdAt = new \DateTime('2018-03-20 18:13:09.000000');
+        $user->getCreatedAt()->willReturn($createdAt);
+        $updatedAt = new \DateTime('2018-04-20 18:13:09.000000');
+        $user->getUpdatedAt()->willReturn($updatedAt);
+        $lastLogin = new \DateTime('2019-04-20 18:13:09.000000');
+        $user->getLastLogin()->willReturn($lastLogin);
+        $dateTimeNormalizer->normalize($createdAt, 'standard', [])->willReturn('2018-03-20T18:13:00+00:00');
+        $dateTimeNormalizer->normalize($updatedAt, 'standard', [])->willReturn('2018-04-20T18:13:00+00:00');
+        $dateTimeNormalizer->normalize($lastLogin,'standard', [])->willReturn('2019-04-20T18:13:00+00:00');
+        $user->getLoginCount()->willReturn(15);
 
         $this->normalize($user, 'standard')->shouldReturn(
             [
@@ -95,6 +111,10 @@ class UserNormalizerSpec extends ObjectBehavior
                 'roles' => ['ROLE_ADMIN'],
                 'product_grid_filters'=> ['family', 'name'],
                 'default_product_grid_view' => 'Incomplete accessories ecommerce',
+                'date_account_created' => '2018-03-20T18:13:00+00:00',
+                'date_account_last_updated' => '2018-04-20T18:13:00+00:00',
+                'last_logged_in' => '2019-04-20T18:13:00+00:00',
+                'login_count' => 15,
             ]
         );
     }

@@ -1,5 +1,9 @@
 # 7.0.x
 
+## New features
+
+-GRF-
+
 # 7.0.18 (2023-06-22)
 
 ## Bug fixes
