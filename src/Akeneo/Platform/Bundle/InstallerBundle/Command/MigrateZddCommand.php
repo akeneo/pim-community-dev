@@ -85,9 +85,7 @@ final class MigrateZddCommand extends Command
                     $this->markAsMigrated($zddMigration);
                     $migrationCount++;
                 } catch (UcsOnlyMigrationException $e) {
-                    $this->logger->notice(sprintf('The migration %s must only be done on UCS platform', $zddMigration->getName()));
-
-                    return Command::SUCCESS;
+                    $this->logger->notice(sprintf('The migration %s will be done on UCS platform', $zddMigration->getName()));
                 } catch (\Throwable $e) {
                     $this->logger->error(
                         sprintf('%s - errored_migration - %s', self::$defaultName, $zddMigration->getName()),
