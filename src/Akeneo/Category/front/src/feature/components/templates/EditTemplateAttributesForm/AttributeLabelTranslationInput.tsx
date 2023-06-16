@@ -1,26 +1,25 @@
-import {NotificationLevel, useFeatureFlags, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {Field, Helper, TextInput} from 'akeneo-design-system';
 import {useQueryClient} from 'react-query';
-import {useSaveStatus} from '../../hooks/useSaveStatus';
-import {useUpdateTemplateAttribute} from '../../hooks/useUpdateTemplateAttribute';
-import {Attribute} from '../../models';
-import {useDebounceCallback} from '../../tools/useDebounceCallback';
-import {Status} from '../providers/SaveStatusProvider';
-import {useTemplateForm} from '../providers/TemplateFormProvider';
+import {useSaveStatus} from '../../../hooks/useSaveStatus';
+import {useUpdateTemplateAttribute} from '../../../hooks/useUpdateTemplateAttribute';
+import {Attribute} from '../../../models';
+import {useDebounceCallback} from '../../../tools/useDebounceCallback';
+import {Status} from '../../providers/SaveStatusProvider';
+import {useTemplateForm} from '../../providers/TemplateFormProvider';
 
-const useTranslationFormData = (attribute: Attribute, localeCode: string) => {
+const useFormData = (attribute: Attribute, localeCode: string) => {
   const [state] = useTemplateForm();
 
-  const translationFormData = state.attributes?.[attribute.uuid]?.[localeCode];
+  const formData = state.attributes?.[attribute.uuid]?.labels?.[localeCode];
 
-  if (undefined === translationFormData) {
+  if (undefined === formData) {
     return {
       value: attribute.labels[localeCode] || '',
       errors: [],
     };
   }
 
-  return translationFormData;
+  return formData;
 };
 
 type Props = {
@@ -29,10 +28,7 @@ type Props = {
   label: string;
 };
 
-export const LabelTranslationInput = ({attribute, localeCode, label}: Props) => {
-  const featureFlag = useFeatureFlags();
-  const translate = useTranslate();
-  const notify = useNotify();
+export const AttributeLabelTranslationInput = ({attribute, localeCode, label}: Props) => {
   const queryClient = useQueryClient();
 
   const {handleStatusListChange} = useSaveStatus();
@@ -53,11 +49,6 @@ export const LabelTranslationInput = ({attribute, localeCode, label}: Props) => 
             payload: {attributeUuid: attribute.uuid, localeCode, errors},
           });
           handleStatusListChange(saveStatusId, Status.ERRORS);
-          notify(
-            NotificationLevel.ERROR,
-            translate('akeneo.category.template.auto-save.error_notification.title'),
-            translate('akeneo.category.template.auto-save.error_notification.content')
-          );
         },
       }
     );
@@ -78,17 +69,12 @@ export const LabelTranslationInput = ({attribute, localeCode, label}: Props) => 
     handleStatusListChange(saveStatusId, Status.EDITING);
   };
 
-  const translationFormData = useTranslationFormData(attribute, localeCode);
+  const formData = useFormData(attribute, localeCode);
 
   return (
     <Field label={label} locale={localeCode}>
-      <TextInput
-        onChange={handleTranslationChange}
-        invalid={false}
-        value={translationFormData.value}
-        readOnly={!featureFlag.isEnabled('category_update_template_attribute')}
-      />
-      {translationFormData.errors.map(message => (
+      <TextInput onChange={handleTranslationChange} invalid={false} value={formData.value} />
+      {formData.errors.map(message => (
         <Helper level="error" key={message}>
           {message}
         </Helper>

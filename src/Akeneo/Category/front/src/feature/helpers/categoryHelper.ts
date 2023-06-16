@@ -114,7 +114,14 @@ function buildCategoryAttributeValues(
   channels: ChannelCode[],
   locales: LocaleCode[]
 ): CategoryAttributes {
-  const attributesValues = {};
+  const attributesValues: {
+    [key: string]: {
+      data: CategoryAttributeValueData;
+      channel: string | null;
+      locale: string | null;
+      attribute_code: string;
+    };
+  } = {};
   const applicableChannels = attribute.is_scopable ? channels : [null];
   const applicableLocales = attribute.is_localizable ? locales : [null];
   for (const channel of applicableChannels) {
