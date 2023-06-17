@@ -87,9 +87,6 @@ akeneo.category:
       saving: Desant
       editing: Editant
       errors: Errors no desats
-      error_notification:
-        title: Alguns valors no s'han pogut desar.
-        content: Alguns dels valors que heu introduït sembla que no són vàlids i no s'han pogut desar
   template_list:
     columns:
       header: Etiqueta
