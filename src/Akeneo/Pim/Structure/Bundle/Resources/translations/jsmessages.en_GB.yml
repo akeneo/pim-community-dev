@@ -109,9 +109,9 @@ pim_enrich.entity.association_type:
       title: Create a new association type
       button: Create association type
       is_two_way:
-        message_on_read_only: Association type can be either quantified or two-way, to select this one, uncheck the other
+        message_on_read_only: Association type can be either with quantities or two-way, to select this one, uncheck the other
       is_quantified:
-        message_on_read_only: Association type can be either quantified or two-way, to select this one, uncheck the other
+        message_on_read_only: Association type can be either with quantities or two-way, to select this one, uncheck the other
     delete:
       confirm: Are you sure you want to delete this association type?
   hint: <a href="{{link}}" target="_blank">In this article</a>, you'll find everything you need to create your own association type.
