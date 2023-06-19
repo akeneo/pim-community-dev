@@ -70,6 +70,10 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
      */
     public function read()
     {
+        if (null === $this->fileIterator) {
+            $this->initialize();
+        }
+
         $this->fileIterator->next();
 
         if ($this->fileIterator->valid() && null !== $this->stepExecution) {

@@ -135,7 +135,6 @@ class ReaderSpec extends ObjectBehavior
         $fileIteratorFactory->create($this->initFilePath(), [])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name', 'description', 'short_description']);
-        $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);
 
@@ -201,7 +200,6 @@ class ReaderSpec extends ObjectBehavior
         $fileIteratorFactory->create($this->initFilePath(), [])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name']);
-        $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);
 
