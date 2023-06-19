@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Application\ActivateTemplate;
+use Akeneo\Category\Api\Command\CommandMessageBus;
+use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand;
+use Akeneo\Category\Domain\Exceptions\ViolationsException;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,31 +21,42 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class CreateTemplateController
 {
     public function __construct(
-        private SecurityFacade $securityFacade,
-        private GetCategoryInterface $getCategory,
-        private ActivateTemplate $activateTemplate,
+        private readonly SecurityFacade $securityFacade,
+        private readonly GetCategoryInterface $getCategory,
+        private readonly CommandMessageBus $categoryCommandBus,
     ) {
     }
 
-    /**
-     * @param string $templateCode
-     *
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
-     */
     public function __invoke(Request $request, int $categoryTreeId): JsonResponse
     {
         if ($this->securityFacade->isGranted('pim_enrich_product_category_template') === false) {
             throw new AccessDeniedException();
         }
 
-        $data = $request->toArray();
-        $templateCode = new TemplateCode($data['code']);
-        $templateLabelCollection = LabelCollection::fromArray($data['labels'] ?? []);
-
         $categoryTree = $this->getCategory->byId($categoryTreeId);
-        $templateUuid = ($this->activateTemplate)($categoryTree->getId(), $templateCode, $templateLabelCollection);
+        if (null === $categoryTree) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        }
 
-        return new JsonResponse(['uuid' => (string) $templateUuid], Response::HTTP_OK);
+        try {
+            $command = new CreateTemplateCommand(
+                $categoryTree->getId(),
+                $request->toArray(),
+            );
+            $this->categoryCommandBus->dispatch($command);
+        } catch (ViolationsException $violationsException) {
+            $normalizedViolations = $violationsException->normalize();
+            foreach ($normalizedViolations as &$violation) {
+                $locale = $violation['error']['property'];
+                $regex = "/\[(.*?)\]/";
+                if (preg_match($regex, $locale, $matches)) {
+                    $violation['error']['property'] = $matches[1];
+                }
+            }
+
+            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+        }
+
+        return new JsonResponse(null, Response::HTTP_OK);
     }
 }

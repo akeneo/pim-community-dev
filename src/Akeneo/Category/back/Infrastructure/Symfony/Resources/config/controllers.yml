@@ -64,7 +64,7 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
-            - '@Akeneo\Category\Application\ActivateTemplate'
+            - '@category.command.message_bus'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\UploadController:
         public: true

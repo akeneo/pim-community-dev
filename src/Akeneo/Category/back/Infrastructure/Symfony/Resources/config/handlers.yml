@@ -84,3 +84,16 @@ services:
       - '@Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\DeleteCategoryCommand\DeleteCategoryCommand' }
+
+  Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+      - '@Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree'
+      - '@Akeneo\Category\Application\Query\CheckTemplate'
+      - '@Akeneo\Category\Infrastructure\Builder\TemplateBuilder'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver'
+      - '@Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand' }
