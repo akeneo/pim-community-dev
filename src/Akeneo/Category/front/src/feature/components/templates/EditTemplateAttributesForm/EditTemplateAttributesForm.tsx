@@ -1,10 +1,10 @@
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useState} from 'react';
 import styled from 'styled-components';
-import {Attribute} from '../../models';
+import {Attribute} from '../../../models';
 import {AttributeList} from './AttributeList';
 import {AttributeSettings} from './AttributeSettings';
-import {NoTemplateAttribute} from './NoTemplateAttribute';
+import {NoTemplateAttribute} from '../NoTemplateAttribute';
 
 interface Props {
   attributes: Attribute[];

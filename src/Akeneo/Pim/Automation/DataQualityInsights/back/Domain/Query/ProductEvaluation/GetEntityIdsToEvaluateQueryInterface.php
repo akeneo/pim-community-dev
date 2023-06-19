@@ -12,8 +12,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
  */
 interface GetEntityIdsToEvaluateQueryInterface
 {
+    public const BULK_SIZE = 100;
+
     /**
      * @return \Iterator<int, ProductEntityIdCollection>
      */
-    public function execute(int $limit, int $bulkSize): \Iterator;
+    public function execute(?int $limit = null, int $bulkSize = self::BULK_SIZE): \Iterator;
 }

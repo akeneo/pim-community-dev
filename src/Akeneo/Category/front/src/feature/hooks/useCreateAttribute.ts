@@ -12,10 +12,7 @@ type Form = {
   isScopable: boolean;
 };
 
-type CreateAttributeErrors = {
-  code?: string[];
-  label?: string[];
-};
+type CreateAttributeErrors = {[property: string]: string[]};
 
 type ResponseError = {
   error: {

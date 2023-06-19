@@ -56,7 +56,6 @@ const CategoryEditPage: FC = () => {
   const userContext = useUserContext();
 
   // locales
-  const uiLocale = userContext.get('uiLocale');
   const [catalogLocale, setCatalogLocale] = useState<string | null>(null);
   const handleLocaleChanges = (locale: string) => {
     setCatalogLocale(locale);
@@ -185,7 +184,7 @@ const CategoryEditPage: FC = () => {
     );
   }
   const templateHasAttribute = () => {
-    return template?.attributes.length != 0;
+    return template?.attributes.length !== 0;
   };
 
   return (

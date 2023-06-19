@@ -79,15 +79,7 @@ akeneo.category:
       notification_success:
         title: 'Attributo {{ attribute }} eliminato correttamente'
     deactivate:
-      deactivate_template: Disattiva modello
-      confirmation_modal:
-        title: Disattiva modello categoria
-        message: Confermi di voler disattivare il modello di categoria denominato {{ template }}?
-        helper: Disattivando questo modello si eliminano definitivamente gli attributi e i valori delle categorie associate.
-        deactivate: Disattiva
-      notification_success:
-        title: 'Modello {{ template }} disattivato'
-        message: '{{ template }} è stato disattivato. Il contenuto delle categorie associate è stato eliminato.'
+      deactivate_template: Elimina modello
   template_list:
     columns:
       header: Etichetta
@@ -100,7 +92,6 @@ akeneo.category:
     content:
       enrich_attribute_values: Arricchisci qualsiasi livello degli alberi di categorie con gli attributi Testo, Area di Testo e Immagine
       customizable_templates: Offri l'esperienza di prodotto che desideri grazie a modelli personalizzabili
-      edit_attributes: 'Prossimamente: aggiornamento delle impostazioni di questi attributi di categoria'
     survey_link_label: Dicci cosa ne pensi
     learn_more_link_label: Scopri di più sulle Categorie arricchite
   other_actions: Altre azioni

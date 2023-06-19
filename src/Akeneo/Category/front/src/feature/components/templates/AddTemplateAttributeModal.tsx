@@ -68,7 +68,11 @@ export const AddTemplateAttributeModal = ({templateId, onClose}: Props) => {
 
   const displayError = (errorMessages: string[]) => {
     return errorMessages.map(message => {
-      return <Helper level="error">{message}</Helper>;
+      return (
+        <Helper key={message} level="error">
+          {message}
+        </Helper>
+      );
     });
   };
 

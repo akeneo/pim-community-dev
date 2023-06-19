@@ -81,23 +81,12 @@ akeneo.category:
       notification_success:
         title: 'L''atribut {{ attribute }} s''ha eliminat correctament'
     deactivate:
-      deactivate_template: Desactiva la plantilla
-      confirmation_modal:
-        title: Desactiva la plantilla de categoria
-        message: Esteu segur que voleu desactivar la plantilla de categoria anomenada {{ template }}?
-        helper: En desactivar aquesta plantilla, se suprimiran permanentment els atributs i els valors de les categories associades.
-        deactivate: Desactiva
-      notification_success:
-        title: 'Plantilla {{ template }} desactivada'
-        message: '{{ template }} s''ha desactivat. S''ha suprimit el contingut de les categories associades.'
+      deactivate_template: Esborrar plantilla
     auto-save:
       saved: Desat
       saving: Desant
       editing: Editant
       errors: Errors no desats
-      error_notification:
-        title: Alguns valors no s'han pogut desar.
-        content: Alguns dels valors que heu introduït sembla que no són vàlids i no s'han pogut desar
   template_list:
     columns:
       header: Etiqueta
@@ -110,7 +99,6 @@ akeneo.category:
     content:
       enrich_attribute_values: Enriquiu qualsevol nivell dels vostres arbres de categories amb atributs de text, àrea de text i imatge
       customizable_templates: Oferiu l'experiència de producte que desitgeu gràcies a plantilles personalitzables
-      edit_attributes: 'Properament: actualitzeu la configuració de qualsevol d''aquests atributs de categoria'
     survey_link_label: Diguen's el que penses
     learn_more_link_label: Més informació sobre les categories enriquides
   other_actions: Altres accions

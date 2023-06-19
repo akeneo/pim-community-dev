@@ -1,5 +1,5 @@
 import React from 'react';
-import {TemplateFormAction, TemplateFormState, templateFormReducer} from '../templates/templateFormReducer';
+import {TemplateFormAction, TemplateFormState, templateFormReducer} from '../reducers/templateFormReducer';
 
 const TemplateFormContext = React.createContext<[TemplateFormState, React.Dispatch<TemplateFormAction>] | null>(null);
 
@@ -17,7 +17,7 @@ type Props = {
 };
 
 export const TemplateFormProvider = ({children}: Props) => {
-  const [state, dispatch] = React.useReducer(templateFormReducer, {attributes: {}, properties: {}});
+  const [state, dispatch] = React.useReducer(templateFormReducer, {attributes: {}, properties: {labels: {}}});
 
   return <TemplateFormContext.Provider value={[state, dispatch]}>{children}</TemplateFormContext.Provider>;
 };

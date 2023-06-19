@@ -1,5 +1,5 @@
 import {getChannelTranslation} from './channelHelper';
-import {aChannelList} from 'tests/provideChannelHelper';
+import {aChannelList} from '../../tests/provideChannelHelper';
 
 describe('channelHelper', () => {
   test('it can get channel translation', () => {
