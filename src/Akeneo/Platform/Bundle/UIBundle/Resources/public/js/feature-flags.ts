@@ -1,6 +1,7 @@
 import jQuery from 'jquery';
 
 const routing = require('routing');
+const Mediator = require('oro/mediator');
 
 class FeatureFlags {
   static features: {[feature: string]: boolean};
@@ -10,7 +11,11 @@ class FeatureFlags {
       throw new Error('FeatureFlags is already initialized.');
     }
 
-    FeatureFlags.features = await jQuery.getJSON(routing.generate('feature_flag'));
+    await FeatureFlags.setFeatureFlags();
+
+    Mediator.on('route_complete', async (): Promise<void> => {
+      await FeatureFlags.setFeatureFlags();
+    });
   }
 
   static isEnabled(feature: string): boolean {
@@ -19,6 +24,10 @@ class FeatureFlags {
     }
 
     return Boolean(FeatureFlags.features[feature]);
+  }
+
+  private static async setFeatureFlags(): Promise<void> {
+    FeatureFlags.features = await jQuery.getJSON(routing.generate('feature_flag'));
   }
 }
 
