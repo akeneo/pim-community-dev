@@ -74,6 +74,18 @@ class ReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn($data);
     }
 
+    function it_resumes_csv_file_read_after_paused_job(
+        FileIteratorInterface $fileIterator,
+    ) {
+
+        $this->setState(['position' => 4]);
+
+        $fileIterator->next()->shouldBeCalledTimes(1);
+
+        $this->initialize();
+        $this->read();
+    }
+
     function it_skips_an_item_in_case_of_conversion_error(
         $converter,
         $stepExecution,
