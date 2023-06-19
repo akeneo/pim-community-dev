@@ -55,12 +55,22 @@ final class SqlGetSequencedNextIdentifierQuery implements GetNextIdentifierQuery
     private function getLastAllocatedNumber(IdentifierGenerator $identifierGenerator, string $prefix): ?int
     {
         $sql = <<<SQL
-SELECT last_allocated_number
-FROM pim_catalog_identifier_generator_sequence s
+WITH highest_prefixe AS (select number from pim_catalog_identifier_generator_prefixes p
+              INNER JOIN pim_catalog_attribute a ON a.id = p.attribute_id
+WHERE a.code =:attribute_code
+AND    p.prefix =:prefix
+ORDER BY number DESC
+LIMIT 1),
+highest_sequence AS (
+    SELECT last_allocated_number
+    FROM pim_catalog_identifier_generator_sequence s
     INNER JOIN pim_catalog_attribute a ON a.id = s.attribute_id
-WHERE a.code=:attribute_code
+    WHERE a.code=:attribute_code
     AND identifier_generator_uuid=UUID_TO_BIN(:identifier_generator_uuid)
     AND prefix=:prefix
+    )
+
+SELECT GREATEST(number, last_allocated_number) as number FROM highest_prefixe, highest_sequence;
 SQL;
 
         $result = $this->connection->fetchOne($sql, [
@@ -103,15 +113,15 @@ SET last_allocated_number=:number
 WHERE attribute_id=(SELECT id FROM pim_catalog_attribute WHERE code=:attribute_code)
     AND identifier_generator_uuid=UUID_TO_BIN(:identifier_generator_uuid)
     AND prefix=:prefix
-    AND last_allocated_number=:last_allocated_number
 SQL;
+        //AND last_allocated_number=:last_allocated_number
 
         return \intval($this->connection->executeStatement($sql, [
             'attribute_code' => $identifierGenerator->target()->asString(),
             'identifier_generator_uuid' => $identifierGenerator->id()->asString(),
             'prefix' => $prefix,
             'number' => $newAllocatedNumber,
-            'last_allocated_number' => $newAllocatedNumber - 1,
+            //'last_allocated_number' => $newAllocatedNumber - 1,
         ]));
     }
 }
