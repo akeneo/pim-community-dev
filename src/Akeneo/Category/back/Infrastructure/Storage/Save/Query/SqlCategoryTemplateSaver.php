@@ -51,6 +51,24 @@ class SqlCategoryTemplateSaver implements CategoryTemplateSaver
 
     public function update(Template $templateModel): void
     {
-        // TODO: Implement update() method.
+        $query = <<< SQL
+            UPDATE pim_catalog_category_template
+            SET
+                labels = :labels
+            WHERE uuid = UUID_TO_BIN(:uuid)
+            ;
+        SQL;
+
+        $this->connection->executeQuery(
+            $query,
+            [
+                'uuid' => (string) $templateModel->getUuid(),
+                'labels' => $templateModel->getLabelCollection()->normalize(),
+            ],
+            [
+                'uuid' => \PDO::PARAM_STR,
+                'labels' => Types::JSON,
+            ],
+        );
     }
 }

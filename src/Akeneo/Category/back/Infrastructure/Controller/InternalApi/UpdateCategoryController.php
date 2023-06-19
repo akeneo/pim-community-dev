@@ -11,7 +11,7 @@ use Akeneo\Category\Application\Converter\StandardFormatToUserIntentsInterface;
 use Akeneo\Category\Application\Filter\CategoryEditAclFilter;
 use Akeneo\Category\Application\Filter\CategoryEditUserIntentFilter;
 use Akeneo\Category\Domain\Event\CategoryEditedEvent;
-use Akeneo\Category\Domain\Exceptions\ViolationsException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Converter\InternalApi\InternalApiToStd;
 use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;
@@ -72,7 +72,7 @@ class UpdateCategoryController
             $this->categoryCommandBus->dispatch($command);
             $this->eventDispatcher->dispatch(new CategoryEditedEvent($category, $filteredUserIntents));
         } catch (ViolationsException $exception) {
-            return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($exception->normalizeDeprecated(), Response::HTTP_BAD_REQUEST);
         }
 
         $category = $this->getCategory->byId($category->getId()->getValue());

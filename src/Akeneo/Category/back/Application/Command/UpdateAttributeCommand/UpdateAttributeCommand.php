@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Command\UpdateAttributeCommand;
 
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Webmozart\Assert\Assert;
 
 /**
@@ -16,21 +15,21 @@ use Webmozart\Assert\Assert;
 final class UpdateAttributeCommand
 {
     /**
-     * @param LocalizedLabels $labels
+     * @phpstan-param LocalizedLabels $labels
      */
     private function __construct(
         public readonly string $attributeUuid,
         public readonly ?bool $isRichTextArea,
         public readonly ?array $labels,
     ) {
-        Assert::uuid($attributeUuid);
-        if ($labels) {
-            LabelCollection::fromArray($this->labels);
+        if ($labels !== null) {
+            Assert::isMap($labels);
+            Assert::allNullOrString($labels);
         }
     }
 
     /**
-     * @param LocalizedLabels $labels
+     * @phpstan-param LocalizedLabels $labels
      */
     public static function create(
         string $attributeUuid,
