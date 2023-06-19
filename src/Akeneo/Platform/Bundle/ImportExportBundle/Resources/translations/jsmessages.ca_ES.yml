@@ -189,6 +189,7 @@ pim_import_export:
         public_key:
           label: Clau pública
           button_title: Copiar al porta-retalls
+          copy_notification_success: S'ha copiat la clau pública al porta-retalls
         login_type:
           label: Mètode d'autenticació
           password: Inici de sessió i contrasenya

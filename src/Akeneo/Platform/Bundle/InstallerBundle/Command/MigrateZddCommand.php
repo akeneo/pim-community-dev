@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
+use Akeneo\Platform\Bundle\InstallerBundle\Exception\UcsOnlyMigrationException;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -83,6 +84,9 @@ final class MigrateZddCommand extends Command
                     );
                     $this->markAsMigrated($zddMigration);
                     $migrationCount++;
+                } catch (UcsOnlyMigrationException $e) {
+                    // @todo: Catch to remove when all flexibility clients will be migrated to the UCS platform (see JEL-359)
+                    $this->logger->notice(sprintf('The migration %s will be done on UCS platform', $zddMigration->getName()));
                 } catch (\Throwable $e) {
                     $this->logger->error(
                         sprintf('%s - errored_migration - %s', self::$defaultName, $zddMigration->getName()),

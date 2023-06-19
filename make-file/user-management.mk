@@ -69,3 +69,6 @@ user-management-integration-back: #Doc: launch PHPUnit integration tests for use
 .PHONY: user-management-end-to-end-back
 user-management-end-to-end-back: #Doc: launch PHPUnit end-to-end tests for user-management bounded context
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit --testsuite End_to_End --filter UserManagement $(O)
+
+.PHONY: user-management-ci
+user-management-ci: user-management-unit-back user-management-coupling-back user-management-integration-back user-management-end-to-end-back

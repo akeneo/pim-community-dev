@@ -1,11 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
+import {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
+import {UserGroup, useFetchUserGroups} from '../hooks/useFetchUserGroups';
 import {EnrichCategory} from '../models';
 import {CategoryPermission, CategoryPermissions} from '../models/CategoryPermission';
-import {useFetchUserGroups, UserGroup} from '../hooks/useFetchUserGroups';
-import {cloneDeep} from 'lodash/fp';
 
 type Props = {
   category: EnrichCategory;

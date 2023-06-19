@@ -118,6 +118,9 @@ oro_config:
               label: Activat
         environment:
           title: Configuració de l'entorn
+          fields:
+            sandbox_banner:
+              label: Mostra el bàner d'alerta de sandbox
         loading_message:
           title: Missatges de càrrega personalitzats
           helper: Entreteniu els vostres usuaris amb missatges personalitzats per a les pantalles de càrrega.
@@ -421,6 +424,7 @@ pim_settings:
     group_types: '{0}Tens 0 tipus de grup|{1}Tens 1 tipus de grup|]1, Inf[Teniu {{ count }} tipus de grup'
     groups: '{0}Tens 0 grups|{1}Tens 1 grup|]1, Inf[Tens {{ count }} grups'
     rules: '{0}Tens 0 regles activades|{1}Teniu 1 regla activada|]1, Inf[Teniu {{ count }} regles activades'
+    identifier_generators: '{0}Tens 0 generador d''identificadors|{1}Tens 1 generador d''identificadors|]1, Inf[Teniu {{ count }} generadors d''identificadors'
 pim_system:
   system_menu: Menú del sistema
   system_navigation: Sistema de navegació
@@ -438,23 +442,31 @@ pim_system:
     modal:
       summary:
         name: Resum
+        title: 'Avís: el reinici del vostre PIM és irreversible'
+        text: 'Això comportarà la supressió de tots els elements excepte els següents:'
         users:
           name: Usuaris
+          tooltip: Els usuaris són persones que permeteu col·laborar dins del vostre PIM.
         user_groups:
           name: Grup d'usuaris
+          tooltip: Els grups d'usuaris defineixen equips que realitzaran diferents accions dins del vostre PIM.
         roles:
           name: Rols
+          tooltip: Els rols defineixen els accessos i les accions que els usuaris i els grups d'usuaris poden dur a terme dins del vostre PIM.
       confirm:
         name: Confirmar
         title: Confirma el reinici del PIM
         helper:
           emphasis: Si reinicies el PIM, no podràs tornar enrere.
+          text: En fer clic al botó de restabliment, se us tancarà la sessió i tornareu a la pàgina d'inici de sessió.
       confirmation_phrase: Si us plau, escriu "{{ confirmation_word }}"
       confirmation_word: reiniciar
     button:
       label: Restableix la instància
       confirm: Reinicieu i tanqueu la sessió
-    error_notification: S'ha produït un error durant el restabliment del PIM; poseu-vos en contacte amb l'administrador del sistema.
+  sandbox:
+    helper:
+      text: Aquest és un entorn sandbox; els vostres canvis no afectaran la vostra producció.
 pim_datagrid:
   mass_action:
     default:

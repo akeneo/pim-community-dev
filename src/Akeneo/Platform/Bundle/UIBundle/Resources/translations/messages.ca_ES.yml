@@ -131,6 +131,7 @@ pim_enrich:
       create: Crear un grup d'atributs
       edit: Editar un grup d'atributs
       remove: Suprimir un grup d'atributs
+      mass_delete: Eliminació massiva de grups d'atributs
       sort: Ordenar grups d'atribut
       add_attribute: Afegir l'atribut a un grup
       remove_attribute: Suprimir l'atribut d'un grup
@@ -140,6 +141,7 @@ pim_enrich:
       create: Crear un atribut
       edit: Editar un atribut
       remove: Eliminar un atribut
+      mass_delete: Supressió massiva d'atributs
       sort: Ordena els atributs dins els grups d'atributs
       history: Veure l'històric dels atributs
     group:
@@ -212,6 +214,7 @@ flash:
   attribute:
     identifier_not_removable: L'atribut identificador no es pot suprimir
     used_as_conversion_unit: Aquest atribut no es pot eliminar perquè s'utilitza com a unitat de conversió al canal(s) %channelCodes%.
+    cant_remove_attributes_used_as_label: Els atributs utilitzats com a etiquetes en una família no es poden eliminar.
     cant_remove_attribute_used_as_axis: No podeu suprimir aquest atribut utilitzat com un eix variant en una variant familiar
   category:
     removed: Categoria suprimida correctament

@@ -464,7 +464,6 @@ pim_system:
     button:
       label: Restablecer instancia
       confirm: Restablecer y cerrar sesión
-    error_notification: Se ha producido un error durante el restablecimiento del PIM, contacte con el administrador del sistema.
   sandbox:
     helper:
       text: Este es un entorno sandbox; sus cambios no afectarán a su producción.
