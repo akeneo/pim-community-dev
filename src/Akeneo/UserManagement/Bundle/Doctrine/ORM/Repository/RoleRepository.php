@@ -68,20 +68,6 @@ class RoleRepository extends EntityRepository implements RoleRepositoryInterface
             ->setParameter('role', $role);
     }
 
-    public function getRoleWithEditRolePermissions(array $roles): QueryBuilder
-    {
-        return $this->_em->createQueryBuilder()
-            ->select('u')
-            ->from(UserInterface::class, 'u')
-            ->join('u.roles', 'role')
-            ->andWhere('u.enabled = :enabled')
-            ->andWhere('u.type = :user_type')
-            ->andWhere('role IN (:roles)')
-            ->setParameter('enabled', 1)
-            ->setParameter('user_type', User::TYPE_USER)
-            ->setParameter('roles', $roles);
-    }
-
     /**
      * @param array<RoleInterface> $roles
      */

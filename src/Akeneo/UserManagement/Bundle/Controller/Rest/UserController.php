@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
-use _PHPStan_0f7d3d695\Nette\Utils\Json;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
