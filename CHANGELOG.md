@@ -2,7 +2,6 @@
 
 ## Bug fixes
 
-- PIM-11041: Fix null has attribute group code broke the pef
 - PIM-10966: Fix error when toggling between tabs on an export profile editing page
 - PIM-10972: Fix shifting data during import
 - PIM-10950: Fix wrongly removed code filter on attribute page
