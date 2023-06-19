@@ -52,7 +52,7 @@ class CheckAdminRolePermissions
             $userQueryBuilder = $this->roleRepository->getUserQueryBuilder($role);
             $users = $userQueryBuilder->getQuery()->execute();
             foreach ($users as $user) {
-                if(!in_array($user, $usersWithPrivileges)) {
+                if($user->isEnabled() && $user->isUiUser() && !in_array($user, $usersWithPrivileges)) {
                     $usersWithPrivileges[] = $user;
                 }
             }

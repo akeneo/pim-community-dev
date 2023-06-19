@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
+use _PHPStan_0f7d3d695\Nette\Utils\Json;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -26,8 +27,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -107,7 +110,7 @@ final class UserController
      * @param int     $identifier
      *
      * @return Response
-     * @throws \HttpException
+     * @throws UnprocessableEntityHttpException
      *
      * @AclAncestor("pim_user_user_edit")
      */
@@ -135,8 +138,21 @@ final class UserController
             $usersWithAdminRoles = $this->checkAdminRolePermissions->getUsersWithAdminRoles();
             if(count($usersWithAdminRoles) <= 1) {
                 $lastUser = $usersWithAdminRoles[0];
-                if($lastUser && $lastUser === $user) {
-                    throw new NotFoundHttpException('This user is the last with admin privileges');
+                if($lastUser && $lastUser->getId() === $identifier) {
+                    $violation = new ConstraintViolation(
+                        message: 'This user is the last with admin privileges',
+                        messageTemplate: null,
+                        parameters: [],
+                        root: null,
+                        propertyPath: 'roles',
+                        invalidValue: null,
+                    );
+                    $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                        $violation,
+                        'internal_api',
+                        ['user' => $lastUser]
+                    );
+                    return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
                 }
             }
         }
