@@ -152,7 +152,7 @@ final class UserController
                         'internal_api',
                         ['user' => $lastUser]
                     );
-                    return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+                    return new JsonResponse($normalizedViolations, Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
             }
         }
@@ -298,6 +298,21 @@ final class UserController
         $currentUser = null !== $token ? $token->getUser() : null;
         if ($currentUser !== null && $user->getId() === $currentUser->getId()) {
             return new Response(null, Response::HTTP_FORBIDDEN);
+        }
+
+        $adminRolesPrivileges = $this->checkAdminRolePermissions->getRolesWithMinimumAdminPrivileges();
+        $adminRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $adminRolesPrivileges);
+        $adminRoleLeft = array_filter($user->getRoles(), (function ($role) use ($adminRolesNamePrivileges) {
+            return in_array($role, $adminRolesNamePrivileges);
+        }));
+        if(count($adminRoleLeft) <= 1) {
+            $usersWithAdminRoles = $this->checkAdminRolePermissions->getUsersWithAdminRoles();
+            if(count($usersWithAdminRoles) <= 1) {
+                $lastUser = $usersWithAdminRoles[0];
+                if($lastUser && $lastUser === $user) {
+                    return new JsonResponse(['message' => 'This user is the last with admin privileges'], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
+            }
         }
 
         try {

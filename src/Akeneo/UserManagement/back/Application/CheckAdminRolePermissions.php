@@ -23,7 +23,7 @@ class CheckAdminRolePermissions
         $roles = $this->roleRepository->findAll();
         /** @var RoleInterface[] $minimumPrivilegesRoles */
         $minimumPrivilegesRoles = [];
-        $minimumAdminPrivileges = ['action:pim_user_role_edit','action:pim_user_role_index','action:pim_user_user_index','action:pim_user_user_edit', 'action:oro_config_system'];
+        $minimumAdminPrivileges = ['action:pim_user_role_edit','action:pim_user_role_index', 'action:oro_config_system'];
         /** @var RoleInterface $role */
         foreach ($roles as $role) {
             $roleWithPermission = $this->roleWithPermissionsRepository->findOneByIdentifier($role->getRole());
@@ -45,18 +45,8 @@ class CheckAdminRolePermissions
      */
     public function getUsersWithAdminRoles(): array
     {
-        /** @var UserInterface[] $minimumPrivilegesRoles */
-        $usersWithPrivileges = [];
         $minimumPrivilegesRoles = $this->getRolesWithMinimumAdminPrivileges();
-        foreach ($minimumPrivilegesRoles as $role) {
-            $userQueryBuilder = $this->roleRepository->getUserQueryBuilder($role);
-            $users = $userQueryBuilder->getQuery()->execute();
-            foreach ($users as $user) {
-                if($user->isEnabled() && $user->isUiUser() && !in_array($user, $usersWithPrivileges)) {
-                    $usersWithPrivileges[] = $user;
-                }
-            }
-        }
-        return $usersWithPrivileges;
+        $uiUserEnabledByRoles = $this->roleRepository->getUiUserEnabledByRoles($minimumPrivilegesRoles);
+        return $uiUserEnabledByRoles->getQuery()->execute();
     }
 }
