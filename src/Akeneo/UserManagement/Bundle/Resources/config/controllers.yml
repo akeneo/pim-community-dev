@@ -22,7 +22,7 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\UserManagement\Domain\PasswordCheckerInterface'
             - '@Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler'
-            - '@Akeneo\UserManagement\Application\CheckAdminRolePermissions'
+            - '@Akeneo\UserManagement\Application\CheckEditRolePermissions'
 
     pim_user.controller.security_rest:
         public: true

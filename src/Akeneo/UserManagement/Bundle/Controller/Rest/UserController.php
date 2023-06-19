@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\UserManagement\Application\CheckAdminRolePermissions;
+use Akeneo\UserManagement\Application\CheckEditRolePermissions;
 use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommand;
 use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler;
 use Akeneo\UserManagement\Application\Exception\UserNotFoundException;
@@ -50,17 +50,17 @@ final class UserController
         private readonly NormalizerInterface $normalizer,
         private readonly ObjectRepository $repository,
         private readonly ObjectUpdaterInterface $updater,
-        private readonly ValidatorInterface $validator,
-        private readonly SaverInterface $saver,
-        private readonly NormalizerInterface $constraintViolationNormalizer,
-        private readonly SimpleFactoryInterface $factory,
-        private readonly RemoverInterface $remover,
-        private readonly NumberFactory $numberFactory,
-        private readonly TranslatorInterface $translator,
-        private readonly SecurityFacade $securityFacade,
+        private readonly ValidatorInterface       $validator,
+        private readonly SaverInterface           $saver,
+        private readonly NormalizerInterface      $constraintViolationNormalizer,
+        private readonly SimpleFactoryInterface   $factory,
+        private readonly RemoverInterface         $remover,
+        private readonly NumberFactory            $numberFactory,
+        private readonly TranslatorInterface      $translator,
+        private readonly SecurityFacade           $securityFacade,
         private readonly PasswordCheckerInterface $passwordChecker,
         private readonly UpdateUserCommandHandler $updateUserCommandHandler,
-        private readonly CheckAdminRolePermissions $checkAdminRolePermissions,
+        private readonly CheckEditRolePermissions $checkAdminRolePermissions,
     ) {
     }
 
@@ -129,13 +129,13 @@ final class UserController
             unset($data['groups']);
         }
 
-        $adminRolesPrivileges = $this->checkAdminRolePermissions->getRolesWithMinimumAdminPrivileges();
+        $adminRolesPrivileges = $this->checkAdminRolePermissions->getRolesWithMinimumEditRolePrivileges();
         $adminRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $adminRolesPrivileges);
         $adminRoleLeft = array_filter($data['roles'], (function ($role) use ($adminRolesNamePrivileges) {
             return in_array($role, $adminRolesNamePrivileges);
         }));
         if(count($adminRoleLeft) < 1) {
-            $usersWithAdminRoles = $this->checkAdminRolePermissions->getUsersWithAdminRoles();
+            $usersWithAdminRoles = $this->checkAdminRolePermissions->getUsersWithEditRoleRoles();
             if(count($usersWithAdminRoles) <= 1) {
                 $lastUser = $usersWithAdminRoles[0];
                 if($lastUser && $lastUser->getId() === $identifier) {
@@ -300,13 +300,13 @@ final class UserController
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
-        $adminRolesPrivileges = $this->checkAdminRolePermissions->getRolesWithMinimumAdminPrivileges();
+        $adminRolesPrivileges = $this->checkAdminRolePermissions->getRolesWithMinimumEditRolePrivileges();
         $adminRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $adminRolesPrivileges);
         $adminRoleLeft = array_filter($user->getRoles(), (function ($role) use ($adminRolesNamePrivileges) {
             return in_array($role, $adminRolesNamePrivileges);
         }));
         if(count($adminRoleLeft) <= 1) {
-            $usersWithAdminRoles = $this->checkAdminRolePermissions->getUsersWithAdminRoles();
+            $usersWithAdminRoles = $this->checkAdminRolePermissions->getUsersWithEditRoleRoles();
             if(count($usersWithAdminRoles) <= 1) {
                 $lastUser = $usersWithAdminRoles[0];
                 if($lastUser && $lastUser === $user) {

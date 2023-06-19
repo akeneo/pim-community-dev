@@ -7,8 +7,9 @@ use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepo
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
-class CheckAdminRolePermissions
+class CheckEditRolePermissions
 {
+    public const MINIMUM_EDITROLE_PRIVILEGES = ['action:pim_user_role_edit','action:pim_user_role_index', 'action:oro_config_system'];
     public function __construct(
         private RoleWithPermissionsRepository $roleWithPermissionsRepository,
         private RoleRepository $roleRepository,
@@ -18,12 +19,12 @@ class CheckAdminRolePermissions
     /**
      * @return array<RoleInterface>
      */
-    public function getRolesWithMinimumAdminPrivileges(): array
+    public function getRolesWithMinimumEditRolePrivileges(): array
     {
         $roles = $this->roleRepository->findAll();
         /** @var RoleInterface[] $minimumPrivilegesRoles */
         $minimumPrivilegesRoles = [];
-        $minimumAdminPrivileges = ['action:pim_user_role_edit','action:pim_user_role_index', 'action:oro_config_system'];
+        $minimumAdminPrivileges = self::MINIMUM_EDITROLE_PRIVILEGES;
         /** @var RoleInterface $role */
         foreach ($roles as $role) {
             $roleWithPermission = $this->roleWithPermissionsRepository->findOneByIdentifier($role->getRole());
@@ -43,9 +44,9 @@ class CheckAdminRolePermissions
     /**
      * @return array<UserInterface>
      */
-    public function getUsersWithAdminRoles(): array
+    public function getUsersWithEditRoleRoles(): array
     {
-        $minimumPrivilegesRoles = $this->getRolesWithMinimumAdminPrivileges();
+        $minimumPrivilegesRoles = $this->getRolesWithMinimumEditRolePrivileges();
         $uiUserEnabledByRoles = $this->roleRepository->getUiUserEnabledByRoles($minimumPrivilegesRoles);
         return $uiUserEnabledByRoles->getQuery()->execute();
     }
