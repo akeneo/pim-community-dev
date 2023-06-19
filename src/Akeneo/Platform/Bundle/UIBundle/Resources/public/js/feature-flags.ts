@@ -13,8 +13,8 @@ class FeatureFlags {
 
     await FeatureFlags.setFeatureFlags();
 
-    Mediator.on('route_complete', async (): Promise<void> => {
-      await FeatureFlags.setFeatureFlags();
+    Mediator.on('route_complete', (): void => {
+      FeatureFlags.setFeatureFlags();
     });
   }
 
