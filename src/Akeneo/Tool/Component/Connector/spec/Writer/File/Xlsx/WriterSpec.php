@@ -98,7 +98,7 @@ class WriterSpec extends ObjectBehavior
             'label-de_DE' => 'Verbunden'
         ]);
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
         $flatRowBuffer->write(
             [
                 [
@@ -144,7 +144,7 @@ class WriterSpec extends ObjectBehavior
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => sys_get_temp_dir() . '/my/file/path/%job_label%_%datetime%.xlsx']);
         $jobParameters->has('ui_locale')->willReturn(false);
 
-        $bufferFactory->create()->willReturn($flatRowBuffer);
+        $bufferFactory->create(null)->willReturn($flatRowBuffer);
 
         $this->initialize();
         $flusher->flush(
