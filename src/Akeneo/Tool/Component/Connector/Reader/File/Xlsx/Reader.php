@@ -74,6 +74,10 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Initi
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('storage')['file_path'];
 
+        if (null === $this->fileIterator) {
+            $this->initialize();
+        }
+
         $this->fileIterator->next();
 
         if ($this->fileIterator->valid() && null !== $this->stepExecution) {
