@@ -50,8 +50,6 @@ final class ViolationsException extends \LogicException
     }
 
     /**
-     * @deprecated
-     *
      * @return array<int, array{error: array{code: string|null, message: string}}>
      */
     public function normalizeDeprecated(): array

@@ -198,7 +198,7 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
             'labels' => [
                 'fr_FR' => ['This value is too long. It should have 255 characters or less.'],
                 'en_US' => ['This value is too long. It should have 255 characters or less.'],
-            ]
+            ],
         ];
         $normalizedErrors = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
