@@ -148,13 +148,6 @@ services:
             - '@database_connection'
             - '@pim_channel.query.cache.channel_exists_with_locale'
 
-    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SwitchSqlGetCompleteness:
-        decorates: akeneo.pim.enrichment.product.query.get_product_completenesses
-        arguments:
-            - '@.inner'
-            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlGetCompletenesses'
-            - '@database_connection'
-
     akeneo.pim.enrichment.product.query.save_product_completenesses:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveProductCompletenesses'
         arguments:
