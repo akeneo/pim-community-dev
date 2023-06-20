@@ -129,7 +129,7 @@ final class UserController
         }
 
         if(isset($data['roles'])) {
-            $editRoleLeft = $this->getEditRoleLeft($data['roles']);
+            $editRoleLeft = $this->getEditRoleLeftFromRoles($data['roles']);
             if(count($editRoleLeft) < 1) {
                 $usersWithEditRoleRoles = $this->checkEditRolePermissions->getUsersWithEditRoleRoles();
                 if(count($usersWithEditRoleRoles) <= 1) {
@@ -297,7 +297,7 @@ final class UserController
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
-        $editRoleLeft = $this->getEditRoleLeft($user->getRoles());
+        $editRoleLeft = $this->getEditRoleLeftFromRoles($user->getRoles());
         if(count($editRoleLeft) <= 1) {
             $usersWithEditRoleRoles = $this->checkEditRolePermissions->getUsersWithEditRoleRoles();
             if(count($usersWithEditRoleRoles) <= 1) {
@@ -379,7 +379,7 @@ final class UserController
     /**
      * @param array<string> $roles
      */
-    private function getEditRoleLeft(array $roles) {
+    private function getEditRoleLeftFromRoles(array $roles) {
         $editRoleRolesPrivileges = $this->checkEditRolePermissions->getRolesWithMinimumEditRolePrivileges();
         $editRoleRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $editRoleRolesPrivileges);
         return array_filter($roles, (function ($role) use ($editRoleRolesNamePrivileges) {
