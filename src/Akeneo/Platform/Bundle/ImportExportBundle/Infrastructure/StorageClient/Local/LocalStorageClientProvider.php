@@ -27,7 +27,10 @@ final class LocalStorageClientProvider implements StorageClientProviderInterface
 
         $dirname = dirname($storage->getFilePath());
 
-        return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter($dirname)));
+        return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter(
+            location: $dirname,
+            lazyRootCreation: true,
+        )));
     }
 
     public function supports(StorageInterface $storage): bool

@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Bundle\FileStorageBundle;
 
 use Akeneo\Tool\Bundle\FileStorageBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Akeneo\Tool\Bundle\FileStorageBundle\DependencyInjection\Compiler\SetLazyRootCreationToLocalStorageAdapterPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -22,7 +23,8 @@ class AkeneoFileStorageBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new ResolveDoctrineTargetModelPass());
+            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
+            ->addCompilerPass(new SetLazyRootCreationToLocalStorageAdapterPass());
 
         $mappings = [
             realpath(__DIR__.'/Resources/config/model/doctrine') => 'Akeneo\Tool\Component\FileStorage\Model',

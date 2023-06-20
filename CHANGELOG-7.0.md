@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-11047: Fix $lazyRootCreation is not configurable for LocalFilesystemAdapter
+
 # 7.0.17 (2023-05-24)
 
 # 7.0.16 (2023-05-24)
