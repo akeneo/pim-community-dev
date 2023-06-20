@@ -65,7 +65,7 @@ class TemplateBuilderSpec extends ObjectBehavior
         $template = $this->generateTemplate($categoryTreeId, new TemplateCode('template_code'), LabelCollection::fromArray([]));
 
         $template->getCode()->__toString()->shouldReturn('template_code');
-
+//        TODO: will be moved to test of service that will load the predefined attributes in GRF-842
 //        $richTextAttribute = $template->getAttributeCollection()->getAttributeByCode('long_description');
 //        $richTextAttribute->getType()->__toString()->shouldReturn(AttributeType::RICH_TEXT);
 //        $richTextAttribute->getOrder()->intValue()->shouldReturn(1);
