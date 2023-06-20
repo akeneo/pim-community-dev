@@ -246,6 +246,37 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         $this->assertJsonStringEqualsJsonString($expectedContent, $responseJson->getContent());
     }
 
+    public function testItCannotDeleteLastUserWithEditRole(): void
+    {
+        $this->createRoleWithAcls('ROLE_WITHOUT_EDIT_ROLE', ['action:oro_config_system']);
+        $julien = $this->userLoader->createUser('Julien', [], ['ROLE_USER', 'ROLE_WITHOUT_EDIT_ROLE']);
+
+        $julia = $this->userProvider->loadUserByIdentifier('julia');
+
+        $this->updateUser($julia->getId(), [
+            'first_name' => 'julia',
+            'last_name' => 'julia',
+            'roles'=> ['ROLE_WITHOUT_EDIT_ROLE'],
+        ]);
+
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_user_user_rest_post',
+            routeArguments: [
+                'identifier' => (string) $julien->getId(),
+            ],
+            method: Request::METHOD_DELETE,
+        );
+
+        $expectedContent = <<<JSON
+        {
+            "message": "This user is the last with edit role privileges"
+        }
+        JSON;
+        $responseJson = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $responseJson->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $responseJson->getContent());
+    }
     public function testItThrowsPasswordErrors(): void
     {
         $user = $this->userLoader->createUser('Julien', [], ['ROLE_USER']);
