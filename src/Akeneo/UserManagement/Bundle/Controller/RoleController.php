@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Controller;
 
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\UserManagement\Application\CheckEditRolePermissions;
 use Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
@@ -23,6 +24,7 @@ class RoleController extends AbstractController
         private readonly AclSidManager $aclSidManager,
         private readonly AclRoleHandler $aclRoleHandler,
         private readonly TranslatorInterface $translator,
+        private readonly CheckEditRolePermissions $checkEditRolePermissions,
     ) {
     }
 
@@ -59,6 +61,11 @@ class RoleController extends AbstractController
 
         if (null === $role) {
             throw $this->createNotFoundException(sprintf('Role with id %d could not be found.', $id));
+        }
+
+        $minimumEditRoleRoles = $this->checkEditRolePermissions->getRolesWithMinimumEditRolePrivileges();
+        if(count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
+            return new JsonResponse(['message' => 'You canno`t delete edit role privileges on the last role'], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
