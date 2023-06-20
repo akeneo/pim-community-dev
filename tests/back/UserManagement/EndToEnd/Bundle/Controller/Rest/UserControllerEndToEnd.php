@@ -100,6 +100,24 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         $this->assertTrue($this->userPasswordHasher->isPasswordValid($user, $newPassword));
     }
 
+    public function testDeleteUser(): void
+    {
+        $julien = $this->userLoader->createUser('Julien', [], ['ROLE_USER']);
+
+        $this->callApiRoute(
+            client: $this->client,
+            route: 'pim_user_user_rest_post',
+            routeArguments: [
+                'identifier' => (string) $julien->getId(),
+            ],
+            method: Request::METHOD_DELETE,
+        );
+
+        $responseJson = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $responseJson->getStatusCode());
+        $this->assertEmpty($responseJson->getContent());
+    }
+
     public function testItUpdateUser(): void
     {
         $user = $this->userLoader->createUser('Julien', [], ['ROLE_USER']);
@@ -162,7 +180,7 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         $this->deleteUser('Julien');
     }
 
-    public function testItRemoveLastEditRoleToUser(): void
+    public function testItCannotRemoveLastEditRoleToUser(): void
     {
         $this->createRoleWithAcls('ROLE_WITHOUT_EDIT_ROLE', ['action:oro_config_system']);
         $julien = $this->userLoader->createUser('Julien', [], ['ROLE_USER', 'ROLE_WITHOUT_EDIT_ROLE']);
@@ -174,7 +192,6 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
             'last_name' => 'julia',
             'roles'=> ['ROLE_WITHOUT_EDIT_ROLE'],
         ]);
-
 
         $this->callApiRoute(
             client: $this->client,

@@ -129,28 +129,22 @@ final class UserController
         }
 
         if(isset($data['roles'])) {
-            $editRoleLeft = $this->getEditRoleLeftFromRoles($data['roles']);
-            if(count($editRoleLeft) < 1) {
-                $usersWithEditRoleRoles = $this->checkEditRolePermissions->getUsersWithEditRoleRoles();
-                if(count($usersWithEditRoleRoles) <= 1) {
-                    $lastUser = $usersWithEditRoleRoles[0];
-                    if($lastUser && $lastUser->getId() === $identifier) {
-                        $violation = new ConstraintViolation(
-                            message: 'This user is the last with edit role privileges',
-                            messageTemplate: null,
-                            parameters: [],
-                            root: null,
-                            propertyPath: 'roles',
-                            invalidValue: null,
-                        );
-                        $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                            $violation,
-                            'internal_api',
-                            ['user' => $lastUser]
-                        );
-                        return new JsonResponse($normalizedViolations, Response::HTTP_UNPROCESSABLE_ENTITY);
-                    }
-                }
+            $lastUser = $this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole($data['roles'], $identifier);
+            if($lastUser) {
+                $violation = new ConstraintViolation(
+                    message: 'This user is the last with edit role privileges',
+                    messageTemplate: null,
+                    parameters: [],
+                    root: null,
+                    propertyPath: 'roles',
+                    invalidValue: null,
+                );
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['user' => $lastUser]
+                );
+                return new JsonResponse($normalizedViolations, Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         }
 
@@ -297,15 +291,8 @@ final class UserController
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
-        $editRoleLeft = $this->getEditRoleLeftFromRoles($user->getRoles());
-        if(count($editRoleLeft) <= 1) {
-            $usersWithEditRoleRoles = $this->checkEditRolePermissions->getUsersWithEditRoleRoles();
-            if(count($usersWithEditRoleRoles) <= 1) {
-                $lastUser = $usersWithEditRoleRoles[0];
-                if($lastUser && $lastUser === $user) {
-                    return new JsonResponse(['message' => 'This user is the last with edit role privileges'], Response::HTTP_UNPROCESSABLE_ENTITY);
-                }
-            }
+        if($this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole($user->getRoles(), $identifier)) {
+            return new JsonResponse(['message' => 'This user is the last with edit role privileges'], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
@@ -374,16 +361,5 @@ final class UserController
             ->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
 
         return $decimalSeparator;
-    }
-
-    /**
-     * @param array<string> $roles
-     */
-    private function getEditRoleLeftFromRoles(array $roles) {
-        $editRoleRolesPrivileges = $this->checkEditRolePermissions->getRolesWithMinimumEditRolePrivileges();
-        $editRoleRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $editRoleRolesPrivileges);
-        return array_filter($roles, (function ($role) use ($editRoleRolesNamePrivileges) {
-            return in_array($role, $editRoleRolesNamePrivileges);
-        }));
     }
 }

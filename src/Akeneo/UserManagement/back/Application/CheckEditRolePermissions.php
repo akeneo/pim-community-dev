@@ -50,4 +50,25 @@ class CheckEditRolePermissions
         $uiUserEnabledByRoles = $this->roleRepository->getUiUserEnabledByRoles($minimumPrivilegesRoles);
         return $uiUserEnabledByRoles->getQuery()->execute();
     }
+
+    /**
+     * @param array<string> $roles
+     */
+    public function isLastUserWithEditPrivilegeRole(array $roles, int $identifier): ?UserInterface {
+        $editRoleRolesPrivileges = $this->getRolesWithMinimumEditRolePrivileges();
+        $editRoleRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $editRoleRolesPrivileges);
+        $editRoleLeft =  array_filter($roles, (function ($role) use ($editRoleRolesNamePrivileges) {
+            return in_array($role, $editRoleRolesNamePrivileges);
+        }));
+        if(count($editRoleLeft) < 1) {
+            $usersWithEditRoleRoles = $this->getUsersWithEditRoleRoles();
+            if (count($usersWithEditRoleRoles) <= 1) {
+                $lastUser = $usersWithEditRoleRoles[0];
+                if ($lastUser && $lastUser->getId() === $identifier) {
+                    return $lastUser;
+                }
+            }
+        }
+        return null;
+    }
 }
