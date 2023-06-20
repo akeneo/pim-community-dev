@@ -3,7 +3,6 @@
 namespace Akeneo\Test\UserManagement\Integration\Application;
 
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader;
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
@@ -36,7 +35,6 @@ class CheckEditRolePermissionsIntegration extends TestCase
         $this->checkEditRolePermissions = $this->get(CheckEditRolePermissions::class);
         $this->roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
         $this->userLoader = $this->get(UserLoader::class);
-        $this->aclLoader = $this->get(AclLoader::class);
         $this->aclManager = $this->get('oro_security.acl.manager');
         $this->cacheClearer = $this->get('pim_connector.doctrine.cache_clearer');
         $this->roleFactory = $this->get('pim_user.factory.role');
