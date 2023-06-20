@@ -10,7 +10,7 @@ services:
         public: true
         arguments:
             - '@pim_catalog.completeness.calculator'
-            - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveCompletenesses'
             - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
             - '@event_dispatcher'
             - '@Akeneo\Pim\Enrichment\Product\Domain\Clock'
