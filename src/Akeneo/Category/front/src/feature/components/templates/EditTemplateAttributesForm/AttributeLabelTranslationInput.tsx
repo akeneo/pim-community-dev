@@ -56,6 +56,7 @@ export const AttributeLabelTranslationInput = ({attribute, localeCode, label}: P
         });
         handleStatusListChange(saveStatusId, Status.ERRORS);
       } else {
+        handleStatusListChange(saveStatusId, Status.SAVED);
         throw error;
       }
     }

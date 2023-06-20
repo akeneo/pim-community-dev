@@ -58,6 +58,7 @@ export const TemplateLabelTranslationInput = ({template, locale}: Props) => {
         });
         handleStatusListChange(saveStatusId, Status.ERRORS);
       } else {
+        handleStatusListChange(saveStatusId, Status.SAVED);
         throw error;
       }
     }
