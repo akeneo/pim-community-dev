@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\EndToEnd\InternalApi;
 
-use Akeneo\Category\Application\ActivateTemplate;
+use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand;
+use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommandHandler;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryBaseSaver;
 use Akeneo\Category\back\tests\EndToEnd\Helper\ControllerIntegrationTestCase;
@@ -74,7 +75,7 @@ class UpdateCategoryControllerEndToEnd extends ControllerIntegrationTestCase
                 'attributes' => [],
                 'permissions' => [],
                 'isRoot' => $category->isRoot(),
-            ]),
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
@@ -99,16 +100,13 @@ class UpdateCategoryControllerEndToEnd extends ControllerIntegrationTestCase
          */
         $categoryMaster = $getCategory->byCode('master');
 
-        $templateUuid = $this->activateTemplate($categoryMaster->getId(), TemplateCode::fromString((string) $categoryMaster->getCode()), []);
+        $this->createTemplate($categoryMaster->getId(), TemplateCode::fromString((string) $categoryMaster->getCode()), []);
 
         /**
          * @var GetAttribute $getAttribute
          */
         $getAttribute = $this->get(GetAttribute::class);
 
-        /**
-         * @var AttributeCollection $attributes
-         */
         $attributes = $getAttribute->byTemplateUuid($templateUuid);
         $longDescriptionAttribute = $attributes->getAttributeByCode('long_description');
         $shortDescriptionAttribute = $attributes->getAttributeByCode('short_description');
@@ -154,7 +152,7 @@ class UpdateCategoryControllerEndToEnd extends ControllerIntegrationTestCase
                 ],
                 'permissions' => [],
                 'isRoot' => $category->isRoot(),
-            ]),
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
@@ -216,7 +214,7 @@ class UpdateCategoryControllerEndToEnd extends ControllerIntegrationTestCase
                 'attributes' => [],
                 'permissions' => [],
                 'isRoot' => true,
-            ]),
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
@@ -257,19 +255,22 @@ class UpdateCategoryControllerEndToEnd extends ControllerIntegrationTestCase
     /**
      * @param array<string> $labels
      */
-    protected function activateTemplate(CategoryId $categoryTreeId, TemplateCode $code, ?array $labels): ?TemplateUuid
+    protected function createTemplate(CategoryId $categoryTreeId, TemplateCode $code, ?array $labels): ?TemplateUuid
     {
         /**
-         * @var ActivateTemplate $activateTemplateService
+         * @var CreateTemplateCommandHandler $activateTemplateService
          */
-        $activateTemplateService = $this->get(ActivateTemplate::class);
+        $createTemplate = $this->get(CreateTemplateCommandHandler::class);
+        $command =  new CreateTemplateCommand(
+            $categoryTreeId,
+            [
+                'code' => (string) $code,
+                'labels' => $labels,
+            ]
+        );
 
         try {
-            return ($activateTemplateService)(
-                $categoryTreeId,
-                $code,
-                LabelCollection::fromArray($labels)
-            );
+            ($createTemplate)($command);
         } catch (Exception|\Doctrine\DBAL\Exception $e) {
             $this->fail('An unexpected exception was thrown: '.$e->getMessage());
         }

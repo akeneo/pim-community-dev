@@ -2,22 +2,10 @@
 
 namespace Akeneo\Category\Infrastructure\Builder;
 
-use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
-use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
-use Akeneo\Category\Domain\Model\Attribute\AttributeText;
-use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
-use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
@@ -31,16 +19,10 @@ use Ramsey\Uuid\Uuid;
 class TemplateBuilder
 {
     public function __construct(
-        private GetCategoryInterface $getCategory,
+        private readonly GetCategoryInterface $getCategory,
     ) {
     }
 
-    /**
-     * @param Code $categoryTreeCode
-     * @param string $templateCode
-     *
-     * @throws \Exception
-     */
     public function generateTemplate(
         CategoryId $categoryTreeId,
         TemplateCode $templateCode,
@@ -54,7 +36,7 @@ class TemplateBuilder
             $templateCode,
             $templateLabelCollection,
             $categoryTree->getId(),
-            AttributeCollection::fromArray([]),
+null
 //          TODO: Externalize this in a service for loading the default attributes - GRF-842
 //            AttributeCollection::fromArray([
 //                AttributeRichText::create(

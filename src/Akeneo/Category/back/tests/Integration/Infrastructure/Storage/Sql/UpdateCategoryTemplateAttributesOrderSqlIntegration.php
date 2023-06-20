@@ -2,11 +2,11 @@
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\ActivateTemplate;
+use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand;
+use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommandHandler;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
-use Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid;
 use Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
@@ -16,22 +16,27 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 class UpdateCategoryTemplateAttributesOrderSqlIntegration  extends CategoryTestCase
 {
     private TemplateUuid $templateUuid;
+    private CreateTemplateCommandHandler $createTemplateCommandHandler;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->createTemplateCommandHandler = $this->get(CreateTemplateCommandHandler::class);
         $category = $this->insertBaseCategory(new Code('template_model'));
         $mockedTemplate = $this->generateMockedCategoryTemplateModel(
             categoryTreeId: $category->getId()->getValue()
         );
 
-        $activateTemplate = $this->get(ActivateTemplate::class);
-        $this->templateUuid = ($activateTemplate)(
+        $command = new CreateTemplateCommand(
             $mockedTemplate->getCategoryTreeId(),
-            $mockedTemplate->getCode(),
-            $mockedTemplate->getLabelCollection()
+            [
+                'code' => (string) $mockedTemplate->getCode(),
+                'labels' => $mockedTemplate->getLabelCollection()->normalize(),
+            ]
         );
+        ($this->createTemplateCommandHandler)($command);
+        $this->templateUuid = ($this->getTemplate)($category->getId())->getUuid();
     }
     public function testItUpdatesAttributesOrder(): void
     {
