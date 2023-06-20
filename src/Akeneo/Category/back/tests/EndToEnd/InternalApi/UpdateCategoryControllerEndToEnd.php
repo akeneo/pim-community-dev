@@ -7,19 +7,29 @@ namespace Akeneo\Category\back\tests\EndToEnd\InternalApi;
 use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand;
 use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommandHandler;
 use Akeneo\Category\Application\Query\GetAttribute;
+use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryBaseSaver;
+use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\back\tests\EndToEnd\Helper\ControllerIntegrationTestCase;
+use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
+use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\Attribute\Value\TextAreaValue;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Driver\Exception;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -90,32 +100,58 @@ class UpdateCategoryControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItUpdatesCategoryWithAttributes(): void
     {
-        /**
-         * @var GetCategoryInterface $getCategory
-         */
+        /** @var GetCategoryInterface $getCategory */
         $getCategory = $this->get(GetCategoryInterface::class);
 
-        /**
-         * @var Category $categoryMaster
-         */
+        /** @var Category $categoryMaster */
         $categoryMaster = $getCategory->byCode('master');
 
         $this->createTemplate($categoryMaster->getId(), TemplateCode::fromString((string) $categoryMaster->getCode()), []);
 
-        /**
-         * @var GetAttribute $getAttribute
-         */
-        $getAttribute = $this->get(GetAttribute::class);
+        /** @var GetCategoryTemplateByCategoryTree $getTemplate */
+        $getTemplate = $this->get(GetCategoryTemplateByCategoryTree::class);
+        $templateUuid = ($getTemplate)($categoryMaster->getId())->getUuid();
 
+        $longDescriptionAttribute = AttributeRichText::create(
+            AttributeUuid::fromUuid(Uuid::uuid4()),
+            new AttributeCode('long_description'),
+            AttributeOrder::fromInteger(1),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeIsScopable::fromBoolean(true),
+            AttributeIsLocalizable::fromBoolean(true),
+            LabelCollection::fromArray(['en_US' => 'Long description']),
+            $templateUuid,
+            AttributeAdditionalProperties::fromArray([]),
+        );
+        $shortDescriptionAttribute = AttributeRichText::create(
+            AttributeUuid::fromUuid(Uuid::uuid4()),
+            new AttributeCode('short_description'),
+            AttributeOrder::fromInteger(2),
+            AttributeIsRequired::fromBoolean(false),
+            AttributeIsScopable::fromBoolean(true),
+            AttributeIsLocalizable::fromBoolean(true),
+            LabelCollection::fromArray(['en_US' => 'Short description']),
+            $templateUuid,
+            AttributeAdditionalProperties::fromArray([]),
+        );
+
+        /** @var CategoryTemplateAttributeSaver $categoryTemplateAttributeSaver */
+        $categoryTemplateAttributeSaver = $this->get(CategoryTemplateAttributeSaver::class);
+        $categoryTemplateAttributeSaver->insert($templateUuid, AttributeCollection::fromArray([
+            $longDescriptionAttribute,
+            $shortDescriptionAttribute,
+        ]));
+
+        /** @var GetAttribute $getAttribute */
+        $getAttribute = $this->get(GetAttribute::class);
         $attributes = $getAttribute->byTemplateUuid($templateUuid);
+
         $longDescriptionAttribute = $attributes->getAttributeByCode('long_description');
         $shortDescriptionAttribute = $attributes->getAttributeByCode('short_description');
         $longDescriptionAttributeCode = "{$longDescriptionAttribute->getCode()}|{$longDescriptionAttribute->getUuid()}";
         $shortDescriptionAttributeCode = "{$shortDescriptionAttribute->getCode()}|{$shortDescriptionAttribute->getUuid()}";
 
-        /**
-         * @var Category $category
-         */
+        /** @var Category $category */
         $category = $getCategory->byId($this->categoryID->getValue());
 
         $this->assertEmpty($category->getAttributes());
@@ -185,14 +221,10 @@ class UpdateCategoryControllerEndToEnd extends ControllerIntegrationTestCase
 
     public function testItThrowsExceptionsOnIncoherentContent(): void
     {
-        /**
-         * @var GetCategoryInterface $getCategory
-         */
+        /** @var GetCategoryInterface $getCategory */
         $getCategory = $this->get(GetCategoryInterface::class);
 
-        /**
-         * @var Category $category
-         */
+        /** @var Category $category */
         $category = $getCategory->byId($this->categoryID->getValue());
 
         $this->callApiRoute(
@@ -223,14 +255,10 @@ class UpdateCategoryControllerEndToEnd extends ControllerIntegrationTestCase
 
     protected function createCategory(?string $code, ?string $parent): void
     {
-        /**
-         * @var GetCategoryInterface $getCategory
-         */
+        /** @var GetCategoryInterface $getCategory */
         $getCategory = $this->get(GetCategoryInterface::class);
 
-        /**
-         * @var Category $categoryMaster
-         */
+        /** @var Category $categoryMaster */
         $categoryMaster = $getCategory->byCode($parent);
 
         /** @var Category $category */
@@ -255,18 +283,16 @@ class UpdateCategoryControllerEndToEnd extends ControllerIntegrationTestCase
     /**
      * @param array<string> $labels
      */
-    protected function createTemplate(CategoryId $categoryTreeId, TemplateCode $code, ?array $labels): ?TemplateUuid
+    protected function createTemplate(CategoryId $categoryTreeId, TemplateCode $code, ?array $labels): void
     {
-        /**
-         * @var CreateTemplateCommandHandler $activateTemplateService
-         */
+        /** @var CreateTemplateCommandHandler $createTemplate */
         $createTemplate = $this->get(CreateTemplateCommandHandler::class);
-        $command =  new CreateTemplateCommand(
+        $command = new CreateTemplateCommand(
             $categoryTreeId,
             [
                 'code' => (string) $code,
                 'labels' => $labels,
-            ]
+            ],
         );
 
         try {

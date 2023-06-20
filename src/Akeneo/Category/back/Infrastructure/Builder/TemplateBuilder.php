@@ -36,7 +36,7 @@ class TemplateBuilder
             $templateCode,
             $templateLabelCollection,
             $categoryTree->getId(),
-null
+            null,
 //          TODO: Externalize this in a service for loading the default attributes - GRF-842
 //            AttributeCollection::fromArray([
 //                AttributeRichText::create(
