@@ -194,17 +194,15 @@ class UpdateAttributeControllerEndToEnd extends ControllerIntegrationTestCase
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
 
+        $expectedErrors = [
+            'labels' => [
+                'fr_FR' => ['This value is too long. It should have 255 characters or less.'],
+                'en_US' => ['This value is too long. It should have 255 characters or less.'],
+            ]
+        ];
         $normalizedErrors = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $this->assertCount(2, $normalizedErrors);
 
-        $localesList = ['fr_FR', 'en_US'];
-        foreach ($localesList as $locale) {
-            $localizedNormalizedError = array_values(array_filter($normalizedErrors, static function ($error) use ($locale) {
-                return $error['error']['property'] === $locale;
-            }));
-            $this->assertCount(1, $localizedNormalizedError);
-            $this->assertEquals('This value is too long. It should have 255 characters or less.', $localizedNormalizedError[0]['error']['message']);
-        }
+        $this->assertEquals($expectedErrors, $normalizedErrors);
     }
 
     public function testItDoesNotUpdateOnDeactivateTemplate(): void
