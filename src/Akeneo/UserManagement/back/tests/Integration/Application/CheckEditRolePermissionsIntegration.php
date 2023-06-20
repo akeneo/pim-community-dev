@@ -43,6 +43,7 @@ class CheckEditRolePermissionsIntegration extends TestCase
         $this->decisionManager = $this->get('security.access.decision_manager');
 
         $this->createRoleWithAcls('ROLE_WITH_EDIT_ROLE', CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES);
+        $this->createRoleWithAcls('ROLE_WITHOUT_EDIT_ROLE', ['action:oro_config_system']);
     }
 
 
@@ -64,6 +65,22 @@ class CheckEditRolePermissionsIntegration extends TestCase
         $editRoleUsers = $this->checkEditRolePermissions->getUsersWithEditRoleRoles();
         $editUserFound = array_filter($editRoleUsers, fn($user) => $user === $userWithEditRole);
         $this::assertNotEmpty($editUserFound);
+    }
+
+    public function testItIsLastUserWithEditRolePermissions(): void
+    {
+        $userWithEditRole = $this->userLoader->createUser('userWithEditRole', [], ['ROLE_WITH_EDIT_ROLE']);
+        $editRoleUser = $this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
+        $this::assertNotNull($editRoleUser);
+        $this::assertEquals($userWithEditRole, $editRoleUser);
+    }
+
+    public function testItIsntLastUserWithEditRolePermissions(): void
+    {
+        $userWithEditRole = $this->userLoader->createUser('userWithEditRole', [], ['ROLE_WITH_EDIT_ROLE']);
+        $this->userLoader->createUser('userWithEditRole2', [], ['ROLE_WITH_EDIT_ROLE']);
+        $editRoleUser = $this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
+        $this::assertNull($editRoleUser);
     }
 
     private function createRoleWithAcls(string $roleCode, array $acls): void
