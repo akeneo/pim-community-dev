@@ -28,6 +28,15 @@ final class ViolationsException extends \LogicException
     }
 
     /**
+     * Normalizes the constraint violation list recusively into an array based on the property path.
+     *
+     * For example, the property path "labels[en_US]" will be normalized into:
+     *  $errors = [
+     *      'labels' => [
+     *          'en_US' => ['An error message']
+     *      ]
+     *  ];
+     *
      * @return array<string, array<mixed>>
      */
     public function normalize(): array
