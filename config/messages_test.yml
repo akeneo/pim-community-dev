@@ -19,3 +19,11 @@ queues:
             - name: failing_consumer
               service_handler: 'Akeneo\Tool\Bundle\MessengerBundle\tests\config\FailingHandler'
               env_var: PUBSUB_SUBSCRIPTION_TEST_CONSUMER_4
+
+    created_or_updated_attribute_queue:
+        env_var: PUBSUB_TOPIC_ATTRIBUTES_WERE_UPSERT
+        message_class: Akeneo\Pim\Structure\Component\Event\AttributesWereCreatedOrUpdated
+        consumers:
+            - name: test_upsert_attributes_consumer
+              env_var: PUBSUB_SUBSCRIPTION_TEST_UPSERT_ATTRIBUTES_CONSUMER
+              service_handler: 'Akeneo\Tool\Bundle\MessengerBundle\tests\config\Handler1ForMessage2'
