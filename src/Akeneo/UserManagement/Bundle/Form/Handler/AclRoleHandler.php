@@ -2,15 +2,17 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Application\CheckEditRolePermissions;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -26,12 +28,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class AclRoleHandler
 {
-    /** @var RequestStack */
-    protected $requestStack;
-
-    /** @var FormFactory */
-    protected $formFactory;
-
     /** @var FormInterface */
     protected $form;
 
@@ -41,19 +37,13 @@ class AclRoleHandler
     /** @var AclManager */
     protected $aclManager;
 
-    /** @var array */
-    protected $privilegeConfig;
-
-    /**
-     * @param FormFactory  $formFactory
-     * @param array        $privilegeConfig
-     * @param RequestStack $requestStack
-     */
-    public function __construct(FormFactory $formFactory, array $privilegeConfig, RequestStack $requestStack)
+    public function __construct(
+        private readonly FormFactory $formFactory,
+        private array $privilegeConfig,
+        private readonly RequestStack $requestStack,
+        private readonly CheckEditRolePermissions $checkEditRolePermissions,
+    )
     {
-        $this->formFactory = $formFactory;
-        $this->privilegeConfig = $privilegeConfig;
-        $this->requestStack = $requestStack;
     }
 
     /**
@@ -169,10 +159,19 @@ class AclRoleHandler
      */
     protected function processPrivileges(Role $role)
     {
+        /** @var array<AclPrivilege> $formPrivileges */
         $formPrivileges = [];
         foreach ($this->privilegeConfig as $fieldName => $config) {
             $privileges = $this->form->get($fieldName)->getData();
             $formPrivileges = array_merge($formPrivileges, $privileges);
+        }
+
+        $minimumEditRoleRoles = $this->checkEditRolePermissions->getRolesWithMinimumEditRolePrivileges();
+        if(count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
+            $editRoleActivePrivileges = array_filter($formPrivileges, fn($privilege) => in_array($privilege->getIdentity()->getId(), CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES) && array_filter($privilege->getPermissions()->toArray(), fn($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL));
+            if(count($editRoleActivePrivileges) < count(CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES)) {
+                throw new \LogicException('You canno`t remove edit role privileges on the last role');
+            }
         }
 
         $this->aclManager->getPrivilegeRepository()->savePrivileges(
@@ -181,7 +180,8 @@ class AclRoleHandler
         );
     }
 
-    /**
+    /**im
+     *
      * @param ArrayCollection $privileges
      * @param array           $rootIds
      *
