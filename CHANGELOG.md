@@ -92,6 +92,7 @@
 - PIM-11023 : Fix product search containing underscores
 - PIM-11016 : Improve the clean-removed-attributes command
 - PIM-11050 : On "locale" DIV, missing the indication of the country
+- PIM-10869: Image upload fields now only accept images
 
 ## Improvements
 

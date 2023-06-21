@@ -11,6 +11,9 @@ akeneo_pim_enrichment:
 akeneo_connectivity_connection:
     resource: "@AkeneoConnectivityConnectionBundle/Resources/config/routing.yml"
 
+akeneo_file_storage:
+    resource: "@AkeneoFileStorageBundle/Resources/config/routing.yml"
+
 akeneo_measure:
     resource: "@AkeneoMeasureBundle/Resources/config/routing.yml"
 

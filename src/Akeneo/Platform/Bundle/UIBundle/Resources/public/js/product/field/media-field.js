@@ -28,6 +28,7 @@ define([
       'click  .open-media': 'previewImage',
     },
     uploadContext: {},
+    uploadRouteName: 'pim_enrich_media_rest_post',
     renderInput: function (context) {
       return this.fieldTemplate(context);
     },
@@ -81,7 +82,7 @@ define([
       };
 
       $.ajax({
-        url: Routing.generate('pim_enrich_media_rest_post'),
+        url: Routing.generate(this.uploadRouteName),
         type: 'POST',
         data: formData,
         contentType: false,
