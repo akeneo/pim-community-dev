@@ -53,3 +53,5 @@ parameters:
     webhook_requests_limit: 4000
 
     openssl_config_path: '%pim_ce_dev_src_folder_location%/config/openssl.cnf'
+
+    local_storage_root: '/'

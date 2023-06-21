@@ -18,7 +18,7 @@ oneup_flysystem:
                 bucket: 'category'
         local_storage_adapter:
             local:
-                location: '/'
+                location: '%local_storage_root%'
         catalogs_mapping_adapter:
             awss3v3:
                 client: 'Aws\S3\S3Client'

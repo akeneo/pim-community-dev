@@ -30,6 +30,7 @@ final class DownloadStep extends AbstractStep
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         private DownloadFileFromStorageHandler $downloadFileFromStorageHandler,
+        private readonly string $localStorageRoot,
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
     }
@@ -57,11 +58,12 @@ final class DownloadStep extends AbstractStep
             $jobExecution->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER),
         );
 
-        $outputFilePath = $this->downloadFileFromStorageHandler->handle($command);
+        $relativeOutputFilePath = $this->downloadFileFromStorageHandler->handle($command);
+        $absoluteOutputFilePath = str_replace('//', '/', $this->localStorageRoot . $relativeOutputFilePath);
 
         $storage = [
             'type' => LocalStorage::TYPE,
-            'file_path' => $outputFilePath,
+            'file_path' => $absoluteOutputFilePath,
         ];
         $jobExecution->getJobParameters()->set('storage', $storage);
     }
