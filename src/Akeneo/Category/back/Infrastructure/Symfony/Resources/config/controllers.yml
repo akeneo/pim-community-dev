@@ -139,3 +139,10 @@ services:
         public: true
         arguments:
             - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\TrackUsageOfLoadPredefinedAttributesController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Domain\Query\GetTemplate'
+            - '@logger'
