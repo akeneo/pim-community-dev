@@ -40,9 +40,8 @@ class AclRoleHandler
         private readonly FormFactory $formFactory,
         private array $privilegeConfig,
         private readonly RequestStack $requestStack,
-        private readonly CheckEditRolePermissions $checkEditRolePermissions,
-    )
-    {
+        private readonly CheckEditRolePermissions $checkEditRolePermissions
+    ) {
     }
 
     /**
@@ -166,9 +165,9 @@ class AclRoleHandler
         }
 
         $minimumEditRoleRoles = $this->checkEditRolePermissions->getRolesWithMinimumEditRolePrivileges();
-        if(count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
-            $editRoleActivePrivileges = array_filter($formPrivileges, fn($privilege) => in_array($privilege->getIdentity()->getId(), CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES) && array_filter($privilege->getPermissions()->toArray(), fn($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL));
-            if(count($editRoleActivePrivileges) < count(CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES)) {
+        if (count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
+            $editRoleActivePrivileges = array_filter($formPrivileges, fn ($privilege) => in_array($privilege->getIdentity()->getId(), CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES) && array_filter($privilege->getPermissions()->toArray(), fn ($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL));
+            if (count($editRoleActivePrivileges) < count(CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES)) {
                 throw new \LogicException('pim_user.controller.role.message.cannot_remove_last_edit_role_privileges');
             }
         }

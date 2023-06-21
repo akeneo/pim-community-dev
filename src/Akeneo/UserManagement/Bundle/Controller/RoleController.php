@@ -68,7 +68,7 @@ class RoleController extends AbstractController
         }
 
         $minimumEditRoleRoles = $this->checkEditRolePermissions->getRolesWithMinimumEditRolePrivileges();
-        if(count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
+        if (count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
             return new JsonResponse([
                 'message' => $this->translator->trans('pim_user.controller.role.message.cannot_delete_last_edit_role_privileges')
             ], Response::HTTP_UNPROCESSABLE_ENTITY);

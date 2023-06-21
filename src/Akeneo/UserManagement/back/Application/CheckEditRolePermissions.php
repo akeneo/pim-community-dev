@@ -33,7 +33,7 @@ class CheckEditRolePermissions
                 $isMinimumAdminPrivileges = in_array($permission, $minimumAdminPrivileges);
                 return $isMinimumAdminPrivileges && $rolePermissions[$permission];
             }, ARRAY_FILTER_USE_KEY);
-            if(count($minimumPrivileges) === count($minimumAdminPrivileges)) {
+            if (count($minimumPrivileges) === count($minimumAdminPrivileges)) {
                 $minimumPrivilegesRoles[] = $role;
             }
         }
@@ -54,13 +54,14 @@ class CheckEditRolePermissions
     /**
      * @param array<string> $roles
      */
-    public function isLastUserWithEditPrivilegeRole(array $roles, int $identifier): ?UserInterface {
+    public function isLastUserWithEditPrivilegeRole(array $roles, int $identifier): ?UserInterface
+    {
         $editRoleRolesPrivileges = $this->getRolesWithMinimumEditRolePrivileges();
         $editRoleRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $editRoleRolesPrivileges);
         $editRoleLeft =  array_filter($roles, (function ($role) use ($editRoleRolesNamePrivileges) {
             return in_array($role, $editRoleRolesNamePrivileges);
         }));
-        if(count($editRoleLeft) <= 1) {
+        if (count($editRoleLeft) <= 1) {
             $usersWithEditRoleRoles = $this->getUsersWithEditRoleRoles();
             if (count($usersWithEditRoleRoles) <= 1) {
                 $lastUser = $usersWithEditRoleRoles[0];
