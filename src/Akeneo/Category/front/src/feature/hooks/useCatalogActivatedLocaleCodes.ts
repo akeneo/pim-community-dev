@@ -3,7 +3,7 @@ import {useCallback} from 'react';
 import {apiFetch} from '../tools/apiFetch';
 import {useQuery} from 'react-query';
 
-const useCatalogActivatedLocales = () => {
+export const useCatalogActivatedLocaleCodes = () => {
   const url = useRoute('internal_api_category_catalog_activated_locales', {});
 
   const fetchCatalogLocales = useCallback(async () => {
@@ -13,4 +13,3 @@ const useCatalogActivatedLocales = () => {
   const {data} = useQuery<string[]>(['get-catalog-activated-locales'], fetchCatalogLocales, {});
   return data;
 };
-export {useCatalogActivatedLocales};

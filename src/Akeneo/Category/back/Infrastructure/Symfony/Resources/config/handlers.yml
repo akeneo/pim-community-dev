@@ -56,6 +56,14 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand' }
 
+  Akeneo\Category\Application\Command\UpdateTemplateCommand\UpdateTemplateCommandHandler:
+    arguments:
+      - '@validator'
+      - '@Akeneo\Category\Domain\Query\GetTemplate'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\UpdateTemplateCommand\UpdateTemplateCommand' }
+
   Akeneo\Category\Application\Handler\StoreUploadedFile:
     arguments:
       - '@akeneo_file_storage.file_storage.file.file_storer'

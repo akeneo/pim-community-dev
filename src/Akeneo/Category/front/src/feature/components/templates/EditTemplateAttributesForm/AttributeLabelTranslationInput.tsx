@@ -6,6 +6,7 @@ import {Attribute} from '../../../models';
 import {useDebounceCallback} from '../../../tools/useDebounceCallback';
 import {Status} from '../../providers/SaveStatusProvider';
 import {useTemplateForm} from '../../providers/TemplateFormProvider';
+import {BadRequestError} from '../../../tools/apiFetch';
 
 const useFormData = (attribute: Attribute, localeCode: string) => {
   const [state] = useTemplateForm();
@@ -38,26 +39,28 @@ export const AttributeLabelTranslationInput = ({attribute, localeCode, label}: P
 
   const mutation = useUpdateTemplateAttribute(attribute.template_uuid, attribute.uuid);
   const debouncedUpdateAttributeLabel = useDebounceCallback(async (value: string) => {
-    handleStatusListChange(saveStatusId, Status.SAVING);
-    await mutation.mutateAsync(
-      {labels: {[localeCode]: value}},
-      {
-        onError: error => {
-          const errors = error.data.map(({error}) => error.message);
-          dispatch({
-            type: 'save_attribute_label_translation_failed',
-            payload: {attributeUuid: attribute.uuid, localeCode, errors},
-          });
-          handleStatusListChange(saveStatusId, Status.ERRORS);
-        },
+    try {
+      handleStatusListChange(saveStatusId, Status.SAVING);
+      await mutation.mutateAsync({labels: {[localeCode]: value}});
+      await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
+      dispatch({
+        type: 'attribute_label_translation_saved',
+        payload: {attributeUuid: attribute.uuid, localeCode, value},
+      });
+      handleStatusListChange(saveStatusId, Status.SAVED);
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        dispatch({
+          type: 'save_attribute_label_translation_failed',
+          payload: {attributeUuid: attribute.uuid, localeCode, errors: error.data.labels[localeCode]},
+        });
+        handleStatusListChange(saveStatusId, Status.ERRORS);
+      } else {
+        // Change status to "SAVED" to avoid the "unsaved changes" alert to be triggered during a reload of the page.
+        handleStatusListChange(saveStatusId, Status.SAVED);
+        throw error;
       }
-    );
-    await queryClient.invalidateQueries(['get-template', attribute.template_uuid]);
-    dispatch({
-      type: 'attribute_label_translation_saved',
-      payload: {attributeUuid: attribute.uuid, localeCode, value},
-    });
-    handleStatusListChange(saveStatusId, Status.SAVED);
+    }
   }, 300);
 
   const handleTranslationChange = async (value: string) => {

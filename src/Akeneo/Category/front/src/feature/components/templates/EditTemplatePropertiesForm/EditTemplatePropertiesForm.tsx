@@ -13,6 +13,7 @@ export const EditTemplatePropertiesForm = ({template}: Props) => {
   const translate = useTranslate();
 
   const uiLocales = useUiLocales();
+  const sortedUiLocales = uiLocales?.sort((a, b) => a.label.localeCompare(b.label));
 
   return (
     <>
@@ -25,23 +26,18 @@ export const EditTemplatePropertiesForm = ({template}: Props) => {
         </Field>
       </FieldContainer>
 
-      {
-        uiLocales && (
-            <>
-              <SectionTitle>
-                <SectionTitle.Title>
-                  {translate('akeneo.category.template.properties.label_translations_in_ui_locales')}
-                </SectionTitle.Title>
-              </SectionTitle>
-              <FieldContainer>
-                {uiLocales.map(locale => (
-                  <TemplateLabelTranslationInput key={locale.code} locale={locale} template={template} />
-                ))}
-              </FieldContainer>
-            </>
-          ) &&
-          null /* remove to display section */
-      }
+      <>
+        <SectionTitle>
+          <SectionTitle.Title>
+            {translate('akeneo.category.template.properties.label_translations_in_ui_locales')}
+          </SectionTitle.Title>
+        </SectionTitle>
+        <FieldContainer>
+          {sortedUiLocales?.map(locale => (
+            <TemplateLabelTranslationInput key={locale.code} locale={locale} template={template} />
+          ))}
+        </FieldContainer>
+      </>
     </>
   );
 };

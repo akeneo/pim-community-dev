@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\Query\GetTemplate;
+use Akeneo\Category\Domain\Query\GetTemplate;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
+use Akeneo\Category\Domain\Exception\TemplateNotFoundException;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
@@ -48,9 +49,9 @@ class GetCategoryTemplateSqlIntegration extends CategoryTestCase
 
         $this->deactivateTemplate($templateUuid);
 
-        $retrievedTemplate = $this->get(GetTemplate::class)->byUuid(TemplateUuid::fromString($templateUuid));
+        $this->expectException(TemplateNotFoundException::class);
 
-        $this->assertNull($retrievedTemplate);
+        $this->get(GetTemplate::class)->byUuid(TemplateUuid::fromString($templateUuid));
     }
 
     protected function getConfiguration()

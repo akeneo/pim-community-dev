@@ -55,15 +55,20 @@ services:
         public: true
         arguments:
             - '@oro_security.security_facade'
-            - '@Akeneo\Category\Application\Query\GetTemplate'
+            - '@Akeneo\Category\Domain\Query\GetTemplate'
             - '@Akeneo\Category\Application\Query\GetAttribute'
-
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\CreateTemplateController:
         public: true
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
+            - '@category.command.message_bus'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateTemplateController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
             - '@category.command.message_bus'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\UploadController:
