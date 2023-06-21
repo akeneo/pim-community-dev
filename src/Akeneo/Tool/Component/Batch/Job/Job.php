@@ -25,7 +25,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface, VisibleJobInterface
+class Job implements JobInterface, StoppableJobInterface, PausableJobInterface, JobWithStepsInterface, VisibleJobInterface
 {
     protected string $name;
     protected EventDispatcherInterface $eventDispatcher;
@@ -33,6 +33,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     protected array $steps;
     protected bool $isStoppable;
     protected bool $isVisible;
+    protected bool $isPausable;
     protected Filesystem $filesystem;
 
     public function __construct(
@@ -41,7 +42,8 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         JobRepositoryInterface $jobRepository,
         array $steps = [],
         bool $isStoppable = false,
-        bool $isVisible = true
+        bool $isVisible = true,
+        bool $isPausable = false
     ) {
         $this->name = $name;
         $this->eventDispatcher = $eventDispatcher;
@@ -49,6 +51,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         $this->steps = $steps;
         $this->isStoppable = $isStoppable;
         $this->isVisible = $isVisible;
+        $this->isPausable = $isPausable;
         $this->filesystem = new Filesystem();
     }
 
@@ -183,6 +186,11 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
     public function isVisible(): bool
     {
         return $this->isVisible;
+    }
+
+    public function isPausable(): bool
+    {
+        return $this->isPausable;
     }
 
     /**
