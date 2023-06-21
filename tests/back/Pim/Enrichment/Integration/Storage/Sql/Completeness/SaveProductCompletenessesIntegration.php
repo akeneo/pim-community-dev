@@ -50,10 +50,8 @@ class SaveProductCompletenessesIntegration extends TestCase
         Assert::assertCount(6, $dbCompletenesses);
         Assert::assertEquals(
             [
-                'channel_code' => 'ecommerce',
-                'locale_code' => 'en_US',
-                'missing_count' => 0,
-                'required_count' => 5,
+                'missing' => 0,
+                'required' => 5,
             ],
             $dbCompletenesses['ecommerce-en_US']
         );
@@ -86,19 +84,15 @@ class SaveProductCompletenessesIntegration extends TestCase
         Assert::assertCount(6, $dbCompletenesses);
         Assert::assertEquals(
             [
-                'channel_code' => 'ecommerce',
-                'locale_code' => 'en_US',
-                'missing_count' => 1,
-                'required_count' => 5,
+                'missing' => 1,
+                'required' => 5,
             ],
             $dbCompletenesses['ecommerce-en_US']
         );
         Assert::assertEquals(
             [
-                'channel_code' => 'tablet',
-                'locale_code' => 'fr_FR',
-                'missing_count' => 6,
-                'required_count' => 10,
+                'missing' => 6,
+                'required' => 10,
             ],
             $dbCompletenesses['tablet-fr_FR']
         );
@@ -125,17 +119,21 @@ class SaveProductCompletenessesIntegration extends TestCase
     private function getCompletenessesFromDB(UuidInterface $productUuid): array
     {
         $sql = <<<SQL
-SELECT channel.code as channel_code, locale.code as locale_code, completeness.missing_count, completeness.required_count
-FROM pim_catalog_completeness completeness
-    INNER JOIN pim_catalog_channel channel on channel.id = completeness.channel_id
-    INNER JOIN pim_catalog_locale locale on locale.id = completeness.locale_id
-WHERE completeness.product_uuid = :productUuid
+SELECT completeness
+FROM pim_catalog_product_completeness
+WHERE pim_catalog_product_completeness.product_uuid = :productUuid
 SQL;
         $results = [];
-        $rows = $this->get('database_connection')->executeQuery($sql, ['productUuid' => $productUuid->getBytes()])->fetchAll();
-        foreach ($rows as $row) {
-            $key = sprintf('%s-%s', $row['channel_code'], $row['locale_code']);
-            $results[$key] = $row;
+        $completenesses = \json_decode(
+            $this->get('database_connection')->executeQuery($sql, ['productUuid' => $productUuid->getBytes()])->fetchOne(),
+            true
+        );
+
+        foreach ($completenesses as $channelCode => $completenessPerChannel) {
+            foreach ($completenessPerChannel as $localeCode => $completeness) {
+                $key = sprintf('%s-%s', $channelCode, $localeCode);
+                $results[$key] = $completeness;
+            }
         }
 
         return $results;
