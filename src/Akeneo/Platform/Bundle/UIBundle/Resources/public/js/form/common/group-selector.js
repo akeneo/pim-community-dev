@@ -137,7 +137,7 @@ define([
      * Ensure default values for the current attribute group
      */
     ensureDefault: function () {
-      if (_.isUndefined(this.getCurrent()) || !this.getElements()[this.getCurrent()]) {
+      if (_.isUndefined(this.getCurrent()) || !Object.keys(this.getElements()).includes(this.getCurrent())) {
         if (!this.elements[this.all.code]) {
           this.elements[this.all.code] = this.all;
         }
