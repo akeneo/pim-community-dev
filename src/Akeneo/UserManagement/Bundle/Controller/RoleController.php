@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -70,7 +69,9 @@ class RoleController extends AbstractController
 
         $minimumEditRoleRoles = $this->checkEditRolePermissions->getRolesWithMinimumEditRolePrivileges();
         if(count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
-            return new JsonResponse(['message' => 'You canno`t delete edit role privileges on the last role'], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse([
+                'message' => $this->translator->trans('pim_user.controller.role.message.cannot_delete_last_edit_role_privileges')
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
@@ -102,7 +103,7 @@ class RoleController extends AbstractController
                 );
             }
         } catch (\LogicException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage());
+            throw new UnprocessableEntityHttpException($this->translator->trans($e->getMessage()));
         }
         return $this->render('@PimUser/Role/update.html.twig', [
             'form' => $this->aclRoleHandler->createView(),

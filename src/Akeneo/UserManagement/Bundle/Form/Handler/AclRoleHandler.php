@@ -12,7 +12,6 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -170,7 +169,7 @@ class AclRoleHandler
         if(count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
             $editRoleActivePrivileges = array_filter($formPrivileges, fn($privilege) => in_array($privilege->getIdentity()->getId(), CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES) && array_filter($privilege->getPermissions()->toArray(), fn($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL));
             if(count($editRoleActivePrivileges) < count(CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES)) {
-                throw new \LogicException('You canno`t remove edit role privileges on the last role');
+                throw new \LogicException('pim_user.controller.role.message.cannot_remove_last_edit_role_privileges');
             }
         }
 
