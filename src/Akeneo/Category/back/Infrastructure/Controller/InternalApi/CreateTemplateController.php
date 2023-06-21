@@ -27,7 +27,7 @@ class CreateTemplateController
     ) {
     }
 
-    public function __invoke(Request $request, int $categoryTreeId): JsonResponse
+    public function __invoke(Request $request, int $categoryTreeId): Response
     {
         if ($this->securityFacade->isGranted('pim_enrich_product_category_template') === false) {
             throw new AccessDeniedException();
@@ -45,16 +45,7 @@ class CreateTemplateController
             );
             $this->categoryCommandBus->dispatch($command);
         } catch (ViolationsException $violationsException) {
-            $normalizedViolations = $violationsException->normalize();
-            foreach ($normalizedViolations as &$violation) {
-                $locale = $violation['error']['property'];
-                $regex = "/\[(.*?)\]/";
-                if (preg_match($regex, $locale, $matches)) {
-                    $violation['error']['property'] = $matches[1];
-                }
-            }
-
-            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($violationsException->normalizeDeprecated(), Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse(null, Response::HTTP_OK);
