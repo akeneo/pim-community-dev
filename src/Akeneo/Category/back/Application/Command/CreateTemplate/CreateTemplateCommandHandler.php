@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Application\Command\CreateTemplate;
 
-use Akeneo\Category\Application\Query\CheckTemplate;
 use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
-use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\Domain\Exception\CategoryTreeNotFoundException;
@@ -28,10 +26,8 @@ class CreateTemplateCommandHandler
         private readonly ValidatorInterface $validator,
         private readonly GetCategoryInterface $getCategory,
         private readonly GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
-        private readonly CheckTemplate $checkTemplate,
         private readonly CategoryTemplateSaver $categoryTemplateSaver,
         private readonly CategoryTreeTemplateSaver $categoryTreeTemplateSaver,
-        private readonly GetCategoryTreeByCategoryTemplate $getCategoryTreeByCategoryTemplate,
     ) {
     }
 
@@ -61,16 +57,13 @@ class CreateTemplateCommandHandler
         );
 
         $this->categoryTemplateSaver->insert($templateToSave);
-        if (($this->getCategoryTreeByCategoryTemplate)($templateToSave->getUuid()) === null) {
-            $this->categoryTreeTemplateSaver->insert($templateToSave);
-        }
+        $this->categoryTreeTemplateSaver->insert($templateToSave);
     }
 
     /**
      * A template creation is considered valid if:
      *  - the current category tree has no template attached
-     *  - the attached category id is the root of a category tree
-     *  - the template code is free to use.
+     *  - the attached category id is the root of a category tree.
      *
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
@@ -82,10 +75,6 @@ class CreateTemplateCommandHandler
         }
 
         if ($categoryTree->getParentId() !== null) {
-            return false;
-        }
-
-        if ($this->checkTemplate->codeExists($templateCode)) {
             return false;
         }
 

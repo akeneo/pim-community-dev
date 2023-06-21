@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Command\CreateTemplate;
 
 use Akeneo\Category\Domain\ValueObject\CategoryId;
+use Akeneo\Category\Infrastructure\Validation\TemplateCodeShouldBeUnique;
 use Symfony\Component\Validator\Constraints;
 use Webmozart\Assert\Assert;
 
@@ -16,6 +17,7 @@ final class CreateTemplateCommand
 {
     #[Constraints\NotBlank]
     #[Constraints\Length(['max' => 100])]
+    #[TemplateCodeShouldBeUnique]
     public readonly string $templateCode;
 
     /**

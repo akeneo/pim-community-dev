@@ -10,6 +10,9 @@ akeneo.category:
                 text_too_long: The value cannot be longer than {{ limit }} characters
                 textarea_too_long: The value cannot be longer than {{ limit }} characters
                 richtext_too_long: The value cannot be longer than {{ limit }} characters
+        template:
+            code:
+                unique: Template code {{ templateCode }} must be unique
         attribute:
             limit:
                 title: You cannot add more than 50 attributes
