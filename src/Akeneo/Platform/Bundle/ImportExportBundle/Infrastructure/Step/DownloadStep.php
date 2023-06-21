@@ -59,7 +59,7 @@ final class DownloadStep extends AbstractStep
         );
 
         $relativeOutputFilePath = $this->downloadFileFromStorageHandler->handle($command);
-        $absoluteOutputFilePath = str_replace('//', '/', $this->localStorageRoot . $relativeOutputFilePath);
+        $absoluteOutputFilePath = str_replace('//', '/', $this->localStorageRoot.$relativeOutputFilePath);
 
         $storage = [
             'type' => LocalStorage::TYPE,
