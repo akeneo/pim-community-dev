@@ -58,6 +58,7 @@ export const TemplateLabelTranslationInput = ({template, locale}: Props) => {
         });
         handleStatusListChange(saveStatusId, Status.ERRORS);
       } else {
+        // Change status to "SAVED" to avoid the "unsaved changes" alert to be triggered during a reload of the page.
         handleStatusListChange(saveStatusId, Status.SAVED);
         throw error;
       }
