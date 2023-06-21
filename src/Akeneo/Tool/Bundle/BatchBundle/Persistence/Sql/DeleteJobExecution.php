@@ -19,7 +19,7 @@ final class DeleteJobExecution
     {
     }
 
-    public function olderThanDays(int $days): int
+    public function olderThanDays(int $days, array $jobInstanceCodes, ?BatchStatus $status): int
     {
         if ($days < 1) {
             throw new \InvalidArgumentException(
@@ -30,10 +30,10 @@ final class DeleteJobExecution
         $endTime = new \DateTime();
         $endTime->modify(sprintf('- %d days', $days));
 
-        return $this->deleteOlderThanTime($endTime);
+        return $this->deleteOlderThanTime($endTime, $jobInstanceCodes, $status);
     }
 
-    public function olderThanHours(int $hours): int
+    public function olderThanHours(int $hours, array $jobInstanceCodes, ?BatchStatus $status): int
     {
         Assert::greaterThanEq(
             $hours,
@@ -44,14 +44,33 @@ final class DeleteJobExecution
         $endTime = new \DateTime();
         $endTime->modify(sprintf('- %d hours', $hours));
 
-        return $this->deleteOlderThanTime($endTime);
+        return $this->deleteOlderThanTime($endTime, $jobInstanceCodes, $status);
     }
 
-    public function all(): int
+    public function all(array $jobInstanceCodes, ?BatchStatus $status): int
     {
         $query = 'DELETE FROM akeneo_batch_job_execution';
 
-        return $this->connection->executeStatement($query);
+        $conditions = [];
+        if (!empty($jobInstanceCodes)) {
+            $conditions[] = 'job_instance_id IN (
+                SELECT ji.id
+                FROM akeneo_batch_job_instance ji
+                WHERE ji.code IN (:job_instance_codes)
+            )';
+        }
+
+        if ($status !== null) {
+            $conditions[] = 'status = :status_code';
+        }
+
+        $query .= empty($conditions) ? '' : ' WHERE ' . implode(' AND ', $conditions);
+
+        return $this->connection->executeStatement(
+            $query,
+            ['job_instance_codes' => $jobInstanceCodes, 'status_code' => $status?->getValue()],
+            ['job_instance_codes' => Connection::PARAM_STR_ARRAY]
+        );
     }
 
     /**
@@ -59,7 +78,7 @@ final class DeleteJobExecution
      * It is to avoid a limitation in Mysql that prevents the deletion in the same table as the subquery.
      * The query cannot be executed without it.
      */
-    public function deleteOlderThanTime(\DateTime $createdTimeLimit): int
+    public function deleteOlderThanTime(\DateTime $createdTimeLimit, array $jobInstanceCodes, ?BatchStatus $status): int
     {
         $query = <<<SQL
             DELETE FROM akeneo_batch_job_execution WHERE id IN (
@@ -72,14 +91,38 @@ final class DeleteJobExecution
                         WHERE last_job_execution.status = :status 
                         GROUP BY last_job_execution.job_instance_id
                     )
+                    %s
                 ) as job_execution_to_remove
             )
         SQL;
 
+        $conditions = [];
+        if (!empty($jobInstanceCodes)) {
+            $conditions[] = 'job_instance_id IN (
+                SELECT ji.id
+                FROM akeneo_batch_job_instance ji
+                WHERE ji.code IN (:job_instance_codes)
+            )';
+        }
+
+        if ($status !== null) {
+            $conditions[] = 'status = :status_code';
+        }
+
+        $query = sprintf($query, empty($conditions) ? '' : ' AND ' . implode(' AND ', $conditions));
+
         return $this->connection->executeStatement(
             $query,
-            ['create_time' => $createdTimeLimit, 'status' => BatchStatus::COMPLETED],
-            ['create_time' => Types::DATETIME_MUTABLE]
+            [
+                'create_time' => $createdTimeLimit,
+                'status' => BatchStatus::COMPLETED,
+                'status_code' => $status?->getValue(),
+                'job_instance_codes' => $jobInstanceCodes,
+            ],
+            [
+                'create_time' => Types::DATETIME_MUTABLE,
+                'job_instance_codes' => Connection::PARAM_STR_ARRAY
+            ]
         );
     }
 }
