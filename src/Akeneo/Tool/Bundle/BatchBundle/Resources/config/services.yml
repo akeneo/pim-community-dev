@@ -61,6 +61,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Tool\Bundle\BatchBundle\EventListener\CleanImportFileAfterJobExecutionSubscriber:
+        arguments:
+            - '@pim_connector.job.file_backuper'
+        tags:
+            - { name: kernel.event_subscriber }
+
     akeneo_batch.mail_notifier:
         class: '%akeneo_batch.mail_notifier.class%'
         arguments:
