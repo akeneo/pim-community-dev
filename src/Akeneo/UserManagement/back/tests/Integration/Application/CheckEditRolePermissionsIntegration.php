@@ -18,16 +18,16 @@ use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface
 
 class CheckEditRolePermissionsIntegration extends TestCase
 {
-    private readonly CheckEditRolePermissions $checkEditRolePermissions;
-    private readonly RoleWithPermissionsRepository $roleWithPermissionsRepository;
-    private readonly UserLoader $userLoader;
+    private CheckEditRolePermissions $checkEditRolePermissions;
+    private RoleWithPermissionsRepository $roleWithPermissionsRepository;
+    private UserLoader $userLoader;
 
-    private readonly AclManager $aclManager;
-    private readonly UnitOfWorkAndRepositoriesClearer $cacheClearer;
-    private readonly SimpleFactoryInterface $roleFactory;
-    private readonly SaverInterface $roleSaver;
-    private readonly RoleWithPermissionsSaver $roleWithPermissionsSaver;
-    private readonly AccessDecisionManagerInterface $decisionManager;
+    private AclManager $aclManager;
+    private UnitOfWorkAndRepositoriesClearer $cacheClearer;
+    private SimpleFactoryInterface $roleFactory;
+    private SaverInterface $roleSaver;
+    private RoleWithPermissionsSaver $roleWithPermissionsSaver;
+    private AccessDecisionManagerInterface $decisionManager;
 
     protected function setUp(): void
     {
