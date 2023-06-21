@@ -6,6 +6,7 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand;
+use Akeneo\Category\Domain\Exception\CategoryTreeNotFoundException;
 use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -45,7 +46,9 @@ class CreateTemplateController
             );
             $this->categoryCommandBus->dispatch($command);
         } catch (ViolationsException $violationsException) {
-            return new JsonResponse($violationsException->normalizeDeprecated(), Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($violationsException->normalize(), Response::HTTP_BAD_REQUEST);
+        } catch (CategoryTreeNotFoundException $exception) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse(null, Response::HTTP_OK);

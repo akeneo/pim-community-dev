@@ -9,12 +9,13 @@ use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
 use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
+use Akeneo\Category\Domain\Exception\CategoryTreeNotFoundException;
 use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
+use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
-use Akeneo\Category\Infrastructure\Builder\TemplateBuilder;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -28,7 +29,6 @@ class CreateTemplateCommandHandler
         private readonly GetCategoryInterface $getCategory,
         private readonly GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree,
         private readonly CheckTemplate $checkTemplate,
-        private readonly TemplateBuilder $templateBuilder,
         private readonly CategoryTemplateSaver $categoryTemplateSaver,
         private readonly CategoryTreeTemplateSaver $categoryTreeTemplateSaver,
         private readonly GetCategoryTreeByCategoryTemplate $getCategoryTreeByCategoryTemplate,
@@ -43,7 +43,7 @@ class CreateTemplateCommandHandler
 
         $categoryTree = $this->getCategory->byId($categoryTreeId->getValue());
         if ($categoryTree === null) {
-            throw new \RuntimeException(sprintf('Category tree not found. Id: %d', $categoryTreeId->getValue()));
+            throw new CategoryTreeNotFoundException();
         }
 
         $violations = $this->validator->validate($command);
@@ -54,8 +54,7 @@ class CreateTemplateCommandHandler
         if (!$this->validateTemplateCreation($categoryTree, $templateCode)) {
             throw new \RuntimeException(\sprintf("Template for category tree '%s' cannot be activated.", $categoryTree->getCode()));
         }
-
-        $templateToSave = $this->templateBuilder->generateTemplate(
+        $templateToSave = Template::create(
             $categoryTreeId,
             $templateCode,
             $templateLabelCollection,

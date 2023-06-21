@@ -30,8 +30,8 @@ final class CreateTemplateCommand
      * @param array{code:string,labels:array<string,string>} $data
      */
     public function __construct(
-        readonly CategoryId $categoryTreeId,
-        readonly array $data,
+        public readonly CategoryId $categoryTreeId,
+        array $data,
     ) {
         Assert::string($data['code']);
         Assert::notEmpty($data['code']);
