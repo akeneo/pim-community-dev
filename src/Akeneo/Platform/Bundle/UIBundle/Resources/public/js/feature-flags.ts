@@ -13,7 +13,7 @@ class FeatureFlags {
 
     await FeatureFlags.setFeatureFlags();
 
-    Mediator.on('route_complete', (): void => {
+    Mediator.on('route_start', (): void => {
       FeatureFlags.setFeatureFlags();
     });
   }
