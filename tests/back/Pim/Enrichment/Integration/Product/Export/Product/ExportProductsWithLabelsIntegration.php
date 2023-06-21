@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\Q
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
@@ -75,6 +76,30 @@ CSV;
                 'withHeader' => true,
                 'file_locale' => 'unknown_locale',
                 'with_uuid' => true,
+            ]
+        );
+    }
+
+    public function testExportProductsWithDuplicatedHeaders(): void
+    {
+        $this->loadAdditionalFixtures();;
+
+        $expectedCsvWithNoDuplicatesForHeaders = <<<CSV
+[sku];Catégories;Activé;Famille;Parent;Groupes;"Couleur - color";"Est-ce en vente ?";"Couleur - main_color";"Une métrique";"Une métrique (Unité)";"Nom (anglais États-Unis)";"Pack Groupes";"Pack Produits";"Pack Modèles de produits";"Association avec des quantitées Produits";"Association avec des quantitées Produits Quantité";"Association avec des quantitées Modèles de produits";"Association avec des quantitées Modèles de produits Quantité";Taille;"Remplacement Groupes";"Remplacement Produits";"Remplacement Modèles de produits";"Vente incitative Groupes";"Vente incitative Produits";"Vente incitative Modèles de produits";"Vente croisée Groupes";"Vente croisée Produits";"Vente croisée Modèles de produits"
+apollon_pink_m;T-shirt;Oui;Vêtements;"Tshirt Appolon";;Bleu,Rose;Oui;;12;Kilogramme;;;;;;;;;"Taille M";;;;;;;;;
+stansmith;;Oui;Sneakers;;;;;Blanc;;;;;;;;;;;;;;;;;;;;
+summer_shirt;Été,T-shirt;Oui;Vêtements;;;Bleu,Rose;Non;;12;Kilogramme;;;;;"Tshirt Appolon";12;"Tshirt Appolon";5;"Taille L";;;;;;;;"Tshirt Appolon";"Tshirt Appolon"
+
+CSV;
+
+        $this->assertProductExport(
+            $expectedCsvWithNoDuplicatesForHeaders,
+            [
+                'header_with_label' => true,
+                'with_label' => true,
+                'withHeader' => true,
+                'file_locale' => 'fr_FR',
+                'with_uuid' => false,
             ]
         );
     }
@@ -263,5 +288,42 @@ CSV;
         $frenchCatalogue->set('pim_common.products', 'Produits');
         $frenchCatalogue->set('pim_common.product_uuids', 'Produits');
         $frenchCatalogue->set('pim_common.product_models', 'Modèles de produits');
+    }
+
+    private function loadAdditionalFixtures(): void
+    {
+        $this->createAttribute([
+            'code'        => 'main_color',
+            'type'        => 'pim_catalog_simpleselect',
+            'group'       => 'attributeGroupA',
+            'localizable' => false,
+            'scopable'    => false,
+            'labels' => [
+                'fr_FR' => 'Couleur'
+            ]
+        ]);
+        $this->createAttributeOption([
+            'code'        => 'white',
+            'attribute'   => 'main_color',
+            'labels' => [
+                'fr_FR' => 'Blanc',
+            ],
+        ]);
+        $this->createFamily([
+            'code'        => 'sneakers',
+            'attributes'  => ['sku', 'main_color', 'is_on_sale'],
+            'attribute_as_label' => 'sku',
+            'labels' => [
+                'fr_FR' => 'Sneakers',
+            ],
+        ]);
+        $this->uuids['stansmith'] = $this->createProduct(
+            'stansmith',
+            [
+                new SetFamily('sneakers'),
+                new SetIdentifierValue('sku', 'stansmith'),
+                new SetSimpleSelectValue('main_color', null, null, 'white'),
+            ]
+        );
     }
 }
