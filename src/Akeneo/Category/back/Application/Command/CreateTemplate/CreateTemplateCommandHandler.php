@@ -9,9 +9,10 @@ use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
 use Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
-use Akeneo\Category\Domain\Exceptions\ViolationsException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Infrastructure\Builder\TemplateBuilder;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -37,8 +38,8 @@ class CreateTemplateCommandHandler
     public function __invoke(CreateTemplateCommand $command): void
     {
         $categoryTreeId = $command->categoryTreeId;
-        $templateCode = $command->templateCode;
-        $templateLabelCollection = $command->labels;
+        $templateCode = TemplateCode::fromString($command->templateCode);
+        $templateLabelCollection = LabelCollection::fromArray($command->labels);
 
         $categoryTree = $this->getCategory->byId($categoryTreeId->getValue());
         if ($categoryTree === null) {

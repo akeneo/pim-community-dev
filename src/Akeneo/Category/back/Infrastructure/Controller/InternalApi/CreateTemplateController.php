@@ -6,7 +6,7 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand;
-use Akeneo\Category\Domain\Exceptions\ViolationsException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;

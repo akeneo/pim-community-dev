@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Command\CreateTemplate;
 
 use Akeneo\Category\Domain\ValueObject\CategoryId;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
+use Symfony\Component\Validator\Constraints;
 use Webmozart\Assert\Assert;
 
 /**
@@ -15,8 +14,17 @@ use Webmozart\Assert\Assert;
  */
 final class CreateTemplateCommand
 {
-    public readonly TemplateCode $templateCode;
-    public readonly LabelCollection $labels;
+    #[Constraints\NotBlank]
+    #[Constraints\Length(['max' => 100])]
+    public readonly string $templateCode;
+
+    /**
+     * @var array<string,string|null>
+     */
+    #[Constraints\All([
+        new Constraints\Length(['max' => 255]),
+    ])]
+    public readonly array $labels;
 
     /**
      * @param array{code:string,labels:array<string,string>} $data
@@ -27,9 +35,11 @@ final class CreateTemplateCommand
     ) {
         Assert::string($data['code']);
         Assert::notEmpty($data['code']);
+        Assert::isMap($data['labels']);
+        Assert::allNullOrString($data['labels']);
         Assert::allString($data['labels']);
 
-        $this->labels = LabelCollection::fromArray($data['labels']);
-        $this->templateCode = new TemplateCode($data['code']);
+        $this->templateCode = $data['code'];
+        $this->labels = $data['labels'];
     }
 }
