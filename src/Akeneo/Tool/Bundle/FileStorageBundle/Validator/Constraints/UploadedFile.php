@@ -6,7 +6,7 @@ namespace Akeneo\Tool\Bundle\FileStorageBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-final class UploadedFile extends Constraint
+class UploadedFile extends Constraint
 {
     public array $types;
 
