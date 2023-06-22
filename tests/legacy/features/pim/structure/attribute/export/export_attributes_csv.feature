@@ -4,7 +4,7 @@ Feature: Export attributes
   As a product manager
   I need to be able to export attributes
 
-  @critical
+  @ce @critical
   Scenario: Successfully export attributes in CSV
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_attribute_export" configuration:
