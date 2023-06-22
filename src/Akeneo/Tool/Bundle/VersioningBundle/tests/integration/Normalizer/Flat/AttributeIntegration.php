@@ -13,7 +13,7 @@ use PHPUnit\Framework\Assert;
  */
 class AttributeIntegration extends AbstractFlatNormalizerTestCase
 {
-    public function testAttributeIdentifier(): void
+    public function testAttributeIdentifier()
     {
         $this->assert('sku', [
             'code'                   => 'sku',
@@ -50,7 +50,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         ]);
     }
 
-    public function testAttributeDate(): void
+    public function testAttributeDate()
     {
         $this->assert('a_date', [
             'code'                   => 'a_date',
@@ -87,7 +87,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         ]);
     }
 
-    public function testAttributeFile(): void
+    public function testAttributeFile()
     {
         $this->assert('a_file', [
             'code'                   => 'a_file',
@@ -123,7 +123,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         ]);
     }
 
-    public function testAttributeImage(): void
+    public function testAttributeImage()
     {
         $this->assert('an_image', [
             'code'                   => 'an_image',
@@ -159,7 +159,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         ]);
     }
 
-    public function testAttributeMetric(): void
+    public function testAttributeMetric()
     {
         $this->assert('a_metric', [
             'code'                   => 'a_metric',
@@ -195,7 +195,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         ]);
     }
 
-    public function testAttributeMetricWithoutDecimal(): void
+    public function testAttributeMetricWithoutDecimal()
     {
         $expected = [
             'code'                   => 'a_metric_without_decimal',
@@ -233,7 +233,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_metric_without_decimal', $expected);
     }
 
-    public function testAttributeMetricWithoutDecimalNegative(): void
+    public function testAttributeMetricWithoutDecimalNegative()
     {
         $expected = [
             'code'                   => 'a_metric_without_decimal_negative',
@@ -271,7 +271,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_metric_without_decimal_negative', $expected);
     }
 
-    public function testAttributeMetricNegative(): void
+    public function testAttributeMetricNegative()
     {
         $expected = [
             'code'                   => 'a_metric_negative',
@@ -309,7 +309,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_metric_negative', $expected);
     }
 
-    public function testAttributeMultiSelect(): void
+    public function testAttributeMultiSelect()
     {
         $expected = [
             'code'                   => 'a_multi_select',
@@ -347,7 +347,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_multi_select', $expected);
     }
 
-    public function testAttributeNumberFloat(): void
+    public function testAttributeNumberFloat()
     {
         $expected = [
             'code'                   => 'a_number_float',
@@ -385,7 +385,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_number_float', $expected);
     }
 
-    public function testAttributeNumberFloatNegative(): void
+    public function testAttributeNumberFloatNegative()
     {
         $expected = [
             'code'                   => 'a_number_float_negative',
@@ -423,7 +423,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_number_float_negative', $expected);
     }
 
-    public function testAttributeNumberInteger(): void
+    public function testAttributeNumberInteger()
     {
         $expected = [
             'code'                   => 'a_number_integer',
@@ -461,7 +461,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_number_integer', $expected);
     }
 
-    public function testAttributeNumberIntegerNegative(): void
+    public function testAttributeNumberIntegerNegative()
     {
         $expected = [
             'code'                   => 'a_number_integer_negative',
@@ -499,7 +499,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_number_integer_negative', $expected);
     }
 
-    public function testAttributePrice(): void
+    public function testAttributePrice()
     {
         $expected = [
             'code'                   => 'a_price',
@@ -537,7 +537,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_price', $expected);
     }
 
-    public function testAttributePriceWithoutDecimal(): void
+    public function testAttributePriceWithoutDecimal()
     {
         $expected = [
             'code'                   => 'a_price_without_decimal',
@@ -575,7 +575,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_price_without_decimal', $expected);
     }
 
-    public function testAttributeReferenceDataMultiSelect(): void
+    public function testAttributeReferenceDataMultiSelect()
     {
         $expected = [
             'code'                   => 'a_ref_data_multi_select',
@@ -613,7 +613,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_ref_data_multi_select', $expected);
     }
 
-    public function testAttributeReferenceDataSimpleSelect(): void
+    public function testAttributeReferenceDataSimpleSelect()
     {
         $expected = [
             'code'                   => 'a_ref_data_simple_select',
@@ -651,7 +651,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_ref_data_simple_select', $expected);
     }
 
-    public function testAttributeSimpleSelect(): void
+    public function testAttributeSimpleSelect()
     {
         $expected = [
             'code'                   => 'a_simple_select',
@@ -689,7 +689,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_simple_select', $expected);
     }
 
-    public function testAttributeText(): void
+    public function testAttributeText()
     {
         $expected = [
             'code'                   => 'a_text',
@@ -727,7 +727,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_text', $expected);
     }
 
-    public function testAttributeTextArea(): void
+    public function testAttributeTextArea()
     {
         $expected = [
             'code'                   => 'a_text_area',
@@ -765,7 +765,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_text_area', $expected);
     }
 
-    public function testAttributeBoolean(): void
+    public function testAttributeBoolean()
     {
         $expected = [
             'code'                   => 'a_yes_no',
@@ -803,7 +803,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_yes_no', $expected);
     }
 
-    public function testBooleanAttributeDefaultValue(): void
+    public function testBooleanAttributeDefaultValue()
     {
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_yes_no');
         $this->get('pim_catalog.updater.attribute')->update($attribute, ['default_value' => true]);
@@ -846,7 +846,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_yes_no', $expected);
     }
 
-    public function testAttributeLocalizableImage(): void
+    public function testAttributeLocalizableImage()
     {
         $expected = [
             'code'                   => 'a_localizable_image',
@@ -884,7 +884,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_localizable_image', $expected);
     }
 
-    public function testAttributeScopablePrice(): void
+    public function testAttributeScopablePrice()
     {
         $expected = [
             'code'                   => 'a_scopable_price',
@@ -922,7 +922,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_scopable_price', $expected);
     }
 
-    public function testAttributeLocalizableAndScopableTextArea(): void
+    public function testAttributeLocalizableAndScopableTextArea()
     {
         $expected = [
             'code'                   => 'a_localized_and_scopable_text_area',
@@ -960,7 +960,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_localized_and_scopable_text_area', $expected);
     }
 
-    public function testAttributeRegexp(): void
+    public function testAttributeRegexp()
     {
         $expected = [
             'code'                   => 'a_regexp',
@@ -998,11 +998,15 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('a_regexp', $expected);
     }
 
-    private function assert(string $identifier, array $expected): void
+    /**
+     * @param string $identifier
+     * @param array  $expected
+     */
+    private function assert($identifier, array $expected)
     {
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($identifier);
         $flatAttribute = $this->get('pim_versioning.serializer')->normalize($attribute, 'flat');
 
-        $this->assertEquals($expected, $flatAttribute);
+        $this->assertSame($expected, $flatAttribute);
     }
 }

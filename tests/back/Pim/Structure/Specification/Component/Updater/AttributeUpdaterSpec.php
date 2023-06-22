@@ -21,12 +21,12 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class AttributeUpdaterSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
         AttributeTypeRegistry $registry,
         TranslatableUpdater $translatableUpdater
-    ): void {
+    ) {
         $this->beConstructedWith(
             $attrGroupRepo,
             $localeRepository,
@@ -37,23 +37,23 @@ class AttributeUpdaterSpec extends ObjectBehavior
         );
     }
 
-    public function it_is_initializable(): void
+    function it_is_initializable()
     {
         $this->shouldHaveType(AttributeUpdater::class);
     }
 
-    public function it_is_a_updater(): void
+    function it_is_a_updater()
     {
         $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    public function it_updates_attribute_properties(AttributeInterface $attribute): void
+    function it_updates_attribute_properties(AttributeInterface $attribute)
     {
         $attribute->setProperty('auto_option_sorting', true)->shouldBeCalled();
         $this->update($attribute, ['auto_option_sorting' => true]);
     }
 
-    public function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute(): void
+    function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute()
     {
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
@@ -66,15 +66,15 @@ class AttributeUpdaterSpec extends ObjectBehavior
         );
     }
 
-    public function it_updates_a_new_attribute(
-        AttributeGroupRepositoryInterface $attrGroupRepo,
-        AttributeTypeRegistry $registry,
-        TranslatableUpdater $translatableUpdater,
+    function it_updates_a_new_attribute(
+        $attrGroupRepo,
+        $registry,
+        $translatableUpdater,
         AttributeInterface $attribute,
         AttributeGroupInterface $attributeGroup,
         PropertyAccessor $accessor,
         AttributeTypeInterface $attributeType
-    ): void {
+    ) {
         $attribute->getId()->willReturn(null);
         $attribute->getType()->willReturn('pim_reference_data_multiselect');
 
@@ -112,10 +112,8 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $this->update($attribute, $data);
     }
 
-    public function it_ignores_fields_when_updating_an_attribute(
-        AttributeInterface $attribute,
-        PropertyAccessor $accessor
-    ): void {
+    function it_ignores_fields_when_updating_an_attribute(AttributeInterface $attribute, PropertyAccessor $accessor)
+    {
         $updates = [
             'number_min' => 1,
             'group_labels' => ['label1', 'label2'],
@@ -132,13 +130,13 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $this->update($attribute, $updates, []);
     }
 
-    public function it_throws_an_exception_if_no_groups_found(
-        AttributeGroupRepositoryInterface $attrGroupRepo,
-        AttributeTypeRegistry $registry,
-        TranslatableUpdater $translatableUpdater,
+    function it_throws_an_exception_if_no_groups_found(
+        $attrGroupRepo,
+        $registry,
+        $translatableUpdater,
         AttributeInterface $attribute,
         AttributeTypeInterface $attributeType
-    ): void {
+    ) {
         $attribute->getId()->willReturn(null);
         $attribute->getType()->willReturn('pim_reference_data_simpleselect');
 
@@ -170,7 +168,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_an_exception_if_it_attribute_type_is_empty(AttributeInterface $attribute): void
+    function it_throws_an_exception_if_it_attribute_type_is_empty(AttributeInterface $attribute)
     {
         $this->shouldThrow(
             InvalidPropertyException::valueNotEmptyExpected('type',
@@ -182,10 +180,8 @@ class AttributeUpdaterSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_an_exception_if_attribute_type_does_not_exist(
-        AttributeInterface $attribute,
-        AttributeTypeRegistry $registry
-    ): void {
+    function it_throws_an_exception_if_attribute_type_does_not_exist(AttributeInterface $attribute, $registry)
+    {
         $registry->get('unknown_type')->willThrow(new \LogicException());
 
         $this->shouldThrow(
@@ -199,7 +195,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         )->during('update', [$attribute, ['type' => 'unknown_type']]);
     }
 
-    public function it_throws_an_exception_if_data_is_not_a_date(AttributeInterface $attribute): void
+    function it_throws_an_exception_if_data_is_not_a_date(AttributeInterface $attribute)
     {
         $this->shouldThrow(
             InvalidPropertyException::dateExpected(
@@ -214,7 +210,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_an_exception_if_date_is_invalid(AttributeInterface $attribute): void
+    function it_throws_an_exception_if_date_is_invalid(AttributeInterface $attribute)
     {
         $this->shouldThrow(
             InvalidPropertyException::dateExpected(
@@ -229,7 +225,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_an_exception_if_date_is_not_well_formatted(AttributeInterface $attribute): void
+    function it_throws_an_exception_if_date_is_not_well_formatted(AttributeInterface $attribute)
     {
         $this->shouldThrow(
             InvalidPropertyException::dateExpected(
@@ -244,8 +240,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_an_exception_when_trying_to_update_a_non_existent_field(AttributeInterface $attribute): void
-    {
+    function it_throws_an_exception_when_trying_to_update_a_non_existent_field(AttributeInterface $attribute) {
         $values = [
             'non_existent_field' => 'field',
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
@@ -258,10 +253,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             ->during('update', [$attribute, $values, []]);
     }
 
-    public function it_throws_an_exception_if_locale_does_not_exist(
-        LocaleRepositoryInterface $localeRepository,
-        AttributeInterface $attribute
-    ): void {
+    function it_throws_an_exception_if_locale_does_not_exist($localeRepository, AttributeInterface $attribute) {
         $localeRepository->findOneByIdentifier('foo')->willReturn(null);
 
         $values = [
@@ -279,7 +271,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         )->during('update', [$attribute, $values, []]);
     }
 
-    public function it_throws_an_exception_when_code_is_not_scalar(AttributeInterface $attribute): void
+    function it_throws_an_exception_when_code_is_not_scalar(AttributeInterface $attribute)
     {
         $values = [
             'code' => [],
@@ -293,7 +285,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             ->during('update', [$attribute, $values, []]);
     }
 
-    public function it_throws_an_exception_when_labels_is_not_an_array(AttributeInterface $attribute): void
+    function it_throws_an_exception_when_labels_is_not_an_array(AttributeInterface $attribute)
     {
         $values = [
             'labels' => 'not_an_array',
@@ -307,7 +299,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             ->during('update', [$attribute, $values, []]);
     }
 
-    public function it_throws_an_exception_when_available_locales_is_not_an_array(AttributeInterface $attribute): void
+    function it_throws_an_exception_when_available_locales_is_not_an_array(AttributeInterface $attribute)
     {
         $values = [
             'available_locales' => 'not_an_array',
@@ -321,7 +313,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             ->during('update', [$attribute, $values, []]);
     }
 
-    public function it_throws_an_exception_when_allowed_extensions_is_not_an_array(AttributeInterface $attribute): void
+    function it_throws_an_exception_when_allowed_extensions_is_not_an_array(AttributeInterface $attribute)
     {
         $values = [
             'allowed_extensions' => 'not_an_array',
@@ -335,7 +327,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             ->during('update', [$attribute, $values, []]);
     }
 
-    public function it_throws_an_exception_when_table_configuration_is_not_an_array(AttributeInterface $attribute): void
+    function it_throws_an_exception_when_table_configuration_is_not_an_array(AttributeInterface $attribute)
     {
         $data = [
             'table_configuration' => 'config',
@@ -348,11 +340,11 @@ class AttributeUpdaterSpec extends ObjectBehavior
             ->during('update', [$attribute, $data, []]);
     }
 
-    public function it_sets_the_default_unique_property_when_setting_an_attribute_type(
+    function it_sets_the_default_unique_property_when_setting_an_attribute_type(
         AttributeTypeRegistry $registry,
         AttributeInterface $attribute,
         AttributeTypeInterface $textAttributeType
-    ): void {
+    ) {
         $attribute->isUnique()->willReturn(null);
 
         $textAttributeType->getName()->willReturn('pim_catalog_text');
@@ -367,11 +359,11 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $this->update($attribute, ['type' => 'pim_catalog_text']);
     }
 
-    public function it_does_not_update_the_unique_property_if_it_is_already_defined(
+    function it_does_not_update_the_unique_property_if_it_is_already_defined(
         AttributeTypeRegistry $registry,
         AttributeInterface $attribute,
         AttributeTypeInterface $textAttributeType
-    ): void {
+    ) {
         $attribute->isUnique()->willReturn(true);
 
         $textAttributeType->getName()->willReturn('pim_catalog_text');
@@ -386,11 +378,11 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $this->update($attribute, ['type' => 'pim_catalog_text']);
     }
 
-    public function it_sets_the_unique_property_to_true_if_the_attribute_type_must_be_unique(
+    function it_sets_the_unique_property_to_true_if_the_attribute_type_must_be_unique(
         AttributeTypeRegistry $registry,
         AttributeInterface $attribute,
         AttributeTypeInterface $identifierAttributeType
-    ): void {
+    ) {
         $attribute->isUnique()->willReturn(false);
 
         $identifierAttributeType->getName()->willReturn('pim_catalog_identifier');
