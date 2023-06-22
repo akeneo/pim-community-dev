@@ -8,6 +8,7 @@ use Akeneo\Category\Domain\Exception\TemplateNotFoundException;
 use Akeneo\Category\Domain\Query\GetTemplate;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use PHPUnit\Framework\Assert;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class TrackUsageOfLoadPredefinedAttributesController
 {
+    private const LOAD_PREDEFINED_ATTRIBUTES = 'load_predefined_attributes';
+
+    private const CREATE_FIRST_ATTRIBUTE = 'create_first_attribute';
+
     public function __construct(
         private readonly SecurityFacade $securityFacade,
         private GetTemplate $getTemplate,
@@ -41,16 +46,18 @@ class TrackUsageOfLoadPredefinedAttributesController
         }
 
         $data = json_decode($request->getContent(), true);
-        $action = $data['action'] ?? '';
+        $action = $data['action'];
+        Assert::assertContains($action, [TrackUsageOfLoadPredefinedAttributesController::LOAD_PREDEFINED_ATTRIBUTES, TrackUsageOfLoadPredefinedAttributesController::CREATE_FIRST_ATTRIBUTE]);
+
         $context = [
             'log_type' => 'create_category_template_tracking',
-            'message' => 'Category template created with[out] set of attributes',
-            'level' => 'notice',
             'action' => "$action",
             'template_uuid' => "$templateUuid",
         ];
 
-        $this->logger->notice($templateUuid, $context);
+        $loadAttributeMessage = ($action === TrackUsageOfLoadPredefinedAttributesController::LOAD_PREDEFINED_ATTRIBUTES) ? 'with' : 'without';
+
+        $this->logger->notice("Category template: created $loadAttributeMessage set of attributes", $context);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
