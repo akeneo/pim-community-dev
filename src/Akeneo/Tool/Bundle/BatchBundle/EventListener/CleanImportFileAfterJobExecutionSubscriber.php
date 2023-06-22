@@ -32,7 +32,7 @@ final class CleanImportFileAfterJobExecutionSubscriber implements EventSubscribe
     {
         $jobExecution = $event->getJobExecution();
 
-        if ($jobExecution->getJobInstance()->getType() !== 'import' || $jobExecution->getStatus()->getValue() !== BatchStatus::COMPLETED) {
+        if ($jobExecution->getJobInstance()->getType() !== 'import' || $jobExecution->getStatus()->getValue() === BatchStatus::PAUSED) {
             return;
         }
 
