@@ -23,7 +23,7 @@ services:
     arguments:
       - '@database_connection'
 
-  Akeneo\Category\Application\Query\GetTemplate:
+  Akeneo\Category\Domain\Query\GetTemplate:
     class: Akeneo\Category\Infrastructure\Storage\Sql\GetCategoryTemplateSql
     arguments:
       - '@database_connection'
