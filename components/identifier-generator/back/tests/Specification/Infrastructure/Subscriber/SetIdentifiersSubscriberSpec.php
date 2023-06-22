@@ -23,7 +23,7 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Subscriber\SetIdent
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
-use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
@@ -90,7 +90,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         PropertyMetadataInterface $productPropertyMetadata,
     ): void {
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
-        $value = ScalarValue::value('sku', 'AKN');
+        $value = IdentifierValue::value('sku', true, 'AKN');
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
@@ -134,7 +134,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         PropertyMetadataInterface $valuePropertyMetadata,
     ): void {
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
-        $value = ScalarValue::value('sku', 'AKN');
+        $value = IdentifierValue::value('sku', true, 'AKN');
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
@@ -179,7 +179,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         PropertyMetadataInterface $productPropertyMetadata,
     ): void {
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
-        $value = ScalarValue::value('sku', 'AKN');
+        $value = IdentifierValue::value('sku', true, 'AKN');
         $product->addValue($value)->shouldBeCalled();
         $product->setIdentifier('AKN')->shouldBeCalled();
         $product->isEnabled()->shouldBeCalled()->willReturn(true);
