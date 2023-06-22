@@ -1,27 +1,12 @@
 import {Field, Helper, TextInput} from 'akeneo-design-system';
-import {useMutation, useQueryClient} from 'react-query';
+import {useQueryClient} from 'react-query';
 import {useSaveStatus} from '../../../hooks/useSaveStatus';
+import {useUpdateTemplateProperties} from '../../../hooks/useUpdateTemplateProperties';
 import {Template} from '../../../models';
-import {useTemplateForm} from '../../providers/TemplateFormProvider';
+import {BadRequestError} from '../../../tools/apiFetch';
 import {useDebounceCallback} from '../../../tools/useDebounceCallback';
 import {Status} from '../../providers/SaveStatusProvider';
-import {BadRequestError} from '../../../tools/apiFetch';
-
-// Temporary, awaiting the implementation of the API endpoint
-const useUpdateTemplateProperties = (templateUuid: string) => {
-  return useMutation<
-    void,
-    BadRequestError<
-      Array<{
-        error: {
-          property: string;
-          message: string;
-        };
-      }>
-    >,
-    {labels: {[localeCode: string]: string}}
-  >(() => new Promise<void>(resolve => setTimeout(resolve, 150)));
-};
+import {useTemplateForm} from '../../providers/TemplateFormProvider';
 
 const useFormData = (template: Template, localeCode: string) => {
   const [state] = useTemplateForm();
@@ -56,26 +41,28 @@ export const TemplateLabelTranslationInput = ({template, locale}: Props) => {
 
   const mutation = useUpdateTemplateProperties(template.uuid);
   const debouncedUpdateTemplateLabel = useDebounceCallback(async (value: string) => {
-    handleStatusListChange(saveStatusId, Status.SAVING);
-    await mutation.mutateAsync(
-      {labels: {[locale.code]: value}},
-      {
-        onError: error => {
-          const errors = error.data.map(({error}) => error.message);
-          dispatch({
-            type: 'save_template_label_translation_failed',
-            payload: {localeCode: locale.code, errors},
-          });
-          handleStatusListChange(saveStatusId, Status.ERRORS);
-        },
+    try {
+      handleStatusListChange(saveStatusId, Status.SAVING);
+      await mutation.mutateAsync({labels: {[locale.code]: value}});
+      await queryClient.invalidateQueries(['get-template', template.uuid]);
+      dispatch({
+        type: 'template_label_translation_saved',
+        payload: {localeCode: locale.code, value},
+      });
+      handleStatusListChange(saveStatusId, Status.SAVED);
+    } catch (error) {
+      if (error instanceof BadRequestError) {
+        dispatch({
+          type: 'save_template_label_translation_failed',
+          payload: {localeCode: locale.code, errors: error.data.labels[locale.code]},
+        });
+        handleStatusListChange(saveStatusId, Status.ERRORS);
+      } else {
+        // Change status to "SAVED" to avoid the "unsaved changes" alert to be triggered during a reload of the page.
+        handleStatusListChange(saveStatusId, Status.SAVED);
+        throw error;
       }
-    );
-    await queryClient.invalidateQueries(['get-template', template.uuid]);
-    dispatch({
-      type: 'template_label_translation_saved',
-      payload: {localeCode: locale.code, value},
-    });
-    handleStatusListChange(saveStatusId, Status.SAVED);
+    }
   }, 300);
 
   const handleChange = async (value: string) => {

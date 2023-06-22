@@ -185,7 +185,7 @@ abstract class Attribute
     }
 
     /**
-     * @param LocalizedLabels $labels
+     * @phpstan-param LocalizedLabels $labels
      */
     public function update(?bool $isRichTextArea, ?array $labels): void
     {
@@ -196,11 +196,7 @@ abstract class Attribute
         }
 
         if ($labels !== null) {
-            $labels = LabelCollection::fromArray($labels);
-
-            foreach ($labels->getIterator() as $local => $label) {
-                $this->labelCollection->setTranslation($local, $label);
-            }
+            $this->labelCollection->merge(LabelCollection::fromArray($labels));
         }
     }
 }

@@ -40,6 +40,10 @@
             <directory suffix="Integration.php">src/Akeneo/Connectivity/Connection/back/tests/Integration</directory>
         </testsuite>
 
+        <testsuite name="Akeneo_FileStorage_Integration">
+            <directory suffix="Integration.php">src/Akeneo/Tool/Bundle/FileStorageBundle/tests/Integration</directory>
+        </testsuite>
+
         <testsuite name="Akeneo_Measurement_Integration">
             <directory suffix="Integration.php">src/Akeneo/Tool/Bundle/MeasureBundle/tests/Integration</directory>
         </testsuite>

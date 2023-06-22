@@ -55,6 +55,13 @@ class Template
         return $this->attributeCollection;
     }
 
+    public function update(?LabelCollection $labelCollection): void
+    {
+        if ($labelCollection !== null) {
+            $this->labelCollection->merge($labelCollection);
+        }
+    }
+
     /**
      * @return array{
      *     uuid: string,

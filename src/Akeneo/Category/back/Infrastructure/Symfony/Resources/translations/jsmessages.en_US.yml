@@ -2,6 +2,9 @@ pim_title:
     pim_category_template_edit: Edit category template
 
 akeneo.category:
+    unknown_error:
+        title: Sorry, an unknown error occurred.
+        message: Please reload the page and try again.
     tree_list:
         column:
             category_templates: Category templates
@@ -46,7 +49,7 @@ akeneo.category:
                 translations:
                     title: Label translations
                 error_message: There are invalid values on the page.
-                unsaved_changes: Those values will not be saved if you leave the page.
+                unsaved_changes: You have unsaved changes, are you sure that you want to leave?
         add_attribute:
             no_attribute_title: Create your first attribute
             no_attribute_instructions: Define the content you want to associate to your categories by adding Text, Text Area or Image attributes to this template.

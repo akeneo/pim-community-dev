@@ -45,7 +45,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\Product',
-            'Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue',
+            'Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue',
             'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
             'Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity',
             'Akeneo\Pim\Structure\Component\AttributeTypes',

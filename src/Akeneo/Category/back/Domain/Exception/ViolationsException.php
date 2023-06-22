@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\Domain\Exceptions;
+namespace Akeneo\Category\Domain\Exception;
 
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -28,9 +28,40 @@ final class ViolationsException extends \LogicException
     }
 
     /**
-     * @return array<int, array{error: array{code: string|null, message: string}}>
+     * Normalizes the constraint violation list recusively into an array based on the property path.
+     *
+     * For example, the property path "labels[en_US]" will be normalized into:
+     *  $errors = [
+     *      'labels' => [
+     *          'en_US' => ['An error message']
+     *      ]
+     *  ];
+     *
+     * @return array<string, array<mixed>>
      */
     public function normalize(): array
+    {
+        if (count($this->constraintViolationList) === 0) {
+            return [];
+        }
+
+        $errors = [];
+        foreach ($this->constraintViolationList as $constraintViolation) {
+            $propertyPath = explode('[', str_replace(']', '', $constraintViolation->getPropertyPath()));
+            $current = &$errors;
+            foreach ($propertyPath as $property) {
+                $current = &$current[$property];
+            }
+            $current[] = $constraintViolation->getMessage();
+        }
+
+        return $errors;
+    }
+
+    /**
+     * @return array<int, array{error: array{code: string|null, message: string}}>
+     */
+    public function normalizeDeprecated(): array
     {
         if (count($this->constraintViolationList) === 0) {
             return [];
