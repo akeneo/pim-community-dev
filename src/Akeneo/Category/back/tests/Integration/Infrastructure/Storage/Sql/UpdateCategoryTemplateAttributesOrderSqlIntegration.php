@@ -6,7 +6,6 @@ use Akeneo\Category\Application\ActivateTemplate;
 use Akeneo\Category\Application\Query\GetAttribute;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
-use Akeneo\Category\Domain\Query\DeleteCategoryTreeTemplateByTemplateUuid;
 use Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
@@ -15,11 +14,15 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
 class UpdateCategoryTemplateAttributesOrderSqlIntegration  extends CategoryTestCase
 {
+    private UpdateCategoryTemplateAttributesOrder $updateCategoryTemplateAttributesOrder;
+
     private TemplateUuid $templateUuid;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->updateCategoryTemplateAttributesOrder = $this->get(UpdateCategoryTemplateAttributesOrder::class);
 
         $category = $this->insertBaseCategory(new Code('template_model'));
         $mockedTemplate = $this->generateMockedCategoryTemplateModel(
@@ -33,6 +36,7 @@ class UpdateCategoryTemplateAttributesOrderSqlIntegration  extends CategoryTestC
             $mockedTemplate->getLabelCollection()
         );
     }
+
     public function testItUpdatesAttributesOrder(): void
     {
         /** @var Attribute $longDescriptionAttribute */
@@ -52,11 +56,7 @@ class UpdateCategoryTemplateAttributesOrderSqlIntegration  extends CategoryTestC
             $longDescriptionAttribute->getAdditionalProperties(),
         );
 
-        /**
-         * @var UpdateCategoryTemplateAttributesOrder $updateCategoryTemplateAttributesOrder
-         */
-        $updateCategoryTemplateAttributesOrder = $this->get(UpdateCategoryTemplateAttributesOrder::class);
-        $updateCategoryTemplateAttributesOrder->fromAttributeCollection(
+        $this->updateCategoryTemplateAttributesOrder->fromAttributeCollection(
             AttributeCollection::fromArray([$toUpdateAttribute])
         );
 
@@ -65,5 +65,18 @@ class UpdateCategoryTemplateAttributesOrderSqlIntegration  extends CategoryTestC
             ->getAttributeByCode('long_description');
 
         $this->assertEquals(200, $updatedLongDescriptionAttribute->getOrder()->intValue());
+    }
+
+    public function testItDoesNotUpdateAttributesOrderForAnEmptyAttributeCollection(): void
+    {
+        // When
+
+        $this->updateCategoryTemplateAttributesOrder->fromAttributeCollection(
+            AttributeCollection::fromArray([])
+        );
+
+        // Then
+
+        $this->doesNotPerformAssertions();
     }
 }
