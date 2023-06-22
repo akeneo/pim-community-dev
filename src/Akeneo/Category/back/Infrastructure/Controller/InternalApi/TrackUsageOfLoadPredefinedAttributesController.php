@@ -8,13 +8,13 @@ use Akeneo\Category\Domain\Exception\TemplateNotFoundException;
 use Akeneo\Category\Domain\Query\GetTemplate;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use PHPUnit\Framework\Assert;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (http://www.akeneo.com)
@@ -47,7 +47,7 @@ class TrackUsageOfLoadPredefinedAttributesController
 
         $data = json_decode($request->getContent(), true);
         $action = $data['action'];
-        Assert::assertContains($action, [TrackUsageOfLoadPredefinedAttributesController::LOAD_PREDEFINED_ATTRIBUTES, TrackUsageOfLoadPredefinedAttributesController::CREATE_FIRST_ATTRIBUTE]);
+        Assert::inArray($action, [TrackUsageOfLoadPredefinedAttributesController::LOAD_PREDEFINED_ATTRIBUTES, TrackUsageOfLoadPredefinedAttributesController::CREATE_FIRST_ATTRIBUTE]);
 
         $context = [
             'log_type' => 'create_category_template_tracking',
