@@ -16,6 +16,7 @@ import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure';
 import {useCountCategoryTreesChildren} from '../../hooks';
+import {CreateTemplateModal} from '../templates/CreateTemplateModal';
 
 const createTemplate = async (categoryTree: CategoryTreeModel, catalogLocale: string, router: Router) => {
   const data = {
@@ -50,6 +51,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const notify = useNotify();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
+  const [categoryTreeForTemplateCreation, setCategoryTreeForTemplateCreation] = useState<CategoryTreeModel | null>(null);
   const [displayCategoryTemplatesColumn, setDisplayCategoryTemplatesColumn] = useState<boolean>(false);
   const userContext = useUserContext();
   const catalogLocale = userContext.get('catalogLocale');
@@ -94,19 +96,24 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     closeConfirmationModal();
   };
 
-  const onCreateTemplate = (categoryTree: CategoryTreeModel) => {
-    createTemplate(categoryTree, catalogLocale, router)
-      .then(response => {
-        response.json().then((template: Template) => {
-          if (template) {
-            notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
-            redirectToTemplate(categoryTree.id, template.uuid);
-          }
-        });
-      })
-      .catch(() => {
-        notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
-      });
+  const [isCreateTemplateModalOpen, openCreateTemplateModal, closeCreateTemplateModal] =
+    useBooleanState(false);
+
+  const handleCreateTemplate = (categoryTree: CategoryTreeModel) => {
+    setCategoryTreeForTemplateCreation(categoryTree);
+    openCreateTemplateModal();
+    // createTemplate(categoryTree, catalogLocale, router)
+    //   .then(response => {
+    //     response.json().then((template: Template) => {
+    //       if (template) {
+    //         notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
+    //         redirectToTemplate(categoryTree.id, template.uuid);
+    //       }
+    //     });
+    //   })
+    //   .catch(() => {
+    //     notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
+    //   });
   };
 
   const redirectToTemplate = (treeId: number, templateUuid: string) => {
@@ -236,9 +243,10 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         ghost
                         level="tertiary"
                         size={'small'}
-                        onClick={() => {
-                          tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree);
-                        }}
+                        onClick={() => {handleCreateTemplate(tree)}}
+                        // onClick={() => {
+                        //   tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree);
+                        // }}
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
                         {translate(
@@ -262,6 +270,12 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
               ))}
             </Table.Body>
           </Table>
+          {isCreateTemplateModalOpen && categoryTreeForTemplateCreation && (
+            <CreateTemplateModal
+              categoryTree={categoryTreeForTemplateCreation}
+              onClose={closeCreateTemplateModal}
+            />
+          )}
           {isConfirmationModalOpen && categoryTreeToDelete && (
             <DeleteCategoryModal
               categoryLabel={categoryTreeToDelete.label}
