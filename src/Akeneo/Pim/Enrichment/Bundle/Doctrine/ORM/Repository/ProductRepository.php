@@ -42,7 +42,8 @@ class ProductRepository extends EntityRepository implements
             [
                 'identifiers' => $identifiers,
                 'attributeId' => $this->getMainIdentifierId(),
-            ], [
+            ],
+            [
                 'identifiers' => Connection::PARAM_STR_ARRAY,
                 'attributeId' => ParameterType::INTEGER,
             ]
