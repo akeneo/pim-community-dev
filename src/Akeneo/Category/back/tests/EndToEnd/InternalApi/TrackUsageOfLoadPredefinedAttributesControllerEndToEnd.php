@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 class TrackUsageOfLoadPredefinedAttributesControllerEndToEnd extends ControllerIntegrationTestCase
 {
     private TemplateUuid $templateUuid;
+
     protected function setUp(): void
     {
         parent::setUp();
