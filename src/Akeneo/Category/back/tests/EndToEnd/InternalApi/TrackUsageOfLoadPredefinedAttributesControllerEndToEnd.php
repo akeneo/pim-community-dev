@@ -14,10 +14,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
-use Akeneo\Category\Infrastructure\Controller\InternalApi\TrackUsageOfLoadPredefinedAttributesController;
 use Akeneo\Test\Integration\Configuration;
-use Psr\Log\LoggerInterface;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -61,7 +58,7 @@ class TrackUsageOfLoadPredefinedAttributesControllerEndToEnd extends ControllerI
             ],
             method: Request::METHOD_POST,
             content: json_encode([
-                'action' => 'bas_action',
+                'action' => 'bad_action',
             ]),
         );
 
