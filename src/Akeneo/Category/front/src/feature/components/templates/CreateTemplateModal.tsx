@@ -1,6 +1,5 @@
-import {translate} from '@akeneo-pim-community/shared';
+import {NotificationLevel, translate, useNotify} from '@akeneo-pim-community/shared';
 import {useState} from 'react';
-import {useQueryClient} from 'react-query';
 import {userContext} from '@akeneo-pim-community/shared/lib/dependencies/user-context';
 import {
   Button,
@@ -27,11 +26,10 @@ type Props = {
 };
 
 export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
-  // const defaultCatalogLocale = userContext.get('catalog_default_locale');
-  const defaultUserUiLocale = userContext.get('ui_locale');
+  const defaultUserUiLocale = userContext.get('user_default_locale');
   console.log('defaultUserUiLocale: ', defaultUserUiLocale);
+  const notify = useNotify();
   const mutation = useCreateTemplate();
-  const queryClient = useQueryClient();
   const [form, setForm] = useState<Form>({label: '', code: ''});
   const [error, setError] = useState<FormError>({});
 
@@ -56,6 +54,7 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
       {
         onError: error => {
           setError(error.data);
+          notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
         },
         onSuccess: () => {
           onClose();
