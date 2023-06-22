@@ -1,5 +1,9 @@
 # 7.0.x
 
+## Bug fixes
+
+- PIM-11047: Be able to customize local storage root without breaking import/export
+
 # 7.0.17 (2023-05-24)
 
 # 7.0.16 (2023-05-24)
