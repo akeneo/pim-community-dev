@@ -1068,7 +1068,7 @@ JSON;
               {
                 "locale": null,
                 "scope": null,
-                "data": null
+                "data": true
               }
             ]
         }
