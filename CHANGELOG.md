@@ -6,6 +6,7 @@
 - PIM-10966: Fix error when toggling between tabs on an export profile editing page
 - PIM-10972: Fix shifting data during import
 - PIM-10950: Fix wrongly removed code filter on attribute page
+- PIM-11057: Fix ScalarValue::__toString does not cast wrapped boolean value correctly
 - PIM-10960: Fix no violation raised when importing variant with already existing siblings
 - PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
 - PIM-10779: Fix lowercase on get attribute group code for dqi activation
