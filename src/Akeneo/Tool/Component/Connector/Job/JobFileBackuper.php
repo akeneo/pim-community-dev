@@ -31,7 +31,10 @@ class JobFileBackuper
     public function clean(JobExecution $jobExecution): void
     {
         $backupDir = $this->getBackupDir($jobExecution);
-        $this->filesystemOperator->deleteDirectory($backupDir);
+
+        if ($this->filesystemOperator->directoryExists($backupDir)) {
+            $this->filesystemOperator->deleteDirectory($backupDir);
+        }
     }
 
     private function getBackupDir(JobExecution $jobExecution): string
