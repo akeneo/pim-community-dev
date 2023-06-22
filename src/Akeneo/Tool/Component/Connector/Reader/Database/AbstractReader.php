@@ -57,11 +57,11 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     {
         $this->initializeReader();
 
-        if (!isset($this->state['position'])) {
+        if (!array_key_exists('position', $this->state)) {
             return;
         }
 
-        while ($this->results->key() < $this->state['position']) {
+        while ($this->results->valid() && ($this->results->key() < $this->state['position'] || is_null($this->state['position']))) {
             $this->results->next();
         }
     }

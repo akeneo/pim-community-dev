@@ -64,6 +64,9 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         }
 
         $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
+        if (isset($this->state['headers'])) {
+            $this->flatRowBuffer->addToHeaders($this->state['headers']);
+        }
     }
 
     /**
@@ -87,6 +90,11 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         $this->flatRowBuffer->write($flatItems, $options);
     }
 
+    public function emptyWrite(): void
+    {
+        $this->flatRowBuffer->emptyWrite();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -105,6 +113,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
             $writerOptions,
+//            str_replace('/tmp//tmp', '/tmp', $this->getPath()),
             $this->getPath(),
             ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1)
         );
@@ -125,11 +134,22 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
 
         return [
             'buffer_file_path' => $filePath,
+            'headers'          => $this->flatRowBuffer->getHeaders(),
         ];
     }
 
     public function setState(array $state): void
     {
         $this->state = $state;
+    }
+
+    public function addHeaders(array $headers = [])
+    {
+        if (!empty($headers)) {
+            $parameters = $this->stepExecution->getJobParameters();
+            if ($parameters->get('withHeader')) {
+                $this->flatRowBuffer->addToHeaders($headers);
+            }
+        }
     }
 }
