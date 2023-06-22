@@ -844,7 +844,7 @@ JSON;
             "a_yes_no": [{
                 "locale": null,
                 "scope": null,
-                "data": false
+                "data": true
             }],
             "a_localizable_scopable_image": [{
                 "locale": "en_US",
@@ -922,7 +922,7 @@ JSON;
                     ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                 ],
                 'a_yes_no'                           => [
-                    ['locale' => null, 'scope' => null, 'data' => false],
+                    ['locale' => null, 'scope' => null, 'data' => true],
                 ],
                 'a_text_area'                           => [
                     ['locale' => null, 'scope' => null, 'data' => 'this is a very very very very very long  text'],
@@ -1052,7 +1052,7 @@ JSON;
         $this->createVariantProduct('apollon_option_b_true', [
             new SetCategories(['master']),
             new ChangeParent('amor'),
-            new SetBooleanValue('a_yes_no', null, null, false)
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
         $client = $this->createAuthenticatedClient();
@@ -1068,7 +1068,7 @@ JSON;
               {
                 "locale": null,
                 "scope": null,
-                "data": false
+                "data": null
               }
             ]
         }

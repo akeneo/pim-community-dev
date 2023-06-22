@@ -104,7 +104,7 @@ class PartialUpdateVariantProductWithUuidEndToEnd extends AbstractProductTestCas
             {
               "locale": null,
               "scope": null,
-              "data": false
+              "data": true
             }
           ],
           "sku": [{"locale": null, "scope": null, "data": "product_variant_create_with_identifier" }]
@@ -155,7 +155,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => false,
+                        "data"   => true,
                     ],
                 ],
             ],
@@ -195,7 +195,7 @@ JSON;
             {
               "locale": null,
               "scope": null,
-              "data": false
+              "data": true
             }
           ],
           "sku": [{"locale": null, "scope": null, "data": "product_variant_create_with_identifier" }]
@@ -246,7 +246,7 @@ JSON;
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => false,
+                        "data"   => true,
                     ],
                 ],
             ],
