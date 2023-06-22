@@ -22,5 +22,6 @@ class AkeneoInstallerExtension extends Extension
         $loader->load('handlers.yml');
         $loader->load('queries.yml');
         $loader->load('services.yml');
+        $loader->load('commands.yml');
     }
 }

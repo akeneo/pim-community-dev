@@ -1,0 +1,6 @@
+services:
+  Akeneo\Platform\Installer\Infrastructure\Command\PurgeStorageCommand:
+    arguments:
+      - '@Akeneo\Platform\Installer\Infrastructure\StoragePurger\StoragePurger'
+    tags:
+      - { name: 'console.command' }

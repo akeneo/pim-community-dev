@@ -40,3 +40,7 @@ services:
       - '@database_connection'
     tags:
       - {name: akeneo.installer.user_configuration_resetter}
+
+  Akeneo\Platform\Installer\Infrastructure\StoragePurger\StoragePurger:
+    arguments:
+      - '@oneup_flysystem.catalog_storage_filesystem'
