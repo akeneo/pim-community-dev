@@ -223,7 +223,7 @@ services:
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.completeness.calculator'
-            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\SqlSaveCompletenesses'
+            - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
             - '@pim_enrich.product.query_message_bus'
 
     pim_connector.tasklet.xlsx_family.compute_data_related_to_family_root_product_models:
