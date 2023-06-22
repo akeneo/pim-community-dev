@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Structure\Component\Repository;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ObjectRepository;
@@ -153,6 +152,4 @@ interface AttributeRepositoryInterface extends
      * @return array
      */
     public function findAvailableAxes($locale);
-
-    public function updateMainIdentifier(AttributeInterface $attribute): void;
 }

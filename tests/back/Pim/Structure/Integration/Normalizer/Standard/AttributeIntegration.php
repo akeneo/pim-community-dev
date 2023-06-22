@@ -2,7 +2,6 @@
 
 namespace AkeneoTest\Pim\Structure\Integration\Normalizer\Standard;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -15,7 +14,7 @@ use PHPUnit\Framework\Assert;
  */
 class AttributeIntegration extends TestCase
 {
-    public function testAttributeIdentifier(): void
+    public function testAttributeIdentifier()
     {
         $expected = [
             'code'                   => 'sku',
@@ -52,7 +51,7 @@ class AttributeIntegration extends TestCase
         $this->assert('sku', $expected);
     }
 
-    public function testAttributeDate(): void
+    public function testAttributeDate()
     {
         $expected = [
             'code'                   => 'a_date',
@@ -89,7 +88,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_date', $expected);
     }
 
-    public function testAttributeFile(): void
+    public function testAttributeFile()
     {
         $expected = [
             'code'                   => 'a_file',
@@ -126,7 +125,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_file', $expected);
     }
 
-    public function testAttributeImage(): void
+    public function testAttributeImage()
     {
         $expected = [
             'code'                   => 'an_image',
@@ -163,7 +162,7 @@ class AttributeIntegration extends TestCase
         $this->assert('an_image', $expected);
     }
 
-    public function testAttributeMetric(): void
+    public function testAttributeMetric()
     {
         $expected = [
             'code'                   => 'a_metric',
@@ -200,7 +199,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_metric', $expected);
     }
 
-    public function testAttributeMetricWithoutDecimal(): void
+    public function testAttributeMetricWithoutDecimal()
     {
         $expected = [
             'code'                   => 'a_metric_without_decimal',
@@ -237,7 +236,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_metric_without_decimal', $expected);
     }
 
-    public function testAttributeMetricWithoutDecimalNegative(): void
+    public function testAttributeMetricWithoutDecimalNegative()
     {
         $expected = [
             'code'                   => 'a_metric_without_decimal_negative',
@@ -274,7 +273,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_metric_without_decimal_negative', $expected);
     }
 
-    public function testAttributeMetricNegative(): void
+    public function testAttributeMetricNegative()
     {
         $expected = [
             'code'                   => 'a_metric_negative',
@@ -311,7 +310,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_metric_negative', $expected);
     }
 
-    public function testAttributeMultiSelect(): void
+    public function testAttributeMultiSelect()
     {
         $expected = [
             'code'                   => 'a_multi_select',
@@ -348,7 +347,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_multi_select', $expected);
     }
 
-    public function testAttributeNumberFloat(): void
+    public function testAttributeNumberFloat()
     {
         $expected = [
             'code'                   => 'a_number_float',
@@ -385,7 +384,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_number_float', $expected);
     }
 
-    public function testAttributeNumberFloatNegative(): void
+    public function testAttributeNumberFloatNegative()
     {
         $expected = [
             'code'                   => 'a_number_float_negative',
@@ -422,7 +421,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_number_float_negative', $expected);
     }
 
-    public function testAttributeNumberInteger(): void
+    public function testAttributeNumberInteger()
     {
         $expected = [
             'code'                   => 'a_number_integer',
@@ -459,7 +458,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_number_integer', $expected);
     }
 
-    public function testAttributeNumberIntegerNegative(): void
+    public function testAttributeNumberIntegerNegative()
     {
         $expected = [
             'code'                   => 'a_number_integer_negative',
@@ -496,7 +495,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_number_integer_negative', $expected);
     }
 
-    public function testAttributePrice(): void
+    public function testAttributePrice()
     {
         $expected = [
             'code'                   => 'a_price',
@@ -533,7 +532,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_price', $expected);
     }
 
-    public function testAttributePriceWithoutDecimal(): void
+    public function testAttributePriceWithoutDecimal()
     {
         $expected = [
             'code'                   => 'a_price_without_decimal',
@@ -570,7 +569,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_price_without_decimal', $expected);
     }
 
-    public function testAttributeReferenceDataMultiSelect(): void
+    public function testAttributeReferenceDataMultiSelect()
     {
         $expected = [
             'code'                   => 'a_ref_data_multi_select',
@@ -607,7 +606,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_ref_data_multi_select', $expected);
     }
 
-    public function testAttributeReferenceDataSimpleSelect(): void
+    public function testAttributeReferenceDataSimpleSelect()
     {
         $expected = [
             'code'                   => 'a_ref_data_simple_select',
@@ -644,7 +643,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_ref_data_simple_select', $expected);
     }
 
-    public function testAttributeSimpleSelect(): void
+    public function testAttributeSimpleSelect()
     {
         $expected = [
             'code'                   => 'a_simple_select',
@@ -681,7 +680,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_simple_select', $expected);
     }
 
-    public function testAttributeText(): void
+    public function testAttributeText()
     {
         $expected = [
             'code'                   => 'a_text',
@@ -718,7 +717,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_text', $expected);
     }
 
-    public function testAttributeTextArea(): void
+    public function testAttributeTextArea()
     {
         $expected = [
             'code'                   => 'a_text_area',
@@ -755,7 +754,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_text_area', $expected);
     }
 
-    public function testAttributeBoolean(): void
+    public function testAttributeBoolean()
     {
         $expected = [
             'code'                   => 'a_yes_no',
@@ -792,7 +791,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_yes_no', $expected);
     }
 
-    public function testAttributeLocalizableImage(): void
+    public function testAttributeLocalizableImage()
     {
         $expected = [
             'code'                   => 'a_localizable_image',
@@ -829,7 +828,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_localizable_image', $expected);
     }
 
-    public function testAttributeScopablePrice(): void
+    public function testAttributeScopablePrice()
     {
         $expected = [
             'code'                   => 'a_scopable_price',
@@ -866,7 +865,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_scopable_price', $expected);
     }
 
-    public function testAttributeLocalizableAndScopableTextArea(): void
+    public function testAttributeLocalizableAndScopableTextArea()
     {
         $expected = [
             'code'                   => 'a_localized_and_scopable_text_area',
@@ -903,7 +902,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_localized_and_scopable_text_area', $expected);
     }
 
-    public function testAttributeRegexp(): void
+    public function testAttributeRegexp()
     {
         $expected = [
             'code'                   => 'a_regexp',
@@ -940,7 +939,7 @@ class AttributeIntegration extends TestCase
         $this->assert('a_regexp', $expected);
     }
 
-    public function testBooleanAttributeDefaultValue(): void
+    public function testBooleanAttributeDefaultValue()
     {
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_yes_no');
         $this->get('pim_catalog.updater.attribute')->update($attribute, ['default_value' => false]);
@@ -982,7 +981,11 @@ class AttributeIntegration extends TestCase
         $this->assert('a_yes_no', $expected);
     }
 
-    private function assert(string $identifier, array $expected): void
+    /**
+     * @param string $identifier
+     * @param array  $expected
+     */
+    private function assert($identifier, array $expected)
     {
         $repository = $this->get('pim_catalog.repository.attribute');
         $serializer = $this->get('pim_standard_format_serializer');
@@ -995,7 +998,7 @@ class AttributeIntegration extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration(): Configuration
+    protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
     }
