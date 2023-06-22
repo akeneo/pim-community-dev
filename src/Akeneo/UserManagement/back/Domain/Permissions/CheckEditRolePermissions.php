@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\UserManagement\Application;
+namespace Akeneo\UserManagement\Domain\Permissions;
 
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
@@ -56,17 +56,42 @@ class CheckEditRolePermissions
      */
     public function isLastUserWithEditPrivilegeRole(array $roles, int $identifier): bool
     {
+        $editRoleLeft = $this->getRoleLeftWithEditRolePermissions($roles);
+        if (count($editRoleLeft) <= 1) {
+            return $this->isUserLeftWithEditRolePermissions($identifier);
+        }
+        return false;
+    }
+
+    public function isLastRoleWithEditPrivilegeRoleForUser(array $roles, int $identifier): bool
+    {
+        $editRoleLeft = $this->getRoleLeftWithEditRolePermissions($roles);
+        if (count($editRoleLeft) < 1) {
+            return $this->isUserLeftWithEditRolePermissions($identifier);
+        }
+        return false;
+    }
+
+    /**
+     * @param array<string> $roles
+     *
+     * @return array<string>
+     */
+    private function getRoleLeftWithEditRolePermissions(array $roles): array
+    {
         $editRoleRolesPrivileges = $this->getRolesWithMinimumEditRolePrivileges();
         $editRoleRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $editRoleRolesPrivileges);
-        $editRoleLeft =  array_filter($roles, (function ($role) use ($editRoleRolesNamePrivileges) {
+        return array_filter($roles, (function ($role) use ($editRoleRolesNamePrivileges) {
             return in_array($role, $editRoleRolesNamePrivileges);
         }));
-        if (count($editRoleLeft) <= 1) {
-            $usersWithEditRoleRoles = $this->getUsersWithEditRoleRoles();
-            if (count($usersWithEditRoleRoles) <= 1) {
-                $lastUser = $usersWithEditRoleRoles[0] ?? null;
-                return $lastUser && $lastUser->getId() === $identifier;
-            }
+    }
+
+    private function isUserLeftWithEditRolePermissions(int $identifier): bool
+    {
+        $usersWithEditRoleRoles = $this->getUsersWithEditRoleRoles();
+        if (count($usersWithEditRoleRoles) <= 1) {
+            $lastUser = $usersWithEditRoleRoles[0] ?? null;
+            return $lastUser && $lastUser->getId() === $identifier;
         }
         return false;
     }

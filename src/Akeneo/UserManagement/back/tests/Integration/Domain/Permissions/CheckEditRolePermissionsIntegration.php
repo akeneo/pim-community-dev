@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Test\UserManagement\Integration\Application;
+namespace Akeneo\Test\UserManagement\Integration\Domain\Permissions;
 
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader;
 use Akeneo\Test\Integration\Configuration;
@@ -8,9 +8,9 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\UserManagement\Application\CheckEditRolePermissions;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
+use Akeneo\UserManagement\Domain\Permissions\CheckEditRolePermissions;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -65,6 +65,21 @@ class CheckEditRolePermissionsIntegration extends TestCase
         $editRoleUsers = $this->checkEditRolePermissions->getUsersWithEditRoleRoles();
         $editUserFound = array_filter($editRoleUsers, fn($user) => $user === $userWithEditRole);
         $this::assertNotEmpty($editUserFound);
+    }
+
+    public function testItIsLastRoleWithEditRolePermissionsForUser(): void
+    {
+        $userWithEditRole = $this->userLoader->createUser('userWithEditRole', [], ['ROLE_WITH_EDIT_ROLE']);
+        $isLastEditRoleUser = $this->checkEditRolePermissions->isLastRoleWithEditPrivilegeRoleForUser(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
+        $this::assertTrue($isLastEditRoleUser);
+    }
+
+    public function testItIsntLastRoleWithEditRolePermissionsForUser(): void
+    {
+        $userWithEditRole = $this->userLoader->createUser('userWithEditRole', [], ['ROLE_WITH_EDIT_ROLE']);
+        $this->userLoader->createUser('userWithEditRole2', [], ['ROLE_WITH_EDIT_ROLE']);
+        $isLastEditRoleUser = $this->checkEditRolePermissions->isLastRoleWithEditPrivilegeRoleForUser(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
+        $this::assertFalse($isLastEditRoleUser);
     }
 
     public function testItIsLastUserWithEditRolePermissions(): void

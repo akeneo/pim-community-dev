@@ -2,10 +2,10 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
-use Akeneo\UserManagement\Application\CheckEditRolePermissions;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Domain\Permissions\CheckEditRolePermissions;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;

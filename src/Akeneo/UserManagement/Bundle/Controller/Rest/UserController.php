@@ -9,12 +9,12 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\UserManagement\Application\CheckEditRolePermissions;
 use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommand;
 use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler;
 use Akeneo\UserManagement\Application\Exception\UserNotFoundException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
+use Akeneo\UserManagement\Domain\Permissions\CheckEditRolePermissions;
 use Akeneo\UserManagement\ServiceApi\ViolationsException;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -129,7 +129,7 @@ final class UserController
         }
 
         if (isset($data['roles'])) {
-            if ($this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole($data['roles'], $identifier)) {
+            if ($this->checkEditRolePermissions->isLastRoleWithEditPrivilegeRoleForUser($data['roles'], $identifier)) {
                 $violation = new ConstraintViolation(
                     message: $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_privileges'),
                     messageTemplate: null,
