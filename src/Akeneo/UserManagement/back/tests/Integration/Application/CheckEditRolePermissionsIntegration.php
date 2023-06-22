@@ -70,17 +70,23 @@ class CheckEditRolePermissionsIntegration extends TestCase
     public function testItIsLastUserWithEditRolePermissions(): void
     {
         $userWithEditRole = $this->userLoader->createUser('userWithEditRole', [], ['ROLE_WITH_EDIT_ROLE']);
-        $editRoleUser = $this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
-        $this::assertNotNull($editRoleUser);
-        $this::assertEquals($userWithEditRole, $editRoleUser);
+        $isLastEditRoleUser = $this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
+        $this::assertTrue($isLastEditRoleUser);
     }
 
     public function testItIsntLastUserWithEditRolePermissions(): void
     {
         $userWithEditRole = $this->userLoader->createUser('userWithEditRole', [], ['ROLE_WITH_EDIT_ROLE']);
         $this->userLoader->createUser('userWithEditRole2', [], ['ROLE_WITH_EDIT_ROLE']);
-        $editRoleUser = $this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
-        $this::assertNull($editRoleUser);
+        $isLastEditRoleUser = $this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
+        $this::assertFalse($isLastEditRoleUser);
+    }
+
+    public function testThereIsNoUserWithEditRolePermissionsLeft(): void
+    {
+        $userWithoutEditRole = $this->userLoader->createUser('userWithoutEditRole', [], ['ROLE_WITHOUT_EDIT_ROLE']);
+        $isLastEditRoleUser = $this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithoutEditRole->getId());
+        $this::assertFalse($isLastEditRoleUser);
     }
 
     private function createRoleWithAcls(string $roleCode, array $acls): void
@@ -117,6 +123,7 @@ class CheckEditRolePermissionsIntegration extends TestCase
             $this->assertEquals($expectedValue, $isAllowed, sprintf('%s %s', $role, $acl));
         }
     }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

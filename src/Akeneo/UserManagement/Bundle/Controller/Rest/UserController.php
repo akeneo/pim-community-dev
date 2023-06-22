@@ -129,8 +129,7 @@ final class UserController
         }
 
         if (isset($data['roles'])) {
-            $lastUser = $this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole($data['roles'], $identifier);
-            if ($lastUser) {
+            if ($this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole($data['roles'], $identifier)) {
                 $violation = new ConstraintViolation(
                     message: $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_privileges'),
                     messageTemplate: null,
@@ -142,7 +141,6 @@ final class UserController
                 $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
                     $violation,
                     'internal_api',
-                    ['user' => $lastUser]
                 );
                 return new JsonResponse($normalizedViolations, Response::HTTP_UNPROCESSABLE_ENTITY);
             }

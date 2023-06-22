@@ -54,7 +54,7 @@ class CheckEditRolePermissions
     /**
      * @param array<string> $roles
      */
-    public function isLastUserWithEditPrivilegeRole(array $roles, int $identifier): ?UserInterface
+    public function isLastUserWithEditPrivilegeRole(array $roles, int $identifier): bool
     {
         $editRoleRolesPrivileges = $this->getRolesWithMinimumEditRolePrivileges();
         $editRoleRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $editRoleRolesPrivileges);
@@ -64,12 +64,10 @@ class CheckEditRolePermissions
         if (count($editRoleLeft) <= 1) {
             $usersWithEditRoleRoles = $this->getUsersWithEditRoleRoles();
             if (count($usersWithEditRoleRoles) <= 1) {
-                $lastUser = $usersWithEditRoleRoles[0];
-                if ($lastUser && $lastUser->getId() === $identifier) {
-                    return $lastUser;
-                }
+                $lastUser = $usersWithEditRoleRoles[0] ?? null;
+                return $lastUser && $lastUser->getId() === $identifier;
             }
         }
-        return null;
+        return false;
     }
 }
