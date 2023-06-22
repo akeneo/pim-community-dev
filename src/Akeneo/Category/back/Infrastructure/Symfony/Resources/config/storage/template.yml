@@ -1,16 +1,4 @@
 services:
-    Akeneo\Category\Application\ActivateTemplate:
-        class: 'Akeneo\Category\Application\ActivateTemplate'
-        arguments:
-            - '@Akeneo\Category\Application\Query\CheckTemplate'
-            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
-            - '@Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree'
-            - '@Akeneo\Category\Application\Query\GetCategoryTreeByCategoryTemplate'
-            - '@Akeneo\Category\Infrastructure\Builder\TemplateBuilder'
-            - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver'
-            - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver'
-            - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
-
     Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver:
         class: 'Akeneo\Category\Infrastructure\Storage\Save\Query\SqlCategoryTemplateSaver'
         arguments:
