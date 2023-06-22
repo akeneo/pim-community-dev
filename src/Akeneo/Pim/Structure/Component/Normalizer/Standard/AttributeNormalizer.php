@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -44,7 +42,8 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
                 null : $attribute->getDefaultMetricUnit(),
             'reference_data_name'    => $attribute->getReferenceDataName(),
             'available_locales'      => $attribute->getAvailableLocaleCodes(),
-            'max_characters'         => null === $attribute->getMaxCharacters() ? null : $attribute->getMaxCharacters(),
+            'max_characters'         => null === $attribute->getMaxCharacters() ?
+                null : (int) $attribute->getMaxCharacters(),
             'validation_rule'        => '' === $attribute->getValidationRule() ? null : $attribute->getValidationRule(),
             'validation_regexp'      => '' === $attribute->getValidationRegexp() ?
                 null : $attribute->getValidationRegexp(),

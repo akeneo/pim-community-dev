@@ -181,8 +181,7 @@ JSON;
             "is_locale_specific": false,
             "meta": {
                 "id": {$attribute->getId()}
-            },
-            "is_main_identifier": true
+            }
         }
 JSON;
 

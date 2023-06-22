@@ -1,10 +1,7 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
@@ -22,15 +19,43 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    protected array $supportedFormats = ['internal_api'];
+    /** @var array $supportedFormats */
+    protected $supportedFormats = ['internal_api'];
 
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /** @var FieldProviderInterface */
+    protected $fieldProvider;
+
+    /** @var EmptyValueProviderInterface */
+    protected $emptyValueProvider;
+
+    /** @var FilterProviderInterface */
+    protected $filterProvider;
+
+    /** @var LocalizerInterface */
+    protected $numberLocalizer;
+
+    /**
+     * @param NormalizerInterface               $normalizer
+     * @param FieldProviderInterface            $fieldProvider
+     * @param EmptyValueProviderInterface       $emptyValueProvider
+     * @param FilterProviderInterface           $filterProvider
+     * @param LocalizerInterface                $numberLocalizer
+     */
     public function __construct(
-        protected NormalizerInterface $normalizer,
-        protected FieldProviderInterface $fieldProvider,
-        protected EmptyValueProviderInterface $emptyValueProvider,
-        protected FilterProviderInterface $filterProvider,
-        protected LocalizerInterface $numberLocalizer
+        NormalizerInterface $normalizer,
+        FieldProviderInterface $fieldProvider,
+        EmptyValueProviderInterface $emptyValueProvider,
+        FilterProviderInterface $filterProvider,
+        LocalizerInterface $numberLocalizer
     ) {
+        $this->normalizer = $normalizer;
+        $this->fieldProvider = $fieldProvider;
+        $this->emptyValueProvider = $emptyValueProvider;
+        $this->filterProvider = $filterProvider;
+        $this->numberLocalizer = $numberLocalizer;
     }
 
     /**
@@ -41,10 +66,8 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         $dateMin = null === $attribute->getDateMin() ? null : $attribute->getDateMin()->format('Y-m-d');
         $dateMax = null === $attribute->getDateMax() ? null : $attribute->getDateMax()->format('Y-m-d');
 
-        $normalizedAttribute = $this->normalizer->normalize($attribute, 'standard', $context);
-
-        $normalizedAttribute = \array_merge(
-            $normalizedAttribute,
+        $normalizedAttribute = array_merge(
+            $this->normalizer->normalize($attribute, 'standard', $context),
             [
                 'empty_value'        => $this->emptyValueProvider->getEmptyValue($attribute),
                 'field_type'         => $this->fieldProvider->getField($attribute),
@@ -69,10 +92,6 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
 
         $normalizedAttribute['meta']['id'] = $attribute->getId();
 
-        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
-            $normalizedAttribute['is_main_identifier'] = $attribute->isMainIdentifier();
-        }
-
         return $normalizedAttribute;
     }
 
@@ -81,7 +100,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof AttributeInterface && \in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
