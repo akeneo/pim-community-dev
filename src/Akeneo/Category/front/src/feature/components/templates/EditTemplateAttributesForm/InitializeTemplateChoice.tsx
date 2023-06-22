@@ -12,7 +12,7 @@ export const InitializeTemplateChoice = ({templateId}: Props) => {
   const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
     useBooleanState(false);
 
-  const [isLoadAttributeSetModalIpen, openLoadAttributeSetModalIpen, closeLoadAttributeSetModalIpen] =
+  const [isLoadAttributeSetModalOpen, openLoadAttributeSetModalOpen, closeLoadAttributeSetModalOpen] =
     useBooleanState(false);
 
   return (
@@ -28,11 +28,11 @@ export const InitializeTemplateChoice = ({templateId}: Props) => {
       </TextContainer>
 
       <ButtonContainer>
-        <Button level="tertiary" ghost onClick={openLoadAttributeSetModalIpen}>
+        <Button level="tertiary" ghost onClick={openLoadAttributeSetModalOpen}>
           {translate('akeneo.category.template.initialize.button.load')}
         </Button>
-        {isLoadAttributeSetModalIpen && (
-          <LoadAttributeSetModal templateId={templateId} onClose={closeLoadAttributeSetModalIpen} />
+        {isLoadAttributeSetModalOpen && (
+          <LoadAttributeSetModal templateId={templateId} onClose={closeLoadAttributeSetModalOpen} />
         )}
 
         <Button level="primary" onClick={openAddTemplateAttributeModal}>
