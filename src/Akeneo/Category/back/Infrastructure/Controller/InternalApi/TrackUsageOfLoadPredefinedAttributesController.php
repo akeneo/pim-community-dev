@@ -51,6 +51,7 @@ class TrackUsageOfLoadPredefinedAttributesController
         ];
 
         $this->logger->notice($templateUuid, $context);
+
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

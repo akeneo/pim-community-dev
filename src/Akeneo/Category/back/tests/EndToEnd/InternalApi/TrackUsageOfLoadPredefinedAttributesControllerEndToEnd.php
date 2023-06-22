@@ -4,26 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\EndToEnd\InternalApi;
 
-use Akeneo\Category\Application\Query\GetAttribute;
-use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateSaver;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTreeTemplateSaver;
 use Akeneo\Category\back\tests\EndToEnd\Helper\ControllerIntegrationTestCase;
-use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
-use Akeneo\Category\Domain\Model\Attribute\AttributeRichText;
-use Akeneo\Category\Domain\Model\Attribute\AttributeText;
-use Akeneo\Category\Domain\Model\Attribute\AttributeTextArea;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsLocalizable;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsScopable;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeOrder;
-use Akeneo\Category\Domain\ValueObject\Attribute\AttributeUuid;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
@@ -50,7 +37,7 @@ class TrackUsageOfLoadPredefinedAttributesControllerEndToEnd extends ControllerI
             client: $this->client,
             route: 'pim_category_template_track_usage_of_load_predefined_attributes',
             routeArguments: [
-                'templateUuid' => $this->templateUuid,
+                'templateUuid' => $this->templateUuid->getValue(),
             ],
             method: Request::METHOD_POST,
             content: json_encode([
@@ -76,6 +63,7 @@ class TrackUsageOfLoadPredefinedAttributesControllerEndToEnd extends ControllerI
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
+
     public function testItThrowsExceptionsWhenUuidInvalid(): void
     {
         $this->callApiRoute(
@@ -109,6 +97,7 @@ class TrackUsageOfLoadPredefinedAttributesControllerEndToEnd extends ControllerI
         $this->get(CategoryTemplateSaver::class)->insert($templateModel);
         $this->get(CategoryTreeTemplateSaver::class)->insert($templateModel);
     }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
