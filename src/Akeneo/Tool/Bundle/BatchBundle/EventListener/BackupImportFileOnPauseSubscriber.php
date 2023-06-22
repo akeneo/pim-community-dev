@@ -11,6 +11,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\EventListener;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Connector\Job\JobFileBackuper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -32,7 +33,7 @@ final class BackupImportFileOnPauseSubscriber implements EventSubscriberInterfac
     {
         $stepExecution = $event->getStepExecution();
 
-        if ($stepExecution->getJobExecution()->getJobInstance()->getType() !== 'import') {
+        if ($stepExecution->getJobExecution()->getJobInstance()->getType() !== JobInstance::TYPE_IMPORT) {
             return;
         }
 
