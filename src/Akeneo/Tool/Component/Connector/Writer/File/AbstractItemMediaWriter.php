@@ -100,6 +100,9 @@ abstract class AbstractItemMediaWriter implements
         if (!is_dir($exportDirectory)) {
             $this->localFs->mkdir($exportDirectory);
         }
+        if (isset($this->state['headers'])) {
+            $this->flatRowBuffer->addToHeaders($this->state['headers']);
+        }
     }
 
     /**
@@ -411,6 +414,7 @@ abstract class AbstractItemMediaWriter implements
 
         return [
             'buffer_file_path' => $filePath,
+            'headers'          => $this->flatRowBuffer->getHeaders(),
         ];
     }
 

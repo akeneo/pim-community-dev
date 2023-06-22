@@ -136,14 +136,4 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
     {
         $this->state = $state;
     }
-
-    public function addHeaders(array $headers = [])
-    {
-        if (!empty($headers)) {
-            $parameters = $this->stepExecution->getJobParameters();
-            if ($parameters->get('withHeader')) {
-                $this->flatRowBuffer->addToHeaders($headers);
-            }
-        }
-    }
 }
