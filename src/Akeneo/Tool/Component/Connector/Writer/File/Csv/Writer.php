@@ -90,11 +90,6 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         $this->flatRowBuffer->write($flatItems, $options);
     }
 
-    public function emptyWrite(): void
-    {
-        $this->flatRowBuffer->emptyWrite();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -113,7 +108,6 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         $writtenFiles = $this->flusher->flush(
             $this->flatRowBuffer,
             $writerOptions,
-//            str_replace('/tmp//tmp', '/tmp', $this->getPath()),
             $this->getPath(),
             ($parameters->has('linesPerFile') ? $parameters->get('linesPerFile') : -1)
         );
