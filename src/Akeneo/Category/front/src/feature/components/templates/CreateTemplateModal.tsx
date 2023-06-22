@@ -45,7 +45,23 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
     });
   };
 
-  const handleCreate = () => {};
+  const handleCreate = () => {
+    mutation.mutate(
+      {
+        categoryTreeId: categoryTree.id,
+        code: form.code,
+        locale: defaultUserUiLocale,
+        label: form.label,
+      },
+      {
+        onError: error => {
+          setError(error.data);
+        },
+        onSuccess: () => {
+          onClose();
+        }
+      });
+  };
 
   return (
     <Modal illustration={<ProductCategoryIllustration />} onClose={onClose} closeTitle={translate('pim_common.close')}>
@@ -96,7 +112,7 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
           {translate('pim_common.cancel')}
         </Button>
         <Button
-          // disabled={mutation.isLoading}
+          disabled={mutation.isLoading}
           level="primary"
           onClick={handleCreate}
         >

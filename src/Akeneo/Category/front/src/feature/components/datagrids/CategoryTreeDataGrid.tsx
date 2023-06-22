@@ -2,7 +2,6 @@ import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
-  Router,
   useDebounceCallback,
   useNotify,
   useRouter,
@@ -17,25 +16,6 @@ import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure';
 import {useCountCategoryTreesChildren} from '../../hooks';
 import {CreateTemplateModal} from '../templates/CreateTemplateModal';
-
-const createTemplate = async (categoryTree: CategoryTreeModel, catalogLocale: string, router: Router) => {
-  const data = {
-    code: categoryTree.code + '_template',
-  };
-
-  const url = router.generate('pim_category_template_rest_create', {
-    categoryTreeId: categoryTree.id,
-  });
-
-  return fetch(url, {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Accept: 'application/json',
-    },
-  });
-};
 
 type Props = {
   trees: CategoryTreeModel[];
@@ -102,18 +82,6 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const handleCreateTemplate = (categoryTree: CategoryTreeModel) => {
     setCategoryTreeForTemplateCreation(categoryTree);
     openCreateTemplateModal();
-    // createTemplate(categoryTree, catalogLocale, router)
-    //   .then(response => {
-    //     response.json().then((template: Template) => {
-    //       if (template) {
-    //         notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_success'));
-    //         redirectToTemplate(categoryTree.id, template.uuid);
-    //       }
-    //     });
-    //   })
-    //   .catch(() => {
-    //     notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
-    //   });
   };
 
   const redirectToTemplate = (treeId: number, templateUuid: string) => {
@@ -122,8 +90,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
         treeId: treeId,
         templateUuid: templateUuid,
       })
-    );
-  };
+    )};
 
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
@@ -243,10 +210,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         ghost
                         level="tertiary"
                         size={'small'}
-                        onClick={() => {handleCreateTemplate(tree)}}
-                        // onClick={() => {
-                        //   tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : onCreateTemplate(tree);
-                        // }}
+                        onClick={() => {tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : handleCreateTemplate(tree)}}
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
                         {translate(
