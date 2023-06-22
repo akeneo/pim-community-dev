@@ -107,6 +107,27 @@ akeneo.category:
             saving: Saving
             editing: Editing
             errors: Errors not saved
+        initialize:
+            title: Add category attributes
+            message: Define content of your categories by adding Text, Text Area or Image attributes.
+            choice_message: Start by creating a first attribute according to your needs, or load a set of 13 suggested attributes.
+            button:
+                load: Load a set of attributes
+                create: Create 1st attribute
+        load_attribute_set:
+            section_title: Load set of attributes
+            title: Load a set of suggested attributes
+            description: Easily start the configuration of enriched categories by loading a set of suggested attributes.
+            content_description: 'This set contains 13 attributes:'
+            content:
+                description_attributes: 2 Text Area attributes for Long and Short category descriptions
+                url_attributes: 1 Text attribute for URL information
+                image_attributes: 3 Images and 3 Text attributes for image and their alt-text information
+                seo_attributes: 2 Text and 2 Text Area for SEO information
+            confirmation_message: Are you sure want to load this set of attributes?
+            button:
+                load: Load set of attributes
+
 
     template_list:
         columns:

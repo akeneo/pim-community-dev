@@ -62,7 +62,6 @@ services:
         public: true
         arguments:
             - '@oro_security.security_facade'
-            - '@Akeneo\Category\Domain\Query\GetCategoryInterface'
             - '@category.command.message_bus'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateTemplateController:
