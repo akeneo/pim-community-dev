@@ -95,6 +95,7 @@
 - PIM-11050 : On "locale" DIV, missing the indication of the country
 - PIM-11039: Fix export with duplicated labels
 - PIM-10869: Image upload fields now only accept images
+- PIM-11063: Fix validation of generated identifiers
 
 ## Improvements
 
