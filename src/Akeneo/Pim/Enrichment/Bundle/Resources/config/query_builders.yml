@@ -263,6 +263,7 @@ services:
     pim_catalog.query.elasticsearch.filter.identifier_field:
         class: '%pim_catalog.query.elasticsearch.filter.identifier_field.class%'
         arguments:
+            - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetMainIdentifierAttributeCode'
             - ['identifier']
             - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         tags:
