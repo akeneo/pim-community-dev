@@ -8,7 +8,7 @@ use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand;
 use Akeneo\Category\Domain\Exception\CategoryTreeNotFoundException;
 use Akeneo\Category\Domain\Exception\ViolationsException;
-use Akeneo\Category\Domain\Query\GetCategoryInterface;
+use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,6 @@ class CreateTemplateController
 {
     public function __construct(
         private readonly SecurityFacade $securityFacade,
-        private readonly GetCategoryInterface $getCategory,
         private readonly CommandMessageBus $categoryCommandBus,
     ) {
     }
@@ -34,14 +33,9 @@ class CreateTemplateController
             throw new AccessDeniedException();
         }
 
-        $categoryTree = $this->getCategory->byId($categoryTreeId);
-        if (null === $categoryTree) {
-            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
-        }
-
         try {
             $command = new CreateTemplateCommand(
-                $categoryTree->getId(),
+                new CategoryId($categoryTreeId),
                 $request->toArray(),
             );
             $this->categoryCommandBus->dispatch($command);
