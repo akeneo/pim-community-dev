@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ParameterType;
 use Doctrine\ORM\EntityRepository;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -31,9 +32,9 @@ class ProductRepository extends EntityRepository implements
      */
     public function getItemsFromIdentifiers(array $identifiers)
     {
-        $uuids = $this->getEntityManager()->getConnection()->fetchFirstColumn(
+        $uuidsAsBytes = $this->getEntityManager()->getConnection()->fetchFirstColumn(
             <<<SQL
-            SELECT BIN_TO_UUID(product_uuid)
+            SELECT product_uuid
             FROM pim_catalog_product_unique_data
             WHERE attribute_id = :attributeId
             AND raw_data IN (:identifiers)
@@ -43,10 +44,11 @@ class ProductRepository extends EntityRepository implements
                 'attributeId' => $this->getMainIdentifierId(),
             ], [
                 'identifiers' => Connection::PARAM_STR_ARRAY,
+                'attributeId' => ParameterType::INTEGER,
             ]
         );
 
-        return $this->findBy(['uuid' => $uuids]);
+        return $this->findBy(['uuid' => $uuidsAsBytes]);
     }
 
     /**
