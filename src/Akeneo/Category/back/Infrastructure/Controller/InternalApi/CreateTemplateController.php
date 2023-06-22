@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Application\ActivateTemplate;
-use Akeneo\Category\Domain\Query\GetCategoryInterface;
-use Akeneo\Category\Domain\ValueObject\LabelCollection;
-use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
+use Akeneo\Category\Api\Command\CommandMessageBus;
+use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand;
+use Akeneo\Category\Domain\Exception\CategoryTreeNotFoundException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
+use Akeneo\Category\Domain\ValueObject\CategoryId;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,31 +22,29 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class CreateTemplateController
 {
     public function __construct(
-        private SecurityFacade $securityFacade,
-        private GetCategoryInterface $getCategory,
-        private ActivateTemplate $activateTemplate,
+        private readonly SecurityFacade $securityFacade,
+        private readonly CommandMessageBus $categoryCommandBus,
     ) {
     }
 
-    /**
-     * @param string $templateCode
-     *
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
-     */
-    public function __invoke(Request $request, int $categoryTreeId): JsonResponse
+    public function __invoke(Request $request, int $categoryTreeId): Response
     {
         if ($this->securityFacade->isGranted('pim_enrich_product_category_template') === false) {
             throw new AccessDeniedException();
         }
 
-        $data = $request->toArray();
-        $templateCode = new TemplateCode($data['code']);
-        $templateLabelCollection = LabelCollection::fromArray($data['labels'] ?? []);
+        try {
+            $command = new CreateTemplateCommand(
+                new CategoryId($categoryTreeId),
+                $request->toArray(),
+            );
+            $this->categoryCommandBus->dispatch($command);
+        } catch (ViolationsException $violationsException) {
+            return new JsonResponse($violationsException->normalize(), Response::HTTP_BAD_REQUEST);
+        } catch (CategoryTreeNotFoundException $exception) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        }
 
-        $categoryTree = $this->getCategory->byId($categoryTreeId);
-        $templateUuid = ($this->activateTemplate)($categoryTree->getId(), $templateCode, $templateLabelCollection);
-
-        return new JsonResponse(['uuid' => (string) $templateUuid], Response::HTTP_OK);
+        return new JsonResponse(null, Response::HTTP_OK);
     }
 }
