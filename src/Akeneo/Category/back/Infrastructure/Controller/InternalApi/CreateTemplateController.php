@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand;
+use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommandHandler;
 use Akeneo\Category\Domain\Exception\CategoryTreeNotFoundException;
 use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Domain\ValueObject\CategoryId;
@@ -23,7 +23,7 @@ class CreateTemplateController
 {
     public function __construct(
         private readonly SecurityFacade $securityFacade,
-        private readonly CommandMessageBus $categoryCommandBus,
+        private readonly CreateTemplateCommandHandler $createTemplateCommandHandler,
     ) {
     }
 
@@ -38,13 +38,13 @@ class CreateTemplateController
                 new CategoryId($categoryTreeId),
                 $request->toArray(),
             );
-            $this->categoryCommandBus->dispatch($command);
+            $templateUuid = ($this->createTemplateCommandHandler)($command);
         } catch (ViolationsException $violationsException) {
             return new JsonResponse($violationsException->normalize(), Response::HTTP_BAD_REQUEST);
         } catch (CategoryTreeNotFoundException $exception) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse(null, Response::HTTP_OK);
+        return new JsonResponse(['template_uuid' => $templateUuid->getValue()], Response::HTTP_OK);
     }
 }
