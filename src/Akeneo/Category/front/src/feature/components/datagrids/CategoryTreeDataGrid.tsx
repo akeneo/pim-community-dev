@@ -238,7 +238,13 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
             </Table.Body>
           </Table>
           {isCreateTemplateModalOpen && categoryTreeForTemplateCreation && (
-            <CreateTemplateModal categoryTree={categoryTreeForTemplateCreation} onClose={closeCreateTemplateModal} />
+            <CreateTemplateModal
+              categoryTree={categoryTreeForTemplateCreation}
+              onClose={() => {
+                refreshCategoryTrees();
+                closeCreateTemplateModal();
+              }}
+            />
           )}
           {isConfirmationModalOpen && categoryTreeToDelete && (
             <DeleteCategoryModal
