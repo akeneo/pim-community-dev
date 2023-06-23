@@ -61,8 +61,6 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
           notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
         },
         onSuccess: (data) => {
-          onClose();
-          notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.notification_error'));
           redirectToTemplate(categoryTree.id, data.template_uuid);
         },
       }
@@ -93,7 +91,7 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
                 setForm({...form, label: label});
               }}
             />
-            {error?.labels[defaultUserUiLocale] && displayError(error?.labels[defaultUserUiLocale])}
+            {error?.labels && error.labels[defaultUserUiLocale] && displayError(error.labels[defaultUserUiLocale])}
           </Field>
           <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
             <TextInput
@@ -103,7 +101,7 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
                 setForm({...form, code: code});
               }}
             />
-            {error?.templateCode && displayError(error?.templateCode)}
+            {error?.templateCode && displayError(error.templateCode)}
           </Field>
         </FieldSet>
       </Content>

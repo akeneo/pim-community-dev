@@ -17,6 +17,7 @@ final class CreateTemplateCommand
 {
     #[Constraints\NotBlank]
     #[Constraints\Length(['max' => 100])]
+    #[Constraints\Regex(pattern: '/^[a-zA-Z0-9_]+$/', message: 'akeneo.category.validation.template.code.wrong_format')]
     #[TemplateCodeShouldBeUnique]
     public readonly string $templateCode;
 

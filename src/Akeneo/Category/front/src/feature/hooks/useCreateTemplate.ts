@@ -14,8 +14,8 @@ type MutationResult = {
 }
 
 export type CreateTemplateError = {
-  templateCode: string[];
-  labels: {[locale: string]: string[]};
+  templateCode: string[] | null;
+  labels: {[locale: string]: string[]} | null;
 };
 
 export const useCreateTemplate = () => {
