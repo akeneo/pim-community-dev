@@ -6,6 +6,7 @@
 - PIM-10966: Fix error when toggling between tabs on an export profile editing page
 - PIM-10972: Fix shifting data during import
 - PIM-10950: Fix wrongly removed code filter on attribute page
+- PIM-11057: Fix ScalarValue::__toString does not cast wrapped boolean value correctly
 - PIM-10960: Fix no violation raised when importing variant with already existing siblings
 - PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
 - PIM-10779: Fix lowercase on get attribute group code for dqi activation
@@ -92,7 +93,9 @@
 - PIM-11023 : Fix product search containing underscores
 - PIM-11016 : Improve the clean-removed-attributes command
 - PIM-11050 : On "locale" DIV, missing the indication of the country
+- PIM-11039: Fix export with duplicated labels
 - PIM-10869: Image upload fields now only accept images
+- PIM-11063: Fix validation of generated identifiers
 
 ## Improvements
 

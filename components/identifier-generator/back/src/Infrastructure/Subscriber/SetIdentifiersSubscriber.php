@@ -17,7 +17,6 @@ use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGenera
 use Akeneo\Pim\Automation\IdentifierGenerator\Infrastructure\Event\UnableToSetIdentifierEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
@@ -114,11 +113,7 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         $product->addValue($value);
         $product->setIdentifier($newIdentifier);
 
-        $violations = $this->updatePropertyPath(
-            $this->validator->validate($product, $this->getProductConstraints($product)),
-            'identifier'
-        );
-
+        $violations = $this->validator->validate($product, null, ['identifiers']);
         $violations->addAll($this->updatePropertyPath(
             $this->validator->validate($value, $this->getValueConstraints($value)),
             $identifierGenerator->target()->asString()
@@ -153,25 +148,6 @@ final class SetIdentifiersSubscriber implements EventSubscriberInterface
         }
 
         return $this->identifierGenerators;
-    }
-
-    /**
-     * Returns Symfony constraints defined here:
-     * src/Akeneo/Pim/Enrichment/Bundle/Resources/config/validation/product.yml
-     *
-     * @return Constraint[]
-     */
-    private function getProductConstraints(ProductInterface $product): array
-    {
-        $metadata = $this->metadataFactory->getMetadataFor($product);
-        Assert::isInstanceOf($metadata, ClassMetadataInterface::class);
-        $propertiesMetadata = $metadata->getPropertyMetadata('identifier');
-        $constraints = [new UniqueProductEntity()];
-        foreach ($propertiesMetadata as $propertyMetadata) {
-            $constraints = \array_merge($constraints, $propertyMetadata->getConstraints());
-        }
-
-        return $constraints;
     }
 
     /**

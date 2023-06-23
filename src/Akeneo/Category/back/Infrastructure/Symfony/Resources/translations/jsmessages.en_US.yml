@@ -127,7 +127,8 @@ akeneo.category:
             confirmation_message: Are you sure want to load this set of attributes?
             button:
                 load: Load set of attributes
-
+            notification:
+                success: Attributes successfully created
 
     template_list:
         columns:
