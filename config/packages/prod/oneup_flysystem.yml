@@ -14,4 +14,4 @@ oneup_flysystem:
                 location: '%kernel.project_dir%/var/file_storage/category'
         local_storage_adapter:
             local:
-                location: '/'
+                location: '%local_storage_root%'

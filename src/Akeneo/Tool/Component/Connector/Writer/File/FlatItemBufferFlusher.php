@@ -84,22 +84,21 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $headers = $this->sortHeaders($buffer->getHeaders());
         $headers = $this->columnPresenter->present($headers, $this->stepExecution->getJobParameters()->all());
 
-        $hollowItem = array_fill_keys($headers, '');
-
         $writer = $this->getWriter($filePath, $writerOptions);
         if ([] !== $headers) {
             $writer->addRow(Row::fromValues($headers));
         }
 
         foreach ($buffer as $incompleteItem) {
-            $incompleteKeys = $this->columnPresenter->present(
-                array_keys($incompleteItem),
-                $this->stepExecution->getJobParameters()->all()
-            );
+            $item = array_fill_keys($headers, '');
+            foreach ($incompleteItem as $key => $value) {
+                $headerName = $headers[$key] ?? null;
+                if (null === $headerName) {
+                    continue;
+                }
+                $item[$headerName] = $value;
+            }
 
-            $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
-
-            $item = array_replace($hollowItem, $incompleteItem);
             $writer->addRow(Row::fromValues($item));
 
             if (null !== $this->stepExecution) {
@@ -135,7 +134,6 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $headers = $this->sortHeaders($buffer->getHeaders());
         $headers = $this->columnPresenter->present($headers, $this->stepExecution->getJobParameters()->all());
 
-        $hollowItem = array_fill_keys($headers, '');
         $writer = null;
         $filePath = '';
         foreach ($buffer as $count => $incompleteItem) {
@@ -153,14 +151,14 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 }
             }
 
-            $incompleteKeys = $this->columnPresenter->present(
-                array_keys($incompleteItem),
-                $this->stepExecution->getJobParameters()->all()
-            );
-
-            $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
-
-            $item = array_replace($hollowItem, $incompleteItem);
+            $item = array_fill_keys($headers, '');
+            foreach ($incompleteItem as $key => $value) {
+                $headerName = $headers[$key] ?? null;
+                if (null === $headerName) {
+                    continue;
+                }
+                $item[$headerName] = $value;
+            }
             $writer->addRow(Row::fromValues($item));
             $writtenLinesCount++;
 
