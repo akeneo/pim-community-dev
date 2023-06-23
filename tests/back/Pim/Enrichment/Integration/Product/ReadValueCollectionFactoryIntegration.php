@@ -87,10 +87,11 @@ class ReadValueCollectionFactoryIntegration extends TestCase
 
         $sql = <<<SQL
 UPDATE pim_catalog_product SET raw_values = :raw_values
-WHERE identifier = 'my_product';
+WHERE uuid=:product_uuid;
 SQL;
         $this->get('database_connection')->executeQuery($sql, [
             'raw_values' => json_encode($rawValues),
+            'product_uuid' => $product->getUuid()->getBytes(),
         ]);
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
