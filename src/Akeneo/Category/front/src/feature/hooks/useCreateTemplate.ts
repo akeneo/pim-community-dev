@@ -11,7 +11,7 @@ type Form = {
 
 type MutationResult = {
   template_uuid: string;
-}
+};
 
 export type CreateTemplateError = {
   templateCode: string[] | null;
@@ -31,6 +31,6 @@ export const useCreateTemplate = () => {
         method: 'POST',
         body: JSON.stringify(requestPayload),
       }
-    )
+    );
   });
 };

@@ -5,7 +5,7 @@ import {Button, Field, Helper, Link, Modal, ProductCategoryIllustration, TextInp
 import styled from 'styled-components';
 import {CategoryTreeModel} from '../../models';
 import {CreateTemplateError, useCreateTemplate} from '../../hooks/useCreateTemplate';
-import {BadRequestError} from "../../tools/apiFetch";
+import {BadRequestError} from '../../tools/apiFetch';
 
 type Form = {
   label: string;
@@ -24,7 +24,7 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
   const mutation = useCreateTemplate();
 
   let error: CreateTemplateError | null = null;
-  if (mutation.error instanceof BadRequestError){
+  if (mutation.error instanceof BadRequestError) {
     error = mutation.error.data;
   }
   const [form, setForm] = useState<Form>({label: '', code: ''});
@@ -60,7 +60,7 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
         onError: () => {
           notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
         },
-        onSuccess: (data) => {
+        onSuccess: data => {
           redirectToTemplate(categoryTree.id, data.template_uuid);
         },
       }
