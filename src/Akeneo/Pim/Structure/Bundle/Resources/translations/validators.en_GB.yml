@@ -1,6 +1,6 @@
 pim_structure:
   validation:
     association_type:
-      cannot_be_quantified_and_two_way: Association type can be either quantified or two-way
+      cannot_be_quantified_and_two_way: Association type can be either with quantities or two-way
     available_locales:
       is_variant_axis_without_available_locales: An attribute cannot become locale specific if it is already used as an axis in a variant family.

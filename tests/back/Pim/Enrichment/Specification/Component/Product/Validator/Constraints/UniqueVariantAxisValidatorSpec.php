@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantA
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxisValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueAxesCombinationSet;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -325,6 +326,51 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 [
                     '%values%' => '[blue]',
                     '%attributes%' => 'color',
+                    '%validated_entity%' => 'my_identifier',
+                    '%sibling_with_same_value%' => 'sibling2',
+                ]
+            )
+            ->willReturn($violation);
+        $violation->atPath('attribute')->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate($entity, $constraint);
+    }
+
+    function it_raises_a_violation_if_there_is_a_duplicate_boolean_value_in_any_sibling_variant_product(
+        ExecutionContextInterface $context,
+        EntityWithFamilyVariantAttributesProvider $axesProvider,
+        GetValuesOfSiblings $getValuesOfSiblings,
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $parent,
+        AttributeInterface $autoExposure,
+        UniqueVariantAxis $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $autoExposure->getCode()->willReturn('auto_exposure');
+        $axes = [$autoExposure];
+
+        $entity = new Product();
+        $entity->setIdentifier('my_identifier');
+        $entity->setParent($parent->getWrappedObject());
+        $entity->setFamilyVariant($familyVariant->getWrappedObject());
+        $entity->addValue(ScalarValue::value('auto_exposure', false));
+
+        $axesProvider->getAxes($entity)->willReturn($axes);
+
+        $getValuesOfSiblings->for($entity, ['auto_exposure'])->willReturn(
+            [
+                'sibling1' => new WriteValueCollection([ScalarValue::value('auto_exposure', null)]),
+                'sibling2' => new WriteValueCollection([ScalarValue::value('auto_exposure', false)]),
+            ]
+        );
+
+        $context
+            ->buildViolation(
+                UniqueVariantAxis::DUPLICATE_VALUE_IN_VARIANT_PRODUCT,
+                [
+                    '%values%' => '0',
+                    '%attributes%' => 'auto_exposure',
                     '%validated_entity%' => 'my_identifier',
                     '%sibling_with_same_value%' => 'sibling2',
                 ]

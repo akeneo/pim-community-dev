@@ -12,6 +12,9 @@ Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationC
           value: code
           message: akeneo_connectivity.connection.connect.apps.constraint.response_type.must_be_code
     scope:
+      - Type:
+          type: string
+          message: akeneo_connectivity.connection.connect.apps.constraint.scope.must_be_a_string
       - Length:
           maxMessage: akeneo_connectivity.connection.connect.apps.constraint.scope.too_long
           max: 1000
