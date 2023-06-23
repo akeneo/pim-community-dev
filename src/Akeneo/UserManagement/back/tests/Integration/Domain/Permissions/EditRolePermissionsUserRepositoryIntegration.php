@@ -52,7 +52,7 @@ class EditRolePermissionsUserRepositoryIntegration extends TestCase
     public function testItIsLastRoleWithEditRolePermissionsForUser(): void
     {
         $userWithEditRole = $this->userLoader->createUser('userWithEditRole', [], ['ROLE_WITH_EDIT_ROLE']);
-        $isLastEditRoleUser = $this->editRolePermissionsUserRepository->isLastRoleWithEditRolePermissionsRoleForUser(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
+        $isLastEditRoleUser = $this->editRolePermissionsUserRepository->isLastRoleWithEditRolePermissionsRoleForUser(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getUserIdentifier());
         $this::assertTrue($isLastEditRoleUser);
     }
 
@@ -60,14 +60,14 @@ class EditRolePermissionsUserRepositoryIntegration extends TestCase
     {
         $userWithEditRole = $this->userLoader->createUser('userWithEditRole', [], ['ROLE_WITH_EDIT_ROLE']);
         $this->userLoader->createUser('userWithEditRole2', [], ['ROLE_WITH_EDIT_ROLE']);
-        $isLastEditRoleUser = $this->editRolePermissionsUserRepository->isLastRoleWithEditRolePermissionsRoleForUser(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
+        $isLastEditRoleUser = $this->editRolePermissionsUserRepository->isLastRoleWithEditRolePermissionsRoleForUser(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getUserIdentifier());
         $this::assertFalse($isLastEditRoleUser);
     }
 
     public function testItIsLastUserWithEditRolePermissions(): void
     {
         $userWithEditRole = $this->userLoader->createUser('userWithEditRole', [], ['ROLE_WITH_EDIT_ROLE']);
-        $isLastEditRoleUser = $this->editRolePermissionsUserRepository->isLastUserWithEditRolePermissionsRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
+        $isLastEditRoleUser = $this->editRolePermissionsUserRepository->isLastUserWithEditRolePermissionsRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getUserIdentifier());
         $this::assertTrue($isLastEditRoleUser);
     }
 
@@ -75,14 +75,14 @@ class EditRolePermissionsUserRepositoryIntegration extends TestCase
     {
         $userWithEditRole = $this->userLoader->createUser('userWithEditRole', [], ['ROLE_WITH_EDIT_ROLE']);
         $this->userLoader->createUser('userWithEditRole2', [], ['ROLE_WITH_EDIT_ROLE']);
-        $isLastEditRoleUser = $this->editRolePermissionsUserRepository->isLastUserWithEditRolePermissionsRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getId());
+        $isLastEditRoleUser = $this->editRolePermissionsUserRepository->isLastUserWithEditRolePermissionsRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithEditRole->getUserIdentifier());
         $this::assertFalse($isLastEditRoleUser);
     }
 
     public function testThereIsNoUserWithEditRolePermissionsLeft(): void
     {
         $userWithoutEditRole = $this->userLoader->createUser('userWithoutEditRole', [], ['ROLE_WITHOUT_EDIT_ROLE']);
-        $isLastEditRoleUser = $this->editRolePermissionsUserRepository->isLastUserWithEditRolePermissionsRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithoutEditRole->getId());
+        $isLastEditRoleUser = $this->editRolePermissionsUserRepository->isLastUserWithEditRolePermissionsRole(['ROLE_WITHOUT_EDIT_ROLE'], $userWithoutEditRole->getUserIdentifier());
         $this::assertFalse($isLastEditRoleUser);
     }
 

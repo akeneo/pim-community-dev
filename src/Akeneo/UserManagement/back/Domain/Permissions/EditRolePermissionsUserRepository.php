@@ -28,30 +28,30 @@ class EditRolePermissionsUserRepository
     /**
      * @param array<string> $roles
      */
-    public function isLastUserWithEditRolePermissionsRole(array $roles, int $identifier): bool
+    public function isLastUserWithEditRolePermissionsRole(array $roles, string $username): bool
     {
         $editRoleLeft = $this->getRoleLeftWithEditRolePermissions($roles);
         if (count($editRoleLeft) <= 1) {
-            return $this->isUserLeftWithEditRolePermissions($identifier);
+            return $this->isUserLeftWithEditRolePermissions($username);
         }
         return false;
     }
 
-    public function isLastRoleWithEditRolePermissionsRoleForUser(array $roles, int $identifier): bool
+    public function isLastRoleWithEditRolePermissionsRoleForUser(array $roles, string $username): bool
     {
         $editRoleLeft = $this->getRoleLeftWithEditRolePermissions($roles);
         if (count($editRoleLeft) < 1) {
-            return $this->isUserLeftWithEditRolePermissions($identifier);
+            return $this->isUserLeftWithEditRolePermissions($username);
         }
         return false;
     }
 
-    private function isUserLeftWithEditRolePermissions(int $identifier): bool
+    private function isUserLeftWithEditRolePermissions(string $username): bool
     {
         $usersWithEditRoleRoles = $this->getUsersWithEditRoleRoles();
         if (count($usersWithEditRoleRoles) <= 1) {
             $lastUser = $usersWithEditRoleRoles[0] ?? null;
-            return $lastUser && $lastUser->getId() === $identifier;
+            return $lastUser && $lastUser->getUserIdentifier() === $username;
         }
         return false;
     }
