@@ -11,7 +11,7 @@ type Form = {
 
 type MutationResult = {
   template_uuid: string;
-}
+};
 
 export type CreateTemplateError = {
   templateCode: string[] | null;
