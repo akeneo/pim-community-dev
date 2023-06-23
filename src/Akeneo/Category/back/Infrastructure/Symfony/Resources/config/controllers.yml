@@ -122,6 +122,12 @@ services:
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
 
+    Akeneo\Category\Infrastructure\Controller\InternalApi\LoadAttributeSetController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@category.command.message_bus'
+
     Akeneo\Category\Infrastructure\Controller\InternalApi\AddAttributeController:
         public: true
         arguments:
@@ -138,3 +144,10 @@ services:
         public: true
         arguments:
             - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\TrackUsageOfLoadPredefinedAttributesController:
+        public: true
+        arguments:
+            - '@oro_security.security_facade'
+            - '@Akeneo\Category\Domain\Query\GetTemplate'
+            - '@logger'

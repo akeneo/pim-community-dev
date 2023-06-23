@@ -86,8 +86,6 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         ClassMetadataInterface $valueMetadata,
         PropertyMetadataInterface $valuePropertyMetadata,
-        ClassMetadataInterface $productMetadata,
-        PropertyMetadataInterface $productPropertyMetadata,
     ): void {
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = IdentifierValue::value('sku', true, 'AKN');
@@ -98,11 +96,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->getCategoryCodes()->shouldBeCalled()->willReturn([]);
         $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
-        $unique = new UniqueProductEntity();
-        $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
-        $productMetadata->getPropertyMetadata('identifier')->shouldBeCalled()->willReturn([$productPropertyMetadata]);
-        $productPropertyMetadata->getConstraints()->shouldBeCalled()->willReturn([]);
-        $validator->validate($product, [$unique])
+        $validator->validate($product, null, ['identifiers'])
             ->shouldBeCalled()
             ->willReturn(new ConstraintViolationList([]));
 
@@ -128,8 +122,6 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         LoggerInterface $logger,
         ProductInterface $product,
         MetadataFactoryInterface $metadataFactory,
-        ClassMetadataInterface $productMetadata,
-        PropertyMetadataInterface $productPropertyMetadata,
         ClassMetadataInterface $valueMetadata,
         PropertyMetadataInterface $valuePropertyMetadata,
     ): void {
@@ -142,11 +134,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->getCategoryCodes()->shouldBeCalled()->willReturn([]);
         $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
-        $unique = new UniqueProductEntity();
-        $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
-        $productMetadata->getPropertyMetadata('identifier')->shouldBeCalled()->willReturn([$productPropertyMetadata]);
-        $productPropertyMetadata->getConstraints()->shouldBeCalled()->willReturn([]);
-        $validator->validate($product, [$unique])
+        $validator->validate($product, null, ['identifiers'])
             ->shouldBeCalled()
             ->willReturn(new ConstraintViolationList([
                 new ConstraintViolation('', '', [], '', '', ''),
@@ -175,8 +163,6 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         MetadataFactoryInterface $metadataFactory,
         ClassMetadataInterface $valueMetadata,
         PropertyMetadataInterface $valuePropertyMetadata,
-        ClassMetadataInterface $productMetadata,
-        PropertyMetadataInterface $productPropertyMetadata,
     ): void {
         $identifierGeneratorRepository->getAll()->shouldBeCalled()->willReturn([$this->getIdentifierGenerator()]);
         $value = IdentifierValue::value('sku', true, 'AKN');
@@ -187,11 +173,7 @@ class SetIdentifiersSubscriberSpec extends ObjectBehavior
         $product->getCategoryCodes()->shouldBeCalled()->willReturn([]);
         $product->getValues()->shouldBeCalled()->willReturn(new WriteValueCollection([]));
 
-        $unique = new UniqueProductEntity();
-        $metadataFactory->getMetadataFor($product)->shouldBeCalled()->willReturn($productMetadata);
-        $productMetadata->getPropertyMetadata('identifier')->shouldBeCalled()->willReturn([$productPropertyMetadata]);
-        $productPropertyMetadata->getConstraints()->shouldBeCalled()->willReturn([]);
-        $validator->validate($product, [$unique])
+        $validator->validate($product, null, ['identifiers'])
             ->shouldBeCalled()
             ->willReturn(new ConstraintViolationList([]));
 

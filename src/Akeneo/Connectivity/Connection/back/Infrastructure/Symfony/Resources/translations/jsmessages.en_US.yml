@@ -271,6 +271,7 @@ akeneo_connectivity.connection:
                     not_blank: The redirect_uri is required.
                     must_be_url: The redirect_uri is not a valid url.
                 scope:
+                    must_be_a_string: The scope list must be a string separated by spaces.
                     too_long: The scope list must not contain more than 1000 characters.
         custom_apps:
             creation_limit_reached: You reached the limit of 20 custom apps.
