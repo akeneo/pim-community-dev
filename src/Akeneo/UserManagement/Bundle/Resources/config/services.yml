@@ -49,7 +49,12 @@ services:
             - '@security.password_hasher'
             - '@translator'
 
-    Akeneo\UserManagement\Domain\Permissions\CheckEditRolePermissions:
+    Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleRepository:
         arguments:
             - '@pim_user.repository.role_with_permissions'
             - '@pim_user.repository.role'
+
+    Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserRepository:
+        arguments:
+            - '@pim_user.repository.role'
+            - '@Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleRepository'

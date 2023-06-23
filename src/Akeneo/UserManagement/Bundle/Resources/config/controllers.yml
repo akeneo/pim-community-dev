@@ -22,7 +22,7 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\UserManagement\Domain\PasswordCheckerInterface'
             - '@Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserCommandHandler'
-            - '@Akeneo\UserManagement\Domain\Permissions\CheckEditRolePermissions'
+            - '@Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserRepository'
 
     pim_user.controller.security_rest:
         public: true
@@ -80,7 +80,7 @@ services:
             - '@oro_security.acl.sid_manager'
             - '@pim_user.form.handler.acl_role'
             - '@translator'
-            - '@Akeneo\UserManagement\Domain\Permissions\CheckEditRolePermissions'
+            - '@Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleRepository'
         calls:
             - [ 'setContainer', [ '@service_container' ] ]
 

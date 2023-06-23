@@ -14,7 +14,7 @@ use Akeneo\UserManagement\Application\Command\UpdateUserCommand\UpdateUserComman
 use Akeneo\UserManagement\Application\Exception\UserNotFoundException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Domain\PasswordCheckerInterface;
-use Akeneo\UserManagement\Domain\Permissions\CheckEditRolePermissions;
+use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserRepository;
 use Akeneo\UserManagement\ServiceApi\ViolationsException;
 use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -59,7 +59,7 @@ final class UserController
         private readonly SecurityFacade           $securityFacade,
         private readonly PasswordCheckerInterface $passwordChecker,
         private readonly UpdateUserCommandHandler $updateUserCommandHandler,
-        private readonly CheckEditRolePermissions $checkEditRolePermissions,
+        private readonly EditRolePermissionsUserRepository $editRolePermissionsUserRepository,
     ) {
     }
 
@@ -129,7 +129,7 @@ final class UserController
         }
 
         if (isset($data['roles'])) {
-            if ($this->checkEditRolePermissions->isLastRoleWithEditPrivilegeRoleForUser($data['roles'], $identifier)) {
+            if ($this->editRolePermissionsUserRepository->isLastRoleWithEditPrivilegeRoleForUser($data['roles'], $identifier)) {
                 $violation = new ConstraintViolation(
                     message: $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_privileges'),
                     messageTemplate: null,
@@ -289,7 +289,7 @@ final class UserController
             return new Response(null, Response::HTTP_FORBIDDEN);
         }
 
-        if ($this->checkEditRolePermissions->isLastUserWithEditPrivilegeRole($user->getRoles(), $identifier)) {
+        if ($this->editRolePermissionsUserRepository->isLastUserWithEditPrivilegeRole($user->getRoles(), $identifier)) {
             return new JsonResponse(['message' => $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_privileges')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 

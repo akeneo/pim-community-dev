@@ -5,7 +5,8 @@ namespace Akeneo\UserManagement\Bundle\Form\Handler;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\Domain\Permissions\CheckEditRolePermissions;
+use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleRepository;
+use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
@@ -43,7 +44,7 @@ class AclRoleHandler
         private readonly FormFactory $formFactory,
         private array $privilegeConfig,
         private readonly RequestStack $requestStack,
-        private readonly CheckEditRolePermissions $checkEditRolePermissions,
+        private readonly EditRolePermissionsRoleRepository $editRolePermissionsRoleRepository,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -91,10 +92,10 @@ class AclRoleHandler
                         $formPrivileges = array_merge($formPrivileges, $privileges);
                     }
 
-                    $minimumEditRoleRoles = $this->checkEditRolePermissions->getRolesWithMinimumEditRolePrivileges();
+                    $minimumEditRoleRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePrivileges();
                     if (count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
-                        $editRoleActivePrivileges = array_filter($formPrivileges, fn ($privilege) => in_array($privilege->getIdentity()->getId(), CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES) && array_filter($privilege->getPermissions()->toArray(), fn ($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL));
-                        if (count($editRoleActivePrivileges) < count(CheckEditRolePermissions::MINIMUM_EDITROLE_PRIVILEGES)) {
+                        $editRoleActivePrivileges = array_filter($formPrivileges, fn ($privilege) => in_array($privilege->getIdentity()->getId(), MinimumEditRolePermission::getAllValues()) && array_filter($privilege->getPermissions()->toArray(), fn ($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL));
+                        if (count($editRoleActivePrivileges) < count(MinimumEditRolePermission::getAllValues())) {
                             $context
                                 ->buildViolation($this->translator->trans('pim_user.controller.role.message.cannot_remove_last_edit_role_privileges'))
                                 ->addViolation();
