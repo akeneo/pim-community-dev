@@ -652,8 +652,20 @@ class SqlGetConnectorProductsIntegration extends TestCase
 
     private function getProductData(string $identifier): array
     {
-        return $this->connection->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = :identifier',
+        return $this->connection->executeQuery(<<<SQL
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
+SELECT BIN_TO_UUID(uuid) AS uuid, created, updated
+FROM pim_catalog_product
+INNER JOIN pim_catalog_product_unique_data pcpud
+    ON pcpud.product_uuid = pim_catalog_product.uuid
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
+WHERE raw_data = :identifier
+SQL,
             ['identifier' => $identifier]
         )->fetchAssociative();
     }

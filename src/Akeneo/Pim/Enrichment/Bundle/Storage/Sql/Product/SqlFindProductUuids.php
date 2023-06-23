@@ -33,8 +33,13 @@ final class SqlFindProductUuids
             return [];
         }
 
-        $result = $this->connection->fetchAllKeyValue(
-            'SELECT identifier, BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier IN (:identifiers)',
+        $result = $this->connection->fetchAllKeyValue(<<<SQL
+SELECT raw_data AS identifier, BIN_TO_UUID(product_uuid) AS uuid
+FROM pim_catalog_product_unique_data pcpud
+INNER JOIN pim_catalog_attribute ON pim_catalog_attribute.id = pcpud.attribute_id 
+WHERE raw_data IN (:identifiers)
+AND main_identifier = 1
+SQL,
             ['identifiers' => $identifiers],
             ['identifiers' => Connection::PARAM_STR_ARRAY]
         );
