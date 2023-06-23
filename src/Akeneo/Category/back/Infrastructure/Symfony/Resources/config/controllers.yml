@@ -62,7 +62,7 @@ services:
         public: true
         arguments:
             - '@oro_security.security_facade'
-            - '@category.command.message_bus'
+            - '@Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommandHandler'
 
     Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateTemplateController:
         public: true

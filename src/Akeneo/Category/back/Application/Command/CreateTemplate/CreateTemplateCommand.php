@@ -36,10 +36,8 @@ final class CreateTemplateCommand
         array $data,
     ) {
         Assert::string($data['code']);
-        Assert::notEmpty($data['code']);
         Assert::isMap($data['labels']);
         Assert::allNullOrString($data['labels']);
-        Assert::allString($data['labels']);
 
         $this->templateCode = $data['code'];
         $this->labels = $data['labels'];

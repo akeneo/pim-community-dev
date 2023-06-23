@@ -30,8 +30,8 @@ akeneo.category:
             category_tree: Category tree
             link: Learn more about category templates
         edit: Edit template
-        notification_success: Template activated successfully
-        notification_error: Template could not be activated
+        notification_success: Category template created successfully
+        notification_error: Category template could not be created
         not_found: There is no active template for this category
         properties:
             general_properties: General properties

@@ -7,7 +7,6 @@ import {
   useRouter,
   useSecurity,
   useTranslate,
-  useUserContext,
 } from '@akeneo-pim-community/shared';
 import {CategoryTreeModel, Template} from '../../models';
 import styled from 'styled-components';
@@ -31,10 +30,10 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   const notify = useNotify();
   const [isConfirmationModalOpen, openConfirmationModal, closeConfirmationModal] = useBooleanState();
   const [categoryTreeToDelete, setCategoryTreeToDelete] = useState<CategoryTreeModel | null>(null);
-  const [categoryTreeForTemplateCreation, setCategoryTreeForTemplateCreation] = useState<CategoryTreeModel | null>(null);
+  const [categoryTreeForTemplateCreation, setCategoryTreeForTemplateCreation] = useState<CategoryTreeModel | null>(
+    null
+  );
   const [displayCategoryTemplatesColumn, setDisplayCategoryTemplatesColumn] = useState<boolean>(false);
-  const userContext = useUserContext();
-  const catalogLocale = userContext.get('catalogLocale');
 
   const followCategoryTree = useCallback(
     (tree: CategoryTreeModel): void => {
@@ -76,8 +75,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     closeConfirmationModal();
   };
 
-  const [isCreateTemplateModalOpen, openCreateTemplateModal, closeCreateTemplateModal] =
-    useBooleanState(false);
+  const [isCreateTemplateModalOpen, openCreateTemplateModal, closeCreateTemplateModal] = useBooleanState(false);
 
   const handleCreateTemplate = (categoryTree: CategoryTreeModel) => {
     setCategoryTreeForTemplateCreation(categoryTree);
@@ -90,7 +88,8 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
         treeId: treeId,
         templateUuid: templateUuid,
       })
-    )};
+    );
+  };
 
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
@@ -210,7 +209,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         ghost
                         level="tertiary"
                         size={'small'}
-                        onClick={() => {tree.templateUuid ? redirectToTemplate(tree.id, tree.templateUuid) : handleCreateTemplate(tree)}}
+                        onClick={() => {
+                          tree.templateUuid
+                            ? redirectToTemplate(tree.id, tree.templateUuid)
+                            : handleCreateTemplate(tree);
+                        }}
                         disabled={!tree.hasOwnProperty('productsNumber')}
                       >
                         {translate(
@@ -235,10 +238,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
             </Table.Body>
           </Table>
           {isCreateTemplateModalOpen && categoryTreeForTemplateCreation && (
-            <CreateTemplateModal
-              categoryTree={categoryTreeForTemplateCreation}
-              onClose={closeCreateTemplateModal}
-            />
+            <CreateTemplateModal categoryTree={categoryTreeForTemplateCreation} onClose={closeCreateTemplateModal} />
           )}
           {isConfirmationModalOpen && categoryTreeToDelete && (
             <DeleteCategoryModal

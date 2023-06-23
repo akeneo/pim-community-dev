@@ -7,35 +7,30 @@ type Form = {
   code: string;
   locale: string;
   label: string | null;
-}
-
-type CreateAttributeErrors = {[property: string]: string[]};
-
-type ResponseError = {
-  error: {
-    property: string;
-    message: string;
-  };
 };
 
-type ApiResponseError = ResponseError[];
+type MutationResult = {
+  template_uuid: string;
+}
+
+export type CreateTemplateError = {
+  templateCode: string[];
+  labels: {[locale: string]: string[]};
+};
 
 export const useCreateTemplate = () => {
   const router = useRouter();
-  return useMutation<void, BadRequestError<CreateAttributeErrors>, Form>(async (form: Form) => {
+  return useMutation<MutationResult, BadRequestError<CreateTemplateError>, Form>(async (form: Form) => {
     const requestPayload = {
       code: form.code,
-      labels: {[form.locale]: form.label}
+      labels: {[form.locale]: form.label},
     };
-    return apiFetch<void, ApiResponseError>(
+    return apiFetch<MutationResult, CreateTemplateError>(
       router.generate('pim_category_template_rest_create', {categoryTreeId: form.categoryTreeId}),
       {
         method: 'POST',
         body: JSON.stringify(requestPayload),
       }
-    ).catch((error: BadRequestError<ApiResponseError>) => {
-
-    })
+    )
   });
-
-}
+};

@@ -14,6 +14,7 @@ use Akeneo\Category\Domain\Model\Enrichment\Template;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Domain\ValueObject\LabelCollection;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateCode;
+use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -31,12 +32,9 @@ class CreateTemplateCommandHandler
     ) {
     }
 
-    public function __invoke(CreateTemplateCommand $command): void
+    public function __invoke(CreateTemplateCommand $command): TemplateUuid
     {
         $categoryTreeId = $command->categoryTreeId;
-        $templateCode = TemplateCode::fromString($command->templateCode);
-        $templateLabelCollection = LabelCollection::fromArray($command->labels);
-
         $categoryTree = $this->getCategory->byId($categoryTreeId->getValue());
         if ($categoryTree === null) {
             throw new CategoryTreeNotFoundException();
@@ -47,7 +45,10 @@ class CreateTemplateCommandHandler
             throw new ViolationsException($violations);
         }
 
-        if (!$this->validateTemplateCreation($categoryTree, $templateCode)) {
+        $templateCode = TemplateCode::fromString($command->templateCode);
+        $templateLabelCollection = LabelCollection::fromArray($command->labels);
+
+        if (!$this->validateTemplateCreation($categoryTree)) {
             throw new \RuntimeException(\sprintf("Template for category tree '%s' cannot be activated.", $categoryTree->getCode()));
         }
         $templateToSave = Template::create(
@@ -58,6 +59,8 @@ class CreateTemplateCommandHandler
 
         $this->categoryTemplateSaver->insert($templateToSave);
         $this->categoryTreeTemplateSaver->insert($templateToSave);
+
+        return $templateToSave->getUuid();
     }
 
     /**
@@ -68,7 +71,7 @@ class CreateTemplateCommandHandler
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
      */
-    private function validateTemplateCreation(Category $categoryTree, TemplateCode $templateCode): bool
+    private function validateTemplateCreation(Category $categoryTree): bool
     {
         if (($this->getCategoryTemplateByCategoryTree)($categoryTree->getId())) {
             return false;
