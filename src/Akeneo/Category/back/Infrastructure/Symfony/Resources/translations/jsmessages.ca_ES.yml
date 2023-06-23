@@ -42,7 +42,6 @@ akeneo.category:
         translations:
           title: Traduccions d'etiquetes
         error_message: Hi ha valors no vàlids a la pàgina.
-        unsaved_changes: Aquests valors no es desaran si sortiu de la pàgina.
     add_attribute:
       no_attribute_title: Crea el teu primer atribut
       no_attribute_instructions: Definiu el contingut que voleu associar a les vostres categories afegint atributs de text, àrea de text o imatge a aquesta plantilla.

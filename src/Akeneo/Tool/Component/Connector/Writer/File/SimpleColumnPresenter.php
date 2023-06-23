@@ -8,6 +8,6 @@ class SimpleColumnPresenter implements ColumnPresenterInterface
 {
     public function present(array $data, array $context): array
     {
-        return $data;
+        return \array_combine($data, $data);
     }
 }
