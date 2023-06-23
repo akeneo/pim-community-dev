@@ -1,5 +1,7 @@
 # 6.0.x
 
+- PIM-xxxxx: increase the oro_access_role label column to VARCHAR(255)
+
 # 6.0.87 (2023-06-14)
 
 # 6.0.86 (2023-05-29)
