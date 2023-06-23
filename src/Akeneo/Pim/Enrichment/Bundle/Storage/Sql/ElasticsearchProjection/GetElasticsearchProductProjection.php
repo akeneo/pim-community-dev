@@ -131,7 +131,13 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
     {
         if ($this->newCompletenessTableExists()) {
             $sql = <<<SQL
-WITH
+WITH 
+    main_identifier AS (
+        SELECT id
+        FROM pim_catalog_attribute
+        WHERE main_identifier = 1
+        LIMIT 1
+    ),
     product as (
         SELECT
             product.uuid,
@@ -158,8 +164,9 @@ WITH
             CASE WHEN root_product_model.id IS NOT NULL THEN 2 ELSE 1 END AS product_lvl_in_attribute_set
         FROM
             pim_catalog_product product
-            INNER JOIN pim_catalog_product_unique_data ON pim_catalog_product_unique_data.product_uuid = product.uuid
-            INNER JOIN pim_catalog_attribute ON pim_catalog_attribute.id = pim_catalog_product_unique_data.attribute_id
+            LEFT JOIN pim_catalog_product_unique_data 
+                ON pim_catalog_product_unique_data.product_uuid = product.uuid
+                AND pim_catalog_product_unique_data.attribute_id = (SELECT id FROM main_identifier)
             LEFT JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
             LEFT JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
             LEFT JOIN pim_catalog_family family ON family.id = product.family_id
@@ -167,7 +174,6 @@ WITH
             LEFT JOIN pim_catalog_attribute attribute ON attribute.id = family.label_attribute_id
         WHERE
             product.uuid IN (:uuids)
-            AND pim_catalog_attribute.main_identifier = 1
     ),
     product_categories AS (
         SELECT
@@ -280,7 +286,13 @@ SQL;
         // TODO remove CPM-1042
         } else {
             $sql = <<<SQL
-WITH
+WITH 
+    main_identifier AS (
+        SELECT id
+        FROM pim_catalog_attribute
+        WHERE main_identifier = 1
+        LIMIT 1
+    ),
     product as (
         SELECT
             product.uuid,
@@ -307,8 +319,9 @@ WITH
             CASE WHEN root_product_model.id IS NOT NULL THEN 2 ELSE 1 END AS product_lvl_in_attribute_set
         FROM
             pim_catalog_product product
-            INNER JOIN pim_catalog_product_unique_data ON pim_catalog_product_unique_data.product_uuid = product.uuid
-            INNER JOIN pim_catalog_attribute ON pim_catalog_attribute.id = pim_catalog_product_unique_data.attribute_id
+            LEFT JOIN pim_catalog_product_unique_data
+                ON pim_catalog_product_unique_data.product_uuid = product.uuid
+                AND pimè_catalog_product_unique_data.attribute_id = (SELECT id FROM main_identifier)
             LEFT JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
             LEFT JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
             LEFT JOIN pim_catalog_family family ON family.id = product.family_id
@@ -316,7 +329,6 @@ WITH
             LEFT JOIN pim_catalog_attribute attribute ON attribute.id = family.label_attribute_id
         WHERE
             product.uuid IN (:uuids)
-            AND pim_catalog_attribute.main_identifier = 1
     ),
     product_categories AS (
         SELECT
