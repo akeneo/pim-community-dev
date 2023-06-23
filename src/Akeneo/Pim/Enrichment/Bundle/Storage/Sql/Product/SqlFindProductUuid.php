@@ -19,7 +19,8 @@ final class SqlFindProductUuid implements FindId
 
     public function fromIdentifier(string $identifier): null|string
     {
-        $uuid = $this->connection->executeQuery(<<<SQL
+        $uuid = $this->connection->executeQuery(
+            <<<SQL
 SELECT BIN_TO_UUID(product_uuid) AS uuid
 FROM pim_catalog_product_unique_data
 INNER JOIN pim_catalog_attribute ON pim_catalog_product_unique_data.attribute_id = pim_catalog_attribute.id

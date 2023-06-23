@@ -32,7 +32,8 @@ class SqlGetProductUuids implements GetProductUuids
             return [];
         }
 
-        $result = $this->connection->fetchAllAssociative(<<<SQL
+        $result = $this->connection->fetchAllAssociative(
+            <<<SQL
 WITH main_identifier AS (
     SELECT id
     FROM pim_catalog_attribute
