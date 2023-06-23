@@ -20,17 +20,22 @@ export type CreateTemplateError = {
 
 export const useCreateTemplate = () => {
   const router = useRouter();
-  return useMutation<MutationResult, BadRequestError<CreateTemplateError>, Form>(async (form: Form) => {
-    const requestPayload = {
-      code: form.code,
-      labels: {[form.locale]: form.label},
-    };
-    return apiFetch<MutationResult, CreateTemplateError>(
-      router.generate('pim_category_template_rest_create', {categoryTreeId: form.categoryTreeId}),
-      {
-        method: 'POST',
-        body: JSON.stringify(requestPayload),
-      }
-    )
-  });
+  return useMutation<MutationResult, BadRequestError<CreateTemplateError>, Form>(
+    async (form: Form) => {
+      const requestPayload = {
+        code: form.code,
+        labels: {[form.locale]: form.label},
+      };
+      return apiFetch<MutationResult, CreateTemplateError>(
+        router.generate('pim_category_template_rest_create', {categoryTreeId: form.categoryTreeId}),
+        {
+          method: 'POST',
+          body: JSON.stringify(requestPayload),
+        }
+      );
+    },
+    {
+      useErrorBoundary: false,
+    }
+  );
 };

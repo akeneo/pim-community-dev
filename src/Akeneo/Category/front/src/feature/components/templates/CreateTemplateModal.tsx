@@ -1,11 +1,12 @@
-import {NotificationLevel, translate, useNotify, useRouter} from '@akeneo-pim-community/shared';
-import {useState} from 'react';
+import {NotificationLevel, translate, useNotify} from '@akeneo-pim-community/shared';
 import {userContext} from '@akeneo-pim-community/shared/lib/dependencies/user-context';
 import {Button, Field, Helper, Link, Modal, ProductCategoryIllustration, TextInput} from 'akeneo-design-system';
+import {useState} from 'react';
+import {useHistory} from 'react-router';
 import styled from 'styled-components';
-import {CategoryTreeModel} from '../../models';
 import {CreateTemplateError, useCreateTemplate} from '../../hooks/useCreateTemplate';
-import {BadRequestError} from "../../tools/apiFetch";
+import {CategoryTreeModel} from '../../models';
+import {BadRequestError} from '../../tools/apiFetch';
 
 type Form = {
   label: string;
@@ -20,34 +21,10 @@ type Props = {
 export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
   const defaultUserUiLocale = userContext.get('user_default_locale');
   const notify = useNotify();
-  const router = useRouter();
-  const mutation = useCreateTemplate();
+  const history = useHistory();
 
-  let error: CreateTemplateError | null = null;
-  if (mutation.error instanceof BadRequestError){
-    error = mutation.error.data;
-  }
   const [form, setForm] = useState<Form>({label: '', code: ''});
-
-  const displayError = (errorMessages: string[]) => {
-    return errorMessages.map(message => {
-      return (
-        <Helper key={message} level="error">
-          {message}
-        </Helper>
-      );
-    });
-  };
-
-  const redirectToTemplate = (treeId: number, templateUuid: string) => {
-    router.redirect(
-      router.generate('pim_category_template_edit', {
-        treeId: treeId,
-        templateUuid: templateUuid,
-      })
-    );
-  };
-
+  const mutation = useCreateTemplate();
   const handleCreate = () => {
     mutation.mutate(
       {
@@ -57,15 +34,32 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
         label: form.label,
       },
       {
-        onError: () => {
+        onError: error => {
+          if (error instanceof BadRequestError) {
+            return;
+          }
+          onClose();
           notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
         },
-        onSuccess: (data) => {
-          redirectToTemplate(categoryTree.id, data.template_uuid);
+        onSuccess: data => {
+          onClose();
+          history.push(`/${categoryTree.id}/template/${data.template_uuid}`);
         },
       }
     );
   };
+
+  const displayError = (errorMessages: string[]) =>
+    errorMessages.map(message => (
+      <Helper key={message} level="error">
+        {message}
+      </Helper>
+    ));
+
+  let error: CreateTemplateError | null = null;
+  if (mutation.error instanceof BadRequestError) {
+    error = mutation.error.data;
+  }
 
   return (
     <Modal illustration={<ProductCategoryIllustration />} onClose={onClose} closeTitle={translate('pim_common.close')}>
@@ -75,7 +69,10 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
         <FieldSet>
           <HelperContent level="info">
             {translate('akeneo.category.template.create_confirmation_modal.helper')}{' '}
-            <Link href="https://help.akeneo.com/serenity-take-the-power-over-your-products/serenity-enrich-your-category">
+            <Link
+              href="https://help.akeneo.com/serenity-take-the-power-over-your-products/serenity-enrich-your-category"
+              target="_blank"
+            >
               {translate('akeneo.category.template.add_attribute.confirmation_modal.link')}
             </Link>
           </HelperContent>
