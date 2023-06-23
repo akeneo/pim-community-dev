@@ -63,29 +63,4 @@ final class HourlyInterval
     {
         return $this->upToDateTime()->getTimestamp() === $hourlyInterval->upToDateTime()->getTimestamp();
     }
-
-    /**
-     * Returns an array of HourlyInterval instances representing hourly intervals between the start and end dates.
-     *
-     * @param \DateTimeInterface $startDateTime
-     * @param \DateTimeInterface $endDateTime
-     *
-     * @return HourlyInterval[]
-     */
-    public static function getHourlyIntervals(\DateTimeInterface $startDateTime, \DateTimeInterface $endDateTime): array
-    {
-        if ($startDateTime > $endDateTime) {
-            throw new \InvalidArgumentException("Start date must be before end date.");
-        }
-
-        $hourlyIntervals = [];
-        $currentDateTime = $startDateTime;
-
-        while ($currentDateTime <= $endDateTime) {
-            $hourlyIntervals[] = self::createFromDateTime($currentDateTime);
-            $currentDateTime = $currentDateTime->add(new \DateInterval('PT1H'));
-        }
-
-        return $hourlyIntervals;
-    }
 }

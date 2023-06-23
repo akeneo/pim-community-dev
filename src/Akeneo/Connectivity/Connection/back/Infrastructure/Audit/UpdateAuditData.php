@@ -30,9 +30,9 @@ final class UpdateAuditData
 
         $defaultStartDatetime = $this->getDefaultStartDatetime(10);
 
-        $this->purgeOlderThanXDays($defaultStartDatetime);
+        $this->purgeEventsOlderThan($defaultStartDatetime);
 
-        $hourlyIntervals = HourlyInterval::getHourlyIntervals(
+        $hourlyIntervals = $this->getHourlyIntervals(
             $defaultStartDatetime,
             new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
         );
@@ -44,7 +44,7 @@ final class UpdateAuditData
         $this->logger->info('End audit data purge');
     }
 
-    private function purgeOlderThanXDays(\DateTimeImmutable $before): void
+    private function purgeEventsOlderThan(\DateTimeImmutable $before): void
     {
         $this->purgeQuery->execute($before);
     }
@@ -56,9 +56,34 @@ final class UpdateAuditData
         );
     }
 
-    private function getDefaultStartDatetime(int $days)
+    private function getDefaultStartDatetime(int $days): \DateTimeImmutable
     {
         $before = new \DateTimeImmutable("now - $days days", new \DateTimeZone('UTC'));
         return $before->setTime((int) $before->format('H'), 0, 0);
+    }
+
+    /**
+     * Returns an array of HourlyInterval instances representing hourly intervals between the start and end dates.
+     *
+     * @param \DateTimeInterface $startDateTime
+     * @param \DateTimeInterface $endDateTime
+     *
+     * @return HourlyInterval[]
+     */
+    private function getHourlyIntervals(\DateTimeInterface $startDateTime, \DateTimeInterface $endDateTime): array
+    {
+        if ($startDateTime > $endDateTime) {
+            throw new \InvalidArgumentException("Start date must be before end date.");
+        }
+
+        $hourlyIntervals = [];
+        $currentDateTime = $startDateTime;
+
+        while ($currentDateTime <= $endDateTime) {
+            $hourlyIntervals[] = HourlyInterval::createFromDateTime($currentDateTime);
+            $currentDateTime = $currentDateTime->add(new \DateInterval('PT1H'));
+        }
+
+        return $hourlyIntervals;
     }
 }

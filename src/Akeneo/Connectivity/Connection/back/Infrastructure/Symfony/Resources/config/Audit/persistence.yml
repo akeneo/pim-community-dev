@@ -35,7 +35,3 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalUpsertEventCountQuery:
         arguments:
             - '@database_connection'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectLastConnectionsEventDatetimeQuery:
-        arguments:
-            - '@database_connection'
