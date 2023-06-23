@@ -17,25 +17,25 @@ class EditRolePermissionsRoleRepository
     /**
      * @return array<RoleInterface>
      */
-    public function getRolesWithMinimumEditRolePrivileges(): array
+    public function getRolesWithMinimumEditRolePermissions(): array
     {
         $roles = $this->roleRepository->findAll();
-        /** @var RoleInterface[] $minimumPrivilegesRoles */
-        $minimumPrivilegesRoles = [];
-        $minimumAdminPrivileges = MinimumEditRolePermission::getAllValues();
+        /** @var RoleInterface[] $minimumPermissionsRoles */
+        $minimumPermissionsRoles = [];
+        $minimumEditRolePermissions = MinimumEditRolePermission::getAllValues();
         /** @var RoleInterface $role */
         foreach ($roles as $role) {
             $roleWithPermission = $this->roleWithPermissionsRepository->findOneByIdentifier($role->getRole());
             $rolePermissions = $roleWithPermission->permissions();
-            $minimumPrivileges = array_filter($rolePermissions, function ($permission) use ($rolePermissions, $minimumAdminPrivileges) {
-                $isMinimumAdminPrivileges = in_array($permission, $minimumAdminPrivileges);
-                return $isMinimumAdminPrivileges && $rolePermissions[$permission];
+            $minimumPermissions = array_filter($rolePermissions, function ($permission) use ($rolePermissions, $minimumEditRolePermissions) {
+                $isMinimumEditRolePermissions = in_array($permission, $minimumEditRolePermissions);
+                return $isMinimumEditRolePermissions && $rolePermissions[$permission];
             }, ARRAY_FILTER_USE_KEY);
-            if (count($minimumPrivileges) === count($minimumAdminPrivileges)) {
-                $minimumPrivilegesRoles[] = $role;
+            if (count($minimumPermissions) === count($minimumEditRolePermissions)) {
+                $minimumPermissionsRoles[] = $role;
             }
         }
 
-        return $minimumPrivilegesRoles;
+        return $minimumPermissionsRoles;
     }
 }

@@ -20,15 +20,15 @@ class EditRolePermissionsUserRepository
      */
     public function getUsersWithEditRoleRoles(): array
     {
-        $minimumPrivilegesRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePrivileges();
-        $uiUserEnabledByRoles = $this->roleRepository->getUiUserEnabledByRoles($minimumPrivilegesRoles);
+        $minimumPermissionsRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
+        $uiUserEnabledByRoles = $this->roleRepository->getUiUserEnabledByRoles($minimumPermissionsRoles);
         return $uiUserEnabledByRoles->getQuery()->execute();
     }
 
     /**
      * @param array<string> $roles
      */
-    public function isLastUserWithEditPrivilegeRole(array $roles, int $identifier): bool
+    public function isLastUserWithEditRolePermissionsRole(array $roles, int $identifier): bool
     {
         $editRoleLeft = $this->getRoleLeftWithEditRolePermissions($roles);
         if (count($editRoleLeft) <= 1) {
@@ -37,7 +37,7 @@ class EditRolePermissionsUserRepository
         return false;
     }
 
-    public function isLastRoleWithEditPrivilegeRoleForUser(array $roles, int $identifier): bool
+    public function isLastRoleWithEditRolePermissionsRoleForUser(array $roles, int $identifier): bool
     {
         $editRoleLeft = $this->getRoleLeftWithEditRolePermissions($roles);
         if (count($editRoleLeft) < 1) {
@@ -63,10 +63,10 @@ class EditRolePermissionsUserRepository
      */
     private function getRoleLeftWithEditRolePermissions(array $roles): array
     {
-        $editRoleRolesPrivileges = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePrivileges();
-        $editRoleRolesNamePrivileges = array_map(fn ($role) => $role->getRole(), $editRoleRolesPrivileges);
-        return array_filter($roles, (function ($role) use ($editRoleRolesNamePrivileges) {
-            return in_array($role, $editRoleRolesNamePrivileges);
+        $editRoleRolesPermissions = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
+        $editRoleRolesNamePermissions = array_map(fn ($role) => $role->getRole(), $editRoleRolesPermissions);
+        return array_filter($roles, (function ($role) use ($editRoleRolesNamePermissions) {
+            return in_array($role, $editRoleRolesNamePermissions);
         }));
     }
 }

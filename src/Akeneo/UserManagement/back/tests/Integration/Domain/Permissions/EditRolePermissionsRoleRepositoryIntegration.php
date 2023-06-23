@@ -24,7 +24,7 @@ class EditRolePermissionsRoleRepositoryIntegration extends TestCase
 
     public function testItGetRolesWithEditRolePermissions(): void
     {
-        $editRoleRoles =$this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePrivileges();
+        $editRoleRoles =$this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
         foreach ($editRoleRoles as $editRole) {
             $this->assertRoleAclsAreGranted($editRole->getRole(), [
                 'pim_user_role_edit' => true,

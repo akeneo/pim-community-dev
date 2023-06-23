@@ -92,7 +92,7 @@ class AclRoleHandler
                         $formPrivileges = array_merge($formPrivileges, $privileges);
                     }
 
-                    $minimumEditRoleRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePrivileges();
+                    $minimumEditRoleRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
                     if (count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
                         $editRoleActivePrivileges = array_filter($formPrivileges, fn ($privilege) => in_array($privilege->getIdentity()->getId(), MinimumEditRolePermission::getAllValues()) && array_filter($privilege->getPermissions()->toArray(), fn ($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL));
                         if (count($editRoleActivePrivileges) < count(MinimumEditRolePermission::getAllValues())) {
