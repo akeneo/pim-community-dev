@@ -11,6 +11,7 @@ class TranslatedColumnPresenter implements ColumnPresenterInterface
 {
     public function present(array $columns, array $context): array
     {
+        $columns = \array_combine($columns, $columns);
         if (!$this->headerAreTranslated($context)) {
             return $columns;
         }
@@ -40,7 +41,7 @@ class TranslatedColumnPresenter implements ColumnPresenterInterface
     private function removeCodeWhenTranslationIsNotDuplicated(array $columns, array $duplicatedTranslations): array
     {
         return array_map(function (string $column) use ($duplicatedTranslations) {
-            list($code, $columnTranslation) = explode(
+            [$code, $columnTranslation] = explode(
                 FlatTranslatorInterface::COLUMN_CODE_AND_TRANSLATION_SEPARATOR,
                 $column,
                 2

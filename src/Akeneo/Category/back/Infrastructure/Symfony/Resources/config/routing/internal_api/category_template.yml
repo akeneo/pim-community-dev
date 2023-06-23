@@ -12,6 +12,12 @@ pim_category_template_rest_create:
         _feature: enriched_category
     methods: [POST]
 
+pim_category_template_rest_update:
+    path: /rest/{templateUuid}
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateTemplateController
+    methods: [PATCH]
+
 pim_enriched_category_rest_deactivate_template:
     path: /rest/{templateUuid}
     defaults:

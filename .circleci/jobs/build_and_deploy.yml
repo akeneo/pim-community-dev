@@ -84,13 +84,6 @@ jobs:
                       cd /home/circleci/project
                       echo "Current commit: $(git rev-parse --short HEAD)"
             - run:
-                  name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
-                  command: |
-                      mkdir -p tmp
-                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                      CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
-                      git clone --depth=1 --single-branch --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
-            - run:
                   name: Update composer.json if same branch exists in pim-onboader for EE
                   command: |
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_ee73a1e4ef57139ecfd323fbe2c1d792 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'

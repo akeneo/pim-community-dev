@@ -1,7 +1,7 @@
 import {useTranslate, userContext} from '@akeneo-pim-community/shared';
 import {Button, Checkbox, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {useCatalogActivatedLocales} from '../../../hooks/useCatalogActivatedLocales';
+import {useCatalogActivatedLocaleCodes} from '../../../hooks/useCatalogActivatedLocaleCodes';
 import {useCatalogLocales} from '../../../hooks/useCatalogLocales';
 import {Attribute} from '../../../models';
 import {getLabelFromAttribute} from '../../attributes';
@@ -17,8 +17,13 @@ export const AttributeSettings = ({attribute}: Props) => {
   const translate = useTranslate();
   const attributeLabel = getLabelFromAttribute(attribute, userContext.get('catalogLocale'));
 
-  const activatedCatalogLocales = useCatalogActivatedLocales();
   const catalogLocales = useCatalogLocales();
+  const activatedCatalogLocaleCodes = useCatalogActivatedLocaleCodes();
+  const sortedActivatedCatalogLocales = activatedCatalogLocaleCodes
+    ?.map(
+      localeCode => catalogLocales?.find(locale => locale.code === localeCode) || {code: localeCode, label: localeCode}
+    )
+    .sort((a, b) => a.label.localeCompare(b.label));
 
   const [
     isDeactivateTemplateAttributeModalOpen,
@@ -55,12 +60,12 @@ export const AttributeSettings = ({attribute}: Props) => {
         </SectionTitle.Title>
       </SectionTitle>
       <FieldContainer>
-        {activatedCatalogLocales?.map(localeCode => (
+        {sortedActivatedCatalogLocales?.map(locale => (
           <AttributeLabelTranslationInput
-            key={localeCode}
+            key={locale.code}
             attribute={attribute}
-            localeCode={localeCode}
-            label={catalogLocales?.find(catalogLocale => catalogLocale.code === localeCode)?.label || localeCode}
+            localeCode={locale.code}
+            label={locale.label}
           />
         ))}
       </FieldContainer>

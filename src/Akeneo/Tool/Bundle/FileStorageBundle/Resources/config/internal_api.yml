@@ -1,0 +1,43 @@
+parameters:
+    supported_image_types:
+        avif:
+            - image/avif
+        bmp:
+            - image/bmp
+        dxf:
+            - image/vnd.dwg
+        gif:
+            - image/gif
+        jpeg:
+            - image/jpg
+            - image/jpeg
+        jpg:
+            - image/jpg
+            - image/jpeg
+        png:
+            - image/png
+        psd:
+            - image/vnd.adobe.photoshop
+        svg:
+            - image/svg+xml
+        tif:
+            - image/tiff
+        tiff:
+            - image/tiff
+        webp:
+            - image/webp
+        wbmp:
+            - image/wbmp
+        xbm:
+            - image/xbm
+
+services:
+    # controllers
+    pim_api.controller.internal_api.upload_image:
+        public: true
+        class: 'Akeneo\Tool\Bundle\FileStorageBundle\Controller\InternalApi\UploadImageAction'
+        arguments:
+            - '@validator'
+            - '@akeneo_file_storage.file_storage.path_generator'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '%supported_image_types%'

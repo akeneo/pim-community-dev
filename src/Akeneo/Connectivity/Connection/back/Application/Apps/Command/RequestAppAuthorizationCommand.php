@@ -13,7 +13,7 @@ final class RequestAppAuthorizationCommand
     public function __construct(
         private string $clientId,
         private string $responseType,
-        private string $scope,
+        private mixed $scope,
         private string $callbackUrl,
         private ?string $state = null
     ) {
