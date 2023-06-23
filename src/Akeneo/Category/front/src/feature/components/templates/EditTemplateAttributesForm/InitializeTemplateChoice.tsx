@@ -2,7 +2,7 @@ import {translate} from '@akeneo-pim-community/shared';
 import {AttributesIllustration, Button, Placeholder, useBooleanState} from 'akeneo-design-system';
 import {AddTemplateAttributeModal} from '../AddTemplateAttributeModal';
 import styled from 'styled-components';
-import {LoadAttributeSetModal} from './LoadAttributeSetModel';
+import {LoadAttributeSetModal} from './LoadAttributeSetModal';
 
 interface Props {
   templateId: string;
