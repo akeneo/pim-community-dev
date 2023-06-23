@@ -33,6 +33,15 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\CleanCategoryTemplateAndEnrichedValues\CleanCategoryTemplateAndEnrichedValuesCommand' }
 
+  Akeneo\Category\Application\Command\LoadAttributeSet\LoadAttributeSetCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\GetTemplate'
+      - '@Akeneo\Category\Application\Query\GetAttribute'
+      - '@Akeneo\Category\Domain\AttributeSetFactory'
+      - '@Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\LoadAttributeSet\LoadAttributeSetCommand' }
+
   Akeneo\Category\Application\Command\AddAttributeCommandHandler:
     arguments:
       - '@validator'
