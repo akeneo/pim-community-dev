@@ -97,7 +97,7 @@ class AclRoleHandler
                         $editRoleActivePrivileges = array_filter($formPrivileges, fn ($privilege) => in_array($privilege->getIdentity()->getId(), MinimumEditRolePermission::getAllValues()) && array_filter($privilege->getPermissions()->toArray(), fn ($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL));
                         if (count($editRoleActivePrivileges) < count(MinimumEditRolePermission::getAllValues())) {
                             $context
-                                ->buildViolation($this->translator->trans('pim_user.controller.role.message.cannot_remove_last_edit_role_privileges'))
+                                ->buildViolation($this->translator->trans('pim_user.controller.role.message.cannot_remove_last_edit_role_permission'))
                                 ->addViolation();
                         }
                     }

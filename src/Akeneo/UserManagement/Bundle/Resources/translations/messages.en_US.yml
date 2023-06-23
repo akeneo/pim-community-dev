@@ -49,7 +49,7 @@ pim_user:
             current_password:
                 wrong: Wrong password
             roles:
-                last_user_with_edit_role_privileges: This user is the last with edit role privileges
+                last_user_with_edit_role_permissions: This user is the last with edit role permissions.
         tabs:
             general:
                 title: General
@@ -94,8 +94,8 @@ pim_user:
         role:
             message:
                 saved: "Role saved"
-                cannot_delete_last_edit_role_privileges: You cannot delete edit role privileges on the last role
-                cannot_remove_last_edit_role_privileges : You cannot remove edit role privileges on the last role
+                cannot_delete_last_edit_role_permission: You cannot delete edit role permissions on the last role.
+                cannot_remove_last_edit_role_permission : You cannot remove edit role permissions on the last role.
         user:
             message:
                 saved: "User saved"

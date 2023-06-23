@@ -236,7 +236,7 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
         [
             {
                 "path": "roles",
-                "message": "This user is the last with edit role privileges",
+                "message": "This user is the last with edit role permissions.",
                 "global": false
             }
         ]
@@ -270,7 +270,7 @@ class UserControllerEndToEnd extends ControllerEndToEndTestCase
 
         $expectedContent = <<<JSON
         {
-            "message": "This user is the last with edit role privileges"
+            "message": "This user is the last with edit role permissions."
         }
         JSON;
         $responseJson = $this->client->getResponse();

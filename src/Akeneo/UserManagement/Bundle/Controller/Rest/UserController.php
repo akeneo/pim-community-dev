@@ -131,7 +131,7 @@ final class UserController
         if (isset($data['roles'])) {
             if ($this->editRolePermissionsUserRepository->isLastRoleWithEditPrivilegeRoleForUser($data['roles'], $identifier)) {
                 $violation = new ConstraintViolation(
-                    message: $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_privileges'),
+                    message: $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_permissions'),
                     messageTemplate: null,
                     parameters: [],
                     root: null,
@@ -290,7 +290,7 @@ final class UserController
         }
 
         if ($this->editRolePermissionsUserRepository->isLastUserWithEditPrivilegeRole($user->getRoles(), $identifier)) {
-            return new JsonResponse(['message' => $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_privileges')], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse(['message' => $this->translator->trans('pim_user.user.fields_errors.roles.last_user_with_edit_role_permissions')], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
