@@ -91,20 +91,18 @@ class RoleController extends AbstractController
     {
         $this->aclRoleHandler->createForm($role);
 
-        try {
-            if ($this->aclRoleHandler->process($role)) {
-                $this->addFlash(
-                    'success',
-                    $this->translator->trans('pim_user.controller.role.message.saved')
-                );
-
-                return new JsonResponse(
-                    ['route' => 'pim_user_role_update', 'params' => ['id' => $role->getId()]]
-                );
-            }
-        } catch (\LogicException $e) {
-            throw new UnprocessableEntityHttpException($this->translator->trans($e->getMessage()));
+        if ($this->aclRoleHandler->process($role)) {
+            $this->addFlash(
+                'success',
+                $this->translator->trans('pim_user.controller.role.message.saved')
+            );
+            return new JsonResponse(
+                ['route' => 'pim_user_role_update', 'params' => ['id' => $role->getId()]]
+            );
+        } else {
+            $this->aclRoleHandler->reinitializeData($role);
         }
+
         return $this->render('@PimUser/Role/update.html.twig', [
             'form' => $this->aclRoleHandler->createView(),
             'privilegesConfig' => $this->container->getParameter('pim_user.privileges'),
