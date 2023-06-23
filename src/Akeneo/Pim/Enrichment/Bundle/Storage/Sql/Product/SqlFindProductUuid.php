@@ -19,8 +19,13 @@ final class SqlFindProductUuid implements FindId
 
     public function fromIdentifier(string $identifier): null|string
     {
-        $uuid = $this->connection->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
+        $uuid = $this->connection->executeQuery(<<<SQL
+SELECT BIN_TO_UUID(product_uuid) AS uuid
+FROM pim_catalog_product_unique_data
+INNER JOIN pim_catalog_attribute ON pim_catalog_product_unique_data.attribute_id = pim_catalog_attribute.id
+WHERE raw_data = :identifier
+AND pim_catalog_attribute.main_identifier = 1
+SQL,
             ['identifier' => $identifier]
         )->fetchOne();
 

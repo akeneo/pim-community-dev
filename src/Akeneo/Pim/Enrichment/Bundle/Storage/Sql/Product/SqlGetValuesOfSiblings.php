@@ -47,9 +47,12 @@ SQL;
         } elseif ($entity instanceof ProductInterface) {
             $identifier = $entity->getUuid()->toString();
             $sql = <<<SQL
-SELECT identifier, BIN_TO_UUID(uuid) AS uuid, raw_values
+SELECT pim_catalog_product_unique_data.raw_data AS identifier, BIN_TO_UUID(uuid) AS uuid, raw_values
 FROM pim_catalog_product
+INNER JOIN pim_catalog_product_unique_data ON pim_catalog_product_unique_data.product_uuid = pim_catalog_product.uuid
+INNER JOIN pim_catalog_attribute ON pim_catalog_attribute.id = pim_catalog_product_unique_data.attribute_id
 WHERE product_model_id = :parentId
+AND pim_catalog_attribute.main_identifier = 1
 AND uuid != UUID_TO_BIN(:identifier)
 SQL;
         } else {

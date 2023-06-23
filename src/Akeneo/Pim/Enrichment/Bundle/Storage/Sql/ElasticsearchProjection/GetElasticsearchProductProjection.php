@@ -135,7 +135,7 @@ WITH
     product as (
         SELECT
             product.uuid,
-            product.identifier,
+            pim_catalog_product_unique_data.raw_data AS identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
             sub_product_model.code AS parent_product_model_code,
@@ -158,6 +158,8 @@ WITH
             CASE WHEN root_product_model.id IS NOT NULL THEN 2 ELSE 1 END AS product_lvl_in_attribute_set
         FROM
             pim_catalog_product product
+            INNER JOIN pim_catalog_product_unique_data ON pim_catalog_product_unique_data.product_uuid = product.uuid
+            INNER JOIN pim_catalog_attribute ON pim_catalog_attribute.id = pim_catalog_product_unique_data.attribute_id
             LEFT JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
             LEFT JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
             LEFT JOIN pim_catalog_family family ON family.id = product.family_id
@@ -165,6 +167,7 @@ WITH
             LEFT JOIN pim_catalog_attribute attribute ON attribute.id = family.label_attribute_id
         WHERE
             product.uuid IN (:uuids)
+            AND pim_catalog_attribute.main_identifier = 1
     ),
     product_categories AS (
         SELECT
@@ -281,7 +284,7 @@ WITH
     product as (
         SELECT
             product.uuid,
-            product.identifier,
+            pim_catalog_product_unique_data.raw_data AS identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
             sub_product_model.code AS parent_product_model_code,
@@ -304,6 +307,8 @@ WITH
             CASE WHEN root_product_model.id IS NOT NULL THEN 2 ELSE 1 END AS product_lvl_in_attribute_set
         FROM
             pim_catalog_product product
+            INNER JOIN pim_catalog_product_unique_data ON pim_catalog_product_unique_data.product_uuid = product.uuid
+            INNER JOIN pim_catalog_attribute ON pim_catalog_attribute.id = pim_catalog_product_unique_data.attribute_id
             LEFT JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
             LEFT JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
             LEFT JOIN pim_catalog_family family ON family.id = product.family_id
@@ -311,6 +316,7 @@ WITH
             LEFT JOIN pim_catalog_attribute attribute ON attribute.id = family.label_attribute_id
         WHERE
             product.uuid IN (:uuids)
+            AND pim_catalog_attribute.main_identifier = 1
     ),
     product_categories AS (
         SELECT
