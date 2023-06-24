@@ -53,7 +53,7 @@ pim_import_export:
         show_profile.title: Ver perfil
         download_log.title: Descargar registro de log
         download_file.title: Descargar archivo generado
-        download_archive.title: Descargar archivo generado
+        download_archive.title: Descargar archivo ZIP generado
       summary:
         fetching: Colectando datos sobre la ejecución del trabajo...
         warning: '¡Advertencia!'
