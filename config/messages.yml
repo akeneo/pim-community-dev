@@ -6,8 +6,11 @@ queues:
             - name: dqi_launch_product_evaluations_consumer
               env_var: PUBSUB_SUBSCRIPTION_DQI_LAUNCH_PRODUCT_EVALUATIONS_CONSUMER
               service_handler: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\LaunchProductAndProductModelEvaluationsHandler'
-    products_were_updated_queue:
+
+    products_were_created_or_updated_queue:
+        env_var: PUBSUB_TOPIC_PRODUCTS_WERE_UPSERT_QUEUE
         message_class: Akeneo\Pim\Enrichment\Product\API\Event\ProductsWereCreatedOrUpdated
         consumers:
-            - name: dqi_products_were_updated_consumer
+            - name: dqi_product_score_compute_on_upsert
+              env_var: PUBSUB_SUBSCRIPTION_DQI_PRODUCT_SCORE_COMPUTE_ON_UPSERT
               service_handler: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\ProductsWereCreatedOrUpdatedHandler
