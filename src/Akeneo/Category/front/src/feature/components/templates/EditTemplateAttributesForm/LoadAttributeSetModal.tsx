@@ -2,6 +2,7 @@ import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-
 import {Button, Modal, ProductCategoryIllustration} from 'akeneo-design-system';
 import {useMutation, useQueryClient} from 'react-query';
 import {apiFetch} from '../../../tools/apiFetch';
+import styled from 'styled-components';
 
 type Props = {
   templateId: string;
@@ -49,12 +50,13 @@ export const LoadAttributeSetModal = ({templateId, onClose, onSuccess}: Props) =
       <br />
       <br />
       {translate('akeneo.category.template.load_attribute_set.content_description')}
-      <ul>
-        <li>{translate('akeneo.category.template.load_attribute_set.content.description_attributes')}</li>
-        <li>{translate('akeneo.category.template.load_attribute_set.content.url_attributes')}</li>
-        <li>{translate('akeneo.category.template.load_attribute_set.content.image_attributes')}</li>
-        <li>{translate('akeneo.category.template.load_attribute_set.content.seo_attributes')}</li>
-      </ul>
+      <List>
+        <ListItem>{translate('akeneo.category.template.load_attribute_set.content.description_attributes')}</ListItem>
+        <ListItem>{translate('akeneo.category.template.load_attribute_set.content.url_attributes')}</ListItem>
+        <ListItem>{translate('akeneo.category.template.load_attribute_set.content.image_attributes')}</ListItem>
+        <ListItem>{translate('akeneo.category.template.load_attribute_set.content.seo_attributes')}</ListItem>
+      </List>
+      <br />
       {translate('akeneo.category.template.load_attribute_set.confirmation_message')}
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={handleClose} disabled={mutation.isLoading}>
@@ -67,3 +69,12 @@ export const LoadAttributeSetModal = ({templateId, onClose, onSuccess}: Props) =
     </Modal>
   );
 };
+
+const List = styled.ul`
+  padding: 0;
+  margin-left: 1.5rem;
+`;
+
+const ListItem = styled.li`
+  list-style: disc;
+`;
