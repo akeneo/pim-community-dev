@@ -4,7 +4,7 @@ services:
             - '@logger'
             - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\ExecuteJobExecutionHandlerInterface'
             - '@Akeneo\Tool\Bundle\BatchBundle\JobExecution\CreateJobExecutionHandlerInterface'
-            - '%env(int:PIM_VERSIONING_RETENTION_IN_DAYS)%'
+            - '%env(default::PIM_VERSIONING_RETENTION_IN_DAYS)%'
         tags:
             - { name: console.command }
             - { name: 'akeneo.command.authenticated_as_admin_user' }
