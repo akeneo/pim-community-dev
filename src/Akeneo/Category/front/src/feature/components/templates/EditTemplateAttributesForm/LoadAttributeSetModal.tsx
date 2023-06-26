@@ -6,9 +6,10 @@ import {apiFetch} from '../../../tools/apiFetch';
 type Props = {
   templateId: string;
   onClose: () => void;
+  onSuccess?: () => void;
 };
 
-export const LoadAttributeSetModal = ({templateId, onClose}: Props) => {
+export const LoadAttributeSetModal = ({templateId, onClose, onSuccess}: Props) => {
   const translate = useTranslate();
   const queryClient = useQueryClient();
   const notify = useNotify();
@@ -19,6 +20,7 @@ export const LoadAttributeSetModal = ({templateId, onClose}: Props) => {
       await queryClient.invalidateQueries('get-template');
       notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.load_attribute_set.notification.success'));
       onClose();
+      onSuccess && onSuccess();
     },
   });
 

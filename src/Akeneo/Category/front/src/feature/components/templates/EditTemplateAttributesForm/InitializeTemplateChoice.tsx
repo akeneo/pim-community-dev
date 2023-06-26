@@ -3,12 +3,15 @@ import {AttributesIllustration, Button, Placeholder, useBooleanState} from 'aken
 import {AddTemplateAttributeModal} from '../AddTemplateAttributeModal';
 import styled from 'styled-components';
 import {LoadAttributeSetModal} from './LoadAttributeSetModal';
+import {useTrackUsageOfLoadPredefinedAttributes} from '../../../hooks/useTrackUsageOfLoadPredefinedAttributes';
 
 interface Props {
   templateId: string;
 }
 
 export const InitializeTemplateChoice = ({templateId}: Props) => {
+  const trackUsageOfLoadPredefinedAttributes = useTrackUsageOfLoadPredefinedAttributes(templateId);
+
   const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
     useBooleanState(false);
 
@@ -32,14 +35,22 @@ export const InitializeTemplateChoice = ({templateId}: Props) => {
           {translate('akeneo.category.template.initialize.button.load')}
         </Button>
         {isLoadAttributeSetModalOpen && (
-          <LoadAttributeSetModal templateId={templateId} onClose={closeLoadAttributeSetModalOpen} />
+          <LoadAttributeSetModal
+            templateId={templateId}
+            onClose={closeLoadAttributeSetModalOpen}
+            onSuccess={() => trackUsageOfLoadPredefinedAttributes('load_predefined_attributes')}
+          />
         )}
 
         <Button level="primary" onClick={openAddTemplateAttributeModal}>
           {translate('akeneo.category.template.initialize.button.create')}
         </Button>
         {isAddTemplateAttributeModalOpen && (
-          <AddTemplateAttributeModal templateId={templateId} onClose={closeAddTemplateAttributeModal} />
+          <AddTemplateAttributeModal
+            templateId={templateId}
+            onClose={closeAddTemplateAttributeModal}
+            onSuccess={() => trackUsageOfLoadPredefinedAttributes('create_first_attribute')}
+          />
         )}
       </ButtonContainer>
     </Placeholder>
