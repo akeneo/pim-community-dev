@@ -6,6 +6,8 @@ import {Attribute, CATEGORY_ATTRIBUTE_TYPE_AREA, CATEGORY_ATTRIBUTE_TYPE_RICHTEX
 import {getLabelFromAttribute} from '../../attributes';
 import {useTemplateForm} from '../../providers/TemplateFormProvider';
 import {AddTemplateAttributeModal} from '../AddTemplateAttributeModal';
+import {useReorderAttributes} from '../../../hooks/useReorderAttributes';
+import {useQueryClient} from 'react-query';
 
 const useAttributeFormHasErrors = () => {
   const [state] = useTemplateForm();
@@ -27,12 +29,22 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
   const catalogLocale = userContext.get('catalogLocale');
   const featureFlags = useFeatureFlags();
   const attributeFormHasErrors = useAttributeFormHasErrors();
+  const mutation = useReorderAttributes();
+  const queryClient = useQueryClient();
 
   const [isAddTemplateAttributeModalOpen, openAddTemplateAttributeModal, closeAddTemplateAttributeModal] =
     useBooleanState(false);
 
   const handleRowOnclick = (attribute: Attribute) => {
     onAttributeSelection(attribute);
+  };
+
+  const handleReorder = (indices: number[]) => {
+    const uuids = indices.map(i => attributes[i]?.uuid);
+    mutation.mutate(
+      {templateUuid: templateId, uuids: uuids},
+      {onSettled: () => queryClient.invalidateQueries(['get-template', templateId])}
+    );
   };
 
   const sortedAttributes = useMemo(
@@ -59,7 +71,7 @@ export const AttributeList = ({attributes, selectedAttribute, templateId, onAttr
         )}
       </SectionTitle>
       <ScrollablePanel>
-        <Table>
+        <Table isDragAndDroppable={!mutation.isLoading} onReorder={handleReorder}>
           <Table.Header sticky={0}>
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.header')}</Table.HeaderCell>
             <Table.HeaderCell>{translate('akeneo.category.template_list.columns.code')}</Table.HeaderCell>
