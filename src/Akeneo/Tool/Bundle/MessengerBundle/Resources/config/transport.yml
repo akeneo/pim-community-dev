@@ -17,6 +17,7 @@ services:
         arguments:
             - '%env(default::string:APP_TENANT_ID)%'
             - '@logger'
+            - '%kernel.environment%'
 
     Akeneo\Tool\Bundle\MessengerBundle\Process\RunMessageProcess:
         arguments:

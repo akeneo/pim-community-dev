@@ -21,6 +21,7 @@ class UcsMiddleware implements MiddlewareInterface
     public function __construct(
         private readonly ?string $pimTenantId,
         private readonly LoggerInterface $logger,
+        private readonly ?string $environment = 'prod',
     ) {
     }
 
@@ -30,7 +31,7 @@ class UcsMiddleware implements MiddlewareInterface
         // If there is none, we fallback on the tenantid coming from the env variables.
         $tenantId = $envelope->last(TenantIdStamp::class)?->pimTenantId() ?: $this->pimTenantId;
 
-        if (empty($tenantId)) {
+        if ($this->environment === 'prod' && empty($tenantId)) {
             $this->logger->warning(sprintf(
                 'A message of type "%s" is consumed without a tenant id available',
                 get_class($envelope->getMessage()),
