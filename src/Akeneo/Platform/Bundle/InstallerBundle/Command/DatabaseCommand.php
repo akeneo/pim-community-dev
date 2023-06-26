@@ -5,6 +5,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
+use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\GetInstallDatetime;
 use Akeneo\Platform\Bundle\InstallerBundle\Persistence\Sql\InstallData;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
 use Akeneo\Tool\Component\Console\CommandExecutor;
@@ -44,6 +45,7 @@ class DatabaseCommand extends Command
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly InstallData $installTimeQuery,
         private readonly LoggerInterface $logger,
+        private readonly GetInstallDatetime $getInstallDatetime,
     ) {
         parent::__construct();
     }
@@ -151,7 +153,9 @@ class DatabaseCommand extends Command
             );
         }
 
-        $this->installTimeQuery->withDatetime(new \DateTimeImmutable());
+        if (null === ($this->getInstallDatetime)()) {
+            $this->installTimeQuery->withDatetime(new \DateTimeImmutable());
+        }
 
         return Command::SUCCESS;
     }
