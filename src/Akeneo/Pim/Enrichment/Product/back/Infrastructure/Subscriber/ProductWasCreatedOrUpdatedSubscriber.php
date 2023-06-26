@@ -26,7 +26,9 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
     public function __construct(
         private readonly MessageBusInterface $messageBus,
         private readonly LoggerInterface $logger,
-        private readonly int $batchSize = 100
+        private readonly ?string $tenantId,
+        private readonly string $env,
+        private readonly int $batchSize = 100,
     ) {
     }
 
@@ -59,7 +61,10 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
         $product = $event->getSubject();
         $unitary = $event->getArguments()['unitary'] ?? false;
 
-        if (false === $unitary || !$product instanceof ProductInterface) {
+        if (false === $unitary
+            || !$product instanceof ProductInterface
+            || $this->isProdLegacy()
+        ) {
             return;
         }
 
@@ -82,7 +87,10 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
     public function recordCreatedProducts(GenericEvent $event): void
     {
         $products = $event->getSubject();
-        if (empty($products) || !reset($products) instanceof ProductInterface) {
+        if (empty($products)
+            || !reset($products) instanceof ProductInterface
+            || $this->isProdLegacy()
+        ) {
             return;
         }
 
@@ -124,5 +132,15 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
                 'error' => $exception->getMessage(),
             ]);
         }
+    }
+
+    /**
+     * In prod legacy we don't have pubsub topic and subscription, so it would not work.
+     *
+     * @return bool
+     */
+    private function isProdLegacy(): bool
+    {
+        return 'prod' === $this->env && null === $this->tenantId;
     }
 }

@@ -3,5 +3,7 @@ services:
         arguments:
             - '@messenger.bus.default'
             - '@logger'
+            - '%env(default::string:APP_TENANT_ID)%'
+            - '%env(APP_ENV)%'
         tags:
             - { name: kernel.event_subscriber }
