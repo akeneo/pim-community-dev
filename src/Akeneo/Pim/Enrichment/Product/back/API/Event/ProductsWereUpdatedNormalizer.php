@@ -29,7 +29,11 @@ final class ProductsWereUpdatedNormalizer implements NormalizerInterface, Denorm
             Assert::isArray($normalizedProductWasUpdated, 'Normalized ProductWasUpdated must be an array');
             Assert::keyExists($normalizedProductWasUpdated, 'product_uuid', 'Normalized ProductWasUpdated must contains a key "product_uuid"');
             Assert::string($normalizedProductWasUpdated['product_uuid'], 'Normalized ProductWasUpdated product_uuid property must be a string');
-            $events[] = new ProductWasUpdated(Uuid::fromString($normalizedProductWasUpdated['product_uuid']));
+            // @todo: handle ProductWasCreated
+            $events[] = new ProductWasUpdated(
+                Uuid::fromString($normalizedProductWasUpdated['product_uuid']),
+                \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $normalizedProductWasUpdated['updated_at'])
+            );
         }
 
         return new ProductsWereUpdated($events);

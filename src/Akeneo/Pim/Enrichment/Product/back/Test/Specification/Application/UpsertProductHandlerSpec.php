@@ -106,6 +106,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('identifier1');
         $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
+        $product->setUpdated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $tokenStorage->getToken()->willReturn($token);
@@ -115,7 +116,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $productBuilder->createProduct('identifier1')->shouldNotBeCalled();
         $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
-        $event = new ProductWasUpdated($product->getUuid());
+        $event = new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
 
         $this->__invoke($command);
@@ -252,6 +253,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         $command = UpsertProductCommand::createWithIdentifier(1, ProductIdentifier::fromIdentifier('identifier1'), userIntents: [$userIntent, $setTextUserIntent]);
         $product = new Product();
         $product->setCreated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
+        $product->setUpdated(\DateTime::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
@@ -267,7 +269,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
 
         $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
-        $event = new ProductWasUpdated($product->getUuid());
+        $event = new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2022-02-12 10:05:24'));
         $eventDispatcher->dispatch($event)->shouldBeCalledOnce()->willReturn($event);
 
         $this->__invoke($command);
