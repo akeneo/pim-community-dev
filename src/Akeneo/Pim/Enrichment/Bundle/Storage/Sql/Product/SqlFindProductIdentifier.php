@@ -21,7 +21,8 @@ final class SqlFindProductIdentifier implements FindIdentifier
 
     public function fromUuid(string $uuid): null|string
     {
-        $identifier = $this->connection->executeQuery(<<<SQL
+        $identifier = $this->connection->executeQuery(
+            <<<SQL
 SELECT raw_data AS identifier
 FROM pim_catalog_product_unique_data pcpud
 INNER JOIN pim_catalog_attribute a ON pcpud.attribute_id = a.id 
@@ -51,7 +52,8 @@ SQL,
             return Uuid::fromString($uuid)->getBytes();
         }, $uuids);
 
-        $stmt = $this->connection->executeQuery(<<<SQL
+        $stmt = $this->connection->executeQuery(
+            <<<SQL
 WITH main_identifier AS (
     SELECT id
     FROM pim_catalog_attribute

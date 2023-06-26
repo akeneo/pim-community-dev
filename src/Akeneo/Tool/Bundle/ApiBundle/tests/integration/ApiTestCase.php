@@ -397,7 +397,8 @@ abstract class ApiTestCase extends WebTestCase
 
     protected function getProductUuid(string $productIdentifier): ?UuidInterface
     {
-        $productUuid = $this->get('database_connection')->executeQuery(<<<SQL
+        $productUuid = $this->get('database_connection')->executeQuery(
+            <<<SQL
 SELECT BIN_TO_UUID(product_uuid) AS uuid
 FROM pim_catalog_product_unique_data
 INNER JOIN pim_catalog_attribute ON pim_catalog_product_unique_data.attribute_id = pim_catalog_attribute.id
