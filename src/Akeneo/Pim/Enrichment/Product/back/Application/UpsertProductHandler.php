@@ -80,7 +80,10 @@ final class UpsertProductHandler
         if ($isCreation) {
             $this->eventDispatcher->dispatch(new ProductWasCreated($product->getUuid()));
         } elseif ($isUpdate) {
-            $this->eventDispatcher->dispatch(new ProductWasUpdated($product->getUuid()));
+            $this->eventDispatcher->dispatch(new ProductWasUpdated(
+                $product->getUuid(),
+                \DateTimeImmutable::createFromMutable($product->getUpdated())
+            ));
         }
     }
 

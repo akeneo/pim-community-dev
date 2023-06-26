@@ -28,12 +28,12 @@ final class ProductWasUpdatedSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::POST_SAVE => 'launchProductWasUpdatedMessage',
-            StorageEvents::POST_SAVE_ALL => 'launchProductWereUpdatedMessage',
+            StorageEvents::POST_SAVE => 'dispatchProductWasUpdatedMessage',
+            StorageEvents::POST_SAVE_ALL => 'dispatchProductWereUpdatedMessage',
         ];
     }
 
-    public function launchProductWasUpdatedMessage(GenericEvent $event): void
+    public function dispatchProductWasUpdatedMessage(GenericEvent $event): void
     {
         $product = $event->getSubject();
         $unitary = $event->getArguments()['unitary'] ?? false;
@@ -42,20 +42,21 @@ final class ProductWasUpdatedSubscriber implements EventSubscriberInterface
             return;
         }
 
+        // @TODO: handle ProductWasCreated
         try {
             // Launch ProductsWereUpdatedMessage with a single event to simplify the messaging stack
             $this->messageBus->dispatch(new ProductsWereUpdated([
-                new ProductWasUpdated($product->getUuid())
+                new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
             ]));
         } catch (\Throwable $exception) {
-            $this->logger->error('Failed to launch ProductsWereUpdatedMessage from unitary product update', [
+            $this->logger->error('Failed to dispatch ProductsWereUpdatedMessage from unitary product update', [
                 'product_uuid' => $product->getUuid()->toString(),
                 'error' => $exception->getMessage(),
             ]);
         }
     }
 
-    public function launchProductWereUpdatedMessage(GenericEvent $event): void
+    public function dispatchProductWereUpdatedMessage(GenericEvent $event): void
     {
         $products = $event->getSubject();
 
@@ -63,14 +64,18 @@ final class ProductWasUpdatedSubscriber implements EventSubscriberInterface
             return;
         }
 
+        // @TODO: handle ProductWasCreated
         try {
             $message = new ProductsWereUpdated(\array_map(
-                fn (ProductInterface $product) => new ProductWasUpdated($product->getUuid()),
+                static fn (ProductInterface $product) => new ProductWasUpdated(
+                    $product->getUuid(),
+                    \DateTimeImmutable::createFromMutable($product->getCreated())
+                ),
                 $products
             ));
             $this->messageBus->dispatch($message);
         } catch (\Throwable $exception) {
-            $this->logger->error('Failed to launch ProductsWereUpdatedMessage from batch products update', [
+            $this->logger->error('Failed to dispatch ProductsWereUpdatedMessage from batch products update', [
                 'error' => $exception->getMessage(),
             ]);
         }
