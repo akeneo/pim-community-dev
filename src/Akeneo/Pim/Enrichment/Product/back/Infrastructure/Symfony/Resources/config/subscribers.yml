@@ -1,5 +1,5 @@
 services:
-    Akeneo\Pim\Enrichment\Product\Infrastructure\Subscriber\ProductWasUpdatedSubscriber:
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Subscriber\ProductWasCreatedOrUpdatedSubscriber:
         arguments:
             - '@messenger.bus.default'
             - '@logger'

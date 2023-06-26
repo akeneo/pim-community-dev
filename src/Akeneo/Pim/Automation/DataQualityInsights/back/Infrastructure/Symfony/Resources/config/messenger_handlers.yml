@@ -15,7 +15,7 @@ services:
         tags:
             - { name: akeneo_messenger.message.normalizer }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\ProductsWereUpdatedHandler:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Messenger\ProductsWereCreatedOrUpdatedHandler:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
