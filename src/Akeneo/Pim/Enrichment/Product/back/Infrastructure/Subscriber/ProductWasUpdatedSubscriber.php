@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Subscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Product\API\Event\ProductsWereUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Event\ProductsWereCreatedOrUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Psr\Log\LoggerInterface;
@@ -19,18 +20,38 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 final class ProductWasUpdatedSubscriber implements EventSubscriberInterface
 {
+    /** @var array<string, bool>  */
+    private $createdProductsByUuid = [];
+
     public function __construct(
         private readonly MessageBusInterface $messageBus,
         private readonly LoggerInterface $logger,
+        private readonly int $batchSize = 100
     ) {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
+            StorageEvents::PRE_SAVE => 'recordCreatedProduct',
+            StorageEvents::PRE_SAVE_ALL => 'recordCreatedProducts',
             StorageEvents::POST_SAVE => 'dispatchProductWasUpdatedMessage',
             StorageEvents::POST_SAVE_ALL => 'dispatchProductWereUpdatedMessage',
         ];
+    }
+
+    public function recordCreatedProduct(GenericEvent $event): void
+    {
+        $product = $event->getSubject();
+        $unitary = $event->getArguments()['unitary'] ?? false;
+
+        if (false === $unitary || !$product instanceof ProductInterface) {
+            return;
+        }
+
+        if (null === $product->getCreated()) {
+            $this->createdProductsByUuid[$product->getUuid()->toString()] = true;
+        }
     }
 
     public function dispatchProductWasUpdatedMessage(GenericEvent $event): void
@@ -42,12 +63,14 @@ final class ProductWasUpdatedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        // @TODO: handle ProductWasCreated
         try {
+            $event = ($this->createdProductsByUuid[$product->getUuid()->toString()] ?? false)
+                ? new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
+                : new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
+                ;
+            unset($this->createdProductsByUuid[$product->getUuid()->toString()]);
             // Launch ProductsWereUpdatedMessage with a single event to simplify the messaging stack
-            $this->messageBus->dispatch(new ProductsWereUpdated([
-                new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
-            ]));
+            $this->messageBus->dispatch(new ProductsWereCreatedOrUpdated([$event]));
         } catch (\Throwable $exception) {
             $this->logger->error('Failed to dispatch ProductsWereUpdatedMessage from unitary product update', [
                 'product_uuid' => $product->getUuid()->toString(),
@@ -56,24 +79,46 @@ final class ProductWasUpdatedSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function dispatchProductWereUpdatedMessage(GenericEvent $event): void
+    public function recordCreatedProducts(GenericEvent $event): void
     {
         $products = $event->getSubject();
-
         if (empty($products) || !reset($products) instanceof ProductInterface) {
             return;
         }
 
-        // @TODO: handle ProductWasCreated
+        foreach ($products as $product) {
+            if (null === $product->getCreated()) {
+                $this->createdProductsByUuid[$product->getUuid()->toString()] = true;
+            }
+        }
+    }
+
+    public function dispatchProductWereUpdatedMessage(GenericEvent $event): void
+    {
+        $products = $event->getSubject();
+        if (empty($products) || !reset($products) instanceof ProductInterface) {
+            return;
+        }
+
         try {
-            $message = new ProductsWereUpdated(\array_map(
-                static fn (ProductInterface $product) => new ProductWasUpdated(
-                    $product->getUuid(),
-                    \DateTimeImmutable::createFromMutable($product->getCreated())
-                ),
+            $events = \array_map(
+                function (ProductInterface $product) {
+                    $event = ($this->createdProductsByUuid[$product->getUuid()->toString()] ?? false)
+                        ? new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
+                        : new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
+                    ;
+                    unset($this->createdProductsByUuid[$product->getUuid()->toString()]);
+
+                    return $event;
+                },
                 $products
-            ));
-            $this->messageBus->dispatch($message);
+            );
+
+            $batchEvents = \array_chunk($events, $this->batchSize);
+            foreach ($batchEvents as $events) {
+                $message = new ProductsWereCreatedOrUpdated($events);
+                $this->messageBus->dispatch($message);
+            }
         } catch (\Throwable $exception) {
             $this->logger->error('Failed to dispatch ProductsWereUpdatedMessage from batch products update', [
                 'error' => $exception->getMessage(),
