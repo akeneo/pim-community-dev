@@ -120,4 +120,24 @@ final class PubSubQueueStatus
             $subscription->create();
         }
     }
+
+    public function flushJobQueue(): void
+    {
+        $subscription = $this->getSubscription();
+        try {
+            $subscription->reload();
+        } catch (\Exception $e) {
+        }
+        if (!$subscription->exists()) {
+            return;
+        }
+
+        do {
+            $messages = $subscription->pull(['maxMessages' => 10, 'returnImmediately' => true]);
+            $count = count($messages);
+            if ($count > 0) {
+                $subscription->acknowledgeBatch($messages);
+            }
+        } while (0 < $count);
+    }
 }
