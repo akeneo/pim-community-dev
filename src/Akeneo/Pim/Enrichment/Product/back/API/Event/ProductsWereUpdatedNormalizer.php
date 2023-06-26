@@ -51,7 +51,7 @@ final class ProductsWereUpdatedNormalizer implements NormalizerInterface, Denorm
         return ['events' =>
             \array_map(
                 fn (ProductWasUpdated $productWasUpdated) => [
-                    'product_uuid' => $productWasUpdated->productUuid()->toString(),
+                    'product_uuid' => $productWasUpdated->productUuid->toString(),
                 ],
                 $object->events
             )

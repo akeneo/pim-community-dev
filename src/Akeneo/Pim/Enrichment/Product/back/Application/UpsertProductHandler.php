@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\API\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
+use Akeneo\Pim\Enrichment\Product\Domain\Clock;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -40,6 +41,7 @@ final class UpsertProductHandler
         private EventDispatcherInterface $eventDispatcher,
         private UserIntentApplierRegistry $applierRegistry,
         private TokenStorageInterface $tokenStorage,
+        private Clock $clock
     ) {
     }
 
@@ -81,13 +83,11 @@ final class UpsertProductHandler
         $isUpdate = $product->isDirty();
         $this->productSaver->save($product);
 
+        $date = $this->clock->now();
         if ($isCreation) {
-            $this->eventDispatcher->dispatch(new ProductWasCreated($product->getUuid()));
+            $this->eventDispatcher->dispatch(new ProductWasCreated($product->getUuid(), $date));
         } elseif ($isUpdate) {
-            $this->eventDispatcher->dispatch(new ProductWasUpdated(
-                $product->getUuid(),
-                \DateTimeImmutable::createFromMutable($product->getUpdated())
-            ));
+            $this->eventDispatcher->dispatch(new ProductWasUpdated($product->getUuid(), $date));
         }
     }
 

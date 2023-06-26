@@ -28,7 +28,7 @@ final class ProductsWereUpdatedHandler
         $productUuids = [];
         /** @var ProductWasUpdated $productWasUpdated */
         foreach ($message->events as $productWasUpdated) {
-            $productUuids[] = ProductUuid::fromUuid($productWasUpdated->productUuid());
+            $productUuids[] = ProductUuid::fromUuid($productWasUpdated->productUuid);
         }
 
         $productUuids = ProductUuidCollection::fromProductUuids($productUuids);
