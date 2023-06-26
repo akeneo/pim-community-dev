@@ -66,6 +66,7 @@
 
         <testsuite name="Data_Quality_Insights">
             <directory suffix="Integration.php">src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/Integration</directory>
+            <directory suffix="EndToEnd.php">src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/EndToEnd</directory>
         </testsuite>
 
         <testsuite name="Batch_Queue_Acceptance">
