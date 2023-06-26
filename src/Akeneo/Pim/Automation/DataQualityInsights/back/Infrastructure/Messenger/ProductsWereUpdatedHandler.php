@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
-use Akeneo\Pim\Enrichment\Product\API\Event\ProductsWereUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Event\ProductsWereCreatedOrUpdated;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
 
 /**
@@ -23,7 +23,7 @@ final class ProductsWereUpdatedHandler
     ) {
     }
 
-    public function __invoke(ProductsWereUpdated $message): void
+    public function __invoke(ProductsWereCreatedOrUpdated $message): void
     {
         $productUuids = [];
         /** @var ProductWasUpdated $productWasUpdated */
