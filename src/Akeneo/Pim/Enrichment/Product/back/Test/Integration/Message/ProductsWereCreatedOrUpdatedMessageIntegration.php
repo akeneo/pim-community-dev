@@ -25,7 +25,7 @@ final class ProductsWereCreatedOrUpdatedMessageIntegration extends EnrichmentPro
     {
         parent::setUp();
 
-        $this->pubSubQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.product_was_created_or_updated');
+        $this->pubSubQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.dqi_product_score_compute_on_upsert');
         $this->pubSubQueueStatus->flushJobQueue();
     }
 
@@ -68,7 +68,6 @@ final class ProductsWereCreatedOrUpdatedMessageIntegration extends EnrichmentPro
         self::assertCount(0, $this->get('pim_catalog.validator.product')->validate($product2));
 
         $this->get('pim_catalog.saver.product')->saveAll([$product1, $product2]);
-
 
         $messages = $this->pubSubQueueStatus->getMessagesInQueue();
         self::assertCount(1, $messages);

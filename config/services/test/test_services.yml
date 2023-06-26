@@ -210,7 +210,7 @@ services:
         tags:
             - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
 
-    akeneo_integration_tests.pub_sub_queue_status.product_was_created_or_updated:
+    akeneo_integration_tests.pub_sub_queue_status.dqi_product_score_compute_on_upsert:
         class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
