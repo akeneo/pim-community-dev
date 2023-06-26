@@ -220,7 +220,7 @@ flash:
     entity:
         removed: Item was deleted
     attribute:
-        main_identifier_not_removable: Main identifier attribute can not be removed
+        main_identifier_not_removable: The main identifier attribute can not be removed
         used_as_conversion_unit:  This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
         cant_remove_attributes_used_as_label: Attributes used as labels in a family cannot be removed.
         cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
