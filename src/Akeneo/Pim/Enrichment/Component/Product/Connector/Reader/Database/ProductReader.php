@@ -175,9 +175,4 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     {
         $this->state = $state;
     }
-
-    public function setState(array $state): void
-    {
-        $this->state = $state;
-    }
 }

@@ -252,9 +252,4 @@ class FilteredProductAndProductModelReader implements
     {
         $this->state = $state;
     }
-
-    public function setState(array $state): void
-    {
-        $this->state = $state;
-    }
 }
