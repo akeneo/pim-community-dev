@@ -2,23 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Normalizer;
-
-use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelsWereCreatedOrUpdated;
-use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelWasCreated;
-use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelWasUpdated;
-use Akeneo\Pim\Enrichment\Product\API\Event\ProductsWereCreatedOrUpdated;
-use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
-use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
-use Ramsey\Uuid\Uuid;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Webmozart\Assert\Assert;
-
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+
+namespace Akeneo\Pim\Enrichment\Bundle\Normalizer;
+
+use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelsWereCreatedOrUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelWasCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Event\ProductModelWasUpdated;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
+
 final class ProductModelsWereCreatedOrUpdatedNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
