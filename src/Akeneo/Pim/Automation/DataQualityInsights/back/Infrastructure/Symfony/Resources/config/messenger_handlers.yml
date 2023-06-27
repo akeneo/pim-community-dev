@@ -19,3 +19,11 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
+
+    akeneo.pim.automation.data_quality_insights.event_listener.ack.products_were_created_or_update_message:
+        class: Akeneo\Tool\Bundle\MessengerBundle\EventListener\AckMessageEventListener
+        arguments:
+            - '@messenger.receiver_locator'
+            - 'dqi_product_score_compute_on_upsert_consumer'
+        tags:
+            - { name: kernel.event_subscriber }
