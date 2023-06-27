@@ -10,6 +10,9 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
+use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleRepository;
+use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -22,17 +25,20 @@ final class RoleWithPermissionsProcessor extends AbstractProcessor implements It
     private SimpleFactoryInterface $roleWithPermissionsFactory;
     private ObjectUpdaterInterface $roleWithPermissionsUpdater;
     private ValidatorInterface $validator;
+    private EditRolePermissionsRoleRepository $editRolePermissionsRoleRepository;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         SimpleFactoryInterface $roleWithPermissionsFactory,
         ObjectUpdaterInterface $roleWithPermissionsUpdater,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        EditRolePermissionsRoleRepository $editRolePermissionsRoleRepository,
     ) {
         parent::__construct($repository);
         $this->roleWithPermissionsFactory = $roleWithPermissionsFactory;
         $this->roleWithPermissionsUpdater = $roleWithPermissionsUpdater;
         $this->validator = $validator;
+        $this->editRolePermissionsRoleRepository = $editRolePermissionsRoleRepository;
     }
 
     /**
@@ -41,8 +47,15 @@ final class RoleWithPermissionsProcessor extends AbstractProcessor implements It
     public function process($item): RoleWithPermissions
     {
         $itemIdentifier = $this->getItemIdentifier($this->repository, $item);
+        /** @var RoleWithPermissions $roleWithPermissions */
         $roleWithPermissions = $this->findOrCreateRoleWithPermissions($itemIdentifier);
 
+        $minimumEditRoleRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
+        if (count($minimumEditRoleRoles) <= 1 && in_array($item['role'], $minimumEditRoleRoles)) {
+            if(count(array_intersect(MinimumEditRolePermission::getAllValues(), $item['permissions'])) < count(MinimumEditRolePermission::getAllValues())) {
+                $this->skipItemWithMessage($item, 'pim_user.controller.role.message.cannot_remove_last_edit_role_permission');
+            }
+        }
         try {
             $permissions = (null === $roleWithPermissions->role()->getId()) ? ['permissions' => []] : [];
             $this->roleWithPermissionsUpdater->update($roleWithPermissions, array_merge($permissions, $item));
