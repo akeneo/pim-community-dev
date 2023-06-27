@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\tests\Integration\Infrastructure\Storage\Sql;
 
-use Akeneo\Category\Application\ActivateTemplate;
+use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommand;
+use Akeneo\Category\Application\Command\CreateTemplate\CreateTemplateCommandHandler;
 use Akeneo\Category\Application\Query\DeactivateTemplate;
+use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\ValueObject\Code;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
@@ -16,6 +18,17 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
  */
 class DeactivateTemplateSqlIntegration extends CategoryTestCase
 {
+    private CreateTemplateCommandHandler $createTemplateCommandHandler;
+    private GetCategoryTemplateByCategoryTree $getTemplate;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->createTemplateCommandHandler = $this->get(CreateTemplateCommandHandler::class);
+        $this->getTemplate = $this->get(GetCategoryTemplateByCategoryTree::class);
+    }
+
     public function testTemplateHasBeenDeactivated(): void
     {
         $category = $this->insertBaseCategory(new Code('template_deactivation'));
@@ -23,12 +36,16 @@ class DeactivateTemplateSqlIntegration extends CategoryTestCase
             categoryTreeId: $category->getId()->getValue()
         );
 
-        $activateTemplate = $this->get(ActivateTemplate::class);
-        $templateUuid = ($activateTemplate)(
+        $command = new CreateTemplateCommand(
             $mockedTemplate->getCategoryTreeId(),
-            $mockedTemplate->getCode(),
-            $mockedTemplate->getLabelCollection()
+            [
+                'code' => (string) $mockedTemplate->getCode(),
+                'labels' => $mockedTemplate->getLabelCollection()->normalize(),
+            ]
         );
+        ($this->createTemplateCommandHandler)($command);
+
+        $templateUuid = ($this->getTemplate)($category->getId())->getUuid();
         $this::assertFalse($this->retrieveTemplateDeactivationStatus($templateUuid));
 
         $markTemplateAsDeactivated = $this->get(DeactivateTemplate::class);

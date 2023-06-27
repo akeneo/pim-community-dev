@@ -23,10 +23,15 @@ akeneo.category:
         delete: Delete tree
     template:
         learn_more: Learn more about category template
-        create: Activate template
+        create: Create template
+        create_confirmation_modal:
+            title: Create a new category template
+            helper: Create category template to define attributes and activate enrichment on all category of this tree.
+            category_tree: Category tree
+            link: Learn more about category templates
         edit: Edit template
-        notification_success: Template activated successfully
-        notification_error: Template could not be activated
+        notification_success: Category template created successfully
+        notification_error: Category template could not be created
         not_found: There is no active template for this category
         properties:
             general_properties: General properties
@@ -102,6 +107,28 @@ akeneo.category:
             saving: Saving
             editing: Editing
             errors: Errors not saved
+        initialize:
+            title: Add category attributes
+            message: Define content of your categories by adding Text, Text Area or Image attributes.
+            choice_message: Start by creating a first attribute according to your needs, or load a set of 13 suggested attributes.
+            button:
+                load: Load a set of attributes
+                create: Create 1st attribute
+        load_attribute_set:
+            section_title: Load set of attributes
+            title: Load a set of suggested attributes
+            description: Easily start the configuration of enriched categories by loading a set of suggested attributes.
+            content_description: 'This set contains 13 attributes:'
+            content:
+                description_attributes: 2 Text Area attributes for Long and Short category descriptions
+                url_attributes: 1 Text attribute for URL information
+                image_attributes: 3 Images and 3 Text attributes for image and their alt-text information
+                seo_attributes: 2 Text and 2 Text Area attributes for SEO information
+            confirmation_message: Are you sure want to load this set of attributes?
+            button:
+                load: Load set of attributes
+            notification:
+                success: Attributes successfully created
 
     template_list:
         columns:

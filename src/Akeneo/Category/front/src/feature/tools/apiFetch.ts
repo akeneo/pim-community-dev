@@ -45,5 +45,10 @@ export const apiFetch = async <T = void, E = unknown>(url: string, init: Request
     }
   }
 
+  switch (response.status) {
+    case 204:
+      return Promise.resolve() as unknown as Promise<T>;
+  }
+
   return await response.json();
 };
