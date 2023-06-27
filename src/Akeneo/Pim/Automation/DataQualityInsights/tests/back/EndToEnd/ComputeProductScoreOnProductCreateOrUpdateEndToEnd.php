@@ -14,13 +14,15 @@ use Ramsey\Uuid\Uuid;
  */
 final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends MessengerTestCase
 {
+    private const CONSUMER_NAME = 'dqi_product_score_compute_on_upsert_consumer';
+
     public function test_it_computes_product_score_after_creation(): void
     {
         $uuid1 = Uuid::uuid4();
         $this->createOrUpdateProduct($uuid1);
 
         self::assertFalse($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
-        $this->launchConsumer('dqi_product_score_compute_on_upsert_consumer');
+        $this->launchConsumer(self::CONSUMER_NAME);
         self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
     }
 
@@ -34,7 +36,7 @@ final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends Messenger
         self::assertFalse($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
 
         $this->createOrUpdateProduct($uuid1);
-        $this->launchConsumer('dqi_product_score_compute_on_upsert_consumer');
+        $this->launchConsumer(self::CONSUMER_NAME);
 
         self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
     }
@@ -61,7 +63,7 @@ final class ComputeProductScoreOnProductCreateOrUpdateEndToEnd extends Messenger
         $this->get('pim_catalog.saver.product')->saveAll([$product1, $product2]);
 
 
-        $this->launchConsumer('dqi_product_score_compute_on_upsert_consumer');
+        $this->launchConsumer(self::CONSUMER_NAME);
 
         self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
         self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid2->toString())));

@@ -20,6 +20,8 @@ final class ProductsWereCreatedOrUpdatedNormalizer implements NormalizerInterfac
 {
     /**
      * {@inheritDoc}
+     *
+     * @param array<string, mixed> $context
      */
     public function denormalize($data, string $type, string $format = null, array $context = []): ProductsWereCreatedOrUpdated
     {
@@ -32,15 +34,13 @@ final class ProductsWereCreatedOrUpdatedNormalizer implements NormalizerInterfac
             Assert::keyExists($normalizedEvent, 'product_uuid', 'Normalized event must contains a key "product_uuid"');
             Assert::string($normalizedEvent['product_uuid'], 'Normalized event product_uuid property must be a string');
             if (\array_key_exists('created_at', $normalizedEvent)) {
-                $events[] = new ProductWasCreated(
-                    Uuid::fromString($normalizedEvent['product_uuid']),
-                    \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $normalizedEvent['created_at'])
-                );
+                $createdAt = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $normalizedEvent['created_at']);
+                Assert::isInstanceOf($createdAt, \DateTimeImmutable::class);
+                $events[] = new ProductWasCreated(Uuid::fromString($normalizedEvent['product_uuid']), $createdAt);
             } elseif (\array_key_exists('updated_at', $normalizedEvent)) {
-                $events[] = new ProductWasUpdated(
-                    Uuid::fromString($normalizedEvent['product_uuid']),
-                    \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $normalizedEvent['updated_at'])
-                );
+                $updatedAt = \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $normalizedEvent['updated_at']);
+                Assert::isInstanceOf($updatedAt, \DateTimeImmutable::class);
+                $events[] = new ProductWasUpdated(Uuid::fromString($normalizedEvent['product_uuid']), $updatedAt);
             } else {
                 throw new \InvalidArgumentException('Normalized event should have a "created_at" or "updated_at" key');
             }
@@ -59,6 +59,9 @@ final class ProductsWereCreatedOrUpdatedNormalizer implements NormalizerInterfac
 
     /**
      * {@inheritDoc}
+     *
+     * @param array<string, mixed> $context
+     * @return array<string, array<int, mixed>>
      */
     public function normalize($object, string $format = null, array $context = []): array
     {

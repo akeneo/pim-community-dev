@@ -13,6 +13,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2023 Akeneo SAS (https://www.akeneo.com)
@@ -23,6 +24,9 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
     /** @var array<string, bool>  */
     private $createdProductsByUuid = [];
 
+    /**
+     * @param int<1, max> $batchSize
+     */
     public function __construct(
         private readonly MessageBusInterface $messageBus,
         private readonly LoggerInterface $logger,
@@ -30,6 +34,7 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
         private readonly string $env,
         private readonly int $batchSize = 100,
     ) {
+        Assert::greaterThanEq($this->batchSize, 1);
     }
 
     public static function getSubscribedEvents(): array
@@ -70,13 +75,15 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
             return;
         }
 
-        $event = ($this->createdProductsByUuid[$product->getUuid()->toString()] ?? false)
-            ? new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
-            : new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
-        ;
-        unset($this->createdProductsByUuid[$product->getUuid()->toString()]);
-
         try {
+            $updatedAt = $product->getUpdated();
+            Assert::isInstanceOf($updatedAt, \DateTime::class);
+            $event = ($this->createdProductsByUuid[$product->getUuid()->toString()] ?? false)
+                ? new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromMutable($updatedAt))
+                : new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($updatedAt))
+            ;
+            unset($this->createdProductsByUuid[$product->getUuid()->toString()]);
+
             // Launch ProductsWereUpdatedMessage with a single event to simplify the messaging stack
             $this->messageBus->dispatch(new ProductsWereCreatedOrUpdated([$event]));
         } catch (\Throwable $exception) {
@@ -100,7 +107,7 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
 
         foreach ($products as $product) {
             if (null === $product->getCreated()) {
-                $this->createdProductsByUuid[$product->getUuid()->toString()] = true;
+                $this->createdProductsByUuid[(string) $product->getUuid()->toString()] = true;
             }
         }
     }
@@ -114,9 +121,11 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
 
         $events = \array_map(
             function (ProductInterface $product) {
+                $updatedAt = $product->getUpdated();
+                Assert::isInstanceOf($updatedAt, \DateTime::class);
                 $event = ($this->createdProductsByUuid[$product->getUuid()->toString()] ?? false)
-                    ? new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
-                    : new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
+                    ? new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromMutable($updatedAt))
+                    : new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($updatedAt))
                 ;
                 unset($this->createdProductsByUuid[$product->getUuid()->toString()]);
 

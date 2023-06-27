@@ -84,9 +84,10 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface',
         'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
-        'Akeneo\Tool\Component\Messenger',
+        'Akeneo\Tool\Component\StorageUtils\StorageEvents',
 
         // Symfony, Doctrine DBAL and other libs
+        'Psr\\',
         'Webmozart\Assert\Assert',
         'Ramsey\Uuid',
         'Symfony\Component\Validator',
@@ -94,6 +95,10 @@ $rules = [
         'Symfony\Component\HttpKernel',
         'Symfony\Component\Config\FileLocator',
         'Doctrine\DBAL\Connection',
+        'Symfony\Component\EventDispatcher',
+        'Symfony\Component\Messenger\MessageBusInterface',
+        'Symfony\Component\Serializer\Normalizer\DenormalizerInterface',
+        'Symfony\Component\Serializer\Normalizer\NormalizerInterface',
     ])->in('Akeneo\Pim\Enrichment\Product\Infrastructure'),
 ];
 
