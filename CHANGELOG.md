@@ -96,6 +96,7 @@
 - PIM-11039: Fix export with duplicated labels
 - PIM-10869: Image upload fields now only accept images
 - PIM-11063: Fix validation of generated identifiers
+- PIM-11066: PIM-11066: Fix Missing Values Adder for scopable + localizable + locale specific attributes
 
 ## Improvements
 
