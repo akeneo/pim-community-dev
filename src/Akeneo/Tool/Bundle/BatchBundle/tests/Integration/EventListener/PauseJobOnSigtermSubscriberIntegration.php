@@ -83,7 +83,7 @@ class PauseJobOnSigtermSubscriberIntegration extends TestCase
         $this->assertJobExecutionHasStatus($jobExecution, BatchStatus::PAUSED);
     }
 
-    public function test_it_does_nont_update_status_when_job_is_not_pausable(): void
+    public function test_it_does_not_update_status_when_job_is_not_pausable(): void
     {
         $this->featureFlags->enable('pause_jobs');
         $jobExecution = $this->getJobExecution(self::STARTED_UNPAUSABLE_JOB_EXECUTION_ID);
