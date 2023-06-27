@@ -95,7 +95,6 @@ export const AddTemplateAttributeModal = ({templateId, onClose, onSuccess}: Prop
         onSuccess: async () => {
           await queryClient.invalidateQueries(['get-template', templateId]);
           notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.add_attribute.success.notification'));
-          onClose();
           onSuccess && onSuccess();
         },
       }

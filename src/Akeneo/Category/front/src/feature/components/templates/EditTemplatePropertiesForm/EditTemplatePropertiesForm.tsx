@@ -1,5 +1,5 @@
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
+import {Field, SectionTitle, SkeletonPlaceholder, TextInput} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useUiLocales} from '../../../hooks/useUiLocales';
 import {Template} from '../../../models';
@@ -22,7 +22,7 @@ export const EditTemplatePropertiesForm = ({template}: Props) => {
       </SectionTitle>
       <FieldContainer>
         <Field label={translate('pim_common.code')}>
-          <TextInput value={template.code} readOnly={true} />
+          <TextInput value={template.code} readOnly />
         </Field>
       </FieldContainer>
 
@@ -33,9 +33,13 @@ export const EditTemplatePropertiesForm = ({template}: Props) => {
           </SectionTitle.Title>
         </SectionTitle>
         <FieldContainer>
-          {sortedUiLocales?.map(locale => (
-            <TemplateLabelTranslationInput key={locale.code} locale={locale} template={template} />
-          ))}
+          {sortedUiLocales ? (
+            sortedUiLocales.map(locale => (
+              <TemplateLabelTranslationInput key={locale.code} locale={locale} template={template} />
+            ))
+          ) : (
+            <InputListSkeleton />
+          )}
         </FieldContainer>
       </>
     </>
@@ -48,3 +52,17 @@ const FieldContainer = styled.div`
     margin: 10px 0 0 0;
   }
 `;
+
+const InputListSkeleton = () => (
+  <>
+    {Array(15)
+      .fill(0)
+      .map((_, i) => (
+        <SkeletonPlaceholder key={i} style={{maxWidth: 460}}>
+          <Field label="label">
+            <TextInput readOnly />
+          </Field>
+        </SkeletonPlaceholder>
+      ))}
+  </>
+);

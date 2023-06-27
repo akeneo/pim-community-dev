@@ -18,9 +18,8 @@ export const LoadAttributeSetModal = ({templateId, onClose, onSuccess}: Props) =
   const url = useRoute('pim_category_template_rest_load_attribute_set', {templateUuid: templateId});
   const mutation = useMutation(() => apiFetch(url, {method: 'POST'}), {
     onSuccess: async () => {
-      await queryClient.invalidateQueries('get-template');
+      await queryClient.invalidateQueries(['get-template', templateId]);
       notify(NotificationLevel.SUCCESS, translate('akeneo.category.template.load_attribute_set.notification.success'));
-      onClose();
       onSuccess && onSuccess();
     },
   });
