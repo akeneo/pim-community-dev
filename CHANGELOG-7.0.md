@@ -2,7 +2,7 @@
 
 ## New features
 
--GRF-
+- GRF-872 [Backport GRF-669]: Add 4 field columns (properties) to the user export job profile
 
 # 7.0.18 (2023-06-22)
 
