@@ -17,8 +17,6 @@ const systemConfiguration: SystemConfiguration = {
 
       return Promise.resolve();
     } catch (error) {
-      systemConfigurationData['sandbox_banner'] = true;
-
       return Promise.resolve();
     }
   },

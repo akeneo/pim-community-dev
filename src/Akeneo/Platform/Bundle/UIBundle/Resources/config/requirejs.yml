@@ -410,6 +410,7 @@ config:
           aclResourceId: pim_enrich_grouptype_remove
         oro_config_configuration_system:
           module: pim/controller/config
+          aclResourceId: oro_config_system
         pim_enrich_catalog_volume_index:
           module: pim/controller/catalog-volume
         pim_user_security_logout:
