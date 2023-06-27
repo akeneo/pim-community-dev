@@ -55,6 +55,12 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $variantProductB->setFamilyVariant($familyVariant);
         $variantProductB->setParent($productModel);
 
+        $variantProductBBis = new Product(strtoupper($variantProductB->getUuid()->toString()));
+        $variantProductBBis->addValue($identifierB);
+        $variantProductBBis->setIdentifier('product_b');
+        $variantProductBBis->setFamilyVariant($familyVariant);
+        $variantProductBBis->setParent($productModel);
+
         $this->addCombination($productModel, '[a_color]');
         $this->addCombination($anotherProductModel, '[another_color]');
         $this->addCombination($variantProductA, '[a_size]');
@@ -122,10 +128,10 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
 
         $exception = new AlreadyExistingAxisValueCombinationException(
             'valid_variant_product',
-            'Variant product "valid_variant_product" already have the "[a_color]" combination of axis values.'
+            'Variant product "valid_variant_product" already have the "[A_color]" combination of axis values.'
         );
         $this
             ->shouldThrow($exception)
-            ->during('addCombination', [$invalidVariantProduct, '[a_color]']);
+            ->during('addCombination', [$invalidVariantProduct, '[A_color]']);
     }
 }

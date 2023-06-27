@@ -18,6 +18,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -28,8 +29,12 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         EntityWithFamilyVariantAttributesProvider $axesProvider,
         UniqueAxesCombinationSet $uniqueAxesCombinationSet,
         GetValuesOfSiblings $getValuesOfSiblings,
-        ExecutionContextInterface $context
+        ExecutionContextInterface $context,
+        ConstraintViolationListInterface $constraintViolationList
     ) {
+        $context->getViolations()->willReturn($constraintViolationList);
+        $constraintViolationList->count()->willReturn(0);
+
         $this->beConstructedWith($axesProvider, $uniqueAxesCombinationSet, $getValuesOfSiblings);
         $this->initialize($context);
     }
@@ -451,6 +456,51 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                     '%values%' => '[blue],[xl]',
                     '%attributes%' => 'color,size',
                     '%validated_entity%' => 'entity_code',
+                    '%sibling_with_same_value%' => 'sibling2',
+                ]
+            )
+            ->willReturn($violation);
+        $violation->atPath('attribute')->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $this->validate($entity, $constraint);
+    }
+
+    function it_raises_a_violation_if_there_is_a_duplicate_value_with_a_different_case_in_any_sibling_product_model(
+        ExecutionContextInterface $context,
+        EntityWithFamilyVariantAttributesProvider $axesProvider,
+        GetValuesOfSiblings $getValuesOfSiblings,
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $parent,
+        AttributeInterface $color,
+        UniqueVariantAxis $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $color->getCode()->willReturn('color');
+        $axes = [$color];
+
+        $entity = new Product();
+        $entity->setIdentifier('my_identifier');
+        $entity->setParent($parent->getWrappedObject());
+        $entity->setFamilyVariant($familyVariant->getWrappedObject());
+        $entity->addValue(OptionValue::value('color', 'Blue'));
+
+        $axesProvider->getAxes($entity)->willReturn($axes);
+
+        $getValuesOfSiblings->for($entity, ['color'])->willReturn(
+            [
+                'sibling1' => new WriteValueCollection([OptionValue::value('color', 'yellow')]),
+                'sibling2' => new WriteValueCollection([OptionValue::value('color', 'blue')]),
+            ]
+        );
+
+        $context
+            ->buildViolation(
+                UniqueVariantAxis::DUPLICATE_VALUE_IN_VARIANT_PRODUCT,
+                [
+                    '%values%' => '[Blue]',
+                    '%attributes%' => 'color',
+                    '%validated_entity%' => 'my_identifier',
                     '%sibling_with_same_value%' => 'sibling2',
                 ]
             )

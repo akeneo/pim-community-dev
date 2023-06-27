@@ -72,6 +72,9 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         }
 
         $this->validateValueIsNotAlreadyInDatabase($entity, $axes);
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
         $this->validateValueWasNotAlreadyValidated($entity, $axes);
     }
 
@@ -102,10 +105,10 @@ class UniqueVariantAxisValidator extends ConstraintValidator
 
         $siblingsCombinations = [];
         foreach ($siblingValues as $siblingIdentifier => $values) {
-            $siblingsCombinations[$siblingIdentifier] = $this->getCombinationOfAxisValues($values, $axes);
+            $siblingsCombinations[$siblingIdentifier] = \mb_strtolower($this->getCombinationOfAxisValues($values, $axes));
         }
 
-        if (in_array($ownCombination, $siblingsCombinations, true)) {
+        if (in_array(\mb_strtolower($ownCombination), $siblingsCombinations, true)) {
             $alreadyInDatabaseSiblingIdentifier = array_search($ownCombination, $siblingsCombinations);
 
             $this->addViolation(

@@ -530,6 +530,7 @@
 - PIM-10217: Fix cannot quick export product model when id is not present in grid context
 - PIM-10212: Prevent spaces in locale codes
 - PIM-10218: Remove previous scope filter before moving the new one
+- PIM-10960: Fix no violation raised when importing variant with already existing siblings
 
 ## New features
 
