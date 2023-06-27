@@ -10,45 +10,33 @@ namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
  */
 class ListRootCategoriesWithCount
 {
-    /** @var int */
-    private $categoryIdSelectedAsFilter;
-
-    /** @var bool */
-    private $countIncludingSubCategories;
-
-    /** @var int */
-    private $userId;
-
-    /** @var string */
-    private $translationLocaleCode;
-
-    /**
-     * @param int    $categoryIdSelectedAsFilter
-     * @param bool   $countIncludingSubCategories
-     * @param int    $userId
-     * @param string $translationLocaleCode
-     */
     public function __construct(
-        int $categoryIdSelectedAsFilter,
-        bool $countIncludingSubCategories,
-        int $userId,
-        string $translationLocaleCode
+        private int $categoryIdSelectedAsFilter,
+        private bool $countIncludingSubCategories,
+        private int $userId,
+        private string $translationLocaleCode,
+        private int|null $categoryTreeIdSelectedAsFilter = null,
     ) {
-        $this->categoryIdSelectedAsFilter = $categoryIdSelectedAsFilter;
-        $this->countIncludingSubCategories = $countIncludingSubCategories;
-        $this->userId = $userId;
-        $this->translationLocaleCode = $translationLocaleCode;
     }
 
     /**
-     * This category is the category that is selected by the user to filter the product grid.
-     * The tree of this category is the tree that is displayed.
-     *
+     * This category is sub-category that is selected by the user to filter the product grid.
+     * This category is the one that is displayed as selected. It is used to deduct the category tree displayed (root).
      * @return int
      */
     public function categoryIdSelectedAsFilter(): int
     {
         return $this->categoryIdSelectedAsFilter;
+    }
+
+    /**
+     * Optional
+     * This is the category tree that is selected by the user to filter the product grid.
+     * @return int
+     */
+    public function categoryTreeIdSelectedAsFilter(): int|null
+    {
+        return $this->categoryTreeIdSelectedAsFilter;
     }
 
     /**

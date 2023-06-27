@@ -44,6 +44,7 @@ class TreeView {
         _format: 'json',
         dataLocale: undefined,
         select_node_id: this.state.selectedNode,
+        select_tree_id: this.state.selectedTree,
         include_sub: this.state.includeSub ? 1 : 0,
         context: 'view',
       });
@@ -111,9 +112,14 @@ class TreeView {
       this.onChange(treeLabel, categoryLabel);
     };
 
-    const handleTreeChange = (treeId: number, treeLabel: string) => {
+    const handleTreeChange = (treeId: number, treeLabel: string, selectedCategoryId: number) => {
       this.state.selectedTree = treeId;
-      this.state.selectedNode = treeId;
+      if (selectedCategoryId >= 0) {
+        this.state.selectedNode = -2;
+      } else {
+        this.state.selectedNode = selectedCategoryId;
+      }
+
       this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
       this.onChange(treeLabel);
     };
@@ -136,7 +142,7 @@ class TreeView {
             initTree={initTree}
             initCallback={initCallback}
             initialIncludeSubCategories={this.state.includeSub}
-            initialSelectedTreeId={this.state.selectedNode}
+            initialSelectedNodeId={this.state.selectedNode}
             onCategoryClick={handleCategoryClick}
             onTreeChange={handleTreeChange}
             onIncludeSubCategoriesChange={handleIncludeSubCategoriesChange}
