@@ -9,7 +9,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\Batch\Item;
 
-interface PausableReaderInterface
+interface StatefulInterface
 {
+    /**
+     * @param array<string, mixed> $state
+     */
+    public function setState(array $state): void;
+
+    /**
+     * @return array<string, mixed>
+     */
     public function getState(): array;
 }

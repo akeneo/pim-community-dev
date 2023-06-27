@@ -3,8 +3,9 @@
 namespace Akeneo\Tool\Component\Connector\Reader\File\Yaml;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -22,11 +23,12 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface, TrackableItemReaderInterface, PausableReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface, InitializableInterface, StatefulInterface
 {
     protected bool $uploadAllowed = false;
     protected ?StepExecution $stepExecution = null;
     protected ?\ArrayIterator $yaml = null;
+    protected array $state = [];
 
     /**
      * @param ArrayConverterInterface $converter
@@ -83,12 +85,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
      */
     public function read()
     {
-        if (null === $this->yaml) {
-            $fileData = $this->getFileData();
-            if (null === $fileData) {
-                return null;
-            }
-            $this->yaml = new \ArrayIterator($fileData);
+        if (!$this->initYaml()) {
+            return null;
         }
 
         if ($data = $this->yaml->current()) {
@@ -110,6 +108,19 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
         $this->flush();
 
         return null;
+    }
+
+    private function initYaml(): bool
+    {
+        if (null === $this->yaml) {
+            $fileData = $this->getFileData();
+            if (null === $fileData) {
+                return false;
+            }
+            $this->yaml = new \ArrayIterator($fileData);
+        }
+
+        return true;
     }
 
     /**
@@ -160,10 +171,20 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
-        if (null !== $this->yaml) {
-            $this->yaml->rewind();
+        if (!$this->initYaml()) {
+            return;
+        }
+
+        $this->yaml->rewind();
+
+        if (!array_key_exists('position', $this->state)) {
+            return;
+        }
+
+        while ($this->yaml->key() < $this->state['position']) {
+            $this->yaml->next();
         }
     }
 
@@ -210,5 +231,10 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Pausa
     public function getState(): array
     {
         return null !== $this->yaml ? ['position' => $this->yaml->key()] : [];
+    }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
     }
 }

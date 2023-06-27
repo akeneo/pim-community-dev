@@ -23,8 +23,31 @@ class FillMissingProductValuesSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         GetAttributes $getAttributes
-    )
-    {
+    ) {
+        $deDe = new Locale();
+        $enUs = new Locale();
+        $frFR = new Locale();
+        $deDe->setCode('de_DE');
+        $enUs->setCode('en_US');
+        $frFR->setCode('fr_FR');
+
+        $USD = new Currency();
+        $EUR = new Currency();
+        $AED = new Currency();
+        $USD->setCode('USD');
+        $EUR->setCode('EUR');
+        $AED->setCode('AED');
+
+        $tablet = new Channel();
+        $tablet->setCode('tablet');
+        $tablet->setLocales([$enUs, $frFR]);
+        $tablet->setCurrencies([$AED, $EUR]);
+
+        $ecommerce = new Channel();
+        $ecommerce->setCode('ecommerce');
+        $ecommerce->setLocales([$frFR, $deDe]);
+        $ecommerce->setCurrencies([$USD, $EUR]);
+
         $family = new Family();
 
         $family->addAttribute(
@@ -34,12 +57,12 @@ class FillMissingProductValuesSpec extends ObjectBehavior
             (new Builder())->aTextAttribute()->withCode('localizable_name')->localizable()->build()
         );
         $family->addAttribute(
-            (new Builder())->aTextAttribute()->withCode('specific_localizable_name')->specificlocalizable()->build()
+            (new Builder())->aTextAttribute()->withCode('specific_localizable_name')->localeSpecific([$frFR])->build()
         );
         $family->addAttribute(
             (new Builder())
                 ->aTextAttribute()
-                ->withCode('scopable_localizable_locale_specific_name')->localizable()->scopable()->specificlocalizable()
+                ->withCode('scopable_localizable_locale_specific_name')->localizable()->scopable()->localeSpecific([$frFR])
                 ->build()
         );
 
@@ -70,30 +93,6 @@ class FillMissingProductValuesSpec extends ObjectBehavior
 
         $familyRepository->findOneByIdentifier('shoes')->willReturn($family);
         $familyRepository->findOneByIdentifier('family_with_price')->willReturn($familyWithPrice);
-
-        $deDe = new Locale();
-        $enUs = new Locale();
-        $frFR = new Locale();
-        $deDe->setCode('de_DE');
-        $enUs->setCode('en_US');
-        $frFR->setCode('fr_FR');
-
-        $USD = new Currency();
-        $EUR = new Currency();
-        $AED = new Currency();
-        $USD->setCode('USD');
-        $EUR->setCode('EUR');
-        $AED->setCode('AED');
-
-        $tablet = new Channel();
-        $tablet->setCode('tablet');
-        $tablet->setLocales([$enUs, $frFR]);
-        $tablet->setCurrencies([$AED, $EUR]);
-
-        $ecommerce = new Channel();
-        $ecommerce->setCode('ecommerce');
-        $ecommerce->setLocales([$frFR, $deDe]);
-        $ecommerce->setCurrencies([$USD, $EUR]);
 
         $channelRepository->findAll()->willReturn([$tablet, $ecommerce]);
         $localeRepository->getActivatedLocales()->willReturn([$enUs, $frFR, $deDe]);
@@ -150,12 +149,12 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                     'scopable_localizable_locale_specific_name' => [
                         [
                             'scope' => 'tablet',
-                            'locale' => null,
+                            'locale' => 'fr_FR',
                             'data' => null
                         ],
                         [
                             'scope' => 'ecommerce',
-                            'locale' => null,
+                            'locale' => 'fr_FR',
                             'data' => null
                         ],
                     ],
@@ -295,12 +294,12 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                     'scopable_localizable_locale_specific_name' => [
                         [
                             'scope' => 'tablet',
-                            'locale' => null,
+                            'locale' => 'fr_FR',
                             'data' => null
                         ],
                         [
                             'scope' => 'ecommerce',
-                            'locale' => null,
+                            'locale' => 'fr_FR',
                             'data' => null
                         ],
                     ],

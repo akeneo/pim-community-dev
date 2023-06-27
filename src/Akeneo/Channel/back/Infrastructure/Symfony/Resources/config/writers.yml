@@ -14,7 +14,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.locale'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     #TODO: fix the dependency to the writer class
     pim_connector.writer.file.xlsx_locale:
@@ -23,7 +23,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.locale'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     ### Channel
     #TODO: fix the dependency to the writer class
@@ -40,7 +40,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.channel'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     #TODO: fix the dependency to the writer class
     pim_connector.writer.file.xlsx_channel:
@@ -49,7 +49,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.channel'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     ### Currency
     #TODO: fix the dependency to the writer class
@@ -66,7 +66,7 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.currency'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
 
     #TODO: fix the dependency to the writer class
     pim_connector.writer.file.xlsx_currency:
@@ -75,4 +75,4 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.currency'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
-            - '@pim_connector.writer.file.backuper'
+            - '@pim_connector.job.file_backuper'
