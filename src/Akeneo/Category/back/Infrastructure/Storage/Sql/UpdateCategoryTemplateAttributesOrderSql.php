@@ -76,7 +76,7 @@ class UpdateCategoryTemplateAttributesOrderSql implements UpdateCategoryTemplate
 
         $queryIndex = 0;
         foreach ($attributeUuids as $index => $attributeUuid) {
-            $statement->bindValue(++$queryIndex, $index, \PDO::PARAM_INT);
+            $statement->bindValue(++$queryIndex, $index + 1, \PDO::PARAM_INT);
             $statement->bindValue(++$queryIndex, $attributeUuid, \PDO::PARAM_STR);
         }
 
