@@ -105,6 +105,7 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
     private function extractFamilyCodes()
     {
         $familyCodes = [];
+
         while (true) {
             $family = $this->familyReader->read();
             if (null === $family) {
