@@ -96,9 +96,10 @@
 - PIM-11039: Fix export with duplicated labels
 - PIM-10869: Image upload fields now only accept images
 - PIM-11063: Fix validation of generated identifiers
-- PIM-11066: PIM-11066: Fix Missing Values Adder for scopable + localizable + locale specific attributes
+- PIM-11066: Fix Missing Values Adder for scopable + localizable + locale specific attributes
 - PIM-11018: Fix view on Connected App permissions if manage or not
 - PIM-11062: Fix category filter behavior in product grid
+- PIM-11071: Fix potential divided by zero in completeness calculation
 
 ## Improvements
 
