@@ -47,13 +47,15 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
         $product = $event->getSubject();
         $unitary = $event->getArguments()['unitary'] ?? false;
 
-        if (false === $unitary || !$product instanceof ProductInterface) {
+        if (false === $unitary
+            || !$product instanceof ProductInterface
+            || $this->isProdLegacy()
+            || null !== $product->getCreated()
+        ) {
             return;
         }
 
-        if (null === $product->getCreated()) {
-            $this->createdProductsByUuid[$product->getUuid()->toString()] = true;
-        }
+        $this->createdProductsByUuid[$product->getUuid()->toString()] = true;
     }
 
     public function dispatchProductWasUpdatedMessage(GenericEvent $event): void
@@ -68,15 +70,17 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
             return;
         }
 
+        $event = ($this->createdProductsByUuid[$product->getUuid()->toString()] ?? false)
+            ? new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
+            : new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
+        ;
+        unset($this->createdProductsByUuid[$product->getUuid()->toString()]);
+
         try {
-            $event = ($this->createdProductsByUuid[$product->getUuid()->toString()] ?? false)
-                ? new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
-                : new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
-                ;
-            unset($this->createdProductsByUuid[$product->getUuid()->toString()]);
             // Launch ProductsWereUpdatedMessage with a single event to simplify the messaging stack
             $this->messageBus->dispatch(new ProductsWereCreatedOrUpdated([$event]));
         } catch (\Throwable $exception) {
+            // Catch any error to not block the critical path
             $this->logger->error('Failed to dispatch ProductsWereUpdatedMessage from unitary product update', [
                 'product_uuid' => $product->getUuid()->toString(),
                 'error' => $exception->getMessage(),
@@ -104,30 +108,30 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
     public function dispatchProductWereUpdatedMessage(GenericEvent $event): void
     {
         $products = $event->getSubject();
-        if (empty($products) || !reset($products) instanceof ProductInterface) {
+        if (empty($products) || !reset($products) instanceof ProductInterface || $this->isProdLegacy()) {
             return;
         }
 
+        $events = \array_map(
+            function (ProductInterface $product) {
+                $event = ($this->createdProductsByUuid[$product->getUuid()->toString()] ?? false)
+                    ? new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
+                    : new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
+                ;
+                unset($this->createdProductsByUuid[$product->getUuid()->toString()]);
+
+                return $event;
+            },
+            $products
+        );
+        $batchEvents = \array_chunk($events, $this->batchSize);
+
         try {
-            $events = \array_map(
-                function (ProductInterface $product) {
-                    $event = ($this->createdProductsByUuid[$product->getUuid()->toString()] ?? false)
-                        ? new ProductWasCreated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
-                        : new ProductWasUpdated($product->getUuid(), \DateTimeImmutable::createFromMutable($product->getCreated()))
-                    ;
-                    unset($this->createdProductsByUuid[$product->getUuid()->toString()]);
-
-                    return $event;
-                },
-                $products
-            );
-
-            $batchEvents = \array_chunk($events, $this->batchSize);
             foreach ($batchEvents as $events) {
-                $message = new ProductsWereCreatedOrUpdated($events);
-                $this->messageBus->dispatch($message);
+                $this->messageBus->dispatch(new ProductsWereCreatedOrUpdated($events));
             }
         } catch (\Throwable $exception) {
+            // Catch any error to not block the critical path
             $this->logger->error('Failed to dispatch ProductsWereUpdatedMessage from batch products update', [
                 'error' => $exception->getMessage(),
             ]);
