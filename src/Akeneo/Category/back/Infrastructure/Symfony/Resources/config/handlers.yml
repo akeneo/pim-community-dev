@@ -65,6 +65,12 @@ services:
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand' }
 
+  Akeneo\Category\Application\Command\ReorderTemplateAttributesCommand\ReorderTemplateAttributesCommandHandler:
+    arguments:
+      - '@Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder'
+    tags:
+      - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\ReorderTemplateAttributesCommand\ReorderTemplateAttributesCommand' }
+
   Akeneo\Category\Application\Command\UpdateTemplateCommand\UpdateTemplateCommandHandler:
     arguments:
       - '@validator'

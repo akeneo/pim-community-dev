@@ -157,4 +157,4 @@ services:
         arguments:
             - '@oro_security.security_facade'
             - '@Akeneo\Category\Domain\Query\GetTemplate'
-            - '@Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder'
+            - '@category.command.message_bus'

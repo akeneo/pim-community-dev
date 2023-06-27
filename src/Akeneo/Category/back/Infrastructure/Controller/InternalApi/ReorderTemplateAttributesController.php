@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
+use Akeneo\Category\Api\Command\CommandMessageBus;
+use Akeneo\Category\Application\Command\ReorderTemplateAttributesCommand\ReorderTemplateAttributesCommand;
 use Akeneo\Category\Domain\Exception\TemplateNotFoundException;
 use Akeneo\Category\Domain\Query\GetTemplate;
-use Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +25,7 @@ class ReorderTemplateAttributesController
     public function __construct(
         private readonly SecurityFacade $securityFacade,
         private readonly GetTemplate $getTemplate,
-        private readonly UpdateCategoryTemplateAttributesOrder $updateCategoryTemplateAttributesOrder,
+        private readonly CommandMessageBus $categoryCommandBus,
     ) {
     }
 
@@ -40,8 +41,11 @@ class ReorderTemplateAttributesController
             throw new NotFoundHttpException($e->getMessage());
         }
 
-        $attributesUuid = json_decode($request->getContent(), true);
-        $this->updateCategoryTemplateAttributesOrder->fromAttributeUuids($attributesUuid);
+        $attributeUuids = json_decode($request->getContent(), true);
+        $command = ReorderTemplateAttributesCommand::create(
+            attributeUuids: $attributeUuids,
+        );
+        $this->categoryCommandBus->dispatch($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
