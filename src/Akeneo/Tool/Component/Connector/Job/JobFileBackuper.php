@@ -39,7 +39,8 @@ class JobFileBackuper
 
     private function getBackupDir(JobExecution $jobExecution): string
     {
-        return sprintf('%s/%s/%s/%s',
+        return sprintf(
+            '%s/%s/%s/%s',
             $jobExecution->getJobInstance()->getType(),
             $jobExecution->getJobInstance()->getJobName(),
             $jobExecution->getId(),
