@@ -102,6 +102,7 @@ class ProductModelReaderSpec extends ObjectBehavior
             ]
         )->willReturn($absolutePath);
 
+        $this->initialize();
         $this->read()->shouldReturn($absolutePath);
     }
 }

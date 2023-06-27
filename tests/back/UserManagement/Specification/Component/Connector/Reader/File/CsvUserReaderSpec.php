@@ -76,6 +76,7 @@ class CsvUserReaderSpec extends ObjectBehavior
             ]
         );
 
+        $this->initialize();
         $this->read()->shouldReturn(
             [
                 'username' => 'julia',
