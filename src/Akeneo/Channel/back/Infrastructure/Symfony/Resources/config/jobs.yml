@@ -30,6 +30,8 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_locale_import.import'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -56,6 +58,8 @@ services:
                 - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_locale_import.import'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
@@ -85,6 +89,8 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_channel_import.import'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -111,6 +117,8 @@ services:
                     - '@akeneo.job_automation.connector.step.download'
                     - '@pim_connector.step.charset_validator'
                     - '@pim_connector.step.xlsx_channel_import.import'
+                - true
+                - true
                 - true
             tags:
                 - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
@@ -140,6 +148,8 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_currency_import.import'
             - true
+            - true
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -167,6 +177,8 @@ services:
                 - '@akeneo.job_automation.connector.step.download'
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_currency_import.import'
+            - true
+            - true
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
