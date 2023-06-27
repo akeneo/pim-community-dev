@@ -464,7 +464,6 @@ pim_system:
     button:
       label: Reimposta istanza
       confirm: Reimposta e disconnetti
-    error_notification: Si è verificato un errore durante la reimpostazione del PIM, contatta l'amministratore di sistema.
   sandbox:
     helper:
       text: Questo è un ambiente di prova; i cambiamenti non avranno effetto su quello di lavoro.

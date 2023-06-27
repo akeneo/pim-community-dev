@@ -2,6 +2,7 @@ import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
+  Router,
   useDebounceCallback,
   useNotify,
   useRouter,
@@ -14,8 +15,26 @@ import styled from 'styled-components';
 import {NoResults} from './NoResults';
 import {DeleteCategoryModal} from './DeleteCategoryModal';
 import {deleteCategory} from '../../infrastructure';
-import {createTemplate} from '../templates/createTemplate';
 import {useCountCategoryTreesChildren} from '../../hooks';
+
+const createTemplate = async (categoryTree: CategoryTreeModel, catalogLocale: string, router: Router) => {
+  const data = {
+    code: categoryTree.code + '_template',
+  };
+
+  const url = router.generate('pim_category_template_rest_create', {
+    categoryTreeId: categoryTree.id,
+  });
+
+  return fetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Accept: 'application/json',
+    },
+  });
+};
 
 type Props = {
   trees: CategoryTreeModel[];

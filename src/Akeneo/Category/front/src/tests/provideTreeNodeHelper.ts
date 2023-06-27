@@ -1,4 +1,4 @@
-import {DraggedNode, TreeNode} from 'feature/models';
+import {DraggedNode, TreeNode} from '../feature/models';
 
 const aTreeNode = <T>(
   data: T,

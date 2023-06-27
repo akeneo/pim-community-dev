@@ -1,5 +1,5 @@
-import {aCategory, aCategoryTree, aCategoryTreeWithChildren} from 'tests/provideCategoryHelper';
-import {aTreeNode} from 'tests/provideTreeNodeHelper';
+import {aCategory, aCategoryTree, aCategoryTreeWithChildren} from '../../tests/provideCategoryHelper';
+import {aTreeNode} from '../../tests/provideTreeNodeHelper';
 import {buildNodesFromCategoryTree, findLoadedDescendantsIdentifiers} from './treeHelper';
 
 describe('treeHelper', () => {

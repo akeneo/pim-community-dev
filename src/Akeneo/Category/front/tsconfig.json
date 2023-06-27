@@ -26,10 +26,8 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
-    "suppressImplicitAnyIndexErrors": true,
     "removeComments": true,
     "target": "es5",
-    "baseUrl": "./src",
     "types": [
       "node",
       "jest",
@@ -40,7 +38,8 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "noEmit": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    // "noUncheckedIndexedAccess": true
   },
   "include": [
     "src/feature"

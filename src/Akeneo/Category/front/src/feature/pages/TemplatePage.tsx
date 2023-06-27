@@ -14,8 +14,8 @@ import {useParams} from 'react-router';
 import styled from 'styled-components';
 import {useTemplateForm} from '../components/providers/TemplateFormProvider';
 import {DeactivateTemplateModal} from '../components/templates/DeactivateTemplateModal';
-import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm';
-import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm';
+import {EditTemplateAttributesForm} from '../components/templates/EditTemplateAttributesForm/EditTemplateAttributesForm';
+import {EditTemplatePropertiesForm} from '../components/templates/EditTemplatePropertiesForm/EditTemplatePropertiesForm';
 import {SaveStatusIndicator} from '../components/templates/SaveStatusIndicator';
 import {TemplateOtherActions} from '../components/templates/TemplateOtherActions';
 import {useCategoryTree, useTemplateByTemplateUuid} from '../hooks';
@@ -29,10 +29,10 @@ const useTabInError = () => {
   const [state] = useTemplateForm();
 
   return {
-    [Tabs.ATTRIBUTE]: Object.values(state.attributes).some(translations =>
-      Object.values(translations || {}).some(({errors}) => errors.length > 0)
+    [Tabs.ATTRIBUTE]: Object.values(state.attributes).some(attribute =>
+      Object.values(attribute.labels || {}).some(({errors}) => errors.length > 0)
     ),
-    [Tabs.PROPERTY]: false,
+    [Tabs.PROPERTY]: Object.values(state.properties.labels).some(({errors}) => errors.length > 0),
   };
 };
 

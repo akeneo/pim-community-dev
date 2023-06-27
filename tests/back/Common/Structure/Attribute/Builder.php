@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Common\Structure\Attribute;
 
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Test\Common\EntityWithValue\Code;
 use Akeneo\Pim\Structure\Component\Model;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -33,8 +34,8 @@ class Builder
     /** @var bool */
     private $localizable;
 
-    /** @var bool */
-    private $specificlocalizable;
+    /** @var LocaleInterface[]  */
+    private $availableLocales = [];
 
     /** @var bool */
     private $scopable;
@@ -67,10 +68,8 @@ class Builder
         $attribute->setUnique($this->isUnique);
         $attribute->setScopable($this->scopable);
         $attribute->setLocalizable($this->localizable);
-        if ($this->specificlocalizable) {
-            $locale = new Locale();
-            $locale->setCode("locale_code");
-            $attribute->addAvailableLocale(new Locale());
+        foreach ($this->availableLocales as $availableLocale) {
+            $attribute->addAvailableLocale($availableLocale);
         }
         $attribute->setDecimalsAllowed(false);
         $attribute->setBackendType($this->backendType);
@@ -162,8 +161,10 @@ class Builder
         return $this;
     }
 
-    public function  specificlocalizable(): Builder {
-        $this->specificlocalizable =true;
+    public function localeSpecific(array $locales): Builder
+    {
+        $this->availableLocales = $locales;
+
         return $this;
     }
 

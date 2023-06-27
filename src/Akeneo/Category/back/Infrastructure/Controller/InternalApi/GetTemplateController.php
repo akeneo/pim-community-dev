@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Application\Query\GetAttribute;
-use Akeneo\Category\Application\Query\GetTemplate;
+use Akeneo\Category\Domain\Exception\TemplateNotFoundException;
+use Akeneo\Category\Domain\Query\GetTemplate;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,8 +36,9 @@ class GetTemplateController
             throw new AccessDeniedException();
         }
 
-        $template = $this->getTemplate->byUuid(TemplateUuid::fromString($templateUuid));
-        if (null === $template) {
+        try {
+            $template = $this->getTemplate->byUuid(TemplateUuid::fromString($templateUuid));
+        } catch (TemplateNotFoundException $exception) {
             throw new NotFoundHttpException();
         }
 

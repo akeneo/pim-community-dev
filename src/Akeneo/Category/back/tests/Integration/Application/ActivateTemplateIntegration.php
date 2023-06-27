@@ -4,7 +4,7 @@ namespace Akeneo\Category\back\tests\Integration\Application;
 
 use Akeneo\Category\Application\ActivateTemplate;
 use Akeneo\Category\Application\Query\GetAttribute;
-use Akeneo\Category\Application\Query\GetTemplate;
+use Akeneo\Category\Domain\Query\GetTemplate;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;

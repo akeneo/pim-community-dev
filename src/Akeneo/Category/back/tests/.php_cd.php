@@ -16,7 +16,6 @@ $rules = [
         'Akeneo\Category\Domain',
 
         // TBD
-        'Akeneo\Category\Domain\Exceptions\ViolationsException',
         'Akeneo\Category\Api\Command\UpsertCategoryCommand',
         'Akeneo\Category\Api\Command\UserIntents\SetImage',
         'Akeneo\Category\Api\Command\UserIntents\SetLabel',

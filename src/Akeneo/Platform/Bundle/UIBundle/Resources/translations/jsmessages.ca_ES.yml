@@ -464,7 +464,6 @@ pim_system:
     button:
       label: Restableix la instància
       confirm: Reinicieu i tanqueu la sessió
-    error_notification: S'ha produït un error durant el restabliment del PIM; poseu-vos en contacte amb l'administrador del sistema.
   sandbox:
     helper:
       text: Aquest és un entorn sandbox; els vostres canvis no afectaran la vostra producció.

@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Job;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Psr\Log\LoggerInterface;
@@ -28,12 +29,16 @@ class PurgeJobExecutions implements TaskletInterface
     public function execute(): void
     {
         $days = (int) $this->stepExecution->getJobParameters()->get('days');
+        $jobExecutionStatus = null;
+        if ($this->stepExecution->getJobParameters()->has('status')) {
+            $jobExecutionStatus = new BatchStatus($this->stepExecution->getJobParameters()->get('status'));
+        }
 
         if (0 === $days) {
-            $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanHours(1);
+            $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanHours(1, [], $jobExecutionStatus);
             $this->logger->info('Purged jobs execution older than 1 hour');
         } else {
-            $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanDays($days);
+            $numberOfDeletedJobExecutions = $this->purgeJobExecution->olderThanDays($days, [], $jobExecutionStatus);
             $this->logger->info(sprintf('Purged jobs execution older than %d days', $days));
         }
         $this->logger->info(sprintf('%d jobs execution deleted', $numberOfDeletedJobExecutions));

@@ -94,4 +94,9 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
     {
         $this->state = $state;
     }
+
+    public function setState(array $state): void
+    {
+        $this->state = $state;
+    }
 }
