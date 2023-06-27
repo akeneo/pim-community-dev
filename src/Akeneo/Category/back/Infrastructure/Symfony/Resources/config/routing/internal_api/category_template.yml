@@ -18,6 +18,12 @@ pim_category_template_rest_update:
         _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\UpdateTemplateController
     methods: [PATCH]
 
+pim_category_template_rest_reorder_attributes:
+    path: /rest/{templateUuid}/reorder
+    defaults:
+        _controller: Akeneo\Category\Infrastructure\Controller\InternalApi\ReorderTemplateAttributesController
+    methods: [POST]
+
 pim_enriched_category_rest_deactivate_template:
     path: /rest/{templateUuid}
     defaults:

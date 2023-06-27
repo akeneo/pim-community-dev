@@ -11,4 +11,7 @@ use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCollection;
 interface UpdateCategoryTemplateAttributesOrder
 {
     public function fromAttributeCollection(AttributeCollection $attributeList): void;
+
+    /** @param array<string> $attributeUuids */
+    public function fromAttributeUuids(array $attributeUuids): void;
 }
