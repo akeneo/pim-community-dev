@@ -58,6 +58,7 @@ pim_identifier_generator:
     helper:
       title: 'Voeg voorwaarden toe aan uw productselectie, als u:'
       automate: 'de creatie van identifiers wilt automatiseren voor een gerichte selectie van producten'
+      multiple: 'meerdere id-structuren wilt hebben voor verschillende productselecties'
     empty:
       title: 'Definieer uw productselectie'
       text: 'Al uw producten met een lege identificatie zullen beïnvloed worden.'
