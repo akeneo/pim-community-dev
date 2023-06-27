@@ -20,9 +20,8 @@ class ListRootCategoriesWithCount
     }
 
     /**
-     * This category is sub-category that is selected by the user to filter the product grid.
-     * This category is the one that is displayed as selected. It is used to deduct the category tree displayed (root).
-     * @return int
+     * The category node selected by the user in a category tree to filter products on the grid.
+     * This category is the one displayed as selected. It is used to deduct the category tree displayed (root).
      */
     public function categoryIdSelectedAsFilter(): int
     {
@@ -32,9 +31,10 @@ class ListRootCategoriesWithCount
     /**
      * Optional
      * This is the category tree that is selected by the user to filter the product grid.
-     * @return int
+     * It is useful when the selected node is "All products" or "Unclassified products" as it is then not possible to
+     * deduct the category tree from the selected node id.
      */
-    public function categoryTreeIdSelectedAsFilter(): int|null
+    public function categoryTreeIdSelectedAsFilter(): ?int
     {
         return $this->categoryTreeIdSelectedAsFilter;
     }

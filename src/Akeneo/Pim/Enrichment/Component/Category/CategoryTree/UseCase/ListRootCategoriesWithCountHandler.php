@@ -54,8 +54,7 @@ class ListRootCategoriesWithCountHandler
      */
     public function handle(ListRootCategoriesWithCount $query): array
     {
-        $defaultCategoryTreeId = $query->categoryTreeIdSelectedAsFilter() ?? $this->userContext->getAccessibleUserTree()?->getId();
-
+        $defaultCategoryTreeId = $this->getDefaultCategoryTreeId($query);
         if ($defaultCategoryTreeId === null) {
             return [];
         }
@@ -82,19 +81,38 @@ class ListRootCategoriesWithCountHandler
             );
     }
 
-    private function getCategoryTreeFromSelectedSubCategory(int $subCategoryId, int $defaultCategoryTreeId): CategoryInterface|null
+    /**
+     * Try to get the categoryTreeId from url parameters.
+     * If not set, try to get the root category id from selectedCategoryId in url parameters.
+     * If the root category does not exist, try to get the user accessible categoryTreeId.
+     * @param ListRootCategoriesWithCount $query
+     * @return int|null
+     */
+    private function getDefaultCategoryTreeId(ListRootCategoriesWithCount $query): ?int
+    {
+        $defaultCategoryTreeId = $this->userContext->getAccessibleUserTree()?->getId();
+        if (null !== $query->categoryTreeIdSelectedAsFilter()) {
+            $defaultCategoryTreeId = $query->categoryTreeIdSelectedAsFilter();
+        } else if (null !== $query->categoryIdSelectedAsFilter()) {
+            $selectedCategory = $this->categoryRepository->find($query->categoryIdSelectedAsFilter());
+            if (null !== $selectedCategory && null !== $selectedCategory->getRoot()) {
+                $defaultCategoryTreeId = $selectedCategory->getRoot();
+            }
+        }
+        return $defaultCategoryTreeId;
+    }
+
+    private function getCategoryTreeFromSelectedSubCategory(int $subCategoryId, ?int $defaultCategoryTreeId): CategoryInterface|null
     {
         $selectedCategory = $this->categoryRepository->find($subCategoryId);
         if (null === $selectedCategory) {
-            // selected category does not exist in DB, so we get the categoryTree from the default categoryTreeId
-            $selectedCategory = $this->categoryRepository->find($defaultCategoryTreeId);
+            if (null !== $defaultCategoryTreeId) {
+                // selected category does not exist in DB, so we get the categoryTree from the default categoryTreeId
+                $selectedCategory = $this->categoryRepository->find($defaultCategoryTreeId);
+            }
             if ($selectedCategory === null) {
-                // we can't find the category tree, so we use the one accessible to the user
-                $selectedCategory = $this->userContext->getAccessibleUserTree();
-                if ($selectedCategory === null) {
-                    // we can't find a proper category tree
-                    return null;
-                }
+                // we can't find a proper category tree
+                return null;
             }
         }
         return $this->categoryRepository->find($selectedCategory->getRoot());
