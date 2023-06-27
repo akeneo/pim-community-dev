@@ -139,9 +139,7 @@ final class ProductWasCreatedOrUpdatedSubscriber implements EventSubscriberInter
     }
 
     /**
-     * In prod legacy we don't have pubsub topic and subscription, so it would not work.
-     *
-     * @return bool
+     * In prod legacy we don't have pubsub topic and subscription, so it does not work.
      */
     private function isProdLegacy(): bool
     {

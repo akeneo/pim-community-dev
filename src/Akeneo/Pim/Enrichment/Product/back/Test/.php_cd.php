@@ -19,9 +19,6 @@ $rules = [
         'Ramsey\Uuid\Uuid',
         'Ramsey\Uuid\UuidInterface',
         'Symfony\Component\Messenger\Stamp',
-
-        // PIM
-        'Akeneo\Tool\Component\Messenger',
     ])->in('Akeneo\Pim\Enrichment\Product\API'),
 
     $builder->only([
@@ -87,6 +84,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface',
         'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
+        'Akeneo\Tool\Component\Messenger',
 
         // Symfony, Doctrine DBAL and other libs
         'Webmozart\Assert\Assert',

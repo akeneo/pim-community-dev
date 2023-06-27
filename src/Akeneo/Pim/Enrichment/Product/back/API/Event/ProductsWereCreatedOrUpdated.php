@@ -15,9 +15,8 @@ final class ProductsWereCreatedOrUpdated
     /**
      * @param (ProductWasCreated|ProductWasUpdated)[] $events
      */
-    public function __construct(
-        public readonly array $events,
-    ) {
+    public function __construct(public readonly array $events)
+    {
         Assert::notEmpty($this->events);
         Assert::allIsInstanceOfAny($this->events, [ProductWasCreated::class, ProductWasUpdated::class]);
     }
