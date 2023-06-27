@@ -139,7 +139,7 @@ class AclRoleHandler
     public function reinitializeData(Role $role)
     {
         $errors = $this->form?->getErrors();
-        if($this->form->isSubmitted() && $errors) {
+        if ($this->form->isSubmitted() && $errors) {
             $this->createForm($role);
             $this->setRolePrivileges($role);
             foreach ($errors as $error) {
