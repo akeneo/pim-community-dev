@@ -18,66 +18,48 @@ class ReaderSpec extends ObjectBehavior
     function let(
         FileIteratorFactory $fileIteratorFactory,
         ArrayConverterInterface $converter,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        FileIteratorInterface $fileIterator,
     ) {
         $this->beConstructedWith($fileIteratorFactory, $converter);
-        $this->setStepExecution($stepExecution);
-    }
-
-    function it_returns_the_count_of_item_without_header(
-        FileIteratorFactory $fileIteratorFactory,
-        FileIteratorInterface $fileIterator,
-        JobParameters $jobParameters,
-        StepExecution $stepExecution
-    ) {
         $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->has('storage')->willReturn(true);
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
-
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $fileIterator->valid()->willReturn(true, true, true, false);
-        $fileIterator->current()->willReturn(null);
-        $fileIterator->rewind()->shouldBeCalled();
-        $fileIterator->next()->shouldBeCalled();
         $readerOptions = [
             'fieldDelimiter' => ';',
             'fieldEnclosure' => '"',
         ];
-
         $fileIteratorFactory->create($filePath, ['reader_options' => $readerOptions])->willReturn($fileIterator);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $this->setStepExecution($stepExecution);
+        $this->initialize();
+    }
+
+    function it_returns_the_count_of_item_without_header(
+        FileIteratorInterface $fileIterator,
+    ) {
+        $fileIterator->valid()->willReturn(true, true, true, false);
+        $fileIterator->current()->willReturn(null);
+        $fileIterator->rewind()->shouldBeCalled();
+        $fileIterator->next()->shouldBeCalled();
 
         /** Expect 2 items, even there is 3 lines because the first one (the header) is ignored */
         $this->totalItems()->shouldReturn(2);
     }
 
     function it_reads_csv_file(
-        $fileIteratorFactory,
         $converter,
         $stepExecution,
         FileIteratorInterface $fileIterator,
-        JobParameters $jobParameters
     ) {
-        $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
-
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->has('storage')->willReturn(true);
-        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
-
         $data = [
             'sku'  => 'SKU-001',
             'name' => 'door',
         ];
-
-        $fileIteratorFactory->create($filePath, [
-            'reader_options' => [
-                'fieldDelimiter' => ';',
-                'fieldEnclosure' => '"',
-            ]
-        ])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name']);
         $fileIterator->rewind()->shouldBeCalled();
@@ -93,32 +75,15 @@ class ReaderSpec extends ObjectBehavior
     }
 
     function it_skips_an_item_in_case_of_conversion_error(
-        $fileIteratorFactory,
         $converter,
         $stepExecution,
         FileIteratorInterface $fileIterator,
-        JobParameters $jobParameters
     ) {
-        $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
-
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('enclosure')->willReturn('"');
-        $jobParameters->get('delimiter')->willReturn(';');
-        $jobParameters->has('storage')->willReturn(true);
-        $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
-
         $data = [
             'sku'  => 'SKU-001',
             'name' => 'door',
         ];
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
-
-        $fileIteratorFactory->create($filePath, [
-            'reader_options' => [
-                'fieldDelimiter' => ';',
-                'fieldEnclosure' => '"',
-            ]
-        ])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name']);
         $fileIterator->rewind()->shouldBeCalled();

@@ -9,20 +9,16 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\PausableWriterInterface;
-use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Job\JobStopperInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
-use Akeneo\Tool\Component\Batch\spec\Item\FakeReader;
-use Akeneo\Tool\Component\Batch\spec\Item\FakeWriter;
+use Akeneo\Tool\Component\Batch\spec\Step\StatefulReaderInterface;
+use Akeneo\Tool\Component\Batch\spec\Step\StatefulWriterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ItemStepSpec extends ObjectBehavior
@@ -59,6 +55,7 @@ class ItemStepSpec extends ObjectBehavior
     ) {
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
+        $status->isPaused()->willReturn(false);
 
         $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
         $execution->setStartTime(Argument::any())->shouldBeCalled();
@@ -112,6 +109,7 @@ class ItemStepSpec extends ObjectBehavior
     ) {
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
+        $status->isPaused()->willReturn(false);
 
         $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
         $execution->setStartTime(Argument::any())->shouldBeCalled();
@@ -170,6 +168,7 @@ class ItemStepSpec extends ObjectBehavior
     ) {
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
+        $status->isPaused()->willReturn(false);
 
         $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
         $execution->setStartTime(Argument::any())->shouldBeCalled();
@@ -220,6 +219,7 @@ class ItemStepSpec extends ObjectBehavior
     ) {
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
+        $status->isPaused()->willReturn(false);
 
         $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
         $execution->setStartTime(Argument::any())->shouldBeCalled();
@@ -256,9 +256,9 @@ class ItemStepSpec extends ObjectBehavior
     }
 
     function it_pause_if_asked(
-        FakeReader $reader,
+        StatefulReaderInterface $reader,
         ItemProcessorInterface $processor,
-        FakeWriter $writer,
+        StatefulWriterInterface $writer,
         EventDispatcherInterface $dispatcher,
         DoctrineJobRepository $repository,
         StepExecution $execution,
@@ -267,10 +267,14 @@ class ItemStepSpec extends ObjectBehavior
     ) {
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
+        $status->isPaused()->willReturn(false);
 
         $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
         $execution->setStartTime(Argument::any())->shouldBeCalled();
         $execution->setStatus(Argument::any())->shouldBeCalled();
+        $execution->getCurrentState()->willReturn([]);
+        $reader->setState([])->shouldBeCalled();
+        $writer->setState([])->shouldBeCalled();
         $jobStopper->isStopping($execution)->willReturn(false);
         $jobStopper->isPausing($execution)->willReturn(false);
 
@@ -285,9 +289,9 @@ class ItemStepSpec extends ObjectBehavior
 
         // second batch
         $jobStopper->isPausing($execution)->willReturn(true);
-        $reader->getState()->willReturn([]);
-        $writer->getState()->willReturn([]);
-        $jobStopper->pause($execution, ['reader' => [], 'writer' => []])->shouldBeCalled();
+        $reader->getState()->willReturn(['position' => 1]);
+        $writer->getState()->willReturn(['file_path' => '/tmp/file.xslx']);
+        $jobStopper->pause($execution, ['reader' => ['position' => 1], 'writer' => ['file_path' => '/tmp/file.xslx']])->shouldBeCalled();
 
         $exitStatus = new ExitStatus(ExitStatus::COMPLETED, "");
         $execution->getExitStatus()->willReturn($exitStatus);

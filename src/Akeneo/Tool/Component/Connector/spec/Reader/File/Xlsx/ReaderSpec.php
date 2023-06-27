@@ -44,6 +44,8 @@ class ReaderSpec extends ObjectBehavior
         $fileIterator->next()->shouldBeCalled();
         $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
+        $this->initialize();
+
         /** Expect 2 items, even there is 3 lines because the first one (the header) is ignored */
         $this->totalItems()->shouldReturn(2);
     }
@@ -133,7 +135,6 @@ class ReaderSpec extends ObjectBehavior
         $fileIteratorFactory->create($this->initFilePath(), [])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name', 'description', 'short_description']);
-        $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);
 
@@ -199,7 +200,6 @@ class ReaderSpec extends ObjectBehavior
         $fileIteratorFactory->create($this->initFilePath(), [])->willReturn($fileIterator);
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name']);
-        $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->valid()->willReturn(true);
 
