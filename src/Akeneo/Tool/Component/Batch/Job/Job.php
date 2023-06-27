@@ -6,6 +6,7 @@ namespace Akeneo\Tool\Component\Batch\Job;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepInterface;
@@ -363,6 +364,8 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface,
         if ($stepExecution->getStepName() !== $this->steps[$index]->getName()) {
             throw new \RuntimeException("Can't resume the job because steps configuration has changed during pause.");
         }
+
+        $stepExecution->setExecutionContext(new ExecutionContext());
 
         return $stepExecution;
     }

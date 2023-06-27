@@ -39,7 +39,7 @@ class YamlWriterIntegration extends KernelTestCase
         $jobExecution = new JobExecution();
         $jobExecution->setJobParameters($jobParameters);
         $stepExecution = new StepExecution('a_step', $jobExecution);
-        $backuper = static::getContainer()->get('pim_connector.writer.file.backuper');
+        $backuper = static::getContainer()->get('pim_connector.job.file_backuper');
         $this->writer = new Writer(new DummyConverter(new FieldsRequirementChecker()), $backuper, $this->header);
         $this->writer->setStepExecution($stepExecution);
     }

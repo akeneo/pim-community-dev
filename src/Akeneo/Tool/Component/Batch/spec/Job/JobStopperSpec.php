@@ -77,9 +77,10 @@ class JobStopperSpec extends ObjectBehavior
     function it_pauses_a_job(StepExecution $stepExecution)
     {
         $stepExecution->setStatus(new BatchStatus(BatchStatus::PAUSED))->shouldBeCalled();
-        $stepExecution->setCurrentState(["position" => 1])->shouldBeCalled();
+        $stepExecution->getCurrentState()->willReturn(['file_path' => 'file.csv']);
+        $stepExecution->setCurrentState(['file_path' => 'file.csv', 'position' => 1])->shouldBeCalled();
 
-        $this->pause($stepExecution, ["position" => 1]);
+        $this->pause($stepExecution, ['position' => 1]);
     }
 
 }
