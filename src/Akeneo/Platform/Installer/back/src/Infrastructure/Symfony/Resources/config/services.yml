@@ -41,8 +41,8 @@ services:
     tags:
       - { name: akeneo.installer.user_configuration_resetter }
 
-  akeneo.installer.doctrine.pim_configuration_schema_asset_filter:
-    class: 'Doctrine\Bundle\DoctrineBundle\Dbal\RegexSchemaAssetFilter'
+  akeneo.installer.doctrine.pim_schema_asset_filter:
+    class: Akeneo\Platform\Installer\Infrastructure\Doctrine\PimSchemaAssetFilter
     arguments:
       - '/^(?!pim_configuration).*$/'
     tags:
