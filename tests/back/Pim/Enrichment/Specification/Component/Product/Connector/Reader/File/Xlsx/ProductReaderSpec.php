@@ -98,7 +98,7 @@ class ProductReaderSpec extends ObjectBehavior
         ];
 
         $fileIterator->getHeaders()->willReturn(['sku', 'name', 'view', 'manual-fr_FR']);
-        $fileIterator->rewind()->shouldNotBeCalled();
+        $fileIterator->rewind()->shouldBeCalled();
         $fileIterator->next()->shouldBeCalled();
         $fileIterator->current()->willReturn($item);
         $fileIterator->valid()->willReturn(true);
