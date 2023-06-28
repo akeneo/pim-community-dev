@@ -82,6 +82,8 @@ pim_user_management:
         default_published_product_grid_view: 默认的已发布产品网格视图 #EE Only
         proposals_to_review_notification: 有新的提案待审查时 #EE Only
         proposals_state_notifications: 当提案被接受或拒绝时 #EE Only
+        not_fully_supported_locale: '所选的 UI 区域 [{{ code }}] 当前不受完全支持。可能因为文本翻译缺失或不完整。请帮助改善区域覆盖面：'
+        link_to_crowdin_label: 参与 Crowdin。
       meta:
         created: 已创建
         updated: 已更新
