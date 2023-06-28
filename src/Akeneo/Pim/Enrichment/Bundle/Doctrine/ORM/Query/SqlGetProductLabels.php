@@ -21,8 +21,14 @@ class SqlGetProductLabels implements GetProductLabelsInterface
     public function byIdentifiersAndLocaleAndScope(array $identifiers, string $locale, string $channel): array
     {
         $query = <<<SQL
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
 SELECT
-    p.identifier,
+    pcpud.raw_data AS identifier,
     a.code as label_code, 
     a.is_localizable as label_is_localizable, 
     a.is_scopable AS label_is_scopable,
@@ -32,7 +38,10 @@ LEFT JOIN pim_catalog_family f ON p.family_id = f.id
 LEFT JOIN pim_catalog_attribute a ON f.label_attribute_id = a.id
 LEFT JOIN pim_catalog_product_model pm on p.product_model_id = pm.id
 LEFT JOIN pim_catalog_product_model pm1 ON pm.parent_id = pm1.id
-WHERE p.identifier IN (:identifiers);
+LEFT JOIN pim_catalog_product_unique_data pcpud
+    ON pcpud.product_uuid = p.uuid
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
+WHERE pcpud.raw_data IN (:identifiers);
 SQL;
 
         $results = $this->connection->executeQuery(
