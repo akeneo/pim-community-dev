@@ -153,5 +153,3 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
         return 'prod' === $this->env && null === $this->tenantId;
     }
 }
-
-

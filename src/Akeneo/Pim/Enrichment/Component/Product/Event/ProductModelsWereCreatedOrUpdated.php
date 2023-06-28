@@ -14,12 +14,11 @@ use Webmozart\Assert\Assert;
 class ProductModelsWereCreatedOrUpdated
 {
     /**
-     * @param (ProductModelWasCreated|ProductModelWasUpdated)[] $productModelEvent
+     * @param (ProductModelWasCreated|ProductModelWasUpdated)[] $events
      */
     public function __construct(
         public readonly array $events,
-    )
-    {
+    ) {
         Assert::notEmpty($this->events);
         Assert::allIsInstanceOfAny($this->events, [ProductModelWasCreated::class, ProductModelWasUpdated::class]);
     }
