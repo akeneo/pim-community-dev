@@ -16,8 +16,10 @@ final class ReorderTemplateAttributesCommand
      * @param array<string> $attributeUuids
      */
     private function __construct(
+        public readonly string $templateUuid,
         public readonly array $attributeUuids,
     ) {
+        Assert::uuid($templateUuid);
         Assert::allNullOrString($attributeUuids);
     }
 
@@ -25,9 +27,11 @@ final class ReorderTemplateAttributesCommand
      * @param array<string> $attributeUuids
      */
     public static function create(
+        string $templateUuid,
         array $attributeUuids,
     ): self {
         return new self(
+            templateUuid: $templateUuid,
             attributeUuids: $attributeUuids,
         );
     }

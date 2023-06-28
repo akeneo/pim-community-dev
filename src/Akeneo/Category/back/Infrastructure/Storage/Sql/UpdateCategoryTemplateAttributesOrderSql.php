@@ -52,34 +52,4 @@ class UpdateCategoryTemplateAttributesOrderSql implements UpdateCategoryTemplate
 
         $statement->executeQuery();
     }
-
-    public function fromAttributeUuids(array $attributeUuids): void
-    {
-        if (count($attributeUuids) === 0) {
-            return;
-        }
-
-        $queries = \implode(
-            ';',
-            \array_fill(
-                0,
-                count($attributeUuids),
-                'UPDATE pim_catalog_category_attribute as pcca
-                SET pcca.attribute_order = ?
-                WHERE uuid = UUID_TO_BIN(?)',
-            ),
-        );
-
-        $statement = $this->connection->prepare(<<<SQL
-            $queries
-        SQL);
-
-        $queryIndex = 0;
-        foreach ($attributeUuids as $index => $attributeUuid) {
-            $statement->bindValue(++$queryIndex, $index + 1, \PDO::PARAM_INT);
-            $statement->bindValue(++$queryIndex, $attributeUuid, \PDO::PARAM_STR);
-        }
-
-        $statement->executeQuery();
-    }
 }

@@ -41,8 +41,9 @@ class ReorderTemplateAttributesController
             throw new NotFoundHttpException($e->getMessage());
         }
 
-        $attributeUuids = json_decode($request->getContent(), true);
+        $attributeUuids = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $command = ReorderTemplateAttributesCommand::create(
+            templateUuid: $templateUuid,
             attributeUuids: $attributeUuids,
         );
         $this->categoryCommandBus->dispatch($command);

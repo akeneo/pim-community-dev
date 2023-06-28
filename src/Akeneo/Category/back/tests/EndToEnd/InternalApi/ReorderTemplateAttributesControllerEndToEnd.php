@@ -33,6 +33,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ReorderTemplateAttributesControllerEndToEnd extends ControllerIntegrationTestCase
 {
     private GetAttribute $getAttribute;
+    private GetCategoryInterface $getCategory;
     private CategoryTemplateSaver $categoryTemplateSaver;
     private CategoryTreeTemplateSaver $categoryTreeTemplateSaver;
     private CategoryTemplateAttributeSaver $categoryTemplateAttributeSaver;
@@ -53,6 +54,7 @@ class ReorderTemplateAttributesControllerEndToEnd extends ControllerIntegrationT
         parent::setUp();
 
         $this->getAttribute = $this->get(GetAttribute::class);
+        $this->getCategory = $this->get(GetCategoryInterface::class);
         $this->categoryTemplateSaver = $this->get(CategoryTemplateSaver::class);
         $this->categoryTreeTemplateSaver = $this->get(CategoryTreeTemplateSaver::class);
         $this->categoryTemplateAttributeSaver = $this->get(CategoryTemplateAttributeSaver::class);
@@ -63,7 +65,7 @@ class ReorderTemplateAttributesControllerEndToEnd extends ControllerIntegrationT
         $this->createTemplate();
     }
 
-    public function testItReorderTemplateAttributes(): void
+    public function testItReordersTemplateAttributes(): void
     {
         $this->callApiRoute(
             client: $this->client,
@@ -79,13 +81,16 @@ class ReorderTemplateAttributesControllerEndToEnd extends ControllerIntegrationT
                 $this->attributeUuids[5],
                 $this->attributeUuids[1],
                 $this->attributeUuids[2],
-            ]),
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $reorderedAttributes = $this->getAttribute->byTemplateUuid($this->templateUuid);
-        $reorderedAttributesUuid = array_map(fn ($attribute) => $attribute->getUuid()->getValue(), $reorderedAttributes->getAttributes());
+        $reorderedAttributesUuid = array_map(
+            static fn ($attribute) => $attribute->getUuid()->getValue(),
+            $reorderedAttributes->getAttributes(),
+        );
 
         $expectedAttributesOrder = [
             $this->attributeUuids[0],
@@ -131,7 +136,7 @@ class ReorderTemplateAttributesControllerEndToEnd extends ControllerIntegrationT
     private function createTemplate(): void
     {
         /** @var Category $category */
-        $category = $this->get(GetCategoryInterface::class)->byCode('master');
+        $category = $this->getCategory->byCode('master');
 
         $this->templateUuid = TemplateUuid::fromString('02274dac-e99a-4e1d-8f9b-794d4c3ba330');
 
@@ -151,7 +156,7 @@ class ReorderTemplateAttributesControllerEndToEnd extends ControllerIntegrationT
         );
     }
 
-    protected function givenAttributes(TemplateUuid $templateUuid): AttributeCollection
+    private function givenAttributes(TemplateUuid $templateUuid): AttributeCollection
     {
         return AttributeCollection::fromArray([
             AttributeRichText::create(

@@ -57,9 +57,21 @@ class AttributeCollection implements \Countable
         return reset($attribute);
     }
 
-    /**
-     * Retrieve an Attribute by his code.
-     */
+    public function getAttributeByUuid(string $uuid): ?Attribute
+    {
+        $attribute = array_filter(
+            $this->attributes,
+            static function ($attribute) use ($uuid) {
+                return (string) $attribute->getUuid() === $uuid;
+            },
+        );
+        if (empty($attribute) || count($attribute) > 1) {
+            return null;
+        }
+
+        return reset($attribute);
+    }
+
     public function getAttributeByCode(string $code): ?Attribute
     {
         $attribute = array_filter(
@@ -108,14 +120,14 @@ class AttributeCollection implements \Countable
 
         usort(
             $attributeList,
-            function (Attribute $a, Attribute $b) {
+            static function (Attribute $a, Attribute $b) {
                 return $a->getOrder()->intValue() - $b->getOrder()->intValue();
             },
         );
         $reindexedAttributeList = [];
         array_walk(
             $attributeList,
-            function ($attribute, $index) use (&$reindexedAttributeList) {
+            static function ($attribute, $index) use (&$reindexedAttributeList) {
                 $newOrder = $index + 1;
                 $reindexedAttributeList[$newOrder] = Attribute::fromType(
                     $attribute->getType(),
@@ -142,12 +154,35 @@ class AttributeCollection implements \Countable
     {
         return 1 + array_reduce(
             $this->attributes,
-            function (int $maxOrder, Attribute $attribute) {
+            static function (int $maxOrder, Attribute $attribute) {
                 $attributeOrder = $attribute->getOrder()->intValue();
 
                 return max($attributeOrder, $maxOrder);
             },
             1,
         );
+    }
+
+    /**
+     * @param array<string> $orderedAttributeUuids
+     */
+    public function reorder(array $orderedAttributeUuids): void
+    {
+        $order = 1;
+        // We reorder the attributes that are in the ordered list,
+        // ignoring the attributes that are not in the collection. Co-edition use case
+        foreach ($orderedAttributeUuids as $attributeUuid) {
+            $attribute = $this->getAttributeByUuid($attributeUuid);
+            if (null === $attribute) {
+                continue;
+            }
+            $attribute->setOrder(AttributeOrder::fromInteger($order++));
+        }
+        // We reorder the attributes that are not in the ordered list by adding them at the end
+        foreach ($this->attributes as $attribute) {
+            if (!in_array((string) $attribute->getUuid(), $orderedAttributeUuids, true)) {
+                $attribute->setOrder(AttributeOrder::fromInteger($order++));
+            }
+        }
     }
 }

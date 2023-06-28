@@ -67,6 +67,7 @@ services:
 
   Akeneo\Category\Application\Command\ReorderTemplateAttributesCommand\ReorderTemplateAttributesCommandHandler:
     arguments:
+      - '@Akeneo\Category\Application\Query\GetAttribute'
       - '@Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder'
     tags:
       - { name: 'akeneo.category.command.handler', command: 'Akeneo\Category\Application\Command\ReorderTemplateAttributesCommand\ReorderTemplateAttributesCommand' }
