@@ -114,6 +114,22 @@ class DataQualityInsightsTestCase extends TestCase
         return $this->updateProductModel($productModel, $data);
     }
 
+    /**
+     * @return ProductModelInterface[]
+     */
+    protected function createProductModels(array $codes, string $familyVariant, array $data = []): array
+    {
+        $productModels = [];
+        foreach ($codes as $code) {
+            $productModels[] = $this->get('akeneo_integration_tests.catalog.product_model.builder')
+                ->withCode($code)
+                ->withFamilyVariant($familyVariant)
+                ->build();
+        }
+
+        return $this->updateProductModels($productModels, $data);
+    }
+
     protected function updateProductModel(ProductModelInterface $productModel, array $data = []): ProductModelInterface
     {
         if (!empty($data)) {
@@ -125,6 +141,25 @@ class DataQualityInsightsTestCase extends TestCase
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         return $productModel;
+    }
+
+    /**
+     * @param ProductModelInterface[] $productModels
+     * @return ProductModelInterface[]
+     */
+    protected function updateProductModels(array $productModels, array $data = []): array
+    {
+        foreach ($productModels as $productModel) {
+            if (!empty($data)) {
+                $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
+                $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+                Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid product model', $errors));
+            }
+        }
+
+        $this->get('pim_catalog.saver.product_model')->saveAll($productModels);
+
+        return $productModels;
     }
 
     protected function createProductModelWithoutEvaluations(string $code, string $familyVariant, array $data = []): ProductModelInterface

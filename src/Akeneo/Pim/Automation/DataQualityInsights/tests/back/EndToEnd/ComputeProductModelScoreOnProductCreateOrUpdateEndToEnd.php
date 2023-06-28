@@ -81,32 +81,26 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
         $this->launchConsumer('dqi_product_model_score_compute_on_upsert_consumer');
         self::assertTrue($this->isProductModelScoreComputed($productModelId));
     }
-//
-//    public function test_it_computes_product_score_after_bulk_save(): void
-//    {
-//        $uuid1 = Uuid::uuid4();
-//        $this->createOrUpdateProduct($uuid1);
-//
-//        $this->productScoreComputeOnUpsertQueueStatus->flushJobQueue();
-//        $this->simulateOldProductScoreCompute();
-//        self::assertFalse($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
-//
-//        /** @var ProductInterface $product1 */
-//        $product1 = $this->get('pim_catalog.repository.product')->findOneByUuid($uuid1);
-//        $product1->setEnabled(!$product1->isEnabled());
-//        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
-//        self::assertCount(0, $this->get('pim_catalog.validator.product')->validate($product1));
-//
-//        $product2 = $this->get('pim_catalog.builder.product')->createProduct('id2');
-//        $uuid2 = $product2->getUuid();
-//        self::assertCount(0, $this->get('pim_catalog.validator.product')->validate($product2));
-//
-//        $this->get('pim_catalog.saver.product')->saveAll([$product1, $product2]);
-//
-//
-//        $this->launchConsumer('dqi_product_score_compute_on_upsert_consumer');
-//
-//        self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
-//        self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid2->toString())));
-//    }
+
+    public function test_it_computes_product_score_after_bulk_save(): void
+    {
+        $codes = [
+          'product-model-1',
+          'product-model-2',
+        ];
+
+        $productModels = $this->createProductModels($codes, 'shoes_color');
+
+        foreach ($productModels as $productModel) {
+            $productModelId = new ProductModelId($productModel->getId());
+            self::assertFalse($this->isProductModelScoreComputed($productModelId));
+        }
+
+        $this->launchConsumer('dqi_product_model_score_compute_on_upsert_consumer');
+
+        foreach ($productModels as $productModel) {
+            $productModelId = new ProductModelId($productModel->getId());
+            self::assertTrue($this->isProductModelScoreComputed($productModelId));
+        }
+    }
 }
