@@ -45,7 +45,7 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
         ];
     }
 
-    private function recordCreatedProductModel(GenericEvent $event): void
+    public function recordCreatedProductModel(GenericEvent $event): void
     {
         $productModel = $event->getSubject();
         $unitary = $event->getArguments()['unitary'] ?? false;
@@ -62,7 +62,7 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
         }
     }
 
-    private function recordCreatedProductModels(GenericEvent $event): void
+    public function recordCreatedProductModels(GenericEvent $event): void
     {
         $productModels = $event->getSubject();
         if (empty($productModels)
@@ -79,7 +79,7 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
         }
     }
 
-    private function dispatchProductModelWasUpdatedMessage(GenericEvent $event): void
+    public function dispatchProductModelWasUpdatedMessage(GenericEvent $event): void
     {
         $productModel = $event->getSubject();
         $unitary = $event->getArguments()['unitary'] ?? false;
@@ -107,7 +107,7 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
         }
     }
 
-    private function dispatchProductModelsWereUpdatedMessage(GenericEvent $event): void
+    public function dispatchProductModelsWereUpdatedMessage(GenericEvent $event): void
     {
         $productModels = $event->getSubject();
         if (empty($productModels)

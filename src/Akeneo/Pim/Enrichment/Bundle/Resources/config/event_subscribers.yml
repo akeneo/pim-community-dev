@@ -269,7 +269,7 @@ services:
         tags:
             - { name: doctrine.event_listener, event: 'onSchemaIndexDefinition' }
     
-    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ComputeProductAndAncestorsSubscriber:
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ProductModelWasCreatedOrUpdatedSubscriber:
       arguments:
         - '@messenger.bus.default'
         - '@logger'
