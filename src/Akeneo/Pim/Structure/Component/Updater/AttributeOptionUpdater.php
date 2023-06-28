@@ -147,7 +147,7 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
         }
 
         if ('sort_order' === $field) {
-                $attributeOption->setSortOrder($data);
+            $attributeOption->setSortOrder($data);
         }
     }
 
