@@ -115,7 +115,7 @@ class TreeView {
     const handleTreeChange = (treeId: number, treeLabel: string, selectedCategoryId: number) => {
       this.state.selectedTree = treeId;
       if (selectedCategoryId >= 0) {
-        this.state.selectedNode = -2;
+        this.state.selectedNode = treeId;
       } else {
         this.state.selectedNode = selectedCategoryId;
       }
