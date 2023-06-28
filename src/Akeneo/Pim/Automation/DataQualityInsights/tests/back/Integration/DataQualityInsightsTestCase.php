@@ -111,6 +111,11 @@ class DataQualityInsightsTestCase extends TestCase
             ->withFamilyVariant($familyVariant)
             ->build();
 
+        return $this->updateProductModel($productModel, $data);
+    }
+
+    protected function updateProductModel(ProductModelInterface $productModel, array $data = []): ProductModelInterface
+    {
         if (!empty($data)) {
             $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
             $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);

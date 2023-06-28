@@ -11,15 +11,20 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\EndToEnd;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\EndToEnd\MessengerTestCase;
+use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
+use Webmozart\Assert\Assert;
 
 final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends MessengerTestCase
 {
+    private PubSubQueueStatus $productModelScoreComputeOnUpsertQueueStatus;
+
     public function setUp(): void
     {
         parent::setUp();
         
         $this->createAttribute('name');
         $this->createSimpleSelectAttributeWithOptions('color', ['red', 'blue']);
+        $this->createSimpleSelectAttributeWithOptions('size', ['38', '39', '40']);
         $this->createFamily('shoes', ['attributes' => ['sku', 'name', 'color']]);
         $this->createFamilyVariant('shoes_color', 'shoes', [
             'variant_attribute_sets' => [
@@ -30,6 +35,22 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
                 ],
             ],
         ]);
+
+        $this->productModelScoreComputeOnUpsertQueueStatus = $this->get('akeneo_integration_tests.pub_sub_queue_status.dqi_product_model_score_compute_on_upsert');
+
+        // Be sure the subscription is created before any tests
+        $subscription = $this->productModelScoreComputeOnUpsertQueueStatus->getSubscription();
+        if (!$subscription->exists()) {
+            $subscription->create();
+        }
+
+        $this->productModelScoreComputeOnUpsertQueueStatus->flushJobQueue();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->productModelScoreComputeOnUpsertQueueStatus->flushJobQueue();
     }
 
     public function test_it_computes_product_model_score_after_creation(): void
@@ -43,20 +64,23 @@ final class ComputeProductModelScoreOnProductCreateOrUpdateEndToEnd extends Mess
         self::assertTrue($this->isProductModelScoreComputed($productModelId));
     }
 
-//    public function test_it_computes_product_score_after_update(): void
-//    {
-//        $uuid1 = Uuid::uuid4();
-//        $this->createOrUpdateProduct($uuid1);
-//
-//        $this->productScoreComputeOnUpsertQueueStatus->flushJobQueue();
-//        $this->simulateOldProductScoreCompute();
-//        self::assertFalse($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
-//
-//        $this->createOrUpdateProduct($uuid1);
-//        $this->launchConsumer('dqi_product_score_compute_on_upsert_consumer');
-//
-//        self::assertTrue($this->isProductScoreComputed(ProductUuid::fromString($uuid1->toString())));
-//    }
+    public function test_it_computes_product_score_after_update(): void
+    {
+        $code = 'product-model-1';
+        $productModel = $this->createProductModel($code, 'shoes_color');
+        $productModelId = new ProductModelId($productModel->getId());
+
+        $this->launchConsumer('dqi_product_model_score_compute_on_upsert_consumer');
+        $this->productModelScoreComputeOnUpsertQueueStatus->flushJobQueue();
+
+        $this->updateProductModel($productModel, [
+            'code' => 'product-model-1b',
+        ]);
+
+        $this->simulateOldProductModelScoreCompute();
+        $this->launchConsumer('dqi_product_model_score_compute_on_upsert_consumer');
+        self::assertTrue($this->isProductModelScoreComputed($productModelId));
+    }
 //
 //    public function test_it_computes_product_score_after_bulk_save(): void
 //    {
