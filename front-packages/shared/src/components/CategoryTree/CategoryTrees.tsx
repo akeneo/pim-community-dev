@@ -90,7 +90,9 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
       })
     );
     // Keep the selected filter if "All Products" (-2) or "Unclassified Products" (-1) were selected, select CategoryTree otherwise
-    setSelectedNodeId(previousSelectedNodeId => {return previousSelectedNodeId > 0 ? treeId : previousSelectedNodeId});
+    setSelectedNodeId(previousSelectedNodeId => {
+      return previousSelectedNodeId > 0 ? treeId : previousSelectedNodeId;
+    });
     onTreeChange(treeId, (trees.find(tree => tree.id === treeId) || trees[0]).label, selectedNodeId);
   };
 
