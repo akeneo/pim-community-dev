@@ -112,13 +112,21 @@ class ReorderTemplateAttributesControllerEndToEnd extends ControllerIntegrationT
                 'templateUuid' => '885ee073-046e-4b46-864d-9d22532e69c5',
             ],
             method: Request::METHOD_POST,
+            content: json_encode([
+                $this->attributeUuids[0],
+                $this->attributeUuids[3],
+                $this->attributeUuids[4],
+                $this->attributeUuids[5],
+                $this->attributeUuids[1],
+                $this->attributeUuids[2],
+            ], JSON_THROW_ON_ERROR),
         );
 
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    public function testItThrowsExceptionsWhenUuidInvalid(): void
+    public function testItThrowsExceptionOnInvalidUuid(): void
     {
         $this->callApiRoute(
             client: $this->client,

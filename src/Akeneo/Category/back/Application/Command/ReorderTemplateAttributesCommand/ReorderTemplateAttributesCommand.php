@@ -20,7 +20,7 @@ final class ReorderTemplateAttributesCommand
         public readonly array $attributeUuids,
     ) {
         Assert::uuid($templateUuid);
-        Assert::allNullOrString($attributeUuids);
+        Assert::AllString($attributeUuids);
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Category\Application\Command\ReorderTemplateAttributesCommand;
 
 use Akeneo\Category\Application\Query\GetAttribute;
+use Akeneo\Category\Domain\Query\GetTemplate;
 use Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder;
 use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 
@@ -15,6 +16,7 @@ use Akeneo\Category\Domain\ValueObject\Template\TemplateUuid;
 class ReorderTemplateAttributesCommandHandler
 {
     public function __construct(
+        private readonly GetTemplate $getTemplate,
         private readonly GetAttribute $getAttribute,
         private readonly UpdateCategoryTemplateAttributesOrder $updateCategoryTemplateAttributesOrder,
     ) {
@@ -22,7 +24,9 @@ class ReorderTemplateAttributesCommandHandler
 
     public function __invoke(ReorderTemplateAttributesCommand $command): void
     {
-        $attributes = $this->getAttribute->byTemplateUuid(TemplateUuid::fromString($command->templateUuid));
+        $template = $this->getTemplate->byUuid(TemplateUuid::fromString($command->templateUuid));
+
+        $attributes = $this->getAttribute->byTemplateUuid($template->getUuid());
         $attributes->reorder($command->attributeUuids);
         $this->updateCategoryTemplateAttributesOrder->fromAttributeCollection($attributes);
     }

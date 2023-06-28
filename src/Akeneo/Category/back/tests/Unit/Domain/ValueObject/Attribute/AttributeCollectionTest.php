@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\tests\Unit\Domain\ValueObject\Attribute\Value;
+namespace Akeneo\Category\back\tests\Unit\Domain\ValueObject\Attribute;
 
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
