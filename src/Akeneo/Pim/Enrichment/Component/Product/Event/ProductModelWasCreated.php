@@ -12,7 +12,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Event;
 class ProductModelWasCreated
 {
     public function __construct(
-        public readonly ?string $id,
+        public readonly ?int $id,
         public readonly ?\DateTimeImmutable $createdAt,
     ){}
 }

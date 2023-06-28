@@ -121,8 +121,8 @@ class ProductModelWasCreatedOrUpdatedSubscriber implements EventSubscriberInterf
             $events = \array_map(
                 function (ProductModelInterface $productModel) {
                     $event = ($this->createdProductModelsByCode[$productModel->getCode()] ?? false)
-                        ? new ProductModelWasCreated($productModel->getCode(), \DateTimeImmutable::createFromMutable($productModel->getCreated()))
-                        : new ProductModelWasUpdated($productModel->getCode(), \DateTimeImmutable::createFromMutable($productModel->getCreated()))
+                        ? new ProductModelWasCreated($productModel->getId(), \DateTimeImmutable::createFromMutable($productModel->getCreated()))
+                        : new ProductModelWasUpdated($productModel->getId(), \DateTimeImmutable::createFromMutable($productModel->getCreated()))
                     ;
                     unset($this->createdProductModelsByCode[$productModel->getCode()]);
 

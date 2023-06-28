@@ -30,15 +30,16 @@ final class ProductModelsWereCreatedOrUpdatedNormalizer implements NormalizerInt
         foreach ($data['events'] as $normalizedEvent) {
             Assert::isArray($normalizedEvent, 'Normalized event must be an array');
             Assert::keyExists($normalizedEvent, 'product_model_id', 'Normalized event must contains a key "product_model_id"');
-            Assert::string($normalizedEvent['product_model_id'], 'Normalized event product_model_id property must be a string');
+            Assert::integerish($normalizedEvent['product_model_id'], 'Normalized event product_model_id property must be a int');
+
             if (\array_key_exists('created_at', $normalizedEvent)) {
                 $events[] = new ProductModelWasCreated(
-                    $normalizedEvent['product_model_id'],
+                    (int) $normalizedEvent['product_model_id'],
                     \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $normalizedEvent['created_at'])
                 );
             } elseif (\array_key_exists('updated_at', $normalizedEvent)) {
                 $events[] = new ProductModelWasUpdated(
-                    $normalizedEvent['product_model_id'],
+                    (int) $normalizedEvent['product_model_id'],
                     \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $normalizedEvent['updated_at'])
                 );
             } else {
