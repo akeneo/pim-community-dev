@@ -29,7 +29,7 @@ class ProductModelsWereCreatedOrUpdatedHandler
         $productModelIds = [];
         /** @var ProductModelWasCreated|ProductModelWasUpdated $event */
         foreach ($message->events as $event) {
-            $productModelIds[] = $event->id;
+            $productModelIds[] = (string) $event->id;
         }
 
         $productModelIdCollection = ProductModelIdCollection::fromStrings($productModelIds);
