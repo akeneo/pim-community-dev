@@ -464,7 +464,6 @@ pim_system:
     button:
       label: 인스턴스 재설정
       confirm: 재설정 및 로그아웃
-    error_notification: PIM 재설정 중에 오류가 발생했습니다. 시스템 관리자에게 문의하십시오.
   sandbox:
     helper:
       text: 샌드박스 환경이므로, 변경 사항이 프로덕션에 영향을 미치지 않습니다.

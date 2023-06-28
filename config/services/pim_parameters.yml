@@ -54,4 +54,4 @@ parameters:
 
     openssl_config_path: '%pim_ce_dev_src_folder_location%/config/openssl.cnf'
 
-    env(PIM_VERSIONING_RETENTION_IN_DAYS): ~
+    local_storage_root: '/'

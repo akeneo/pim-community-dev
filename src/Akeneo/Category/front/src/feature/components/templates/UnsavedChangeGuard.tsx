@@ -1,5 +1,5 @@
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {useContext, useEffect} from 'react';
+import {useCallback, useContext, useEffect} from 'react';
 import {Prompt} from 'react-router';
 import {useSaveStatus} from '../../hooks/useSaveStatus';
 import {CanLeavePageContext} from '../providers';
@@ -11,12 +11,15 @@ export const UnsavedChangesGuard = () => {
   const {globalStatus} = useSaveStatus();
 
   // Browser
-  const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-    if (globalStatus !== Status.SAVED) {
-      event.preventDefault();
-      event.returnValue = translate('akeneo.category.template.attribute.settings.unsaved_changes');
-    }
-  };
+  const handleBeforeUnload = useCallback(
+    (event: BeforeUnloadEvent) => {
+      if (globalStatus !== Status.SAVED) {
+        event.preventDefault();
+        event.returnValue = translate('akeneo.category.template.attribute.settings.unsaved_changes');
+      }
+    },
+    [globalStatus, translate]
+  );
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
@@ -33,7 +36,7 @@ export const UnsavedChangesGuard = () => {
       setCanLeavePage(false);
       setLeavePageMessage(translate('akeneo.category.template.attribute.settings.unsaved_changes'));
     }
-  }, [globalStatus]);
+  }, [globalStatus, setCanLeavePage, setLeavePageMessage, translate]);
 
   // React-router
   return (

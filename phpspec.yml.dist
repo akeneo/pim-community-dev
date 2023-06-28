@@ -205,6 +205,11 @@ suites:
         spec_path: src/Akeneo/Platform/Job/back/tests
         src_path: src/Akeneo/Platform/Job/back
         spec_prefix: Specification
+    FileStorageBundle:
+        namespace: Akeneo\Tool\Bundle\FileStorageBundle
+        psr4_prefix: Akeneo\Tool\Bundle\FileStorageBundle
+        spec_path: src/Akeneo/Tool/Bundle/FileStorageBundle
+        src_path: src/Akeneo/Tool/Bundle/FileStorageBundle
     MeasureBundle:
         namespace: Akeneo\Tool\Bundle\MeasureBundle
         psr4_prefix: Akeneo\Tool\Bundle\MeasureBundle

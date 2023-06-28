@@ -8,7 +8,7 @@ use Akeneo\Category\Api\Command\UpsertCategoryCommand;
 use Akeneo\Category\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Category\Application\Storage\Save\SaveCategory;
 use Akeneo\Category\Domain\Event\CategoryUpdatedEvent;
-use Akeneo\Category\Domain\Exceptions\ViolationsException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Domain\Model\Enrichment\Category;
 use Akeneo\Category\Domain\Query\GetCategoryInterface;
 use Akeneo\Category\Infrastructure\Registry\FindCategoryAdditionalPropertiesRegistry;

@@ -18,4 +18,4 @@ oneup_flysystem:
                 bucket: 'category'
         local_storage_adapter:
             local:
-                location: '/'
+                location: '%local_storage_root%'

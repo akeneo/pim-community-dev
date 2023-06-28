@@ -1,3 +1,5 @@
+/* eslint-disable jest/no-conditional-expect */
+
 import {apiFetch, BadRequestError, ForbiddenError} from './apiFetch';
 
 afterEach(() => {

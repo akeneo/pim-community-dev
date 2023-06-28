@@ -79,15 +79,7 @@ akeneo.category:
       notification_success:
         title: 'El atributo {{ attribute }} se ha eliminado correctamente'
     deactivate:
-      deactivate_template: Desactivar plantilla
-      confirmation_modal:
-        title: Desactivar plantilla de categoría
-        message: '¿Seguro que desea desactivar la plantilla de categoría denominada {{ template }}?'
-        helper: La desactivación de esta plantilla eliminará permanentemente los atributos y valores de las categorías asociadas.
-        deactivate: Desactivar
-      notification_success:
-        title: 'Plantilla {{ template }} desactivada'
-        message: '{{ template }} ha sido desactivada. Se ha eliminado el contenido de las categorías asociadas.'
+      deactivate_template: Eliminar plantilla
   template_list:
     columns:
       header: Etiqueta
@@ -100,7 +92,6 @@ akeneo.category:
     content:
       enrich_attribute_values: Enriquezca cualquier nivel de sus Árboles de categoría con atributos de Texto, Área de texto e Imagen
       customizable_templates: Ofrezca la experiencia de producto que desee gracias a las plantillas personalizables
-      edit_attributes: 'Próximamente: actualice la configuración de cualquiera de esos atributos de categoría'
     survey_link_label: Díganos lo que piensa
     learn_more_link_label: Más información sobre las categorías enriquecidas
   other_actions: Otras acciones

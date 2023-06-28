@@ -6,7 +6,7 @@ namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Category\Api\Command\CommandMessageBus;
 use Akeneo\Category\Application\Command\UpdateAttributeCommand\UpdateAttributeCommand;
-use Akeneo\Category\Domain\Exceptions\ViolationsException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,17 +43,8 @@ class UpdateAttributeController
                 labels: $data['labels'] ?? null,
             );
             $this->categoryCommandBus->dispatch($command);
-        } catch (ViolationsException $violationsException) {
-            $normalizedViolations = $violationsException->normalize();
-            foreach ($normalizedViolations as &$violation) {
-                $locale = $violation['error']['property'];
-                $regex = "/\[(.*?)\]/";
-                if (preg_match($regex, $locale, $matches)) {
-                    $violation['error']['property'] = $matches[1];
-                }
-            }
-
-            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+        } catch (ViolationsException $exception) {
+            return new JsonResponse($exception->normalize(), Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse(null, Response::HTTP_OK);

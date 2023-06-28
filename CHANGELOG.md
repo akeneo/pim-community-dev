@@ -2,9 +2,11 @@
 
 ## Bug fixes
 
+- PIM-11041: Fix null has attribute group code broke the pef
 - PIM-10966: Fix error when toggling between tabs on an export profile editing page
 - PIM-10972: Fix shifting data during import
 - PIM-10950: Fix wrongly removed code filter on attribute page
+- PIM-11057: Fix ScalarValue::__toString does not cast wrapped boolean value correctly
 - PIM-10960: Fix no violation raised when importing variant with already existing siblings
 - PIM-10789: Fix password is displayed in SFTP and Amazon S3 form and encrypted password is displayed on history
 - PIM-10779: Fix lowercase on get attribute group code for dqi activation
@@ -83,12 +85,20 @@
 - PIM-10997: Update error message when trying to delete role with linked users or connections
 - PIM-11003: Fix scrolling on Product edit form attributes
 - PIM-10982 : Fix flag emoji rendering on windows
+- PIM-10931: Add possibility to filter job execution to purge by status and job_instance_code
 - PIM-11013 : Fix edit user profile without password changes
 - PIM-11012 : Add helper if selected UI language is not sufficiently supported
 - PIM-11024 : Add an error message when trying to modify the code of an option attribute [External API]
 - PIM-11040 : Sku is disabled according to the rights
 - PIM-11023 : Fix product search containing underscores
 - PIM-11016 : Improve the clean-removed-attributes command
+- PIM-11050 : On "locale" DIV, missing the indication of the country
+- PIM-11039: Fix export with duplicated labels
+- PIM-10869: Image upload fields now only accept images
+- PIM-11063: Fix validation of generated identifiers
+- PIM-11066: PIM-11066: Fix Missing Values Adder for scopable + localizable + locale specific attributes
+- PIM-11018: Fix view on Connected App permissions if manage or not
+
 
 ## Improvements
 

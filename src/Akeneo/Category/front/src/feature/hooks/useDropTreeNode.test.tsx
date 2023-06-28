@@ -1,10 +1,10 @@
 import React, {FC, useContext, useEffect} from 'react';
 import {renderHook} from '@testing-library/react-hooks';
 import {act} from 'react-test-renderer';
-import {DraggedNode, TreeNode} from 'feature/models';
-import {OrderableTreeContext, OrderableTreeProvider} from 'feature/components';
+import {DraggedNode, TreeNode} from '../models';
+import {OrderableTreeContext, OrderableTreeProvider} from '../components';
 import {ReorderOnDropHandler, useDropTreeNode} from './useDropTreeNode';
-import {aDraggedNode, aTreeNode} from 'tests/provideTreeNodeHelper';
+import {aDraggedNode, aTreeNode} from '../../tests/provideTreeNodeHelper';
 
 const InitDraggedNodeWrapper: FC<{draggedNode: DraggedNode | null}> = ({children, draggedNode}) => {
   const {setDraggedNode} = useContext(OrderableTreeContext);

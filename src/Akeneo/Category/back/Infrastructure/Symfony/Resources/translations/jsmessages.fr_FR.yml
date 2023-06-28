@@ -51,15 +51,7 @@ akeneo.category:
           title: Vous ne pouvez pas ajouter plus de 50 attributs
           message: Les templates de catégories sont limités à 50 attributs par modèle.
     deactivate:
-      deactivate_template: Désactiver le template
-      confirmation_modal:
-        title: Désactiver le template de catégorie
-        message: Êtes-vous sûr de vouloir désactiver le template de catégorie nommé {{ template }}?
-        helper: La désactivation de ce template supprimera définitivement les attributs et valeurs des catégories associées.
-        deactivate: Désactiver
-      notification_success:
-        title: 'Template {{ template }} désactivé'
-        message: '{{ template }} a été désactivé. Le contenu des catégories associées a été supprimé.'
+      deactivate_template: Supprimer le modèle
   template_list:
     columns:
       header: Libellé

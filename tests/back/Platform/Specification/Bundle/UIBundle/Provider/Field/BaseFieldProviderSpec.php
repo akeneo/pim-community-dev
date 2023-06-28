@@ -23,7 +23,7 @@ class BaseFieldProviderSpec extends ObjectBehavior
 
         $attribute->getType()->willReturn('pim_catalog_image');
         $this->supports($attribute)->shouldReturn(true);
-        $this->getField($attribute)->shouldReturn('akeneo-media-uploader-field');
+        $this->getField($attribute)->shouldReturn('akeneo-image-uploader-field');
 
         $attribute->getType()->willReturn('pim_catalog_metric');
         $this->supports($attribute)->shouldReturn(true);

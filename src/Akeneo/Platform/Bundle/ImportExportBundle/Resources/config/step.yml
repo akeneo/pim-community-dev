@@ -6,6 +6,7 @@ services:
       - '@event_dispatcher'
       - '@akeneo_batch.job_repository'
       - '@Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage\DownloadFileFromStorageHandler'
+      - '%local_storage_root%'
 
   akeneo.job_automation.connector.step.upload:
     class: Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Step\UploadStep

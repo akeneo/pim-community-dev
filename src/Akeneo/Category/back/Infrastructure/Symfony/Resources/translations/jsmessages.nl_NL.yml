@@ -79,15 +79,7 @@ akeneo.category:
       notification_success:
         title: 'Attribuut {{ attribute }} is verwijderd'
     deactivate:
-      deactivate_template: Template deactiveren
-      confirmation_modal:
-        title: Deactiveer categorie template
-        message: Weet u zeker dat u het categorie template {{ template }} wilt deactiveren?
-        helper: Het deactiveren van deze template zal de kenmerken en waardes van de geassocieerde categorieën permanent verwijderen.
-        deactivate: Deactiveren
-      notification_success:
-        title: '{{ template }} sjabloon gedeactiveerd'
-        message: '{{ template }} is gedeactiveerd. De inhoud van de bijbehorende categorieën is verwijderd.'
+      deactivate_template: Sjabloon verwijderen
   template_list:
     columns:
       header: Label
@@ -100,7 +92,6 @@ akeneo.category:
     content:
       enrich_attribute_values: Verrijk een niveau van uw categoriebomen met attributen voor tekst, tekstgebied en afbeelding
       customizable_templates: Bied de gewenste productervaring aan dankzij de aanpasbare sjablonen
-      edit_attributes: 'Binnenkort beschikbaar: de instellingen van elk van deze categorie-attributen bijwerken'
     survey_link_label: Vertel ons wat u ervan vindt!
     learn_more_link_label: Meer informatie over verrijkte categorieën
   other_actions: Andere acties
