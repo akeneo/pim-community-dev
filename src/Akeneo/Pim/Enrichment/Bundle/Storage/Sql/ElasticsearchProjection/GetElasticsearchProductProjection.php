@@ -131,11 +131,17 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
     {
         if ($this->newCompletenessTableExists()) {
             $sql = <<<SQL
-WITH
+WITH 
+    main_identifier AS (
+        SELECT id
+        FROM pim_catalog_attribute
+        WHERE main_identifier = 1
+        LIMIT 1
+    ),
     product as (
         SELECT
             product.uuid,
-            product.identifier,
+            pim_catalog_product_unique_data.raw_data AS identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
             sub_product_model.code AS parent_product_model_code,
@@ -158,6 +164,9 @@ WITH
             CASE WHEN root_product_model.id IS NOT NULL THEN 2 ELSE 1 END AS product_lvl_in_attribute_set
         FROM
             pim_catalog_product product
+            LEFT JOIN pim_catalog_product_unique_data 
+                ON pim_catalog_product_unique_data.product_uuid = product.uuid
+                AND pim_catalog_product_unique_data.attribute_id = (SELECT id FROM main_identifier)
             LEFT JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
             LEFT JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
             LEFT JOIN pim_catalog_family family ON family.id = product.family_id
@@ -277,11 +286,17 @@ SQL;
         // TODO remove CPM-1042
         } else {
             $sql = <<<SQL
-WITH
+WITH 
+    main_identifier AS (
+        SELECT id
+        FROM pim_catalog_attribute
+        WHERE main_identifier = 1
+        LIMIT 1
+    ),
     product as (
         SELECT
             product.uuid,
-            product.identifier,
+            pim_catalog_product_unique_data.raw_data AS identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
             sub_product_model.code AS parent_product_model_code,
@@ -304,6 +319,9 @@ WITH
             CASE WHEN root_product_model.id IS NOT NULL THEN 2 ELSE 1 END AS product_lvl_in_attribute_set
         FROM
             pim_catalog_product product
+            LEFT JOIN pim_catalog_product_unique_data
+                ON pim_catalog_product_unique_data.product_uuid = product.uuid
+                AND pimè_catalog_product_unique_data.attribute_id = (SELECT id FROM main_identifier)
             LEFT JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
             LEFT JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
             LEFT JOIN pim_catalog_family family ON family.id = product.family_id

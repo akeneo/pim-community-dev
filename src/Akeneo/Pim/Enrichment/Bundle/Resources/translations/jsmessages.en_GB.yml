@@ -2,6 +2,7 @@ pim_notification:
   types:
     settings: Settings
     mass_delete: Deletion
+    attribute_mass_delete: Deletion
 flash:
   comment:
     create:
@@ -107,8 +108,6 @@ pim_enrich.entity.product:
       variant_products: Variant products
       quantified:
         quantity: Quantities
-      search:
-        placeholder: Search on label or identifier
       no_data: There are no associated products
       remove: Remove association
       edit: Edit product

@@ -1,8 +1,7 @@
-import {NotificationLevel, translate, useNotify} from '@akeneo-pim-community/shared';
+import {NotificationLevel, translate, useNotify, useRouter} from '@akeneo-pim-community/shared';
 import {userContext} from '@akeneo-pim-community/shared/lib/dependencies/user-context';
 import {Button, Field, Helper, Link, Modal, ProductCategoryIllustration, TextInput} from 'akeneo-design-system';
 import {useState} from 'react';
-import {useHistory} from 'react-router';
 import styled from 'styled-components';
 import {CreateTemplateError, useCreateTemplate} from '../../hooks/useCreateTemplate';
 import {CategoryTreeModel} from '../../models';
@@ -21,7 +20,7 @@ type Props = {
 export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
   const defaultUserUiLocale = userContext.get('user_default_locale');
   const notify = useNotify();
-  const history = useHistory();
+  const router = useRouter();
 
   const [form, setForm] = useState<Form>({label: '', code: ''});
   const mutation = useCreateTemplate();
@@ -42,8 +41,12 @@ export const CreateTemplateModal = ({categoryTree, onClose}: Props) => {
           notify(NotificationLevel.ERROR, translate('akeneo.category.template.notification_error'));
         },
         onSuccess: data => {
-          onClose();
-          history.push(`/${categoryTree.id}/template/${data.template_uuid}`);
+          router.redirect(
+            router.generate('pim_category_template_edit', {
+              treeId: categoryTree.id,
+              templateUuid: data.template_uuid,
+            })
+          );
         },
       }
     );

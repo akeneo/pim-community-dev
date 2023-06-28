@@ -232,21 +232,15 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
      */
     public function test_get_product_from_the_PQB_by_filtering_on_values()
     {
-        $productDataAppolonA = $this->connection->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = :identifier',
-            ['identifier' => 'apollon_A_false']
-        )->fetchAssociative();
-        $productDataAppolonB = $this->connection->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = :identifier',
-            ['identifier' => 'apollon_B_false']
-        )->fetchAssociative();
+        $productDataApollonA = $this->getProductData('apollon_A_false');
+        $productDataApollonB = $this->getProductData('apollon_B_false');
 
         $expectedProducts = new ConnectorProductList(2, [
             new ConnectorProduct(
-                Uuid::fromString($productDataAppolonA['uuid']),
+                Uuid::fromString($productDataApollonA['uuid']),
                 'apollon_A_false',
-                new \DateTimeImmutable($productDataAppolonA['created'], new \DateTimeZone('UTC')),
-                new \DateTimeImmutable($productDataAppolonA['updated'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($productDataApollonA['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($productDataApollonA['updated'], new \DateTimeZone('UTC')),
                 true,
                 'familyA',
                 ['categoryA2', 'categoryB', 'categoryC'],
@@ -288,10 +282,10 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 null
             ),
             new ConnectorProduct(
-                Uuid::fromString($productDataAppolonB['uuid']),
+                Uuid::fromString($productDataApollonB['uuid']),
                 'apollon_B_false',
-                new \DateTimeImmutable($productDataAppolonB['created'], new \DateTimeZone('UTC')),
-                new \DateTimeImmutable($productDataAppolonB['updated'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($productDataApollonB['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($productDataApollonB['updated'], new \DateTimeZone('UTC')),
                 true,
                 'familyA',
                 ['categoryA1', 'categoryA2'],
@@ -300,7 +294,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 [
                     'X_SELL' => [
                         'products' => [
-                            ['identifier' => 'apollon_A_false', 'uuid' => $productDataAppolonA['uuid']],
+                            ['identifier' => 'apollon_A_false', 'uuid' => $productDataApollonA['uuid']],
                         ],
                         'product_models' => ['amor'],
                         'groups' => ['groupA', 'groupB'],
@@ -323,7 +317,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 ],
                 [
                     'PRODUCT_SET' => [
-                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6, 'uuid' => $productDataAppolonA['uuid']]],
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6, 'uuid' => $productDataApollonA['uuid']]],
                         'product_models' => [],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
@@ -662,8 +656,20 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
 
     private function getProductData(string $identifier): array
     {
-        return $this->connection->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = :identifier',
+        return $this->connection->executeQuery(<<<SQL
+WITH main_identifier AS (
+    SELECT id
+    FROM pim_catalog_attribute
+    WHERE main_identifier = 1
+    LIMIT 1
+)
+SELECT BIN_TO_UUID(uuid) AS uuid, created, updated
+FROM pim_catalog_product
+INNER JOIN pim_catalog_product_unique_data pcpud
+    ON pcpud.product_uuid = pim_catalog_product.uuid
+    AND pcpud.attribute_id = (SELECT id FROM main_identifier)
+WHERE raw_data = :identifier
+SQL,
             ['identifier' => $identifier]
         )->fetchAssociative();
     }

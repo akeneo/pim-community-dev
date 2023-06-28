@@ -16,6 +16,8 @@ pim_import_export:
     6: Failed
     7: Abandoned
     8: Unknown
+    9: Pause requested
+    10: Paused
   download_archive:
     archive: download generated archive|download generated archives
     output: download generated file|download generated files

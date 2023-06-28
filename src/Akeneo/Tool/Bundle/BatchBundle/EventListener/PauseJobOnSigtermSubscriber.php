@@ -12,8 +12,14 @@ namespace Akeneo\Tool\Bundle\BatchBundle\EventListener;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Item\StatefulInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
+use Akeneo\Tool\Component\Batch\Job\PausableJobInterface;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
+use Akeneo\Tool\Component\Batch\Step\StepInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -23,6 +29,7 @@ class PauseJobOnSigtermSubscriber implements EventSubscriberInterface
         private readonly FeatureFlags $featureFlags,
         private readonly LoggerInterface $logger,
         private readonly SqlUpdateJobExecutionStatus $updateJobExecutionStatus,
+        private readonly JobRegistry $jobRegistry,
     ) {
     }
 
@@ -45,11 +52,22 @@ class PauseJobOnSigtermSubscriber implements EventSubscriberInterface
                 'job_execution_id' => $jobExecution->getId()
             ]);
 
-            if (!$jobExecution->isRunning()) {
+            if (!$jobExecution->isRunning() || !$this->isJobExecutionPausable($jobExecution)) {
                 return;
             }
 
             $this->updateJobExecutionStatus->updateByJobExecutionId($jobExecution->getId(), new BatchStatus(BatchStatus::PAUSING));
         });
+    }
+
+    private function isJobExecutionPausable(JobExecution $jobExecution): bool
+    {
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
+
+        if ($job instanceof PausableJobInterface) {
+            return $job->isPausable();
+        }
+
+        return false;
     }
 }
