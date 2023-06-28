@@ -16,7 +16,7 @@ akeneo_job:
     PAUSED: In pausa
 akeneo_job_process_tracker:
   tooltip:
-    paused: Questa operazione è stata sospesa a causa della manutenzione interna sulla tua istanza. Al termine verrà ripresa automaticamente.
+    paused: Questa operazione è stata messa in pausa a causa della manutenzione interna sulla tua istanza. Al termine verrà ripresa automaticamente.
   last_operations:
     title: Ultime operazioni
     view_all: Mostra tutti

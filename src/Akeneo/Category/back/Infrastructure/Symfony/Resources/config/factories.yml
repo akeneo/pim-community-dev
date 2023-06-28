@@ -13,3 +13,5 @@ services:
             - '@Akeneo\Category\Application\Query\GetAttribute'
         tags:
             - { name: 'pim.category.user_intent_factory' }
+
+    Akeneo\Category\Domain\AttributeSetFactory: ~
