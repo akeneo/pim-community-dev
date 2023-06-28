@@ -9,6 +9,7 @@ use Akeneo\Category\Application\Query\GetCategoryTemplateByCategoryTree;
 use Akeneo\Category\Application\Storage\Save\Saver\CategoryTemplateAttributeSaver;
 use Akeneo\Category\back\tests\Integration\Helper\CategoryTestCase;
 use Akeneo\Category\Domain\Model\Attribute\Attribute;
+use Akeneo\Category\Domain\Model\Attribute\AttributeImage;
 use Akeneo\Category\Domain\Query\UpdateCategoryTemplateAttributesOrder;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeAdditionalProperties;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
@@ -30,17 +31,19 @@ class UpdateCategoryTemplateAttributesOrderSqlIntegration  extends CategoryTestC
 
     private TemplateUuid $templateUuid;
     private CreateTemplateCommandHandler $createTemplateCommandHandler;
-    private GetCategoryTemplateByCategoryTree $getTemplate;
+    private GetCategoryTemplateByCategoryTree $getCategoryTemplateByCategoryTree;
     private CategoryTemplateAttributeSaver $categoryTemplateAttributeSaver;
+    private GetAttribute $getAttribute;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->createTemplateCommandHandler = $this->get(CreateTemplateCommandHandler::class);
-        $this->getTemplate = $this->get(GetCategoryTemplateByCategoryTree::class);
+        $this->getCategoryTemplateByCategoryTree = $this->get(GetCategoryTemplateByCategoryTree::class);
         $this->categoryTemplateAttributeSaver = $this->get(CategoryTemplateAttributeSaver::class);
         $this->updateCategoryTemplateAttributesOrder = $this->get(UpdateCategoryTemplateAttributesOrder::class);
+        $this->getAttribute = $this->get(GetAttribute::class);
 
         $category = $this->insertBaseCategory(new Code('template_model'));
         $mockedTemplate = $this->generateMockedCategoryTemplateModel(
@@ -55,7 +58,7 @@ class UpdateCategoryTemplateAttributesOrderSqlIntegration  extends CategoryTestC
             ]
         );
         ($this->createTemplateCommandHandler)($command);
-        $this->templateUuid = ($this->getTemplate)($category->getId())->getUuid();
+        $this->templateUuid = ($this->getCategoryTemplateByCategoryTree)($category->getId())->getUuid();
 
         $attribute = Attribute::fromType(
             type: new AttributeType(AttributeType::TEXTAREA),
@@ -75,8 +78,7 @@ class UpdateCategoryTemplateAttributesOrderSqlIntegration  extends CategoryTestC
 
     public function testItUpdatesAttributesOrder(): void
     {
-        /** @var Attribute $longDescriptionAttribute */
-        $longDescriptionAttribute =  $this->get(GetAttribute::class)->byTemplateUuid($this->templateUuid)
+        $longDescriptionAttribute =  $this->getAttribute->byTemplateUuid($this->templateUuid)
             ->getAttributeByCode('long_description');
 
         $toUpdateAttribute = Attribute::fromType(
@@ -96,8 +98,7 @@ class UpdateCategoryTemplateAttributesOrderSqlIntegration  extends CategoryTestC
             AttributeCollection::fromArray([$toUpdateAttribute])
         );
 
-        /** @var Attribute $updatedLongDescriptionAttribute */
-        $updatedLongDescriptionAttribute =  $this->get(GetAttribute::class)->byTemplateUuid($this->templateUuid)
+        $updatedLongDescriptionAttribute =  $this->getAttribute->byTemplateUuid($this->templateUuid)
             ->getAttributeByCode('long_description');
 
         $this->assertEquals(200, $updatedLongDescriptionAttribute->getOrder()->intValue());
