@@ -107,16 +107,15 @@ class ListRootCategoriesWithCountHandler
     private function getCategoryTreeFromSelectedSubCategory(int $subCategoryId, ?int $defaultCategoryTreeId): CategoryInterface|null
     {
         $selectedCategory = $this->categoryRepository->find($subCategoryId);
-        if (null === $selectedCategory) {
-            if (null !== $defaultCategoryTreeId) {
-                // selected category does not exist in DB, so we get the categoryTree from the default categoryTreeId
-                $selectedCategory = $this->categoryRepository->find($defaultCategoryTreeId);
-            }
-            if ($selectedCategory === null) {
-                // we can't find a proper category tree
-                return null;
-            }
+        if (null !== $selectedCategory) {
+            return $this->categoryRepository->find($selectedCategory->getRoot());
         }
-        return $this->categoryRepository->find($selectedCategory->getRoot());
+
+        // selected category does not exist in DB, so we get the categoryTree from the default categoryTreeId
+        if (null !== $defaultCategoryTreeId) {
+            return $this->categoryRepository->find($defaultCategoryTreeId);
+        }
+
+        return null;
     }
 }
