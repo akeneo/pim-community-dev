@@ -90,16 +90,18 @@ class ListRootCategoriesWithCountHandler
      */
     private function getDefaultCategoryTreeId(ListRootCategoriesWithCount $query): ?int
     {
-        $defaultCategoryTreeId = $this->userContext->getAccessibleUserTree()?->getId();
-        if (null !== $query->categoryTreeIdSelectedAsFilter()) {
-            $defaultCategoryTreeId = $query->categoryTreeIdSelectedAsFilter();
-        } else if (null !== $query->categoryIdSelectedAsFilter()) {
-            $selectedCategory = $this->categoryRepository->find($query->categoryIdSelectedAsFilter());
-            if (null !== $selectedCategory && null !== $selectedCategory->getRoot()) {
-                $defaultCategoryTreeId = $selectedCategory->getRoot();
-            }
+    if (null !== $query->categoryTreeIdSelectedAsFilter()) {
+        return $query->categoryTreeIdSelectedAsFilter();
+    }
+
+    if (null !== $query->categoryIdSelectedAsFilter()) {
+        $selectedCategory = $this->categoryRepository->find($query->categoryIdSelectedAsFilter());
+        if (null !== $selectedCategory && null !== $selectedCategory->getRoot()) {
+            return $selectedCategory->getRoot();
         }
-        return $defaultCategoryTreeId;
+    }
+
+    return $this->userContext->getAccessibleUserTree()?->getId();
     }
 
     private function getCategoryTreeFromSelectedSubCategory(int $subCategoryId, ?int $defaultCategoryTreeId): CategoryInterface|null
