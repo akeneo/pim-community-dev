@@ -105,18 +105,18 @@ class UniqueVariantAxisValidator extends ConstraintValidator
 
         $siblingsCombinations = [];
         foreach ($siblingValues as $siblingIdentifier => $values) {
-            $siblingsCombinations[$siblingIdentifier] = \mb_strtolower($this->getCombinationOfAxisValues($values, $axes));
-        }
+            $siblingsCombinations[$siblingIdentifier] = $this->getCombinationOfAxisValues($values, $axes);
 
-        if (in_array(\mb_strtolower($ownCombination), $siblingsCombinations, true)) {
-            $alreadyInDatabaseSiblingIdentifier = array_search($ownCombination, $siblingsCombinations);
+            if (\mb_strtolower($ownCombination) === \mb_strtolower($this->getCombinationOfAxisValues($values, $axes))) {
+                $this->addViolation(
+                    $axes,
+                    $ownCombination,
+                    $entity,
+                    $siblingIdentifier
+                );
 
-            $this->addViolation(
-                $axes,
-                $ownCombination,
-                $entity,
-                $alreadyInDatabaseSiblingIdentifier
-            );
+                return;
+            }
         }
     }
 

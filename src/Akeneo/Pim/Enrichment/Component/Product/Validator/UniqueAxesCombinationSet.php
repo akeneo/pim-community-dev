@@ -62,7 +62,7 @@ class UniqueAxesCombinationSet
                         sprintf(
                             'Variant product "%s" already have the "%s" combination of axis values.',
                             $cachedIdentifier,
-                            $loweredAxisValueCombination
+                            $axisValueCombination
                         )
                     );
                 }
@@ -72,7 +72,7 @@ class UniqueAxesCombinationSet
                     sprintf(
                         'Product model "%s" already have the "%s" combination of axis values.',
                         $cachedIdentifier,
-                        $loweredAxisValueCombination
+                        $axisValueCombination
                     )
                 );
             }
