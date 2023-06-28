@@ -59,12 +59,12 @@ class ListRootCategoriesWithCountHandler
             return [];
         }
 
-        $selectedCategoryTree = $this->getCategoryTreeFromSelectedSubCategory(
+        $rootCategoryToExpand = $this->getRootCategoryToExpandFromSelectedCategory(
             $query->categoryIdSelectedAsFilter(),
             $defaultCategoryTreeId
         );
 
-        if ($selectedCategoryTree === null) {
+        if ($rootCategoryToExpand === null) {
             return [];
         }
 
@@ -72,12 +72,12 @@ class ListRootCategoriesWithCountHandler
             $this->listAndCountIncludingSubCategories->list(
                 $query->translationLocaleCode(),
                 $query->userId(),
-                $selectedCategoryTree->getId()
+                $rootCategoryToExpand->getId()
             ) :
             $this->listAndCountNotIncludingSubCategories->list(
                 $query->translationLocaleCode(),
                 $query->userId(),
-                $selectedCategoryTree->getId()
+                $rootCategoryToExpand->getId()
             );
     }
 
@@ -90,21 +90,21 @@ class ListRootCategoriesWithCountHandler
      */
     private function getDefaultCategoryTreeId(ListRootCategoriesWithCount $query): ?int
     {
-    if (null !== $query->categoryTreeIdSelectedAsFilter()) {
-        return $query->categoryTreeIdSelectedAsFilter();
-    }
-
-    if (null !== $query->categoryIdSelectedAsFilter()) {
-        $selectedCategory = $this->categoryRepository->find($query->categoryIdSelectedAsFilter());
-        if (null !== $selectedCategory && null !== $selectedCategory->getRoot()) {
-            return $selectedCategory->getRoot();
+        if (null !== $query->categoryTreeIdSelectedAsFilter()) {
+            return $query->categoryTreeIdSelectedAsFilter();
         }
+
+        if (null !== $query->categoryIdSelectedAsFilter()) {
+            $selectedCategory = $this->categoryRepository->find($query->categoryIdSelectedAsFilter());
+            if (null !== $selectedCategory && null !== $selectedCategory->getRoot()) {
+                return $selectedCategory->getRoot();
+            }
+        }
+
+        return $this->userContext->getAccessibleUserTree()?->getId();
     }
 
-    return $this->userContext->getAccessibleUserTree()?->getId();
-    }
-
-    private function getCategoryTreeFromSelectedSubCategory(int $subCategoryId, ?int $defaultCategoryTreeId): CategoryInterface|null
+    private function getRootCategoryToExpandFromSelectedCategory(int $subCategoryId, ?int $defaultCategoryTreeId): CategoryInterface|null
     {
         $selectedCategory = $this->categoryRepository->find($subCategoryId);
         if (null !== $selectedCategory) {
