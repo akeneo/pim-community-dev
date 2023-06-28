@@ -21,10 +21,7 @@ akeneo.category:
     delete: Supprimer l'arbre
   template:
     learn_more: En savoir plus sur le template de catégorie
-    create: Activer le template
     edit: Modifier le template
-    notification_success: "Le template a été activé avec succès.\n"
-    notification_error: Le template n’a pas pu être activé
     not_found: Il n'y a pas de template actif pour cette catégorie.
     properties:
       general_properties: Propriétés générales
