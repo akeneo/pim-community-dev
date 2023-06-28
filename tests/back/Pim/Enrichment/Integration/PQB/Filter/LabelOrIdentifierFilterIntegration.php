@@ -87,13 +87,10 @@ class LabelOrIdentifierFilterIntegration extends AbstractProductAndProductModelQ
 
     public function testSearchByUuid(): void
     {
-        $uuid = $this->get('database_connection')->fetchOne(
-            'SELECT uuid FROM pim_catalog_product WHERE identifier = :identifier',
-            ['identifier' => '1111111234'],
-        );
+        $uuid = $this->getProductUuid('1111111234');
 
         $result = $this->executeFilter([
-            ['label_or_identifier', Operators::CONTAINS, Uuid::fromBytes($uuid)->toString()]
+            ['label_or_identifier', Operators::CONTAINS, $uuid->toString()]
         ]);
         $this->assert($result, ['1111111234']);
     }

@@ -9,8 +9,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 use Doctrine\DBAL\Types\Type;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -220,20 +218,20 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
         $sql = <<<SQL
 UPDATE pim_catalog_product
 SET updated = :updated_date
-WHERE identifier = :identifier
+WHERE uuid = :uuid
 SQL;
+        $uuid = $this->getProductUuid($identifier);
 
         $this->get('database_connection')->executeQuery(
             $sql,
             [
-                'identifier' => $identifier,
+                'uuid' => $uuid->getBytes(),
                 'updated_date' => $updatedDate,
             ],
             [
                 'updated_date' => Type::DATETIME
             ]);
 
-        $uuid = $this->getProductUuid($identifier);
         $this->getProductAndAncestorsIndexer()->indexFromProductUuids([$uuid]);
     }
 
