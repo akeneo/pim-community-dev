@@ -464,6 +464,8 @@ pim_system:
     button:
       label: Reimposta istanza
       confirm: Reimposta e disconnetti
+    error_notification: Si è verificato un errore durante la reimpostazione dell'istanza, contatta l'amministratore di sistema.
+    jobs_running: Al momento non puoi reimpostare la tua istanza, perché ci sono ancora alcuni processi in coda o in esecuzione.
   sandbox:
     helper:
       text: Questo è un ambiente di prova; i cambiamenti non avranno effetto su quello di lavoro.

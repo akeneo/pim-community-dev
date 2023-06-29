@@ -22,10 +22,7 @@ akeneo.category:
     delete: Eliminar árbol
   template:
     learn_more: Más información sobre las plantillas de categorías
-    create: Activar plantilla
     edit: Editar plantilla
-    notification_success: Plantilla activada correctamente
-    notification_error: No se pudo activar la plantilla
     not_found: No hay ninguna plantilla activa para esta categoría
     properties:
       general_properties: Propiedades generales

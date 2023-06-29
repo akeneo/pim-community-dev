@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
+use Akeneo\Category\Infrastructure\Component\Classification\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query\ListRootCategoriesWithCountNotIncludingSubCategories;
@@ -53,29 +54,68 @@ class ListRootCategoriesWithCountHandler
      */
     public function handle(ListRootCategoriesWithCount $query): array
     {
-        $categorySelectedAsFilter = -1 !== $query->categoryIdSelectedAsFilter() ?
-            $this->categoryRepository->find($query->categoryIdSelectedAsFilter()) : null;
-
-        if (null === $categorySelectedAsFilter) {
-            $categorySelectedAsFilter = $this->userContext->getAccessibleUserTree();
-            if ($categorySelectedAsFilter === null) {
-                return [];
-            }
+        $defaultCategoryTreeId = $this->getDefaultCategoryTreeId($query);
+        if ($defaultCategoryTreeId === null) {
+            return [];
         }
-        $rootCategoryIdToExpand = $categorySelectedAsFilter->getRoot();
 
-        $rootCategories = $query->countIncludingSubCategories() ?
+        $rootCategoryToExpand = $this->getRootCategoryToExpandFromSelectedCategory(
+            $query->categoryIdSelectedAsFilter(),
+            $defaultCategoryTreeId
+        );
+
+        if ($rootCategoryToExpand === null) {
+            return [];
+        }
+
+        return $query->countIncludingSubCategories() ?
             $this->listAndCountIncludingSubCategories->list(
                 $query->translationLocaleCode(),
                 $query->userId(),
-                $rootCategoryIdToExpand
+                $rootCategoryToExpand->getId()
             ) :
             $this->listAndCountNotIncludingSubCategories->list(
                 $query->translationLocaleCode(),
                 $query->userId(),
-                $rootCategoryIdToExpand
+                $rootCategoryToExpand->getId()
             );
+    }
 
-        return $rootCategories;
+    /**
+     * Try to get the categoryTreeId from url parameters.
+     * If not set, try to get the root category id from selectedCategoryId in url parameters.
+     * If the root category does not exist, try to get the user accessible categoryTreeId.
+     * @param ListRootCategoriesWithCount $query
+     * @return int|null
+     */
+    private function getDefaultCategoryTreeId(ListRootCategoriesWithCount $query): ?int
+    {
+        if (null !== $query->categoryTreeIdSelectedAsFilter()) {
+            return $query->categoryTreeIdSelectedAsFilter();
+        }
+
+        if (null !== $query->categoryIdSelectedAsFilter()) {
+            $selectedCategory = $this->categoryRepository->find($query->categoryIdSelectedAsFilter());
+            if (null !== $selectedCategory && null !== $selectedCategory->getRoot()) {
+                return $selectedCategory->getRoot();
+            }
+        }
+
+        return $this->userContext->getAccessibleUserTree()?->getId();
+    }
+
+    private function getRootCategoryToExpandFromSelectedCategory(int $subCategoryId, ?int $defaultCategoryTreeId): CategoryInterface|null
+    {
+        $selectedCategory = $this->categoryRepository->find($subCategoryId);
+        if (null !== $selectedCategory) {
+            return $this->categoryRepository->find($selectedCategory->getRoot());
+        }
+
+        // selected category does not exist in DB, so we get the categoryTree from the default categoryTreeId
+        if (null !== $defaultCategoryTreeId) {
+            return $this->categoryRepository->find($defaultCategoryTreeId);
+        }
+
+        return null;
     }
 }

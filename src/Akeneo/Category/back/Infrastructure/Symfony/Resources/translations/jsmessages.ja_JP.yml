@@ -19,10 +19,7 @@ akeneo.category:
     delete: ツリーを削除
   template:
     learn_more: カテゴリテンプレートの詳細
-    create: テンプレートを有効化
     edit: テンプレートを編集
-    notification_success: テンプレートが正常に有効化されました
-    notification_error: テンプレートを有効化できませんでした
     not_found: このカテゴリのアクティブなテンプレートはありません。
     attribute:
       description_title: 説明の設定

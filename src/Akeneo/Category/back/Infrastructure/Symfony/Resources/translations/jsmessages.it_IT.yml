@@ -1,6 +1,9 @@
 pim_title:
   pim_category_template_edit: Modifica modello categoria
 akeneo.category:
+  unknown_error:
+    title: Spiacenti, si è verificato un errore sconosciuto.
+    message: Ricarica la pagina e riprova.
   tree_list:
     column:
       category_templates: Modelli di categoria
@@ -19,11 +22,11 @@ akeneo.category:
     delete: Elimina struttura
   template:
     learn_more: Scopri di più sui modelli di categoria
-    create: Attiva modello
     edit: Modifica modello
-    notification_success: Modello attivato correttamente
-    notification_error: Impossibile attivare il modello
     not_found: Per questa categoria non c'è un modello attivo
+    properties:
+      general_properties: Proprietà generali
+      label_translations_in_ui_locales: Traduzione delle etichette nelle lingue dell'interfaccia
     attribute:
       description_title: Impostazioni descrizione
       type:
@@ -41,6 +44,8 @@ akeneo.category:
           rich_text: Editor di Testi Avanzato
         translations:
           title: Traduzioni etichette
+        error_message: La pagina contiene valori non validi.
+        unsaved_changes: Hai delle modifiche non salvate, confermi di voler uscire?
     add_attribute:
       no_attribute_title: Crea il tuo primo attributo
       no_attribute_instructions: Definisci il contenuto che vuoi associare alle tue categorie aggiungendo attributi Testo, Area di Testo o Immagine a questo modello.
@@ -80,6 +85,19 @@ akeneo.category:
         title: 'Attributo {{ attribute }} eliminato correttamente'
     deactivate:
       deactivate_template: Elimina modello
+      confirmation_modal:
+        title: Elimina il modello di categoria
+        message: Confermi di voler eliminare il modello di categoria denominato {{ template }}?
+        helper: Eliminando questo modello si eliminano definitivamente gli attributi e i valori delle categorie associate.
+        deactivate: Elimina
+      notification_success:
+        title: 'Modello {{ template }} eliminato'
+        message: '{{ template }} è stato eliminato. Il contenuto delle categorie associate è stato eliminato.'
+    auto-save:
+      saved: Salvato
+      saving: Salvataggio
+      editing: Modifica
+      errors: Errori non salvati
   template_list:
     columns:
       header: Etichetta
