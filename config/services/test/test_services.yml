@@ -217,8 +217,6 @@ services:
             - '%env(GOOGLE_CLOUD_PROJECT)%'
             - '%env(PUBSUB_TOPIC_PRODUCTS_WERE_UPSERT_QUEUE)%'
             - '%env(PUBSUB_SUBSCRIPTION_DQI_PRODUCT_SCORE_COMPUTE_ON_UPSERT)%'
-        tags:
-            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
 
     akeneo_integration_tests.launcher.job_execution_observer:
         class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'
