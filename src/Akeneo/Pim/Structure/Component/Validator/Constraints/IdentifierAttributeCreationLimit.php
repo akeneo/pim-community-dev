@@ -14,21 +14,6 @@ final class IdentifierAttributeCreationLimit extends Constraint
 {
     public string $message = 'pim_catalog.constraint.identifier_attribute_limit_reached';
 
-    public int $limit = 1;
-
-    public function __construct($options = null, array $groups = null, $payload = null)
-    {
-        if (null === $options || (\is_array($options) && !isset($options['limit']))) {
-            $options['limit'] = $this->limit;
-        }
-        parent::__construct($options, $groups, $payload);
-    }
-
-    public function getDefaultOption()
-    {
-        return 'limit';
-    }
-
     /**
      * @inerhitDoc
      */
