@@ -163,6 +163,8 @@ pim_import_export:
     6: Failed
     7: Abandoned
     8: Unknown
+    9: Pausing
+    10: Paused
   job_status:
     COMPLETED: Completed
     STARTING: Starting

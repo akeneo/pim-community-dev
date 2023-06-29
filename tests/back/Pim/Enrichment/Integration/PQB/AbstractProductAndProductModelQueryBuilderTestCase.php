@@ -57,7 +57,7 @@ abstract class AbstractProductAndProductModelQueryBuilderTestCase extends TestCa
         );
 
         foreach ($filters as $filter) {
-            $context = isset($filter[3]) ? $filter[3] : [];
+            $context = $filter[3] ?? [];
             $pqb->addFilter($filter[0], $filter[1], $filter[2], $context);
         }
 

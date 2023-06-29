@@ -19,10 +19,7 @@ akeneo.category:
     delete: Usuń drzewo
   template:
     learn_more: Dowiedz się więcej o szablonie kategorii
-    create: Aktywuj szablon
     edit: Edytuj szablon
-    notification_success: Szablon został aktywowany.
-    notification_error: Nie można aktywować szablonu.
     not_found: Nie ma aktywnego szablonu dla tej kategorii.
     attribute:
       description_title: Ustawienia opisu

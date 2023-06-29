@@ -83,9 +83,7 @@ final class UploadedFileValidatorSpec extends ObjectBehavior
             'types' => ['png' => ['image/png']],
         ]);
 
-        $context->buildViolation($constraint->unsupportedMimeTypeMessage)->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->setParameter('{{ mimeType }}', 'image/jpg')->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->setParameter('{{ mimeTypes }}', 'image/png')->willReturn($constraintViolationBuilder);
+        $context->buildViolation($constraint->fileIsCorruptedMessage)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate($file, $constraint);
@@ -107,8 +105,7 @@ final class UploadedFileValidatorSpec extends ObjectBehavior
             'types' => ['png' => ['image/png']],
         ]);
 
-        $context->buildViolation($constraint->invalidExtensionMessage)->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->setParameter('{{ originalExtension }}', 'png')->willReturn($constraintViolationBuilder);
+        $context->buildViolation($constraint->fileIsCorruptedMessage)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate($file, $constraint);
@@ -130,8 +127,7 @@ final class UploadedFileValidatorSpec extends ObjectBehavior
             'types' => ['png' => ['image/png']],
         ]);
 
-        $context->buildViolation($constraint->invalidMimeTypeMessage)->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->setParameter('{{ originalMimeType }}', 'image/png')->willReturn($constraintViolationBuilder);
+        $context->buildViolation($constraint->fileIsCorruptedMessage)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate($file, $constraint);
@@ -156,9 +152,7 @@ final class UploadedFileValidatorSpec extends ObjectBehavior
             ],
         ]);
 
-        $context->buildViolation($constraint->mimeTypeDoesNotMatchExtensionMessage)->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->setParameter('{{ originalMimeType }}', 'image/jpg')->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->setParameter('{{ originalExtension }}', 'png')->willReturn($constraintViolationBuilder);
+        $context->buildViolation($constraint->fileIsCorruptedMessage)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate($file, $constraint);

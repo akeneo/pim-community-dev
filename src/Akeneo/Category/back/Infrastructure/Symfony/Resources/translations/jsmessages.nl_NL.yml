@@ -19,10 +19,7 @@ akeneo.category:
     delete: Boomstructuur verwijderen
   template:
     learn_more: Meer informatie over het categoriesjabloon
-    create: Sjabloon activeren
     edit: Sjabloon bewerken
-    notification_success: Het sjabloon is geactiveerd
-    notification_error: Het sjabloon kon niet geactiveerd worden
     not_found: Er is geen actieve sjabloon voor deze categorie
     attribute:
       description_title: Instellingen van beschrijving
