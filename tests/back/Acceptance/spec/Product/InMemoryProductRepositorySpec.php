@@ -104,7 +104,10 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $product2->addValue(IdentifierValue::value('sku', true, 'product-2'));
         $this->save($product2);
 
-        $this->findAll()->shouldReturn(['product-1' => $product1, 'product-2' => $product2]);
+        $this->findAll()->shouldReturn([
+            $product1->getUuid()->toString() => $product1,
+            $product2->getUuid()->toString() => $product2,
+        ]);
     }
 
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
@@ -133,8 +136,8 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $products = $this->findAll();
         $products->shouldBeArray();
         $products->shouldHaveCount(2);
-        $products['a-product']->shouldBe($product1);
-        $products['a-second-product']->shouldBe($product2);
+        $products[$product1->getUuid()->toString()]->shouldBe($product1);
+        $products[$product2->getUuid()->toString()]->shouldBe($product2);
     }
 
     function it_returns_products_from_identifiers()
@@ -165,7 +168,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $products = $this->findBy(['identifier' => 'A']);
         $products->shouldBeArray();
         $products->shouldHaveCount(1);
-        $products->shouldHaveKeyWithValue('A', $productA);
+        $products->shouldHaveKeyWithValue($productA->getUuid()->toString(), $productA);
     }
 
     function it_finds_one_product_by_uuid()

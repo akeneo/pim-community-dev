@@ -353,7 +353,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $axes = [$autoExposure];
 
         $entity = new Product();
-        $entity->setIdentifier('my_identifier');
+        $entity->addValue(IdentifierValue::value('sku', true, 'my_identifier'));
         $entity->setParent($parent->getWrappedObject());
         $entity->setFamilyVariant($familyVariant->getWrappedObject());
         $entity->addValue(ScalarValue::value('auto_exposure', false));
@@ -377,7 +377,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                     '%sibling_with_same_value%' => 'sibling2',
                 ]
             )
-            ->willReturn($violation);
+            ->shouldBeCalled()->willReturn($violation);
         $violation->atPath('attribute')->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 

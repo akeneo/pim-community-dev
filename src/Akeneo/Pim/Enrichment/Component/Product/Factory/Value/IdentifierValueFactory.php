@@ -29,8 +29,7 @@ final class IdentifierValueFactory implements ValueFactory
             throw new \InvalidArgumentException('An identifier value cannot be scopable nor localizable');
         }
 
-        # TODO: CPM-1068, replace false with $attribute->isMainIdentifier()
-        return IdentifierValue::value($attributeCode, false, $data);
+        return IdentifierValue::value($attributeCode, $attribute->isMainIdentifier(), $data);
     }
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface

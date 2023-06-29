@@ -19,7 +19,7 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AttributeInterface $attribute)
+    public function supportAttribute(AttributeInterface $attribute): bool
     {
         $availableTypes = [
             AttributeTypes::BACKEND_TYPE_TEXT,
@@ -28,18 +28,18 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
             AttributeTypes::BACKEND_TYPE_DECIMAL
         ];
 
-        return in_array($attribute->getBackendType(), $availableTypes);
+        return in_array($attribute->getBackendType(), $availableTypes) && $attribute->getType() !== AttributeTypes::IDENTIFIER;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AttributeInterface $attribute)
+    public function guessConstraints(AttributeInterface $attribute): array
     {
         $constraints = [];
 
         // We don't apply the unique value constraint on identifier because it is done
-        // by `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity`
+        // by `Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\UniqueIdentifierValueGuesser`
         if ($attribute->isUnique() && AttributeTypes::IDENTIFIER !== $attribute->getType()) {
             $constraints[] = new UniqueValue();
         }

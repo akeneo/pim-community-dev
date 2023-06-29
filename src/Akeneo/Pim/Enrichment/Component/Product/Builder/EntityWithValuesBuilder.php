@@ -118,7 +118,6 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
     ): ValueInterface {
         $newValue = $this->productValueFactory->createByCheckingData($attribute, $channelCode, $localeCode, $data);
         $entityWithValues->addValue($newValue);
-        $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
 
         return $newValue;
     }
@@ -135,7 +134,6 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         if (!$formerValue->isEqual($updatedValue)) {
             $entityWithValues->removeValue($formerValue)->addValue($updatedValue);
         }
-        $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
 
         return $updatedValue;
     }
@@ -149,19 +147,7 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
     ): ?ValueInterface {
         $formerValue = $entityWithValues->getValue($attribute->code(), $localeCode, $channelCode);
         $entityWithValues->removeValue($formerValue);
-        $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
 
         return null;
-    }
-
-    private function updateProductIdentiferIfNeeded(
-        Attribute $attribute,
-        EntityWithValuesInterface $entityWithValues,
-        $data
-    ): void {
-        // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        if (AttributeTypes::IDENTIFIER === $attribute->type() && $entityWithValues instanceof ProductInterface) {
-            $entityWithValues->setIdentifier($data);
-        }
     }
 }

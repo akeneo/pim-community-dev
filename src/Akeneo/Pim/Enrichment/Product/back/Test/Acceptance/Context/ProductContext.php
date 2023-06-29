@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context;
 
 use Akeneo\Category\Infrastructure\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Value\IdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
@@ -48,7 +49,7 @@ final class ProductContext implements Context
     public function aProductWithIdentifierInTheCategory(string $identifier, string $categoryCode): void
     {
         $product = new Product();
-        $product->setIdentifier($identifier);
+        $product->addValue(IdentifierValue::value('sku', true, $identifier));
 
         $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
         Assert::notNull($category);

@@ -15,6 +15,7 @@ class LengthGuesserSpec extends ObjectBehavior
         $text->getType()->willReturn('pim_catalog_text');
         $text->getCode()->willReturn('a_text');
         $identifier->getType()->willReturn('pim_catalog_identifier');
+        $identifier->getCode()->willReturn('sku');
         $textarea->getType()->willReturn('pim_catalog_textarea');
         $textarea->getCode()->willReturn('a_textarea');
     }
@@ -40,7 +41,7 @@ class LengthGuesserSpec extends ObjectBehavior
         $this->supportAttribute($image)->shouldReturn(false);
     }
 
-    function it_enforces_the_keyword_identifier_instead_of_attribute_code($identifier)
+    function it_applies_the_same_constraint_for_an_identifier_attribute_as_it_does_the_others($identifier)
     {
         $identifier->getMaxCharacters()->willReturn(null);
         $lengthConstraints = $this->guessConstraints($identifier);
@@ -48,7 +49,7 @@ class LengthGuesserSpec extends ObjectBehavior
         $lengthConstraints->shouldHaveCount(1);
         $lengthConstraints[0]->shouldBeAnInstanceOf(Length::class);
         $lengthConstraints[0]->max->shouldBe(255);
-        $lengthConstraints[0]->attributeCode->shouldBe('identifier');
+        $lengthConstraints[0]->attributeCode->shouldBe('sku');
     }
 
     function it_enforces_database_length_constraints($text, $textarea)

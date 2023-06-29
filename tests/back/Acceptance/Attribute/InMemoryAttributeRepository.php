@@ -61,6 +61,18 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
             throw new \InvalidArgumentException('The object argument should be a attribute');
         }
 
+        if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+            $mainIdentifier = $this->attributes->filter(
+                static fn (AttributeInterface $savedAttribute): bool =>
+                    $savedAttribute->isMainIdentifier() && $savedAttribute->getCode() !== $attribute->getCode()
+            )->isEmpty();
+
+            if ($mainIdentifier) {
+                $refl = new \ReflectionClass($attribute);
+                $refl->getProperty('mainIdentifier')->setValue($attribute, true);
+            }
+        }
+
         $this->attributes->set($attribute->getCode(), $attribute);
     }
 
