@@ -68,8 +68,7 @@ class RoleController extends AbstractController
             throw $this->createNotFoundException(sprintf('Role with id %d could not be found.', $id));
         }
 
-        $minimumEditRoleRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
-        if (count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
+        if ($this->editRolePermissionsRoleRepository->isLastRoleWithEditRolePermissions($role)) {
             return new JsonResponse([
                 'message' => $this->translator->trans('pim_user.controller.role.message.cannot_delete_last_edit_role_permission')
             ], Response::HTTP_UNPROCESSABLE_ENTITY);

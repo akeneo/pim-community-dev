@@ -100,17 +100,26 @@ class AclRoleHandler
             $formPrivileges = array_merge($formPrivileges, $privileges);
         }
 
-        $minimumEditRoleRoles = $this->editRolePermissionsRoleRepository->getRolesWithMinimumEditRolePermissions();
-        if (count($minimumEditRoleRoles) <= 1 && in_array($role, $minimumEditRoleRoles)) {
-
+        if ($this->editRolePermissionsRoleRepository->isLastRoleWithEditRolePermissions($role)) {
+            // This function extract the values from the form inputs by the user
             $filterSelectedEditRolePrivilegesFn = function (AclPrivilege $formPrivilege) {
+                // Keep only the privileges with the identity/key for the minimum edit role permissions
                 if (false === in_array(
                     $formPrivilege->getIdentity()->getId(),
                     MinimumEditRolePermission::getAllValues()
                 )) {
                     return false;
                 }
-
+                // With the remaining privileges, we identify if it has been checked by getting the 'EXECUTE' with SYSTEM_LEVEL access (NONE_LEVEL if unchecked)
+                // for example :
+                //  [
+                //      'identity' => ['id' => 'action:oro_config_system'],
+                //      'permissions' => ['elements' => ['EXECUTE' => [
+                //                  'name' => 'EXECUTE',
+                //                  'accessLevel' => 5,
+                //              ],
+                //      ]],
+                //  ]
                 return array_filter(
                     $formPrivilege->getPermissions()->toArray(),
                     fn ($permission) => $permission->getName() === 'EXECUTE' && $permission->getAccessLevel() === AccessLevel::SYSTEM_LEVEL
