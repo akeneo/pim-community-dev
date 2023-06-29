@@ -104,6 +104,7 @@
 - PIM-11071: Fix potential divided by zero in completeness calculation
 - PIM-11073: Fix search with underscore on attribute grid
 - PIM-11035: Modify the command to fit with UCS
+- PIM-11011: Fix versioning on common attribute values update using no real time imports
 
 ## Improvements
 

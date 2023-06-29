@@ -105,11 +105,11 @@ class VersionBuilder
         $oldSnapshot = $previousVersion ? $previousVersion->getSnapshot() : [];
 
         $modification = $pending->getChangeset();
-        $snapshot = $modification + $oldSnapshot;
-        $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
+        $snapshotFromPreviousVersion = \array_replace($modification, $oldSnapshot);
+        $changeset = $this->buildChangeset($oldSnapshot, $snapshotFromPreviousVersion);
 
         $pending->setVersion($versionNumber)
-            ->setSnapshot($snapshot)
+            ->setSnapshot($snapshotFromPreviousVersion)
             ->setChangeset($changeset);
 
         return $pending;
