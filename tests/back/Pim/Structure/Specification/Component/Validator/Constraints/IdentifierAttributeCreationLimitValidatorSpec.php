@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Akeneo\Pim\Automation\IdentifierGenerator\Domain\Repository\IdentifierGeneratorRepository;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\IdentifierAttributeCreationLimit;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\IdentifierAttributeCreationLimitValidator;
@@ -43,9 +44,35 @@ class IdentifierAttributeCreationLimitValidatorSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['code', new NotBlank()]);
     }
 
+    public function it_can_only_validate_attribute_value(
+        IdentifierGeneratorRepository $repository
+    ): void {
+        $repository
+            ->findBy(Argument::any())
+            ->shouldNotBeCalled();
+
+        $this->validate(new \stdClass(), new IdentifierAttributeCreationLimit());
+    }
+
+    public function it_can_only_validate_new_attribute_value(
+        IdentifierGeneratorRepository $repository,
+        AttributeInterface $attribute
+    ): void {
+        $attribute
+            ->getId()
+            ->shouldBeCalled()
+            ->willReturn(1);
+        $repository
+            ->findBy(Argument::any())
+            ->shouldNotBeCalled();
+
+        $this->validate($attribute, new IdentifierAttributeCreationLimit());
+    }
+
     public function it_should_build_violation_when_identifier_attribute_limit_is_reached(
         ExecutionContext $context,
-        IdentifierGeneratorRepository $repository
+        IdentifierGeneratorRepository $repository,
+        AttributeInterface $attribute
     ): void {
 
         $repository
@@ -58,12 +85,13 @@ class IdentifierAttributeCreationLimitValidatorSpec extends ObjectBehavior
             ['{{limit}}' => $this->creationLimit]
         )->shouldBeCalled();
 
-        $this->validate('identifier', new IdentifierAttributeCreationLimit());
+        $this->validate($attribute, new IdentifierAttributeCreationLimit());
     }
 
     public function it_should_be_valid_when_identifier_attribute_is_under_limit(
         ExecutionContext $context,
-        IdentifierGeneratorRepository $repository
+        IdentifierGeneratorRepository $repository,
+        AttributeInterface $attribute
     ): void {
         $repository
             ->findBy(Argument::any())
@@ -72,6 +100,6 @@ class IdentifierAttributeCreationLimitValidatorSpec extends ObjectBehavior
 
         $context->buildViolation((string)Argument::any())->shouldNotBeCalled();
 
-        $this->validate('identifier', new IdentifierAttributeCreationLimit());
+        $this->validate($attribute, new IdentifierAttributeCreationLimit());
     }
 }
