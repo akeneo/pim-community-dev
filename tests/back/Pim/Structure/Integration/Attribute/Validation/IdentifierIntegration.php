@@ -42,7 +42,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertCount(0, $violations);
     }
 
-    public function testIdentifierIsUsableAsGridFilter()
+    public function testIdentifierIsUsableAsGridFilter(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -63,7 +63,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('useableAsGridFilter', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierIsRequired()
+    public function testIdentifierIsRequired(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -81,7 +81,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('required', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveAllowedExtensions()
+    public function testIdentifierShouldNotHaveAllowedExtensions(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -99,7 +99,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('allowedExtensions', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveAMetricFamily()
+    public function testIdentifierShouldNotHaveAMetricFamily(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -117,7 +117,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('metricFamily', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveADefaultMetricUnit()
+    public function testIdentifierShouldNotHaveADefaultMetricUnit(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -135,7 +135,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('defaultMetricUnit', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveAReferenceDataName()
+    public function testIdentifierShouldNotHaveAReferenceDataName(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -153,7 +153,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('reference_data_name', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveAutoOptionSorting()
+    public function testIdentifierShouldNotHaveAutoOptionSorting(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -171,7 +171,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('auto_option_sorting', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveAvailableLocales()
+    public function testIdentifierShouldNotHaveAvailableLocales(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -189,7 +189,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('availableLocales', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierMaxCharacterIsNotDecimal()
+    public function testIdentifierMaxCharacterIsNotDecimal(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -207,7 +207,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierMaxCharacterIsPositive()
+    public function testIdentifierMaxCharacterIsPositive(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -225,7 +225,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierMaxCharactersIsNotGreaterThan()
+    public function testIdentifierMaxCharactersIsNotGreaterThan(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -243,7 +243,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('maxCharacters', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveADateMin()
+    public function testIdentifierShouldNotHaveADateMin(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -261,7 +261,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('dateMin', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveADateMax()
+    public function testIdentifierShouldNotHaveADateMax(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -279,7 +279,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('dateMax', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveAMaxFileSize()
+    public function testIdentifierShouldNotHaveAMaxFileSize(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -297,7 +297,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('maxFileSize', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierValidationRule()
+    public function testIdentifierValidationRule(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -315,7 +315,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('validationRule', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierValidationRegexp()
+    public function testIdentifierValidationRegexp(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -334,7 +334,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('validationRegexp', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveANumberMin()
+    public function testIdentifierShouldNotHaveANumberMin(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -352,7 +352,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('numberMin', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveANumberMax()
+    public function testIdentifierShouldNotHaveANumberMax(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -370,7 +370,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('numberMax', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveWysiwygEnabled()
+    public function testIdentifierShouldNotHaveWysiwygEnabled(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -388,7 +388,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('wysiwygEnabled', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveDecimalsAllowed()
+    public function testIdentifierShouldNotHaveDecimalsAllowed(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -406,7 +406,7 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertSame('decimalsAllowed', $violations->get(0)->getPropertyPath());
     }
 
-    public function testIdentifierShouldNotHaveNegativeAllowed()
+    public function testIdentifierShouldNotHaveNegativeAllowed(): void
     {
         $attribute = $this->getAttribute('sku');
 
@@ -422,5 +422,43 @@ class IdentifierIntegration extends AbstractAttributeTestCase
         $this->assertCount(1, $violations);
         $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
         $this->assertSame('negativeAllowed', $violations->get(0)->getPropertyPath());
+    }
+
+    public function testMultipleIdentifiersCantBeCreatedOverLimit(): void
+    {
+        $limit = 10;
+        for ($i = 1; $i < $limit; $i++) {
+            $tempAttribute = $this->createAttribute();
+            $this->updateAttribute(
+                $tempAttribute,
+                [
+                    'code'                   => 'identifier'.$i,
+                    'type'                   => 'pim_catalog_identifier',
+                    'group'                  => 'attributeGroupA',
+                    'useable_as_grid_filter' => true,
+                ]
+            );
+            $violations = $this->validateAttribute($tempAttribute);
+            $this->assertCount(0, $violations);
+            $this->saveAttribute($tempAttribute);
+
+            $this->assertNotNull($this->getAttribute('identifier'.$i));
+        }
+
+        $attributeOverLimit = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attributeOverLimit,
+            [
+                'code'                   => 'over_limit_identifier',
+                'type'                   => 'pim_catalog_identifier',
+                'group'                  => 'attributeGroupA',
+                'useable_as_grid_filter' => true,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attributeOverLimit);
+        $this->assertCount(1, $violations);
+        $this->assertSame('Limit of "10" identifier attributes is reached', $violations->get(0)->getMessage());
     }
 }
