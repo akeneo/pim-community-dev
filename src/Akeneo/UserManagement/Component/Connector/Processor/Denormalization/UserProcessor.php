@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsUserQuery;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsUserQuery;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

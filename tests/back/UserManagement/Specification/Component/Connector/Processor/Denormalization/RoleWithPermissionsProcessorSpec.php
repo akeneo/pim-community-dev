@@ -14,12 +14,11 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Connector\Processor\Denormalization\RoleWithPermissionsProcessor;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleQuery;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use function Symfony\Component\Translation\t;
 
 class RoleWithPermissionsProcessorSpec extends ObjectBehavior
 {

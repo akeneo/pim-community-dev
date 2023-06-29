@@ -10,8 +10,8 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
-use Akeneo\UserManagement\Domain\Permissions\EditRolePermissionsRoleQuery;
 use Akeneo\UserManagement\Domain\Permissions\MinimumEditRolePermission;
+use Akeneo\UserManagement\Domain\Permissions\Query\EditRolePermissionsRoleQuery;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
