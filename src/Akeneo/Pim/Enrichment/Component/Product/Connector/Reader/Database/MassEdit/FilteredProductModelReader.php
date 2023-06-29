@@ -94,7 +94,6 @@ class FilteredProductModelReader implements
      */
     public function read(): ?ProductModelInterface
     {
-        $productModel = null;
         $productModel = $this->getNextProductModel();
 
         if (null !== $productModel) {

@@ -69,7 +69,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
         }
 
         $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
-        if (isset($this->state['headers'])) {
+        if (array_key_exists('headers', $this->state)) {
             $this->flatRowBuffer->addToHeaders($this->state['headers']);
         }
     }
@@ -169,7 +169,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
 
         return [
             'buffer_file_path' => $filePath,
-            'headers'          => $this->flatRowBuffer->getHeaders(),
+            'headers' => $this->flatRowBuffer->getHeaders(),
         ];
     }
 
