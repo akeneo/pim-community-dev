@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -16,17 +17,22 @@ use Webmozart\Assert\Assert;
  */
 final class IdentifierAttributeCreationLimitValidator extends ConstraintValidator
 {
-    public function __construct(private AttributeRepositoryInterface $repository)
-    {
+    public function __construct(
+        private readonly AttributeRepositoryInterface $repository,
+        private readonly int $creationLimit
+    ) {
     }
 
     public function validate($value, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, IdentifierAttributeCreationLimit::class);
+        if (!$value instanceof AttributeInterface) {
+            return;
+        }
 
-        if (\count($this->repository->findBy(['type' => AttributeTypes::IDENTIFIER])) >= $constraint->limit) {
+        if ($this->creationLimit <= \count($this->repository->findBy(['type' => AttributeTypes::IDENTIFIER]))) {
             $this->context
-                ->buildViolation($constraint->message, ['{{limit}}' => $constraint->limit])
+                ->buildViolation($constraint->message, ['{{limit}}' => $this->creationLimit])
                 ->addViolation();
         }
     }

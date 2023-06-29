@@ -1,5 +1,6 @@
 parameters:
     max_attribute_groups: 1000
+    identifier_attribute_creation_limit: 10
 
 services:
     pim_catalog.validator.constraint.family_requirements:
@@ -133,5 +134,6 @@ services:
     Akeneo\Pim\Structure\Component\Validator\Constraints\IdentifierAttributeCreationLimitValidator:
         arguments:
             - '@pim_catalog.repository.attribute'
+            - '%identifier_attribute_creation_limit%'
         tags:
             - { name: validator.constraint_validator }
