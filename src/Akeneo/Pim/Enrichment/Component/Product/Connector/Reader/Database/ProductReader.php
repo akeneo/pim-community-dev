@@ -51,7 +51,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
             return;
         }
 
-        while ($this->products->key() < $this->state['position']) {
+        while ($this->products->valid() && ($this->products->key() < $this->state['position'] || is_null($this->state['position']))) {
             $this->products->next();
         }
         $this->firstRead = false;

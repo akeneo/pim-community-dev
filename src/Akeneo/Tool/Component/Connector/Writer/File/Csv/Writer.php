@@ -64,6 +64,9 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
         }
 
         $this->flatRowBuffer = $this->bufferFactory->create($bufferFilePath);
+        if (isset($this->state['headers'])) {
+            $this->flatRowBuffer->addToHeaders($this->state['headers']);
+        }
     }
 
     /**
@@ -125,6 +128,7 @@ class Writer extends AbstractFileWriter implements ItemWriterInterface, Initiali
 
         return [
             'buffer_file_path' => $filePath,
+            'headers'          => $this->flatRowBuffer->getHeaders(),
         ];
     }
 
