@@ -40,7 +40,7 @@ class ReaderSpec extends ObjectBehavior
         $jobParameters->get('storage')->willReturn(['type' => 'local', 'file_path' => $filePath]);
         $fileIterator->valid()->willReturn(true, true, true, false);
         $fileIterator->current()->willReturn(null);
-        $fileIterator->rewind()->shouldBeCalledTimes(2);
+        $fileIterator->rewind()->shouldBeCalledTimes(3);
         $fileIterator->next()->shouldBeCalled();
         $fileIteratorFactory->create($filePath, [])->willReturn($fileIterator);
 
